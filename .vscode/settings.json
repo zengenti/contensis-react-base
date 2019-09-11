@@ -1,0 +1,47 @@
+{
+  // The number of spaces a tab is equal to. This setting is overridden based on the file contents when `editor.detectIndentation` is on.
+  "editor.tabSize": 2,
+  "editor.detectIndentation": false,
+  // Controls whether the editor should automatically format the line after typing.
+  "editor.formatOnType": true,
+  // Render the actual characters on a line as opposed to color blocks.
+  "editor.minimap.renderCharacters": false,
+  // Controls fading out of unused code.
+  "editor.showUnused": true,
+  // Remove trailing auto inserted whitespace.
+  "editor.trimAutoWhitespace": true,
+  // When enabled, insert a final new line at the end of the file when saving it.
+  "files.insertFinalNewline": true,
+  // When enabled, will trim all new lines after the final new line at the end of the file when saving it.
+  "files.trimFinalNewlines": true,
+  // When enabled, will trim trailing whitespace when saving a file.
+  "files.trimTrailingWhitespace": false,
+  // Enable/disable default HTML formatter.
+  "html.format.enable": true,
+  // End with a newline.
+  "html.format.endWithNewline": false,
+  // Turns auto fix on save on or off.
+  "eslint.autoFixOnSave": true,
+  // Always show the ESlint status bar item.
+  "eslint.alwaysShowStatus": false,
+  "prettier.eslintIntegration": true,
+  "files.exclude": {
+    // exclude .js and .js.map files, when in a TypeScript project
+    "**/*.js.map": true,
+    "**/*.js": {
+      "when": "$(basename).ts"
+    },
+    "**/*?.js": {
+      "when": "$(basename).tsx"
+    }
+  },
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true,
+  "workbench.colorCustomizations": {
+    "activityBar.background": "#e9654c",
+    "activityBar.foreground": "#fff",
+    "activityBar.inactiveForeground": "#f3f3f380",
+    "tab.activeBorderTop": "#e9654c"
+  },
+  "prettier.printWidth": 115
+}

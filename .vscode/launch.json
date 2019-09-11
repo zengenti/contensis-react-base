@@ -1,0 +1,68 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  //
+  // TO USE VSCODE DEBUGGING, INSTALL "DEBUGGER FOR CHROME" EXTENSION IN VSCODE,
+  // ENSURE APPROPRIATE DEV/STORYBOOK TERMINAL IS RUNNING AND THEN HIT F5 TO
+  // RUN THE SELECTED LAUNCH CONFIG TO OPEN UP A SPECIAL DEBUGGING BROWSER.
+  // BREAKPOINTS AND WATCHES WILL WORK.
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Debug Storybook in Chrome against localhost",
+      "url": "http://localhost:6006",
+      "webRoot": "${workspaceFolder}"
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Debug App in Chrome against localhost",
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceFolder}",
+      "skipFiles": [
+        "${workspaceFolder}/node_modules/**/*.js"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "attach",
+      "name": "Attach to Remote",
+      "address": "127.0.0.1",
+      "port": 9229,
+      "localRoot": "${workspaceFolder}",
+      "remoteRoot": "${workspaceFolder}\\dist",
+      "smartStep": true,
+      // Note: These are the mappings that are included by default out of the box, with examples of how they could be resolved in different scenarios. These are not mappings that would make sense together in one project.
+      "sourceMapPathOverrides": {
+        "webpack:///./~/*": "${workspaceFolder}/node_modules/*", // Example: "webpack:///./~/querystring/index.js" -> "/Users/me/project/node_modules/querystring/index.js"
+        "webpack:///./*": "${workspaceFolder}/*", // Example: "webpack:///./src/app.js" -> "/Users/me/project/src/app.js",
+        "webpack:///*": "*", // Example: "webpack:///project/app.ts" -> "/project/app.ts"
+        "webpack:///src/*": "${workspaceFolder}/*", // Example: "webpack:///src/app.js" -> "/Users/me/project/app.js"
+        "meteor://💻app/*": "${workspaceFolder}/*" // Example: "meteor://💻app/main.ts" -> "/Users/me/project/main.ts"
+      }
+    }
+        {
+      "type": "node",
+      "request": "launch",
+      "name": "Run server - debug",
+      "program": "${workspaceFolder}/src/server/server.js",
+      "runtimeExecutable": "nodemon",
+      "runtimeArgs": [
+        "--exec",
+        "${workspaceRoot}/node_modules/.bin/babel-node"
+      ],
+      "smartStep": true,
+      "internalConsoleOptions": "neverOpen",
+      "restart": true,
+      "cwd": "${workspaceRoot}",
+      "console": "internalConsole",
+      "outFiles": [],
+      "env": {
+        "NODE_ENV": "test"
+      },
+      "sourceMaps": true
+    ]
+  }
