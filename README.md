@@ -7,3 +7,5 @@ If your commmit message contains a Jira task ID gitlab will automatically add a 
 - `Resolves PSBP-1`
 - `Closes PSBP-1`
 - `Fixes PSBP-1`
+
+
