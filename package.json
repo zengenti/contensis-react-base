@@ -1,7 +1,7 @@
 {
-  "name": "university-demo",
+  "name": "zen-base",
   "version": "0.0.1",
-  "repository": "",
+  "repository": "https://gitlab.zengenti.com/ps-projects/zengenti-base/zen-base",
   "license": "None",
   "description": "",
   "main": "index.js",

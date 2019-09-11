@@ -10,7 +10,7 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx', '.json'],
     alias: {
-      app: path.resolve(__dirname, '../src/app'),
+      '~': path.resolve(__dirname, '../src/app'),
     },
   },
   module: {

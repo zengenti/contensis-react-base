@@ -4,7 +4,7 @@
     "module": "commonjs",
     "baseUrl": ".",
     "paths": {
-      "*": ["src/*"]
+      "~/*": ["./src/app/*"]
     }
   },
   "exclude": [
