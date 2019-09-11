@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "baseUrl": ".",
+    "paths": {
+      "*": ["src/*"]
+    }
+  },
+  "exclude": [
+    ".storybook",
+    "config",
+    "public",
+    "webpack",
+    "node_modules",
+    "storybook-static"
+  ]
+}

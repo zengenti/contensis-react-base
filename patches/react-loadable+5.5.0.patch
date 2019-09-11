@@ -1,0 +1,57 @@
+diff --git a/node_modules/react-loadable/lib/webpack.js b/node_modules/react-loadable/lib/webpack.js
+index 2bd1040..3be6fb5 100644
+--- a/node_modules/react-loadable/lib/webpack.js
++++ b/node_modules/react-loadable/lib/webpack.js
+@@ -33,22 +33,16 @@ function buildManifest(compiler, compilation) {
+   return manifest;
+ }
+ 
+-var ReactLoadablePlugin = function () {
+-  function ReactLoadablePlugin() {
+-    var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+-
+-    _classCallCheck(this, ReactLoadablePlugin);
+-
++class ReactLoadablePlugin {
++  constructor(opts = {}) {
+     this.filename = opts.filename;
+   }
+ 
+-  ReactLoadablePlugin.prototype.apply = function apply(compiler) {
+-    var _this = this;
+-
+-    compiler.plugin('emit', function (compilation, callback) {
+-      var manifest = buildManifest(compiler, compilation);
++  apply(compiler) {
++    const emit = (compilation, callback) => {
++      const manifest = buildManifest(compiler, compilation);
+       var json = JSON.stringify(manifest, null, 2);
+-      var outputDirectory = path.dirname(_this.filename);
++      const outputDirectory = path.dirname(this.filename);
+       try {
+         fs.mkdirSync(outputDirectory);
+       } catch (err) {
+@@ -56,13 +50,18 @@ var ReactLoadablePlugin = function () {
+           throw err;
+         }
+       }
+-      fs.writeFileSync(_this.filename, json);
++      fs.writeFileSync(this.filename, json);
+       callback();
+-    });
+-  };
++    };
++    if (compiler.hooks) {
++      const plugin = { name: 'ReactLoadablePlugin' };
++      compiler.hooks.emit.tapAsync(plugin, emit);
++    } else {
++      compiler.plugin('emit', emit);
++    }
++  }
++}
+ 
+-  return ReactLoadablePlugin;
+-}();
+ 
+ function getBundles(manifest, moduleIds) {
+   return moduleIds.reduce(function (bundles, moduleId) {

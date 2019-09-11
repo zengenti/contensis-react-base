@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html itemscope itemtype="http://schema.org/" lang="en" dir="ltr">
+
+<head>
+	<!-- General metadata *Common to all pages.-->
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+	<head>
+		<!-- General metadata *Common to all pages.-->
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+		<!--[if IE 11]>
+      <meta name="msapplication-config" content="static/browserconfig.xml" />
+    <![endif]-->
+
+		<!-- Standard favicon -->
+		<link rel="icon" type="image/x-icon" href="/static/img/icons/favicon.ico" />
+		<link rel="icon" type="image/png" href="/static/img/icons/favicon.png" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.4.0/leaflet.css" />
+    <link rel="manifest" href="/static/manifest.webmanifest" />
+    <link href="https://fonts.googleapis.com/css?family=Fira+Sans|Oswald&display=swap" rel="stylesheet">
+    <!-- Title provided by page component over a Helmet HOC. -->
+    
+		{{TITLE}}
+		{{SEO_CRITICAL_METADATA}}
+		{{CRITICAL_CSS}}
+
+	</head>
+
+<body>
+	<div id="root">{{APP}}</div>
+	{{LOADABLE_CHUNKS}}
+</body>
+
+</html>

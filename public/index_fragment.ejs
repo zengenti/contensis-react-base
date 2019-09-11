@@ -1,0 +1,18 @@
+{{CRITICAL_CSS}}
+<div id="root">{{APP}}</div>
+
+<% if (htmlWebpackPlugin.files.chunks.runtime.entry.length) { %>
+<script src=<%=htmlWebpackPlugin.files.chunks.runtime.entry %>></script>
+<% } %>
+
+<% if (htmlWebpackPlugin.files.chunks.vendor.entry.length) { %>
+<script src=<%=htmlWebpackPlugin.files.chunks.vendor.entry %>></script>
+<% } %>
+
+{{REDUX_DATA}}
+
+{{LOADABLE_CHUNKS}}
+
+<% if (htmlWebpackPlugin.files.chunks.app.entry.length) { %>
+<script src=<%=htmlWebpackPlugin.files.chunks.app.entry%>></script>
+<% } %>
