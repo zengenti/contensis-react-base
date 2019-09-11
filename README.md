@@ -2,8 +2,8 @@
 
 ## Jira Integration
 
-If your commmit messages contains a Jira task ID you it will add a comment to the Jira task, you can also add the following to your commit messages:
+If your commmit message contains a Jira task ID gitlab will automatically add a comment to the Jira task, you can also add the following to your commit messages:
 
-- Resolves PROJECT-1
-- Closes PROJECT-1
-- Fixes PROJECT-1
+- `Resolves PSBP-1`
+- `Closes PSBP-1`
+- `Fixes PSBP-1`
