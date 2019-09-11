@@ -24,7 +24,7 @@
   "eslint.autoFixOnSave": true,
   // Always show the ESlint status bar item.
   "eslint.alwaysShowStatus": false,
-  "prettier.eslintIntegration": true,
+  "prettier-eslint.eslintIntegration": true,
   "files.exclude": {
     // exclude .js and .js.map files, when in a TypeScript project
     "**/*.js.map": true,
@@ -37,6 +37,8 @@
   },
   "editor.formatOnSave": true,
   "editor.formatOnPaste": true,
+  "editor.cursorBlinking": "smooth",
+  "workbench.editor.highlightModifiedTabs": true,
   "workbench.colorCustomizations": {
     "activityBar.background": "#e9654c",
     "activityBar.foreground": "#fff",

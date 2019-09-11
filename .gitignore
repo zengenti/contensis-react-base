@@ -1,0 +1,14 @@
+/node_modules
+/coverage
+/build
+/dist
+/docs
+.env
+npm-debug.log*
+*.log
+yarn-error.log
+__snapshots__
+.cache
+/old
+.DS_Store
+.out
