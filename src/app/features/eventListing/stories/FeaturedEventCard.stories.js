@@ -1,20 +1,20 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 
-import EventCard from '../components/EventCard';
+import FeaturedEventCard from '../components/FeaturedEventCard';
 
 storiesOf('Event Listing', module).add(
-  'Event Card',
+  'Featured Event Card',
   () => {
     const props = {
       date: '2018-03-12T00:00:00',
-      description: 'This is a description',
-      location: 'Location',
+      imageAlt: 'image alt text',
+      imagePath: '/path-to-image/image-name.jpg',
       title: 'This is a title',
       uri: '/path-to-page',
     };
 
-    return <EventCard {...props} />;
+    return <FeaturedEventCard {...props} />;
   },
   {
     knobs: {

@@ -4,6 +4,8 @@ import '@testing-library/jest-dom/extend-expect';
 
 import EventCard from '../components/EventCard';
 
+//set default props to pass to component render <EventCard {...props} />
+//to override a default value: <EventCard {...props} title="new title"/>
 const props = {
   date: '2018-03-12T00:00:00',
   description: 'This is a description',
