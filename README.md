@@ -21,7 +21,7 @@ Staging branch is used for reviwing features that are ready to be merged into ma
 
 This branch is the master branch, it shoould only contain code that is ready to be released.
 
-## Jira Integration :white_check_mark:
+## Jira Integration
 
 If your commit message contains a Jira task ID gitlab will automatically add a comment to the Jira task, you can also add the following to your commit messages:
 
