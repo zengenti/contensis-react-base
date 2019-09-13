@@ -8,11 +8,11 @@ import {
   SET_ANCESTORS,
   SET_ROUTE_LOADING,
   SET_ENTRY_RELATED_ARTICLES,
-} from 'app/redux/types/routing';
+} from '~/core/redux/types/routing';
 import {
   GetAllResponseGuids,
   // fixImageUri,
-} from 'app/util/ContensisDeliveryApi';
+} from '~/core/util/ContensisDeliveryApi';
 
 let initialState = Map({
   currentPath: [],

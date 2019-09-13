@@ -1,7 +1,7 @@
 import { getContentPageEntriesQuery } from './queries';
-import { deliveryApi } from 'app/util/ContensisDeliveryApi';
+import { deliveryApi } from '~/core/util/ContensisDeliveryApi';
 
-// import { deliveryApi } from 'app/util/ContensisDeliveryApi';
+// import { deliveryApi } from '~/core/util/ContensisDeliveryApi';
 
 const getNormalisedLocation = location => {
   return `${location.pathname}${location.search}`;

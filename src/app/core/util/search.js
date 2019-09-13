@@ -8,13 +8,13 @@ import {
   getJointHonors,
   getStudyModes,
   getClearingFilter,
-} from 'app/redux/selectors/search';
+} from '~/core/redux/selectors/search';
 import {
   Facets,
   ContentTypes,
   FacetSearchFields,
-} from 'app/redux/types/search';
-import { selectVersionStatus } from 'app/redux/selectors/version';
+} from '~/core/redux/types/search';
+import { selectVersionStatus } from '~/core/redux/selectors/version';
 
 function fixFreeTextForElastic(s) {
   let illegalChars = ['>', '<'];

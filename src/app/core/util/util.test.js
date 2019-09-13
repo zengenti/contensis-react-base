@@ -1,7 +1,7 @@
 //could use --json and --jsonOutputFile=<filename> to output test results for using in CI
-import isNonEmptyArray from 'app/util/isNonEmptyArray';
-import truncateString from 'app/util/truncateString';
-import { getHumanReadableDate } from 'app/util/dateHelper';
+import isNonEmptyArray from '~/core/util/isNonEmptyArray';
+import truncateString from '~/core/util/truncateString';
+import { getHumanReadableDate } from '~/core/util/dateHelper';
 describe('#isNonEmptyArray', function() {
   it('should return true/false depending on whether input is a non-empty array or not.', function() {
     expect(isNonEmptyArray(['hello'])).toBe(true);

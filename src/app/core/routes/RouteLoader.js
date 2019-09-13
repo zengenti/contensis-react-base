@@ -10,10 +10,10 @@ import {
   selectRouteEntryContentTypeId,
   selectRouteEntryListingType,
   selectIsNotFound,
-} from 'app/redux/selectors/routing';
-import { setRouteEntry, setNavigationPath } from 'app/redux/actions/routing';
-import { loadNavigationTree } from 'app/redux/actions/navigation';
-import NotFound from 'app/pages/NotFound';
+} from '~/core/redux/selectors/routing';
+import { setRouteEntry, setNavigationPath } from '~/core/redux/actions/routing';
+import { loadNavigationTree } from '~/core/redux/actions/navigation';
+import NotFound from '~/pages/NotFound';
 import ContentTypeMappings from './ContentTypeMappings';
 import staticRoutes from './StaticRoutes';
 import { Status } from './Status';

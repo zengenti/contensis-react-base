@@ -13,7 +13,7 @@ import { ServerStyleSheet } from 'styled-components';
 import { Provider as ReduxProvider } from 'react-redux';
 import 'isomorphic-fetch';
 
-import rootSaga from 'app/redux/sagas';
+import rootSaga from '~/core/redux/sagas';
 import httpProxy from 'http-proxy';
 import evilDns from 'evil-dns';
 const templateHTML = fs.readFileSync('dist/index.html', 'utf8');
@@ -25,18 +25,18 @@ const templateHTMLFragment = fs.readFileSync(
 );
 const templateHTMLStatic = fs.readFileSync('dist/index_static.html', 'utf8');
 const stats = JSON.parse(fs.readFileSync('dist/static/react-loadable.json'));
-import { setVersion, setVersionStatus } from 'app/redux/actions/version';
-import { initialiseApp } from 'app/redux/actions/app';
+import { setVersion, setVersionStatus } from '~/core/redux/actions/version';
+import { initialiseApp } from '~/core/redux/actions/app';
 
-import App from 'app/App';
-import createStore from 'app/redux/store';
+import App from '~/App';
+import createStore from '~/core/redux/store';
 
-import { GetDeliveryApiStatusFromHostname } from 'app/util/ContensisDeliveryApi';
-import { loadNavigationTree } from 'app/redux/actions/navigation';
+import { GetDeliveryApiStatusFromHostname } from '~/core/util/ContensisDeliveryApi';
+import { loadNavigationTree } from '~/core/redux/actions/navigation';
 //import { setServerSideBasePath } from '../app/redux/actions/routing';
 import generateSiteMap from './siteMapGenerator';
-import { selectNavigationDepends } from 'app/redux/selectors/navigation';
-import { selectRouteEntryDepends } from 'app/redux/selectors/routing';
+import { selectNavigationDepends } from '~/core/redux/selectors/navigation';
+import { selectRouteEntryDepends } from '~/core/redux/selectors/routing';
 
 export const app = express();
 app.disable('x-powered-by');

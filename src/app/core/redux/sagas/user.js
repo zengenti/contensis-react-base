@@ -4,9 +4,9 @@ import {
   SET_USER_DETAILS,
   TOGGLE_USER_DETAILS_ARE_HIDDEN,
   SET_SHOW_USER_DETAILS,
-} from 'app/redux/types/user';
-import { getUserDetails } from 'app/util/user';
-import { selectUserDetailsAreHidden } from 'app/redux/selectors/user';
+} from '~/core/redux/types/user';
+import { getUserDetails } from '~/core/util/user';
+import { selectUserDetailsAreHidden } from '~/core/redux/selectors/user';
 
 export const userSagas = [
   takeEvery(CHECK_USER_LOGGED_IN, checkUserLoggedInSaga),

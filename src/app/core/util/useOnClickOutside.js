@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import isNonEmptyArray from 'app/util/isNonEmptyArray';
+import isNonEmptyArray from '~/core/util/isNonEmptyArray';
 function isOutside(ref, event) {
   return ref.current && !ref.current.contains(event.target);
 }

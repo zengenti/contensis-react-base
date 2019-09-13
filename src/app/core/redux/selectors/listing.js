@@ -4,7 +4,7 @@ import {
   selectRouteEntryCategory,
   selectRouteEntryID,
   selectRouteEntryParentSlug,
-} from 'app/redux/selectors/routing';
+} from '~/core/redux/selectors/routing';
 export const selectListingTree = state => state.get('listing');
 
 export const selectGlobalSearchListingData = state => {

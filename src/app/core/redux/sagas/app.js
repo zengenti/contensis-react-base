@@ -1,5 +1,5 @@
 import { takeEvery, put, call, all } from 'redux-saga/effects';
-import { deliveryApi } from 'app/util/ContensisDeliveryApi';
+import { deliveryApi } from '~/core/util/ContensisDeliveryApi';
 import {
   APP_INITIALISE,
   APP_SET_INITIALISED,
@@ -8,7 +8,7 @@ import {
 } from '../types/app';
 import { initialiseNavigationSaga } from './navigation';
 import { initialiseListingsSaga } from './listing';
-import { getSiteSettingsQuery } from 'app/util/queries';
+import { getSiteSettingsQuery } from '~/core/util/queries';
 
 export const appSagas = [takeEvery(APP_INITIALISE, initialiseAppSaga)];
 

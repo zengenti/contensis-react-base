@@ -1,5 +1,5 @@
 import { Map, fromJS } from 'immutable';
-import { courseNav } from 'app/redux/types/routing';
+import { courseNav } from '~/core/redux/types/routing';
 import {
   NAVIGATION_SET_TREE_ROOT,
   NAVIGATION_INITIALISE_TREES_ERROR,
@@ -9,8 +9,8 @@ import {
   NAVIGATION_SET_PATH_DICTIONARY_ENTRY,
   NAVIGATION_CLEAR_MENU_ITEMS,
   NAVIGATION_SET_WAYPOINT,
-} from 'app/redux/types/navigation';
-import { NAVIGATION_SET_PATH_DICTIONARY } from 'app/redux/types/navigation';
+} from '~/core/redux/types/navigation';
+import { NAVIGATION_SET_PATH_DICTIONARY } from '~/core/redux/types/navigation';
 import {
   NAVIGATION_SET_IS_ACCORDIAN_MODE,
   NAVIGATION_ADD_SELECTED_MENU_ITEM_FOR_ACCORDIAN,

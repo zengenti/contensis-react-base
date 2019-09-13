@@ -6,33 +6,33 @@ import {
   takeEvery,
   takeLatest,
 } from 'redux-saga/effects';
-import { deliveryApi } from 'app/util/ContensisDeliveryApi';
-// import { getFullPathFromEntryId } from 'app/util/navHelper';
+import { deliveryApi } from '~/core/util/ContensisDeliveryApi';
+// import { getFullPathFromEntryId } from '~/core/util/navHelper';
 
 import {
   getNavigationTreeQuery,
   getNavigationTreeEntriesQuery,
-} from 'app/util/queries';
+} from '~/core/util/queries';
 import {
   NAVIGATION_SET_TREE_ROOT,
   // NAVIGATION_INITIALISE_TREES,
   NAVIGATION_INITIALISE_TREES_ERROR,
-} from 'app/redux/types/navigation';
+} from '~/core/redux/types/navigation';
 import {
   NAVIGATION_SET_TREE_ENTRIES,
   NAVIGATION_SET_TREE_ENTRIES_ERROR,
   NAVIGATION_SET_PATH_DICTIONARY_ENTRY,
-} from 'app/redux/types/navigation';
+} from '~/core/redux/types/navigation';
 import {
   selectNavigationTrees,
   selectPathDictionary,
-} from 'app/redux/selectors/navigation';
-import { getPathDictionary, getPathFromEntry } from 'app/util/navHelper';
+} from '~/core/redux/selectors/navigation';
+import { getPathDictionary, getPathFromEntry } from '~/core/util/navHelper';
 import {
   NAVIGATION_SET_PATH_DICTIONARY,
   CLEAR_MENU_SELECTIONS,
   CLEAR_MENU_SELECTIONS_FOR_TREE,
-} from 'app/redux/types/navigation';
+} from '~/core/redux/types/navigation';
 import { selectVersionStatus } from '../selectors/version';
 
 export const navigationSagas = [

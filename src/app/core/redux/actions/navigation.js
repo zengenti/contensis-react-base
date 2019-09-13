@@ -1,9 +1,9 @@
-import { action } from 'app/util/helpers';
+import { action } from '~/core/util/helpers';
 import {
   NAVIGATION_SET_LAST_SELECTED_MENU_ITEM,
   NAVIGATION_ENSURE_ENTRY_IN_PATH_DICTIONARY,
   NAVIGATION_SET_WAYPOINT,
-} from 'app/redux/types/navigation';
+} from '~/core/redux/types/navigation';
 import {
   NAVIGATION_SET_IS_ACCORDIAN_MODE,
   NAVIGATION_ADD_SELECTED_MENU_ITEM_FOR_ACCORDIAN,

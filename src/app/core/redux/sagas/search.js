@@ -2,8 +2,8 @@
 import 'isomorphic-fetch';
 import * as log from 'loglevel';
 import { takeEvery, put, select, call, fork } from 'redux-saga/effects';
-import { deliveryApi } from 'app/util/ContensisDeliveryApi';
-import { now } from 'app/util/performance';
+import { deliveryApi } from '~/core/util/ContensisDeliveryApi';
+import { now } from '~/core/util/performance';
 import {
   EXECUTE_SEARCH,
   SET_ENTRIES,
@@ -12,9 +12,12 @@ import {
   CHANGE_PAGE,
   TOGGLE_TAXONOMY_SELECTION_LIST,
   TOGGLE_SEARCH_FILTER,
-} from 'app/redux/types/search';
-import { getSearchQuery, getSearchPromoQuery } from 'app/util/search';
-import { getCurrentFacet, isSingleFacetMode } from 'app/redux/selectors/search';
+} from '~/core/redux/types/search';
+import { getSearchQuery, getSearchPromoQuery } from '~/core/util/search';
+import {
+  getCurrentFacet,
+  isSingleFacetMode,
+} from '~/core/redux/selectors/search';
 
 export const searchSagas = [
   takeEvery(EXECUTE_SEARCH, executeSearch),

@@ -6,14 +6,14 @@ import { preloadReady } from 'react-loadable';
 import { AppContainer } from 'react-hot-loader';
 import { Provider as ReduxProvider } from 'react-redux';
 
-import createStore from 'app/redux/store';
-import rootSaga from 'app/redux/sagas';
+import createStore from '~/core/redux/store';
+import rootSaga from '~/core/redux/sagas';
 
-import App from 'app/App';
+import App from '~/App';
 import { fromJS } from 'immutable';
-import { setVersionStatus } from 'app/redux/actions/version';
-import { GetClientSideDeliveryApiStatus } from 'app/util/ContensisDeliveryApi';
-import { initialiseApp } from 'app/redux/actions/app';
+import { setVersionStatus } from '~/core/redux/actions/version';
+import { GetClientSideDeliveryApiStatus } from '~/core/util/ContensisDeliveryApi';
+import { initialiseApp } from '~/core/redux/actions/app';
 
 const documentRoot = document.getElementById('root');
 
@@ -81,7 +81,7 @@ if (
 
 // webpack Hot Module Replacement API
 if (module.hot) {
-  module.hot.accept('app/App', () => {
+  module.hot.accept('~/App', () => {
     // if you are using harmony modules ({modules:false})
     HMRRenderer(GetClientJSX(store));
   });
