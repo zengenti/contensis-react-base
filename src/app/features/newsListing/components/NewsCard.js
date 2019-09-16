@@ -5,9 +5,9 @@ import formatDate from '../util/formatDate';
 const NewsCard = ({ className, title, date, description, image, imageAlt }) => {
   return (
     <div data-testid="card" className={className}>
-      <img data-testid="image" src={image} alt={imageAlt} />
+      <img data-testid="image" src={image} alt={imageAlt && imageAlt} />
       <div data-testid="title">{title}</div>
-      <div data-testid="description">{description}</div>
+      <div data-testid="description">{description}</div>s
       <span data-testid="date">{formatDate(date, 'dd MMMM yyyy')}</span>
     </div>
   );
