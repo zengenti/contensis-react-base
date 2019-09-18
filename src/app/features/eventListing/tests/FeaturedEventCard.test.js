@@ -4,15 +4,12 @@ import '@testing-library/jest-dom/extend-expect';
 
 import FeaturedEventCard from '../components/FeaturedEventCard';
 
+import { entry } from './data.mock';
+import { eventCardMapper } from '../util/eventCard.mapper';
+
 //set default props to pass to component render <FeaturedEventCard {...props} />
 //to override a default value: <FeaturedEventCard {...props} title="new title"/>
-const props = {
-  date: '2018-03-12T00:00:00',
-  imageAlt: 'image alt text',
-  imagePath: '/path-to-image/image-name.jpg',
-  title: 'This is a title',
-  uri: '/path-to-page',
-};
+const props = eventCardMapper(entry);
 
 test('if a required prop is null then do not render component', () => {
   const { queryByTestId, rerender } = render(<FeaturedEventCard {...props} />);

@@ -119,6 +119,8 @@ test('when a users selects a month filter option then update the active month fi
     },
   ];
 
+  //loop through expected values array and trigger a component rerender
+  //when the {filter.month} button is clicked
   expectedValues.map(filter => {
     //trigger a click on {filter.month} filter option
     //then rerender the component with updated props
