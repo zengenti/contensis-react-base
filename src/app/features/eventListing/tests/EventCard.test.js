@@ -1,86 +1,82 @@
 import React from 'react';
-import { render, rerender } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
-import Component from '../Component';
+import EventCard from '../components/EventCard';
 
-const props = {
-  description: 'This is a description',
-  location: 'Location',
-  title: 'This is a title',
-  uri: '/path-to-page',
-};
+import { entry } from './data.mock';
+import { eventCardMapper } from '../util/eventCard.mapper';
+
+//set default props to pass to component render <EventCard {...props} />
+//to override a default value: <EventCard {...props} title="new title"/>
+const props = eventCardMapper(entry);
 
 test('if a required prop is null then do not render component', () => {
-  const date = '2018-03-12T00:00:00';
-
-  const { getByTestId } = render(<Component {...props} date={date} />);
-  expect(getByTestId('component')).not.toBeNull();
+  const { queryByTestId, rerender } = render(<EventCard {...props} />);
+  expect(queryByTestId('eventCard')).not.toBeNull();
 
   //date is null or empty
-  rerender(<Component {...props} date={null} />);
-  expect(getByTestId('component')).toBeNull();
+  rerender(<EventCard {...props} date={null} />);
+  expect(queryByTestId('eventCard')).toBeNull();
 
   //description is null or empty
-  rerender(<Component {...props} date={date} description={''} />);
-  expect(getByTestId('component')).toBeNull();
+  rerender(<EventCard {...props} description={''} />);
+  expect(queryByTestId('eventCard')).toBeNull();
 
   //location is null or empty
-  rerender(<Component {...props} date={date} location={''} />);
-  expect(getByTestId('component')).toBeNull();
+  rerender(<EventCard {...props} location={''} />);
+  expect(queryByTestId('eventCard')).toBeNull();
 
   //title is null or empty
-  rerender(<Component {...props} date={date} title={''} />);
-  expect(getByTestId('component')).toBeNull();
+  rerender(<EventCard {...props} title={''} />);
+  expect(queryByTestId('eventCard')).toBeNull();
 
   //uri is null or empty
-  rerender(<Component {...props} date={date} title={''} />);
-  expect(getByTestId('component')).toBeNull();
+  rerender(<EventCard {...props} uri={''} />);
+  expect(queryByTestId('eventCard')).toBeNull();
 });
 
 test('date is displayed', () => {
   const date = '2018-03-12T00:00:00';
-  const { getByTestId } = render(<Component date={date} />);
+  const { getByTestId } = render(<EventCard {...props} date={date} />);
 
-  expect(getByTestId('dateDay')).toBe('12');
-  expect(getByTestId('dateMonth')).toBe('Mar');
+  expect(getByTestId('dateDay')).toHaveTextContent('12');
+  expect(getByTestId('dateMonth')).toHaveTextContent('Mar');
 });
 
 test('single digit date is displayed with preceeding 0', () => {
   const date = '2015-03-02T00:00:00';
-  const { getByTestId } = render(<Component date={date} />);
+  const { getByTestId } = render(<EventCard {...props} date={date} />);
 
-  expect(getByTestId('dateDay')).toBe('02');
-  expect(getByTestId('dateMonth')).toBe('Mar');
+  expect(getByTestId('dateDay')).toHaveTextContent('02');
+  expect(getByTestId('dateMonth')).toHaveTextContent('Mar');
 });
 
 test('description is displayed', () => {
-  const { getByTestId } = render(<Component description={props.description} />);
+  const { getByTestId } = render(<EventCard {...props} />);
 
-  expect(getByTestId('description')).toBe(props.description);
+  expect(getByTestId('description')).toHaveTextContent(props.description);
 });
 
 test('location is displayed', () => {
-  const { getByTestId } = render(<Component location={props.location} />);
+  const { getByTestId } = render(<EventCard {...props} />);
 
-  expect(getByTestId('location')).toBe(props.location);
+  expect(getByTestId('location')).toHaveTextContent(props.location);
 });
 
 test('title is displayed', () => {
-  const { getByTestId } = render(<Component title={props.title} />);
+  const { getByTestId } = render(<EventCard {...props} />);
 
-  expect(getByTestId('title')).toBe(props.title);
+  expect(getByTestId('title')).toHaveTextContent(props.title);
 });
 
 test('uri prop has a value then wrap title in <a> tag', () => {
-  const { getByTestId } = render(
-    <Component title={props.title} uri={props.uri} />
-  );
+  const { getByTestId } = render(<EventCard {...props} />);
   const compTitle = getByTestId('title');
-  const compLink = compTitle.find('a');
+  const compLink = compTitle.querySelector('a');
 
   //check that the a tag is present
-  expect(compLink).not.toBeNull();
+  expect(compLink).not.toBeNull;
   //check that href of a tag is the uri
-  expect(compLink.find(['href'])).toBe(props.uri);
+  expect(compLink.getAttribute(['href'])).toBe(props.uri);
 });
