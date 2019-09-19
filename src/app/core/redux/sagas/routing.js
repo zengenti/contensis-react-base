@@ -9,14 +9,14 @@ import {
   SET_ANCESTORS,
   SET_NAVIGATION_PATH,
   SET_ENTRY_RELATED_ARTICLES,
-} from 'app/redux/types/routing';
-import { deliveryApi, Query, Op } from 'app/util/ContensisDeliveryApi';
-import { getListingsQuery } from 'app/util/queries';
-import { selectVersionStatus } from 'app/redux/selectors/version';
+} from '~/core/redux/types/routing';
+import { deliveryApi, Query, Op } from '~/core/util/ContensisDeliveryApi';
+import { getListingsQuery } from '~/core/util/queries';
+import { selectVersionStatus } from '~/core/redux/selectors/version';
 import {
   validateRouteFromNavigationSettings,
   getLeafSlugFromRoute,
-} from 'app/util/navHelper';
+} from '~/core/util/navHelper';
 
 // import { getMessages } from './defaultMessages';
 import { fetchCountries } from './countryEntryRequirements';

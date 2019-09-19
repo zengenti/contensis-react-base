@@ -1,4 +1,4 @@
-import { action } from 'app/util/helpers';
+import { action } from '~/core/util/helpers';
 import {
   EXECUTE_SEARCH,
   SET_KEYWORD,
@@ -9,7 +9,7 @@ import {
   TOGGLE_SEARCH_FILTER,
   TOGGLE_TAXONOMY_SELECTION_LIST,
   SET_SINGLE_FACET_MODE,
-} from 'app/redux/types/search';
+} from '~/core/redux/types/search';
 
 export const setSingleFacetMode = () => action(SET_SINGLE_FACET_MODE);
 export const executeSearch = () => action(EXECUTE_SEARCH);

@@ -1,4 +1,4 @@
-import { Levels } from 'app/redux/types/search';
+import { Levels } from '~/core/redux/types/search';
 export default class ProjectHelper {
   static currencyFormat(val) {
     const formatter = new Intl.NumberFormat('en-GB', {

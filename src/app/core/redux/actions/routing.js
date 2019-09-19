@@ -1,10 +1,10 @@
-import { action } from 'app/util/helpers';
+import { action } from '~/core/util/helpers';
 import {
   SET_ENTRY,
   SET_NAVIGATION_NOT_FOUND,
   SET_NAVIGATION_PATH,
   SET_ENTRY_RELATED_ARTICLES,
-} from 'app/redux/types/routing';
+} from '~/core/redux/types/routing';
 
 export const setNotFound = notFound =>
   action(SET_NAVIGATION_NOT_FOUND, { notFound });

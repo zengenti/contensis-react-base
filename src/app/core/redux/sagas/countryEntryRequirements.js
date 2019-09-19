@@ -1,6 +1,6 @@
 import * as log from 'loglevel';
 import { takeEvery, put, select } from 'redux-saga/effects';
-import { cachedSearch } from 'app/util/ContensisDeliveryApi';
+import { cachedSearch } from '~/core/util/ContensisDeliveryApi';
 import { now } from '../../util/performance';
 import { deliveryApi } from '../../util/ContensisDeliveryApi';
 import { fromJS } from 'immutable';
@@ -9,7 +9,7 @@ import {
   SET_COUNTRY,
   SET_COUNTRY_REQUIREMENTS,
 } from '../types/countryEntryRequirements';
-import { getEntryEquivilents } from 'app/util/search';
+import { getEntryEquivilents } from '~/core/util/search';
 import {
   getSelectedCountry,
   getCourseEntryRequirementGrade,

@@ -1,9 +1,9 @@
 import { select } from 'redux-saga/effects';
 
 import { Op, Query, OrderBy } from 'contensis-delivery-api';
-import { selectVersionStatus } from 'app/redux/selectors/version';
-import { ContentTypes } from 'app/redux/types/navigation';
-// import { ContentTypes } from 'app/redux/types/navigation';
+import { selectVersionStatus } from '~/core/redux/selectors/version';
+import { ContentTypes } from '~/core/redux/types/navigation';
+// import { ContentTypes } from '~/core/redux/types/navigation';
 
 export function* getNavigationTreeQuery() {
   const versionStatus = yield select(selectVersionStatus);

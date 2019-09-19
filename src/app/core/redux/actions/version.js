@@ -1,5 +1,5 @@
-import { action } from 'app/util/helpers';
-import { SET_VERSION, SET_VERSION_STATUS } from 'app/redux/types/version';
+import { action } from '~/core/util/helpers';
+import { SET_VERSION, SET_VERSION_STATUS } from '~/core/redux/types/version';
 
 export const setVersion = (commitRef, buildNo) =>
   action(SET_VERSION, { commitRef, buildNo });
