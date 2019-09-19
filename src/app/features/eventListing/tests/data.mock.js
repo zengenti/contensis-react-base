@@ -2,6 +2,14 @@
 //this will get passed through a mapper function to bind the entry data to relevant props
 export const entry = {
   title: 'Event Title',
+  image: {
+    asset: {
+      sys: {
+        uri: 'https://picsum.photos/1920/1080',
+      },
+    },
+    altText: 'Image from Picsum',
+  },
 };
 
 export const filterGroup = {

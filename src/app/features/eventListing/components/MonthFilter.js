@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import MonthFilter from '../components.styled/MonthFilter.styled';
+
 import formatDate from '../util/formatDate';
 
 const FeaturedEventCard = ({ activeDate, currentDate, updateActiveMonth }) => {
@@ -43,7 +45,7 @@ const FeaturedEventCard = ({ activeDate, currentDate, updateActiveMonth }) => {
     filterMonthInt++;
   }
   return (
-    <div>
+    <MonthFilter>
       {filters.map((filter, idx) => {
         const filterClass = filter.month == activeMonth ? 'active' : '';
         const disabled = filter.month == activeMonth && true;
@@ -57,7 +59,7 @@ const FeaturedEventCard = ({ activeDate, currentDate, updateActiveMonth }) => {
           <button
             key={idx}
             data-testid="filterOption"
-            className={filterClass}
+            className={`mfButton ${filterClass}`}
             disabled={disabled}
             onClick={() => {
               updateActiveMonth(`${filter.year}-${monthInt}-01T00:00:00`);
@@ -68,7 +70,7 @@ const FeaturedEventCard = ({ activeDate, currentDate, updateActiveMonth }) => {
           </button>
         );
       })}
-    </div>
+    </MonthFilter>
   );
 };
 

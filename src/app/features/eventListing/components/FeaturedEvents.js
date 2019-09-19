@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import FeaturedEventCard from './FeaturedEventCard';
+import FeaturedEventsStyled from '../components.styled/FeaturedEvents.styled';
 
 import { eventCardMapper } from '../util/eventCard.mapper';
 
@@ -11,12 +12,18 @@ const FeaturedEvents = ({ events }) => {
   events = events.slice(0, 3);
 
   return (
-    <div data-testid="featuredEvents">
+    <FeaturedEventsStyled data-testid="featuredEvents">
       {events.map((event, idx) => {
         const props = eventCardMapper(event);
-        return <FeaturedEventCard {...props} key={idx} />;
+        return (
+          <div className="feItem" key={idx}>
+            <div className="feItemPadding">
+              <FeaturedEventCard {...props} />
+            </div>
+          </div>
+        );
       })}
-    </div>
+    </FeaturedEventsStyled>
   );
 };
 

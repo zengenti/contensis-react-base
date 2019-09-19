@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import FeaturedEventCardStyled from '../components.styled/FeaturedEventCard.styled';
+
 import formatDate from '../util/formatDate';
 
 const FeaturedEventCard = ({ date, imageAlt, imagePath, title, uri }) => {
@@ -11,14 +13,27 @@ const FeaturedEventCard = ({ date, imageAlt, imagePath, title, uri }) => {
   if (missingProp) return null;
   const dateArr = date && formatDate(date, 'dd|MMM').split('|');
   return (
-    <a href={uri} data-testid="eventCard">
-      <img data-testid="image" src={imagePath} alt={imageAlt} />
-      <div>
-        <span data-testid="dateDay">{dateArr[0]}</span>
-        <span data-testid="dateMonth">{dateArr[1]}</span>
+    <FeaturedEventCardStyled href={uri} data-testid="eventCard">
+      <img
+        data-testid="image"
+        src={imagePath}
+        alt={imageAlt}
+        className="fecImage"
+      />
+      <div className="fecDate">
+        <div className="fecDateInner">
+          <span data-testid="dateDay" className="fecDateDay">
+            {dateArr[0]}
+          </span>
+          <span data-testid="dateMonth" className="fecDateMonth">
+            {dateArr[1]}
+          </span>
+        </div>
       </div>
-      <h3 data-testid="title">{title}</h3>
-    </a>
+      <h3 data-testid="title" className="fecTitle">
+        {title}
+      </h3>
+    </FeaturedEventCardStyled>
   );
 };
 
