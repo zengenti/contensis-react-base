@@ -9,23 +9,13 @@
 const path = require('path');
 const webpack = require('webpack');
 const packagejson = require('../package.json');
+const defineConfig = require('../webpack/define-config-webpack').base;
+
 module.exports = {
   plugins: [
+    new webpack.DefinePlugin(defineConfig),
     new webpack.DefinePlugin({
       __isBrowser__: 'true',
-    }),
-    new webpack.DefinePlugin({
-      VERSION: JSON.stringify(packagejson.version),
-      DELIVERY_API_CONFIG: {
-        rootUrl: JSON.stringify('https://cms-kcl.cloud.contensis.com'),
-        livePublishingRootUrl: JSON.stringify(
-          'https://preview-mathsschool-kcl.cloud.contensis.com'
-        ),
-        accessToken: JSON.stringify(
-          'JjV9NgvYm8BQgTNx2AtThsRBeK5qZxArDnRc2SKrzYWzvsS6'
-        ),
-        projectId: JSON.stringify('mathsSchool'),
-      },
     }),
   ],
   module: {

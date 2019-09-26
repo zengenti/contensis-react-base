@@ -6,9 +6,6 @@ import createSagaMiddleware, { END } from 'redux-saga';
 import RoutingReducer from './reducers/routing';
 import VersionReducer from './reducers/version';
 import AppReducer from './reducers/app';
-import ListingReducer from './reducers/listing';
-import CountryEntryRequirementsReducer from './reducers/countryEntryRequirements';
-import DefaultMessageReducer from './reducers/defaultMessages';
 import SearchReducer from './reducers/search';
 import NavigationReducer from './reducers/navigation';
 // import UserReducer from './reducers/user';
@@ -16,12 +13,13 @@ import NavigationReducer from './reducers/navigation';
 const thunkMiddleware = [thunk];
 
 let reduxDevToolsMiddleware = f => f;
-// let __isBrowser__ = false;
-if (__isBrowser__) {
+
+if (typeof window != 'undefined') {
   reduxDevToolsMiddleware = window.__REDUX_DEVTOOLS_EXTENSION__
     ? window.__REDUX_DEVTOOLS_EXTENSION__()
     : f => f;
 }
+
 const sagaMiddleware = createSagaMiddleware();
 const middleware = compose(
   applyMiddleware(...thunkMiddleware, sagaMiddleware),
@@ -33,10 +31,7 @@ let reducers = {
   navigation: NavigationReducer,
   routing: RoutingReducer,
   version: VersionReducer,
-  listing: ListingReducer,
   app: AppReducer,
-  defaultMessages: DefaultMessageReducer,
-  countries: CountryEntryRequirementsReducer,
 };
 
 const combinedReducers = combineReducers(reducers);

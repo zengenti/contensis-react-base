@@ -1,13 +1,20 @@
 import { Client } from 'contensis-delivery-api';
 
-const getClientConfig = () => {
-  let config = DELIVERY_API_CONFIG; /* global DELIVERY_API_CONFIG */
-  if (typeof window != 'undefined') {
+const getClientConfig = (project, env = 'live') => {
+  let config = DELIVERY_API_CONFIG[env]; /* global DELIVERY_API_CONFIG */
+  if (project) {
+    config.projectId = project;
+  }
+
+  if (
+    typeof window != 'undefined' &&
+    PROXY_DELIVERY_API /* global PROXY_DELIVERY_API */
+  ) {
+    // ensure a relative url is used to bypass the need for CORS (separate OPTIONS calls)
     config.rootUrl = '';
     config.responseHandler = {
       404: () => null,
     };
-    // ensure we go releative and by pass need for cors.
   }
   return config;
 };
@@ -53,11 +60,11 @@ export const fixImageUri = object => {
         let userTransforms = object[k].transformations
           ? `&${object[k].transformations}`
           : '';
-        let versionNo =
-          object[k].sys.version && object[k].sys.version.versionNo;
-        object[
-          k
-        ].sys.uri = `/image-library/${object[k].sys.uri}?invalidationKey=${versionNo}${userTransforms}`;
+
+        object[k].sys.uri = `/api/image/${
+          object[k].sys.id
+        }?invalidationKey=${object[k].sys &&
+          object[k].sys.version.versionNo}${userTransforms}`;
       }
       return false;
     }
@@ -73,17 +80,15 @@ export const GetResponseGuids = object => {
   Object.keys(object).some(function(k) {
     if (k === 'sys') {
       //Should always have an ID, but lets check...
-      if (object[k].id) {
+      if (object[k].id && object[k].language) {
         // We can exclude assets here i think... ?
         if (object[k].dataFormat) {
           if (object[k].dataFormat !== 'asset') {
-            if (object[k].language)
-              Ids.push(`${object[k].id}_${object[k].language.toLowerCase()}`);
+            Ids.push(`${object[k].id}_${object[k].language.toLowerCase()}`);
           }
         } else {
           // If we don't have a dataformat add it anyhow, for safety
-          if (object[k].language)
-            Ids.push(`${object[k].id}_${object[k].language.toLowerCase()}`);
+          Ids.push(`${object[k].id}_${object[k].language.toLowerCase()}`);
         }
       }
       return false;
@@ -106,23 +111,22 @@ export const GetAllResponseGuids = object => {
   return unique;
 };
 class DeliveryApi {
-  search(query, linkDepth) {
-    const client = Client.create(getClientConfig());
+  search(query, linkDepth, project, env) {
+    const client = Client.create(getClientConfig(project, env));
     return client.entries.search(query, linkDepth || 1);
   }
 
-  getEntry(id, linkDepth = 1, deliveryApiStatus = 'published') {
-    const baseConfig = getClientConfig();
+  getClient(deliveryApiStatus = 'published', project, env) {
+    const baseConfig = getClientConfig(project, env);
+    baseConfig.versionStatus = deliveryApiStatus;
+    return Client.create(baseConfig);
+  }
+  getEntry(id, linkDepth = 1, deliveryApiStatus = 'published', project, env) {
+    const baseConfig = getClientConfig(project, env);
     baseConfig.versionStatus = deliveryApiStatus;
     const client = Client.create(baseConfig);
     // return client.entries.get(id, linkDepth);
     return client.entries.get({ id, linkDepth });
-  }
-
-  getClient(deliveryApiStatus = 'published') {
-    const baseConfig = getClientConfig();
-    baseConfig.versionStatus = deliveryApiStatus;
-    return Client.create(baseConfig);
   }
 }
 
@@ -206,28 +210,29 @@ class CachedSearch {
   cache = new LruCache();
   taxonomyLookup = {};
 
-  search(query, linkDepth) {
-    const client = Client.create(getClientConfig());
-    return this.request(JSON.stringify(query) + linkDepth.toString(), () =>
-      client.entries.search(query, linkDepth)
+  search(query, linkDepth, project, env) {
+    const client = Client.create(getClientConfig(project, env));
+    return this.request(
+      project + JSON.stringify(query) + linkDepth.toString(),
+      () => client.entries.search(query, linkDepth)
     );
   }
 
-  get(id, linkDepth, versionStatus) {
-    const client = Client.create(getClientConfig());
+  get(id, linkDepth, versionStatus, project, env) {
+    const client = Client.create(getClientConfig(project, env));
     client.clientConfig.versionStatus = versionStatus;
     return this.request(id, () => client.entries.get({ id, linkDepth }));
   }
 
-  getContentType(id) {
-    const client = Client.create(getClientConfig());
-    return this.request(`[CONTENT TYPE] ${id}`, () =>
+  getContentType(id, project, env) {
+    const client = Client.create(getClientConfig(project, env));
+    return this.request(`[CONTENT TYPE] ${id} ${project}`, () =>
       client.contentTypes.get(id)
     );
   }
 
-  getTaxonomyNode(key) {
-    const client = Client.create(getClientConfig());
+  getTaxonomyNode(key, project, env) {
+    const client = Client.create(getClientConfig(project, env));
     return this.request(`[TAXONOMY NODE] ${key}`, () =>
       client.taxonomy
         .resolveChildren(key)

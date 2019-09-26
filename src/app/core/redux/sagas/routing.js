@@ -1,6 +1,6 @@
 // load-entries.js
 // import * as log from 'loglevel';
-import { takeEvery, put, select, call, all, fork } from 'redux-saga/effects';
+import { takeEvery, put, select, call, all } from 'redux-saga/effects';
 import {
   SET_ENTRY_ID,
   SET_ENTRY,
@@ -17,9 +17,7 @@ import {
   validateRouteFromNavigationSettings,
   getLeafSlugFromRoute,
 } from '~/core/util/navHelper';
-
-// import { getMessages } from './defaultMessages';
-import { fetchCountries } from './countryEntryRequirements';
+import { selectCurrentProject } from '../selectors/routing';
 
 export const routingSagas = [
   takeEvery(SET_NAVIGATION_PATH, getRouteSaga),
@@ -49,8 +47,6 @@ function* setRouteEntry(entry, node, ancestors) {
       ancestors,
     }),
   ]);
-  // yield fork(getMessages);
-  yield fork(fetchCountries);
 }
 
 function* do404() {
@@ -116,6 +112,7 @@ function* getRouteSaga(action) {
   // try {
   const state = yield select();
   // const currentPath = selectCurrentPath(state);
+  const currentProject = selectCurrentProject(state);
   const deliveryApiStatus = selectVersionStatus(state);
   const currentPath = action.path;
   if (currentPath && currentPath.startsWith('/preview/')) {
@@ -145,7 +142,8 @@ function* getRouteSaga(action) {
     }
     if (currentPath === '/') {
       let homeEntry = yield deliveryApi.getEntry(
-        '33479a87-7069-4220-9b0c-220318bd3345',
+        PROJECTS.find(p => p.id == currentProject)
+          .homeEntry /* global PROJECTS */,
         2,
         deliveryApiStatus
       );

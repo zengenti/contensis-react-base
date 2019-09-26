@@ -7,18 +7,13 @@ import {
   APP_SET_INITIALISING,
 } from '../types/app';
 import { initialiseNavigationSaga } from './navigation';
-import { initialiseListingsSaga } from './listing';
 import { getSiteSettingsQuery } from '~/core/util/queries';
 
 export const appSagas = [takeEvery(APP_INITIALISE, initialiseAppSaga)];
 
 function* initialiseAppSaga() {
   yield put({ type: APP_SET_INITIALISING, appInitialising: true });
-  yield all([
-    call(getAppSettingsSaga),
-    call(initialiseNavigationSaga),
-    call(initialiseListingsSaga),
-  ]);
+  yield all([call(getAppSettingsSaga), call(initialiseNavigationSaga)]);
   yield put({ type: APP_SET_INITIALISED });
   yield put({ type: APP_SET_INITIALISING, appInitialising: false });
 }

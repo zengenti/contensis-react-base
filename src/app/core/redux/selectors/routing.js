@@ -38,9 +38,11 @@ export const selectRouteEntryID = state => {
 export const selectCurrentPath = state => {
   return state.getIn(['routing', 'currentPath']);
 };
-export const selectFullCurrentPath = state => {
-  const currentpath = state.getIn(['routing', 'currentPath']);
-  return `${PUBLIC_URI}${currentpath}`; /* global  PUBLIC_URI */
+export const selectCurrentProject = state => {
+  return state.getIn(['routing', 'currentProject']);
+};
+export const selectCurrentEnvironment = state => {
+  return state.getIn(['routing', 'currentEnvironment']);
 };
 export const selectIsNotFound = state => {
   return state.getIn(['routing', 'notFound']);
