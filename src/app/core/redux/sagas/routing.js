@@ -17,7 +17,7 @@ import {
   validateRouteFromNavigationSettings,
   getLeafSlugFromRoute,
 } from '~/core/util/navHelper';
-import { selectCurrentProject } from '../selectors/routing';
+// import { selectCurrentProject } from '../selectors/routing';
 
 export const routingSagas = [
   takeEvery(SET_NAVIGATION_PATH, getRouteSaga),
@@ -112,7 +112,7 @@ function* getRouteSaga(action) {
   // try {
   const state = yield select();
   // const currentPath = selectCurrentPath(state);
-  const currentProject = selectCurrentProject(state);
+  // const currentProject = selectCurrentProject(state);
   const deliveryApiStatus = selectVersionStatus(state);
   const currentPath = action.path;
   if (currentPath && currentPath.startsWith('/preview/')) {
@@ -142,8 +142,7 @@ function* getRouteSaga(action) {
     }
     if (currentPath === '/') {
       let homeEntry = yield deliveryApi.getEntry(
-        PROJECTS.find(p => p.id == currentProject)
-          .homeEntry /* global PROJECTS */,
+        PROJECTS[0].homeEntry /* global PROJECTS */,
         2,
         deliveryApiStatus
       );
