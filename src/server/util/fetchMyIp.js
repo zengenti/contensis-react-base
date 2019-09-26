@@ -1,4 +1,4 @@
-const fetchMyIp = (servers, configureLocalEndpoint) => {
+const fetchMyIp = (env, configureLocalEndpoint) => {
   /* eslint-disable no-console */
   fetch('https://api.ipify.org?format=json', {
     method: 'GET',
@@ -21,7 +21,7 @@ const fetchMyIp = (servers, configureLocalEndpoint) => {
       console.log(`Current public ip -> ${JSON.stringify(ipJson)}`);
       if (ipJson.ip.startsWith('185.18.13')) {
         console.log(
-          `Using local endpoint for ${servers.live.alias} -> ${servers.live.internalVip}`
+          `Using local endpoint for ${env.alias} -> ${env.internalVip}`
         );
         configureLocalEndpoint();
       } else {

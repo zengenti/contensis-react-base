@@ -3,7 +3,6 @@
 /build
 /dist
 /docs
-.env
 npm-debug.log*
 *.log
 yarn-error.log

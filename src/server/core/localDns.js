@@ -1,13 +1,13 @@
 import evilDns from 'evil-dns';
 import fetchMyIp from '../util/fetchMyIp';
 const apiConfig = DELIVERY_API_CONFIG; /* global DELIVERY_API_CONFIG */
-const servers = SERVERS; /* global SERVERS */
+const env = SERVERS; /* global SERVERS */
 /* eslint-disable no-console */
 console.log();
 console.log(
   `Starting with the following servers configured:
 `,
-  servers
+  env
 );
 console.log();
 /* eslint-enable no-console */
@@ -17,19 +17,16 @@ const localDns = () => {
 
   const configureLocalEndpoint = () => {
     if (!disableDnsChanges) {
-      Object.entries(servers).forEach(([, env]) => {
-        evilDns.add(`*${env.alias}.cloud.contensis.com`, env.internalVip);
-      });
+      evilDns.add(`*${env.alias}.cloud.contensis.com`, env.internalVip);
 
-      Object.entries(apiConfig).forEach(([, env]) => {
-        if (env.internalIp) evilDns.add(env.rootUrl, env.internalIp);
-      });
+      if (apiConfig.internalIp)
+        evilDns.add(apiConfig.rootUrl, apiConfig.internalIp);
     }
   };
 
   // Break api.ipify to test
   // evilDns.add('api.ipify.org', '8.8.8.8');
-  fetchMyIp(servers, configureLocalEndpoint);
+  fetchMyIp(env, configureLocalEndpoint);
 };
 
 export default localDns;

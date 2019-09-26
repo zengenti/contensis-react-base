@@ -1,5 +1,5 @@
 const servers = SERVERS; /* global SERVERS */
-const aliases = Object.entries(servers).map(([, value]) => value.alias);
+const aliases = [servers.alias]; //Object.entries(servers).map(([, value]) => value.alias);
 const publicUri = PUBLIC_URI; /* global PUBLIC_URI */
 const projects = PROJECTS; /* global PROJECTS */
 

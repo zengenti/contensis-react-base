@@ -1,13 +1,7 @@
 const packagejson = require('../package.json');
+require('custom-env').env(process.env.CMS_ENV);
 
-const PUBLIC_URI = 'ludlow.ac.uk';
-const ALIAS = 'uni-demo';
-const INTERNAL_VIP = '10.128.73.132';
-const ACCESS_TOKEN = 'ppER5snmMgnDicH7ehoSceX6vC5EDbS9mbnNWFDNa3Lu2Zsd';
-
-const DEV_ALIAS = `${ALIAS}-dev`;
-const DEV_INTERNAL_VIP = INTERNAL_VIP;
-const DEV_ACCESS_TOKEN = ACCESS_TOKEN;
+const { PUBLIC_URI, ALIAS, INTERNAL_VIP, ACCESS_TOKEN } = process.env;
 
 const PROJECTS = [
   {
@@ -41,35 +35,18 @@ const url = alias => ({
 });
 
 const SERVERS = {
-  dev: {
-    alias: DEV_ALIAS,
-    internalVip: DEV_INTERNAL_VIP,
-    web: url(DEV_ALIAS).liveWeb,
-    cms: url(DEV_ALIAS).cms,
-    iis: url(DEV_ALIAS).iisWeb,
-  },
-  live: {
-    alias: ALIAS,
-    internalVip: INTERNAL_VIP,
-    web: url(ALIAS).liveWeb,
-    cms: url(ALIAS).cms,
-    iis: url(ALIAS).iisWeb,
-  },
+  alias: ALIAS,
+  internalVip: INTERNAL_VIP,
+  web: url(ALIAS).liveWeb,
+  cms: url(ALIAS).cms,
+  iis: url(ALIAS).iisWeb,
 };
 
 const DELIVERY_API_CONFIG = {
-  dev: {
-    rootUrl: url(DEV_ALIAS).cms,
-    accessToken: DEV_ACCESS_TOKEN,
-    projectId: PROJECTS[0].id,
-    livePublishingRootUrl: url(DEV_ALIAS).previewWeb,
-  },
-  live: {
-    rootUrl: url(ALIAS).cms,
-    accessToken: ACCESS_TOKEN,
-    projectId: PROJECTS[0].id,
-    livePublishingRootUrl: url(ALIAS).previewWeb,
-  },
+  rootUrl: url(ALIAS).cms,
+  accessToken: ACCESS_TOKEN,
+  projectId: PROJECTS[0].id,
+  livePublishingRootUrl: url(ALIAS).previewWeb,
 };
 
 module.exports = {
