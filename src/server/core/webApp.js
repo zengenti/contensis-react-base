@@ -166,7 +166,7 @@ const webApp = app => {
     );
     /* eslint-enable no-console */
 
-    // Serve a blank HTML page with client scripts to hydrate in the browser
+    // Serve a blank HTML page with client scripts to load the app in the browser
     if (accessMethod.DYNAMIC) {
       // Dynamic doesn't need sagas
       renderToString(jsx);
@@ -246,7 +246,7 @@ const webApp = app => {
             responseHTML = minifyCssString(styleTags) + html;
           }
 
-          // Page fragment served with client scripts
+          // Page fragment served with client scripts and redux data that hydrate the app client side
           if (accessMethod.FRAGMENT && !accessMethod.STATIC) {
             responseHTML = templateHTMLFragment
               .replace('{{TITLE}}', title)
@@ -267,7 +267,7 @@ const webApp = app => {
               .replace('{{LOADABLE_CHUNKS}}', '');
           }
 
-          // Full HTML page served with client scripts
+          // Full HTML page served with client scripts and redux data that hydrate the app client side
           if (!accessMethod.FRAGMENT && !accessMethod.STATIC) {
             responseHTML = templateHTML
               .replace('{{TITLE}}', title)
