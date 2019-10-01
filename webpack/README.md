@@ -8,7 +8,7 @@ A file called `.env` is required in the project root, this contains the core pie
 
 You may create other files for example `.env.development` to contains the same core information but for another CMS environment e.g. a DEV CMS (if available).
 
-To activate an alternative build/startup config you need to set environment variable `CMS_ENV` to the same value as your .env file's .{suffix}, you can do this in CLI e.g. `npx cross-env CMS_ENV=development npm start` or `npx cross-env CMS_ENV=development npm run build` or `npx cross-env CMS_ENV=development npm run server`, or you can add additional npm scripts to `package.json` to do the same.
+To activate an alternative build/startup config you need to set environment variable `CMS_ENV` to the same value as your .env file's .{suffix}, you can do this in CLI e.g. `npx cross-env CMS_ENV=development npm start` or `npx cross-env CMS_ENV=development npm run build`, or you can add additional npm scripts to `package.json` to do the same.
 
 ### Project config (Babel) :space_invader:
 

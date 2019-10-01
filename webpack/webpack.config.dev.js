@@ -6,9 +6,29 @@ const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 const DashboardPlugin = require('webpack-dashboard/plugin');
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const appConfig = require('./define-config');
 const defineConfigDev = require('./define-config-webpack').dev;
 
 const BASE_CONFIG = require('./webpack.config.base');
+
+const { SERVERS, REVERSE_PROXY_PATHS, PROXY_DELIVERY_API } = appConfig;
+
+const apiProxy = PROXY_DELIVERY_API
+  ? {
+      '/api/*': {
+        target: SERVERS.cms,
+        changeOrigin: true,
+      },
+    }
+  : {};
+const reverseProxies = {};
+
+REVERSE_PROXY_PATHS.forEach(path => {
+  reverseProxies[path] = {
+    target: SERVERS.iis || SERVERS.web,
+    changeOrigin: true,
+  };
+});
 
 const CLIENT_DEV_CONFIG = {
   name: 'webpack-dev-config',
@@ -105,22 +125,8 @@ const CLIENT_DEV_CONFIG = {
       // poll: 1000,
     },
     proxy: {
-      '/api/*': {
-        target: 'https://live-uni-demo.cloud.contensis.com',
-        changeOrigin: true,
-      },
-      '/image-library/*': {
-        target: 'https://iis-live-uni-demo.cloud.contensis.com',
-        changeOrigin: true,
-      },
-      '/video-library/*': {
-        target: 'https://iis-live-uni-demo.cloud.contensis.com',
-        changeOrigin: true,
-      },
-      '/asset-library/*': {
-        target: 'https://iis-live-uni-demo.cloud.contensis.com',
-        changeOrigin: true,
-      },
+      ...apiProxy,
+      ...reverseProxies,
     },
   },
 };
