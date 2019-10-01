@@ -17,7 +17,7 @@ import {
   validateRouteFromNavigationSettings,
   getLeafSlugFromRoute,
 } from '~/core/util/navHelper';
-// import { selectCurrentProject } from '../selectors/routing';
+import { selectCurrentProject } from '../selectors/routing';
 
 export const routingSagas = [
   takeEvery(SET_NAVIGATION_PATH, getRouteSaga),
@@ -91,7 +91,8 @@ function* ensureRelatedArticlesSaga(action) {
           'sys',
         ];
         //yield console.info('query:', query);
-        const queryResponse = yield deliveryApi.search(query, 1);
+        const project = yield select(selectCurrentProject);
+        const queryResponse = yield deliveryApi.search(query, 1, project);
         //yield console.info('query response', queryResponse);
         yield put({
           type: SET_ENTRY_RELATED_ARTICLES,
@@ -110,10 +111,8 @@ function* ensureRelatedArticlesSaga(action) {
 
 function* getRouteSaga(action) {
   // try {
-  const state = yield select();
-  // const currentPath = selectCurrentPath(state);
-  // const currentProject = selectCurrentProject(state);
-  const deliveryApiStatus = selectVersionStatus(state);
+  const project = yield select(selectCurrentProject);
+  const deliveryApiStatus = yield select(selectVersionStatus);
   const currentPath = action.path;
   if (currentPath && currentPath.startsWith('/preview/')) {
     let splitPath = currentPath.split('/');
@@ -122,7 +121,8 @@ function* getRouteSaga(action) {
       let previewEntry = yield deliveryApi.getEntry(
         entryGuid,
         2,
-        deliveryApiStatus
+        deliveryApiStatus,
+        project
       );
       if (previewEntry) {
         yield call(setRouteEntry, previewEntry);
@@ -144,7 +144,8 @@ function* getRouteSaga(action) {
       let homeEntry = yield deliveryApi.getEntry(
         PROJECTS[0].homeEntry /* global PROJECTS */,
         2,
-        deliveryApiStatus
+        deliveryApiStatus,
+        project
       );
       pathNode = { entry: homeEntry };
     } else {
@@ -157,7 +158,7 @@ function* getRouteSaga(action) {
       ];
       query = new Query(...expressions);
       query.pageSize = 1;
-      const routePathEntryResult = yield deliveryApi.search(query, 2);
+      const routePathEntryResult = yield deliveryApi.search(query, 2, project);
       let routePathEntry =
         routePathEntryResult &&
         routePathEntryResult.totalCount &&

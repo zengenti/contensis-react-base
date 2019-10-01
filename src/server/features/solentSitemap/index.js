@@ -1,5 +1,5 @@
 import generateSitemap from './sitemap';
-import pickProject from '../../util/pickProject';
+import pickProject from '~/core/util/pickProject';
 
 const sitemap = app => {
   app.get('/sitemap.xml', (req, res) => {

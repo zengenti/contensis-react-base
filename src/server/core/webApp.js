@@ -33,7 +33,7 @@ import App from '~/App';
 
 import { AccessMethods } from '../util/types';
 import pickEnv from '../util/pickEnv';
-import pickProject, { allowedGroups } from '../util/pickProject';
+import pickProject, { allowedGroups } from '~/core/util/pickProject';
 
 const templateHTML = fs.readFileSync('dist/index.html', 'utf8');
 const versionData = fs.readFileSync('dist/static/version.json', 'utf8');

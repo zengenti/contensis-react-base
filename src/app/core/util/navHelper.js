@@ -174,10 +174,10 @@ export const validateRouteFromNavigationSettings = (currentPath, entry) => {
   return routeValidationResult;
 };
 
-export const getPathDictionary = async versionStatus => {
+export const getPathDictionary = async (versionStatus, project) => {
   const pageSize = 3000;
   const query = getContentPageEntriesQuery(0, pageSize, versionStatus);
-  const entryInfo = await getContentPageEntryInfo(query);
+  const entryInfo = await getContentPageEntryInfo(query, project);
   // console.log('EntryInfo: ' + JSON.stringify(entryInfo));
   const { pageCount } = entryInfo;
   const pageArray = [];
@@ -187,7 +187,7 @@ export const getPathDictionary = async versionStatus => {
   const getEntryTasks = [];
   pageArray.forEach(pageIndex => {
     query.pageIndex = pageIndex;
-    getEntryTasks.push(getContentPageEntries(query));
+    getEntryTasks.push(getContentPageEntries(query, project));
   });
   const pagesOfEntries = await Promise.all(getEntryTasks);
   const writeTasks = [];
@@ -221,18 +221,18 @@ const writePageOfEntries = async function(entries, dictionary) {
   });
 };
 
-const getContentPageEntryInfo = async query => {
+const getContentPageEntryInfo = async (query, project) => {
   try {
-    const result = await deliveryApi.search(query, 3);
+    const result = await deliveryApi.search(query, 3, project);
     return result;
   } catch (error) {
     throw new Error(JSON.stringify(error));
   }
 };
 
-const getContentPageEntries = async query => {
+const getContentPageEntries = async (query, project) => {
   try {
-    const payload = await deliveryApi.search(query, 3);
+    const payload = await deliveryApi.search(query, 3, project);
     if (payload && payload.items) {
       return payload.items;
     }

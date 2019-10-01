@@ -1,13 +1,20 @@
 const packagejson = require('../package.json');
 require('custom-env').env(process.env.CMS_ENV);
 
-const { PUBLIC_URI, ALIAS, INTERNAL_VIP, ACCESS_TOKEN } = process.env;
+const {
+  PUBLIC_URI,
+  ALIAS,
+  INTERNAL_VIP,
+  ACCESS_TOKEN,
+  PROJECT,
+  HOME_ENTRY,
+} = process.env;
 
 const PROJECTS = [
   {
-    id: 'website',
-    publicUri: 'ludlow.ac.uk',
-    homeEntry: '33479a87-7069-4220-9b0c-220318bd3345',
+    id: PROJECT,
+    publicUri: PUBLIC_URI,
+    homeEntry: HOME_ENTRY,
   },
   {
     id: 'mock',
@@ -22,6 +29,13 @@ const REVERSE_PROXY_PATHS = [
   '/video-library/*',
   '/asset-library/*',
 ];
+
+const ALLOWED_GROUPS = {
+  // 1 is Everyone, -1 is false (no security)
+  website: [-1],
+  mock: [-1],
+  intranet: [1],
+};
 
 // --------------------
 // End of configuration
@@ -55,7 +69,8 @@ module.exports = {
   DISABLE_SSR_REDUX: false,
   SERVERS,
   PROJECTS,
-  PROXY_DELIVERY_API: true,
+  ALLOWED_GROUPS,
+  PROXY_DELIVERY_API: false,
   PUBLIC_URI,
   REVERSE_PROXY_PATHS,
   VERSION: packagejson.version,

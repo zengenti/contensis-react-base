@@ -18,6 +18,7 @@ import {
   getCurrentFacet,
   isSingleFacetMode,
 } from '~/core/redux/selectors/search';
+import { selectCurrentProject } from '../selectors/routing';
 
 export const searchSagas = [
   takeEvery(EXECUTE_SEARCH, executeSearch),
@@ -31,6 +32,7 @@ export const searchSagas = [
 function* executeSearch(action) {
   const state = yield select();
   const facet = getCurrentFacet(state);
+  const project = selectCurrentProject(state);
   // yield log.info(`${EXECUTE_SEARCH} Fired about to Get Entry`);
   /* eslint-disable no-console */
   console.log(`${EXECUTE_SEARCH} Fired about to Get Entry`);
@@ -44,7 +46,7 @@ function* executeSearch(action) {
     // query.fields = getSearchFacetFields(facet);
     let duration = 0;
     const start = now();
-    const payload = yield deliveryApi.search(query, 1);
+    const payload = yield deliveryApi.search(query, 1, project);
     const end = now();
     duration = end - start;
     yield fork(getSearchPromo, action, facet);
@@ -75,6 +77,7 @@ function* executeSearch(action) {
 
 function* getSearchPromo(action, facet) {
   const state = yield select();
+  const project = selectCurrentProject(state);
   // yield log.info(`${EXECUTE_SEARCH} Fired about to Get Entry`);
   try {
     const query = getSearchPromoQuery(state, facet);
@@ -89,7 +92,7 @@ function* getSearchPromo(action, facet) {
       'url',
     ];
     //const benchmark = new Benchmark();
-    const payload = yield deliveryApi.search(query, 1);
+    const payload = yield deliveryApi.search(query, 1, project);
 
     //const duration = benchmark.elapsed;
     const duration = 0;
@@ -106,6 +109,7 @@ function* getSearchPromo(action, facet) {
 
 function* ensureSearchPreload(facet) {
   const state = yield select();
+  const project = selectCurrentProject(state);
   const preload = true;
   // yield log.info(`${EXECUTE_SEARCH} Fired about to Get Entry`);
   try {
@@ -113,7 +117,7 @@ function* ensureSearchPreload(facet) {
     // query.fields = getSearchFacetFields(facet);
     // debugger;
     const start = now();
-    const payload = yield deliveryApi.search(query, 1);
+    const payload = yield deliveryApi.search(query, 1, project);
 
     const end = now();
     const duration = end - start;
