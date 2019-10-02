@@ -1,28 +1,39 @@
 import styled from 'styled-components';
 
-const FeaturedEvents = styled.div`
+const EventListing = styled.div`
+  /* to remove */
+  @import url('https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap');
+  font-family: Roboto;
+  * {
+    box-sizing: border-box;
+  }
+  /* ^^^ */
   margin: auto;
   width: 100%;
   max-width: 1280px;
 
   .feWrap {
-    display: flex;
-    margin: 0 -16px;
-    flex-direction: row-reverse;
-    justify-content: space-between;
+    @media only screen and (min-width: 1024px) {
+      display: flex;
+      margin: 80px -20px 0;
+      flex-direction: row-reverse;
+      justify-content: space-between;
+    }
   }
 
   .feColumnPadding {
-    padding: 0 16px;
+    @media only screen and (min-width: 1024px) {
+      padding: 0 20px;
+    }
   }
 
   .feFilters {
-    width: ${(100 / 12) * 3}%;
+    flex-basis: ${(100 / 12) * 3}%;
   }
 
   .feList {
-    width: ${(100 / 12) * 8}%;
+    flex-basis: ${(100 / 12) * 8}%;
   }
 `;
 
-export default FeaturedEvents;
+export default EventListing;

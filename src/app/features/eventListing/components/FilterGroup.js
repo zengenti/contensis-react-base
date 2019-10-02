@@ -1,31 +1,39 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import FilterGroupStyled from '../components.styled/FilterGroup.styled';
+
 const FilterGroup = ({ id, options, title, update }) => {
   if (!options || options.length < 1) return null;
 
   return (
-    <div data-testid="filterGroup">
-      <h3 data-testid="title">{title}</h3>
-      <div>
-        {options.map((option, idx) => {
-          const filterId = `${option.title}-${idx}`;
-          return (
-            <div data-testid="filterOption" key={filterId}>
-              <input
-                data-testid="input"
-                type="checkbox"
-                name={filterId}
-                value={option.id}
-                defaultChecked={option.isSelected}
-                onChange={() => update(id, option.id)}
-              />
-              <label htmlFor={filterId}>{option.title}</label>
-            </div>
-          );
-        })}
-      </div>
-    </div>
+    <FilterGroupStyled data-testid="filterGroup">
+      <h3 className="fgTitle" data-testid="title">
+        {title}
+      </h3>
+
+      {options.map((option, idx) => {
+        let filterId = `${option.title}-${idx}`.replace(/ /g, '-');
+
+        return (
+          <div className="fgOption" data-testid="filterOption" key={filterId}>
+            <input
+              className="fgOptionInput"
+              data-testid="input"
+              defaultChecked={option.isSelected}
+              id={filterId}
+              name={option.title}
+              onChange={() => update(id, option.id)}
+              type="checkbox"
+              value={option.id}
+            />
+            <label className="fgOptionLabel" htmlFor={filterId}>
+              {option.title}
+            </label>
+          </div>
+        );
+      })}
+    </FilterGroupStyled>
   );
 };
 

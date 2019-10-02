@@ -41,7 +41,7 @@ test('filter option is visible and label is as expected', () => {
 
   filterGroup.options.map((option, idx) => {
     const fOption = filterOptions[idx];
-    const id = fOption.querySelector('input').getAttribute('name');
+    const id = fOption.querySelector('input').getAttribute('id');
     //check label text
     expect(fOption.querySelector('label')).toHaveTextContent(option.title);
     //check label is linked to input via 'for' attribute

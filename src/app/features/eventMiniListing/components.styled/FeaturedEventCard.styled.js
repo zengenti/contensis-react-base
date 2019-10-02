@@ -1,9 +1,22 @@
 import styled from 'styled-components';
 
 const FeaturedEventCard = styled.a`
-  display: block;
+  display: flex;
+  align-items: flex-end;
   position: relative;
+  height: 100%;
+  min-height: 320px;
+  overflow: hidden;
   line-height: 0;
+  text-decoration: none;
+
+  background-image: url(${props => props.imagePath});
+  background-size: cover;
+  background-position: center center;
+
+  @media only screen and (min-width: 700px) {
+    padding: 25%;
+  }
 
   &:after {
     content: '';
@@ -20,11 +33,16 @@ const FeaturedEventCard = styled.a`
     z-index: 2;
     top: 0;
     left: 0;
-    width: 180px;
-    height: 180px;
+    width: 100px;
+    height: 100px;
     background-color: #fff;
 
     font-weight: 300;
+
+    @media only screen and (min-width: 700px) {
+      width: 180px;
+      height: 180px;
+    }
   }
 
   .fecDateInner {
@@ -39,32 +57,41 @@ const FeaturedEventCard = styled.a`
 
   .fecDateDay {
     display: block;
-    font-size: 56px;
+    font-size: 40px;
     color: #aaa;
+
+    @media only screen and (min-width: 700px) {
+      font-size: 56px;
+    }
   }
 
   .fecDateMonth {
     display: block;
-    font-size: 40px;
+    font-size: 28px;
     color: #222;
-  }
 
-  .fecImage {
-    width: 100%;
+    @media only screen and (min-width: 700px) {
+      font-size: 40px;
+    }
   }
 
   .fecTitle {
-    position: absolute;
+    position: relative;
     z-index: 2;
     bottom: 0;
     left: 0;
-    margin: 0;
+    margin: 100px 0 0 0;
     padding: 32px 16px;
     color: #fff;
     line-height: 1;
 
     font-size: 40px;
     font-weight: 400;
+
+    @media only screen and (min-width: 700px) {
+      position: absolute;
+      margin-top: 0;
+    }
   }
 `;
 

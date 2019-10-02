@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import EventCard from './EventCard';
+import EventListStyled from '../components.styled/EventList.styled';
 
 import { eventCardMapper } from '../util/eventCard.mapper';
 
@@ -10,12 +11,16 @@ const FeaturedEvents = ({ events, message }) => {
     return <div data-testid="noResultsMessage">{message}</div>;
 
   return (
-    <div data-testid="eventList">
+    <EventListStyled data-testid="eventList">
       {events.map((event, idx) => {
         const props = eventCardMapper(event);
-        return <EventCard {...props} key={idx} />;
+        return (
+          <li className="elItem" key={idx}>
+            <EventCard {...props} />
+          </li>
+        );
       })}
-    </div>
+    </EventListStyled>
   );
 };
 

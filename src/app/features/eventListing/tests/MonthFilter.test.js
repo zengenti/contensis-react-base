@@ -144,3 +144,22 @@ test('when a users selects a month filter option then update the active month fi
     expect(activeDate).toBe(filter.isoDate);
   });
 });
+
+test('if toggle months visibility button is selected then action is dispatched', () => {
+  let actionDispatched = false;
+  const { queryByTestId } = render(
+    <MonthFilter
+      {...props}
+      updateActiveMonth={() => {}}
+      toggleIsOpen={() => {
+        actionDispatched = !actionDispatched;
+      }}
+    />
+  );
+
+  expect(actionDispatched).toBe(false);
+
+  fireEvent.click(queryByTestId('toggleMonthsVisibility'));
+
+  expect(actionDispatched).toBe(true);
+});
