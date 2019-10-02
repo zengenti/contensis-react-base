@@ -5,21 +5,19 @@ import FeaturedEventCardStyled from '../components.styled/FeaturedEventCard.styl
 
 import formatDate from '../util/formatDate';
 
-const FeaturedEventCard = ({ date, imageAlt, imagePath, title, uri }) => {
+const FeaturedEventCard = ({ date, imagePath, title, uri }) => {
   let missingProp = false;
-  [date, imageAlt, imagePath, title, uri].map(prop => {
+  [date, imagePath, title, uri].map(prop => {
     if (!prop || prop == '') missingProp = true;
   });
   if (missingProp) return null;
   const dateArr = date && formatDate(date, 'dd|MMM').split('|');
   return (
-    <FeaturedEventCardStyled href={uri} data-testid="eventCard">
-      <img
-        className="fecImage"
-        data-testid="image"
-        alt={imageAlt}
-        src={imagePath}
-      />
+    <FeaturedEventCardStyled
+      href={uri}
+      data-testid="eventCard"
+      imagePath={imagePath}
+    >
       <div className="fecDate">
         <div className="fecDateInner">
           <span className="fecDateDay" data-testid="dateDay">

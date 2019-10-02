@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 const FeaturedEvents = styled.div`
   display: flex;
-  margin: 0 -20px;
+  margin: 80px -20px 0;
 
   .feItem {
     flex-basis: ${100 / 3}%;
