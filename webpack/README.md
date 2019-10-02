@@ -28,9 +28,9 @@ Previously we would define any config twice, once in `define-config.js`, and the
 
 ## Delivery API project selection
 
-So we can develop new features in a mock project, or support a skinned or localised instance of a site (e.g. improbable.com / improbable.cn) we might wish to connect either a development instance (running on localhost) or a deployed instance of a site/container to a different CMS project.
+So we can develop new features in a mock project, or support a skinned or localised instance of a site (e.g. improbable.com / improbable.cn) we might wish to scope our delivery api requests to either a development instance (running on localhost) or a deployed instance of a site/container to a different CMS project.
 
-We can do this without rebuilding as the project supports setting the delivery api projectId dynamically at runtime.
+We can do this without rebuilding or stop/start-ing as the project supports setting the delivery api projectId dynamically at runtime.
 
 In a deployed instance, the project selection is inferred from the hostname, or if it matches the defined PUBLIC_URI for that project. e.g. `dev.live.zen-base.contensis.cloud` or `live-zen-base.cloud.contensis.com` would resolve to the "primary" project, this is the project defined in the `.env` file, and is usually called "website". `dev.preview.mock.zen-base.contensis.cloud` or `*-mock-zen-base.cloud.contensis.com` would set the projectId to be "mock".
 

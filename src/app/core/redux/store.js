@@ -3,12 +3,18 @@ import { combineReducers } from 'redux-immutable';
 import thunk from 'redux-thunk';
 import createSagaMiddleware, { END } from 'redux-saga';
 
+// Core reducers
 import RoutingReducer from './reducers/routing';
 import VersionReducer from './reducers/version';
-import AppReducer from './reducers/app';
-import SearchReducer from './reducers/search';
 import NavigationReducer from './reducers/navigation';
-// import UserReducer from './reducers/user';
+
+// Feature reducers
+// import { reducer as FormsReducer } from 'zengenti-forms-package';
+// import { reducer as ListingReducer } from '~/features/listings';
+// import { reducer as SearchReducer } from '~/features/search';
+// import { reducer as AlertReducer } from '~/features/siteAlert';
+
+const featureReducers = {};
 
 const thunkMiddleware = [thunk];
 
@@ -27,11 +33,10 @@ const middleware = compose(
 );
 
 let reducers = {
-  search: SearchReducer,
   navigation: NavigationReducer,
   routing: RoutingReducer,
   version: VersionReducer,
-  app: AppReducer,
+  ...featureReducers,
 };
 
 const combinedReducers = combineReducers(reducers);

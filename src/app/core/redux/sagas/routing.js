@@ -1,5 +1,5 @@
 // load-entries.js
-// import * as log from 'loglevel';
+import * as log from 'loglevel';
 import { takeEvery, put, select, call, all } from 'redux-saga/effects';
 import {
   SET_ENTRY_ID,
@@ -8,21 +8,92 @@ import {
   SET_NODE,
   SET_ANCESTORS,
   SET_NAVIGATION_PATH,
-  SET_ENTRY_RELATED_ARTICLES,
 } from '~/core/redux/types/routing';
-import { deliveryApi, Query, Op } from '~/core/util/ContensisDeliveryApi';
-import { getListingsQuery } from '~/core/util/queries';
+import { deliveryApi } from '~/core/util/ContensisDeliveryApi';
 import { selectVersionStatus } from '~/core/redux/selectors/version';
 import {
-  validateRouteFromNavigationSettings,
-  getLeafSlugFromRoute,
-} from '~/core/util/navHelper';
-import { selectCurrentProject } from '../selectors/routing';
+  selectCurrentPath,
+  selectCurrentProject,
+} from '~/core/redux/selectors/routing';
+import { hasNavigationTree } from '../selectors/navigation';
+import { ensureNodeTreeSaga } from './navigation';
 
-export const routingSagas = [
-  takeEvery(SET_NAVIGATION_PATH, getRouteSaga),
-  takeEvery(SET_ENTRY, ensureRelatedArticlesSaga),
-];
+export const routingSagas = [takeEvery(SET_NAVIGATION_PATH, getRouteSaga)];
+
+function* getRouteSaga() {
+  try {
+    yield ensureNavigationTree();
+    const state = yield select();
+    const currentPath = selectCurrentPath(state);
+    const deliveryApiStatus = selectVersionStatus(state);
+    const project = selectCurrentProject(state);
+
+    let pathNode = null;
+    let ancestors = null;
+    // Scroll into View
+    if (typeof window !== 'undefined') {
+      window.scroll({
+        top: 0,
+      });
+    }
+    if (currentPath === '/') {
+      pathNode = yield deliveryApi
+        .getClient(deliveryApiStatus, project)
+        .nodes.getRoot({
+          entryFields: '*',
+          entryLinkDepth: 4,
+          language: 'en-GB',
+        });
+    } else {
+      if (currentPath.startsWith('/preview/')) {
+        let splitPath = currentPath.split('/');
+        let entryGuid = splitPath[2];
+        pathNode = yield deliveryApi
+          .getClient(deliveryApiStatus, project)
+          .nodes.getByEntry({
+            entryId: entryGuid,
+            entryFields: '*',
+            entryLinkDepth: 4,
+          });
+        pathNode = pathNode[0];
+      } else {
+        pathNode = yield deliveryApi
+          .getClient(deliveryApiStatus, project)
+          .nodes.get({
+            path: currentPath,
+            entryFields: '*',
+            entryLinkDepth: 4,
+          });
+      }
+
+      ancestors = yield deliveryApi
+        .getClient(deliveryApiStatus)
+        .nodes.getAncestors(pathNode.id);
+      // debugger;
+    }
+
+    if (
+      pathNode &&
+      pathNode.entry &&
+      pathNode.entry.sys &&
+      pathNode.entry.sys.id
+    ) {
+      yield call(setRouteEntry, pathNode.entry, pathNode, ancestors);
+    } else {
+      yield call(do404);
+    }
+  } catch (e) {
+    log.info(`Error running route saga: ${e}`);
+    yield call(do404);
+  }
+}
+
+function* ensureNavigationTree() {
+  const treeLoaded = yield select(hasNavigationTree);
+  if (!treeLoaded) {
+    yield call(ensureNodeTreeSaga);
+  }
+}
 
 function* setRouteEntry(entry, node, ancestors) {
   yield all([
@@ -58,142 +129,4 @@ function* do404() {
     type: SET_ENTRY_ID,
     id: null,
   });
-}
-
-function* ensureRelatedArticlesSaga(action) {
-  //yield console.info('action::', action);
-  try {
-    const entry = action.entry;
-    if (entry) {
-      const contentTypeId = entry.sys.contentTypeId;
-
-      if (contentTypeId === 'news') {
-        //if no articleCategories, exit, don't set any related articles
-        if (!entry.articleCategory) return;
-        //assume articleCategory if exists that it has at least 1 item in the category array, else error.
-        const filters = {
-          categoryKey: entry.articleCategory.category[0].key,
-          not: {
-            ids: [entry.sys.id],
-          },
-        };
-        console.info('filters', filters);
-        const query = yield getListingsQuery(
-          [contentTypeId],
-          'paged-datedesc',
-          filters
-        );
-        //fields currently doesn't work, could be due to internalServer not handling fields
-        query.fields = [
-          'entryTitle',
-          'publishDateOverride',
-          'listingImage',
-          'sys',
-        ];
-        //yield console.info('query:', query);
-        const project = yield select(selectCurrentProject);
-        const queryResponse = yield deliveryApi.search(query, 1, project);
-        //yield console.info('query response', queryResponse);
-        yield put({
-          type: SET_ENTRY_RELATED_ARTICLES,
-          relatedArticles: queryResponse.items,
-        });
-      }
-    }
-  } catch (err) {
-    //SET_ENTRY action has invalid input
-    console.error('SET_ENTRY action may have an invalid payload.', action);
-    throw new Error(err);
-    //could create validation to ensure payload is the correct/expected shape
-    //so there's no need to do too much falsey checking
-  }
-}
-
-function* getRouteSaga(action) {
-  // try {
-  const project = yield select(selectCurrentProject);
-  const deliveryApiStatus = yield select(selectVersionStatus);
-  const currentPath = action.path;
-  if (currentPath && currentPath.startsWith('/preview/')) {
-    let splitPath = currentPath.split('/');
-    let entryGuid = splitPath[2];
-    if (splitPath.length == 3) {
-      let previewEntry = yield deliveryApi.getEntry(
-        entryGuid,
-        2,
-        deliveryApiStatus,
-        project
-      );
-      if (previewEntry) {
-        yield call(setRouteEntry, previewEntry);
-      } else {
-        yield call(do404);
-      }
-      return true;
-    }
-  } else {
-    let pathNode = null;
-    let Ancestors = null;
-    // Scroll into View
-    if (typeof window !== 'undefined') {
-      window.scroll({
-        top: 0,
-      });
-    }
-    if (currentPath === '/') {
-      let homeEntry = yield deliveryApi.getEntry(
-        PROJECTS[0].homeEntry /* global PROJECTS */,
-        2,
-        deliveryApiStatus,
-        project
-      );
-      pathNode = { entry: homeEntry };
-    } else {
-      let query = null;
-      const leaf = getLeafSlugFromRoute(currentPath);
-
-      let expressions = [
-        ...GetSlugQuery(leaf),
-        ...selectVersionStatusQuery(deliveryApiStatus),
-      ];
-      query = new Query(...expressions);
-      query.pageSize = 1;
-      const routePathEntryResult = yield deliveryApi.search(query, 2, project);
-      let routePathEntry =
-        routePathEntryResult &&
-        routePathEntryResult.totalCount &&
-        routePathEntryResult.totalCount > 0 &&
-        routePathEntryResult.items &&
-        routePathEntryResult.items[0];
-
-      // Validate path down navigationSettings.parent
-      const routeValidated = validateRouteFromNavigationSettings(
-        currentPath,
-        routePathEntry
-      );
-
-      if (routePathEntry && routeValidated) {
-        pathNode = { entry: routePathEntry };
-      }
-    }
-    if (
-      pathNode &&
-      pathNode.entry &&
-      pathNode.entry.sys &&
-      pathNode.entry.sys.id
-    ) {
-      yield call(setRouteEntry, pathNode.entry, pathNode, Ancestors);
-    } else {
-      debugger;
-      yield call(do404);
-    }
-  }
-}
-
-function GetSlugQuery(s) {
-  return [Op.equalTo('sys.slug', s)];
-}
-
-function selectVersionStatusQuery(deliveryApiStatus) {
-  return [Op.equalTo('sys.versionStatus', deliveryApiStatus)];
 }

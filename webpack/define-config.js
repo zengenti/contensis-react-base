@@ -1,25 +1,16 @@
 const packagejson = require('../package.json');
 require('custom-env').env(process.env.CMS_ENV);
 
-const {
-  PUBLIC_URI,
-  ALIAS,
-  INTERNAL_VIP,
-  ACCESS_TOKEN,
-  PROJECT,
-  HOME_ENTRY,
-} = process.env;
+const { PUBLIC_URI, ALIAS, INTERNAL_VIP, ACCESS_TOKEN, PROJECT } = process.env;
 
 const PROJECTS = [
   {
     id: PROJECT,
     publicUri: PUBLIC_URI,
-    homeEntry: HOME_ENTRY,
   },
   {
     id: 'mock',
     publicUri: 'mock.ludlow.ac.uk',
-    homeEntry: 'abcd-efgh-ijkl-mnop',
   },
 ];
 

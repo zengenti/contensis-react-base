@@ -14,7 +14,6 @@ import App from '~/App';
 import { fromJS } from 'immutable';
 import { setVersionStatus } from '~/core/redux/actions/version';
 import { GetClientSideDeliveryApiStatus } from '~/core/util/ContensisDeliveryApi';
-import { initialiseApp } from '~/core/redux/actions/app';
 import { setCurrentProject } from '~/core/redux/actions/routing';
 import pickProject from '~/core/util/pickProject';
 
@@ -65,7 +64,6 @@ if (
       )
     )
   );
-  store.dispatch(initialiseApp());
 
   delete window.REDUX_DATA;
   HMRRenderer(GetClientJSX(store));
@@ -82,7 +80,6 @@ if (
       // store.dispatch(setVersionStatus(versionStatusFromHostname));
 
       store.runSaga(rootSaga);
-      store.dispatch(initialiseApp());
       store.dispatch(
         setCurrentProject(
           pickProject(

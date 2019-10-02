@@ -2,8 +2,6 @@ import { select } from 'redux-saga/effects';
 
 import { Op, Query, OrderBy } from 'contensis-delivery-api';
 import { selectVersionStatus } from '~/core/redux/selectors/version';
-import { ContentTypes } from '~/core/redux/types/navigation';
-// import { ContentTypes } from '~/core/redux/types/navigation';
 
 export function* getNavigationTreeQuery() {
   const versionStatus = yield select(selectVersionStatus);
@@ -15,37 +13,6 @@ export function* getNavigationTreeQuery() {
   const query = new Query(...expressions);
   query.pageIndex = 0;
   query.pageSize = 100;
-  return query;
-}
-export function* getNavigationTreeEntriesQuery(selectedNodeId) {
-  const versionStatus = yield select(selectVersionStatus);
-  let expressions = [
-    Op.equalTo('sys.versionStatus', versionStatus),
-    Op.equalTo('navigationSettings.parent.sys.id', selectedNodeId),
-  ];
-
-  const query = new Query(...expressions);
-  query.pageIndex = 0;
-  query.pageSize = 100;
-  return query;
-}
-
-export function getContentPageEntriesQuery(pageIndex, pageSize, versionStatus) {
-  const contentTypes = [...ContentTypes];
-  const query = new Query(
-    Op.equalTo('sys.versionStatus', versionStatus),
-    Op.in('sys.contentTypeId', ...contentTypes)
-  );
-  query.pageSize = pageSize;
-  query.fields = [
-    'entryTitle',
-    'navigationSettings',
-    'sys.slug',
-    'sys.contentTypeId',
-    'parent',
-    'sys.version',
-  ];
-  query.pageIndex = pageIndex;
   return query;
 }
 

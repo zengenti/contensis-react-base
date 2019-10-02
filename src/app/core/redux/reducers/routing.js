@@ -8,7 +8,7 @@ import {
   SET_ANCESTORS,
   SET_ROUTE_LOADING,
   SET_ENTRY_RELATED_ARTICLES,
-  SET_CURRENT_PROJECT,
+  SET_TARGET_PROJECT,
   SET_CURRENT_ENVIRONMENT,
 } from '~/core/redux/types/routing';
 import {
@@ -70,7 +70,7 @@ export default (state = initialState, action) => {
     case SET_ENTRY_RELATED_ARTICLES: {
       return state.set('relatedArticles', fromJS(action.relatedArticles));
     }
-    case SET_CURRENT_PROJECT: {
+    case SET_TARGET_PROJECT: {
       return state
         .set('currentProject', action.project)
         .set('allowedGroups', fromJS(action.allowedGroups));

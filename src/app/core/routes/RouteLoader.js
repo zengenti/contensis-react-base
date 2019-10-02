@@ -8,11 +8,9 @@ import { renderRoutes, matchRoutes } from 'react-router-config';
 import {
   selectRouteEntry,
   selectRouteEntryContentTypeId,
-  selectRouteEntryListingType,
   selectIsNotFound,
 } from '~/core/redux/selectors/routing';
-import { setRouteEntry, setNavigationPath } from '~/core/redux/actions/routing';
-import { loadNavigationTree } from '~/core/redux/actions/navigation';
+import { setNavigationPath } from '~/core/redux/actions/routing';
 import NotFound from '~/pages/NotFound';
 import ContentTypeMappings from './ContentTypeMappings';
 import staticRoutes from './StaticRoutes';
@@ -36,12 +34,8 @@ class RouteLoader extends Component {
     match: PropTypes.object.isRequired,
     entry: PropTypes.object,
     isNotFound: PropTypes.bool,
-    setRecordEntry: PropTypes.func,
     setNavigationPath: PropTypes.func,
     contentTypeId: PropTypes.string,
-    listingType: PropTypes.string,
-    tree: PropTypes.object,
-    loadNavigationTree: PropTypes.func,
   };
   static defaultProps = {};
 
@@ -78,22 +72,12 @@ class RouteLoader extends Component {
     }
     // Match Any Defined Content Type Mappings
     if (this.props.contentTypeId) {
-      const matchedComponent = ContentTypeMappings.find(
+      const MatchedComponent = ContentTypeMappings.find(
         item => item.contentTypeID == this.props.contentTypeId
       );
 
-      if (matchedComponent) {
-        // if (this.props.contentTypeId === 'listing') {
-        //   return (
-        //     <matchedComponent.component
-        //       singleFacetMode
-        //       defaultFacet={
-        //         this.props.listingType && this.props.listingType.toLowerCase()
-        //       }
-        //     />
-        //   );
-        // }
-        return <matchedComponent.component />;
+      if (MatchedComponent) {
+        return <MatchedComponent.component />;
       }
     }
 
@@ -112,16 +96,13 @@ const mapStateToProps = state => {
   return {
     entry: selectRouteEntry(state),
     contentTypeId: selectRouteEntryContentTypeId(state),
-    listingType: selectRouteEntryListingType(state),
     isNotFound: selectIsNotFound(state),
   };
 };
 
 function mapDispatchToProps(dispatch) {
   return {
-    setRecordEntry: id => dispatch(setRouteEntry(id)),
     setNavigationPath: path => dispatch(setNavigationPath(path)),
-    loadNavigationTree: () => dispatch(loadNavigationTree()),
   };
 }
 
