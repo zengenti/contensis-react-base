@@ -5,7 +5,7 @@ import {
   SHOW_USER_DETAILS,
   HIDE_USER_DETAILS,
   SIGN_OUT,
-} from 'app/redux/types/user';
+} from '~/core/redux/types/user';
 
 let initialState = Map({
   userDetails: null,

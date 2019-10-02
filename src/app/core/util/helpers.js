@@ -1,4 +1,3 @@
-import { Levels } from 'app/redux/types/search';
 export default class ProjectHelper {
   static currencyFormat(val) {
     const formatter = new Intl.NumberFormat('en-GB', {
@@ -7,6 +6,17 @@ export default class ProjectHelper {
       minimumFractionDigits: 0,
     });
     return formatter.format(val);
+  }
+
+  static showChildren(e) {
+    e.preventDefault;
+
+    let children = document.getElementById(e);
+    if (children.style.display == 'block') {
+      children.style.display = 'none';
+    } else {
+      children.style.display = 'block';
+    }
   }
 
   static camelize(str) {
@@ -20,21 +30,19 @@ export default class ProjectHelper {
   static ltrim(stringToTrim) {
     return stringToTrim.replace(/^\s+/, '');
   }
-  static trim(s, c) {
+
+  static trim(s, c = ' ') {
     if (c === ']') c = '\\]';
     if (c === '\\') c = '\\\\';
     return s.replace(new RegExp('^[' + c + ']+|[' + c + ']+$', 'g'), '');
   }
-  static resolveRelativeUrl(url) {
-    // return 'https://www.brunel.ac.uk/' + url;
-    // return 'https://www.brunel.ac.uk/' + this.trim(url, '/');
-    return this.trim(url, '.aspx');
-  }
+
   static ArrayToSentence(arr, connector = 'and') {
     return arr.length > 1
       ? arr.slice(0, -1).join(', ') + ' ' + connector + ' ' + arr.slice(-1)
       : arr.toString();
   }
+
   static GetComposerContent(composer, fieldName) {
     if (composer) {
       let composerField = composer
@@ -46,327 +54,99 @@ export default class ProjectHelper {
     }
     return null;
   }
-  // type tabContent, Pill,
-  static GetTabMessages(defaultMessages, course, tabName, above) {
-    // Get a list of Default Mesages that match the type we require.
-    const Messages = [];
-    defaultMessages.forEach(message => {
-      message.messageContent.forEach(mc => {
-        if (
-          mc.type == 'tabContent' &&
-          mc.value.tab == tabName &&
-          mc.value.positionAbove === above
-        ) {
-          const item = {
-            conditions: message.renderConditions,
-            content: mc.value.message,
-          };
-          Messages.push(item);
-        }
-      });
-    });
-    return this.GetMessagesMatchingCourse(Messages, course);
+
+  static dedupeUriSlashes(uri) {
+    const work = uri.replace('//', '~~'); // replace first instance of double slash with tildes to switch out again for slashes later
+    const uriParts = work.split('/').filter(part => part); // split the working url into parts and filter any null parts
+    return uriParts.join('/').replace('~~', '//');
   }
 
-  static GetPillItems(defaultMessages, course) {
-    // Get a list of Default Mesages that match the type we require.
-    const Messages = [];
-    defaultMessages.forEach(message => {
-      message.messageContent.forEach(mc => {
-        if (mc.type == 'pill') {
-          const item = {
-            conditions: message.renderConditions,
-            content: {
-              title: mc.value.title,
-              link: mc.value.link,
-            },
-          };
-          Messages.push(item);
-        }
-      });
-    });
-    return this.GetMessagesMatchingCourse(Messages, course);
+  static dedupeArray(arr) {
+    // remove duplicates from simple array
+    return arr.filter((elem, pos, arr) => arr.indexOf(elem) == pos);
   }
 
-  static GetPillItemsImutable(defaultMessages, course) {
-    // Get a list of Default Mesages that match the type we require.
-    const Messages = [];
-    defaultMessages.forEach(message => {
-      message.messageContent.forEach(mc => {
-        if (mc.type == 'pill') {
-          const item = {
-            conditions: message.renderConditions,
-            content: {
-              title: mc.value.title,
-              link: mc.value.link,
-            },
-          };
-          Messages.push(item);
-        }
-      });
-    });
-    return this.GetMessagesMatchingCourseImmutable(Messages, course);
+  static stringToArray(s, seperator = ',') {
+    return typeof s === 'string'
+      ? s.split(seperator).map(item => ProjectHelper.trim(item))
+      : s;
   }
-  static GetMessagesMatchingCourseImmutable(messages, course) {
-    if (messages.length > 0) {
-      const returnMessages = [];
-      messages.forEach(message => {
-        if (this.MatchesConditions(message, course)) {
-          returnMessages.push(message.content);
-        }
-      });
-      return returnMessages;
+
+  static composedFieldToObject(composer) {
+    // convert array of [ { type: 'type', value: composerItem } ]
+    // to plain object of { type: composerItem }
+    const object = {};
+    composer.forEach(
+      cfi =>
+        (object[cfi.type] = ProjectHelper.getComposerContent(
+          cfi.type,
+          composer
+        ))
+    );
+    return object;
+  }
+
+  static getComposerContent(type, composer) {
+    const component = composer.find(c => c.type === type);
+    return component && component.value;
+  }
+
+  static getFileSize(fileSize) {
+    const kb = Math.ceil(fileSize * 0.0009765625);
+    const mb =
+      Math.round(
+        parseFloat((fileSize * 0.00000095367432 * Math.pow(10, 2)).toFixed(2))
+      ) / Math.pow(10, 2);
+
+    if (kb < 1000) {
+      return kb + 'KB';
     }
-    return [];
-  }
-  static GetSidebarLinks(defaultMessages, course) {
-    // Get a list of Default Mesages that match the type we require.
-    const Messages = [];
-    defaultMessages.forEach(message => {
-      message.messageContent.forEach(mc => {
-        if (mc.type == 'sidebarLink') {
-          const item = {
-            conditions: message.renderConditions,
-            priority: message.orderingPriority,
-            content: {
-              title: mc.value.title,
-              link: mc.value.link,
-              style: mc.value.style,
-              forwardQueryString: mc.value.forwardQueryString,
-            },
-          };
-          Messages.push(item);
-        }
-      });
-    });
-    Messages.sort((a, b) => a.priority - b.priority);
-    return this.GetMessagesMatchingCourse(Messages, course);
+    return mb + 'MB';
   }
 
-  static GetGlanceBarMessages(defaultMessages, course) {
-    // Get a list of Default Mesages that match the type we require.
-    const Messages = [];
-    defaultMessages.forEach(message => {
-      message.messageContent.forEach(mc => {
-        if (mc.type == 'glanceBar') {
-          const item = {
-            conditions: message.renderConditions,
-            content: {
-              title: mc.value.title,
-              text: mc.value.text,
-              icon: mc.value.icon,
-              itemToOverride: mc.value.itemToOverride,
-            },
-          };
-          Messages.push(item);
-        }
-      });
-    });
-    return this.GetMessagesMatchingCourse(Messages, course);
-  }
+  static getFileExtension(uri) {
+    const re = /(?:\.([^.]+))?$/;
+    const ext = re.exec(uri)[1];
 
-  static GetAdditionalLinks(course) {
-    // Get a list of Default Mesages that match the type we require.
-    const Messages = [];
-    if (course.applicationLinks) {
-      course.applicationLinks.map(appLinks => {
-        switch (appLinks.type) {
-          case 'pgLinks':
-            Messages.push({
-              type: appLinks.type,
-              title: appLinks.value.title,
-              link: appLinks.value.linkURL,
-            });
-            break;
-          case 'partTimeLinks':
-            Messages.push({
-              type: appLinks.type,
-              title: 'Apply part-time',
-              link: appLinks.value,
-            });
-            break;
-        }
-      });
+    if (ext) {
+      return ext.toUpperCase();
     }
-    if (course.subjectAreas) {
-      course.subjectAreas.map(sa => {
-        Messages.push({
-          type: 'subjectArea',
-          title: `Subject area: ` + sa.name,
-          link: `/` + sa.name.replace(/ /g, '-').toLowerCase(),
-        });
-      });
-    }
-    return Messages;
+    return '';
   }
-  static GetMessagesMatchingCourse(messages, course) {
-    if (messages.length > 0) {
-      const returnMessages = [];
-      messages.forEach(message => {
-        if (this.MatchesConditions(message, course)) {
-          returnMessages.push(message.content);
-        }
-      });
-      return returnMessages;
-    }
-    return [];
-  }
-
-  static MatchesConditions(message, course) {
-    let evaluations = [];
-    let finalEval = [];
-    // Each Message HAs multiple Conditions
-    message.conditions.forEach(codition => {
-      let subEvaluations = codition.conditions.map(conditionItem => {
-        switch (conditionItem.type) {
-          case 'level': {
-            const matchingLevels = conditionItem.value.filter(
-              // We Asume a course Must have a Level!
-              conditionItem => conditionItem.key === course.level[0].key
-            );
-            return matchingLevels.length > 0;
-          }
-          case 'college': {
-            //Do any of the assigned colleges match our course college
-            const matchingCollege = conditionItem.value.some(
-              r => course.college.key === r.key
-            );
-            return matchingCollege;
-          }
-          case 'department': {
-            //Do any of the assigned colleges match our course college
-            const matchingDept = conditionItem.value.some(
-              r => course.department.key === r.key
-            );
-            return matchingDept;
-          }
-          case 'subjectAreas': {
-            const matchingSubj = conditionItem.value.some(r =>
-              course.subjectAreas.some(s => s.key === r.key)
-            );
-            return matchingSubj;
-          }
-          case 'placement': {
-            //Do any of the assigned colleges match our course college
-            let matchingPlacement = false;
-            if (codition.includeExclude == true) {
-              matchingPlacement = course.placement
-                ? conditionItem.value.key === course.placement.key
-                : false;
-            } else {
-              matchingPlacement = course.placement
-                ? conditionItem.value.key !== course.placement.key
-                : false;
-            }
-            return matchingPlacement;
-          }
-          case 'inClearing': {
-            if (codition.includeExclude == true) {
-              return conditionItem.value == course.inClearing;
-            } else {
-              return conditionItem.value != course.inClearing;
-            }
-          }
-          case 'hasMPhilOptionPhD': {
-            if (codition.includeExclude == true) {
-              return (
-                conditionItem.value ==
-                course.pageRenderControls.phdHasMPhilOption
-              );
-            } else {
-              return (
-                conditionItem.value !=
-                course.pageRenderControls.phdHasMPhilOption
-              );
-            }
-          }
-          case 'hasAnnualFee': {
-            if (codition.includeExclude == true) {
-              return (
-                conditionItem.value == course.pageRenderControls.hasAnnualFee
-              );
-            } else {
-              return (
-                conditionItem.value != course.pageRenderControls.hasAnnualFee
-              );
-            }
-          }
-          case 'preMastersCourse': {
-            return (
-              conditionItem.value == course.pageRenderControls.preMastersCourse
-            );
-          }
-          case 'feeNotesBelowIsNull': {
-            if (!course.tuitionFees) {
-              return false;
-            } else {
-              return (
-                conditionItem.value !=
-                course.tuitionFees.some(tf => tf.feeNote !== null)
-              );
-            }
-          }
-          case 'hasDistanceLearning': {
-            if (codition.includeExclude == true) {
-              return (
-                conditionItem.value ==
-                course.pageRenderControls.hasDistanceLearning
-              );
-            } else {
-              return (
-                conditionItem.value !=
-                course.pageRenderControls.hasDistanceLearning
-              );
-            }
-          }
-          case 'directEntry': {
-            if (codition.includeExclude == true) {
-              return (
-                conditionItem.value == course.pageRenderControls.directEntry
-              );
-            } else {
-              return (
-                conditionItem.value != course.pageRenderControls.directEntry
-              );
-            }
-          }
-          case 'courses': {
-            if (conditionItem.value != null) {
-              if (codition.includeExclude == true) {
-                return conditionItem.value.sys.id === course.sys.id;
-              } else {
-                return conditionItem.value.sys.id !== course.sys.id;
-              }
-            }
-            return false;
-          }
-          default:
-            return false;
-        }
-      });
-      evaluations = evaluations.concat(subEvaluations);
-      const anyNegative = evaluations.filter(evaluation => evaluation == false);
-      const anyPositive = evaluations.filter(evaluation => evaluation == true);
-      //If conditional opeerator is TRUE then all conditions must match.
-      if (codition.conditionalOperator === true) {
-        if (anyNegative.length > 0) {
-          finalEval.push(false);
-        }
-        finalEval.push(true);
+  static renderImageAsWebP(imageUrl) {
+    //Set new url to current url by default
+    let newImageUrl = imageUrl;
+    //First check if image has has webp referenced in url
+    if (imageUrl && !imageUrl.includes('webp')) {
+      //Check if image already has transformations
+      if (!imageUrl.includes('?')) {
+        //If not load image as webp
+        newImageUrl = imageUrl + '?f=webp';
+      } else {
+        //Otherwise append webp format to existing transformations
+        newImageUrl = imageUrl + '&f=webp';
       }
-      //If conditional operator is FALSE then we only need at least 1 matching condition.
-      if (codition.consitionalOperator === false) {
-        if (anyPositive.length > 0) {
-          finalEval.push(true);
-        }
-        finalEval.push(false);
-      }
-    });
-    const anyNegative = finalEval.filter(evaluation => evaluation == false);
-    if (anyNegative.length > 0) {
-      return false;
     }
-    return true;
+    return newImageUrl;
+  }
+
+  static decodeEntities(encodedString) {
+    var translate_re = /&(nbsp|amp|quot|lt|gt);/g;
+    var translate = {
+      nbsp: ' ',
+      amp: '&',
+      quot: '"',
+      lt: '<',
+      gt: '>',
+    };
+    return encodedString
+      .replace(translate_re, function(match, entity) {
+        return translate[entity];
+      })
+      .replace(/&#(\d+);/gi, function(match, numStr) {
+        var num = parseInt(numStr, 10);
+        return String.fromCharCode(num);
+      });
   }
 
   static keyPress(event, action) {
@@ -375,71 +155,7 @@ export default class ProjectHelper {
       action;
     }
   }
-  static YearTitleChecker(year) {
-    //We can add any other year values based on what Brunel ask
-    if (year === 100) {
-      return 'Distance Learning';
-    }
-    return `Year ` + year;
-  }
-  static SortGroupedByType(typedGroup) {
-    let modules = [];
-    typedGroup.Compulsory
-      ? modules.push({
-          title: 'Compulsory',
-          modules: typedGroup.Compulsory.map(mod => {
-            return {
-              modules: mod.module,
-              studyMode: mod.studyMode,
-            };
-          }),
-        })
-      : {};
-    typedGroup.Optional
-      ? modules.push({
-          title: 'Optional',
-          modules: typedGroup.Optional.map(mod => {
-            return {
-              modules: mod.module,
-              studyMode: mod.studyMode,
-            };
-          }),
-        })
-      : {};
-    typedGroup.Typical
-      ? modules.push({
-          title: 'Typical',
-          modules: typedGroup.Typical.map(mod => {
-            return {
-              modules: mod.module,
-              studyMode: mod.studyMode,
-            };
-          }),
-        })
-      : {};
-    return modules;
-  }
-  static GroupedModules(modules) {
-    const modArr = new Array();
-    let groupedModules = ProjectHelper.GroupBy(modules, m => m.year);
-    groupedModules.forEach(groupItem => {
-      let modTypes = ProjectHelper.Group(groupItem, 'type');
-      modArr.push({
-        year: ProjectHelper.YearTitleChecker(groupItem[0].year),
-        GroupedByType: ProjectHelper.SortGroupedByType(modTypes),
-      });
-    });
-    return modArr;
-  }
-  static Group(arr, property) {
-    return arr.reduce(function(memo, x) {
-      if (!memo[x[property]]) {
-        memo[x[property]] = [];
-      }
-      memo[x[property]].push(x);
-      return memo;
-    }, {});
-  }
+
   static GroupBy(list, keyGetter) {
     const map = new Map();
     list.forEach(item => {
@@ -451,172 +167,6 @@ export default class ProjectHelper {
       }
     });
     return map;
-  }
-  static ReturnScript() {
-    if (typeof window == 'undefined') {
-      return null;
-    }
-    let script = document.createElement('script');
-    script.innerHTML =
-      "(function (d) {'use strict';var widgetScript = d.createElement('script'); widgetScript.id = 'unistats-widget-script';widgetScript.src = '//widget.unistats.ac.uk/js/unistats.widget.js';var scriptTags = d.getElementsByTagName('script')[0];if (d.getElementById('unistats-widget-script')) { return; }scriptTags.parentNode.insertBefore(widgetScript, scriptTags);}(document));";
-    document.body.appendChild(script);
-  }
-  static ReturnPlacementMessage(levels, placement, subjectInfo) {
-    let placementLink = undefined;
-    const message = [];
-    if (subjectInfo != undefined) {
-      if (levels.filter(sl => sl.name === 'Undergraduate').length > 0) {
-        placementLink = subjectInfo.placementPageUg;
-      }
-      if (levels.filter(sl => sl.name === 'Postgraduate').length > 0) {
-        placementLink = subjectInfo.placementPagePg;
-      }
-      message.push(
-        '<p>' +
-          'This course has a ' +
-          placement.name +
-          ' option. </span>' +
-          'Find out more about <a href="' +
-          placementLink +
-          '">work placements available</a>' +
-          '.' +
-          '</p>'
-      );
-    }
-    return message;
-  }
-  static GetStudyModeType(studyMode) {
-    if (studyMode.includes('compressed')) {
-      return 'compressed-sandwich';
-    } else if (studyMode.includes('thick')) {
-      return 'thick-sandwich';
-    } else if (studyMode.includes('thin')) {
-      return 'thin-sandwich';
-    } else if (studyMode.includes('full')) {
-      return 'full-time';
-    } else if (studyMode.includes('part')) {
-      return 'part-time';
-    }
-  }
-  static CalculateCourseFees(
-    course,
-    fee,
-    override,
-    overrideInt,
-    distanceLearning
-  ) {
-    let extraFees = [];
-    if (fee.feeType.includes('Distance Learning')) {
-      if (override && fee.feeType === 'Distance Learning UK / EU') {
-        extraFees.push(`${ProjectHelper.currencyFormat(override)} part-time`);
-      } else if (
-        overrideInt &&
-        fee.feeType === 'Distance Learning International'
-      ) {
-        extraFees.push(
-          `${ProjectHelper.currencyFormat(overrideInt)} part-time`
-        );
-      }
-    } else {
-      const partTimeOnly = /(^part-time$)|(^part-time\sthin-sandwich$)/;
-      if (
-        course &&
-        course.level &&
-        course.level.filter(sl => sl.name === 'Undergraduate').length > 0
-      ) {
-        let ptFee = Math.floor((fee.fee * 0.75) / 5) * 5;
-        if (override && fee.feeType === 'UG UK / EU') {
-          extraFees.push(`${ProjectHelper.currencyFormat(override)} part-time`);
-        } else if (overrideInt && fee.feeType === 'UG International') {
-          extraFees.push(
-            `${ProjectHelper.currencyFormat(overrideInt)} part-time`
-          );
-        } else if (
-          course.courseStudyMode.some(item => partTimeOnly.test(item.mode))
-        ) {
-          extraFees.push(ProjectHelper.currencyFormat(ptFee) + ` part-time`);
-        }
-        if (
-          course.placement &&
-          course.placement.name !== 'none' &&
-          course.pageRenderControls.hidePlacementFee !== true
-        ) {
-          extraFees.push(`£1,000 placement year`);
-        }
-        if (fee.feeType.includes('UK')) {
-          if (course.title.includes('MMath')) {
-            extraFees.push(`£6,330 final year`);
-          }
-          if (course.title.includes('MEng')) {
-            extraFees.push(`£6,330 final year`);
-          }
-        }
-        if (distanceLearning) {
-          extraFees.push(
-            ProjectHelper.currencyFormat(distanceLearning) +
-              ` distance learning`
-          );
-        }
-      } else if (
-        course &&
-        course.level &&
-        course.level.filter(sl => sl.name === 'Postgraduate').length > 0
-      ) {
-        let ptFee = Math.floor(fee.fee / 2);
-        if (override && fee.feeType === 'PG UK / EU') {
-          extraFees.push(`${ProjectHelper.currencyFormat(override)} part-time`);
-        } else if (overrideInt && fee.feeType === 'PG International') {
-          extraFees.push(
-            `${ProjectHelper.currencyFormat(overrideInt)} part-time`
-          );
-        } else if (
-          course.courseStudyMode.some(item => partTimeOnly.test(item.mode))
-        ) {
-          extraFees.push(ProjectHelper.currencyFormat(ptFee) + ` part-time`);
-        }
-
-        if (distanceLearning) {
-          extraFees.push(
-            ProjectHelper.currencyFormat(distanceLearning) +
-              ` distance learning`
-          );
-        }
-      }
-    }
-    return extraFees;
-  }
-  static FilterCountryRequirementMessages(entries, courseGrade) {
-    const Messages = [];
-    if (!courseGrade) {
-      return [];
-    }
-    if (entries.size === 0) {
-      return [];
-    }
-    entries.map(entry => {
-      entry.get('entryEquivalents').map(entryEquivalent => {
-        if (
-          entryEquivalent.getIn(['requirement', 'title'], null) === courseGrade
-        ) {
-          Messages.push({
-            title: entry.get('title'),
-            equivalent: entryEquivalent.get('equivalent'),
-          });
-        }
-      });
-    });
-    return Messages;
-  }
-
-  static showChildren(e) {
-    e.preventDefault;
-
-    let children = document.getElementById(e);
-    if (children.style.display == 'block') {
-      children.style.display = 'none';
-    } else {
-      children.style.display = 'block';
-    }
   }
 }
 export function action(type, payload = {}) {
@@ -679,61 +229,51 @@ export const resizeImageUri = (uri, height, width) => {
   return formatedUri;
 };
 
-export function splitTitle(title, text) {
-  const titleTrim = title.trim();
-  const titleSplit = titleTrim.split(' ');
-  // if text is present get penultimate word else get last word
-  const titleB =
-    text && titleSplit.length >= 3
-      ? titleSplit[titleSplit.length - 2]
-      : titleSplit.length >= 2
-      ? titleSplit[titleSplit.length - 1]
-      : null;
-  // if text is present get last word
-  const titleC =
-    text && titleSplit.length >= 3 ? titleSplit[titleSplit.length - 1] : null;
+export function flattenArray(arr) {
+  // flatten arrays inside the supplied array and
+  // remove duplicates from the result
+  return arr
+    .reduce((acc, val) => acc.concat(val), [])
+    .filter((elem, pos, arr) => arr.indexOf(elem) == pos);
+}
 
-  // remove last word. if text is present also remove penultimate word
-  if (titleSplit.length >= 2) {
-    if (text && titleSplit.length >= 3) {
-      titleSplit.pop();
-      titleSplit.pop();
-    } else {
-      titleSplit.pop();
-    }
+export async function api(url, options) {
+  return fetch(url, options)
+    .then(async response => {
+      setTimeout(() => null, 0);
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+      return response.json().then(data => data);
+    })
+    .catch(error => {
+      //console.log(error);
+      throw error;
+    });
+}
+
+export function dynamicSort(property) {
+  var sortOrder = 1;
+  if (property[0] === '-') {
+    sortOrder = -1;
+    property = property.substr(1);
   }
-
-  const titleA = titleSplit.join(' ') + ' ';
-
-  return {
-    a: titleA,
-    b: titleB,
-    c: titleC,
+  return function(a, b) {
+    /* next line works with strings and numbers,
+     * and you may want to customize it to your needs
+     */
+    var result =
+      a[property] < b[property] ? -1 : a[property] > b[property] ? 1 : 0;
+    return result * sortOrder;
   };
 }
 
-export function getTarget(url) {
-  const target =
-    url.indexOf('http') > -1 || url.indexOf('www') > -1 ? '_blank' : '_self';
-  return target;
-}
-
-export function newWindow(url) {
-  const target =
-    url.indexOf('http') > -1 || url.indexOf('www') > -1 ? true : false;
-  return target;
-}
-
-export function getEntryRoute(entry) {
-  if (entry.sys.contentTypeId === 'course') {
-    let entryPath = '';
-    Levels.forEach(level => {
-      // debugger;
-      if (level.key == entry.level[0].key) {
-        entryPath = `${level.basePath}/${entry.sys.slug}`;
-      }
-    });
-    return entryPath;
+export const randomString = length => {
+  let text = '';
+  const possible =
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  for (var i = 0; i < length; i++) {
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
   }
-  return '';
-}
+  return text;
+};

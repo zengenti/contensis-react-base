@@ -4,11 +4,11 @@
 
 ### feature-featureName :exclamation:
 
-We are using feature branches on this project, if you are developing a new feature please create a new branch with the following naming convention `feature-featureName` this will give us a clear understanding that it is a feature branch. You should work on your feature branch until you are happy it passes tests and can be reviewed, your branch can then be merged into develop.
+We are using feature branches on this project, if you are developing a new feature please create a new branch with the following naming convention `feature-featureName` this will clearly indicate that it is a feature branch. You should work on your feature branch until you are happy it passes tests and can be reviewed, your branch can then be merged into develop.
 
 ### Develop :bug:
 
-This is the development branch, it can be viewed by the client but they understand that it is under dvelopment and they may see some unusual things. The reasons for this branch are as follows:
+This is the development branch, it can be viewed by the client but they understand that it is under development and they may see some unusual things. The reasons for this branch are as follows:
 
 - A location to see prototypes that are functionality only
 - Peer reviews

@@ -1,6 +1,6 @@
 // load-entries.js
 // import * as log from 'loglevel';
-import { takeEvery, put, select, call, all, fork } from 'redux-saga/effects';
+import { takeEvery, put, select, call, all } from 'redux-saga/effects';
 import {
   SET_ENTRY_ID,
   SET_ENTRY,
@@ -9,17 +9,15 @@ import {
   SET_ANCESTORS,
   SET_NAVIGATION_PATH,
   SET_ENTRY_RELATED_ARTICLES,
-} from 'app/redux/types/routing';
-import { deliveryApi, Query, Op } from 'app/util/ContensisDeliveryApi';
-import { getListingsQuery } from 'app/util/queries';
-import { selectVersionStatus } from 'app/redux/selectors/version';
+} from '~/core/redux/types/routing';
+import { deliveryApi, Query, Op } from '~/core/util/ContensisDeliveryApi';
+import { getListingsQuery } from '~/core/util/queries';
+import { selectVersionStatus } from '~/core/redux/selectors/version';
 import {
   validateRouteFromNavigationSettings,
   getLeafSlugFromRoute,
-} from 'app/util/navHelper';
-
-// import { getMessages } from './defaultMessages';
-import { fetchCountries } from './countryEntryRequirements';
+} from '~/core/util/navHelper';
+import { selectCurrentProject } from '../selectors/routing';
 
 export const routingSagas = [
   takeEvery(SET_NAVIGATION_PATH, getRouteSaga),
@@ -49,8 +47,6 @@ function* setRouteEntry(entry, node, ancestors) {
       ancestors,
     }),
   ]);
-  // yield fork(getMessages);
-  yield fork(fetchCountries);
 }
 
 function* do404() {
@@ -95,7 +91,8 @@ function* ensureRelatedArticlesSaga(action) {
           'sys',
         ];
         //yield console.info('query:', query);
-        const queryResponse = yield deliveryApi.search(query, 1);
+        const project = yield select(selectCurrentProject);
+        const queryResponse = yield deliveryApi.search(query, 1, project);
         //yield console.info('query response', queryResponse);
         yield put({
           type: SET_ENTRY_RELATED_ARTICLES,
@@ -114,9 +111,8 @@ function* ensureRelatedArticlesSaga(action) {
 
 function* getRouteSaga(action) {
   // try {
-  const state = yield select();
-  // const currentPath = selectCurrentPath(state);
-  const deliveryApiStatus = selectVersionStatus(state);
+  const project = yield select(selectCurrentProject);
+  const deliveryApiStatus = yield select(selectVersionStatus);
   const currentPath = action.path;
   if (currentPath && currentPath.startsWith('/preview/')) {
     let splitPath = currentPath.split('/');
@@ -125,7 +121,8 @@ function* getRouteSaga(action) {
       let previewEntry = yield deliveryApi.getEntry(
         entryGuid,
         2,
-        deliveryApiStatus
+        deliveryApiStatus,
+        project
       );
       if (previewEntry) {
         yield call(setRouteEntry, previewEntry);
@@ -145,9 +142,10 @@ function* getRouteSaga(action) {
     }
     if (currentPath === '/') {
       let homeEntry = yield deliveryApi.getEntry(
-        '33479a87-7069-4220-9b0c-220318bd3345',
+        PROJECTS[0].homeEntry /* global PROJECTS */,
         2,
-        deliveryApiStatus
+        deliveryApiStatus,
+        project
       );
       pathNode = { entry: homeEntry };
     } else {
@@ -160,7 +158,7 @@ function* getRouteSaga(action) {
       ];
       query = new Query(...expressions);
       query.pageSize = 1;
-      const routePathEntryResult = yield deliveryApi.search(query, 2);
+      const routePathEntryResult = yield deliveryApi.search(query, 2, project);
       let routePathEntry =
         routePathEntryResult &&
         routePathEntryResult.totalCount &&

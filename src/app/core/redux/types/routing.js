@@ -10,12 +10,5 @@ export const SET_NAVIGATION_NOT_FOUND = `${ROUTING_PREFIX}_SET_NOT_FOUND`;
 export const SET_NAVIGATION_PATH = `${ROUTING_PREFIX}_SET_NAVIGATION_PATH`;
 export const SET_ROUTE_LOADING = `${ROUTING_PREFIX}_SET_ROUTE_LOADING`;
 
-export const courseNav = [
-  { link: 'overview', title: 'Overview' },
-  { link: 'entryRequirements', title: 'Entry requirements' },
-  { link: 'content', title: 'Course content' },
-  { link: 'careers', title: 'Careers and your future' },
-  { link: 'fees', title: 'Fees and funding' },
-  { link: 'teaching', title: 'Teaching and learning' },
-  { link: 'assessment', title: 'Assessment and feedback' },
-];
+export const SET_CURRENT_PROJECT = `${ROUTING_PREFIX}_SET_CURRENT_PROJECT`;
+export const SET_CURRENT_ENVIRONMENT = `${ROUTING_PREFIX}_SET_CURRENT_ENVIRONMENT`;

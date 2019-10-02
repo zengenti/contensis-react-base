@@ -1,5 +1,5 @@
 const defineConfig = require('./webpack/define-config');
-const NODE_TARGET = 10;
+const NODE_TARGET = 8;
 
 // const presetEnv = {
 //   "targets": {
@@ -26,7 +26,7 @@ module.exports = {
       {
         root: './src',
         alias: {
-          app: './src/app',
+          '~': './src/app',
         },
         cwd: 'packagejson',
       },

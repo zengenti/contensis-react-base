@@ -1,5 +1,5 @@
 import { Map } from 'immutable';
-import { SET_VERSION, SET_VERSION_STATUS } from 'app/redux/types/version';
+import { SET_VERSION, SET_VERSION_STATUS } from '~/core/redux/types/version';
 
 let initialState = Map({
   commitRef: null,

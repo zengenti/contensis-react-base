@@ -12,7 +12,7 @@ import {
   TOGGLE_SEARCH_FILTER,
   TOGGLE_TAXONOMY_SELECTION_LIST,
   SET_SINGLE_FACET_MODE,
-} from 'app/redux/types/search';
+} from '~/core/redux/types/search';
 import { List, Map, fromJS } from 'immutable';
 
 const searchFacet = Map({

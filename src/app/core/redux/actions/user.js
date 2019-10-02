@@ -1,11 +1,11 @@
-import { action } from 'app/util/helpers';
+import { action } from '~/core/util/helpers';
 import {
   CHECK_USER_LOGGED_IN,
   TOGGLE_USER_DETAILS_ARE_HIDDEN,
   SHOW_USER_DETAILS,
   HIDE_USER_DETAILS,
   SIGN_OUT,
-} from 'app/redux/types/user';
+} from '~/core/redux/types/user';
 
 export const checkUserLoggedIn = () => action(CHECK_USER_LOGGED_IN);
 export const toggleShowUserDetails = () =>

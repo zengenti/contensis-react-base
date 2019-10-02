@@ -1,11 +1,17 @@
 import { configure, addDecorator } from '@storybook/react';
 import { withKnobs } from '@storybook/addon-knobs';
 import { withOptions } from '@storybook/addon-options';
+import { withTests } from '@storybook/addon-jest';
 
-import results from './jest-test-results.json';
+import results from '../.jest-test-results.json';
 import StoryRouter from 'storybook-react-router';
 
 addDecorator(StoryRouter());
+addDecorator(
+  withTests({
+    results,
+  })
+);
 addDecorator(
   withOptions({
     name: 'Storybook Project Name',

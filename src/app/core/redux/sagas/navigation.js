@@ -6,34 +6,35 @@ import {
   takeEvery,
   takeLatest,
 } from 'redux-saga/effects';
-import { deliveryApi } from 'app/util/ContensisDeliveryApi';
-// import { getFullPathFromEntryId } from 'app/util/navHelper';
+import { deliveryApi } from '~/core/util/ContensisDeliveryApi';
+// import { getFullPathFromEntryId } from '~/core/util/navHelper';
 
 import {
   getNavigationTreeQuery,
   getNavigationTreeEntriesQuery,
-} from 'app/util/queries';
+} from '~/core/util/queries';
 import {
   NAVIGATION_SET_TREE_ROOT,
   // NAVIGATION_INITIALISE_TREES,
   NAVIGATION_INITIALISE_TREES_ERROR,
-} from 'app/redux/types/navigation';
+} from '~/core/redux/types/navigation';
 import {
   NAVIGATION_SET_TREE_ENTRIES,
   NAVIGATION_SET_TREE_ENTRIES_ERROR,
   NAVIGATION_SET_PATH_DICTIONARY_ENTRY,
-} from 'app/redux/types/navigation';
+} from '~/core/redux/types/navigation';
 import {
   selectNavigationTrees,
   selectPathDictionary,
-} from 'app/redux/selectors/navigation';
-import { getPathDictionary, getPathFromEntry } from 'app/util/navHelper';
+} from '~/core/redux/selectors/navigation';
+import { getPathDictionary, getPathFromEntry } from '~/core/util/navHelper';
 import {
   NAVIGATION_SET_PATH_DICTIONARY,
   CLEAR_MENU_SELECTIONS,
   CLEAR_MENU_SELECTIONS_FOR_TREE,
-} from 'app/redux/types/navigation';
+} from '~/core/redux/types/navigation';
 import { selectVersionStatus } from '../selectors/version';
+import { selectCurrentProject } from '../selectors/routing';
 
 export const navigationSagas = [
   takeEvery(
@@ -50,7 +51,8 @@ export function* initialiseNavigationSaga() {
 
 function* getNavigationTreeRootsSaga() {
   const query = yield getNavigationTreeQuery();
-  const navItemsResult = yield deliveryApi.search(query, 2);
+  const project = yield select(selectCurrentProject);
+  const navItemsResult = yield deliveryApi.search(query, 2, project);
   if (
     navItemsResult &&
     navItemsResult.items &&
@@ -133,7 +135,8 @@ function* ensureNavigationEntriesForMenuItemSaga(treeKey, menuItemKey) {
     }
     default: {
       const query = yield getNavigationTreeEntriesQuery(treeNodeId);
-      const result = yield deliveryApi.search(query, 3);
+      const project = yield select(selectCurrentProject);
+      const result = yield deliveryApi.search(query, 3, project);
       rawEntries =
         result && result.items && result.items.length > 0 ? result.items : [];
     }
@@ -185,7 +188,8 @@ function* ensurePathDictionarySaga() {
   const pathDictionary = yield select(selectPathDictionary);
   if (!pathDictionary || !pathDictionary.size) {
     const versionStatus = yield select(selectVersionStatus);
-    const dictionary = yield getPathDictionary(versionStatus);
+    const project = yield select(selectCurrentProject);
+    const dictionary = yield getPathDictionary(versionStatus, project);
     yield put({ type: NAVIGATION_SET_PATH_DICTIONARY, dictionary });
   }
 }

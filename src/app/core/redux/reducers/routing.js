@@ -8,15 +8,19 @@ import {
   SET_ANCESTORS,
   SET_ROUTE_LOADING,
   SET_ENTRY_RELATED_ARTICLES,
-} from 'app/redux/types/routing';
+  SET_CURRENT_PROJECT,
+  SET_CURRENT_ENVIRONMENT,
+} from '~/core/redux/types/routing';
 import {
   GetAllResponseGuids,
   // fixImageUri,
-} from 'app/util/ContensisDeliveryApi';
+} from '~/core/util/ContensisDeliveryApi';
 
 let initialState = Map({
   currentPath: [],
   currentNode: [],
+  currentProject: 'unknown',
+  currentEnvironment: 'live',
   notFound: false,
   entryID: null,
   entry: null,
@@ -65,6 +69,14 @@ export default (state = initialState, action) => {
     }
     case SET_ENTRY_RELATED_ARTICLES: {
       return state.set('relatedArticles', fromJS(action.relatedArticles));
+    }
+    case SET_CURRENT_PROJECT: {
+      return state
+        .set('currentProject', action.project)
+        .set('allowedGroups', fromJS(action.allowedGroups));
+    }
+    case SET_CURRENT_ENVIRONMENT: {
+      return state.set('currentEnvironment', action.env);
     }
     default:
       return state;

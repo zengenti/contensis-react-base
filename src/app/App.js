@@ -1,19 +1,9 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { hot } from 'react-hot-loader';
-import RouteLoader from './routes/RouteLoader';
-import { ThemeProvider } from 'styled-components';
-import GlobalStyles from 'app/theme/globalStyles';
-import MainTheme from 'app/theme/theme.js';
+import RouteLoader from '~/core/routes/RouteLoader';
 
 const AppRoot = () => {
-  return (
-    <ThemeProvider theme={MainTheme}>
-      <Fragment>
-        <GlobalStyles />
-        <RouteLoader />
-      </Fragment>
-    </ThemeProvider>
-  );
+  return <RouteLoader />;
 };
 
 export default hot(module)(AppRoot);

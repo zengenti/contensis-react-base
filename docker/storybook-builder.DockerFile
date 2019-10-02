@@ -15,6 +15,7 @@ COPY public /usr/src/app/public
 COPY src /usr/src/app/src
 COPY webpack /usr/src/app/webpack
 COPY babel.config.js .
+COPY .env .
 COPY .eslintignore .
 COPY .eslintignore .
 COPY .nvmrc .

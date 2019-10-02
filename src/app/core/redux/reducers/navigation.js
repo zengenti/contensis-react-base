@@ -1,5 +1,4 @@
 import { Map, fromJS } from 'immutable';
-import { courseNav } from 'app/redux/types/routing';
 import {
   NAVIGATION_SET_TREE_ROOT,
   NAVIGATION_INITIALISE_TREES_ERROR,
@@ -9,8 +8,8 @@ import {
   NAVIGATION_SET_PATH_DICTIONARY_ENTRY,
   NAVIGATION_CLEAR_MENU_ITEMS,
   NAVIGATION_SET_WAYPOINT,
-} from 'app/redux/types/navigation';
-import { NAVIGATION_SET_PATH_DICTIONARY } from 'app/redux/types/navigation';
+} from '~/core/redux/types/navigation';
+import { NAVIGATION_SET_PATH_DICTIONARY } from '~/core/redux/types/navigation';
 import {
   NAVIGATION_SET_IS_ACCORDIAN_MODE,
   NAVIGATION_ADD_SELECTED_MENU_ITEM_FOR_ACCORDIAN,
@@ -46,33 +45,33 @@ export default (state = initialState, action) => {
       if (action.scrollingUp) {
         if (!action.leave) {
           // Bump it up by one, unless it is the first, in which case we need to set it to the first nav item
-          const askedForIndex = courseNav.findIndex(
-            navItem => navItem.link == action.name
-          );
+          const askedForIndex = false; //courseNav.findIndex(
+          //   navItem => navItem.link == action.name
+          // );
           if (askedForIndex == 0) {
             return state.set('selectedWaypoint', action.name);
           }
         }
 
-        const currentWaypoint = state.get('selectedWaypoint');
-        const currentIndex = courseNav.findIndex(
-          navItem => navItem.link == currentWaypoint
-        );
+        //const currentWaypoint = state.get('selectedWaypoint');
+        const currentIndex = false; //courseNav.findIndex(
+        //   navItem => navItem.link == currentWaypoint
+        // );
         if (currentIndex == 0) {
           return state;
         }
-        const LeaveIndex = courseNav.findIndex(
-          navItem => navItem.link == action.name
-        );
+        const LeaveIndex = false; //courseNav.findIndex(
+        //   navItem => navItem.link == action.name
+        // );
         if (action.leave) {
           if (LeaveIndex == currentIndex) {
-            const nextWaypoint = courseNav[currentIndex - 1];
+            const nextWaypoint = false; //courseNav[currentIndex - 1];
             return state.set('selectedWaypoint', nextWaypoint.link);
           } else {
             return state;
           }
         } else {
-          const nextWaypoint = courseNav[currentIndex - 1];
+          const nextWaypoint = false; //courseNav[currentIndex - 1];
           return state.set('selectedWaypoint', nextWaypoint.link);
         }
       }

@@ -1,18 +1,25 @@
-const packagejson = require('../package.json');
+const defineConfig = require('./define-config');
+
+const stringifyStrings = obj => {
+  const returnObj = {};
+  Object.entries(obj).forEach(([key, value]) => {
+    switch (typeof value) {
+      case 'string':
+        returnObj[key] = JSON.stringify(value);
+        break;
+      case 'object':
+        returnObj[key] = stringifyStrings(value);
+        break;
+      default:
+        returnObj[key] = value;
+        break;
+    }
+  });
+  return returnObj;
+};
+
 module.exports = {
-  base: {
-    DISABLE_SSR_REDUX: false,
-    VERSION: JSON.stringify(packagejson.version),
-    HOME_ENTRY: JSON.stringify('33479a87-7069-4220-9b0c-220318bd3345'),
-    PUBLIC_URI: JSON.stringify('https://live-uni-demo.cloud.contensis.com'),
-    DELIVERY_API_CONFIG: {
-      rootUrl: JSON.stringify('https://live-uni-demo.cloud.contensis.com'),
-      accessToken: JSON.stringify(
-        'ppER5snmMgnDicH7ehoSceX6vC5EDbS9mbnNWFDNa3Lu2Zsd'
-      ),
-      projectId: JSON.stringify('website'),
-    },
-  },
+  base: stringifyStrings(defineConfig),
   dev: {
     __isBrowser__: 'true',
   },
