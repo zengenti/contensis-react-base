@@ -22,9 +22,7 @@
       "name": "Debug App in Chrome against localhost",
       "url": "http://localhost:3000",
       "webRoot": "${workspaceFolder}",
-      "skipFiles": [
-        "${workspaceFolder}/node_modules/**/*.js"
-      ]
+      "skipFiles": ["${workspaceFolder}/node_modules/**/*.js"]
     },
     {
       "type": "node",
@@ -43,8 +41,8 @@
         "webpack:///src/*": "${workspaceFolder}/*", // Example: "webpack:///src/app.js" -> "/Users/me/project/app.js"
         "meteor://💻app/*": "${workspaceFolder}/*" // Example: "meteor://💻app/main.ts" -> "/Users/me/project/main.ts"
       }
-    }
-        {
+    },
+    {
       "type": "node",
       "request": "launch",
       "name": "Run server - debug",
@@ -64,5 +62,6 @@
         "NODE_ENV": "test"
       },
       "sourceMaps": true
-    ]
-  }
+    }
+  ]
+}
