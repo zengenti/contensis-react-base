@@ -15,6 +15,7 @@ import NotFound from '~/pages/NotFound';
 import ContentTypeMappings from './ContentTypeMappings';
 import staticRoutes from './StaticRoutes';
 import { Status } from './Status';
+import { toJS } from '../util/ToJs';
 
 const getTrimmedPath = path => {
   if (path !== '/') {
@@ -61,7 +62,7 @@ class RouteLoader extends Component {
 
     if (MatchedStaticRoute.length > 0) {
       // debugger;
-      return renderRoutes(staticRoutes);
+      return renderRoutes(staticRoutes, { entry: this.props.entry });
     }
 
     // Need to redirect when url endswith a /
@@ -77,7 +78,7 @@ class RouteLoader extends Component {
       );
 
       if (MatchedComponent) {
-        return <MatchedComponent.component />;
+        return <MatchedComponent.component entry={this.props.entry} />;
       }
     }
 
@@ -111,6 +112,6 @@ export default hot(module)(
     connect(
       mapStateToProps,
       mapDispatchToProps
-    )(RouteLoader)
+    )(toJS(RouteLoader))
   )
 );
