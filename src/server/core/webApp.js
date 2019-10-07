@@ -10,17 +10,12 @@ import Helmet from 'react-helmet';
 import serialize from 'serialize-javascript';
 import minifyCssString from 'minify-css-string';
 
-import { isImmutable } from 'immutable';
-
 import createStore from '~/core/redux/store';
 import rootSaga from '~/core/redux/sagas';
 import { setVersion, setVersionStatus } from '~/core/redux/actions/version';
 import { selectNavigationDepends } from '~/core/redux/selectors/navigation';
 
-import {
-  setCurrentProject,
-  setCurrentEnvironment,
-} from '~/core/redux/actions/routing';
+import { setCurrentProject } from '~/core/redux/actions/routing';
 import {
   selectRouteEntryDepends,
   selectRouteEntry,
@@ -32,7 +27,6 @@ import App from '~/App';
 // import { history } from '~/core/redux/history';
 
 import { AccessMethods } from '../util/types';
-import pickEnv from '../util/pickEnv';
 import pickProject, { allowedGroups } from '~/core/util/pickProject';
 
 const templateHTML = fs.readFileSync('dist/index.html', 'utf8');
@@ -53,8 +47,7 @@ const addStandardHeaders = (state, response) => {
       console.log('About to add header');
       let navDepends = selectNavigationDepends(state);
       let recordDepends = selectRouteEntryDepends(state);
-      navDepends =
-        navDepends && isImmutable(navDepends) ? navDepends.toJS() : navDepends;
+      navDepends = navDepends.toJS();
       recordDepends = recordDepends.toJS();
       console.log(`navDepends count: ${navDepends.length}`);
       console.log(`recordDepends count: ${recordDepends.length}`);
@@ -142,10 +135,8 @@ const webApp = app => {
     store.dispatch(setVersionStatus(versionStatusFromHostname));
     store.dispatch(setVersion(versionInfo.commitRef, versionInfo.buildNo));
 
-    const env = pickEnv(request.hostname, request.query);
     const project = pickProject(request.hostname, request.query);
 
-    store.dispatch(setCurrentEnvironment(env));
     const groups = allowedGroups(project);
     store.dispatch(setCurrentProject(project, groups));
 

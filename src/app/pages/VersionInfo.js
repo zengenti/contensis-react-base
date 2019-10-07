@@ -53,14 +53,14 @@ const StyledTable = styled.table`
 
 const VersionInfo = ({ project, version }) => {
   const config = {
-    DELIVERY_API_CONFIG /* global DELIVERY_API_CONFIG */,
-    DISABLE_SSR_REDUX /* global DISABLE_SSR_REDUX*/,
-    SERVERS /* global SERVERS */,
-    PROJECTS /* global PROJECTS */,
-    PROXY_DELIVERY_API /* global PROXY_DELIVERY_API */,
-    PUBLIC_URI /* global PUBLIC_URI */,
-    REVERSE_PROXY_PATHS /* global REVERSE_PROXY_PATHS */,
-    VERSION /* global VERSION */,
+    deliveryApi: DELIVERY_API_CONFIG /* global DELIVERY_API_CONFIG */,
+    disabeSsrRedux: DISABLE_SSR_REDUX /* global DISABLE_SSR_REDUX*/,
+    servers: SERVERS /* global SERVERS */,
+    projects: PROJECTS /* global PROJECTS */,
+    proxyDeliveryApi: PROXY_DELIVERY_API /* global PROXY_DELIVERY_API */,
+    publicUri: PUBLIC_URI /* global PUBLIC_URI */,
+    reverseProxyPaths: REVERSE_PROXY_PATHS /* global REVERSE_PROXY_PATHS */,
+    version: VERSION /* global VERSION */,
   };
   return (
     <>
@@ -88,13 +88,53 @@ const VersionInfo = ({ project, version }) => {
             <th colSpan={2}>Version info (state)</th>
           </tr>
           <tr>
-            <td>Build number: </td>
-            <td>{version.buildNumber}</td>
+            <td>Git repo url: </td>
+            <td>
+              <a
+                href={packagejson.repository}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {packagejson.repository}
+              </a>
+            </td>
           </tr>
           <tr>
-            <td>Commit ref: </td>
-            <td>{version.commitRef}</td>
+            <td>Pipeline: </td>
+            <td>
+              <a
+                href={`${packagejson.repository}/pipelines/${
+                  version.buildNumber ? version.buildNumber : ''
+                }`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {version.buildNumber}
+              </a>
+            </td>
           </tr>
+          <tr>
+            <td>Commit: </td>
+            <td>
+              <a
+                href={`${packagejson.repository}/commit/${
+                  version.commitRef ? version.commitRef : ''
+                }`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {version.commitRef}
+              </a>
+            </td>
+          </tr>
+          {/* <tr>
+            <td>Last release ref: </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Number of commits since last release: </td>
+            <td></td>
+          </tr> */}
           <tr>
             <td>Project</td>
             <td className={project == 'unknown' ? 'red' : ''}>{project}</td>
@@ -114,49 +154,47 @@ const VersionInfo = ({ project, version }) => {
           </tr>
           <tr>
             <td>Environment</td>
-            <td>{config.SERVERS.alias}</td>
+            <td>{config.servers.alias}</td>
           </tr>
           <tr>
             <td>Public uri</td>
-            <td>{config.PUBLIC_URI}</td>
+            <td>{config.publicUri}</td>
           </tr>
           <tr>
             <td>Servers</td>
             <td>
-              <div>web: {config.SERVERS.web}</div>
-              <div>cms: {config.SERVERS.cms}</div>
-              <div>iis: {config.SERVERS.iis}</div>
-              <div>internal vip: {config.SERVERS.internalVip}</div>
+              <div>web: {config.servers.web}</div>
+              <div>cms: {config.servers.cms}</div>
+              <div>iis: {config.servers.iis}</div>
+              <div>internal vip: {config.servers.internalVip}</div>
             </td>
           </tr>
           <tr>
             <td>Reverse proxy paths</td>
             <td>
-              {Object.entries(config.REVERSE_PROXY_PATHS).map(
-                ([, path], key) => (
-                  <span key={key}>[ {path} ] </span>
-                )
-              )}
+              {Object.entries(config.reverseProxyPaths).map(([, path], key) => (
+                <span key={key}>[ {path} ] </span>
+              ))}
             </td>
           </tr>
           <tr>
             <td>Projects</td>
             <td>
-              {Object.entries(config.PROJECTS).map(([, project], key) => (
+              {Object.entries(config.projects).map(([, project], key) => (
                 <div key={key}>
-                  [ {project.id}: {project.publicUri} ({project.homeEntry}) ]
+                  [ {project.id}: {project.publicUri} ]
                 </div>
               ))}
             </td>
           </tr>
           <tr>
             <td>Disable SSR inline-redux</td>
-            <td>{config.DISABLE_SSR_REDUX.toString()}</td>
+            <td>{config.disabeSsrRedux.toString()}</td>
           </tr>
           <tr>
             <td>Proxy Delivery API requests</td>
-            <td className={config.PROXY_DELIVERY_API ? 'green' : 'red'}>
-              {config.PROXY_DELIVERY_API.toString()}
+            <td className={config.proxyDeliveryApi ? 'green' : 'red'}>
+              {config.proxyDeliveryApi.toString()}
             </td>
           </tr>
         </tbody>

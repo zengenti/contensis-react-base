@@ -30,8 +30,8 @@
       "name": "Attach to Remote",
       "address": "127.0.0.1",
       "port": 9229,
-      "localRoot": "${workspaceFolder}",
-      "remoteRoot": "${workspaceFolder}\\dist",
+      "localRoot": "${workspaceFolder}\\",
+      "remoteRoot": "${workspaceFolder}\\",
       "smartStep": true,
       // Note: These are the mappings that are included by default out of the box, with examples of how they could be resolved in different scenarios. These are not mappings that would make sense together in one project.
       "sourceMapPathOverrides": {

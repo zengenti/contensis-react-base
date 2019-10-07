@@ -1,4 +1,4 @@
-import { Map, fromJS } from 'immutable';
+import { Map, fromJS, List } from 'immutable';
 
 import {
   SET_NODE_TREE,
@@ -7,6 +7,7 @@ import {
 
 const initialState = Map({
   root: null,
+  treeDepends: new List([]),
   isError: false,
   isReady: false,
 });
@@ -14,7 +15,7 @@ const initialState = Map({
 export default (state = initialState, action) => {
   switch (action.type) {
     case SET_NODE_TREE: {
-      return fromJS({ root: action.nodes, isReady: true });
+      return state.set('root', fromJS(action.nodes)).set('isReady', true);
     }
     case GET_NODE_TREE_ERROR: {
       return state.set('isError', true);

@@ -1,6 +1,8 @@
 {{CRITICAL_CSS}}
 <div id="root">{{APP}}</div>
 
+<script src="/static/startup.js"></script>
+
 <% if (htmlWebpackPlugin.files.chunks.runtime.entry.length) { %>
 <script src=<%=htmlWebpackPlugin.files.chunks.runtime.entry %>></script>
 <% } %>

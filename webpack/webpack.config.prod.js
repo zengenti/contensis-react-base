@@ -9,6 +9,8 @@ const webpackNodeExternals = require('webpack-node-externals');
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ImageminPlugin = require('imagemin-webpack-plugin').default;
+const WebpackShellPlugin = require('webpack-shell-plugin');
+
 const BASE_CONFIG = require('./webpack.config.base');
 const defineConfigProd = require('./define-config-webpack').prod;
 
@@ -142,6 +144,12 @@ const SERVER_PROD_CONFIG = {
     }),
     new webpack.optimize.LimitChunkCountPlugin({
       maxChunks: 1,
+    }),
+    new WebpackShellPlugin({
+      onBuildEnd: [
+        'echo "Executing Webpack post build scripts..."',
+        'node webpack/buildStartup.js',
+      ],
     }),
   ],
 };

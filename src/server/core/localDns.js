@@ -5,7 +5,7 @@ const env = SERVERS; /* global SERVERS */
 /* eslint-disable no-console */
 console.log();
 console.log(
-  `Starting with the following servers configured:
+  `Configured servers:
 `,
   env
 );

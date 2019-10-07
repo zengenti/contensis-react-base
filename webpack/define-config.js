@@ -1,12 +1,12 @@
 const packagejson = require('../package.json');
 require('custom-env').env(process.env.CMS_ENV);
 
-const { PUBLIC_URI, ALIAS, INTERNAL_VIP, ACCESS_TOKEN, PROJECT } = process.env;
+const { PUBLIC_URL, ALIAS, INTERNAL_VIP, ACCESS_TOKEN, PROJECT } = process.env;
 
 const PROJECTS = [
   {
     id: PROJECT,
-    publicUri: PUBLIC_URI,
+    publicUri: PUBLIC_URL,
   },
   {
     id: 'mock',
@@ -54,15 +54,28 @@ const DELIVERY_API_CONFIG = {
   livePublishingRootUrl: url(ALIAS).previewWeb,
 };
 
-module.exports = {
-  __isBrowser__: false,
+const development = {
+  __isBrowser__: true,
   DELIVERY_API_CONFIG,
   DISABLE_SSR_REDUX: false,
-  SERVERS,
   PROJECTS,
   ALLOWED_GROUPS,
   PROXY_DELIVERY_API: false,
-  PUBLIC_URI,
+  PUBLIC_URI: PUBLIC_URL,
+  REVERSE_PROXY_PATHS,
+  SERVERS,
+  VERSION: packagejson.version,
+};
+
+const production = {
+  __isBrowser__: false,
+  DISABLE_SSR_REDUX: false,
+  PROJECTS,
+  ALLOWED_GROUPS,
+  PROXY_DELIVERY_API: false,
   REVERSE_PROXY_PATHS,
   VERSION: packagejson.version,
 };
+
+module.exports =
+  process.env.NODE_ENV == 'production' ? production : development;

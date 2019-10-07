@@ -5,7 +5,6 @@ import {
   SET_NAVIGATION_PATH,
   SET_ENTRY_RELATED_ARTICLES,
   SET_TARGET_PROJECT,
-  SET_CURRENT_ENVIRONMENT,
 } from '~/core/redux/types/routing';
 
 export const setNotFound = notFound =>
@@ -17,5 +16,3 @@ export const setRouteEntryRelatedArticles = relatedArticles =>
 
 export const setCurrentProject = (project, allowedGroups) =>
   action(SET_TARGET_PROJECT, { project, allowedGroups });
-export const setCurrentEnvironment = env =>
-  action(SET_CURRENT_ENVIRONMENT, { env });
