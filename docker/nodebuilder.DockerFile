@@ -16,7 +16,7 @@ COPY src /usr/src/app/src
 RUN mkdir -p /usr/src/app/src/dist/static
 COPY webpack /usr/src/app/webpack
 COPY babel.config.js .
-COPY .env .
+COPY .env* .
 COPY .eslintignore .
 COPY .eslintrc.js .
 COPY .nvmrc .
@@ -24,6 +24,6 @@ COPY .prettierignore .
 COPY .prettierrc .
 COPY .stylelintrc .
 RUN npm run build
-RUN mocha dist/test.js
+RUN mocha dist/server/start.js -tests
 COPY version.json /usr/src/app/dist/static/version.json
 RUN cat /usr/src/app/dist/static/version.json

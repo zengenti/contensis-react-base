@@ -34,5 +34,9 @@ if (typeof window == 'undefined') {
   // scripts and bundles, then start the server
   var utils = require('./startup.utils.js');
   utils.setDefaults(__filename);
-  utils.startServer();
+  if (process.argv.includes('-tests')) {
+    utils.runTests();
+  } else {
+    utils.startServer();
+  }
 }

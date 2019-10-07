@@ -4,6 +4,9 @@ module.exports = {
   startServer: function() {
     require('../server.js');
   },
+  runTests: function() {
+    require('../test.js');
+  },
   setDefaults: function(currentScript) {
     // in a server context check if we are using a standard or
     // targeted start script and write new defaults for a targeted startup
