@@ -31,7 +31,12 @@ module.exports = {
       },
       {
         test: /\.jsx?$/,
-        exclude: /node_modules/,
+        include: [
+          path.resolve('src'),
+          // These dependencies have es6 syntax which ie11 doesn't like.
+          path.resolve('node_modules/contensis-delivery-api'),
+          // path.resolve('node_modules/zengenti-forms-package'),
+        ],
         use: {
           loader: 'babel-loader',
         },

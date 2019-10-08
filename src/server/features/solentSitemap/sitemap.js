@@ -7,7 +7,7 @@ import { dynamicSort } from '~/core/util/helpers';
 /* global PUBLIC_URI */
 const publicUri = PUBLIC_URI;
 
-/* global DELIVERY_API_CONFIG PUBLIC_URI */
+/* global DELIVERY_API_CONFIG */
 const contensisConfig = {
   rootUrl: DELIVERY_API_CONFIG.rootUrl,
   accessToken: DELIVERY_API_CONFIG.accessToken,
@@ -28,7 +28,7 @@ const contensisConfig = {
     'sys.slug',
     'sys.metadata',
   ],
-  previewUrl: PUBLIC_URI,
+  previewUrl: publicUri,
 };
 
 const query = (pageIndex, pageSize) => {
@@ -95,6 +95,7 @@ const mapEntryToSitemapUrl = entry => {
 };
 
 const generateSitemap = async project =>
+  //eslint-disable-next-line
   new Promise(async (resolve, reject) => {
     try {
       const pageSize = 100;

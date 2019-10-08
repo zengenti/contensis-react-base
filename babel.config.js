@@ -1,11 +1,6 @@
 const defineConfig = require('./webpack/define-config');
 const NODE_TARGET = 8;
 
-// const presetEnv = {
-//   "targets": {
-//     "node": NODE_TARGET
-//   }
-// }
 const presetEnv = {
   targets: {
     browsers: ['last 2 versions', 'IE >= 11'],
@@ -14,9 +9,9 @@ const presetEnv = {
   //useBuiltIns: 'usage',
 };
 
-// if (process.env.NODE_ENV !== 'test') {
-//   presetEnv.modules = false;
-// }
+if (process.env.NODE_ENV !== 'test') {
+  presetEnv.modules = 'commonjs';
+}
 
 module.exports = {
   presets: [['@babel/preset-env', presetEnv], '@babel/preset-react'],

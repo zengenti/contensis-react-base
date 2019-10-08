@@ -129,6 +129,7 @@ const getContentPageEntriesQuery = (pageIndex, pageSize) => {
 };
 
 const writePageOfEntries = async (entries, xw) => {
+  //eslint-disable-next-line
   return new Promise(async (resolve, reject) => {
     try {
       if (entries && entries.length) {
@@ -187,6 +188,7 @@ const getContentPageEntryInfo = async pageSize => {
 };
 // [TODO] dynamic contentTypeId query?
 const generateSiteMap = async response =>
+  //eslint-disable-next-line
   new Promise(async (resolve, reject) => {
     try {
       // console.log('starting site map gen...');

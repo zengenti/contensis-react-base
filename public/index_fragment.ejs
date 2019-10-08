@@ -1,6 +1,12 @@
 {{CRITICAL_CSS}}
 <div id="root">{{APP}}</div>
 
+<script type="text/javascript">
+  Object.entries || document.write(
+    '<script crossorigin="anonymous" src="https://polyfill.io/v3/polyfill.min.js?features=default,es2015,es2016,es2017"><\/script>'
+  );
+</script>
+
 <script src="/static/startup.js"></script>
 
 <% if (htmlWebpackPlugin.files.chunks.runtime.entry.length) { %>

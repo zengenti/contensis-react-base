@@ -3,7 +3,6 @@ const merge = require('webpack-merge');
 const path = require('path');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
-const DashboardPlugin = require('webpack-dashboard/plugin');
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const appConfig = require('./define-config');
@@ -97,7 +96,6 @@ const CLIENT_DEV_CONFIG = {
       },
       { reload: false }
     ),
-    new DashboardPlugin(),
     new FriendlyErrorsWebpackPlugin({
       compilationSuccessInfo: {
         messages: ['Application is now running at http://localhost:3000'],

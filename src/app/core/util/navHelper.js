@@ -200,7 +200,7 @@ export const getPathDictionary = async (versionStatus, project) => {
 };
 
 const writePageOfEntries = async function(entries, dictionary) {
-  return new Promise(async function(resolve, reject) {
+  return new Promise(function(resolve, reject) {
     try {
       if (entries && entries.length) {
         // console.log(`writing page of entries...`);
