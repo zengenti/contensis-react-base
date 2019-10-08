@@ -1,5 +1,4 @@
 /* eslint-disable no-undef */
-/* eslint-disable no-console */
 
 var context = typeof window != 'undefined' ? window : global;
 
