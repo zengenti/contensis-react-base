@@ -3,6 +3,8 @@
 const fs = require('fs');
 const dotenv = require('dotenv');
 const path = require('path');
+const packagejson = require('../package.json');
+
 const _module = path.basename(__filename);
 
 const envs = [];
@@ -85,11 +87,18 @@ try {
     var startup = makeReplacements(config, template);
 
     if (process.env.dotenv == '.env') {
-      // write the 'default' project startup (.env) as just startup.js
+      // write the 'default' project startup (.env) as just start.js
       // so it is ready to launch with just a default server start script
-      // and a default client bundle
+      // and serve a default client bundle
       writeModuleFileSync('dist/server/start.js', startup);
       writeModuleFileSync('dist/static/startup.js', startup);
+
+      // write another start script which matches the project name
+      // e.g. dist/server/start.zen-base.js
+      writeModuleFileSync(
+        'dist/server/start.' + packagejson.name + '.js',
+        startup
+      );
     }
 
     // write a startup.alias.js file for the environment alias read from
