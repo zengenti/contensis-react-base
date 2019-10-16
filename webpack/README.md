@@ -28,13 +28,13 @@ Webpack uses an addon called `DefineConfig` where global variables can be define
 
 Previously we would define any config twice, once in `define-config.js`, and then the decorated values in `define-config-webpack.js`. We no longer need to do this as there is a utility funtion in `define-config-webpack.js` which imports the values defined in `define-config.js` and will analyse and decorate any string values for us as needed.
 
-## Delivery API project selection
+## Delivery API project selection :man-golfing:
 
 So we can develop new features in a mock project, or support a skinned or localised instance of a site (e.g. improbable.com / improbable.cn) we might wish to scope our delivery api requests to either a development instance (running on localhost) or a deployed instance of a site/container to a different CMS project.
 
 ### There are two ways we can achieve this:
 
-#### Dynamic project selection at runtime
+#### Dynamic project selection at runtime :man-juggling:
 
 We can do this without rebuilding or stop/start-ing as the project supports setting the delivery api projectId dynamically at runtime.
 
@@ -44,19 +44,19 @@ In development / local server we cannot infer the project from hostname (unless 
 
 In backend saga code you can also set the project in calls to the delivery api, if for example you need to fetch some data from a different project while keeping your primary project targeted to a default.
 
-#### Another .env file
+#### Another .env file :man-boy:
 
 This is a better option if you are working in a project that will be deployed and hosted as separate websites but built up from the same code-base / git repo.
 
 Simply define an additional `.env.project` file for each project you need to provide a build for (ensure these are committed) and you can start an instance of the built project targeted at a specific environment AND project.
 
-## Project build and startup :building_construction: :vertical_traffic_lights:
+## Project build and startup :building_construction: :vertical_traffic_light:
 
 If you are using a single environment and a single project then you do nothing different. Simply `npm run build && npm run server` will get you where you need to be. If that were the case you wouldn't be here reading this, right?
 
 We can cover multiple scenarios when using `.env` files
 
-### Connecting to a different CMS
+### Connecting to a different CMS :man_and_woman_holding_hands:
 
 If for example we need to provide a build for both a live and development environment. We will provide and commit a separate `.env` file for each CMS environment we wish to connect our project to. Naming is not important, you choose what is handy for you in development. e.g. supplying files called `.env.development` and `.env` will work fine.
 
@@ -68,7 +68,7 @@ For my `.env` file containing `ALIAS=zen-base` and `PROJECT=website` I can start
 
 When we have started a sever in this way we are also setting our default target from now on. The startup process will write out new default start scripts targeted to that environment, this is so we can still serve everything up in a standard way for those who have not read this document!
 
-### Multiple projects, same CMS
+### Multiple projects, same CMS :two_men_holding_hands:
 
 If we are working on a project that is using multiple CMS projects to serve up content for a skinned or localised variant of a site that is deployed and hosted as separate websites but built up from the same code-base / git repo. (e.g. staff.ludlow.ac.uk, student.ludlow.ac.uk)
 
