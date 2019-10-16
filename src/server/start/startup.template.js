@@ -6,7 +6,7 @@ function url() {
   var alias = _ALIAS_;
   var project = _PROJECT_;
   var projectAndAlias =
-    project && project != 'website' ? `${project}-${alias}` : alias;
+    project && project != 'website' ? project + '-' + alias : alias;
   return Object({
     cms: 'https://cms-' + alias + '.cloud.contensis.com',
     previewWeb: 'https://preview-' + projectAndAlias + '.cloud.contensis.com',
