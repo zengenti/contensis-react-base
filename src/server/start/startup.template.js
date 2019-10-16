@@ -3,12 +3,12 @@
 var context = typeof window != 'undefined' ? window : global;
 
 function url() {
-  let alias = _ALIAS_;
-  let project = _PROJECT_;
-  let projectAndAlias =
+  var alias = _ALIAS_;
+  var project = _PROJECT_;
+  var projectAndAlias =
     project && project != 'website' ? `${project}-${alias}` : alias;
   return Object({
-    cms: 'https://cms-' + projectAndAlias + '.cloud.contensis.com',
+    cms: 'https://cms-' + alias + '.cloud.contensis.com',
     previewWeb: 'https://preview-' + projectAndAlias + '.cloud.contensis.com',
     liveWeb: 'https://live-' + projectAndAlias + '.cloud.contensis.com',
     iisWeb: 'https://iis-live-' + projectAndAlias + '.cloud.contensis.com',

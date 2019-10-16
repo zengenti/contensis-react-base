@@ -36,7 +36,7 @@ const url = (alias, project) => {
   let projectAndAlias =
     project && project != 'website' ? `${project}-${alias}` : alias;
   return {
-    cms: `https://cms-${projectAndAlias}.cloud.contensis.com`,
+    cms: `https://cms-${alias}.cloud.contensis.com`,
     previewWeb: `https://preview-${projectAndAlias}.cloud.contensis.com`,
     liveWeb: `https://live-${projectAndAlias}.cloud.contensis.com`,
     iisWeb: `https://iis-live-${projectAndAlias}.cloud.contensis.com`,
