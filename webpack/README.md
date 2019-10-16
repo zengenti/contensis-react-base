@@ -28,7 +28,7 @@ Webpack uses an addon called `DefineConfig` where global variables can be define
 
 Previously we would define any config twice, once in `define-config.js`, and then the decorated values in `define-config-webpack.js`. We no longer need to do this as there is a utility funtion in `define-config-webpack.js` which imports the values defined in `define-config.js` and will analyse and decorate any string values for us as needed.
 
-## Delivery API project selection :man-golfing:
+## Delivery API project selection :golfer:
 
 So we can develop new features in a mock project, or support a skinned or localised instance of a site (e.g. improbable.com / improbable.cn) we might wish to scope our delivery api requests to either a development instance (running on localhost) or a deployed instance of a site/container to a different CMS project.
 
