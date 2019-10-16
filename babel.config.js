@@ -1,4 +1,4 @@
-const defineConfig = require('./webpack/define-config');
+const defineConfig = require('./webpack/define-config').build;
 const NODE_TARGET = 8;
 
 const presetEnv = {

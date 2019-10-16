@@ -1,12 +1,12 @@
 const packagejson = require('../package.json');
-require('custom-env').env(process.env.CMS_ENV);
+require('custom-env').env(process.env.env || process.env.npm_config_env);
 
-const { PUBLIC_URL, ALIAS, INTERNAL_VIP, ACCESS_TOKEN, PROJECT } = process.env;
+const { PUBLIC_URL, ALIAS, INTERNAL_VIP, ACCESS_TOKEN } = process.env;
 
-const PROJECTS = [
+const PROJECTS = env => [
   {
-    id: PROJECT,
-    publicUri: PUBLIC_URL,
+    id: env.PROJECT,
+    publicUri: env.PUBLIC_URL,
   },
   {
     id: 'mock',
@@ -32,12 +32,16 @@ const ALLOWED_GROUPS = {
 // End of configuration
 // --------------------
 
-const url = alias => ({
-  cms: `https://cms-${alias}.cloud.contensis.com`,
-  previewWeb: `https://preview-${alias}.cloud.contensis.com`,
-  liveWeb: `https://live-${alias}.cloud.contensis.com`,
-  iisWeb: `https://iis-live-${alias}.cloud.contensis.com`,
-});
+const url = (alias, project) => {
+  let projectAndAlias =
+    project && project != 'website' ? `${project}-${alias}` : alias;
+  return {
+    cms: `https://cms-${projectAndAlias}.cloud.contensis.com`,
+    previewWeb: `https://preview-${projectAndAlias}.cloud.contensis.com`,
+    liveWeb: `https://live-${projectAndAlias}.cloud.contensis.com`,
+    iisWeb: `https://iis-live-${projectAndAlias}.cloud.contensis.com`,
+  };
+};
 
 const SERVERS = {
   alias: ALIAS,
@@ -50,7 +54,7 @@ const SERVERS = {
 const DELIVERY_API_CONFIG = {
   rootUrl: url(ALIAS).cms,
   accessToken: ACCESS_TOKEN,
-  projectId: PROJECTS[0].id,
+  projectId: PROJECTS(process.env)[0].id,
   livePublishingRootUrl: url(ALIAS).previewWeb,
 };
 
@@ -58,7 +62,7 @@ const development = {
   __isBrowser__: true,
   DELIVERY_API_CONFIG,
   DISABLE_SSR_REDUX: false,
-  PROJECTS,
+  PROJECTS: PROJECTS(process.env),
   ALLOWED_GROUPS,
   PROXY_DELIVERY_API: false,
   PUBLIC_URI: PUBLIC_URL,
@@ -70,12 +74,14 @@ const development = {
 const production = {
   __isBrowser__: false,
   DISABLE_SSR_REDUX: false,
-  PROJECTS,
+  //PROJECTS,
   ALLOWED_GROUPS,
   PROXY_DELIVERY_API: false,
   REVERSE_PROXY_PATHS,
   VERSION: packagejson.version,
 };
 
-module.exports =
+module.exports.build =
   process.env.NODE_ENV == 'production' ? production : development;
+
+module.exports.PROJECTS = PROJECTS;

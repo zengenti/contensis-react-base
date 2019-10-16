@@ -2,6 +2,7 @@ import 'isomorphic-fetch';
 import express from 'express';
 import Loadable from 'react-loadable';
 
+import DisplayStartupConfiguration from './util/displayStartupConfiguration';
 import ConfigureLocalDNS from './core/localDns';
 import ConfigureReverseProxies from './core/reverseProxies';
 import ConfigureFeatures from './features/configure';
@@ -9,6 +10,9 @@ import ConfigureWebApp from './core/webApp';
 
 export const app = express();
 app.disable('x-powered-by');
+
+// Output some information about the used build/startup configuration
+DisplayStartupConfiguration();
 
 // Configure DNS to make life easier
 ConfigureLocalDNS();

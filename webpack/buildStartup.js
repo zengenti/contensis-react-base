@@ -6,7 +6,7 @@ const path = require('path');
 const packagejson = require('../package.json');
 
 const _module = path.basename(__filename);
-
+const globalConfig = require('../webpack/define-config');
 const envs = [];
 
 function readDotEnvFiles() {
@@ -39,11 +39,12 @@ function readModuleFileSync(path) {
 function makeReplacements(config, template) {
   // replace template with stringified values from process.env.*
   return template
-    .replace(/ALIAS/g, JSON.stringify(config.ALIAS))
-    .replace(/INTERNAL_VIP/g, JSON.stringify(config.INTERNAL_VIP))
-    .replace(/ACCESS_TOKEN/g, JSON.stringify(config.ACCESS_TOKEN))
-    .replace(/PROJECT/g, JSON.stringify(config.PROJECT))
-    .replace(/PUBLIC_URL/g, JSON.stringify(config.PUBLIC_URL));
+    .replace(/_PROJECTS_/g, JSON.stringify(globalConfig.PROJECTS(config)))
+    .replace(/_ALIAS_/g, JSON.stringify(config.ALIAS))
+    .replace(/_INTERNAL_VIP_/g, JSON.stringify(config.INTERNAL_VIP))
+    .replace(/_ACCESS_TOKEN_/g, JSON.stringify(config.ACCESS_TOKEN))
+    .replace(/_PROJECT_/g, JSON.stringify(config.PROJECT))
+    .replace(/_PUBLIC_URL_/g, JSON.stringify(config.PUBLIC_URL));
 }
 
 function mkdirp(filepath) {
@@ -90,10 +91,10 @@ try {
       // write the 'default' project startup (.env) as just start.js
       // so it is ready to launch with just a default server start script
       // and serve a default client bundle
-      writeModuleFileSync('dist/server/start.js', startup);
       writeModuleFileSync('dist/static/startup.js', startup);
+      writeModuleFileSync('dist/server/start.js', startup);
 
-      // write another start script which matches the project name
+      // write another start script which matches the package.json project name
       // e.g. dist/server/start.zen-base.js
       writeModuleFileSync(
         'dist/server/start.' + packagejson.name + '.js',
@@ -104,7 +105,13 @@ try {
     // write a startup.alias.js file for the environment alias read from
     // the .env.* file so the script can be used to start the server
     // and serve the bundle configuration for that specific environment
-    writeModuleFileSync('dist/server/start.' + config.ALIAS + '.js', startup);
+    writeModuleFileSync(
+      'dist/server/start.' +
+        (config.PROJECT != 'website' ? `${config.PROJECT}.` : '') +
+        config.ALIAS +
+        '.js',
+      startup
+    );
   });
 
   console.log('Deploying server start scripts');

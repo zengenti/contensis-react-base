@@ -1,4 +1,4 @@
-const defineConfig = require('./define-config');
+const defineConfig = require('./define-config').build;
 
 const stringifyStrings = obj => {
   const returnObj = {};

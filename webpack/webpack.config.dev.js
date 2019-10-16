@@ -5,7 +5,7 @@ const HtmlWebPackPlugin = require('html-webpack-plugin');
 const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const appConfig = require('./define-config');
+const appConfig = require('./define-config').build;
 const defineConfigDev = require('./define-config-webpack').dev;
 
 const BASE_CONFIG = require('./webpack.config.base');
