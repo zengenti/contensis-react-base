@@ -34,7 +34,7 @@ So we can develop new features in a mock project, or support a skinned or locali
 
 ### There are two ways we can achieve this:
 
-#### Dynamic project selection at runtime :man-juggling:
+#### Dynamic project selection at runtime :juggling:
 
 We can do this without rebuilding or stop/start-ing as the project supports setting the delivery api projectId dynamically at runtime.
 
@@ -44,7 +44,7 @@ In development / local server we cannot infer the project from hostname (unless 
 
 In backend saga code you can also set the project in calls to the delivery api, if for example you need to fetch some data from a different project while keeping your primary project targeted to a default.
 
-#### Another .env file :man-boy:
+#### Another .env file :gemini:
 
 This is a better option if you are working in a project that will be deployed and hosted as separate websites but built up from the same code-base / git repo.
 
@@ -56,7 +56,7 @@ If you are using a single environment and a single project then you do nothing d
 
 We can cover multiple scenarios when using `.env` files
 
-### Connecting to a different CMS :man_and_woman_holding_hands:
+### Connecting to a different CMS :couple:
 
 If for example we need to provide a build for both a live and development environment. We will provide and commit a separate `.env` file for each CMS environment we wish to connect our project to. Naming is not important, you choose what is handy for you in development. e.g. supplying files called `.env.development` and `.env` will work fine.
 
