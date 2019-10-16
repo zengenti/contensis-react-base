@@ -77,3 +77,22 @@ Create a separate `.env.*` file for each project we wish to connect the app to. 
 Build the project as normal, and then start the server in the following way: `npm --start=staff.ludlow-uni run-script server` for the staff.ludlow.ac.uk deployment, and `npm --start=student.ludlow-uni run-script server` for the student.ludlow.ac.uk deployment
 
 Another use case for this multiple-project approach is if multiple borough councils wish to develop the same site but keep their content separate, we could create a .env file for each project and start each server targeting both the project and CMS alias. e.g. `.env.montgomeryshire` and `.env.radnorshire` we could start each site in the following way: `npm --start=montgomeryshire.council-blueprint run-script server`
+
+### Considerations for Server-side debugging
+
+In a server-side debug context we consume no built files (server-side) as we wish to run and debug server-side source code, no start scripts are available, there is no way of setting the default client bundle.
+
+To use server-side debugging in a project/environment switching context we need to run the standard build script first to generate client bundles anyway so we can serve them up and hydrate the app in the browser.
+
+To work around not having start scripts we can target a client build and server startup by running the build and server scripts first, before firing up our `dev:server` script to run the server-side debug session
+
+For example we wish to connect our complete server-side debug session to `zen-base-dev` cms, `mock` project we would run `npm --start=mock.zen-base-dev run-script build:server` - this will generate a universal build, and start the server pointing at zen-base-dev, mock project and write out a default client bundle configured for that environment.
+
+Then we can quit this server session and run our `dev:server` script that is targeted to one of our `.env*` files: `npm --env=development run-script dev:server`, because we are running this from source code in a non-production NODE_ENV, we switch back to supplying our environment as `--env={.env-file-suffix}` variable rather than `--start={project}.{cms-alias}` variable.
+
+To recap:
+
+- `npm run build` - generates a universal client bundle
+- `npm --start=mock.zen-base-dev run-script server` - to write out a new default client bundle to serve later
+- `[CTRL+C]` - quit the server
+- `npm --env=development run-script dev:server` - start the server-side debug session, targeting any code executed server-side to the appropriate `.env*` file.

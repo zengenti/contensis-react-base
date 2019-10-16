@@ -1,5 +1,16 @@
 # Zengenti Base Project :boom:
 
+## Key scripts :vertical_traffic_light: :page_with_curl:
+
+- `npm install` - install dependencies so we can use the application
+- `npm start` - start the application in development mode
+- `npm run storybook` - start storybook in development mode
+- `npm run build` - build the application into production-ready client and server-side bundles
+- `npm run server` - start the application server same as we would as if it were deployed in production
+- `npm run build && npm run dev:server` - build the application and start the server-side application from source code (allowing us to connect a debugger and stop on code that is executed server-side)
+
+There is also a README in the webpack folder that goes into detail using multiple environments for a project and setting variables as part of launching the application.
+
 ## Branches
 
 ### feature-featureName :exclamation:
