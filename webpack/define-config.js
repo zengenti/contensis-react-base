@@ -1,7 +1,7 @@
 const packagejson = require('../package.json');
 require('custom-env').env(process.env.env || process.env.npm_config_env);
 
-const { PUBLIC_URL, ALIAS, INTERNAL_VIP, ACCESS_TOKEN } = process.env;
+const { PUBLIC_URL, ALIAS, INTERNAL_VIP, ACCESS_TOKEN, PROJECT } = process.env;
 
 const PROJECTS = env => [
   {
@@ -32,8 +32,10 @@ const ALLOWED_GROUPS = {
 // End of configuration
 // --------------------
 
-const url = (alias, project) => {
-  let projectAndAlias =
+const url = () => {
+  const alias = ALIAS;
+  const project = PROJECT;
+  const projectAndAlias =
     project && project != 'website' ? `${project}-${alias}` : alias;
   return {
     cms: `https://cms-${alias}.cloud.contensis.com`,
@@ -46,16 +48,16 @@ const url = (alias, project) => {
 const SERVERS = {
   alias: ALIAS,
   internalVip: INTERNAL_VIP,
-  web: url(ALIAS).liveWeb,
-  cms: url(ALIAS).cms,
-  iis: url(ALIAS).iisWeb,
+  cms: url().cms,
+  web: url().liveWeb,
+  iis: url().iisWeb,
 };
 
 const DELIVERY_API_CONFIG = {
-  rootUrl: url(ALIAS).cms,
+  rootUrl: url().cms,
   accessToken: ACCESS_TOKEN,
   projectId: PROJECTS(process.env)[0].id,
-  livePublishingRootUrl: url(ALIAS).previewWeb,
+  livePublishingRootUrl: url().previewWeb,
 };
 
 const development = {

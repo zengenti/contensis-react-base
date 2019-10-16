@@ -20,8 +20,8 @@ context.PUBLIC_URI = _PUBLIC_URL_;
 context.SERVERS = Object({
   alias: _ALIAS_,
   internalVip: _INTERNAL_VIP_,
-  web: url().liveWeb,
   cms: url().cms,
+  web: url().liveWeb,
   iis: url().iisWeb,
 });
 

@@ -1,8 +1,3 @@
-import { getContentPageEntriesQuery } from './queries';
-import { deliveryApi } from '~/core/util/ContensisDeliveryApi';
-
-// import { deliveryApi } from '~/core/util/ContensisDeliveryApi';
-
 const getNormalisedLocation = location => {
   return `${location.pathname}${location.search}`;
 };
@@ -19,22 +14,15 @@ const getHasParameterInQueryString = (urlPropsQueryConfig, nextprops) => {
 };
 
 export const componentWillMountNavHandler = (props, urlPropsQueryConfig) => {
-  // debugger;
   Object.keys(urlPropsQueryConfig).forEach(key => {
     const urlprops = urlPropsQueryConfig[key];
     if (
       props[urlprops.queryParam] &&
       props[urlprops.queryParam] != props[urlprops.reduxProp]
     ) {
-      // debugger;
       eval(`props.${urlprops.reduxSetProp}`)(props[urlprops.queryParam]);
     }
   });
-
-  // if (props.q && props.q != props.reduxKeyword) {
-  //   // debugger;
-  //   this.props.setSearchTerm(this.props.q);
-  // }
 };
 
 export const componentWillReceivePropsNavHandler = (
@@ -112,22 +100,6 @@ export const componentWillReceivePropsNavHandler = (
   }
 };
 
-const getTreeEntry = tree => {
-  return tree && tree.entries && tree.entries.length > 0
-    ? tree.entries[0]
-    : null;
-};
-
-export const getHeaderMenu = tree => {
-  const entry = getTreeEntry(tree);
-  return entry && entry.menu ? entry.menu : [];
-};
-
-export const getFooterMenu = tree => {
-  const entry = getTreeEntry(tree);
-  return entry && entry.footerMenu ? entry.footerMenu : [];
-};
-
 export const getUrlFromNavigationSettings = entry => {
   let path = '';
   if (entry.navigationSettings && entry.navigationSettings.parent) {
@@ -172,74 +144,6 @@ export const validateRouteFromNavigationSettings = (currentPath, entry) => {
       nextParent.navigationSettings && nextParent.navigationSettings.parent;
   });
   return routeValidationResult;
-};
-
-export const getPathDictionary = async (versionStatus, project) => {
-  const pageSize = 3000;
-  const query = getContentPageEntriesQuery(0, pageSize, versionStatus);
-  const entryInfo = await getContentPageEntryInfo(query, project);
-  // console.log('EntryInfo: ' + JSON.stringify(entryInfo));
-  const { pageCount } = entryInfo;
-  const pageArray = [];
-  for (let i = 0; i < pageCount; i += 1) {
-    pageArray.push(i);
-  }
-  const getEntryTasks = [];
-  pageArray.forEach(pageIndex => {
-    query.pageIndex = pageIndex;
-    getEntryTasks.push(getContentPageEntries(query, project));
-  });
-  const pagesOfEntries = await Promise.all(getEntryTasks);
-  const writeTasks = [];
-  const dictionary = {};
-  pagesOfEntries.forEach(entryPage => {
-    writeTasks.push(writePageOfEntries(entryPage, dictionary));
-  });
-  await Promise.all(writeTasks);
-  return dictionary;
-};
-
-const writePageOfEntries = async function(entries, dictionary) {
-  return new Promise(function(resolve, reject) {
-    try {
-      if (entries && entries.length) {
-        // console.log(`writing page of entries...`);
-        entries.forEach(entry => {
-          const slug = entry.sys.slug;
-          const path = getPathFromEntry(entry);
-          const encodedPath = encodeURI(path);
-          const id = entry.sys.id;
-          const title = entry.entryTitle;
-          const contentTypeId = entry.sys.contentTypeId;
-          dictionary[slug] = { path: encodedPath, title, id, contentTypeId };
-        });
-      }
-      resolve(true);
-    } catch (error) {
-      reject(error);
-    }
-  });
-};
-
-const getContentPageEntryInfo = async (query, project) => {
-  try {
-    const result = await deliveryApi.search(query, 3, project);
-    return result;
-  } catch (error) {
-    throw new Error(JSON.stringify(error));
-  }
-};
-
-const getContentPageEntries = async (query, project) => {
-  try {
-    const payload = await deliveryApi.search(query, 3, project);
-    if (payload && payload.items) {
-      return payload.items;
-    }
-    return [];
-  } catch (error) {
-    throw new Error(JSON.stringify(error));
-  }
 };
 
 export const getPathFromEntry = entry => {

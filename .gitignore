@@ -11,3 +11,4 @@ __snapshots__
 /old
 .DS_Store
 .out
+storybook-static/

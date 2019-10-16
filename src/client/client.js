@@ -17,68 +17,46 @@ import { GetClientSideDeliveryApiStatus } from '~/core/util/ContensisDeliveryApi
 import { setCurrentProject } from '~/core/redux/actions/routing';
 import pickProject from '~/core/util/pickProject';
 
-const documentRoot = document.getElementById('root');
+class ClientApp {
+  constructor() {
+    const documentRoot = document.getElementById('root');
 
-const GetClientJSX = store => {
-  const ClientJsx = (
-    <AppContainer>
-      <ReduxProvider store={store}>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </ReduxProvider>
-    </AppContainer>
-  );
-  return ClientJsx;
-};
+    const GetClientJSX = store => {
+      const ClientJsx = (
+        <AppContainer>
+          <ReduxProvider store={store}>
+            <BrowserRouter>
+              <App />
+            </BrowserRouter>
+          </ReduxProvider>
+        </AppContainer>
+      );
+      return ClientJsx;
+    };
 
-/**
- * Webpack HMR Setup.
- */
-const HMRRenderer = Component => {
-  preloadReady().then(() => {
-    module.hot
-      ? render(Component, documentRoot)
-      : hydrate(Component, documentRoot);
-  });
-};
-let store = null;
-const versionStatusFromHostname = GetClientSideDeliveryApiStatus();
-if (
-  window.isDynamic ||
-  window.REDUX_DATA ||
-  process.env.NODE_ENV !== 'production'
-) {
-  store = createStore(fromJS(window.REDUX_DATA));
-  store.dispatch(setVersionStatus(versionStatusFromHostname));
+    /**
+     * Webpack HMR Setup.
+     */
+    const HMRRenderer = Component => {
+      preloadReady().then(() => {
+        module.hot
+          ? render(Component, documentRoot)
+          : hydrate(Component, documentRoot);
+      });
+    };
+    let store = null;
+    const versionStatusFromHostname = GetClientSideDeliveryApiStatus();
+    if (
+      window.isDynamic ||
+      window.REDUX_DATA ||
+      process.env.NODE_ENV !== 'production'
+    ) {
+      store = createStore(fromJS(window.REDUX_DATA));
+      store.dispatch(setVersionStatus(versionStatusFromHostname));
 
-  /* eslint-disable no-console */
-  console.log('Hydrating from inline Redux');
-  /* eslint-enable no-console */
-  store.runSaga(rootSaga);
-  store.dispatch(
-    setCurrentProject(
-      pickProject(
-        window.location.hostname,
-        queryString.parse(window.location.search)
-      )
-    )
-  );
-
-  delete window.REDUX_DATA;
-  HMRRenderer(GetClientJSX(store));
-} else {
-  fetch(`${window.location.pathname}?redux=true`)
-    .then(response => response.json())
-    .then(data => {
       /* eslint-disable no-console */
-      //console.log('Got Data Back');
-      // console.log(data);
+      console.log('Hydrating from inline Redux');
       /* eslint-enable no-console */
-      const ssRedux = JSON.parse(data);
-      store = createStore(fromJS(ssRedux));
-      // store.dispatch(setVersionStatus(versionStatusFromHostname));
-
       store.runSaga(rootSaga);
       store.dispatch(
         setCurrentProject(
@@ -88,17 +66,45 @@ if (
           )
         )
       );
-      // if (typeof window != 'undefined') {
-      //   store.dispatch(checkUserLoggedIn());
-      // }
+
+      delete window.REDUX_DATA;
       HMRRenderer(GetClientJSX(store));
-    });
+    } else {
+      fetch(`${window.location.pathname}?redux=true`)
+        .then(response => response.json())
+        .then(data => {
+          /* eslint-disable no-console */
+          //console.log('Got Data Back');
+          // console.log(data);
+          /* eslint-enable no-console */
+          const ssRedux = JSON.parse(data);
+          store = createStore(fromJS(ssRedux));
+          // store.dispatch(setVersionStatus(versionStatusFromHostname));
+
+          store.runSaga(rootSaga);
+          store.dispatch(
+            setCurrentProject(
+              pickProject(
+                window.location.hostname,
+                queryString.parse(window.location.search)
+              )
+            )
+          );
+          // if (typeof window != 'undefined') {
+          //   store.dispatch(checkUserLoggedIn());
+          // }
+          HMRRenderer(GetClientJSX(store));
+        });
+    }
+
+    // webpack Hot Module Replacement API
+    if (module.hot) {
+      module.hot.accept('~/App', () => {
+        // if you are using harmony modules ({modules:false})
+        HMRRenderer(GetClientJSX(store));
+      });
+    }
+  }
 }
 
-// webpack Hot Module Replacement API
-if (module.hot) {
-  module.hot.accept('~/App', () => {
-    // if you are using harmony modules ({modules:false})
-    HMRRenderer(GetClientJSX(store));
-  });
-}
+export default ClientApp;

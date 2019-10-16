@@ -1,17 +1,23 @@
-import generateSiteMap from './siteMapGenerator';
+import generateSitemap from './sitemap';
+import pickProject from '~/core/util/pickProject';
 
 const sitemap = app => {
-  // generates and returns a site-map, also updates the sitemap in dist/static/sitemap.xml
-  // possibly recommend robots.txt has link to dist/static/sitemap.xml
-  // and another process routinely calls this endpoint to refresh sitemap?
-  app.get('/sitemap1.xml', (req, res) => {
-    res.writeHead(200, {
-      'Content-Type': 'text/xml',
-      'Surrogate-Control': 'max-age=3600',
-    });
-    generateSiteMap(res).catch(e =>
-      res.status(500).send(`Error occurred: ${e.stack}`)
-    );
+  app.get('/sitemap.xml', (req, res) => {
+    const project = pickProject(req.hostname, req.query);
+    generateSitemap(project)
+      .then(sitemap => {
+        res.writeHead(200, {
+          'Content-Type': 'application/xml',
+          'Surrogate-Control': 'max-age=3600',
+        });
+        res.write(sitemap.toString());
+        res.end();
+      })
+      .catch(error =>
+        res
+          .status(500)
+          .send(`Error occurred generating sitemap -- ${error.toString()}`)
+      );
   });
 };
 

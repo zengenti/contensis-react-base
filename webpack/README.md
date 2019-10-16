@@ -50,7 +50,7 @@ This is a better option if you are working in a project that will be deployed an
 
 Simply define an additional `.env.project` file for each project you need to provide a build for (ensure these are committed) and you can start an instance of the built project targeted at a specific environment AND project.
 
-## Project build and startup
+## Project build and startup :building_construction: :vertical_traffic_lights:
 
 If you are using a single environment and a single project then you do nothing different. Simply `npm run build && npm run server` will get you where you need to be. If that were the case you wouldn't be here reading this, right?
 
@@ -78,7 +78,7 @@ Build the project as normal, and then start the server in the following way: `np
 
 Another use case for this multiple-project approach is if multiple borough councils wish to develop the same site but keep their content separate, we could create a .env file for each project and start each server targeting both the project and CMS alias. e.g. `.env.montgomeryshire` and `.env.radnorshire` we could start each site in the following way: `npm --start=montgomeryshire.council-blueprint run-script server`
 
-### Considerations for Server-side debugging
+### Considerations for Server-side debugging :beetle:
 
 In a server-side debug context we consume no built files (server-side) as we wish to run and debug server-side source code, no start scripts are available, there is no way of setting the default client bundle.
 
