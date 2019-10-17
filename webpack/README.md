@@ -30,7 +30,7 @@ Previously we would define any config twice, once in `define-config.js`, and the
 
 ## Delivery API project selection :golfer:
 
-So we can develop new features in a mock project, or support a skinned or localised instance of a site (e.g. improbable.com / improbable.cn) we might wish to scope our delivery api requests to either a development instance (running on localhost) or a deployed instance of a site/container to a different CMS project.
+So we can develop new features in a mock project, or support a skinned or localised instance of a site (e.g. improbable.com / improbable.cn) we might wish to scope our delivery api requests that come from either a development instance (running on localhost) or a deployed instance of a site/container to a different CMS project.
 
 ### There are two ways we can achieve this:
 

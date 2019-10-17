@@ -102,27 +102,26 @@ const webApp = app => {
     // Hack for certain pages to avoid SSR
     const onlyDynamic = [false].includes(request.path);
 
-    const isDynamic =
-      onlyDynamic || isDynamicNormalised === 'true' ? true : false;
-
     const isReduxRequestNormalised = request.query.redux
       ? request.query.redux.toLowerCase()
       : 'false';
-    const isReduxRequest = isReduxRequestNormalised === 'true' ? true : false;
 
     const isFragmentNormalised = request.query.fragment
       ? request.query.fragment.toLowerCase()
       : 'false';
+
     const isStaticNormalised = request.query.static
       ? request.query.static.toLowerCase()
       : 'false';
-    const isFragment = isFragmentNormalised === 'true' ? true : false;
-    let isStatic = isStaticNormalised === 'true' ? true : false;
 
-    if (isDynamic) accessMethod.DYNAMIC = AccessMethods.DYNAMIC;
-    if (isReduxRequest) accessMethod.REDUX = AccessMethods.REDUX;
-    if (isFragment) accessMethod.FRAGMENT = AccessMethods.FRAGMENT;
-    if (isStatic) accessMethod.STATIC = AccessMethods.STATIC;
+    if (onlyDynamic || isDynamicNormalised === 'true')
+      accessMethod.DYNAMIC = AccessMethods.DYNAMIC;
+    if (isReduxRequestNormalised === 'true')
+      accessMethod.REDUX = AccessMethods.REDUX;
+    if (isFragmentNormalised === 'true')
+      accessMethod.FRAGMENT = AccessMethods.FRAGMENT;
+    if (isStaticNormalised === 'true')
+      accessMethod.STATIC = AccessMethods.STATIC;
 
     const context = {};
     const store = createStore();
@@ -212,7 +211,7 @@ const webApp = app => {
 
           let serialisedReduxData = '';
           if (context.status !== 404) {
-            if (isReduxRequest) {
+            if (accessMethod.REDUX) {
               serialisedReduxData = serialize(reduxState);
               addStandardHeaders(reduxState, response);
               response.status(status).json(serialisedReduxData);
@@ -224,7 +223,6 @@ const webApp = app => {
             } /* global DISABLE_SSR_REDUX */
           }
           if (context.status === 404) {
-            isStatic = true;
             accessMethod.STATIC = AccessMethods.STATIC;
           }
 
