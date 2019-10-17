@@ -76,7 +76,6 @@ const development = {
 const production = {
   __isBrowser__: false,
   DISABLE_SSR_REDUX: false,
-  //PROJECTS,
   ALLOWED_GROUPS,
   PROXY_DELIVERY_API: false,
   REVERSE_PROXY_PATHS,
