@@ -9,6 +9,8 @@ export default [
     exact: true,
     component: Homepage,
   },
+  // ********************************
+  // ˅˅ Do not delete these routes ˅˅
   {
     path: '/404',
     exact: true,
@@ -25,4 +27,14 @@ export default [
       loading: Loading,
     }),
   },
+  // ˄˄ Do not delete these routes ˄˄
+  // ********************************
+  // {
+  //   path: '/search',
+  //   exact: false,
+  //   component: Loadable({
+  //     loader: () => import('~/pages/SearchResults'),
+  //     loading: Loading,
+  //   }),
+  // },
 ];
