@@ -261,7 +261,7 @@ const webApp = app => {
             responseHTML = templateHTML
               .replace('{{TITLE}}', title)
               .replace('{{SEO_CRITICAL_METADATA}}', metadata)
-              .replace('{{CRITICAL_CSS}}', minifyCssString(styleTags))
+              .replace('{{CRITICAL_CSS}}', styleTags)
               .replace('{{APP}}', html)
               .replace('{{LOADABLE_CHUNKS}}', bundleScripts)
               .replace('{{REDUX_DATA}}', serialisedReduxData);
