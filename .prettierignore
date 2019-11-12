@@ -2,4 +2,4 @@
 /docs
 /node_modules
 /public/styles
-/src/server/zengenti-appserver-package.js
+/lib/zengenti-appserver-package.js
