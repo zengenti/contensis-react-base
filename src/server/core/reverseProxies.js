@@ -3,10 +3,10 @@ import httpProxy from 'http-proxy';
 const servers = SERVERS; /* global SERVERS */
 var apiProxy = httpProxy.createProxyServer();
 
-const reverseProxies = app => {
+const reverseProxies = (app, reverseProxyPaths) => {
   deliveryApiProxy(apiProxy, app);
 
-  app.all(REVERSE_PROXY_PATHS /* global REVERSE_PROXY_PATHS */, (req, res) => {
+  app.all(reverseProxyPaths, (req, res) => {
     const target = servers.iis;
 
     apiProxy.web(req, res, { target, changeOrigin: true });

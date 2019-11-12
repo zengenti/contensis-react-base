@@ -1,10 +1,10 @@
 {
-  "name": "zen-base",
+  "name": "zengenti-appserver-package",
   "version": "0.0.1",
   "repository": "https://gitlab.zengenti.com/ps-projects/zengenti-base/zen-base",
   "license": "None",
   "description": "",
-  "main": "index.js",
+  "main": "dist/zengenti-appserver-package.js",
   "config": {
     "startup": ""
   },
@@ -15,6 +15,7 @@
     "dev:server": "nodemon --exec cross-env NODE_ENV=test babel-node --inspect=9229 src/server/server.js",
     "build:server": "npm run build && npm run server",
     "build:dev:server": "npm run build && npm run dev:server",
+    "build:lib": "rimraf ./lib && cross-env NODE_ENV=production webpack --config webpack/webpack.config.lib.js",
     "postinstall": "patch-package",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
@@ -30,6 +31,18 @@
   },
   "keywords": [],
   "author": "http://Zengenti.com",
+  "peerDependencies": {
+    "isomorphic-fetch": "2.2.1",
+    "express": "^4.17.1",
+    "react-loadable": "5.5.0",
+    "evil-dns": "^0.2.0",
+    "http-proxy": "^1.17.0",
+    "react": "16.8.6",
+    "styled-components": "^4.3.2",
+    "react-helmet": "5.2.1",
+    "serialize-javascript": "1.7.0",
+    "minify-css-string": "1.0.0"
+  },
   "devDependencies": {
     "@babel/cli": "7.4.4",
     "@babel/core": "7.4.5",
