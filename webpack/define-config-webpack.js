@@ -1,7 +1,7 @@
 const defineConfig = require('./define-config').build;
 
 const stringifyStrings = obj => {
-  const returnObj = {};
+  const returnObj = Array.isArray(obj) ? [] : {};
   Object.entries(obj).forEach(([key, value]) => {
     switch (typeof value) {
       case 'string':

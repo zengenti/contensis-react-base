@@ -17,7 +17,11 @@ const LIB_CONFIG = {
     sourceMapFilename: '[file].map',
     libraryTarget: 'umd',
   },
-  externals: Object.keys(packagejson.dependencies),
+  externals: [
+    ...Object.keys(packagejson.devDependencies),
+    'react-dom/server',
+    'react-loadable/webpack',
+  ],
   optimization: {
     minimize: false,
   },

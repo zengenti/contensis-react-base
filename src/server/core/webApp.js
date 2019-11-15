@@ -1,3 +1,8 @@
+import fs from 'fs';
+import React from 'react';
+import { StaticRouter } from 'react-router-dom';
+import { Provider as ReduxProvider } from 'react-redux';
+import Loadable from 'react-loadable';
 import { renderToString } from 'react-dom/server';
 import { getBundles } from 'react-loadable/webpack';
 import { ServerStyleSheet } from 'styled-components';
@@ -8,14 +13,25 @@ import minifyCssString from 'minify-css-string';
 
 import { AccessMethods } from '../util/types';
 import pickProject, { allowedGroups } from '~/core/util/pickProject';
+import { GetDeliveryApiStatusFromHostname } from '~/core/util/ContensisDeliveryApi';
 
-const addStandardHeaders = (state, response, selectors, packagejson) => {
+import { setCurrentProject } from '~/core/redux/actions/routing';
+import { setVersion, setVersionStatus } from '~/core/redux/actions/version';
+
+import { selectNavigationDepends } from '~/core/redux/selectors/navigation';
+import {
+  selectRouteEntryDepends,
+  selectRouteEntry,
+  selectCurrentProject,
+} from '~/core/redux/selectors/routing';
+
+const addStandardHeaders = (state, response, packagejson) => {
   if (state) {
     /* eslint-disable no-console */
     try {
       console.log('About to add header');
-      let navDepends = selectors.selectNavigationDepends(state);
-      let recordDepends = selectors.selectRouteEntryDepends(state);
+      let navDepends = selectNavigationDepends(state);
+      let recordDepends = selectRouteEntryDepends(state);
       navDepends = navDepends.toJS();
       recordDepends = recordDepends.toJS();
       console.log(`navDepends count: ${navDepends.length}`);
@@ -25,7 +41,7 @@ const addStandardHeaders = (state, response, selectors, packagejson) => {
       allDependsHeaderValue = ` ${packagejson.name}-app ${allDependsHeaderValue} ${packagejson.name}-app`;
       response.header('surrogate-key', allDependsHeaderValue);
 
-      addVarnishAuthenticationHeaders(state, response, selectors);
+      addVarnishAuthenticationHeaders(state, response);
     } catch (e) {
       console.log('Error Adding headers');
       console.log(e);
@@ -34,11 +50,11 @@ const addStandardHeaders = (state, response, selectors, packagejson) => {
   response.setHeader('Surrogate-Control', 'max-age=3600');
 };
 
-const addVarnishAuthenticationHeaders = (state, response, selectors) => {
+const addVarnishAuthenticationHeaders = (state, response) => {
   if (state) {
     try {
-      const stateEntry = selectors.selectRouteEntry(state);
-      const project = selectors.selectCurrentProject(state);
+      const stateEntry = selectRouteEntry(state);
+      const project = selectCurrentProject(state);
       if (
         stateEntry &&
         stateEntry.getIn(['authentication', 'isLoginRequired'])
@@ -55,7 +71,17 @@ const addVarnishAuthenticationHeaders = (state, response, selectors) => {
   }
 };
 
-const webApp = (app, options) => {
+const webApp = (app, ReactApp, config) => {
+  const { store, rootSaga, packagejson, versionData, dynamicPaths } = config;
+
+  const templates = {
+    templateHTML: fs.readFileSync(config.templates.html, 'utf8'),
+    templateHTMLStatic: fs.readFileSync(config.templates.static, 'utf8'),
+    templateHTMLFragment: fs.readFileSync(config.templates.fragment, 'utf8'),
+  };
+  const stats = JSON.parse(fs.readFileSync(config.stats));
+  const versionInfo = JSON.parse(fs.readFileSync(versionData, 'utf8'));
+
   app.get('/*', (request, response, next) => {
     if (request.originalUrl.startsWith('/static/')) return next();
 
@@ -69,7 +95,7 @@ const webApp = (app, options) => {
       : 'false';
 
     // Hack for certain pages to avoid SSR
-    const onlyDynamic = options.dynamicPaths.includes(request.path);
+    const onlyDynamic = dynamicPaths.includes(request.path);
 
     const isReduxRequestNormalised = request.query.redux
       ? request.query.redux.toLowerCase()
@@ -92,30 +118,34 @@ const webApp = (app, options) => {
     if (isStaticNormalised === 'true')
       accessMethod.STATIC = AccessMethods.STATIC;
 
-    const context = options.context; //{};
-    const store = options.createStore();
+    const context = {};
 
     let status = 200;
 
     // dispatch any global and non-saga related actions before calling our JSX
-    const versionStatusFromHostname = options.helpers.GetDeliveryApiStatusFromHostname(
+    const versionStatusFromHostname = GetDeliveryApiStatusFromHostname(
       request.hostname
     );
-    const { versionInfo } = options.version;
 
-    store.dispatch(options.actions.setVersionStatus(versionStatusFromHostname));
-    store.dispatch(
-      options.actions.setVersion(versionInfo.commitRef, versionInfo.buildNo)
-    );
+    store.dispatch(setVersionStatus(versionStatusFromHostname));
+    store.dispatch(setVersion(versionInfo.commitRef, versionInfo.buildNo));
 
     const project = pickProject(request.hostname, request.query);
 
     const groups = allowedGroups(project);
-    store.dispatch(options.actions.setCurrentProject(project, groups));
+    store.dispatch(setCurrentProject(project, groups));
 
     const modules = [];
 
-    const jsx = options.jsx({ store, modules, url, context });
+    const jsx = (
+      <Loadable.Capture report={moduleName => modules.push(moduleName)}>
+        <ReduxProvider store={store}>
+          <StaticRouter context={context} location={url}>
+            <ReactApp />
+          </StaticRouter>
+        </ReduxProvider>
+      </Loadable.Capture>
+    );
 
     /* eslint-disable no-console */
     console.log(
@@ -127,7 +157,7 @@ const webApp = (app, options) => {
       templateHTML,
       templateHTMLFragment,
       templateHTMLStatic,
-    } = options.templates;
+    } = templates;
 
     // Serve a blank HTML page with client scripts to load the app in the browser
     if (accessMethod.DYNAMIC) {
@@ -135,7 +165,7 @@ const webApp = (app, options) => {
       renderToString(jsx);
 
       const isDynamicHint = `<script>window.isDynamic = true;</script>`;
-      const dynamicBundles = getBundles(options.stats, modules);
+      const dynamicBundles = getBundles(stats, modules);
       const dynamicBundleScripts = dynamicBundles
         .map(bundle => `<script src="${bundle.publicPath}"></script>`)
         .join('');
@@ -153,7 +183,7 @@ const webApp = (app, options) => {
     // Render the JSX server side and send response as per access method options
     if (!accessMethod.DYNAMIC) {
       store
-        .runSaga(options.rootSaga)
+        .runSaga(rootSaga)
         .toPromise()
         .then(() => {
           const sheet = new ServerStyleSheet();
@@ -178,7 +208,7 @@ const webApp = (app, options) => {
 
           const styleTags = sheet.getStyleTags();
 
-          const bundles = getBundles(options.stats, modules);
+          const bundles = getBundles(stats, modules);
 
           const bundleScripts = bundles
             .map(bundle => `<script src="${bundle.publicPath}"></script>`)
@@ -188,12 +218,7 @@ const webApp = (app, options) => {
           if (context.status !== 404) {
             if (accessMethod.REDUX) {
               serialisedReduxData = serialize(reduxState);
-              addStandardHeaders(
-                reduxState,
-                response,
-                options.selectors,
-                options.packagejson
-              );
+              addStandardHeaders(reduxState, response, packagejson);
               response.status(status).json(serialisedReduxData);
               return true;
             }
@@ -211,12 +236,7 @@ const webApp = (app, options) => {
 
           // Static page served as a fragment
           if (accessMethod.FRAGMENT && accessMethod.STATIC) {
-            addStandardHeaders(
-              reduxState,
-              response,
-              options.selectors,
-              options.packagejson
-            );
+            addStandardHeaders(reduxState, response, packagejson);
             responseHTML = minifyCssString(styleTags) + html;
           }
 
@@ -251,12 +271,7 @@ const webApp = (app, options) => {
               .replace('{{LOADABLE_CHUNKS}}', bundleScripts)
               .replace('{{REDUX_DATA}}', serialisedReduxData);
           }
-          addStandardHeaders(
-            reduxState,
-            response,
-            options.selectors,
-            options.packagejson
-          );
+          addStandardHeaders(reduxState, response, packagejson);
           response.status(status).send(responseHTML);
         })
         .catch(err => {

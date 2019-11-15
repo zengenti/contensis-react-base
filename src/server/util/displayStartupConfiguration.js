@@ -1,8 +1,4 @@
-const DisplayStartupConfiguration = ({
-  servers,
-  projects,
-  reverseProxyPaths,
-}) => {
+const DisplayStartupConfiguration = (servers, projects, reverseProxyPaths) => {
   /* eslint-disable no-console */
   console.log();
   console.log(
