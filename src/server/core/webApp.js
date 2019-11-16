@@ -82,6 +82,7 @@ const webApp = (app, ReactApp, config) => {
     versionData,
     dynamicPaths,
     allowedGroups,
+    disableSsrRedux,
   } = config;
 
   const templates = {
@@ -238,10 +239,10 @@ const webApp = (app, ReactApp, config) => {
               response.status(status).json(serialisedReduxData);
               return true;
             }
-            if (!DISABLE_SSR_REDUX) {
+            if (!disableSsrRedux) {
               serialisedReduxData = serialize(reduxState);
               serialisedReduxData = `<script>window.REDUX_DATA = ${serialisedReduxData}</script>`;
-            } /* global DISABLE_SSR_REDUX */
+            }
           }
           if (context.status === 404) {
             accessMethod.STATIC = AccessMethods.STATIC;

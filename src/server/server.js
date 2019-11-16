@@ -22,6 +22,7 @@ ZengentiAppServer.start(
     dynamicPaths: [],
     reverseProxyPaths: REVERSE_PROXY_PATHS /* global REVERSE_PROXY_PATHS */,
     allowedGroups: ALLOWED_GROUPS /* global ALLOWED_GROUPS */,
+    disableSsrRedux: DISABLE_SSR_REDUX /* global DISABLE_SSR_REDUX */,
     // Some information about the project and the build to pass to the start config
     packagejson: require('../../package.json'),
     stats: 'dist/static/react-loadable.json',
