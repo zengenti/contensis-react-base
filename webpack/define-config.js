@@ -1,4 +1,7 @@
 const packagejson = require('../package.json');
+// const urls = require('../src/app/core/util/urls').urls;
+const { urls } = require('../util');
+
 require('custom-env').env(process.env.env || process.env.npm_config_env);
 
 const { PUBLIC_URL, ALIAS, INTERNAL_VIP, ACCESS_TOKEN, PROJECT } = process.env;
@@ -32,32 +35,21 @@ const ALLOWED_GROUPS = {
 // End of configuration
 // --------------------
 
-const url = () => {
-  const alias = ALIAS;
-  const project = PROJECT;
-  const projectAndAlias =
-    project && project != 'website' ? `${project}-${alias}` : alias;
-  return {
-    cms: `https://cms-${alias}.cloud.contensis.com`,
-    previewWeb: `https://preview-${projectAndAlias}.cloud.contensis.com`,
-    liveWeb: `https://live-${projectAndAlias}.cloud.contensis.com`,
-    iisWeb: `https://iis-live-${projectAndAlias}.cloud.contensis.com`,
-  };
-};
+const url = urls(ALIAS, PROJECT);
 
 const SERVERS = {
   alias: ALIAS,
   internalVip: INTERNAL_VIP,
-  cms: url().cms,
-  web: url().liveWeb,
-  iis: url().iisWeb,
+  cms: url.cms,
+  web: url.liveWeb,
+  iis: url.iisWeb,
 };
 
 const DELIVERY_API_CONFIG = {
-  rootUrl: url().cms,
+  rootUrl: url.cms,
   accessToken: ACCESS_TOKEN,
   projectId: PROJECTS(process.env)[0].id,
-  livePublishingRootUrl: url().previewWeb,
+  livePublishingRootUrl: url.previewWeb,
 };
 
 const development = {

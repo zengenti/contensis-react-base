@@ -11,6 +11,7 @@ const LIB_CONFIG = {
   entry: {
     'zengenti-isomorphic-base': './src/app/lib.js',
     client: './src/app/lib-client.js',
+    util: './src/app/lib-util.js',
   },
   output: {
     path: path.resolve(__dirname, '../'),
