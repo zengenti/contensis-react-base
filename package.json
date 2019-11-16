@@ -4,7 +4,7 @@
   "repository": "https://gitlab.zengenti.com/ps-projects/zengenti-base/zen-base",
   "license": "None",
   "description": "",
-  "main": "dist/zengenti-appserver-package.js",
+  "main": "lib/zengenti-appserver-package.js",
   "config": {
     "startup": ""
   },
