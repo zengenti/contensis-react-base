@@ -1,25 +1,18 @@
 import ZengentiAppServer from '../../lib/zengenti-appserver-package';
-
-import createStore from '~/core/redux/store';
-import rootSaga from '~/core/redux/sagas';
-import ReactApp from '~/App';
+import ContentTypeMappings from '~/core/routes/ContentTypeMappings';
+import StaticRoutes from '~/core/routes/StaticRoutes';
 import ServerFeatures from './features/configure';
 
-const packagejson = require('../../package.json');
-
-const globals = {
-  servers: SERVERS /* global SERVERS */,
-  projects: PROJECTS /* global PROJECTS */,
-  reverseProxyPaths: REVERSE_PROXY_PATHS /* global REVERSE_PROXY_PATHS */,
-};
+// Feature reducers
+// import { reducer as FormsReducer } from 'zengenti-forms-package';
+// import { reducer as AlertReducer } from '~/features/siteAlert';
 
 ZengentiAppServer.start(
-  ReactApp,
-  // Configure any server-side features such as sitemap or REST api's
-  ServerFeatures,
+  ZengentiAppServer.ReactApp,
   {
-    store: createStore(),
-    rootSaga,
+    routes: { ContentTypeMappings, StaticRoutes },
+    withReducers: {},
+    withSagas: [],
     // The HTML templates we will render the app into
     templates: {
       html: 'dist/index.html',
@@ -28,11 +21,16 @@ ZengentiAppServer.start(
     },
     dynamicPaths: [],
     // Some information about the project and the build to pass to the start config
-    packagejson,
+    packagejson: require('../../package.json'),
     stats: 'dist/static/react-loadable.json',
     versionData: 'dist/static/version.json',
   },
-  globals
+  // Configure any server-side features such as sitemap or REST api's
+  ServerFeatures
 );
 
-ZengentiAppServer.app.emit('ready');
+const app = ZengentiAppServer.app;
+
+app.emit('ready');
+
+export { app };

@@ -12,8 +12,7 @@ import {
 } from '~/core/redux/selectors/routing';
 import { setNavigationPath } from '~/core/redux/actions/routing';
 import NotFound from '~/pages/NotFound';
-import ContentTypeMappings from './ContentTypeMappings';
-import staticRoutes from './StaticRoutes';
+
 import { Status } from './Status';
 import { toJS } from '../util/ToJs';
 
@@ -29,6 +28,7 @@ const getTrimmedPath = path => {
 
 class RouteLoader extends Component {
   static propTypes = {
+    routes: PropTypes.objectOf(PropTypes.array, PropTypes.array),
     currentPath: PropTypes.string,
     location: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
@@ -56,13 +56,15 @@ class RouteLoader extends Component {
   render = () => {
     // Match Any Static Routes a developer has defined
     const MatchedStaticRoute = matchRoutes(
-      staticRoutes,
+      this.props.routes.StaticRoutes,
       this.props.location.pathname
     );
 
     if (MatchedStaticRoute.length > 0) {
       // debugger;
-      return renderRoutes(staticRoutes, { entry: this.props.entry });
+      return renderRoutes(this.props.routes.StaticRoutes, {
+        entry: this.props.entry,
+      });
     }
 
     // Need to redirect when url endswith a /
@@ -73,7 +75,7 @@ class RouteLoader extends Component {
     }
     // Match Any Defined Content Type Mappings
     if (this.props.contentTypeId) {
-      const MatchedComponent = ContentTypeMappings.find(
+      const MatchedComponent = this.props.routes.ContentTypeMappings.find(
         item => item.contentTypeID == this.props.contentTypeId
       );
 

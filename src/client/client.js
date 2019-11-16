@@ -6,27 +6,29 @@ import { preloadReady } from 'react-loadable';
 import { AppContainer } from 'react-hot-loader';
 import { Provider as ReduxProvider } from 'react-redux';
 import queryString from 'query-string';
+import { fromJS } from 'immutable';
 
 import createStore from '~/core/redux/store';
 import rootSaga from '~/core/redux/sagas';
 
 import App from '~/App';
-import { fromJS } from 'immutable';
 import { setVersionStatus } from '~/core/redux/actions/version';
 import { GetClientSideDeliveryApiStatus } from '~/core/util/ContensisDeliveryApi';
 import { setCurrentProject } from '~/core/redux/actions/routing';
 import pickProject from '~/core/util/pickProject';
 
 class ClientApp {
-  constructor() {
+  constructor(config) {
     const documentRoot = document.getElementById('root');
+
+    const { routes, withReducers, withSagas } = config;
 
     const GetClientJSX = store => {
       const ClientJsx = (
         <AppContainer>
           <ReduxProvider store={store}>
             <BrowserRouter>
-              <App />
+              <App routes={routes} />
             </BrowserRouter>
           </ReduxProvider>
         </AppContainer>
@@ -51,13 +53,13 @@ class ClientApp {
       window.REDUX_DATA ||
       process.env.NODE_ENV !== 'production'
     ) {
-      store = createStore(fromJS(window.REDUX_DATA));
+      store = createStore(withReducers, fromJS(window.REDUX_DATA));
       store.dispatch(setVersionStatus(versionStatusFromHostname));
 
       /* eslint-disable no-console */
       console.log('Hydrating from inline Redux');
       /* eslint-enable no-console */
-      store.runSaga(rootSaga);
+      store.runSaga(rootSaga(withSagas));
       store.dispatch(
         setCurrentProject(
           pickProject(
@@ -78,10 +80,10 @@ class ClientApp {
           // console.log(data);
           /* eslint-enable no-console */
           const ssRedux = JSON.parse(data);
-          store = createStore(fromJS(ssRedux));
+          store = createStore(withReducers, fromJS(ssRedux));
           // store.dispatch(setVersionStatus(versionStatusFromHostname));
 
-          store.runSaga(rootSaga);
+          store.runSaga(rootSaga(withSagas));
           store.dispatch(
             setCurrentProject(
               pickProject(

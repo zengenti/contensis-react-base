@@ -8,14 +8,6 @@ import RoutingReducer from './reducers/routing';
 import VersionReducer from './reducers/version';
 import NavigationReducer from './reducers/navigation';
 
-// Feature reducers
-// import { reducer as FormsReducer } from 'zengenti-forms-package';
-// import { reducer as ListingReducer } from '~/features/listings';
-// import { reducer as SearchReducer } from '~/features/search';
-// import { reducer as AlertReducer } from '~/features/siteAlert';
-
-const featureReducers = {};
-
 const thunkMiddleware = [thunk];
 
 let reduxDevToolsMiddleware = f => f;
@@ -36,12 +28,10 @@ let reducers = {
   navigation: NavigationReducer,
   routing: RoutingReducer,
   version: VersionReducer,
-  ...featureReducers,
 };
 
-const combinedReducers = combineReducers(reducers);
-
-const store = initialState => {
+const store = (featureReducers, initialState) => {
+  const combinedReducers = combineReducers({ ...reducers, ...featureReducers });
   const store = createStore(combinedReducers, initialState, middleware);
   store.runSaga = sagaMiddleware.run;
   store.close = () => store.dispatch(END);

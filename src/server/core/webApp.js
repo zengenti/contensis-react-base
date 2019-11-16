@@ -24,6 +24,8 @@ import {
   selectRouteEntry,
   selectCurrentProject,
 } from '~/core/redux/selectors/routing';
+import createStore from '~/core/redux/store';
+import rootSaga from '~/core/redux/sagas';
 
 const addStandardHeaders = (state, response, packagejson) => {
   if (state) {
@@ -72,7 +74,14 @@ const addVarnishAuthenticationHeaders = (state, response) => {
 };
 
 const webApp = (app, ReactApp, config) => {
-  const { store, rootSaga, packagejson, versionData, dynamicPaths } = config;
+  const {
+    routes,
+    withReducers,
+    withSagas,
+    packagejson,
+    versionData,
+    dynamicPaths,
+  } = config;
 
   const templates = {
     templateHTML: fs.readFileSync(config.templates.html, 'utf8'),
@@ -119,8 +128,9 @@ const webApp = (app, ReactApp, config) => {
       accessMethod.STATIC = AccessMethods.STATIC;
 
     const context = {};
-
     let status = 200;
+
+    const store = createStore(withReducers);
 
     // dispatch any global and non-saga related actions before calling our JSX
     const versionStatusFromHostname = GetDeliveryApiStatusFromHostname(
@@ -141,7 +151,7 @@ const webApp = (app, ReactApp, config) => {
       <Loadable.Capture report={moduleName => modules.push(moduleName)}>
         <ReduxProvider store={store}>
           <StaticRouter context={context} location={url}>
-            <ReactApp />
+            <ReactApp routes={routes} />
           </StaticRouter>
         </ReduxProvider>
       </Loadable.Capture>
@@ -183,7 +193,7 @@ const webApp = (app, ReactApp, config) => {
     // Render the JSX server side and send response as per access method options
     if (!accessMethod.DYNAMIC) {
       store
-        .runSaga(rootSaga)
+        .runSaga(rootSaga(withSagas))
         .toPromise()
         .then(() => {
           const sheet = new ServerStyleSheet();

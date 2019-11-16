@@ -3,4 +3,4 @@
 /docs
 \.*
 /src/contensis-delivery-api
-/lib/zengenti-appserver-package.js
+/lib/*

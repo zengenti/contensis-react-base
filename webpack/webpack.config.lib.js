@@ -10,6 +10,7 @@ const LIB_CONFIG = {
   target: 'node',
   entry: {
     'zengenti-appserver-package': './src/app/lib.js',
+    'zengenti-clientapp-package': './src/app/lib-client.js',
   },
   output: {
     path: path.resolve(__dirname, '../lib'),
@@ -18,7 +19,7 @@ const LIB_CONFIG = {
     libraryTarget: 'umd',
   },
   externals: [
-    ...Object.keys(packagejson.devDependencies),
+    ...Object.keys(packagejson.dependencies),
     'react-dom/server',
     'react-loadable/webpack',
   ],

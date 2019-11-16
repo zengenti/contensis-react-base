@@ -148,7 +148,7 @@ const SERVER_PROD_CONFIG = {
     new WebpackShellPlugin({
       onBuildEnd: [
         'echo "Executing Webpack post build scripts..."',
-        'node webpack/buildStartup.js',
+        'node node_modules/zengenti-buildstartup-package',
       ],
     }),
   ],

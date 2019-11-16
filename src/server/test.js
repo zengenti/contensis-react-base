@@ -4,13 +4,14 @@ chai.should();
 chai.use(chaiHttp);
 
 describe('Server Loads', () => {
-  const { app } = require('./internalServer.js');
+  require('./server.js');
+  const app = require('./server.js').app;
   before(function() {
     return new Promise(resolve => {
       app.on('app_started', function() {
         return resolve();
       });
-      app.emit('ready');
+      //app.emit('ready');
     });
   });
   after(function() {

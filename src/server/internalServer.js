@@ -10,19 +10,17 @@ import ConfigureWebApp from './core/webApp';
 
 const app = express();
 
-const start = (ReactApp, ServerFeatures, config, globals) => {
+const start = (ReactApp, config, ServerFeatures) => {
   app.disable('x-powered-by');
 
-  const { servers, projects, reverseProxyPaths } = globals;
-
   // Output some information about the used build/startup configuration
-  DisplayStartupConfiguration(servers, projects, reverseProxyPaths);
+  DisplayStartupConfiguration();
 
   // Configure DNS to make life easier
   ConfigureLocalDNS();
 
   // Set-up local proxy for images from cms, to save doing rewrites and extra code
-  ConfigureReverseProxies(app, reverseProxyPaths);
+  ConfigureReverseProxies(app);
   ServerFeatures(app);
   ConfigureWebApp(app, ReactApp, config);
 
