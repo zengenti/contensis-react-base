@@ -6,7 +6,6 @@ import ServerFeatures from './features/configure';
 // Feature reducers
 // import { reducer as FormsReducer } from 'zengenti-forms-package';
 // import { reducer as AlertReducer } from '~/features/siteAlert';
-const reverseProxyPaths = REVERSE_PROXY_PATHS; /* global REVERSE_PROXY_PATHS */
 
 ZengentiAppServer.start(
   ZengentiAppServer.ReactApp,
@@ -21,7 +20,7 @@ ZengentiAppServer.start(
       fragment: 'dist/index_fragment.html',
     },
     dynamicPaths: [],
-    reverseProxyPaths: REVERSE_PROXY_PATHS; /* global REVERSE_PROXY_PATHS */,
+    reverseProxyPaths: REVERSE_PROXY_PATHS, /* global REVERSE_PROXY_PATHS */,
     // Some information about the project and the build to pass to the start config
     packagejson: require('../../package.json'),
     stats: 'dist/static/react-loadable.json',
