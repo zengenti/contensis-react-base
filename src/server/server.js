@@ -20,7 +20,8 @@ ZengentiAppServer.start(
       fragment: 'dist/index_fragment.html',
     },
     dynamicPaths: [],
-    reverseProxyPaths: REVERSE_PROXY_PATHS, /* global REVERSE_PROXY_PATHS */,
+    reverseProxyPaths: REVERSE_PROXY_PATHS /* global REVERSE_PROXY_PATHS */,
+    allowedGroups: ALLOWED_GROUPS /* global ALLOWED_GROUPS */,
     // Some information about the project and the build to pass to the start config
     packagejson: require('../../package.json'),
     stats: 'dist/static/react-loadable.json',

@@ -12,7 +12,7 @@ import minifyCssString from 'minify-css-string';
 // import { history } from '~/core/redux/history';
 
 import { AccessMethods } from '../util/types';
-import pickProject, { allowedGroups } from '~/core/util/pickProject';
+import pickProject from '~/core/util/pickProject';
 import { GetDeliveryApiStatusFromHostname } from '~/core/util/ContensisDeliveryApi';
 
 import { setCurrentProject } from '~/core/redux/actions/routing';
@@ -27,7 +27,7 @@ import {
 import createStore from '~/core/redux/store';
 import rootSaga from '~/core/redux/sagas';
 
-const addStandardHeaders = (state, response, packagejson) => {
+const addStandardHeaders = (state, response, packagejson, allowedGroups) => {
   if (state) {
     /* eslint-disable no-console */
     try {
@@ -43,7 +43,7 @@ const addStandardHeaders = (state, response, packagejson) => {
       allDependsHeaderValue = ` ${packagejson.name}-app ${allDependsHeaderValue} ${packagejson.name}-app`;
       response.header('surrogate-key', allDependsHeaderValue);
 
-      addVarnishAuthenticationHeaders(state, response);
+      addVarnishAuthenticationHeaders(state, response, allowedGroups);
     } catch (e) {
       console.log('Error Adding headers');
       console.log(e);
@@ -52,7 +52,7 @@ const addStandardHeaders = (state, response, packagejson) => {
   response.setHeader('Surrogate-Control', 'max-age=3600');
 };
 
-const addVarnishAuthenticationHeaders = (state, response) => {
+const addVarnishAuthenticationHeaders = (state, response, allowedGroups) => {
   if (state) {
     try {
       const stateEntry = selectRouteEntry(state);
@@ -63,7 +63,7 @@ const addVarnishAuthenticationHeaders = (state, response) => {
       ) {
         response.header(
           'x-contensis-viewer-groups',
-          allowedGroups(project).join('|')
+          allowedGroups[project].join('|')
         );
       }
     } catch (e) {
@@ -81,6 +81,7 @@ const webApp = (app, ReactApp, config) => {
     packagejson,
     versionData,
     dynamicPaths,
+    allowedGroups,
   } = config;
 
   const templates = {
@@ -142,7 +143,7 @@ const webApp = (app, ReactApp, config) => {
 
     const project = pickProject(request.hostname, request.query);
 
-    const groups = allowedGroups(project);
+    const groups = allowedGroups && allowedGroups[project];
     store.dispatch(setCurrentProject(project, groups));
 
     const modules = [];
@@ -228,7 +229,12 @@ const webApp = (app, ReactApp, config) => {
           if (context.status !== 404) {
             if (accessMethod.REDUX) {
               serialisedReduxData = serialize(reduxState);
-              addStandardHeaders(reduxState, response, packagejson);
+              addStandardHeaders(
+                reduxState,
+                response,
+                packagejson,
+                allowedGroups
+              );
               response.status(status).json(serialisedReduxData);
               return true;
             }
@@ -246,7 +252,12 @@ const webApp = (app, ReactApp, config) => {
 
           // Static page served as a fragment
           if (accessMethod.FRAGMENT && accessMethod.STATIC) {
-            addStandardHeaders(reduxState, response, packagejson);
+            addStandardHeaders(
+              reduxState,
+              response,
+              packagejson,
+              allowedGroups
+            );
             responseHTML = minifyCssString(styleTags) + html;
           }
 
@@ -281,7 +292,7 @@ const webApp = (app, ReactApp, config) => {
               .replace('{{LOADABLE_CHUNKS}}', bundleScripts)
               .replace('{{REDUX_DATA}}', serialisedReduxData);
           }
-          addStandardHeaders(reduxState, response, packagejson);
+          addStandardHeaders(reduxState, response, packagejson, allowedGroups);
           response.status(status).send(responseHTML);
         })
         .catch(err => {

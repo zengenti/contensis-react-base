@@ -46,8 +46,4 @@ const pickProject = (hostname, query) => {
   return project;
 };
 
-export const allowedGroups = project => {
-  return ALLOWED_GROUPS[project] /* global ALLOWED_GROUPS */;
-};
-
 export default pickProject;
