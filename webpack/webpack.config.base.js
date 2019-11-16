@@ -60,11 +60,6 @@ module.exports = {
   plugins: [
     new webpack.DefinePlugin({
       ...defineConfig,
-      REVERSE_PROXY_PATHS: [
-        JSON.stringify('/image-library/*'),
-        JSON.stringify('/video-library/*'),
-        JSON.stringify('/asset-library/*'),
-      ],
     }),
   ],
 };

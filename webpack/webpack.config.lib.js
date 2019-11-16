@@ -29,6 +29,7 @@ const LIB_CONFIG = {
   plugins: [
     new webpack.DefinePlugin({
       VERSION: JSON.stringify(packagejson.version),
+      'process.env.NODE_ENV': 'process.env.NODE_ENV',
     }),
   ],
 };

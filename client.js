@@ -4152,7 +4152,7 @@ var ClientApp = function ClientApp(config) {
   var store = null;
   var versionStatusFromHostname = (0, _ContensisDeliveryApi.GetClientSideDeliveryApiStatus)();
 
-  if (window.isDynamic || window.REDUX_DATA || "production" !== 'production') {
+  if (window.isDynamic || window.REDUX_DATA || process.env.NODE_ENV !== 'production') {
     store = (0, _store.default)(withReducers, (0, _immutable.fromJS)(window.REDUX_DATA));
     store.dispatch((0, _version.setVersionStatus)(versionStatusFromHostname));
     /* eslint-disable no-console */
