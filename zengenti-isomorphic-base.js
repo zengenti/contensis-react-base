@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("react"), require("immutable"), require("react-router-dom"), require("react-hot-loader"), require("react-redux"), require("react-loadable"), require("isomorphic-fetch"), require("contensis-delivery-api"), require("regenerator-runtime"), require("redux"), require("redux-immutable"), require("redux-thunk"), require("redux-saga"), require("loglevel"), require("react-router-config"), require("react-dom"));
+		module.exports = factory(require("react"), require("immutable"), require("react-router-dom"), require("react-hot-loader"), require("react-redux"), require("react-loadable"), require("isomorphic-fetch"), require("contensis-delivery-api"), require("regenerator-runtime"), require("redux"), require("redux-immutable"), require("redux-thunk"), require("redux-saga"), require("loglevel"), require("react-router-config"), require("express"), require("evil-dns"), require("http-proxy"), require("react-dom/server"), require("react-loadable/webpack"), require("styled-components"), require("react-helmet"), require("serialize-javascript"), require("minify-css-string"));
 	else if(typeof define === 'function' && define.amd)
-		define(["react", "immutable", "react-router-dom", "react-hot-loader", "react-redux", "react-loadable", "isomorphic-fetch", "contensis-delivery-api", "regenerator-runtime", "redux", "redux-immutable", "redux-thunk", "redux-saga", "loglevel", "react-router-config", "react-dom"], factory);
+		define(["react", "immutable", "react-router-dom", "react-hot-loader", "react-redux", "react-loadable", "isomorphic-fetch", "contensis-delivery-api", "regenerator-runtime", "redux", "redux-immutable", "redux-thunk", "redux-saga", "loglevel", "react-router-config", "express", "evil-dns", "http-proxy", "react-dom/server", "react-loadable/webpack", "styled-components", "react-helmet", "serialize-javascript", "minify-css-string"], factory);
 	else {
-		var a = typeof exports === 'object' ? factory(require("react"), require("immutable"), require("react-router-dom"), require("react-hot-loader"), require("react-redux"), require("react-loadable"), require("isomorphic-fetch"), require("contensis-delivery-api"), require("regenerator-runtime"), require("redux"), require("redux-immutable"), require("redux-thunk"), require("redux-saga"), require("loglevel"), require("react-router-config"), require("react-dom")) : factory(root["react"], root["immutable"], root["react-router-dom"], root["react-hot-loader"], root["react-redux"], root["react-loadable"], root["isomorphic-fetch"], root["contensis-delivery-api"], root["regenerator-runtime"], root["redux"], root["redux-immutable"], root["redux-thunk"], root["redux-saga"], root["loglevel"], root["react-router-config"], root["react-dom"]);
+		var a = typeof exports === 'object' ? factory(require("react"), require("immutable"), require("react-router-dom"), require("react-hot-loader"), require("react-redux"), require("react-loadable"), require("isomorphic-fetch"), require("contensis-delivery-api"), require("regenerator-runtime"), require("redux"), require("redux-immutable"), require("redux-thunk"), require("redux-saga"), require("loglevel"), require("react-router-config"), require("express"), require("evil-dns"), require("http-proxy"), require("react-dom/server"), require("react-loadable/webpack"), require("styled-components"), require("react-helmet"), require("serialize-javascript"), require("minify-css-string")) : factory(root["react"], root["immutable"], root["react-router-dom"], root["react-hot-loader"], root["react-redux"], root["react-loadable"], root["isomorphic-fetch"], root["contensis-delivery-api"], root["regenerator-runtime"], root["redux"], root["redux-immutable"], root["redux-thunk"], root["redux-saga"], root["loglevel"], root["react-router-config"], root["express"], root["evil-dns"], root["http-proxy"], root["react-dom/server"], root["react-loadable/webpack"], root["styled-components"], root["react-helmet"], root["serialize-javascript"], root["minify-css-string"]);
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(global, function(__WEBPACK_EXTERNAL_MODULE__1__, __WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__8__, __WEBPACK_EXTERNAL_MODULE__15__, __WEBPACK_EXTERNAL_MODULE__16__, __WEBPACK_EXTERNAL_MODULE__26__, __WEBPACK_EXTERNAL_MODULE__28__, __WEBPACK_EXTERNAL_MODULE__33__, __WEBPACK_EXTERNAL_MODULE__34__, __WEBPACK_EXTERNAL_MODULE__38__, __WEBPACK_EXTERNAL_MODULE__39__, __WEBPACK_EXTERNAL_MODULE__40__, __WEBPACK_EXTERNAL_MODULE__41__, __WEBPACK_EXTERNAL_MODULE__47__, __WEBPACK_EXTERNAL_MODULE__56__, __WEBPACK_EXTERNAL_MODULE__80__) {
+})(global, function(__WEBPACK_EXTERNAL_MODULE__1__, __WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__8__, __WEBPACK_EXTERNAL_MODULE__15__, __WEBPACK_EXTERNAL_MODULE__16__, __WEBPACK_EXTERNAL_MODULE__26__, __WEBPACK_EXTERNAL_MODULE__28__, __WEBPACK_EXTERNAL_MODULE__33__, __WEBPACK_EXTERNAL_MODULE__34__, __WEBPACK_EXTERNAL_MODULE__38__, __WEBPACK_EXTERNAL_MODULE__39__, __WEBPACK_EXTERNAL_MODULE__40__, __WEBPACK_EXTERNAL_MODULE__41__, __WEBPACK_EXTERNAL_MODULE__47__, __WEBPACK_EXTERNAL_MODULE__56__, __WEBPACK_EXTERNAL_MODULE__62__, __WEBPACK_EXTERNAL_MODULE__65__, __WEBPACK_EXTERNAL_MODULE__68__, __WEBPACK_EXTERNAL_MODULE__71__, __WEBPACK_EXTERNAL_MODULE__72__, __WEBPACK_EXTERNAL_MODULE__73__, __WEBPACK_EXTERNAL_MODULE__74__, __WEBPACK_EXTERNAL_MODULE__75__, __WEBPACK_EXTERNAL_MODULE__76__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -91,7 +91,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 78);
+/******/ 	return __webpack_require__(__webpack_require__.s = 60);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -4040,42 +4040,26 @@ var toJS = function toJS(WrappedComponent) {
 exports.toJS = toJS;
 
 /***/ }),
-/* 60 */,
-/* 61 */,
-/* 62 */,
-/* 63 */,
-/* 64 */,
-/* 65 */,
-/* 66 */,
-/* 67 */,
-/* 68 */,
-/* 69 */,
-/* 70 */,
-/* 71 */,
-/* 72 */,
-/* 73 */,
-/* 74 */,
-/* 75 */,
-/* 76 */,
-/* 77 */,
-/* 78 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
+var internalServer = __webpack_require__(61).default;
 
-var client = __webpack_require__(79).default;
+exports.app = internalServer.app;
+exports.start = internalServer.start;
 
-var _default = client;
-exports.default = _default;
+var ReactApp = __webpack_require__(48).default;
+
+var RouteLoader = __webpack_require__(27).default;
+
+exports.ReactApp = ReactApp;
+exports.RouteLoader = RouteLoader;
 
 /***/ }),
-/* 79 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4088,439 +4072,583 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__(6));
-
 __webpack_require__(28);
+
+var _express = _interopRequireDefault(__webpack_require__(62));
+
+var _reactLoadable = _interopRequireDefault(__webpack_require__(26));
+
+var _displayStartupConfiguration = _interopRequireDefault(__webpack_require__(63));
+
+var _localDns = _interopRequireDefault(__webpack_require__(64));
+
+var _reverseProxies = _interopRequireDefault(__webpack_require__(67));
+
+var _webApp = _interopRequireDefault(__webpack_require__(69));
+
+// import ServerFeatures from './features/configure';
+var app = (0, _express.default)();
+
+var start = function start(ReactApp, config, ServerFeatures) {
+  app.disable('x-powered-by'); // Output some information about the used build/startup configuration
+
+  (0, _displayStartupConfiguration.default)(config); // Configure DNS to make life easier
+
+  (0, _localDns.default)(); // Set-up local proxy for images from cms, to save doing rewrites and extra code
+
+  (0, _reverseProxies.default)(app, config.reverseProxyPaths);
+  ServerFeatures(app);
+  (0, _webApp.default)(app, ReactApp, config);
+  app.use('/static', _express.default.static('dist/static', {
+    maxage: '31557600h'
+  }));
+  app.on('ready', function () {
+    _reactLoadable.default.preloadAll().then(function () {
+      var server = app.listen(3001, function () {
+        console.info("HTTP server is listening @ port 3001");
+        setTimeout(function () {
+          app.emit('app_started');
+        }, 500);
+      });
+      app.on('stop', function () {
+        server.close(function () {
+          console.info('GoodBye :(');
+        });
+      });
+    });
+  });
+};
+
+var _default = {
+  app: app,
+  start: start
+};
+exports.default = _default;
+
+/***/ }),
+/* 62 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__62__;
+
+/***/ }),
+/* 63 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var servers = SERVERS;
+/* global SERVERS */
+
+var projects = PROJECTS;
+/* global PROJECTS */
+
+var DisplayStartupConfiguration = function DisplayStartupConfiguration(config) {
+  /* eslint-disable no-console */
+  console.log();
+  console.log("Configured servers:\n", JSON.stringify(servers, null, 2));
+  console.log();
+  console.log("Configured projects:\n", JSON.stringify(projects, null, 2));
+  console.log();
+  console.log('Reverse proxy paths: ', JSON.stringify(config.reverseProxyPaths, null, 2));
+  console.log();
+  /* eslint-enable no-console */
+};
+
+var _default = DisplayStartupConfiguration;
+exports.default = _default;
+
+/***/ }),
+/* 64 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(0);
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _evilDns = _interopRequireDefault(__webpack_require__(65));
+
+var _fetchMyIp = _interopRequireDefault(__webpack_require__(66));
+
+var servers = SERVERS;
+/* global SERVERS */
+
+var apiConfig = DELIVERY_API_CONFIG;
+/* global DELIVERY_API_CONFIG */
+
+var localDns = function localDns() {
+  var disableDnsChanges = false;
+
+  var configureLocalEndpoint = function configureLocalEndpoint() {
+    if (!disableDnsChanges) {
+      _evilDns.default.add("*".concat(servers.alias, ".cloud.contensis.com"), servers.internalVip);
+
+      if (apiConfig.internalIp) _evilDns.default.add(apiConfig.rootUrl, apiConfig.internalIp);
+    }
+  }; // Break api.ipify to test
+  // evilDns.add('api.ipify.org', '8.8.8.8');
+
+
+  (0, _fetchMyIp.default)(servers, configureLocalEndpoint);
+};
+
+var _default = localDns;
+exports.default = _default;
+
+/***/ }),
+/* 65 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__65__;
+
+/***/ }),
+/* 66 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var fetchMyIp = function fetchMyIp(env, configureLocalEndpoint) {
+  /* eslint-disable no-console */
+  fetch('https://api.ipify.org?format=json', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }).then(function (response) {
+    return response.json();
+  }, function (error) {
+    console.log("Could not work out where I am so defaulting to local DNS, as I am probably running as a container this is what matters most. Not developers at home or tests :( Sorry. error: ".concat(error));
+    configureLocalEndpoint();
+  }).then(function (ipJson) {
+    console.log("Current public ip -> ".concat(JSON.stringify(ipJson)));
+
+    if (ipJson.ip.startsWith('185.18.13')) {
+      console.log("Using local endpoint for ".concat(env.alias, " -> ").concat(env.internalVip));
+      configureLocalEndpoint();
+    } else {
+      console.log("Outside Zengenti network, use real DNS.");
+    }
+  }).catch(function (error) {
+    configureLocalEndpoint();
+    console.log("Could not work out where I am so defaulting to local DNS, as I am probably running as a container this is what matters most. Not developers at home or tests :( Sorry. error: ".concat(error));
+  });
+  /* eslint-enable no-console */
+};
+
+var _default = fetchMyIp;
+exports.default = _default;
+
+/***/ }),
+/* 67 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(0);
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _httpProxy = _interopRequireDefault(__webpack_require__(68));
+
+var servers = SERVERS;
+/* global SERVERS */
+
+var apiProxy = _httpProxy.default.createProxyServer();
+
+var reverseProxies = function reverseProxies(app, reverseProxyPaths) {
+  deliveryApiProxy(apiProxy, app);
+  app.all(reverseProxyPaths, function (req, res) {
+    var target = servers.iis;
+    apiProxy.web(req, res, {
+      target: target,
+      changeOrigin: true
+    });
+    apiProxy.on('error', function (e) {
+      /* eslint-disable no-console */
+      console.log("Proxy Request for ".concat(req.path, " HostName:").concat(req.hostname, " failed with ").concat(e));
+      /* eslint-enable no-console */
+    });
+  });
+};
+
+var deliveryApiProxy = function deliveryApiProxy(apiProxy, app) {
+  // This is just here to stop cors requests on localhost. In Production this is mapped using varnish.
+  app.all(['/api/delivery/*'], function (req, res) {
+    /* eslint-disable no-console */
+    var target = servers.cms;
+    console.log("Proxying api request to ".concat(servers.alias));
+    apiProxy.web(req, res, {
+      target: target,
+      changeOrigin: true
+    });
+    apiProxy.on('error', function (e) {
+      /* eslint-disable no-console */
+      console.log("Proxy request for ".concat(req.path, " HostName:").concat(req.hostname, " failed with ").concat(e));
+      /* eslint-enable no-console */
+    });
+  });
+};
+
+var _default = reverseProxies;
+exports.default = _default;
+
+/***/ }),
+/* 68 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__68__;
+
+/***/ }),
+/* 69 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(0);
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _toConsumableArray2 = _interopRequireDefault(__webpack_require__(13));
+
+var _fs = _interopRequireDefault(__webpack_require__(70));
 
 var _react = _interopRequireDefault(__webpack_require__(1));
 
-var _reactDom = __webpack_require__(80);
-
 var _reactRouterDom = __webpack_require__(8);
-
-var _reactLoadable = __webpack_require__(26);
-
-var _reactHotLoader = __webpack_require__(15);
 
 var _reactRedux = __webpack_require__(16);
 
-var _queryString = _interopRequireDefault(__webpack_require__(81));
+var _reactLoadable = _interopRequireDefault(__webpack_require__(26));
 
-var _immutable = __webpack_require__(2);
+var _server = __webpack_require__(71);
 
-var _store = _interopRequireDefault(__webpack_require__(37));
+var _webpack = __webpack_require__(72);
 
-var _sagas = _interopRequireDefault(__webpack_require__(45));
+var _styledComponents = __webpack_require__(73);
 
-var _App = _interopRequireDefault(__webpack_require__(48));
+var _reactHelmet = _interopRequireDefault(__webpack_require__(74));
 
-var _version = __webpack_require__(36);
+var _serializeJavascript = _interopRequireDefault(__webpack_require__(75));
+
+var _minifyCssString = _interopRequireDefault(__webpack_require__(76));
+
+var _types = __webpack_require__(77);
+
+var _pickProject = _interopRequireDefault(__webpack_require__(32));
 
 var _ContensisDeliveryApi = __webpack_require__(3);
 
 var _routing = __webpack_require__(18);
 
-var _pickProject = _interopRequireDefault(__webpack_require__(32));
+var _version = __webpack_require__(36);
 
-var ClientApp = function ClientApp(config) {
-  (0, _classCallCheck2.default)(this, ClientApp);
-  var documentRoot = document.getElementById('root');
-  var routes = config.routes,
-      withReducers = config.withReducers,
-      withSagas = config.withSagas;
+var _navigation = __webpack_require__(14);
 
-  var GetClientJSX = function GetClientJSX(store) {
-    var ClientJsx = _react.default.createElement(_reactHotLoader.AppContainer, null, _react.default.createElement(_reactRedux.Provider, {
-      store: store
-    }, _react.default.createElement(_reactRouterDom.BrowserRouter, null, _react.default.createElement(_App.default, {
-      routes: routes
-    }))));
+var _routing2 = __webpack_require__(7);
 
-    return ClientJsx;
-  };
-  /**
-   * Webpack HMR Setup.
-   */
+var _store = _interopRequireDefault(__webpack_require__(37));
 
+var _sagas = _interopRequireDefault(__webpack_require__(45));
 
-  var HMRRenderer = function HMRRenderer(Component) {
-    (0, _reactLoadable.preloadReady)().then(function () {
-       false ? undefined : (0, _reactDom.hydrate)(Component, documentRoot);
-    });
-  };
-
-  var store = null;
-  var versionStatusFromHostname = (0, _ContensisDeliveryApi.GetClientSideDeliveryApiStatus)();
-
-  if (window.isDynamic || window.REDUX_DATA || "production" !== 'production') {
-    store = (0, _store.default)(withReducers, (0, _immutable.fromJS)(window.REDUX_DATA));
-    store.dispatch((0, _version.setVersionStatus)(versionStatusFromHostname));
+// import { history } from '~/core/redux/history';
+var addStandardHeaders = function addStandardHeaders(state, response, packagejson, allowedGroups) {
+  if (state) {
     /* eslint-disable no-console */
+    try {
+      console.log('About to add header');
+      var navDepends = (0, _navigation.selectNavigationDepends)(state);
+      var recordDepends = (0, _routing2.selectRouteEntryDepends)(state);
+      navDepends = navDepends.toJS();
+      recordDepends = recordDepends.toJS();
+      console.log("navDepends count: ".concat(navDepends.length));
+      console.log("recordDepends count: ".concat(recordDepends.length));
+      var allDepends = [].concat((0, _toConsumableArray2.default)(navDepends), (0, _toConsumableArray2.default)(recordDepends));
+      var allDependsHeaderValue = allDepends.join(' ');
+      allDependsHeaderValue = " ".concat(packagejson.name, "-app ").concat(allDependsHeaderValue, " ").concat(packagejson.name, "-app");
+      response.header('surrogate-key', allDependsHeaderValue);
+      addVarnishAuthenticationHeaders(state, response, allowedGroups);
+    } catch (e) {
+      console.log('Error Adding headers');
+      console.log(e);
+    }
+  }
 
-    console.log('Hydrating from inline Redux');
-    /* eslint-enable no-console */
-
-    store.runSaga((0, _sagas.default)(withSagas));
-    store.dispatch((0, _routing.setCurrentProject)((0, _pickProject.default)(window.location.hostname, _queryString.default.parse(window.location.search))));
-    delete window.REDUX_DATA;
-    HMRRenderer(GetClientJSX(store));
-  } else {
-    fetch("".concat(window.location.pathname, "?redux=true")).then(function (response) {
-      return response.json();
-    }).then(function (data) {
-      /* eslint-disable no-console */
-      //console.log('Got Data Back');
-      // console.log(data);
-
-      /* eslint-enable no-console */
-      var ssRedux = JSON.parse(data);
-      store = (0, _store.default)(withReducers, (0, _immutable.fromJS)(ssRedux)); // store.dispatch(setVersionStatus(versionStatusFromHostname));
-
-      store.runSaga((0, _sagas.default)(withSagas));
-      store.dispatch((0, _routing.setCurrentProject)((0, _pickProject.default)(window.location.hostname, _queryString.default.parse(window.location.search)))); // if (typeof window != 'undefined') {
-      //   store.dispatch(checkUserLoggedIn());
-      // }
-
-      HMRRenderer(GetClientJSX(store));
-    });
-  } // webpack Hot Module Replacement API
-
-
-  if (false) {}
+  response.setHeader('Surrogate-Control', 'max-age=3600');
 };
 
-var _default = ClientApp;
+var addVarnishAuthenticationHeaders = function addVarnishAuthenticationHeaders(state, response, allowedGroups) {
+  if (state) {
+    try {
+      var stateEntry = (0, _routing2.selectRouteEntry)(state);
+      var project = (0, _routing2.selectCurrentProject)(state);
+
+      if (stateEntry && stateEntry.getIn(['authentication', 'isLoginRequired'])) {
+        response.header('x-contensis-viewer-groups', allowedGroups[project].join('|'));
+      }
+    } catch (e) {
+      console.log('Error adding authentication header');
+      console.log(e);
+    }
+  }
+};
+
+var webApp = function webApp(app, ReactApp, config) {
+  var routes = config.routes,
+      withReducers = config.withReducers,
+      withSagas = config.withSagas,
+      packagejson = config.packagejson,
+      versionData = config.versionData,
+      dynamicPaths = config.dynamicPaths,
+      allowedGroups = config.allowedGroups,
+      disableSsrRedux = config.disableSsrRedux;
+  var templates = {
+    templateHTML: _fs.default.readFileSync(config.templates.html, 'utf8'),
+    templateHTMLStatic: _fs.default.readFileSync(config.templates.static, 'utf8'),
+    templateHTMLFragment: _fs.default.readFileSync(config.templates.fragment, 'utf8')
+  };
+  var stats = JSON.parse(_fs.default.readFileSync(config.stats));
+  var versionInfo = JSON.parse(_fs.default.readFileSync(versionData, 'utf8'));
+  app.get('/*', function (request, response, next) {
+    if (request.originalUrl.startsWith('/static/')) return next();
+    var url = request.url; // Determine functional params and set access methods
+
+    var accessMethod = {};
+    var isDynamicNormalised = request.query.dynamic ? request.query.dynamic.toLowerCase() : 'false'; // Hack for certain pages to avoid SSR
+
+    var onlyDynamic = dynamicPaths.includes(request.path);
+    var isReduxRequestNormalised = request.query.redux ? request.query.redux.toLowerCase() : 'false';
+    var isFragmentNormalised = request.query.fragment ? request.query.fragment.toLowerCase() : 'false';
+    var isStaticNormalised = request.query.static ? request.query.static.toLowerCase() : 'false';
+    if (onlyDynamic || isDynamicNormalised === 'true') accessMethod.DYNAMIC = _types.AccessMethods.DYNAMIC;
+    if (isReduxRequestNormalised === 'true') accessMethod.REDUX = _types.AccessMethods.REDUX;
+    if (isFragmentNormalised === 'true') accessMethod.FRAGMENT = _types.AccessMethods.FRAGMENT;
+    if (isStaticNormalised === 'true') accessMethod.STATIC = _types.AccessMethods.STATIC;
+    var context = {};
+    var status = 200;
+    var store = (0, _store.default)(withReducers); // dispatch any global and non-saga related actions before calling our JSX
+
+    var versionStatusFromHostname = (0, _ContensisDeliveryApi.GetDeliveryApiStatusFromHostname)(request.hostname);
+    store.dispatch((0, _version.setVersionStatus)(versionStatusFromHostname));
+    store.dispatch((0, _version.setVersion)(versionInfo.commitRef, versionInfo.buildNo));
+    var project = (0, _pickProject.default)(request.hostname, request.query);
+    var groups = allowedGroups && allowedGroups[project];
+    store.dispatch((0, _routing.setCurrentProject)(project, groups));
+    var modules = [];
+
+    var jsx = _react.default.createElement(_reactLoadable.default.Capture, {
+      report: function report(moduleName) {
+        return modules.push(moduleName);
+      }
+    }, _react.default.createElement(_reactRedux.Provider, {
+      store: store
+    }, _react.default.createElement(_reactRouterDom.StaticRouter, {
+      context: context,
+      location: url
+    }, _react.default.createElement(ReactApp, {
+      routes: routes
+    }))));
+    /* eslint-disable no-console */
+
+
+    console.log("Request for ".concat(request.path, " hostname: ").concat(request.hostname, " versionStatus: ").concat(versionStatusFromHostname));
+    /* eslint-enable no-console */
+
+    var templateHTML = templates.templateHTML,
+        templateHTMLFragment = templates.templateHTMLFragment,
+        templateHTMLStatic = templates.templateHTMLStatic; // Serve a blank HTML page with client scripts to load the app in the browser
+
+    if (accessMethod.DYNAMIC) {
+      // Dynamic doesn't need sagas
+      (0, _server.renderToString)(jsx);
+      var isDynamicHint = "<script>window.isDynamic = true;</script>";
+      var dynamicBundles = (0, _webpack.getBundles)(stats, modules);
+      var dynamicBundleScripts = dynamicBundles.map(function (bundle) {
+        return "<script src=\"".concat(bundle.publicPath, "\"></script>");
+      }).join('');
+      var responseHtmlDynamic = templateHTML.replace('{{TITLE}}', '').replace('{{SEO_CRITICAL_METADATA}}', '').replace('{{CRITICAL_CSS}}', '').replace('{{APP}}', '').replace('{{LOADABLE_CHUNKS}}', dynamicBundleScripts).replace('{{REDUX_DATA}}', isDynamicHint);
+      response.setHeader('Surrogate-Control', 'max-age=3600');
+      response.status(status).send(responseHtmlDynamic);
+    } // Render the JSX server side and send response as per access method options
+
+
+    if (!accessMethod.DYNAMIC) {
+      store.runSaga((0, _sagas.default)(withSagas)).toPromise().then(function () {
+        var sheet = new _styledComponents.ServerStyleSheet();
+        var html = (0, _server.renderToString)(sheet.collectStyles(jsx));
+
+        var helmet = _reactHelmet.default.renderStatic();
+
+        _reactHelmet.default.rewind();
+
+        var title = helmet.title.toString();
+        var metadata = helmet.meta.toString();
+
+        if (context.status === 404) {
+          status = 404;
+          title = '<title>404 page not found</title>';
+        }
+
+        if (context.url) {
+          return response.redirect(302, context.url);
+        }
+
+        var reduxState = store.getState();
+        var styleTags = sheet.getStyleTags();
+        var bundles = (0, _webpack.getBundles)(stats, modules);
+        var bundleScripts = bundles.map(function (bundle) {
+          return "<script src=\"".concat(bundle.publicPath, "\"></script>");
+        }).join('');
+        var serialisedReduxData = '';
+
+        if (context.status !== 404) {
+          if (accessMethod.REDUX) {
+            serialisedReduxData = (0, _serializeJavascript.default)(reduxState);
+            addStandardHeaders(reduxState, response, packagejson, allowedGroups);
+            response.status(status).json(serialisedReduxData);
+            return true;
+          }
+
+          if (!disableSsrRedux) {
+            serialisedReduxData = (0, _serializeJavascript.default)(reduxState);
+            serialisedReduxData = "<script>window.REDUX_DATA = ".concat(serialisedReduxData, "</script>");
+          }
+        }
+
+        if (context.status === 404) {
+          accessMethod.STATIC = _types.AccessMethods.STATIC;
+        } // Responses
+
+
+        var responseHTML = ''; // Static page served as a fragment
+
+        if (accessMethod.FRAGMENT && accessMethod.STATIC) {
+          addStandardHeaders(reduxState, response, packagejson, allowedGroups);
+          responseHTML = (0, _minifyCssString.default)(styleTags) + html;
+        } // Page fragment served with client scripts and redux data that hydrate the app client side
+
+
+        if (accessMethod.FRAGMENT && !accessMethod.STATIC) {
+          responseHTML = templateHTMLFragment.replace('{{TITLE}}', title).replace('{{SEO_CRITICAL_METADATA}}', metadata).replace('{{CRITICAL_CSS}}', (0, _minifyCssString.default)(styleTags)).replace('{{APP}}', html).replace('{{LOADABLE_CHUNKS}}', bundleScripts).replace('{{REDUX_DATA}}', serialisedReduxData);
+        } // Full HTML page served statically
+
+
+        if (!accessMethod.FRAGMENT && accessMethod.STATIC) {
+          responseHTML = templateHTMLStatic.replace('{{TITLE}}', title).replace('{{SEO_CRITICAL_METADATA}}', metadata).replace('{{CRITICAL_CSS}}', (0, _minifyCssString.default)(styleTags)).replace('{{APP}}', html).replace('{{LOADABLE_CHUNKS}}', '');
+        } // Full HTML page served with client scripts and redux data that hydrate the app client side
+
+
+        if (!accessMethod.FRAGMENT && !accessMethod.STATIC) {
+          responseHTML = templateHTML.replace('{{TITLE}}', title).replace('{{SEO_CRITICAL_METADATA}}', metadata).replace('{{CRITICAL_CSS}}', styleTags).replace('{{APP}}', html).replace('{{LOADABLE_CHUNKS}}', bundleScripts).replace('{{REDUX_DATA}}', serialisedReduxData);
+        }
+
+        addStandardHeaders(reduxState, response, packagejson, allowedGroups);
+        response.status(status).send(responseHTML);
+      }).catch(function (err) {
+        // Handle any error that occurred in any of the previous
+        // promises in the chain.
+
+        /* eslint-disable no-console */
+        console.log(err);
+        /* eslint-enable no-console */
+
+        response.status(500).send("Error occurred: <br />".concat(err.stack, " <br />").concat(JSON.stringify(err)));
+      });
+      (0, _server.renderToString)(jsx);
+      store.close();
+    }
+  });
+};
+
+var _default = webApp;
 exports.default = _default;
 
 /***/ }),
-/* 80 */
+/* 70 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__80__;
+module.exports = require("fs");
 
 /***/ }),
-/* 81 */
+/* 71 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__71__;
+
+/***/ }),
+/* 72 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__72__;
+
+/***/ }),
+/* 73 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__73__;
+
+/***/ }),
+/* 74 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__74__;
+
+/***/ }),
+/* 75 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__75__;
+
+/***/ }),
+/* 76 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__76__;
+
+/***/ }),
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var strictUriEncode = __webpack_require__(82);
-var objectAssign = __webpack_require__(83);
 
-function encoderForArrayFormat(opts) {
-	switch (opts.arrayFormat) {
-		case 'index':
-			return function (key, value, index) {
-				return value === null ? [
-					encode(key, opts),
-					'[',
-					index,
-					']'
-				].join('') : [
-					encode(key, opts),
-					'[',
-					encode(index, opts),
-					']=',
-					encode(value, opts)
-				].join('');
-			};
-
-		case 'bracket':
-			return function (key, value) {
-				return value === null ? encode(key, opts) : [
-					encode(key, opts),
-					'[]=',
-					encode(value, opts)
-				].join('');
-			};
-
-		default:
-			return function (key, value) {
-				return value === null ? encode(key, opts) : [
-					encode(key, opts),
-					'=',
-					encode(value, opts)
-				].join('');
-			};
-	}
-}
-
-function parserForArrayFormat(opts) {
-	var result;
-
-	switch (opts.arrayFormat) {
-		case 'index':
-			return function (key, value, accumulator) {
-				result = /\[(\d*)\]$/.exec(key);
-
-				key = key.replace(/\[\d*\]$/, '');
-
-				if (!result) {
-					accumulator[key] = value;
-					return;
-				}
-
-				if (accumulator[key] === undefined) {
-					accumulator[key] = {};
-				}
-
-				accumulator[key][result[1]] = value;
-			};
-
-		case 'bracket':
-			return function (key, value, accumulator) {
-				result = /(\[\])$/.exec(key);
-				key = key.replace(/\[\]$/, '');
-
-				if (!result) {
-					accumulator[key] = value;
-					return;
-				} else if (accumulator[key] === undefined) {
-					accumulator[key] = [value];
-					return;
-				}
-
-				accumulator[key] = [].concat(accumulator[key], value);
-			};
-
-		default:
-			return function (key, value, accumulator) {
-				if (accumulator[key] === undefined) {
-					accumulator[key] = value;
-					return;
-				}
-
-				accumulator[key] = [].concat(accumulator[key], value);
-			};
-	}
-}
-
-function encode(value, opts) {
-	if (opts.encode) {
-		return opts.strict ? strictUriEncode(value) : encodeURIComponent(value);
-	}
-
-	return value;
-}
-
-function keysSorter(input) {
-	if (Array.isArray(input)) {
-		return input.sort();
-	} else if (typeof input === 'object') {
-		return keysSorter(Object.keys(input)).sort(function (a, b) {
-			return Number(a) - Number(b);
-		}).map(function (key) {
-			return input[key];
-		});
-	}
-
-	return input;
-}
-
-exports.extract = function (str) {
-	return str.split('?')[1] || '';
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.AccessMethods = void 0;
+var AccessMethods = {
+  DYNAMIC: 'dynamic',
+  STATIC: 'static',
+  FRAGMENT: 'fragment',
+  REDUX: 'redux'
 };
-
-exports.parse = function (str, opts) {
-	opts = objectAssign({arrayFormat: 'none'}, opts);
-
-	var formatter = parserForArrayFormat(opts);
-
-	// Create an object with no prototype
-	// https://github.com/sindresorhus/query-string/issues/47
-	var ret = Object.create(null);
-
-	if (typeof str !== 'string') {
-		return ret;
-	}
-
-	str = str.trim().replace(/^(\?|#|&)/, '');
-
-	if (!str) {
-		return ret;
-	}
-
-	str.split('&').forEach(function (param) {
-		var parts = param.replace(/\+/g, ' ').split('=');
-		// Firefox (pre 40) decodes `%3D` to `=`
-		// https://github.com/sindresorhus/query-string/pull/37
-		var key = parts.shift();
-		var val = parts.length > 0 ? parts.join('=') : undefined;
-
-		// missing `=` should be `null`:
-		// http://w3.org/TR/2012/WD-url-20120524/#collect-url-parameters
-		val = val === undefined ? null : decodeURIComponent(val);
-
-		formatter(decodeURIComponent(key), val, ret);
-	});
-
-	return Object.keys(ret).sort().reduce(function (result, key) {
-		var val = ret[key];
-		if (Boolean(val) && typeof val === 'object' && !Array.isArray(val)) {
-			// Sort object keys, not values
-			result[key] = keysSorter(val);
-		} else {
-			result[key] = val;
-		}
-
-		return result;
-	}, Object.create(null));
-};
-
-exports.stringify = function (obj, opts) {
-	var defaults = {
-		encode: true,
-		strict: true,
-		arrayFormat: 'none'
-	};
-
-	opts = objectAssign(defaults, opts);
-
-	var formatter = encoderForArrayFormat(opts);
-
-	return obj ? Object.keys(obj).sort().map(function (key) {
-		var val = obj[key];
-
-		if (val === undefined) {
-			return '';
-		}
-
-		if (val === null) {
-			return encode(key, opts);
-		}
-
-		if (Array.isArray(val)) {
-			var result = [];
-
-			val.slice().forEach(function (val2) {
-				if (val2 === undefined) {
-					return;
-				}
-
-				result.push(formatter(key, val2, result.length));
-			});
-
-			return result.join('&');
-		}
-
-		return encode(key, opts) + '=' + encode(val, opts);
-	}).filter(function (x) {
-		return x.length > 0;
-	}).join('&') : '';
-};
-
-
-/***/ }),
-/* 82 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-module.exports = function (str) {
-	return encodeURIComponent(str).replace(/[!'()*]/g, function (c) {
-		return '%' + c.charCodeAt(0).toString(16).toUpperCase();
-	});
-};
-
-
-/***/ }),
-/* 83 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*
-object-assign
-(c) Sindre Sorhus
-@license MIT
-*/
-
-
-/* eslint-disable no-unused-vars */
-var getOwnPropertySymbols = Object.getOwnPropertySymbols;
-var hasOwnProperty = Object.prototype.hasOwnProperty;
-var propIsEnumerable = Object.prototype.propertyIsEnumerable;
-
-function toObject(val) {
-	if (val === null || val === undefined) {
-		throw new TypeError('Object.assign cannot be called with null or undefined');
-	}
-
-	return Object(val);
-}
-
-function shouldUseNative() {
-	try {
-		if (!Object.assign) {
-			return false;
-		}
-
-		// Detect buggy property enumeration order in older V8 versions.
-
-		// https://bugs.chromium.org/p/v8/issues/detail?id=4118
-		var test1 = new String('abc');  // eslint-disable-line no-new-wrappers
-		test1[5] = 'de';
-		if (Object.getOwnPropertyNames(test1)[0] === '5') {
-			return false;
-		}
-
-		// https://bugs.chromium.org/p/v8/issues/detail?id=3056
-		var test2 = {};
-		for (var i = 0; i < 10; i++) {
-			test2['_' + String.fromCharCode(i)] = i;
-		}
-		var order2 = Object.getOwnPropertyNames(test2).map(function (n) {
-			return test2[n];
-		});
-		if (order2.join('') !== '0123456789') {
-			return false;
-		}
-
-		// https://bugs.chromium.org/p/v8/issues/detail?id=3056
-		var test3 = {};
-		'abcdefghijklmnopqrst'.split('').forEach(function (letter) {
-			test3[letter] = letter;
-		});
-		if (Object.keys(Object.assign({}, test3)).join('') !==
-				'abcdefghijklmnopqrst') {
-			return false;
-		}
-
-		return true;
-	} catch (err) {
-		// We don't expect any of the above to throw, but better to be safe.
-		return false;
-	}
-}
-
-module.exports = shouldUseNative() ? Object.assign : function (target, source) {
-	var from;
-	var to = toObject(target);
-	var symbols;
-
-	for (var s = 1; s < arguments.length; s++) {
-		from = Object(arguments[s]);
-
-		for (var key in from) {
-			if (hasOwnProperty.call(from, key)) {
-				to[key] = from[key];
-			}
-		}
-
-		if (getOwnPropertySymbols) {
-			symbols = getOwnPropertySymbols(from);
-			for (var i = 0; i < symbols.length; i++) {
-				if (propIsEnumerable.call(from, symbols[i])) {
-					to[symbols[i]] = from[symbols[i]];
-				}
-			}
-		}
-	}
-
-	return to;
-};
-
+exports.AccessMethods = AccessMethods;
 
 /***/ })
 /******/ ]);
 });
-//# sourceMappingURL=zengenti-clientapp-package.js.map
+//# sourceMappingURL=zengenti-isomorphic-base.js.map

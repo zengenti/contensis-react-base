@@ -9,11 +9,11 @@ const LIB_CONFIG = {
   devtool: 'source-map',
   target: 'node',
   entry: {
-    'zengenti-appserver-package': './src/app/lib.js',
-    'zengenti-clientapp-package': './src/app/lib-client.js',
+    'zengenti-isomorphic-base': './src/app/lib.js',
+    client: './src/app/lib-client.js',
   },
   output: {
-    path: path.resolve(__dirname, '../lib'),
+    path: path.resolve(__dirname, '../'),
     filename: '[name].js',
     sourceMapFilename: '[file].map',
     libraryTarget: 'umd',

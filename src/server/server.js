@@ -1,4 +1,4 @@
-import ZengentiAppServer from '../../lib/zengenti-appserver-package';
+import ZengentiAppServer from '../../zengenti-isomorphic-base';
 import ContentTypeMappings from '~/core/routes/ContentTypeMappings';
 import StaticRoutes from '~/core/routes/StaticRoutes';
 import ServerFeatures from './features/configure';

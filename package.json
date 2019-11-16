@@ -1,10 +1,10 @@
 {
-  "name": "zengenti-appserver-package",
+  "name": "zengenti-isomorphic-base",
   "version": "0.0.1",
   "repository": "https://gitlab.zengenti.com/ps-projects/zengenti-base/zen-base",
   "license": "None",
   "description": "",
-  "main": "lib/zengenti-appserver-package.js",
+  "main": "zengenti-isomorphic-base.js",
   "config": {
     "startup": ""
   },
