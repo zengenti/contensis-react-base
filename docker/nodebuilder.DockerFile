@@ -23,6 +23,7 @@ COPY .nvmrc .
 COPY .prettierignore .
 COPY .prettierrc .
 COPY .stylelintrc .
+COPY *.js ./
 RUN npm run build
 RUN mocha dist/server/start.js -tests
 COPY version.json /usr/src/app/dist/static/version.json

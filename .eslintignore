@@ -4,3 +4,4 @@
 \.*
 /src/contensis-delivery-api
 /lib/*
+/*.js

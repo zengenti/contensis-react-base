@@ -1,7 +1,7 @@
 {
   "name": "zengenti-isomorphic-base",
   "version": "0.0.1",
-  "repository": "https://gitlab.zengenti.com/ps-projects/zengenti-base/zen-base",
+  "repository": "https://gitlab.zengenti.com/ps-projects/zengenti-base/zen-base/tree/isomorphic-base",
   "license": "None",
   "description": "",
   "main": "zengenti-isomorphic-base.js",
