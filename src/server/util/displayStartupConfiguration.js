@@ -1,8 +1,7 @@
 const servers = SERVERS; /* global SERVERS */
 const projects = PROJECTS; /* global PROJECTS */
-const reverseProxyPaths = REVERSE_PROXY_PATHS; /* global REVERSE_PROXY_PATHS */
 
-const DisplayStartupConfiguration = () => {
+const DisplayStartupConfiguration = config => {
   /* eslint-disable no-console */
   console.log();
   console.log(
@@ -19,7 +18,7 @@ const DisplayStartupConfiguration = () => {
   console.log();
   console.log(
     'Reverse proxy paths: ',
-    JSON.stringify(reverseProxyPaths, null, 2)
+    JSON.stringify(config.reverseProxyPaths, null, 2)
   );
   console.log();
 

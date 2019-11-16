@@ -1,10 +1,9 @@
 import httpProxy from 'http-proxy';
 
 const servers = SERVERS; /* global SERVERS */
-const reverseProxyPaths = REVERSE_PROXY_PATHS; /* global REVERSE_PROXY_PATHS */
 var apiProxy = httpProxy.createProxyServer();
 
-const reverseProxies = app => {
+const reverseProxies = (app, reverseProxyPaths) => {
   deliveryApiProxy(apiProxy, app);
 
   app.all(reverseProxyPaths, (req, res) => {

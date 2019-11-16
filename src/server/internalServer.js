@@ -14,13 +14,13 @@ const start = (ReactApp, config, ServerFeatures) => {
   app.disable('x-powered-by');
 
   // Output some information about the used build/startup configuration
-  DisplayStartupConfiguration();
+  DisplayStartupConfiguration(config);
 
   // Configure DNS to make life easier
   ConfigureLocalDNS();
 
   // Set-up local proxy for images from cms, to save doing rewrites and extra code
-  ConfigureReverseProxies(app);
+  ConfigureReverseProxies(app, config.reverseProxyPaths);
   ServerFeatures(app);
   ConfigureWebApp(app, ReactApp, config);
 
