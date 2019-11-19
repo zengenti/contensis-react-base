@@ -4253,14 +4253,15 @@ var ClientApp = function ClientApp(config) {
 
     return ClientJsx;
   };
+
+  var isProduction = !(process.env.NODE_ENV != 'production');
   /**
    * Webpack HMR Setup.
    */
 
-
   var HMRRenderer = function HMRRenderer(Component) {
     (0, _reactLoadable.preloadReady)().then(function () {
-       false ? undefined : (0, _reactDom.hydrate)(Component, documentRoot);
+      isProduction ? (0, _reactDom.hydrate)(Component, documentRoot) : (0, _reactDom.render)(Component, documentRoot);
     });
   };
 

@@ -1,7 +1,7 @@
 import 'isomorphic-fetch';
 import React from 'react';
 import { render, hydrate } from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
+import { Router } from 'react-router-dom';
 import { preloadReady } from 'react-loadable';
 import { AppContainer } from 'react-hot-loader';
 import { Provider as ReduxProvider } from 'react-redux';
@@ -16,6 +16,7 @@ import { setVersionStatus } from '~/core/redux/actions/version';
 import { GetClientSideDeliveryApiStatus } from '~/core/util/ContensisDeliveryApi';
 import { setCurrentProject } from '~/core/redux/actions/routing';
 import pickProject from '~/core/util/pickProject';
+import { browserHistory as history } from '~/core/redux/history';
 
 class ClientApp {
   constructor(config) {
@@ -27,23 +28,25 @@ class ClientApp {
       const ClientJsx = (
         <AppContainer>
           <ReduxProvider store={store}>
-            <BrowserRouter>
+            <Router history={history}>
               <App routes={routes} />
-            </BrowserRouter>
+            </Router>
           </ReduxProvider>
         </AppContainer>
       );
       return ClientJsx;
     };
 
+    const isProduction = !(process.env.NODE_ENV != 'production');
+
     /**
      * Webpack HMR Setup.
      */
     const HMRRenderer = Component => {
       preloadReady().then(() => {
-        process.env.NODE_ENV != 'production'
-          ? render(Component, documentRoot)
-          : hydrate(Component, documentRoot);
+        isProduction
+          ? hydrate(Component, documentRoot)
+          : render(Component, documentRoot);
       });
     };
     let store = null;
@@ -53,7 +56,7 @@ class ClientApp {
       window.REDUX_DATA ||
       process.env.NODE_ENV !== 'production'
     ) {
-      store = createStore(withReducers, fromJS(window.REDUX_DATA));
+      store = createStore({}, fromJS(window.REDUX_DATA), history);
       store.dispatch(setVersionStatus(versionStatusFromHostname));
 
       /* eslint-disable no-console */
@@ -80,7 +83,7 @@ class ClientApp {
           // console.log(data);
           /* eslint-enable no-console */
           const ssRedux = JSON.parse(data);
-          store = createStore(withReducers, fromJS(ssRedux));
+          store = createStore(withReducers, fromJS(ssRedux), history);
           // store.dispatch(setVersionStatus(versionStatusFromHostname));
 
           store.runSaga(rootSaga(withSagas));
