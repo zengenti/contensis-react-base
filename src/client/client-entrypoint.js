@@ -2,13 +2,14 @@ import loadPolyfills from './loadPolyFills';
 import ClientApp from './client'; // the entry point for the rest of the app
 // import ClientApp from '../../client';
 
-import ContentTypeMappings from '~/core/routes/ContentTypeMappings';
-import StaticRoutes from '~/core/routes/StaticRoutes';
+import routes from '~/core/routes';
+import withReducers from '~/core/redux/reducers.js';
+import withSagas from '~/core/redux/sagas.js';
 
 const config = {
-  routes: { ContentTypeMappings, StaticRoutes },
-  withReducers: {},
-  withSagas: [],
+  routes,
+  withReducers,
+  withSagas,
 };
 
 if (process.env.NODE_ENV == 'development') {

@@ -34,18 +34,17 @@ export default (featureReducers, initialState, history) => {
     navigation: NavigationReducer,
     routing: RoutingReducer,
     version: VersionReducer,
+    ...featureReducers,
   };
 
-  const store = (featureReducers, initialState) => {
-    const combinedReducers = combineReducers({
-      ...reducers,
-      ...featureReducers,
-    });
+  const combinedReducers = combineReducers(reducers);
+
+  const store = initialState => {
     const store = createStore(combinedReducers, initialState, middleware);
     store.runSaga = sagaMiddleware.run;
     store.close = () => store.dispatch(END);
     return store;
   };
 
-  return store(featureReducers, initialState);
+  return store(initialState);
 };

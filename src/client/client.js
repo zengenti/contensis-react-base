@@ -9,7 +9,7 @@ import queryString from 'query-string';
 import { fromJS } from 'immutable';
 
 import createStore from '~/core/redux/store';
-import rootSaga from '~/core/redux/sagas';
+import rootSaga from '~/core/redux/sagas/index.js';
 
 import App from '~/App';
 import { setVersionStatus } from '~/core/redux/actions/version';
@@ -56,7 +56,7 @@ class ClientApp {
       window.REDUX_DATA ||
       process.env.NODE_ENV !== 'production'
     ) {
-      store = createStore({}, fromJS(window.REDUX_DATA), history);
+      store = createStore(withReducers, fromJS(window.REDUX_DATA), history);
       store.dispatch(setVersionStatus(versionStatusFromHostname));
 
       /* eslint-disable no-console */

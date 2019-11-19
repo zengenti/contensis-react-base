@@ -36,6 +36,7 @@ module.exports = {
     },
   },
   rules: {
+    'require-atomic-updates': 0,
     'react/require-default-props': 0,
     'no-debugger': 0,
     'no-alert': 0,
