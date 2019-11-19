@@ -25,7 +25,7 @@ import {
   selectCurrentProject,
 } from '~/core/redux/selectors/routing';
 import createStore from '~/core/redux/store';
-import rootSaga from '~/core/redux/sagas';
+import rootSaga from '~/core/redux/sagas/index.js';
 import { fromJS } from 'immutable';
 
 const addStandardHeaders = (state, response, packagejson, allowedGroups) => {

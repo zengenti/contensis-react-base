@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("immutable"), require("react"), require("react-router-dom"), require("react-hot-loader"), require("react-redux"), require("react-loadable"), require("isomorphic-fetch"), require("contensis-delivery-api"), require("regenerator-runtime"), require("redux"), require("redux-immutable"), require("redux-thunk"), require("redux-saga"), require("query-string"), require("react-router-config"), require("react-dom"), require("loglevel"));
+		module.exports = factory(require("react"), require("immutable"), require("react-router-dom"), require("react-hot-loader"), require("react-redux"), require("react-loadable"), require("isomorphic-fetch"), require("contensis-delivery-api"), require("regenerator-runtime"), require("redux"), require("redux-immutable"), require("redux-thunk"), require("redux-saga"), require("loglevel"), require("react-router-config"), require("react-dom"), require("query-string"));
 	else if(typeof define === 'function' && define.amd)
-		define(["immutable", "react", "react-router-dom", "react-hot-loader", "react-redux", "react-loadable", "isomorphic-fetch", "contensis-delivery-api", "regenerator-runtime", "redux", "redux-immutable", "redux-thunk", "redux-saga", "query-string", "react-router-config", "react-dom", "loglevel"], factory);
+		define(["react", "immutable", "react-router-dom", "react-hot-loader", "react-redux", "react-loadable", "isomorphic-fetch", "contensis-delivery-api", "regenerator-runtime", "redux", "redux-immutable", "redux-thunk", "redux-saga", "loglevel", "react-router-config", "react-dom", "query-string"], factory);
 	else {
-		var a = typeof exports === 'object' ? factory(require("immutable"), require("react"), require("react-router-dom"), require("react-hot-loader"), require("react-redux"), require("react-loadable"), require("isomorphic-fetch"), require("contensis-delivery-api"), require("regenerator-runtime"), require("redux"), require("redux-immutable"), require("redux-thunk"), require("redux-saga"), require("query-string"), require("react-router-config"), require("react-dom"), require("loglevel")) : factory(root["immutable"], root["react"], root["react-router-dom"], root["react-hot-loader"], root["react-redux"], root["react-loadable"], root["isomorphic-fetch"], root["contensis-delivery-api"], root["regenerator-runtime"], root["redux"], root["redux-immutable"], root["redux-thunk"], root["redux-saga"], root["query-string"], root["react-router-config"], root["react-dom"], root["loglevel"]);
+		var a = typeof exports === 'object' ? factory(require("react"), require("immutable"), require("react-router-dom"), require("react-hot-loader"), require("react-redux"), require("react-loadable"), require("isomorphic-fetch"), require("contensis-delivery-api"), require("regenerator-runtime"), require("redux"), require("redux-immutable"), require("redux-thunk"), require("redux-saga"), require("loglevel"), require("react-router-config"), require("react-dom"), require("query-string")) : factory(root["react"], root["immutable"], root["react-router-dom"], root["react-hot-loader"], root["react-redux"], root["react-loadable"], root["isomorphic-fetch"], root["contensis-delivery-api"], root["regenerator-runtime"], root["redux"], root["redux-immutable"], root["redux-thunk"], root["redux-saga"], root["loglevel"], root["react-router-config"], root["react-dom"], root["query-string"]);
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(global, function(__WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__3__, __WEBPACK_EXTERNAL_MODULE__10__, __WEBPACK_EXTERNAL_MODULE__15__, __WEBPACK_EXTERNAL_MODULE__16__, __WEBPACK_EXTERNAL_MODULE__24__, __WEBPACK_EXTERNAL_MODULE__28__, __WEBPACK_EXTERNAL_MODULE__34__, __WEBPACK_EXTERNAL_MODULE__35__, __WEBPACK_EXTERNAL_MODULE__38__, __WEBPACK_EXTERNAL_MODULE__39__, __WEBPACK_EXTERNAL_MODULE__40__, __WEBPACK_EXTERNAL_MODULE__41__, __WEBPACK_EXTERNAL_MODULE__46__, __WEBPACK_EXTERNAL_MODULE__55__, __WEBPACK_EXTERNAL_MODULE__92__, __WEBPACK_EXTERNAL_MODULE__95__) {
+})(global, function(__WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__3__, __WEBPACK_EXTERNAL_MODULE__11__, __WEBPACK_EXTERNAL_MODULE__16__, __WEBPACK_EXTERNAL_MODULE__17__, __WEBPACK_EXTERNAL_MODULE__27__, __WEBPACK_EXTERNAL_MODULE__29__, __WEBPACK_EXTERNAL_MODULE__35__, __WEBPACK_EXTERNAL_MODULE__36__, __WEBPACK_EXTERNAL_MODULE__40__, __WEBPACK_EXTERNAL_MODULE__41__, __WEBPACK_EXTERNAL_MODULE__42__, __WEBPACK_EXTERNAL_MODULE__43__, __WEBPACK_EXTERNAL_MODULE__50__, __WEBPACK_EXTERNAL_MODULE__59__, __WEBPACK_EXTERNAL_MODULE__85__, __WEBPACK_EXTERNAL_MODULE__86__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -91,7 +91,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 90);
+/******/ 	return __webpack_require__(__webpack_require__.s = 83);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -144,127 +144,6 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__3__;
 
 /***/ }),
 /* 4 */
-/***/ (function(module, exports) {
-
-function _defineProperty(obj, key, value) {
-  if (key in obj) {
-    Object.defineProperty(obj, key, {
-      value: value,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-  } else {
-    obj[key] = value;
-  }
-
-  return obj;
-}
-
-module.exports = _defineProperty;
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports) {
-
-function _classCallCheck(instance, Constructor) {
-  if (!(instance instanceof Constructor)) {
-    throw new TypeError("Cannot call a class as a function");
-  }
-}
-
-module.exports = _classCallCheck;
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports) {
-
-function _defineProperties(target, props) {
-  for (var i = 0; i < props.length; i++) {
-    var descriptor = props[i];
-    descriptor.enumerable = descriptor.enumerable || false;
-    descriptor.configurable = true;
-    if ("value" in descriptor) descriptor.writable = true;
-    Object.defineProperty(target, descriptor.key, descriptor);
-  }
-}
-
-function _createClass(Constructor, protoProps, staticProps) {
-  if (protoProps) _defineProperties(Constructor.prototype, protoProps);
-  if (staticProps) _defineProperties(Constructor, staticProps);
-  return Constructor;
-}
-
-module.exports = _createClass;
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(35);
-
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var arrayWithoutHoles = __webpack_require__(29);
-
-var iterableToArray = __webpack_require__(30);
-
-var nonIterableSpread = __webpack_require__(31);
-
-function _toConsumableArray(arr) {
-  return arrayWithoutHoles(arr) || iterableToArray(arr) || nonIterableSpread();
-}
-
-module.exports = _toConsumableArray;
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.CALL_HISTORY_METHOD = exports.SET_ROUTE = exports.SET_TARGET_PROJECT = exports.SET_ROUTE_LOADING = exports.SET_NAVIGATION_PATH = exports.SET_NAVIGATION_NOT_FOUND = exports.SET_ENTRY_RELATED_ARTICLES = exports.SET_ENTRY_ID = exports.SET_ANCESTORS = exports.SET_NODE = exports.SET_ENTRY = exports.GET_ENTRY = void 0;
-var ROUTING_PREFIX = '@ROUTING/';
-var GET_ENTRY = "".concat(ROUTING_PREFIX, "_GET_ENTRY");
-exports.GET_ENTRY = GET_ENTRY;
-var SET_ENTRY = "".concat(ROUTING_PREFIX, "_SET_ENTRY");
-exports.SET_ENTRY = SET_ENTRY;
-var SET_NODE = "".concat(ROUTING_PREFIX, "_SET_NODE");
-exports.SET_NODE = SET_NODE;
-var SET_ANCESTORS = "".concat(ROUTING_PREFIX, "_SET_ANCESTORS");
-exports.SET_ANCESTORS = SET_ANCESTORS;
-var SET_ENTRY_ID = "".concat(ROUTING_PREFIX, "_SET_ENTRY_ID");
-exports.SET_ENTRY_ID = SET_ENTRY_ID;
-var SET_ENTRY_RELATED_ARTICLES = "".concat(ROUTING_PREFIX, "_SET_ENTRY_RELATED_ARTICLES");
-exports.SET_ENTRY_RELATED_ARTICLES = SET_ENTRY_RELATED_ARTICLES;
-var SET_NAVIGATION_NOT_FOUND = "".concat(ROUTING_PREFIX, "_SET_NOT_FOUND");
-exports.SET_NAVIGATION_NOT_FOUND = SET_NAVIGATION_NOT_FOUND;
-var SET_NAVIGATION_PATH = "".concat(ROUTING_PREFIX, "_SET_NAVIGATION_PATH");
-exports.SET_NAVIGATION_PATH = SET_NAVIGATION_PATH;
-var SET_ROUTE_LOADING = "".concat(ROUTING_PREFIX, "_SET_ROUTE_LOADING");
-exports.SET_ROUTE_LOADING = SET_ROUTE_LOADING;
-var SET_TARGET_PROJECT = "".concat(ROUTING_PREFIX, "_SET_TARGET_PROJECT");
-exports.SET_TARGET_PROJECT = SET_TARGET_PROJECT;
-var SET_ROUTE = "".concat(ROUTING_PREFIX, "_SET_ROUTE");
-exports.SET_ROUTE = SET_ROUTE;
-var CALL_HISTORY_METHOD = "".concat(ROUTING_PREFIX, "_CALL_HISTORY_METHOD");
-exports.CALL_HISTORY_METHOD = CALL_HISTORY_METHOD;
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__10__;
-
-/***/ }),
-/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -286,17 +165,17 @@ var _exportNames = {
 };
 exports.cachedSearch = exports.deliveryApi = exports.GetAllResponseGuids = exports.GetResponseGuids = exports.fixImageUri = exports.GetDeliveryApiStatusFromHostname = exports.GetClientSideDeliveryApiStatus = void 0;
 
-var _defineProperty2 = _interopRequireDefault(__webpack_require__(4));
+var _defineProperty2 = _interopRequireDefault(__webpack_require__(5));
 
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__(5));
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(9));
 
-var _createClass2 = _interopRequireDefault(__webpack_require__(6));
+var _createClass2 = _interopRequireDefault(__webpack_require__(12));
 
 var _toConsumableArray2 = _interopRequireDefault(__webpack_require__(8));
 
-var _typeof2 = _interopRequireDefault(__webpack_require__(17));
+var _typeof2 = _interopRequireDefault(__webpack_require__(18));
 
-var _contensisDeliveryApi = __webpack_require__(34);
+var _contensisDeliveryApi = __webpack_require__(35);
 
 Object.keys(_contensisDeliveryApi).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -685,416 +564,100 @@ var cachedSearch = new CachedSearch();
 exports.cachedSearch = cachedSearch;
 
 /***/ }),
-/* 12 */
+/* 5 */
+/***/ (function(module, exports) {
+
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+}
+
+module.exports = _defineProperty;
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(36);
+
+
+/***/ }),
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _interopRequireDefault = __webpack_require__(0);
-
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.action = action;
-exports.flattenArray = flattenArray;
-exports.api = api;
-exports.dynamicSort = dynamicSort;
-exports.randomString = exports.resizeImageUri = exports.resizeImage = exports.getWebPImageUri = exports.default = void 0;
-
-var _regenerator = _interopRequireDefault(__webpack_require__(7));
-
-var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(19));
-
-var _defineProperty2 = _interopRequireDefault(__webpack_require__(4));
-
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__(5));
-
-var _createClass2 = _interopRequireDefault(__webpack_require__(6));
-
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-var ProjectHelper =
-/*#__PURE__*/
-function () {
-  function ProjectHelper() {
-    (0, _classCallCheck2.default)(this, ProjectHelper);
-  }
-
-  (0, _createClass2.default)(ProjectHelper, null, [{
-    key: "currencyFormat",
-    value: function currencyFormat(val) {
-      var formatter = new Intl.NumberFormat('en-GB', {
-        style: 'currency',
-        currency: 'GBP',
-        minimumFractionDigits: 0
-      });
-      return formatter.format(val);
-    }
-  }, {
-    key: "showChildren",
-    value: function showChildren(e) {
-      e.preventDefault;
-      var children = document.getElementById(e);
-
-      if (children.style.display == 'block') {
-        children.style.display = 'none';
-      } else {
-        children.style.display = 'block';
-      }
-    }
-  }, {
-    key: "camelize",
-    value: function camelize(str) {
-      return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function (letter, index) {
-        return index == 0 ? letter.toLowerCase() : letter.toUpperCase();
-      }).replace(/\s+/g, '');
-    }
-  }, {
-    key: "ltrim",
-    value: function ltrim(stringToTrim) {
-      return stringToTrim.replace(/^\s+/, '');
-    }
-  }, {
-    key: "trim",
-    value: function trim(s) {
-      var c = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : ' ';
-      if (c === ']') c = '\\]';
-      if (c === '\\') c = '\\\\';
-      return s.replace(new RegExp('^[' + c + ']+|[' + c + ']+$', 'g'), '');
-    }
-  }, {
-    key: "ArrayToSentence",
-    value: function ArrayToSentence(arr) {
-      var connector = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'and';
-      return arr.length > 1 ? arr.slice(0, -1).join(', ') + ' ' + connector + ' ' + arr.slice(-1) : arr.toString();
-    }
-  }, {
-    key: "GetComposerContent",
-    value: function GetComposerContent(composer, fieldName) {
-      if (composer) {
-        var composerField = composer.filter(function (c) {
-          return c.type === fieldName;
-        }).map(function (c) {
-          return c.value;
-        });
-        return composerField;
-      }
-
-      return null;
-    }
-  }, {
-    key: "dedupeUriSlashes",
-    value: function dedupeUriSlashes(uri) {
-      var work = uri.replace('//', '~~'); // replace first instance of double slash with tildes to switch out again for slashes later
-
-      var uriParts = work.split('/').filter(function (part) {
-        return part;
-      }); // split the working url into parts and filter any null parts
-
-      return uriParts.join('/').replace('~~', '//');
-    }
-  }, {
-    key: "dedupeArray",
-    value: function dedupeArray(arr) {
-      // remove duplicates from simple array
-      return arr.filter(function (elem, pos, arr) {
-        return arr.indexOf(elem) == pos;
-      });
-    }
-  }, {
-    key: "stringToArray",
-    value: function stringToArray(s) {
-      var seperator = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : ',';
-      return typeof s === 'string' ? s.split(seperator).map(function (item) {
-        return ProjectHelper.trim(item);
-      }) : s;
-    }
-  }, {
-    key: "composedFieldToObject",
-    value: function composedFieldToObject(composer) {
-      // convert array of [ { type: 'type', value: composerItem } ]
-      // to plain object of { type: composerItem }
-      var object = {};
-      composer.forEach(function (cfi) {
-        return object[cfi.type] = ProjectHelper.getComposerContent(cfi.type, composer);
-      });
-      return object;
-    }
-  }, {
-    key: "getComposerContent",
-    value: function getComposerContent(type, composer) {
-      var component = composer.find(function (c) {
-        return c.type === type;
-      });
-      return component && component.value;
-    }
-  }, {
-    key: "getFileSize",
-    value: function getFileSize(fileSize) {
-      var kb = Math.ceil(fileSize * 0.0009765625);
-      var mb = Math.round(parseFloat((fileSize * 0.00000095367432 * Math.pow(10, 2)).toFixed(2))) / Math.pow(10, 2);
-
-      if (kb < 1000) {
-        return kb + 'KB';
-      }
-
-      return mb + 'MB';
-    }
-  }, {
-    key: "getFileExtension",
-    value: function getFileExtension(uri) {
-      var re = /(?:\.([^.]+))?$/;
-      var ext = re.exec(uri)[1];
-
-      if (ext) {
-        return ext.toUpperCase();
-      }
-
-      return '';
-    }
-  }, {
-    key: "renderImageAsWebP",
-    value: function renderImageAsWebP(imageUrl) {
-      //Set new url to current url by default
-      var newImageUrl = imageUrl; //First check if image has has webp referenced in url
-
-      if (imageUrl && !imageUrl.includes('webp')) {
-        //Check if image already has transformations
-        if (!imageUrl.includes('?')) {
-          //If not load image as webp
-          newImageUrl = imageUrl + '?f=webp';
-        } else {
-          //Otherwise append webp format to existing transformations
-          newImageUrl = imageUrl + '&f=webp';
-        }
-      }
-
-      return newImageUrl;
-    }
-  }, {
-    key: "decodeEntities",
-    value: function decodeEntities(encodedString) {
-      var translate_re = /&(nbsp|amp|quot|lt|gt);/g;
-      var translate = {
-        nbsp: ' ',
-        amp: '&',
-        quot: '"',
-        lt: '<',
-        gt: '>'
-      };
-      return encodedString.replace(translate_re, function (match, entity) {
-        return translate[entity];
-      }).replace(/&#(\d+);/gi, function (match, numStr) {
-        var num = parseInt(numStr, 10);
-        return String.fromCharCode(num);
-      });
-    }
-  }, {
-    key: "keyPress",
-    value: function keyPress(event, action) {
-      var code = event.keyCode || event.which;
-
-      if (code === 13) {
-        action;
-      }
-    }
-  }, {
-    key: "GroupBy",
-    value: function GroupBy(list, keyGetter) {
-      var map = new Map();
-      list.forEach(function (item) {
-        var key = keyGetter(item);
-
-        if (!map.has(key)) {
-          map.set(key, [item]);
-        } else {
-          map.get(key).push(item);
-        }
-      });
-      return map;
-    }
-  }]);
-  return ProjectHelper;
-}();
-
-exports.default = ProjectHelper;
-
-function action(type) {
-  var payload = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-  return _objectSpread({
-    type: type
-  }, payload);
-}
-
-var getWebPImageUri = function getWebPImageUri(uri) {
-  var formatedUri = uri;
-
-  if (uri.indexOf('.gif') == -1) {
-    if (uri.indexOf('f=') == -1 && uri.indexOf('format=') == -1) {
-      if (uri.indexOf('?') > -1) {
-        formatedUri = "".concat(uri, "&f=webp");
-      } else {
-        formatedUri = "".concat(uri, "?f=webp");
-      }
-    }
-
-    if (formatedUri.indexOf('q=') == -1 && formatedUri.indexOf('quality=') == -1) {
-      if (formatedUri.indexOf('?') > -1) {
-        formatedUri = "".concat(formatedUri, "&q=70");
-      } else {
-        formatedUri = "".concat(formatedUri, "?q=70");
-      }
-    }
-  }
-
-  return formatedUri;
-};
-
-exports.getWebPImageUri = getWebPImageUri;
-
-var resizeImage = function resizeImage(image, height, width) {
-  if (image.asset && image.asset.sys && image.asset.sys.uri) {
-    image.asset.sys.uri = resizeImageUri(image.asset.sys.uri, height, width);
-  }
-};
-
-exports.resizeImage = resizeImage;
-
-var resizeImageUri = function resizeImageUri(uri, height, width) {
-  var formatedUri = uri;
-  var paramDelimeter = '?';
-
-  if (uri.indexOf('?') > -1) {
-    paramDelimeter = '&';
-  }
-
-  if (width) {
-    if (formatedUri.indexOf('w=') == -1 && formatedUri.indexOf('width=') == -1) {
-      formatedUri = "".concat(formatedUri).concat(paramDelimeter, "w=").concat(width);
-      paramDelimeter = '&';
-    }
-  }
-
-  if (height) {
-    if (formatedUri.indexOf('h=') == -1 && formatedUri.indexOf('height=') == -1) {
-      formatedUri = "".concat(formatedUri).concat(paramDelimeter, "h=").concat(height);
-    }
-  }
-
-  return formatedUri;
-};
-
-exports.resizeImageUri = resizeImageUri;
-
-function flattenArray(arr) {
-  // flatten arrays inside the supplied array and
-  // remove duplicates from the result
-  return arr.reduce(function (acc, val) {
-    return acc.concat(val);
-  }, []).filter(function (elem, pos, arr) {
-    return arr.indexOf(elem) == pos;
-  });
-}
-
-function api(_x, _x2) {
-  return _api.apply(this, arguments);
-}
-
-function _api() {
-  _api = (0, _asyncToGenerator2.default)(
-  /*#__PURE__*/
-  _regenerator.default.mark(function _callee2(url, options) {
-    return _regenerator.default.wrap(function _callee2$(_context2) {
-      while (1) {
-        switch (_context2.prev = _context2.next) {
-          case 0:
-            return _context2.abrupt("return", fetch(url, options).then(
-            /*#__PURE__*/
-            function () {
-              var _ref = (0, _asyncToGenerator2.default)(
-              /*#__PURE__*/
-              _regenerator.default.mark(function _callee(response) {
-                return _regenerator.default.wrap(function _callee$(_context) {
-                  while (1) {
-                    switch (_context.prev = _context.next) {
-                      case 0:
-                        setTimeout(function () {
-                          return null;
-                        }, 0);
-
-                        if (response.ok) {
-                          _context.next = 3;
-                          break;
-                        }
-
-                        throw new Error(response.statusText);
-
-                      case 3:
-                        return _context.abrupt("return", response.json().then(function (data) {
-                          return data;
-                        }));
-
-                      case 4:
-                      case "end":
-                        return _context.stop();
-                    }
-                  }
-                }, _callee);
-              }));
-
-              return function (_x3) {
-                return _ref.apply(this, arguments);
-              };
-            }()).catch(function (error) {
-              //console.log(error);
-              throw error;
-            }));
-
-          case 1:
-          case "end":
-            return _context2.stop();
-        }
-      }
-    }, _callee2);
-  }));
-  return _api.apply(this, arguments);
-}
-
-function dynamicSort(property) {
-  var sortOrder = 1;
-
-  if (property[0] === '-') {
-    sortOrder = -1;
-    property = property.substr(1);
-  }
-
-  return function (a, b) {
-    /* next line works with strings and numbers,
-     * and you may want to customize it to your needs
-     */
-    var result = a[property] < b[property] ? -1 : a[property] > b[property] ? 1 : 0;
-    return result * sortOrder;
-  };
-}
-
-var randomString = function randomString(length) {
-  var text = '';
-  var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-  for (var i = 0; i < length; i++) {
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
-  }
-
-  return text;
-};
-
-exports.randomString = randomString;
+exports.CALL_HISTORY_METHOD = exports.SET_ROUTE = exports.SET_TARGET_PROJECT = exports.SET_ROUTE_LOADING = exports.SET_NAVIGATION_PATH = exports.SET_NAVIGATION_NOT_FOUND = exports.SET_ENTRY_RELATED_ARTICLES = exports.SET_ENTRY_ID = exports.SET_ANCESTORS = exports.SET_NODE = exports.SET_ENTRY = exports.GET_ENTRY = void 0;
+var ROUTING_PREFIX = '@ROUTING/';
+var GET_ENTRY = "".concat(ROUTING_PREFIX, "_GET_ENTRY");
+exports.GET_ENTRY = GET_ENTRY;
+var SET_ENTRY = "".concat(ROUTING_PREFIX, "_SET_ENTRY");
+exports.SET_ENTRY = SET_ENTRY;
+var SET_NODE = "".concat(ROUTING_PREFIX, "_SET_NODE");
+exports.SET_NODE = SET_NODE;
+var SET_ANCESTORS = "".concat(ROUTING_PREFIX, "_SET_ANCESTORS");
+exports.SET_ANCESTORS = SET_ANCESTORS;
+var SET_ENTRY_ID = "".concat(ROUTING_PREFIX, "_SET_ENTRY_ID");
+exports.SET_ENTRY_ID = SET_ENTRY_ID;
+var SET_ENTRY_RELATED_ARTICLES = "".concat(ROUTING_PREFIX, "_SET_ENTRY_RELATED_ARTICLES");
+exports.SET_ENTRY_RELATED_ARTICLES = SET_ENTRY_RELATED_ARTICLES;
+var SET_NAVIGATION_NOT_FOUND = "".concat(ROUTING_PREFIX, "_SET_NOT_FOUND");
+exports.SET_NAVIGATION_NOT_FOUND = SET_NAVIGATION_NOT_FOUND;
+var SET_NAVIGATION_PATH = "".concat(ROUTING_PREFIX, "_SET_NAVIGATION_PATH");
+exports.SET_NAVIGATION_PATH = SET_NAVIGATION_PATH;
+var SET_ROUTE_LOADING = "".concat(ROUTING_PREFIX, "_SET_ROUTE_LOADING");
+exports.SET_ROUTE_LOADING = SET_ROUTE_LOADING;
+var SET_TARGET_PROJECT = "".concat(ROUTING_PREFIX, "_SET_TARGET_PROJECT");
+exports.SET_TARGET_PROJECT = SET_TARGET_PROJECT;
+var SET_ROUTE = "".concat(ROUTING_PREFIX, "_SET_ROUTE");
+exports.SET_ROUTE = SET_ROUTE;
+var CALL_HISTORY_METHOD = "".concat(ROUTING_PREFIX, "_CALL_HISTORY_METHOD");
+exports.CALL_HISTORY_METHOD = CALL_HISTORY_METHOD;
 
 /***/ }),
-/* 13 */
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var arrayWithoutHoles = __webpack_require__(30);
+
+var iterableToArray = __webpack_require__(31);
+
+var nonIterableSpread = __webpack_require__(32);
+
+function _toConsumableArray(arr) {
+  return arrayWithoutHoles(arr) || iterableToArray(arr) || nonIterableSpread();
+}
+
+module.exports = _toConsumableArray;
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports) {
+
+function _classCallCheck(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+}
+
+module.exports = _classCallCheck;
+
+/***/ }),
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1105,7 +668,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.selectRouteEntryRelatedArticles = exports.selectRouteLoading = exports.selectCurrentAncestors = exports.selectIsNotFound = exports.selectCurrentProject = exports.selectCurrentPath = exports.selectRouteEntryID = exports.selectRouteEntrySlug = exports.selectRouteEntryContentTypeId = exports.selectRouteEntryEntryId = exports.selectRouteEntryDepends = exports.selectRouteEntry = void 0;
 
-var _immutable = __webpack_require__(2);
+var _immutable = __webpack_require__(3);
 
 var selectRouteEntry = function selectRouteEntry(state) {
   return state.getIn(['routing', 'entry']);
@@ -1180,7 +743,35 @@ var selectRouteEntryRelatedArticles = function selectRouteEntryRelatedArticles(s
 exports.selectRouteEntryRelatedArticles = selectRouteEntryRelatedArticles;
 
 /***/ }),
-/* 14 */
+/* 11 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__11__;
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports) {
+
+function _defineProperties(target, props) {
+  for (var i = 0; i < props.length; i++) {
+    var descriptor = props[i];
+    descriptor.enumerable = descriptor.enumerable || false;
+    descriptor.configurable = true;
+    if ("value" in descriptor) descriptor.writable = true;
+    Object.defineProperty(target, descriptor.key, descriptor);
+  }
+}
+
+function _createClass(Constructor, protoProps, staticProps) {
+  if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+  if (staticProps) _defineProperties(Constructor, staticProps);
+  return Constructor;
+}
+
+module.exports = _createClass;
+
+/***/ }),
+/* 13 */
 /***/ (function(module, exports) {
 
 function _getRequireWildcardCache() {
@@ -1235,199 +826,7 @@ function _interopRequireWildcard(obj) {
 module.exports = _interopRequireWildcard;
 
 /***/ }),
-/* 15 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__15__;
-
-/***/ }),
-/* 16 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__16__;
-
-/***/ }),
-/* 17 */
-/***/ (function(module, exports) {
-
-function _typeof2(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof2 = function _typeof2(obj) { return typeof obj; }; } else { _typeof2 = function _typeof2(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof2(obj); }
-
-function _typeof(obj) {
-  if (typeof Symbol === "function" && _typeof2(Symbol.iterator) === "symbol") {
-    module.exports = _typeof = function _typeof(obj) {
-      return _typeof2(obj);
-    };
-  } else {
-    module.exports = _typeof = function _typeof(obj) {
-      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : _typeof2(obj);
-    };
-  }
-
-  return _typeof(obj);
-}
-
-module.exports = _typeof;
-
-/***/ }),
-/* 18 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.setCurrentProject = exports.setRouteEntryRelatedArticles = exports.setRouteEntry = exports.setRoute = exports.setNavigationPath = exports.setNotFound = void 0;
-
-var _helpers = __webpack_require__(12);
-
-var _routing = __webpack_require__(9);
-
-var setNotFound = function setNotFound(notFound) {
-  return (0, _helpers.action)(_routing.SET_NAVIGATION_NOT_FOUND, {
-    notFound: notFound
-  });
-};
-
-exports.setNotFound = setNotFound;
-
-var setNavigationPath = function setNavigationPath(path, isStatic) {
-  return (0, _helpers.action)(_routing.SET_NAVIGATION_PATH, {
-    path: path,
-    isStatic: isStatic
-  });
-};
-
-exports.setNavigationPath = setNavigationPath;
-
-var setRoute = function setRoute(path, state) {
-  return (0, _helpers.action)(_routing.SET_ROUTE, {
-    path: path,
-    state: state
-  });
-};
-
-exports.setRoute = setRoute;
-
-var setRouteEntry = function setRouteEntry(entry) {
-  return (0, _helpers.action)(_routing.SET_ENTRY, {
-    entry: entry
-  });
-};
-
-exports.setRouteEntry = setRouteEntry;
-
-var setRouteEntryRelatedArticles = function setRouteEntryRelatedArticles(relatedArticles) {
-  return (0, _helpers.action)(_routing.SET_ENTRY_RELATED_ARTICLES, {
-    relatedArticles: relatedArticles
-  });
-};
-
-exports.setRouteEntryRelatedArticles = setRouteEntryRelatedArticles;
-
-var setCurrentProject = function setCurrentProject(project, allowedGroups) {
-  return (0, _helpers.action)(_routing.SET_TARGET_PROJECT, {
-    project: project,
-    allowedGroups: allowedGroups
-  });
-};
-
-exports.setCurrentProject = setCurrentProject;
-
-/***/ }),
-/* 19 */
-/***/ (function(module, exports) {
-
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
-  try {
-    var info = gen[key](arg);
-    var value = info.value;
-  } catch (error) {
-    reject(error);
-    return;
-  }
-
-  if (info.done) {
-    resolve(value);
-  } else {
-    Promise.resolve(value).then(_next, _throw);
-  }
-}
-
-function _asyncToGenerator(fn) {
-  return function () {
-    var self = this,
-        args = arguments;
-    return new Promise(function (resolve, reject) {
-      var gen = fn.apply(self, args);
-
-      function _next(value) {
-        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
-      }
-
-      function _throw(err) {
-        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
-      }
-
-      _next(undefined);
-    });
-  };
-}
-
-module.exports = _asyncToGenerator;
-
-/***/ }),
-/* 20 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.SET_VERSION_STATUS = exports.SET_VERSION = void 0;
-var VERSION_PREFIX = '@VERSION/';
-var SET_VERSION = "".concat(VERSION_PREFIX, "SET_VERSION");
-exports.SET_VERSION = SET_VERSION;
-var SET_VERSION_STATUS = "".concat(VERSION_PREFIX, "SET_VERSION_STATUS");
-exports.SET_VERSION_STATUS = SET_VERSION_STATUS;
-
-/***/ }),
-/* 21 */
-/***/ (function(module, exports) {
-
-function _assertThisInitialized(self) {
-  if (self === void 0) {
-    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-  }
-
-  return self;
-}
-
-module.exports = _assertThisInitialized;
-
-/***/ }),
-/* 22 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-if (false) { var throwOnDirectAccess, ReactIs; } else {
-  // By explicitly using `prop-types` you are opting into new production behavior.
-  // http://fb.me/prop-types-in-prod
-  module.exports = __webpack_require__(53)();
-}
-
-
-/***/ }),
-/* 23 */
+/* 14 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2631,13 +2030,7 @@ function debounce(delayLength, pattern, worker) {
 
 
 /***/ }),
-/* 24 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__24__;
-
-/***/ }),
-/* 25 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2667,7 +2060,534 @@ var selectNavigationDepends = function selectNavigationDepends(state) {
 exports.selectNavigationDepends = selectNavigationDepends;
 
 /***/ }),
-/* 26 */
+/* 16 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__16__;
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__17__;
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports) {
+
+function _typeof2(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof2 = function _typeof2(obj) { return typeof obj; }; } else { _typeof2 = function _typeof2(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof2(obj); }
+
+function _typeof(obj) {
+  if (typeof Symbol === "function" && _typeof2(Symbol.iterator) === "symbol") {
+    module.exports = _typeof = function _typeof(obj) {
+      return _typeof2(obj);
+    };
+  } else {
+    module.exports = _typeof = function _typeof(obj) {
+      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : _typeof2(obj);
+    };
+  }
+
+  return _typeof(obj);
+}
+
+module.exports = _typeof;
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.setCurrentProject = exports.setRouteEntryRelatedArticles = exports.setRouteEntry = exports.setRoute = exports.setNavigationPath = exports.setNotFound = void 0;
+
+var _helpers = __webpack_require__(20);
+
+var _routing = __webpack_require__(7);
+
+var setNotFound = function setNotFound(notFound) {
+  return (0, _helpers.action)(_routing.SET_NAVIGATION_NOT_FOUND, {
+    notFound: notFound
+  });
+};
+
+exports.setNotFound = setNotFound;
+
+var setNavigationPath = function setNavigationPath(path, isStatic) {
+  return (0, _helpers.action)(_routing.SET_NAVIGATION_PATH, {
+    path: path,
+    isStatic: isStatic
+  });
+};
+
+exports.setNavigationPath = setNavigationPath;
+
+var setRoute = function setRoute(path, state) {
+  return (0, _helpers.action)(_routing.SET_ROUTE, {
+    path: path,
+    state: state
+  });
+};
+
+exports.setRoute = setRoute;
+
+var setRouteEntry = function setRouteEntry(entry) {
+  return (0, _helpers.action)(_routing.SET_ENTRY, {
+    entry: entry
+  });
+};
+
+exports.setRouteEntry = setRouteEntry;
+
+var setRouteEntryRelatedArticles = function setRouteEntryRelatedArticles(relatedArticles) {
+  return (0, _helpers.action)(_routing.SET_ENTRY_RELATED_ARTICLES, {
+    relatedArticles: relatedArticles
+  });
+};
+
+exports.setRouteEntryRelatedArticles = setRouteEntryRelatedArticles;
+
+var setCurrentProject = function setCurrentProject(project, allowedGroups) {
+  return (0, _helpers.action)(_routing.SET_TARGET_PROJECT, {
+    project: project,
+    allowedGroups: allowedGroups
+  });
+};
+
+exports.setCurrentProject = setCurrentProject;
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(0);
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.action = action;
+exports.flattenArray = flattenArray;
+exports.api = api;
+exports.dynamicSort = dynamicSort;
+exports.randomString = exports.resizeImageUri = exports.resizeImage = exports.getWebPImageUri = exports.default = void 0;
+
+var _regenerator = _interopRequireDefault(__webpack_require__(6));
+
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(37));
+
+var _defineProperty2 = _interopRequireDefault(__webpack_require__(5));
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(9));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(12));
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+var ProjectHelper =
+/*#__PURE__*/
+function () {
+  function ProjectHelper() {
+    (0, _classCallCheck2.default)(this, ProjectHelper);
+  }
+
+  (0, _createClass2.default)(ProjectHelper, null, [{
+    key: "currencyFormat",
+    value: function currencyFormat(val) {
+      var formatter = new Intl.NumberFormat('en-GB', {
+        style: 'currency',
+        currency: 'GBP',
+        minimumFractionDigits: 0
+      });
+      return formatter.format(val);
+    }
+  }, {
+    key: "showChildren",
+    value: function showChildren(e) {
+      e.preventDefault;
+      var children = document.getElementById(e);
+
+      if (children.style.display == 'block') {
+        children.style.display = 'none';
+      } else {
+        children.style.display = 'block';
+      }
+    }
+  }, {
+    key: "camelize",
+    value: function camelize(str) {
+      return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function (letter, index) {
+        return index == 0 ? letter.toLowerCase() : letter.toUpperCase();
+      }).replace(/\s+/g, '');
+    }
+  }, {
+    key: "ltrim",
+    value: function ltrim(stringToTrim) {
+      return stringToTrim.replace(/^\s+/, '');
+    }
+  }, {
+    key: "trim",
+    value: function trim(s) {
+      var c = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : ' ';
+      if (c === ']') c = '\\]';
+      if (c === '\\') c = '\\\\';
+      return s.replace(new RegExp('^[' + c + ']+|[' + c + ']+$', 'g'), '');
+    }
+  }, {
+    key: "ArrayToSentence",
+    value: function ArrayToSentence(arr) {
+      var connector = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'and';
+      return arr.length > 1 ? arr.slice(0, -1).join(', ') + ' ' + connector + ' ' + arr.slice(-1) : arr.toString();
+    }
+  }, {
+    key: "GetComposerContent",
+    value: function GetComposerContent(composer, fieldName) {
+      if (composer) {
+        var composerField = composer.filter(function (c) {
+          return c.type === fieldName;
+        }).map(function (c) {
+          return c.value;
+        });
+        return composerField;
+      }
+
+      return null;
+    }
+  }, {
+    key: "dedupeUriSlashes",
+    value: function dedupeUriSlashes(uri) {
+      var work = uri.replace('//', '~~'); // replace first instance of double slash with tildes to switch out again for slashes later
+
+      var uriParts = work.split('/').filter(function (part) {
+        return part;
+      }); // split the working url into parts and filter any null parts
+
+      return uriParts.join('/').replace('~~', '//');
+    }
+  }, {
+    key: "dedupeArray",
+    value: function dedupeArray(arr) {
+      // remove duplicates from simple array
+      return arr.filter(function (elem, pos, arr) {
+        return arr.indexOf(elem) == pos;
+      });
+    }
+  }, {
+    key: "stringToArray",
+    value: function stringToArray(s) {
+      var seperator = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : ',';
+      return typeof s === 'string' ? s.split(seperator).map(function (item) {
+        return ProjectHelper.trim(item);
+      }) : s;
+    }
+  }, {
+    key: "composedFieldToObject",
+    value: function composedFieldToObject(composer) {
+      // convert array of [ { type: 'type', value: composerItem } ]
+      // to plain object of { type: composerItem }
+      var object = {};
+      composer.forEach(function (cfi) {
+        return object[cfi.type] = ProjectHelper.getComposerContent(cfi.type, composer);
+      });
+      return object;
+    }
+  }, {
+    key: "getComposerContent",
+    value: function getComposerContent(type, composer) {
+      var component = composer.find(function (c) {
+        return c.type === type;
+      });
+      return component && component.value;
+    }
+  }, {
+    key: "getFileSize",
+    value: function getFileSize(fileSize) {
+      var kb = Math.ceil(fileSize * 0.0009765625);
+      var mb = Math.round(parseFloat((fileSize * 0.00000095367432 * Math.pow(10, 2)).toFixed(2))) / Math.pow(10, 2);
+
+      if (kb < 1000) {
+        return kb + 'KB';
+      }
+
+      return mb + 'MB';
+    }
+  }, {
+    key: "getFileExtension",
+    value: function getFileExtension(uri) {
+      var re = /(?:\.([^.]+))?$/;
+      var ext = re.exec(uri)[1];
+
+      if (ext) {
+        return ext.toUpperCase();
+      }
+
+      return '';
+    }
+  }, {
+    key: "renderImageAsWebP",
+    value: function renderImageAsWebP(imageUrl) {
+      //Set new url to current url by default
+      var newImageUrl = imageUrl; //First check if image has has webp referenced in url
+
+      if (imageUrl && !imageUrl.includes('webp')) {
+        //Check if image already has transformations
+        if (!imageUrl.includes('?')) {
+          //If not load image as webp
+          newImageUrl = imageUrl + '?f=webp';
+        } else {
+          //Otherwise append webp format to existing transformations
+          newImageUrl = imageUrl + '&f=webp';
+        }
+      }
+
+      return newImageUrl;
+    }
+  }, {
+    key: "decodeEntities",
+    value: function decodeEntities(encodedString) {
+      var translate_re = /&(nbsp|amp|quot|lt|gt);/g;
+      var translate = {
+        nbsp: ' ',
+        amp: '&',
+        quot: '"',
+        lt: '<',
+        gt: '>'
+      };
+      return encodedString.replace(translate_re, function (match, entity) {
+        return translate[entity];
+      }).replace(/&#(\d+);/gi, function (match, numStr) {
+        var num = parseInt(numStr, 10);
+        return String.fromCharCode(num);
+      });
+    }
+  }, {
+    key: "keyPress",
+    value: function keyPress(event, action) {
+      var code = event.keyCode || event.which;
+
+      if (code === 13) {
+        action;
+      }
+    }
+  }, {
+    key: "GroupBy",
+    value: function GroupBy(list, keyGetter) {
+      var map = new Map();
+      list.forEach(function (item) {
+        var key = keyGetter(item);
+
+        if (!map.has(key)) {
+          map.set(key, [item]);
+        } else {
+          map.get(key).push(item);
+        }
+      });
+      return map;
+    }
+  }]);
+  return ProjectHelper;
+}();
+
+exports.default = ProjectHelper;
+
+function action(type) {
+  var payload = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  return _objectSpread({
+    type: type
+  }, payload);
+}
+
+var getWebPImageUri = function getWebPImageUri(uri) {
+  var formatedUri = uri;
+
+  if (uri.indexOf('.gif') == -1) {
+    if (uri.indexOf('f=') == -1 && uri.indexOf('format=') == -1) {
+      if (uri.indexOf('?') > -1) {
+        formatedUri = "".concat(uri, "&f=webp");
+      } else {
+        formatedUri = "".concat(uri, "?f=webp");
+      }
+    }
+
+    if (formatedUri.indexOf('q=') == -1 && formatedUri.indexOf('quality=') == -1) {
+      if (formatedUri.indexOf('?') > -1) {
+        formatedUri = "".concat(formatedUri, "&q=70");
+      } else {
+        formatedUri = "".concat(formatedUri, "?q=70");
+      }
+    }
+  }
+
+  return formatedUri;
+};
+
+exports.getWebPImageUri = getWebPImageUri;
+
+var resizeImage = function resizeImage(image, height, width) {
+  if (image.asset && image.asset.sys && image.asset.sys.uri) {
+    image.asset.sys.uri = resizeImageUri(image.asset.sys.uri, height, width);
+  }
+};
+
+exports.resizeImage = resizeImage;
+
+var resizeImageUri = function resizeImageUri(uri, height, width) {
+  var formatedUri = uri;
+  var paramDelimeter = '?';
+
+  if (uri.indexOf('?') > -1) {
+    paramDelimeter = '&';
+  }
+
+  if (width) {
+    if (formatedUri.indexOf('w=') == -1 && formatedUri.indexOf('width=') == -1) {
+      formatedUri = "".concat(formatedUri).concat(paramDelimeter, "w=").concat(width);
+      paramDelimeter = '&';
+    }
+  }
+
+  if (height) {
+    if (formatedUri.indexOf('h=') == -1 && formatedUri.indexOf('height=') == -1) {
+      formatedUri = "".concat(formatedUri).concat(paramDelimeter, "h=").concat(height);
+    }
+  }
+
+  return formatedUri;
+};
+
+exports.resizeImageUri = resizeImageUri;
+
+function flattenArray(arr) {
+  // flatten arrays inside the supplied array and
+  // remove duplicates from the result
+  return arr.reduce(function (acc, val) {
+    return acc.concat(val);
+  }, []).filter(function (elem, pos, arr) {
+    return arr.indexOf(elem) == pos;
+  });
+}
+
+function api(_x, _x2) {
+  return _api.apply(this, arguments);
+}
+
+function _api() {
+  _api = (0, _asyncToGenerator2.default)(
+  /*#__PURE__*/
+  _regenerator.default.mark(function _callee2(url, options) {
+    return _regenerator.default.wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            return _context2.abrupt("return", fetch(url, options).then(
+            /*#__PURE__*/
+            function () {
+              var _ref = (0, _asyncToGenerator2.default)(
+              /*#__PURE__*/
+              _regenerator.default.mark(function _callee(response) {
+                return _regenerator.default.wrap(function _callee$(_context) {
+                  while (1) {
+                    switch (_context.prev = _context.next) {
+                      case 0:
+                        setTimeout(function () {
+                          return null;
+                        }, 0);
+
+                        if (response.ok) {
+                          _context.next = 3;
+                          break;
+                        }
+
+                        throw new Error(response.statusText);
+
+                      case 3:
+                        return _context.abrupt("return", response.json().then(function (data) {
+                          return data;
+                        }));
+
+                      case 4:
+                      case "end":
+                        return _context.stop();
+                    }
+                  }
+                }, _callee);
+              }));
+
+              return function (_x3) {
+                return _ref.apply(this, arguments);
+              };
+            }()).catch(function (error) {
+              //console.log(error);
+              throw error;
+            }));
+
+          case 1:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2);
+  }));
+  return _api.apply(this, arguments);
+}
+
+function dynamicSort(property) {
+  var sortOrder = 1;
+
+  if (property[0] === '-') {
+    sortOrder = -1;
+    property = property.substr(1);
+  }
+
+  return function (a, b) {
+    /* next line works with strings and numbers,
+     * and you may want to customize it to your needs
+     */
+    var result = a[property] < b[property] ? -1 : a[property] > b[property] ? 1 : 0;
+    return result * sortOrder;
+  };
+}
+
+var randomString = function randomString(length) {
+  var text = '';
+  var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+  for (var i = 0; i < length; i++) {
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+  }
+
+  return text;
+};
+
+exports.randomString = randomString;
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.SET_VERSION_STATUS = exports.SET_VERSION = void 0;
+var VERSION_PREFIX = '@VERSION/';
+var SET_VERSION = "".concat(VERSION_PREFIX, "SET_VERSION");
+exports.SET_VERSION = SET_VERSION;
+var SET_VERSION_STATUS = "".concat(VERSION_PREFIX, "SET_VERSION_STATUS");
+exports.SET_VERSION_STATUS = SET_VERSION_STATUS;
+
+/***/ }),
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2686,13 +2606,196 @@ var GET_NODE_TREE_ERROR = "".concat(ACTION_PREFIX, "_GET_NODE_TREE_ERROR");
 exports.GET_NODE_TREE_ERROR = GET_NODE_TREE_ERROR;
 
 /***/ }),
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.selectVersionStatus = exports.selectBuildNumber = exports.selectCommitRef = void 0;
+
+var selectCommitRef = function selectCommitRef(state) {
+  return state.getIn(['version', 'commitRef']);
+};
+
+exports.selectCommitRef = selectCommitRef;
+
+var selectBuildNumber = function selectBuildNumber(state) {
+  return state.getIn(['version', 'buildNo']);
+};
+
+exports.selectBuildNumber = selectBuildNumber;
+
+var selectVersionStatus = function selectVersionStatus(state) {
+  return state.getIn(['version', 'contensisVersionStatus']);
+};
+
+exports.selectVersionStatus = selectVersionStatus;
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(0);
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.ensureNodeTreeSaga = ensureNodeTreeSaga;
+exports.navigationSagas = void 0;
+
+var _regenerator = _interopRequireDefault(__webpack_require__(6));
+
+var _effects = __webpack_require__(14);
+
+var _ContensisDeliveryApi = __webpack_require__(4);
+
+var _navigation = __webpack_require__(22);
+
+var _navigation2 = __webpack_require__(15);
+
+var _version = __webpack_require__(23);
+
+var _routing = __webpack_require__(10);
+
+var _marked =
+/*#__PURE__*/
+_regenerator.default.mark(ensureNodeTreeSaga);
+
+var navigationSagas = [(0, _effects.takeEvery)(_navigation.GET_NODE_TREE, ensureNodeTreeSaga)];
+exports.navigationSagas = navigationSagas;
+
+function ensureNodeTreeSaga() {
+  var state, deliveryApiVersionStatus, project, nodes;
+  return _regenerator.default.wrap(function ensureNodeTreeSaga$(_context) {
+    while (1) {
+      switch (_context.prev = _context.next) {
+        case 0:
+          _context.next = 2;
+          return (0, _effects.select)();
+
+        case 2:
+          state = _context.sent;
+          _context.prev = 3;
+
+          if ((0, _navigation2.hasNavigationTree)(state)) {
+            _context.next = 21;
+            break;
+          }
+
+          _context.next = 7;
+          return (0, _effects.select)(_version.selectVersionStatus);
+
+        case 7:
+          deliveryApiVersionStatus = _context.sent;
+          _context.next = 10;
+          return (0, _effects.select)(_routing.selectCurrentProject);
+
+        case 10:
+          project = _context.sent;
+          _context.next = 13;
+          return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiVersionStatus, project).nodes.getRoot({
+            depth: 8,
+            entryFields: 'entryTitle, metaInformation, sys.contentTypeId'
+          });
+
+        case 13:
+          nodes = _context.sent;
+
+          if (!nodes) {
+            _context.next = 19;
+            break;
+          }
+
+          _context.next = 17;
+          return (0, _effects.put)({
+            type: _navigation.SET_NODE_TREE,
+            nodes: nodes
+          });
+
+        case 17:
+          _context.next = 21;
+          break;
+
+        case 19:
+          _context.next = 21;
+          return (0, _effects.put)({
+            type: _navigation.GET_NODE_TREE_ERROR
+          });
+
+        case 21:
+          _context.next = 27;
+          break;
+
+        case 23:
+          _context.prev = 23;
+          _context.t0 = _context["catch"](3);
+          _context.next = 27;
+          return (0, _effects.put)({
+            type: _navigation.GET_NODE_TREE_ERROR,
+            error: _context.t0.toString()
+          });
+
+        case 27:
+        case "end":
+          return _context.stop();
+      }
+    }
+  }, _marked, null, [[3, 23]]);
+}
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports) {
+
+function _assertThisInitialized(self) {
+  if (self === void 0) {
+    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+  }
+
+  return self;
+}
+
+module.exports = _assertThisInitialized;
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+if (false) { var throwOnDirectAccess, ReactIs; } else {
+  // By explicitly using `prop-types` you are opting into new production behavior.
+  // http://fb.me/prop-types-in-prod
+  module.exports = __webpack_require__(57)();
+}
+
+
+/***/ }),
 /* 27 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__27__;
+
+/***/ }),
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(module) {
 
-var _interopRequireWildcard = __webpack_require__(14);
+var _interopRequireWildcard = __webpack_require__(13);
 
 var _interopRequireDefault = __webpack_require__(0);
 
@@ -2701,41 +2804,41 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__(5));
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(9));
 
-var _createClass2 = _interopRequireDefault(__webpack_require__(6));
+var _createClass2 = _interopRequireDefault(__webpack_require__(12));
 
-var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(49));
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(53));
 
-var _getPrototypeOf3 = _interopRequireDefault(__webpack_require__(50));
+var _getPrototypeOf3 = _interopRequireDefault(__webpack_require__(54));
 
-var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__(21));
+var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__(25));
 
-var _inherits2 = _interopRequireDefault(__webpack_require__(51));
+var _inherits2 = _interopRequireDefault(__webpack_require__(55));
 
-var _defineProperty2 = _interopRequireDefault(__webpack_require__(4));
+var _defineProperty2 = _interopRequireDefault(__webpack_require__(5));
 
-var _react = _interopRequireWildcard(__webpack_require__(3));
+var _react = _interopRequireWildcard(__webpack_require__(2));
 
-var _propTypes = _interopRequireDefault(__webpack_require__(22));
+var _propTypes = _interopRequireDefault(__webpack_require__(26));
 
-var _reactRedux = __webpack_require__(16);
+var _reactRedux = __webpack_require__(17);
 
-var _reactHotLoader = __webpack_require__(15);
+var _reactHotLoader = __webpack_require__(16);
 
-var _reactRouterDom = __webpack_require__(10);
+var _reactRouterDom = __webpack_require__(11);
 
-var _reactRouterConfig = __webpack_require__(55);
+var _reactRouterConfig = __webpack_require__(59);
 
-var _routing = __webpack_require__(13);
+var _routing = __webpack_require__(10);
 
-var _routing2 = __webpack_require__(18);
+var _routing2 = __webpack_require__(19);
 
-var _NotFound = _interopRequireDefault(__webpack_require__(56));
+var _NotFound = _interopRequireDefault(__webpack_require__(60));
 
-var _Status = __webpack_require__(57);
+var _Status = __webpack_require__(61);
 
-var _ToJs = __webpack_require__(58);
+var _ToJs = __webpack_require__(62);
 
 var getTrimmedPath = function getTrimmedPath(path) {
   if (path !== '/') {
@@ -2863,16 +2966,16 @@ function mapDispatchToProps(dispatch) {
 var _default = (0, _reactHotLoader.hot)(module)((0, _reactRouterDom.withRouter)((0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)((0, _ToJs.toJS)(RouteLoader))));
 
 exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(48)(module)))
-
-/***/ }),
-/* 28 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__28__;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(52)(module)))
 
 /***/ }),
 /* 29 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__29__;
+
+/***/ }),
+/* 30 */
 /***/ (function(module, exports) {
 
 function _arrayWithoutHoles(arr) {
@@ -2888,7 +2991,7 @@ function _arrayWithoutHoles(arr) {
 module.exports = _arrayWithoutHoles;
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports) {
 
 function _iterableToArray(iter) {
@@ -2898,7 +3001,7 @@ function _iterableToArray(iter) {
 module.exports = _iterableToArray;
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports) {
 
 function _nonIterableSpread() {
@@ -2908,7 +3011,7 @@ function _nonIterableSpread() {
 module.exports = _nonIterableSpread;
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2919,7 +3022,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.browserHistory = exports.history = void 0;
 
-var _history = __webpack_require__(59);
+var _history = __webpack_require__(63);
 
 // Create a history depending on the environment
 var selectedHistory = typeof window !== 'undefined' ? _history.createBrowserHistory : _history.createMemoryHistory;
@@ -2934,7 +3037,7 @@ var browserHistory = selectedHistory();
 exports.browserHistory = browserHistory;
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2989,12 +3092,6 @@ var _default = pickProject;
 exports.default = _default;
 
 /***/ }),
-/* 34 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__34__;
-
-/***/ }),
 /* 35 */
 /***/ (function(module, exports) {
 
@@ -3002,6 +3099,54 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__35__;
 
 /***/ }),
 /* 36 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__36__;
+
+/***/ }),
+/* 37 */
+/***/ (function(module, exports) {
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
+  try {
+    var info = gen[key](arg);
+    var value = info.value;
+  } catch (error) {
+    reject(error);
+    return;
+  }
+
+  if (info.done) {
+    resolve(value);
+  } else {
+    Promise.resolve(value).then(_next, _throw);
+  }
+}
+
+function _asyncToGenerator(fn) {
+  return function () {
+    var self = this,
+        args = arguments;
+    return new Promise(function (resolve, reject) {
+      var gen = fn.apply(self, args);
+
+      function _next(value) {
+        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
+      }
+
+      function _throw(err) {
+        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
+      }
+
+      _next(undefined);
+    });
+  };
+}
+
+module.exports = _asyncToGenerator;
+
+/***/ }),
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3012,9 +3157,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.setVersionStatus = exports.setVersion = void 0;
 
-var _helpers = __webpack_require__(12);
+var _helpers = __webpack_require__(20);
 
-var _version = __webpack_require__(20);
+var _version = __webpack_require__(21);
 
 var setVersion = function setVersion(commitRef, buildNo) {
   return (0, _helpers.action)(_version.SET_VERSION, {
@@ -3034,13 +3179,13 @@ var setVersionStatus = function setVersionStatus(status) {
 exports.setVersionStatus = setVersionStatus;
 
 /***/ }),
-/* 37 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _interopRequireWildcard = __webpack_require__(14);
+var _interopRequireWildcard = __webpack_require__(13);
 
 var _interopRequireDefault = __webpack_require__(0);
 
@@ -3049,23 +3194,23 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _defineProperty2 = _interopRequireDefault(__webpack_require__(4));
+var _defineProperty2 = _interopRequireDefault(__webpack_require__(5));
 
-var _redux = __webpack_require__(38);
+var _redux = __webpack_require__(40);
 
-var _reduxImmutable = __webpack_require__(39);
+var _reduxImmutable = __webpack_require__(41);
 
-var _reduxThunk = _interopRequireDefault(__webpack_require__(40));
+var _reduxThunk = _interopRequireDefault(__webpack_require__(42));
 
-var _reduxSaga = _interopRequireWildcard(__webpack_require__(41));
+var _reduxSaga = _interopRequireWildcard(__webpack_require__(43));
 
-var _routing = _interopRequireDefault(__webpack_require__(42));
+var _routing = _interopRequireDefault(__webpack_require__(44));
 
-var _version = _interopRequireDefault(__webpack_require__(43));
+var _version = _interopRequireDefault(__webpack_require__(45));
 
-var _navigation = _interopRequireDefault(__webpack_require__(44));
+var _navigation = _interopRequireDefault(__webpack_require__(46));
 
-var _routerMiddleware = _interopRequireDefault(__webpack_require__(45));
+var _routerMiddleware = _interopRequireDefault(__webpack_require__(47));
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
@@ -3112,18 +3257,6 @@ var _default = function _default(featureReducers, initialState, history) {
 exports.default = _default;
 
 /***/ }),
-/* 38 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__38__;
-
-/***/ }),
-/* 39 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__39__;
-
-/***/ }),
 /* 40 */
 /***/ (function(module, exports) {
 
@@ -3137,6 +3270,18 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__41__;
 
 /***/ }),
 /* 42 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__42__;
+
+/***/ }),
+/* 43 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__43__;
+
+/***/ }),
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3147,11 +3292,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _immutable = __webpack_require__(2);
+var _immutable = __webpack_require__(3);
 
-var _routing = __webpack_require__(9);
+var _routing = __webpack_require__(7);
 
-var _ContensisDeliveryApi = __webpack_require__(11);
+var _ContensisDeliveryApi = __webpack_require__(4);
 
 var initialState = (0, _immutable.Map)({
   currentPath: [],
@@ -3243,7 +3388,7 @@ var _default = function _default() {
 exports.default = _default;
 
 /***/ }),
-/* 43 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3254,9 +3399,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _immutable = __webpack_require__(2);
+var _immutable = __webpack_require__(3);
 
-var _version = __webpack_require__(20);
+var _version = __webpack_require__(21);
 
 var initialState = (0, _immutable.Map)({
   commitRef: null,
@@ -3287,7 +3432,7 @@ var _default = function _default() {
 exports.default = _default;
 
 /***/ }),
-/* 44 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3298,9 +3443,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _immutable = __webpack_require__(2);
+var _immutable = __webpack_require__(3);
 
-var _navigation = __webpack_require__(26);
+var _navigation = __webpack_require__(22);
 
 var initialState = (0, _immutable.Map)({
   root: null,
@@ -3332,7 +3477,7 @@ var _default = function _default() {
 exports.default = _default;
 
 /***/ }),
-/* 45 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3347,7 +3492,7 @@ exports.default = void 0;
 
 var _toConsumableArray2 = _interopRequireDefault(__webpack_require__(8));
 
-var _routing = __webpack_require__(9);
+var _routing = __webpack_require__(7);
 
 /**
  * This middleware captures CALL_HISTORY_METHOD actions to redirect to the
@@ -3377,13 +3522,365 @@ var _default = routerMiddleware;
 exports.default = _default;
 
 /***/ }),
-/* 46 */
-/***/ (function(module, exports) {
+/* 48 */
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__46__;
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(0);
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = _default;
+
+var _regenerator = _interopRequireDefault(__webpack_require__(6));
+
+var _toConsumableArray2 = _interopRequireDefault(__webpack_require__(8));
+
+var _effects = __webpack_require__(14);
+
+var _routing = __webpack_require__(49);
+
+var _navigation = __webpack_require__(24);
+
+// index.js
+function _default() {
+  var featureSagas = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+  return (
+    /*#__PURE__*/
+    _regenerator.default.mark(function rootSaga() {
+      var subSagas;
+      return _regenerator.default.wrap(function rootSaga$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              subSagas = [].concat((0, _toConsumableArray2.default)(_routing.routingSagas), (0, _toConsumableArray2.default)(_navigation.navigationSagas));
+              _context.next = 3;
+              return (0, _effects.all)([].concat((0, _toConsumableArray2.default)(subSagas), (0, _toConsumableArray2.default)(featureSagas)));
+
+            case 3:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, rootSaga);
+    })
+  );
+}
 
 /***/ }),
-/* 47 */
+/* 49 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireWildcard = __webpack_require__(13);
+
+var _interopRequireDefault = __webpack_require__(0);
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.routingSagas = void 0;
+
+var _regenerator = _interopRequireDefault(__webpack_require__(6));
+
+var log = _interopRequireWildcard(__webpack_require__(50));
+
+var _effects = __webpack_require__(14);
+
+var _routing = __webpack_require__(7);
+
+var _ContensisDeliveryApi = __webpack_require__(4);
+
+var _version = __webpack_require__(23);
+
+var _routing2 = __webpack_require__(10);
+
+var _navigation = __webpack_require__(15);
+
+var _navigation2 = __webpack_require__(24);
+
+var _marked =
+/*#__PURE__*/
+_regenerator.default.mark(setRouteSaga),
+    _marked2 =
+/*#__PURE__*/
+_regenerator.default.mark(getRouteSaga),
+    _marked3 =
+/*#__PURE__*/
+_regenerator.default.mark(ensureNavigationTree),
+    _marked4 =
+/*#__PURE__*/
+_regenerator.default.mark(setRouteEntry),
+    _marked5 =
+/*#__PURE__*/
+_regenerator.default.mark(do404);
+
+var routingSagas = [(0, _effects.takeEvery)(_routing.SET_NAVIGATION_PATH, getRouteSaga), (0, _effects.takeEvery)(_routing.SET_ROUTE, setRouteSaga)];
+exports.routingSagas = routingSagas;
+
+function setRouteSaga(action) {
+  return _regenerator.default.wrap(function setRouteSaga$(_context) {
+    while (1) {
+      switch (_context.prev = _context.next) {
+        case 0:
+          /* eslint-disable no-console */
+          console.log(action);
+          _context.next = 3;
+          return (0, _effects.put)({
+            type: _routing.CALL_HISTORY_METHOD,
+            payload: {
+              method: 'push',
+              args: [action.path, action.state]
+            }
+          });
+
+        case 3:
+          _context.next = 5;
+          return (0, _effects.put)({
+            type: _routing.SET_NAVIGATION_PATH,
+            path: action.path
+          });
+
+        case 5:
+        case "end":
+          return _context.stop();
+      }
+    }
+  }, _marked);
+}
+
+function getRouteSaga(action) {
+  var state, currentPath, deliveryApiStatus, project, pathNode, ancestors, splitPath, entryGuid;
+  return _regenerator.default.wrap(function getRouteSaga$(_context2) {
+    while (1) {
+      switch (_context2.prev = _context2.next) {
+        case 0:
+          _context2.prev = 0;
+
+          if (action.isStatic) {
+            _context2.next = 6;
+            break;
+          }
+
+          _context2.next = 4;
+          return (0, _effects.call)(do404);
+
+        case 4:
+          _context2.next = 45;
+          break;
+
+        case 6:
+          _context2.next = 8;
+          return ensureNavigationTree();
+
+        case 8:
+          _context2.next = 10;
+          return (0, _effects.select)();
+
+        case 10:
+          state = _context2.sent;
+          currentPath = (0, _routing2.selectCurrentPath)(state);
+          deliveryApiStatus = (0, _version.selectVersionStatus)(state);
+          project = (0, _routing2.selectCurrentProject)(state);
+          pathNode = null;
+          ancestors = null; // Scroll into View
+
+          if (typeof window !== 'undefined') {
+            window.scroll({
+              top: 0
+            });
+          }
+
+          if (!(currentPath === '/')) {
+            _context2.next = 23;
+            break;
+          }
+
+          _context2.next = 20;
+          return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiStatus, project).nodes.getRoot({
+            entryFields: '*',
+            entryLinkDepth: 4,
+            language: 'en-GB'
+          });
+
+        case 20:
+          pathNode = _context2.sent;
+          _context2.next = 38;
+          break;
+
+        case 23:
+          if (!currentPath.startsWith('/preview/')) {
+            _context2.next = 32;
+            break;
+          }
+
+          splitPath = currentPath.split('/');
+          entryGuid = splitPath[2];
+          _context2.next = 28;
+          return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiStatus, project).nodes.getByEntry({
+            entryId: entryGuid,
+            entryFields: '*',
+            entryLinkDepth: 4
+          });
+
+        case 28:
+          pathNode = _context2.sent;
+          pathNode = pathNode[0];
+          _context2.next = 35;
+          break;
+
+        case 32:
+          _context2.next = 34;
+          return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiStatus, project).nodes.get({
+            path: currentPath,
+            entryFields: '*',
+            entryLinkDepth: 4
+          });
+
+        case 34:
+          pathNode = _context2.sent;
+
+        case 35:
+          _context2.next = 37;
+          return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiStatus, project).nodes.getAncestors(pathNode.id);
+
+        case 37:
+          ancestors = _context2.sent;
+
+        case 38:
+          if (!(pathNode && pathNode.entry && pathNode.entry.sys && pathNode.entry.sys.id)) {
+            _context2.next = 43;
+            break;
+          }
+
+          _context2.next = 41;
+          return (0, _effects.call)(setRouteEntry, pathNode.entry, pathNode, ancestors);
+
+        case 41:
+          _context2.next = 45;
+          break;
+
+        case 43:
+          _context2.next = 45;
+          return (0, _effects.call)(do404);
+
+        case 45:
+          _context2.next = 52;
+          break;
+
+        case 47:
+          _context2.prev = 47;
+          _context2.t0 = _context2["catch"](0);
+          log.info("Error running route saga: ".concat(_context2.t0));
+          _context2.next = 52;
+          return (0, _effects.call)(do404);
+
+        case 52:
+        case "end":
+          return _context2.stop();
+      }
+    }
+  }, _marked2, null, [[0, 47]]);
+}
+
+function ensureNavigationTree() {
+  var treeLoaded;
+  return _regenerator.default.wrap(function ensureNavigationTree$(_context3) {
+    while (1) {
+      switch (_context3.prev = _context3.next) {
+        case 0:
+          _context3.next = 2;
+          return (0, _effects.select)(_navigation.hasNavigationTree);
+
+        case 2:
+          treeLoaded = _context3.sent;
+
+          if (treeLoaded) {
+            _context3.next = 6;
+            break;
+          }
+
+          _context3.next = 6;
+          return (0, _effects.call)(_navigation2.ensureNodeTreeSaga);
+
+        case 6:
+        case "end":
+          return _context3.stop();
+      }
+    }
+  }, _marked3);
+}
+
+function setRouteEntry(entry, node, ancestors) {
+  return _regenerator.default.wrap(function setRouteEntry$(_context4) {
+    while (1) {
+      switch (_context4.prev = _context4.next) {
+        case 0:
+          _context4.next = 2;
+          return (0, _effects.all)([(0, _effects.put)({
+            type: _routing.SET_NAVIGATION_NOT_FOUND,
+            notFound: false
+          }), (0, _effects.put)({
+            type: _routing.SET_NODE,
+            node: node
+          }), (0, _effects.put)({
+            type: _routing.SET_ENTRY,
+            entry: entry
+          }), (0, _effects.put)({
+            type: _routing.SET_ENTRY_ID,
+            id: entry.sys.id
+          }), (0, _effects.put)({
+            type: _routing.SET_ANCESTORS,
+            ancestors: ancestors
+          })]);
+
+        case 2:
+        case "end":
+          return _context4.stop();
+      }
+    }
+  }, _marked4);
+}
+
+function do404() {
+  return _regenerator.default.wrap(function do404$(_context5) {
+    while (1) {
+      switch (_context5.prev = _context5.next) {
+        case 0:
+          _context5.next = 2;
+          return (0, _effects.put)({
+            type: _routing.SET_NAVIGATION_NOT_FOUND,
+            notFound: true
+          });
+
+        case 2:
+          _context5.next = 4;
+          return (0, _effects.put)({
+            type: _routing.SET_ENTRY_ID,
+            id: null
+          });
+
+        case 4:
+        case "end":
+          return _context5.stop();
+      }
+    }
+  }, _marked5);
+}
+
+/***/ }),
+/* 50 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__50__;
+
+/***/ }),
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3396,11 +3893,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _react = _interopRequireDefault(__webpack_require__(3));
+var _react = _interopRequireDefault(__webpack_require__(2));
 
-var _reactHotLoader = __webpack_require__(15);
+var _reactHotLoader = __webpack_require__(16);
 
-var _RouteLoader = _interopRequireDefault(__webpack_require__(27));
+var _RouteLoader = _interopRequireDefault(__webpack_require__(28));
 
 var AppRoot = function AppRoot(props) {
   return _react.default.createElement(_RouteLoader.default, props);
@@ -3410,7 +3907,7 @@ var _default = AppRoot;
 exports.default = _default;
 
 /***/ }),
-/* 48 */
+/* 52 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -3438,12 +3935,12 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 49 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _typeof = __webpack_require__(17);
+var _typeof = __webpack_require__(18);
 
-var assertThisInitialized = __webpack_require__(21);
+var assertThisInitialized = __webpack_require__(25);
 
 function _possibleConstructorReturn(self, call) {
   if (call && (_typeof(call) === "object" || typeof call === "function")) {
@@ -3456,7 +3953,7 @@ function _possibleConstructorReturn(self, call) {
 module.exports = _possibleConstructorReturn;
 
 /***/ }),
-/* 50 */
+/* 54 */
 /***/ (function(module, exports) {
 
 function _getPrototypeOf(o) {
@@ -3469,10 +3966,10 @@ function _getPrototypeOf(o) {
 module.exports = _getPrototypeOf;
 
 /***/ }),
-/* 51 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var setPrototypeOf = __webpack_require__(52);
+var setPrototypeOf = __webpack_require__(56);
 
 function _inherits(subClass, superClass) {
   if (typeof superClass !== "function" && superClass !== null) {
@@ -3492,7 +3989,7 @@ function _inherits(subClass, superClass) {
 module.exports = _inherits;
 
 /***/ }),
-/* 52 */
+/* 56 */
 /***/ (function(module, exports) {
 
 function _setPrototypeOf(o, p) {
@@ -3507,7 +4004,7 @@ function _setPrototypeOf(o, p) {
 module.exports = _setPrototypeOf;
 
 /***/ }),
-/* 53 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3520,7 +4017,7 @@ module.exports = _setPrototypeOf;
 
 
 
-var ReactPropTypesSecret = __webpack_require__(54);
+var ReactPropTypesSecret = __webpack_require__(58);
 
 function emptyFunction() {}
 function emptyFunctionWithReset() {}
@@ -3578,7 +4075,7 @@ module.exports = function() {
 
 
 /***/ }),
-/* 54 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3597,13 +4094,13 @@ module.exports = ReactPropTypesSecret;
 
 
 /***/ }),
-/* 55 */
+/* 59 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__55__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__59__;
 
 /***/ }),
-/* 56 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3616,7 +4113,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _react = _interopRequireDefault(__webpack_require__(3));
+var _react = _interopRequireDefault(__webpack_require__(2));
 
 var NotFound = function NotFound() {
   return _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("header", null, _react.default.createElement("h1", null, "404 Page Not Found")));
@@ -3626,7 +4123,7 @@ var _default = NotFound;
 exports.default = _default;
 
 /***/ }),
-/* 57 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3639,11 +4136,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Status = void 0;
 
-var _react = _interopRequireDefault(__webpack_require__(3));
+var _react = _interopRequireDefault(__webpack_require__(2));
 
-var _propTypes = _interopRequireDefault(__webpack_require__(22));
+var _propTypes = _interopRequireDefault(__webpack_require__(26));
 
-var _reactRouterDom = __webpack_require__(10);
+var _reactRouterDom = __webpack_require__(11);
 
 var Status = function Status(_ref) {
   var code = _ref.code,
@@ -3664,7 +4161,7 @@ Status.propTypes = {
 };
 
 /***/ }),
-/* 58 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3677,9 +4174,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.toJS = void 0;
 
-var _react = _interopRequireDefault(__webpack_require__(3));
+var _react = _interopRequireDefault(__webpack_require__(2));
 
-var _immutable = __webpack_require__(2);
+var _immutable = __webpack_require__(3);
 
 var toJS = function toJS(WrappedComponent) {
   return function (wrappedComponentProps) {
@@ -3696,7 +4193,7 @@ var toJS = function toJS(WrappedComponent) {
 exports.toJS = toJS;
 
 /***/ }),
-/* 59 */
+/* 63 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4767,154 +5264,7 @@ function createMemoryHistory(props) {
 
 
 /***/ }),
-/* 60 */,
-/* 61 */,
-/* 62 */,
-/* 63 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.selectVersionStatus = exports.selectBuildNumber = exports.selectCommitRef = void 0;
-
-var selectCommitRef = function selectCommitRef(state) {
-  return state.getIn(['version', 'commitRef']);
-};
-
-exports.selectCommitRef = selectCommitRef;
-
-var selectBuildNumber = function selectBuildNumber(state) {
-  return state.getIn(['version', 'buildNo']);
-};
-
-exports.selectBuildNumber = selectBuildNumber;
-
-var selectVersionStatus = function selectVersionStatus(state) {
-  return state.getIn(['version', 'contensisVersionStatus']);
-};
-
-exports.selectVersionStatus = selectVersionStatus;
-
-/***/ }),
-/* 64 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(0);
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.ensureNodeTreeSaga = ensureNodeTreeSaga;
-exports.navigationSagas = void 0;
-
-var _regenerator = _interopRequireDefault(__webpack_require__(7));
-
-var _effects = __webpack_require__(23);
-
-var _ContensisDeliveryApi = __webpack_require__(11);
-
-var _navigation = __webpack_require__(26);
-
-var _navigation2 = __webpack_require__(25);
-
-var _version = __webpack_require__(63);
-
-var _routing = __webpack_require__(13);
-
-var _marked =
-/*#__PURE__*/
-_regenerator.default.mark(ensureNodeTreeSaga);
-
-var navigationSagas = [(0, _effects.takeEvery)(_navigation.GET_NODE_TREE, ensureNodeTreeSaga)];
-exports.navigationSagas = navigationSagas;
-
-function ensureNodeTreeSaga() {
-  var state, deliveryApiVersionStatus, project, nodes;
-  return _regenerator.default.wrap(function ensureNodeTreeSaga$(_context) {
-    while (1) {
-      switch (_context.prev = _context.next) {
-        case 0:
-          _context.next = 2;
-          return (0, _effects.select)();
-
-        case 2:
-          state = _context.sent;
-          _context.prev = 3;
-
-          if ((0, _navigation2.hasNavigationTree)(state)) {
-            _context.next = 21;
-            break;
-          }
-
-          _context.next = 7;
-          return (0, _effects.select)(_version.selectVersionStatus);
-
-        case 7:
-          deliveryApiVersionStatus = _context.sent;
-          _context.next = 10;
-          return (0, _effects.select)(_routing.selectCurrentProject);
-
-        case 10:
-          project = _context.sent;
-          _context.next = 13;
-          return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiVersionStatus, project).nodes.getRoot({
-            depth: 8,
-            entryFields: 'entryTitle, metaInformation, sys.contentTypeId'
-          });
-
-        case 13:
-          nodes = _context.sent;
-
-          if (!nodes) {
-            _context.next = 19;
-            break;
-          }
-
-          _context.next = 17;
-          return (0, _effects.put)({
-            type: _navigation.SET_NODE_TREE,
-            nodes: nodes
-          });
-
-        case 17:
-          _context.next = 21;
-          break;
-
-        case 19:
-          _context.next = 21;
-          return (0, _effects.put)({
-            type: _navigation.GET_NODE_TREE_ERROR
-          });
-
-        case 21:
-          _context.next = 27;
-          break;
-
-        case 23:
-          _context.prev = 23;
-          _context.t0 = _context["catch"](3);
-          _context.next = 27;
-          return (0, _effects.put)({
-            type: _navigation.GET_NODE_TREE_ERROR,
-            error: _context.t0.toString()
-          });
-
-        case 27:
-        case "end":
-          return _context.stop();
-      }
-    }
-  }, _marked, null, [[3, 23]]);
-}
-
-/***/ }),
+/* 64 */,
 /* 65 */,
 /* 66 */,
 /* 67 */,
@@ -4933,14 +5283,7 @@ function ensureNodeTreeSaga() {
 /* 80 */,
 /* 81 */,
 /* 82 */,
-/* 83 */,
-/* 84 */,
-/* 85 */,
-/* 86 */,
-/* 87 */,
-/* 88 */,
-/* 89 */,
-/* 90 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4951,13 +5294,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var client = __webpack_require__(91).default;
+var client = __webpack_require__(84).default;
 
 var _default = client;
 exports.default = _default;
 
 /***/ }),
-/* 91 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4970,41 +5313,41 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__(5));
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(9));
 
-__webpack_require__(28);
+__webpack_require__(29);
 
-var _react = _interopRequireDefault(__webpack_require__(3));
+var _react = _interopRequireDefault(__webpack_require__(2));
 
-var _reactDom = __webpack_require__(92);
+var _reactDom = __webpack_require__(85);
 
-var _reactRouterDom = __webpack_require__(10);
+var _reactRouterDom = __webpack_require__(11);
 
-var _reactLoadable = __webpack_require__(24);
+var _reactLoadable = __webpack_require__(27);
 
-var _reactHotLoader = __webpack_require__(15);
+var _reactHotLoader = __webpack_require__(16);
 
-var _reactRedux = __webpack_require__(16);
+var _reactRedux = __webpack_require__(17);
 
-var _queryString = _interopRequireDefault(__webpack_require__(46));
+var _queryString = _interopRequireDefault(__webpack_require__(86));
 
-var _immutable = __webpack_require__(2);
+var _immutable = __webpack_require__(3);
 
-var _store = _interopRequireDefault(__webpack_require__(37));
+var _store = _interopRequireDefault(__webpack_require__(39));
 
-var _index = _interopRequireDefault(__webpack_require__(93));
+var _index = _interopRequireDefault(__webpack_require__(48));
 
-var _App = _interopRequireDefault(__webpack_require__(47));
+var _App = _interopRequireDefault(__webpack_require__(51));
 
-var _version = __webpack_require__(36);
+var _version = __webpack_require__(38);
 
-var _ContensisDeliveryApi = __webpack_require__(11);
+var _ContensisDeliveryApi = __webpack_require__(4);
 
-var _routing = __webpack_require__(18);
+var _routing = __webpack_require__(19);
 
-var _pickProject = _interopRequireDefault(__webpack_require__(33));
+var _pickProject = _interopRequireDefault(__webpack_require__(34));
 
-var _history = __webpack_require__(32);
+var _history = __webpack_require__(33);
 
 var ClientApp = function ClientApp(config) {
   (0, _classCallCheck2.default)(this, ClientApp);
@@ -5080,368 +5423,16 @@ var _default = ClientApp;
 exports.default = _default;
 
 /***/ }),
-/* 92 */
+/* 85 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__92__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__85__;
 
 /***/ }),
-/* 93 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(0);
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = _default;
-
-var _regenerator = _interopRequireDefault(__webpack_require__(7));
-
-var _toConsumableArray2 = _interopRequireDefault(__webpack_require__(8));
-
-var _effects = __webpack_require__(23);
-
-var _routing = __webpack_require__(94);
-
-var _navigation = __webpack_require__(64);
-
-// index.js
-function _default() {
-  var featureSagas = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-  return (
-    /*#__PURE__*/
-    _regenerator.default.mark(function rootSaga() {
-      var subSagas;
-      return _regenerator.default.wrap(function rootSaga$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              subSagas = [].concat((0, _toConsumableArray2.default)(_routing.routingSagas), (0, _toConsumableArray2.default)(_navigation.navigationSagas));
-              _context.next = 3;
-              return (0, _effects.all)([].concat((0, _toConsumableArray2.default)(subSagas), (0, _toConsumableArray2.default)(featureSagas)));
-
-            case 3:
-            case "end":
-              return _context.stop();
-          }
-        }
-      }, rootSaga);
-    })
-  );
-}
-
-/***/ }),
-/* 94 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireWildcard = __webpack_require__(14);
-
-var _interopRequireDefault = __webpack_require__(0);
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.routingSagas = void 0;
-
-var _regenerator = _interopRequireDefault(__webpack_require__(7));
-
-var log = _interopRequireWildcard(__webpack_require__(95));
-
-var _effects = __webpack_require__(23);
-
-var _routing = __webpack_require__(9);
-
-var _ContensisDeliveryApi = __webpack_require__(11);
-
-var _version = __webpack_require__(63);
-
-var _routing2 = __webpack_require__(13);
-
-var _navigation = __webpack_require__(25);
-
-var _navigation2 = __webpack_require__(64);
-
-var _marked =
-/*#__PURE__*/
-_regenerator.default.mark(setRouteSaga),
-    _marked2 =
-/*#__PURE__*/
-_regenerator.default.mark(getRouteSaga),
-    _marked3 =
-/*#__PURE__*/
-_regenerator.default.mark(ensureNavigationTree),
-    _marked4 =
-/*#__PURE__*/
-_regenerator.default.mark(setRouteEntry),
-    _marked5 =
-/*#__PURE__*/
-_regenerator.default.mark(do404);
-
-var routingSagas = [(0, _effects.takeEvery)(_routing.SET_NAVIGATION_PATH, getRouteSaga), (0, _effects.takeEvery)(_routing.SET_ROUTE, setRouteSaga)];
-exports.routingSagas = routingSagas;
-
-function setRouteSaga(action) {
-  return _regenerator.default.wrap(function setRouteSaga$(_context) {
-    while (1) {
-      switch (_context.prev = _context.next) {
-        case 0:
-          /* eslint-disable no-console */
-          console.log(action);
-          _context.next = 3;
-          return (0, _effects.put)({
-            type: _routing.CALL_HISTORY_METHOD,
-            payload: {
-              method: 'push',
-              args: [action.path, action.state]
-            }
-          });
-
-        case 3:
-          _context.next = 5;
-          return (0, _effects.put)({
-            type: _routing.SET_NAVIGATION_PATH,
-            path: action.path
-          });
-
-        case 5:
-        case "end":
-          return _context.stop();
-      }
-    }
-  }, _marked);
-}
-
-function getRouteSaga(action) {
-  var state, currentPath, deliveryApiStatus, project, pathNode, ancestors, splitPath, entryGuid;
-  return _regenerator.default.wrap(function getRouteSaga$(_context2) {
-    while (1) {
-      switch (_context2.prev = _context2.next) {
-        case 0:
-          _context2.prev = 0;
-
-          if (action.isStatic) {
-            _context2.next = 6;
-            break;
-          }
-
-          _context2.next = 4;
-          return (0, _effects.call)(do404);
-
-        case 4:
-          _context2.next = 45;
-          break;
-
-        case 6:
-          _context2.next = 8;
-          return ensureNavigationTree();
-
-        case 8:
-          _context2.next = 10;
-          return (0, _effects.select)();
-
-        case 10:
-          state = _context2.sent;
-          currentPath = (0, _routing2.selectCurrentPath)(state);
-          deliveryApiStatus = (0, _version.selectVersionStatus)(state);
-          project = (0, _routing2.selectCurrentProject)(state);
-          pathNode = null;
-          ancestors = null; // Scroll into View
-
-          if (typeof window !== 'undefined') {
-            window.scroll({
-              top: 0
-            });
-          }
-
-          if (!(currentPath === '/')) {
-            _context2.next = 23;
-            break;
-          }
-
-          _context2.next = 20;
-          return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiStatus, project).nodes.getRoot({
-            entryFields: '*',
-            entryLinkDepth: 4,
-            language: 'en-GB'
-          });
-
-        case 20:
-          pathNode = _context2.sent;
-          _context2.next = 38;
-          break;
-
-        case 23:
-          if (!currentPath.startsWith('/preview/')) {
-            _context2.next = 32;
-            break;
-          }
-
-          splitPath = currentPath.split('/');
-          entryGuid = splitPath[2];
-          _context2.next = 28;
-          return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiStatus, project).nodes.getByEntry({
-            entryId: entryGuid,
-            entryFields: '*',
-            entryLinkDepth: 4
-          });
-
-        case 28:
-          pathNode = _context2.sent;
-          pathNode = pathNode[0];
-          _context2.next = 35;
-          break;
-
-        case 32:
-          _context2.next = 34;
-          return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiStatus, project).nodes.get({
-            path: currentPath,
-            entryFields: '*',
-            entryLinkDepth: 4
-          });
-
-        case 34:
-          pathNode = _context2.sent;
-
-        case 35:
-          _context2.next = 37;
-          return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiStatus, project).nodes.getAncestors(pathNode.id);
-
-        case 37:
-          ancestors = _context2.sent;
-
-        case 38:
-          if (!(pathNode && pathNode.entry && pathNode.entry.sys && pathNode.entry.sys.id)) {
-            _context2.next = 43;
-            break;
-          }
-
-          _context2.next = 41;
-          return (0, _effects.call)(setRouteEntry, pathNode.entry, pathNode, ancestors);
-
-        case 41:
-          _context2.next = 45;
-          break;
-
-        case 43:
-          _context2.next = 45;
-          return (0, _effects.call)(do404);
-
-        case 45:
-          _context2.next = 52;
-          break;
-
-        case 47:
-          _context2.prev = 47;
-          _context2.t0 = _context2["catch"](0);
-          log.info("Error running route saga: ".concat(_context2.t0));
-          _context2.next = 52;
-          return (0, _effects.call)(do404);
-
-        case 52:
-        case "end":
-          return _context2.stop();
-      }
-    }
-  }, _marked2, null, [[0, 47]]);
-}
-
-function ensureNavigationTree() {
-  var treeLoaded;
-  return _regenerator.default.wrap(function ensureNavigationTree$(_context3) {
-    while (1) {
-      switch (_context3.prev = _context3.next) {
-        case 0:
-          _context3.next = 2;
-          return (0, _effects.select)(_navigation.hasNavigationTree);
-
-        case 2:
-          treeLoaded = _context3.sent;
-
-          if (treeLoaded) {
-            _context3.next = 6;
-            break;
-          }
-
-          _context3.next = 6;
-          return (0, _effects.call)(_navigation2.ensureNodeTreeSaga);
-
-        case 6:
-        case "end":
-          return _context3.stop();
-      }
-    }
-  }, _marked3);
-}
-
-function setRouteEntry(entry, node, ancestors) {
-  return _regenerator.default.wrap(function setRouteEntry$(_context4) {
-    while (1) {
-      switch (_context4.prev = _context4.next) {
-        case 0:
-          _context4.next = 2;
-          return (0, _effects.all)([(0, _effects.put)({
-            type: _routing.SET_NAVIGATION_NOT_FOUND,
-            notFound: false
-          }), (0, _effects.put)({
-            type: _routing.SET_NODE,
-            node: node
-          }), (0, _effects.put)({
-            type: _routing.SET_ENTRY,
-            entry: entry
-          }), (0, _effects.put)({
-            type: _routing.SET_ENTRY_ID,
-            id: entry.sys.id
-          }), (0, _effects.put)({
-            type: _routing.SET_ANCESTORS,
-            ancestors: ancestors
-          })]);
-
-        case 2:
-        case "end":
-          return _context4.stop();
-      }
-    }
-  }, _marked4);
-}
-
-function do404() {
-  return _regenerator.default.wrap(function do404$(_context5) {
-    while (1) {
-      switch (_context5.prev = _context5.next) {
-        case 0:
-          _context5.next = 2;
-          return (0, _effects.put)({
-            type: _routing.SET_NAVIGATION_NOT_FOUND,
-            notFound: true
-          });
-
-        case 2:
-          _context5.next = 4;
-          return (0, _effects.put)({
-            type: _routing.SET_ENTRY_ID,
-            id: null
-          });
-
-        case 4:
-        case "end":
-          return _context5.stop();
-      }
-    }
-  }, _marked5);
-}
-
-/***/ }),
-/* 95 */
+/* 86 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__95__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__86__;
 
 /***/ })
 /******/ ]);
