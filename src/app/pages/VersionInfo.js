@@ -10,6 +10,7 @@ import {
   selectBuildNumber,
 } from '~/core/redux/selectors/version.js';
 import { selectCurrentProject } from '~/core/redux/selectors/routing.js';
+import { setRoute } from '~/core/redux/actions/routing.js';
 
 const StyledTable = styled.table`
   font-family: 'Fira Sans', 'Source Sans Pro', Helvetica, Arial, sans-serif;
@@ -51,7 +52,7 @@ const StyledTable = styled.table`
   }
 `;
 
-const VersionInfo = ({ project, version }) => {
+const VersionInfo = ({ project, version, setRoute }) => {
   const config = {
     deliveryApi: DELIVERY_API_CONFIG /* global DELIVERY_API_CONFIG */,
     disabeSsrRedux: DISABLE_SSR_REDUX /* global DISABLE_SSR_REDUX*/,
@@ -62,8 +63,13 @@ const VersionInfo = ({ project, version }) => {
     reverseProxyPaths: REVERSE_PROXY_PATHS /* global REVERSE_PROXY_PATHS */,
     version: VERSION /* global VERSION */,
   };
+  const changeRoute = () => {
+    setRoute('/');
+  };
   return (
     <>
+      <button onClick={e => changeRoute(e)}>Change Route</button>
+
       <StyledTable>
         <thead>
           <tr>
@@ -206,6 +212,7 @@ const VersionInfo = ({ project, version }) => {
 VersionInfo.propTypes = {
   project: PropTypes.string,
   version: PropTypes.object,
+  setRoute: PropTypes.func,
 };
 
 const mapStateToProps = state => {
@@ -219,4 +226,13 @@ const mapStateToProps = state => {
   };
 };
 
-export default hot(module)(connect(mapStateToProps)(VersionInfo));
+const mapDispatchToProps = {
+  setRoute: (path, state) => setRoute(path, state),
+};
+
+export default hot(module)(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(VersionInfo)
+);

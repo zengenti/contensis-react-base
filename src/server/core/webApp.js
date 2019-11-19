@@ -26,6 +26,7 @@ import {
 } from '~/core/redux/selectors/routing';
 import createStore from '~/core/redux/store';
 import rootSaga from '~/core/redux/sagas';
+import { fromJS } from 'immutable';
 
 const addStandardHeaders = (state, response, packagejson, allowedGroups) => {
   if (state) {
@@ -132,7 +133,13 @@ const webApp = (app, ReactApp, config) => {
     const context = {};
     let status = 200;
 
-    const store = createStore(withReducers);
+    // Create a store (with a memory history) from our current url
+    const store = createStore(
+      withReducers,
+      fromJS({}),
+      history({ initialEntries: [url] })
+    );
+    //const store = createStore(withReducers);
 
     // dispatch any global and non-saga related actions before calling our JSX
     const versionStatusFromHostname = GetDeliveryApiStatusFromHostname(

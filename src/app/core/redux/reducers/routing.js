@@ -9,6 +9,7 @@ import {
   SET_ROUTE_LOADING,
   SET_ENTRY_RELATED_ARTICLES,
   SET_TARGET_PROJECT,
+  SET_ROUTE,
 } from '~/core/redux/types/routing';
 import {
   GetAllResponseGuids,
@@ -58,6 +59,9 @@ export default (state = initialState, action) => {
         return state.set('currentPath', fromJS(action.path));
       }
       return state;
+    }
+    case SET_ROUTE: {
+      return state.set('nextPath', action.path);
     }
     case SET_NAVIGATION_NOT_FOUND: {
       return state.set('notFound', fromJS(action.notFound));

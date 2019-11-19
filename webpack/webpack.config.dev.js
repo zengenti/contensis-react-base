@@ -119,8 +119,8 @@ const CLIENT_DEV_CONFIG = {
     quiet: false,
     watchOptions: {
       ignored: ['node_modules'],
-      // aggregateTimeout: 300,
-      // poll: 1000,
+      aggregateTimeout: 300,
+      poll: 1000,
     },
     proxy: {
       ...apiProxy,

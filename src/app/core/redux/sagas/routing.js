@@ -8,6 +8,8 @@ import {
   SET_NODE,
   SET_ANCESTORS,
   SET_NAVIGATION_PATH,
+  SET_ROUTE,
+  CALL_HISTORY_METHOD,
 } from '~/core/redux/types/routing';
 import { deliveryApi } from '~/core/util/ContensisDeliveryApi';
 import { selectVersionStatus } from '~/core/redux/selectors/version';
@@ -18,9 +20,25 @@ import {
 import { hasNavigationTree } from '../selectors/navigation';
 import { ensureNodeTreeSaga } from './navigation';
 
-export const routingSagas = [takeEvery(SET_NAVIGATION_PATH, getRouteSaga)];
+export const routingSagas = [
+  takeEvery(SET_NAVIGATION_PATH, getRouteSaga),
+  takeEvery(SET_ROUTE, setRouteSaga),
+];
 
-function* getRouteSaga() {
+function* setRouteSaga(action) {
+  /* eslint-disable no-console */
+  console.log(action);
+  yield put({
+    type: CALL_HISTORY_METHOD,
+    payload: {
+      method: 'push',
+      args: [action.path, action.state],
+    },
+  });
+  yield put({ type: SET_NAVIGATION_PATH, path: action.path });
+}
+
+function* getRouteSaga(action) {
   try {
     if (!action.isStatic) {
       yield call(do404);
