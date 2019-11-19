@@ -22,65 +22,68 @@ export const routingSagas = [takeEvery(SET_NAVIGATION_PATH, getRouteSaga)];
 
 function* getRouteSaga() {
   try {
-    yield ensureNavigationTree();
-    const state = yield select();
-    const currentPath = selectCurrentPath(state);
-    const deliveryApiStatus = selectVersionStatus(state);
-    const project = selectCurrentProject(state);
-
-    let pathNode = null;
-    let ancestors = null;
-    // Scroll into View
-    if (typeof window !== 'undefined') {
-      window.scroll({
-        top: 0,
-      });
-    }
-    if (currentPath === '/') {
-      pathNode = yield deliveryApi
-        .getClient(deliveryApiStatus, project)
-        .nodes.getRoot({
-          entryFields: '*',
-          entryLinkDepth: 4,
-          language: 'en-GB',
-        });
+    if (!action.isStatic) {
+      yield call(do404);
     } else {
-      if (currentPath.startsWith('/preview/')) {
-        let splitPath = currentPath.split('/');
-        let entryGuid = splitPath[2];
+      yield ensureNavigationTree();
+      const state = yield select();
+      const currentPath = selectCurrentPath(state);
+      const deliveryApiStatus = selectVersionStatus(state);
+      const project = selectCurrentProject(state);
+
+      let pathNode = null;
+      let ancestors = null;
+      // Scroll into View
+      if (typeof window !== 'undefined') {
+        window.scroll({
+          top: 0,
+        });
+      }
+      if (currentPath === '/') {
         pathNode = yield deliveryApi
           .getClient(deliveryApiStatus, project)
-          .nodes.getByEntry({
-            entryId: entryGuid,
+          .nodes.getRoot({
             entryFields: '*',
             entryLinkDepth: 4,
+            language: 'en-GB',
           });
-        pathNode = pathNode[0];
       } else {
-        pathNode = yield deliveryApi
+        if (currentPath.startsWith('/preview/')) {
+          let splitPath = currentPath.split('/');
+          let entryGuid = splitPath[2];
+          pathNode = yield deliveryApi
+            .getClient(deliveryApiStatus, project)
+            .nodes.getByEntry({
+              entryId: entryGuid,
+              entryFields: '*',
+              entryLinkDepth: 4,
+            });
+          pathNode = pathNode[0];
+        } else {
+          pathNode = yield deliveryApi
+            .getClient(deliveryApiStatus, project)
+            .nodes.get({
+              path: currentPath,
+              entryFields: '*',
+              entryLinkDepth: 4,
+            });
+        }
+
+        ancestors = yield deliveryApi
           .getClient(deliveryApiStatus, project)
-          .nodes.get({
-            path: currentPath,
-            entryFields: '*',
-            entryLinkDepth: 4,
-          });
+          .nodes.getAncestors(pathNode.id);
       }
 
-      ancestors = yield deliveryApi
-        .getClient(deliveryApiStatus)
-        .nodes.getAncestors(pathNode.id);
-      // debugger;
-    }
-
-    if (
-      pathNode &&
-      pathNode.entry &&
-      pathNode.entry.sys &&
-      pathNode.entry.sys.id
-    ) {
-      yield call(setRouteEntry, pathNode.entry, pathNode, ancestors);
-    } else {
-      yield call(do404);
+      if (
+        pathNode &&
+        pathNode.entry &&
+        pathNode.entry.sys &&
+        pathNode.entry.sys.id
+      ) {
+        yield call(setRouteEntry, pathNode.entry, pathNode, ancestors);
+      } else {
+        yield call(do404);
+      }
     }
   } catch (e) {
     log.info(`Error running route saga: ${e}`);

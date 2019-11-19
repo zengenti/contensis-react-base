@@ -42,34 +42,41 @@ class RouteLoader extends Component {
 
   componentWillMount() {
     const trimmedPath = getTrimmedPath(this.props.location.pathname);
-    this.props.setNavigationPath(trimmedPath);
+    this.props.setNavigationPath(
+      trimmedPath,
+      this.MatchedStaticRoute(trimmedPath)
+    );
   }
   componentWillReceiveProps(nextProps) {
     const nextPath = nextProps.location.pathname;
     const trimmedNextPath = getTrimmedPath(nextPath);
     const trimmedPreviousPath = getTrimmedPath(this.props.location.pathname);
     if (trimmedPreviousPath !== trimmedNextPath) {
-      this.props.setNavigationPath(trimmedNextPath);
+      this.props.setNavigationPath(
+        trimmedNextPath,
+        this.MatchedStaticRoute(trimmedNextPath)
+      );
     }
   }
 
-  render = () => {
-    // Match Any Static Routes a developer has defined
-    const MatchedStaticRoute = matchRoutes(
+  MatchedStaticRoute = pathname =>
+    matchRoutes(
       this.props.routes.StaticRoutes,
-      this.props.location.pathname
-    );
+      typeof window != 'undefined' ? window.location.pathname : pathname
+    ).length;
 
-    if (MatchedStaticRoute.length > 0) {
-      // debugger;
+  render = () => {
+    const currentPath = this.props.location.pathname;
+    const trimmedCurrentPath = getTrimmedPath(this.props.location.pathname);
+
+    // Match Any Static Routes a developer has defined
+    if (this.MatchedStaticRoute(currentPath)) {
       return renderRoutes(this.props.routes.StaticRoutes, {
         entry: this.props.entry,
       });
     }
 
     // Need to redirect when url endswith a /
-    const currentPath = this.props.location.pathname;
-    const trimmedCurrentPath = getTrimmedPath(this.props.location.pathname);
     if (currentPath.length > trimmedCurrentPath.length) {
       return <Redirect to={trimmedCurrentPath} />;
     }
