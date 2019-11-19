@@ -1,4 +1,6 @@
-import ZengentiAppServer from '../../zengenti-isomorphic-base';
+import ZengentiAppServer from './internalServer';
+import App from '~/App';
+// import ZengentiAppServer from '../../zengenti-isomorphic-base';
 import ContentTypeMappings from '~/core/routes/ContentTypeMappings';
 import StaticRoutes from '~/core/routes/StaticRoutes';
 import ServerFeatures from './features/configure';
@@ -8,7 +10,7 @@ import ServerFeatures from './features/configure';
 // import { reducer as AlertReducer } from '~/features/siteAlert';
 
 ZengentiAppServer.start(
-  ZengentiAppServer.ReactApp,
+  ZengentiAppServer.ReactApp || App,
   {
     routes: { ContentTypeMappings, StaticRoutes },
     withReducers: {},

@@ -9,7 +9,7 @@ import { ServerStyleSheet } from 'styled-components';
 import Helmet from 'react-helmet';
 import serialize from 'serialize-javascript';
 import minifyCssString from 'minify-css-string';
-// import { history } from '~/core/redux/history';
+import { history } from '~/core/redux/history';
 
 import { AccessMethods } from '../util/types';
 import pickProject from '~/core/util/pickProject';
