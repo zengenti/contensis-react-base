@@ -1,6 +1,6 @@
 import loadPolyfills from './loadPolyFills';
-// import ClientApp from './client'; // the entry point for the rest of the app
-import ClientApp from '../../client';
+import ClientApp from './client'; // the entry point for the rest of the app
+// import ClientApp from '../../client';
 
 import ContentTypeMappings from '~/core/routes/ContentTypeMappings';
 import StaticRoutes from '~/core/routes/StaticRoutes';

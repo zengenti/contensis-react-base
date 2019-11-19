@@ -41,7 +41,7 @@ class ClientApp {
      */
     const HMRRenderer = Component => {
       preloadReady().then(() => {
-        module.hot
+        process.env.NODE_ENV != 'production'
           ? render(Component, documentRoot)
           : hydrate(Component, documentRoot);
       });
