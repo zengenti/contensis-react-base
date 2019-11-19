@@ -40,10 +40,21 @@
   "editor.cursorBlinking": "smooth",
   "workbench.editor.highlightModifiedTabs": true,
   "workbench.colorCustomizations": {
-    "activityBar.background": "#e9654c",
-    "activityBar.foreground": "#fff",
-    "activityBar.inactiveForeground": "#f3f3f380",
-    "tab.activeBorderTop": "#e9654c"
+    "tab.activeBorderTop": "#e9654c",
+    "activityBar.background": "#1e593f",
+    "activityBar.activeBorder": "#221030",
+    "activityBar.foreground": "#e7e7e7",
+    "activityBar.inactiveForeground": "#e7e7e799",
+    "activityBarBadge.background": "#221030",
+    "activityBarBadge.foreground": "#e7e7e7",
+    "titleBar.activeBackground": "#113324",
+    "titleBar.inactiveBackground": "#11332499",
+    "titleBar.activeForeground": "#e7e7e7",
+    "titleBar.inactiveForeground": "#e7e7e799",
+    "statusBar.background": "#113324",
+    "statusBarItem.hoverBackground": "#1e593f",
+    "statusBar.foreground": "#e7e7e7"
   },
-  "prettier.printWidth": 115
+  "prettier.printWidth": 80,
+  "peacock.color": "#113324"
 }
