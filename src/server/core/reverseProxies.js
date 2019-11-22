@@ -4,7 +4,8 @@ const servers = SERVERS; /* global SERVERS */
 var apiProxy = httpProxy.createProxyServer();
 
 const reverseProxies = (app, reverseProxyPaths) => {
-  deliveryApiProxy(apiProxy, app);
+  PROXY_DELIVERY_API /* global PROXY_DELIVERY_API */ &&
+    deliveryApiProxy(apiProxy, app);
 
   app.all(reverseProxyPaths, (req, res) => {
     const target = servers.iis;

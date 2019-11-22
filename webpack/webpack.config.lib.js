@@ -21,6 +21,8 @@ const LIB_CONFIG = {
   },
   externals: [
     ...Object.keys(packagejson.dependencies),
+    '@babel',
+    /^@redux-saga*/,
     'react-dom/server',
     'react-loadable/webpack',
   ],

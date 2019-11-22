@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("react"), require("immutable"), require("react-router-dom"), require("react-hot-loader"), require("react-redux"), require("react-loadable"), require("isomorphic-fetch"), require("contensis-delivery-api"), require("regenerator-runtime"), require("redux"), require("redux-immutable"), require("redux-thunk"), require("redux-saga"), require("loglevel"), require("react-router-config"), require("react-dom"), require("query-string"));
+		module.exports = factory(require("react"), require("immutable"), require("react-router-dom"), require("react-hot-loader"), require("react-redux"), require("@redux-saga/core/effects"), require("react-loadable"), require("isomorphic-fetch"), require("contensis-delivery-api"), require("regenerator-runtime"), require("redux"), require("redux-immutable"), require("redux-thunk"), require("redux-saga"), require("loglevel"), require("react-router-config"), require("react-dom"), require("query-string"));
 	else if(typeof define === 'function' && define.amd)
-		define(["react", "immutable", "react-router-dom", "react-hot-loader", "react-redux", "react-loadable", "isomorphic-fetch", "contensis-delivery-api", "regenerator-runtime", "redux", "redux-immutable", "redux-thunk", "redux-saga", "loglevel", "react-router-config", "react-dom", "query-string"], factory);
+		define(["react", "immutable", "react-router-dom", "react-hot-loader", "react-redux", "@redux-saga/core/effects", "react-loadable", "isomorphic-fetch", "contensis-delivery-api", "regenerator-runtime", "redux", "redux-immutable", "redux-thunk", "redux-saga", "loglevel", "react-router-config", "react-dom", "query-string"], factory);
 	else {
-		var a = typeof exports === 'object' ? factory(require("react"), require("immutable"), require("react-router-dom"), require("react-hot-loader"), require("react-redux"), require("react-loadable"), require("isomorphic-fetch"), require("contensis-delivery-api"), require("regenerator-runtime"), require("redux"), require("redux-immutable"), require("redux-thunk"), require("redux-saga"), require("loglevel"), require("react-router-config"), require("react-dom"), require("query-string")) : factory(root["react"], root["immutable"], root["react-router-dom"], root["react-hot-loader"], root["react-redux"], root["react-loadable"], root["isomorphic-fetch"], root["contensis-delivery-api"], root["regenerator-runtime"], root["redux"], root["redux-immutable"], root["redux-thunk"], root["redux-saga"], root["loglevel"], root["react-router-config"], root["react-dom"], root["query-string"]);
+		var a = typeof exports === 'object' ? factory(require("react"), require("immutable"), require("react-router-dom"), require("react-hot-loader"), require("react-redux"), require("@redux-saga/core/effects"), require("react-loadable"), require("isomorphic-fetch"), require("contensis-delivery-api"), require("regenerator-runtime"), require("redux"), require("redux-immutable"), require("redux-thunk"), require("redux-saga"), require("loglevel"), require("react-router-config"), require("react-dom"), require("query-string")) : factory(root["react"], root["immutable"], root["react-router-dom"], root["react-hot-loader"], root["react-redux"], root["@redux-saga/core/effects"], root["react-loadable"], root["isomorphic-fetch"], root["contensis-delivery-api"], root["regenerator-runtime"], root["redux"], root["redux-immutable"], root["redux-thunk"], root["redux-saga"], root["loglevel"], root["react-router-config"], root["react-dom"], root["query-string"]);
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(global, function(__WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__3__, __WEBPACK_EXTERNAL_MODULE__11__, __WEBPACK_EXTERNAL_MODULE__16__, __WEBPACK_EXTERNAL_MODULE__17__, __WEBPACK_EXTERNAL_MODULE__27__, __WEBPACK_EXTERNAL_MODULE__29__, __WEBPACK_EXTERNAL_MODULE__35__, __WEBPACK_EXTERNAL_MODULE__36__, __WEBPACK_EXTERNAL_MODULE__40__, __WEBPACK_EXTERNAL_MODULE__41__, __WEBPACK_EXTERNAL_MODULE__42__, __WEBPACK_EXTERNAL_MODULE__43__, __WEBPACK_EXTERNAL_MODULE__50__, __WEBPACK_EXTERNAL_MODULE__59__, __WEBPACK_EXTERNAL_MODULE__85__, __WEBPACK_EXTERNAL_MODULE__86__) {
+})(global, function(__WEBPACK_EXTERNAL_MODULE__1__, __WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__10__, __WEBPACK_EXTERNAL_MODULE__15__, __WEBPACK_EXTERNAL_MODULE__16__, __WEBPACK_EXTERNAL_MODULE__22__, __WEBPACK_EXTERNAL_MODULE__27__, __WEBPACK_EXTERNAL_MODULE__29__, __WEBPACK_EXTERNAL_MODULE__35__, __WEBPACK_EXTERNAL_MODULE__36__, __WEBPACK_EXTERNAL_MODULE__40__, __WEBPACK_EXTERNAL_MODULE__41__, __WEBPACK_EXTERNAL_MODULE__42__, __WEBPACK_EXTERNAL_MODULE__43__, __WEBPACK_EXTERNAL_MODULE__50__, __WEBPACK_EXTERNAL_MODULE__59__, __WEBPACK_EXTERNAL_MODULE__85__, __WEBPACK_EXTERNAL_MODULE__86__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -108,27 +108,9 @@ module.exports = _interopRequireDefault;
 
 /***/ }),
 /* 1 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return _extends; });
-function _extends() {
-  _extends = Object.assign || function (target) {
-    for (var i = 1; i < arguments.length; i++) {
-      var source = arguments[i];
-
-      for (var key in source) {
-        if (Object.prototype.hasOwnProperty.call(source, key)) {
-          target[key] = source[key];
-        }
-      }
-    }
-
-    return target;
-  };
-
-  return _extends.apply(this, arguments);
-}
+module.exports = __WEBPACK_EXTERNAL_MODULE__1__;
 
 /***/ }),
 /* 2 */
@@ -138,12 +120,6 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__2__;
 
 /***/ }),
 /* 3 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__3__;
-
-/***/ }),
-/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -165,15 +141,15 @@ var _exportNames = {
 };
 exports.cachedSearch = exports.deliveryApi = exports.GetAllResponseGuids = exports.GetResponseGuids = exports.fixImageUri = exports.GetDeliveryApiStatusFromHostname = exports.GetClientSideDeliveryApiStatus = void 0;
 
-var _defineProperty2 = _interopRequireDefault(__webpack_require__(5));
+var _defineProperty2 = _interopRequireDefault(__webpack_require__(4));
 
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__(9));
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(8));
 
-var _createClass2 = _interopRequireDefault(__webpack_require__(12));
+var _createClass2 = _interopRequireDefault(__webpack_require__(11));
 
-var _toConsumableArray2 = _interopRequireDefault(__webpack_require__(8));
+var _toConsumableArray2 = _interopRequireDefault(__webpack_require__(7));
 
-var _typeof2 = _interopRequireDefault(__webpack_require__(18));
+var _typeof2 = _interopRequireDefault(__webpack_require__(17));
 
 var _contensisDeliveryApi = __webpack_require__(35);
 
@@ -564,7 +540,7 @@ var cachedSearch = new CachedSearch();
 exports.cachedSearch = cachedSearch;
 
 /***/ }),
-/* 5 */
+/* 4 */
 /***/ (function(module, exports) {
 
 function _defineProperty(obj, key, value) {
@@ -585,14 +561,14 @@ function _defineProperty(obj, key, value) {
 module.exports = _defineProperty;
 
 /***/ }),
-/* 6 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(36);
 
 
 /***/ }),
-/* 7 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -629,7 +605,7 @@ var CALL_HISTORY_METHOD = "".concat(ROUTING_PREFIX, "_CALL_HISTORY_METHOD");
 exports.CALL_HISTORY_METHOD = CALL_HISTORY_METHOD;
 
 /***/ }),
-/* 8 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var arrayWithoutHoles = __webpack_require__(30);
@@ -645,7 +621,7 @@ function _toConsumableArray(arr) {
 module.exports = _toConsumableArray;
 
 /***/ }),
-/* 9 */
+/* 8 */
 /***/ (function(module, exports) {
 
 function _classCallCheck(instance, Constructor) {
@@ -657,7 +633,7 @@ function _classCallCheck(instance, Constructor) {
 module.exports = _classCallCheck;
 
 /***/ }),
-/* 10 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -668,7 +644,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.selectRouteEntryRelatedArticles = exports.selectRouteLoading = exports.selectCurrentAncestors = exports.selectIsNotFound = exports.selectCurrentProject = exports.selectCurrentPath = exports.selectRouteEntryID = exports.selectRouteEntrySlug = exports.selectRouteEntryContentTypeId = exports.selectRouteEntryEntryId = exports.selectRouteEntryDepends = exports.selectRouteEntry = void 0;
 
-var _immutable = __webpack_require__(3);
+var _immutable = __webpack_require__(2);
 
 var selectRouteEntry = function selectRouteEntry(state) {
   return state.getIn(['routing', 'entry']);
@@ -743,13 +719,13 @@ var selectRouteEntryRelatedArticles = function selectRouteEntryRelatedArticles(s
 exports.selectRouteEntryRelatedArticles = selectRouteEntryRelatedArticles;
 
 /***/ }),
-/* 11 */
+/* 10 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__11__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__10__;
 
 /***/ }),
-/* 12 */
+/* 11 */
 /***/ (function(module, exports) {
 
 function _defineProperties(target, props) {
@@ -771,7 +747,7 @@ function _createClass(Constructor, protoProps, staticProps) {
 module.exports = _createClass;
 
 /***/ }),
-/* 13 */
+/* 12 */
 /***/ (function(module, exports) {
 
 function _getRequireWildcardCache() {
@@ -826,1211 +802,19 @@ function _interopRequireWildcard(obj) {
 module.exports = _interopRequireWildcard;
 
 /***/ }),
-/* 14 */
+/* 13 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-
-// CONCATENATED MODULE: ./node_modules/@redux-saga/symbols/dist/redux-saga-symbols.esm.js
-var createSymbol = function createSymbol(name) {
-  return "@@redux-saga/" + name;
-};
-
-var CANCEL =
-/*#__PURE__*/
-createSymbol('CANCEL_PROMISE');
-var CHANNEL_END_TYPE =
-/*#__PURE__*/
-createSymbol('CHANNEL_END');
-var IO =
-/*#__PURE__*/
-createSymbol('IO');
-var MATCH =
-/*#__PURE__*/
-createSymbol('MATCH');
-var MULTICAST =
-/*#__PURE__*/
-createSymbol('MULTICAST');
-var SAGA_ACTION =
-/*#__PURE__*/
-createSymbol('SAGA_ACTION');
-var SELF_CANCELLATION =
-/*#__PURE__*/
-createSymbol('SELF_CANCELLATION');
-var TASK =
-/*#__PURE__*/
-createSymbol('TASK');
-var TASK_CANCEL =
-/*#__PURE__*/
-createSymbol('TASK_CANCEL');
-var TERMINATE =
-/*#__PURE__*/
-createSymbol('TERMINATE');
-var SAGA_LOCATION =
-/*#__PURE__*/
-createSymbol('LOCATION');
-
-
-
-// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/extends.js
-var esm_extends = __webpack_require__(1);
-
-// CONCATENATED MODULE: ./node_modules/@redux-saga/is/dist/redux-saga-is.esm.js
-
-
-var undef = function undef(v) {
-  return v === null || v === undefined;
-};
-var notUndef = function notUndef(v) {
-  return v !== null && v !== undefined;
-};
-var func = function func(f) {
-  return typeof f === 'function';
-};
-var number = function number(n) {
-  return typeof n === 'number';
-};
-var string = function string(s) {
-  return typeof s === 'string';
-};
-var array = Array.isArray;
-var object = function object(obj) {
-  return obj && !array(obj) && typeof obj === 'object';
-};
-var redux_saga_is_esm_promise = function promise(p) {
-  return p && func(p.then);
-};
-var iterator = function iterator(it) {
-  return it && func(it.next) && func(it.throw);
-};
-var iterable = function iterable(it) {
-  return it && func(Symbol) ? func(it[Symbol.iterator]) : array(it);
-};
-var redux_saga_is_esm_task = function task(t) {
-  return t && t[TASK];
-};
-var redux_saga_is_esm_sagaAction = function sagaAction(a) {
-  return Boolean(a && a[SAGA_ACTION]);
-};
-var observable = function observable(ob) {
-  return ob && func(ob.subscribe);
-};
-var buffer = function buffer(buf) {
-  return buf && func(buf.isEmpty) && func(buf.take) && func(buf.put);
-};
-var redux_saga_is_esm_pattern = function pattern(pat) {
-  return pat && (string(pat) || symbol(pat) || func(pat) || array(pat) && pat.every(pattern));
-};
-var redux_saga_is_esm_channel = function channel(ch) {
-  return ch && func(ch.take) && func(ch.close);
-};
-var stringableFunc = function stringableFunc(f) {
-  return func(f) && f.hasOwnProperty('toString');
-};
-var symbol = function symbol(sym) {
-  return Boolean(sym) && typeof Symbol === 'function' && sym.constructor === Symbol && sym !== Symbol.prototype;
-};
-var redux_saga_is_esm_multicast = function multicast(ch) {
-  return redux_saga_is_esm_channel(ch) && ch[MULTICAST];
-};
-var redux_saga_is_esm_effect = function effect(eff) {
-  return eff && eff[IO];
-};
-
-
-
-// CONCATENATED MODULE: ./node_modules/@redux-saga/delay-p/dist/redux-saga-delay-p.esm.js
-
-
-function delayP(ms, val) {
-  if (val === void 0) {
-    val = true;
-  }
-
-  var timeoutId;
-  var promise = new Promise(function (resolve) {
-    timeoutId = setTimeout(resolve, ms, val);
-  });
-
-  promise[CANCEL] = function () {
-    clearTimeout(timeoutId);
-  };
-
-  return promise;
-}
-
-/* harmony default export */ var redux_saga_delay_p_esm = (delayP);
-
-// CONCATENATED MODULE: ./node_modules/@redux-saga/core/dist/io-427945dd.js
-
-
-
-
-
-var konst = function konst(v) {
-  return function () {
-    return v;
-  };
-};
-var kTrue =
-/*#__PURE__*/
-konst(true);
-
-var noop = function noop() {};
-
-if (false) {}
-var identity = function identity(v) {
-  return v;
-};
-var hasSymbol = typeof Symbol === 'function';
-var asyncIteratorSymbol = hasSymbol && Symbol.asyncIterator ? Symbol.asyncIterator : '@@asyncIterator';
-function check(value, predicate, error) {
-  if (!predicate(value)) {
-    throw new Error(error);
-  }
-}
-var io_427945dd_assignWithSymbols = function assignWithSymbols(target, source) {
-  Object(esm_extends["a" /* default */])(target, source);
-
-  if (Object.getOwnPropertySymbols) {
-    Object.getOwnPropertySymbols(source).forEach(function (s) {
-      target[s] = source[s];
-    });
-  }
-};
-var flatMap = function flatMap(mapper, arr) {
-  var _ref;
-
-  return (_ref = []).concat.apply(_ref, arr.map(mapper));
-};
-function remove(array, item) {
-  var index = array.indexOf(item);
-
-  if (index >= 0) {
-    array.splice(index, 1);
-  }
-}
-function once(fn) {
-  var called = false;
-  return function () {
-    if (called) {
-      return;
-    }
-
-    called = true;
-    fn();
-  };
-}
-
-var kThrow = function kThrow(err) {
-  throw err;
-};
-
-var kReturn = function kReturn(value) {
-  return {
-    value: value,
-    done: true
-  };
-};
-
-function makeIterator(next, thro, name) {
-  if (thro === void 0) {
-    thro = kThrow;
-  }
-
-  if (name === void 0) {
-    name = 'iterator';
-  }
-
-  var iterator = {
-    meta: {
-      name: name
-    },
-    next: next,
-    throw: thro,
-    return: kReturn,
-    isSagaIterator: true
-  };
-
-  if (typeof Symbol !== 'undefined') {
-    iterator[Symbol.iterator] = function () {
-      return iterator;
-    };
-  }
-
-  return iterator;
-}
-function logError(error, _ref2) {
-  var sagaStack = _ref2.sagaStack;
-
-  /*eslint-disable no-console*/
-  console.error(error);
-  console.error(sagaStack);
-}
-var internalErr = function internalErr(err) {
-  return new Error("\n  redux-saga: Error checking hooks detected an inconsistent state. This is likely a bug\n  in redux-saga code and not yours. Thanks for reporting this in the project's github repo.\n  Error: " + err + "\n");
-};
-var createSetContextWarning = function createSetContextWarning(ctx, props) {
-  return (ctx ? ctx + '.' : '') + "setContext(props): argument " + props + " is not a plain object";
-};
-var FROZEN_ACTION_ERROR = "You can't put (a.k.a. dispatch from saga) frozen actions.\nWe have to define a special non-enumerable property on those actions for scheduling purposes.\nOtherwise you wouldn't be able to communicate properly between sagas & other subscribers (action ordering would become far less predictable).\nIf you are using redux and you care about this behaviour (frozen actions),\nthen you might want to switch to freezing actions in a middleware rather than in action creator.\nExample implementation:\n\nconst freezeActions = store => next => action => next(Object.freeze(action))\n"; // creates empty, but not-holey array
-
-var createEmptyArray = function createEmptyArray(n) {
-  return Array.apply(null, new Array(n));
-};
-var io_427945dd_wrapSagaDispatch = function wrapSagaDispatch(dispatch) {
-  return function (action) {
-    if (false) {}
-
-    return dispatch(Object.defineProperty(action, SAGA_ACTION, {
-      value: true
-    }));
-  };
-};
-var io_427945dd_shouldTerminate = function shouldTerminate(res) {
-  return res === TERMINATE;
-};
-var io_427945dd_shouldCancel = function shouldCancel(res) {
-  return res === TASK_CANCEL;
-};
-var shouldComplete = function shouldComplete(res) {
-  return io_427945dd_shouldTerminate(res) || io_427945dd_shouldCancel(res);
-};
-function createAllStyleChildCallbacks(shape, parentCallback) {
-  var keys = Object.keys(shape);
-  var totalCount = keys.length;
-
-  if (false) {}
-
-  var completedCount = 0;
-  var completed;
-  var results = array(shape) ? createEmptyArray(totalCount) : {};
-  var childCallbacks = {};
-
-  function checkEnd() {
-    if (completedCount === totalCount) {
-      completed = true;
-      parentCallback(results);
-    }
-  }
-
-  keys.forEach(function (key) {
-    var chCbAtKey = function chCbAtKey(res, isErr) {
-      if (completed) {
-        return;
-      }
-
-      if (isErr || shouldComplete(res)) {
-        parentCallback.cancel();
-        parentCallback(res, isErr);
-      } else {
-        results[key] = res;
-        completedCount++;
-        checkEnd();
-      }
-    };
-
-    chCbAtKey.cancel = noop;
-    childCallbacks[key] = chCbAtKey;
-  });
-
-  parentCallback.cancel = function () {
-    if (!completed) {
-      completed = true;
-      keys.forEach(function (key) {
-        return childCallbacks[key].cancel();
-      });
-    }
-  };
-
-  return childCallbacks;
-}
-function getMetaInfo(fn) {
-  return {
-    name: fn.name || 'anonymous',
-    location: getLocation(fn)
-  };
-}
-function getLocation(instrumented) {
-  return instrumented[SAGA_LOCATION];
-}
-
-var BUFFER_OVERFLOW = "Channel's Buffer overflow!";
-var ON_OVERFLOW_THROW = 1;
-var ON_OVERFLOW_DROP = 2;
-var ON_OVERFLOW_SLIDE = 3;
-var ON_OVERFLOW_EXPAND = 4;
-var zeroBuffer = {
-  isEmpty: kTrue,
-  put: noop,
-  take: noop
-};
-
-function ringBuffer(limit, overflowAction) {
-  if (limit === void 0) {
-    limit = 10;
-  }
-
-  var arr = new Array(limit);
-  var length = 0;
-  var pushIndex = 0;
-  var popIndex = 0;
-
-  var push = function push(it) {
-    arr[pushIndex] = it;
-    pushIndex = (pushIndex + 1) % limit;
-    length++;
-  };
-
-  var take = function take() {
-    if (length != 0) {
-      var it = arr[popIndex];
-      arr[popIndex] = null;
-      length--;
-      popIndex = (popIndex + 1) % limit;
-      return it;
-    }
-  };
-
-  var flush = function flush() {
-    var items = [];
-
-    while (length) {
-      items.push(take());
-    }
-
-    return items;
-  };
-
-  return {
-    isEmpty: function isEmpty() {
-      return length == 0;
-    },
-    put: function put(it) {
-      if (length < limit) {
-        push(it);
-      } else {
-        var doubledLimit;
-
-        switch (overflowAction) {
-          case ON_OVERFLOW_THROW:
-            throw new Error(BUFFER_OVERFLOW);
-
-          case ON_OVERFLOW_SLIDE:
-            arr[pushIndex] = it;
-            pushIndex = (pushIndex + 1) % limit;
-            popIndex = pushIndex;
-            break;
-
-          case ON_OVERFLOW_EXPAND:
-            doubledLimit = 2 * limit;
-            arr = flush();
-            length = arr.length;
-            pushIndex = arr.length;
-            popIndex = 0;
-            arr.length = doubledLimit;
-            limit = doubledLimit;
-            push(it);
-            break;
-
-          default: // DROP
-
-        }
-      }
-    },
-    take: take,
-    flush: flush
-  };
-}
-
-var none = function none() {
-  return zeroBuffer;
-};
-var fixed = function fixed(limit) {
-  return ringBuffer(limit, ON_OVERFLOW_THROW);
-};
-var dropping = function dropping(limit) {
-  return ringBuffer(limit, ON_OVERFLOW_DROP);
-};
-var sliding = function sliding(limit) {
-  return ringBuffer(limit, ON_OVERFLOW_SLIDE);
-};
-var expanding = function expanding(initialSize) {
-  return ringBuffer(initialSize, ON_OVERFLOW_EXPAND);
-};
-
-var buffers = /*#__PURE__*/Object.freeze({
-  none: none,
-  fixed: fixed,
-  dropping: dropping,
-  sliding: sliding,
-  expanding: expanding
-});
-
-var TAKE = 'TAKE';
-var PUT = 'PUT';
-var ALL = 'ALL';
-var RACE = 'RACE';
-var CALL = 'CALL';
-var CPS = 'CPS';
-var FORK = 'FORK';
-var JOIN = 'JOIN';
-var io_427945dd_CANCEL = 'CANCEL';
-var SELECT = 'SELECT';
-var ACTION_CHANNEL = 'ACTION_CHANNEL';
-var CANCELLED = 'CANCELLED';
-var FLUSH = 'FLUSH';
-var GET_CONTEXT = 'GET_CONTEXT';
-var SET_CONTEXT = 'SET_CONTEXT';
-
-var effectTypes = /*#__PURE__*/Object.freeze({
-  TAKE: TAKE,
-  PUT: PUT,
-  ALL: ALL,
-  RACE: RACE,
-  CALL: CALL,
-  CPS: CPS,
-  FORK: FORK,
-  JOIN: JOIN,
-  CANCEL: io_427945dd_CANCEL,
-  SELECT: SELECT,
-  ACTION_CHANNEL: ACTION_CHANNEL,
-  CANCELLED: CANCELLED,
-  FLUSH: FLUSH,
-  GET_CONTEXT: GET_CONTEXT,
-  SET_CONTEXT: SET_CONTEXT
-});
-
-var TEST_HINT = '\n(HINT: if you are getting these errors in tests, consider using createMockTask from @redux-saga/testing-utils)';
-
-var io_427945dd_makeEffect = function makeEffect(type, payload) {
-  var _ref;
-
-  return _ref = {}, _ref[IO] = true, _ref.combinator = false, _ref.type = type, _ref.payload = payload, _ref;
-};
-
-var io_427945dd_isForkEffect = function isForkEffect(eff) {
-  return eff && eff[IO] && eff.type === FORK;
-};
-
-var io_427945dd_detach = function detach(eff) {
-  if (false) {}
-
-  return io_427945dd_makeEffect(FORK, Object(esm_extends["a" /* default */])({}, eff.payload, {
-    detached: true
-  }));
-};
-function take(patternOrChannel, multicastPattern) {
-  if (patternOrChannel === void 0) {
-    patternOrChannel = '*';
-  }
-
-  if (false) {}
-
-  if (redux_saga_is_esm_pattern(patternOrChannel)) {
-    return io_427945dd_makeEffect(TAKE, {
-      pattern: patternOrChannel
-    });
-  }
-
-  if (redux_saga_is_esm_multicast(patternOrChannel) && notUndef(multicastPattern) && redux_saga_is_esm_pattern(multicastPattern)) {
-    return io_427945dd_makeEffect(TAKE, {
-      channel: patternOrChannel,
-      pattern: multicastPattern
-    });
-  }
-
-  if (redux_saga_is_esm_channel(patternOrChannel)) {
-    return io_427945dd_makeEffect(TAKE, {
-      channel: patternOrChannel
-    });
-  }
-
-  if (false) {}
-}
-var takeMaybe = function takeMaybe() {
-  var eff = take.apply(void 0, arguments);
-  eff.payload.maybe = true;
-  return eff;
-};
-function put(channel$1, action) {
-  if (false) {}
-
-  if (undef(action)) {
-    action = channel$1; // `undefined` instead of `null` to make default parameter work
-
-    channel$1 = undefined;
-  }
-
-  return io_427945dd_makeEffect(PUT, {
-    channel: channel$1,
-    action: action
-  });
-}
-var putResolve = function putResolve() {
-  var eff = put.apply(void 0, arguments);
-  eff.payload.resolve = true;
-  return eff;
-};
-function io_427945dd_all(effects) {
-  var eff = io_427945dd_makeEffect(ALL, effects);
-  eff.combinator = true;
-  return eff;
-}
-function race(effects) {
-  var eff = io_427945dd_makeEffect(RACE, effects);
-  eff.combinator = true;
-  return eff;
-} // this match getFnCallDescriptor logic
-
-var io_427945dd_validateFnDescriptor = function validateFnDescriptor(effectName, fnDescriptor) {
-  check(fnDescriptor, notUndef, effectName + ": argument fn is undefined or null");
-
-  if (func(fnDescriptor)) {
-    return;
-  }
-
-  var context = null;
-  var fn;
-
-  if (array(fnDescriptor)) {
-    context = fnDescriptor[0];
-    fn = fnDescriptor[1];
-    check(fn, notUndef, effectName + ": argument of type [context, fn] has undefined or null `fn`");
-  } else if (object(fnDescriptor)) {
-    context = fnDescriptor.context;
-    fn = fnDescriptor.fn;
-    check(fn, notUndef, effectName + ": argument of type {context, fn} has undefined or null `fn`");
-  } else {
-    check(fnDescriptor, func, effectName + ": argument fn is not function");
-    return;
-  }
-
-  if (context && string(fn)) {
-    check(context[fn], func, effectName + ": context arguments has no such method - \"" + fn + "\"");
-    return;
-  }
-
-  check(fn, func, effectName + ": unpacked fn argument (from [context, fn] or {context, fn}) is not a function");
-};
-
-function getFnCallDescriptor(fnDescriptor, args) {
-  var context = null;
-  var fn;
-
-  if (func(fnDescriptor)) {
-    fn = fnDescriptor;
-  } else {
-    if (array(fnDescriptor)) {
-      context = fnDescriptor[0];
-      fn = fnDescriptor[1];
-    } else {
-      context = fnDescriptor.context;
-      fn = fnDescriptor.fn;
-    }
-
-    if (context && string(fn) && func(context[fn])) {
-      fn = context[fn];
-    }
-  }
-
-  return {
-    context: context,
-    fn: fn,
-    args: args
-  };
-}
-
-var isNotDelayEffect = function isNotDelayEffect(fn) {
-  return fn !== delay;
-};
-
-function call(fnDescriptor) {
-  for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-    args[_key - 1] = arguments[_key];
-  }
-
-  if (false) { var arg0; }
-
-  return io_427945dd_makeEffect(CALL, getFnCallDescriptor(fnDescriptor, args));
-}
-function apply(context, fn, args) {
-  if (args === void 0) {
-    args = [];
-  }
-
-  var fnDescriptor = [context, fn];
-
-  if (false) {}
-
-  return io_427945dd_makeEffect(CALL, getFnCallDescriptor([context, fn], args));
-}
-function cps(fnDescriptor) {
-  if (false) {}
-
-  for (var _len2 = arguments.length, args = new Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
-    args[_key2 - 1] = arguments[_key2];
-  }
-
-  return io_427945dd_makeEffect(CPS, getFnCallDescriptor(fnDescriptor, args));
-}
-function fork(fnDescriptor) {
-  if (false) {}
-
-  for (var _len3 = arguments.length, args = new Array(_len3 > 1 ? _len3 - 1 : 0), _key3 = 1; _key3 < _len3; _key3++) {
-    args[_key3 - 1] = arguments[_key3];
-  }
-
-  return io_427945dd_makeEffect(FORK, getFnCallDescriptor(fnDescriptor, args));
-}
-function spawn(fnDescriptor) {
-  if (false) {}
-
-  for (var _len4 = arguments.length, args = new Array(_len4 > 1 ? _len4 - 1 : 0), _key4 = 1; _key4 < _len4; _key4++) {
-    args[_key4 - 1] = arguments[_key4];
-  }
-
-  return io_427945dd_detach(fork.apply(void 0, [fnDescriptor].concat(args)));
-}
-function join(taskOrTasks) {
-  if (false) {}
-
-  return io_427945dd_makeEffect(JOIN, taskOrTasks);
-}
-function cancel(taskOrTasks) {
-  if (taskOrTasks === void 0) {
-    taskOrTasks = SELF_CANCELLATION;
-  }
-
-  if (false) {}
-
-  return io_427945dd_makeEffect(io_427945dd_CANCEL, taskOrTasks);
-}
-function io_427945dd_select(selector) {
-  if (selector === void 0) {
-    selector = identity;
-  }
-
-  for (var _len5 = arguments.length, args = new Array(_len5 > 1 ? _len5 - 1 : 0), _key5 = 1; _key5 < _len5; _key5++) {
-    args[_key5 - 1] = arguments[_key5];
-  }
-
-  if (false) {}
-
-  return io_427945dd_makeEffect(SELECT, {
-    selector: selector,
-    args: args
-  });
-}
-/**
-  channel(pattern, [buffer])    => creates a proxy channel for store actions
-**/
-
-function actionChannel(pattern$1, buffer$1) {
-  if (false) {}
-
-  return io_427945dd_makeEffect(ACTION_CHANNEL, {
-    pattern: pattern$1,
-    buffer: buffer$1
-  });
-}
-function cancelled() {
-  return io_427945dd_makeEffect(CANCELLED, {});
-}
-function flush(channel$1) {
-  if (false) {}
-
-  return io_427945dd_makeEffect(FLUSH, channel$1);
-}
-function getContext(prop) {
-  if (false) {}
-
-  return io_427945dd_makeEffect(GET_CONTEXT, prop);
-}
-function setContext(props) {
-  if (false) {}
-
-  return io_427945dd_makeEffect(SET_CONTEXT, props);
-}
-var delay =
-/*#__PURE__*/
-call.bind(null, redux_saga_delay_p_esm);
-
-
-
-// CONCATENATED MODULE: ./node_modules/@redux-saga/core/dist/redux-saga-effects.esm.js
-
-
-
-
-
-
-
-var done = function done(value) {
-  return {
-    done: true,
-    value: value
-  };
-};
-
-var qEnd = {};
-function safeName(patternOrChannel) {
-  if (redux_saga_is_esm_channel(patternOrChannel)) {
-    return 'channel';
-  }
-
-  if (stringableFunc(patternOrChannel)) {
-    return String(patternOrChannel);
-  }
-
-  if (func(patternOrChannel)) {
-    return patternOrChannel.name;
-  }
-
-  return String(patternOrChannel);
-}
-function fsmIterator(fsm, startState, name) {
-  var stateUpdater,
-      errorState,
-      effect,
-      nextState = startState;
-
-  function next(arg, error) {
-    if (nextState === qEnd) {
-      return done(arg);
-    }
-
-    if (error && !errorState) {
-      nextState = qEnd;
-      throw error;
-    } else {
-      stateUpdater && stateUpdater(arg);
-      var currentState = error ? fsm[errorState](error) : fsm[nextState]();
-      nextState = currentState.nextState;
-      effect = currentState.effect;
-      stateUpdater = currentState.stateUpdater;
-      errorState = currentState.errorState;
-      return nextState === qEnd ? done(arg) : effect;
-    }
-  }
-
-  return makeIterator(next, function (error) {
-    return next(null, error);
-  }, name);
-}
-
-function takeEvery(patternOrChannel, worker) {
-  for (var _len = arguments.length, args = new Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
-    args[_key - 2] = arguments[_key];
-  }
-
-  var yTake = {
-    done: false,
-    value: take(patternOrChannel)
-  };
-
-  var yFork = function yFork(ac) {
-    return {
-      done: false,
-      value: fork.apply(void 0, [worker].concat(args, [ac]))
-    };
-  };
-
-  var action,
-      setAction = function setAction(ac) {
-    return action = ac;
-  };
-
-  return fsmIterator({
-    q1: function q1() {
-      return {
-        nextState: 'q2',
-        effect: yTake,
-        stateUpdater: setAction
-      };
-    },
-    q2: function q2() {
-      return {
-        nextState: 'q1',
-        effect: yFork(action)
-      };
-    }
-  }, 'q1', "takeEvery(" + safeName(patternOrChannel) + ", " + worker.name + ")");
-}
-
-function takeLatest(patternOrChannel, worker) {
-  for (var _len = arguments.length, args = new Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
-    args[_key - 2] = arguments[_key];
-  }
-
-  var yTake = {
-    done: false,
-    value: take(patternOrChannel)
-  };
-
-  var yFork = function yFork(ac) {
-    return {
-      done: false,
-      value: fork.apply(void 0, [worker].concat(args, [ac]))
-    };
-  };
-
-  var yCancel = function yCancel(task) {
-    return {
-      done: false,
-      value: cancel(task)
-    };
-  };
-
-  var task, action;
-
-  var setTask = function setTask(t) {
-    return task = t;
-  };
-
-  var setAction = function setAction(ac) {
-    return action = ac;
-  };
-
-  return fsmIterator({
-    q1: function q1() {
-      return {
-        nextState: 'q2',
-        effect: yTake,
-        stateUpdater: setAction
-      };
-    },
-    q2: function q2() {
-      return task ? {
-        nextState: 'q3',
-        effect: yCancel(task)
-      } : {
-        nextState: 'q1',
-        effect: yFork(action),
-        stateUpdater: setTask
-      };
-    },
-    q3: function q3() {
-      return {
-        nextState: 'q1',
-        effect: yFork(action),
-        stateUpdater: setTask
-      };
-    }
-  }, 'q1', "takeLatest(" + safeName(patternOrChannel) + ", " + worker.name + ")");
-}
-
-function takeLeading(patternOrChannel, worker) {
-  for (var _len = arguments.length, args = new Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
-    args[_key - 2] = arguments[_key];
-  }
-
-  var yTake = {
-    done: false,
-    value: take(patternOrChannel)
-  };
-
-  var yCall = function yCall(ac) {
-    return {
-      done: false,
-      value: call.apply(void 0, [worker].concat(args, [ac]))
-    };
-  };
-
-  var action;
-
-  var setAction = function setAction(ac) {
-    return action = ac;
-  };
-
-  return fsmIterator({
-    q1: function q1() {
-      return {
-        nextState: 'q2',
-        effect: yTake,
-        stateUpdater: setAction
-      };
-    },
-    q2: function q2() {
-      return {
-        nextState: 'q1',
-        effect: yCall(action)
-      };
-    }
-  }, 'q1', "takeLeading(" + safeName(patternOrChannel) + ", " + worker.name + ")");
-}
-
-function throttle(delayLength, pattern, worker) {
-  for (var _len = arguments.length, args = new Array(_len > 3 ? _len - 3 : 0), _key = 3; _key < _len; _key++) {
-    args[_key - 3] = arguments[_key];
-  }
-
-  var action, channel;
-  var yActionChannel = {
-    done: false,
-    value: actionChannel(pattern, sliding(1))
-  };
-
-  var yTake = function yTake() {
-    return {
-      done: false,
-      value: take(channel)
-    };
-  };
-
-  var yFork = function yFork(ac) {
-    return {
-      done: false,
-      value: fork.apply(void 0, [worker].concat(args, [ac]))
-    };
-  };
-
-  var yDelay = {
-    done: false,
-    value: delay(delayLength)
-  };
-
-  var setAction = function setAction(ac) {
-    return action = ac;
-  };
-
-  var setChannel = function setChannel(ch) {
-    return channel = ch;
-  };
-
-  return fsmIterator({
-    q1: function q1() {
-      return {
-        nextState: 'q2',
-        effect: yActionChannel,
-        stateUpdater: setChannel
-      };
-    },
-    q2: function q2() {
-      return {
-        nextState: 'q3',
-        effect: yTake(),
-        stateUpdater: setAction
-      };
-    },
-    q3: function q3() {
-      return {
-        nextState: 'q4',
-        effect: yFork(action)
-      };
-    },
-    q4: function q4() {
-      return {
-        nextState: 'q2',
-        effect: yDelay
-      };
-    }
-  }, 'q1', "throttle(" + safeName(pattern) + ", " + worker.name + ")");
-}
-
-function retry(maxTries, delayLength, fn) {
-  var counter = maxTries;
-
-  for (var _len = arguments.length, args = new Array(_len > 3 ? _len - 3 : 0), _key = 3; _key < _len; _key++) {
-    args[_key - 3] = arguments[_key];
-  }
-
-  var yCall = {
-    done: false,
-    value: call.apply(void 0, [fn].concat(args))
-  };
-  var yDelay = {
-    done: false,
-    value: delay(delayLength)
-  };
-  return fsmIterator({
-    q1: function q1() {
-      return {
-        nextState: 'q2',
-        effect: yCall,
-        errorState: 'q10'
-      };
-    },
-    q2: function q2() {
-      return {
-        nextState: qEnd
-      };
-    },
-    q10: function q10(error) {
-      counter -= 1;
-
-      if (counter <= 0) {
-        throw error;
-      }
-
-      return {
-        nextState: 'q1',
-        effect: yDelay
-      };
-    }
-  }, 'q1', "retry(" + fn.name + ")");
-}
-
-function debounceHelper(delayLength, patternOrChannel, worker) {
-  for (var _len = arguments.length, args = new Array(_len > 3 ? _len - 3 : 0), _key = 3; _key < _len; _key++) {
-    args[_key - 3] = arguments[_key];
-  }
-
-  var action, raceOutput;
-  var yTake = {
-    done: false,
-    value: take(patternOrChannel)
-  };
-  var yRace = {
-    done: false,
-    value: race({
-      action: take(patternOrChannel),
-      debounce: delay(delayLength)
-    })
-  };
-
-  var yFork = function yFork(ac) {
-    return {
-      done: false,
-      value: fork.apply(void 0, [worker].concat(args, [ac]))
-    };
-  };
-
-  var yNoop = function yNoop(value) {
-    return {
-      done: false,
-      value: value
-    };
-  };
-
-  var setAction = function setAction(ac) {
-    return action = ac;
-  };
-
-  var setRaceOutput = function setRaceOutput(ro) {
-    return raceOutput = ro;
-  };
-
-  return fsmIterator({
-    q1: function q1() {
-      return {
-        nextState: 'q2',
-        effect: yTake,
-        stateUpdater: setAction
-      };
-    },
-    q2: function q2() {
-      return {
-        nextState: 'q3',
-        effect: yRace,
-        stateUpdater: setRaceOutput
-      };
-    },
-    q3: function q3() {
-      return raceOutput.debounce ? {
-        nextState: 'q1',
-        effect: yFork(action)
-      } : {
-        nextState: 'q2',
-        effect: yNoop(raceOutput.action),
-        stateUpdater: setAction
-      };
-    }
-  }, 'q1', "debounce(" + safeName(patternOrChannel) + ", " + worker.name + ")");
-}
-
-var redux_saga_effects_esm_validateTakeEffect = function validateTakeEffect(fn, patternOrChannel, worker) {
-  check(patternOrChannel, notUndef, fn.name + " requires a pattern or channel");
-  check(worker, notUndef, fn.name + " requires a saga parameter");
-};
-
-function takeEvery$1(patternOrChannel, worker) {
-  if (false) {}
-
-  for (var _len = arguments.length, args = new Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
-    args[_key - 2] = arguments[_key];
-  }
-
-  return fork.apply(void 0, [takeEvery, patternOrChannel, worker].concat(args));
-}
-function takeLatest$1(patternOrChannel, worker) {
-  if (false) {}
-
-  for (var _len2 = arguments.length, args = new Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
-    args[_key2 - 2] = arguments[_key2];
-  }
-
-  return fork.apply(void 0, [takeLatest, patternOrChannel, worker].concat(args));
-}
-function takeLeading$1(patternOrChannel, worker) {
-  if (false) {}
-
-  for (var _len3 = arguments.length, args = new Array(_len3 > 2 ? _len3 - 2 : 0), _key3 = 2; _key3 < _len3; _key3++) {
-    args[_key3 - 2] = arguments[_key3];
-  }
-
-  return fork.apply(void 0, [takeLeading, patternOrChannel, worker].concat(args));
-}
-function throttle$1(ms, pattern, worker) {
-  if (false) {}
-
-  for (var _len4 = arguments.length, args = new Array(_len4 > 3 ? _len4 - 3 : 0), _key4 = 3; _key4 < _len4; _key4++) {
-    args[_key4 - 3] = arguments[_key4];
-  }
-
-  return fork.apply(void 0, [throttle, ms, pattern, worker].concat(args));
-}
-function retry$1(maxTries, delayLength, worker) {
-  for (var _len5 = arguments.length, args = new Array(_len5 > 3 ? _len5 - 3 : 0), _key5 = 3; _key5 < _len5; _key5++) {
-    args[_key5 - 3] = arguments[_key5];
-  }
-
-  return call.apply(void 0, [retry, maxTries, delayLength, worker].concat(args));
-}
-function debounce(delayLength, pattern, worker) {
-  for (var _len6 = arguments.length, args = new Array(_len6 > 3 ? _len6 - 3 : 0), _key6 = 3; _key6 < _len6; _key6++) {
-    args[_key6 - 3] = arguments[_key6];
-  }
-
-  return fork.apply(void 0, [debounceHelper, delayLength, pattern, worker].concat(args));
-}
-
-
-
-// CONCATENATED MODULE: ./node_modules/redux-saga/dist/redux-saga-effects-npm-proxy.esm.js
-/* concated harmony reexport actionChannel */__webpack_require__.d(__webpack_exports__, "actionChannel", function() { return actionChannel; });
-/* concated harmony reexport all */__webpack_require__.d(__webpack_exports__, "all", function() { return io_427945dd_all; });
-/* concated harmony reexport apply */__webpack_require__.d(__webpack_exports__, "apply", function() { return apply; });
-/* concated harmony reexport call */__webpack_require__.d(__webpack_exports__, "call", function() { return call; });
-/* concated harmony reexport cancel */__webpack_require__.d(__webpack_exports__, "cancel", function() { return cancel; });
-/* concated harmony reexport cancelled */__webpack_require__.d(__webpack_exports__, "cancelled", function() { return cancelled; });
-/* concated harmony reexport cps */__webpack_require__.d(__webpack_exports__, "cps", function() { return cps; });
-/* concated harmony reexport delay */__webpack_require__.d(__webpack_exports__, "delay", function() { return delay; });
-/* concated harmony reexport effectTypes */__webpack_require__.d(__webpack_exports__, "effectTypes", function() { return effectTypes; });
-/* concated harmony reexport flush */__webpack_require__.d(__webpack_exports__, "flush", function() { return flush; });
-/* concated harmony reexport fork */__webpack_require__.d(__webpack_exports__, "fork", function() { return fork; });
-/* concated harmony reexport getContext */__webpack_require__.d(__webpack_exports__, "getContext", function() { return getContext; });
-/* concated harmony reexport join */__webpack_require__.d(__webpack_exports__, "join", function() { return join; });
-/* concated harmony reexport put */__webpack_require__.d(__webpack_exports__, "put", function() { return put; });
-/* concated harmony reexport putResolve */__webpack_require__.d(__webpack_exports__, "putResolve", function() { return putResolve; });
-/* concated harmony reexport race */__webpack_require__.d(__webpack_exports__, "race", function() { return race; });
-/* concated harmony reexport select */__webpack_require__.d(__webpack_exports__, "select", function() { return io_427945dd_select; });
-/* concated harmony reexport setContext */__webpack_require__.d(__webpack_exports__, "setContext", function() { return setContext; });
-/* concated harmony reexport spawn */__webpack_require__.d(__webpack_exports__, "spawn", function() { return spawn; });
-/* concated harmony reexport take */__webpack_require__.d(__webpack_exports__, "take", function() { return take; });
-/* concated harmony reexport takeMaybe */__webpack_require__.d(__webpack_exports__, "takeMaybe", function() { return takeMaybe; });
-/* concated harmony reexport debounce */__webpack_require__.d(__webpack_exports__, "debounce", function() { return debounce; });
-/* concated harmony reexport retry */__webpack_require__.d(__webpack_exports__, "retry", function() { return retry$1; });
-/* concated harmony reexport takeEvery */__webpack_require__.d(__webpack_exports__, "takeEvery", function() { return takeEvery$1; });
-/* concated harmony reexport takeLatest */__webpack_require__.d(__webpack_exports__, "takeLatest", function() { return takeLatest$1; });
-/* concated harmony reexport takeLeading */__webpack_require__.d(__webpack_exports__, "takeLeading", function() { return takeLeading$1; });
-/* concated harmony reexport throttle */__webpack_require__.d(__webpack_exports__, "throttle", function() { return throttle$1; });
+/* harmony import */ var _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(22);
+/* harmony import */ var _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 
 
 
 /***/ }),
-/* 15 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2060,6 +844,12 @@ var selectNavigationDepends = function selectNavigationDepends(state) {
 exports.selectNavigationDepends = selectNavigationDepends;
 
 /***/ }),
+/* 15 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__15__;
+
+/***/ }),
 /* 16 */
 /***/ (function(module, exports) {
 
@@ -2067,12 +857,6 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__16__;
 
 /***/ }),
 /* 17 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__17__;
-
-/***/ }),
-/* 18 */
 /***/ (function(module, exports) {
 
 function _typeof2(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof2 = function _typeof2(obj) { return typeof obj; }; } else { _typeof2 = function _typeof2(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof2(obj); }
@@ -2094,7 +878,7 @@ function _typeof(obj) {
 module.exports = _typeof;
 
 /***/ }),
-/* 19 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2105,9 +889,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.setCurrentProject = exports.setRouteEntryRelatedArticles = exports.setRouteEntry = exports.setRoute = exports.setNavigationPath = exports.setNotFound = void 0;
 
-var _helpers = __webpack_require__(20);
+var _helpers = __webpack_require__(19);
 
-var _routing = __webpack_require__(7);
+var _routing = __webpack_require__(6);
 
 var setNotFound = function setNotFound(notFound) {
   return (0, _helpers.action)(_routing.SET_NAVIGATION_NOT_FOUND, {
@@ -2161,7 +945,7 @@ var setCurrentProject = function setCurrentProject(project, allowedGroups) {
 exports.setCurrentProject = setCurrentProject;
 
 /***/ }),
-/* 20 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2178,15 +962,15 @@ exports.api = api;
 exports.dynamicSort = dynamicSort;
 exports.randomString = exports.resizeImageUri = exports.resizeImage = exports.getWebPImageUri = exports.default = void 0;
 
-var _regenerator = _interopRequireDefault(__webpack_require__(6));
+var _regenerator = _interopRequireDefault(__webpack_require__(5));
 
 var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(37));
 
-var _defineProperty2 = _interopRequireDefault(__webpack_require__(5));
+var _defineProperty2 = _interopRequireDefault(__webpack_require__(4));
 
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__(9));
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(8));
 
-var _createClass2 = _interopRequireDefault(__webpack_require__(12));
+var _createClass2 = _interopRequireDefault(__webpack_require__(11));
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
@@ -2570,7 +1354,7 @@ var randomString = function randomString(length) {
 exports.randomString = randomString;
 
 /***/ }),
-/* 21 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2587,7 +1371,7 @@ var SET_VERSION_STATUS = "".concat(VERSION_PREFIX, "SET_VERSION_STATUS");
 exports.SET_VERSION_STATUS = SET_VERSION_STATUS;
 
 /***/ }),
-/* 22 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2604,6 +1388,12 @@ var SET_NODE_TREE = "".concat(ACTION_PREFIX, "_SET_NODE_TREE");
 exports.SET_NODE_TREE = SET_NODE_TREE;
 var GET_NODE_TREE_ERROR = "".concat(ACTION_PREFIX, "_GET_NODE_TREE_ERROR");
 exports.GET_NODE_TREE_ERROR = GET_NODE_TREE_ERROR;
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__22__;
 
 /***/ }),
 /* 23 */
@@ -2650,19 +1440,19 @@ Object.defineProperty(exports, "__esModule", {
 exports.ensureNodeTreeSaga = ensureNodeTreeSaga;
 exports.navigationSagas = void 0;
 
-var _regenerator = _interopRequireDefault(__webpack_require__(6));
+var _regenerator = _interopRequireDefault(__webpack_require__(5));
 
-var _effects = __webpack_require__(14);
+var _effects = __webpack_require__(13);
 
-var _ContensisDeliveryApi = __webpack_require__(4);
+var _ContensisDeliveryApi = __webpack_require__(3);
 
-var _navigation = __webpack_require__(22);
+var _navigation = __webpack_require__(21);
 
-var _navigation2 = __webpack_require__(15);
+var _navigation2 = __webpack_require__(14);
 
 var _version = __webpack_require__(23);
 
-var _routing = __webpack_require__(10);
+var _routing = __webpack_require__(9);
 
 var _marked =
 /*#__PURE__*/
@@ -2795,7 +1585,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__27__;
 "use strict";
 /* WEBPACK VAR INJECTION */(function(module) {
 
-var _interopRequireWildcard = __webpack_require__(13);
+var _interopRequireWildcard = __webpack_require__(12);
 
 var _interopRequireDefault = __webpack_require__(0);
 
@@ -2804,9 +1594,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__(9));
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(8));
 
-var _createClass2 = _interopRequireDefault(__webpack_require__(12));
+var _createClass2 = _interopRequireDefault(__webpack_require__(11));
 
 var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(53));
 
@@ -2816,23 +1606,23 @@ var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__(25));
 
 var _inherits2 = _interopRequireDefault(__webpack_require__(55));
 
-var _defineProperty2 = _interopRequireDefault(__webpack_require__(5));
+var _defineProperty2 = _interopRequireDefault(__webpack_require__(4));
 
-var _react = _interopRequireWildcard(__webpack_require__(2));
+var _react = _interopRequireWildcard(__webpack_require__(1));
 
 var _propTypes = _interopRequireDefault(__webpack_require__(26));
 
-var _reactRedux = __webpack_require__(17);
+var _reactRedux = __webpack_require__(16);
 
-var _reactHotLoader = __webpack_require__(16);
+var _reactHotLoader = __webpack_require__(15);
 
-var _reactRouterDom = __webpack_require__(11);
+var _reactRouterDom = __webpack_require__(10);
 
 var _reactRouterConfig = __webpack_require__(59);
 
-var _routing = __webpack_require__(10);
+var _routing = __webpack_require__(9);
 
-var _routing2 = __webpack_require__(19);
+var _routing2 = __webpack_require__(18);
 
 var _NotFound = _interopRequireDefault(__webpack_require__(60));
 
@@ -3157,9 +1947,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.setVersionStatus = exports.setVersion = void 0;
 
-var _helpers = __webpack_require__(20);
+var _helpers = __webpack_require__(19);
 
-var _version = __webpack_require__(21);
+var _version = __webpack_require__(20);
 
 var setVersion = function setVersion(commitRef, buildNo) {
   return (0, _helpers.action)(_version.SET_VERSION, {
@@ -3185,7 +1975,7 @@ exports.setVersionStatus = setVersionStatus;
 "use strict";
 
 
-var _interopRequireWildcard = __webpack_require__(13);
+var _interopRequireWildcard = __webpack_require__(12);
 
 var _interopRequireDefault = __webpack_require__(0);
 
@@ -3194,7 +1984,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _defineProperty2 = _interopRequireDefault(__webpack_require__(5));
+var _defineProperty2 = _interopRequireDefault(__webpack_require__(4));
 
 var _redux = __webpack_require__(40);
 
@@ -3292,11 +2082,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _immutable = __webpack_require__(3);
+var _immutable = __webpack_require__(2);
 
-var _routing = __webpack_require__(7);
+var _routing = __webpack_require__(6);
 
-var _ContensisDeliveryApi = __webpack_require__(4);
+var _ContensisDeliveryApi = __webpack_require__(3);
 
 var initialState = (0, _immutable.Map)({
   currentPath: [],
@@ -3399,9 +2189,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _immutable = __webpack_require__(3);
+var _immutable = __webpack_require__(2);
 
-var _version = __webpack_require__(21);
+var _version = __webpack_require__(20);
 
 var initialState = (0, _immutable.Map)({
   commitRef: null,
@@ -3443,9 +2233,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _immutable = __webpack_require__(3);
+var _immutable = __webpack_require__(2);
 
-var _navigation = __webpack_require__(22);
+var _navigation = __webpack_require__(21);
 
 var initialState = (0, _immutable.Map)({
   root: null,
@@ -3490,9 +2280,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _toConsumableArray2 = _interopRequireDefault(__webpack_require__(8));
+var _toConsumableArray2 = _interopRequireDefault(__webpack_require__(7));
 
-var _routing = __webpack_require__(7);
+var _routing = __webpack_require__(6);
 
 /**
  * This middleware captures CALL_HISTORY_METHOD actions to redirect to the
@@ -3535,11 +2325,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = _default;
 
-var _regenerator = _interopRequireDefault(__webpack_require__(6));
+var _regenerator = _interopRequireDefault(__webpack_require__(5));
 
-var _toConsumableArray2 = _interopRequireDefault(__webpack_require__(8));
+var _toConsumableArray2 = _interopRequireDefault(__webpack_require__(7));
 
-var _effects = __webpack_require__(14);
+var _effects = __webpack_require__(13);
 
 var _routing = __webpack_require__(49);
 
@@ -3577,7 +2367,7 @@ function _default() {
 "use strict";
 
 
-var _interopRequireWildcard = __webpack_require__(13);
+var _interopRequireWildcard = __webpack_require__(12);
 
 var _interopRequireDefault = __webpack_require__(0);
 
@@ -3586,21 +2376,21 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.routingSagas = void 0;
 
-var _regenerator = _interopRequireDefault(__webpack_require__(6));
+var _regenerator = _interopRequireDefault(__webpack_require__(5));
 
 var log = _interopRequireWildcard(__webpack_require__(50));
 
-var _effects = __webpack_require__(14);
+var _effects = __webpack_require__(13);
 
-var _routing = __webpack_require__(7);
+var _routing = __webpack_require__(6);
 
-var _ContensisDeliveryApi = __webpack_require__(4);
+var _ContensisDeliveryApi = __webpack_require__(3);
 
 var _version = __webpack_require__(23);
 
-var _routing2 = __webpack_require__(10);
+var _routing2 = __webpack_require__(9);
 
-var _navigation = __webpack_require__(15);
+var _navigation = __webpack_require__(14);
 
 var _navigation2 = __webpack_require__(24);
 
@@ -3893,9 +2683,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _react = _interopRequireDefault(__webpack_require__(2));
+var _react = _interopRequireDefault(__webpack_require__(1));
 
-var _reactHotLoader = __webpack_require__(16);
+var _reactHotLoader = __webpack_require__(15);
 
 var _RouteLoader = _interopRequireDefault(__webpack_require__(28));
 
@@ -3938,7 +2728,7 @@ module.exports = function(module) {
 /* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _typeof = __webpack_require__(18);
+var _typeof = __webpack_require__(17);
 
 var assertThisInitialized = __webpack_require__(25);
 
@@ -4113,7 +2903,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _react = _interopRequireDefault(__webpack_require__(2));
+var _react = _interopRequireDefault(__webpack_require__(1));
 
 var NotFound = function NotFound() {
   return _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("header", null, _react.default.createElement("h1", null, "404 Page Not Found")));
@@ -4136,11 +2926,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Status = void 0;
 
-var _react = _interopRequireDefault(__webpack_require__(2));
+var _react = _interopRequireDefault(__webpack_require__(1));
 
 var _propTypes = _interopRequireDefault(__webpack_require__(26));
 
-var _reactRouterDom = __webpack_require__(11);
+var _reactRouterDom = __webpack_require__(10);
 
 var Status = function Status(_ref) {
   var code = _ref.code,
@@ -4174,9 +2964,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.toJS = void 0;
 
-var _react = _interopRequireDefault(__webpack_require__(2));
+var _react = _interopRequireDefault(__webpack_require__(1));
 
-var _immutable = __webpack_require__(3);
+var _immutable = __webpack_require__(2);
 
 var toJS = function toJS(WrappedComponent) {
   return function (wrappedComponentProps) {
@@ -4199,9 +2989,24 @@ exports.toJS = toJS;
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 
-// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/extends.js
-var esm_extends = __webpack_require__(1);
+// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/extends.js
+function _extends() {
+  _extends = Object.assign || function (target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i];
 
+      for (var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          target[key] = source[key];
+        }
+      }
+    }
+
+    return target;
+  };
+
+  return _extends.apply(this, arguments);
+}
 // CONCATENATED MODULE: ./node_modules/resolve-pathname/esm/resolve-pathname.js
 function isAbsolute(pathname) {
   return pathname.charAt(0) === '/';
@@ -4406,7 +3211,7 @@ function createLocation(path, state, key, currentLocation) {
     location.state = state;
   } else {
     // One-arg form: push(location)
-    location = Object(esm_extends["a" /* default */])({}, path);
+    location = _extends({}, path);
     if (location.pathname === undefined) location.pathname = '';
 
     if (location.search) {
@@ -4626,7 +3431,7 @@ function createBrowserHistory(props) {
   var transitionManager = createTransitionManager();
 
   function setState(nextState) {
-    Object(esm_extends["a" /* default */])(history, nextState);
+    _extends(history, nextState);
 
     history.length = globalHistory.length;
     transitionManager.notifyListeners(history.location, history.action);
@@ -4899,7 +3704,7 @@ function createHashHistory(props) {
   var transitionManager = createTransitionManager();
 
   function setState(nextState) {
-    Object(esm_extends["a" /* default */])(history, nextState);
+    _extends(history, nextState);
 
     history.length = globalHistory.length;
     transitionManager.notifyListeners(history.location, history.action);
@@ -5141,7 +3946,7 @@ function createMemoryHistory(props) {
   var transitionManager = createTransitionManager();
 
   function setState(nextState) {
-    Object(esm_extends["a" /* default */])(history, nextState);
+    _extends(history, nextState);
 
     history.length = history.entries.length;
     transitionManager.notifyListeners(history.location, history.action);
@@ -5313,25 +4118,25 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__(9));
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(8));
 
 __webpack_require__(29);
 
-var _react = _interopRequireDefault(__webpack_require__(2));
+var _react = _interopRequireDefault(__webpack_require__(1));
 
 var _reactDom = __webpack_require__(85);
 
-var _reactRouterDom = __webpack_require__(11);
+var _reactRouterDom = __webpack_require__(10);
 
 var _reactLoadable = __webpack_require__(27);
 
-var _reactHotLoader = __webpack_require__(16);
+var _reactHotLoader = __webpack_require__(15);
 
-var _reactRedux = __webpack_require__(17);
+var _reactRedux = __webpack_require__(16);
 
 var _queryString = _interopRequireDefault(__webpack_require__(86));
 
-var _immutable = __webpack_require__(3);
+var _immutable = __webpack_require__(2);
 
 var _store = _interopRequireDefault(__webpack_require__(39));
 
@@ -5341,9 +4146,9 @@ var _App = _interopRequireDefault(__webpack_require__(51));
 
 var _version = __webpack_require__(38);
 
-var _ContensisDeliveryApi = __webpack_require__(4);
+var _ContensisDeliveryApi = __webpack_require__(3);
 
-var _routing = __webpack_require__(19);
+var _routing = __webpack_require__(18);
 
 var _pickProject = _interopRequireDefault(__webpack_require__(34));
 
