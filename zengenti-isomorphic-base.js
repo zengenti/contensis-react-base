@@ -4129,8 +4129,8 @@ var start = function start(ReactApp, config, ServerFeatures) {
 
   (0, _localDns.default)(); // Set-up local proxy for images from cms, to save doing rewrites and extra code
 
-  (0, _reverseProxies.default)(app, config.reverseProxyPaths);
   ServerFeatures(app);
+  (0, _reverseProxies.default)(app, config.reverseProxyPaths);
   (0, _webApp.default)(app, ReactApp, config);
   app.use('/static', _express.default.static('dist/static', {
     maxage: '31557600h'
@@ -4313,9 +4313,7 @@ var apiProxy = _httpProxy.default.createProxyServer();
 exports.apiProxy = apiProxy;
 
 var reverseProxies = function reverseProxies(app, reverseProxyPaths) {
-  PROXY_DELIVERY_API
-  /* global PROXY_DELIVERY_API */
-  && deliveryApiProxy(apiProxy, app);
+  deliveryApiProxy(apiProxy, app);
   app.all(reverseProxyPaths, function (req, res) {
     var target = servers.iis;
     apiProxy.web(req, res, {
