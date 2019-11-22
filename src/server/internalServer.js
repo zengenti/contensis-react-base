@@ -4,7 +4,7 @@ import Loadable from 'react-loadable';
 
 import DisplayStartupConfiguration from './util/displayStartupConfiguration';
 import ConfigureLocalDNS from './core/localDns';
-import ConfigureReverseProxies from './core/reverseProxies';
+import ConfigureReverseProxies, { apiProxy } from './core/reverseProxies';
 // import ServerFeatures from './features/configure';
 import ConfigureWebApp from './core/webApp';
 
@@ -43,4 +43,4 @@ const start = (ReactApp, config, ServerFeatures) => {
   });
 };
 
-export default { app, start };
+export default { app, apiProxy, start };

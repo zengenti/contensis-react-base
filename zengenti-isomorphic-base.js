@@ -7,7 +7,7 @@
 		var a = typeof exports === 'object' ? factory(require("react"), require("immutable"), require("react-router-dom"), require("react-hot-loader"), require("react-redux"), require("@redux-saga/core/effects"), require("react-loadable"), require("isomorphic-fetch"), require("contensis-delivery-api"), require("regenerator-runtime"), require("redux"), require("redux-immutable"), require("redux-thunk"), require("redux-saga"), require("loglevel"), require("react-router-config"), require("express"), require("evil-dns"), require("http-proxy"), require("react-dom/server"), require("react-loadable/webpack"), require("styled-components"), require("react-helmet"), require("serialize-javascript"), require("minify-css-string")) : factory(root["react"], root["immutable"], root["react-router-dom"], root["react-hot-loader"], root["react-redux"], root["@redux-saga/core/effects"], root["react-loadable"], root["isomorphic-fetch"], root["contensis-delivery-api"], root["regenerator-runtime"], root["redux"], root["redux-immutable"], root["redux-thunk"], root["redux-saga"], root["loglevel"], root["react-router-config"], root["express"], root["evil-dns"], root["http-proxy"], root["react-dom/server"], root["react-loadable/webpack"], root["styled-components"], root["react-helmet"], root["serialize-javascript"], root["minify-css-string"]);
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(global, function(__WEBPACK_EXTERNAL_MODULE__1__, __WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__10__, __WEBPACK_EXTERNAL_MODULE__15__, __WEBPACK_EXTERNAL_MODULE__16__, __WEBPACK_EXTERNAL_MODULE__22__, __WEBPACK_EXTERNAL_MODULE__27__, __WEBPACK_EXTERNAL_MODULE__29__, __WEBPACK_EXTERNAL_MODULE__35__, __WEBPACK_EXTERNAL_MODULE__36__, __WEBPACK_EXTERNAL_MODULE__40__, __WEBPACK_EXTERNAL_MODULE__41__, __WEBPACK_EXTERNAL_MODULE__42__, __WEBPACK_EXTERNAL_MODULE__43__, __WEBPACK_EXTERNAL_MODULE__50__, __WEBPACK_EXTERNAL_MODULE__59__, __WEBPACK_EXTERNAL_MODULE__67__, __WEBPACK_EXTERNAL_MODULE__70__, __WEBPACK_EXTERNAL_MODULE__73__, __WEBPACK_EXTERNAL_MODULE__76__, __WEBPACK_EXTERNAL_MODULE__77__, __WEBPACK_EXTERNAL_MODULE__78__, __WEBPACK_EXTERNAL_MODULE__79__, __WEBPACK_EXTERNAL_MODULE__80__, __WEBPACK_EXTERNAL_MODULE__81__) {
+})(global, function(__WEBPACK_EXTERNAL_MODULE__1__, __WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__11__, __WEBPACK_EXTERNAL_MODULE__15__, __WEBPACK_EXTERNAL_MODULE__16__, __WEBPACK_EXTERNAL_MODULE__22__, __WEBPACK_EXTERNAL_MODULE__27__, __WEBPACK_EXTERNAL_MODULE__29__, __WEBPACK_EXTERNAL_MODULE__35__, __WEBPACK_EXTERNAL_MODULE__36__, __WEBPACK_EXTERNAL_MODULE__40__, __WEBPACK_EXTERNAL_MODULE__41__, __WEBPACK_EXTERNAL_MODULE__42__, __WEBPACK_EXTERNAL_MODULE__43__, __WEBPACK_EXTERNAL_MODULE__50__, __WEBPACK_EXTERNAL_MODULE__59__, __WEBPACK_EXTERNAL_MODULE__67__, __WEBPACK_EXTERNAL_MODULE__70__, __WEBPACK_EXTERNAL_MODULE__73__, __WEBPACK_EXTERNAL_MODULE__76__, __WEBPACK_EXTERNAL_MODULE__77__, __WEBPACK_EXTERNAL_MODULE__78__, __WEBPACK_EXTERNAL_MODULE__79__, __WEBPACK_EXTERNAL_MODULE__80__, __WEBPACK_EXTERNAL_MODULE__81__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -143,11 +143,11 @@ exports.cachedSearch = exports.deliveryApi = exports.GetAllResponseGuids = expor
 
 var _defineProperty2 = _interopRequireDefault(__webpack_require__(4));
 
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__(8));
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(9));
 
-var _createClass2 = _interopRequireDefault(__webpack_require__(11));
+var _createClass2 = _interopRequireDefault(__webpack_require__(12));
 
-var _toConsumableArray2 = _interopRequireDefault(__webpack_require__(7));
+var _toConsumableArray2 = _interopRequireDefault(__webpack_require__(8));
 
 var _typeof2 = _interopRequireDefault(__webpack_require__(17));
 
@@ -606,6 +606,61 @@ exports.CALL_HISTORY_METHOD = CALL_HISTORY_METHOD;
 
 /***/ }),
 /* 7 */
+/***/ (function(module, exports) {
+
+function _getRequireWildcardCache() {
+  if (typeof WeakMap !== "function") return null;
+  var cache = new WeakMap();
+
+  _getRequireWildcardCache = function _getRequireWildcardCache() {
+    return cache;
+  };
+
+  return cache;
+}
+
+function _interopRequireWildcard(obj) {
+  if (obj && obj.__esModule) {
+    return obj;
+  }
+
+  var cache = _getRequireWildcardCache();
+
+  if (cache && cache.has(obj)) {
+    return cache.get(obj);
+  }
+
+  var newObj = {};
+
+  if (obj != null) {
+    var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;
+
+    for (var key in obj) {
+      if (Object.prototype.hasOwnProperty.call(obj, key)) {
+        var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;
+
+        if (desc && (desc.get || desc.set)) {
+          Object.defineProperty(newObj, key, desc);
+        } else {
+          newObj[key] = obj[key];
+        }
+      }
+    }
+  }
+
+  newObj["default"] = obj;
+
+  if (cache) {
+    cache.set(obj, newObj);
+  }
+
+  return newObj;
+}
+
+module.exports = _interopRequireWildcard;
+
+/***/ }),
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var arrayWithoutHoles = __webpack_require__(30);
@@ -621,7 +676,7 @@ function _toConsumableArray(arr) {
 module.exports = _toConsumableArray;
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports) {
 
 function _classCallCheck(instance, Constructor) {
@@ -633,7 +688,7 @@ function _classCallCheck(instance, Constructor) {
 module.exports = _classCallCheck;
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -719,13 +774,13 @@ var selectRouteEntryRelatedArticles = function selectRouteEntryRelatedArticles(s
 exports.selectRouteEntryRelatedArticles = selectRouteEntryRelatedArticles;
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__10__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__11__;
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports) {
 
 function _defineProperties(target, props) {
@@ -745,61 +800,6 @@ function _createClass(Constructor, protoProps, staticProps) {
 }
 
 module.exports = _createClass;
-
-/***/ }),
-/* 12 */
-/***/ (function(module, exports) {
-
-function _getRequireWildcardCache() {
-  if (typeof WeakMap !== "function") return null;
-  var cache = new WeakMap();
-
-  _getRequireWildcardCache = function _getRequireWildcardCache() {
-    return cache;
-  };
-
-  return cache;
-}
-
-function _interopRequireWildcard(obj) {
-  if (obj && obj.__esModule) {
-    return obj;
-  }
-
-  var cache = _getRequireWildcardCache();
-
-  if (cache && cache.has(obj)) {
-    return cache.get(obj);
-  }
-
-  var newObj = {};
-
-  if (obj != null) {
-    var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;
-
-    for (var key in obj) {
-      if (Object.prototype.hasOwnProperty.call(obj, key)) {
-        var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;
-
-        if (desc && (desc.get || desc.set)) {
-          Object.defineProperty(newObj, key, desc);
-        } else {
-          newObj[key] = obj[key];
-        }
-      }
-    }
-  }
-
-  newObj["default"] = obj;
-
-  if (cache) {
-    cache.set(obj, newObj);
-  }
-
-  return newObj;
-}
-
-module.exports = _interopRequireWildcard;
 
 /***/ }),
 /* 13 */
@@ -968,9 +968,9 @@ var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(37));
 
 var _defineProperty2 = _interopRequireDefault(__webpack_require__(4));
 
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__(8));
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(9));
 
-var _createClass2 = _interopRequireDefault(__webpack_require__(11));
+var _createClass2 = _interopRequireDefault(__webpack_require__(12));
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
@@ -1452,7 +1452,7 @@ var _navigation2 = __webpack_require__(14);
 
 var _version = __webpack_require__(23);
 
-var _routing = __webpack_require__(9);
+var _routing = __webpack_require__(10);
 
 var _marked =
 /*#__PURE__*/
@@ -1585,7 +1585,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__27__;
 "use strict";
 /* WEBPACK VAR INJECTION */(function(module) {
 
-var _interopRequireWildcard = __webpack_require__(12);
+var _interopRequireWildcard = __webpack_require__(7);
 
 var _interopRequireDefault = __webpack_require__(0);
 
@@ -1594,9 +1594,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__(8));
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(9));
 
-var _createClass2 = _interopRequireDefault(__webpack_require__(11));
+var _createClass2 = _interopRequireDefault(__webpack_require__(12));
 
 var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(53));
 
@@ -1616,11 +1616,11 @@ var _reactRedux = __webpack_require__(16);
 
 var _reactHotLoader = __webpack_require__(15);
 
-var _reactRouterDom = __webpack_require__(10);
+var _reactRouterDom = __webpack_require__(11);
 
 var _reactRouterConfig = __webpack_require__(59);
 
-var _routing = __webpack_require__(9);
+var _routing = __webpack_require__(10);
 
 var _routing2 = __webpack_require__(18);
 
@@ -1975,7 +1975,7 @@ exports.setVersionStatus = setVersionStatus;
 "use strict";
 
 
-var _interopRequireWildcard = __webpack_require__(12);
+var _interopRequireWildcard = __webpack_require__(7);
 
 var _interopRequireDefault = __webpack_require__(0);
 
@@ -2280,7 +2280,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _toConsumableArray2 = _interopRequireDefault(__webpack_require__(7));
+var _toConsumableArray2 = _interopRequireDefault(__webpack_require__(8));
 
 var _routing = __webpack_require__(6);
 
@@ -2327,7 +2327,7 @@ exports.default = _default;
 
 var _regenerator = _interopRequireDefault(__webpack_require__(5));
 
-var _toConsumableArray2 = _interopRequireDefault(__webpack_require__(7));
+var _toConsumableArray2 = _interopRequireDefault(__webpack_require__(8));
 
 var _effects = __webpack_require__(13);
 
@@ -2367,7 +2367,7 @@ function _default() {
 "use strict";
 
 
-var _interopRequireWildcard = __webpack_require__(12);
+var _interopRequireWildcard = __webpack_require__(7);
 
 var _interopRequireDefault = __webpack_require__(0);
 
@@ -2388,7 +2388,7 @@ var _ContensisDeliveryApi = __webpack_require__(3);
 
 var _version = __webpack_require__(23);
 
-var _routing2 = __webpack_require__(9);
+var _routing2 = __webpack_require__(10);
 
 var _navigation = __webpack_require__(14);
 
@@ -2930,7 +2930,7 @@ var _react = _interopRequireDefault(__webpack_require__(1));
 
 var _propTypes = _interopRequireDefault(__webpack_require__(26));
 
-var _reactRouterDom = __webpack_require__(10);
+var _reactRouterDom = __webpack_require__(11);
 
 var Status = function Status(_ref) {
   var code = _ref.code,
@@ -4078,6 +4078,7 @@ function createMemoryHistory(props) {
 var internalServer = __webpack_require__(66).default;
 
 exports.app = internalServer.app;
+exports.httpProxy = internalServer.apiProxy;
 exports.start = internalServer.start;
 
 var ReactApp = __webpack_require__(51).default;
@@ -4094,6 +4095,8 @@ exports.RouteLoader = RouteLoader;
 
 "use strict";
 
+
+var _interopRequireWildcard = __webpack_require__(7);
 
 var _interopRequireDefault = __webpack_require__(0);
 
@@ -4112,7 +4115,7 @@ var _displayStartupConfiguration = _interopRequireDefault(__webpack_require__(68
 
 var _localDns = _interopRequireDefault(__webpack_require__(69));
 
-var _reverseProxies = _interopRequireDefault(__webpack_require__(72));
+var _reverseProxies = _interopRequireWildcard(__webpack_require__(72));
 
 var _webApp = _interopRequireDefault(__webpack_require__(74));
 
@@ -4151,6 +4154,7 @@ var start = function start(ReactApp, config, ServerFeatures) {
 
 var _default = {
   app: app,
+  apiProxy: _reverseProxies.apiProxy,
   start: start
 };
 exports.default = _default;
@@ -4297,7 +4301,7 @@ var _interopRequireDefault = __webpack_require__(0);
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports.default = exports.apiProxy = void 0;
 
 var _httpProxy = _interopRequireDefault(__webpack_require__(73));
 
@@ -4305,6 +4309,8 @@ var servers = SERVERS;
 /* global SERVERS */
 
 var apiProxy = _httpProxy.default.createProxyServer();
+
+exports.apiProxy = apiProxy;
 
 var reverseProxies = function reverseProxies(app, reverseProxyPaths) {
   PROXY_DELIVERY_API
@@ -4365,13 +4371,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _toConsumableArray2 = _interopRequireDefault(__webpack_require__(7));
+var _toConsumableArray2 = _interopRequireDefault(__webpack_require__(8));
 
 var _fs = _interopRequireDefault(__webpack_require__(75));
 
 var _react = _interopRequireDefault(__webpack_require__(1));
 
-var _reactRouterDom = __webpack_require__(10);
+var _reactRouterDom = __webpack_require__(11);
 
 var _reactRedux = __webpack_require__(16);
 
@@ -4403,7 +4409,7 @@ var _version = __webpack_require__(38);
 
 var _navigation = __webpack_require__(14);
 
-var _routing2 = __webpack_require__(9);
+var _routing2 = __webpack_require__(10);
 
 var _store = _interopRequireDefault(__webpack_require__(39));
 
