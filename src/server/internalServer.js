@@ -20,8 +20,8 @@ const start = (ReactApp, config, ServerFeatures) => {
   ConfigureLocalDNS();
 
   // Set-up local proxy for images from cms, to save doing rewrites and extra code
-  ConfigureReverseProxies(app, config.reverseProxyPaths);
   ServerFeatures(app);
+  ConfigureReverseProxies(app, config.reverseProxyPaths);
   ConfigureWebApp(app, ReactApp, config);
 
   app.use('/static', express.static('dist/static', { maxage: '31557600h' }));
