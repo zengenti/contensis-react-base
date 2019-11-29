@@ -6,9 +6,7 @@ import routes from '~/core/routes';
 import withReducers from '~/core/redux/reducers';
 import withSagas from '~/core/redux/sagas';
 
-// Feature reducers
-// import { reducer as FormsReducer } from 'zengenti-forms-package';
-// import { reducer as AlertReducer } from '~/features/siteAlert';
+import ServerFeatures from './features/configure';
 
 ZengentiAppServer.start(
   ZengentiAppServer.ReactApp || App,
