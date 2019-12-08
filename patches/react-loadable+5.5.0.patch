@@ -1,5 +1,18 @@
+diff --git a/node_modules/react-loadable/lib/index.js b/node_modules/react-loadable/lib/index.js
+index 75b1364..49b5403 100644
+--- a/node_modules/react-loadable/lib/index.js
++++ b/node_modules/react-loadable/lib/index.js
+@@ -163,7 +163,7 @@ function createLoadableComponent(loadFn, options) {
+       return init();
+     };
+ 
+-    LoadableComponent.prototype.componentWillMount = function componentWillMount() {
++    LoadableComponent.prototype.UNSAFE_componentWillMount  = function componentWillMount() {
+       this._mounted = true;
+       this._loadModule();
+     };
 diff --git a/node_modules/react-loadable/lib/webpack.js b/node_modules/react-loadable/lib/webpack.js
-index 2bd1040..3be6fb5 100644
+index 2bd1040..e57d4a9 100644
 --- a/node_modules/react-loadable/lib/webpack.js
 +++ b/node_modules/react-loadable/lib/webpack.js
 @@ -33,22 +33,16 @@ function buildManifest(compiler, compilation) {
