@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { hot } from 'react-hot-loader';
@@ -26,81 +26,71 @@ const getTrimmedPath = path => {
   return path;
 };
 
-class RouteLoader extends Component {
-  static propTypes = {
-    routes: PropTypes.objectOf(PropTypes.array, PropTypes.array),
-    currentPath: PropTypes.string,
-    location: PropTypes.object.isRequired,
-    history: PropTypes.object.isRequired,
-    match: PropTypes.object.isRequired,
-    entry: PropTypes.object,
-    isNotFound: PropTypes.bool,
-    setNavigationPath: PropTypes.func,
-    contentTypeId: PropTypes.string,
-  };
-  static defaultProps = {};
+const RouteLoader = ({
+  entry,
+  contentTypeId,
+  isNotFound,
+  setNavigationPath,
+  routes,
+  location,
+  //history,
+}) => {
+  useEffect(() => {
+    const trimmedPath = getTrimmedPath(location.pathname);
+    setNavigationPath(trimmedPath, matchedStaticRoute(trimmedPath));
+  }, [location, setNavigationPath]);
 
-  componentWillMount() {
-    const trimmedPath = getTrimmedPath(this.props.location.pathname);
-    this.props.setNavigationPath(
-      trimmedPath,
-      this.MatchedStaticRoute(trimmedPath)
-    );
-  }
-  componentWillReceiveProps(nextProps) {
-    const nextPath = nextProps.location.pathname;
-    const trimmedNextPath = getTrimmedPath(nextPath);
-    const trimmedPreviousPath = getTrimmedPath(this.props.location.pathname);
-    if (trimmedPreviousPath !== trimmedNextPath) {
-      this.props.setNavigationPath(
-        trimmedNextPath,
-        this.MatchedStaticRoute(trimmedNextPath)
-      );
-    }
-  }
-
-  MatchedStaticRoute = pathname =>
+  const matchedStaticRoute = pathname =>
     matchRoutes(
-      this.props.routes.StaticRoutes,
+      routes.StaticRoutes,
       typeof window != 'undefined' ? window.location.pathname : pathname
     ).length;
 
-  render = () => {
-    const currentPath = this.props.location.pathname;
-    const trimmedCurrentPath = getTrimmedPath(this.props.location.pathname);
+  const currentPath = location.pathname;
+  const trimmedCurrentPath = getTrimmedPath(location.pathname);
 
-    // Match Any Static Routes a developer has defined
-    if (this.MatchedStaticRoute(currentPath)) {
-      return renderRoutes(this.props.routes.StaticRoutes, {
-        entry: this.props.entry,
-      });
-    }
+  // Match Any Static Routes a developer has defined
+  if (matchedStaticRoute(currentPath)) {
+    return renderRoutes(routes.StaticRoutes, {
+      entry,
+    });
+  }
 
-    // Need to redirect when url endswith a /
-    if (currentPath.length > trimmedCurrentPath.length) {
-      return <Redirect to={trimmedCurrentPath} />;
-    }
-    // Match Any Defined Content Type Mappings
-    if (this.props.contentTypeId) {
-      const MatchedComponent = this.props.routes.ContentTypeMappings.find(
-        item => item.contentTypeID == this.props.contentTypeId
-      );
+  // Need to redirect when url endswith a /
+  if (currentPath.length > trimmedCurrentPath.length) {
+    return <Redirect to={trimmedCurrentPath} />;
+  }
+  // Match Any Defined Content Type Mappings
+  if (contentTypeId) {
+    const MatchedComponent = routes.ContentTypeMappings.find(
+      item => item.contentTypeID == contentTypeId
+    );
 
-      if (MatchedComponent) {
-        return <MatchedComponent.component entry={this.props.entry} />;
-      }
+    if (MatchedComponent) {
+      return <MatchedComponent.component entry={entry} />;
     }
+  }
 
-    if (this.props.isNotFound) {
-      return (
-        <Status code={404}>
-          <NotFound />
-        </Status>
-      );
-    }
-    return null;
-  };
-}
+  if (isNotFound) {
+    return (
+      <Status code={404}>
+        <NotFound />
+      </Status>
+    );
+  }
+
+  return null;
+};
+
+RouteLoader.propTypes = {
+  routes: PropTypes.objectOf(PropTypes.array, PropTypes.array),
+  location: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
+  entry: PropTypes.object,
+  isNotFound: PropTypes.bool,
+  setNavigationPath: PropTypes.func,
+  contentTypeId: PropTypes.string,
+};
 
 const mapStateToProps = state => {
   return {
