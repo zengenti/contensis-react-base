@@ -40,8 +40,8 @@ function* setRouteSaga(action) {
 
 function* getRouteSaga(action) {
   try {
-    if (!action.isStatic) {
-      yield call(do404);
+    if (action.isStatic) {
+      //yield call(do404);
     } else {
       yield ensureNavigationTree();
       const state = yield select();

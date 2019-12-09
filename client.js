@@ -2393,27 +2393,23 @@ function getRouteSaga(action) {
         case 0:
           _context2.prev = 0;
 
-          if (action.isStatic) {
-            _context2.next = 6;
+          if (!action.isStatic) {
+            _context2.next = 4;
             break;
           }
 
-          _context2.next = 4;
-          return (0, _effects.call)(do404);
+          _context2.next = 43;
+          break;
 
         case 4:
-          _context2.next = 45;
-          break;
+          _context2.next = 6;
+          return ensureNavigationTree();
 
         case 6:
           _context2.next = 8;
-          return ensureNavigationTree();
-
-        case 8:
-          _context2.next = 10;
           return (0, _effects.select)();
 
-        case 10:
+        case 8:
           state = _context2.sent;
           currentPath = (0, _routing2.selectCurrentPath)(state);
           deliveryApiStatus = (0, _version.selectVersionStatus)(state);
@@ -2428,95 +2424,95 @@ function getRouteSaga(action) {
           }
 
           if (!(currentPath === '/')) {
-            _context2.next = 23;
+            _context2.next = 21;
             break;
           }
 
-          _context2.next = 20;
+          _context2.next = 18;
           return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiStatus, project).nodes.getRoot({
             entryFields: '*',
             entryLinkDepth: 4,
             language: 'en-GB'
           });
 
-        case 20:
+        case 18:
           pathNode = _context2.sent;
-          _context2.next = 38;
+          _context2.next = 36;
           break;
 
-        case 23:
+        case 21:
           if (!currentPath.startsWith('/preview/')) {
-            _context2.next = 32;
+            _context2.next = 30;
             break;
           }
 
           splitPath = currentPath.split('/');
           entryGuid = splitPath[2];
-          _context2.next = 28;
+          _context2.next = 26;
           return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiStatus, project).nodes.getByEntry({
             entryId: entryGuid,
             entryFields: '*',
             entryLinkDepth: 4
           });
 
-        case 28:
+        case 26:
           pathNode = _context2.sent;
           pathNode = pathNode[0];
-          _context2.next = 35;
+          _context2.next = 33;
           break;
 
-        case 32:
-          _context2.next = 34;
+        case 30:
+          _context2.next = 32;
           return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiStatus, project).nodes.get({
             path: currentPath,
             entryFields: '*',
             entryLinkDepth: 4
           });
 
-        case 34:
+        case 32:
           pathNode = _context2.sent;
 
-        case 35:
-          _context2.next = 37;
+        case 33:
+          _context2.next = 35;
           return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiStatus, project).nodes.getAncestors(pathNode.id);
 
-        case 37:
+        case 35:
           ancestors = _context2.sent;
 
-        case 38:
+        case 36:
           if (!(pathNode && pathNode.entry && pathNode.entry.sys && pathNode.entry.sys.id)) {
-            _context2.next = 43;
+            _context2.next = 41;
             break;
           }
 
-          _context2.next = 41;
+          _context2.next = 39;
           return (0, _effects.call)(setRouteEntry, pathNode.entry, pathNode, ancestors);
 
-        case 41:
-          _context2.next = 45;
+        case 39:
+          _context2.next = 43;
           break;
+
+        case 41:
+          _context2.next = 43;
+          return (0, _effects.call)(do404);
 
         case 43:
-          _context2.next = 45;
-          return (0, _effects.call)(do404);
-
-        case 45:
-          _context2.next = 52;
+          _context2.next = 50;
           break;
 
-        case 47:
-          _context2.prev = 47;
+        case 45:
+          _context2.prev = 45;
           _context2.t0 = _context2["catch"](0);
           log.info("Error running route saga: ".concat(_context2.t0));
-          _context2.next = 52;
+          _context2.next = 50;
           return (0, _effects.call)(do404);
 
-        case 52:
+        case 50:
         case "end":
           return _context2.stop();
       }
     }
-  }, _marked2, null, [[0, 47]]);
+  }, _marked2, null, [[0, 45]]);
 }
 
 function ensureNavigationTree() {
