@@ -11,7 +11,6 @@ import { fromJS } from 'immutable';
 import createStore from '~/core/redux/store';
 import rootSaga from '~/core/redux/sagas/index.js';
 
-import App from '~/App';
 import { setVersionStatus } from '~/core/redux/actions/version';
 import { GetClientSideDeliveryApiStatus } from '~/core/util/ContensisDeliveryApi';
 import { setCurrentProject } from '~/core/redux/actions/routing';
@@ -19,17 +18,17 @@ import pickProject from '~/core/util/pickProject';
 import { browserHistory as history } from '~/core/redux/history';
 
 class ClientApp {
-  constructor(config) {
+  constructor(ReactApp, config) {
     const documentRoot = document.getElementById('root');
 
-    const { routes, withReducers, withSagas } = config;
+    const { routes, withReducers, withSagas, withEvents } = config;
 
     const GetClientJSX = store => {
       const ClientJsx = (
         <AppContainer>
           <ReduxProvider store={store}>
             <Router history={history}>
-              <App routes={routes} />
+              <ReactApp routes={routes} withEvents={withEvents} />
             </Router>
           </ReduxProvider>
         </AppContainer>

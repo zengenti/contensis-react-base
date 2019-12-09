@@ -10,8 +10,8 @@ import {
 
 export const setNotFound = notFound =>
   action(SET_NAVIGATION_NOT_FOUND, { notFound });
-export const setNavigationPath = (path, isStatic) =>
-  action(SET_NAVIGATION_PATH, { path, isStatic });
+export const setNavigationPath = (path, withEvents, isStatic) =>
+  action(SET_NAVIGATION_PATH, { path, withEvents, isStatic });
 export const setRoute = (path, state) => action(SET_ROUTE, { path, state });
 export const setRouteEntry = entry => action(SET_ENTRY, { entry });
 export const setRouteEntryRelatedArticles = relatedArticles =>

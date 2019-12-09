@@ -17,8 +17,7 @@ import {
   selectCurrentPath,
   selectCurrentProject,
 } from '~/core/redux/selectors/routing';
-import { hasNavigationTree } from '../selectors/navigation';
-import { ensureNodeTreeSaga } from './navigation';
+import { GET_NODE_TREE } from '../types/navigation';
 
 export const routingSagas = [
   takeEvery(SET_NAVIGATION_PATH, getRouteSaga),
@@ -40,10 +39,13 @@ function* setRouteSaga(action) {
 
 function* getRouteSaga(action) {
   try {
+    const { withEvents } = action;
+    if (withEvents && withEvents.onRouteLoad) {
+      yield withEvents.onRouteLoad(action.path);
+    }
     if (action.isStatic) {
       //yield call(do404);
     } else {
-      yield ensureNavigationTree();
       const state = yield select();
       const currentPath = selectCurrentPath(state);
       const deliveryApiStatus = selectVersionStatus(state);
@@ -103,18 +105,23 @@ function* getRouteSaga(action) {
         yield call(do404);
       }
     }
+    if (withEvents && withEvents.onRouteLoaded) {
+      yield withEvents.onRouteLoaded(action.path);
+    }
+    // Load navigation clientside only, a put() should help that work
+    yield put({ type: GET_NODE_TREE });
   } catch (e) {
     log.info(`Error running route saga: ${e}`);
     yield call(do404);
   }
 }
 
-function* ensureNavigationTree() {
-  const treeLoaded = yield select(hasNavigationTree);
-  if (!treeLoaded) {
-    yield call(ensureNodeTreeSaga);
-  }
-}
+// function* ensureNavigationTree() {
+//   const treeLoaded = yield select(hasNavigationTree);
+//   if (!treeLoaded) {
+//     yield call(ensureNodeTreeSaga);
+//   }
+// }
 
 function* setRouteEntry(entry, node, ancestors) {
   yield all([

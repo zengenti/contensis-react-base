@@ -9,6 +9,7 @@ import {
   selectRouteEntry,
   selectRouteEntryContentTypeId,
   selectIsNotFound,
+  selectCurrentProject,
 } from '~/core/redux/selectors/routing';
 import { setNavigationPath } from '~/core/redux/actions/routing';
 import NotFound from '~/pages/NotFound';
@@ -34,16 +35,20 @@ class RouteLoader extends Component {
     history: PropTypes.object.isRequired,
     match: PropTypes.object.isRequired,
     entry: PropTypes.object,
+    projectId: PropTypes.string,
     isNotFound: PropTypes.bool,
     setNavigationPath: PropTypes.func,
     contentTypeId: PropTypes.string,
+    withEvents: PropTypes.object,
   };
+
   static defaultProps = {};
 
   componentWillMount() {
     const trimmedPath = getTrimmedPath(this.props.location.pathname);
     this.props.setNavigationPath(
       trimmedPath,
+      this.props.withEvents,
       this.MatchedStaticRoute(trimmedPath)
     );
   }
@@ -54,6 +59,7 @@ class RouteLoader extends Component {
     if (trimmedPreviousPath !== trimmedNextPath) {
       this.props.setNavigationPath(
         trimmedNextPath,
+        this.props.withEvents,
         this.MatchedStaticRoute(trimmedNextPath)
       );
     }
@@ -69,10 +75,14 @@ class RouteLoader extends Component {
     const currentPath = this.props.location.pathname;
     const trimmedCurrentPath = getTrimmedPath(this.props.location.pathname);
 
+    const { projectId, contentTypeId, entry } = this.props;
+
     // Match Any Static Routes a developer has defined
     if (this.MatchedStaticRoute(currentPath)) {
       return renderRoutes(this.props.routes.StaticRoutes, {
-        entry: this.props.entry,
+        projectId,
+        contentTypeId,
+        entry,
       });
     }
 
@@ -81,13 +91,19 @@ class RouteLoader extends Component {
       return <Redirect to={trimmedCurrentPath} />;
     }
     // Match Any Defined Content Type Mappings
-    if (this.props.contentTypeId) {
+    if (contentTypeId) {
       const MatchedComponent = this.props.routes.ContentTypeMappings.find(
-        item => item.contentTypeID == this.props.contentTypeId
+        item => item.contentTypeID == contentTypeId
       );
 
       if (MatchedComponent) {
-        return <MatchedComponent.component entry={this.props.entry} />;
+        return (
+          <MatchedComponent.component
+            projectId={projectId}
+            contentTypeId={contentTypeId}
+            entry={entry}
+          />
+        );
       }
     }
 
@@ -104,15 +120,17 @@ class RouteLoader extends Component {
 
 const mapStateToProps = state => {
   return {
-    entry: selectRouteEntry(state),
+    projectId: selectCurrentProject(state),
     contentTypeId: selectRouteEntryContentTypeId(state),
+    entry: selectRouteEntry(state),
     isNotFound: selectIsNotFound(state),
   };
 };
 
 function mapDispatchToProps(dispatch) {
   return {
-    setNavigationPath: path => dispatch(setNavigationPath(path)),
+    setNavigationPath: (path, withEvents, isStatic) =>
+      dispatch(setNavigationPath(path, withEvents, isStatic)),
   };
 }
 
