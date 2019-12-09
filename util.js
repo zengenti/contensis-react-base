@@ -91,24 +91,24 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 87);
+/******/ 	return __webpack_require__(__webpack_require__.s = 82);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 87:
+/***/ 82:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var urls = __webpack_require__(88).urls;
+var urls = __webpack_require__(83).urls;
 
 exports.urls = urls;
 
 /***/ }),
 
-/***/ 88:
+/***/ 83:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
