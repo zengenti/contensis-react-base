@@ -2338,36 +2338,37 @@ function setRouteSaga(action) {
 }
 
 function getRouteSaga(action) {
-  var withEvents, state, currentPath, deliveryApiStatus, project, pathNode, ancestors, splitPath, entryGuid;
+  var entry, withEvents, state, currentPath, deliveryApiStatus, project, pathNode, ancestors, splitPath, entryGuid;
   return _regenerator.default.wrap(function getRouteSaga$(_context2) {
     while (1) {
       switch (_context2.prev = _context2.next) {
         case 0:
-          _context2.prev = 0;
+          entry = null;
+          _context2.prev = 1;
           withEvents = action.withEvents;
 
           if (!(withEvents && withEvents.onRouteLoad)) {
-            _context2.next = 5;
+            _context2.next = 6;
             break;
           }
 
-          _context2.next = 5;
+          _context2.next = 6;
           return withEvents.onRouteLoad(action.path);
 
-        case 5:
+        case 6:
           if (!action.isStatic) {
-            _context2.next = 8;
+            _context2.next = 9;
             break;
           }
 
-          _context2.next = 45;
+          _context2.next = 47;
           break;
 
-        case 8:
-          _context2.next = 10;
+        case 9:
+          _context2.next = 11;
           return (0, _effects.select)();
 
-        case 10:
+        case 11:
           state = _context2.sent;
           currentPath = (0, _routing2.selectCurrentPath)(state);
           deliveryApiStatus = (0, _version.selectVersionStatus)(state);
@@ -2382,110 +2383,111 @@ function getRouteSaga(action) {
           }
 
           if (!(currentPath === '/')) {
-            _context2.next = 23;
+            _context2.next = 24;
             break;
           }
 
-          _context2.next = 20;
+          _context2.next = 21;
           return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiStatus, project).nodes.getRoot({
             entryFields: '*',
             entryLinkDepth: 4,
             language: 'en-GB'
           });
 
-        case 20:
+        case 21:
           pathNode = _context2.sent;
-          _context2.next = 38;
+          _context2.next = 39;
           break;
 
-        case 23:
+        case 24:
           if (!currentPath.startsWith('/preview/')) {
-            _context2.next = 32;
+            _context2.next = 33;
             break;
           }
 
           splitPath = currentPath.split('/');
           entryGuid = splitPath[2];
-          _context2.next = 28;
+          _context2.next = 29;
           return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiStatus, project).nodes.getByEntry({
             entryId: entryGuid,
             entryFields: '*',
             entryLinkDepth: 4
           });
 
-        case 28:
+        case 29:
           pathNode = _context2.sent;
           pathNode = pathNode[0];
-          _context2.next = 35;
+          _context2.next = 36;
           break;
 
-        case 32:
-          _context2.next = 34;
+        case 33:
+          _context2.next = 35;
           return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiStatus, project).nodes.get({
             path: currentPath,
             entryFields: '*',
             entryLinkDepth: 4
           });
 
-        case 34:
+        case 35:
           pathNode = _context2.sent;
 
-        case 35:
-          _context2.next = 37;
+        case 36:
+          _context2.next = 38;
           return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiStatus, project).nodes.getAncestors(pathNode.id);
 
-        case 37:
+        case 38:
           ancestors = _context2.sent;
 
-        case 38:
+        case 39:
           if (!(pathNode && pathNode.entry && pathNode.entry.sys && pathNode.entry.sys.id)) {
-            _context2.next = 43;
+            _context2.next = 45;
             break;
           }
 
-          _context2.next = 41;
-          return (0, _effects.call)(setRouteEntry, pathNode.entry, pathNode, ancestors);
-
-        case 41:
-          _context2.next = 45;
-          break;
+          entry = pathNode.entry;
+          _context2.next = 43;
+          return (0, _effects.call)(setRouteEntry, entry, pathNode, ancestors);
 
         case 43:
-          _context2.next = 45;
-          return (0, _effects.call)(do404);
+          _context2.next = 47;
+          break;
 
         case 45:
+          _context2.next = 47;
+          return (0, _effects.call)(do404);
+
+        case 47:
           if (!(withEvents && withEvents.onRouteLoaded)) {
-            _context2.next = 48;
+            _context2.next = 50;
             break;
           }
 
-          _context2.next = 48;
-          return withEvents.onRouteLoaded(action.path);
-
-        case 48:
           _context2.next = 50;
+          return withEvents.onRouteLoaded(action.path, entry);
+
+        case 50:
+          _context2.next = 52;
           return (0, _effects.put)({
             type: _navigation.GET_NODE_TREE
           });
 
-        case 50:
-          _context2.next = 57;
+        case 52:
+          _context2.next = 59;
           break;
 
-        case 52:
-          _context2.prev = 52;
-          _context2.t0 = _context2["catch"](0);
+        case 54:
+          _context2.prev = 54;
+          _context2.t0 = _context2["catch"](1);
           log.info("Error running route saga: ".concat(_context2.t0));
-          _context2.next = 57;
+          _context2.next = 59;
           return (0, _effects.call)(do404);
 
-        case 57:
+        case 59:
         case "end":
           return _context2.stop();
       }
     }
-  }, _marked2, null, [[0, 52]]);
+  }, _marked2, null, [[1, 54]]);
 } // function* ensureNavigationTree() {
 //   const treeLoaded = yield select(hasNavigationTree);
 //   if (!treeLoaded) {

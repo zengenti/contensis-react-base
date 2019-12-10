@@ -38,6 +38,7 @@ function* setRouteSaga(action) {
 }
 
 function* getRouteSaga(action) {
+  let entry = null;
   try {
     const { withEvents } = action;
     if (withEvents && withEvents.onRouteLoad) {
@@ -100,13 +101,14 @@ function* getRouteSaga(action) {
         pathNode.entry.sys &&
         pathNode.entry.sys.id
       ) {
-        yield call(setRouteEntry, pathNode.entry, pathNode, ancestors);
+        entry = pathNode.entry;
+        yield call(setRouteEntry, entry, pathNode, ancestors);
       } else {
         yield call(do404);
       }
     }
     if (withEvents && withEvents.onRouteLoaded) {
-      yield withEvents.onRouteLoaded(action.path);
+      yield withEvents.onRouteLoaded(action.path, entry);
     }
     // Load navigation clientside only, a put() should help that work
     yield put({ type: GET_NODE_TREE });
