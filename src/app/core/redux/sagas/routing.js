@@ -18,6 +18,7 @@ import {
   selectCurrentProject,
 } from '~/core/redux/selectors/routing';
 import { GET_NODE_TREE } from '../types/navigation';
+import { hasNavigationTree } from '../selectors/navigation';
 
 export const routingSagas = [
   takeEvery(SET_NAVIGATION_PATH, getRouteSaga),
@@ -44,10 +45,10 @@ function* getRouteSaga(action) {
     if (withEvents && withEvents.onRouteLoad) {
       yield withEvents.onRouteLoad(action.path);
     }
+    const state = yield select();
     if (action.isStatic) {
       //yield call(do404);
     } else {
-      const state = yield select();
       const currentPath = selectCurrentPath(state);
       const deliveryApiStatus = selectVersionStatus(state);
       const project = selectCurrentProject(state);
@@ -110,8 +111,10 @@ function* getRouteSaga(action) {
     if (withEvents && withEvents.onRouteLoaded) {
       yield withEvents.onRouteLoaded(action.path, entry);
     }
-    // Load navigation clientside only, a put() should help that work
-    yield put({ type: GET_NODE_TREE });
+
+    if (!hasNavigationTree(state))
+      // Load navigation clientside only, a put() should help that work
+      yield put({ type: GET_NODE_TREE });
   } catch (e) {
     log.info(`Error running route saga: ${e}`);
     yield call(do404);

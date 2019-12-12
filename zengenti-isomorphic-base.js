@@ -7,7 +7,7 @@
 		var a = typeof exports === 'object' ? factory(require("react"), require("immutable"), require("react-router-dom"), require("react-hot-loader"), require("react-redux"), require("@redux-saga/core/effects"), require("react-loadable"), require("isomorphic-fetch"), require("contensis-delivery-api"), require("regenerator-runtime"), require("redux"), require("redux-immutable"), require("redux-thunk"), require("redux-saga"), require("loglevel"), require("react-router-config"), require("express"), require("evil-dns"), require("http-proxy"), require("react-dom/server"), require("react-loadable/webpack"), require("styled-components"), require("react-helmet"), require("serialize-javascript"), require("minify-css-string")) : factory(root["react"], root["immutable"], root["react-router-dom"], root["react-hot-loader"], root["react-redux"], root["@redux-saga/core/effects"], root["react-loadable"], root["isomorphic-fetch"], root["contensis-delivery-api"], root["regenerator-runtime"], root["redux"], root["redux-immutable"], root["redux-thunk"], root["redux-saga"], root["loglevel"], root["react-router-config"], root["express"], root["evil-dns"], root["http-proxy"], root["react-dom/server"], root["react-loadable/webpack"], root["styled-components"], root["react-helmet"], root["serialize-javascript"], root["minify-css-string"]);
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(global, function(__WEBPACK_EXTERNAL_MODULE__1__, __WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__11__, __WEBPACK_EXTERNAL_MODULE__15__, __WEBPACK_EXTERNAL_MODULE__16__, __WEBPACK_EXTERNAL_MODULE__21__, __WEBPACK_EXTERNAL_MODULE__25__, __WEBPACK_EXTERNAL_MODULE__28__, __WEBPACK_EXTERNAL_MODULE__34__, __WEBPACK_EXTERNAL_MODULE__35__, __WEBPACK_EXTERNAL_MODULE__39__, __WEBPACK_EXTERNAL_MODULE__40__, __WEBPACK_EXTERNAL_MODULE__41__, __WEBPACK_EXTERNAL_MODULE__42__, __WEBPACK_EXTERNAL_MODULE__49__, __WEBPACK_EXTERNAL_MODULE__59__, __WEBPACK_EXTERNAL_MODULE__67__, __WEBPACK_EXTERNAL_MODULE__70__, __WEBPACK_EXTERNAL_MODULE__73__, __WEBPACK_EXTERNAL_MODULE__76__, __WEBPACK_EXTERNAL_MODULE__77__, __WEBPACK_EXTERNAL_MODULE__78__, __WEBPACK_EXTERNAL_MODULE__79__, __WEBPACK_EXTERNAL_MODULE__80__, __WEBPACK_EXTERNAL_MODULE__81__) {
+})(global, function(__WEBPACK_EXTERNAL_MODULE__1__, __WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__11__, __WEBPACK_EXTERNAL_MODULE__16__, __WEBPACK_EXTERNAL_MODULE__17__, __WEBPACK_EXTERNAL_MODULE__22__, __WEBPACK_EXTERNAL_MODULE__26__, __WEBPACK_EXTERNAL_MODULE__28__, __WEBPACK_EXTERNAL_MODULE__34__, __WEBPACK_EXTERNAL_MODULE__35__, __WEBPACK_EXTERNAL_MODULE__39__, __WEBPACK_EXTERNAL_MODULE__40__, __WEBPACK_EXTERNAL_MODULE__41__, __WEBPACK_EXTERNAL_MODULE__42__, __WEBPACK_EXTERNAL_MODULE__49__, __WEBPACK_EXTERNAL_MODULE__59__, __WEBPACK_EXTERNAL_MODULE__67__, __WEBPACK_EXTERNAL_MODULE__70__, __WEBPACK_EXTERNAL_MODULE__73__, __WEBPACK_EXTERNAL_MODULE__76__, __WEBPACK_EXTERNAL_MODULE__77__, __WEBPACK_EXTERNAL_MODULE__78__, __WEBPACK_EXTERNAL_MODULE__79__, __WEBPACK_EXTERNAL_MODULE__80__, __WEBPACK_EXTERNAL_MODULE__81__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -149,7 +149,7 @@ var _createClass2 = _interopRequireDefault(__webpack_require__(12));
 
 var _toConsumableArray2 = _interopRequireDefault(__webpack_require__(8));
 
-var _typeof2 = _interopRequireDefault(__webpack_require__(17));
+var _typeof2 = _interopRequireDefault(__webpack_require__(18));
 
 var _contensisDeliveryApi = __webpack_require__(34);
 
@@ -827,7 +827,7 @@ exports.GET_NODE_TREE_ERROR = GET_NODE_TREE_ERROR;
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(21);
+/* harmony import */ var _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(22);
 /* harmony import */ var _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 
@@ -835,9 +835,33 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 /* 15 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__15__;
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.selectNavigationDepends = exports.selectNavigationRoot = exports.hasNavigationTree = void 0;
+
+var hasNavigationTree = function hasNavigationTree(state) {
+  return state.getIn(['navigation', 'isReady']);
+};
+
+exports.hasNavigationTree = hasNavigationTree;
+
+var selectNavigationRoot = function selectNavigationRoot(state) {
+  return state.getIn(['navigation', 'root']);
+};
+
+exports.selectNavigationRoot = selectNavigationRoot;
+
+var selectNavigationDepends = function selectNavigationDepends(state) {
+  return state.getIn(['navigation', 'treeDepends']);
+};
+
+exports.selectNavigationDepends = selectNavigationDepends;
 
 /***/ }),
 /* 16 */
@@ -847,6 +871,12 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__16__;
 
 /***/ }),
 /* 17 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__17__;
+
+/***/ }),
+/* 18 */
 /***/ (function(module, exports) {
 
 function _typeof2(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof2 = function _typeof2(obj) { return typeof obj; }; } else { _typeof2 = function _typeof2(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof2(obj); }
@@ -868,7 +898,7 @@ function _typeof(obj) {
 module.exports = _typeof;
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -879,7 +909,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.setCurrentProject = exports.setRouteEntryRelatedArticles = exports.setRouteEntry = exports.setRoute = exports.setNavigationPath = exports.setNotFound = void 0;
 
-var _helpers = __webpack_require__(19);
+var _helpers = __webpack_require__(20);
 
 var _routing = __webpack_require__(6);
 
@@ -936,7 +966,7 @@ var setCurrentProject = function setCurrentProject(project, allowedGroups) {
 exports.setCurrentProject = setCurrentProject;
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1345,7 +1375,7 @@ var randomString = function randomString(length) {
 exports.randomString = randomString;
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1362,13 +1392,13 @@ var SET_VERSION_STATUS = "".concat(VERSION_PREFIX, "SET_VERSION_STATUS");
 exports.SET_VERSION_STATUS = SET_VERSION_STATUS;
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__21__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__22__;
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1398,7 +1428,7 @@ var selectVersionStatus = function selectVersionStatus(state) {
 exports.selectVersionStatus = selectVersionStatus;
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports) {
 
 function _assertThisInitialized(self) {
@@ -1412,7 +1442,7 @@ function _assertThisInitialized(self) {
 module.exports = _assertThisInitialized;
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -1430,40 +1460,10 @@ if (false) { var throwOnDirectAccess, ReactIs; } else {
 
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__25__;
-
-/***/ }),
-/* 26 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.selectNavigationDepends = exports.selectNavigationRoot = exports.hasNavigationTree = void 0;
-
-var hasNavigationTree = function hasNavigationTree(state) {
-  return state.getIn(['navigation', 'isReady']);
-};
-
-exports.hasNavigationTree = hasNavigationTree;
-
-var selectNavigationRoot = function selectNavigationRoot(state) {
-  return state.getIn(['navigation', 'root']);
-};
-
-exports.selectNavigationRoot = selectNavigationRoot;
-
-var selectNavigationDepends = function selectNavigationDepends(state) {
-  return state.getIn(['navigation', 'treeDepends']);
-};
-
-exports.selectNavigationDepends = selectNavigationDepends;
+module.exports = __WEBPACK_EXTERNAL_MODULE__26__;
 
 /***/ }),
 /* 27 */
@@ -1489,7 +1489,7 @@ var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(53)
 
 var _getPrototypeOf3 = _interopRequireDefault(__webpack_require__(54));
 
-var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__(23));
+var _assertThisInitialized2 = _interopRequireDefault(__webpack_require__(24));
 
 var _inherits2 = _interopRequireDefault(__webpack_require__(55));
 
@@ -1497,11 +1497,11 @@ var _defineProperty2 = _interopRequireDefault(__webpack_require__(4));
 
 var _react = _interopRequireWildcard(__webpack_require__(1));
 
-var _propTypes = _interopRequireDefault(__webpack_require__(24));
+var _propTypes = _interopRequireDefault(__webpack_require__(25));
 
-var _reactRedux = __webpack_require__(16);
+var _reactRedux = __webpack_require__(17);
 
-var _reactHotLoader = __webpack_require__(15);
+var _reactHotLoader = __webpack_require__(16);
 
 var _reactRouterDom = __webpack_require__(11);
 
@@ -1509,7 +1509,7 @@ var _reactRouterConfig = __webpack_require__(59);
 
 var _routing = __webpack_require__(10);
 
-var _routing2 = __webpack_require__(18);
+var _routing2 = __webpack_require__(19);
 
 var _NotFound = _interopRequireDefault(__webpack_require__(60));
 
@@ -1845,9 +1845,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.setVersionStatus = exports.setVersion = void 0;
 
-var _helpers = __webpack_require__(19);
+var _helpers = __webpack_require__(20);
 
-var _version = __webpack_require__(20);
+var _version = __webpack_require__(21);
 
 var setVersion = function setVersion(commitRef, buildNo) {
   return (0, _helpers.action)(_version.SET_VERSION, {
@@ -2089,7 +2089,7 @@ exports.default = void 0;
 
 var _immutable = __webpack_require__(2);
 
-var _version = __webpack_require__(20);
+var _version = __webpack_require__(21);
 
 var initialState = (0, _immutable.Map)({
   commitRef: null,
@@ -2284,11 +2284,13 @@ var _routing = __webpack_require__(6);
 
 var _ContensisDeliveryApi = __webpack_require__(3);
 
-var _version = __webpack_require__(22);
+var _version = __webpack_require__(23);
 
 var _routing2 = __webpack_require__(10);
 
 var _navigation = __webpack_require__(13);
+
+var _navigation2 = __webpack_require__(15);
 
 var _marked =
 /*#__PURE__*/
@@ -2356,20 +2358,21 @@ function getRouteSaga(action) {
           return withEvents.onRouteLoad(action.path);
 
         case 6:
+          _context2.next = 8;
+          return (0, _effects.select)();
+
+        case 8:
+          state = _context2.sent;
+
           if (!action.isStatic) {
-            _context2.next = 9;
+            _context2.next = 12;
             break;
           }
 
           _context2.next = 47;
           break;
 
-        case 9:
-          _context2.next = 11;
-          return (0, _effects.select)();
-
-        case 11:
-          state = _context2.sent;
+        case 12:
           currentPath = (0, _routing2.selectCurrentPath)(state);
           deliveryApiStatus = (0, _version.selectVersionStatus)(state);
           project = (0, _routing2.selectCurrentProject)(state);
@@ -2466,28 +2469,33 @@ function getRouteSaga(action) {
           return withEvents.onRouteLoaded(action.path, entry);
 
         case 50:
-          _context2.next = 52;
+          if ((0, _navigation2.hasNavigationTree)(state)) {
+            _context2.next = 53;
+            break;
+          }
+
+          _context2.next = 53;
           return (0, _effects.put)({
             type: _navigation.GET_NODE_TREE
           });
 
-        case 52:
-          _context2.next = 59;
+        case 53:
+          _context2.next = 60;
           break;
 
-        case 54:
-          _context2.prev = 54;
+        case 55:
+          _context2.prev = 55;
           _context2.t0 = _context2["catch"](1);
           log.info("Error running route saga: ".concat(_context2.t0));
-          _context2.next = 59;
+          _context2.next = 60;
           return (0, _effects.call)(do404);
 
-        case 59:
+        case 60:
         case "end":
           return _context2.stop();
       }
     }
-  }, _marked2, null, [[1, 54]]);
+  }, _marked2, null, [[1, 55]]);
 } // function* ensureNavigationTree() {
 //   const treeLoaded = yield select(hasNavigationTree);
 //   if (!treeLoaded) {
@@ -2582,9 +2590,9 @@ var _ContensisDeliveryApi = __webpack_require__(3);
 
 var _navigation = __webpack_require__(13);
 
-var _navigation2 = __webpack_require__(26);
+var _navigation2 = __webpack_require__(15);
 
-var _version = __webpack_require__(22);
+var _version = __webpack_require__(23);
 
 var _routing = __webpack_require__(10);
 
@@ -2690,7 +2698,7 @@ exports.default = void 0;
 
 var _react = _interopRequireDefault(__webpack_require__(1));
 
-var _reactHotLoader = __webpack_require__(15);
+var _reactHotLoader = __webpack_require__(16);
 
 var _RouteLoader = _interopRequireDefault(__webpack_require__(27));
 
@@ -2733,9 +2741,9 @@ module.exports = function(module) {
 /* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _typeof = __webpack_require__(17);
+var _typeof = __webpack_require__(18);
 
-var assertThisInitialized = __webpack_require__(23);
+var assertThisInitialized = __webpack_require__(24);
 
 function _possibleConstructorReturn(self, call) {
   if (call && (_typeof(call) === "object" || typeof call === "function")) {
@@ -2933,7 +2941,7 @@ exports.Status = void 0;
 
 var _react = _interopRequireDefault(__webpack_require__(1));
 
-var _propTypes = _interopRequireDefault(__webpack_require__(24));
+var _propTypes = _interopRequireDefault(__webpack_require__(25));
 
 var _reactRouterDom = __webpack_require__(11);
 
@@ -4114,7 +4122,7 @@ __webpack_require__(28);
 
 var _express = _interopRequireDefault(__webpack_require__(67));
 
-var _reactLoadable = _interopRequireDefault(__webpack_require__(25));
+var _reactLoadable = _interopRequireDefault(__webpack_require__(26));
 
 var _displayStartupConfiguration = _interopRequireDefault(__webpack_require__(68));
 
@@ -4382,9 +4390,9 @@ var _react = _interopRequireDefault(__webpack_require__(1));
 
 var _reactRouterDom = __webpack_require__(11);
 
-var _reactRedux = __webpack_require__(16);
+var _reactRedux = __webpack_require__(17);
 
-var _reactLoadable = _interopRequireDefault(__webpack_require__(25));
+var _reactLoadable = _interopRequireDefault(__webpack_require__(26));
 
 var _server = __webpack_require__(76);
 
@@ -4406,11 +4414,11 @@ var _pickProject = _interopRequireDefault(__webpack_require__(33));
 
 var _ContensisDeliveryApi = __webpack_require__(3);
 
-var _routing = __webpack_require__(18);
+var _routing = __webpack_require__(19);
 
 var _version = __webpack_require__(37);
 
-var _navigation = __webpack_require__(26);
+var _navigation = __webpack_require__(15);
 
 var _routing2 = __webpack_require__(10);
 
@@ -4465,6 +4473,7 @@ var webApp = function webApp(app, ReactApp, config) {
   var routes = config.routes,
       withReducers = config.withReducers,
       withSagas = config.withSagas,
+      withEvents = config.withEvents,
       packagejson = config.packagejson,
       versionData = config.versionData,
       dynamicPaths = config.dynamicPaths,
@@ -4518,7 +4527,8 @@ var webApp = function webApp(app, ReactApp, config) {
       context: context,
       location: url
     }, _react.default.createElement(ReactApp, {
-      routes: routes
+      routes: routes,
+      withEvents: withEvents
     }))));
     /* eslint-disable no-console */
 

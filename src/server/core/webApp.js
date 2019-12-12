@@ -79,6 +79,7 @@ const webApp = (app, ReactApp, config) => {
     routes,
     withReducers,
     withSagas,
+    withEvents,
     packagejson,
     versionData,
     dynamicPaths,
@@ -160,7 +161,7 @@ const webApp = (app, ReactApp, config) => {
       <Loadable.Capture report={moduleName => modules.push(moduleName)}>
         <ReduxProvider store={store}>
           <StaticRouter context={context} location={url}>
-            <ReactApp routes={routes} />
+            <ReactApp routes={routes} withEvents={withEvents} />
           </StaticRouter>
         </ReduxProvider>
       </Loadable.Capture>
