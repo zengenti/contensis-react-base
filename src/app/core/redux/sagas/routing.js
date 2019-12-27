@@ -122,7 +122,7 @@ function* getRouteSaga(action) {
       // Load navigation clientside only, a put() should help that work
       yield put({ type: GET_NODE_TREE });
   } catch (e) {
-    log.info(`Error running route saga: ${e}`);
+    log.error(...['Error running route saga:', e, e.stack]);
     yield call(do404);
   }
 }

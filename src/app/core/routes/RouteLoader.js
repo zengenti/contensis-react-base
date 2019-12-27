@@ -46,7 +46,7 @@ const RouteLoader = ({
       trimmedPath,
       routeParams,
       withEvents,
-      matchedStaticRoute(trimmedPath)
+      isStaticRoute(trimmedPath)
     );
   }, [location, setNavigationPath]);
 

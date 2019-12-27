@@ -1491,7 +1491,7 @@ var RouteLoader = function RouteLoader(_ref) {
   (0, _react.useEffect)(function () {
     var trimmedPath = getTrimmedPath(location.pathname);
     var routeParams = isStaticRoute(trimmedPath) ? matchedStaticRoute(trimmedPath)[0].match.params : {};
-    setNavigationPath(trimmedPath, routeParams, withEvents, matchedStaticRoute(trimmedPath));
+    setNavigationPath(trimmedPath, routeParams, withEvents, isStaticRoute(trimmedPath));
   }, [location, setNavigationPath]);
 
   var matchedStaticRoute = function matchedStaticRoute(pathname) {
@@ -1925,7 +1925,7 @@ var _routing = __webpack_require__(5);
 var _ContensisDeliveryApi = __webpack_require__(3);
 
 var initialState = (0, _immutable.Map)({
-  currentPath: [],
+  currentPath: '/',
   currentNode: [],
   currentProject: 'unknown',
   notFound: false,
@@ -2424,7 +2424,7 @@ function getRouteSaga(action) {
         case 55:
           _context2.prev = 55;
           _context2.t0 = _context2["catch"](1);
-          log.info("Error running route saga: ".concat(_context2.t0));
+          log.error.apply(log, ['Error running route saga:', _context2.t0, _context2.t0.stack]);
           _context2.next = 60;
           return (0, _effects.call)(do404);
 

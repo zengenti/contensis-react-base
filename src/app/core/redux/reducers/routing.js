@@ -17,7 +17,7 @@ import {
 } from '~/core/util/ContensisDeliveryApi';
 
 let initialState = Map({
-  currentPath: [],
+  currentPath: '/',
   currentNode: [],
   currentProject: 'unknown',
   notFound: false,
