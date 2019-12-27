@@ -35,7 +35,12 @@ function* setRouteSaga(action) {
       args: [action.path, action.state],
     },
   });
-  yield put({ type: SET_NAVIGATION_PATH, path: action.path });
+  yield put({
+    type: SET_NAVIGATION_PATH,
+    path: action.path,
+    withEvents: action.withEvents,
+    isStatic: action.isStatic,
+  });
 }
 
 function* getRouteSaga(action) {

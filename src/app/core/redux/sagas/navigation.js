@@ -21,7 +21,7 @@ export function* ensureNodeTreeSaga() {
       const nodes = yield deliveryApi
         .getClient(deliveryApiVersionStatus, project)
         .nodes.getRoot({
-          depth: 8,
+          depth: 2,
           entryFields: 'entryTitle, metaInformation, sys.contentTypeId',
         });
       if (nodes) {
