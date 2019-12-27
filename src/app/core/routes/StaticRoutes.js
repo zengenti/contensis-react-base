@@ -15,7 +15,7 @@ export default [
     path: '/404',
     exact: true,
     component: Loadable({
-      loader: () => import('~/pages/NotFound'),
+      loader: () => import(/* webpackChunkName: "404" */ '~/pages/NotFound'),
       loading: Loading,
     }),
   },
@@ -23,9 +23,15 @@ export default [
     path: '/zenInfo',
     exact: true,
     component: Loadable({
-      loader: () => import('~/pages/VersionInfo'),
+      loader: () =>
+        import(/* webpackChunkName: "VersionInfo" */ '~/pages/VersionInfo'),
       loading: Loading,
     }),
+  },
+  {
+    path: '/zenInfo2',
+    exact: true,
+    component: Load(pages.ZenInfo),
   },
   // ˄˄ Do not delete these routes ˄˄
   // ********************************

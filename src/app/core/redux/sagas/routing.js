@@ -26,8 +26,7 @@ export const routingSagas = [
 ];
 
 function* setRouteSaga(action) {
-  /* eslint-disable no-console */
-  console.log(action);
+  // To navigate / push a specific route via redux middleware
   yield put({
     type: CALL_HISTORY_METHOD,
     payload: {
@@ -52,7 +51,9 @@ function* getRouteSaga(action) {
     }
     const state = yield select();
     if (action.isStatic) {
-      //yield call(do404);
+      // Do we need to fetch node/validate routes for a static route?
+      // For a genuinely static route we recieve a 404 in browser console,
+      // and a wasted network call.
     } else {
       const currentPath = selectCurrentPath(state);
       const deliveryApiStatus = selectVersionStatus(state);
@@ -125,13 +126,6 @@ function* getRouteSaga(action) {
     yield call(do404);
   }
 }
-
-// function* ensureNavigationTree() {
-//   const treeLoaded = yield select(hasNavigationTree);
-//   if (!treeLoaded) {
-//     yield call(ensureNodeTreeSaga);
-//   }
-// }
 
 function* setRouteEntry(entry, node, ancestors) {
   yield all([
