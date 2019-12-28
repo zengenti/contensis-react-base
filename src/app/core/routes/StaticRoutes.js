@@ -28,11 +28,6 @@ export default [
       loading: Loading,
     }),
   },
-  {
-    path: '/zenInfo2',
-    exact: true,
-    component: Load(pages.ZenInfo),
-  },
   // ˄˄ Do not delete these routes ˄˄
   // ********************************
   // {
