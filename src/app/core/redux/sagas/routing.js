@@ -47,7 +47,7 @@ function* getRouteSaga(action) {
   try {
     const { withEvents } = action;
     if (withEvents && withEvents.onRouteLoad) {
-      yield withEvents.onRouteLoad(action.path);
+      yield withEvents.onRouteLoad(action);
     }
     const state = yield select();
     if (action.isStatic) {
@@ -115,7 +115,7 @@ function* getRouteSaga(action) {
       }
     }
     if (withEvents && withEvents.onRouteLoaded) {
-      yield withEvents.onRouteLoaded(action);
+      yield withEvents.onRouteLoaded({ ...action, entry });
     }
 
     if (!hasNavigationTree(state))
