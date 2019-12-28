@@ -115,7 +115,7 @@ function* getRouteSaga(action) {
       }
     }
     if (withEvents && withEvents.onRouteLoaded) {
-      yield withEvents.onRouteLoaded(action.path, entry);
+      yield withEvents.onRouteLoaded(action);
     }
 
     if (!hasNavigationTree(state))

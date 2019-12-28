@@ -31,11 +31,6 @@ export const selectIsNotFound = state => {
 export const selectCurrentAncestors = state => {
   return state.getIn(['routing', 'currentNodeAncestors']);
 };
-
 export const selectRouteLoading = state => {
   return state.getIn(['routing', 'routeLoading']);
-};
-
-export const selectRouteEntryRelatedArticles = state => {
-  return state.getIn(['routing', 'relatedArticles']);
 };

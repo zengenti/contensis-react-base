@@ -556,7 +556,7 @@ module.exports = __webpack_require__(34);
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.CALL_HISTORY_METHOD = exports.SET_ROUTE = exports.SET_TARGET_PROJECT = exports.SET_ROUTE_LOADING = exports.SET_NAVIGATION_PATH = exports.SET_NAVIGATION_NOT_FOUND = exports.SET_ENTRY_RELATED_ARTICLES = exports.SET_ENTRY_ID = exports.SET_ANCESTORS = exports.SET_NODE = exports.SET_ENTRY = exports.GET_ENTRY = void 0;
+exports.CALL_HISTORY_METHOD = exports.SET_ROUTE = exports.SET_TARGET_PROJECT = exports.SET_ROUTE_LOADING = exports.SET_NAVIGATION_PATH = exports.SET_NAVIGATION_NOT_FOUND = exports.SET_ENTRY_ID = exports.SET_ANCESTORS = exports.SET_NODE = exports.SET_ENTRY = exports.GET_ENTRY = void 0;
 var ROUTING_PREFIX = '@ROUTING/';
 var GET_ENTRY = "".concat(ROUTING_PREFIX, "_GET_ENTRY");
 exports.GET_ENTRY = GET_ENTRY;
@@ -568,8 +568,6 @@ var SET_ANCESTORS = "".concat(ROUTING_PREFIX, "_SET_ANCESTORS");
 exports.SET_ANCESTORS = SET_ANCESTORS;
 var SET_ENTRY_ID = "".concat(ROUTING_PREFIX, "_SET_ENTRY_ID");
 exports.SET_ENTRY_ID = SET_ENTRY_ID;
-var SET_ENTRY_RELATED_ARTICLES = "".concat(ROUTING_PREFIX, "_SET_ENTRY_RELATED_ARTICLES");
-exports.SET_ENTRY_RELATED_ARTICLES = SET_ENTRY_RELATED_ARTICLES;
 var SET_NAVIGATION_NOT_FOUND = "".concat(ROUTING_PREFIX, "_SET_NOT_FOUND");
 exports.SET_NAVIGATION_NOT_FOUND = SET_NAVIGATION_NOT_FOUND;
 var SET_NAVIGATION_PATH = "".concat(ROUTING_PREFIX, "_SET_NAVIGATION_PATH");
@@ -664,7 +662,7 @@ module.exports = _toConsumableArray;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.selectRouteEntryRelatedArticles = exports.selectRouteLoading = exports.selectCurrentAncestors = exports.selectIsNotFound = exports.selectCurrentProject = exports.selectCurrentPath = exports.selectRouteEntryID = exports.selectRouteEntrySlug = exports.selectRouteEntryContentTypeId = exports.selectRouteEntryEntryId = exports.selectRouteEntryDepends = exports.selectRouteEntry = void 0;
+exports.selectRouteLoading = exports.selectCurrentAncestors = exports.selectIsNotFound = exports.selectCurrentProject = exports.selectCurrentPath = exports.selectRouteEntryID = exports.selectRouteEntrySlug = exports.selectRouteEntryContentTypeId = exports.selectRouteEntryEntryId = exports.selectRouteEntryDepends = exports.selectRouteEntry = void 0;
 
 var _immutable = __webpack_require__(2);
 
@@ -734,12 +732,6 @@ var selectRouteLoading = function selectRouteLoading(state) {
 };
 
 exports.selectRouteLoading = selectRouteLoading;
-
-var selectRouteEntryRelatedArticles = function selectRouteEntryRelatedArticles(state) {
-  return state.getIn(['routing', 'relatedArticles']);
-};
-
-exports.selectRouteEntryRelatedArticles = selectRouteEntryRelatedArticles;
 
 /***/ }),
 /* 9 */
@@ -885,7 +877,7 @@ module.exports = _createClass;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.setCurrentProject = exports.setRouteEntryRelatedArticles = exports.setRouteEntry = exports.setRoute = exports.setNavigationPath = exports.setNotFound = void 0;
+exports.setRouteEntry = exports.setRoute = exports.setCurrentProject = exports.setNavigationPath = exports.setNotFound = void 0;
 
 var _helpers = __webpack_require__(19);
 
@@ -910,6 +902,15 @@ var setNavigationPath = function setNavigationPath(path, routeParams, withEvents
 
 exports.setNavigationPath = setNavigationPath;
 
+var setCurrentProject = function setCurrentProject(project, allowedGroups) {
+  return (0, _helpers.action)(_routing.SET_TARGET_PROJECT, {
+    project: project,
+    allowedGroups: allowedGroups
+  });
+};
+
+exports.setCurrentProject = setCurrentProject;
+
 var setRoute = function setRoute(path, state) {
   return (0, _helpers.action)(_routing.SET_ROUTE, {
     path: path,
@@ -926,23 +927,6 @@ var setRouteEntry = function setRouteEntry(entry) {
 };
 
 exports.setRouteEntry = setRouteEntry;
-
-var setRouteEntryRelatedArticles = function setRouteEntryRelatedArticles(relatedArticles) {
-  return (0, _helpers.action)(_routing.SET_ENTRY_RELATED_ARTICLES, {
-    relatedArticles: relatedArticles
-  });
-};
-
-exports.setRouteEntryRelatedArticles = setRouteEntryRelatedArticles;
-
-var setCurrentProject = function setCurrentProject(project, allowedGroups) {
-  return (0, _helpers.action)(_routing.SET_TARGET_PROJECT, {
-    project: project,
-    allowedGroups: allowedGroups
-  });
-};
-
-exports.setCurrentProject = setCurrentProject;
 
 /***/ }),
 /* 19 */
@@ -1481,18 +1465,14 @@ var getTrimmedPath = function getTrimmedPath(path) {
 };
 
 var RouteLoader = function RouteLoader(_ref) {
-  var entry = _ref.entry,
+  var projectId = _ref.projectId,
       contentTypeId = _ref.contentTypeId,
+      entry = _ref.entry,
       isNotFound = _ref.isNotFound,
       setNavigationPath = _ref.setNavigationPath,
       routes = _ref.routes,
       location = _ref.location,
       withEvents = _ref.withEvents;
-  (0, _react.useEffect)(function () {
-    var trimmedPath = getTrimmedPath(location.pathname);
-    var routeParams = isStaticRoute(trimmedPath) ? matchedStaticRoute(trimmedPath)[0].match.params : {};
-    setNavigationPath(trimmedPath, routeParams, withEvents, isStaticRoute(trimmedPath));
-  }, [location, setNavigationPath]);
 
   var matchedStaticRoute = function matchedStaticRoute(pathname) {
     return (0, _reactRouterConfig.matchRoutes)(routes.StaticRoutes, typeof window != 'undefined' ? window.location.pathname : pathname);
@@ -1503,18 +1483,30 @@ var RouteLoader = function RouteLoader(_ref) {
   };
 
   var currentPath = location.pathname;
-  var trimmedCurrentPath = getTrimmedPath(location.pathname); // Match Any Static Routes a developer has defined
+  var trimmedPath = getTrimmedPath(location.pathname);
+
+  var setPath = function setPath() {
+    var routeParams = isStaticRoute(trimmedPath) ? matchedStaticRoute(trimmedPath)[0].match.params : {};
+    setNavigationPath(trimmedPath, routeParams, withEvents, isStaticRoute(trimmedPath));
+  };
+
+  if (typeof window == 'undefined') setPath();
+  (0, _react.useEffect)(function () {
+    setPath();
+  }, [location]); // Match Any Static Routes a developer has defined
 
   if (isStaticRoute(currentPath)) {
     return (0, _reactRouterConfig.renderRoutes)(routes.StaticRoutes, {
+      projectId: projectId,
+      contentTypeId: contentTypeId,
       entry: entry
     });
   } // Need to redirect when url endswith a /
 
 
-  if (currentPath.length > trimmedCurrentPath.length) {
+  if (currentPath.length > trimmedPath.length) {
     return _react.default.createElement(_reactRouterDom.Redirect, {
-      to: trimmedCurrentPath
+      to: trimmedPath
     });
   } // Match Any Defined Content Type Mappings
 
@@ -1526,6 +1518,8 @@ var RouteLoader = function RouteLoader(_ref) {
 
     if (MatchedComponent) {
       return _react.default.createElement(MatchedComponent.component, {
+        projectId: projectId,
+        contentTypeId: contentTypeId,
         entry: entry
       });
     }
@@ -1542,17 +1536,19 @@ var RouteLoader = function RouteLoader(_ref) {
 
 RouteLoader.propTypes = {
   routes: _propTypes.default.objectOf(_propTypes.default.array, _propTypes.default.array),
+  withEvents: _propTypes.default.object,
   location: _propTypes.default.object.isRequired,
   history: _propTypes.default.object.isRequired,
+  projectId: _propTypes.default.string,
+  contentTypeId: _propTypes.default.string,
   entry: _propTypes.default.object,
   isNotFound: _propTypes.default.bool,
-  setNavigationPath: _propTypes.default.func,
-  contentTypeId: _propTypes.default.string,
-  withEvents: _propTypes.default.object
+  setNavigationPath: _propTypes.default.func
 };
 
 var mapStateToProps = function mapStateToProps(state) {
   return {
+    projectId: (0, _routing.selectCurrentProject)(state),
     entry: (0, _routing.selectRouteEntry)(state),
     contentTypeId: (0, _routing.selectRouteEntryContentTypeId)(state),
     isNotFound: (0, _routing.selectIsNotFound)(state)
@@ -1975,7 +1971,7 @@ var _default = function _default() {
     case _routing.SET_NAVIGATION_PATH:
       {
         if (action.path) {
-          return state.set('currentPath', (0, _immutable.fromJS)(action.path));
+          return state.set('currentPath', (0, _immutable.fromJS)(action.path)).set('routeParams', (0, _immutable.fromJS)(action.routeParams)).set('isStatic', action.isStatic);
         }
 
         return state;
@@ -1994,11 +1990,6 @@ var _default = function _default() {
     case _routing.SET_ROUTE_LOADING:
       {
         return state.set('routeLoading', action.loading);
-      }
-
-    case _routing.SET_ENTRY_RELATED_ARTICLES:
-      {
-        return state.set('relatedArticles', (0, _immutable.fromJS)(action.relatedArticles));
       }
 
     case _routing.SET_TARGET_PROJECT:
@@ -2404,7 +2395,7 @@ function getRouteSaga(action) {
           }
 
           _context2.next = 50;
-          return withEvents.onRouteLoaded(action.path, entry);
+          return withEvents.onRouteLoaded(action);
 
         case 50:
           if ((0, _navigation2.hasNavigationTree)(state)) {

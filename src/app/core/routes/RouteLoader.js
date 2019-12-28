@@ -9,6 +9,7 @@ import {
   selectRouteEntry,
   selectRouteEntryContentTypeId,
   selectIsNotFound,
+  selectCurrentProject,
 } from '~/core/redux/selectors/routing';
 import { setNavigationPath } from '~/core/redux/actions/routing';
 import NotFound from '~/pages/NotFound';
@@ -27,8 +28,9 @@ const getTrimmedPath = path => {
 };
 
 const RouteLoader = ({
-  entry,
+  projectId,
   contentTypeId,
+  entry,
   isNotFound,
   setNavigationPath,
   routes,
@@ -36,8 +38,17 @@ const RouteLoader = ({
   //history,
   withEvents,
 }) => {
-  useEffect(() => {
-    const trimmedPath = getTrimmedPath(location.pathname);
+  const matchedStaticRoute = pathname =>
+    matchRoutes(
+      routes.StaticRoutes,
+      typeof window != 'undefined' ? window.location.pathname : pathname
+    );
+  const isStaticRoute = pathname => matchedStaticRoute(pathname).length > 0;
+
+  const currentPath = location.pathname;
+  const trimmedPath = getTrimmedPath(location.pathname);
+
+  const setPath = () => {
     const routeParams = isStaticRoute(trimmedPath)
       ? matchedStaticRoute(trimmedPath)[0].match.params
       : {};
@@ -48,28 +59,26 @@ const RouteLoader = ({
       withEvents,
       isStaticRoute(trimmedPath)
     );
-  }, [location, setNavigationPath]);
+  };
 
-  const matchedStaticRoute = pathname =>
-    matchRoutes(
-      routes.StaticRoutes,
-      typeof window != 'undefined' ? window.location.pathname : pathname
-    );
-  const isStaticRoute = pathname => matchedStaticRoute(pathname).length > 0;
+  if (typeof window == 'undefined') setPath();
 
-  const currentPath = location.pathname;
-  const trimmedCurrentPath = getTrimmedPath(location.pathname);
+  useEffect(() => {
+    setPath();
+  }, [location]);
 
   // Match Any Static Routes a developer has defined
   if (isStaticRoute(currentPath)) {
     return renderRoutes(routes.StaticRoutes, {
+      projectId,
+      contentTypeId,
       entry,
     });
   }
 
   // Need to redirect when url endswith a /
-  if (currentPath.length > trimmedCurrentPath.length) {
-    return <Redirect to={trimmedCurrentPath} />;
+  if (currentPath.length > trimmedPath.length) {
+    return <Redirect to={trimmedPath} />;
   }
   // Match Any Defined Content Type Mappings
   if (contentTypeId) {
@@ -78,7 +87,13 @@ const RouteLoader = ({
     );
 
     if (MatchedComponent) {
-      return <MatchedComponent.component entry={entry} />;
+      return (
+        <MatchedComponent.component
+          projectId={projectId}
+          contentTypeId={contentTypeId}
+          entry={entry}
+        />
+      );
     }
   }
 
@@ -95,17 +110,19 @@ const RouteLoader = ({
 
 RouteLoader.propTypes = {
   routes: PropTypes.objectOf(PropTypes.array, PropTypes.array),
+  withEvents: PropTypes.object,
   location: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
+  projectId: PropTypes.string,
+  contentTypeId: PropTypes.string,
   entry: PropTypes.object,
   isNotFound: PropTypes.bool,
   setNavigationPath: PropTypes.func,
-  contentTypeId: PropTypes.string,
-  withEvents: PropTypes.object,
 };
 
 const mapStateToProps = state => {
   return {
+    projectId: selectCurrentProject(state),
     entry: selectRouteEntry(state),
     contentTypeId: selectRouteEntryContentTypeId(state),
     isNotFound: selectIsNotFound(state),

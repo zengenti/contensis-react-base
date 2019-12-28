@@ -7,7 +7,6 @@ import {
   SET_NODE,
   SET_ANCESTORS,
   SET_ROUTE_LOADING,
-  SET_ENTRY_RELATED_ARTICLES,
   SET_TARGET_PROJECT,
   SET_ROUTE,
 } from '~/core/redux/types/routing';
@@ -56,7 +55,10 @@ export default (state = initialState, action) => {
     }
     case SET_NAVIGATION_PATH: {
       if (action.path) {
-        return state.set('currentPath', fromJS(action.path));
+        return state
+          .set('currentPath', fromJS(action.path))
+          .set('routeParams', fromJS(action.routeParams))
+          .set('isStatic', action.isStatic);
       }
       return state;
     }
@@ -68,9 +70,6 @@ export default (state = initialState, action) => {
     }
     case SET_ROUTE_LOADING: {
       return state.set('routeLoading', action.loading);
-    }
-    case SET_ENTRY_RELATED_ARTICLES: {
-      return state.set('relatedArticles', fromJS(action.relatedArticles));
     }
     case SET_TARGET_PROJECT: {
       return state
