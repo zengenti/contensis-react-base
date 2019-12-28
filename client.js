@@ -891,12 +891,12 @@ var setNotFound = function setNotFound(notFound) {
 
 exports.setNotFound = setNotFound;
 
-var setNavigationPath = function setNavigationPath(path, routeParams, withEvents, isStatic) {
+var setNavigationPath = function setNavigationPath(path, location, staticRoute, withEvents) {
   return (0, _helpers.action)(_routing.SET_NAVIGATION_PATH, {
     path: path,
-    routeParams: routeParams,
-    withEvents: withEvents,
-    isStatic: isStatic
+    location: location,
+    staticRoute: staticRoute,
+    withEvents: withEvents
   });
 };
 
@@ -1474,6 +1474,7 @@ var RouteLoader = function RouteLoader(_ref) {
       location = _ref.location,
       withEvents = _ref.withEvents;
 
+  // Match any Static Routes a developer has defined
   var matchedStaticRoute = function matchedStaticRoute(pathname) {
     return (0, _reactRouterConfig.matchRoutes)(routes.StaticRoutes, typeof window != 'undefined' ? window.location.pathname : pathname);
   };
@@ -1486,14 +1487,22 @@ var RouteLoader = function RouteLoader(_ref) {
   var trimmedPath = getTrimmedPath(location.pathname);
 
   var setPath = function setPath() {
-    var routeParams = isStaticRoute(trimmedPath) ? matchedStaticRoute(trimmedPath)[0].match.params : {};
-    setNavigationPath(trimmedPath, routeParams, withEvents, isStaticRoute(trimmedPath));
+    var staticRoute = isStaticRoute(trimmedPath) && matchedStaticRoute(trimmedPath)[0];
+    var serverPath = null;
+
+    if (staticRoute) {
+      serverPath = staticRoute.route.path.split('/').filter(function (p) {
+        return !p.startsWith(':');
+      }).join('/');
+    }
+
+    setNavigationPath(serverPath || trimmedPath, location, staticRoute, withEvents);
   };
 
   if (typeof window == 'undefined') setPath();
   (0, _react.useEffect)(function () {
     setPath();
-  }, [location]); // Match Any Static Routes a developer has defined
+  }, [location]); // Render any Static Routes a developer has defined
 
   if (isStaticRoute(currentPath)) {
     return (0, _reactRouterConfig.renderRoutes)(routes.StaticRoutes, {
@@ -1508,7 +1517,7 @@ var RouteLoader = function RouteLoader(_ref) {
     return _react.default.createElement(_reactRouterDom.Redirect, {
       to: trimmedPath
     });
-  } // Match Any Defined Content Type Mappings
+  } // Match any Defined Content Type Mappings
 
 
   if (contentTypeId) {
@@ -1557,8 +1566,8 @@ var mapStateToProps = function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    setNavigationPath: function setNavigationPath(path, routeParams, withEvents, isStatic) {
-      return dispatch((0, _routing2.setNavigationPath)(path, routeParams, withEvents, isStatic));
+    setNavigationPath: function setNavigationPath(path, location, staticRoute, withEvents) {
+      return dispatch((0, _routing2.setNavigationPath)(path, location, staticRoute, withEvents));
     }
   };
 }
@@ -1971,7 +1980,7 @@ var _default = function _default() {
     case _routing.SET_NAVIGATION_PATH:
       {
         if (action.path) {
-          return state.set('currentPath', (0, _immutable.fromJS)(action.path)).set('routeParams', (0, _immutable.fromJS)(action.routeParams)).set('isStatic', action.isStatic);
+          return state.set('currentPath', (0, _immutable.fromJS)(action.path)).set('location', (0, _immutable.fromJS)(action.location)).set('staticRoute', (0, _immutable.fromJS)(action.staticRoute));
         }
 
         return state;
@@ -2299,7 +2308,7 @@ function getRouteSaga(action) {
         case 8:
           state = _context2.sent;
 
-          if (!action.isStatic) {
+          if (!(action.staticRoute && !action.staticRoute.route.fetchNode)) {
             _context2.next = 12;
             break;
           }

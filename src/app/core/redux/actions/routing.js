@@ -9,12 +9,12 @@ import {
 
 export const setNotFound = notFound =>
   action(SET_NAVIGATION_NOT_FOUND, { notFound });
-export const setNavigationPath = (path, routeParams, withEvents, isStatic) =>
+export const setNavigationPath = (path, location, staticRoute, withEvents) =>
   action(SET_NAVIGATION_PATH, {
     path,
-    routeParams,
+    location,
+    staticRoute,
     withEvents,
-    isStatic,
   });
 export const setCurrentProject = (project, allowedGroups) =>
   action(SET_TARGET_PROJECT, { project, allowedGroups });

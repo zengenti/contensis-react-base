@@ -57,8 +57,8 @@ export default (state = initialState, action) => {
       if (action.path) {
         return state
           .set('currentPath', fromJS(action.path))
-          .set('routeParams', fromJS(action.routeParams))
-          .set('isStatic', action.isStatic);
+          .set('location', fromJS(action.location))
+          .set('staticRoute', fromJS(action.staticRoute));
       }
       return state;
     }

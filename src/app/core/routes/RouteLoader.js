@@ -38,6 +38,7 @@ const RouteLoader = ({
   //history,
   withEvents,
 }) => {
+  // Match any Static Routes a developer has defined
   const matchedStaticRoute = pathname =>
     matchRoutes(
       routes.StaticRoutes,
@@ -49,15 +50,21 @@ const RouteLoader = ({
   const trimmedPath = getTrimmedPath(location.pathname);
 
   const setPath = () => {
-    const routeParams = isStaticRoute(trimmedPath)
-      ? matchedStaticRoute(trimmedPath)[0].match.params
-      : {};
+    const staticRoute =
+      isStaticRoute(trimmedPath) && matchedStaticRoute(trimmedPath)[0];
+    let serverPath = null;
+    if (staticRoute) {
+      serverPath = staticRoute.route.path
+        .split('/')
+        .filter(p => !p.startsWith(':'))
+        .join('/');
+    }
 
     setNavigationPath(
-      trimmedPath,
-      routeParams,
-      withEvents,
-      isStaticRoute(trimmedPath)
+      serverPath || trimmedPath,
+      location,
+      staticRoute,
+      withEvents
     );
   };
 
@@ -67,7 +74,7 @@ const RouteLoader = ({
     setPath();
   }, [location]);
 
-  // Match Any Static Routes a developer has defined
+  // Render any Static Routes a developer has defined
   if (isStaticRoute(currentPath)) {
     return renderRoutes(routes.StaticRoutes, {
       projectId,
@@ -80,7 +87,7 @@ const RouteLoader = ({
   if (currentPath.length > trimmedPath.length) {
     return <Redirect to={trimmedPath} />;
   }
-  // Match Any Defined Content Type Mappings
+  // Match any Defined Content Type Mappings
   if (contentTypeId) {
     const MatchedComponent = routes.ContentTypeMappings.find(
       item => item.contentTypeID == contentTypeId
@@ -131,8 +138,8 @@ const mapStateToProps = state => {
 
 function mapDispatchToProps(dispatch) {
   return {
-    setNavigationPath: (path, routeParams, withEvents, isStatic) =>
-      dispatch(setNavigationPath(path, routeParams, withEvents, isStatic)),
+    setNavigationPath: (path, location, staticRoute, withEvents) =>
+      dispatch(setNavigationPath(path, location, staticRoute, withEvents)),
   };
 }
 
