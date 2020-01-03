@@ -2267,15 +2267,6 @@ function setRouteSaga(action) {
           });
 
         case 2:
-          _context.next = 4;
-          return (0, _effects.put)({
-            type: _routing.SET_NAVIGATION_PATH,
-            path: action.path,
-            withEvents: action.withEvents,
-            isStatic: action.isStatic
-          });
-
-        case 4:
         case "end":
           return _context.stop();
       }
