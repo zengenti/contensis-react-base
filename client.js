@@ -2276,7 +2276,7 @@ function setRouteSaga(action) {
 }
 
 function getRouteSaga(action) {
-  var entry, withEvents, state, currentPath, deliveryApiStatus, project, pathNode, ancestors, splitPath, entryGuid;
+  var entry, withEvents, state, routeEntry, currentPath, deliveryApiStatus, project, pathNode, ancestors, splitPath, entryGuid;
   return _regenerator.default.wrap(function getRouteSaga$(_context2) {
     while (1) {
       switch (_context2.prev = _context2.next) {
@@ -2299,20 +2299,21 @@ function getRouteSaga(action) {
 
         case 8:
           state = _context2.sent;
+          routeEntry = (0, _routing2.selectRouteEntry)(state);
 
-          if (!(action.staticRoute && !action.staticRoute.route.fetchNode || action.statePath === action.path)) {
-            _context2.next = 13;
+          if (!(action.staticRoute && !action.staticRoute.route.fetchNode || routeEntry && action.statePath === action.path)) {
+            _context2.next = 14;
             break;
           }
 
           // Do we need to fetch node/validate routes for a static route?
           // For a genuinely static route we recieve a 404 in browser console,
           // and a wasted network call.
-          entry = (0, _routing2.selectRouteEntry)(state).toJS();
-          _context2.next = 48;
+          entry = routeEntry.toJS();
+          _context2.next = 49;
           break;
 
-        case 13:
+        case 14:
           currentPath = (0, _routing2.selectCurrentPath)(state);
           deliveryApiStatus = (0, _version.selectVersionStatus)(state);
           project = (0, _routing2.selectCurrentProject)(state);
@@ -2326,118 +2327,118 @@ function getRouteSaga(action) {
           }
 
           if (!(currentPath === '/')) {
-            _context2.next = 25;
+            _context2.next = 26;
             break;
           }
 
-          _context2.next = 22;
+          _context2.next = 23;
           return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiStatus, project).nodes.getRoot({
             entryFields: '*',
             entryLinkDepth: 4,
             language: 'en-GB'
           });
 
-        case 22:
+        case 23:
           pathNode = _context2.sent;
-          _context2.next = 40;
+          _context2.next = 41;
           break;
 
-        case 25:
+        case 26:
           if (!currentPath.startsWith('/preview/')) {
-            _context2.next = 34;
+            _context2.next = 35;
             break;
           }
 
           splitPath = currentPath.split('/');
           entryGuid = splitPath[2];
-          _context2.next = 30;
+          _context2.next = 31;
           return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiStatus, project).nodes.getByEntry({
             entryId: entryGuid,
             entryFields: '*',
             entryLinkDepth: 4
           });
 
-        case 30:
+        case 31:
           pathNode = _context2.sent;
           pathNode = pathNode[0];
-          _context2.next = 37;
+          _context2.next = 38;
           break;
 
-        case 34:
-          _context2.next = 36;
+        case 35:
+          _context2.next = 37;
           return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiStatus, project).nodes.get({
             path: currentPath,
             entryFields: '*',
             entryLinkDepth: 4
           });
 
-        case 36:
+        case 37:
           pathNode = _context2.sent;
 
-        case 37:
-          _context2.next = 39;
+        case 38:
+          _context2.next = 40;
           return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiStatus, project).nodes.getAncestors(pathNode.id);
 
-        case 39:
+        case 40:
           ancestors = _context2.sent;
 
-        case 40:
+        case 41:
           if (!(pathNode && pathNode.entry && pathNode.entry.sys && pathNode.entry.sys.id)) {
-            _context2.next = 46;
+            _context2.next = 47;
             break;
           }
 
           entry = pathNode.entry;
-          _context2.next = 44;
+          _context2.next = 45;
           return (0, _effects.call)(setRouteEntry, entry, pathNode, ancestors);
 
-        case 44:
-          _context2.next = 48;
+        case 45:
+          _context2.next = 49;
           break;
 
-        case 46:
-          _context2.next = 48;
+        case 47:
+          _context2.next = 49;
           return (0, _effects.call)(do404);
 
-        case 48:
+        case 49:
           if (!(withEvents && withEvents.onRouteLoaded)) {
-            _context2.next = 51;
+            _context2.next = 52;
             break;
           }
 
-          _context2.next = 51;
+          _context2.next = 52;
           return withEvents.onRouteLoaded(_objectSpread({}, action, {
             entry: entry
           }));
 
-        case 51:
+        case 52:
           if ((0, _navigation2.hasNavigationTree)(state)) {
-            _context2.next = 54;
+            _context2.next = 55;
             break;
           }
 
-          _context2.next = 54;
+          _context2.next = 55;
           return (0, _effects.put)({
             type: _navigation.GET_NODE_TREE
           });
 
-        case 54:
-          _context2.next = 61;
+        case 55:
+          _context2.next = 62;
           break;
 
-        case 56:
-          _context2.prev = 56;
+        case 57:
+          _context2.prev = 57;
           _context2.t0 = _context2["catch"](1);
           log.error.apply(log, ['Error running route saga:', _context2.t0, _context2.t0.stack]);
-          _context2.next = 61;
+          _context2.next = 62;
           return (0, _effects.call)(do404);
 
-        case 61:
+        case 62:
         case "end":
           return _context2.stop();
       }
     }
-  }, _marked2, null, [[1, 56]]);
+  }, _marked2, null, [[1, 57]]);
 }
 
 function setRouteEntry(entry, node, ancestors) {

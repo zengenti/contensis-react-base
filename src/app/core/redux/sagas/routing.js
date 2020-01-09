@@ -51,14 +51,15 @@ function* getRouteSaga(action) {
       yield withEvents.onRouteLoad(action);
     }
     const state = yield select();
+    const routeEntry = selectRouteEntry(state);
     if (
       (action.staticRoute && !action.staticRoute.route.fetchNode) ||
-      action.statePath === action.path
+      (routeEntry && action.statePath === action.path)
     ) {
       // Do we need to fetch node/validate routes for a static route?
       // For a genuinely static route we recieve a 404 in browser console,
       // and a wasted network call.
-      entry = selectRouteEntry(state).toJS();
+      entry = routeEntry.toJS();
     } else {
       const currentPath = selectCurrentPath(state);
       const deliveryApiStatus = selectVersionStatus(state);
