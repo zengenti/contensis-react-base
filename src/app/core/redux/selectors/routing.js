@@ -1,7 +1,7 @@
-import { List } from 'immutable';
+import { List, Map } from 'immutable';
 
 export const selectRouteEntry = state => {
-  return state.getIn(['routing', 'entry']);
+  return state.getIn(['routing', 'entry'], Map({}));
 };
 export const selectRouteEntryDepends = state => {
   return state.getIn(['routing', 'entryDepends'], new List());

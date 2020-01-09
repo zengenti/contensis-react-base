@@ -688,7 +688,7 @@ exports.selectRouteLoading = exports.selectCurrentAncestors = exports.selectIsNo
 var _immutable = __webpack_require__(2);
 
 var selectRouteEntry = function selectRouteEntry(state) {
-  return state.getIn(['routing', 'entry']);
+  return state.getIn(['routing', 'entry'], (0, _immutable.Map)({}));
 };
 
 exports.selectRouteEntry = selectRouteEntry;
@@ -891,12 +891,13 @@ var setNotFound = function setNotFound(notFound) {
 
 exports.setNotFound = setNotFound;
 
-var setNavigationPath = function setNavigationPath(path, location, staticRoute, withEvents) {
+var setNavigationPath = function setNavigationPath(path, location, staticRoute, withEvents, statePath) {
   return (0, _helpers.action)(_routing.SET_NAVIGATION_PATH, {
     path: path,
     location: location,
     staticRoute: staticRoute,
-    withEvents: withEvents
+    withEvents: withEvents,
+    statePath: statePath
   });
 };
 
@@ -1465,7 +1466,8 @@ var getTrimmedPath = function getTrimmedPath(path) {
 };
 
 var RouteLoader = function RouteLoader(_ref) {
-  var projectId = _ref.projectId,
+  var statePath = _ref.statePath,
+      projectId = _ref.projectId,
       contentTypeId = _ref.contentTypeId,
       entry = _ref.entry,
       isNotFound = _ref.isNotFound,
@@ -1483,7 +1485,6 @@ var RouteLoader = function RouteLoader(_ref) {
     return matchedStaticRoute(pathname).length > 0;
   };
 
-  var currentPath = location.pathname;
   var trimmedPath = getTrimmedPath(location.pathname);
 
   var setPath = function setPath() {
@@ -1496,7 +1497,7 @@ var RouteLoader = function RouteLoader(_ref) {
       }).join('/');
     }
 
-    setNavigationPath(serverPath || trimmedPath, location, staticRoute, withEvents);
+    setNavigationPath(serverPath || trimmedPath, location, staticRoute, withEvents, statePath);
   };
 
   if (typeof window == 'undefined') setPath();
@@ -1504,7 +1505,7 @@ var RouteLoader = function RouteLoader(_ref) {
     setPath();
   }, [location]); // Render any Static Routes a developer has defined
 
-  if (isStaticRoute(currentPath)) {
+  if (isStaticRoute(trimmedPath)) {
     return (0, _reactRouterConfig.renderRoutes)(routes.StaticRoutes, {
       projectId: projectId,
       contentTypeId: contentTypeId,
@@ -1513,7 +1514,7 @@ var RouteLoader = function RouteLoader(_ref) {
   } // Need to redirect when url endswith a /
 
 
-  if (currentPath.length > trimmedPath.length) {
+  if (location.pathname.length > trimmedPath.length) {
     return _react.default.createElement(_reactRouterDom.Redirect, {
       to: trimmedPath
     });
@@ -1548,6 +1549,7 @@ RouteLoader.propTypes = {
   withEvents: _propTypes.default.object,
   location: _propTypes.default.object.isRequired,
   history: _propTypes.default.object.isRequired,
+  statePath: _propTypes.default.string,
   projectId: _propTypes.default.string,
   contentTypeId: _propTypes.default.string,
   entry: _propTypes.default.object,
@@ -1557,6 +1559,7 @@ RouteLoader.propTypes = {
 
 var mapStateToProps = function mapStateToProps(state) {
   return {
+    statePath: (0, _routing.selectCurrentPath)(state),
     projectId: (0, _routing.selectCurrentProject)(state),
     entry: (0, _routing.selectRouteEntry)(state),
     contentTypeId: (0, _routing.selectRouteEntryContentTypeId)(state),
@@ -1564,13 +1567,11 @@ var mapStateToProps = function mapStateToProps(state) {
   };
 };
 
-function mapDispatchToProps(dispatch) {
-  return {
-    setNavigationPath: function setNavigationPath(path, location, staticRoute, withEvents) {
-      return dispatch((0, _routing2.setNavigationPath)(path, location, staticRoute, withEvents));
-    }
-  };
-}
+var mapDispatchToProps = {
+  setNavigationPath: function setNavigationPath(path, location, staticRoute, withEvents, statePath) {
+    return (0, _routing2.setNavigationPath)(path, location, staticRoute, withEvents, statePath);
+  }
+};
 
 var _default = (0, _reactHotLoader.hot)(module)((0, _reactRouterDom.withRouter)((0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)((0, _ToJs.toJS)(RouteLoader))));
 
@@ -2299,15 +2300,19 @@ function getRouteSaga(action) {
         case 8:
           state = _context2.sent;
 
-          if (!(action.staticRoute && !action.staticRoute.route.fetchNode)) {
-            _context2.next = 12;
+          if (!(action.staticRoute && !action.staticRoute.route.fetchNode || action.statePath === action.path)) {
+            _context2.next = 13;
             break;
           }
 
-          _context2.next = 47;
+          // Do we need to fetch node/validate routes for a static route?
+          // For a genuinely static route we recieve a 404 in browser console,
+          // and a wasted network call.
+          entry = (0, _routing2.selectRouteEntry)(state).toJS();
+          _context2.next = 48;
           break;
 
-        case 12:
+        case 13:
           currentPath = (0, _routing2.selectCurrentPath)(state);
           deliveryApiStatus = (0, _version.selectVersionStatus)(state);
           project = (0, _routing2.selectCurrentProject)(state);
@@ -2321,118 +2326,118 @@ function getRouteSaga(action) {
           }
 
           if (!(currentPath === '/')) {
-            _context2.next = 24;
+            _context2.next = 25;
             break;
           }
 
-          _context2.next = 21;
+          _context2.next = 22;
           return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiStatus, project).nodes.getRoot({
             entryFields: '*',
             entryLinkDepth: 4,
             language: 'en-GB'
           });
 
-        case 21:
+        case 22:
           pathNode = _context2.sent;
-          _context2.next = 39;
+          _context2.next = 40;
           break;
 
-        case 24:
+        case 25:
           if (!currentPath.startsWith('/preview/')) {
-            _context2.next = 33;
+            _context2.next = 34;
             break;
           }
 
           splitPath = currentPath.split('/');
           entryGuid = splitPath[2];
-          _context2.next = 29;
+          _context2.next = 30;
           return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiStatus, project).nodes.getByEntry({
             entryId: entryGuid,
             entryFields: '*',
             entryLinkDepth: 4
           });
 
-        case 29:
+        case 30:
           pathNode = _context2.sent;
           pathNode = pathNode[0];
-          _context2.next = 36;
+          _context2.next = 37;
           break;
 
-        case 33:
-          _context2.next = 35;
+        case 34:
+          _context2.next = 36;
           return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiStatus, project).nodes.get({
             path: currentPath,
             entryFields: '*',
             entryLinkDepth: 4
           });
 
-        case 35:
+        case 36:
           pathNode = _context2.sent;
 
-        case 36:
-          _context2.next = 38;
+        case 37:
+          _context2.next = 39;
           return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiStatus, project).nodes.getAncestors(pathNode.id);
 
-        case 38:
+        case 39:
           ancestors = _context2.sent;
 
-        case 39:
+        case 40:
           if (!(pathNode && pathNode.entry && pathNode.entry.sys && pathNode.entry.sys.id)) {
-            _context2.next = 45;
+            _context2.next = 46;
             break;
           }
 
           entry = pathNode.entry;
-          _context2.next = 43;
+          _context2.next = 44;
           return (0, _effects.call)(setRouteEntry, entry, pathNode, ancestors);
 
-        case 43:
-          _context2.next = 47;
+        case 44:
+          _context2.next = 48;
           break;
 
-        case 45:
-          _context2.next = 47;
+        case 46:
+          _context2.next = 48;
           return (0, _effects.call)(do404);
 
-        case 47:
+        case 48:
           if (!(withEvents && withEvents.onRouteLoaded)) {
-            _context2.next = 50;
+            _context2.next = 51;
             break;
           }
 
-          _context2.next = 50;
+          _context2.next = 51;
           return withEvents.onRouteLoaded(_objectSpread({}, action, {
             entry: entry
           }));
 
-        case 50:
+        case 51:
           if ((0, _navigation2.hasNavigationTree)(state)) {
-            _context2.next = 53;
+            _context2.next = 54;
             break;
           }
 
-          _context2.next = 53;
+          _context2.next = 54;
           return (0, _effects.put)({
             type: _navigation.GET_NODE_TREE
           });
 
-        case 53:
-          _context2.next = 60;
+        case 54:
+          _context2.next = 61;
           break;
 
-        case 55:
-          _context2.prev = 55;
+        case 56:
+          _context2.prev = 56;
           _context2.t0 = _context2["catch"](1);
           log.error.apply(log, ['Error running route saga:', _context2.t0, _context2.t0.stack]);
-          _context2.next = 60;
+          _context2.next = 61;
           return (0, _effects.call)(do404);
 
-        case 60:
+        case 61:
         case "end":
           return _context2.stop();
       }
     }
-  }, _marked2, null, [[1, 55]]);
+  }, _marked2, null, [[1, 56]]);
 }
 
 function setRouteEntry(entry, node, ancestors) {

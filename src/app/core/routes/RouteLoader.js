@@ -10,6 +10,7 @@ import {
   selectRouteEntryContentTypeId,
   selectIsNotFound,
   selectCurrentProject,
+  selectCurrentPath,
 } from '~/core/redux/selectors/routing';
 import { setNavigationPath } from '~/core/redux/actions/routing';
 import NotFound from '~/pages/NotFound';
@@ -28,6 +29,7 @@ const getTrimmedPath = path => {
 };
 
 const RouteLoader = ({
+  statePath,
   projectId,
   contentTypeId,
   entry,
@@ -46,7 +48,6 @@ const RouteLoader = ({
     );
   const isStaticRoute = pathname => matchedStaticRoute(pathname).length > 0;
 
-  const currentPath = location.pathname;
   const trimmedPath = getTrimmedPath(location.pathname);
 
   const setPath = () => {
@@ -64,7 +65,8 @@ const RouteLoader = ({
       serverPath || trimmedPath,
       location,
       staticRoute,
-      withEvents
+      withEvents,
+      statePath
     );
   };
 
@@ -75,7 +77,7 @@ const RouteLoader = ({
   }, [location]);
 
   // Render any Static Routes a developer has defined
-  if (isStaticRoute(currentPath)) {
+  if (isStaticRoute(trimmedPath)) {
     return renderRoutes(routes.StaticRoutes, {
       projectId,
       contentTypeId,
@@ -84,7 +86,7 @@ const RouteLoader = ({
   }
 
   // Need to redirect when url endswith a /
-  if (currentPath.length > trimmedPath.length) {
+  if (location.pathname.length > trimmedPath.length) {
     return <Redirect to={trimmedPath} />;
   }
   // Match any Defined Content Type Mappings
@@ -120,6 +122,7 @@ RouteLoader.propTypes = {
   withEvents: PropTypes.object,
   location: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
+  statePath: PropTypes.string,
   projectId: PropTypes.string,
   contentTypeId: PropTypes.string,
   entry: PropTypes.object,
@@ -129,6 +132,7 @@ RouteLoader.propTypes = {
 
 const mapStateToProps = state => {
   return {
+    statePath: selectCurrentPath(state),
     projectId: selectCurrentProject(state),
     entry: selectRouteEntry(state),
     contentTypeId: selectRouteEntryContentTypeId(state),
@@ -136,12 +140,10 @@ const mapStateToProps = state => {
   };
 };
 
-function mapDispatchToProps(dispatch) {
-  return {
-    setNavigationPath: (path, location, staticRoute, withEvents) =>
-      dispatch(setNavigationPath(path, location, staticRoute, withEvents)),
-  };
-}
+const mapDispatchToProps = {
+  setNavigationPath: (path, location, staticRoute, withEvents, statePath) =>
+    setNavigationPath(path, location, staticRoute, withEvents, statePath),
+};
 
 export default hot(module)(
   withRouter(
