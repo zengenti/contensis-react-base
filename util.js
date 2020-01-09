@@ -121,7 +121,7 @@ var url = function url(alias, project) {
     liveWeb: "https://live-".concat(projectAndAlias, ".cloud.contensis.com"),
     previewWeb: "https://preview-".concat(projectAndAlias, ".cloud.contensis.com"),
     iisWeb: "https://iis-live-".concat(projectAndAlias, ".cloud.contensis.com"),
-    iisPreviewWeb: "https://iis-previe-".concat(projectAndAlias, ".cloud.contensis.com")
+    iisPreviewWeb: "https://iis-preview-".concat(projectAndAlias, ".cloud.contensis.com")
   };
 };
 

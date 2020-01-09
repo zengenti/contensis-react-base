@@ -8,7 +8,7 @@ const url = (alias, project) => {
     liveWeb: `https://live-${projectAndAlias}.cloud.contensis.com`,
     previewWeb: `https://preview-${projectAndAlias}.cloud.contensis.com`,
     iisWeb: `https://iis-live-${projectAndAlias}.cloud.contensis.com`,
-    iisPreviewWeb: `https://iis-previe-${projectAndAlias}.cloud.contensis.com`,
+    iisPreviewWeb: `https://iis-preview-${projectAndAlias}.cloud.contensis.com`,
   };
 };
 
