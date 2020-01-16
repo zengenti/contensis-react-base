@@ -65,6 +65,22 @@ function* getRouteSaga(action) {
       const deliveryApiStatus = selectVersionStatus(state);
       const project = selectCurrentProject(state);
 
+      if (currentPath && currentPath.startsWith('/preview/')) {
+        let splitPath = currentPath.split('/');
+        let entryGuid = splitPath[2];
+        if (splitPath.length == 3) {
+          let previewEntry = yield deliveryApi
+            .getClient(deliveryApiStatus, project)
+            .entries.get({ id: entryGuid, linkDepth: 4 });
+          if (previewEntry) {
+            yield call(setRouteEntry, previewEntry);
+          } else {
+            yield call(do404);
+          }
+          return true;
+        }
+      }
+
       let pathNode = null;
       let ancestors = null;
       // Scroll into View
@@ -82,17 +98,36 @@ function* getRouteSaga(action) {
             language: 'en-GB',
           });
       } else {
-        if (currentPath.startsWith('/preview/')) {
+        // if (currentPath.startsWith('/preview/')) {
+        //   let splitPath = currentPath.split('/');
+        //   let entryGuid = splitPath[2];
+
+        //   // According to product dev we cannot use Node API
+        //   // for previewing entries as it gives a response of []
+        //   // -- apparently it is not correct to request latest content
+        //   // with Node API
+        //   pathNode = yield deliveryApi
+        //     .getClient(deliveryApiStatus, project)
+        //     .nodes.getByEntry({
+        //       entryId: entryGuid,
+        //       entryFields: '*',
+        //       entryLinkDepth: 4,
+        //     });
+        //   pathNode = pathNode[0];
+        if (currentPath && currentPath.startsWith('/preview/')) {
           let splitPath = currentPath.split('/');
           let entryGuid = splitPath[2];
-          pathNode = yield deliveryApi
-            .getClient(deliveryApiStatus, project)
-            .nodes.getByEntry({
-              entryId: entryGuid,
-              entryFields: '*',
-              entryLinkDepth: 4,
-            });
-          pathNode = pathNode[0];
+          if (splitPath.length == 3) {
+            let previewEntry = yield deliveryApi
+              .getClient(deliveryApiStatus, project)
+              .entries.get({ id: entryGuid, linkDepth: 4 });
+            if (previewEntry) {
+              yield call(setRouteEntry, previewEntry);
+            } else {
+              yield call(do404);
+            }
+            return true;
+          }
         } else {
           pathNode = yield deliveryApi
             .getClient(deliveryApiStatus, project)
@@ -103,9 +138,10 @@ function* getRouteSaga(action) {
             });
         }
 
-        ancestors = yield deliveryApi
-          .getClient(deliveryApiStatus, project)
-          .nodes.getAncestors(pathNode.id);
+        if (pathNode)
+          ancestors = yield deliveryApi
+            .getClient(deliveryApiStatus, project)
+            .nodes.getAncestors(pathNode.id);
       }
 
       if (
