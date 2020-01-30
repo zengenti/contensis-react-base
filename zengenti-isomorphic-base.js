@@ -2282,8 +2282,7 @@ function setRouteSaga(action) {
 }
 
 function getRouteSaga(action) {
-  var entry, withEvents, state, routeEntry, currentPath, deliveryApiStatus, project, splitPath, entryGuid, previewEntry, pathNode, ancestors, _splitPath, _entryGuid, _previewEntry;
-
+  var entry, withEvents, state, routeEntry, currentPath, deliveryApiStatus, project, pathNode, ancestors, splitPath, entryGuid, previewEntry;
   return _regenerator.default.wrap(function getRouteSaga$(_context2) {
     while (1) {
       switch (_context2.prev = _context2.next) {
@@ -2317,56 +2316,13 @@ function getRouteSaga(action) {
           // For a genuinely static route we recieve a 404 in browser console,
           // and a wasted network call.
           if (routeEntry) entry = routeEntry.toJS();
-          _context2.next = 73;
+          _context2.next = 57;
           break;
 
         case 14:
           currentPath = (0, _routing2.selectCurrentPath)(state);
           deliveryApiStatus = (0, _version.selectVersionStatus)(state);
           project = (0, _routing2.selectCurrentProject)(state);
-
-          if (!(currentPath && currentPath.startsWith('/preview/'))) {
-            _context2.next = 32;
-            break;
-          }
-
-          splitPath = currentPath.split('/');
-          entryGuid = splitPath[2];
-
-          if (!(splitPath.length == 3)) {
-            _context2.next = 32;
-            break;
-          }
-
-          _context2.next = 23;
-          return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiStatus, project).entries.get({
-            id: entryGuid,
-            linkDepth: 4
-          });
-
-        case 23:
-          previewEntry = _context2.sent;
-
-          if (!previewEntry) {
-            _context2.next = 29;
-            break;
-          }
-
-          _context2.next = 27;
-          return (0, _effects.call)(setRouteEntry, previewEntry);
-
-        case 27:
-          _context2.next = 31;
-          break;
-
-        case 29:
-          _context2.next = 31;
-          return (0, _effects.call)(do404);
-
-        case 31:
-          return _context2.abrupt("return", true);
-
-        case 32:
           pathNode = null;
           ancestors = null; // Scroll into View
 
@@ -2377,148 +2333,145 @@ function getRouteSaga(action) {
           }
 
           if (!(currentPath === '/')) {
-            _context2.next = 41;
+            _context2.next = 26;
             break;
           }
 
-          _context2.next = 38;
+          _context2.next = 23;
           return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiStatus, project).nodes.getRoot({
             entryFields: '*',
             entryLinkDepth: 4,
             language: 'en-GB'
           });
 
-        case 38:
+        case 23:
           pathNode = _context2.sent;
-          _context2.next = 65;
+          _context2.next = 49;
           break;
 
-        case 41:
+        case 26:
           if (!(currentPath && currentPath.startsWith('/preview/'))) {
-            _context2.next = 58;
+            _context2.next = 42;
             break;
           }
 
-          _splitPath = currentPath.split('/');
-          _entryGuid = _splitPath[2];
+          splitPath = currentPath.split('/');
+          entryGuid = splitPath[2];
 
-          if (!(_splitPath.length == 3)) {
-            _context2.next = 56;
+          if (!(splitPath.length == 3)) {
+            _context2.next = 40;
             break;
           }
 
-          _context2.next = 47;
+          _context2.next = 32;
           return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiStatus, project).entries.get({
-            id: _entryGuid,
+            id: entryGuid,
             linkDepth: 4
           });
 
-        case 47:
-          _previewEntry = _context2.sent;
+        case 32:
+          previewEntry = _context2.sent;
 
-          if (!_previewEntry) {
-            _context2.next = 53;
+          if (!previewEntry) {
+            _context2.next = 38;
             break;
           }
 
-          _context2.next = 51;
-          return (0, _effects.call)(setRouteEntry, _previewEntry);
+          _context2.next = 36;
+          return (0, _effects.call)(setRouteEntry, previewEntry);
 
-        case 51:
-          _context2.next = 55;
+        case 36:
+          _context2.next = 40;
           break;
 
-        case 53:
-          _context2.next = 55;
+        case 38:
+          _context2.next = 40;
           return (0, _effects.call)(do404);
 
-        case 55:
-          return _context2.abrupt("return", true);
-
-        case 56:
-          _context2.next = 61;
+        case 40:
+          _context2.next = 45;
           break;
 
-        case 58:
-          _context2.next = 60;
+        case 42:
+          _context2.next = 44;
           return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiStatus, project).nodes.get({
             path: currentPath,
             entryFields: '*',
             entryLinkDepth: 4
           });
 
-        case 60:
+        case 44:
           pathNode = _context2.sent;
 
-        case 61:
+        case 45:
           if (!pathNode) {
-            _context2.next = 65;
+            _context2.next = 49;
             break;
           }
 
-          _context2.next = 64;
+          _context2.next = 48;
           return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiStatus, project).nodes.getAncestors(pathNode.id);
 
-        case 64:
+        case 48:
           ancestors = _context2.sent;
 
-        case 65:
+        case 49:
           if (!(pathNode && pathNode.entry && pathNode.entry.sys && pathNode.entry.sys.id)) {
-            _context2.next = 71;
+            _context2.next = 55;
             break;
           }
 
           entry = pathNode.entry;
-          _context2.next = 69;
+          _context2.next = 53;
           return (0, _effects.call)(setRouteEntry, entry, pathNode, ancestors);
 
-        case 69:
-          _context2.next = 73;
+        case 53:
+          _context2.next = 57;
           break;
 
-        case 71:
-          _context2.next = 73;
+        case 55:
+          _context2.next = 57;
           return (0, _effects.call)(do404);
 
-        case 73:
+        case 57:
           if (!(withEvents && withEvents.onRouteLoaded)) {
-            _context2.next = 76;
+            _context2.next = 60;
             break;
           }
 
-          _context2.next = 76;
+          _context2.next = 60;
           return withEvents.onRouteLoaded(_objectSpread({}, action, {
             entry: entry
           }));
 
-        case 76:
+        case 60:
           if ((0, _navigation2.hasNavigationTree)(state)) {
-            _context2.next = 79;
+            _context2.next = 63;
             break;
           }
 
-          _context2.next = 79;
+          _context2.next = 63;
           return (0, _effects.put)({
             type: _navigation.GET_NODE_TREE
           });
 
-        case 79:
-          _context2.next = 86;
+        case 63:
+          _context2.next = 70;
           break;
 
-        case 81:
-          _context2.prev = 81;
+        case 65:
+          _context2.prev = 65;
           _context2.t0 = _context2["catch"](1);
           log.error.apply(log, ['Error running route saga:', _context2.t0, _context2.t0.stack]);
-          _context2.next = 86;
+          _context2.next = 70;
           return (0, _effects.call)(do404);
 
-        case 86:
+        case 70:
         case "end":
           return _context2.stop();
       }
     }
-  }, _marked2, null, [[1, 81]]);
+  }, _marked2, null, [[1, 65]]);
 }
 
 function setRouteEntry(entry, node, ancestors) {
@@ -3204,7 +3157,7 @@ var reverseProxies = function reverseProxies(app, reverseProxyPaths) {
 
 var deliveryApiProxy = function deliveryApiProxy(apiProxy, app) {
   // This is just here to stop cors requests on localhost. In Production this is mapped using varnish.
-  app.all(['/api/delivery/*'], function (req, res) {
+  app.all(['/api/delivery/*', '/api/image/*'], function (req, res) {
     /* eslint-disable no-console */
     var target = servers.cms;
     console.log("Proxying api request to ".concat(servers.alias));

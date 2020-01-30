@@ -65,22 +65,6 @@ function* getRouteSaga(action) {
       const deliveryApiStatus = selectVersionStatus(state);
       const project = selectCurrentProject(state);
 
-      if (currentPath && currentPath.startsWith('/preview/')) {
-        let splitPath = currentPath.split('/');
-        let entryGuid = splitPath[2];
-        if (splitPath.length == 3) {
-          let previewEntry = yield deliveryApi
-            .getClient(deliveryApiStatus, project)
-            .entries.get({ id: entryGuid, linkDepth: 4 });
-          if (previewEntry) {
-            yield call(setRouteEntry, previewEntry);
-          } else {
-            yield call(do404);
-          }
-          return true;
-        }
-      }
-
       let pathNode = null;
       let ancestors = null;
       // Scroll into View
@@ -126,7 +110,6 @@ function* getRouteSaga(action) {
             } else {
               yield call(do404);
             }
-            return true;
           }
         } else {
           pathNode = yield deliveryApi
