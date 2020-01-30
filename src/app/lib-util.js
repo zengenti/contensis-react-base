@@ -1,2 +1,2 @@
-const urls = require('~/core/util/urls').urls;
-exports.urls = urls;
+exports.stringifyStrings = require('~/core/util/stringifyStrings');
+exports.urls = require('~/core/util/urls');

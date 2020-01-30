@@ -12,4 +12,4 @@ const url = (alias, project) => {
   };
 };
 
-exports.urls = url;
+module.exports = url;
