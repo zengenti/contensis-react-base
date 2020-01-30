@@ -1,5 +1,5 @@
 const servers = SERVERS; /* global SERVERS */
-const alias = servers.alias;
+const alias = servers.alias.toLowerCase();
 const publicUri = PUBLIC_URI; /* global PUBLIC_URI */
 const projects = PROJECTS; /* global PROJECTS */
 
@@ -18,12 +18,12 @@ const pickProject = (hostname, query) => {
   let project = 'unknown';
 
   // go through all the defined projects
-  projects.forEach(p => {
+  Object.entries(projects).map(([, p]) => {
     // check if we're accessing via the project's public uri
     if (hostname.includes(p.publicUri)) project = p.id;
 
     // the url structure is different for website (we don't prefix)
-    if (p.id == 'website') {
+    if (p.id.startsWith('website')) {
       // check for internal and external hostnames
       // we check live and preview distinctly so our rule does not clash with
       // hostnames that use a project prefix
@@ -37,8 +37,10 @@ const pickProject = (hostname, query) => {
     } else {
       // check for internal and external hostnames, prefixed with the projectId
       if (
-        hostname.includes(`${p.id}-${alias}.cloud.contensis.com`) ||
-        hostname.includes(`${p.id}.${alias}.contensis.cloud`)
+        hostname.includes(
+          `${p.id.toLowerCase()}-${alias}.cloud.contensis.com`
+        ) ||
+        hostname.includes(`${p.id.toLowerCase()}.${alias}.contensis.cloud`)
       )
         project = p.id;
     }
