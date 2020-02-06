@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { hot } from 'react-hot-loader';
-import { withRouter, Redirect } from 'react-router-dom';
+import { Redirect, useLocation } from 'react-router-dom';
 import { renderRoutes, matchRoutes } from 'react-router-config';
 
 import {
@@ -36,10 +36,11 @@ const RouteLoader = ({
   isNotFound,
   setNavigationPath,
   routes,
-  location,
+  //location,
   //history,
   withEvents,
 }) => {
+  const location = useLocation();
   // Match any Static Routes a developer has defined
   const matchedStaticRoute = pathname =>
     matchRoutes(
@@ -120,8 +121,8 @@ const RouteLoader = ({
 RouteLoader.propTypes = {
   routes: PropTypes.objectOf(PropTypes.array, PropTypes.array),
   withEvents: PropTypes.object,
-  location: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired,
+  // location: PropTypes.object.isRequired,
+  // history: PropTypes.object.isRequired,
   statePath: PropTypes.string,
   projectId: PropTypes.string,
   contentTypeId: PropTypes.string,
@@ -146,10 +147,8 @@ const mapDispatchToProps = {
 };
 
 export default hot(module)(
-  withRouter(
-    connect(
-      mapStateToProps,
-      mapDispatchToProps
-    )(toJS(RouteLoader))
-  )
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(toJS(RouteLoader))
 );

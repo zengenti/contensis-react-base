@@ -1567,10 +1567,9 @@ var RouteLoader = function RouteLoader(_ref) {
       isNotFound = _ref.isNotFound,
       setNavigationPath = _ref.setNavigationPath,
       routes = _ref.routes,
-      location = _ref.location,
       withEvents = _ref.withEvents;
+  var location = (0, _reactRouterDom.useLocation)(); // Match any Static Routes a developer has defined
 
-  // Match any Static Routes a developer has defined
   var matchedStaticRoute = function matchedStaticRoute(pathname) {
     return (0, _reactRouterConfig.matchRoutes)(routes.StaticRoutes, typeof window != 'undefined' ? window.location.pathname : pathname);
   };
@@ -1641,8 +1640,8 @@ var RouteLoader = function RouteLoader(_ref) {
 RouteLoader.propTypes = {
   routes: _propTypes.default.objectOf(_propTypes.default.array, _propTypes.default.array),
   withEvents: _propTypes.default.object,
-  location: _propTypes.default.object.isRequired,
-  history: _propTypes.default.object.isRequired,
+  // location: PropTypes.object.isRequired,
+  // history: PropTypes.object.isRequired,
   statePath: _propTypes.default.string,
   projectId: _propTypes.default.string,
   contentTypeId: _propTypes.default.string,
@@ -1667,7 +1666,7 @@ var mapDispatchToProps = {
   }
 };
 
-var _default = (0, _reactHotLoader.hot)(module)((0, _reactRouterDom.withRouter)((0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)((0, _ToJs.toJS)(RouteLoader))));
+var _default = (0, _reactHotLoader.hot)(module)((0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)((0, _ToJs.toJS)(RouteLoader)));
 
 exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(56)(module)))
