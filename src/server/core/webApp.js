@@ -27,6 +27,7 @@ import {
 import createStore from '~/core/redux/store';
 import rootSaga from '~/core/redux/sagas/index.js';
 import { fromJS } from 'immutable';
+import { matchesUA } from 'browserslist-useragent';
 
 const addStandardHeaders = (state, response, packagejson, allowedGroups) => {
   if (state) {
@@ -74,6 +75,31 @@ const addVarnishAuthenticationHeaders = (state, response, allowedGroups) => {
   }
 };
 
+const readFileSync = path => fs.readFileSync(path, 'utf8');
+
+const loadBundleData = ({ stats, templates }, build = 'default') => {
+  try {
+    const bundle = {};
+    bundle.stats = JSON.parse(
+      readFileSync(stats.replace('/target', `/${build}`))
+    );
+    bundle.templates = {
+      templateHTML: readFileSync(
+        templates.html.replace('/target', `/${build}`)
+      ),
+      templateHTMLStatic: readFileSync(
+        templates.static.replace('/target', `/${build}`)
+      ),
+      templateHTMLFragment: readFileSync(
+        templates.fragment.replace('/target', `/${build}`)
+      ),
+    };
+    return bundle;
+  } catch {
+    //console.log(ex);
+  }
+};
+
 const webApp = (app, ReactApp, config) => {
   const {
     routes,
@@ -87,16 +113,21 @@ const webApp = (app, ReactApp, config) => {
     disableSsrRedux,
   } = config;
 
-  const templates = {
-    templateHTML: fs.readFileSync(config.templates.html, 'utf8'),
-    templateHTMLStatic: fs.readFileSync(config.templates.static, 'utf8'),
-    templateHTMLFragment: fs.readFileSync(config.templates.fragment, 'utf8'),
+  const bundles = {
+    default: loadBundleData(config),
+    legacy: loadBundleData(config, 'legacy'),
+    modern: loadBundleData(config, 'modern'),
   };
-  const stats = JSON.parse(fs.readFileSync(config.stats));
+
   const versionInfo = JSON.parse(fs.readFileSync(versionData, 'utf8'));
 
   app.get('/*', (request, response, next) => {
     if (request.originalUrl.startsWith('/static/')) return next();
+    const useragent = request.headers['user-agent'];
+    const isModernUser = matchesUA(useragent, {
+      env: 'modern',
+      allowHigherVersions: true,
+    });
 
     const { url } = request;
 
@@ -172,6 +203,10 @@ const webApp = (app, ReactApp, config) => {
       `Request for ${request.path} hostname: ${request.hostname} versionStatus: ${versionStatusFromHostname}`
     );
     /* eslint-enable no-console */
+
+    const target = isModernUser ? bundles.modern : bundles.legacy;
+
+    const { templates, stats } = target || bundles.default;
 
     const {
       templateHTML,

@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("react"), require("immutable"), require("react-router-dom"), require("react-hot-loader"), require("react-redux"), require("@redux-saga/core/effects"), require("react-loadable"), require("isomorphic-fetch"), require("history"), require("contensis-delivery-api"), require("regenerator-runtime"), require("redux"), require("redux-immutable"), require("redux-thunk"), require("redux-saga"), require("loglevel"), require("react-router-config"), require("express"), require("evil-dns"), require("http-proxy"), require("react-dom/server"), require("react-loadable/webpack"), require("styled-components"), require("react-helmet"), require("serialize-javascript"), require("minify-css-string"));
+		module.exports = factory(require("react"), require("immutable"), require("react-router-dom"), require("react-hot-loader"), require("react-redux"), require("@redux-saga/core/effects"), require("react-loadable"), require("isomorphic-fetch"), require("history"), require("contensis-delivery-api"), require("regenerator-runtime"), require("redux"), require("redux-immutable"), require("redux-thunk"), require("redux-saga"), require("loglevel"), require("react-router-config"), require("express"), require("evil-dns"), require("http-proxy"), require("react-dom/server"), require("react-loadable/webpack"), require("styled-components"), require("react-helmet"), require("serialize-javascript"), require("minify-css-string"), require("browserslist-useragent"));
 	else if(typeof define === 'function' && define.amd)
-		define(["react", "immutable", "react-router-dom", "react-hot-loader", "react-redux", "@redux-saga/core/effects", "react-loadable", "isomorphic-fetch", "history", "contensis-delivery-api", "regenerator-runtime", "redux", "redux-immutable", "redux-thunk", "redux-saga", "loglevel", "react-router-config", "express", "evil-dns", "http-proxy", "react-dom/server", "react-loadable/webpack", "styled-components", "react-helmet", "serialize-javascript", "minify-css-string"], factory);
+		define(["react", "immutable", "react-router-dom", "react-hot-loader", "react-redux", "@redux-saga/core/effects", "react-loadable", "isomorphic-fetch", "history", "contensis-delivery-api", "regenerator-runtime", "redux", "redux-immutable", "redux-thunk", "redux-saga", "loglevel", "react-router-config", "express", "evil-dns", "http-proxy", "react-dom/server", "react-loadable/webpack", "styled-components", "react-helmet", "serialize-javascript", "minify-css-string", "browserslist-useragent"], factory);
 	else {
-		var a = typeof exports === 'object' ? factory(require("react"), require("immutable"), require("react-router-dom"), require("react-hot-loader"), require("react-redux"), require("@redux-saga/core/effects"), require("react-loadable"), require("isomorphic-fetch"), require("history"), require("contensis-delivery-api"), require("regenerator-runtime"), require("redux"), require("redux-immutable"), require("redux-thunk"), require("redux-saga"), require("loglevel"), require("react-router-config"), require("express"), require("evil-dns"), require("http-proxy"), require("react-dom/server"), require("react-loadable/webpack"), require("styled-components"), require("react-helmet"), require("serialize-javascript"), require("minify-css-string")) : factory(root["react"], root["immutable"], root["react-router-dom"], root["react-hot-loader"], root["react-redux"], root["@redux-saga/core/effects"], root["react-loadable"], root["isomorphic-fetch"], root["history"], root["contensis-delivery-api"], root["regenerator-runtime"], root["redux"], root["redux-immutable"], root["redux-thunk"], root["redux-saga"], root["loglevel"], root["react-router-config"], root["express"], root["evil-dns"], root["http-proxy"], root["react-dom/server"], root["react-loadable/webpack"], root["styled-components"], root["react-helmet"], root["serialize-javascript"], root["minify-css-string"]);
+		var a = typeof exports === 'object' ? factory(require("react"), require("immutable"), require("react-router-dom"), require("react-hot-loader"), require("react-redux"), require("@redux-saga/core/effects"), require("react-loadable"), require("isomorphic-fetch"), require("history"), require("contensis-delivery-api"), require("regenerator-runtime"), require("redux"), require("redux-immutable"), require("redux-thunk"), require("redux-saga"), require("loglevel"), require("react-router-config"), require("express"), require("evil-dns"), require("http-proxy"), require("react-dom/server"), require("react-loadable/webpack"), require("styled-components"), require("react-helmet"), require("serialize-javascript"), require("minify-css-string"), require("browserslist-useragent")) : factory(root["react"], root["immutable"], root["react-router-dom"], root["react-hot-loader"], root["react-redux"], root["@redux-saga/core/effects"], root["react-loadable"], root["isomorphic-fetch"], root["history"], root["contensis-delivery-api"], root["regenerator-runtime"], root["redux"], root["redux-immutable"], root["redux-thunk"], root["redux-saga"], root["loglevel"], root["react-router-config"], root["express"], root["evil-dns"], root["http-proxy"], root["react-dom/server"], root["react-loadable/webpack"], root["styled-components"], root["react-helmet"], root["serialize-javascript"], root["minify-css-string"], root["browserslist-useragent"]);
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(global, function(__WEBPACK_EXTERNAL_MODULE__1__, __WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__10__, __WEBPACK_EXTERNAL_MODULE__15__, __WEBPACK_EXTERNAL_MODULE__16__, __WEBPACK_EXTERNAL_MODULE__26__, __WEBPACK_EXTERNAL_MODULE__29__, __WEBPACK_EXTERNAL_MODULE__31__, __WEBPACK_EXTERNAL_MODULE__36__, __WEBPACK_EXTERNAL_MODULE__38__, __WEBPACK_EXTERNAL_MODULE__39__, __WEBPACK_EXTERNAL_MODULE__43__, __WEBPACK_EXTERNAL_MODULE__44__, __WEBPACK_EXTERNAL_MODULE__45__, __WEBPACK_EXTERNAL_MODULE__46__, __WEBPACK_EXTERNAL_MODULE__53__, __WEBPACK_EXTERNAL_MODULE__59__, __WEBPACK_EXTERNAL_MODULE__65__, __WEBPACK_EXTERNAL_MODULE__68__, __WEBPACK_EXTERNAL_MODULE__71__, __WEBPACK_EXTERNAL_MODULE__74__, __WEBPACK_EXTERNAL_MODULE__75__, __WEBPACK_EXTERNAL_MODULE__76__, __WEBPACK_EXTERNAL_MODULE__77__, __WEBPACK_EXTERNAL_MODULE__78__, __WEBPACK_EXTERNAL_MODULE__79__) {
+})(global, function(__WEBPACK_EXTERNAL_MODULE__1__, __WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__10__, __WEBPACK_EXTERNAL_MODULE__15__, __WEBPACK_EXTERNAL_MODULE__16__, __WEBPACK_EXTERNAL_MODULE__26__, __WEBPACK_EXTERNAL_MODULE__29__, __WEBPACK_EXTERNAL_MODULE__31__, __WEBPACK_EXTERNAL_MODULE__36__, __WEBPACK_EXTERNAL_MODULE__38__, __WEBPACK_EXTERNAL_MODULE__39__, __WEBPACK_EXTERNAL_MODULE__43__, __WEBPACK_EXTERNAL_MODULE__44__, __WEBPACK_EXTERNAL_MODULE__45__, __WEBPACK_EXTERNAL_MODULE__46__, __WEBPACK_EXTERNAL_MODULE__53__, __WEBPACK_EXTERNAL_MODULE__59__, __WEBPACK_EXTERNAL_MODULE__65__, __WEBPACK_EXTERNAL_MODULE__68__, __WEBPACK_EXTERNAL_MODULE__71__, __WEBPACK_EXTERNAL_MODULE__74__, __WEBPACK_EXTERNAL_MODULE__75__, __WEBPACK_EXTERNAL_MODULE__76__, __WEBPACK_EXTERNAL_MODULE__77__, __WEBPACK_EXTERNAL_MODULE__78__, __WEBPACK_EXTERNAL_MODULE__79__, __WEBPACK_EXTERNAL_MODULE__81__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -3321,6 +3321,8 @@ var _index = _interopRequireDefault(__webpack_require__(51));
 
 var _immutable = __webpack_require__(2);
 
+var _browserslistUseragent = __webpack_require__(81);
+
 var addStandardHeaders = function addStandardHeaders(state, response, packagejson, allowedGroups) {
   if (state) {
     /* eslint-disable no-console */
@@ -3362,6 +3364,28 @@ var addVarnishAuthenticationHeaders = function addVarnishAuthenticationHeaders(s
   }
 };
 
+var readFileSync = function readFileSync(path) {
+  return _fs.default.readFileSync(path, 'utf8');
+};
+
+var loadBundleData = function loadBundleData(_ref) {
+  var stats = _ref.stats,
+      templates = _ref.templates;
+  var build = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'default';
+
+  try {
+    var bundle = {};
+    bundle.stats = JSON.parse(readFileSync(stats.replace('/target', "/".concat(build))));
+    bundle.templates = {
+      templateHTML: readFileSync(templates.html.replace('/target', "/".concat(build))),
+      templateHTMLStatic: readFileSync(templates.static.replace('/target', "/".concat(build))),
+      templateHTMLFragment: readFileSync(templates.fragment.replace('/target', "/".concat(build)))
+    };
+    return bundle;
+  } catch (_unused) {//console.log(ex);
+  }
+};
+
 var webApp = function webApp(app, ReactApp, config) {
   var routes = config.routes,
       withReducers = config.withReducers,
@@ -3372,15 +3396,19 @@ var webApp = function webApp(app, ReactApp, config) {
       dynamicPaths = config.dynamicPaths,
       allowedGroups = config.allowedGroups,
       disableSsrRedux = config.disableSsrRedux;
-  var templates = {
-    templateHTML: _fs.default.readFileSync(config.templates.html, 'utf8'),
-    templateHTMLStatic: _fs.default.readFileSync(config.templates.static, 'utf8'),
-    templateHTMLFragment: _fs.default.readFileSync(config.templates.fragment, 'utf8')
+  var bundles = {
+    default: loadBundleData(config),
+    legacy: loadBundleData(config, 'legacy'),
+    modern: loadBundleData(config, 'modern')
   };
-  var stats = JSON.parse(_fs.default.readFileSync(config.stats));
   var versionInfo = JSON.parse(_fs.default.readFileSync(versionData, 'utf8'));
   app.get('/*', function (request, response, next) {
     if (request.originalUrl.startsWith('/static/')) return next();
+    var useragent = request.headers['user-agent'];
+    var isModernUser = (0, _browserslistUseragent.matchesUA)(useragent, {
+      env: 'modern',
+      allowHigherVersions: true
+    });
     var url = request.url; // Determine functional params and set access methods
 
     var accessMethod = {};
@@ -3428,6 +3456,12 @@ var webApp = function webApp(app, ReactApp, config) {
 
     console.log("Request for ".concat(request.path, " hostname: ").concat(request.hostname, " versionStatus: ").concat(versionStatusFromHostname));
     /* eslint-enable no-console */
+
+    var target = isModernUser ? bundles.modern : bundles.legacy;
+
+    var _ref2 = target || bundles.default,
+        templates = _ref2.templates,
+        stats = _ref2.stats;
 
     var templateHTML = templates.templateHTML,
         templateHTMLFragment = templates.templateHTMLFragment,
@@ -3598,6 +3632,12 @@ var AccessMethods = {
   REDUX: 'redux'
 };
 exports.AccessMethods = AccessMethods;
+
+/***/ }),
+/* 81 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__81__;
 
 /***/ })
 /******/ ]);
