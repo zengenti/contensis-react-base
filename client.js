@@ -166,7 +166,7 @@ Object.keys(_contensisDeliveryApi).forEach(function (key) {
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 var getClientConfig = function getClientConfig(project) {
   var config = DELIVERY_API_CONFIG;
@@ -240,7 +240,7 @@ var fixImageUri = function fixImageUri(object) {
       return false;
     }
 
-    if (object[k] && (0, _typeof2.default)(object[k]) === 'object') {
+    if (object[k] && (0, _typeof2["default"])(object[k]) === 'object') {
       fixImageUri(object[k]);
       return false;
     }
@@ -269,11 +269,11 @@ var GetResponseGuids = function GetResponseGuids(object) {
       return false;
     }
 
-    if (object[k] && (0, _typeof2.default)(object[k]) === 'object') {
+    if (object[k] && (0, _typeof2["default"])(object[k]) === 'object') {
       var subIds = GetResponseGuids(object[k]);
 
       if (subIds.length > 0) {
-        Ids.push.apply(Ids, (0, _toConsumableArray2.default)(subIds));
+        Ids.push.apply(Ids, (0, _toConsumableArray2["default"])(subIds));
       }
 
       return false;
@@ -287,7 +287,7 @@ exports.GetResponseGuids = GetResponseGuids;
 var GetAllResponseGuids = function GetAllResponseGuids(object) {
   if (!object) return [];
   var returnItems = GetResponseGuids(object);
-  var unique = (0, _toConsumableArray2.default)(new Set(returnItems));
+  var unique = (0, _toConsumableArray2["default"])(new Set(returnItems));
   return unique;
 };
 
@@ -297,10 +297,10 @@ var DeliveryApi =
 /*#__PURE__*/
 function () {
   function DeliveryApi() {
-    (0, _classCallCheck2.default)(this, DeliveryApi);
+    (0, _classCallCheck2["default"])(this, DeliveryApi);
   }
 
-  (0, _createClass2.default)(DeliveryApi, [{
+  (0, _createClass2["default"])(DeliveryApi, [{
     key: "search",
     value: function search(query, linkDepth, project, env) {
       var client = _contensisDeliveryApi.Client.create(getClientConfig(project, env));
@@ -343,7 +343,7 @@ var deliveryApi = new DeliveryApi();
 exports.deliveryApi = deliveryApi;
 
 var CacheNode = function CacheNode(key, value) {
-  (0, _classCallCheck2.default)(this, CacheNode);
+  (0, _classCallCheck2["default"])(this, CacheNode);
   this.key = key;
   this.value = value;
   this.next = null;
@@ -355,7 +355,7 @@ var LruCache =
 function () {
   function LruCache() {
     var limit = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 100;
-    (0, _classCallCheck2.default)(this, LruCache);
+    (0, _classCallCheck2["default"])(this, LruCache);
     this.map = {};
     this.head = null;
     this.tail = null;
@@ -363,7 +363,7 @@ function () {
     this.size = 0;
   }
 
-  (0, _createClass2.default)(LruCache, [{
+  (0, _createClass2["default"])(LruCache, [{
     key: "get",
     value: function get(key) {
       if (this.map[key]) {
@@ -439,12 +439,12 @@ var CachedSearch =
 /*#__PURE__*/
 function () {
   function CachedSearch() {
-    (0, _classCallCheck2.default)(this, CachedSearch);
-    (0, _defineProperty2.default)(this, "cache", new LruCache());
-    (0, _defineProperty2.default)(this, "taxonomyLookup", {});
+    (0, _classCallCheck2["default"])(this, CachedSearch);
+    (0, _defineProperty2["default"])(this, "cache", new LruCache());
+    (0, _defineProperty2["default"])(this, "taxonomyLookup", {});
   }
 
-  (0, _createClass2.default)(CachedSearch, [{
+  (0, _createClass2["default"])(CachedSearch, [{
     key: "search",
     value: function search(query, linkDepth, project, env) {
       var client = _contensisDeliveryApi.Client.create(getClientConfig(project, env));
@@ -496,7 +496,7 @@ function () {
       if (!this.cache.get(key) || typeof window == 'undefined') {
         var promise = execute();
         this.cache.set(key, promise);
-        promise.catch(function () {
+        promise["catch"](function () {
           _this2.cache.remove(key);
         });
       }
@@ -1039,7 +1039,7 @@ exports.action = action;
 exports.flattenArray = flattenArray;
 exports.api = api;
 exports.dynamicSort = dynamicSort;
-exports.randomString = exports.resizeImageUri = exports.resizeImage = exports.getWebPImageUri = exports.default = void 0;
+exports.randomString = exports.resizeImageUri = exports.resizeImage = exports.getWebPImageUri = exports["default"] = void 0;
 
 var _regenerator = _interopRequireDefault(__webpack_require__(5));
 
@@ -1053,16 +1053,16 @@ var _createClass2 = _interopRequireDefault(__webpack_require__(21));
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 var ProjectHelper =
 /*#__PURE__*/
 function () {
   function ProjectHelper() {
-    (0, _classCallCheck2.default)(this, ProjectHelper);
+    (0, _classCallCheck2["default"])(this, ProjectHelper);
   }
 
-  (0, _createClass2.default)(ProjectHelper, null, [{
+  (0, _createClass2["default"])(ProjectHelper, null, [{
     key: "currencyFormat",
     value: function currencyFormat(val) {
       var formatter = new Intl.NumberFormat('en-GB', {
@@ -1259,7 +1259,7 @@ function () {
   return ProjectHelper;
 }();
 
-exports.default = ProjectHelper;
+exports["default"] = ProjectHelper;
 
 function action(type) {
   var payload = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -1343,20 +1343,20 @@ function api(_x, _x2) {
 }
 
 function _api() {
-  _api = (0, _asyncToGenerator2.default)(
+  _api = (0, _asyncToGenerator2["default"])(
   /*#__PURE__*/
-  _regenerator.default.mark(function _callee2(url, options) {
-    return _regenerator.default.wrap(function _callee2$(_context2) {
+  _regenerator["default"].mark(function _callee2(url, options) {
+    return _regenerator["default"].wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
             return _context2.abrupt("return", fetch(url, options).then(
             /*#__PURE__*/
             function () {
-              var _ref = (0, _asyncToGenerator2.default)(
+              var _ref = (0, _asyncToGenerator2["default"])(
               /*#__PURE__*/
-              _regenerator.default.mark(function _callee(response) {
-                return _regenerator.default.wrap(function _callee$(_context) {
+              _regenerator["default"].mark(function _callee(response) {
+                return _regenerator["default"].wrap(function _callee$(_context) {
                   while (1) {
                     switch (_context.prev = _context.next) {
                       case 0:
@@ -1387,7 +1387,7 @@ function _api() {
               return function (_x3) {
                 return _ref.apply(this, arguments);
               };
-            }()).catch(function (error) {
+            }())["catch"](function (error) {
               //console.log(error);
               throw error;
             }));
@@ -1523,7 +1523,7 @@ var _interopRequireWildcard = __webpack_require__(7);
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _react = _interopRequireWildcard(__webpack_require__(1));
 
@@ -1608,7 +1608,7 @@ var RouteLoader = function RouteLoader(_ref) {
 
 
   if (location.pathname.length > trimmedPath.length) {
-    return _react.default.createElement(_reactRouterDom.Redirect, {
+    return _react["default"].createElement(_reactRouterDom.Redirect, {
       to: trimmedPath
     });
   } // Match any Defined Content Type Mappings
@@ -1620,7 +1620,7 @@ var RouteLoader = function RouteLoader(_ref) {
     });
 
     if (MatchedComponent) {
-      return _react.default.createElement(MatchedComponent.component, {
+      return _react["default"].createElement(MatchedComponent.component, {
         projectId: projectId,
         contentTypeId: contentTypeId,
         entry: entry
@@ -1629,25 +1629,25 @@ var RouteLoader = function RouteLoader(_ref) {
   }
 
   if (isNotFound) {
-    return _react.default.createElement(_Status.Status, {
+    return _react["default"].createElement(_Status.Status, {
       code: 404
-    }, _react.default.createElement(_NotFound.default, null));
+    }, _react["default"].createElement(_NotFound["default"], null));
   }
 
   return null;
 };
 
 RouteLoader.propTypes = {
-  routes: _propTypes.default.objectOf(_propTypes.default.array, _propTypes.default.array),
-  withEvents: _propTypes.default.object,
+  routes: _propTypes["default"].objectOf(_propTypes["default"].array, _propTypes["default"].array),
+  withEvents: _propTypes["default"].object,
   // location: PropTypes.object.isRequired,
   // history: PropTypes.object.isRequired,
-  statePath: _propTypes.default.string,
-  projectId: _propTypes.default.string,
-  contentTypeId: _propTypes.default.string,
-  entry: _propTypes.default.object,
-  isNotFound: _propTypes.default.bool,
-  setNavigationPath: _propTypes.default.func
+  statePath: _propTypes["default"].string,
+  projectId: _propTypes["default"].string,
+  contentTypeId: _propTypes["default"].string,
+  entry: _propTypes["default"].object,
+  isNotFound: _propTypes["default"].bool,
+  setNavigationPath: _propTypes["default"].func
 };
 
 var mapStateToProps = function mapStateToProps(state) {
@@ -1668,7 +1668,7 @@ var mapDispatchToProps = {
 
 var _default = (0, _reactHotLoader.hot)(module)((0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)((0, _ToJs.toJS)(RouteLoader)));
 
-exports.default = _default;
+exports["default"] = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(56)(module)))
 
 /***/ }),
@@ -1757,7 +1757,7 @@ var _interopRequireDefault = __webpack_require__(0);
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _slicedToArray2 = _interopRequireDefault(__webpack_require__(17));
 
@@ -1786,7 +1786,7 @@ var pickProject = function pickProject(hostname, query) {
   var project = 'unknown'; // go through all the defined projects
 
   Object.entries(projects).map(function (_ref) {
-    var _ref2 = (0, _slicedToArray2.default)(_ref, 2),
+    var _ref2 = (0, _slicedToArray2["default"])(_ref, 2),
         p = _ref2[1];
 
     // check if we're accessing via the project's public uri
@@ -1806,7 +1806,7 @@ var pickProject = function pickProject(hostname, query) {
 };
 
 var _default = pickProject;
-exports.default = _default;
+exports["default"] = _default;
 
 /***/ }),
 /* 38 */
@@ -1909,7 +1909,7 @@ var _interopRequireDefault = __webpack_require__(0);
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _defineProperty2 = _interopRequireDefault(__webpack_require__(4));
 
@@ -1931,10 +1931,10 @@ var _routerMiddleware = _interopRequireDefault(__webpack_require__(50));
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 var _default = function _default(featureReducers, initialState, history) {
-  var thunkMiddleware = [_reduxThunk.default];
+  var thunkMiddleware = [_reduxThunk["default"]];
 
   var reduxDevToolsMiddleware = function reduxDevToolsMiddleware(f) {
     return f;
@@ -1946,13 +1946,13 @@ var _default = function _default(featureReducers, initialState, history) {
     };
   }
 
-  var sagaMiddleware = (0, _reduxSaga.default)();
-  var middleware = (0, _redux.compose)(_redux.applyMiddleware.apply(void 0, thunkMiddleware.concat([sagaMiddleware, (0, _routerMiddleware.default)(history)])), reduxDevToolsMiddleware);
+  var sagaMiddleware = (0, _reduxSaga["default"])();
+  var middleware = (0, _redux.compose)(_redux.applyMiddleware.apply(void 0, thunkMiddleware.concat([sagaMiddleware, (0, _routerMiddleware["default"])(history)])), reduxDevToolsMiddleware);
 
   var reducers = _objectSpread({
-    navigation: _navigation.default,
-    routing: _routing.default,
-    version: _version.default
+    navigation: _navigation["default"],
+    routing: _routing["default"],
+    version: _version["default"]
   }, featureReducers);
 
   var combinedReducers = (0, _reduxImmutable.combineReducers)(reducers);
@@ -1971,7 +1971,7 @@ var _default = function _default(featureReducers, initialState, history) {
   return store(initialState);
 };
 
-exports.default = _default;
+exports["default"] = _default;
 
 /***/ }),
 /* 43 */
@@ -2007,7 +2007,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__46__;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _immutable = __webpack_require__(2);
 
@@ -2097,7 +2097,7 @@ var _default = function _default() {
   }
 };
 
-exports.default = _default;
+exports["default"] = _default;
 
 /***/ }),
 /* 48 */
@@ -2109,7 +2109,7 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _immutable = __webpack_require__(2);
 
@@ -2141,7 +2141,7 @@ var _default = function _default() {
   }
 };
 
-exports.default = _default;
+exports["default"] = _default;
 
 /***/ }),
 /* 49 */
@@ -2153,7 +2153,7 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _immutable = __webpack_require__(2);
 
@@ -2186,7 +2186,7 @@ var _default = function _default() {
   }
 };
 
-exports.default = _default;
+exports["default"] = _default;
 
 /***/ }),
 /* 50 */
@@ -2200,7 +2200,7 @@ var _interopRequireDefault = __webpack_require__(0);
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _toConsumableArray2 = _interopRequireDefault(__webpack_require__(8));
 
@@ -2224,14 +2224,14 @@ var routerMiddleware = function routerMiddleware(history) {
         var _action$payload = action.payload,
             method = _action$payload.method,
             args = _action$payload.args;
-        history[method].apply(history, (0, _toConsumableArray2.default)(args));
+        history[method].apply(history, (0, _toConsumableArray2["default"])(args));
       };
     };
   };
 };
 
 var _default = routerMiddleware;
-exports.default = _default;
+exports["default"] = _default;
 
 /***/ }),
 /* 51 */
@@ -2245,7 +2245,7 @@ var _interopRequireDefault = __webpack_require__(0);
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = _default;
+exports["default"] = _default;
 
 var _regenerator = _interopRequireDefault(__webpack_require__(5));
 
@@ -2262,15 +2262,15 @@ function _default() {
   var featureSagas = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
   return (
     /*#__PURE__*/
-    _regenerator.default.mark(function rootSaga() {
+    _regenerator["default"].mark(function rootSaga() {
       var subSagas;
-      return _regenerator.default.wrap(function rootSaga$(_context) {
+      return _regenerator["default"].wrap(function rootSaga$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              subSagas = [].concat((0, _toConsumableArray2.default)(_routing.routingSagas), (0, _toConsumableArray2.default)(_navigation.navigationSagas));
+              subSagas = [].concat((0, _toConsumableArray2["default"])(_routing.routingSagas), (0, _toConsumableArray2["default"])(_navigation.navigationSagas));
               _context.next = 3;
-              return (0, _effects.all)([].concat((0, _toConsumableArray2.default)(subSagas), (0, _toConsumableArray2.default)(featureSagas)));
+              return (0, _effects.all)([].concat((0, _toConsumableArray2["default"])(subSagas), (0, _toConsumableArray2["default"])(featureSagas)));
 
             case 3:
             case "end":
@@ -2320,26 +2320,26 @@ var _navigation2 = __webpack_require__(14);
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 var _marked =
 /*#__PURE__*/
-_regenerator.default.mark(setRouteSaga),
+_regenerator["default"].mark(setRouteSaga),
     _marked2 =
 /*#__PURE__*/
-_regenerator.default.mark(getRouteSaga),
+_regenerator["default"].mark(getRouteSaga),
     _marked3 =
 /*#__PURE__*/
-_regenerator.default.mark(setRouteEntry),
+_regenerator["default"].mark(setRouteEntry),
     _marked4 =
 /*#__PURE__*/
-_regenerator.default.mark(do404);
+_regenerator["default"].mark(do404);
 
 var routingSagas = [(0, _effects.takeEvery)(_routing.SET_NAVIGATION_PATH, getRouteSaga), (0, _effects.takeEvery)(_routing.SET_ROUTE, setRouteSaga)];
 exports.routingSagas = routingSagas;
 
 function setRouteSaga(action) {
-  return _regenerator.default.wrap(function setRouteSaga$(_context) {
+  return _regenerator["default"].wrap(function setRouteSaga$(_context) {
     while (1) {
       switch (_context.prev = _context.next) {
         case 0:
@@ -2362,7 +2362,7 @@ function setRouteSaga(action) {
 
 function getRouteSaga(action) {
   var entry, withEvents, state, routeEntry, currentPath, deliveryApiStatus, project, pathNode, ancestors, splitPath, entryGuid, previewEntry;
-  return _regenerator.default.wrap(function getRouteSaga$(_context2) {
+  return _regenerator["default"].wrap(function getRouteSaga$(_context2) {
     while (1) {
       switch (_context2.prev = _context2.next) {
         case 0:
@@ -2554,7 +2554,7 @@ function getRouteSaga(action) {
 }
 
 function setRouteEntry(entry, node, ancestors) {
-  return _regenerator.default.wrap(function setRouteEntry$(_context3) {
+  return _regenerator["default"].wrap(function setRouteEntry$(_context3) {
     while (1) {
       switch (_context3.prev = _context3.next) {
         case 0:
@@ -2585,7 +2585,7 @@ function setRouteEntry(entry, node, ancestors) {
 }
 
 function do404() {
-  return _regenerator.default.wrap(function do404$(_context4) {
+  return _regenerator["default"].wrap(function do404$(_context4) {
     while (1) {
       switch (_context4.prev = _context4.next) {
         case 0:
@@ -2647,14 +2647,14 @@ var _routing = __webpack_require__(9);
 
 var _marked =
 /*#__PURE__*/
-_regenerator.default.mark(ensureNodeTreeSaga);
+_regenerator["default"].mark(ensureNodeTreeSaga);
 
 var navigationSagas = [(0, _effects.takeEvery)(_navigation.GET_NODE_TREE, ensureNodeTreeSaga)];
 exports.navigationSagas = navigationSagas;
 
 function ensureNodeTreeSaga() {
   var state, deliveryApiVersionStatus, project, nodes;
-  return _regenerator.default.wrap(function ensureNodeTreeSaga$(_context) {
+  return _regenerator["default"].wrap(function ensureNodeTreeSaga$(_context) {
     while (1) {
       switch (_context.prev = _context.next) {
         case 0:
@@ -2743,7 +2743,7 @@ var _interopRequireDefault = __webpack_require__(0);
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _react = _interopRequireDefault(__webpack_require__(1));
 
@@ -2752,11 +2752,11 @@ var _reactHotLoader = __webpack_require__(15);
 var _RouteLoader = _interopRequireDefault(__webpack_require__(30));
 
 var AppRoot = function AppRoot(props) {
-  return _react.default.createElement(_RouteLoader.default, props);
+  return _react["default"].createElement(_RouteLoader["default"], props);
 };
 
 var _default = AppRoot;
-exports.default = _default;
+exports["default"] = _default;
 
 /***/ }),
 /* 56 */
@@ -2894,16 +2894,16 @@ var _interopRequireDefault = __webpack_require__(0);
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _react = _interopRequireDefault(__webpack_require__(1));
 
 var NotFound = function NotFound() {
-  return _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("header", null, _react.default.createElement("h1", null, "404 Page Not Found")));
+  return _react["default"].createElement(_react["default"].Fragment, null, _react["default"].createElement("header", null, _react["default"].createElement("h1", null, "404 Page Not Found")));
 };
 
 var _default = NotFound;
-exports.default = _default;
+exports["default"] = _default;
 
 /***/ }),
 /* 61 */
@@ -2928,7 +2928,7 @@ var _reactRouterDom = __webpack_require__(10);
 var Status = function Status(_ref) {
   var code = _ref.code,
       children = _ref.children;
-  return _react.default.createElement(_reactRouterDom.Route, {
+  return _react["default"].createElement(_reactRouterDom.Route, {
     render: function render(_ref2) {
       var staticContext = _ref2.staticContext;
       if (staticContext) staticContext.status = code;
@@ -2939,8 +2939,8 @@ var Status = function Status(_ref) {
 
 exports.Status = Status;
 Status.propTypes = {
-  code: _propTypes.default.number.isRequired,
-  children: _propTypes.default.element
+  code: _propTypes["default"].number.isRequired,
+  children: _propTypes["default"].element
 };
 
 /***/ }),
@@ -2969,7 +2969,7 @@ var toJS = function toJS(WrappedComponent) {
       newProps[wrappedComponentProp[KEY]] = _immutable.Iterable.isIterable(wrappedComponentProp[VALUE]) ? wrappedComponentProp[VALUE].toJS() : wrappedComponentProp[VALUE];
       return newProps;
     }, {});
-    return _react.default.createElement(WrappedComponent, propsJS);
+    return _react["default"].createElement(WrappedComponent, propsJS);
   };
 };
 
@@ -3004,15 +3004,15 @@ exports.toJS = toJS;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = exports.ReactApp = void 0;
+exports["default"] = exports.ReactApp = void 0;
 
-var client = __webpack_require__(83).default;
+var client = __webpack_require__(83)["default"];
 
-var ReactApp = __webpack_require__(55).default;
+var ReactApp = __webpack_require__(55)["default"];
 
 exports.ReactApp = ReactApp;
 var _default = client;
-exports.default = _default;
+exports["default"] = _default;
 
 /***/ }),
 /* 83 */
@@ -3026,7 +3026,7 @@ var _interopRequireDefault = __webpack_require__(0);
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _classCallCheck2 = _interopRequireDefault(__webpack_require__(13));
 
@@ -3063,7 +3063,7 @@ var _pickProject = _interopRequireDefault(__webpack_require__(37));
 var _history = __webpack_require__(35);
 
 var ClientApp = function ClientApp(ReactApp, config) {
-  (0, _classCallCheck2.default)(this, ClientApp);
+  (0, _classCallCheck2["default"])(this, ClientApp);
   var documentRoot = document.getElementById('root');
   var routes = config.routes,
       withReducers = config.withReducers,
@@ -3071,11 +3071,11 @@ var ClientApp = function ClientApp(ReactApp, config) {
       withEvents = config.withEvents;
 
   var GetClientJSX = function GetClientJSX(store) {
-    var ClientJsx = _react.default.createElement(_reactHotLoader.AppContainer, null, _react.default.createElement(_reactRedux.Provider, {
+    var ClientJsx = _react["default"].createElement(_reactHotLoader.AppContainer, null, _react["default"].createElement(_reactRedux.Provider, {
       store: store
-    }, _react.default.createElement(_reactRouterDom.Router, {
+    }, _react["default"].createElement(_reactRouterDom.Router, {
       history: _history.browserHistory
-    }, _react.default.createElement(ReactApp, {
+    }, _react["default"].createElement(ReactApp, {
       routes: routes,
       withEvents: withEvents
     }))));
@@ -3098,15 +3098,15 @@ var ClientApp = function ClientApp(ReactApp, config) {
   var versionStatusFromHostname = (0, _ContensisDeliveryApi.GetClientSideDeliveryApiStatus)();
 
   if (window.isDynamic || window.REDUX_DATA || process.env.NODE_ENV !== 'production') {
-    store = (0, _store.default)(withReducers, (0, _immutable.fromJS)(window.REDUX_DATA), _history.browserHistory);
+    store = (0, _store["default"])(withReducers, (0, _immutable.fromJS)(window.REDUX_DATA), _history.browserHistory);
     store.dispatch((0, _version.setVersionStatus)(versionStatusFromHostname));
     /* eslint-disable no-console */
 
     console.log('Hydrating from inline Redux');
     /* eslint-enable no-console */
 
-    store.runSaga((0, _index.default)(withSagas));
-    store.dispatch((0, _routing.setCurrentProject)((0, _pickProject.default)(window.location.hostname, _queryString.default.parse(window.location.search))));
+    store.runSaga((0, _index["default"])(withSagas));
+    store.dispatch((0, _routing.setCurrentProject)((0, _pickProject["default"])(window.location.hostname, _queryString["default"].parse(window.location.search))));
     delete window.REDUX_DATA;
     HMRRenderer(GetClientJSX(store));
   } else {
@@ -3119,10 +3119,10 @@ var ClientApp = function ClientApp(ReactApp, config) {
 
       /* eslint-enable no-console */
       var ssRedux = JSON.parse(data);
-      store = (0, _store.default)(withReducers, (0, _immutable.fromJS)(ssRedux), _history.browserHistory); // store.dispatch(setVersionStatus(versionStatusFromHostname));
+      store = (0, _store["default"])(withReducers, (0, _immutable.fromJS)(ssRedux), _history.browserHistory); // store.dispatch(setVersionStatus(versionStatusFromHostname));
 
-      store.runSaga((0, _index.default)(withSagas));
-      store.dispatch((0, _routing.setCurrentProject)((0, _pickProject.default)(window.location.hostname, _queryString.default.parse(window.location.search)))); // if (typeof window != 'undefined') {
+      store.runSaga((0, _index["default"])(withSagas));
+      store.dispatch((0, _routing.setCurrentProject)((0, _pickProject["default"])(window.location.hostname, _queryString["default"].parse(window.location.search)))); // if (typeof window != 'undefined') {
       //   store.dispatch(checkUserLoggedIn());
       // }
 
@@ -3135,7 +3135,7 @@ var ClientApp = function ClientApp(ReactApp, config) {
 };
 
 var _default = ClientApp;
-exports.default = _default;
+exports["default"] = _default;
 
 /***/ }),
 /* 84 */

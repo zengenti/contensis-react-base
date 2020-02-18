@@ -234,11 +234,11 @@ var _slicedToArray2 = _interopRequireDefault(__webpack_require__(17));
 var stringifyStrings = function stringifyStrings(obj) {
   var returnObj = Array.isArray(obj) ? [] : {};
   Object.entries(obj).forEach(function (_ref) {
-    var _ref2 = (0, _slicedToArray2.default)(_ref, 2),
+    var _ref2 = (0, _slicedToArray2["default"])(_ref, 2),
         key = _ref2[0],
         value = _ref2[1];
 
-    switch ((0, _typeof2.default)(value)) {
+    switch ((0, _typeof2["default"])(value)) {
       case 'string':
         returnObj[key] = JSON.stringify(value);
         break;

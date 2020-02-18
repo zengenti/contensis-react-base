@@ -77,21 +77,21 @@ const addVarnishAuthenticationHeaders = (state, response, allowedGroups) => {
 
 const readFileSync = path => fs.readFileSync(path, 'utf8');
 
-const loadBundleData = ({ stats, templates }, build = 'default') => {
+const loadBundleData = ({ stats, templates }, build) => {
   try {
     const bundle = {};
     bundle.stats = JSON.parse(
-      readFileSync(stats.replace('/target', `/${build}`))
+      readFileSync(stats.replace('/target', build ? `/${build}` : ''))
     );
     bundle.templates = {
       templateHTML: readFileSync(
-        templates.html.replace('/target', `/${build}`)
+        templates.html.replace('/target', build ? `/${build}` : '')
       ),
       templateHTMLStatic: readFileSync(
-        templates.static.replace('/target', `/${build}`)
+        templates.static.replace('/target', build ? `/${build}` : '')
       ),
       templateHTMLFragment: readFileSync(
-        templates.fragment.replace('/target', `/${build}`)
+        templates.fragment.replace('/target', build ? `/${build}` : '')
       ),
     };
     return bundle;
@@ -118,6 +118,7 @@ const webApp = (app, ReactApp, config) => {
     legacy: loadBundleData(config, 'legacy'),
     modern: loadBundleData(config, 'modern'),
   };
+  if (!bundles.default) bundles.default = bundles.legacy || bundles.modern;
 
   const versionInfo = JSON.parse(fs.readFileSync(versionData, 'utf8'));
 

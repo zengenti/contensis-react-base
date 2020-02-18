@@ -166,7 +166,7 @@ Object.keys(_contensisDeliveryApi).forEach(function (key) {
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 var getClientConfig = function getClientConfig(project) {
   var config = DELIVERY_API_CONFIG;
@@ -240,7 +240,7 @@ var fixImageUri = function fixImageUri(object) {
       return false;
     }
 
-    if (object[k] && (0, _typeof2.default)(object[k]) === 'object') {
+    if (object[k] && (0, _typeof2["default"])(object[k]) === 'object') {
       fixImageUri(object[k]);
       return false;
     }
@@ -269,11 +269,11 @@ var GetResponseGuids = function GetResponseGuids(object) {
       return false;
     }
 
-    if (object[k] && (0, _typeof2.default)(object[k]) === 'object') {
+    if (object[k] && (0, _typeof2["default"])(object[k]) === 'object') {
       var subIds = GetResponseGuids(object[k]);
 
       if (subIds.length > 0) {
-        Ids.push.apply(Ids, (0, _toConsumableArray2.default)(subIds));
+        Ids.push.apply(Ids, (0, _toConsumableArray2["default"])(subIds));
       }
 
       return false;
@@ -287,7 +287,7 @@ exports.GetResponseGuids = GetResponseGuids;
 var GetAllResponseGuids = function GetAllResponseGuids(object) {
   if (!object) return [];
   var returnItems = GetResponseGuids(object);
-  var unique = (0, _toConsumableArray2.default)(new Set(returnItems));
+  var unique = (0, _toConsumableArray2["default"])(new Set(returnItems));
   return unique;
 };
 
@@ -297,10 +297,10 @@ var DeliveryApi =
 /*#__PURE__*/
 function () {
   function DeliveryApi() {
-    (0, _classCallCheck2.default)(this, DeliveryApi);
+    (0, _classCallCheck2["default"])(this, DeliveryApi);
   }
 
-  (0, _createClass2.default)(DeliveryApi, [{
+  (0, _createClass2["default"])(DeliveryApi, [{
     key: "search",
     value: function search(query, linkDepth, project, env) {
       var client = _contensisDeliveryApi.Client.create(getClientConfig(project, env));
@@ -343,7 +343,7 @@ var deliveryApi = new DeliveryApi();
 exports.deliveryApi = deliveryApi;
 
 var CacheNode = function CacheNode(key, value) {
-  (0, _classCallCheck2.default)(this, CacheNode);
+  (0, _classCallCheck2["default"])(this, CacheNode);
   this.key = key;
   this.value = value;
   this.next = null;
@@ -355,7 +355,7 @@ var LruCache =
 function () {
   function LruCache() {
     var limit = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 100;
-    (0, _classCallCheck2.default)(this, LruCache);
+    (0, _classCallCheck2["default"])(this, LruCache);
     this.map = {};
     this.head = null;
     this.tail = null;
@@ -363,7 +363,7 @@ function () {
     this.size = 0;
   }
 
-  (0, _createClass2.default)(LruCache, [{
+  (0, _createClass2["default"])(LruCache, [{
     key: "get",
     value: function get(key) {
       if (this.map[key]) {
@@ -439,12 +439,12 @@ var CachedSearch =
 /*#__PURE__*/
 function () {
   function CachedSearch() {
-    (0, _classCallCheck2.default)(this, CachedSearch);
-    (0, _defineProperty2.default)(this, "cache", new LruCache());
-    (0, _defineProperty2.default)(this, "taxonomyLookup", {});
+    (0, _classCallCheck2["default"])(this, CachedSearch);
+    (0, _defineProperty2["default"])(this, "cache", new LruCache());
+    (0, _defineProperty2["default"])(this, "taxonomyLookup", {});
   }
 
-  (0, _createClass2.default)(CachedSearch, [{
+  (0, _createClass2["default"])(CachedSearch, [{
     key: "search",
     value: function search(query, linkDepth, project, env) {
       var client = _contensisDeliveryApi.Client.create(getClientConfig(project, env));
@@ -496,7 +496,7 @@ function () {
       if (!this.cache.get(key) || typeof window == 'undefined') {
         var promise = execute();
         this.cache.set(key, promise);
-        promise.catch(function () {
+        promise["catch"](function () {
           _this2.cache.remove(key);
         });
       }
@@ -1039,7 +1039,7 @@ exports.action = action;
 exports.flattenArray = flattenArray;
 exports.api = api;
 exports.dynamicSort = dynamicSort;
-exports.randomString = exports.resizeImageUri = exports.resizeImage = exports.getWebPImageUri = exports.default = void 0;
+exports.randomString = exports.resizeImageUri = exports.resizeImage = exports.getWebPImageUri = exports["default"] = void 0;
 
 var _regenerator = _interopRequireDefault(__webpack_require__(5));
 
@@ -1053,16 +1053,16 @@ var _createClass2 = _interopRequireDefault(__webpack_require__(21));
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 var ProjectHelper =
 /*#__PURE__*/
 function () {
   function ProjectHelper() {
-    (0, _classCallCheck2.default)(this, ProjectHelper);
+    (0, _classCallCheck2["default"])(this, ProjectHelper);
   }
 
-  (0, _createClass2.default)(ProjectHelper, null, [{
+  (0, _createClass2["default"])(ProjectHelper, null, [{
     key: "currencyFormat",
     value: function currencyFormat(val) {
       var formatter = new Intl.NumberFormat('en-GB', {
@@ -1259,7 +1259,7 @@ function () {
   return ProjectHelper;
 }();
 
-exports.default = ProjectHelper;
+exports["default"] = ProjectHelper;
 
 function action(type) {
   var payload = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -1343,20 +1343,20 @@ function api(_x, _x2) {
 }
 
 function _api() {
-  _api = (0, _asyncToGenerator2.default)(
+  _api = (0, _asyncToGenerator2["default"])(
   /*#__PURE__*/
-  _regenerator.default.mark(function _callee2(url, options) {
-    return _regenerator.default.wrap(function _callee2$(_context2) {
+  _regenerator["default"].mark(function _callee2(url, options) {
+    return _regenerator["default"].wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
             return _context2.abrupt("return", fetch(url, options).then(
             /*#__PURE__*/
             function () {
-              var _ref = (0, _asyncToGenerator2.default)(
+              var _ref = (0, _asyncToGenerator2["default"])(
               /*#__PURE__*/
-              _regenerator.default.mark(function _callee(response) {
-                return _regenerator.default.wrap(function _callee$(_context) {
+              _regenerator["default"].mark(function _callee(response) {
+                return _regenerator["default"].wrap(function _callee$(_context) {
                   while (1) {
                     switch (_context.prev = _context.next) {
                       case 0:
@@ -1387,7 +1387,7 @@ function _api() {
               return function (_x3) {
                 return _ref.apply(this, arguments);
               };
-            }()).catch(function (error) {
+            }())["catch"](function (error) {
               //console.log(error);
               throw error;
             }));
@@ -1523,7 +1523,7 @@ var _interopRequireWildcard = __webpack_require__(7);
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _react = _interopRequireWildcard(__webpack_require__(1));
 
@@ -1608,7 +1608,7 @@ var RouteLoader = function RouteLoader(_ref) {
 
 
   if (location.pathname.length > trimmedPath.length) {
-    return _react.default.createElement(_reactRouterDom.Redirect, {
+    return _react["default"].createElement(_reactRouterDom.Redirect, {
       to: trimmedPath
     });
   } // Match any Defined Content Type Mappings
@@ -1620,7 +1620,7 @@ var RouteLoader = function RouteLoader(_ref) {
     });
 
     if (MatchedComponent) {
-      return _react.default.createElement(MatchedComponent.component, {
+      return _react["default"].createElement(MatchedComponent.component, {
         projectId: projectId,
         contentTypeId: contentTypeId,
         entry: entry
@@ -1629,25 +1629,25 @@ var RouteLoader = function RouteLoader(_ref) {
   }
 
   if (isNotFound) {
-    return _react.default.createElement(_Status.Status, {
+    return _react["default"].createElement(_Status.Status, {
       code: 404
-    }, _react.default.createElement(_NotFound.default, null));
+    }, _react["default"].createElement(_NotFound["default"], null));
   }
 
   return null;
 };
 
 RouteLoader.propTypes = {
-  routes: _propTypes.default.objectOf(_propTypes.default.array, _propTypes.default.array),
-  withEvents: _propTypes.default.object,
+  routes: _propTypes["default"].objectOf(_propTypes["default"].array, _propTypes["default"].array),
+  withEvents: _propTypes["default"].object,
   // location: PropTypes.object.isRequired,
   // history: PropTypes.object.isRequired,
-  statePath: _propTypes.default.string,
-  projectId: _propTypes.default.string,
-  contentTypeId: _propTypes.default.string,
-  entry: _propTypes.default.object,
-  isNotFound: _propTypes.default.bool,
-  setNavigationPath: _propTypes.default.func
+  statePath: _propTypes["default"].string,
+  projectId: _propTypes["default"].string,
+  contentTypeId: _propTypes["default"].string,
+  entry: _propTypes["default"].object,
+  isNotFound: _propTypes["default"].bool,
+  setNavigationPath: _propTypes["default"].func
 };
 
 var mapStateToProps = function mapStateToProps(state) {
@@ -1668,7 +1668,7 @@ var mapDispatchToProps = {
 
 var _default = (0, _reactHotLoader.hot)(module)((0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)((0, _ToJs.toJS)(RouteLoader)));
 
-exports.default = _default;
+exports["default"] = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(56)(module)))
 
 /***/ }),
@@ -1757,7 +1757,7 @@ var _interopRequireDefault = __webpack_require__(0);
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _slicedToArray2 = _interopRequireDefault(__webpack_require__(17));
 
@@ -1786,7 +1786,7 @@ var pickProject = function pickProject(hostname, query) {
   var project = 'unknown'; // go through all the defined projects
 
   Object.entries(projects).map(function (_ref) {
-    var _ref2 = (0, _slicedToArray2.default)(_ref, 2),
+    var _ref2 = (0, _slicedToArray2["default"])(_ref, 2),
         p = _ref2[1];
 
     // check if we're accessing via the project's public uri
@@ -1806,7 +1806,7 @@ var pickProject = function pickProject(hostname, query) {
 };
 
 var _default = pickProject;
-exports.default = _default;
+exports["default"] = _default;
 
 /***/ }),
 /* 38 */
@@ -1909,7 +1909,7 @@ var _interopRequireDefault = __webpack_require__(0);
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _defineProperty2 = _interopRequireDefault(__webpack_require__(4));
 
@@ -1931,10 +1931,10 @@ var _routerMiddleware = _interopRequireDefault(__webpack_require__(50));
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 var _default = function _default(featureReducers, initialState, history) {
-  var thunkMiddleware = [_reduxThunk.default];
+  var thunkMiddleware = [_reduxThunk["default"]];
 
   var reduxDevToolsMiddleware = function reduxDevToolsMiddleware(f) {
     return f;
@@ -1946,13 +1946,13 @@ var _default = function _default(featureReducers, initialState, history) {
     };
   }
 
-  var sagaMiddleware = (0, _reduxSaga.default)();
-  var middleware = (0, _redux.compose)(_redux.applyMiddleware.apply(void 0, thunkMiddleware.concat([sagaMiddleware, (0, _routerMiddleware.default)(history)])), reduxDevToolsMiddleware);
+  var sagaMiddleware = (0, _reduxSaga["default"])();
+  var middleware = (0, _redux.compose)(_redux.applyMiddleware.apply(void 0, thunkMiddleware.concat([sagaMiddleware, (0, _routerMiddleware["default"])(history)])), reduxDevToolsMiddleware);
 
   var reducers = _objectSpread({
-    navigation: _navigation.default,
-    routing: _routing.default,
-    version: _version.default
+    navigation: _navigation["default"],
+    routing: _routing["default"],
+    version: _version["default"]
   }, featureReducers);
 
   var combinedReducers = (0, _reduxImmutable.combineReducers)(reducers);
@@ -1971,7 +1971,7 @@ var _default = function _default(featureReducers, initialState, history) {
   return store(initialState);
 };
 
-exports.default = _default;
+exports["default"] = _default;
 
 /***/ }),
 /* 43 */
@@ -2007,7 +2007,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__46__;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _immutable = __webpack_require__(2);
 
@@ -2097,7 +2097,7 @@ var _default = function _default() {
   }
 };
 
-exports.default = _default;
+exports["default"] = _default;
 
 /***/ }),
 /* 48 */
@@ -2109,7 +2109,7 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _immutable = __webpack_require__(2);
 
@@ -2141,7 +2141,7 @@ var _default = function _default() {
   }
 };
 
-exports.default = _default;
+exports["default"] = _default;
 
 /***/ }),
 /* 49 */
@@ -2153,7 +2153,7 @@ exports.default = _default;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _immutable = __webpack_require__(2);
 
@@ -2186,7 +2186,7 @@ var _default = function _default() {
   }
 };
 
-exports.default = _default;
+exports["default"] = _default;
 
 /***/ }),
 /* 50 */
@@ -2200,7 +2200,7 @@ var _interopRequireDefault = __webpack_require__(0);
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _toConsumableArray2 = _interopRequireDefault(__webpack_require__(8));
 
@@ -2224,14 +2224,14 @@ var routerMiddleware = function routerMiddleware(history) {
         var _action$payload = action.payload,
             method = _action$payload.method,
             args = _action$payload.args;
-        history[method].apply(history, (0, _toConsumableArray2.default)(args));
+        history[method].apply(history, (0, _toConsumableArray2["default"])(args));
       };
     };
   };
 };
 
 var _default = routerMiddleware;
-exports.default = _default;
+exports["default"] = _default;
 
 /***/ }),
 /* 51 */
@@ -2245,7 +2245,7 @@ var _interopRequireDefault = __webpack_require__(0);
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = _default;
+exports["default"] = _default;
 
 var _regenerator = _interopRequireDefault(__webpack_require__(5));
 
@@ -2262,15 +2262,15 @@ function _default() {
   var featureSagas = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
   return (
     /*#__PURE__*/
-    _regenerator.default.mark(function rootSaga() {
+    _regenerator["default"].mark(function rootSaga() {
       var subSagas;
-      return _regenerator.default.wrap(function rootSaga$(_context) {
+      return _regenerator["default"].wrap(function rootSaga$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              subSagas = [].concat((0, _toConsumableArray2.default)(_routing.routingSagas), (0, _toConsumableArray2.default)(_navigation.navigationSagas));
+              subSagas = [].concat((0, _toConsumableArray2["default"])(_routing.routingSagas), (0, _toConsumableArray2["default"])(_navigation.navigationSagas));
               _context.next = 3;
-              return (0, _effects.all)([].concat((0, _toConsumableArray2.default)(subSagas), (0, _toConsumableArray2.default)(featureSagas)));
+              return (0, _effects.all)([].concat((0, _toConsumableArray2["default"])(subSagas), (0, _toConsumableArray2["default"])(featureSagas)));
 
             case 3:
             case "end":
@@ -2320,26 +2320,26 @@ var _navigation2 = __webpack_require__(14);
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 var _marked =
 /*#__PURE__*/
-_regenerator.default.mark(setRouteSaga),
+_regenerator["default"].mark(setRouteSaga),
     _marked2 =
 /*#__PURE__*/
-_regenerator.default.mark(getRouteSaga),
+_regenerator["default"].mark(getRouteSaga),
     _marked3 =
 /*#__PURE__*/
-_regenerator.default.mark(setRouteEntry),
+_regenerator["default"].mark(setRouteEntry),
     _marked4 =
 /*#__PURE__*/
-_regenerator.default.mark(do404);
+_regenerator["default"].mark(do404);
 
 var routingSagas = [(0, _effects.takeEvery)(_routing.SET_NAVIGATION_PATH, getRouteSaga), (0, _effects.takeEvery)(_routing.SET_ROUTE, setRouteSaga)];
 exports.routingSagas = routingSagas;
 
 function setRouteSaga(action) {
-  return _regenerator.default.wrap(function setRouteSaga$(_context) {
+  return _regenerator["default"].wrap(function setRouteSaga$(_context) {
     while (1) {
       switch (_context.prev = _context.next) {
         case 0:
@@ -2362,7 +2362,7 @@ function setRouteSaga(action) {
 
 function getRouteSaga(action) {
   var entry, withEvents, state, routeEntry, currentPath, deliveryApiStatus, project, pathNode, ancestors, splitPath, entryGuid, previewEntry;
-  return _regenerator.default.wrap(function getRouteSaga$(_context2) {
+  return _regenerator["default"].wrap(function getRouteSaga$(_context2) {
     while (1) {
       switch (_context2.prev = _context2.next) {
         case 0:
@@ -2554,7 +2554,7 @@ function getRouteSaga(action) {
 }
 
 function setRouteEntry(entry, node, ancestors) {
-  return _regenerator.default.wrap(function setRouteEntry$(_context3) {
+  return _regenerator["default"].wrap(function setRouteEntry$(_context3) {
     while (1) {
       switch (_context3.prev = _context3.next) {
         case 0:
@@ -2585,7 +2585,7 @@ function setRouteEntry(entry, node, ancestors) {
 }
 
 function do404() {
-  return _regenerator.default.wrap(function do404$(_context4) {
+  return _regenerator["default"].wrap(function do404$(_context4) {
     while (1) {
       switch (_context4.prev = _context4.next) {
         case 0:
@@ -2647,14 +2647,14 @@ var _routing = __webpack_require__(9);
 
 var _marked =
 /*#__PURE__*/
-_regenerator.default.mark(ensureNodeTreeSaga);
+_regenerator["default"].mark(ensureNodeTreeSaga);
 
 var navigationSagas = [(0, _effects.takeEvery)(_navigation.GET_NODE_TREE, ensureNodeTreeSaga)];
 exports.navigationSagas = navigationSagas;
 
 function ensureNodeTreeSaga() {
   var state, deliveryApiVersionStatus, project, nodes;
-  return _regenerator.default.wrap(function ensureNodeTreeSaga$(_context) {
+  return _regenerator["default"].wrap(function ensureNodeTreeSaga$(_context) {
     while (1) {
       switch (_context.prev = _context.next) {
         case 0:
@@ -2743,7 +2743,7 @@ var _interopRequireDefault = __webpack_require__(0);
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _react = _interopRequireDefault(__webpack_require__(1));
 
@@ -2752,11 +2752,11 @@ var _reactHotLoader = __webpack_require__(15);
 var _RouteLoader = _interopRequireDefault(__webpack_require__(30));
 
 var AppRoot = function AppRoot(props) {
-  return _react.default.createElement(_RouteLoader.default, props);
+  return _react["default"].createElement(_RouteLoader["default"], props);
 };
 
 var _default = AppRoot;
-exports.default = _default;
+exports["default"] = _default;
 
 /***/ }),
 /* 56 */
@@ -2894,16 +2894,16 @@ var _interopRequireDefault = __webpack_require__(0);
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _react = _interopRequireDefault(__webpack_require__(1));
 
 var NotFound = function NotFound() {
-  return _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("header", null, _react.default.createElement("h1", null, "404 Page Not Found")));
+  return _react["default"].createElement(_react["default"].Fragment, null, _react["default"].createElement("header", null, _react["default"].createElement("h1", null, "404 Page Not Found")));
 };
 
 var _default = NotFound;
-exports.default = _default;
+exports["default"] = _default;
 
 /***/ }),
 /* 61 */
@@ -2928,7 +2928,7 @@ var _reactRouterDom = __webpack_require__(10);
 var Status = function Status(_ref) {
   var code = _ref.code,
       children = _ref.children;
-  return _react.default.createElement(_reactRouterDom.Route, {
+  return _react["default"].createElement(_reactRouterDom.Route, {
     render: function render(_ref2) {
       var staticContext = _ref2.staticContext;
       if (staticContext) staticContext.status = code;
@@ -2939,8 +2939,8 @@ var Status = function Status(_ref) {
 
 exports.Status = Status;
 Status.propTypes = {
-  code: _propTypes.default.number.isRequired,
-  children: _propTypes.default.element
+  code: _propTypes["default"].number.isRequired,
+  children: _propTypes["default"].element
 };
 
 /***/ }),
@@ -2969,7 +2969,7 @@ var toJS = function toJS(WrappedComponent) {
       newProps[wrappedComponentProp[KEY]] = _immutable.Iterable.isIterable(wrappedComponentProp[VALUE]) ? wrappedComponentProp[VALUE].toJS() : wrappedComponentProp[VALUE];
       return newProps;
     }, {});
-    return _react.default.createElement(WrappedComponent, propsJS);
+    return _react["default"].createElement(WrappedComponent, propsJS);
   };
 };
 
@@ -2982,15 +2982,15 @@ exports.toJS = toJS;
 "use strict";
 
 
-var internalServer = __webpack_require__(64).default;
+var internalServer = __webpack_require__(64)["default"];
 
 exports.app = internalServer.app;
 exports.httpProxy = internalServer.apiProxy;
 exports.start = internalServer.start;
 
-var ReactApp = __webpack_require__(55).default;
+var ReactApp = __webpack_require__(55)["default"];
 
-var RouteLoader = __webpack_require__(30).default;
+var RouteLoader = __webpack_require__(30)["default"];
 
 exports.ReactApp = ReactApp;
 exports.RouteLoader = RouteLoader;
@@ -3009,7 +3009,7 @@ var _interopRequireDefault = __webpack_require__(0);
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 __webpack_require__(31);
 
@@ -3026,23 +3026,23 @@ var _reverseProxies = _interopRequireWildcard(__webpack_require__(70));
 var _webApp = _interopRequireDefault(__webpack_require__(72));
 
 // import ServerFeatures from './features/configure';
-var app = (0, _express.default)();
+var app = (0, _express["default"])();
 
 var start = function start(ReactApp, config, ServerFeatures) {
   app.disable('x-powered-by'); // Output some information about the used build/startup configuration
 
-  (0, _displayStartupConfiguration.default)(config); // Configure DNS to make life easier
+  (0, _displayStartupConfiguration["default"])(config); // Configure DNS to make life easier
 
-  (0, _localDns.default)(); // Set-up local proxy for images from cms, to save doing rewrites and extra code
+  (0, _localDns["default"])(); // Set-up local proxy for images from cms, to save doing rewrites and extra code
 
   ServerFeatures(app);
-  (0, _reverseProxies.default)(app, config.reverseProxyPaths);
-  (0, _webApp.default)(app, ReactApp, config);
-  app.use('/static', _express.default.static('dist/static', {
+  (0, _reverseProxies["default"])(app, config.reverseProxyPaths);
+  (0, _webApp["default"])(app, ReactApp, config);
+  app.use('/static', _express["default"]["static"]('dist/static', {
     maxage: '31557600h'
   }));
   app.on('ready', function () {
-    _reactLoadable.default.preloadAll().then(function () {
+    _reactLoadable["default"].preloadAll().then(function () {
       var server = app.listen(3001, function () {
         console.info("HTTP server is listening @ port 3001");
         setTimeout(function () {
@@ -3063,7 +3063,7 @@ var _default = {
   apiProxy: _reverseProxies.apiProxy,
   start: start
 };
-exports.default = _default;
+exports["default"] = _default;
 
 /***/ }),
 /* 65 */
@@ -3081,7 +3081,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__65__;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 var servers = SERVERS;
 /* global SERVERS */
 
@@ -3101,7 +3101,7 @@ var DisplayStartupConfiguration = function DisplayStartupConfiguration(config) {
 };
 
 var _default = DisplayStartupConfiguration;
-exports.default = _default;
+exports["default"] = _default;
 
 /***/ }),
 /* 67 */
@@ -3115,7 +3115,7 @@ var _interopRequireDefault = __webpack_require__(0);
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _evilDns = _interopRequireDefault(__webpack_require__(68));
 
@@ -3132,19 +3132,19 @@ var localDns = function localDns() {
 
   var configureLocalEndpoint = function configureLocalEndpoint() {
     if (!disableDnsChanges) {
-      _evilDns.default.add("*".concat(servers.alias, ".cloud.contensis.com"), servers.internalVip);
+      _evilDns["default"].add("*".concat(servers.alias, ".cloud.contensis.com"), servers.internalVip);
 
-      if (apiConfig.internalIp) _evilDns.default.add(apiConfig.rootUrl, apiConfig.internalIp);
+      if (apiConfig.internalIp) _evilDns["default"].add(apiConfig.rootUrl, apiConfig.internalIp);
     }
   }; // Break api.ipify to test
   // evilDns.add('api.ipify.org', '8.8.8.8');
 
 
-  (0, _fetchMyIp.default)(servers, configureLocalEndpoint);
+  (0, _fetchMyIp["default"])(servers, configureLocalEndpoint);
 };
 
 var _default = localDns;
-exports.default = _default;
+exports["default"] = _default;
 
 /***/ }),
 /* 68 */
@@ -3162,7 +3162,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__68__;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var fetchMyIp = function fetchMyIp(env, configureLocalEndpoint) {
   /* eslint-disable no-console */
@@ -3185,7 +3185,7 @@ var fetchMyIp = function fetchMyIp(env, configureLocalEndpoint) {
     } else {
       console.log("Outside Zengenti network, use real DNS.");
     }
-  }).catch(function (error) {
+  })["catch"](function (error) {
     configureLocalEndpoint();
     console.log("Could not work out where I am so defaulting to local DNS, as I am probably running as a container this is what matters most. Not developers at home or tests :( Sorry. error: ".concat(error));
   });
@@ -3193,7 +3193,7 @@ var fetchMyIp = function fetchMyIp(env, configureLocalEndpoint) {
 };
 
 var _default = fetchMyIp;
-exports.default = _default;
+exports["default"] = _default;
 
 /***/ }),
 /* 70 */
@@ -3207,14 +3207,14 @@ var _interopRequireDefault = __webpack_require__(0);
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = exports.apiProxy = void 0;
+exports["default"] = exports.apiProxy = void 0;
 
 var _httpProxy = _interopRequireDefault(__webpack_require__(71));
 
 var servers = SERVERS;
 /* global SERVERS */
 
-var apiProxy = _httpProxy.default.createProxyServer();
+var apiProxy = _httpProxy["default"].createProxyServer();
 
 exports.apiProxy = apiProxy;
 
@@ -3253,7 +3253,7 @@ var deliveryApiProxy = function deliveryApiProxy(apiProxy, app) {
 };
 
 var _default = reverseProxies;
-exports.default = _default;
+exports["default"] = _default;
 
 /***/ }),
 /* 71 */
@@ -3273,7 +3273,7 @@ var _interopRequireDefault = __webpack_require__(0);
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _toConsumableArray2 = _interopRequireDefault(__webpack_require__(8));
 
@@ -3334,7 +3334,7 @@ var addStandardHeaders = function addStandardHeaders(state, response, packagejso
       recordDepends = recordDepends.toJS();
       console.log("navDepends count: ".concat(navDepends.length));
       console.log("recordDepends count: ".concat(recordDepends.length));
-      var allDepends = [].concat((0, _toConsumableArray2.default)(navDepends), (0, _toConsumableArray2.default)(recordDepends));
+      var allDepends = [].concat((0, _toConsumableArray2["default"])(navDepends), (0, _toConsumableArray2["default"])(recordDepends));
       var allDependsHeaderValue = allDepends.join(' ');
       allDependsHeaderValue = " ".concat(packagejson.name, "-app ").concat(allDependsHeaderValue, " ").concat(packagejson.name, "-app");
       response.header('surrogate-key', allDependsHeaderValue);
@@ -3365,21 +3365,20 @@ var addVarnishAuthenticationHeaders = function addVarnishAuthenticationHeaders(s
 };
 
 var readFileSync = function readFileSync(path) {
-  return _fs.default.readFileSync(path, 'utf8');
+  return _fs["default"].readFileSync(path, 'utf8');
 };
 
-var loadBundleData = function loadBundleData(_ref) {
+var loadBundleData = function loadBundleData(_ref, build) {
   var stats = _ref.stats,
       templates = _ref.templates;
-  var build = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'default';
 
   try {
     var bundle = {};
-    bundle.stats = JSON.parse(readFileSync(stats.replace('/target', "/".concat(build))));
+    bundle.stats = JSON.parse(readFileSync(stats.replace('/target', build ? "/".concat(build) : '')));
     bundle.templates = {
-      templateHTML: readFileSync(templates.html.replace('/target', "/".concat(build))),
-      templateHTMLStatic: readFileSync(templates.static.replace('/target', "/".concat(build))),
-      templateHTMLFragment: readFileSync(templates.fragment.replace('/target', "/".concat(build)))
+      templateHTML: readFileSync(templates.html.replace('/target', build ? "/".concat(build) : '')),
+      templateHTMLStatic: readFileSync(templates["static"].replace('/target', build ? "/".concat(build) : '')),
+      templateHTMLFragment: readFileSync(templates.fragment.replace('/target', build ? "/".concat(build) : ''))
     };
     return bundle;
   } catch (_unused) {//console.log(ex);
@@ -3397,11 +3396,12 @@ var webApp = function webApp(app, ReactApp, config) {
       allowedGroups = config.allowedGroups,
       disableSsrRedux = config.disableSsrRedux;
   var bundles = {
-    default: loadBundleData(config),
+    "default": loadBundleData(config),
     legacy: loadBundleData(config, 'legacy'),
     modern: loadBundleData(config, 'modern')
   };
-  var versionInfo = JSON.parse(_fs.default.readFileSync(versionData, 'utf8'));
+  if (!bundles["default"]) bundles["default"] = bundles.legacy || bundles.modern;
+  var versionInfo = JSON.parse(_fs["default"].readFileSync(versionData, 'utf8'));
   app.get('/*', function (request, response, next) {
     if (request.originalUrl.startsWith('/static/')) return next();
     var useragent = request.headers['user-agent'];
@@ -3417,7 +3417,7 @@ var webApp = function webApp(app, ReactApp, config) {
     var onlyDynamic = dynamicPaths.includes(request.path);
     var isReduxRequestNormalised = request.query.redux ? request.query.redux.toLowerCase() : 'false';
     var isFragmentNormalised = request.query.fragment ? request.query.fragment.toLowerCase() : 'false';
-    var isStaticNormalised = request.query.static ? request.query.static.toLowerCase() : 'false';
+    var isStaticNormalised = request.query["static"] ? request.query["static"].toLowerCase() : 'false';
     if (onlyDynamic || isDynamicNormalised === 'true') accessMethod.DYNAMIC = _types.AccessMethods.DYNAMIC;
     if (isReduxRequestNormalised === 'true') accessMethod.REDUX = _types.AccessMethods.REDUX;
     if (isFragmentNormalised === 'true') accessMethod.FRAGMENT = _types.AccessMethods.FRAGMENT;
@@ -3425,7 +3425,7 @@ var webApp = function webApp(app, ReactApp, config) {
     var context = {};
     var status = 200; // Create a store (with a memory history) from our current url
 
-    var store = (0, _store.default)(withReducers, (0, _immutable.fromJS)({}), (0, _history.history)({
+    var store = (0, _store["default"])(withReducers, (0, _immutable.fromJS)({}), (0, _history.history)({
       initialEntries: [url]
     })); //const store = createStore(withReducers);
     // dispatch any global and non-saga related actions before calling our JSX
@@ -3433,21 +3433,21 @@ var webApp = function webApp(app, ReactApp, config) {
     var versionStatusFromHostname = (0, _ContensisDeliveryApi.GetDeliveryApiStatusFromHostname)(request.hostname);
     store.dispatch((0, _version.setVersionStatus)(versionStatusFromHostname));
     store.dispatch((0, _version.setVersion)(versionInfo.commitRef, versionInfo.buildNo));
-    var project = (0, _pickProject.default)(request.hostname, request.query);
+    var project = (0, _pickProject["default"])(request.hostname, request.query);
     var groups = allowedGroups && allowedGroups[project];
     store.dispatch((0, _routing.setCurrentProject)(project, groups));
     var modules = [];
 
-    var jsx = _react.default.createElement(_reactLoadable.default.Capture, {
+    var jsx = _react["default"].createElement(_reactLoadable["default"].Capture, {
       report: function report(moduleName) {
         return modules.push(moduleName);
       }
-    }, _react.default.createElement(_reactRedux.Provider, {
+    }, _react["default"].createElement(_reactRedux.Provider, {
       store: store
-    }, _react.default.createElement(_reactRouterDom.StaticRouter, {
+    }, _react["default"].createElement(_reactRouterDom.StaticRouter, {
       context: context,
       location: url
-    }, _react.default.createElement(ReactApp, {
+    }, _react["default"].createElement(ReactApp, {
       routes: routes,
       withEvents: withEvents
     }))));
@@ -3459,7 +3459,7 @@ var webApp = function webApp(app, ReactApp, config) {
 
     var target = isModernUser ? bundles.modern : bundles.legacy;
 
-    var _ref2 = target || bundles.default,
+    var _ref2 = target || bundles["default"],
         templates = _ref2.templates,
         stats = _ref2.stats;
 
@@ -3482,13 +3482,13 @@ var webApp = function webApp(app, ReactApp, config) {
 
 
     if (!accessMethod.DYNAMIC) {
-      store.runSaga((0, _index.default)(withSagas)).toPromise().then(function () {
+      store.runSaga((0, _index["default"])(withSagas)).toPromise().then(function () {
         var sheet = new _styledComponents.ServerStyleSheet();
         var html = (0, _server.renderToString)(sheet.collectStyles(jsx));
 
-        var helmet = _reactHelmet.default.renderStatic();
+        var helmet = _reactHelmet["default"].renderStatic();
 
-        _reactHelmet.default.rewind();
+        _reactHelmet["default"].rewind();
 
         var title = helmet.title.toString();
         var metadata = helmet.meta.toString();
@@ -3512,14 +3512,14 @@ var webApp = function webApp(app, ReactApp, config) {
 
         if (context.status !== 404) {
           if (accessMethod.REDUX) {
-            serialisedReduxData = (0, _serializeJavascript.default)(reduxState);
+            serialisedReduxData = (0, _serializeJavascript["default"])(reduxState);
             addStandardHeaders(reduxState, response, packagejson, allowedGroups);
             response.status(status).json(serialisedReduxData);
             return true;
           }
 
           if (!disableSsrRedux) {
-            serialisedReduxData = (0, _serializeJavascript.default)(reduxState);
+            serialisedReduxData = (0, _serializeJavascript["default"])(reduxState);
             serialisedReduxData = "<script>window.REDUX_DATA = ".concat(serialisedReduxData, "</script>");
           }
         }
@@ -3533,17 +3533,17 @@ var webApp = function webApp(app, ReactApp, config) {
 
         if (accessMethod.FRAGMENT && accessMethod.STATIC) {
           addStandardHeaders(reduxState, response, packagejson, allowedGroups);
-          responseHTML = (0, _minifyCssString.default)(styleTags) + html;
+          responseHTML = (0, _minifyCssString["default"])(styleTags) + html;
         } // Page fragment served with client scripts and redux data that hydrate the app client side
 
 
         if (accessMethod.FRAGMENT && !accessMethod.STATIC) {
-          responseHTML = templateHTMLFragment.replace('{{TITLE}}', title).replace('{{SEO_CRITICAL_METADATA}}', metadata).replace('{{CRITICAL_CSS}}', (0, _minifyCssString.default)(styleTags)).replace('{{APP}}', html).replace('{{LOADABLE_CHUNKS}}', bundleScripts).replace('{{REDUX_DATA}}', serialisedReduxData);
+          responseHTML = templateHTMLFragment.replace('{{TITLE}}', title).replace('{{SEO_CRITICAL_METADATA}}', metadata).replace('{{CRITICAL_CSS}}', (0, _minifyCssString["default"])(styleTags)).replace('{{APP}}', html).replace('{{LOADABLE_CHUNKS}}', bundleScripts).replace('{{REDUX_DATA}}', serialisedReduxData);
         } // Full HTML page served statically
 
 
         if (!accessMethod.FRAGMENT && accessMethod.STATIC) {
-          responseHTML = templateHTMLStatic.replace('{{TITLE}}', title).replace('{{SEO_CRITICAL_METADATA}}', metadata).replace('{{CRITICAL_CSS}}', (0, _minifyCssString.default)(styleTags)).replace('{{APP}}', html).replace('{{LOADABLE_CHUNKS}}', '');
+          responseHTML = templateHTMLStatic.replace('{{TITLE}}', title).replace('{{SEO_CRITICAL_METADATA}}', metadata).replace('{{CRITICAL_CSS}}', (0, _minifyCssString["default"])(styleTags)).replace('{{APP}}', html).replace('{{LOADABLE_CHUNKS}}', '');
         } // Full HTML page served with client scripts and redux data that hydrate the app client side
 
 
@@ -3553,7 +3553,7 @@ var webApp = function webApp(app, ReactApp, config) {
 
         addStandardHeaders(reduxState, response, packagejson, allowedGroups);
         response.status(status).send(responseHTML);
-      }).catch(function (err) {
+      })["catch"](function (err) {
         // Handle any error that occurred in any of the previous
         // promises in the chain.
 
@@ -3570,7 +3570,7 @@ var webApp = function webApp(app, ReactApp, config) {
 };
 
 var _default = webApp;
-exports.default = _default;
+exports["default"] = _default;
 
 /***/ }),
 /* 73 */
