@@ -1,5 +1,3 @@
-import 'core-js/features/promise';
-
 export default function loadPolyfills() {
   const fillFetch = () =>
     new Promise(resolve => {

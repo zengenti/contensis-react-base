@@ -1,4 +1,5 @@
-import loadPolyfills from './loadPolyFills';
+import 'core-js';
+
 import ClientApp from './client'; // the entry point for the rest of the app
 import ReactApp from '~/App';
 // import ClientApp, { ReactApp } from '../../client';
@@ -15,8 +16,4 @@ const config = {
   withEvents,
 };
 
-if (process.env.NODE_ENV == 'development') {
-  new ClientApp(ReactApp, config);
-} else {
-  loadPolyfills().then(new ClientApp(ReactApp, config));
-}
+new ClientApp(ReactApp, config);

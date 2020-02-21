@@ -9,11 +9,15 @@
     "startup": ""
   },
   "scripts": {
-    "start": "cross-env NODE_ENV=development webpack-dev-server --config webpack/webpack.config.dev.js",
-    "build": "cross-env NODE_ENV=production parallel-webpack --config webpack/webpack.config.prod.js",
+    "start": "cross-env NODE_ENV=development BROWSERSLIST_ENV=modern webpack-dev-server --config webpack/webpack.config.dev.js",
+    "build": "rimraf ./dist && concurrently \"npm run build:modern\" \"npm run build:legacy\" \"npm run build:server\"",
+    "build:local": "rimraf ./dist && concurrently \"npm run build:modern\" \"npm run build:server\"",
+    "build:server": "cross-env NODE_ENV=production BROWSERSLIST_ENV=node webpack --config webpack/webpack.config.server.js",
+    "build:modern": "cross-env NODE_ENV=production BROWSERSLIST_ENV=modern webpack --config webpack/webpack.config.prod.js",
+    "build:legacy": "cross-env NODE_ENV=production BROWSERSLIST_ENV=legacy webpack --config webpack/webpack.config.prod.js",
     "server": "node dist/start.js",
-    "dev:server": "nodemon --exec cross-env NODE_ENV=test babel-node --inspect=9229 src/server/server.js",
-    "build:server": "npm run build && npm run server",
+    "dev:server": "nodemon --exec cross-env BROWSERSLIST_ENV=node NODE_ENV=test babel-node --inspect=9229 src/server/debug.js",
+    "build:serv": "npm run build && npm run server",
     "build:lib": "rimraf ./lib && cross-env NODE_ENV=production webpack --config webpack/webpack.config.lib.js",
     "postinstall": "patch-package",
     "lint": "eslint .",
@@ -25,6 +29,23 @@
   },
   "keywords": [],
   "author": "http://Zengenti.com",
+  "browserslist": {
+    "modern": [
+      "Firefox >= 53",
+      "Edge >= 15",
+      "Chrome >= 58",
+      "iOS >= 10.1"
+    ],
+    "legacy": [
+      "IE >= 11",
+      "> 1%"
+    ],
+    "node": [
+      "node 8",
+      "IE >= 11",
+      "> 1%"
+    ]
+  },
   "peerDependencies": {
     "@hot-loader/react-dom": "16.11.0",
     "browserslist-useragent": "^3.0.2",
