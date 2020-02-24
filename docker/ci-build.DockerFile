@@ -6,6 +6,13 @@ FROM mhart/alpine-node:8
 WORKDIR /usr/src/app
 COPY package.json .
 COPY package-lock.json .
+RUN apk add --update --no-cache \
+  make \
+  autoconf \
+  automake \
+  libexecinfo-dev \
+  build-base \
+  python
 RUN npm install --production --loglevel error
 COPY --from=basebuilder /usr/src/app/dist /usr/src/app/dist
 
