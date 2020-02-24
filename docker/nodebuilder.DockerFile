@@ -6,6 +6,13 @@ WORKDIR /usr/src/app
 COPY package.json .
 COPY package-lock.json .
 COPY patches /usr/src/app/patches
+RUN apk add --update --no-cache \
+  make \
+  autoconf \
+  automake \
+  libexecinfo-dev \
+  build-base \
+  python
 RUN npm install -g mocha
 RUN npm install --loglevel error
 RUN npm run postinstall
