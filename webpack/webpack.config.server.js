@@ -2,7 +2,6 @@ const webpack = require('webpack');
 const merge = require('webpack-merge');
 const path = require('path');
 const webpackNodeExternals = require('webpack-node-externals');
-const WebpackShellPlugin = require('webpack-shell-plugin');
 const Visualizer = require('webpack-visualizer-plugin');
 
 const BASE_CONFIG = require('./webpack.config.base');
@@ -27,12 +26,6 @@ const SERVER_PROD_CONFIG = {
     }),
     new webpack.optimize.LimitChunkCountPlugin({
       maxChunks: 1,
-    }),
-    new WebpackShellPlugin({
-      onBuildEnd: [
-        'echo "Executing Webpack post build scripts..."',
-        'node node_modules/zengenti-buildstartup-package',
-      ],
     }),
     new Visualizer({
       filename: './server/server-stats.html',

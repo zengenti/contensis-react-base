@@ -17,34 +17,34 @@ const pickProject = (hostname, query) => {
 
   let project = 'unknown';
 
-  // go through all the defined projects
-  Object.entries(projects).map(([, p]) => {
-    // check if we're accessing via the project's public uri
-    if (hostname.includes(p.publicUri)) project = p.id;
+  // // go through all the defined projects
+  // Object.entries(projects).map(([, p]) => {
+  const p = projects[0];
 
-    // the url structure is different for website (we don't prefix)
-    if (p.id.startsWith('website')) {
-      // check for internal and external hostnames
-      // we check live and preview distinctly so our rule does not clash with
-      // hostnames that use a project prefix
-      if (
-        hostname.includes(`live-${alias}.cloud.contensis.com`) ||
-        hostname.includes(`live.${alias}.contensis.cloud`) ||
-        hostname.includes(`preview-${alias}.cloud.contensis.com`) ||
-        hostname.includes(`preview.${alias}.contensis.cloud`)
-      )
-        project = p.id;
-    } else {
-      // check for internal and external hostnames, prefixed with the projectId
-      if (
-        hostname.includes(
-          `${p.id.toLowerCase()}-${alias}.cloud.contensis.com`
-        ) ||
-        hostname.includes(`${p.id.toLowerCase()}.${alias}.contensis.cloud`)
-      )
-        project = p.id;
-    }
-  });
+  // check if we're accessing via the project's public uri
+  if (hostname.includes(p.publicUri)) project = p.id;
+
+  // the url structure is different for website (we don't prefix)
+  if (p.id.startsWith('website')) {
+    // check for internal and external hostnames
+    // we check live and preview distinctly so our rule does not clash with
+    // hostnames that use a project prefix
+    if (
+      hostname.includes(`live-${alias}.cloud.contensis.com`) ||
+      hostname.includes(`live.${alias}.contensis.cloud`) ||
+      hostname.includes(`preview-${alias}.cloud.contensis.com`) ||
+      hostname.includes(`preview.${alias}.contensis.cloud`)
+    )
+      project = p.id;
+  } else {
+    // check for internal and external hostnames, prefixed with the projectId
+    if (
+      hostname.includes(`${p.id.toLowerCase()}-${alias}.cloud.contensis.com`) ||
+      hostname.includes(`${p.id.toLowerCase()}.${alias}.contensis.cloud`)
+    )
+      project = p.id;
+  }
+  // });
   return project;
 };
 

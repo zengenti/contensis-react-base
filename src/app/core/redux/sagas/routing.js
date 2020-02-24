@@ -10,6 +10,7 @@ import {
   SET_NAVIGATION_PATH,
   SET_ROUTE,
   CALL_HISTORY_METHOD,
+  SET_SIBLINGS,
 } from '~/core/redux/types/routing';
 import { deliveryApi } from '~/core/util/ContensisDeliveryApi';
 import { selectVersionStatus } from '~/core/redux/selectors/version';
@@ -26,8 +27,11 @@ export const routingSagas = [
   takeEvery(SET_ROUTE, setRouteSaga),
 ];
 
+/**
+ * To navigate / push a specific route via redux middleware
+ * @param {path, state} action
+ */
 function* setRouteSaga(action) {
-  // To navigate / push a specific route via redux middleware
   yield put({
     type: CALL_HISTORY_METHOD,
     payload: {
@@ -35,12 +39,6 @@ function* setRouteSaga(action) {
       args: [action.path, action.state],
     },
   });
-  // yield put({
-  //   type: SET_NAVIGATION_PATH,
-  //   path: action.path,
-  //   staticRoute: action.isStatic,
-  //   withEvents: action.withEvents,
-  // });
 }
 
 function* getRouteSaga(action) {
@@ -65,43 +63,40 @@ function* getRouteSaga(action) {
       const deliveryApiStatus = selectVersionStatus(state);
       const project = selectCurrentProject(state);
 
-      let pathNode = null;
-      let ancestors = null;
+      let pathNode = null,
+        ancestors = null,
+        siblings = null;
+
       // Scroll into View
       if (typeof window !== 'undefined') {
         window.scroll({
           top: 0,
         });
       }
+
+      let currentPathDepth = currentPath.split('/').length - 1;
+      if (currentPath === '/') currentPathDepth = 0;
+
+      // Handle homepage
       if (currentPath === '/') {
         pathNode = yield deliveryApi
           .getClient(deliveryApiStatus, project)
           .nodes.getRoot({
+            depth: 1,
             entryFields: '*',
             entryLinkDepth: 4,
             language: 'en-GB',
           });
       } else {
-        // if (currentPath.startsWith('/preview/')) {
-        //   let splitPath = currentPath.split('/');
-        //   let entryGuid = splitPath[2];
-
-        //   // According to product dev we cannot use Node API
-        //   // for previewing entries as it gives a response of []
-        //   // -- apparently it is not correct to request latest content
-        //   // with Node API
-        //   pathNode = yield deliveryApi
-        //     .getClient(deliveryApiStatus, project)
-        //     .nodes.getByEntry({
-        //       entryId: entryGuid,
-        //       entryFields: '*',
-        //       entryLinkDepth: 4,
-        //     });
-        //   pathNode = pathNode[0];
+        // Handle preview routes
         if (currentPath && currentPath.startsWith('/preview/')) {
           let splitPath = currentPath.split('/');
           let entryGuid = splitPath[2];
           if (splitPath.length == 3) {
+            // According to product dev we cannot use Node API
+            // for previewing entries as it gives a response of []
+            // -- apparently it is not correct to request latest content
+            // with Node API
             let previewEntry = yield deliveryApi
               .getClient(deliveryApiStatus, project)
               .entries.get({ id: entryGuid, linkDepth: 4 });
@@ -112,19 +107,31 @@ function* getRouteSaga(action) {
             }
           }
         } else {
+          // Handle all other routes
           pathNode = yield deliveryApi
             .getClient(deliveryApiStatus, project)
             .nodes.get({
+              depth: 1,
               path: currentPath,
               entryFields: '*',
               entryLinkDepth: 4,
             });
         }
 
-        if (pathNode)
+        if (pathNode && pathNode.id) {
           ancestors = yield deliveryApi
             .getClient(deliveryApiStatus, project)
             .nodes.getAncestors(pathNode.id);
+          // No menu shows the  siblings at this level, so no need to load them.
+          if (currentPathDepth > 1) {
+            siblings = yield deliveryApi
+              .getClient(deliveryApiStatus, project)
+              .nodes.getSiblings({
+                id: pathNode.id,
+                entryFields: ['sys.contentTypeId', 'url'],
+              });
+          }
+        }
       }
 
       if (
@@ -134,7 +141,7 @@ function* getRouteSaga(action) {
         pathNode.entry.sys.id
       ) {
         entry = pathNode.entry;
-        yield call(setRouteEntry, entry, pathNode, ancestors);
+        yield call(setRouteEntry, entry, pathNode, ancestors, siblings);
       } else {
         yield call(do404);
       }
@@ -152,7 +159,7 @@ function* getRouteSaga(action) {
   }
 }
 
-function* setRouteEntry(entry, node, ancestors) {
+function* setRouteEntry(entry, node, ancestors, siblings) {
   yield all([
     put({
       type: SET_NAVIGATION_NOT_FOUND,
@@ -173,6 +180,10 @@ function* setRouteEntry(entry, node, ancestors) {
     put({
       type: SET_ANCESTORS,
       ancestors,
+    }),
+    put({
+      type: SET_SIBLINGS,
+      siblings,
     }),
   ]);
 }

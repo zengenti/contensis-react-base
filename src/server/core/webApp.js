@@ -7,45 +7,61 @@ import { renderToString } from 'react-dom/server';
 import { getBundles } from 'react-loadable/webpack';
 import { ServerStyleSheet } from 'styled-components';
 import Helmet from 'react-helmet';
+import { matchesUA } from 'browserslist-useragent';
 import serialize from 'serialize-javascript';
 import minifyCssString from 'minify-css-string';
+import { fromJS } from 'immutable';
+
 import { history } from '~/core/redux/history';
 
 import { AccessMethods } from '../util/types';
+import { hashKeys } from '../util/cacheHashing';
+
 import pickProject from '~/core/util/pickProject';
 import { GetDeliveryApiStatusFromHostname } from '~/core/util/ContensisDeliveryApi';
 
 import { setCurrentProject } from '~/core/redux/actions/routing';
 import { setVersion, setVersionStatus } from '~/core/redux/actions/version';
 
-import { selectNavigationDepends } from '~/core/redux/selectors/navigation';
 import {
-  selectRouteEntryDepends,
-  selectRouteEntry,
   selectCurrentProject,
+  selectCurrentTreeID,
+  selectEntryDepends,
+  selectNodeDepends,
+  selectRouteEntry,
 } from '~/core/redux/selectors/routing';
+
 import createStore from '~/core/redux/store';
 import rootSaga from '~/core/redux/sagas/index.js';
-import { fromJS } from 'immutable';
-import { matchesUA } from 'browserslist-useragent';
 
-const addStandardHeaders = (state, response, packagejson, allowedGroups) => {
+const packagejson = require('-/package.json');
+
+const addStandardHeaders = (state, response) => {
   if (state) {
     /* eslint-disable no-console */
     try {
       console.log('About to add header');
-      let navDepends = selectNavigationDepends(state);
-      let recordDepends = selectRouteEntryDepends(state);
-      navDepends = navDepends.toJS();
-      recordDepends = recordDepends.toJS();
-      console.log(`navDepends count: ${navDepends.length}`);
-      console.log(`recordDepends count: ${recordDepends.length}`);
-      const allDepends = [...navDepends, ...recordDepends];
-      let allDependsHeaderValue = allDepends.join(' ');
-      allDependsHeaderValue = ` ${packagejson.name}-app ${allDependsHeaderValue} ${packagejson.name}-app`;
-      response.header('surrogate-key', allDependsHeaderValue);
+      let entryDepends = selectEntryDepends(state);
+      entryDepends = entryDepends.toJS();
+      console.log(`entryDepends count: ${entryDepends.length}`);
 
-      addVarnishAuthenticationHeaders(state, response, allowedGroups);
+      let nodeDepends = selectNodeDepends(state).toJS();
+      let currentTreeId = selectCurrentTreeID(state);
+      let nodeDependsKeys = nodeDepends.map(nodeKey => {
+        return `${currentTreeId}_${nodeKey}`;
+      });
+      const allDepends = [...entryDepends, ...nodeDependsKeys];
+
+      const allDependsHashed = hashKeys(allDepends);
+
+      response.header(
+        'surrogate-key',
+        ` ${packagejson.name}-app ${allDependsHashed.join(' ')}`
+      );
+      console.log(`depends hashed: ${allDependsHashed.join(' ')}`);
+      console.log(`depends hashed: ${allDepends.join(' ')}`);
+
+      addVarnishAuthenticationHeaders(state, response);
     } catch (e) {
       console.log('Error Adding headers');
       console.log(e);

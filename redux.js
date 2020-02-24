@@ -7,7 +7,7 @@
 		var a = typeof exports === 'object' ? factory(require("regenerator-runtime")) : factory(root["regenerator-runtime"]);
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(global, function(__WEBPACK_EXTERNAL_MODULE__21__) {
+})(global, function(__WEBPACK_EXTERNAL_MODULE__17__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -91,7 +91,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 86);
+/******/ 	return __webpack_require__(__webpack_require__.s = 89);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -106,42 +106,6 @@ function _interopRequireDefault(obj) {
 }
 
 module.exports = _interopRequireDefault;
-
-/***/ }),
-
-/***/ 1:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.CALL_HISTORY_METHOD = exports.SET_ROUTE = exports.SET_TARGET_PROJECT = exports.SET_ROUTE_LOADING = exports.SET_NAVIGATION_PATH = exports.SET_NAVIGATION_NOT_FOUND = exports.SET_ENTRY_ID = exports.SET_ANCESTORS = exports.SET_NODE = exports.SET_ENTRY = exports.GET_ENTRY = void 0;
-var ROUTING_PREFIX = '@ROUTING/';
-var GET_ENTRY = "".concat(ROUTING_PREFIX, "_GET_ENTRY");
-exports.GET_ENTRY = GET_ENTRY;
-var SET_ENTRY = "".concat(ROUTING_PREFIX, "_SET_ENTRY");
-exports.SET_ENTRY = SET_ENTRY;
-var SET_NODE = "".concat(ROUTING_PREFIX, "_SET_NODE");
-exports.SET_NODE = SET_NODE;
-var SET_ANCESTORS = "".concat(ROUTING_PREFIX, "_SET_ANCESTORS");
-exports.SET_ANCESTORS = SET_ANCESTORS;
-var SET_ENTRY_ID = "".concat(ROUTING_PREFIX, "_SET_ENTRY_ID");
-exports.SET_ENTRY_ID = SET_ENTRY_ID;
-var SET_NAVIGATION_NOT_FOUND = "".concat(ROUTING_PREFIX, "_SET_NOT_FOUND");
-exports.SET_NAVIGATION_NOT_FOUND = SET_NAVIGATION_NOT_FOUND;
-var SET_NAVIGATION_PATH = "".concat(ROUTING_PREFIX, "_SET_NAVIGATION_PATH");
-exports.SET_NAVIGATION_PATH = SET_NAVIGATION_PATH;
-var SET_ROUTE_LOADING = "".concat(ROUTING_PREFIX, "_SET_ROUTE_LOADING");
-exports.SET_ROUTE_LOADING = SET_ROUTE_LOADING;
-var SET_TARGET_PROJECT = "".concat(ROUTING_PREFIX, "_SET_TARGET_PROJECT");
-exports.SET_TARGET_PROJECT = SET_TARGET_PROJECT;
-var SET_ROUTE = "".concat(ROUTING_PREFIX, "_SET_ROUTE");
-exports.SET_ROUTE = SET_ROUTE;
-var CALL_HISTORY_METHOD = "".concat(ROUTING_PREFIX, "_CALL_HISTORY_METHOD");
-exports.CALL_HISTORY_METHOD = CALL_HISTORY_METHOD;
 
 /***/ }),
 
@@ -201,7 +165,7 @@ exports.setRouteEntry = exports.setRoute = exports.setCurrentProject = exports.s
 
 var _helpers = __webpack_require__(7);
 
-var _routing = __webpack_require__(1);
+var _routing = __webpack_require__(2);
 
 var setNotFound = function setNotFound(notFound) {
   return (0, _helpers.action)(_routing.SET_NAVIGATION_NOT_FOUND, {
@@ -270,89 +234,13 @@ exports.SET_VERSION_STATUS = SET_VERSION_STATUS;
 /***/ }),
 
 /***/ 17:
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-var arrayWithHoles = __webpack_require__(18);
-
-var iterableToArrayLimit = __webpack_require__(19);
-
-var nonIterableRest = __webpack_require__(20);
-
-function _slicedToArray(arr, i) {
-  return arrayWithHoles(arr) || iterableToArrayLimit(arr, i) || nonIterableRest();
-}
-
-module.exports = _slicedToArray;
+module.exports = __WEBPACK_EXTERNAL_MODULE__17__;
 
 /***/ }),
 
 /***/ 18:
-/***/ (function(module, exports) {
-
-function _arrayWithHoles(arr) {
-  if (Array.isArray(arr)) return arr;
-}
-
-module.exports = _arrayWithHoles;
-
-/***/ }),
-
-/***/ 19:
-/***/ (function(module, exports) {
-
-function _iterableToArrayLimit(arr, i) {
-  if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) {
-    return;
-  }
-
-  var _arr = [];
-  var _n = true;
-  var _d = false;
-  var _e = undefined;
-
-  try {
-    for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
-      _arr.push(_s.value);
-
-      if (i && _arr.length === i) break;
-    }
-  } catch (err) {
-    _d = true;
-    _e = err;
-  } finally {
-    try {
-      if (!_n && _i["return"] != null) _i["return"]();
-    } finally {
-      if (_d) throw _e;
-    }
-  }
-
-  return _arr;
-}
-
-module.exports = _iterableToArrayLimit;
-
-/***/ }),
-
-/***/ 20:
-/***/ (function(module, exports) {
-
-function _nonIterableRest() {
-  throw new TypeError("Invalid attempt to destructure non-iterable instance");
-}
-
-module.exports = _nonIterableRest;
-
-/***/ }),
-
-/***/ 21:
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__21__;
-
-/***/ }),
-
-/***/ 22:
 /***/ (function(module, exports) {
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
@@ -395,7 +283,47 @@ module.exports = _asyncToGenerator;
 
 /***/ }),
 
-/***/ 28:
+/***/ 2:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.CALL_HISTORY_METHOD = exports.SET_ROUTE = exports.SET_TARGET_PROJECT = exports.SET_ROUTE_LOADING = exports.SET_NAVIGATION_PATH = exports.SET_NAVIGATION_NOT_FOUND = exports.SET_ENTRY_RELATED_ARTICLES = exports.SET_ENTRY_ID = exports.SET_SIBLINGS = exports.SET_ANCESTORS = exports.SET_NODE = exports.SET_ENTRY = exports.GET_ENTRY = void 0;
+var ROUTING_PREFIX = '@ROUTING/';
+var GET_ENTRY = "".concat(ROUTING_PREFIX, "_GET_ENTRY");
+exports.GET_ENTRY = GET_ENTRY;
+var SET_ENTRY = "".concat(ROUTING_PREFIX, "_SET_ENTRY");
+exports.SET_ENTRY = SET_ENTRY;
+var SET_NODE = "".concat(ROUTING_PREFIX, "_SET_NODE");
+exports.SET_NODE = SET_NODE;
+var SET_ANCESTORS = "".concat(ROUTING_PREFIX, "_SET_ANCESTORS");
+exports.SET_ANCESTORS = SET_ANCESTORS;
+var SET_SIBLINGS = "".concat(ROUTING_PREFIX, "_SET_SIBLINGS");
+exports.SET_SIBLINGS = SET_SIBLINGS;
+var SET_ENTRY_ID = "".concat(ROUTING_PREFIX, "_SET_ENTRY_ID");
+exports.SET_ENTRY_ID = SET_ENTRY_ID;
+var SET_ENTRY_RELATED_ARTICLES = "".concat(ROUTING_PREFIX, "_SET_ENTRY_RELATED_ARTICLES");
+exports.SET_ENTRY_RELATED_ARTICLES = SET_ENTRY_RELATED_ARTICLES;
+var SET_NAVIGATION_NOT_FOUND = "".concat(ROUTING_PREFIX, "_SET_NOT_FOUND");
+exports.SET_NAVIGATION_NOT_FOUND = SET_NAVIGATION_NOT_FOUND;
+var SET_NAVIGATION_PATH = "".concat(ROUTING_PREFIX, "_SET_NAVIGATION_PATH");
+exports.SET_NAVIGATION_PATH = SET_NAVIGATION_PATH;
+var SET_ROUTE_LOADING = "".concat(ROUTING_PREFIX, "_SET_ROUTE_LOADING");
+exports.SET_ROUTE_LOADING = SET_ROUTE_LOADING;
+var SET_TARGET_PROJECT = "".concat(ROUTING_PREFIX, "_SET_TARGET_PROJECT");
+exports.SET_TARGET_PROJECT = SET_TARGET_PROJECT;
+var SET_ROUTE = "".concat(ROUTING_PREFIX, "_SET_ROUTE");
+exports.SET_ROUTE = SET_ROUTE;
+var CALL_HISTORY_METHOD = "".concat(ROUTING_PREFIX, "_CALL_HISTORY_METHOD");
+exports.CALL_HISTORY_METHOD = CALL_HISTORY_METHOD;
+
+/***/ }),
+
+/***/ 23:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -454,8 +382,25 @@ module.exports = _defineProperty;
 /***/ 5:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(21);
+module.exports = __webpack_require__(17);
 
+
+/***/ }),
+
+/***/ 59:
+/***/ (function(module, exports, __webpack_require__) {
+
+var arrayWithHoles = __webpack_require__(60);
+
+var iterableToArrayLimit = __webpack_require__(61);
+
+var nonIterableRest = __webpack_require__(62);
+
+function _slicedToArray(arr, i) {
+  return arrayWithHoles(arr) || iterableToArrayLimit(arr, i) || nonIterableRest();
+}
+
+module.exports = _slicedToArray;
 
 /***/ }),
 
@@ -515,6 +460,65 @@ module.exports = _interopRequireWildcard;
 
 /***/ }),
 
+/***/ 60:
+/***/ (function(module, exports) {
+
+function _arrayWithHoles(arr) {
+  if (Array.isArray(arr)) return arr;
+}
+
+module.exports = _arrayWithHoles;
+
+/***/ }),
+
+/***/ 61:
+/***/ (function(module, exports) {
+
+function _iterableToArrayLimit(arr, i) {
+  if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) {
+    return;
+  }
+
+  var _arr = [];
+  var _n = true;
+  var _d = false;
+  var _e = undefined;
+
+  try {
+    for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
+      _arr.push(_s.value);
+
+      if (i && _arr.length === i) break;
+    }
+  } catch (err) {
+    _d = true;
+    _e = err;
+  } finally {
+    try {
+      if (!_n && _i["return"] != null) _i["return"]();
+    } finally {
+      if (_d) throw _e;
+    }
+  }
+
+  return _arr;
+}
+
+module.exports = _iterableToArrayLimit;
+
+/***/ }),
+
+/***/ 62:
+/***/ (function(module, exports) {
+
+function _nonIterableRest() {
+  throw new TypeError("Invalid attempt to destructure non-iterable instance");
+}
+
+module.exports = _nonIterableRest;
+
+/***/ }),
+
 /***/ 7:
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -534,7 +538,7 @@ exports.randomString = exports.resizeImageUri = exports.resizeImage = exports.ge
 
 var _regenerator = _interopRequireDefault(__webpack_require__(5));
 
-var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(22));
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(18));
 
 var _defineProperty2 = _interopRequireDefault(__webpack_require__(4));
 
@@ -938,7 +942,7 @@ module.exports = _classCallCheck;
 
 /***/ }),
 
-/***/ 86:
+/***/ 89:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -951,11 +955,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
-var _slicedToArray2 = _interopRequireDefault(__webpack_require__(17));
+var _slicedToArray2 = _interopRequireDefault(__webpack_require__(59));
 
-var types = __webpack_require__(87)["default"];
+var types = __webpack_require__(90)["default"];
 
-var actions = __webpack_require__(88)["default"];
+var actions = __webpack_require__(91)["default"];
 
 var reduxExports = {}; // Remap the objects so they are presented in "feature" hierarchy
 // e.g. { routing: { types, actions }, navigation: { types, actions } }
@@ -976,7 +980,7 @@ exports["default"] = _default;
 
 /***/ }),
 
-/***/ 87:
+/***/ 90:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -991,7 +995,7 @@ exports["default"] = void 0;
 
 var navigation = _interopRequireWildcard(__webpack_require__(10));
 
-var routing = _interopRequireWildcard(__webpack_require__(1));
+var routing = _interopRequireWildcard(__webpack_require__(2));
 
 var version = _interopRequireWildcard(__webpack_require__(15));
 
@@ -1004,7 +1008,7 @@ exports["default"] = _default;
 
 /***/ }),
 
-/***/ 88:
+/***/ 91:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1017,11 +1021,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
-var navigation = _interopRequireWildcard(__webpack_require__(89));
+var navigation = _interopRequireWildcard(__webpack_require__(92));
 
 var routing = _interopRequireWildcard(__webpack_require__(13));
 
-var version = _interopRequireWildcard(__webpack_require__(28));
+var version = _interopRequireWildcard(__webpack_require__(23));
 
 var _default = {
   navigation: navigation,
@@ -1032,7 +1036,7 @@ exports["default"] = _default;
 
 /***/ }),
 
-/***/ 89:
+/***/ 92:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

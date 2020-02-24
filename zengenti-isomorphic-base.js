@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("immutable"), require("react"), require("react-router-dom"), require("regenerator-runtime"), require("react-hot-loader"), require("react-redux"), require("@redux-saga/core/effects"), require("react-loadable"), require("isomorphic-fetch"), require("history"), require("contensis-delivery-api"), require("redux"), require("redux-immutable"), require("redux-thunk"), require("redux-saga"), require("loglevel"), require("react-router-config"), require("express"), require("evil-dns"), require("http-proxy"), require("react-dom/server"), require("react-loadable/webpack"), require("styled-components"), require("react-helmet"), require("serialize-javascript"), require("minify-css-string"), require("browserslist-useragent"));
+		module.exports = factory(require("immutable"), require("react"), require("react-router-dom"), require("regenerator-runtime"), require("react-hot-loader"), require("react-redux"), require("@redux-saga/core/effects"), require("react-loadable"), require("isomorphic-fetch"), require("history"), require("contensis-delivery-api"), require("redux"), require("redux-immutable"), require("redux-thunk"), require("redux-saga"), require("loglevel"), require("react-router-config"), require("express"), require("evil-dns"), require("http-proxy"), require("react-dom/server"), require("react-loadable/webpack"), require("styled-components"), require("react-helmet"), require("browserslist-useragent"), require("serialize-javascript"), require("minify-css-string"), require("xxhash"));
 	else if(typeof define === 'function' && define.amd)
-		define(["immutable", "react", "react-router-dom", "regenerator-runtime", "react-hot-loader", "react-redux", "@redux-saga/core/effects", "react-loadable", "isomorphic-fetch", "history", "contensis-delivery-api", "redux", "redux-immutable", "redux-thunk", "redux-saga", "loglevel", "react-router-config", "express", "evil-dns", "http-proxy", "react-dom/server", "react-loadable/webpack", "styled-components", "react-helmet", "serialize-javascript", "minify-css-string", "browserslist-useragent"], factory);
+		define(["immutable", "react", "react-router-dom", "regenerator-runtime", "react-hot-loader", "react-redux", "@redux-saga/core/effects", "react-loadable", "isomorphic-fetch", "history", "contensis-delivery-api", "redux", "redux-immutable", "redux-thunk", "redux-saga", "loglevel", "react-router-config", "express", "evil-dns", "http-proxy", "react-dom/server", "react-loadable/webpack", "styled-components", "react-helmet", "browserslist-useragent", "serialize-javascript", "minify-css-string", "xxhash"], factory);
 	else {
-		var a = typeof exports === 'object' ? factory(require("immutable"), require("react"), require("react-router-dom"), require("regenerator-runtime"), require("react-hot-loader"), require("react-redux"), require("@redux-saga/core/effects"), require("react-loadable"), require("isomorphic-fetch"), require("history"), require("contensis-delivery-api"), require("redux"), require("redux-immutable"), require("redux-thunk"), require("redux-saga"), require("loglevel"), require("react-router-config"), require("express"), require("evil-dns"), require("http-proxy"), require("react-dom/server"), require("react-loadable/webpack"), require("styled-components"), require("react-helmet"), require("serialize-javascript"), require("minify-css-string"), require("browserslist-useragent")) : factory(root["immutable"], root["react"], root["react-router-dom"], root["regenerator-runtime"], root["react-hot-loader"], root["react-redux"], root["@redux-saga/core/effects"], root["react-loadable"], root["isomorphic-fetch"], root["history"], root["contensis-delivery-api"], root["redux"], root["redux-immutable"], root["redux-thunk"], root["redux-saga"], root["loglevel"], root["react-router-config"], root["express"], root["evil-dns"], root["http-proxy"], root["react-dom/server"], root["react-loadable/webpack"], root["styled-components"], root["react-helmet"], root["serialize-javascript"], root["minify-css-string"], root["browserslist-useragent"]);
+		var a = typeof exports === 'object' ? factory(require("immutable"), require("react"), require("react-router-dom"), require("regenerator-runtime"), require("react-hot-loader"), require("react-redux"), require("@redux-saga/core/effects"), require("react-loadable"), require("isomorphic-fetch"), require("history"), require("contensis-delivery-api"), require("redux"), require("redux-immutable"), require("redux-thunk"), require("redux-saga"), require("loglevel"), require("react-router-config"), require("express"), require("evil-dns"), require("http-proxy"), require("react-dom/server"), require("react-loadable/webpack"), require("styled-components"), require("react-helmet"), require("browserslist-useragent"), require("serialize-javascript"), require("minify-css-string"), require("xxhash")) : factory(root["immutable"], root["react"], root["react-router-dom"], root["regenerator-runtime"], root["react-hot-loader"], root["react-redux"], root["@redux-saga/core/effects"], root["react-loadable"], root["isomorphic-fetch"], root["history"], root["contensis-delivery-api"], root["redux"], root["redux-immutable"], root["redux-thunk"], root["redux-saga"], root["loglevel"], root["react-router-config"], root["express"], root["evil-dns"], root["http-proxy"], root["react-dom/server"], root["react-loadable/webpack"], root["styled-components"], root["react-helmet"], root["browserslist-useragent"], root["serialize-javascript"], root["minify-css-string"], root["xxhash"]);
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(global, function(__WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__3__, __WEBPACK_EXTERNAL_MODULE__16__, __WEBPACK_EXTERNAL_MODULE__21__, __WEBPACK_EXTERNAL_MODULE__25__, __WEBPACK_EXTERNAL_MODULE__26__, __WEBPACK_EXTERNAL_MODULE__29__, __WEBPACK_EXTERNAL_MODULE__32__, __WEBPACK_EXTERNAL_MODULE__34__, __WEBPACK_EXTERNAL_MODULE__39__, __WEBPACK_EXTERNAL_MODULE__41__, __WEBPACK_EXTERNAL_MODULE__43__, __WEBPACK_EXTERNAL_MODULE__44__, __WEBPACK_EXTERNAL_MODULE__45__, __WEBPACK_EXTERNAL_MODULE__46__, __WEBPACK_EXTERNAL_MODULE__53__, __WEBPACK_EXTERNAL_MODULE__59__, __WEBPACK_EXTERNAL_MODULE__65__, __WEBPACK_EXTERNAL_MODULE__68__, __WEBPACK_EXTERNAL_MODULE__71__, __WEBPACK_EXTERNAL_MODULE__74__, __WEBPACK_EXTERNAL_MODULE__75__, __WEBPACK_EXTERNAL_MODULE__76__, __WEBPACK_EXTERNAL_MODULE__77__, __WEBPACK_EXTERNAL_MODULE__78__, __WEBPACK_EXTERNAL_MODULE__79__, __WEBPACK_EXTERNAL_MODULE__81__) {
+})(global, function(__WEBPACK_EXTERNAL_MODULE__1__, __WEBPACK_EXTERNAL_MODULE__3__, __WEBPACK_EXTERNAL_MODULE__16__, __WEBPACK_EXTERNAL_MODULE__17__, __WEBPACK_EXTERNAL_MODULE__20__, __WEBPACK_EXTERNAL_MODULE__21__, __WEBPACK_EXTERNAL_MODULE__24__, __WEBPACK_EXTERNAL_MODULE__28__, __WEBPACK_EXTERNAL_MODULE__30__, __WEBPACK_EXTERNAL_MODULE__35__, __WEBPACK_EXTERNAL_MODULE__37__, __WEBPACK_EXTERNAL_MODULE__39__, __WEBPACK_EXTERNAL_MODULE__40__, __WEBPACK_EXTERNAL_MODULE__41__, __WEBPACK_EXTERNAL_MODULE__42__, __WEBPACK_EXTERNAL_MODULE__49__, __WEBPACK_EXTERNAL_MODULE__55__, __WEBPACK_EXTERNAL_MODULE__65__, __WEBPACK_EXTERNAL_MODULE__68__, __WEBPACK_EXTERNAL_MODULE__71__, __WEBPACK_EXTERNAL_MODULE__74__, __WEBPACK_EXTERNAL_MODULE__75__, __WEBPACK_EXTERNAL_MODULE__76__, __WEBPACK_EXTERNAL_MODULE__77__, __WEBPACK_EXTERNAL_MODULE__78__, __WEBPACK_EXTERNAL_MODULE__79__, __WEBPACK_EXTERNAL_MODULE__80__, __WEBPACK_EXTERNAL_MODULE__83__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -108,6 +108,12 @@ module.exports = _interopRequireDefault;
 
 /***/ }),
 /* 1 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__1__;
+
+/***/ }),
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -116,7 +122,7 @@ module.exports = _interopRequireDefault;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.CALL_HISTORY_METHOD = exports.SET_ROUTE = exports.SET_TARGET_PROJECT = exports.SET_ROUTE_LOADING = exports.SET_NAVIGATION_PATH = exports.SET_NAVIGATION_NOT_FOUND = exports.SET_ENTRY_ID = exports.SET_ANCESTORS = exports.SET_NODE = exports.SET_ENTRY = exports.GET_ENTRY = void 0;
+exports.CALL_HISTORY_METHOD = exports.SET_ROUTE = exports.SET_TARGET_PROJECT = exports.SET_ROUTE_LOADING = exports.SET_NAVIGATION_PATH = exports.SET_NAVIGATION_NOT_FOUND = exports.SET_ENTRY_RELATED_ARTICLES = exports.SET_ENTRY_ID = exports.SET_SIBLINGS = exports.SET_ANCESTORS = exports.SET_NODE = exports.SET_ENTRY = exports.GET_ENTRY = void 0;
 var ROUTING_PREFIX = '@ROUTING/';
 var GET_ENTRY = "".concat(ROUTING_PREFIX, "_GET_ENTRY");
 exports.GET_ENTRY = GET_ENTRY;
@@ -126,8 +132,12 @@ var SET_NODE = "".concat(ROUTING_PREFIX, "_SET_NODE");
 exports.SET_NODE = SET_NODE;
 var SET_ANCESTORS = "".concat(ROUTING_PREFIX, "_SET_ANCESTORS");
 exports.SET_ANCESTORS = SET_ANCESTORS;
+var SET_SIBLINGS = "".concat(ROUTING_PREFIX, "_SET_SIBLINGS");
+exports.SET_SIBLINGS = SET_SIBLINGS;
 var SET_ENTRY_ID = "".concat(ROUTING_PREFIX, "_SET_ENTRY_ID");
 exports.SET_ENTRY_ID = SET_ENTRY_ID;
+var SET_ENTRY_RELATED_ARTICLES = "".concat(ROUTING_PREFIX, "_SET_ENTRY_RELATED_ARTICLES");
+exports.SET_ENTRY_RELATED_ARTICLES = SET_ENTRY_RELATED_ARTICLES;
 var SET_NAVIGATION_NOT_FOUND = "".concat(ROUTING_PREFIX, "_SET_NOT_FOUND");
 exports.SET_NAVIGATION_NOT_FOUND = SET_NAVIGATION_NOT_FOUND;
 var SET_NAVIGATION_PATH = "".concat(ROUTING_PREFIX, "_SET_NAVIGATION_PATH");
@@ -140,12 +150,6 @@ var SET_ROUTE = "".concat(ROUTING_PREFIX, "_SET_ROUTE");
 exports.SET_ROUTE = SET_ROUTE;
 var CALL_HISTORY_METHOD = "".concat(ROUTING_PREFIX, "_CALL_HISTORY_METHOD");
 exports.CALL_HISTORY_METHOD = CALL_HISTORY_METHOD;
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__2__;
 
 /***/ }),
 /* 3 */
@@ -178,7 +182,7 @@ module.exports = _defineProperty;
 /* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(21);
+module.exports = __webpack_require__(17);
 
 
 /***/ }),
@@ -256,7 +260,7 @@ exports.randomString = exports.resizeImageUri = exports.resizeImage = exports.ge
 
 var _regenerator = _interopRequireDefault(__webpack_require__(5));
 
-var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(22));
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(18));
 
 var _defineProperty2 = _interopRequireDefault(__webpack_require__(4));
 
@@ -667,9 +671,9 @@ module.exports = _classCallCheck;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.selectRouteLoading = exports.selectCurrentAncestors = exports.selectIsNotFound = exports.selectCurrentProject = exports.selectCurrentPath = exports.selectRouteEntryID = exports.selectRouteEntrySlug = exports.selectRouteEntryContentTypeId = exports.selectRouteEntryEntryId = exports.selectRouteEntryDepends = exports.selectRouteEntry = void 0;
+exports.selectRouteLoading = exports.selectCurrentAncestors = exports.selectIsNotFound = exports.selectCurrentProject = exports.selectCurrentPath = exports.selectRouteEntryID = exports.selectRouteEntrySlug = exports.selectRouteEntryContentTypeId = exports.selectRouteEntryEntryId = exports.selectEntryDepends = exports.selectCurrentTreeID = exports.selectNodeDepends = exports.selectRouteEntry = void 0;
 
-var _immutable = __webpack_require__(2);
+var _immutable = __webpack_require__(1);
 
 var selectRouteEntry = function selectRouteEntry(state) {
   return state.getIn(['routing', 'entry'], (0, _immutable.Map)({}));
@@ -677,11 +681,23 @@ var selectRouteEntry = function selectRouteEntry(state) {
 
 exports.selectRouteEntry = selectRouteEntry;
 
-var selectRouteEntryDepends = function selectRouteEntryDepends(state) {
-  return state.getIn(['routing', 'entryDepends'], new _immutable.List());
+var selectNodeDepends = function selectNodeDepends(state) {
+  return state.getIn(['routing', 'nodeDepends'], new _immutable.List([]));
 };
 
-exports.selectRouteEntryDepends = selectRouteEntryDepends;
+exports.selectNodeDepends = selectNodeDepends;
+
+var selectCurrentTreeID = function selectCurrentTreeID(state) {
+  return state.getIn(['routing', 'currentTreeId']);
+};
+
+exports.selectCurrentTreeID = selectCurrentTreeID;
+
+var selectEntryDepends = function selectEntryDepends(state) {
+  return state.getIn(['routing', 'entryDepends']);
+};
+
+exports.selectEntryDepends = selectEntryDepends;
 
 var selectRouteEntryEntryId = function selectRouteEntryEntryId(state) {
   return state.getIn(['routing', 'entry', 'sys', 'id'], null);
@@ -788,9 +804,9 @@ var _createClass2 = _interopRequireDefault(__webpack_require__(12));
 
 var _toConsumableArray2 = _interopRequireDefault(__webpack_require__(14));
 
-var _typeof2 = _interopRequireDefault(__webpack_require__(27));
+var _typeof2 = _interopRequireDefault(__webpack_require__(22));
 
-var _contensisDeliveryApi = __webpack_require__(41);
+var _contensisDeliveryApi = __webpack_require__(37);
 
 Object.keys(_contensisDeliveryApi).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -1214,7 +1230,7 @@ exports.setRouteEntry = exports.setRoute = exports.setCurrentProject = exports.s
 
 var _helpers = __webpack_require__(7);
 
-var _routing = __webpack_require__(1);
+var _routing = __webpack_require__(2);
 
 var setNotFound = function setNotFound(notFound) {
   return (0, _helpers.action)(_routing.SET_NAVIGATION_NOT_FOUND, {
@@ -1266,11 +1282,11 @@ exports.setRouteEntry = setRouteEntry;
 /* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var arrayWithoutHoles = __webpack_require__(35);
+var arrayWithoutHoles = __webpack_require__(31);
 
-var iterableToArray = __webpack_require__(36);
+var iterableToArray = __webpack_require__(32);
 
-var nonIterableSpread = __webpack_require__(37);
+var nonIterableSpread = __webpack_require__(33);
 
 function _toConsumableArray(arr) {
   return arrayWithoutHoles(arr) || iterableToArray(arr) || nonIterableSpread();
@@ -1303,84 +1319,12 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__16__;
 
 /***/ }),
 /* 17 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-var arrayWithHoles = __webpack_require__(18);
-
-var iterableToArrayLimit = __webpack_require__(19);
-
-var nonIterableRest = __webpack_require__(20);
-
-function _slicedToArray(arr, i) {
-  return arrayWithHoles(arr) || iterableToArrayLimit(arr, i) || nonIterableRest();
-}
-
-module.exports = _slicedToArray;
+module.exports = __WEBPACK_EXTERNAL_MODULE__17__;
 
 /***/ }),
 /* 18 */
-/***/ (function(module, exports) {
-
-function _arrayWithHoles(arr) {
-  if (Array.isArray(arr)) return arr;
-}
-
-module.exports = _arrayWithHoles;
-
-/***/ }),
-/* 19 */
-/***/ (function(module, exports) {
-
-function _iterableToArrayLimit(arr, i) {
-  if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) {
-    return;
-  }
-
-  var _arr = [];
-  var _n = true;
-  var _d = false;
-  var _e = undefined;
-
-  try {
-    for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
-      _arr.push(_s.value);
-
-      if (i && _arr.length === i) break;
-    }
-  } catch (err) {
-    _d = true;
-    _e = err;
-  } finally {
-    try {
-      if (!_n && _i["return"] != null) _i["return"]();
-    } finally {
-      if (_d) throw _e;
-    }
-  }
-
-  return _arr;
-}
-
-module.exports = _iterableToArrayLimit;
-
-/***/ }),
-/* 20 */
-/***/ (function(module, exports) {
-
-function _nonIterableRest() {
-  throw new TypeError("Invalid attempt to destructure non-iterable instance");
-}
-
-module.exports = _nonIterableRest;
-
-/***/ }),
-/* 21 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__21__;
-
-/***/ }),
-/* 22 */
 /***/ (function(module, exports) {
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
@@ -1422,61 +1366,31 @@ function _asyncToGenerator(fn) {
 module.exports = _asyncToGenerator;
 
 /***/ }),
-/* 23 */
+/* 19 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(29);
+/* harmony import */ var _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(24);
 /* harmony import */ var _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 
 
 
 /***/ }),
-/* 24 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.selectNavigationDepends = exports.selectNavigationRoot = exports.hasNavigationTree = void 0;
-
-var hasNavigationTree = function hasNavigationTree(state) {
-  return state.getIn(['navigation', 'isReady']);
-};
-
-exports.hasNavigationTree = hasNavigationTree;
-
-var selectNavigationRoot = function selectNavigationRoot(state) {
-  return state.getIn(['navigation', 'root']);
-};
-
-exports.selectNavigationRoot = selectNavigationRoot;
-
-var selectNavigationDepends = function selectNavigationDepends(state) {
-  return state.getIn(['navigation', 'treeDepends']);
-};
-
-exports.selectNavigationDepends = selectNavigationDepends;
-
-/***/ }),
-/* 25 */
+/* 20 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__25__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__20__;
 
 /***/ }),
-/* 26 */
+/* 21 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__26__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__21__;
 
 /***/ }),
-/* 27 */
+/* 22 */
 /***/ (function(module, exports) {
 
 function _typeof2(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof2 = function _typeof2(obj) { return typeof obj; }; } else { _typeof2 = function _typeof2(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof2(obj); }
@@ -1498,7 +1412,7 @@ function _typeof(obj) {
 module.exports = _typeof;
 
 /***/ }),
-/* 28 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1531,13 +1445,13 @@ var setVersionStatus = function setVersionStatus(status) {
 exports.setVersionStatus = setVersionStatus;
 
 /***/ }),
-/* 29 */
+/* 24 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__29__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__24__;
 
 /***/ }),
-/* 30 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1567,7 +1481,37 @@ var selectVersionStatus = function selectVersionStatus(state) {
 exports.selectVersionStatus = selectVersionStatus;
 
 /***/ }),
-/* 31 */
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.selectNavigationDepends = exports.selectNavigationRoot = exports.hasNavigationTree = void 0;
+
+var hasNavigationTree = function hasNavigationTree(state) {
+  return state.getIn(['navigation', 'isReady']);
+};
+
+exports.hasNavigationTree = hasNavigationTree;
+
+var selectNavigationRoot = function selectNavigationRoot(state) {
+  return state.getIn(['navigation', 'root']);
+};
+
+exports.selectNavigationRoot = selectNavigationRoot;
+
+var selectNavigationDepends = function selectNavigationDepends(state) {
+  return state.getIn(['navigation', 'treeDepends']);
+};
+
+exports.selectNavigationDepends = selectNavigationDepends;
+
+/***/ }),
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -1580,18 +1524,18 @@ exports.selectVersionStatus = selectVersionStatus;
 if (false) { var throwOnDirectAccess, ReactIs; } else {
   // By explicitly using `prop-types` you are opting into new production behavior.
   // http://fb.me/prop-types-in-prod
-  module.exports = __webpack_require__(57)();
+  module.exports = __webpack_require__(53)();
 }
 
 
 /***/ }),
-/* 32 */
+/* 28 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__32__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__28__;
 
 /***/ }),
-/* 33 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1608,25 +1552,25 @@ exports["default"] = void 0;
 
 var _react = _interopRequireWildcard(__webpack_require__(3));
 
-var _propTypes = _interopRequireDefault(__webpack_require__(31));
+var _propTypes = _interopRequireDefault(__webpack_require__(27));
 
-var _reactRedux = __webpack_require__(26);
+var _reactRedux = __webpack_require__(21);
 
-var _reactHotLoader = __webpack_require__(25);
+var _reactHotLoader = __webpack_require__(20);
 
 var _reactRouterDom = __webpack_require__(16);
 
-var _reactRouterConfig = __webpack_require__(59);
+var _reactRouterConfig = __webpack_require__(55);
 
 var _routing = __webpack_require__(9);
 
 var _routing2 = __webpack_require__(13);
 
-var _NotFound = _interopRequireDefault(__webpack_require__(60));
+var _NotFound = _interopRequireDefault(__webpack_require__(56));
 
-var _Status = __webpack_require__(61);
+var _Status = __webpack_require__(57);
 
-var _ToJs = __webpack_require__(62);
+var _ToJs = __webpack_require__(58);
 
 var getTrimmedPath = function getTrimmedPath(path) {
   if (path !== '/') {
@@ -1750,16 +1694,16 @@ var mapDispatchToProps = {
 var _default = (0, _reactHotLoader.hot)(module)((0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)((0, _ToJs.toJS)(RouteLoader)));
 
 exports["default"] = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(56)(module)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(52)(module)))
 
 /***/ }),
-/* 34 */
+/* 30 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__34__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__30__;
 
 /***/ }),
-/* 35 */
+/* 31 */
 /***/ (function(module, exports) {
 
 function _arrayWithoutHoles(arr) {
@@ -1775,7 +1719,7 @@ function _arrayWithoutHoles(arr) {
 module.exports = _arrayWithoutHoles;
 
 /***/ }),
-/* 36 */
+/* 32 */
 /***/ (function(module, exports) {
 
 function _iterableToArray(iter) {
@@ -1785,7 +1729,7 @@ function _iterableToArray(iter) {
 module.exports = _iterableToArray;
 
 /***/ }),
-/* 37 */
+/* 33 */
 /***/ (function(module, exports) {
 
 function _nonIterableSpread() {
@@ -1795,7 +1739,7 @@ function _nonIterableSpread() {
 module.exports = _nonIterableSpread;
 
 /***/ }),
-/* 38 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1806,7 +1750,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.browserHistory = exports.history = void 0;
 
-var _history = __webpack_require__(39);
+var _history = __webpack_require__(35);
 
 // Create a history depending on the environment
 var selectedHistory = typeof window !== 'undefined' ? _history.createBrowserHistory : _history.createMemoryHistory;
@@ -1821,27 +1765,22 @@ var browserHistory = selectedHistory();
 exports.browserHistory = browserHistory;
 
 /***/ }),
-/* 39 */
+/* 35 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__39__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__35__;
 
 /***/ }),
-/* 40 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _interopRequireDefault = __webpack_require__(0);
-
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
-
-var _slicedToArray2 = _interopRequireDefault(__webpack_require__(17));
-
 var servers = SERVERS;
 /* global SERVERS */
 
@@ -1864,25 +1803,24 @@ var pickProject = function pickProject(hostname, query) {
     return projects[0].id;
   }
 
-  var project = 'unknown'; // go through all the defined projects
+  var project = 'unknown'; // // go through all the defined projects
+  // Object.entries(projects).map(([, p]) => {
 
-  Object.entries(projects).map(function (_ref) {
-    var _ref2 = (0, _slicedToArray2["default"])(_ref, 2),
-        p = _ref2[1];
+  var p = projects[0]; // check if we're accessing via the project's public uri
 
-    // check if we're accessing via the project's public uri
-    if (hostname.includes(p.publicUri)) project = p.id; // the url structure is different for website (we don't prefix)
+  if (hostname.includes(p.publicUri)) project = p.id; // the url structure is different for website (we don't prefix)
 
-    if (p.id.startsWith('website')) {
-      // check for internal and external hostnames
-      // we check live and preview distinctly so our rule does not clash with
-      // hostnames that use a project prefix
-      if (hostname.includes("live-".concat(alias, ".cloud.contensis.com")) || hostname.includes("live.".concat(alias, ".contensis.cloud")) || hostname.includes("preview-".concat(alias, ".cloud.contensis.com")) || hostname.includes("preview.".concat(alias, ".contensis.cloud"))) project = p.id;
-    } else {
-      // check for internal and external hostnames, prefixed with the projectId
-      if (hostname.includes("".concat(p.id.toLowerCase(), "-").concat(alias, ".cloud.contensis.com")) || hostname.includes("".concat(p.id.toLowerCase(), ".").concat(alias, ".contensis.cloud"))) project = p.id;
-    }
-  });
+  if (p.id.startsWith('website')) {
+    // check for internal and external hostnames
+    // we check live and preview distinctly so our rule does not clash with
+    // hostnames that use a project prefix
+    if (hostname.includes("live-".concat(alias, ".cloud.contensis.com")) || hostname.includes("live.".concat(alias, ".contensis.cloud")) || hostname.includes("preview-".concat(alias, ".cloud.contensis.com")) || hostname.includes("preview.".concat(alias, ".contensis.cloud"))) project = p.id;
+  } else {
+    // check for internal and external hostnames, prefixed with the projectId
+    if (hostname.includes("".concat(p.id.toLowerCase(), "-").concat(alias, ".cloud.contensis.com")) || hostname.includes("".concat(p.id.toLowerCase(), ".").concat(alias, ".contensis.cloud"))) project = p.id;
+  } // });
+
+
   return project;
 };
 
@@ -1890,13 +1828,13 @@ var _default = pickProject;
 exports["default"] = _default;
 
 /***/ }),
-/* 41 */
+/* 37 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__41__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__37__;
 
 /***/ }),
-/* 42 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1913,21 +1851,21 @@ exports["default"] = void 0;
 
 var _defineProperty2 = _interopRequireDefault(__webpack_require__(4));
 
-var _redux = __webpack_require__(43);
+var _redux = __webpack_require__(39);
 
-var _reduxImmutable = __webpack_require__(44);
+var _reduxImmutable = __webpack_require__(40);
 
-var _reduxThunk = _interopRequireDefault(__webpack_require__(45));
+var _reduxThunk = _interopRequireDefault(__webpack_require__(41));
 
-var _reduxSaga = _interopRequireWildcard(__webpack_require__(46));
+var _reduxSaga = _interopRequireWildcard(__webpack_require__(42));
 
-var _routing = _interopRequireDefault(__webpack_require__(47));
+var _routing = _interopRequireDefault(__webpack_require__(43));
 
-var _version = _interopRequireDefault(__webpack_require__(48));
+var _version = _interopRequireDefault(__webpack_require__(44));
 
-var _navigation = _interopRequireDefault(__webpack_require__(49));
+var _navigation = _interopRequireDefault(__webpack_require__(45));
 
-var _routerMiddleware = _interopRequireDefault(__webpack_require__(50));
+var _routerMiddleware = _interopRequireDefault(__webpack_require__(46));
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
@@ -1974,31 +1912,31 @@ var _default = function _default(featureReducers, initialState, history) {
 exports["default"] = _default;
 
 /***/ }),
+/* 39 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__39__;
+
+/***/ }),
+/* 40 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__40__;
+
+/***/ }),
+/* 41 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__41__;
+
+/***/ }),
+/* 42 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__42__;
+
+/***/ }),
 /* 43 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__43__;
-
-/***/ }),
-/* 44 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__44__;
-
-/***/ }),
-/* 45 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__45__;
-
-/***/ }),
-/* 46 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__46__;
-
-/***/ }),
-/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2009,9 +1947,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
-var _immutable = __webpack_require__(2);
+var _immutable = __webpack_require__(1);
 
-var _routing = __webpack_require__(1);
+var _routing = __webpack_require__(2);
 
 var _ContensisDeliveryApi = __webpack_require__(11);
 
@@ -2032,6 +1970,28 @@ var _default = function _default() {
   var action = arguments.length > 1 ? arguments[1] : undefined;
 
   switch (action.type) {
+    case _routing.SET_ANCESTORS:
+      {
+        if (action.ancestors) {
+          var ancestorIDs = action.ancestors.map(function (node) {
+            return node.id;
+          });
+          var currentNodeDepends = state.get('nodeDepends');
+
+          var allNodeDepends = _immutable.Set.union([(0, _immutable.Set)(ancestorIDs), currentNodeDepends]);
+
+          return state.set('nodeDepends', allNodeDepends).set('currentNodeAncestors', (0, _immutable.fromJS)(action.ancestors));
+        }
+
+        return state.set('currentNodeAncestors', (0, _immutable.fromJS)(action.ancestors));
+      }
+
+    case _routing.SET_ENTRY:
+      {
+        var entryDepends = (0, _ContensisDeliveryApi.GetAllResponseGuids)(action.entry);
+        return state.set('entryDepends', (0, _immutable.fromJS)(entryDepends)).set('entry', (0, _immutable.fromJS)(action.entry));
+      }
+
     case _routing.SET_ENTRY_ID:
       {
         if (action.id === '') {
@@ -2039,28 +1999,6 @@ var _default = function _default() {
         }
 
         return state.set('entryID', action.id);
-      }
-
-    case _routing.SET_ANCESTORS:
-      {
-        return state.set('currentNodeAncestors', (0, _immutable.fromJS)(action.ancestors));
-      }
-
-    case _routing.SET_NODE:
-      {
-        // We have the entry stored elsewhere, so lets not keep it twice.
-        if (action.node && action.node.entry) delete action.node.entry;
-        return state.set('currentNode', (0, _immutable.fromJS)(action.node));
-      }
-
-    case _routing.SET_ENTRY:
-      {
-        // Get Depends for entry
-        var depends = (0, _ContensisDeliveryApi.GetAllResponseGuids)(action.entry); // if (action.entry) {
-        //   fixImageUri(action.entry);
-        // }
-
-        return state.set('entryDepends', (0, _immutable.fromJS)(depends)).set('entry', (0, _immutable.fromJS)(action.entry));
       }
 
     case _routing.SET_NAVIGATION_PATH:
@@ -2072,19 +2010,48 @@ var _default = function _default() {
         return state;
       }
 
-    case _routing.SET_ROUTE:
-      {
-        return state.set('nextPath', action.path);
-      }
-
     case _routing.SET_NAVIGATION_NOT_FOUND:
       {
         return state.set('notFound', (0, _immutable.fromJS)(action.notFound));
       }
 
+    case _routing.SET_NODE:
+      {
+        // We have the entry stored elsewhere, so lets not keep it twice.
+        // On Set Node, we reset all dependants.
+        var nodeDepends = (0, _immutable.Set)([action.node.id]);
+        if (action.node && action.node.entry) delete action.node.entry;
+        return state.set('nodeDepends', nodeDepends).set('currentNode', (0, _immutable.fromJS)(action.node));
+      }
+
+    case _routing.SET_ROUTE:
+      {
+        return state.set('nextPath', action.path);
+      }
+
     case _routing.SET_ROUTE_LOADING:
       {
         return state.set('routeLoading', action.loading);
+      }
+
+    case _routing.SET_SIBLINGS:
+      {
+        // Can be null in some cases like the homepage.
+        var currentNodeSiblingParent = null;
+        var siblingIDs = [];
+
+        if (action.siblings && action.siblings.length > 0) {
+          currentNodeSiblingParent = action.siblings[0].parentId;
+          siblingIDs = action.siblings.map(function (node) {
+            return node.id;
+          });
+        }
+
+        var _currentNodeDepends = state.get('nodeDepends');
+
+        var _allNodeDepends = _immutable.Set.union([(0, _immutable.Set)(siblingIDs), _currentNodeDepends]);
+
+        return state.set('nodeDepends', _allNodeDepends).set('currentNodeSiblings', (0, _immutable.fromJS)(action.siblings)).set('currentNodeSiblingsParent', currentNodeSiblingParent);
       }
 
     case _routing.SET_TARGET_PROJECT:
@@ -2100,7 +2067,7 @@ var _default = function _default() {
 exports["default"] = _default;
 
 /***/ }),
-/* 48 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2111,7 +2078,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
-var _immutable = __webpack_require__(2);
+var _immutable = __webpack_require__(1);
 
 var _version = __webpack_require__(15);
 
@@ -2144,7 +2111,7 @@ var _default = function _default() {
 exports["default"] = _default;
 
 /***/ }),
-/* 49 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2155,7 +2122,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
-var _immutable = __webpack_require__(2);
+var _immutable = __webpack_require__(1);
 
 var _navigation = __webpack_require__(10);
 
@@ -2189,7 +2156,7 @@ var _default = function _default() {
 exports["default"] = _default;
 
 /***/ }),
-/* 50 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2204,7 +2171,7 @@ exports["default"] = void 0;
 
 var _toConsumableArray2 = _interopRequireDefault(__webpack_require__(14));
 
-var _routing = __webpack_require__(1);
+var _routing = __webpack_require__(2);
 
 /**
  * This middleware captures CALL_HISTORY_METHOD actions to redirect to the
@@ -2234,7 +2201,7 @@ var _default = routerMiddleware;
 exports["default"] = _default;
 
 /***/ }),
-/* 51 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2251,11 +2218,11 @@ var _regenerator = _interopRequireDefault(__webpack_require__(5));
 
 var _toConsumableArray2 = _interopRequireDefault(__webpack_require__(14));
 
-var _effects = __webpack_require__(23);
+var _effects = __webpack_require__(19);
 
-var _routing = __webpack_require__(52);
+var _routing = __webpack_require__(48);
 
-var _navigation = __webpack_require__(54);
+var _navigation = __webpack_require__(50);
 
 // index.js
 function _default() {
@@ -2283,7 +2250,7 @@ function _default() {
 }
 
 /***/ }),
-/* 52 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2302,21 +2269,21 @@ var _defineProperty2 = _interopRequireDefault(__webpack_require__(4));
 
 var _regenerator = _interopRequireDefault(__webpack_require__(5));
 
-var log = _interopRequireWildcard(__webpack_require__(53));
+var log = _interopRequireWildcard(__webpack_require__(49));
 
-var _effects = __webpack_require__(23);
+var _effects = __webpack_require__(19);
 
-var _routing = __webpack_require__(1);
+var _routing = __webpack_require__(2);
 
 var _ContensisDeliveryApi = __webpack_require__(11);
 
-var _version = __webpack_require__(30);
+var _version = __webpack_require__(25);
 
 var _routing2 = __webpack_require__(9);
 
 var _navigation = __webpack_require__(10);
 
-var _navigation2 = __webpack_require__(24);
+var _navigation2 = __webpack_require__(26);
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
@@ -2336,6 +2303,11 @@ _regenerator["default"].mark(setRouteEntry),
 _regenerator["default"].mark(do404);
 
 var routingSagas = [(0, _effects.takeEvery)(_routing.SET_NAVIGATION_PATH, getRouteSaga), (0, _effects.takeEvery)(_routing.SET_ROUTE, setRouteSaga)];
+/**
+ * To navigate / push a specific route via redux middleware
+ * @param {path, state} action
+ */
+
 exports.routingSagas = routingSagas;
 
 function setRouteSaga(action) {
@@ -2361,7 +2333,7 @@ function setRouteSaga(action) {
 }
 
 function getRouteSaga(action) {
-  var entry, withEvents, state, routeEntry, currentPath, deliveryApiStatus, project, pathNode, ancestors, splitPath, entryGuid, previewEntry;
+  var entry, withEvents, state, routeEntry, currentPath, deliveryApiStatus, project, pathNode, ancestors, siblings, currentPathDepth, splitPath, entryGuid, previewEntry;
   return _regenerator["default"].wrap(function getRouteSaga$(_context2) {
     while (1) {
       switch (_context2.prev = _context2.next) {
@@ -2395,15 +2367,14 @@ function getRouteSaga(action) {
           // For a genuinely static route we recieve a 404 in browser console,
           // and a wasted network call.
           if (routeEntry) entry = routeEntry.toJS();
-          _context2.next = 57;
+          _context2.next = 62;
           break;
 
         case 14:
           currentPath = (0, _routing2.selectCurrentPath)(state);
           deliveryApiStatus = (0, _version.selectVersionStatus)(state);
           project = (0, _routing2.selectCurrentProject)(state);
-          pathNode = null;
-          ancestors = null; // Scroll into View
+          pathNode = null, ancestors = null, siblings = null; // Scroll into View
 
           if (typeof window !== 'undefined') {
             window.scroll({
@@ -2411,26 +2382,30 @@ function getRouteSaga(action) {
             });
           }
 
+          currentPathDepth = currentPath.split('/').length - 1;
+          if (currentPath === '/') currentPathDepth = 0; // Handle homepage
+
           if (!(currentPath === '/')) {
-            _context2.next = 26;
+            _context2.next = 27;
             break;
           }
 
-          _context2.next = 23;
+          _context2.next = 24;
           return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiStatus, project).nodes.getRoot({
+            depth: 1,
             entryFields: '*',
             entryLinkDepth: 4,
             language: 'en-GB'
           });
 
-        case 23:
+        case 24:
           pathNode = _context2.sent;
-          _context2.next = 49;
+          _context2.next = 54;
           break;
 
-        case 26:
+        case 27:
           if (!(currentPath && currentPath.startsWith('/preview/'))) {
-            _context2.next = 42;
+            _context2.next = 43;
             break;
           }
 
@@ -2438,122 +2413,137 @@ function getRouteSaga(action) {
           entryGuid = splitPath[2];
 
           if (!(splitPath.length == 3)) {
-            _context2.next = 40;
+            _context2.next = 41;
             break;
           }
 
-          _context2.next = 32;
+          _context2.next = 33;
           return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiStatus, project).entries.get({
             id: entryGuid,
             linkDepth: 4
           });
 
-        case 32:
+        case 33:
           previewEntry = _context2.sent;
 
           if (!previewEntry) {
-            _context2.next = 38;
+            _context2.next = 39;
             break;
           }
 
-          _context2.next = 36;
+          _context2.next = 37;
           return (0, _effects.call)(setRouteEntry, previewEntry);
 
-        case 36:
-          _context2.next = 40;
+        case 37:
+          _context2.next = 41;
           break;
 
-        case 38:
-          _context2.next = 40;
+        case 39:
+          _context2.next = 41;
           return (0, _effects.call)(do404);
 
-        case 40:
-          _context2.next = 45;
+        case 41:
+          _context2.next = 46;
           break;
 
-        case 42:
-          _context2.next = 44;
+        case 43:
+          _context2.next = 45;
           return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiStatus, project).nodes.get({
+            depth: 1,
             path: currentPath,
             entryFields: '*',
             entryLinkDepth: 4
           });
 
-        case 44:
+        case 45:
           pathNode = _context2.sent;
 
-        case 45:
-          if (!pathNode) {
-            _context2.next = 49;
+        case 46:
+          if (!(pathNode && pathNode.id)) {
+            _context2.next = 54;
             break;
           }
 
-          _context2.next = 48;
+          _context2.next = 49;
           return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiStatus, project).nodes.getAncestors(pathNode.id);
 
-        case 48:
+        case 49:
           ancestors = _context2.sent;
 
-        case 49:
-          if (!(pathNode && pathNode.entry && pathNode.entry.sys && pathNode.entry.sys.id)) {
-            _context2.next = 55;
+          if (!(currentPathDepth > 1)) {
+            _context2.next = 54;
             break;
           }
 
-          entry = pathNode.entry;
           _context2.next = 53;
-          return (0, _effects.call)(setRouteEntry, entry, pathNode, ancestors);
+          return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiStatus, project).nodes.getSiblings({
+            id: pathNode.id,
+            entryFields: ['sys.contentTypeId', 'url']
+          });
 
         case 53:
-          _context2.next = 57;
-          break;
+          siblings = _context2.sent;
 
-        case 55:
-          _context2.next = 57;
-          return (0, _effects.call)(do404);
-
-        case 57:
-          if (!(withEvents && withEvents.onRouteLoaded)) {
+        case 54:
+          if (!(pathNode && pathNode.entry && pathNode.entry.sys && pathNode.entry.sys.id)) {
             _context2.next = 60;
             break;
           }
 
-          _context2.next = 60;
+          entry = pathNode.entry;
+          _context2.next = 58;
+          return (0, _effects.call)(setRouteEntry, entry, pathNode, ancestors, siblings);
+
+        case 58:
+          _context2.next = 62;
+          break;
+
+        case 60:
+          _context2.next = 62;
+          return (0, _effects.call)(do404);
+
+        case 62:
+          if (!(withEvents && withEvents.onRouteLoaded)) {
+            _context2.next = 65;
+            break;
+          }
+
+          _context2.next = 65;
           return withEvents.onRouteLoaded(_objectSpread({}, action, {
             entry: entry
           }));
 
-        case 60:
+        case 65:
           if ((0, _navigation2.hasNavigationTree)(state)) {
-            _context2.next = 63;
+            _context2.next = 68;
             break;
           }
 
-          _context2.next = 63;
+          _context2.next = 68;
           return (0, _effects.put)({
             type: _navigation.GET_NODE_TREE
           });
 
-        case 63:
-          _context2.next = 70;
+        case 68:
+          _context2.next = 75;
           break;
 
-        case 65:
-          _context2.prev = 65;
+        case 70:
+          _context2.prev = 70;
           _context2.t0 = _context2["catch"](1);
           log.error.apply(log, ['Error running route saga:', _context2.t0, _context2.t0.stack]);
-          _context2.next = 70;
+          _context2.next = 75;
           return (0, _effects.call)(do404);
 
-        case 70:
+        case 75:
         case "end":
           return _context2.stop();
       }
     }
-  }, _marked2, null, [[1, 65]]);
+  }, _marked2, null, [[1, 70]]);
 }
 
-function setRouteEntry(entry, node, ancestors) {
+function setRouteEntry(entry, node, ancestors, siblings) {
   return _regenerator["default"].wrap(function setRouteEntry$(_context3) {
     while (1) {
       switch (_context3.prev = _context3.next) {
@@ -2574,6 +2564,9 @@ function setRouteEntry(entry, node, ancestors) {
           }), (0, _effects.put)({
             type: _routing.SET_ANCESTORS,
             ancestors: ancestors
+          }), (0, _effects.put)({
+            type: _routing.SET_SIBLINGS,
+            siblings: siblings
           })]);
 
         case 2:
@@ -2611,13 +2604,13 @@ function do404() {
 }
 
 /***/ }),
-/* 53 */
+/* 49 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__53__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__49__;
 
 /***/ }),
-/* 54 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2633,15 +2626,15 @@ exports.navigationSagas = void 0;
 
 var _regenerator = _interopRequireDefault(__webpack_require__(5));
 
-var _effects = __webpack_require__(23);
+var _effects = __webpack_require__(19);
 
 var _ContensisDeliveryApi = __webpack_require__(11);
 
 var _navigation = __webpack_require__(10);
 
-var _navigation2 = __webpack_require__(24);
+var _navigation2 = __webpack_require__(26);
 
-var _version = __webpack_require__(30);
+var _version = __webpack_require__(25);
 
 var _routing = __webpack_require__(9);
 
@@ -2732,7 +2725,7 @@ function ensureNodeTreeSaga() {
 }
 
 /***/ }),
-/* 55 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2747,9 +2740,9 @@ exports["default"] = void 0;
 
 var _react = _interopRequireDefault(__webpack_require__(3));
 
-var _reactHotLoader = __webpack_require__(25);
+var _reactHotLoader = __webpack_require__(20);
 
-var _RouteLoader = _interopRequireDefault(__webpack_require__(33));
+var _RouteLoader = _interopRequireDefault(__webpack_require__(29));
 
 var AppRoot = function AppRoot(props) {
   return _react["default"].createElement(_RouteLoader["default"], props);
@@ -2759,7 +2752,7 @@ var _default = AppRoot;
 exports["default"] = _default;
 
 /***/ }),
-/* 56 */
+/* 52 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -2787,7 +2780,7 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 57 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2800,7 +2793,7 @@ module.exports = function(module) {
 
 
 
-var ReactPropTypesSecret = __webpack_require__(58);
+var ReactPropTypesSecret = __webpack_require__(54);
 
 function emptyFunction() {}
 function emptyFunctionWithReset() {}
@@ -2858,7 +2851,7 @@ module.exports = function() {
 
 
 /***/ }),
-/* 58 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2877,13 +2870,13 @@ module.exports = ReactPropTypesSecret;
 
 
 /***/ }),
-/* 59 */
+/* 55 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__59__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__55__;
 
 /***/ }),
-/* 60 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2906,7 +2899,7 @@ var _default = NotFound;
 exports["default"] = _default;
 
 /***/ }),
-/* 61 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2921,7 +2914,7 @@ exports.Status = void 0;
 
 var _react = _interopRequireDefault(__webpack_require__(3));
 
-var _propTypes = _interopRequireDefault(__webpack_require__(31));
+var _propTypes = _interopRequireDefault(__webpack_require__(27));
 
 var _reactRouterDom = __webpack_require__(16);
 
@@ -2944,7 +2937,7 @@ Status.propTypes = {
 };
 
 /***/ }),
-/* 62 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2959,7 +2952,7 @@ exports.toJS = void 0;
 
 var _react = _interopRequireDefault(__webpack_require__(3));
 
-var _immutable = __webpack_require__(2);
+var _immutable = __webpack_require__(1);
 
 var toJS = function toJS(WrappedComponent) {
   return function (wrappedComponentProps) {
@@ -2976,6 +2969,10 @@ var toJS = function toJS(WrappedComponent) {
 exports.toJS = toJS;
 
 /***/ }),
+/* 59 */,
+/* 60 */,
+/* 61 */,
+/* 62 */,
 /* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2988,9 +2985,9 @@ exports.app = internalServer.app;
 exports.httpProxy = internalServer.apiProxy;
 exports.start = internalServer.start;
 
-var ReactApp = __webpack_require__(55)["default"];
+var ReactApp = __webpack_require__(51)["default"];
 
-var RouteLoader = __webpack_require__(33)["default"];
+var RouteLoader = __webpack_require__(29)["default"];
 
 exports.ReactApp = ReactApp;
 exports.RouteLoader = RouteLoader;
@@ -3011,11 +3008,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
-__webpack_require__(34);
+__webpack_require__(30);
 
 var _express = _interopRequireDefault(__webpack_require__(65));
 
-var _reactLoadable = _interopRequireDefault(__webpack_require__(32));
+var _reactLoadable = _interopRequireDefault(__webpack_require__(28));
 
 var _displayStartupConfiguration = _interopRequireDefault(__webpack_require__(66));
 
@@ -3283,9 +3280,9 @@ var _react = _interopRequireDefault(__webpack_require__(3));
 
 var _reactRouterDom = __webpack_require__(16);
 
-var _reactRedux = __webpack_require__(26);
+var _reactRedux = __webpack_require__(21);
 
-var _reactLoadable = _interopRequireDefault(__webpack_require__(32));
+var _reactLoadable = _interopRequireDefault(__webpack_require__(28));
 
 var _server = __webpack_require__(74);
 
@@ -3295,50 +3292,59 @@ var _styledComponents = __webpack_require__(76);
 
 var _reactHelmet = _interopRequireDefault(__webpack_require__(77));
 
-var _serializeJavascript = _interopRequireDefault(__webpack_require__(78));
+var _browserslistUseragent = __webpack_require__(78);
 
-var _minifyCssString = _interopRequireDefault(__webpack_require__(79));
+var _serializeJavascript = _interopRequireDefault(__webpack_require__(79));
 
-var _history = __webpack_require__(38);
+var _minifyCssString = _interopRequireDefault(__webpack_require__(80));
 
-var _types = __webpack_require__(80);
+var _immutable = __webpack_require__(1);
 
-var _pickProject = _interopRequireDefault(__webpack_require__(40));
+var _history = __webpack_require__(34);
+
+var _types = __webpack_require__(81);
+
+var _cacheHashing = __webpack_require__(82);
+
+var _pickProject = _interopRequireDefault(__webpack_require__(36));
 
 var _ContensisDeliveryApi = __webpack_require__(11);
 
 var _routing = __webpack_require__(13);
 
-var _version = __webpack_require__(28);
-
-var _navigation = __webpack_require__(24);
+var _version = __webpack_require__(23);
 
 var _routing2 = __webpack_require__(9);
 
-var _store = _interopRequireDefault(__webpack_require__(42));
+var _store = _interopRequireDefault(__webpack_require__(38));
 
-var _index = _interopRequireDefault(__webpack_require__(51));
+var _index = _interopRequireDefault(__webpack_require__(47));
 
-var _immutable = __webpack_require__(2);
+var packagejson = __webpack_require__(84);
 
-var _browserslistUseragent = __webpack_require__(81);
-
-var addStandardHeaders = function addStandardHeaders(state, response, packagejson, allowedGroups) {
+var addStandardHeaders = function addStandardHeaders(state, response) {
   if (state) {
     /* eslint-disable no-console */
     try {
       console.log('About to add header');
-      var navDepends = (0, _navigation.selectNavigationDepends)(state);
-      var recordDepends = (0, _routing2.selectRouteEntryDepends)(state);
-      navDepends = navDepends.toJS();
-      recordDepends = recordDepends.toJS();
-      console.log("navDepends count: ".concat(navDepends.length));
-      console.log("recordDepends count: ".concat(recordDepends.length));
-      var allDepends = [].concat((0, _toConsumableArray2["default"])(navDepends), (0, _toConsumableArray2["default"])(recordDepends));
-      var allDependsHeaderValue = allDepends.join(' ');
-      allDependsHeaderValue = " ".concat(packagejson.name, "-app ").concat(allDependsHeaderValue, " ").concat(packagejson.name, "-app");
-      response.header('surrogate-key', allDependsHeaderValue);
-      addVarnishAuthenticationHeaders(state, response, allowedGroups);
+      var entryDepends = (0, _routing2.selectEntryDepends)(state);
+      entryDepends = entryDepends.toJS();
+      console.log("entryDepends count: ".concat(entryDepends.length));
+      var nodeDepends = (0, _routing2.selectNodeDepends)(state).toJS();
+      var currentTreeId = (0, _routing2.selectCurrentTreeID)(state);
+      var nodeDependsKeys = nodeDepends.map(function (nodeKey) {
+        return "".concat(currentTreeId, "_").concat(nodeKey);
+      });
+      var allDepends = [].concat((0, _toConsumableArray2["default"])(entryDepends), (0, _toConsumableArray2["default"])(nodeDependsKeys));
+      var allDependsHashed = (0, _cacheHashing.hashKeys)(allDepends);
+      response.header('surrogate-key', " ".concat(packagejson.name, "-app ").concat(allDependsHashed.join(' '))); // response.header(
+      //   'surrogate-key-debug',
+      //   ` ${packagejson.name}-app ${allDepends.join(' ')}`
+      // );
+
+      console.log("depends hashed: ".concat(allDependsHashed.join(' ')));
+      console.log("depends hashed: ".concat(allDepends.join(' ')));
+      addVarnishAuthenticationHeaders(state, response);
     } catch (e) {
       console.log('Error Adding headers');
       console.log(e);
@@ -3616,6 +3622,12 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__79__;
 
 /***/ }),
 /* 80 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__80__;
+
+/***/ }),
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3634,10 +3646,43 @@ var AccessMethods = {
 exports.AccessMethods = AccessMethods;
 
 /***/ }),
-/* 81 */
+/* 82 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.hashKeys = void 0;
+
+var hashKeys = function hashKeys(keys) {
+  var XXHash = __webpack_require__(83);
+
+  var returnKeys = [];
+  keys.forEach(function (cacheKey) {
+    var inputBuffer = Buffer.from(cacheKey.toLowerCase(), 'utf-8');
+    var outputBuffer = Buffer.alloc(4);
+    XXHash.hash(inputBuffer, 0x0, outputBuffer);
+    returnKeys.push(outputBuffer.toString('base64').substring(0, 6));
+  });
+  return returnKeys;
+};
+
+exports.hashKeys = hashKeys;
+
+/***/ }),
+/* 83 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__81__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__83__;
+
+/***/ }),
+/* 84 */
+/***/ (function(module) {
+
+module.exports = {"name":"zengenti-isomorphic-base","version":"0.0.1","repository":"https://gitlab.zengenti.com/ps-projects/zengenti-base/zen-base/tree/isomorphic-base","license":"None","description":"","main":"zengenti-isomorphic-base.js","config":{"startup":""},"scripts":{"start":"cross-env NODE_ENV=development BROWSERSLIST_ENV=modern webpack-dev-server --config webpack/webpack.config.dev.js","build":"rimraf ./dist && concurrently \"npm run build:modern\" \"npm run build:legacy\" \"npm run build:node\" && npm run build:startup","build:local":"rimraf ./dist && concurrently \"npm run build:modern\" \"npm run build:node\" && npm run build:startup","build:node":"cross-env NODE_ENV=production BROWSERSLIST_ENV=node webpack --config webpack/webpack.config.server.js","build:modern":"rimraf ./dist/modern && rimraf ./dist/static/modern && mkdirp ./dist/modern && cross-env NODE_ENV=production BROWSERSLIST_ENV=modern webpack --config webpack/webpack.config.prod.js","build:legacy":"rimraf ./dist/legacy && rimraf ./dist/static/legacy && mkdirp ./dist/legacy && cross-env NODE_ENV=production BROWSERSLIST_ENV=legacy webpack --config webpack/webpack.config.prod.js","build:startup":"node node_modules/zengenti-buildstartup-package","server":"node --max-http-header-size=800000 dist/start.js","dev:server":"cross-env NODE_ENV=test BROWSERSLIST_ENV=node NODE_TLS_REJECT_UNAUTHORIZED=0 NODE_OPTIONS=--max-http-header-size=80000 babel-node --inspect=9229 src/server/debug.js","debug:server":"nodemon --exec cross-env NODE_ENV=test BROWSERSLIST_ENV=node NODE_TLS_REJECT_UNAUTHORIZED=0 NODE_OPTIONS=--max-http-header-size=80000 babel-node --inspect=9229 src/server/debug.js","build:server":"npm run build && npm run server","build:lib":"rimraf ./lib && cross-env NODE_ENV=production webpack --config webpack/webpack.config.lib.js","postinstall":"patch-package","lint":"eslint .","lint:fix":"eslint --fix .","test:generate-output":"jest --json --outputFile=.jest-test-results.json || true","test":"jest  -c ./config/jest.config.js --detectOpenHandles --forceExit","test:watch":"jest --config=./config/jest.config.js --watch","test:coverage":"jest --config=./config/jest.config.js --coverage"},"keywords":[],"author":"http://Zengenti.com","browserslist":{"modern":["Firefox >= 53","Edge >= 15","Chrome >= 58","iOS >= 10.1"],"legacy":["IE >= 11","> 1%"],"node":["node 8","IE >= 11","> 1%"]},"peerDependencies":{"@hot-loader/react-dom":"16.11.0","browserslist-useragent":"^3.0.2","contensis-delivery-api":"^1.1.0","evil-dns":"^0.2.0","express":"^4.17.1","http-proxy":"^1.17.0","immutable":"^4.0.0-rc.12","isomorphic-fetch":"2.2.1","minify-css-string":"1.0.0","query-string":"^5.1.1","react":"16.11.0","react-dom":"16.11.0","react-helmet":"5.2.1","react-hot-loader":"^4.11.0","react-loadable":"5.5.0","react-redux":"7.1.0","react-router-config":"^5.1.1","react-router-dom":"^5.1.1","redux":"^4.0.4","redux-immutable":"^4.0.0","redux-saga":"^1.0.3","redux-thunk":"2.3.0","regenerator-runtime":"0.13.2","reselect":"^4.0.0","serialize-javascript":"1.7.0","styled-components":"^4.3.2","xxhash":"^0.3.0"},"devDependencies":{"@babel/cli":"7.4.4","@babel/core":"7.4.5","@babel/node":"^7.4.5","@babel/plugin-proposal-class-properties":"7.4.4","@babel/plugin-proposal-export-default-from":"^7.2.0","@babel/plugin-syntax-dynamic-import":"7.2.0","@babel/plugin-transform-classes":"^7.5.5","@babel/plugin-transform-regenerator":"^7.4.5","@babel/plugin-transform-runtime":"^7.6.2","@babel/preset-env":"7.4.5","@babel/preset-react":"7.0.0","@testing-library/jest-dom":"^4.1.0","@testing-library/react":"^9.1.4","babel-eslint":"^10.0.3","babel-loader":"8.0.6","babel-plugin-dynamic-import-node":"2.2.0","babel-plugin-module-resolver":"^3.2.0","babel-plugin-prismjs":"^1.0.2","babel-plugin-styled-components":"1.10.0","babel-plugin-transform-define":"^1.3.1","browser-sync":"^2.26.7","browser-sync-webpack-plugin":"2.2.2","chai":"^4.2.0","chai-http":"^4.2.1","clean-webpack-plugin":"0.1.19","concurrently":"^5.1.0","copy-webpack-plugin":"5.0.3","core-js":"^3.6.4","cross-env":"5.2.0","css-loader":"^3.0.0","dotenv":"^8.1.0","eslint":"^6.5.1","eslint-config-prettier":"^6.4.0","eslint-import-resolver-webpack":"^0.11.1","eslint-loader":"^3.0.2","eslint-plugin-flowtype":"3.10.1","eslint-plugin-import":"^2.18.2","eslint-plugin-jsx-a11y":"^6.2.3","eslint-plugin-prettier":"^3.1.1","eslint-plugin-react":"^7.16.0","friendly-errors-webpack-plugin":"1.7.0","html-webpack-plugin":"3.2.0","image-webpack-loader":"^5.0.0","imagemin-webpack-plugin":"^2.4.2","jest":"^24.9.0","mocha":"^6.1.4","nodemon":"^1.19.1","parallel-webpack":"^2.4.0","prettier":"1.18.2","rimraf":"^3.0.2","stylelint":"^11.0.0","stylelint-config-recommended":"^3.0.0","stylelint-config-styled-components":"^0.1.1","stylelint-custom-processor-loader":"0.6.0","stylelint-processor-styled-components":"1.8.0","webpack":"4.33.0","webpack-cli":"^3.3.11","webpack-dev-server":"^3.7.1","webpack-merge":"4.2.1","webpack-node-externals":"1.7.2","webpack-shell-plugin":"^0.5.0","webpack-visualizer-plugin":"^0.1.11","zengenti-buildstartup-package":"0.0.7"},"dependencies":{"@hot-loader/react-dom":"16.11.0","browserslist-useragent":"^3.0.2","contensis-delivery-api":"^1.1.0","custom-env":"^1.0.2","dateformat":"^3.0.3","evil-dns":"^0.2.0","express":"^4.17.1","file-loader":"^4.0.0","http-proxy":"^1.17.0","immutable":"^4.0.0-rc.12","isomorphic-fetch":"2.2.1","js-cookie":"^2.2.1","leaflet":"^1.5.1","loglevel":"^1.6.3","minify-css-string":"1.0.0","patch-package":"^6.2.0","query-string":"^5.1.1","react":"16.11.0","react-dom":"16.11.0","react-helmet":"5.2.1","react-hot-loader":"^4.11.0","react-leaflet":"^2.4.0","react-loadable":"5.5.0","react-redux":"7.1.0","react-router-config":"^5.1.1","react-router-dom":"^5.1.1","redux":"^4.0.4","redux-immutable":"^4.0.0","redux-saga":"^1.0.3","redux-thunk":"2.3.0","regenerator-runtime":"0.13.2","reselect":"^4.0.0","serialize-javascript":"1.7.0","sitemap":"^4.1.1","styled-components":"^4.3.2","xxhash":"^0.3.0"}};
 
 /***/ })
 /******/ ]);

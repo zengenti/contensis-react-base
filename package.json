@@ -10,14 +10,16 @@
   },
   "scripts": {
     "start": "cross-env NODE_ENV=development BROWSERSLIST_ENV=modern webpack-dev-server --config webpack/webpack.config.dev.js",
-    "build": "rimraf ./dist && concurrently \"npm run build:modern\" \"npm run build:legacy\" \"npm run build:server\"",
-    "build:local": "rimraf ./dist && concurrently \"npm run build:modern\" \"npm run build:server\"",
-    "build:server": "cross-env NODE_ENV=production BROWSERSLIST_ENV=node webpack --config webpack/webpack.config.server.js",
-    "build:modern": "cross-env NODE_ENV=production BROWSERSLIST_ENV=modern webpack --config webpack/webpack.config.prod.js",
-    "build:legacy": "cross-env NODE_ENV=production BROWSERSLIST_ENV=legacy webpack --config webpack/webpack.config.prod.js",
-    "server": "node dist/start.js",
-    "dev:server": "nodemon --exec cross-env BROWSERSLIST_ENV=node NODE_ENV=test babel-node --inspect=9229 src/server/debug.js",
-    "build:serv": "npm run build && npm run server",
+    "build": "rimraf ./dist && concurrently \"npm run build:modern\" \"npm run build:legacy\" \"npm run build:node\" && npm run build:startup",
+    "build:local": "rimraf ./dist && concurrently \"npm run build:modern\" \"npm run build:node\" && npm run build:startup",
+    "build:node": "cross-env NODE_ENV=production BROWSERSLIST_ENV=node webpack --config webpack/webpack.config.server.js",
+    "build:modern": "rimraf ./dist/modern && rimraf ./dist/static/modern && mkdirp ./dist/modern && cross-env NODE_ENV=production BROWSERSLIST_ENV=modern webpack --config webpack/webpack.config.prod.js",
+    "build:legacy": "rimraf ./dist/legacy && rimraf ./dist/static/legacy && mkdirp ./dist/legacy && cross-env NODE_ENV=production BROWSERSLIST_ENV=legacy webpack --config webpack/webpack.config.prod.js",
+    "build:startup": "node node_modules/zengenti-buildstartup-package",
+    "server": "node --max-http-header-size=800000 dist/start.js",
+    "dev:server": "cross-env NODE_ENV=test BROWSERSLIST_ENV=node NODE_TLS_REJECT_UNAUTHORIZED=0 NODE_OPTIONS=--max-http-header-size=80000 babel-node --inspect=9229 src/server/debug.js",
+    "debug:server": "nodemon --exec cross-env NODE_ENV=test BROWSERSLIST_ENV=node NODE_TLS_REJECT_UNAUTHORIZED=0 NODE_OPTIONS=--max-http-header-size=80000 babel-node --inspect=9229 src/server/debug.js",
+    "build:server": "npm run build && npm run server",
     "build:lib": "rimraf ./lib && cross-env NODE_ENV=production webpack --config webpack/webpack.config.lib.js",
     "postinstall": "patch-package",
     "lint": "eslint .",
@@ -55,6 +57,7 @@
     "http-proxy": "^1.17.0",
     "immutable": "^4.0.0-rc.12",
     "isomorphic-fetch": "2.2.1",
+    "minify-css-string": "1.0.0",
     "query-string": "^5.1.1",
     "react": "16.11.0",
     "react-dom": "16.11.0",
@@ -72,7 +75,7 @@
     "reselect": "^4.0.0",
     "serialize-javascript": "1.7.0",
     "styled-components": "^4.3.2",
-    "minify-css-string": "1.0.0"
+    "xxhash": "^0.3.0"
   },
   "devDependencies": {
     "@babel/cli": "7.4.4",
@@ -131,7 +134,7 @@
     "stylelint-custom-processor-loader": "0.6.0",
     "stylelint-processor-styled-components": "1.8.0",
     "webpack": "4.33.0",
-    "webpack-cli": "3.3.4",
+    "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.7.1",
     "webpack-merge": "4.2.1",
     "webpack-node-externals": "1.7.2",
@@ -174,6 +177,7 @@
     "reselect": "^4.0.0",
     "serialize-javascript": "1.7.0",
     "sitemap": "^4.1.1",
-    "styled-components": "^4.3.2"
+    "styled-components": "^4.3.2",
+    "xxhash": "^0.3.0"
   }
 }

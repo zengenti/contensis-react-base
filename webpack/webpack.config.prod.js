@@ -10,11 +10,11 @@ const ImageminPlugin = require('imagemin-webpack-plugin').default;
 const Visualizer = require('webpack-visualizer-plugin');
 
 const BASE_CONFIG = require('./webpack.config.base');
-
-const defineConfigProd = require('./define-config-webpack').prod;
-
-const target = process.env.BROWSERSLIST_ENV;
-const isModern = target === 'modern';
+const {
+  BROWSERSLIST_ENV: target,
+  POLYFILLS_PATH,
+  WEBPACK_DEFINE_CONFIG,
+} = require('./bundle-info');
 
 const CLIENT_PROD_CONFIG = {
   name: `webpack-client-prod-config [${target}]`,
@@ -23,9 +23,7 @@ const CLIENT_PROD_CONFIG = {
   stats: 'errors-only',
   entry: {
     app: [
-      isModern
-        ? path.resolve(__dirname, '../src/client/polyfills.modern.js')
-        : path.resolve(__dirname, '../src/client/polyfills.legacy.js'),
+      POLYFILLS_PATH,
       path.resolve(__dirname, '../src/client/client-entrypoint.js'),
     ],
   },
@@ -48,7 +46,7 @@ const CLIENT_PROD_CONFIG = {
     runtimeChunk: 'single',
   },
   plugins: [
-    new webpack.DefinePlugin(defineConfigProd),
+    new webpack.DefinePlugin(WEBPACK_DEFINE_CONFIG.prod),
     new HtmlWebPackPlugin({
       template: path.resolve(__dirname, '../public/index.ejs'),
       filename: path.resolve(__dirname, `../dist/${target}/index.html`),

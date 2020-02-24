@@ -1,13 +1,9 @@
 const path = require('path');
 const webpack = require('webpack');
-const defineConfig = require('./define-config-webpack').base;
+
 const ASSET_PATH = '/';
 
-const BABEL_MODERN = require('../babel.config.modern');
-const BABEL_LEGACY = require('../babel.config.legacy');
-
-const target = process.env.BROWSERSLIST_ENV;
-const isModern = target === 'modern';
+const { BABEL_CONFIG, WEBPACK_DEFINE_CONFIG } = require('./bundle-info');
 
 module.exports = {
   output: {
@@ -17,6 +13,8 @@ module.exports = {
     extensions: ['.js', '.jsx', '.json'],
     alias: {
       '~': path.resolve(__dirname, '../src/app'),
+      '-': path.resolve(__dirname, '../'),
+      react: path.resolve('node_modules/react'),
       'react-dom': '@hot-loader/react-dom',
     },
   },
@@ -42,11 +40,11 @@ module.exports = {
           path.resolve('src'),
           // These dependencies have es6 syntax which ie11 doesn't like.
           path.resolve('node_modules/contensis-delivery-api'),
-          // path.resolve('node_modules/zengenti-forms-package'),
+          path.resolve('node_modules/zengenti-isomorphic-base'),
         ],
         use: {
           loader: 'babel-loader',
-          options: isModern ? BABEL_MODERN : BABEL_LEGACY,
+          options: BABEL_CONFIG,
         },
       },
       {
@@ -65,5 +63,5 @@ module.exports = {
       },
     ],
   },
-  plugins: [new webpack.DefinePlugin(defineConfig)],
+  plugins: [new webpack.DefinePlugin(WEBPACK_DEFINE_CONFIG.base)],
 };

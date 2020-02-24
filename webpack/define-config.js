@@ -74,7 +74,9 @@ const production = {
   VERSION: packagejson.version,
 };
 
-module.exports.build =
-  process.env.NODE_ENV == 'production' ? production : development;
-
-module.exports.projects = PROJECTS;
+module.exports = {
+  build: process.env.NODE_ENV == 'production' ? production : development,
+  development,
+  production,
+  projects: PROJECTS,
+};

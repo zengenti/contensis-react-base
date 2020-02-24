@@ -91,7 +91,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 91);
+/******/ 	return __webpack_require__(__webpack_require__.s = 94);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -109,14 +109,37 @@ module.exports = _interopRequireDefault;
 
 /***/ }),
 
-/***/ 17:
+/***/ 22:
+/***/ (function(module, exports) {
+
+function _typeof2(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof2 = function _typeof2(obj) { return typeof obj; }; } else { _typeof2 = function _typeof2(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof2(obj); }
+
+function _typeof(obj) {
+  if (typeof Symbol === "function" && _typeof2(Symbol.iterator) === "symbol") {
+    module.exports = _typeof = function _typeof(obj) {
+      return _typeof2(obj);
+    };
+  } else {
+    module.exports = _typeof = function _typeof(obj) {
+      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : _typeof2(obj);
+    };
+  }
+
+  return _typeof(obj);
+}
+
+module.exports = _typeof;
+
+/***/ }),
+
+/***/ 59:
 /***/ (function(module, exports, __webpack_require__) {
 
-var arrayWithHoles = __webpack_require__(18);
+var arrayWithHoles = __webpack_require__(60);
 
-var iterableToArrayLimit = __webpack_require__(19);
+var iterableToArrayLimit = __webpack_require__(61);
 
-var nonIterableRest = __webpack_require__(20);
+var nonIterableRest = __webpack_require__(62);
 
 function _slicedToArray(arr, i) {
   return arrayWithHoles(arr) || iterableToArrayLimit(arr, i) || nonIterableRest();
@@ -126,7 +149,7 @@ module.exports = _slicedToArray;
 
 /***/ }),
 
-/***/ 18:
+/***/ 60:
 /***/ (function(module, exports) {
 
 function _arrayWithHoles(arr) {
@@ -137,7 +160,7 @@ module.exports = _arrayWithHoles;
 
 /***/ }),
 
-/***/ 19:
+/***/ 61:
 /***/ (function(module, exports) {
 
 function _iterableToArrayLimit(arr, i) {
@@ -174,7 +197,7 @@ module.exports = _iterableToArrayLimit;
 
 /***/ }),
 
-/***/ 20:
+/***/ 62:
 /***/ (function(module, exports) {
 
 function _nonIterableRest() {
@@ -185,41 +208,39 @@ module.exports = _nonIterableRest;
 
 /***/ }),
 
-/***/ 27:
-/***/ (function(module, exports) {
-
-function _typeof2(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof2 = function _typeof2(obj) { return typeof obj; }; } else { _typeof2 = function _typeof2(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof2(obj); }
-
-function _typeof(obj) {
-  if (typeof Symbol === "function" && _typeof2(Symbol.iterator) === "symbol") {
-    module.exports = _typeof = function _typeof(obj) {
-      return _typeof2(obj);
-    };
-  } else {
-    module.exports = _typeof = function _typeof(obj) {
-      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : _typeof2(obj);
-    };
-  }
-
-  return _typeof(obj);
-}
-
-module.exports = _typeof;
-
-/***/ }),
-
-/***/ 91:
+/***/ 94:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-exports.stringifyStrings = __webpack_require__(92);
-exports.urls = __webpack_require__(93);
+exports.setCachingHeaders = __webpack_require__(95);
+exports.stringifyStrings = __webpack_require__(96);
+exports.urls = __webpack_require__(97);
 
 /***/ }),
 
-/***/ 92:
+/***/ 95:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var setCachingHeaders = function setCachingHeaders(response, _ref) {
+  var _ref$cacheControl = _ref.cacheControl,
+      cacheControl = _ref$cacheControl === void 0 ? 'private' : _ref$cacheControl,
+      _ref$surrogateControl = _ref.surrogateControl,
+      surrogateControl = _ref$surrogateControl === void 0 ? '3600' : _ref$surrogateControl;
+  var method = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'header';
+  if (cacheControl) response[method]('Cache-Control', cacheControl);
+  if (surrogateControl) response[method]('Surrogate-Control', "max-age=".concat(surrogateControl.toString()));
+};
+
+module.exports = setCachingHeaders;
+
+/***/ }),
+
+/***/ 96:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -227,9 +248,9 @@ exports.urls = __webpack_require__(93);
 
 var _interopRequireDefault = __webpack_require__(0);
 
-var _typeof2 = _interopRequireDefault(__webpack_require__(27));
+var _typeof2 = _interopRequireDefault(__webpack_require__(22));
 
-var _slicedToArray2 = _interopRequireDefault(__webpack_require__(17));
+var _slicedToArray2 = _interopRequireDefault(__webpack_require__(59));
 
 var stringifyStrings = function stringifyStrings(obj) {
   var returnObj = Array.isArray(obj) ? [] : {};
@@ -259,7 +280,7 @@ module.exports = stringifyStrings;
 
 /***/ }),
 
-/***/ 93:
+/***/ 97:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

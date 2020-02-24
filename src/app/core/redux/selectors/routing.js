@@ -3,8 +3,14 @@ import { List, Map } from 'immutable';
 export const selectRouteEntry = state => {
   return state.getIn(['routing', 'entry'], Map({}));
 };
-export const selectRouteEntryDepends = state => {
-  return state.getIn(['routing', 'entryDepends'], new List());
+export const selectNodeDepends = state => {
+  return state.getIn(['routing', 'nodeDepends'], new List([]));
+};
+export const selectCurrentTreeID = state => {
+  return state.getIn(['routing', 'currentTreeId']);
+};
+export const selectEntryDepends = state => {
+  return state.getIn(['routing', 'entryDepends']);
 };
 export const selectRouteEntryEntryId = state => {
   return state.getIn(['routing', 'entry', 'sys', 'id'], null);
