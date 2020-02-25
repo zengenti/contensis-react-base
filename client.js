@@ -1821,7 +1821,7 @@ var pickProject = function pickProject(hostname, query) {
   } // });
 
 
-  return project;
+  return project === 'unknown' ? p.id : project;
 };
 
 var _default = pickProject;

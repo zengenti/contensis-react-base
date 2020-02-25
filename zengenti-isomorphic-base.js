@@ -1821,7 +1821,7 @@ var pickProject = function pickProject(hostname, query) {
   } // });
 
 
-  return project;
+  return project === 'unknown' ? p.id : project;
 };
 
 var _default = pickProject;
@@ -3337,11 +3337,7 @@ var addStandardHeaders = function addStandardHeaders(state, response) {
       });
       var allDepends = [].concat((0, _toConsumableArray2["default"])(entryDepends), (0, _toConsumableArray2["default"])(nodeDependsKeys));
       var allDependsHashed = (0, _cacheHashing.hashKeys)(allDepends);
-      response.header('surrogate-key', " ".concat(packagejson.name, "-app ").concat(allDependsHashed.join(' '))); // response.header(
-      //   'surrogate-key-debug',
-      //   ` ${packagejson.name}-app ${allDepends.join(' ')}`
-      // );
-
+      response.header('surrogate-key', " ".concat(packagejson.name, "-app ").concat(allDependsHashed.join(' ')));
       console.log("depends hashed: ".concat(allDependsHashed.join(' ')));
       console.log("depends hashed: ".concat(allDepends.join(' ')));
       addVarnishAuthenticationHeaders(state, response);

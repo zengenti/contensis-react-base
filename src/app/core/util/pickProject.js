@@ -45,7 +45,7 @@ const pickProject = (hostname, query) => {
       project = p.id;
   }
   // });
-  return project;
+  return project === 'unknown' ? p.id : project;
 };
 
 export default pickProject;
