@@ -75,7 +75,7 @@
     "reselect": "^4.0.0",
     "serialize-javascript": "1.7.0",
     "styled-components": "^4.3.2",
-    "xxhash": "^0.3.0"
+    "xxhashjs": "^0.2.2"
   },
   "devDependencies": {
     "@babel/cli": "7.4.4",
@@ -178,6 +178,6 @@
     "serialize-javascript": "1.7.0",
     "sitemap": "^4.1.1",
     "styled-components": "^4.3.2",
-    "xxhash": "^0.3.0"
+    "xxhashjs": "^0.2.2"
   }
 }
