@@ -7,7 +7,7 @@
 		var a = typeof exports === 'object' ? factory(require("immutable"), require("react"), require("react-router-dom"), require("regenerator-runtime"), require("react-hot-loader"), require("react-redux"), require("@redux-saga/core/effects"), require("react-loadable"), require("isomorphic-fetch"), require("history"), require("contensis-delivery-api"), require("redux"), require("redux-immutable"), require("redux-thunk"), require("redux-saga"), require("loglevel"), require("react-router-config"), require("express"), require("evil-dns"), require("http-proxy"), require("react-dom/server"), require("react-loadable/webpack"), require("styled-components"), require("react-helmet"), require("browserslist-useragent"), require("serialize-javascript"), require("minify-css-string"), require("xxhashjs")) : factory(root["immutable"], root["react"], root["react-router-dom"], root["regenerator-runtime"], root["react-hot-loader"], root["react-redux"], root["@redux-saga/core/effects"], root["react-loadable"], root["isomorphic-fetch"], root["history"], root["contensis-delivery-api"], root["redux"], root["redux-immutable"], root["redux-thunk"], root["redux-saga"], root["loglevel"], root["react-router-config"], root["express"], root["evil-dns"], root["http-proxy"], root["react-dom/server"], root["react-loadable/webpack"], root["styled-components"], root["react-helmet"], root["browserslist-useragent"], root["serialize-javascript"], root["minify-css-string"], root["xxhashjs"]);
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(global, function(__WEBPACK_EXTERNAL_MODULE__1__, __WEBPACK_EXTERNAL_MODULE__3__, __WEBPACK_EXTERNAL_MODULE__16__, __WEBPACK_EXTERNAL_MODULE__17__, __WEBPACK_EXTERNAL_MODULE__20__, __WEBPACK_EXTERNAL_MODULE__21__, __WEBPACK_EXTERNAL_MODULE__24__, __WEBPACK_EXTERNAL_MODULE__28__, __WEBPACK_EXTERNAL_MODULE__30__, __WEBPACK_EXTERNAL_MODULE__35__, __WEBPACK_EXTERNAL_MODULE__37__, __WEBPACK_EXTERNAL_MODULE__39__, __WEBPACK_EXTERNAL_MODULE__40__, __WEBPACK_EXTERNAL_MODULE__41__, __WEBPACK_EXTERNAL_MODULE__42__, __WEBPACK_EXTERNAL_MODULE__49__, __WEBPACK_EXTERNAL_MODULE__55__, __WEBPACK_EXTERNAL_MODULE__65__, __WEBPACK_EXTERNAL_MODULE__68__, __WEBPACK_EXTERNAL_MODULE__71__, __WEBPACK_EXTERNAL_MODULE__74__, __WEBPACK_EXTERNAL_MODULE__75__, __WEBPACK_EXTERNAL_MODULE__76__, __WEBPACK_EXTERNAL_MODULE__77__, __WEBPACK_EXTERNAL_MODULE__78__, __WEBPACK_EXTERNAL_MODULE__79__, __WEBPACK_EXTERNAL_MODULE__80__, __WEBPACK_EXTERNAL_MODULE__83__) {
+})(global, function(__WEBPACK_EXTERNAL_MODULE__1__, __WEBPACK_EXTERNAL_MODULE__3__, __WEBPACK_EXTERNAL_MODULE__16__, __WEBPACK_EXTERNAL_MODULE__17__, __WEBPACK_EXTERNAL_MODULE__22__, __WEBPACK_EXTERNAL_MODULE__23__, __WEBPACK_EXTERNAL_MODULE__26__, __WEBPACK_EXTERNAL_MODULE__28__, __WEBPACK_EXTERNAL_MODULE__30__, __WEBPACK_EXTERNAL_MODULE__35__, __WEBPACK_EXTERNAL_MODULE__37__, __WEBPACK_EXTERNAL_MODULE__39__, __WEBPACK_EXTERNAL_MODULE__40__, __WEBPACK_EXTERNAL_MODULE__41__, __WEBPACK_EXTERNAL_MODULE__42__, __WEBPACK_EXTERNAL_MODULE__49__, __WEBPACK_EXTERNAL_MODULE__55__, __WEBPACK_EXTERNAL_MODULE__65__, __WEBPACK_EXTERNAL_MODULE__68__, __WEBPACK_EXTERNAL_MODULE__71__, __WEBPACK_EXTERNAL_MODULE__74__, __WEBPACK_EXTERNAL_MODULE__75__, __WEBPACK_EXTERNAL_MODULE__76__, __WEBPACK_EXTERNAL_MODULE__77__, __WEBPACK_EXTERNAL_MODULE__78__, __WEBPACK_EXTERNAL_MODULE__79__, __WEBPACK_EXTERNAL_MODULE__80__, __WEBPACK_EXTERNAL_MODULE__83__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -247,6 +247,99 @@ module.exports = _interopRequireWildcard;
 "use strict";
 
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.selectRouteLoading = exports.selectCurrentAncestors = exports.selectIsNotFound = exports.selectCurrentProject = exports.selectCurrentPath = exports.selectRouteEntryID = exports.selectRouteEntrySlug = exports.selectRouteEntryContentTypeId = exports.selectRouteEntryEntryId = exports.selectEntryDepends = exports.selectCurrentTreeID = exports.selectNodeDepends = exports.selectRouteEntry = void 0;
+
+var _immutable = __webpack_require__(1);
+
+var selectRouteEntry = function selectRouteEntry(state) {
+  return state.getIn(['routing', 'entry'], (0, _immutable.Map)({}));
+};
+
+exports.selectRouteEntry = selectRouteEntry;
+
+var selectNodeDepends = function selectNodeDepends(state) {
+  return state.getIn(['routing', 'nodeDepends'], new _immutable.List([]));
+};
+
+exports.selectNodeDepends = selectNodeDepends;
+
+var selectCurrentTreeID = function selectCurrentTreeID(state) {
+  return state.getIn(['routing', 'currentTreeId']);
+};
+
+exports.selectCurrentTreeID = selectCurrentTreeID;
+
+var selectEntryDepends = function selectEntryDepends(state) {
+  return state.getIn(['routing', 'entryDepends']);
+};
+
+exports.selectEntryDepends = selectEntryDepends;
+
+var selectRouteEntryEntryId = function selectRouteEntryEntryId(state) {
+  return state.getIn(['routing', 'entry', 'sys', 'id'], null);
+};
+
+exports.selectRouteEntryEntryId = selectRouteEntryEntryId;
+
+var selectRouteEntryContentTypeId = function selectRouteEntryContentTypeId(state) {
+  var entry = selectRouteEntry(state);
+  return entry && entry.getIn(['sys', 'contentTypeId'], null);
+};
+
+exports.selectRouteEntryContentTypeId = selectRouteEntryContentTypeId;
+
+var selectRouteEntrySlug = function selectRouteEntrySlug(state) {
+  return state.getIn(['routing', 'entry', 'sys', 'slug'], null);
+};
+
+exports.selectRouteEntrySlug = selectRouteEntrySlug;
+
+var selectRouteEntryID = function selectRouteEntryID(state) {
+  return state.getIn(['routing', 'entryID']);
+};
+
+exports.selectRouteEntryID = selectRouteEntryID;
+
+var selectCurrentPath = function selectCurrentPath(state) {
+  return state.getIn(['routing', 'currentPath']);
+};
+
+exports.selectCurrentPath = selectCurrentPath;
+
+var selectCurrentProject = function selectCurrentProject(state) {
+  return state.getIn(['routing', 'currentProject']);
+};
+
+exports.selectCurrentProject = selectCurrentProject;
+
+var selectIsNotFound = function selectIsNotFound(state) {
+  return state.getIn(['routing', 'notFound']);
+};
+
+exports.selectIsNotFound = selectIsNotFound;
+
+var selectCurrentAncestors = function selectCurrentAncestors(state) {
+  return state.getIn(['routing', 'currentNodeAncestors']);
+};
+
+exports.selectCurrentAncestors = selectCurrentAncestors;
+
+var selectRouteLoading = function selectRouteLoading(state) {
+  return state.getIn(['routing', 'routeLoading']);
+};
+
+exports.selectRouteLoading = selectRouteLoading;
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
 var _interopRequireDefault = __webpack_require__(0);
 
 Object.defineProperty(exports, "__esModule", {
@@ -264,7 +357,7 @@ var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(18));
 
 var _defineProperty2 = _interopRequireDefault(__webpack_require__(4));
 
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__(8));
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(9));
 
 var _createClass2 = _interopRequireDefault(__webpack_require__(12));
 
@@ -650,7 +743,7 @@ var randomString = function randomString(length) {
 exports.randomString = randomString;
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports) {
 
 function _classCallCheck(instance, Constructor) {
@@ -660,99 +753,6 @@ function _classCallCheck(instance, Constructor) {
 }
 
 module.exports = _classCallCheck;
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.selectRouteLoading = exports.selectCurrentAncestors = exports.selectIsNotFound = exports.selectCurrentProject = exports.selectCurrentPath = exports.selectRouteEntryID = exports.selectRouteEntrySlug = exports.selectRouteEntryContentTypeId = exports.selectRouteEntryEntryId = exports.selectEntryDepends = exports.selectCurrentTreeID = exports.selectNodeDepends = exports.selectRouteEntry = void 0;
-
-var _immutable = __webpack_require__(1);
-
-var selectRouteEntry = function selectRouteEntry(state) {
-  return state.getIn(['routing', 'entry'], (0, _immutable.Map)({}));
-};
-
-exports.selectRouteEntry = selectRouteEntry;
-
-var selectNodeDepends = function selectNodeDepends(state) {
-  return state.getIn(['routing', 'nodeDepends'], new _immutable.List([]));
-};
-
-exports.selectNodeDepends = selectNodeDepends;
-
-var selectCurrentTreeID = function selectCurrentTreeID(state) {
-  return state.getIn(['routing', 'currentTreeId']);
-};
-
-exports.selectCurrentTreeID = selectCurrentTreeID;
-
-var selectEntryDepends = function selectEntryDepends(state) {
-  return state.getIn(['routing', 'entryDepends']);
-};
-
-exports.selectEntryDepends = selectEntryDepends;
-
-var selectRouteEntryEntryId = function selectRouteEntryEntryId(state) {
-  return state.getIn(['routing', 'entry', 'sys', 'id'], null);
-};
-
-exports.selectRouteEntryEntryId = selectRouteEntryEntryId;
-
-var selectRouteEntryContentTypeId = function selectRouteEntryContentTypeId(state) {
-  var entry = selectRouteEntry(state);
-  return entry && entry.getIn(['sys', 'contentTypeId'], null);
-};
-
-exports.selectRouteEntryContentTypeId = selectRouteEntryContentTypeId;
-
-var selectRouteEntrySlug = function selectRouteEntrySlug(state) {
-  return state.getIn(['routing', 'entry', 'sys', 'slug'], null);
-};
-
-exports.selectRouteEntrySlug = selectRouteEntrySlug;
-
-var selectRouteEntryID = function selectRouteEntryID(state) {
-  return state.getIn(['routing', 'entryID']);
-};
-
-exports.selectRouteEntryID = selectRouteEntryID;
-
-var selectCurrentPath = function selectCurrentPath(state) {
-  return state.getIn(['routing', 'currentPath']);
-};
-
-exports.selectCurrentPath = selectCurrentPath;
-
-var selectCurrentProject = function selectCurrentProject(state) {
-  return state.getIn(['routing', 'currentProject']);
-};
-
-exports.selectCurrentProject = selectCurrentProject;
-
-var selectIsNotFound = function selectIsNotFound(state) {
-  return state.getIn(['routing', 'notFound']);
-};
-
-exports.selectIsNotFound = selectIsNotFound;
-
-var selectCurrentAncestors = function selectCurrentAncestors(state) {
-  return state.getIn(['routing', 'currentNodeAncestors']);
-};
-
-exports.selectCurrentAncestors = selectCurrentAncestors;
-
-var selectRouteLoading = function selectRouteLoading(state) {
-  return state.getIn(['routing', 'routeLoading']);
-};
-
-exports.selectRouteLoading = selectRouteLoading;
 
 /***/ }),
 /* 10 */
@@ -798,13 +798,13 @@ exports.cachedSearch = exports.deliveryApi = exports.GetAllResponseGuids = expor
 
 var _defineProperty2 = _interopRequireDefault(__webpack_require__(4));
 
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__(8));
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(9));
 
 var _createClass2 = _interopRequireDefault(__webpack_require__(12));
 
 var _toConsumableArray2 = _interopRequireDefault(__webpack_require__(14));
 
-var _typeof2 = _interopRequireDefault(__webpack_require__(22));
+var _typeof2 = _interopRequireDefault(__webpack_require__(24));
 
 var _contensisDeliveryApi = __webpack_require__(37);
 
@@ -1228,7 +1228,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.setRouteEntry = exports.setRoute = exports.setCurrentProject = exports.setNavigationPath = exports.setNotFound = void 0;
 
-var _helpers = __webpack_require__(7);
+var _helpers = __webpack_require__(8);
 
 var _routing = __webpack_require__(2);
 
@@ -1371,7 +1371,7 @@ module.exports = _asyncToGenerator;
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(24);
+/* harmony import */ var _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(26);
 /* harmony import */ var _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 
@@ -1379,79 +1379,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 /* 20 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__20__;
-
-/***/ }),
-/* 21 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__21__;
-
-/***/ }),
-/* 22 */
-/***/ (function(module, exports) {
-
-function _typeof2(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof2 = function _typeof2(obj) { return typeof obj; }; } else { _typeof2 = function _typeof2(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof2(obj); }
-
-function _typeof(obj) {
-  if (typeof Symbol === "function" && _typeof2(Symbol.iterator) === "symbol") {
-    module.exports = _typeof = function _typeof(obj) {
-      return _typeof2(obj);
-    };
-  } else {
-    module.exports = _typeof = function _typeof(obj) {
-      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : _typeof2(obj);
-    };
-  }
-
-  return _typeof(obj);
-}
-
-module.exports = _typeof;
-
-/***/ }),
-/* 23 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.setVersionStatus = exports.setVersion = void 0;
-
-var _helpers = __webpack_require__(7);
-
-var _version = __webpack_require__(15);
-
-var setVersion = function setVersion(commitRef, buildNo) {
-  return (0, _helpers.action)(_version.SET_VERSION, {
-    commitRef: commitRef,
-    buildNo: buildNo
-  });
-};
-
-exports.setVersion = setVersion;
-
-var setVersionStatus = function setVersionStatus(status) {
-  return (0, _helpers.action)(_version.SET_VERSION_STATUS, {
-    status: status
-  });
-};
-
-exports.setVersionStatus = setVersionStatus;
-
-/***/ }),
-/* 24 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__24__;
-
-/***/ }),
-/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1481,7 +1408,7 @@ var selectVersionStatus = function selectVersionStatus(state) {
 exports.selectVersionStatus = selectVersionStatus;
 
 /***/ }),
-/* 26 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1509,6 +1436,79 @@ var selectNavigationDepends = function selectNavigationDepends(state) {
 };
 
 exports.selectNavigationDepends = selectNavigationDepends;
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__22__;
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__23__;
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports) {
+
+function _typeof2(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof2 = function _typeof2(obj) { return typeof obj; }; } else { _typeof2 = function _typeof2(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof2(obj); }
+
+function _typeof(obj) {
+  if (typeof Symbol === "function" && _typeof2(Symbol.iterator) === "symbol") {
+    module.exports = _typeof = function _typeof(obj) {
+      return _typeof2(obj);
+    };
+  } else {
+    module.exports = _typeof = function _typeof(obj) {
+      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : _typeof2(obj);
+    };
+  }
+
+  return _typeof(obj);
+}
+
+module.exports = _typeof;
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.setVersionStatus = exports.setVersion = void 0;
+
+var _helpers = __webpack_require__(8);
+
+var _version = __webpack_require__(15);
+
+var setVersion = function setVersion(commitRef, buildNo) {
+  return (0, _helpers.action)(_version.SET_VERSION, {
+    commitRef: commitRef,
+    buildNo: buildNo
+  });
+};
+
+exports.setVersion = setVersion;
+
+var setVersionStatus = function setVersionStatus(status) {
+  return (0, _helpers.action)(_version.SET_VERSION_STATUS, {
+    status: status
+  });
+};
+
+exports.setVersionStatus = setVersionStatus;
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__26__;
 
 /***/ }),
 /* 27 */
@@ -1554,15 +1554,15 @@ var _react = _interopRequireWildcard(__webpack_require__(3));
 
 var _propTypes = _interopRequireDefault(__webpack_require__(27));
 
-var _reactRedux = __webpack_require__(21);
+var _reactRedux = __webpack_require__(23);
 
-var _reactHotLoader = __webpack_require__(20);
+var _reactHotLoader = __webpack_require__(22);
 
 var _reactRouterDom = __webpack_require__(16);
 
 var _reactRouterConfig = __webpack_require__(55);
 
-var _routing = __webpack_require__(9);
+var _routing = __webpack_require__(7);
 
 var _routing2 = __webpack_require__(13);
 
@@ -2277,13 +2277,13 @@ var _routing = __webpack_require__(2);
 
 var _ContensisDeliveryApi = __webpack_require__(11);
 
-var _version = __webpack_require__(25);
+var _version = __webpack_require__(20);
 
-var _routing2 = __webpack_require__(9);
+var _routing2 = __webpack_require__(7);
 
 var _navigation = __webpack_require__(10);
 
-var _navigation2 = __webpack_require__(26);
+var _navigation2 = __webpack_require__(21);
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
@@ -2632,11 +2632,11 @@ var _ContensisDeliveryApi = __webpack_require__(11);
 
 var _navigation = __webpack_require__(10);
 
-var _navigation2 = __webpack_require__(26);
+var _navigation2 = __webpack_require__(21);
 
-var _version = __webpack_require__(25);
+var _version = __webpack_require__(20);
 
-var _routing = __webpack_require__(9);
+var _routing = __webpack_require__(7);
 
 var _marked =
 /*#__PURE__*/
@@ -2740,7 +2740,7 @@ exports["default"] = void 0;
 
 var _react = _interopRequireDefault(__webpack_require__(3));
 
-var _reactHotLoader = __webpack_require__(20);
+var _reactHotLoader = __webpack_require__(22);
 
 var _RouteLoader = _interopRequireDefault(__webpack_require__(29));
 
@@ -3280,7 +3280,7 @@ var _react = _interopRequireDefault(__webpack_require__(3));
 
 var _reactRouterDom = __webpack_require__(16);
 
-var _reactRedux = __webpack_require__(21);
+var _reactRedux = __webpack_require__(23);
 
 var _reactLoadable = _interopRequireDefault(__webpack_require__(28));
 
@@ -3312,9 +3312,9 @@ var _ContensisDeliveryApi = __webpack_require__(11);
 
 var _routing = __webpack_require__(13);
 
-var _version = __webpack_require__(23);
+var _version = __webpack_require__(25);
 
-var _routing2 = __webpack_require__(9);
+var _routing2 = __webpack_require__(7);
 
 var _store = _interopRequireDefault(__webpack_require__(38));
 

@@ -91,7 +91,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 93);
+/******/ 	return __webpack_require__(__webpack_require__.s = 94);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -150,7 +150,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.setRouteEntry = exports.setRoute = exports.setCurrentProject = exports.setNavigationPath = exports.setNotFound = void 0;
 
-var _helpers = __webpack_require__(7);
+var _helpers = __webpack_require__(8);
 
 var _routing = __webpack_require__(2);
 
@@ -328,6 +328,100 @@ module.exports = __webpack_require__(17);
 "use strict";
 
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.selectRouteLoading = exports.selectCurrentAncestors = exports.selectIsNotFound = exports.selectCurrentProject = exports.selectCurrentPath = exports.selectRouteEntryID = exports.selectRouteEntrySlug = exports.selectRouteEntryContentTypeId = exports.selectRouteEntryEntryId = exports.selectEntryDepends = exports.selectCurrentTreeID = exports.selectNodeDepends = exports.selectRouteEntry = void 0;
+
+var _immutable = __webpack_require__(1);
+
+var selectRouteEntry = function selectRouteEntry(state) {
+  return state.getIn(['routing', 'entry'], (0, _immutable.Map)({}));
+};
+
+exports.selectRouteEntry = selectRouteEntry;
+
+var selectNodeDepends = function selectNodeDepends(state) {
+  return state.getIn(['routing', 'nodeDepends'], new _immutable.List([]));
+};
+
+exports.selectNodeDepends = selectNodeDepends;
+
+var selectCurrentTreeID = function selectCurrentTreeID(state) {
+  return state.getIn(['routing', 'currentTreeId']);
+};
+
+exports.selectCurrentTreeID = selectCurrentTreeID;
+
+var selectEntryDepends = function selectEntryDepends(state) {
+  return state.getIn(['routing', 'entryDepends']);
+};
+
+exports.selectEntryDepends = selectEntryDepends;
+
+var selectRouteEntryEntryId = function selectRouteEntryEntryId(state) {
+  return state.getIn(['routing', 'entry', 'sys', 'id'], null);
+};
+
+exports.selectRouteEntryEntryId = selectRouteEntryEntryId;
+
+var selectRouteEntryContentTypeId = function selectRouteEntryContentTypeId(state) {
+  var entry = selectRouteEntry(state);
+  return entry && entry.getIn(['sys', 'contentTypeId'], null);
+};
+
+exports.selectRouteEntryContentTypeId = selectRouteEntryContentTypeId;
+
+var selectRouteEntrySlug = function selectRouteEntrySlug(state) {
+  return state.getIn(['routing', 'entry', 'sys', 'slug'], null);
+};
+
+exports.selectRouteEntrySlug = selectRouteEntrySlug;
+
+var selectRouteEntryID = function selectRouteEntryID(state) {
+  return state.getIn(['routing', 'entryID']);
+};
+
+exports.selectRouteEntryID = selectRouteEntryID;
+
+var selectCurrentPath = function selectCurrentPath(state) {
+  return state.getIn(['routing', 'currentPath']);
+};
+
+exports.selectCurrentPath = selectCurrentPath;
+
+var selectCurrentProject = function selectCurrentProject(state) {
+  return state.getIn(['routing', 'currentProject']);
+};
+
+exports.selectCurrentProject = selectCurrentProject;
+
+var selectIsNotFound = function selectIsNotFound(state) {
+  return state.getIn(['routing', 'notFound']);
+};
+
+exports.selectIsNotFound = selectIsNotFound;
+
+var selectCurrentAncestors = function selectCurrentAncestors(state) {
+  return state.getIn(['routing', 'currentNodeAncestors']);
+};
+
+exports.selectCurrentAncestors = selectCurrentAncestors;
+
+var selectRouteLoading = function selectRouteLoading(state) {
+  return state.getIn(['routing', 'routeLoading']);
+};
+
+exports.selectRouteLoading = selectRouteLoading;
+
+/***/ }),
+
+/***/ 8:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
 var _interopRequireDefault = __webpack_require__(0);
 
 Object.defineProperty(exports, "__esModule", {
@@ -345,7 +439,7 @@ var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(18));
 
 var _defineProperty2 = _interopRequireDefault(__webpack_require__(4));
 
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__(8));
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(9));
 
 var _createClass2 = _interopRequireDefault(__webpack_require__(12));
 
@@ -732,7 +826,7 @@ exports.randomString = randomString;
 
 /***/ }),
 
-/***/ 8:
+/***/ 9:
 /***/ (function(module, exports) {
 
 function _classCallCheck(instance, Constructor) {
@@ -745,101 +839,7 @@ module.exports = _classCallCheck;
 
 /***/ }),
 
-/***/ 9:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.selectRouteLoading = exports.selectCurrentAncestors = exports.selectIsNotFound = exports.selectCurrentProject = exports.selectCurrentPath = exports.selectRouteEntryID = exports.selectRouteEntrySlug = exports.selectRouteEntryContentTypeId = exports.selectRouteEntryEntryId = exports.selectEntryDepends = exports.selectCurrentTreeID = exports.selectNodeDepends = exports.selectRouteEntry = void 0;
-
-var _immutable = __webpack_require__(1);
-
-var selectRouteEntry = function selectRouteEntry(state) {
-  return state.getIn(['routing', 'entry'], (0, _immutable.Map)({}));
-};
-
-exports.selectRouteEntry = selectRouteEntry;
-
-var selectNodeDepends = function selectNodeDepends(state) {
-  return state.getIn(['routing', 'nodeDepends'], new _immutable.List([]));
-};
-
-exports.selectNodeDepends = selectNodeDepends;
-
-var selectCurrentTreeID = function selectCurrentTreeID(state) {
-  return state.getIn(['routing', 'currentTreeId']);
-};
-
-exports.selectCurrentTreeID = selectCurrentTreeID;
-
-var selectEntryDepends = function selectEntryDepends(state) {
-  return state.getIn(['routing', 'entryDepends']);
-};
-
-exports.selectEntryDepends = selectEntryDepends;
-
-var selectRouteEntryEntryId = function selectRouteEntryEntryId(state) {
-  return state.getIn(['routing', 'entry', 'sys', 'id'], null);
-};
-
-exports.selectRouteEntryEntryId = selectRouteEntryEntryId;
-
-var selectRouteEntryContentTypeId = function selectRouteEntryContentTypeId(state) {
-  var entry = selectRouteEntry(state);
-  return entry && entry.getIn(['sys', 'contentTypeId'], null);
-};
-
-exports.selectRouteEntryContentTypeId = selectRouteEntryContentTypeId;
-
-var selectRouteEntrySlug = function selectRouteEntrySlug(state) {
-  return state.getIn(['routing', 'entry', 'sys', 'slug'], null);
-};
-
-exports.selectRouteEntrySlug = selectRouteEntrySlug;
-
-var selectRouteEntryID = function selectRouteEntryID(state) {
-  return state.getIn(['routing', 'entryID']);
-};
-
-exports.selectRouteEntryID = selectRouteEntryID;
-
-var selectCurrentPath = function selectCurrentPath(state) {
-  return state.getIn(['routing', 'currentPath']);
-};
-
-exports.selectCurrentPath = selectCurrentPath;
-
-var selectCurrentProject = function selectCurrentProject(state) {
-  return state.getIn(['routing', 'currentProject']);
-};
-
-exports.selectCurrentProject = selectCurrentProject;
-
-var selectIsNotFound = function selectIsNotFound(state) {
-  return state.getIn(['routing', 'notFound']);
-};
-
-exports.selectIsNotFound = selectIsNotFound;
-
-var selectCurrentAncestors = function selectCurrentAncestors(state) {
-  return state.getIn(['routing', 'currentNodeAncestors']);
-};
-
-exports.selectCurrentAncestors = selectCurrentAncestors;
-
-var selectRouteLoading = function selectRouteLoading(state) {
-  return state.getIn(['routing', 'routeLoading']);
-};
-
-exports.selectRouteLoading = selectRouteLoading;
-
-/***/ }),
-
-/***/ 93:
+/***/ 94:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -847,7 +847,7 @@ exports.selectRouteLoading = selectRouteLoading;
 
 exports.types = __webpack_require__(2);
 exports.actions = __webpack_require__(13);
-exports.selectors = __webpack_require__(9);
+exports.selectors = __webpack_require__(7);
 
 /***/ })
 

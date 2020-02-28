@@ -91,7 +91,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 94);
+/******/ 	return __webpack_require__(__webpack_require__.s = 95);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -109,7 +109,7 @@ module.exports = _interopRequireDefault;
 
 /***/ }),
 
-/***/ 22:
+/***/ 24:
 /***/ (function(module, exports) {
 
 function _typeof2(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof2 = function _typeof2(obj) { return typeof obj; }; } else { _typeof2 = function _typeof2(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof2(obj); }
@@ -208,19 +208,19 @@ module.exports = _nonIterableRest;
 
 /***/ }),
 
-/***/ 94:
+/***/ 95:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-exports.setCachingHeaders = __webpack_require__(95);
-exports.stringifyStrings = __webpack_require__(96);
-exports.urls = __webpack_require__(97);
+exports.setCachingHeaders = __webpack_require__(96);
+exports.stringifyStrings = __webpack_require__(97);
+exports.urls = __webpack_require__(98);
 
 /***/ }),
 
-/***/ 95:
+/***/ 96:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -240,7 +240,7 @@ module.exports = setCachingHeaders;
 
 /***/ }),
 
-/***/ 96:
+/***/ 97:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -248,7 +248,7 @@ module.exports = setCachingHeaders;
 
 var _interopRequireDefault = __webpack_require__(0);
 
-var _typeof2 = _interopRequireDefault(__webpack_require__(22));
+var _typeof2 = _interopRequireDefault(__webpack_require__(24));
 
 var _slicedToArray2 = _interopRequireDefault(__webpack_require__(59));
 
@@ -280,7 +280,7 @@ module.exports = stringifyStrings;
 
 /***/ }),
 
-/***/ 97:
+/***/ 98:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

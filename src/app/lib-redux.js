@@ -1,5 +1,6 @@
 const types = require('~/core/redux/types').default;
 const actions = require('~/core/redux/actions').default;
+const selectors = require('~/core/redux/selectors').default;
 
 const reduxExports = {};
 
@@ -11,7 +12,8 @@ Object.entries(types).map(([key, v]) => {
   reduxExports[key] = {
     types: v,
     actions: actions[key],
+    selectors: selectors[key],
   };
 });
 
-export default reduxExports;
+module.exports = reduxExports;
