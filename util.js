@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory();
+		module.exports = factory(require("awesome-json2json"));
 	else if(typeof define === 'function' && define.amd)
-		define([], factory);
+		define(["awesome-json2json"], factory);
 	else {
-		var a = factory();
+		var a = typeof exports === 'object' ? factory(require("awesome-json2json")) : factory(root["awesome-json2json"]);
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(global, function() {
+})(global, function(__WEBPACK_EXTERNAL_MODULE__97__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -91,7 +91,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 95);
+/******/ 	return __webpack_require__(__webpack_require__.s = 96);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -106,6 +106,27 @@ function _interopRequireDefault(obj) {
 }
 
 module.exports = _interopRequireDefault;
+
+/***/ }),
+
+/***/ 100:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var url = function url(alias, project) {
+  var projectAndAlias = project && project.toLowerCase() != 'website' ? "".concat(project.toLowerCase(), "-").concat(alias) : alias;
+  return {
+    cms: "https://cms-".concat(alias, ".cloud.contensis.com"),
+    liveWeb: "https://live-".concat(projectAndAlias, ".cloud.contensis.com"),
+    previewWeb: "https://preview-".concat(projectAndAlias, ".cloud.contensis.com"),
+    iisWeb: "https://iis-live-".concat(projectAndAlias, ".cloud.contensis.com"),
+    iisPreviewWeb: "https://iis-preview-".concat(projectAndAlias, ".cloud.contensis.com")
+  };
+};
+
+module.exports = url;
 
 /***/ }),
 
@@ -208,19 +229,53 @@ module.exports = _nonIterableRest;
 
 /***/ }),
 
-/***/ 95:
+/***/ 63:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-exports.setCachingHeaders = __webpack_require__(96);
-exports.stringifyStrings = __webpack_require__(97);
-exports.urls = __webpack_require__(98);
+var _interopRequireDefault = __webpack_require__(0);
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = exports.useMapper = void 0;
+
+var _awesomeJson2json = _interopRequireDefault(__webpack_require__(97));
+
+var useMapper = function useMapper(json, template) {
+  return (0, _awesomeJson2json["default"])(json, template);
+};
+
+exports.useMapper = useMapper;
+var _default = _awesomeJson2json["default"];
+exports["default"] = _default;
 
 /***/ }),
 
 /***/ 96:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.mapJson = __webpack_require__(63)["default"];
+exports.setCachingHeaders = __webpack_require__(98);
+exports.stringifyStrings = __webpack_require__(99);
+exports.urls = __webpack_require__(100);
+exports.useMapper = __webpack_require__(63).useMapper;
+
+/***/ }),
+
+/***/ 97:
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__97__;
+
+/***/ }),
+
+/***/ 98:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -240,7 +295,7 @@ module.exports = setCachingHeaders;
 
 /***/ }),
 
-/***/ 97:
+/***/ 99:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -277,27 +332,6 @@ var stringifyStrings = function stringifyStrings(obj) {
 };
 
 module.exports = stringifyStrings;
-
-/***/ }),
-
-/***/ 98:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var url = function url(alias, project) {
-  var projectAndAlias = project && project.toLowerCase() != 'website' ? "".concat(project.toLowerCase(), "-").concat(alias) : alias;
-  return {
-    cms: "https://cms-".concat(alias, ".cloud.contensis.com"),
-    liveWeb: "https://live-".concat(projectAndAlias, ".cloud.contensis.com"),
-    previewWeb: "https://preview-".concat(projectAndAlias, ".cloud.contensis.com"),
-    iisWeb: "https://iis-live-".concat(projectAndAlias, ".cloud.contensis.com"),
-    iisPreviewWeb: "https://iis-preview-".concat(projectAndAlias, ".cloud.contensis.com")
-  };
-};
-
-module.exports = url;
 
 /***/ })
 

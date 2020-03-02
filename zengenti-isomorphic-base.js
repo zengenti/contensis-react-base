@@ -7,7 +7,7 @@
 		var a = typeof exports === 'object' ? factory(require("immutable"), require("react"), require("react-router-dom"), require("regenerator-runtime"), require("react-hot-loader"), require("react-redux"), require("@redux-saga/core/effects"), require("react-loadable"), require("isomorphic-fetch"), require("history"), require("contensis-delivery-api"), require("redux"), require("redux-immutable"), require("redux-thunk"), require("redux-saga"), require("loglevel"), require("react-router-config"), require("express"), require("evil-dns"), require("http-proxy"), require("react-dom/server"), require("react-loadable/webpack"), require("styled-components"), require("react-helmet"), require("browserslist-useragent"), require("serialize-javascript"), require("minify-css-string"), require("xxhashjs")) : factory(root["immutable"], root["react"], root["react-router-dom"], root["regenerator-runtime"], root["react-hot-loader"], root["react-redux"], root["@redux-saga/core/effects"], root["react-loadable"], root["isomorphic-fetch"], root["history"], root["contensis-delivery-api"], root["redux"], root["redux-immutable"], root["redux-thunk"], root["redux-saga"], root["loglevel"], root["react-router-config"], root["express"], root["evil-dns"], root["http-proxy"], root["react-dom/server"], root["react-loadable/webpack"], root["styled-components"], root["react-helmet"], root["browserslist-useragent"], root["serialize-javascript"], root["minify-css-string"], root["xxhashjs"]);
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(global, function(__WEBPACK_EXTERNAL_MODULE__1__, __WEBPACK_EXTERNAL_MODULE__3__, __WEBPACK_EXTERNAL_MODULE__16__, __WEBPACK_EXTERNAL_MODULE__17__, __WEBPACK_EXTERNAL_MODULE__22__, __WEBPACK_EXTERNAL_MODULE__23__, __WEBPACK_EXTERNAL_MODULE__26__, __WEBPACK_EXTERNAL_MODULE__28__, __WEBPACK_EXTERNAL_MODULE__30__, __WEBPACK_EXTERNAL_MODULE__35__, __WEBPACK_EXTERNAL_MODULE__37__, __WEBPACK_EXTERNAL_MODULE__39__, __WEBPACK_EXTERNAL_MODULE__40__, __WEBPACK_EXTERNAL_MODULE__41__, __WEBPACK_EXTERNAL_MODULE__42__, __WEBPACK_EXTERNAL_MODULE__49__, __WEBPACK_EXTERNAL_MODULE__55__, __WEBPACK_EXTERNAL_MODULE__65__, __WEBPACK_EXTERNAL_MODULE__68__, __WEBPACK_EXTERNAL_MODULE__71__, __WEBPACK_EXTERNAL_MODULE__74__, __WEBPACK_EXTERNAL_MODULE__75__, __WEBPACK_EXTERNAL_MODULE__76__, __WEBPACK_EXTERNAL_MODULE__77__, __WEBPACK_EXTERNAL_MODULE__78__, __WEBPACK_EXTERNAL_MODULE__79__, __WEBPACK_EXTERNAL_MODULE__80__, __WEBPACK_EXTERNAL_MODULE__83__) {
+})(global, function(__WEBPACK_EXTERNAL_MODULE__1__, __WEBPACK_EXTERNAL_MODULE__3__, __WEBPACK_EXTERNAL_MODULE__16__, __WEBPACK_EXTERNAL_MODULE__17__, __WEBPACK_EXTERNAL_MODULE__22__, __WEBPACK_EXTERNAL_MODULE__23__, __WEBPACK_EXTERNAL_MODULE__26__, __WEBPACK_EXTERNAL_MODULE__28__, __WEBPACK_EXTERNAL_MODULE__30__, __WEBPACK_EXTERNAL_MODULE__35__, __WEBPACK_EXTERNAL_MODULE__37__, __WEBPACK_EXTERNAL_MODULE__39__, __WEBPACK_EXTERNAL_MODULE__40__, __WEBPACK_EXTERNAL_MODULE__41__, __WEBPACK_EXTERNAL_MODULE__42__, __WEBPACK_EXTERNAL_MODULE__49__, __WEBPACK_EXTERNAL_MODULE__55__, __WEBPACK_EXTERNAL_MODULE__66__, __WEBPACK_EXTERNAL_MODULE__69__, __WEBPACK_EXTERNAL_MODULE__72__, __WEBPACK_EXTERNAL_MODULE__75__, __WEBPACK_EXTERNAL_MODULE__76__, __WEBPACK_EXTERNAL_MODULE__77__, __WEBPACK_EXTERNAL_MODULE__78__, __WEBPACK_EXTERNAL_MODULE__79__, __WEBPACK_EXTERNAL_MODULE__80__, __WEBPACK_EXTERNAL_MODULE__81__, __WEBPACK_EXTERNAL_MODULE__84__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -91,7 +91,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 63);
+/******/ 	return __webpack_require__(__webpack_require__.s = 64);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -2973,13 +2973,14 @@ exports.toJS = toJS;
 /* 60 */,
 /* 61 */,
 /* 62 */,
-/* 63 */
+/* 63 */,
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var internalServer = __webpack_require__(64)["default"];
+var internalServer = __webpack_require__(65)["default"];
 
 exports.app = internalServer.app;
 exports.httpProxy = internalServer.apiProxy;
@@ -2993,7 +2994,7 @@ exports.ReactApp = ReactApp;
 exports.RouteLoader = RouteLoader;
 
 /***/ }),
-/* 64 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3010,17 +3011,17 @@ exports["default"] = void 0;
 
 __webpack_require__(30);
 
-var _express = _interopRequireDefault(__webpack_require__(65));
+var _express = _interopRequireDefault(__webpack_require__(66));
 
 var _reactLoadable = _interopRequireDefault(__webpack_require__(28));
 
-var _displayStartupConfiguration = _interopRequireDefault(__webpack_require__(66));
+var _displayStartupConfiguration = _interopRequireDefault(__webpack_require__(67));
 
-var _localDns = _interopRequireDefault(__webpack_require__(67));
+var _localDns = _interopRequireDefault(__webpack_require__(68));
 
-var _reverseProxies = _interopRequireWildcard(__webpack_require__(70));
+var _reverseProxies = _interopRequireWildcard(__webpack_require__(71));
 
-var _webApp = _interopRequireDefault(__webpack_require__(72));
+var _webApp = _interopRequireDefault(__webpack_require__(73));
 
 // import ServerFeatures from './features/configure';
 var app = (0, _express["default"])();
@@ -3063,13 +3064,13 @@ var _default = {
 exports["default"] = _default;
 
 /***/ }),
-/* 65 */
+/* 66 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__65__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__66__;
 
 /***/ }),
-/* 66 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3101,7 +3102,7 @@ var _default = DisplayStartupConfiguration;
 exports["default"] = _default;
 
 /***/ }),
-/* 67 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3114,9 +3115,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
-var _evilDns = _interopRequireDefault(__webpack_require__(68));
+var _evilDns = _interopRequireDefault(__webpack_require__(69));
 
-var _fetchMyIp = _interopRequireDefault(__webpack_require__(69));
+var _fetchMyIp = _interopRequireDefault(__webpack_require__(70));
 
 var servers = SERVERS;
 /* global SERVERS */
@@ -3144,13 +3145,13 @@ var _default = localDns;
 exports["default"] = _default;
 
 /***/ }),
-/* 68 */
+/* 69 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__68__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__69__;
 
 /***/ }),
-/* 69 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3193,7 +3194,7 @@ var _default = fetchMyIp;
 exports["default"] = _default;
 
 /***/ }),
-/* 70 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3206,7 +3207,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = exports.apiProxy = void 0;
 
-var _httpProxy = _interopRequireDefault(__webpack_require__(71));
+var _httpProxy = _interopRequireDefault(__webpack_require__(72));
 
 var servers = SERVERS;
 /* global SERVERS */
@@ -3253,13 +3254,13 @@ var _default = reverseProxies;
 exports["default"] = _default;
 
 /***/ }),
-/* 71 */
+/* 72 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__71__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__72__;
 
 /***/ }),
-/* 72 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3274,7 +3275,7 @@ exports["default"] = void 0;
 
 var _toConsumableArray2 = _interopRequireDefault(__webpack_require__(14));
 
-var _fs = _interopRequireDefault(__webpack_require__(73));
+var _fs = _interopRequireDefault(__webpack_require__(74));
 
 var _react = _interopRequireDefault(__webpack_require__(3));
 
@@ -3284,27 +3285,27 @@ var _reactRedux = __webpack_require__(23);
 
 var _reactLoadable = _interopRequireDefault(__webpack_require__(28));
 
-var _server = __webpack_require__(74);
+var _server = __webpack_require__(75);
 
-var _webpack = __webpack_require__(75);
+var _webpack = __webpack_require__(76);
 
-var _styledComponents = __webpack_require__(76);
+var _styledComponents = __webpack_require__(77);
 
-var _reactHelmet = _interopRequireDefault(__webpack_require__(77));
+var _reactHelmet = _interopRequireDefault(__webpack_require__(78));
 
-var _browserslistUseragent = __webpack_require__(78);
+var _browserslistUseragent = __webpack_require__(79);
 
-var _serializeJavascript = _interopRequireDefault(__webpack_require__(79));
+var _serializeJavascript = _interopRequireDefault(__webpack_require__(80));
 
-var _minifyCssString = _interopRequireDefault(__webpack_require__(80));
+var _minifyCssString = _interopRequireDefault(__webpack_require__(81));
 
 var _immutable = __webpack_require__(1);
 
 var _history = __webpack_require__(34);
 
-var _types = __webpack_require__(81);
+var _types = __webpack_require__(82);
 
-var _cacheHashing = __webpack_require__(82);
+var _cacheHashing = __webpack_require__(83);
 
 var _pickProject = _interopRequireDefault(__webpack_require__(36));
 
@@ -3320,7 +3321,7 @@ var _store = _interopRequireDefault(__webpack_require__(38));
 
 var _index = _interopRequireDefault(__webpack_require__(47));
 
-var packagejson = __webpack_require__(84);
+var packagejson = __webpack_require__(85);
 
 var addStandardHeaders = function addStandardHeaders(state, response) {
   if (state) {
@@ -3575,16 +3576,10 @@ var _default = webApp;
 exports["default"] = _default;
 
 /***/ }),
-/* 73 */
-/***/ (function(module, exports) {
-
-module.exports = require("fs");
-
-/***/ }),
 /* 74 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__74__;
+module.exports = require("fs");
 
 /***/ }),
 /* 75 */
@@ -3624,6 +3619,12 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__80__;
 
 /***/ }),
 /* 81 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__81__;
+
+/***/ }),
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3642,7 +3643,7 @@ var AccessMethods = {
 exports.AccessMethods = AccessMethods;
 
 /***/ }),
-/* 82 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3655,7 +3656,7 @@ exports.hashKeys = void 0;
 
 var hashKeys = function hashKeys(keys) {
   // const XXHash = require('xxhash');
-  var XXHash = __webpack_require__(83);
+  var XXHash = __webpack_require__(84);
 
   var returnKeys = [];
   keys.forEach(function (cacheKey) {
@@ -3673,16 +3674,16 @@ var hashKeys = function hashKeys(keys) {
 exports.hashKeys = hashKeys;
 
 /***/ }),
-/* 83 */
+/* 84 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__83__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__84__;
 
 /***/ }),
-/* 84 */
+/* 85 */
 /***/ (function(module) {
 
-module.exports = {"name":"zengenti-isomorphic-base","version":"0.0.1","repository":"https://gitlab.zengenti.com/ps-projects/zengenti-base/zen-base/tree/isomorphic-base","license":"None","description":"","main":"zengenti-isomorphic-base.js","config":{"startup":""},"scripts":{"start":"cross-env NODE_ENV=development BROWSERSLIST_ENV=modern webpack-dev-server --config webpack/webpack.config.dev.js","build":"rimraf ./dist && concurrently \"npm run build:modern\" \"npm run build:legacy\" \"npm run build:node\" && npm run build:startup","build:local":"rimraf ./dist && concurrently \"npm run build:modern\" \"npm run build:node\" && npm run build:startup","build:node":"cross-env NODE_ENV=production BROWSERSLIST_ENV=node webpack --config webpack/webpack.config.server.js","build:modern":"rimraf ./dist/modern && rimraf ./dist/static/modern && mkdirp ./dist/modern && cross-env NODE_ENV=production BROWSERSLIST_ENV=modern webpack --config webpack/webpack.config.prod.js","build:legacy":"rimraf ./dist/legacy && rimraf ./dist/static/legacy && mkdirp ./dist/legacy && cross-env NODE_ENV=production BROWSERSLIST_ENV=legacy webpack --config webpack/webpack.config.prod.js","build:startup":"node node_modules/zengenti-buildstartup-package","server":"node --max-http-header-size=800000 dist/start.js","dev:server":"cross-env NODE_ENV=test BROWSERSLIST_ENV=node NODE_TLS_REJECT_UNAUTHORIZED=0 NODE_OPTIONS=--max-http-header-size=80000 babel-node --inspect=9229 src/server/debug.js","debug:server":"nodemon --exec cross-env NODE_ENV=test BROWSERSLIST_ENV=node NODE_TLS_REJECT_UNAUTHORIZED=0 NODE_OPTIONS=--max-http-header-size=80000 babel-node --inspect=9229 src/server/debug.js","build:server":"npm run build && npm run server","build:lib":"rimraf ./lib && cross-env NODE_ENV=production webpack --config webpack/webpack.config.lib.js","postinstall":"patch-package","lint":"eslint .","lint:fix":"eslint --fix .","test:generate-output":"jest --json --outputFile=.jest-test-results.json || true","test":"jest  -c ./config/jest.config.js --detectOpenHandles --forceExit","test:watch":"jest --config=./config/jest.config.js --watch","test:coverage":"jest --config=./config/jest.config.js --coverage"},"keywords":[],"author":"http://Zengenti.com","browserslist":{"modern":["Firefox >= 53","Edge >= 15","Chrome >= 58","iOS >= 10.1"],"legacy":["IE >= 11","> 1%"],"node":["node 8","IE >= 11","> 1%"]},"peerDependencies":{"@hot-loader/react-dom":"16.11.0","browserslist-useragent":"^3.0.2","contensis-delivery-api":"^1.1.0","evil-dns":"^0.2.0","express":"^4.17.1","http-proxy":"^1.17.0","immutable":"^4.0.0-rc.12","isomorphic-fetch":"2.2.1","minify-css-string":"1.0.0","query-string":"^5.1.1","react":"16.11.0","react-dom":"16.11.0","react-helmet":"5.2.1","react-hot-loader":"^4.11.0","react-loadable":"5.5.0","react-redux":"7.1.0","react-router-config":"^5.1.1","react-router-dom":"^5.1.1","redux":"^4.0.4","redux-immutable":"^4.0.0","redux-saga":"^1.0.3","redux-thunk":"2.3.0","regenerator-runtime":"0.13.2","reselect":"^4.0.0","serialize-javascript":"1.7.0","styled-components":"^4.3.2","xxhashjs":"^0.2.2"},"devDependencies":{"@babel/cli":"7.4.4","@babel/core":"7.4.5","@babel/node":"^7.4.5","@babel/plugin-proposal-class-properties":"7.4.4","@babel/plugin-proposal-export-default-from":"^7.2.0","@babel/plugin-syntax-dynamic-import":"7.2.0","@babel/plugin-transform-classes":"^7.5.5","@babel/plugin-transform-regenerator":"^7.4.5","@babel/plugin-transform-runtime":"^7.6.2","@babel/preset-env":"7.4.5","@babel/preset-react":"7.0.0","@testing-library/jest-dom":"^4.1.0","@testing-library/react":"^9.1.4","babel-eslint":"^10.0.3","babel-loader":"8.0.6","babel-plugin-dynamic-import-node":"2.2.0","babel-plugin-module-resolver":"^3.2.0","babel-plugin-prismjs":"^1.0.2","babel-plugin-styled-components":"1.10.0","babel-plugin-transform-define":"^1.3.1","browser-sync":"^2.26.7","browser-sync-webpack-plugin":"2.2.2","chai":"^4.2.0","chai-http":"^4.2.1","clean-webpack-plugin":"0.1.19","concurrently":"^5.1.0","copy-webpack-plugin":"5.0.3","core-js":"^3.6.4","cross-env":"5.2.0","css-loader":"^3.0.0","dotenv":"^8.1.0","eslint":"^6.5.1","eslint-config-prettier":"^6.4.0","eslint-import-resolver-webpack":"^0.11.1","eslint-loader":"^3.0.2","eslint-plugin-flowtype":"3.10.1","eslint-plugin-import":"^2.18.2","eslint-plugin-jsx-a11y":"^6.2.3","eslint-plugin-prettier":"^3.1.1","eslint-plugin-react":"^7.16.0","friendly-errors-webpack-plugin":"1.7.0","html-webpack-plugin":"3.2.0","image-webpack-loader":"^5.0.0","imagemin-webpack-plugin":"^2.4.2","jest":"^24.9.0","mocha":"^6.1.4","nodemon":"^1.19.1","parallel-webpack":"^2.4.0","prettier":"1.18.2","rimraf":"^3.0.2","stylelint":"^11.0.0","stylelint-config-recommended":"^3.0.0","stylelint-config-styled-components":"^0.1.1","stylelint-custom-processor-loader":"0.6.0","stylelint-processor-styled-components":"1.8.0","webpack":"4.33.0","webpack-cli":"^3.3.11","webpack-dev-server":"^3.7.1","webpack-merge":"4.2.1","webpack-node-externals":"1.7.2","webpack-shell-plugin":"^0.5.0","webpack-visualizer-plugin":"^0.1.11","zengenti-buildstartup-package":"0.0.7"},"dependencies":{"@hot-loader/react-dom":"16.11.0","browserslist-useragent":"^3.0.2","contensis-delivery-api":"^1.1.0","custom-env":"^1.0.2","dateformat":"^3.0.3","evil-dns":"^0.2.0","express":"^4.17.1","file-loader":"^4.0.0","http-proxy":"^1.17.0","immutable":"^4.0.0-rc.12","isomorphic-fetch":"2.2.1","js-cookie":"^2.2.1","leaflet":"^1.5.1","loglevel":"^1.6.3","minify-css-string":"1.0.0","patch-package":"^6.2.0","query-string":"^5.1.1","react":"16.11.0","react-dom":"16.11.0","react-helmet":"5.2.1","react-hot-loader":"^4.11.0","react-leaflet":"^2.4.0","react-loadable":"5.5.0","react-redux":"7.1.0","react-router-config":"^5.1.1","react-router-dom":"^5.1.1","redux":"^4.0.4","redux-immutable":"^4.0.0","redux-saga":"^1.0.3","redux-thunk":"2.3.0","regenerator-runtime":"0.13.2","reselect":"^4.0.0","serialize-javascript":"1.7.0","sitemap":"^4.1.1","styled-components":"^4.3.2","xxhashjs":"^0.2.2"}};
+module.exports = {"name":"zengenti-isomorphic-base","version":"0.0.1","repository":"https://gitlab.zengenti.com/ps-projects/zengenti-base/zen-base/tree/isomorphic-base","license":"None","description":"","main":"zengenti-isomorphic-base.js","config":{"startup":""},"scripts":{"start":"cross-env NODE_ENV=development BROWSERSLIST_ENV=modern webpack-dev-server --config webpack/webpack.config.dev.js","build":"rimraf ./dist && concurrently \"npm run build:modern\" \"npm run build:legacy\" \"npm run build:node\" && npm run build:startup","build:local":"rimraf ./dist && concurrently \"npm run build:modern\" \"npm run build:node\" && npm run build:startup","build:node":"cross-env NODE_ENV=production BROWSERSLIST_ENV=node webpack --config webpack/webpack.config.server.js","build:modern":"rimraf ./dist/modern && rimraf ./dist/static/modern && mkdirp ./dist/modern && cross-env NODE_ENV=production BROWSERSLIST_ENV=modern webpack --config webpack/webpack.config.prod.js","build:legacy":"rimraf ./dist/legacy && rimraf ./dist/static/legacy && mkdirp ./dist/legacy && cross-env NODE_ENV=production BROWSERSLIST_ENV=legacy webpack --config webpack/webpack.config.prod.js","build:startup":"node node_modules/zengenti-buildstartup-package","server":"node --max-http-header-size=800000 dist/start.js","dev:server":"cross-env NODE_ENV=test BROWSERSLIST_ENV=node NODE_TLS_REJECT_UNAUTHORIZED=0 NODE_OPTIONS=--max-http-header-size=80000 babel-node --inspect=9229 src/server/debug.js","debug:server":"nodemon --exec cross-env NODE_ENV=test BROWSERSLIST_ENV=node NODE_TLS_REJECT_UNAUTHORIZED=0 NODE_OPTIONS=--max-http-header-size=80000 babel-node --inspect=9229 src/server/debug.js","build:server":"npm run build && npm run server","build:lib":"rimraf ./lib && cross-env NODE_ENV=production webpack --config webpack/webpack.config.lib.js","postinstall":"patch-package","lint":"eslint .","lint:fix":"eslint --fix .","test:generate-output":"jest --json --outputFile=.jest-test-results.json || true","test":"jest  -c ./config/jest.config.js --detectOpenHandles --forceExit","test:watch":"jest --config=./config/jest.config.js --watch","test:coverage":"jest --config=./config/jest.config.js --coverage"},"keywords":[],"author":"http://Zengenti.com","browserslist":{"modern":["Firefox >= 53","Edge >= 15","Chrome >= 58","iOS >= 10.1"],"legacy":["IE >= 11","> 1%"],"node":["node 8","IE >= 11","> 1%"]},"peerDependencies":{"@hot-loader/react-dom":"16.11.0","browserslist-useragent":"^3.0.2","contensis-delivery-api":"^1.1.0","evil-dns":"^0.2.0","express":"^4.17.1","http-proxy":"^1.17.0","immutable":"^4.0.0-rc.12","isomorphic-fetch":"2.2.1","minify-css-string":"1.0.0","query-string":"^5.1.1","react":"16.11.0","react-dom":"16.11.0","react-helmet":"5.2.1","react-hot-loader":"^4.11.0","react-loadable":"5.5.0","react-redux":"7.1.0","react-router-config":"^5.1.1","react-router-dom":"^5.1.1","redux":"^4.0.4","redux-immutable":"^4.0.0","redux-saga":"^1.0.3","redux-thunk":"2.3.0","regenerator-runtime":"0.13.2","reselect":"^4.0.0","serialize-javascript":"1.7.0","styled-components":"^4.3.2","xxhashjs":"^0.2.2"},"devDependencies":{"@babel/cli":"7.4.4","@babel/core":"7.4.5","@babel/node":"^7.4.5","@babel/plugin-proposal-class-properties":"7.4.4","@babel/plugin-proposal-export-default-from":"^7.2.0","@babel/plugin-syntax-dynamic-import":"7.2.0","@babel/plugin-transform-classes":"^7.5.5","@babel/plugin-transform-regenerator":"^7.4.5","@babel/plugin-transform-runtime":"^7.6.2","@babel/preset-env":"7.4.5","@babel/preset-react":"7.0.0","@testing-library/jest-dom":"^4.1.0","@testing-library/react":"^9.1.4","babel-eslint":"^10.0.3","babel-loader":"8.0.6","babel-plugin-dynamic-import-node":"2.2.0","babel-plugin-module-resolver":"^3.2.0","babel-plugin-prismjs":"^1.0.2","babel-plugin-styled-components":"1.10.0","babel-plugin-transform-define":"^1.3.1","browser-sync":"^2.26.7","browser-sync-webpack-plugin":"2.2.2","chai":"^4.2.0","chai-http":"^4.2.1","clean-webpack-plugin":"0.1.19","concurrently":"^5.1.0","copy-webpack-plugin":"5.0.3","core-js":"^3.6.4","cross-env":"5.2.0","css-loader":"^3.0.0","dotenv":"^8.1.0","eslint":"^6.5.1","eslint-config-prettier":"^6.4.0","eslint-import-resolver-webpack":"^0.11.1","eslint-loader":"^3.0.2","eslint-plugin-flowtype":"3.10.1","eslint-plugin-import":"^2.18.2","eslint-plugin-jsx-a11y":"^6.2.3","eslint-plugin-prettier":"^3.1.1","eslint-plugin-react":"^7.16.0","friendly-errors-webpack-plugin":"1.7.0","html-webpack-plugin":"3.2.0","image-webpack-loader":"^5.0.0","imagemin-webpack-plugin":"^2.4.2","jest":"^24.9.0","mocha":"^6.1.4","nodemon":"^1.19.1","parallel-webpack":"^2.4.0","prettier":"1.18.2","rimraf":"^3.0.2","stylelint":"^11.0.0","stylelint-config-recommended":"^3.0.0","stylelint-config-styled-components":"^0.1.1","stylelint-custom-processor-loader":"0.6.0","stylelint-processor-styled-components":"1.8.0","webpack":"4.33.0","webpack-cli":"^3.3.11","webpack-dev-server":"^3.7.1","webpack-merge":"4.2.1","webpack-node-externals":"1.7.2","webpack-shell-plugin":"^0.5.0","webpack-visualizer-plugin":"^0.1.11","zengenti-buildstartup-package":"0.0.7"},"dependencies":{"@hot-loader/react-dom":"16.11.0","awesome-json2json":"^0.5.2","browserslist-useragent":"^3.0.2","contensis-delivery-api":"^1.1.0","custom-env":"^1.0.2","dateformat":"^3.0.3","evil-dns":"^0.2.0","express":"^4.17.1","file-loader":"^4.0.0","http-proxy":"^1.17.0","immutable":"^4.0.0-rc.12","isomorphic-fetch":"2.2.1","js-cookie":"^2.2.1","leaflet":"^1.5.1","loglevel":"^1.6.3","minify-css-string":"1.0.0","patch-package":"^6.2.0","query-string":"^5.1.1","react":"16.11.0","react-dom":"16.11.0","react-helmet":"5.2.1","react-hot-loader":"^4.11.0","react-leaflet":"^2.4.0","react-loadable":"5.5.0","react-redux":"7.1.0","react-router-config":"^5.1.1","react-router-dom":"^5.1.1","redux":"^4.0.4","redux-immutable":"^4.0.0","redux-saga":"^1.0.3","redux-thunk":"2.3.0","regenerator-runtime":"0.13.2","reselect":"^4.0.0","serialize-javascript":"1.7.0","sitemap":"^4.1.1","styled-components":"^4.3.2","xxhashjs":"^0.2.2"}};
 
 /***/ })
 /******/ ]);

@@ -144,6 +144,7 @@
   },
   "dependencies": {
     "@hot-loader/react-dom": "16.11.0",
+    "awesome-json2json": "^0.5.2",
     "browserslist-useragent": "^3.0.2",
     "contensis-delivery-api": "^1.1.0",
     "custom-env": "^1.0.2",

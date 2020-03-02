@@ -91,7 +91,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 89);
+/******/ 	return __webpack_require__(__webpack_require__.s = 90);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -1149,7 +1149,8 @@ module.exports = _nonIterableRest;
 /* 86 */,
 /* 87 */,
 /* 88 */,
-/* 89 */
+/* 89 */,
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1159,11 +1160,11 @@ var _interopRequireDefault = __webpack_require__(0);
 
 var _slicedToArray2 = _interopRequireDefault(__webpack_require__(59));
 
-var types = __webpack_require__(90)["default"];
+var types = __webpack_require__(91)["default"];
 
-var actions = __webpack_require__(91)["default"];
+var actions = __webpack_require__(92)["default"];
 
-var selectors = __webpack_require__(93)["default"]; // Remap the objects so they are presented in "feature" hierarchy
+var selectors = __webpack_require__(94)["default"]; // Remap the objects so they are presented in "feature" hierarchy
 // e.g. { routing: { types, actions }, navigation: { types, actions } }
 // instead of { types: { routing, navigation }, actions: { routing, navigation } }
 
@@ -1181,7 +1182,7 @@ Object.entries(types).map(function (_ref) {
 });
 
 /***/ }),
-/* 90 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1208,7 +1209,7 @@ var _default = {
 exports["default"] = _default;
 
 /***/ }),
-/* 91 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1221,7 +1222,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
-var navigation = _interopRequireWildcard(__webpack_require__(92));
+var navigation = _interopRequireWildcard(__webpack_require__(93));
 
 var routing = _interopRequireWildcard(__webpack_require__(13));
 
@@ -1235,7 +1236,7 @@ var _default = {
 exports["default"] = _default;
 
 /***/ }),
-/* 92 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1257,7 +1258,7 @@ var loadNavigationTree = function loadNavigationTree() {
 exports.loadNavigationTree = loadNavigationTree;
 
 /***/ }),
-/* 93 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
