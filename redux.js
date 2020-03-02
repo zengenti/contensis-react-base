@@ -1163,24 +1163,22 @@ var types = __webpack_require__(90)["default"];
 
 var actions = __webpack_require__(91)["default"];
 
-var selectors = __webpack_require__(93)["default"];
-
-var reduxExports = {}; // Remap the objects so they are presented in "feature" hierarchy
+var selectors = __webpack_require__(93)["default"]; // Remap the objects so they are presented in "feature" hierarchy
 // e.g. { routing: { types, actions }, navigation: { types, actions } }
 // instead of { types: { routing, navigation }, actions: { routing, navigation } }
+
 
 Object.entries(types).map(function (_ref) {
   var _ref2 = (0, _slicedToArray2["default"])(_ref, 2),
       key = _ref2[0],
       v = _ref2[1];
 
-  reduxExports[key] = {
+  exports[key] = {
     types: v,
     actions: actions[key],
     selectors: selectors[key]
   };
 });
-module.exports = reduxExports;
 
 /***/ }),
 /* 90 */
