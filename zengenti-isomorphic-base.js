@@ -2017,10 +2017,12 @@ var _default = function _default() {
 
     case _routing.SET_NODE:
       {
-        // We have the entry stored elsewhere, so lets not keep it twice.
+        var node = action.node;
+        if (!node) return state; // We have the entry stored elsewhere, so lets not keep it twice.
         // On Set Node, we reset all dependants.
-        var nodeDepends = (0, _immutable.Set)([action.node.id]);
-        if (action.node && action.node.entry) delete action.node.entry;
+
+        var nodeDepends = (0, _immutable.Set)([node.id]);
+        if (node && node.entry) delete node.entry;
         return state.set('nodeDepends', nodeDepends).set('currentNode', (0, _immutable.fromJS)(action.node));
       }
 

@@ -69,10 +69,12 @@ export default (state = initialState, action) => {
       return state.set('notFound', fromJS(action.notFound));
     }
     case SET_NODE: {
+      const { node } = action;
+      if (!node) return state;
       // We have the entry stored elsewhere, so lets not keep it twice.
       // On Set Node, we reset all dependants.
-      const nodeDepends = Set([action.node.id]);
-      if (action.node && action.node.entry) delete action.node.entry;
+      const nodeDepends = Set([node.id]);
+      if (node && node.entry) delete node.entry;
       return state
         .set('nodeDepends', nodeDepends)
         .set('currentNode', fromJS(action.node));
