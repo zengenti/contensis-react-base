@@ -12,3 +12,4 @@ __snapshots__
 .DS_Store
 .out
 storybook-static/
+client-stats.html

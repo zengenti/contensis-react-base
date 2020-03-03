@@ -34,9 +34,7 @@ import {
 import createStore from '~/core/redux/store';
 import rootSaga from '~/core/redux/sagas/index.js';
 
-const packagejson = require('-/package.json');
-
-const addStandardHeaders = (state, response) => {
+const addStandardHeaders = (state, response, packagejson) => {
   if (state) {
     /* eslint-disable no-console */
     try {

@@ -1,6 +1,8 @@
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const path = require('path');
+const Visualizer = require('webpack-visualizer-plugin');
+
 const packagejson = require('../package.json');
 const BASE_CONFIG = require('./webpack.config.base');
 
@@ -23,11 +25,13 @@ const LIB_CONFIG = {
   },
   externals: [
     ...Object.keys(packagejson.dependencies),
+    /^@babel*/,
     '@babel',
     'history',
     /^@redux-saga*/,
     'react-dom/server',
     'react-loadable/webpack',
+    'prop-types',
   ],
   optimization: {
     minimize: false,
@@ -36,6 +40,9 @@ const LIB_CONFIG = {
     new webpack.DefinePlugin({
       VERSION: JSON.stringify(packagejson.version),
       'process.env.NODE_ENV': 'process.env.NODE_ENV',
+    }),
+    new Visualizer({
+      filename: `./client-stats.html`,
     }),
   ],
 };

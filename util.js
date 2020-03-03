@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("awesome-json2json"));
+		module.exports = factory(require("@babel/runtime/helpers/interopRequireDefault"), require("@babel/runtime/helpers/typeof"), require("@babel/runtime/helpers/slicedToArray"), require("awesome-json2json"));
 	else if(typeof define === 'function' && define.amd)
-		define(["awesome-json2json"], factory);
+		define(["@babel/runtime/helpers/interopRequireDefault", "@babel/runtime/helpers/typeof", "@babel/runtime/helpers/slicedToArray", "awesome-json2json"], factory);
 	else {
-		var a = typeof exports === 'object' ? factory(require("awesome-json2json")) : factory(root["awesome-json2json"]);
+		var a = typeof exports === 'object' ? factory(require("@babel/runtime/helpers/interopRequireDefault"), require("@babel/runtime/helpers/typeof"), require("@babel/runtime/helpers/slicedToArray"), require("awesome-json2json")) : factory(root["@babel/runtime/helpers/interopRequireDefault"], root["@babel/runtime/helpers/typeof"], root["@babel/runtime/helpers/slicedToArray"], root["awesome-json2json"]);
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(global, function(__WEBPACK_EXTERNAL_MODULE__97__) {
+})(global, function(__WEBPACK_EXTERNAL_MODULE__0__, __WEBPACK_EXTERNAL_MODULE__21__, __WEBPACK_EXTERNAL_MODULE__53__, __WEBPACK_EXTERNAL_MODULE__87__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -91,7 +91,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 96);
+/******/ 	return __webpack_require__(__webpack_require__.s = 86);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -99,137 +99,25 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ 0:
 /***/ (function(module, exports) {
 
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : {
-    "default": obj
-  };
-}
-
-module.exports = _interopRequireDefault;
+module.exports = __WEBPACK_EXTERNAL_MODULE__0__;
 
 /***/ }),
 
-/***/ 100:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var url = function url(alias, project) {
-  var projectAndAlias = project && project.toLowerCase() != 'website' ? "".concat(project.toLowerCase(), "-").concat(alias) : alias;
-  return {
-    cms: "https://cms-".concat(alias, ".cloud.contensis.com"),
-    liveWeb: "https://live-".concat(projectAndAlias, ".cloud.contensis.com"),
-    previewWeb: "https://preview-".concat(projectAndAlias, ".cloud.contensis.com"),
-    iisWeb: "https://iis-live-".concat(projectAndAlias, ".cloud.contensis.com"),
-    iisPreviewWeb: "https://iis-preview-".concat(projectAndAlias, ".cloud.contensis.com")
-  };
-};
-
-module.exports = url;
-
-/***/ }),
-
-/***/ 24:
+/***/ 21:
 /***/ (function(module, exports) {
 
-function _typeof2(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof2 = function _typeof2(obj) { return typeof obj; }; } else { _typeof2 = function _typeof2(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof2(obj); }
-
-function _typeof(obj) {
-  if (typeof Symbol === "function" && _typeof2(Symbol.iterator) === "symbol") {
-    module.exports = _typeof = function _typeof(obj) {
-      return _typeof2(obj);
-    };
-  } else {
-    module.exports = _typeof = function _typeof(obj) {
-      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : _typeof2(obj);
-    };
-  }
-
-  return _typeof(obj);
-}
-
-module.exports = _typeof;
+module.exports = __WEBPACK_EXTERNAL_MODULE__21__;
 
 /***/ }),
 
-/***/ 59:
-/***/ (function(module, exports, __webpack_require__) {
-
-var arrayWithHoles = __webpack_require__(60);
-
-var iterableToArrayLimit = __webpack_require__(61);
-
-var nonIterableRest = __webpack_require__(62);
-
-function _slicedToArray(arr, i) {
-  return arrayWithHoles(arr) || iterableToArrayLimit(arr, i) || nonIterableRest();
-}
-
-module.exports = _slicedToArray;
-
-/***/ }),
-
-/***/ 60:
+/***/ 53:
 /***/ (function(module, exports) {
 
-function _arrayWithHoles(arr) {
-  if (Array.isArray(arr)) return arr;
-}
-
-module.exports = _arrayWithHoles;
+module.exports = __WEBPACK_EXTERNAL_MODULE__53__;
 
 /***/ }),
 
-/***/ 61:
-/***/ (function(module, exports) {
-
-function _iterableToArrayLimit(arr, i) {
-  if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) {
-    return;
-  }
-
-  var _arr = [];
-  var _n = true;
-  var _d = false;
-  var _e = undefined;
-
-  try {
-    for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
-      _arr.push(_s.value);
-
-      if (i && _arr.length === i) break;
-    }
-  } catch (err) {
-    _d = true;
-    _e = err;
-  } finally {
-    try {
-      if (!_n && _i["return"] != null) _i["return"]();
-    } finally {
-      if (_d) throw _e;
-    }
-  }
-
-  return _arr;
-}
-
-module.exports = _iterableToArrayLimit;
-
-/***/ }),
-
-/***/ 62:
-/***/ (function(module, exports) {
-
-function _nonIterableRest() {
-  throw new TypeError("Invalid attempt to destructure non-iterable instance");
-}
-
-module.exports = _nonIterableRest;
-
-/***/ }),
-
-/***/ 63:
+/***/ 54:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -242,7 +130,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = exports.useMapper = void 0;
 
-var _awesomeJson2json = _interopRequireDefault(__webpack_require__(97));
+var _awesomeJson2json = _interopRequireDefault(__webpack_require__(87));
 
 var useMapper = function useMapper(json, template) {
   return (0, _awesomeJson2json["default"])(json, template);
@@ -254,28 +142,28 @@ exports["default"] = _default;
 
 /***/ }),
 
-/***/ 96:
+/***/ 86:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-exports.mapJson = __webpack_require__(63)["default"];
-exports.setCachingHeaders = __webpack_require__(98);
-exports.stringifyStrings = __webpack_require__(99);
-exports.urls = __webpack_require__(100);
-exports.useMapper = __webpack_require__(63).useMapper;
+exports.mapJson = __webpack_require__(54)["default"];
+exports.setCachingHeaders = __webpack_require__(88);
+exports.stringifyStrings = __webpack_require__(89);
+exports.urls = __webpack_require__(90);
+exports.useMapper = __webpack_require__(54).useMapper;
 
 /***/ }),
 
-/***/ 97:
+/***/ 87:
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__97__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__87__;
 
 /***/ }),
 
-/***/ 98:
+/***/ 88:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -295,7 +183,7 @@ module.exports = setCachingHeaders;
 
 /***/ }),
 
-/***/ 99:
+/***/ 89:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -303,9 +191,9 @@ module.exports = setCachingHeaders;
 
 var _interopRequireDefault = __webpack_require__(0);
 
-var _typeof2 = _interopRequireDefault(__webpack_require__(24));
+var _typeof2 = _interopRequireDefault(__webpack_require__(21));
 
-var _slicedToArray2 = _interopRequireDefault(__webpack_require__(59));
+var _slicedToArray2 = _interopRequireDefault(__webpack_require__(53));
 
 var stringifyStrings = function stringifyStrings(obj) {
   var returnObj = Array.isArray(obj) ? [] : {};
@@ -332,6 +220,27 @@ var stringifyStrings = function stringifyStrings(obj) {
 };
 
 module.exports = stringifyStrings;
+
+/***/ }),
+
+/***/ 90:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var url = function url(alias, project) {
+  var projectAndAlias = project && project.toLowerCase() != 'website' ? "".concat(project.toLowerCase(), "-").concat(alias) : alias;
+  return {
+    cms: "https://cms-".concat(alias, ".cloud.contensis.com"),
+    liveWeb: "https://live-".concat(projectAndAlias, ".cloud.contensis.com"),
+    previewWeb: "https://preview-".concat(projectAndAlias, ".cloud.contensis.com"),
+    iisWeb: "https://iis-live-".concat(projectAndAlias, ".cloud.contensis.com"),
+    iisPreviewWeb: "https://iis-preview-".concat(projectAndAlias, ".cloud.contensis.com")
+  };
+};
+
+module.exports = url;
 
 /***/ })
 
