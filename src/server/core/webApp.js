@@ -193,7 +193,9 @@ const webApp = (app, ReactApp, config) => {
       request.hostname
     );
 
-    store.dispatch(setVersionStatus(versionStatusFromHostname));
+    store.dispatch(
+      setVersionStatus(request.query.versionStatus || versionStatusFromHostname)
+    );
     store.dispatch(setVersion(versionInfo.commitRef, versionInfo.buildNo));
 
     const project = pickProject(request.hostname, request.query);

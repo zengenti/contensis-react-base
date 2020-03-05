@@ -2585,18 +2585,21 @@ var ClientApp = function ClientApp(ReactApp, config) {
   };
 
   var store = null;
+
+  var qs = _queryString["default"].parse(window.location.search);
+
   var versionStatusFromHostname = (0, _ContensisDeliveryApi.GetClientSideDeliveryApiStatus)();
 
   if (window.isDynamic || window.REDUX_DATA || process.env.NODE_ENV !== 'production') {
     store = (0, _store["default"])(withReducers, (0, _immutable.fromJS)(window.REDUX_DATA), _history.browserHistory);
-    store.dispatch((0, _version.setVersionStatus)(versionStatusFromHostname));
+    store.dispatch((0, _version.setVersionStatus)(qs.versionStatus || versionStatusFromHostname));
     /* eslint-disable no-console */
 
     console.log('Hydrating from inline Redux');
     /* eslint-enable no-console */
 
     store.runSaga((0, _index["default"])(withSagas));
-    store.dispatch((0, _routing.setCurrentProject)((0, _pickProject["default"])(window.location.hostname, _queryString["default"].parse(window.location.search))));
+    store.dispatch((0, _routing.setCurrentProject)((0, _pickProject["default"])(window.location.hostname, qs)));
     delete window.REDUX_DATA;
     HMRRenderer(GetClientJSX(store));
   } else {

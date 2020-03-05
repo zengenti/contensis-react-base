@@ -2922,7 +2922,7 @@ var webApp = function webApp(app, ReactApp, config) {
     // dispatch any global and non-saga related actions before calling our JSX
 
     var versionStatusFromHostname = (0, _ContensisDeliveryApi.GetDeliveryApiStatusFromHostname)(request.hostname);
-    store.dispatch((0, _version.setVersionStatus)(versionStatusFromHostname));
+    store.dispatch((0, _version.setVersionStatus)(request.query.versionStatus || versionStatusFromHostname));
     store.dispatch((0, _version.setVersion)(versionInfo.commitRef, versionInfo.buildNo));
     var project = (0, _pickProject["default"])(request.hostname, request.query);
     var groups = allowedGroups && allowedGroups[project];

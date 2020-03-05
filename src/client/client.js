@@ -49,6 +49,8 @@ class ClientApp {
       });
     };
     let store = null;
+    const qs = queryString.parse(window.location.search);
+
     const versionStatusFromHostname = GetClientSideDeliveryApiStatus();
     if (
       window.isDynamic ||
@@ -56,19 +58,16 @@ class ClientApp {
       process.env.NODE_ENV !== 'production'
     ) {
       store = createStore(withReducers, fromJS(window.REDUX_DATA), history);
-      store.dispatch(setVersionStatus(versionStatusFromHostname));
+      store.dispatch(
+        setVersionStatus(qs.versionStatus || versionStatusFromHostname)
+      );
 
       /* eslint-disable no-console */
       console.log('Hydrating from inline Redux');
       /* eslint-enable no-console */
       store.runSaga(rootSaga(withSagas));
       store.dispatch(
-        setCurrentProject(
-          pickProject(
-            window.location.hostname,
-            queryString.parse(window.location.search)
-          )
-        )
+        setCurrentProject(pickProject(window.location.hostname, qs))
       );
 
       delete window.REDUX_DATA;
