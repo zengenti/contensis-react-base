@@ -82,7 +82,7 @@ function* getRouteSaga(action) {
         pathNode = yield deliveryApi
           .getClient(deliveryApiStatus, project)
           .nodes.getRoot({
-            depth: 1,
+            depth: 0,
             entryFields: '*',
             entryLinkDepth: 4,
             language: 'en-GB',
@@ -111,7 +111,7 @@ function* getRouteSaga(action) {
           pathNode = yield deliveryApi
             .getClient(deliveryApiStatus, project)
             .nodes.get({
-              depth: 1,
+              depth: 0,
               path: currentPath,
               entryFields: '*',
               entryLinkDepth: 4,

@@ -1975,7 +1975,7 @@ function getRouteSaga(action) {
 
           _context2.next = 24;
           return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiStatus, project).nodes.getRoot({
-            depth: 1,
+            depth: 0,
             entryFields: '*',
             entryLinkDepth: 4,
             language: 'en-GB'
@@ -2032,7 +2032,7 @@ function getRouteSaga(action) {
         case 43:
           _context2.next = 45;
           return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiStatus, project).nodes.get({
-            depth: 1,
+            depth: 0,
             path: currentPath,
             entryFields: '*',
             entryLinkDepth: 4
