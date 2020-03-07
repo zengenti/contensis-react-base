@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { hot } from 'react-hot-loader';
@@ -51,9 +51,10 @@ const RouteLoader = ({
 
   const trimmedPath = getTrimmedPath(location.pathname);
 
-  const setPath = () => {
-    const staticRoute =
-      isStaticRoute(trimmedPath) && matchedStaticRoute(trimmedPath)[0];
+  const staticRoute =
+    isStaticRoute(trimmedPath) && matchedStaticRoute(trimmedPath)[0];
+
+  const setPath = useCallback(() => {
     let serverPath = null;
     if (staticRoute) {
       serverPath = staticRoute.route.path
@@ -69,13 +70,20 @@ const RouteLoader = ({
       withEvents,
       statePath
     );
-  };
+  }, [
+    setNavigationPath,
+    staticRoute,
+    withEvents,
+    location,
+    statePath,
+    trimmedPath,
+  ]);
 
   if (typeof window == 'undefined') setPath();
 
   useEffect(() => {
     setPath();
-  }, [location]);
+  }, [location, setPath]);
 
   // Render any Static Routes a developer has defined
   if (isStaticRoute(trimmedPath)) {

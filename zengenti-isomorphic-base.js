@@ -1215,9 +1215,8 @@ var RouteLoader = function RouteLoader(_ref) {
   };
 
   var trimmedPath = getTrimmedPath(location.pathname);
-
-  var setPath = function setPath() {
-    var staticRoute = isStaticRoute(trimmedPath) && matchedStaticRoute(trimmedPath)[0];
+  var staticRoute = isStaticRoute(trimmedPath) && matchedStaticRoute(trimmedPath)[0];
+  var setPath = (0, _react.useCallback)(function () {
     var serverPath = null;
 
     if (staticRoute) {
@@ -1227,12 +1226,11 @@ var RouteLoader = function RouteLoader(_ref) {
     }
 
     setNavigationPath(serverPath || trimmedPath, location, staticRoute, withEvents, statePath);
-  };
-
+  }, [setNavigationPath, staticRoute, withEvents, location, statePath, trimmedPath]);
   if (typeof window == 'undefined') setPath();
   (0, _react.useEffect)(function () {
     setPath();
-  }, [location]); // Render any Static Routes a developer has defined
+  }, [location, setPath]); // Render any Static Routes a developer has defined
 
   if (isStaticRoute(trimmedPath)) {
     return (0, _reactRouterConfig.renderRoutes)(routes.StaticRoutes, {
