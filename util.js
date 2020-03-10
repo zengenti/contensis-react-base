@@ -7,7 +7,7 @@
 		var a = typeof exports === 'object' ? factory(require("@babel/runtime/helpers/interopRequireDefault"), require("@babel/runtime/helpers/typeof"), require("@babel/runtime/helpers/slicedToArray"), require("awesome-json2json")) : factory(root["@babel/runtime/helpers/interopRequireDefault"], root["@babel/runtime/helpers/typeof"], root["@babel/runtime/helpers/slicedToArray"], root["awesome-json2json"]);
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(global, function(__WEBPACK_EXTERNAL_MODULE__0__, __WEBPACK_EXTERNAL_MODULE__23__, __WEBPACK_EXTERNAL_MODULE__53__, __WEBPACK_EXTERNAL_MODULE__87__) {
+})(global, function(__WEBPACK_EXTERNAL_MODULE__0__, __WEBPACK_EXTERNAL_MODULE__23__, __WEBPACK_EXTERNAL_MODULE__61__, __WEBPACK_EXTERNAL_MODULE__94__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -91,7 +91,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 86);
+/******/ 	return __webpack_require__(__webpack_require__.s = 93);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -110,14 +110,14 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__23__;
 
 /***/ }),
 
-/***/ 53:
+/***/ 61:
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__53__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__61__;
 
 /***/ }),
 
-/***/ 54:
+/***/ 62:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -130,7 +130,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = exports.useMapper = void 0;
 
-var _awesomeJson2json = _interopRequireDefault(__webpack_require__(87));
+var _awesomeJson2json = _interopRequireDefault(__webpack_require__(94));
 
 var useMapper = function useMapper(json, template) {
   return (0, _awesomeJson2json["default"])(json, template);
@@ -142,28 +142,28 @@ exports["default"] = _default;
 
 /***/ }),
 
-/***/ 86:
+/***/ 93:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-exports.mapJson = __webpack_require__(54)["default"];
-exports.setCachingHeaders = __webpack_require__(88);
-exports.stringifyStrings = __webpack_require__(89);
-exports.urls = __webpack_require__(90);
-exports.useMapper = __webpack_require__(54).useMapper;
+exports.mapJson = __webpack_require__(62)["default"];
+exports.setCachingHeaders = __webpack_require__(95);
+exports.stringifyStrings = __webpack_require__(96);
+exports.urls = __webpack_require__(97);
+exports.useMapper = __webpack_require__(62).useMapper;
 
 /***/ }),
 
-/***/ 87:
+/***/ 94:
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__87__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__94__;
 
 /***/ }),
 
-/***/ 88:
+/***/ 95:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -183,7 +183,7 @@ module.exports = setCachingHeaders;
 
 /***/ }),
 
-/***/ 89:
+/***/ 96:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -193,7 +193,7 @@ var _interopRequireDefault = __webpack_require__(0);
 
 var _typeof2 = _interopRequireDefault(__webpack_require__(23));
 
-var _slicedToArray2 = _interopRequireDefault(__webpack_require__(53));
+var _slicedToArray2 = _interopRequireDefault(__webpack_require__(61));
 
 var stringifyStrings = function stringifyStrings(obj) {
   var returnObj = Array.isArray(obj) ? [] : {};
@@ -223,7 +223,7 @@ module.exports = stringifyStrings;
 
 /***/ }),
 
-/***/ 90:
+/***/ 97:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

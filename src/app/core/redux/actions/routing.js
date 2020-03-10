@@ -14,7 +14,8 @@ export const setNavigationPath = (
   location,
   staticRoute,
   withEvents,
-  statePath
+  statePath,
+  routes
 ) =>
   action(SET_NAVIGATION_PATH, {
     path,
@@ -22,6 +23,7 @@ export const setNavigationPath = (
     staticRoute,
     withEvents,
     statePath,
+    routes,
   });
 export const setCurrentProject = (project, allowedGroups) =>
   action(SET_TARGET_PROJECT, { project, allowedGroups });

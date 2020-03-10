@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("@babel/runtime/helpers/interopRequireDefault"), require("immutable"), require("@babel/runtime/helpers/interopRequireWildcard"), require("@babel/runtime/helpers/defineProperty"), require("@babel/runtime/regenerator"), require("@babel/runtime/helpers/asyncToGenerator"), require("@babel/runtime/helpers/slicedToArray"));
+		module.exports = factory(require("@babel/runtime/helpers/interopRequireDefault"), require("immutable"), require("@babel/runtime/regenerator"), require("@babel/runtime/helpers/interopRequireWildcard"), require("@babel/runtime/helpers/defineProperty"), require("@babel/runtime/helpers/asyncToGenerator"), require("@babel/runtime/helpers/slicedToArray"));
 	else if(typeof define === 'function' && define.amd)
-		define(["@babel/runtime/helpers/interopRequireDefault", "immutable", "@babel/runtime/helpers/interopRequireWildcard", "@babel/runtime/helpers/defineProperty", "@babel/runtime/regenerator", "@babel/runtime/helpers/asyncToGenerator", "@babel/runtime/helpers/slicedToArray"], factory);
+		define(["@babel/runtime/helpers/interopRequireDefault", "immutable", "@babel/runtime/regenerator", "@babel/runtime/helpers/interopRequireWildcard", "@babel/runtime/helpers/defineProperty", "@babel/runtime/helpers/asyncToGenerator", "@babel/runtime/helpers/slicedToArray"], factory);
 	else {
-		var a = typeof exports === 'object' ? factory(require("@babel/runtime/helpers/interopRequireDefault"), require("immutable"), require("@babel/runtime/helpers/interopRequireWildcard"), require("@babel/runtime/helpers/defineProperty"), require("@babel/runtime/regenerator"), require("@babel/runtime/helpers/asyncToGenerator"), require("@babel/runtime/helpers/slicedToArray")) : factory(root["@babel/runtime/helpers/interopRequireDefault"], root["immutable"], root["@babel/runtime/helpers/interopRequireWildcard"], root["@babel/runtime/helpers/defineProperty"], root["@babel/runtime/regenerator"], root["@babel/runtime/helpers/asyncToGenerator"], root["@babel/runtime/helpers/slicedToArray"]);
+		var a = typeof exports === 'object' ? factory(require("@babel/runtime/helpers/interopRequireDefault"), require("immutable"), require("@babel/runtime/regenerator"), require("@babel/runtime/helpers/interopRequireWildcard"), require("@babel/runtime/helpers/defineProperty"), require("@babel/runtime/helpers/asyncToGenerator"), require("@babel/runtime/helpers/slicedToArray")) : factory(root["@babel/runtime/helpers/interopRequireDefault"], root["immutable"], root["@babel/runtime/regenerator"], root["@babel/runtime/helpers/interopRequireWildcard"], root["@babel/runtime/helpers/defineProperty"], root["@babel/runtime/helpers/asyncToGenerator"], root["@babel/runtime/helpers/slicedToArray"]);
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(global, function(__WEBPACK_EXTERNAL_MODULE__0__, __WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__4__, __WEBPACK_EXTERNAL_MODULE__5__, __WEBPACK_EXTERNAL_MODULE__6__, __WEBPACK_EXTERNAL_MODULE__18__, __WEBPACK_EXTERNAL_MODULE__53__) {
+})(global, function(__WEBPACK_EXTERNAL_MODULE__0__, __WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__3__, __WEBPACK_EXTERNAL_MODULE__5__, __WEBPACK_EXTERNAL_MODULE__7__, __WEBPACK_EXTERNAL_MODULE__14__, __WEBPACK_EXTERNAL_MODULE__61__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -91,7 +91,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 80);
+/******/ 	return __webpack_require__(__webpack_require__.s = 87);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -109,385 +109,6 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__0__;
 "use strict";
 
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.setRouteEntry = exports.setRoute = exports.setCurrentProject = exports.setNavigationPath = exports.setNotFound = void 0;
-
-var _helpers = __webpack_require__(8);
-
-var _routing = __webpack_require__(3);
-
-var setNotFound = function setNotFound(notFound) {
-  return (0, _helpers.action)(_routing.SET_NAVIGATION_NOT_FOUND, {
-    notFound: notFound
-  });
-};
-
-exports.setNotFound = setNotFound;
-
-var setNavigationPath = function setNavigationPath(path, location, staticRoute, withEvents, statePath) {
-  return (0, _helpers.action)(_routing.SET_NAVIGATION_PATH, {
-    path: path,
-    location: location,
-    staticRoute: staticRoute,
-    withEvents: withEvents,
-    statePath: statePath
-  });
-};
-
-exports.setNavigationPath = setNavigationPath;
-
-var setCurrentProject = function setCurrentProject(project, allowedGroups) {
-  return (0, _helpers.action)(_routing.SET_TARGET_PROJECT, {
-    project: project,
-    allowedGroups: allowedGroups
-  });
-};
-
-exports.setCurrentProject = setCurrentProject;
-
-var setRoute = function setRoute(path, state) {
-  return (0, _helpers.action)(_routing.SET_ROUTE, {
-    path: path,
-    state: state
-  });
-};
-
-exports.setRoute = setRoute;
-
-var setRouteEntry = function setRouteEntry(entry) {
-  return (0, _helpers.action)(_routing.SET_ENTRY, {
-    entry: entry
-  });
-};
-
-exports.setRouteEntry = setRouteEntry;
-
-/***/ }),
-
-/***/ 11:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.GET_NODE_TREE_ERROR = exports.SET_NODE_TREE = exports.GET_NODE_TREE = void 0;
-var ACTION_PREFIX = '@NAVIGATION/';
-var GET_NODE_TREE = "".concat(ACTION_PREFIX, "_GET_NODE_TREE");
-exports.GET_NODE_TREE = GET_NODE_TREE;
-var SET_NODE_TREE = "".concat(ACTION_PREFIX, "_SET_NODE_TREE");
-exports.SET_NODE_TREE = SET_NODE_TREE;
-var GET_NODE_TREE_ERROR = "".concat(ACTION_PREFIX, "_GET_NODE_TREE_ERROR");
-exports.GET_NODE_TREE_ERROR = GET_NODE_TREE_ERROR;
-
-/***/ }),
-
-/***/ 15:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.SET_VERSION_STATUS = exports.SET_VERSION = void 0;
-var VERSION_PREFIX = '@VERSION/';
-var SET_VERSION = "".concat(VERSION_PREFIX, "SET_VERSION");
-exports.SET_VERSION = SET_VERSION;
-var SET_VERSION_STATUS = "".concat(VERSION_PREFIX, "SET_VERSION_STATUS");
-exports.SET_VERSION_STATUS = SET_VERSION_STATUS;
-
-/***/ }),
-
-/***/ 18:
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__18__;
-
-/***/ }),
-
-/***/ 2:
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__2__;
-
-/***/ }),
-
-/***/ 20:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.selectVersionStatus = exports.selectBuildNumber = exports.selectCommitRef = void 0;
-
-var selectCommitRef = function selectCommitRef(state) {
-  return state.getIn(['version', 'commitRef']);
-};
-
-exports.selectCommitRef = selectCommitRef;
-
-var selectBuildNumber = function selectBuildNumber(state) {
-  return state.getIn(['version', 'buildNo']);
-};
-
-exports.selectBuildNumber = selectBuildNumber;
-
-var selectVersionStatus = function selectVersionStatus(state) {
-  return state.getIn(['version', 'contensisVersionStatus']);
-};
-
-exports.selectVersionStatus = selectVersionStatus;
-
-/***/ }),
-
-/***/ 21:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.selectNavigationDepends = exports.selectNavigationRoot = exports.hasNavigationTree = void 0;
-
-var hasNavigationTree = function hasNavigationTree(state) {
-  return state.getIn(['navigation', 'isReady']);
-};
-
-exports.hasNavigationTree = hasNavigationTree;
-
-var selectNavigationRoot = function selectNavigationRoot(state) {
-  return state.getIn(['navigation', 'root']);
-};
-
-exports.selectNavigationRoot = selectNavigationRoot;
-
-var selectNavigationDepends = function selectNavigationDepends(state) {
-  return state.getIn(['navigation', 'treeDepends']);
-};
-
-exports.selectNavigationDepends = selectNavigationDepends;
-
-/***/ }),
-
-/***/ 24:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.setVersionStatus = exports.setVersion = void 0;
-
-var _helpers = __webpack_require__(8);
-
-var _version = __webpack_require__(15);
-
-var setVersion = function setVersion(commitRef, buildNo) {
-  return (0, _helpers.action)(_version.SET_VERSION, {
-    commitRef: commitRef,
-    buildNo: buildNo
-  });
-};
-
-exports.setVersion = setVersion;
-
-var setVersionStatus = function setVersionStatus(status) {
-  return (0, _helpers.action)(_version.SET_VERSION_STATUS, {
-    status: status
-  });
-};
-
-exports.setVersionStatus = setVersionStatus;
-
-/***/ }),
-
-/***/ 3:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.CALL_HISTORY_METHOD = exports.SET_ROUTE = exports.SET_TARGET_PROJECT = exports.SET_ROUTE_LOADING = exports.SET_NAVIGATION_PATH = exports.SET_NAVIGATION_NOT_FOUND = exports.SET_ENTRY_RELATED_ARTICLES = exports.SET_ENTRY_ID = exports.SET_SIBLINGS = exports.SET_ANCESTORS = exports.SET_NODE = exports.SET_ENTRY = exports.GET_ENTRY = void 0;
-var ROUTING_PREFIX = '@ROUTING/';
-var GET_ENTRY = "".concat(ROUTING_PREFIX, "_GET_ENTRY");
-exports.GET_ENTRY = GET_ENTRY;
-var SET_ENTRY = "".concat(ROUTING_PREFIX, "_SET_ENTRY");
-exports.SET_ENTRY = SET_ENTRY;
-var SET_NODE = "".concat(ROUTING_PREFIX, "_SET_NODE");
-exports.SET_NODE = SET_NODE;
-var SET_ANCESTORS = "".concat(ROUTING_PREFIX, "_SET_ANCESTORS");
-exports.SET_ANCESTORS = SET_ANCESTORS;
-var SET_SIBLINGS = "".concat(ROUTING_PREFIX, "_SET_SIBLINGS");
-exports.SET_SIBLINGS = SET_SIBLINGS;
-var SET_ENTRY_ID = "".concat(ROUTING_PREFIX, "_SET_ENTRY_ID");
-exports.SET_ENTRY_ID = SET_ENTRY_ID;
-var SET_ENTRY_RELATED_ARTICLES = "".concat(ROUTING_PREFIX, "_SET_ENTRY_RELATED_ARTICLES");
-exports.SET_ENTRY_RELATED_ARTICLES = SET_ENTRY_RELATED_ARTICLES;
-var SET_NAVIGATION_NOT_FOUND = "".concat(ROUTING_PREFIX, "_SET_NOT_FOUND");
-exports.SET_NAVIGATION_NOT_FOUND = SET_NAVIGATION_NOT_FOUND;
-var SET_NAVIGATION_PATH = "".concat(ROUTING_PREFIX, "_SET_NAVIGATION_PATH");
-exports.SET_NAVIGATION_PATH = SET_NAVIGATION_PATH;
-var SET_ROUTE_LOADING = "".concat(ROUTING_PREFIX, "_SET_ROUTE_LOADING");
-exports.SET_ROUTE_LOADING = SET_ROUTE_LOADING;
-var SET_TARGET_PROJECT = "".concat(ROUTING_PREFIX, "_SET_TARGET_PROJECT");
-exports.SET_TARGET_PROJECT = SET_TARGET_PROJECT;
-var SET_ROUTE = "".concat(ROUTING_PREFIX, "_SET_ROUTE");
-exports.SET_ROUTE = SET_ROUTE;
-var CALL_HISTORY_METHOD = "".concat(ROUTING_PREFIX, "_CALL_HISTORY_METHOD");
-exports.CALL_HISTORY_METHOD = CALL_HISTORY_METHOD;
-
-/***/ }),
-
-/***/ 4:
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__4__;
-
-/***/ }),
-
-/***/ 5:
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__5__;
-
-/***/ }),
-
-/***/ 53:
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__53__;
-
-/***/ }),
-
-/***/ 6:
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__6__;
-
-/***/ }),
-
-/***/ 7:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.selectRouteLoading = exports.selectCurrentAncestors = exports.selectIsNotFound = exports.selectCurrentProject = exports.selectCurrentSearch = exports.selectCurrentPath = exports.selectRouteEntryID = exports.selectRouteEntrySlug = exports.selectRouteEntryContentTypeId = exports.selectRouteEntryEntryId = exports.selectEntryDepends = exports.selectCurrentTreeID = exports.selectNodeDepends = exports.selectRouteEntry = void 0;
-
-var _immutable = __webpack_require__(2);
-
-var selectRouteEntry = function selectRouteEntry(state) {
-  return state.getIn(['routing', 'entry'], (0, _immutable.Map)({}));
-};
-
-exports.selectRouteEntry = selectRouteEntry;
-
-var selectNodeDepends = function selectNodeDepends(state) {
-  return state.getIn(['routing', 'nodeDepends'], new _immutable.List([]));
-};
-
-exports.selectNodeDepends = selectNodeDepends;
-
-var selectCurrentTreeID = function selectCurrentTreeID(state) {
-  return state.getIn(['routing', 'currentTreeId']);
-};
-
-exports.selectCurrentTreeID = selectCurrentTreeID;
-
-var selectEntryDepends = function selectEntryDepends(state) {
-  return state.getIn(['routing', 'entryDepends']);
-};
-
-exports.selectEntryDepends = selectEntryDepends;
-
-var selectRouteEntryEntryId = function selectRouteEntryEntryId(state) {
-  return state.getIn(['routing', 'entry', 'sys', 'id'], null);
-};
-
-exports.selectRouteEntryEntryId = selectRouteEntryEntryId;
-
-var selectRouteEntryContentTypeId = function selectRouteEntryContentTypeId(state) {
-  var entry = selectRouteEntry(state);
-  return entry && entry.getIn(['sys', 'contentTypeId'], null);
-};
-
-exports.selectRouteEntryContentTypeId = selectRouteEntryContentTypeId;
-
-var selectRouteEntrySlug = function selectRouteEntrySlug(state) {
-  return state.getIn(['routing', 'entry', 'sys', 'slug'], null);
-};
-
-exports.selectRouteEntrySlug = selectRouteEntrySlug;
-
-var selectRouteEntryID = function selectRouteEntryID(state) {
-  return state.getIn(['routing', 'entryID']);
-};
-
-exports.selectRouteEntryID = selectRouteEntryID;
-
-var selectCurrentPath = function selectCurrentPath(state) {
-  return state.getIn(['routing', 'currentPath']);
-};
-
-exports.selectCurrentPath = selectCurrentPath;
-
-var selectCurrentSearch = function selectCurrentSearch(state) {
-  return state.getIn(['routing', 'location', 'search']);
-};
-
-exports.selectCurrentSearch = selectCurrentSearch;
-
-var selectCurrentProject = function selectCurrentProject(state) {
-  return state.getIn(['routing', 'currentProject']);
-};
-
-exports.selectCurrentProject = selectCurrentProject;
-
-var selectIsNotFound = function selectIsNotFound(state) {
-  return state.getIn(['routing', 'notFound']);
-};
-
-exports.selectIsNotFound = selectIsNotFound;
-
-var selectCurrentAncestors = function selectCurrentAncestors(state) {
-  return state.getIn(['routing', 'currentNodeAncestors']);
-};
-
-exports.selectCurrentAncestors = selectCurrentAncestors;
-
-var selectRouteLoading = function selectRouteLoading(state) {
-  return state.getIn(['routing', 'routeLoading']);
-};
-
-exports.selectRouteLoading = selectRouteLoading;
-
-/***/ }),
-
-/***/ 8:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
 var _interopRequireDefault = __webpack_require__(0);
 
 Object.defineProperty(exports, "__esModule", {
@@ -499,11 +120,11 @@ exports.api = api;
 exports.dynamicSort = dynamicSort;
 exports.randomString = exports.resizeImageUri = exports.resizeImage = exports.getWebPImageUri = void 0;
 
-var _regenerator = _interopRequireDefault(__webpack_require__(6));
+var _regenerator = _interopRequireDefault(__webpack_require__(3));
 
-var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(18));
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(14));
 
-var _defineProperty2 = _interopRequireDefault(__webpack_require__(5));
+var _defineProperty2 = _interopRequireDefault(__webpack_require__(7));
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
@@ -682,7 +303,387 @@ exports.randomString = randomString;
 
 /***/ }),
 
-/***/ 80:
+/***/ 12:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.setRouteEntry = exports.setRoute = exports.setCurrentProject = exports.setNavigationPath = exports.setNotFound = void 0;
+
+var _helpers = __webpack_require__(10);
+
+var _routing = __webpack_require__(4);
+
+var setNotFound = function setNotFound(notFound) {
+  return (0, _helpers.action)(_routing.SET_NAVIGATION_NOT_FOUND, {
+    notFound: notFound
+  });
+};
+
+exports.setNotFound = setNotFound;
+
+var setNavigationPath = function setNavigationPath(path, location, staticRoute, withEvents, statePath, routes) {
+  return (0, _helpers.action)(_routing.SET_NAVIGATION_PATH, {
+    path: path,
+    location: location,
+    staticRoute: staticRoute,
+    withEvents: withEvents,
+    statePath: statePath,
+    routes: routes
+  });
+};
+
+exports.setNavigationPath = setNavigationPath;
+
+var setCurrentProject = function setCurrentProject(project, allowedGroups) {
+  return (0, _helpers.action)(_routing.SET_TARGET_PROJECT, {
+    project: project,
+    allowedGroups: allowedGroups
+  });
+};
+
+exports.setCurrentProject = setCurrentProject;
+
+var setRoute = function setRoute(path, state) {
+  return (0, _helpers.action)(_routing.SET_ROUTE, {
+    path: path,
+    state: state
+  });
+};
+
+exports.setRoute = setRoute;
+
+var setRouteEntry = function setRouteEntry(entry) {
+  return (0, _helpers.action)(_routing.SET_ENTRY, {
+    entry: entry
+  });
+};
+
+exports.setRouteEntry = setRouteEntry;
+
+/***/ }),
+
+/***/ 13:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.GET_NODE_TREE_ERROR = exports.SET_NODE_TREE = exports.GET_NODE_TREE = void 0;
+var ACTION_PREFIX = '@NAVIGATION/';
+var GET_NODE_TREE = "".concat(ACTION_PREFIX, "_GET_NODE_TREE");
+exports.GET_NODE_TREE = GET_NODE_TREE;
+var SET_NODE_TREE = "".concat(ACTION_PREFIX, "_SET_NODE_TREE");
+exports.SET_NODE_TREE = SET_NODE_TREE;
+var GET_NODE_TREE_ERROR = "".concat(ACTION_PREFIX, "_GET_NODE_TREE_ERROR");
+exports.GET_NODE_TREE_ERROR = GET_NODE_TREE_ERROR;
+
+/***/ }),
+
+/***/ 14:
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__14__;
+
+/***/ }),
+
+/***/ 16:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.SET_VERSION_STATUS = exports.SET_VERSION = void 0;
+var VERSION_PREFIX = '@VERSION/';
+var SET_VERSION = "".concat(VERSION_PREFIX, "SET_VERSION");
+exports.SET_VERSION = SET_VERSION;
+var SET_VERSION_STATUS = "".concat(VERSION_PREFIX, "SET_VERSION_STATUS");
+exports.SET_VERSION_STATUS = SET_VERSION_STATUS;
+
+/***/ }),
+
+/***/ 2:
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__2__;
+
+/***/ }),
+
+/***/ 20:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.selectVersionStatus = exports.selectBuildNumber = exports.selectCommitRef = void 0;
+
+var selectCommitRef = function selectCommitRef(state) {
+  return state.getIn(['version', 'commitRef']);
+};
+
+exports.selectCommitRef = selectCommitRef;
+
+var selectBuildNumber = function selectBuildNumber(state) {
+  return state.getIn(['version', 'buildNo']);
+};
+
+exports.selectBuildNumber = selectBuildNumber;
+
+var selectVersionStatus = function selectVersionStatus(state) {
+  return state.getIn(['version', 'contensisVersionStatus']);
+};
+
+exports.selectVersionStatus = selectVersionStatus;
+
+/***/ }),
+
+/***/ 21:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.selectNavigationDepends = exports.selectNavigationRoot = exports.hasNavigationTree = void 0;
+
+var hasNavigationTree = function hasNavigationTree(state) {
+  return state.getIn(['navigation', 'isReady']);
+};
+
+exports.hasNavigationTree = hasNavigationTree;
+
+var selectNavigationRoot = function selectNavigationRoot(state) {
+  return state.getIn(['navigation', 'root']);
+};
+
+exports.selectNavigationRoot = selectNavigationRoot;
+
+var selectNavigationDepends = function selectNavigationDepends(state) {
+  return state.getIn(['navigation', 'treeDepends']);
+};
+
+exports.selectNavigationDepends = selectNavigationDepends;
+
+/***/ }),
+
+/***/ 25:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.setVersionStatus = exports.setVersion = void 0;
+
+var _helpers = __webpack_require__(10);
+
+var _version = __webpack_require__(16);
+
+var setVersion = function setVersion(commitRef, buildNo) {
+  return (0, _helpers.action)(_version.SET_VERSION, {
+    commitRef: commitRef,
+    buildNo: buildNo
+  });
+};
+
+exports.setVersion = setVersion;
+
+var setVersionStatus = function setVersionStatus(status) {
+  return (0, _helpers.action)(_version.SET_VERSION_STATUS, {
+    status: status
+  });
+};
+
+exports.setVersionStatus = setVersionStatus;
+
+/***/ }),
+
+/***/ 3:
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__3__;
+
+/***/ }),
+
+/***/ 4:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.CALL_HISTORY_METHOD = exports.SET_ROUTE = exports.SET_TARGET_PROJECT = exports.SET_ROUTE_LOADING = exports.SET_NAVIGATION_PATH = exports.SET_NAVIGATION_NOT_FOUND = exports.SET_ENTRY_RELATED_ARTICLES = exports.SET_ENTRY_ID = exports.SET_SIBLINGS = exports.SET_ANCESTORS = exports.SET_NODE = exports.SET_ENTRY = exports.GET_ENTRY = void 0;
+var ROUTING_PREFIX = '@ROUTING/';
+var GET_ENTRY = "".concat(ROUTING_PREFIX, "_GET_ENTRY");
+exports.GET_ENTRY = GET_ENTRY;
+var SET_ENTRY = "".concat(ROUTING_PREFIX, "_SET_ENTRY");
+exports.SET_ENTRY = SET_ENTRY;
+var SET_NODE = "".concat(ROUTING_PREFIX, "_SET_NODE");
+exports.SET_NODE = SET_NODE;
+var SET_ANCESTORS = "".concat(ROUTING_PREFIX, "_SET_ANCESTORS");
+exports.SET_ANCESTORS = SET_ANCESTORS;
+var SET_SIBLINGS = "".concat(ROUTING_PREFIX, "_SET_SIBLINGS");
+exports.SET_SIBLINGS = SET_SIBLINGS;
+var SET_ENTRY_ID = "".concat(ROUTING_PREFIX, "_SET_ENTRY_ID");
+exports.SET_ENTRY_ID = SET_ENTRY_ID;
+var SET_ENTRY_RELATED_ARTICLES = "".concat(ROUTING_PREFIX, "_SET_ENTRY_RELATED_ARTICLES");
+exports.SET_ENTRY_RELATED_ARTICLES = SET_ENTRY_RELATED_ARTICLES;
+var SET_NAVIGATION_NOT_FOUND = "".concat(ROUTING_PREFIX, "_SET_NOT_FOUND");
+exports.SET_NAVIGATION_NOT_FOUND = SET_NAVIGATION_NOT_FOUND;
+var SET_NAVIGATION_PATH = "".concat(ROUTING_PREFIX, "_SET_NAVIGATION_PATH");
+exports.SET_NAVIGATION_PATH = SET_NAVIGATION_PATH;
+var SET_ROUTE_LOADING = "".concat(ROUTING_PREFIX, "_SET_ROUTE_LOADING");
+exports.SET_ROUTE_LOADING = SET_ROUTE_LOADING;
+var SET_TARGET_PROJECT = "".concat(ROUTING_PREFIX, "_SET_TARGET_PROJECT");
+exports.SET_TARGET_PROJECT = SET_TARGET_PROJECT;
+var SET_ROUTE = "".concat(ROUTING_PREFIX, "_SET_ROUTE");
+exports.SET_ROUTE = SET_ROUTE;
+var CALL_HISTORY_METHOD = "".concat(ROUTING_PREFIX, "_CALL_HISTORY_METHOD");
+exports.CALL_HISTORY_METHOD = CALL_HISTORY_METHOD;
+
+/***/ }),
+
+/***/ 5:
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__5__;
+
+/***/ }),
+
+/***/ 61:
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__61__;
+
+/***/ }),
+
+/***/ 7:
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__7__;
+
+/***/ }),
+
+/***/ 8:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.selectRouteLoading = exports.selectCurrentAncestors = exports.selectIsNotFound = exports.selectCurrentProject = exports.selectCurrentSearch = exports.selectCurrentPath = exports.selectRouteEntryID = exports.selectRouteEntrySlug = exports.selectRouteEntryContentTypeId = exports.selectRouteEntryEntryId = exports.selectEntryDepends = exports.selectCurrentTreeID = exports.selectNodeDepends = exports.selectRouteEntry = void 0;
+
+var _immutable = __webpack_require__(2);
+
+var selectRouteEntry = function selectRouteEntry(state) {
+  return state.getIn(['routing', 'entry'], (0, _immutable.Map)({}));
+};
+
+exports.selectRouteEntry = selectRouteEntry;
+
+var selectNodeDepends = function selectNodeDepends(state) {
+  return state.getIn(['routing', 'nodeDepends'], new _immutable.List([]));
+};
+
+exports.selectNodeDepends = selectNodeDepends;
+
+var selectCurrentTreeID = function selectCurrentTreeID(state) {
+  return state.getIn(['routing', 'currentTreeId']);
+};
+
+exports.selectCurrentTreeID = selectCurrentTreeID;
+
+var selectEntryDepends = function selectEntryDepends(state) {
+  return state.getIn(['routing', 'entryDepends']);
+};
+
+exports.selectEntryDepends = selectEntryDepends;
+
+var selectRouteEntryEntryId = function selectRouteEntryEntryId(state) {
+  return state.getIn(['routing', 'entry', 'sys', 'id'], null);
+};
+
+exports.selectRouteEntryEntryId = selectRouteEntryEntryId;
+
+var selectRouteEntryContentTypeId = function selectRouteEntryContentTypeId(state) {
+  var entry = selectRouteEntry(state);
+  return entry && entry.getIn(['sys', 'contentTypeId'], null);
+};
+
+exports.selectRouteEntryContentTypeId = selectRouteEntryContentTypeId;
+
+var selectRouteEntrySlug = function selectRouteEntrySlug(state) {
+  return state.getIn(['routing', 'entry', 'sys', 'slug'], null);
+};
+
+exports.selectRouteEntrySlug = selectRouteEntrySlug;
+
+var selectRouteEntryID = function selectRouteEntryID(state) {
+  return state.getIn(['routing', 'entryID']);
+};
+
+exports.selectRouteEntryID = selectRouteEntryID;
+
+var selectCurrentPath = function selectCurrentPath(state) {
+  return state.getIn(['routing', 'currentPath']);
+};
+
+exports.selectCurrentPath = selectCurrentPath;
+
+var selectCurrentSearch = function selectCurrentSearch(state) {
+  return state.getIn(['routing', 'location', 'search']);
+};
+
+exports.selectCurrentSearch = selectCurrentSearch;
+
+var selectCurrentProject = function selectCurrentProject(state) {
+  return state.getIn(['routing', 'currentProject']);
+};
+
+exports.selectCurrentProject = selectCurrentProject;
+
+var selectIsNotFound = function selectIsNotFound(state) {
+  return state.getIn(['routing', 'notFound']);
+};
+
+exports.selectIsNotFound = selectIsNotFound;
+
+var selectCurrentAncestors = function selectCurrentAncestors(state) {
+  return state.getIn(['routing', 'currentNodeAncestors']);
+};
+
+exports.selectCurrentAncestors = selectCurrentAncestors;
+
+var selectRouteLoading = function selectRouteLoading(state) {
+  return state.getIn(['routing', 'routeLoading']);
+};
+
+exports.selectRouteLoading = selectRouteLoading;
+
+/***/ }),
+
+/***/ 87:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -690,13 +691,13 @@ exports.randomString = randomString;
 
 var _interopRequireDefault = __webpack_require__(0);
 
-var _slicedToArray2 = _interopRequireDefault(__webpack_require__(53));
+var _slicedToArray2 = _interopRequireDefault(__webpack_require__(61));
 
-var types = __webpack_require__(81)["default"];
+var types = __webpack_require__(88)["default"];
 
-var actions = __webpack_require__(82)["default"];
+var actions = __webpack_require__(89)["default"];
 
-var selectors = __webpack_require__(84)["default"]; // Remap the objects so they are presented in "feature" hierarchy
+var selectors = __webpack_require__(91)["default"]; // Remap the objects so they are presented in "feature" hierarchy
 // e.g. { routing: { types, actions }, navigation: { types, actions } }
 // instead of { types: { routing, navigation }, actions: { routing, navigation } }
 
@@ -715,24 +716,24 @@ Object.entries(types).map(function (_ref) {
 
 /***/ }),
 
-/***/ 81:
+/***/ 88:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _interopRequireWildcard = __webpack_require__(4);
+var _interopRequireWildcard = __webpack_require__(5);
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
 
-var navigation = _interopRequireWildcard(__webpack_require__(11));
+var navigation = _interopRequireWildcard(__webpack_require__(13));
 
-var routing = _interopRequireWildcard(__webpack_require__(3));
+var routing = _interopRequireWildcard(__webpack_require__(4));
 
-var version = _interopRequireWildcard(__webpack_require__(15));
+var version = _interopRequireWildcard(__webpack_require__(16));
 
 var _default = {
   navigation: navigation,
@@ -743,24 +744,24 @@ exports["default"] = _default;
 
 /***/ }),
 
-/***/ 82:
+/***/ 89:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _interopRequireWildcard = __webpack_require__(4);
+var _interopRequireWildcard = __webpack_require__(5);
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
 
-var navigation = _interopRequireWildcard(__webpack_require__(83));
+var navigation = _interopRequireWildcard(__webpack_require__(90));
 
-var routing = _interopRequireWildcard(__webpack_require__(10));
+var routing = _interopRequireWildcard(__webpack_require__(12));
 
-var version = _interopRequireWildcard(__webpack_require__(24));
+var version = _interopRequireWildcard(__webpack_require__(25));
 
 var _default = {
   navigation: navigation,
@@ -771,7 +772,7 @@ exports["default"] = _default;
 
 /***/ }),
 
-/***/ 83:
+/***/ 90:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -782,9 +783,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.loadNavigationTree = void 0;
 
-var _helpers = __webpack_require__(8);
+var _helpers = __webpack_require__(10);
 
-var _navigation = __webpack_require__(11);
+var _navigation = __webpack_require__(13);
 
 var loadNavigationTree = function loadNavigationTree() {
   return (0, _helpers.action)(_navigation.GET_NODE_TREE);
@@ -794,13 +795,13 @@ exports.loadNavigationTree = loadNavigationTree;
 
 /***/ }),
 
-/***/ 84:
+/***/ 91:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _interopRequireWildcard = __webpack_require__(4);
+var _interopRequireWildcard = __webpack_require__(5);
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -809,7 +810,7 @@ exports["default"] = void 0;
 
 var navigation = _interopRequireWildcard(__webpack_require__(21));
 
-var routing = _interopRequireWildcard(__webpack_require__(7));
+var routing = _interopRequireWildcard(__webpack_require__(8));
 
 var version = _interopRequireWildcard(__webpack_require__(20));
 

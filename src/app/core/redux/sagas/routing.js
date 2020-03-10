@@ -21,6 +21,7 @@ import {
 } from '~/core/redux/selectors/routing';
 import { GET_NODE_TREE } from '../types/navigation';
 import { hasNavigationTree } from '../selectors/navigation';
+import { routeEntryByFields } from './queries';
 
 export const routingSagas = [
   takeEvery(SET_NAVIGATION_PATH, getRouteSaga),
@@ -44,19 +45,22 @@ function* setRouteSaga(action) {
 function* getRouteSaga(action) {
   let entry = null;
   try {
-    const { withEvents } = action;
+    const { withEvents, routes } = action;
+    let appsays;
     if (withEvents && withEvents.onRouteLoad) {
-      yield withEvents.onRouteLoad(action);
+      appsays = yield withEvents.onRouteLoad(action);
     }
     const state = yield select();
     const routeEntry = selectRouteEntry(state);
     if (
+      (appsays && appsays.customRouting) ||
       (action.staticRoute && !action.staticRoute.route.fetchNode) ||
       (routeEntry && action.statePath === action.path)
     ) {
-      // Do we need to fetch node/validate routes for a static route?
-      // For a genuinely static route we recieve a 404 in browser console,
-      // and a wasted network call.
+      // To prevent erroneous 404s and wasted network calls, this covers
+      // - customRouting and SET_ENTRY via the consuming app
+      // - all staticRoutes (where custom 'route.fetchNode' attribute is falsey)
+      // - standard Contensis SiteView Routing where we already have the entry
       if (routeEntry) entry = routeEntry.toJS();
     } else {
       const currentPath = selectCurrentPath(state);
@@ -113,9 +117,34 @@ function* getRouteSaga(action) {
             .nodes.get({
               depth: 0,
               path: currentPath,
-              entryFields: '*',
-              entryLinkDepth: 4,
+              entryFields: ['sys.contentTypeId', 'sys.id'],
+              entryLinkDepth: 0,
             });
+          if (
+            pathNode &&
+            pathNode.entry &&
+            pathNode.entry.sys &&
+            pathNode.entry.sys.id
+          ) {
+            const contentType =
+              routes &&
+              routes.ContentTypeMappings &&
+              routes.ContentTypeMappings.find(
+                ct => ct.contentTypeID === pathNode.entry.sys.contentTypeId
+              );
+            const query = routeEntryByFields(
+              pathNode.entry.sys.id,
+              contentType && contentType.fields,
+              deliveryApiStatus
+            );
+            const payload = yield deliveryApi.search(
+              query,
+              (contentType && contentType.linkDepth) || 3
+            );
+            if (payload && payload.items && payload.items.length > 0) {
+              pathNode.entry = payload.items[0];
+            }
+          }
         }
 
         if (pathNode && pathNode.id) {
@@ -147,10 +176,10 @@ function* getRouteSaga(action) {
       }
     }
     if (withEvents && withEvents.onRouteLoaded) {
-      yield withEvents.onRouteLoaded({ ...action, entry });
+      appsays = yield withEvents.onRouteLoaded({ ...action, entry });
     }
 
-    if (!hasNavigationTree(state))
+    if (!hasNavigationTree(state) && (appsays && !appsays.customNavigation))
       // Load navigation clientside only, a put() should help that work
       yield put({ type: GET_NODE_TREE });
   } catch (e) {

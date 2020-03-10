@@ -36,8 +36,6 @@ const RouteLoader = ({
   isNotFound,
   setNavigationPath,
   routes,
-  //location,
-  //history,
   withEvents,
 }) => {
   const location = useLocation();
@@ -68,14 +66,17 @@ const RouteLoader = ({
       location,
       staticRoute,
       withEvents,
-      statePath
+      statePath,
+      routes
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     setNavigationPath,
     staticRoute,
     withEvents,
     location,
-    statePath,
+    routes,
+    // statePath,
     trimmedPath,
   ]);
 
@@ -129,8 +130,6 @@ const RouteLoader = ({
 RouteLoader.propTypes = {
   routes: PropTypes.objectOf(PropTypes.array, PropTypes.array),
   withEvents: PropTypes.object,
-  // location: PropTypes.object.isRequired,
-  // history: PropTypes.object.isRequired,
   statePath: PropTypes.string,
   projectId: PropTypes.string,
   contentTypeId: PropTypes.string,
@@ -150,8 +149,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = {
-  setNavigationPath: (path, location, staticRoute, withEvents, statePath) =>
-    setNavigationPath(path, location, staticRoute, withEvents, statePath),
+  setNavigationPath,
 };
 
 export default hot(module)(

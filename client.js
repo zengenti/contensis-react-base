@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("@babel/runtime/helpers/interopRequireDefault"), require("react"), require("immutable"), require("@babel/runtime/helpers/interopRequireWildcard"), require("@babel/runtime/helpers/defineProperty"), require("@babel/runtime/regenerator"), require("react-router-dom"), require("react-hot-loader"), require("@babel/runtime/helpers/toConsumableArray"), require("prop-types"), require("react-redux"), require("@babel/runtime/helpers/asyncToGenerator"), require("@babel/runtime/helpers/typeof"), require("@redux-saga/core/effects"), require("react-router-config"), require("react-loadable"), require("@babel/runtime/helpers/classCallCheck"), require("isomorphic-fetch"), require("history"), require("@babel/runtime/helpers/createClass"), require("contensis-delivery-api"), require("redux"), require("redux-immutable"), require("redux-thunk"), require("redux-saga"), require("loglevel"), require("react-dom"), require("query-string"));
+		module.exports = factory(require("@babel/runtime/helpers/interopRequireDefault"), require("react"), require("immutable"), require("@babel/runtime/regenerator"), require("@babel/runtime/helpers/interopRequireWildcard"), require("@babel/runtime/helpers/defineProperty"), require("@babel/runtime/helpers/toConsumableArray"), require("react-router-dom"), require("@babel/runtime/helpers/asyncToGenerator"), require("react-hot-loader"), require("prop-types"), require("react-redux"), require("@babel/runtime/helpers/typeof"), require("contensis-delivery-api"), require("@redux-saga/core/effects"), require("react-router-config"), require("react-loadable"), require("@babel/runtime/helpers/classCallCheck"), require("query-string"), require("isomorphic-fetch"), require("history"), require("@babel/runtime/helpers/createClass"), require("redux"), require("redux-immutable"), require("redux-thunk"), require("redux-saga"), require("loglevel"), require("@babel/runtime/helpers/construct"), require("react-dom"));
 	else if(typeof define === 'function' && define.amd)
-		define(["@babel/runtime/helpers/interopRequireDefault", "react", "immutable", "@babel/runtime/helpers/interopRequireWildcard", "@babel/runtime/helpers/defineProperty", "@babel/runtime/regenerator", "react-router-dom", "react-hot-loader", "@babel/runtime/helpers/toConsumableArray", "prop-types", "react-redux", "@babel/runtime/helpers/asyncToGenerator", "@babel/runtime/helpers/typeof", "@redux-saga/core/effects", "react-router-config", "react-loadable", "@babel/runtime/helpers/classCallCheck", "isomorphic-fetch", "history", "@babel/runtime/helpers/createClass", "contensis-delivery-api", "redux", "redux-immutable", "redux-thunk", "redux-saga", "loglevel", "react-dom", "query-string"], factory);
+		define(["@babel/runtime/helpers/interopRequireDefault", "react", "immutable", "@babel/runtime/regenerator", "@babel/runtime/helpers/interopRequireWildcard", "@babel/runtime/helpers/defineProperty", "@babel/runtime/helpers/toConsumableArray", "react-router-dom", "@babel/runtime/helpers/asyncToGenerator", "react-hot-loader", "prop-types", "react-redux", "@babel/runtime/helpers/typeof", "contensis-delivery-api", "@redux-saga/core/effects", "react-router-config", "react-loadable", "@babel/runtime/helpers/classCallCheck", "query-string", "isomorphic-fetch", "history", "@babel/runtime/helpers/createClass", "redux", "redux-immutable", "redux-thunk", "redux-saga", "loglevel", "@babel/runtime/helpers/construct", "react-dom"], factory);
 	else {
-		var a = typeof exports === 'object' ? factory(require("@babel/runtime/helpers/interopRequireDefault"), require("react"), require("immutable"), require("@babel/runtime/helpers/interopRequireWildcard"), require("@babel/runtime/helpers/defineProperty"), require("@babel/runtime/regenerator"), require("react-router-dom"), require("react-hot-loader"), require("@babel/runtime/helpers/toConsumableArray"), require("prop-types"), require("react-redux"), require("@babel/runtime/helpers/asyncToGenerator"), require("@babel/runtime/helpers/typeof"), require("@redux-saga/core/effects"), require("react-router-config"), require("react-loadable"), require("@babel/runtime/helpers/classCallCheck"), require("isomorphic-fetch"), require("history"), require("@babel/runtime/helpers/createClass"), require("contensis-delivery-api"), require("redux"), require("redux-immutable"), require("redux-thunk"), require("redux-saga"), require("loglevel"), require("react-dom"), require("query-string")) : factory(root["@babel/runtime/helpers/interopRequireDefault"], root["react"], root["immutable"], root["@babel/runtime/helpers/interopRequireWildcard"], root["@babel/runtime/helpers/defineProperty"], root["@babel/runtime/regenerator"], root["react-router-dom"], root["react-hot-loader"], root["@babel/runtime/helpers/toConsumableArray"], root["prop-types"], root["react-redux"], root["@babel/runtime/helpers/asyncToGenerator"], root["@babel/runtime/helpers/typeof"], root["@redux-saga/core/effects"], root["react-router-config"], root["react-loadable"], root["@babel/runtime/helpers/classCallCheck"], root["isomorphic-fetch"], root["history"], root["@babel/runtime/helpers/createClass"], root["contensis-delivery-api"], root["redux"], root["redux-immutable"], root["redux-thunk"], root["redux-saga"], root["loglevel"], root["react-dom"], root["query-string"]);
+		var a = typeof exports === 'object' ? factory(require("@babel/runtime/helpers/interopRequireDefault"), require("react"), require("immutable"), require("@babel/runtime/regenerator"), require("@babel/runtime/helpers/interopRequireWildcard"), require("@babel/runtime/helpers/defineProperty"), require("@babel/runtime/helpers/toConsumableArray"), require("react-router-dom"), require("@babel/runtime/helpers/asyncToGenerator"), require("react-hot-loader"), require("prop-types"), require("react-redux"), require("@babel/runtime/helpers/typeof"), require("contensis-delivery-api"), require("@redux-saga/core/effects"), require("react-router-config"), require("react-loadable"), require("@babel/runtime/helpers/classCallCheck"), require("query-string"), require("isomorphic-fetch"), require("history"), require("@babel/runtime/helpers/createClass"), require("redux"), require("redux-immutable"), require("redux-thunk"), require("redux-saga"), require("loglevel"), require("@babel/runtime/helpers/construct"), require("react-dom")) : factory(root["@babel/runtime/helpers/interopRequireDefault"], root["react"], root["immutable"], root["@babel/runtime/regenerator"], root["@babel/runtime/helpers/interopRequireWildcard"], root["@babel/runtime/helpers/defineProperty"], root["@babel/runtime/helpers/toConsumableArray"], root["react-router-dom"], root["@babel/runtime/helpers/asyncToGenerator"], root["react-hot-loader"], root["prop-types"], root["react-redux"], root["@babel/runtime/helpers/typeof"], root["contensis-delivery-api"], root["@redux-saga/core/effects"], root["react-router-config"], root["react-loadable"], root["@babel/runtime/helpers/classCallCheck"], root["query-string"], root["isomorphic-fetch"], root["history"], root["@babel/runtime/helpers/createClass"], root["redux"], root["redux-immutable"], root["redux-thunk"], root["redux-saga"], root["loglevel"], root["@babel/runtime/helpers/construct"], root["react-dom"]);
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(global, function(__WEBPACK_EXTERNAL_MODULE__0__, __WEBPACK_EXTERNAL_MODULE__1__, __WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__4__, __WEBPACK_EXTERNAL_MODULE__5__, __WEBPACK_EXTERNAL_MODULE__6__, __WEBPACK_EXTERNAL_MODULE__9__, __WEBPACK_EXTERNAL_MODULE__13__, __WEBPACK_EXTERNAL_MODULE__14__, __WEBPACK_EXTERNAL_MODULE__16__, __WEBPACK_EXTERNAL_MODULE__17__, __WEBPACK_EXTERNAL_MODULE__18__, __WEBPACK_EXTERNAL_MODULE__23__, __WEBPACK_EXTERNAL_MODULE__25__, __WEBPACK_EXTERNAL_MODULE__28__, __WEBPACK_EXTERNAL_MODULE__32__, __WEBPACK_EXTERNAL_MODULE__33__, __WEBPACK_EXTERNAL_MODULE__34__, __WEBPACK_EXTERNAL_MODULE__36__, __WEBPACK_EXTERNAL_MODULE__38__, __WEBPACK_EXTERNAL_MODULE__39__, __WEBPACK_EXTERNAL_MODULE__41__, __WEBPACK_EXTERNAL_MODULE__42__, __WEBPACK_EXTERNAL_MODULE__43__, __WEBPACK_EXTERNAL_MODULE__44__, __WEBPACK_EXTERNAL_MODULE__51__, __WEBPACK_EXTERNAL_MODULE__78__, __WEBPACK_EXTERNAL_MODULE__79__) {
+})(global, function(__WEBPACK_EXTERNAL_MODULE__0__, __WEBPACK_EXTERNAL_MODULE__1__, __WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__3__, __WEBPACK_EXTERNAL_MODULE__5__, __WEBPACK_EXTERNAL_MODULE__7__, __WEBPACK_EXTERNAL_MODULE__9__, __WEBPACK_EXTERNAL_MODULE__11__, __WEBPACK_EXTERNAL_MODULE__14__, __WEBPACK_EXTERNAL_MODULE__15__, __WEBPACK_EXTERNAL_MODULE__17__, __WEBPACK_EXTERNAL_MODULE__18__, __WEBPACK_EXTERNAL_MODULE__23__, __WEBPACK_EXTERNAL_MODULE__24__, __WEBPACK_EXTERNAL_MODULE__26__, __WEBPACK_EXTERNAL_MODULE__29__, __WEBPACK_EXTERNAL_MODULE__33__, __WEBPACK_EXTERNAL_MODULE__34__, __WEBPACK_EXTERNAL_MODULE__35__, __WEBPACK_EXTERNAL_MODULE__36__, __WEBPACK_EXTERNAL_MODULE__38__, __WEBPACK_EXTERNAL_MODULE__40__, __WEBPACK_EXTERNAL_MODULE__42__, __WEBPACK_EXTERNAL_MODULE__43__, __WEBPACK_EXTERNAL_MODULE__44__, __WEBPACK_EXTERNAL_MODULE__45__, __WEBPACK_EXTERNAL_MODULE__52__, __WEBPACK_EXTERNAL_MODULE__54__, __WEBPACK_EXTERNAL_MODULE__86__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -91,7 +91,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 76);
+/******/ 	return __webpack_require__(__webpack_require__.s = 84);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -114,6 +114,12 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__2__;
 
 /***/ }),
 /* 3 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__3__;
+
+/***/ }),
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -152,12 +158,6 @@ var CALL_HISTORY_METHOD = "".concat(ROUTING_PREFIX, "_CALL_HISTORY_METHOD");
 exports.CALL_HISTORY_METHOD = CALL_HISTORY_METHOD;
 
 /***/ }),
-/* 4 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__4__;
-
-/***/ }),
 /* 5 */
 /***/ (function(module, exports) {
 
@@ -165,397 +165,6 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__5__;
 
 /***/ }),
 /* 6 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__6__;
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.selectRouteLoading = exports.selectCurrentAncestors = exports.selectIsNotFound = exports.selectCurrentProject = exports.selectCurrentSearch = exports.selectCurrentPath = exports.selectRouteEntryID = exports.selectRouteEntrySlug = exports.selectRouteEntryContentTypeId = exports.selectRouteEntryEntryId = exports.selectEntryDepends = exports.selectCurrentTreeID = exports.selectNodeDepends = exports.selectRouteEntry = void 0;
-
-var _immutable = __webpack_require__(2);
-
-var selectRouteEntry = function selectRouteEntry(state) {
-  return state.getIn(['routing', 'entry'], (0, _immutable.Map)({}));
-};
-
-exports.selectRouteEntry = selectRouteEntry;
-
-var selectNodeDepends = function selectNodeDepends(state) {
-  return state.getIn(['routing', 'nodeDepends'], new _immutable.List([]));
-};
-
-exports.selectNodeDepends = selectNodeDepends;
-
-var selectCurrentTreeID = function selectCurrentTreeID(state) {
-  return state.getIn(['routing', 'currentTreeId']);
-};
-
-exports.selectCurrentTreeID = selectCurrentTreeID;
-
-var selectEntryDepends = function selectEntryDepends(state) {
-  return state.getIn(['routing', 'entryDepends']);
-};
-
-exports.selectEntryDepends = selectEntryDepends;
-
-var selectRouteEntryEntryId = function selectRouteEntryEntryId(state) {
-  return state.getIn(['routing', 'entry', 'sys', 'id'], null);
-};
-
-exports.selectRouteEntryEntryId = selectRouteEntryEntryId;
-
-var selectRouteEntryContentTypeId = function selectRouteEntryContentTypeId(state) {
-  var entry = selectRouteEntry(state);
-  return entry && entry.getIn(['sys', 'contentTypeId'], null);
-};
-
-exports.selectRouteEntryContentTypeId = selectRouteEntryContentTypeId;
-
-var selectRouteEntrySlug = function selectRouteEntrySlug(state) {
-  return state.getIn(['routing', 'entry', 'sys', 'slug'], null);
-};
-
-exports.selectRouteEntrySlug = selectRouteEntrySlug;
-
-var selectRouteEntryID = function selectRouteEntryID(state) {
-  return state.getIn(['routing', 'entryID']);
-};
-
-exports.selectRouteEntryID = selectRouteEntryID;
-
-var selectCurrentPath = function selectCurrentPath(state) {
-  return state.getIn(['routing', 'currentPath']);
-};
-
-exports.selectCurrentPath = selectCurrentPath;
-
-var selectCurrentSearch = function selectCurrentSearch(state) {
-  return state.getIn(['routing', 'location', 'search']);
-};
-
-exports.selectCurrentSearch = selectCurrentSearch;
-
-var selectCurrentProject = function selectCurrentProject(state) {
-  return state.getIn(['routing', 'currentProject']);
-};
-
-exports.selectCurrentProject = selectCurrentProject;
-
-var selectIsNotFound = function selectIsNotFound(state) {
-  return state.getIn(['routing', 'notFound']);
-};
-
-exports.selectIsNotFound = selectIsNotFound;
-
-var selectCurrentAncestors = function selectCurrentAncestors(state) {
-  return state.getIn(['routing', 'currentNodeAncestors']);
-};
-
-exports.selectCurrentAncestors = selectCurrentAncestors;
-
-var selectRouteLoading = function selectRouteLoading(state) {
-  return state.getIn(['routing', 'routeLoading']);
-};
-
-exports.selectRouteLoading = selectRouteLoading;
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(0);
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.action = action;
-exports.flattenArray = flattenArray;
-exports.api = api;
-exports.dynamicSort = dynamicSort;
-exports.randomString = exports.resizeImageUri = exports.resizeImage = exports.getWebPImageUri = void 0;
-
-var _regenerator = _interopRequireDefault(__webpack_require__(6));
-
-var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(18));
-
-var _defineProperty2 = _interopRequireDefault(__webpack_require__(5));
-
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function action(type) {
-  var payload = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-  return _objectSpread({
-    type: type
-  }, payload);
-}
-
-var getWebPImageUri = function getWebPImageUri(uri) {
-  var formatedUri = uri;
-
-  if (uri.indexOf('.gif') == -1) {
-    if (uri.indexOf('f=') == -1 && uri.indexOf('format=') == -1) {
-      if (uri.indexOf('?') > -1) {
-        formatedUri = "".concat(uri, "&f=webp");
-      } else {
-        formatedUri = "".concat(uri, "?f=webp");
-      }
-    }
-
-    if (formatedUri.indexOf('q=') == -1 && formatedUri.indexOf('quality=') == -1) {
-      if (formatedUri.indexOf('?') > -1) {
-        formatedUri = "".concat(formatedUri, "&q=70");
-      } else {
-        formatedUri = "".concat(formatedUri, "?q=70");
-      }
-    }
-  }
-
-  return formatedUri;
-};
-
-exports.getWebPImageUri = getWebPImageUri;
-
-var resizeImage = function resizeImage(image, height, width) {
-  if (image.asset && image.asset.sys && image.asset.sys.uri) {
-    image.asset.sys.uri = resizeImageUri(image.asset.sys.uri, height, width);
-  }
-};
-
-exports.resizeImage = resizeImage;
-
-var resizeImageUri = function resizeImageUri(uri, height, width) {
-  var formatedUri = uri;
-  var paramDelimeter = '?';
-
-  if (uri.indexOf('?') > -1) {
-    paramDelimeter = '&';
-  }
-
-  if (width) {
-    if (formatedUri.indexOf('w=') == -1 && formatedUri.indexOf('width=') == -1) {
-      formatedUri = "".concat(formatedUri).concat(paramDelimeter, "w=").concat(width);
-      paramDelimeter = '&';
-    }
-  }
-
-  if (height) {
-    if (formatedUri.indexOf('h=') == -1 && formatedUri.indexOf('height=') == -1) {
-      formatedUri = "".concat(formatedUri).concat(paramDelimeter, "h=").concat(height);
-    }
-  }
-
-  return formatedUri;
-};
-
-exports.resizeImageUri = resizeImageUri;
-
-function flattenArray(arr) {
-  // flatten arrays inside the supplied array and
-  // remove duplicates from the result
-  return arr.reduce(function (acc, val) {
-    return acc.concat(val);
-  }, []).filter(function (elem, pos, arr) {
-    return arr.indexOf(elem) == pos;
-  });
-}
-
-function api(_x, _x2) {
-  return _api.apply(this, arguments);
-}
-
-function _api() {
-  _api = (0, _asyncToGenerator2["default"])(
-  /*#__PURE__*/
-  _regenerator["default"].mark(function _callee2(url, options) {
-    return _regenerator["default"].wrap(function _callee2$(_context2) {
-      while (1) {
-        switch (_context2.prev = _context2.next) {
-          case 0:
-            return _context2.abrupt("return", fetch(url, options).then(
-            /*#__PURE__*/
-            function () {
-              var _ref = (0, _asyncToGenerator2["default"])(
-              /*#__PURE__*/
-              _regenerator["default"].mark(function _callee(response) {
-                return _regenerator["default"].wrap(function _callee$(_context) {
-                  while (1) {
-                    switch (_context.prev = _context.next) {
-                      case 0:
-                        setTimeout(function () {
-                          return null;
-                        }, 0);
-
-                        if (response.ok) {
-                          _context.next = 3;
-                          break;
-                        }
-
-                        throw new Error(response.statusText);
-
-                      case 3:
-                        return _context.abrupt("return", response.json().then(function (data) {
-                          return data;
-                        }));
-
-                      case 4:
-                      case "end":
-                        return _context.stop();
-                    }
-                  }
-                }, _callee);
-              }));
-
-              return function (_x3) {
-                return _ref.apply(this, arguments);
-              };
-            }())["catch"](function (error) {
-              //console.log(error);
-              throw error;
-            }));
-
-          case 1:
-          case "end":
-            return _context2.stop();
-        }
-      }
-    }, _callee2);
-  }));
-  return _api.apply(this, arguments);
-}
-
-function dynamicSort(property) {
-  var sortOrder = 1;
-
-  if (property[0] === '-') {
-    sortOrder = -1;
-    property = property.substr(1);
-  }
-
-  return function (a, b) {
-    /* next line works with strings and numbers,
-     * and you may want to customize it to your needs
-     */
-    var result = a[property] < b[property] ? -1 : a[property] > b[property] ? 1 : 0;
-    return result * sortOrder;
-  };
-}
-
-var randomString = function randomString(length) {
-  var text = '';
-  var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-  for (var i = 0; i < length; i++) {
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
-  }
-
-  return text;
-};
-
-exports.randomString = randomString;
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__9__;
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.setRouteEntry = exports.setRoute = exports.setCurrentProject = exports.setNavigationPath = exports.setNotFound = void 0;
-
-var _helpers = __webpack_require__(8);
-
-var _routing = __webpack_require__(3);
-
-var setNotFound = function setNotFound(notFound) {
-  return (0, _helpers.action)(_routing.SET_NAVIGATION_NOT_FOUND, {
-    notFound: notFound
-  });
-};
-
-exports.setNotFound = setNotFound;
-
-var setNavigationPath = function setNavigationPath(path, location, staticRoute, withEvents, statePath) {
-  return (0, _helpers.action)(_routing.SET_NAVIGATION_PATH, {
-    path: path,
-    location: location,
-    staticRoute: staticRoute,
-    withEvents: withEvents,
-    statePath: statePath
-  });
-};
-
-exports.setNavigationPath = setNavigationPath;
-
-var setCurrentProject = function setCurrentProject(project, allowedGroups) {
-  return (0, _helpers.action)(_routing.SET_TARGET_PROJECT, {
-    project: project,
-    allowedGroups: allowedGroups
-  });
-};
-
-exports.setCurrentProject = setCurrentProject;
-
-var setRoute = function setRoute(path, state) {
-  return (0, _helpers.action)(_routing.SET_ROUTE, {
-    path: path,
-    state: state
-  });
-};
-
-exports.setRoute = setRoute;
-
-var setRouteEntry = function setRouteEntry(entry) {
-  return (0, _helpers.action)(_routing.SET_ENTRY, {
-    entry: entry
-  });
-};
-
-exports.setRouteEntry = setRouteEntry;
-
-/***/ }),
-/* 11 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.GET_NODE_TREE_ERROR = exports.SET_NODE_TREE = exports.GET_NODE_TREE = void 0;
-var ACTION_PREFIX = '@NAVIGATION/';
-var GET_NODE_TREE = "".concat(ACTION_PREFIX, "_GET_NODE_TREE");
-exports.GET_NODE_TREE = GET_NODE_TREE;
-var SET_NODE_TREE = "".concat(ACTION_PREFIX, "_SET_NODE_TREE");
-exports.SET_NODE_TREE = SET_NODE_TREE;
-var GET_NODE_TREE_ERROR = "".concat(ACTION_PREFIX, "_GET_NODE_TREE_ERROR");
-exports.GET_NODE_TREE_ERROR = GET_NODE_TREE_ERROR;
-
-/***/ }),
-/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -577,17 +186,17 @@ var _exportNames = {
 };
 exports.cachedSearch = exports.deliveryApi = exports.GetAllResponseGuids = exports.GetResponseGuids = exports.fixImageUri = exports.GetDeliveryApiStatusFromHostname = exports.GetClientSideDeliveryApiStatus = void 0;
 
-var _defineProperty2 = _interopRequireDefault(__webpack_require__(5));
+var _defineProperty2 = _interopRequireDefault(__webpack_require__(7));
 
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__(33));
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(34));
 
-var _createClass2 = _interopRequireDefault(__webpack_require__(38));
+var _createClass2 = _interopRequireDefault(__webpack_require__(40));
 
-var _toConsumableArray2 = _interopRequireDefault(__webpack_require__(14));
+var _toConsumableArray2 = _interopRequireDefault(__webpack_require__(9));
 
 var _typeof2 = _interopRequireDefault(__webpack_require__(23));
 
-var _contensisDeliveryApi = __webpack_require__(39);
+var _contensisDeliveryApi = __webpack_require__(24);
 
 Object.keys(_contensisDeliveryApi).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -976,10 +585,402 @@ var cachedSearch = new CachedSearch();
 exports.cachedSearch = cachedSearch;
 
 /***/ }),
-/* 13 */
+/* 7 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__13__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__7__;
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.selectRouteLoading = exports.selectCurrentAncestors = exports.selectIsNotFound = exports.selectCurrentProject = exports.selectCurrentSearch = exports.selectCurrentPath = exports.selectRouteEntryID = exports.selectRouteEntrySlug = exports.selectRouteEntryContentTypeId = exports.selectRouteEntryEntryId = exports.selectEntryDepends = exports.selectCurrentTreeID = exports.selectNodeDepends = exports.selectRouteEntry = void 0;
+
+var _immutable = __webpack_require__(2);
+
+var selectRouteEntry = function selectRouteEntry(state) {
+  return state.getIn(['routing', 'entry'], (0, _immutable.Map)({}));
+};
+
+exports.selectRouteEntry = selectRouteEntry;
+
+var selectNodeDepends = function selectNodeDepends(state) {
+  return state.getIn(['routing', 'nodeDepends'], new _immutable.List([]));
+};
+
+exports.selectNodeDepends = selectNodeDepends;
+
+var selectCurrentTreeID = function selectCurrentTreeID(state) {
+  return state.getIn(['routing', 'currentTreeId']);
+};
+
+exports.selectCurrentTreeID = selectCurrentTreeID;
+
+var selectEntryDepends = function selectEntryDepends(state) {
+  return state.getIn(['routing', 'entryDepends']);
+};
+
+exports.selectEntryDepends = selectEntryDepends;
+
+var selectRouteEntryEntryId = function selectRouteEntryEntryId(state) {
+  return state.getIn(['routing', 'entry', 'sys', 'id'], null);
+};
+
+exports.selectRouteEntryEntryId = selectRouteEntryEntryId;
+
+var selectRouteEntryContentTypeId = function selectRouteEntryContentTypeId(state) {
+  var entry = selectRouteEntry(state);
+  return entry && entry.getIn(['sys', 'contentTypeId'], null);
+};
+
+exports.selectRouteEntryContentTypeId = selectRouteEntryContentTypeId;
+
+var selectRouteEntrySlug = function selectRouteEntrySlug(state) {
+  return state.getIn(['routing', 'entry', 'sys', 'slug'], null);
+};
+
+exports.selectRouteEntrySlug = selectRouteEntrySlug;
+
+var selectRouteEntryID = function selectRouteEntryID(state) {
+  return state.getIn(['routing', 'entryID']);
+};
+
+exports.selectRouteEntryID = selectRouteEntryID;
+
+var selectCurrentPath = function selectCurrentPath(state) {
+  return state.getIn(['routing', 'currentPath']);
+};
+
+exports.selectCurrentPath = selectCurrentPath;
+
+var selectCurrentSearch = function selectCurrentSearch(state) {
+  return state.getIn(['routing', 'location', 'search']);
+};
+
+exports.selectCurrentSearch = selectCurrentSearch;
+
+var selectCurrentProject = function selectCurrentProject(state) {
+  return state.getIn(['routing', 'currentProject']);
+};
+
+exports.selectCurrentProject = selectCurrentProject;
+
+var selectIsNotFound = function selectIsNotFound(state) {
+  return state.getIn(['routing', 'notFound']);
+};
+
+exports.selectIsNotFound = selectIsNotFound;
+
+var selectCurrentAncestors = function selectCurrentAncestors(state) {
+  return state.getIn(['routing', 'currentNodeAncestors']);
+};
+
+exports.selectCurrentAncestors = selectCurrentAncestors;
+
+var selectRouteLoading = function selectRouteLoading(state) {
+  return state.getIn(['routing', 'routeLoading']);
+};
+
+exports.selectRouteLoading = selectRouteLoading;
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__9__;
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(0);
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.action = action;
+exports.flattenArray = flattenArray;
+exports.api = api;
+exports.dynamicSort = dynamicSort;
+exports.randomString = exports.resizeImageUri = exports.resizeImage = exports.getWebPImageUri = void 0;
+
+var _regenerator = _interopRequireDefault(__webpack_require__(3));
+
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(14));
+
+var _defineProperty2 = _interopRequireDefault(__webpack_require__(7));
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function action(type) {
+  var payload = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  return _objectSpread({
+    type: type
+  }, payload);
+}
+
+var getWebPImageUri = function getWebPImageUri(uri) {
+  var formatedUri = uri;
+
+  if (uri.indexOf('.gif') == -1) {
+    if (uri.indexOf('f=') == -1 && uri.indexOf('format=') == -1) {
+      if (uri.indexOf('?') > -1) {
+        formatedUri = "".concat(uri, "&f=webp");
+      } else {
+        formatedUri = "".concat(uri, "?f=webp");
+      }
+    }
+
+    if (formatedUri.indexOf('q=') == -1 && formatedUri.indexOf('quality=') == -1) {
+      if (formatedUri.indexOf('?') > -1) {
+        formatedUri = "".concat(formatedUri, "&q=70");
+      } else {
+        formatedUri = "".concat(formatedUri, "?q=70");
+      }
+    }
+  }
+
+  return formatedUri;
+};
+
+exports.getWebPImageUri = getWebPImageUri;
+
+var resizeImage = function resizeImage(image, height, width) {
+  if (image.asset && image.asset.sys && image.asset.sys.uri) {
+    image.asset.sys.uri = resizeImageUri(image.asset.sys.uri, height, width);
+  }
+};
+
+exports.resizeImage = resizeImage;
+
+var resizeImageUri = function resizeImageUri(uri, height, width) {
+  var formatedUri = uri;
+  var paramDelimeter = '?';
+
+  if (uri.indexOf('?') > -1) {
+    paramDelimeter = '&';
+  }
+
+  if (width) {
+    if (formatedUri.indexOf('w=') == -1 && formatedUri.indexOf('width=') == -1) {
+      formatedUri = "".concat(formatedUri).concat(paramDelimeter, "w=").concat(width);
+      paramDelimeter = '&';
+    }
+  }
+
+  if (height) {
+    if (formatedUri.indexOf('h=') == -1 && formatedUri.indexOf('height=') == -1) {
+      formatedUri = "".concat(formatedUri).concat(paramDelimeter, "h=").concat(height);
+    }
+  }
+
+  return formatedUri;
+};
+
+exports.resizeImageUri = resizeImageUri;
+
+function flattenArray(arr) {
+  // flatten arrays inside the supplied array and
+  // remove duplicates from the result
+  return arr.reduce(function (acc, val) {
+    return acc.concat(val);
+  }, []).filter(function (elem, pos, arr) {
+    return arr.indexOf(elem) == pos;
+  });
+}
+
+function api(_x, _x2) {
+  return _api.apply(this, arguments);
+}
+
+function _api() {
+  _api = (0, _asyncToGenerator2["default"])(
+  /*#__PURE__*/
+  _regenerator["default"].mark(function _callee2(url, options) {
+    return _regenerator["default"].wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            return _context2.abrupt("return", fetch(url, options).then(
+            /*#__PURE__*/
+            function () {
+              var _ref = (0, _asyncToGenerator2["default"])(
+              /*#__PURE__*/
+              _regenerator["default"].mark(function _callee(response) {
+                return _regenerator["default"].wrap(function _callee$(_context) {
+                  while (1) {
+                    switch (_context.prev = _context.next) {
+                      case 0:
+                        setTimeout(function () {
+                          return null;
+                        }, 0);
+
+                        if (response.ok) {
+                          _context.next = 3;
+                          break;
+                        }
+
+                        throw new Error(response.statusText);
+
+                      case 3:
+                        return _context.abrupt("return", response.json().then(function (data) {
+                          return data;
+                        }));
+
+                      case 4:
+                      case "end":
+                        return _context.stop();
+                    }
+                  }
+                }, _callee);
+              }));
+
+              return function (_x3) {
+                return _ref.apply(this, arguments);
+              };
+            }())["catch"](function (error) {
+              //console.log(error);
+              throw error;
+            }));
+
+          case 1:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2);
+  }));
+  return _api.apply(this, arguments);
+}
+
+function dynamicSort(property) {
+  var sortOrder = 1;
+
+  if (property[0] === '-') {
+    sortOrder = -1;
+    property = property.substr(1);
+  }
+
+  return function (a, b) {
+    /* next line works with strings and numbers,
+     * and you may want to customize it to your needs
+     */
+    var result = a[property] < b[property] ? -1 : a[property] > b[property] ? 1 : 0;
+    return result * sortOrder;
+  };
+}
+
+var randomString = function randomString(length) {
+  var text = '';
+  var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+  for (var i = 0; i < length; i++) {
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+  }
+
+  return text;
+};
+
+exports.randomString = randomString;
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__11__;
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.setRouteEntry = exports.setRoute = exports.setCurrentProject = exports.setNavigationPath = exports.setNotFound = void 0;
+
+var _helpers = __webpack_require__(10);
+
+var _routing = __webpack_require__(4);
+
+var setNotFound = function setNotFound(notFound) {
+  return (0, _helpers.action)(_routing.SET_NAVIGATION_NOT_FOUND, {
+    notFound: notFound
+  });
+};
+
+exports.setNotFound = setNotFound;
+
+var setNavigationPath = function setNavigationPath(path, location, staticRoute, withEvents, statePath, routes) {
+  return (0, _helpers.action)(_routing.SET_NAVIGATION_PATH, {
+    path: path,
+    location: location,
+    staticRoute: staticRoute,
+    withEvents: withEvents,
+    statePath: statePath,
+    routes: routes
+  });
+};
+
+exports.setNavigationPath = setNavigationPath;
+
+var setCurrentProject = function setCurrentProject(project, allowedGroups) {
+  return (0, _helpers.action)(_routing.SET_TARGET_PROJECT, {
+    project: project,
+    allowedGroups: allowedGroups
+  });
+};
+
+exports.setCurrentProject = setCurrentProject;
+
+var setRoute = function setRoute(path, state) {
+  return (0, _helpers.action)(_routing.SET_ROUTE, {
+    path: path,
+    state: state
+  });
+};
+
+exports.setRoute = setRoute;
+
+var setRouteEntry = function setRouteEntry(entry) {
+  return (0, _helpers.action)(_routing.SET_ENTRY, {
+    entry: entry
+  });
+};
+
+exports.setRouteEntry = setRouteEntry;
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.GET_NODE_TREE_ERROR = exports.SET_NODE_TREE = exports.GET_NODE_TREE = void 0;
+var ACTION_PREFIX = '@NAVIGATION/';
+var GET_NODE_TREE = "".concat(ACTION_PREFIX, "_GET_NODE_TREE");
+exports.GET_NODE_TREE = GET_NODE_TREE;
+var SET_NODE_TREE = "".concat(ACTION_PREFIX, "_SET_NODE_TREE");
+exports.SET_NODE_TREE = SET_NODE_TREE;
+var GET_NODE_TREE_ERROR = "".concat(ACTION_PREFIX, "_GET_NODE_TREE_ERROR");
+exports.GET_NODE_TREE_ERROR = GET_NODE_TREE_ERROR;
 
 /***/ }),
 /* 14 */
@@ -989,6 +990,12 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__14__;
 
 /***/ }),
 /* 15 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__15__;
+
+/***/ }),
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1003,12 +1010,6 @@ var SET_VERSION = "".concat(VERSION_PREFIX, "SET_VERSION");
 exports.SET_VERSION = SET_VERSION;
 var SET_VERSION_STATUS = "".concat(VERSION_PREFIX, "SET_VERSION_STATUS");
 exports.SET_VERSION_STATUS = SET_VERSION_STATUS;
-
-/***/ }),
-/* 16 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__16__;
 
 /***/ }),
 /* 17 */
@@ -1028,7 +1029,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__18__;
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(25);
+/* harmony import */ var _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(26);
 /* harmony import */ var _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 
@@ -1103,7 +1104,7 @@ exports.selectNavigationDepends = selectNavigationDepends;
 
 var _interopRequireDefault = __webpack_require__(0);
 
-var _interopRequireWildcard = __webpack_require__(4);
+var _interopRequireWildcard = __webpack_require__(5);
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -1112,25 +1113,25 @@ exports["default"] = void 0;
 
 var _react = _interopRequireWildcard(__webpack_require__(1));
 
-var _propTypes = _interopRequireDefault(__webpack_require__(16));
+var _propTypes = _interopRequireDefault(__webpack_require__(17));
 
-var _reactRedux = __webpack_require__(17);
+var _reactRedux = __webpack_require__(18);
 
-var _reactHotLoader = __webpack_require__(13);
+var _reactHotLoader = __webpack_require__(15);
 
-var _reactRouterDom = __webpack_require__(9);
+var _reactRouterDom = __webpack_require__(11);
 
-var _reactRouterConfig = __webpack_require__(28);
+var _reactRouterConfig = __webpack_require__(29);
 
-var _routing = __webpack_require__(7);
+var _routing = __webpack_require__(8);
 
-var _routing2 = __webpack_require__(10);
+var _routing2 = __webpack_require__(12);
 
-var _NotFound = _interopRequireDefault(__webpack_require__(29));
+var _NotFound = _interopRequireDefault(__webpack_require__(30));
 
-var _Status = __webpack_require__(30);
+var _Status = __webpack_require__(31);
 
-var _ToJs = __webpack_require__(31);
+var _ToJs = __webpack_require__(32);
 
 var getTrimmedPath = function getTrimmedPath(path) {
   if (path !== '/') {
@@ -1174,8 +1175,9 @@ var RouteLoader = function RouteLoader(_ref) {
       }).join('/');
     }
 
-    setNavigationPath(serverPath || trimmedPath, location, staticRoute, withEvents, statePath);
-  }, [setNavigationPath, staticRoute, withEvents, location, statePath, trimmedPath]);
+    setNavigationPath(serverPath || trimmedPath, location, staticRoute, withEvents, statePath, routes); // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [setNavigationPath, staticRoute, withEvents, location, routes, // statePath,
+  trimmedPath]);
   if (typeof window == 'undefined') setPath();
   (0, _react.useEffect)(function () {
     setPath();
@@ -1223,8 +1225,6 @@ var RouteLoader = function RouteLoader(_ref) {
 RouteLoader.propTypes = {
   routes: _propTypes["default"].objectOf(_propTypes["default"].array, _propTypes["default"].array),
   withEvents: _propTypes["default"].object,
-  // location: PropTypes.object.isRequired,
-  // history: PropTypes.object.isRequired,
   statePath: _propTypes["default"].string,
   projectId: _propTypes["default"].string,
   contentTypeId: _propTypes["default"].string,
@@ -1244,15 +1244,13 @@ var mapStateToProps = function mapStateToProps(state) {
 };
 
 var mapDispatchToProps = {
-  setNavigationPath: function setNavigationPath(path, location, staticRoute, withEvents, statePath) {
-    return (0, _routing2.setNavigationPath)(path, location, staticRoute, withEvents, statePath);
-  }
+  setNavigationPath: _routing2.setNavigationPath
 };
 
 var _default = (0, _reactHotLoader.hot)(module)((0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)((0, _ToJs.toJS)(RouteLoader)));
 
 exports["default"] = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(27)(module)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(28)(module)))
 
 /***/ }),
 /* 23 */
@@ -1262,6 +1260,12 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__23__;
 
 /***/ }),
 /* 24 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__24__;
+
+/***/ }),
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1272,9 +1276,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.setVersionStatus = exports.setVersion = void 0;
 
-var _helpers = __webpack_require__(8);
+var _helpers = __webpack_require__(10);
 
-var _version = __webpack_require__(15);
+var _version = __webpack_require__(16);
 
 var setVersion = function setVersion(commitRef, buildNo) {
   return (0, _helpers.action)(_version.SET_VERSION, {
@@ -1294,13 +1298,13 @@ var setVersionStatus = function setVersionStatus(status) {
 exports.setVersionStatus = setVersionStatus;
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__25__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__26__;
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1315,7 +1319,7 @@ exports["default"] = void 0;
 
 var _react = _interopRequireDefault(__webpack_require__(1));
 
-var _reactHotLoader = __webpack_require__(13);
+var _reactHotLoader = __webpack_require__(15);
 
 var _RouteLoader = _interopRequireDefault(__webpack_require__(22));
 
@@ -1327,7 +1331,7 @@ var _default = AppRoot;
 exports["default"] = _default;
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -1355,13 +1359,13 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__28__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__29__;
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1384,7 +1388,7 @@ var _default = NotFound;
 exports["default"] = _default;
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1399,9 +1403,9 @@ exports.Status = void 0;
 
 var _react = _interopRequireDefault(__webpack_require__(1));
 
-var _propTypes = _interopRequireDefault(__webpack_require__(16));
+var _propTypes = _interopRequireDefault(__webpack_require__(17));
 
-var _reactRouterDom = __webpack_require__(9);
+var _reactRouterDom = __webpack_require__(11);
 
 var Status = function Status(_ref) {
   var code = _ref.code,
@@ -1422,7 +1426,7 @@ Status.propTypes = {
 };
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1454,12 +1458,6 @@ var toJS = function toJS(WrappedComponent) {
 exports.toJS = toJS;
 
 /***/ }),
-/* 32 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__32__;
-
-/***/ }),
 /* 33 */
 /***/ (function(module, exports) {
 
@@ -1473,6 +1471,18 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__34__;
 
 /***/ }),
 /* 35 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__35__;
+
+/***/ }),
+/* 36 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__36__;
+
+/***/ }),
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1483,7 +1493,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.browserHistory = exports.history = void 0;
 
-var _history = __webpack_require__(36);
+var _history = __webpack_require__(38);
 
 // Create a history depending on the environment
 var selectedHistory = typeof window !== 'undefined' ? _history.createBrowserHistory : _history.createMemoryHistory;
@@ -1498,13 +1508,13 @@ var browserHistory = selectedHistory();
 exports.browserHistory = browserHistory;
 
 /***/ }),
-/* 36 */
+/* 38 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__36__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__38__;
 
 /***/ }),
-/* 37 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1561,25 +1571,19 @@ var _default = pickProject;
 exports["default"] = _default;
 
 /***/ }),
-/* 38 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__38__;
-
-/***/ }),
-/* 39 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__39__;
-
-/***/ }),
 /* 40 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__40__;
+
+/***/ }),
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _interopRequireWildcard = __webpack_require__(4);
+var _interopRequireWildcard = __webpack_require__(5);
 
 var _interopRequireDefault = __webpack_require__(0);
 
@@ -1588,23 +1592,23 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
-var _defineProperty2 = _interopRequireDefault(__webpack_require__(5));
+var _defineProperty2 = _interopRequireDefault(__webpack_require__(7));
 
-var _redux = __webpack_require__(41);
+var _redux = __webpack_require__(42);
 
-var _reduxImmutable = __webpack_require__(42);
+var _reduxImmutable = __webpack_require__(43);
 
-var _reduxThunk = _interopRequireDefault(__webpack_require__(43));
+var _reduxThunk = _interopRequireDefault(__webpack_require__(44));
 
-var _reduxSaga = _interopRequireWildcard(__webpack_require__(44));
+var _reduxSaga = _interopRequireWildcard(__webpack_require__(45));
 
-var _routing = _interopRequireDefault(__webpack_require__(45));
+var _routing = _interopRequireDefault(__webpack_require__(46));
 
-var _version = _interopRequireDefault(__webpack_require__(46));
+var _version = _interopRequireDefault(__webpack_require__(47));
 
-var _navigation = _interopRequireDefault(__webpack_require__(47));
+var _navigation = _interopRequireDefault(__webpack_require__(48));
 
-var _routerMiddleware = _interopRequireDefault(__webpack_require__(48));
+var _routerMiddleware = _interopRequireDefault(__webpack_require__(49));
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
@@ -1651,12 +1655,6 @@ var _default = function _default(featureReducers, initialState, history) {
 exports["default"] = _default;
 
 /***/ }),
-/* 41 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__41__;
-
-/***/ }),
 /* 42 */
 /***/ (function(module, exports) {
 
@@ -1676,6 +1674,12 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__44__;
 
 /***/ }),
 /* 45 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__45__;
+
+/***/ }),
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1688,9 +1692,9 @@ exports["default"] = void 0;
 
 var _immutable = __webpack_require__(2);
 
-var _routing = __webpack_require__(3);
+var _routing = __webpack_require__(4);
 
-var _ContensisDeliveryApi = __webpack_require__(12);
+var _ContensisDeliveryApi = __webpack_require__(6);
 
 var initialState = (0, _immutable.Map)({
   currentPath: '/',
@@ -1808,7 +1812,7 @@ var _default = function _default() {
 exports["default"] = _default;
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1821,7 +1825,7 @@ exports["default"] = void 0;
 
 var _immutable = __webpack_require__(2);
 
-var _version = __webpack_require__(15);
+var _version = __webpack_require__(16);
 
 var initialState = (0, _immutable.Map)({
   commitRef: null,
@@ -1852,7 +1856,7 @@ var _default = function _default() {
 exports["default"] = _default;
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1865,7 +1869,7 @@ exports["default"] = void 0;
 
 var _immutable = __webpack_require__(2);
 
-var _navigation = __webpack_require__(11);
+var _navigation = __webpack_require__(13);
 
 var initialState = (0, _immutable.Map)({
   root: null,
@@ -1897,7 +1901,7 @@ var _default = function _default() {
 exports["default"] = _default;
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1910,9 +1914,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
-var _toConsumableArray2 = _interopRequireDefault(__webpack_require__(14));
+var _toConsumableArray2 = _interopRequireDefault(__webpack_require__(9));
 
-var _routing = __webpack_require__(3);
+var _routing = __webpack_require__(4);
 
 /**
  * This middleware captures CALL_HISTORY_METHOD actions to redirect to the
@@ -1942,7 +1946,7 @@ var _default = routerMiddleware;
 exports["default"] = _default;
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1955,15 +1959,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = _default;
 
-var _regenerator = _interopRequireDefault(__webpack_require__(6));
+var _regenerator = _interopRequireDefault(__webpack_require__(3));
 
-var _toConsumableArray2 = _interopRequireDefault(__webpack_require__(14));
+var _toConsumableArray2 = _interopRequireDefault(__webpack_require__(9));
 
 var _effects = __webpack_require__(19);
 
-var _routing = __webpack_require__(50);
+var _routing = __webpack_require__(51);
 
-var _navigation = __webpack_require__(52);
+var _navigation = __webpack_require__(60);
 
 // index.js
 function _default() {
@@ -1991,13 +1995,13 @@ function _default() {
 }
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _interopRequireWildcard = __webpack_require__(4);
+var _interopRequireWildcard = __webpack_require__(5);
 
 var _interopRequireDefault = __webpack_require__(0);
 
@@ -2006,25 +2010,27 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.routingSagas = void 0;
 
-var _defineProperty2 = _interopRequireDefault(__webpack_require__(5));
+var _defineProperty2 = _interopRequireDefault(__webpack_require__(7));
 
-var _regenerator = _interopRequireDefault(__webpack_require__(6));
+var _regenerator = _interopRequireDefault(__webpack_require__(3));
 
-var log = _interopRequireWildcard(__webpack_require__(51));
+var log = _interopRequireWildcard(__webpack_require__(52));
 
 var _effects = __webpack_require__(19);
 
-var _routing = __webpack_require__(3);
+var _routing = __webpack_require__(4);
 
-var _ContensisDeliveryApi = __webpack_require__(12);
+var _ContensisDeliveryApi = __webpack_require__(6);
 
 var _version = __webpack_require__(20);
 
-var _routing2 = __webpack_require__(7);
+var _routing2 = __webpack_require__(8);
 
-var _navigation = __webpack_require__(11);
+var _navigation = __webpack_require__(13);
 
 var _navigation2 = __webpack_require__(21);
+
+var _queries = __webpack_require__(53);
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
@@ -2074,17 +2080,17 @@ function setRouteSaga(action) {
 }
 
 function getRouteSaga(action) {
-  var entry, withEvents, state, routeEntry, currentPath, deliveryApiStatus, project, pathNode, ancestors, siblings, currentPathDepth, splitPath, entryGuid, previewEntry;
+  var entry, withEvents, routes, appsays, state, routeEntry, currentPath, deliveryApiStatus, project, pathNode, ancestors, siblings, currentPathDepth, splitPath, entryGuid, previewEntry, contentType, query, payload;
   return _regenerator["default"].wrap(function getRouteSaga$(_context2) {
     while (1) {
       switch (_context2.prev = _context2.next) {
         case 0:
           entry = null;
           _context2.prev = 1;
-          withEvents = action.withEvents;
+          withEvents = action.withEvents, routes = action.routes;
 
           if (!(withEvents && withEvents.onRouteLoad)) {
-            _context2.next = 6;
+            _context2.next = 7;
             break;
           }
 
@@ -2092,26 +2098,30 @@ function getRouteSaga(action) {
           return withEvents.onRouteLoad(action);
 
         case 6:
-          _context2.next = 8;
+          appsays = _context2.sent;
+
+        case 7:
+          _context2.next = 9;
           return (0, _effects.select)();
 
-        case 8:
+        case 9:
           state = _context2.sent;
           routeEntry = (0, _routing2.selectRouteEntry)(state);
 
-          if (!(action.staticRoute && !action.staticRoute.route.fetchNode || routeEntry && action.statePath === action.path)) {
-            _context2.next = 14;
+          if (!(appsays && appsays.customRouting || action.staticRoute && !action.staticRoute.route.fetchNode || routeEntry && action.statePath === action.path)) {
+            _context2.next = 15;
             break;
           }
 
-          // Do we need to fetch node/validate routes for a static route?
-          // For a genuinely static route we recieve a 404 in browser console,
-          // and a wasted network call.
+          // To prevent erroneous 404s and wasted network calls, this covers
+          // - customRouting and SET_ENTRY via the consuming app
+          // - all staticRoutes (where custom 'route.fetchNode' attribute is falsey)
+          // - standard Contensis SiteView Routing where we already have the entry
           if (routeEntry) entry = routeEntry.toJS();
-          _context2.next = 62;
+          _context2.next = 70;
           break;
 
-        case 14:
+        case 15:
           currentPath = (0, _routing2.selectCurrentPath)(state);
           deliveryApiStatus = (0, _version.selectVersionStatus)(state);
           project = (0, _routing2.selectCurrentProject)(state);
@@ -2127,11 +2137,11 @@ function getRouteSaga(action) {
           if (currentPath === '/') currentPathDepth = 0; // Handle homepage
 
           if (!(currentPath === '/')) {
-            _context2.next = 27;
+            _context2.next = 28;
             break;
           }
 
-          _context2.next = 24;
+          _context2.next = 25;
           return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiStatus, project).nodes.getRoot({
             depth: 0,
             entryFields: '*',
@@ -2139,14 +2149,14 @@ function getRouteSaga(action) {
             language: 'en-GB'
           });
 
-        case 24:
+        case 25:
           pathNode = _context2.sent;
-          _context2.next = 54;
+          _context2.next = 62;
           break;
 
-        case 27:
+        case 28:
           if (!(currentPath && currentPath.startsWith('/preview/'))) {
-            _context2.next = 43;
+            _context2.next = 44;
             break;
           }
 
@@ -2154,134 +2164,156 @@ function getRouteSaga(action) {
           entryGuid = splitPath[2];
 
           if (!(splitPath.length == 3)) {
-            _context2.next = 41;
+            _context2.next = 42;
             break;
           }
 
-          _context2.next = 33;
+          _context2.next = 34;
           return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiStatus, project).entries.get({
             id: entryGuid,
             linkDepth: 4
           });
 
-        case 33:
+        case 34:
           previewEntry = _context2.sent;
 
           if (!previewEntry) {
-            _context2.next = 39;
+            _context2.next = 40;
             break;
           }
 
-          _context2.next = 37;
+          _context2.next = 38;
           return (0, _effects.call)(setRouteEntry, previewEntry);
 
-        case 37:
-          _context2.next = 41;
+        case 38:
+          _context2.next = 42;
           break;
 
-        case 39:
-          _context2.next = 41;
+        case 40:
+          _context2.next = 42;
           return (0, _effects.call)(do404);
 
-        case 41:
-          _context2.next = 46;
+        case 42:
+          _context2.next = 54;
           break;
 
-        case 43:
-          _context2.next = 45;
+        case 44:
+          _context2.next = 46;
           return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiStatus, project).nodes.get({
             depth: 0,
             path: currentPath,
-            entryFields: '*',
-            entryLinkDepth: 4
+            entryFields: ['sys.contentTypeId', 'sys.id'],
+            entryLinkDepth: 0
           });
 
-        case 45:
+        case 46:
           pathNode = _context2.sent;
 
-        case 46:
-          if (!(pathNode && pathNode.id)) {
+          if (!(pathNode && pathNode.entry && pathNode.entry.sys && pathNode.entry.sys.id)) {
             _context2.next = 54;
             break;
           }
 
-          _context2.next = 49;
+          contentType = routes && routes.ContentTypeMappings && routes.ContentTypeMappings.find(function (ct) {
+            return ct.contentTypeID === pathNode.entry.sys.contentTypeId;
+          });
+          query = (0, _queries.routeEntryByFields)(pathNode.entry.sys.id, contentType && contentType.fields, deliveryApiStatus);
+          _context2.next = 52;
+          return _ContensisDeliveryApi.deliveryApi.search(query, contentType && contentType.linkDepth || 3);
+
+        case 52:
+          payload = _context2.sent;
+
+          if (payload && payload.items && payload.items.length > 0) {
+            pathNode.entry = payload.items[0];
+          }
+
+        case 54:
+          if (!(pathNode && pathNode.id)) {
+            _context2.next = 62;
+            break;
+          }
+
+          _context2.next = 57;
           return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiStatus, project).nodes.getAncestors(pathNode.id);
 
-        case 49:
+        case 57:
           ancestors = _context2.sent;
 
           if (!(currentPathDepth > 1)) {
-            _context2.next = 54;
+            _context2.next = 62;
             break;
           }
 
-          _context2.next = 53;
+          _context2.next = 61;
           return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiStatus, project).nodes.getSiblings({
             id: pathNode.id,
             entryFields: ['sys.contentTypeId', 'url']
           });
 
-        case 53:
+        case 61:
           siblings = _context2.sent;
 
-        case 54:
-          if (!(pathNode && pathNode.entry && pathNode.entry.sys && pathNode.entry.sys.id)) {
-            _context2.next = 60;
-            break;
-          }
-
-          entry = pathNode.entry;
-          _context2.next = 58;
-          return (0, _effects.call)(setRouteEntry, entry, pathNode, ancestors, siblings);
-
-        case 58:
-          _context2.next = 62;
-          break;
-
-        case 60:
-          _context2.next = 62;
-          return (0, _effects.call)(do404);
-
         case 62:
-          if (!(withEvents && withEvents.onRouteLoaded)) {
-            _context2.next = 65;
-            break;
-          }
-
-          _context2.next = 65;
-          return withEvents.onRouteLoaded(_objectSpread({}, action, {
-            entry: entry
-          }));
-
-        case 65:
-          if ((0, _navigation2.hasNavigationTree)(state)) {
+          if (!(pathNode && pathNode.entry && pathNode.entry.sys && pathNode.entry.sys.id)) {
             _context2.next = 68;
             break;
           }
 
-          _context2.next = 68;
+          entry = pathNode.entry;
+          _context2.next = 66;
+          return (0, _effects.call)(setRouteEntry, entry, pathNode, ancestors, siblings);
+
+        case 66:
+          _context2.next = 70;
+          break;
+
+        case 68:
+          _context2.next = 70;
+          return (0, _effects.call)(do404);
+
+        case 70:
+          if (!(withEvents && withEvents.onRouteLoaded)) {
+            _context2.next = 74;
+            break;
+          }
+
+          _context2.next = 73;
+          return withEvents.onRouteLoaded(_objectSpread({}, action, {
+            entry: entry
+          }));
+
+        case 73:
+          appsays = _context2.sent;
+
+        case 74:
+          if (!(!(0, _navigation2.hasNavigationTree)(state) && appsays && !appsays.customNavigation)) {
+            _context2.next = 77;
+            break;
+          }
+
+          _context2.next = 77;
           return (0, _effects.put)({
             type: _navigation.GET_NODE_TREE
           });
 
-        case 68:
-          _context2.next = 75;
+        case 77:
+          _context2.next = 84;
           break;
 
-        case 70:
-          _context2.prev = 70;
+        case 79:
+          _context2.prev = 79;
           _context2.t0 = _context2["catch"](1);
           log.error.apply(log, ['Error running route saga:', _context2.t0, _context2.t0.stack]);
-          _context2.next = 75;
+          _context2.next = 84;
           return (0, _effects.call)(do404);
 
-        case 75:
+        case 84:
         case "end":
           return _context2.stop();
       }
     }
-  }, _marked2, null, [[1, 70]]);
+  }, _marked2, null, [[1, 79]]);
 }
 
 function setRouteEntry(entry, node, ancestors, siblings) {
@@ -2345,13 +2377,523 @@ function do404() {
 }
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__51__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__52__;
 
 /***/ }),
-/* 52 */
+/* 53 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(0);
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.routeEntryByFields = void 0;
+
+var _toConsumableArray2 = _interopRequireDefault(__webpack_require__(9));
+
+var _construct2 = _interopRequireDefault(__webpack_require__(54));
+
+var _ContensisDeliveryApi = __webpack_require__(6);
+
+var _expressions = __webpack_require__(55);
+
+// eslint-disable-next-line import/named
+var routeEntryByFields = function routeEntryByFields(id) {
+  var fields = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+  var versionStatus = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'published';
+  var query = (0, _construct2["default"])(_ContensisDeliveryApi.Query, [].concat((0, _toConsumableArray2["default"])((0, _expressions.fieldExpression)('sys.id', id)), (0, _toConsumableArray2["default"])((0, _expressions.defaultExpressions)(versionStatus))));
+  query.fields = fields;
+  return query;
+};
+
+exports.routeEntryByFields = routeEntryByFields;
+
+/***/ }),
+/* 54 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__54__;
+
+/***/ }),
+/* 55 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(0);
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.termExpressions = exports.customWhereExpressions = exports.orderByExpression = exports.includeInSearchExpressions = exports.defaultSearchExpressions = exports.defaultExpressions = exports.dataFormatExpression = exports.filterExpressions = exports.contentTypeIdExpression = exports.fieldExpression = void 0;
+
+var _toConsumableArray2 = _interopRequireDefault(__webpack_require__(9));
+
+var _contensisDeliveryApi = __webpack_require__(24);
+
+var _schema = __webpack_require__(56);
+
+var _util = __webpack_require__(57);
+
+var fieldExpression = function fieldExpression(field, value) {
+  var operator = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'equalTo';
+  var weight = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
+  if (!field || !value) return [];
+  if (Array.isArray(value)) return equalToOrIn(field, value, operator);else return !weight ? [_contensisDeliveryApi.Op[operator](field, value)] : [_contensisDeliveryApi.Op[operator](field, value).weight(weight)];
+};
+
+exports.fieldExpression = fieldExpression;
+
+var contentTypeIdExpression = function contentTypeIdExpression(contentTypeIds, webpageTemplates) {
+  var expressions = [];
+  if (!contentTypeIds && !webpageTemplates) return expressions;
+
+  if (contentTypeIds && contentTypeIds.length > 0) {
+    expressions.push.apply(expressions, (0, _toConsumableArray2["default"])(dataFormatExpression(contentTypeIds, _schema.DataFormats.entry)));
+  }
+
+  if (webpageTemplates && webpageTemplates.length > 0) {
+    expressions.push.apply(expressions, (0, _toConsumableArray2["default"])(dataFormatExpression(webpageTemplates, _schema.DataFormats.webpage)));
+  }
+
+  if (expressions.length > 1) return [_contensisDeliveryApi.Op.or.apply(_contensisDeliveryApi.Op, expressions)];
+  return expressions;
+};
+
+exports.contentTypeIdExpression = contentTypeIdExpression;
+
+var filterExpressions = function filterExpressions(filters) {
+  if (!filters) return [];
+  var expressions = [];
+  filters.map(function (param) {
+    expressions.push.apply(expressions, (0, _toConsumableArray2["default"])(fieldExpression(param.key, param.value, 'contains')));
+  });
+  return expressions;
+};
+
+exports.filterExpressions = filterExpressions;
+
+var dataFormatExpression = function dataFormatExpression(contentTypeIds) {
+  var dataFormat = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : _schema.DataFormats.entry;
+
+  if (contentTypeIds && contentTypeIds.length > 0) {
+    /**
+     * We have an array of contentTypeIds some may be prefixed with a "!"
+     * to indicate this is a "not" expression
+     */
+    var withContentTypeIds = contentTypeIds.filter(function (c) {
+      return !c.startsWith('!');
+    });
+    var notContentTypeIds = contentTypeIds.filter(function (c) {
+      return c.startsWith('!');
+    }).map(function (id) {
+      return id.substring(1);
+    });
+
+    var andExpr = _contensisDeliveryApi.Op.and();
+
+    var dataFormatExpr = fieldExpression(_schema.Fields.sys.dataFormat, dataFormat);
+    var withExpr = fieldExpression(_schema.Fields.sys.contentTypeId, withContentTypeIds);
+    var notExpr = [_contensisDeliveryApi.Op.not.apply(_contensisDeliveryApi.Op, (0, _toConsumableArray2["default"])(fieldExpression(_schema.Fields.sys.contentTypeId, notContentTypeIds)))];
+    andExpr.add.apply(andExpr, (0, _toConsumableArray2["default"])(dataFormatExpr));
+    if (withContentTypeIds.length > 0) andExpr.add.apply(andExpr, (0, _toConsumableArray2["default"])(withExpr));
+    if (notContentTypeIds.length > 0) andExpr.add.apply(andExpr, notExpr);
+    return [andExpr];
+  }
+
+  return [];
+};
+
+exports.dataFormatExpression = dataFormatExpression;
+
+var defaultExpressions = function defaultExpressions(versionStatus) {
+  return [_contensisDeliveryApi.Op.equalTo(_schema.Fields.sys.versionStatus, versionStatus)];
+};
+
+exports.defaultExpressions = defaultExpressions;
+
+var defaultSearchExpressions = function defaultSearchExpressions(versionStatus) {
+  return [].concat((0, _toConsumableArray2["default"])(defaultExpressions(versionStatus)), (0, _toConsumableArray2["default"])(includeInSearchExpressions()));
+};
+
+exports.defaultSearchExpressions = defaultSearchExpressions;
+
+var includeInSearchExpressions = function includeInSearchExpressions() {
+  return [_contensisDeliveryApi.Op.or(_contensisDeliveryApi.Op.and(_contensisDeliveryApi.Op.exists(_schema.Fields.sys.includeInSearch, true), _contensisDeliveryApi.Op.equalTo(_schema.Fields.sys.includeInSearch, true)), _contensisDeliveryApi.Op.exists(_schema.Fields.sys.includeInSearch, false))];
+};
+
+exports.includeInSearchExpressions = includeInSearchExpressions;
+
+var orderByExpression = function orderByExpression(orderBy) {
+  var expression = _contensisDeliveryApi.OrderBy;
+
+  if (orderBy && orderBy.length > 0) {
+    orderBy.map(function (ob) {
+      return expression = ob.startsWith('-') ? expression.desc(ob.substring(1)) : expression.asc(ob);
+    });
+  }
+
+  return expression;
+};
+
+exports.orderByExpression = orderByExpression;
+
+var equalToOrIn = function equalToOrIn(field, arr) {
+  var operator = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'equalTo';
+  return arr.length === 0 ? [] : arr.length === 1 ? [_contensisDeliveryApi.Op[operator](field, arr[0])] : [_contensisDeliveryApi.Op["in"].apply(_contensisDeliveryApi.Op, [field].concat((0, _toConsumableArray2["default"])(arr)))];
+};
+
+var customWhereExpressions = function customWhereExpressions(where) {
+  if (!where || !Array.isArray(where)) return []; // Accept HTTP style objects and map them to
+  // their equivalent JS client "Op" expressions
+
+  return where.map(function (clause) {
+    var expression;
+    Object.keys(clause).map(function (key, idx) {
+      if (idx === 1) {
+        var operator = key;
+        var value = clause[key];
+        expression = _contensisDeliveryApi.Op[operator](clause.field, value, clause.weight);
+      }
+    });
+    return expression;
+  });
+};
+
+exports.customWhereExpressions = customWhereExpressions;
+
+var termExpressions = function termExpressions(searchTerm, weightedSearchFields) {
+  if (searchTerm && weightedSearchFields && weightedSearchFields.length > 0) {
+    // Extract any phrases in quotes to array
+    var quotedPhrases = (0, _util.extractQuotedPhrases)(searchTerm); // Modify the search term to remove any quoted phrases to leave any remaining terms
+
+    var modifiedSearchTerm = searchTerm;
+    quotedPhrases.forEach(function (qp) {
+      return modifiedSearchTerm = modifiedSearchTerm.replace(qp, '').replace('""', '').trim();
+    }); // Push to the operators array to include in the query
+
+    var operators = []; // Helper functions to generate Op expressions
+
+    var containsOp = function containsOp(f, term) {
+      return fieldExpression(f.fieldId, (0, _util.fixFreeTextForElastic)(term), 'contains', f.weight);
+    };
+
+    var freeTextOp = function freeTextOp(f, term) {
+      return fieldExpression(f.fieldId, (0, _util.fixFreeTextForElastic)(term), 'freeText', f.weight);
+    }; // For each weighted search field
+
+
+    weightedSearchFields.forEach(function (f) {
+      // Push to field operators
+      var fieldOperators = []; // Add operator expressions for modified search term
+
+      if (modifiedSearchTerm) {
+        if ([_schema.Fields.keywords, _schema.Fields.sys.filename, _schema.Fields.sys.uri].includes(f.fieldId)) {
+          fieldOperators.push.apply(fieldOperators, (0, _toConsumableArray2["default"])(containsOp(f, modifiedSearchTerm)));
+        } else {
+          if ([_schema.Fields.entryTitle].includes(f.fieldId)) {
+            fieldOperators.push(_contensisDeliveryApi.Op.or.apply(_contensisDeliveryApi.Op, (0, _toConsumableArray2["default"])(containsOp(f, modifiedSearchTerm)).concat((0, _toConsumableArray2["default"])(freeTextOp(f, modifiedSearchTerm)))));
+          } else {
+            fieldOperators.push.apply(fieldOperators, (0, _toConsumableArray2["default"])(freeTextOp(f, modifiedSearchTerm)));
+          }
+        }
+      } // Add operator expressions for any quoted phrases
+
+
+      quotedPhrases.forEach(function (qp) {
+        return fieldOperators.push.apply(fieldOperators, (0, _toConsumableArray2["default"])(containsOp(f, qp)));
+      }); // If we are using multiple operators for a field we will
+      // wrap each field inside an And operator so we will match
+      // all terms/phrases rather than any terms/phrases
+
+      if (fieldOperators.length > 1) {
+        operators.push(_contensisDeliveryApi.Op.and.apply(_contensisDeliveryApi.Op, fieldOperators));
+      } else {
+        operators.push.apply(operators, fieldOperators);
+      }
+    }); // Wrap operators in an Or operator
+
+    return [_contensisDeliveryApi.Op.or().addRange(operators)];
+  } else if (searchTerm) {
+    return [_contensisDeliveryApi.Op.contains(_schema.Fields.wildcard, searchTerm)];
+  } else {
+    return [];
+  }
+};
+
+exports.termExpressions = termExpressions;
+
+/***/ }),
+/* 56 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.FilterExpressionTypes = exports.WebpageFormats = exports.ContentTypes = exports.VersionStatus = exports.Projects = exports.Fields = exports.DataFormats = void 0;
+var DataFormats = {
+  entry: 'entry',
+  webpage: 'webpage'
+};
+exports.DataFormats = DataFormats;
+var sys = {
+  contentTypeId: 'sys.contentTypeId',
+  dataFormat: 'sys.dataFormat',
+  filename: 'sys.properties.filename',
+  id: 'sys.id',
+  includeInSearch: 'sys.metadata.includeInSearch',
+  slug: 'sys.slug',
+  uri: 'sys.uri',
+  versionStatus: 'sys.versionStatus'
+};
+var Fields = {
+  entryTitle: 'entryTitle',
+  entryDescription: 'entryDescription',
+  keywords: 'keywords',
+  sys: sys,
+  contentTypeId: 'sys.contentTypeId',
+  wildcard: '*'
+};
+exports.Fields = Fields;
+var Projects = {
+  website: 'website'
+};
+exports.Projects = Projects;
+var VersionStatus = {
+  published: 'published',
+  latest: 'latest'
+};
+exports.VersionStatus = VersionStatus;
+var ContentTypes = {
+  contentPage: 'contentPage'
+};
+exports.ContentTypes = ContentTypes;
+var WebpageFormats = {};
+exports.WebpageFormats = WebpageFormats;
+var FilterExpressionTypes = {
+  contentType: 'contentType',
+  field: 'field'
+};
+exports.FilterExpressionTypes = FilterExpressionTypes;
+
+/***/ }),
+/* 57 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(0);
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.fixFreeTextForElastic = fixFreeTextForElastic;
+exports.callCustomApi = exports.extractQuotedPhrases = exports.timedSearch = void 0;
+
+var _regenerator = _interopRequireDefault(__webpack_require__(3));
+
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(14));
+
+var _performance = __webpack_require__(58);
+
+var _ContensisDeliveryApi = __webpack_require__(6);
+
+var _navigation = __webpack_require__(59);
+
+function fixFreeTextForElastic(s) {
+  var illegalChars = ['>', '<'];
+  var encodedChars = ['+', '-', '=', '&', '|', '!', '(', ')', '{', '}', '[', ']', '^', '"', '~', '*', '?', ':', '\\', '/'];
+  var illegalRegEx = new RegExp(illegalChars.map(function (c) {
+    return '\\' + c;
+  }).join('|'), 'g');
+  var encodedRegEx = new RegExp(encodedChars.map(function (c) {
+    return '\\' + c;
+  }).join('|'), 'g');
+  s = s.replace(illegalRegEx, '');
+  s = s.replace(encodedRegEx, ''); // (m) => '\\\\' + m);
+
+  return s;
+}
+
+var timedSearch =
+/*#__PURE__*/
+function () {
+  var _ref = (0, _asyncToGenerator2["default"])(
+  /*#__PURE__*/
+  _regenerator["default"].mark(function _callee(query, linkDepth, projectId) {
+    var duration, start, payload, end;
+    return _regenerator["default"].wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            duration = 0;
+            start = (0, _performance.now)();
+            _context.next = 4;
+            return _ContensisDeliveryApi.cachedSearch.search(query, linkDepth, projectId);
+
+          case 4:
+            payload = _context.sent;
+            end = (0, _performance.now)();
+            duration = end - start;
+            return _context.abrupt("return", {
+              duration: duration,
+              payload: payload
+            });
+
+          case 8:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+
+  return function timedSearch(_x, _x2, _x3) {
+    return _ref.apply(this, arguments);
+  };
+}();
+
+exports.timedSearch = timedSearch;
+
+var extractQuotedPhrases = function extractQuotedPhrases(searchTerm) {
+  var pattern = new RegExp(/(?=["'])(?:"[^"\\]*(?:\\[\s\S][^"\\]*)*"|'[^'\\]*(?:\\[\s\S][^'\\]*)*')/gm);
+  return (searchTerm.match(pattern) || []).map(function (match) {
+    return match.replace(/"/g, '');
+  });
+};
+
+exports.extractQuotedPhrases = extractQuotedPhrases;
+
+var callCustomApi =
+/*#__PURE__*/
+function () {
+  var _ref2 = (0, _asyncToGenerator2["default"])(
+  /*#__PURE__*/
+  _regenerator["default"].mark(function _callee2(customApi, filters) {
+    var uri, response;
+    return _regenerator["default"].wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            uri = (0, _navigation.buildUrl)(customApi.get('uri'), filters);
+
+            if (uri) {
+              _context2.next = 3;
+              break;
+            }
+
+            return _context2.abrupt("return", null);
+
+          case 3:
+            if (typeof window == 'undefined' && uri.startsWith('/')) uri = "http://localhost:3001".concat(uri);
+            _context2.next = 6;
+            return fetch(uri);
+
+          case 6:
+            response = _context2.sent;
+            _context2.next = 9;
+            return response.json();
+
+          case 9:
+            return _context2.abrupt("return", _context2.sent);
+
+          case 10:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2);
+  }));
+
+  return function callCustomApi(_x4, _x5) {
+    return _ref2.apply(this, arguments);
+  };
+}();
+
+exports.callCustomApi = callCustomApi;
+
+/***/ }),
+/* 58 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.now = void 0;
+
+var now = function now() {
+  if (typeof window == 'undefined') {
+    return Date.now();
+  }
+
+  return window.performance.now();
+};
+
+exports.now = now;
+
+/***/ }),
+/* 59 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(0);
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.queryParams = queryParams;
+exports.addHostname = exports.clientHostname = exports.buildUrl = exports.routeParams = void 0;
+
+var _queryString = _interopRequireDefault(__webpack_require__(35));
+
+function queryParams(search) {
+  return _queryString["default"].parse(typeof window != 'undefined' ? window.location.search : search);
+}
+
+var routeParams = function routeParams(staticRoute) {
+  return staticRoute && staticRoute.match ? staticRoute.match.params : {};
+};
+
+exports.routeParams = routeParams;
+
+var buildUrl = function buildUrl(route, params) {
+  var qs = _queryString["default"].stringify(params);
+
+  var path = qs ? "".concat(route, "?").concat(qs) : route;
+  return path;
+};
+
+exports.buildUrl = buildUrl;
+
+var clientHostname = function clientHostname() {
+  return "".concat(window.location.protocol, "//").concat(window.location.hostname, ":").concat(window.location.port);
+};
+
+exports.clientHostname = clientHostname;
+var addHostname = typeof window == 'undefined' || window.location.host == 'localhost:3000' ? "https://".concat(PUBLIC_URI
+/* global PUBLIC_URI */
+) : clientHostname();
+exports.addHostname = addHostname;
+
+/***/ }),
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2365,19 +2907,19 @@ Object.defineProperty(exports, "__esModule", {
 exports.ensureNodeTreeSaga = ensureNodeTreeSaga;
 exports.navigationSagas = void 0;
 
-var _regenerator = _interopRequireDefault(__webpack_require__(6));
+var _regenerator = _interopRequireDefault(__webpack_require__(3));
 
 var _effects = __webpack_require__(19);
 
-var _ContensisDeliveryApi = __webpack_require__(12);
+var _ContensisDeliveryApi = __webpack_require__(6);
 
-var _navigation = __webpack_require__(11);
+var _navigation = __webpack_require__(13);
 
 var _navigation2 = __webpack_require__(21);
 
 var _version = __webpack_require__(20);
 
-var _routing = __webpack_require__(7);
+var _routing = __webpack_require__(8);
 
 var _marked =
 /*#__PURE__*/
@@ -2466,14 +3008,6 @@ function ensureNodeTreeSaga() {
 }
 
 /***/ }),
-/* 53 */,
-/* 54 */,
-/* 55 */,
-/* 56 */,
-/* 57 */,
-/* 58 */,
-/* 59 */,
-/* 60 */,
 /* 61 */,
 /* 62 */,
 /* 63 */,
@@ -2489,7 +3023,15 @@ function ensureNodeTreeSaga() {
 /* 73 */,
 /* 74 */,
 /* 75 */,
-/* 76 */
+/* 76 */,
+/* 77 */,
+/* 78 */,
+/* 79 */,
+/* 80 */,
+/* 81 */,
+/* 82 */,
+/* 83 */,
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2500,16 +3042,16 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = exports.ReactApp = void 0;
 
-var client = __webpack_require__(77)["default"];
+var client = __webpack_require__(85)["default"];
 
-var ReactApp = __webpack_require__(26)["default"];
+var ReactApp = __webpack_require__(27)["default"];
 
 exports.ReactApp = ReactApp;
 var _default = client;
 exports["default"] = _default;
 
 /***/ }),
-/* 77 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2522,39 +3064,39 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__(33));
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(34));
 
-__webpack_require__(34);
+__webpack_require__(36);
 
 var _react = _interopRequireDefault(__webpack_require__(1));
 
-var _reactDom = __webpack_require__(78);
+var _reactDom = __webpack_require__(86);
 
-var _reactRouterDom = __webpack_require__(9);
+var _reactRouterDom = __webpack_require__(11);
 
-var _reactLoadable = __webpack_require__(32);
+var _reactLoadable = __webpack_require__(33);
 
-var _reactHotLoader = __webpack_require__(13);
+var _reactHotLoader = __webpack_require__(15);
 
-var _reactRedux = __webpack_require__(17);
+var _reactRedux = __webpack_require__(18);
 
-var _queryString = _interopRequireDefault(__webpack_require__(79));
+var _queryString = _interopRequireDefault(__webpack_require__(35));
 
 var _immutable = __webpack_require__(2);
 
-var _store = _interopRequireDefault(__webpack_require__(40));
+var _store = _interopRequireDefault(__webpack_require__(41));
 
-var _index = _interopRequireDefault(__webpack_require__(49));
+var _index = _interopRequireDefault(__webpack_require__(50));
 
-var _version = __webpack_require__(24);
+var _version = __webpack_require__(25);
 
-var _ContensisDeliveryApi = __webpack_require__(12);
+var _ContensisDeliveryApi = __webpack_require__(6);
 
-var _routing = __webpack_require__(10);
+var _routing = __webpack_require__(12);
 
-var _pickProject = _interopRequireDefault(__webpack_require__(37));
+var _pickProject = _interopRequireDefault(__webpack_require__(39));
 
-var _history = __webpack_require__(35);
+var _history = __webpack_require__(37);
 
 var ClientApp = function ClientApp(ReactApp, config) {
   (0, _classCallCheck2["default"])(this, ClientApp);
@@ -2635,16 +3177,10 @@ var _default = ClientApp;
 exports["default"] = _default;
 
 /***/ }),
-/* 78 */
+/* 86 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__78__;
-
-/***/ }),
-/* 79 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__79__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__86__;
 
 /***/ })
 /******/ ]);
