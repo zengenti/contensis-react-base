@@ -28,6 +28,9 @@ export const selectRouteEntryID = state => {
 export const selectCurrentPath = state => {
   return state.getIn(['routing', 'currentPath']);
 };
+export const selectCurrentSearch = state => {
+  return state.getIn(['routing', 'location', 'search']);
+};
 export const selectCurrentProject = state => {
   return state.getIn(['routing', 'currentProject']);
 };

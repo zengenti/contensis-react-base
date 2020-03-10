@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("@babel/runtime/helpers/interopRequireDefault"), require("immutable"), require("@babel/runtime/helpers/defineProperty"), require("@babel/runtime/regenerator"), require("@babel/runtime/helpers/interopRequireWildcard"), require("@babel/runtime/helpers/asyncToGenerator"), require("@babel/runtime/helpers/slicedToArray"));
+		module.exports = factory(require("@babel/runtime/helpers/interopRequireDefault"), require("immutable"), require("@babel/runtime/helpers/interopRequireWildcard"), require("@babel/runtime/helpers/defineProperty"), require("@babel/runtime/regenerator"), require("@babel/runtime/helpers/asyncToGenerator"), require("@babel/runtime/helpers/slicedToArray"));
 	else if(typeof define === 'function' && define.amd)
-		define(["@babel/runtime/helpers/interopRequireDefault", "immutable", "@babel/runtime/helpers/defineProperty", "@babel/runtime/regenerator", "@babel/runtime/helpers/interopRequireWildcard", "@babel/runtime/helpers/asyncToGenerator", "@babel/runtime/helpers/slicedToArray"], factory);
+		define(["@babel/runtime/helpers/interopRequireDefault", "immutable", "@babel/runtime/helpers/interopRequireWildcard", "@babel/runtime/helpers/defineProperty", "@babel/runtime/regenerator", "@babel/runtime/helpers/asyncToGenerator", "@babel/runtime/helpers/slicedToArray"], factory);
 	else {
-		var a = typeof exports === 'object' ? factory(require("@babel/runtime/helpers/interopRequireDefault"), require("immutable"), require("@babel/runtime/helpers/defineProperty"), require("@babel/runtime/regenerator"), require("@babel/runtime/helpers/interopRequireWildcard"), require("@babel/runtime/helpers/asyncToGenerator"), require("@babel/runtime/helpers/slicedToArray")) : factory(root["@babel/runtime/helpers/interopRequireDefault"], root["immutable"], root["@babel/runtime/helpers/defineProperty"], root["@babel/runtime/regenerator"], root["@babel/runtime/helpers/interopRequireWildcard"], root["@babel/runtime/helpers/asyncToGenerator"], root["@babel/runtime/helpers/slicedToArray"]);
+		var a = typeof exports === 'object' ? factory(require("@babel/runtime/helpers/interopRequireDefault"), require("immutable"), require("@babel/runtime/helpers/interopRequireWildcard"), require("@babel/runtime/helpers/defineProperty"), require("@babel/runtime/regenerator"), require("@babel/runtime/helpers/asyncToGenerator"), require("@babel/runtime/helpers/slicedToArray")) : factory(root["@babel/runtime/helpers/interopRequireDefault"], root["immutable"], root["@babel/runtime/helpers/interopRequireWildcard"], root["@babel/runtime/helpers/defineProperty"], root["@babel/runtime/regenerator"], root["@babel/runtime/helpers/asyncToGenerator"], root["@babel/runtime/helpers/slicedToArray"]);
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(global, function(__WEBPACK_EXTERNAL_MODULE__0__, __WEBPACK_EXTERNAL_MODULE__1__, __WEBPACK_EXTERNAL_MODULE__4__, __WEBPACK_EXTERNAL_MODULE__5__, __WEBPACK_EXTERNAL_MODULE__6__, __WEBPACK_EXTERNAL_MODULE__15__, __WEBPACK_EXTERNAL_MODULE__53__) {
+})(global, function(__WEBPACK_EXTERNAL_MODULE__0__, __WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__4__, __WEBPACK_EXTERNAL_MODULE__5__, __WEBPACK_EXTERNAL_MODULE__6__, __WEBPACK_EXTERNAL_MODULE__18__, __WEBPACK_EXTERNAL_MODULE__53__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -103,14 +103,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__0__;
 
 /***/ }),
 
-/***/ 1:
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__1__;
-
-/***/ }),
-
-/***/ 11:
+/***/ 10:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -123,7 +116,7 @@ exports.setRouteEntry = exports.setRoute = exports.setCurrentProject = exports.s
 
 var _helpers = __webpack_require__(8);
 
-var _routing = __webpack_require__(2);
+var _routing = __webpack_require__(3);
 
 var setNotFound = function setNotFound(notFound) {
   return (0, _helpers.action)(_routing.SET_NAVIGATION_NOT_FOUND, {
@@ -173,7 +166,27 @@ exports.setRouteEntry = setRouteEntry;
 
 /***/ }),
 
-/***/ 13:
+/***/ 11:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.GET_NODE_TREE_ERROR = exports.SET_NODE_TREE = exports.GET_NODE_TREE = void 0;
+var ACTION_PREFIX = '@NAVIGATION/';
+var GET_NODE_TREE = "".concat(ACTION_PREFIX, "_GET_NODE_TREE");
+exports.GET_NODE_TREE = GET_NODE_TREE;
+var SET_NODE_TREE = "".concat(ACTION_PREFIX, "_SET_NODE_TREE");
+exports.SET_NODE_TREE = SET_NODE_TREE;
+var GET_NODE_TREE_ERROR = "".concat(ACTION_PREFIX, "_GET_NODE_TREE_ERROR");
+exports.GET_NODE_TREE_ERROR = GET_NODE_TREE_ERROR;
+
+/***/ }),
+
+/***/ 15:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -191,14 +204,21 @@ exports.SET_VERSION_STATUS = SET_VERSION_STATUS;
 
 /***/ }),
 
-/***/ 15:
+/***/ 18:
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__15__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__18__;
 
 /***/ }),
 
-/***/ 17:
+/***/ 2:
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__2__;
+
+/***/ }),
+
+/***/ 20:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -229,7 +249,7 @@ exports.selectVersionStatus = selectVersionStatus;
 
 /***/ }),
 
-/***/ 18:
+/***/ 21:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -260,7 +280,41 @@ exports.selectNavigationDepends = selectNavigationDepends;
 
 /***/ }),
 
-/***/ 2:
+/***/ 24:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.setVersionStatus = exports.setVersion = void 0;
+
+var _helpers = __webpack_require__(8);
+
+var _version = __webpack_require__(15);
+
+var setVersion = function setVersion(commitRef, buildNo) {
+  return (0, _helpers.action)(_version.SET_VERSION, {
+    commitRef: commitRef,
+    buildNo: buildNo
+  });
+};
+
+exports.setVersion = setVersion;
+
+var setVersionStatus = function setVersionStatus(status) {
+  return (0, _helpers.action)(_version.SET_VERSION_STATUS, {
+    status: status
+  });
+};
+
+exports.setVersionStatus = setVersionStatus;
+
+/***/ }),
+
+/***/ 3:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -297,40 +351,6 @@ var SET_ROUTE = "".concat(ROUTING_PREFIX, "_SET_ROUTE");
 exports.SET_ROUTE = SET_ROUTE;
 var CALL_HISTORY_METHOD = "".concat(ROUTING_PREFIX, "_CALL_HISTORY_METHOD");
 exports.CALL_HISTORY_METHOD = CALL_HISTORY_METHOD;
-
-/***/ }),
-
-/***/ 22:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.setVersionStatus = exports.setVersion = void 0;
-
-var _helpers = __webpack_require__(8);
-
-var _version = __webpack_require__(13);
-
-var setVersion = function setVersion(commitRef, buildNo) {
-  return (0, _helpers.action)(_version.SET_VERSION, {
-    commitRef: commitRef,
-    buildNo: buildNo
-  });
-};
-
-exports.setVersion = setVersion;
-
-var setVersionStatus = function setVersionStatus(status) {
-  return (0, _helpers.action)(_version.SET_VERSION_STATUS, {
-    status: status
-  });
-};
-
-exports.setVersionStatus = setVersionStatus;
 
 /***/ }),
 
@@ -371,9 +391,9 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__6__;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.selectRouteLoading = exports.selectCurrentAncestors = exports.selectIsNotFound = exports.selectCurrentProject = exports.selectCurrentPath = exports.selectRouteEntryID = exports.selectRouteEntrySlug = exports.selectRouteEntryContentTypeId = exports.selectRouteEntryEntryId = exports.selectEntryDepends = exports.selectCurrentTreeID = exports.selectNodeDepends = exports.selectRouteEntry = void 0;
+exports.selectRouteLoading = exports.selectCurrentAncestors = exports.selectIsNotFound = exports.selectCurrentProject = exports.selectCurrentSearch = exports.selectCurrentPath = exports.selectRouteEntryID = exports.selectRouteEntrySlug = exports.selectRouteEntryContentTypeId = exports.selectRouteEntryEntryId = exports.selectEntryDepends = exports.selectCurrentTreeID = exports.selectNodeDepends = exports.selectRouteEntry = void 0;
 
-var _immutable = __webpack_require__(1);
+var _immutable = __webpack_require__(2);
 
 var selectRouteEntry = function selectRouteEntry(state) {
   return state.getIn(['routing', 'entry'], (0, _immutable.Map)({}));
@@ -430,6 +450,12 @@ var selectCurrentPath = function selectCurrentPath(state) {
 
 exports.selectCurrentPath = selectCurrentPath;
 
+var selectCurrentSearch = function selectCurrentSearch(state) {
+  return state.getIn(['routing', 'location', 'search']);
+};
+
+exports.selectCurrentSearch = selectCurrentSearch;
+
 var selectCurrentProject = function selectCurrentProject(state) {
   return state.getIn(['routing', 'currentProject']);
 };
@@ -473,11 +499,11 @@ exports.api = api;
 exports.dynamicSort = dynamicSort;
 exports.randomString = exports.resizeImageUri = exports.resizeImage = exports.getWebPImageUri = void 0;
 
-var _regenerator = _interopRequireDefault(__webpack_require__(5));
+var _regenerator = _interopRequireDefault(__webpack_require__(6));
 
-var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(15));
+var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(18));
 
-var _defineProperty2 = _interopRequireDefault(__webpack_require__(4));
+var _defineProperty2 = _interopRequireDefault(__webpack_require__(5));
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
@@ -695,18 +721,18 @@ Object.entries(types).map(function (_ref) {
 "use strict";
 
 
-var _interopRequireWildcard = __webpack_require__(6);
+var _interopRequireWildcard = __webpack_require__(4);
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
 
-var navigation = _interopRequireWildcard(__webpack_require__(9));
+var navigation = _interopRequireWildcard(__webpack_require__(11));
 
-var routing = _interopRequireWildcard(__webpack_require__(2));
+var routing = _interopRequireWildcard(__webpack_require__(3));
 
-var version = _interopRequireWildcard(__webpack_require__(13));
+var version = _interopRequireWildcard(__webpack_require__(15));
 
 var _default = {
   navigation: navigation,
@@ -723,7 +749,7 @@ exports["default"] = _default;
 "use strict";
 
 
-var _interopRequireWildcard = __webpack_require__(6);
+var _interopRequireWildcard = __webpack_require__(4);
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -732,9 +758,9 @@ exports["default"] = void 0;
 
 var navigation = _interopRequireWildcard(__webpack_require__(83));
 
-var routing = _interopRequireWildcard(__webpack_require__(11));
+var routing = _interopRequireWildcard(__webpack_require__(10));
 
-var version = _interopRequireWildcard(__webpack_require__(22));
+var version = _interopRequireWildcard(__webpack_require__(24));
 
 var _default = {
   navigation: navigation,
@@ -758,7 +784,7 @@ exports.loadNavigationTree = void 0;
 
 var _helpers = __webpack_require__(8);
 
-var _navigation = __webpack_require__(9);
+var _navigation = __webpack_require__(11);
 
 var loadNavigationTree = function loadNavigationTree() {
   return (0, _helpers.action)(_navigation.GET_NODE_TREE);
@@ -774,18 +800,18 @@ exports.loadNavigationTree = loadNavigationTree;
 "use strict";
 
 
-var _interopRequireWildcard = __webpack_require__(6);
+var _interopRequireWildcard = __webpack_require__(4);
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
 
-var navigation = _interopRequireWildcard(__webpack_require__(18));
+var navigation = _interopRequireWildcard(__webpack_require__(21));
 
 var routing = _interopRequireWildcard(__webpack_require__(7));
 
-var version = _interopRequireWildcard(__webpack_require__(17));
+var version = _interopRequireWildcard(__webpack_require__(20));
 
 var _default = {
   navigation: navigation,
@@ -793,26 +819,6 @@ var _default = {
   version: version
 };
 exports["default"] = _default;
-
-/***/ }),
-
-/***/ 9:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.GET_NODE_TREE_ERROR = exports.SET_NODE_TREE = exports.GET_NODE_TREE = void 0;
-var ACTION_PREFIX = '@NAVIGATION/';
-var GET_NODE_TREE = "".concat(ACTION_PREFIX, "_GET_NODE_TREE");
-exports.GET_NODE_TREE = GET_NODE_TREE;
-var SET_NODE_TREE = "".concat(ACTION_PREFIX, "_SET_NODE_TREE");
-exports.SET_NODE_TREE = SET_NODE_TREE;
-var GET_NODE_TREE_ERROR = "".concat(ACTION_PREFIX, "_GET_NODE_TREE_ERROR");
-exports.GET_NODE_TREE_ERROR = GET_NODE_TREE_ERROR;
 
 /***/ })
 

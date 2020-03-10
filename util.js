@@ -7,7 +7,7 @@
 		var a = typeof exports === 'object' ? factory(require("@babel/runtime/helpers/interopRequireDefault"), require("@babel/runtime/helpers/typeof"), require("@babel/runtime/helpers/slicedToArray"), require("awesome-json2json")) : factory(root["@babel/runtime/helpers/interopRequireDefault"], root["@babel/runtime/helpers/typeof"], root["@babel/runtime/helpers/slicedToArray"], root["awesome-json2json"]);
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(global, function(__WEBPACK_EXTERNAL_MODULE__0__, __WEBPACK_EXTERNAL_MODULE__21__, __WEBPACK_EXTERNAL_MODULE__53__, __WEBPACK_EXTERNAL_MODULE__87__) {
+})(global, function(__WEBPACK_EXTERNAL_MODULE__0__, __WEBPACK_EXTERNAL_MODULE__23__, __WEBPACK_EXTERNAL_MODULE__53__, __WEBPACK_EXTERNAL_MODULE__87__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -103,10 +103,10 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__0__;
 
 /***/ }),
 
-/***/ 21:
+/***/ 23:
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__21__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__23__;
 
 /***/ }),
 
@@ -191,7 +191,7 @@ module.exports = setCachingHeaders;
 
 var _interopRequireDefault = __webpack_require__(0);
 
-var _typeof2 = _interopRequireDefault(__webpack_require__(21));
+var _typeof2 = _interopRequireDefault(__webpack_require__(23));
 
 var _slicedToArray2 = _interopRequireDefault(__webpack_require__(53));
 
