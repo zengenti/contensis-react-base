@@ -2080,7 +2080,7 @@ function setRouteSaga(action) {
 }
 
 function getRouteSaga(action) {
-  var entry, withEvents, routes, appsays, doNavigation, state, routeEntry, currentPath, deliveryApiStatus, project, pathNode, ancestors, siblings, currentPathDepth, splitPath, entryGuid, previewEntry, contentType, query, payload;
+  var entry, withEvents, routes, appsays, doNavigation, entryLinkDepth, setContentTypeLimits, state, routeEntry, currentPath, deliveryApiStatus, project, pathNode, ancestors, siblings, currentPathDepth, splitPath, entryGuid, previewEntry, contentType, query, payload;
   return _regenerator["default"].wrap(function getRouteSaga$(_context2) {
     while (1) {
       switch (_context2.prev = _context2.next) {
@@ -2104,15 +2104,19 @@ function getRouteSaga(action) {
           // if appsays customNavigation: true, we will set doNavigation to false
           // if appsays nothing we will set doNavigation to true and continue to do navigation calls
           doNavigation = !appsays || appsays && !appsays.customNavigation;
-          _context2.next = 10;
+          entryLinkDepth = appsays && appsays.entryLinkDepth || 3;
+          setContentTypeLimits = routes && routes.ContentTypeMappings && !!routes.ContentTypeMappings.find(function (ct) {
+            return ct.fields || ct.linkDepth;
+          });
+          _context2.next = 12;
           return (0, _effects.select)();
 
-        case 10:
+        case 12:
           state = _context2.sent;
           routeEntry = (0, _routing2.selectRouteEntry)(state);
 
           if (!(appsays && appsays.customRouting || action.staticRoute && !action.staticRoute.route.fetchNode || routeEntry && action.statePath === action.path)) {
-            _context2.next = 16;
+            _context2.next = 18;
             break;
           }
 
@@ -2121,10 +2125,10 @@ function getRouteSaga(action) {
           // - all staticRoutes (where custom 'route.fetchNode' attribute is falsey)
           // - standard Contensis SiteView Routing where we already have that entry in state
           if (routeEntry) entry = routeEntry.toJS();
-          _context2.next = 71;
+          _context2.next = 73;
           break;
 
-        case 16:
+        case 18:
           currentPath = (0, _routing2.selectCurrentPath)(state);
           deliveryApiStatus = (0, _version.selectVersionStatus)(state);
           project = (0, _routing2.selectCurrentProject)(state);
@@ -2140,26 +2144,26 @@ function getRouteSaga(action) {
           if (currentPath === '/') currentPathDepth = 0; // Handle homepage
 
           if (!(currentPath === '/')) {
-            _context2.next = 29;
+            _context2.next = 31;
             break;
           }
 
-          _context2.next = 26;
+          _context2.next = 28;
           return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiStatus, project).nodes.getRoot({
             depth: 0,
             entryFields: '*',
-            entryLinkDepth: 4,
+            entryLinkDepth: entryLinkDepth,
             language: 'en-GB'
           });
 
-        case 26:
+        case 28:
           pathNode = _context2.sent;
-          _context2.next = 63;
+          _context2.next = 65;
           break;
 
-        case 29:
+        case 31:
           if (!(currentPath && currentPath.startsWith('/preview/'))) {
-            _context2.next = 45;
+            _context2.next = 47;
             break;
           }
 
@@ -2167,53 +2171,53 @@ function getRouteSaga(action) {
           entryGuid = splitPath[2];
 
           if (!(splitPath.length == 3)) {
-            _context2.next = 43;
+            _context2.next = 45;
             break;
           }
 
-          _context2.next = 35;
+          _context2.next = 37;
           return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiStatus, project).entries.get({
             id: entryGuid,
             linkDepth: 4
           });
 
-        case 35:
+        case 37:
           previewEntry = _context2.sent;
 
           if (!previewEntry) {
-            _context2.next = 41;
+            _context2.next = 43;
             break;
           }
 
-          _context2.next = 39;
+          _context2.next = 41;
           return (0, _effects.call)(setRouteEntry, previewEntry);
 
-        case 39:
-          _context2.next = 43;
-          break;
-
         case 41:
-          _context2.next = 43;
-          return (0, _effects.call)(do404);
+          _context2.next = 45;
+          break;
 
         case 43:
-          _context2.next = 55;
-          break;
+          _context2.next = 45;
+          return (0, _effects.call)(do404);
 
         case 45:
-          _context2.next = 47;
+          _context2.next = 57;
+          break;
+
+        case 47:
+          _context2.next = 49;
           return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiStatus, project).nodes.get({
             depth: 0,
             path: currentPath,
-            entryFields: ['sys.contentTypeId', 'sys.id'],
-            entryLinkDepth: 0
+            entryFields: setContentTypeLimits ? ['sys.contentTypeId', 'sys.id'] : '*',
+            entryLinkDepth: setContentTypeLimits ? 0 : entryLinkDepth
           });
 
-        case 47:
+        case 49:
           pathNode = _context2.sent;
 
-          if (!(pathNode && pathNode.entry && pathNode.entry.sys && pathNode.entry.sys.id)) {
-            _context2.next = 55;
+          if (!(setContentTypeLimits && pathNode && pathNode.entry && pathNode.entry.sys && pathNode.entry.sys.id)) {
+            _context2.next = 57;
             break;
           }
 
@@ -2221,99 +2225,99 @@ function getRouteSaga(action) {
             return ct.contentTypeID === pathNode.entry.sys.contentTypeId;
           });
           query = (0, _queries.routeEntryByFields)(pathNode.entry.sys.id, contentType && contentType.fields, deliveryApiStatus);
-          _context2.next = 53;
+          _context2.next = 55;
           return _ContensisDeliveryApi.deliveryApi.search(query, contentType && contentType.linkDepth || 3, project);
 
-        case 53:
+        case 55:
           payload = _context2.sent;
 
           if (payload && payload.items && payload.items.length > 0) {
             pathNode.entry = payload.items[0];
           }
 
-        case 55:
+        case 57:
           if (!(pathNode && pathNode.id && doNavigation)) {
-            _context2.next = 63;
+            _context2.next = 65;
             break;
           }
 
-          _context2.next = 58;
+          _context2.next = 60;
           return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiStatus, project).nodes.getAncestors(pathNode.id);
 
-        case 58:
+        case 60:
           ancestors = _context2.sent;
 
           if (!(currentPathDepth > 1)) {
-            _context2.next = 63;
+            _context2.next = 65;
             break;
           }
 
-          _context2.next = 62;
+          _context2.next = 64;
           return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiStatus, project).nodes.getSiblings({
             id: pathNode.id,
             entryFields: ['sys.contentTypeId', 'url']
           });
 
-        case 62:
+        case 64:
           siblings = _context2.sent;
 
-        case 63:
+        case 65:
           if (!(pathNode && pathNode.entry && pathNode.entry.sys && pathNode.entry.sys.id)) {
-            _context2.next = 69;
+            _context2.next = 71;
             break;
           }
 
           entry = pathNode.entry;
-          _context2.next = 67;
+          _context2.next = 69;
           return (0, _effects.call)(setRouteEntry, entry, pathNode, ancestors, siblings);
 
-        case 67:
-          _context2.next = 71;
+        case 69:
+          _context2.next = 73;
           break;
 
-        case 69:
-          _context2.next = 71;
+        case 71:
+          _context2.next = 73;
           return (0, _effects.call)(do404);
 
-        case 71:
+        case 73:
           if (!(withEvents && withEvents.onRouteLoaded)) {
-            _context2.next = 74;
+            _context2.next = 76;
             break;
           }
 
-          _context2.next = 74;
+          _context2.next = 76;
           return withEvents.onRouteLoaded(_objectSpread({}, action, {
             entry: entry
           }));
 
-        case 74:
+        case 76:
           if (!(!(0, _navigation2.hasNavigationTree)(state) && doNavigation)) {
-            _context2.next = 77;
+            _context2.next = 79;
             break;
           }
 
-          _context2.next = 77;
+          _context2.next = 79;
           return (0, _effects.put)({
             type: _navigation.GET_NODE_TREE
           });
 
-        case 77:
-          _context2.next = 84;
+        case 79:
+          _context2.next = 86;
           break;
 
-        case 79:
-          _context2.prev = 79;
+        case 81:
+          _context2.prev = 81;
           _context2.t0 = _context2["catch"](1);
           log.error.apply(log, ['Error running route saga:', _context2.t0, _context2.t0.stack]);
-          _context2.next = 84;
+          _context2.next = 86;
           return (0, _effects.call)(do404);
 
-        case 84:
+        case 86:
         case "end":
           return _context2.stop();
       }
     }
-  }, _marked2, null, [[1, 79]]);
+  }, _marked2, null, [[1, 81]]);
 }
 
 function setRouteEntry(entry, node, ancestors, siblings) {

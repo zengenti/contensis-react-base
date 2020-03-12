@@ -53,6 +53,12 @@ function* getRouteSaga(action) {
     // if appsays customNavigation: true, we will set doNavigation to false
     // if appsays nothing we will set doNavigation to true and continue to do navigation calls
     const doNavigation = !appsays || (appsays && !appsays.customNavigation);
+    const entryLinkDepth = (appsays && appsays.entryLinkDepth) || 3;
+    const setContentTypeLimits =
+      routes &&
+      routes.ContentTypeMappings &&
+      !!routes.ContentTypeMappings.find(ct => ct.fields || ct.linkDepth);
+
     const state = yield select();
     const routeEntry = selectRouteEntry(state);
     if (
@@ -91,7 +97,7 @@ function* getRouteSaga(action) {
           .nodes.getRoot({
             depth: 0,
             entryFields: '*',
-            entryLinkDepth: 4,
+            entryLinkDepth,
             language: 'en-GB',
           });
       } else {
@@ -120,10 +126,13 @@ function* getRouteSaga(action) {
             .nodes.get({
               depth: 0,
               path: currentPath,
-              entryFields: ['sys.contentTypeId', 'sys.id'],
-              entryLinkDepth: 0,
+              entryFields: setContentTypeLimits
+                ? ['sys.contentTypeId', 'sys.id']
+                : '*',
+              entryLinkDepth: setContentTypeLimits ? 0 : entryLinkDepth,
             });
           if (
+            setContentTypeLimits &&
             pathNode &&
             pathNode.entry &&
             pathNode.entry.sys &&
