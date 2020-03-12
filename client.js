@@ -2219,7 +2219,7 @@ function getRouteSaga(action) {
           });
           query = (0, _queries.routeEntryByFields)(pathNode.entry.sys.id, contentType && contentType.fields, deliveryApiStatus);
           _context2.next = 52;
-          return _ContensisDeliveryApi.deliveryApi.search(query, contentType && contentType.linkDepth || 3);
+          return _ContensisDeliveryApi.deliveryApi.search(query, contentType && contentType.linkDepth || 3, project);
 
         case 52:
           payload = _context2.sent;
