@@ -50,6 +50,9 @@ function* getRouteSaga(action) {
     if (withEvents && withEvents.onRouteLoad) {
       appsays = yield withEvents.onRouteLoad(action);
     }
+    // if appsays customNavigation: true, we will set doNavigation to false
+    // if appsays nothing we will set doNavigation to true and continue to do navigation calls
+    const doNavigation = !appsays || (appsays && !appsays.customNavigation);
     const state = yield select();
     const routeEntry = selectRouteEntry(state);
     if (
@@ -58,9 +61,9 @@ function* getRouteSaga(action) {
       (routeEntry && action.statePath === action.path)
     ) {
       // To prevent erroneous 404s and wasted network calls, this covers
-      // - customRouting and SET_ENTRY via the consuming app
+      // - appsays customRouting and does SET_ENTRY etc. via the consuming app
       // - all staticRoutes (where custom 'route.fetchNode' attribute is falsey)
-      // - standard Contensis SiteView Routing where we already have the entry
+      // - standard Contensis SiteView Routing where we already have that entry in state
       if (routeEntry) entry = routeEntry.toJS();
     } else {
       const currentPath = selectCurrentPath(state);
@@ -148,7 +151,7 @@ function* getRouteSaga(action) {
           }
         }
 
-        if (pathNode && pathNode.id) {
+        if (pathNode && pathNode.id && doNavigation) {
           ancestors = yield deliveryApi
             .getClient(deliveryApiStatus, project)
             .nodes.getAncestors(pathNode.id);
@@ -177,10 +180,10 @@ function* getRouteSaga(action) {
       }
     }
     if (withEvents && withEvents.onRouteLoaded) {
-      appsays = yield withEvents.onRouteLoaded({ ...action, entry });
+      yield withEvents.onRouteLoaded({ ...action, entry });
     }
 
-    if (!hasNavigationTree(state) && (appsays && !appsays.customNavigation))
+    if (!hasNavigationTree(state) && doNavigation)
       // Load navigation clientside only, a put() should help that work
       yield put({ type: GET_NODE_TREE });
   } catch (e) {
