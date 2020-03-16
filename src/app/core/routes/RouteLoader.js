@@ -72,7 +72,7 @@ const RouteLoader = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     setNavigationPath,
-    staticRoute,
+    // staticRoute,
     withEvents,
     location,
     routes,

@@ -496,7 +496,8 @@ var RouteLoader = function RouteLoader(_ref) {
     }
 
     setNavigationPath(serverPath || trimmedPath, location, staticRoute, withEvents, statePath, routes); // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [setNavigationPath, staticRoute, withEvents, location, routes, // statePath,
+  }, [setNavigationPath, // staticRoute,
+  withEvents, location, routes, // statePath,
   trimmedPath]);
   if (typeof window == 'undefined') setPath();
   (0, _react.useEffect)(function () {
