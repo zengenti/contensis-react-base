@@ -1,11 +1,8 @@
 export const hashKeys = keys => {
-  // const XXHash = require('xxhash');
   const XXHash = require('xxhashjs');
   const returnKeys = [];
   keys.forEach(cacheKey => {
     const inputBuffer = Buffer.from(cacheKey.toLowerCase(), 'utf-8');
-    // const outputBuffer = Buffer.alloc(4);
-    // XXHash.hash(inputBuffer, 0x0, outputBuffer);
 
     const hashed = XXHash.h32(inputBuffer, 0x0).toString(16);
     const reversedhex = hashed

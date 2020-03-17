@@ -5,6 +5,7 @@ import createSagaMiddleware, { END } from 'redux-saga';
 
 // Core reducers
 import RoutingReducer from './reducers/routing';
+import { reducer as UserReducer } from '~/features/login';
 import VersionReducer from './reducers/version';
 import NavigationReducer from './reducers/navigation';
 import routerMiddleware from './routerMiddleware';
@@ -33,6 +34,7 @@ export default (featureReducers, initialState, history) => {
   let reducers = {
     navigation: NavigationReducer,
     routing: RoutingReducer,
+    user: UserReducer,
     version: VersionReducer,
     ...featureReducers,
   };

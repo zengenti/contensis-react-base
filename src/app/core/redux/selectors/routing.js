@@ -1,4 +1,5 @@
 import { List, Map } from 'immutable';
+import { queryParams } from '~/core/util/navigation';
 
 export const selectRouteEntry = state => {
   return state.getIn(['routing', 'entry'], Map({}));
@@ -31,6 +32,8 @@ export const selectCurrentPath = state => {
 export const selectCurrentSearch = state => {
   return state.getIn(['routing', 'location', 'search']);
 };
+export const selectQueryStringAsObject = state =>
+  queryParams(selectCurrentSearch(state));
 export const selectCurrentProject = state => {
   return state.getIn(['routing', 'currentProject']);
 };

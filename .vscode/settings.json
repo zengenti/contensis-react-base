@@ -42,6 +42,7 @@
   "workbench.colorCustomizations": {
     "tab.activeBorderTop": "#e9654c",
     "activityBar.background": "#1e593f",
+    "activityBar.activeBackground": "#1e593f",
     "activityBar.activeBorder": "#221030",
     "activityBar.foreground": "#e7e7e7",
     "activityBar.inactiveForeground": "#e7e7e799",

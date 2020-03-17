@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { setRoute } from '~/core/redux/actions/routing';
+import LoginButton from '~/features/login/components/LoginButton';
 
 const Homepage = ({ entry, setRoute }) => {
   const changeRoute = () => {
@@ -13,6 +14,7 @@ const Homepage = ({ entry, setRoute }) => {
       <h1>Hello world {entry && entry.entryTitle}</h1>
       <Link to="/zenInfo">ZenInfo</Link>
       <button onClick={e => changeRoute(e)}>Change Route</button>
+      <LoginButton text="Sign in here" />
     </>
   );
 };

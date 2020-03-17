@@ -15,6 +15,7 @@ const LIB_CONFIG = {
     client: './src/app/lib-client.js',
     redux: './src/app/lib-redux.js',
     routing: './src/app/lib-routing.js',
+    user: './src/app/lib-user.js',
     util: './src/app/lib-util.js',
   },
   output: {

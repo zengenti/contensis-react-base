@@ -23,6 +23,7 @@ let initialState = Map({
   entryDepends: new List(),
   contentTypeId: null,
   currentNodeAncestors: new List(),
+  currentTreeId: null,
 });
 
 export default (state = initialState, action) => {
@@ -105,6 +106,7 @@ export default (state = initialState, action) => {
     case SET_TARGET_PROJECT: {
       return state
         .set('currentProject', action.project)
+        .set('currentTreeId', '') //getTreeID(action.project))
         .set('allowedGroups', fromJS(action.allowedGroups));
     }
     default:

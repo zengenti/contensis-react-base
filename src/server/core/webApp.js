@@ -34,13 +34,13 @@ import {
 import createStore from '~/core/redux/store';
 import rootSaga from '~/core/redux/sagas/index.js';
 
-const addStandardHeaders = (state, response, packagejson) => {
+const addStandardHeaders = (state, response, packagejson, groups) => {
   if (state) {
     /* eslint-disable no-console */
     try {
       console.log('About to add header');
       let entryDepends = selectEntryDepends(state);
-      entryDepends = entryDepends.toJS();
+      entryDepends = Array.from(entryDepends);
       console.log(`entryDepends count: ${entryDepends.length}`);
 
       let nodeDepends = selectNodeDepends(state).toJS();
@@ -49,7 +49,6 @@ const addStandardHeaders = (state, response, packagejson) => {
         return `${currentTreeId}_${nodeKey}`;
       });
       const allDepends = [...entryDepends, ...nodeDependsKeys];
-
       const allDependsHashed = hashKeys(allDepends);
 
       response.header(
@@ -59,7 +58,7 @@ const addStandardHeaders = (state, response, packagejson) => {
       console.log(`depends hashed: ${allDependsHashed.join(' ')}`);
       console.log(`depends hashed: ${allDepends.join(' ')}`);
 
-      addVarnishAuthenticationHeaders(state, response);
+      addVarnishAuthenticationHeaders(state, response, groups);
     } catch (e) {
       console.log('Error Adding headers');
       console.log(e);
@@ -68,20 +67,23 @@ const addStandardHeaders = (state, response, packagejson) => {
   response.setHeader('Surrogate-Control', 'max-age=3600');
 };
 
-const addVarnishAuthenticationHeaders = (state, response, allowedGroups) => {
+const addVarnishAuthenticationHeaders = (state, response, groups = {}) => {
   if (state) {
     try {
       const stateEntry = selectRouteEntry(state);
       const project = selectCurrentProject(state);
+      const { globalGroups, allowedGroups } = groups;
+      console.log(globalGroups, allowedGroups);
+      let allGroups = [...((globalGroups && globalGroups[project]) || [])];
       if (
         stateEntry &&
-        stateEntry.getIn(['authentication', 'isLoginRequired'])
+        stateEntry.getIn(['authentication', 'isLoginRequired']) &&
+        allowedGroups &&
+        allowedGroups[project]
       ) {
-        response.header(
-          'x-contensis-viewer-groups',
-          allowedGroups[project].join('|')
-        );
+        allGroups = [...allGroups, allowedGroups[project]];
       }
+      response.header('x-contensis-viewer-groups', allGroups.join('|'));
     } catch (e) {
       console.log('Error adding authentication header');
       console.log(e);
@@ -124,6 +126,7 @@ const webApp = (app, ReactApp, config) => {
     versionData,
     dynamicPaths,
     allowedGroups,
+    globalGroups,
     disableSsrRedux,
   } = config;
 
@@ -290,12 +293,10 @@ const webApp = (app, ReactApp, config) => {
           if (context.status !== 404) {
             if (accessMethod.REDUX) {
               serialisedReduxData = serialize(reduxState);
-              addStandardHeaders(
-                reduxState,
-                response,
-                packagejson,
-                allowedGroups
-              );
+              addStandardHeaders(reduxState, response, packagejson, {
+                allowedGroups,
+                globalGroups,
+              });
               response.status(status).json(serialisedReduxData);
               return true;
             }
@@ -313,12 +314,10 @@ const webApp = (app, ReactApp, config) => {
 
           // Static page served as a fragment
           if (accessMethod.FRAGMENT && accessMethod.STATIC) {
-            addStandardHeaders(
-              reduxState,
-              response,
-              packagejson,
-              allowedGroups
-            );
+            addStandardHeaders(reduxState, response, packagejson, {
+              allowedGroups,
+              globalGroups,
+            });
             responseHTML = minifyCssString(styleTags) + html;
           }
 
@@ -353,7 +352,10 @@ const webApp = (app, ReactApp, config) => {
               .replace('{{LOADABLE_CHUNKS}}', bundleScripts)
               .replace('{{REDUX_DATA}}', serialisedReduxData);
           }
-          addStandardHeaders(reduxState, response, packagejson, allowedGroups);
+          addStandardHeaders(reduxState, response, packagejson, {
+            allowedGroups,
+            globalGroups,
+          });
           response.status(status).send(responseHTML);
         })
         .catch(err => {

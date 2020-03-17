@@ -107,7 +107,7 @@ export const GetResponseGuids = object => {
 export const GetAllResponseGuids = object => {
   if (!object) return [];
   let returnItems = GetResponseGuids(object);
-  let unique = [...new Set(returnItems)];
+  let unique = new Set(returnItems);
   return unique;
 };
 class DeliveryApi {

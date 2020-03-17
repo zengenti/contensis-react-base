@@ -7,6 +7,7 @@ export default [
   {
     path: '/',
     exact: true,
+    fetchNode: true,
     component: Homepage,
   },
   // ********************************
@@ -16,6 +17,15 @@ export default [
     exact: true,
     component: Loadable({
       loader: () => import(/* webpackChunkName: "404" */ '~/pages/NotFound'),
+      loading: Loading,
+    }),
+  },
+  {
+    path: '/login',
+    exact: true,
+    component: Loadable({
+      loader: () =>
+        import(/* webpackChunkName: "Login" */ '~/pages/Login/Login'),
       loading: Loading,
     }),
   },

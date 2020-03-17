@@ -7,7 +7,7 @@
 		var a = typeof exports === 'object' ? factory(require("@babel/runtime/helpers/interopRequireDefault"), require("@babel/runtime/helpers/typeof"), require("@babel/runtime/helpers/slicedToArray"), require("awesome-json2json")) : factory(root["@babel/runtime/helpers/interopRequireDefault"], root["@babel/runtime/helpers/typeof"], root["@babel/runtime/helpers/slicedToArray"], root["awesome-json2json"]);
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(global, function(__WEBPACK_EXTERNAL_MODULE__0__, __WEBPACK_EXTERNAL_MODULE__23__, __WEBPACK_EXTERNAL_MODULE__61__, __WEBPACK_EXTERNAL_MODULE__94__) {
+})(global, function(__WEBPACK_EXTERNAL_MODULE__0__, __WEBPACK_EXTERNAL_MODULE__40__, __WEBPACK_EXTERNAL_MODULE__72__, __WEBPACK_EXTERNAL_MODULE__106__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -91,7 +91,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 93);
+/******/ 	return __webpack_require__(__webpack_require__.s = 105);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -103,67 +103,28 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__0__;
 
 /***/ }),
 
-/***/ 23:
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__23__;
-
-/***/ }),
-
-/***/ 61:
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__61__;
-
-/***/ }),
-
-/***/ 62:
+/***/ 105:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _interopRequireDefault = __webpack_require__(0);
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = exports.useMapper = void 0;
-
-var _awesomeJson2json = _interopRequireDefault(__webpack_require__(94));
-
-var useMapper = function useMapper(json, template) {
-  return (0, _awesomeJson2json["default"])(json, template);
-};
-
-exports.useMapper = useMapper;
-var _default = _awesomeJson2json["default"];
-exports["default"] = _default;
+exports.mapJson = __webpack_require__(73)["default"];
+exports.setCachingHeaders = __webpack_require__(107);
+exports.stringifyStrings = __webpack_require__(108);
+exports.urls = __webpack_require__(109);
+exports.useMapper = __webpack_require__(73).useMapper;
 
 /***/ }),
 
-/***/ 93:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-exports.mapJson = __webpack_require__(62)["default"];
-exports.setCachingHeaders = __webpack_require__(95);
-exports.stringifyStrings = __webpack_require__(96);
-exports.urls = __webpack_require__(97);
-exports.useMapper = __webpack_require__(62).useMapper;
-
-/***/ }),
-
-/***/ 94:
+/***/ 106:
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__94__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__106__;
 
 /***/ }),
 
-/***/ 95:
+/***/ 107:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -183,7 +144,7 @@ module.exports = setCachingHeaders;
 
 /***/ }),
 
-/***/ 96:
+/***/ 108:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -191,9 +152,9 @@ module.exports = setCachingHeaders;
 
 var _interopRequireDefault = __webpack_require__(0);
 
-var _typeof2 = _interopRequireDefault(__webpack_require__(23));
+var _typeof2 = _interopRequireDefault(__webpack_require__(40));
 
-var _slicedToArray2 = _interopRequireDefault(__webpack_require__(61));
+var _slicedToArray2 = _interopRequireDefault(__webpack_require__(72));
 
 var stringifyStrings = function stringifyStrings(obj) {
   var returnObj = Array.isArray(obj) ? [] : {};
@@ -223,7 +184,7 @@ module.exports = stringifyStrings;
 
 /***/ }),
 
-/***/ 97:
+/***/ 109:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -241,6 +202,45 @@ var url = function url(alias, project) {
 };
 
 module.exports = url;
+
+/***/ }),
+
+/***/ 40:
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__40__;
+
+/***/ }),
+
+/***/ 72:
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__72__;
+
+/***/ }),
+
+/***/ 73:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(0);
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = exports.useMapper = void 0;
+
+var _awesomeJson2json = _interopRequireDefault(__webpack_require__(106));
+
+var useMapper = function useMapper(json, template) {
+  return (0, _awesomeJson2json["default"])(json, template);
+};
+
+exports.useMapper = useMapper;
+var _default = _awesomeJson2json["default"];
+exports["default"] = _default;
 
 /***/ })
 
