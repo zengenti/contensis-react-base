@@ -6,6 +6,7 @@ import {
   LOGIN_USER,
   LOGOUT_USER,
   TOGGLE_LOGIN_MODE,
+  SET_RECAPTCHA_KEY,
   SET_RECAPTCHA_RESPONSE,
   VALIDATE_USER,
 } from './types';
@@ -31,5 +32,6 @@ export const changePasswordWithToken = (
   newPassword,
   newPasswordConfirm
 ) => action(CHANGE_USER_PASSWORD, { token, newPassword, newPasswordConfirm });
+export const setRecaptchaKey = key => action(SET_RECAPTCHA_KEY, { key });
 export const setRecaptchaResponse = (isHuman, token) =>
   action(SET_RECAPTCHA_RESPONSE, { isHuman, token });

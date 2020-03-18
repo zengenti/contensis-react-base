@@ -2,6 +2,7 @@ import { List, Map, fromJS } from 'immutable';
 import {
   UPDATE_USER,
   TOGGLE_LOGIN_MODE,
+  SET_RECAPTCHA_KEY,
   SET_RECAPTCHA_RESPONSE,
 } from './types';
 
@@ -20,7 +21,7 @@ export const initialUserState = Map({
   passwordReset: false,
   passwordResetMessage: null,
   changePasswordMessage: null,
-  recaptchaKey: RECAPTCHA_KEY /* global RECAPTCHA_KEY */,
+  recaptchaKey: null,
   settings: fromJS({
     recaptcha: { response: { isHuman: false, token: null } },
   }),
@@ -53,10 +54,12 @@ export default (state = initialUserState, action) => {
         .set('emailAddress', user.emailAddress || state.get('emailAddress'))
         .set('fullName', user.fullName || state.get('fullName'));
     }
-
     case TOGGLE_LOGIN_MODE: {
       const newMode = action.loginMode;
       return state.set('loginScreenMode', newMode);
+    }
+    case SET_RECAPTCHA_KEY: {
+      return state.set('recaptchaKey', action.key);
     }
     case SET_RECAPTCHA_RESPONSE: {
       const settings = {

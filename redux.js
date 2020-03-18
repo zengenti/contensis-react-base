@@ -292,7 +292,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__8__;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.SET_RECAPTCHA_RESPONSE = exports.CHANGE_USER_PASSWORD_COMPLETE = exports.CHANGE_USER_PASSWORD_FAILED = exports.CHANGE_USER_PASSWORD = exports.FORGOT_USER_PASSWORD_COMPLETE = exports.FORGOT_USER_PASSWORD = exports.VALIDATE_USER_FAILED = exports.VALIDATE_USER_SUCCESS = exports.VALIDATE_USER = exports.CREATE_USER_ACCOUNT = exports.TOGGLE_LOGIN_MODE = exports.LOGOUT_USER = exports.LOGIN_FAILED = exports.LOGIN_SUCCESSFUL = exports.LOGIN_USER = exports.UPDATE_USER = void 0;
+exports.SET_RECAPTCHA_RESPONSE = exports.SET_RECAPTCHA_KEY = exports.CHANGE_USER_PASSWORD_COMPLETE = exports.CHANGE_USER_PASSWORD_FAILED = exports.CHANGE_USER_PASSWORD = exports.FORGOT_USER_PASSWORD_COMPLETE = exports.FORGOT_USER_PASSWORD = exports.VALIDATE_USER_FAILED = exports.VALIDATE_USER_SUCCESS = exports.VALIDATE_USER = exports.CREATE_USER_ACCOUNT = exports.TOGGLE_LOGIN_MODE = exports.LOGOUT_USER = exports.LOGIN_FAILED = exports.LOGIN_SUCCESSFUL = exports.LOGIN_USER = exports.UPDATE_USER = void 0;
 var ACTION_PREFIX = '@USER/';
 var UPDATE_USER = "".concat(ACTION_PREFIX, "UPDATE_USER");
 exports.UPDATE_USER = UPDATE_USER;
@@ -324,6 +324,8 @@ var CHANGE_USER_PASSWORD_FAILED = "".concat(ACTION_PREFIX, "CHANGE_USER_PASSWORD
 exports.CHANGE_USER_PASSWORD_FAILED = CHANGE_USER_PASSWORD_FAILED;
 var CHANGE_USER_PASSWORD_COMPLETE = "".concat(ACTION_PREFIX, "CHANGE_USER_PASSWORD_COMPLETE");
 exports.CHANGE_USER_PASSWORD_COMPLETE = CHANGE_USER_PASSWORD_COMPLETE;
+var SET_RECAPTCHA_KEY = "".concat(ACTION_PREFIX, "SET_RECAPTCHA_KEY");
+exports.SET_RECAPTCHA_KEY = SET_RECAPTCHA_KEY;
 var SET_RECAPTCHA_RESPONSE = "".concat(ACTION_PREFIX, "SET_RECAPTCHA_RESPONSE");
 exports.SET_RECAPTCHA_RESPONSE = SET_RECAPTCHA_RESPONSE;
 
@@ -653,9 +655,7 @@ var initialUserState = (0, _immutable.Map)({
   passwordReset: false,
   passwordResetMessage: null,
   changePasswordMessage: null,
-  recaptchaKey: RECAPTCHA_KEY
-  /* global RECAPTCHA_KEY */
-  ,
+  recaptchaKey: null,
   settings: (0, _immutable.fromJS)({
     recaptcha: {
       response: {
@@ -682,6 +682,11 @@ var _default = function _default() {
       {
         var newMode = action.loginMode;
         return state.set('loginScreenMode', newMode);
+      }
+
+    case _types.SET_RECAPTCHA_KEY:
+      {
+        return state.set('recaptchaKey', action.key);
       }
 
     case _types.SET_RECAPTCHA_RESPONSE:
@@ -838,7 +843,7 @@ exports.addHostname = addHostname;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.setRecaptchaResponse = exports.changePasswordWithToken = exports.changePassword = exports.forgotPassword = exports.createUserAccount = exports.toggleLoginMode = exports.logoutUser = exports.validateUser = exports.loginUser = void 0;
+exports.setRecaptchaResponse = exports.setRecaptchaKey = exports.changePasswordWithToken = exports.changePassword = exports.forgotPassword = exports.createUserAccount = exports.toggleLoginMode = exports.logoutUser = exports.validateUser = exports.loginUser = void 0;
 
 var _helpers = __webpack_require__(13);
 
@@ -908,6 +913,14 @@ var changePasswordWithToken = function changePasswordWithToken(token, newPasswor
 };
 
 exports.changePasswordWithToken = changePasswordWithToken;
+
+var setRecaptchaKey = function setRecaptchaKey(key) {
+  return (0, _helpers.action)(_types.SET_RECAPTCHA_KEY, {
+    key: key
+  });
+};
+
+exports.setRecaptchaKey = setRecaptchaKey;
 
 var setRecaptchaResponse = function setRecaptchaResponse(isHuman, token) {
   return (0, _helpers.action)(_types.SET_RECAPTCHA_RESPONSE, {
