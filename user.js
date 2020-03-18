@@ -339,7 +339,7 @@ exports.SET_RECAPTCHA_RESPONSE = SET_RECAPTCHA_RESPONSE;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.selectCaptchaSiteKey = exports.selectCaptchaToken = exports.selectCaptchaData = exports.selectCaptchaResponse = exports.selectChangePasswordMessage = exports.selectPasswordMessage = exports.selectLoginScreenMode = exports.selectUserMessage = exports.selectUserGroups = exports.selectUserLoggedIn = exports.selectUsername = exports.selectUser = void 0;
+exports.selectCaptchaToken = exports.selectCaptchaResponse = exports.selectCaptchaData = exports.selectCaptchaSiteKey = exports.selectChangePasswordMessage = exports.selectPasswordMessage = exports.selectLoginScreenMode = exports.selectUserMessage = exports.selectUserGroups = exports.selectUserLoggedIn = exports.selectUsername = exports.selectUser = void 0;
 
 var selectUser = function selectUser(state) {
   return state.get('user');
@@ -366,7 +366,7 @@ var selectUserGroups = function selectUserGroups(state) {
 exports.selectUserGroups = selectUserGroups;
 
 var selectUserMessage = function selectUserMessage(state) {
-  return state.getIn(['user', 'logonResultMessage']);
+  return state.getIn(['user', 'logonResult']);
 };
 
 exports.selectUserMessage = selectUserMessage;
@@ -389,29 +389,29 @@ var selectChangePasswordMessage = function selectChangePasswordMessage(state) {
 
 exports.selectChangePasswordMessage = selectChangePasswordMessage;
 
-var selectCaptchaResponse = function selectCaptchaResponse(state) {
-  return state.getIn(['user', 'settings', 'recaptcha', 'response', 'isHuman']);
+var selectCaptchaSiteKey = function selectCaptchaSiteKey(state) {
+  return state.getIn(['user', 'recaptcha', 'key']);
 };
 
-exports.selectCaptchaResponse = selectCaptchaResponse;
+exports.selectCaptchaSiteKey = selectCaptchaSiteKey;
 
 var selectCaptchaData = function selectCaptchaData(state) {
-  return state.getIn(['user', 'settings', 'recaptcha', 'response']);
+  return state.getIn(['user', 'recaptcha', 'response']);
 };
 
 exports.selectCaptchaData = selectCaptchaData;
 
+var selectCaptchaResponse = function selectCaptchaResponse(state) {
+  return state.getIn(['user', 'recaptcha', 'response', 'isHuman']);
+};
+
+exports.selectCaptchaResponse = selectCaptchaResponse;
+
 var selectCaptchaToken = function selectCaptchaToken(state) {
-  return state.getIn(['user', 'settings', 'recaptcha', 'response', 'token']);
+  return state.getIn(['user', 'recaptcha', 'response', 'token']);
 };
 
 exports.selectCaptchaToken = selectCaptchaToken;
-
-var selectCaptchaSiteKey = function selectCaptchaSiteKey(state) {
-  return state.getIn(['user', 'recaptchaKey']);
-};
-
-exports.selectCaptchaSiteKey = selectCaptchaSiteKey;
 
 /***/ }),
 /* 11 */
@@ -647,7 +647,6 @@ var initialUserState = (0, _immutable.Map)({
   id: null,
   securityToken: null,
   logonResult: null,
-  registrationResult: null,
   groups: new _immutable.List([]),
   emailAddress: null,
   fullName: null,
@@ -655,14 +654,12 @@ var initialUserState = (0, _immutable.Map)({
   passwordReset: false,
   passwordResetMessage: null,
   changePasswordMessage: null,
-  recaptchaKey: null,
-  settings: (0, _immutable.fromJS)({
-    recaptcha: {
-      response: {
-        isHuman: false,
-        token: null
-      }
-    }
+  recaptcha: new _immutable.Map({
+    key: null,
+    response: new _immutable.Map({
+      isHuman: false,
+      token: null
+    })
   })
 });
 exports.initialUserState = initialUserState;
@@ -675,7 +672,7 @@ var _default = function _default() {
     case _types.UPDATE_USER:
       {
         var user = action.user;
-        return state.set('loggedIn', user.loggedIn != 'undefined' ? user.loggedIn : state.get('loggedIn')).set('failedLogin', user.failedLogin != 'undefined' ? user.failedLogin : state.get('failedLogin')).set('username', user.username || state.get('username')).set('id', user.id || state.get('id')).set('securityToken', user.securityToken || state.get('securityToken')).set('logonResult', user.logonResult || state.get('logonResult')).set('registrationResult', user.registrationResult || state.get('registrationResult')).set('groups', (0, _immutable.fromJS)(user.groups) || state.get('groups')).set('emailAddress', user.emailAddress || state.get('emailAddress')).set('fullName', user.fullName || state.get('fullName'));
+        return state.set('loggedIn', typeof user.loggedIn !== 'undefined' ? user.loggedIn : state.get('loggedIn')).set('failedLogin', typeof user.failedLogin !== 'undefined' ? user.failedLogin : state.get('failedLogin')).set('username', user.username || state.get('username')).set('id', user.id || state.get('id')).set('securityToken', user.securityToken || state.get('securityToken')).set('logonResult', user.logonResult || state.get('logonResult')).set('groups', (0, _immutable.fromJS)(user.groups) || state.get('groups')).set('emailAddress', user.emailAddress || state.get('emailAddress')).set('fullName', user.fullName || state.get('fullName')).set('passwordReset', typeof user.passwordReset !== 'undefined' ? user.passwordReset : state.get('passwordReset')).set('passwordResetMessage', user.passwordResetMessage || state.get('passwordResetMessage')).set('changePasswordMessage', user.changePasswordMessage || state.get('changePasswordMessage'));
       }
 
     case _types.TOGGLE_LOGIN_MODE:
@@ -686,20 +683,12 @@ var _default = function _default() {
 
     case _types.SET_RECAPTCHA_KEY:
       {
-        return state.set('recaptchaKey', action.key);
+        return state.setIn(['recaptcha', 'key'], action.key);
       }
 
     case _types.SET_RECAPTCHA_RESPONSE:
       {
-        var settings = {
-          recaptcha: {
-            response: {
-              isHuman: action.isHuman,
-              token: action.token
-            }
-          }
-        };
-        return state.set('settings', (0, _immutable.fromJS)(settings));
+        return state.setIn(['recaptcha', 'response', 'isHuman'], action.isHuman).setIn(['recaptcha', 'response', 'token'], action.token);
       }
 
     default:
@@ -951,9 +940,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.SecurityApi = void 0;
 
-var _regenerator = _interopRequireDefault(__webpack_require__(1));
-
 var _defineProperty2 = _interopRequireDefault(__webpack_require__(4));
+
+var _regenerator = _interopRequireDefault(__webpack_require__(1));
 
 var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(8));
 
@@ -972,12 +961,21 @@ var config = {
   REGISTER_USER_URI: 'Security/RegisterUser',
   LOGON_USER_URI: 'REST/Contensis/Security/AuthenticateApplication',
   VALIDATE_USER_URI: 'REST/Contensis/Security/IsAuthenticated',
-  USER_INFO_URI: 'REST/Contensis/Security/GetUserInfo'
+  USER_INFO_URI: 'REST/Contensis/Security/GetUserInfo',
+  FORGOT_PASSWORD_URI: 'Security/ResetPasswordEmail',
+  CHANGE_PASSWORD_URI: 'Security/ChangePassword',
+  CHANGE_PASSWORD_TOKEN_URI: 'Security/ChangePasswordWithToken',
+  AUTH_CAPTCHA_URI: 'Security/AuthenticateCaptcha',
+  LOGIN_URL: '/business-government/partner'
 };
 var REGISTER_USER_URL = "".concat(CMS_URL, "/").concat(config.REGISTER_USER_URI);
 var LOGON_USER_URL = "".concat(CMS_URL, "/").concat(config.LOGON_USER_URI);
 var VALIDATE_USER_URL = "".concat(CMS_URL, "/").concat(config.VALIDATE_USER_URI);
 var USER_INFO_URL = "".concat(CMS_URL, "/").concat(config.USER_INFO_URI);
+var FORGOT_PASSWORD_URI = "/".concat(config.FORGOT_PASSWORD_URI);
+var CHANGE_PASSWORD_URI = "/".concat(config.CHANGE_PASSWORD_URI);
+var AUTH_CAPTCHA_URI = "/".concat(config.AUTH_CAPTCHA_URI);
+var CHANGE_PASSWORD_TOKEN_URI = "/".concat(config.CHANGE_PASSWORD_TOKEN_URI);
 var BASE_OPTIONS = {
   method: 'GET',
   headers: {
@@ -993,26 +991,25 @@ function () {
   }
 
   (0, _createClass2["default"])(SecurityApi, null, [{
-    key: "RegisterUser",
+    key: "AuthoriseRecaptcha",
     value: function () {
-      var _RegisterUser = (0, _asyncToGenerator2["default"])(
+      var _AuthoriseRecaptcha = (0, _asyncToGenerator2["default"])(
       /*#__PURE__*/
-      _regenerator["default"].mark(function _callee(email, password) {
-        var body, options;
+      _regenerator["default"].mark(function _callee(token) {
+        var url, options;
         return _regenerator["default"].wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                body = {
-                  email: email,
-                  password: password
+                url = "".concat(AUTH_CAPTCHA_URI, "?captchaToken=").concat(encodeURIComponent(token));
+                options = {
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  method: 'POST'
                 };
-                options = _objectSpread({}, BASE_OPTIONS, {
-                  method: 'POST',
-                  body: JSON.stringify(body)
-                });
                 _context.next = 4;
-                return SecurityApi.get(REGISTER_USER_URL, options);
+                return SecurityApi.get(url, options);
 
               case 4:
                 return _context.abrupt("return", _context.sent);
@@ -1025,11 +1022,11 @@ function () {
         }, _callee);
       }));
 
-      function RegisterUser(_x, _x2) {
-        return _RegisterUser.apply(this, arguments);
+      function AuthoriseRecaptcha(_x) {
+        return _AuthoriseRecaptcha.apply(this, arguments);
       }
 
-      return RegisterUser;
+      return AuthoriseRecaptcha;
     }()
   }, {
     key: "LogonUser",
@@ -1066,7 +1063,7 @@ function () {
         }, _callee2);
       }));
 
-      function LogonUser(_x3, _x4) {
+      function LogonUser(_x2, _x3) {
         return _LogonUser.apply(this, arguments);
       }
 
@@ -1105,7 +1102,7 @@ function () {
         }, _callee3);
       }));
 
-      function ValidateUser(_x5) {
+      function ValidateUser(_x4) {
         return _ValidateUser.apply(this, arguments);
       }
 
@@ -1141,57 +1138,210 @@ function () {
         }, _callee4);
       }));
 
-      function GetUserInfo(_x6) {
+      function GetUserInfo(_x5) {
         return _GetUserInfo.apply(this, arguments);
       }
 
       return GetUserInfo;
     }()
   }, {
-    key: "get",
+    key: "RegisterUser",
     value: function () {
-      var _get = (0, _asyncToGenerator2["default"])(
+      var _RegisterUser = (0, _asyncToGenerator2["default"])(
       /*#__PURE__*/
-      _regenerator["default"].mark(function _callee5(url) {
-        var options,
-            responseBody,
-            _args5 = arguments;
+      _regenerator["default"].mark(function _callee5(email, password) {
+        var body, options;
         return _regenerator["default"].wrap(function _callee5$(_context5) {
           while (1) {
             switch (_context5.prev = _context5.next) {
               case 0:
-                options = _args5.length > 1 && _args5[1] !== undefined ? _args5[1] : BASE_OPTIONS;
-                _context5.prev = 1;
+                body = {
+                  email: email,
+                  password: password
+                };
+                options = _objectSpread({}, BASE_OPTIONS, {
+                  method: 'POST',
+                  body: JSON.stringify(body)
+                });
                 _context5.next = 4;
-                return api(url, options);
+                return SecurityApi.get(REGISTER_USER_URL, options);
 
               case 4:
-                responseBody = _context5.sent;
+                return _context5.abrupt("return", _context5.sent);
 
-                if (!responseBody) {
-                  _context5.next = 7;
-                  break;
-                }
-
-                return _context5.abrupt("return", responseBody);
-
-              case 7:
-                return _context5.abrupt("return", false);
-
-              case 10:
-                _context5.prev = 10;
-                _context5.t0 = _context5["catch"](1);
-                return _context5.abrupt("return", false);
-
-              case 13:
+              case 5:
               case "end":
                 return _context5.stop();
             }
           }
-        }, _callee5, null, [[1, 10]]);
+        }, _callee5);
       }));
 
-      function get(_x7) {
+      function RegisterUser(_x6, _x7) {
+        return _RegisterUser.apply(this, arguments);
+      }
+
+      return RegisterUser;
+    }()
+  }, {
+    key: "ChangePassword",
+    value: function () {
+      var _ChangePassword = (0, _asyncToGenerator2["default"])(
+      /*#__PURE__*/
+      _regenerator["default"].mark(function _callee6(username, oldPassword, newPassword, newPasswordConfirm) {
+        var url, options;
+        return _regenerator["default"].wrap(function _callee6$(_context6) {
+          while (1) {
+            switch (_context6.prev = _context6.next) {
+              case 0:
+                url = "".concat(CHANGE_PASSWORD_URI, "?username=").concat(encodeURIComponent(username), "&oldPassword=").concat(encodeURIComponent(oldPassword), "&newPassword=").concat(encodeURIComponent(newPassword), "&newPasswordConfirm=").concat(encodeURIComponent(newPasswordConfirm));
+                options = {
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  method: 'POST'
+                };
+                _context6.next = 4;
+                return SecurityApi.get(url, options);
+
+              case 4:
+                return _context6.abrupt("return", _context6.sent);
+
+              case 5:
+              case "end":
+                return _context6.stop();
+            }
+          }
+        }, _callee6);
+      }));
+
+      function ChangePassword(_x8, _x9, _x10, _x11) {
+        return _ChangePassword.apply(this, arguments);
+      }
+
+      return ChangePassword;
+    }()
+  }, {
+    key: "ChangePasswordWithToken",
+    value: function () {
+      var _ChangePasswordWithToken = (0, _asyncToGenerator2["default"])(
+      /*#__PURE__*/
+      _regenerator["default"].mark(function _callee7(token, newPassword, newPasswordConfirm) {
+        var url, options;
+        return _regenerator["default"].wrap(function _callee7$(_context7) {
+          while (1) {
+            switch (_context7.prev = _context7.next) {
+              case 0:
+                url = "".concat(CHANGE_PASSWORD_TOKEN_URI, "?token=").concat(token, "&newPassword=").concat(encodeURIComponent(newPassword), "&confirmPassword=").concat(encodeURIComponent(newPasswordConfirm));
+                options = {
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  method: 'POST'
+                };
+                _context7.next = 4;
+                return SecurityApi.get(url, options);
+
+              case 4:
+                return _context7.abrupt("return", _context7.sent);
+
+              case 5:
+              case "end":
+                return _context7.stop();
+            }
+          }
+        }, _callee7);
+      }));
+
+      function ChangePasswordWithToken(_x12, _x13, _x14) {
+        return _ChangePasswordWithToken.apply(this, arguments);
+      }
+
+      return ChangePasswordWithToken;
+    }()
+  }, {
+    key: "ForgotPassword",
+    value: function () {
+      var _ForgotPassword = (0, _asyncToGenerator2["default"])(
+      /*#__PURE__*/
+      _regenerator["default"].mark(function _callee8(username, currentUrl) {
+        var url, options;
+        return _regenerator["default"].wrap(function _callee8$(_context8) {
+          while (1) {
+            switch (_context8.prev = _context8.next) {
+              case 0:
+                url = "".concat(FORGOT_PASSWORD_URI, "?username=").concat(encodeURIComponent(username), "&currentUrl=").concat(encodeURIComponent(currentUrl));
+                options = {
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  method: 'POST'
+                };
+                _context8.next = 4;
+                return SecurityApi.get(url, options);
+
+              case 4:
+                return _context8.abrupt("return", _context8.sent);
+
+              case 5:
+              case "end":
+                return _context8.stop();
+            }
+          }
+        }, _callee8);
+      }));
+
+      function ForgotPassword(_x15, _x16) {
+        return _ForgotPassword.apply(this, arguments);
+      }
+
+      return ForgotPassword;
+    }()
+  }, {
+    key: "get",
+    value: function () {
+      var _get = (0, _asyncToGenerator2["default"])(
+      /*#__PURE__*/
+      _regenerator["default"].mark(function _callee9(url) {
+        var options,
+            responseBody,
+            _args9 = arguments;
+        return _regenerator["default"].wrap(function _callee9$(_context9) {
+          while (1) {
+            switch (_context9.prev = _context9.next) {
+              case 0:
+                options = _args9.length > 1 && _args9[1] !== undefined ? _args9[1] : BASE_OPTIONS;
+                _context9.prev = 1;
+                _context9.next = 4;
+                return api(url, options);
+
+              case 4:
+                responseBody = _context9.sent;
+
+                if (!responseBody) {
+                  _context9.next = 7;
+                  break;
+                }
+
+                return _context9.abrupt("return", responseBody);
+
+              case 7:
+                return _context9.abrupt("return", false);
+
+              case 10:
+                _context9.prev = 10;
+                _context9.t0 = _context9["catch"](1);
+                return _context9.abrupt("return", false);
+
+              case 13:
+              case "end":
+                return _context9.stop();
+            }
+          }
+        }, _callee9, null, [[1, 10]]);
+      }));
+
+      function get(_x17) {
         return _get.apply(this, arguments);
       }
 
@@ -1203,53 +1353,53 @@ function () {
 
 exports.SecurityApi = SecurityApi;
 
-function api(_x8, _x9) {
+function api(_x18, _x19) {
   return _api.apply(this, arguments);
 }
 
 function _api() {
   _api = (0, _asyncToGenerator2["default"])(
   /*#__PURE__*/
-  _regenerator["default"].mark(function _callee7(url, options) {
-    return _regenerator["default"].wrap(function _callee7$(_context7) {
+  _regenerator["default"].mark(function _callee11(url, options) {
+    return _regenerator["default"].wrap(function _callee11$(_context11) {
       while (1) {
-        switch (_context7.prev = _context7.next) {
+        switch (_context11.prev = _context11.next) {
           case 0:
-            return _context7.abrupt("return", fetch(url, options).then(
+            return _context11.abrupt("return", fetch(url, options).then(
             /*#__PURE__*/
             function () {
               var _ref = (0, _asyncToGenerator2["default"])(
               /*#__PURE__*/
-              _regenerator["default"].mark(function _callee6(response) {
-                return _regenerator["default"].wrap(function _callee6$(_context6) {
+              _regenerator["default"].mark(function _callee10(response) {
+                return _regenerator["default"].wrap(function _callee10$(_context10) {
                   while (1) {
-                    switch (_context6.prev = _context6.next) {
+                    switch (_context10.prev = _context10.next) {
                       case 0:
                         setTimeout(function () {
                           return null;
                         }, 0);
 
                         if (response.ok) {
-                          _context6.next = 3;
+                          _context10.next = 3;
                           break;
                         }
 
                         throw new Error(response.statusText);
 
                       case 3:
-                        return _context6.abrupt("return", response.json().then(function (data) {
+                        return _context10.abrupt("return", response.json().then(function (data) {
                           return data;
                         }));
 
                       case 4:
                       case "end":
-                        return _context6.stop();
+                        return _context10.stop();
                     }
                   }
-                }, _callee6);
+                }, _callee10);
               }));
 
-              return function (_x10) {
+              return function (_x20) {
                 return _ref.apply(this, arguments);
               };
             }())["catch"](function (error) {
@@ -1259,10 +1409,10 @@ function _api() {
 
           case 1:
           case "end":
-            return _context7.stop();
+            return _context11.stop();
         }
       }
-    }, _callee7);
+    }, _callee11);
   }));
   return _api.apply(this, arguments);
 }
@@ -1317,9 +1467,9 @@ Object.defineProperty(exports, "__esModule", {
 exports.validateUserSaga = validateUserSaga;
 exports.userSagas = void 0;
 
-var _regenerator = _interopRequireDefault(__webpack_require__(1));
-
 var _defineProperty2 = _interopRequireDefault(__webpack_require__(4));
+
+var _regenerator = _interopRequireDefault(__webpack_require__(1));
 
 var _effects = __webpack_require__(19);
 
@@ -1339,62 +1489,319 @@ var _LoginHelper = __webpack_require__(32);
 
 var _SecurityApi = __webpack_require__(24);
 
-var _marked =
-/*#__PURE__*/
-_regenerator["default"].mark(createUserAccountSaga),
-    _marked2 =
-/*#__PURE__*/
-_regenerator["default"].mark(loginUserSaga),
-    _marked3 =
-/*#__PURE__*/
-_regenerator["default"].mark(logoutUserSaga),
-    _marked4 =
-/*#__PURE__*/
-_regenerator["default"].mark(validateUserSaga),
-    _marked5 =
-/*#__PURE__*/
-_regenerator["default"].mark(updateUserSaga);
-
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
-var userSagas = [(0, _effects.takeEvery)(_types.LOGIN_USER, loginUserSaga), (0, _effects.takeEvery)(_types.LOGOUT_USER, logoutUserSaga), (0, _effects.takeEvery)(_types.VALIDATE_USER, validateUserSaga), (0, _effects.takeEvery)(_types.CREATE_USER_ACCOUNT, createUserAccountSaga)];
+var _marked =
+/*#__PURE__*/
+_regenerator["default"].mark(loginUserSaga),
+    _marked2 =
+/*#__PURE__*/
+_regenerator["default"].mark(logoutUserSaga),
+    _marked3 =
+/*#__PURE__*/
+_regenerator["default"].mark(validateUserSaga),
+    _marked4 =
+/*#__PURE__*/
+_regenerator["default"].mark(updateUserSaga),
+    _marked5 =
+/*#__PURE__*/
+_regenerator["default"].mark(forgotPassword),
+    _marked6 =
+/*#__PURE__*/
+_regenerator["default"].mark(changePassword),
+    _marked7 =
+/*#__PURE__*/
+_regenerator["default"].mark(createUserAccountSaga);
+
+var userSagas = [(0, _effects.takeEvery)(_types.LOGIN_USER, loginUserSaga), (0, _effects.takeEvery)(_types.LOGOUT_USER, logoutUserSaga), (0, _effects.takeEvery)(_types.VALIDATE_USER, validateUserSaga), (0, _effects.takeEvery)(_types.CREATE_USER_ACCOUNT, createUserAccountSaga), (0, _effects.takeEvery)(_types.FORGOT_USER_PASSWORD, forgotPassword), (0, _effects.takeEvery)(_types.CHANGE_USER_PASSWORD, changePassword)];
 exports.userSagas = userSagas;
+
+function loginUserSaga(action) {
+  var getGroups, username, password, user;
+  return _regenerator["default"].wrap(function loginUserSaga$(_context) {
+    while (1) {
+      switch (_context.prev = _context.next) {
+        case 0:
+          getGroups = true;
+          username = action.username, password = action.password;
+
+          if (!(username && password)) {
+            _context.next = 10;
+            break;
+          }
+
+          _context.next = 5;
+          return _LoginHelper.LoginHelper.LoginUser(username, password, getGroups);
+
+        case 5:
+          user = _context.sent;
+          _context.next = 8;
+          return (0, _effects.call)(updateUserSaga, {
+            type: user.failedLogin ? _types.LOGIN_FAILED : _types.LOGIN_SUCCESSFUL,
+            user: user,
+            redirect: !user.failedLogin
+          });
+
+        case 8:
+          _context.next = 12;
+          break;
+
+        case 10:
+          _context.next = 12;
+          return _LoginHelper.LoginHelper.ClientRedirectToLogin();
+
+        case 12:
+        case "end":
+          return _context.stop();
+      }
+    }
+  }, _marked);
+}
+
+function logoutUserSaga() {
+  var user, state;
+  return _regenerator["default"].wrap(function logoutUserSaga$(_context2) {
+    while (1) {
+      switch (_context2.prev = _context2.next) {
+        case 0:
+          user = _LoginHelper.LoginHelper.LogoutUser();
+          _context2.next = 3;
+          return (0, _effects.fork)(updateUserSaga, {
+            user: user
+          });
+
+        case 3:
+          _context2.next = 5;
+          return (0, _effects.select)();
+
+        case 5:
+          state = _context2.sent;
+          _context2.next = 8;
+          return _LoginHelper.LoginHelper.ClientRedirectToHome(state.getIn(['router', 'location']));
+
+        case 8:
+        case "end":
+          return _context2.stop();
+      }
+    }
+  }, _marked2);
+}
+
+function validateUserSaga(action) {
+  var getGroups, state, currentQs, qsToken, cookies, user, type;
+  return _regenerator["default"].wrap(function validateUserSaga$(_context3) {
+    while (1) {
+      switch (_context3.prev = _context3.next) {
+        case 0:
+          getGroups = true;
+          _context3.next = 3;
+          return (0, _effects.select)();
+
+        case 3:
+          state = _context3.sent;
+          currentQs = _queryString["default"].parse(state.getIn(['router', 'location', 'search']));
+          qsToken = currentQs.securityToken || currentQs.securitytoken;
+
+          if (qsToken) {
+            _LoginHelper.LoginHelper.SetLoginCookies({
+              securityToken: qsToken
+            });
+          }
+
+          cookies = !qsToken ? action.cookies : _objectSpread({
+            ContensisCMSUserName: encodeURIComponent(qsToken)
+          }, action.cookies);
+          _context3.next = 10;
+          return _LoginHelper.LoginHelper.ValidateUser(getGroups, cookies);
+
+        case 10:
+          user = _context3.sent;
+          type = user && user.loggedIn ? _types.VALIDATE_USER_SUCCESS : _types.VALIDATE_USER_FAILED;
+          _context3.next = 14;
+          return (0, _effects.call)(updateUserSaga, {
+            type: type,
+            user: user && !user.loggedIn ? _reducers.initialUserState : user
+          });
+
+        case 14:
+        case "end":
+          return _context3.stop();
+      }
+    }
+  }, _marked3);
+}
+
+function updateUserSaga(action) {
+  var userState, currentSearch, qs, redirectUri;
+  return _regenerator["default"].wrap(function updateUserSaga$(_context4) {
+    while (1) {
+      switch (_context4.prev = _context4.next) {
+        case 0:
+          _context4.next = 2;
+          return (0, _effects.select)(_selectors.selectUser);
+
+        case 2:
+          userState = _context4.sent;
+          _context4.next = 5;
+          return (0, _effects.put)({
+            type: _types.UPDATE_USER,
+            from: action.type,
+            user: _objectSpread({}, userState.toJS(), {}, action.user)
+          });
+
+        case 5:
+          if (!action.redirect) {
+            _context4.next = 14;
+            break;
+          }
+
+          _context4.next = 8;
+          return (0, _effects.select)(_routing2.selectCurrentSearch);
+
+        case 8:
+          currentSearch = _context4.sent;
+          qs = _queryString["default"].parse(currentSearch);
+          redirectUri = qs.redirect_uri;
+
+          if (!redirectUri) {
+            _context4.next = 14;
+            break;
+          }
+
+          _context4.next = 14;
+          return (0, _effects.put)({
+            type: _routing.SET_ROUTE,
+            path: redirectUri
+          });
+
+        case 14:
+        case "end":
+          return _context4.stop();
+      }
+    }
+  }, _marked4);
+}
+
+function forgotPassword(action) {
+  var message;
+  return _regenerator["default"].wrap(function forgotPassword$(_context5) {
+    while (1) {
+      switch (_context5.prev = _context5.next) {
+        case 0:
+          _context5.next = 2;
+          return _LoginHelper.LoginHelper.ForgotPassword(action.username);
+
+        case 2:
+          message = _context5.sent;
+          _context5.next = 5;
+          return (0, _effects.put)({
+            type: _types.UPDATE_USER,
+            user: {
+              passwordReset: true,
+              passwordResetMessage: message
+            },
+            history: history
+          });
+
+        case 5:
+        case "end":
+          return _context5.stop();
+      }
+    }
+  }, _marked5);
+}
+
+function changePassword(action) {
+  var state, userState, message;
+  return _regenerator["default"].wrap(function changePassword$(_context6) {
+    while (1) {
+      switch (_context6.prev = _context6.next) {
+        case 0:
+          _context6.next = 2;
+          return (0, _effects.select)();
+
+        case 2:
+          state = _context6.sent;
+          _context6.next = 5;
+          return state.get('user');
+
+        case 5:
+          userState = _context6.sent;
+          message = '';
+
+          if (!action.token) {
+            _context6.next = 13;
+            break;
+          }
+
+          _context6.next = 10;
+          return _LoginHelper.LoginHelper.ChangePasswordWithToken(action.token, action.newPassword, action.newPasswordConfirm);
+
+        case 10:
+          message = _context6.sent;
+          _context6.next = 16;
+          break;
+
+        case 13:
+          _context6.next = 15;
+          return _LoginHelper.LoginHelper.ChangePassword(userState.username, action.oldPassword, action.newPassword, action.newPasswordConfirm);
+
+        case 15:
+          message = _context6.sent;
+
+        case 16:
+          _context6.next = 18;
+          return (0, _effects.put)({
+            type: _types.UPDATE_USER,
+            user: {
+              logonResultMessage: message
+            },
+            history: history
+          });
+
+        case 18:
+        case "end":
+          return _context6.stop();
+      }
+    }
+  }, _marked6);
+}
 
 function createUserAccountSaga() {
   var userState, registerResponse, securityToken, registrationResult, id, user, _user;
 
-  return _regenerator["default"].wrap(function createUserAccountSaga$(_context) {
+  return _regenerator["default"].wrap(function createUserAccountSaga$(_context7) {
     while (1) {
-      switch (_context.prev = _context.next) {
+      switch (_context7.prev = _context7.next) {
         case 0:
-          _context.next = 2;
+          _context7.next = 2;
           return (0, _effects.select)(_selectors.selectUser);
 
         case 2:
-          userState = _context.sent;
+          userState = _context7.sent;
 
           if (!(userState.username && userState.password)) {
-            _context.next = 22;
+            _context7.next = 22;
             break;
           }
 
-          _context.next = 6;
+          _context7.next = 6;
           return _SecurityApi.SecurityApi.RegisterUser(userState.username, userState.password);
 
         case 6:
-          registerResponse = _context.sent;
+          registerResponse = _context7.sent;
 
           if (!registerResponse) {
-            _context.next = 20;
+            _context7.next = 20;
             break;
           }
 
           securityToken = registerResponse.securityToken, registrationResult = registerResponse.registrationResult, id = registerResponse.id;
 
           if (!securityToken) {
-            _context.next = 15;
+            _context7.next = 15;
             break;
           }
 
@@ -1408,14 +1815,14 @@ function createUserAccountSaga() {
             failedToCreateAccount: false,
             registrationResult: registrationResult
           });
-          _context.next = 13;
+          _context7.next = 13;
           return (0, _effects.put)({
             type: _types.UPDATE_USER,
             user: user
           });
 
         case 13:
-          _context.next = 18;
+          _context7.next = 18;
           break;
 
         case 15:
@@ -1427,18 +1834,18 @@ function createUserAccountSaga() {
             failedToCreateAccount: true,
             registrationResult: registrationResult
           });
-          _context.next = 18;
+          _context7.next = 18;
           return (0, _effects.put)({
             type: _types.UPDATE_USER,
             user: _user
           });
 
         case 18:
-          _context.next = 22;
+          _context7.next = 22;
           break;
 
         case 20:
-          _context.next = 22;
+          _context7.next = 22;
           return (0, _effects.put)({
             type: _types.UPDATE_USER,
             user: _objectSpread({}, userState, {
@@ -1448,176 +1855,10 @@ function createUserAccountSaga() {
 
         case 22:
         case "end":
-          return _context.stop();
+          return _context7.stop();
       }
     }
-  }, _marked);
-}
-
-function loginUserSaga(action) {
-  var getGroups, username, password, user;
-  return _regenerator["default"].wrap(function loginUserSaga$(_context2) {
-    while (1) {
-      switch (_context2.prev = _context2.next) {
-        case 0:
-          getGroups = true;
-          username = action.username, password = action.password;
-
-          if (!(username && password)) {
-            _context2.next = 10;
-            break;
-          }
-
-          _context2.next = 5;
-          return _LoginHelper.LoginHelper.LoginUser(username, password, getGroups);
-
-        case 5:
-          user = _context2.sent;
-          _context2.next = 8;
-          return (0, _effects.call)(updateUserSaga, {
-            type: user.failedLogin ? _types.LOGIN_FAILED : _types.LOGIN_SUCCESSFUL,
-            user: user,
-            redirect: !user.failedLogin
-          });
-
-        case 8:
-          _context2.next = 12;
-          break;
-
-        case 10:
-          _context2.next = 12;
-          return _LoginHelper.LoginHelper.ClientRedirectToLogin();
-
-        case 12:
-        case "end":
-          return _context2.stop();
-      }
-    }
-  }, _marked2);
-}
-
-function logoutUserSaga() {
-  var user, state;
-  return _regenerator["default"].wrap(function logoutUserSaga$(_context3) {
-    while (1) {
-      switch (_context3.prev = _context3.next) {
-        case 0:
-          user = _LoginHelper.LoginHelper.LogoutUser();
-          _context3.next = 3;
-          return (0, _effects.fork)(updateUserSaga, {
-            user: user
-          });
-
-        case 3:
-          _context3.next = 5;
-          return (0, _effects.select)();
-
-        case 5:
-          state = _context3.sent;
-          _context3.next = 8;
-          return _LoginHelper.LoginHelper.ClientRedirectToHome(state.getIn(['router', 'location']));
-
-        case 8:
-        case "end":
-          return _context3.stop();
-      }
-    }
-  }, _marked3);
-}
-
-function validateUserSaga(action) {
-  var getGroups, state, currentQs, qsToken, cookies, user, type;
-  return _regenerator["default"].wrap(function validateUserSaga$(_context4) {
-    while (1) {
-      switch (_context4.prev = _context4.next) {
-        case 0:
-          getGroups = true;
-          _context4.next = 3;
-          return (0, _effects.select)();
-
-        case 3:
-          state = _context4.sent;
-          currentQs = _queryString["default"].parse(state.getIn(['router', 'location', 'search']));
-          qsToken = currentQs.securityToken || currentQs.securitytoken;
-
-          if (qsToken) {
-            _LoginHelper.LoginHelper.SetLoginCookies({
-              securityToken: qsToken
-            });
-          }
-
-          cookies = !qsToken ? action.cookies : _objectSpread({
-            ContensisCMSUserName: encodeURIComponent(qsToken)
-          }, action.cookies);
-          _context4.next = 10;
-          return _LoginHelper.LoginHelper.ValidateUser(getGroups, cookies);
-
-        case 10:
-          user = _context4.sent;
-          type = user && user.loggedIn ? _types.VALIDATE_USER_SUCCESS : _types.VALIDATE_USER_FAILED;
-          _context4.next = 14;
-          return (0, _effects.call)(updateUserSaga, {
-            type: type,
-            user: user && !user.loggedIn ? _reducers.initialUserState : user
-          });
-
-        case 14:
-        case "end":
-          return _context4.stop();
-      }
-    }
-  }, _marked4);
-}
-
-function updateUserSaga(action) {
-  var userState, currentSearch, qs, redirectUri;
-  return _regenerator["default"].wrap(function updateUserSaga$(_context5) {
-    while (1) {
-      switch (_context5.prev = _context5.next) {
-        case 0:
-          _context5.next = 2;
-          return (0, _effects.select)(_selectors.selectUser);
-
-        case 2:
-          userState = _context5.sent;
-          _context5.next = 5;
-          return (0, _effects.put)({
-            type: _types.UPDATE_USER,
-            from: action.type,
-            user: _objectSpread({}, userState.toJS(), {}, action.user)
-          });
-
-        case 5:
-          if (!action.redirect) {
-            _context5.next = 14;
-            break;
-          }
-
-          _context5.next = 8;
-          return (0, _effects.select)(_routing2.selectCurrentSearch);
-
-        case 8:
-          currentSearch = _context5.sent;
-          qs = _queryString["default"].parse(currentSearch);
-          redirectUri = qs.redirect_uri;
-
-          if (!redirectUri) {
-            _context5.next = 14;
-            break;
-          }
-
-          _context5.next = 14;
-          return (0, _effects.put)({
-            type: _routing.SET_ROUTE,
-            path: redirectUri
-          });
-
-        case 14:
-        case "end":
-          return _context5.stop();
-      }
-    }
-  }, _marked5);
+  }, _marked7);
 }
 
 /***/ }),
@@ -2011,6 +2252,171 @@ function () {
     // }
 
   }, {
+    key: "ForgotPassword",
+    value: function () {
+      var _ForgotPassword = (0, _asyncToGenerator2["default"])(
+      /*#__PURE__*/
+      _regenerator["default"].mark(function _callee4(username) {
+        var currentUrl, passwordResponse;
+        return _regenerator["default"].wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                if (!username) {
+                  _context4.next = 7;
+                  break;
+                }
+
+                currentUrl = window.location.protocol + '//' + window.location.host;
+                _context4.next = 4;
+                return _SecurityApi.SecurityApi.ForgotPassword(username, currentUrl);
+
+              case 4:
+                passwordResponse = _context4.sent;
+
+                if (!passwordResponse) {
+                  _context4.next = 7;
+                  break;
+                }
+
+                return _context4.abrupt("return", passwordResponse);
+
+              case 7:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4);
+      }));
+
+      function ForgotPassword(_x4) {
+        return _ForgotPassword.apply(this, arguments);
+      }
+
+      return ForgotPassword;
+    }()
+  }, {
+    key: "ChangePassword",
+    value: function () {
+      var _ChangePassword = (0, _asyncToGenerator2["default"])(
+      /*#__PURE__*/
+      _regenerator["default"].mark(function _callee5(username, oldPassword, newPassword, newPasswordConfirm) {
+        var passwordResponse;
+        return _regenerator["default"].wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                if (!(newPassword && newPasswordConfirm)) {
+                  _context5.next = 10;
+                  break;
+                }
+
+                if (!this.ValidatePassword(newPassword)) {
+                  _context5.next = 9;
+                  break;
+                }
+
+                _context5.next = 4;
+                return _SecurityApi.SecurityApi.ChangePassword(username, oldPassword, newPassword, newPasswordConfirm);
+
+              case 4:
+                passwordResponse = _context5.sent;
+
+                if (!passwordResponse) {
+                  _context5.next = 7;
+                  break;
+                }
+
+                return _context5.abrupt("return", passwordResponse);
+
+              case 7:
+                _context5.next = 10;
+                break;
+
+              case 9:
+                return _context5.abrupt("return", 'New password does not meet the requirements: \r\n\r\n - Must be a minimum of 8 characters long \r\n - Must contain at least 1 uppercase character \r\n - Must contain at least 1 special character or number');
+
+              case 10:
+              case "end":
+                return _context5.stop();
+            }
+          }
+        }, _callee5, this);
+      }));
+
+      function ChangePassword(_x5, _x6, _x7, _x8) {
+        return _ChangePassword.apply(this, arguments);
+      }
+
+      return ChangePassword;
+    }()
+  }, {
+    key: "ChangePasswordWithToken",
+    value: function () {
+      var _ChangePasswordWithToken = (0, _asyncToGenerator2["default"])(
+      /*#__PURE__*/
+      _regenerator["default"].mark(function _callee6(token, newPassword, newPasswordConfirm) {
+        var passwordResponse;
+        return _regenerator["default"].wrap(function _callee6$(_context6) {
+          while (1) {
+            switch (_context6.prev = _context6.next) {
+              case 0:
+                if (!(newPassword && newPasswordConfirm)) {
+                  _context6.next = 10;
+                  break;
+                }
+
+                if (!this.ValidatePassword(newPassword)) {
+                  _context6.next = 9;
+                  break;
+                }
+
+                _context6.next = 4;
+                return _SecurityApi.SecurityApi.ChangePasswordWithToken(token, btoa(newPassword), btoa(newPasswordConfirm));
+
+              case 4:
+                passwordResponse = _context6.sent;
+
+                if (!passwordResponse) {
+                  _context6.next = 7;
+                  break;
+                }
+
+                return _context6.abrupt("return", passwordResponse);
+
+              case 7:
+                _context6.next = 10;
+                break;
+
+              case 9:
+                return _context6.abrupt("return", 'New password does not meet the requirements: \r\n\r\n - Must be a minimum of 8 characters long \r\n - Must contain at least 1 uppercase character \r\n - Must contain at least 1 special character or number');
+
+              case 10:
+              case "end":
+                return _context6.stop();
+            }
+          }
+        }, _callee6, this);
+      }));
+
+      function ChangePasswordWithToken(_x9, _x10, _x11) {
+        return _ChangePasswordWithToken.apply(this, arguments);
+      }
+
+      return ChangePasswordWithToken;
+    }()
+  }, {
+    key: "ValidatePassword",
+    value: function ValidatePassword(pword) {
+      //Password must be over 8 characters long
+      if (pword.length < 8) return false; //This only returns true if the following criteria is met:
+      //  *8 chars or more
+      //  *Must contain at least 1 capital letter
+      //  *Must contain at least 1 number or special character
+
+      return /^(?:(?=.*[a-z])(?:(?=.*[A-Z])(?=.*[\d\W])|(?=.*\W)(?=.*\d))|(?=.*\W)(?=.*[A-Z])(?=.*\d)).{8,}$/.test(pword);
+    }
+  }, {
     key: "CheckResult",
     value: function CheckResult(result) {
       var Results = {
@@ -2150,6 +2556,7 @@ var withLogin = function withLogin(WrappedComponent) {
       changePasswordMessage: (0, _selectors.selectChangePasswordMessage)(state),
       captchaSiteKey: (0, _selectors.selectCaptchaSiteKey)(state),
       isHuman: (0, _selectors.selectCaptchaResponse)(state),
+      isLoggedIn: (0, _selectors.selectUserLoggedIn)(state),
       currentPath: (0, _routing.selectCurrentPath)(state),
       queryString: (0, _routing.selectQueryStringAsObject)(state)
     };

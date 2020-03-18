@@ -119,7 +119,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__1__;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.selectCaptchaSiteKey = exports.selectCaptchaToken = exports.selectCaptchaData = exports.selectCaptchaResponse = exports.selectChangePasswordMessage = exports.selectPasswordMessage = exports.selectLoginScreenMode = exports.selectUserMessage = exports.selectUserGroups = exports.selectUserLoggedIn = exports.selectUsername = exports.selectUser = void 0;
+exports.selectCaptchaToken = exports.selectCaptchaResponse = exports.selectCaptchaData = exports.selectCaptchaSiteKey = exports.selectChangePasswordMessage = exports.selectPasswordMessage = exports.selectLoginScreenMode = exports.selectUserMessage = exports.selectUserGroups = exports.selectUserLoggedIn = exports.selectUsername = exports.selectUser = void 0;
 
 var selectUser = function selectUser(state) {
   return state.get('user');
@@ -146,7 +146,7 @@ var selectUserGroups = function selectUserGroups(state) {
 exports.selectUserGroups = selectUserGroups;
 
 var selectUserMessage = function selectUserMessage(state) {
-  return state.getIn(['user', 'logonResultMessage']);
+  return state.getIn(['user', 'logonResult']);
 };
 
 exports.selectUserMessage = selectUserMessage;
@@ -169,29 +169,29 @@ var selectChangePasswordMessage = function selectChangePasswordMessage(state) {
 
 exports.selectChangePasswordMessage = selectChangePasswordMessage;
 
-var selectCaptchaResponse = function selectCaptchaResponse(state) {
-  return state.getIn(['user', 'settings', 'recaptcha', 'response', 'isHuman']);
+var selectCaptchaSiteKey = function selectCaptchaSiteKey(state) {
+  return state.getIn(['user', 'recaptcha', 'key']);
 };
 
-exports.selectCaptchaResponse = selectCaptchaResponse;
+exports.selectCaptchaSiteKey = selectCaptchaSiteKey;
 
 var selectCaptchaData = function selectCaptchaData(state) {
-  return state.getIn(['user', 'settings', 'recaptcha', 'response']);
+  return state.getIn(['user', 'recaptcha', 'response']);
 };
 
 exports.selectCaptchaData = selectCaptchaData;
 
+var selectCaptchaResponse = function selectCaptchaResponse(state) {
+  return state.getIn(['user', 'recaptcha', 'response', 'isHuman']);
+};
+
+exports.selectCaptchaResponse = selectCaptchaResponse;
+
 var selectCaptchaToken = function selectCaptchaToken(state) {
-  return state.getIn(['user', 'settings', 'recaptcha', 'response', 'token']);
+  return state.getIn(['user', 'recaptcha', 'response', 'token']);
 };
 
 exports.selectCaptchaToken = selectCaptchaToken;
-
-var selectCaptchaSiteKey = function selectCaptchaSiteKey(state) {
-  return state.getIn(['user', 'recaptchaKey']);
-};
-
-exports.selectCaptchaSiteKey = selectCaptchaSiteKey;
 
 /***/ }),
 

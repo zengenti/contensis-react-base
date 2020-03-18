@@ -10,6 +10,8 @@ import {
   VALIDATE_USER_SUCCESS,
   VALIDATE_USER_FAILED,
   UPDATE_USER,
+  FORGOT_USER_PASSWORD,
+  CHANGE_USER_PASSWORD,
 } from './types';
 import { initialUserState } from './reducers';
 import { SET_ROUTE } from '~/core/redux/types/routing';
@@ -25,53 +27,9 @@ export const userSagas = [
   takeEvery(VALIDATE_USER, validateUserSaga),
 
   takeEvery(CREATE_USER_ACCOUNT, createUserAccountSaga),
+  takeEvery(FORGOT_USER_PASSWORD, forgotPassword),
+  takeEvery(CHANGE_USER_PASSWORD, changePassword),
 ];
-
-function* createUserAccountSaga() {
-  const userState = yield select(selectUser);
-  if (userState.username && userState.password) {
-    // Call RegisterUser API
-    const registerResponse = yield SecurityApi.RegisterUser(
-      userState.username,
-      userState.password
-    );
-
-    if (registerResponse) {
-      const { securityToken, registrationResult, id } = registerResponse;
-
-      if (securityToken) {
-        const user = {
-          ...userState,
-          id,
-          securityToken,
-          password: null,
-          loggedIn: true,
-          verifiedEmail: false,
-          failedLogin: false,
-          failedToCreateAccount: false,
-          registrationResult,
-        };
-        yield put({ type: UPDATE_USER, user });
-      } else {
-        const user = {
-          ...userState,
-          securityToken: null,
-          loggedIn: false,
-          verifiedEmail: false,
-          failedLogin: true,
-          failedToCreateAccount: true,
-          registrationResult,
-        };
-        yield put({ type: UPDATE_USER, user });
-      }
-    } else {
-      yield put({
-        type: UPDATE_USER,
-        user: { ...userState, registrationResult: 'ServiceFault' },
-      });
-    }
-  }
-}
 
 function* loginUserSaga(action) {
   const getGroups = true;
@@ -142,6 +100,91 @@ function* updateUserSaga(action) {
     const redirectUri = qs.redirect_uri;
     if (redirectUri) {
       yield put({ type: SET_ROUTE, path: redirectUri });
+    }
+  }
+}
+
+function* forgotPassword(action) {
+  const message = yield LoginHelper.ForgotPassword(action.username);
+  yield put({
+    type: UPDATE_USER,
+    user: {
+      passwordReset: true,
+      passwordResetMessage: message,
+    },
+    history,
+  });
+}
+
+function* changePassword(action) {
+  const state = yield select();
+  const userState = yield state.get('user');
+  let message = '';
+  if (action.token) {
+    message = yield LoginHelper.ChangePasswordWithToken(
+      action.token,
+      action.newPassword,
+      action.newPasswordConfirm
+    );
+  } else {
+    message = yield LoginHelper.ChangePassword(
+      userState.username,
+      action.oldPassword,
+      action.newPassword,
+      action.newPasswordConfirm
+    );
+  }
+  yield put({
+    type: UPDATE_USER,
+    user: {
+      logonResultMessage: message,
+    },
+    history,
+  });
+}
+
+function* createUserAccountSaga() {
+  const userState = yield select(selectUser);
+  if (userState.username && userState.password) {
+    // Call RegisterUser API
+    const registerResponse = yield SecurityApi.RegisterUser(
+      userState.username,
+      userState.password
+    );
+
+    if (registerResponse) {
+      const { securityToken, registrationResult, id } = registerResponse;
+
+      if (securityToken) {
+        const user = {
+          ...userState,
+          id,
+          securityToken,
+          password: null,
+          loggedIn: true,
+          verifiedEmail: false,
+          failedLogin: false,
+          failedToCreateAccount: false,
+          registrationResult,
+        };
+        yield put({ type: UPDATE_USER, user });
+      } else {
+        const user = {
+          ...userState,
+          securityToken: null,
+          loggedIn: false,
+          verifiedEmail: false,
+          failedLogin: true,
+          failedToCreateAccount: true,
+          registrationResult,
+        };
+        yield put({ type: UPDATE_USER, user });
+      }
+    } else {
+      yield put({
+        type: UPDATE_USER,
+        user: { ...userState, registrationResult: 'ServiceFault' },
+      });
     }
   }
 }

@@ -11,7 +11,7 @@ export const selectUserGroups = state => {
   return state.getIn(['user', 'groups']);
 };
 export const selectUserMessage = state => {
-  return state.getIn(['user', 'logonResultMessage']);
+  return state.getIn(['user', 'logonResult']);
 };
 export const selectLoginScreenMode = state => {
   return state.getIn(['user', 'loginScreenMode']);
@@ -22,15 +22,15 @@ export const selectPasswordMessage = state => {
 export const selectChangePasswordMessage = state => {
   return state.getIn(['user', 'changePasswordMessage']);
 };
-export const selectCaptchaResponse = state => {
-  return state.getIn(['user', 'settings', 'recaptcha', 'response', 'isHuman']);
+export const selectCaptchaSiteKey = state => {
+  return state.getIn(['user', 'recaptcha', 'key']);
 };
 export const selectCaptchaData = state => {
-  return state.getIn(['user', 'settings', 'recaptcha', 'response']);
+  return state.getIn(['user', 'recaptcha', 'response']);
+};
+export const selectCaptchaResponse = state => {
+  return state.getIn(['user', 'recaptcha', 'response', 'isHuman']);
 };
 export const selectCaptchaToken = state => {
-  return state.getIn(['user', 'settings', 'recaptcha', 'response', 'token']);
-};
-export const selectCaptchaSiteKey = state => {
-  return state.getIn(['user', 'recaptchaKey']);
+  return state.getIn(['user', 'recaptcha', 'response', 'token']);
 };

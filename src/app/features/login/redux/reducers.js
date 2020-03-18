@@ -13,7 +13,6 @@ export const initialUserState = Map({
   id: null,
   securityToken: null,
   logonResult: null,
-  registrationResult: null,
   groups: new List([]),
   emailAddress: null,
   fullName: null,
@@ -21,9 +20,9 @@ export const initialUserState = Map({
   passwordReset: false,
   passwordResetMessage: null,
   changePasswordMessage: null,
-  recaptchaKey: null,
-  settings: fromJS({
-    recaptcha: { response: { isHuman: false, token: null } },
+  recaptcha: new Map({
+    key: null,
+    response: new Map({ isHuman: false, token: null }),
   }),
 });
 
@@ -34,11 +33,13 @@ export default (state = initialUserState, action) => {
       return state
         .set(
           'loggedIn',
-          user.loggedIn != 'undefined' ? user.loggedIn : state.get('loggedIn')
+          typeof user.loggedIn !== 'undefined'
+            ? user.loggedIn
+            : state.get('loggedIn')
         )
         .set(
           'failedLogin',
-          user.failedLogin != 'undefined'
+          typeof user.failedLogin !== 'undefined'
             ? user.failedLogin
             : state.get('failedLogin')
         )
@@ -46,28 +47,35 @@ export default (state = initialUserState, action) => {
         .set('id', user.id || state.get('id'))
         .set('securityToken', user.securityToken || state.get('securityToken'))
         .set('logonResult', user.logonResult || state.get('logonResult'))
-        .set(
-          'registrationResult',
-          user.registrationResult || state.get('registrationResult')
-        )
         .set('groups', fromJS(user.groups) || state.get('groups'))
         .set('emailAddress', user.emailAddress || state.get('emailAddress'))
-        .set('fullName', user.fullName || state.get('fullName'));
+        .set('fullName', user.fullName || state.get('fullName'))
+        .set(
+          'passwordReset',
+          typeof user.passwordReset !== 'undefined'
+            ? user.passwordReset
+            : state.get('passwordReset')
+        )
+        .set(
+          'passwordResetMessage',
+          user.passwordResetMessage || state.get('passwordResetMessage')
+        )
+        .set(
+          'changePasswordMessage',
+          user.changePasswordMessage || state.get('changePasswordMessage')
+        );
     }
     case TOGGLE_LOGIN_MODE: {
       const newMode = action.loginMode;
       return state.set('loginScreenMode', newMode);
     }
     case SET_RECAPTCHA_KEY: {
-      return state.set('recaptchaKey', action.key);
+      return state.setIn(['recaptcha', 'key'], action.key);
     }
     case SET_RECAPTCHA_RESPONSE: {
-      const settings = {
-        recaptcha: {
-          response: { isHuman: action.isHuman, token: action.token },
-        },
-      };
-      return state.set('settings', fromJS(settings));
+      return state
+        .setIn(['recaptcha', 'response', 'isHuman'], action.isHuman)
+        .setIn(['recaptcha', 'response', 'token'], action.token);
     }
     default:
       return state;

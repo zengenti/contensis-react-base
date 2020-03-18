@@ -204,6 +204,76 @@ export class LoginHelper {
   //   });
   // }
 
+  static async ForgotPassword(username) {
+    if (username) {
+      const currentUrl = window.location.protocol + '//' + window.location.host;
+      const passwordResponse = await SecurityApi.ForgotPassword(
+        username,
+        currentUrl
+      );
+      if (passwordResponse) {
+        // Extract the elements we need from the response
+        return passwordResponse;
+      }
+    }
+  }
+
+  static async ChangePassword(
+    username,
+    oldPassword,
+    newPassword,
+    newPasswordConfirm
+  ) {
+    if (newPassword && newPasswordConfirm) {
+      if (this.ValidatePassword(newPassword)) {
+        const passwordResponse = await SecurityApi.ChangePassword(
+          username,
+          oldPassword,
+          newPassword,
+          newPasswordConfirm
+        );
+        //const passwordResponse = await SecurityApi.ChangePassword(btoa(username), btoa(oldPassword), btoa(newPassword), btoa(newPasswordConfirm));
+        if (passwordResponse) {
+          // Extract the elements we need from the response
+          return passwordResponse;
+        }
+      } else {
+        return 'New password does not meet the requirements: \r\n\r\n - Must be a minimum of 8 characters long \r\n - Must contain at least 1 uppercase character \r\n - Must contain at least 1 special character or number';
+      }
+    }
+  }
+
+  static async ChangePasswordWithToken(token, newPassword, newPasswordConfirm) {
+    if (newPassword && newPasswordConfirm) {
+      if (this.ValidatePassword(newPassword)) {
+        const passwordResponse = await SecurityApi.ChangePasswordWithToken(
+          token,
+          btoa(newPassword),
+          btoa(newPasswordConfirm)
+        );
+        //const passwordResponse = await SecurityApi.ChangePassword(btoa(username), btoa(oldPassword), btoa(newPassword), btoa(newPasswordConfirm));
+        if (passwordResponse) {
+          // Extract the elements we need from the response
+          return passwordResponse;
+        }
+      } else {
+        return 'New password does not meet the requirements: \r\n\r\n - Must be a minimum of 8 characters long \r\n - Must contain at least 1 uppercase character \r\n - Must contain at least 1 special character or number';
+      }
+    }
+  }
+
+  static ValidatePassword(pword) {
+    //Password must be over 8 characters long
+    if (pword.length < 8) return false;
+    //This only returns true if the following criteria is met:
+    //  *8 chars or more
+    //  *Must contain at least 1 capital letter
+    //  *Must contain at least 1 number or special character
+    return /^(?:(?=.*[a-z])(?:(?=.*[A-Z])(?=.*[\d\W])|(?=.*\W)(?=.*\d))|(?=.*\W)(?=.*[A-Z])(?=.*\d)).{8,}$/.test(
+      pword
+    );
+  }
+
   static CheckResult(result) {
     const Results = {
       '0': 'OK',

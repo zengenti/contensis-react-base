@@ -16,6 +16,7 @@ import {
   selectChangePasswordMessage,
   selectCaptchaSiteKey,
   selectCaptchaResponse,
+  selectUserLoggedIn,
 } from '../redux/selectors';
 import { toJS } from '~/core/util/ToJs';
 import {
@@ -44,6 +45,7 @@ const withLogin = WrappedComponent => {
       changePasswordMessage: selectChangePasswordMessage(state),
       captchaSiteKey: selectCaptchaSiteKey(state),
       isHuman: selectCaptchaResponse(state),
+      isLoggedIn: selectUserLoggedIn(state),
       currentPath: selectCurrentPath(state),
       queryString: selectQueryStringAsObject(state),
     };

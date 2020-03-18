@@ -5,12 +5,21 @@ const config = {
   LOGON_USER_URI: 'REST/Contensis/Security/AuthenticateApplication',
   VALIDATE_USER_URI: 'REST/Contensis/Security/IsAuthenticated',
   USER_INFO_URI: 'REST/Contensis/Security/GetUserInfo',
+  FORGOT_PASSWORD_URI: 'Security/ResetPasswordEmail',
+  CHANGE_PASSWORD_URI: 'Security/ChangePassword',
+  CHANGE_PASSWORD_TOKEN_URI: 'Security/ChangePasswordWithToken',
+  AUTH_CAPTCHA_URI: 'Security/AuthenticateCaptcha',
+  LOGIN_URL: '/business-government/partner',
 };
 
 const REGISTER_USER_URL = `${CMS_URL}/${config.REGISTER_USER_URI}`;
 const LOGON_USER_URL = `${CMS_URL}/${config.LOGON_USER_URI}`;
 const VALIDATE_USER_URL = `${CMS_URL}/${config.VALIDATE_USER_URI}`;
 const USER_INFO_URL = `${CMS_URL}/${config.USER_INFO_URI}`;
+const FORGOT_PASSWORD_URI = `/${config.FORGOT_PASSWORD_URI}`;
+const CHANGE_PASSWORD_URI = `/${config.CHANGE_PASSWORD_URI}`;
+const AUTH_CAPTCHA_URI = `/${config.AUTH_CAPTCHA_URI}`;
+const CHANGE_PASSWORD_TOKEN_URI = `/${config.CHANGE_PASSWORD_TOKEN_URI}`;
 
 const BASE_OPTIONS = {
   method: 'GET',
@@ -18,14 +27,13 @@ const BASE_OPTIONS = {
 };
 
 export class SecurityApi {
-  static async RegisterUser(email, password) {
-    const body = { email, password };
+  static async AuthoriseRecaptcha(token) {
+    const url = `${AUTH_CAPTCHA_URI}?captchaToken=${encodeURIComponent(token)}`;
     const options = {
-      ...BASE_OPTIONS,
+      headers: { 'Content-Type': 'application/json' },
       method: 'POST',
-      body: JSON.stringify(body),
     };
-    return await SecurityApi.get(REGISTER_USER_URL, options);
+    return await SecurityApi.get(url, options);
   }
 
   static async LogonUser(username, password) {
@@ -67,6 +75,58 @@ export class SecurityApi {
       },
     };
     return await SecurityApi.get(USER_INFO_URL, options);
+  }
+
+  static async RegisterUser(email, password) {
+    const body = { email, password };
+    const options = {
+      ...BASE_OPTIONS,
+      method: 'POST',
+      body: JSON.stringify(body),
+    };
+    return await SecurityApi.get(REGISTER_USER_URL, options);
+  }
+
+  static async ChangePassword(
+    username,
+    oldPassword,
+    newPassword,
+    newPasswordConfirm
+  ) {
+    const url = `${CHANGE_PASSWORD_URI}?username=${encodeURIComponent(
+      username
+    )}&oldPassword=${encodeURIComponent(
+      oldPassword
+    )}&newPassword=${encodeURIComponent(
+      newPassword
+    )}&newPasswordConfirm=${encodeURIComponent(newPasswordConfirm)}`;
+    const options = {
+      headers: { 'Content-Type': 'application/json' },
+      method: 'POST',
+    };
+    return await SecurityApi.get(url, options);
+  }
+
+  static async ChangePasswordWithToken(token, newPassword, newPasswordConfirm) {
+    const url = `${CHANGE_PASSWORD_TOKEN_URI}?token=${token}&newPassword=${encodeURIComponent(
+      newPassword
+    )}&confirmPassword=${encodeURIComponent(newPasswordConfirm)}`;
+    const options = {
+      headers: { 'Content-Type': 'application/json' },
+      method: 'POST',
+    };
+    return await SecurityApi.get(url, options);
+  }
+
+  static async ForgotPassword(username, currentUrl) {
+    const url = `${FORGOT_PASSWORD_URI}?username=${encodeURIComponent(
+      username
+    )}&currentUrl=${encodeURIComponent(currentUrl)}`;
+    const options = {
+      headers: { 'Content-Type': 'application/json' },
+      method: 'POST',
+    };
+    return await SecurityApi.get(url, options);
   }
 
   static async get(url, options = BASE_OPTIONS) {
