@@ -1756,7 +1756,7 @@ function changePassword(action) {
           return (0, _effects.put)({
             type: _types.UPDATE_USER,
             user: {
-              logonResultMessage: message
+              logonResult: message
             },
             history: history
           });

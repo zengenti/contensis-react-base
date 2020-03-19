@@ -137,7 +137,7 @@ function* changePassword(action) {
   yield put({
     type: UPDATE_USER,
     user: {
-      logonResultMessage: message,
+      logonResult: message,
     },
     history,
   });
