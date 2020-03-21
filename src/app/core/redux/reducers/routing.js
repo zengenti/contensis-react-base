@@ -6,7 +6,6 @@ import {
   SET_NAVIGATION_NOT_FOUND,
   SET_NODE,
   SET_ANCESTORS,
-  SET_ROUTE_LOADING,
   SET_TARGET_PROJECT,
   SET_ROUTE,
   SET_SIBLINGS,
@@ -49,7 +48,11 @@ export default (state = initialState, action) => {
       const entryDepends = GetAllResponseGuids(action.entry);
       return state
         .set('entryDepends', fromJS(entryDepends))
-        .set('entry', fromJS(action.entry));
+        .set('entry', fromJS(action.entry))
+        .set(
+          'isLoading',
+          typeof action.isLoading === 'undefined' ? false : action.isLoading
+        );
     }
     case SET_ENTRY_ID: {
       if (action.id === '') {
@@ -62,7 +65,11 @@ export default (state = initialState, action) => {
         return state
           .set('currentPath', fromJS(action.path))
           .set('location', fromJS(action.location))
-          .set('staticRoute', fromJS(action.staticRoute));
+          .set('staticRoute', fromJS(action.staticRoute))
+          .set(
+            'isLoading',
+            typeof action.isLoading === 'undefined' ? true : action.isLoading
+          );
       }
       return state;
     }
@@ -82,9 +89,6 @@ export default (state = initialState, action) => {
     }
     case SET_ROUTE: {
       return state.set('nextPath', action.path);
-    }
-    case SET_ROUTE_LOADING: {
-      return state.set('routeLoading', action.loading);
     }
     case SET_SIBLINGS: {
       // Can be null in some cases like the homepage.

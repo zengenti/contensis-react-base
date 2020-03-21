@@ -8,6 +8,7 @@ import { renderRoutes, matchRoutes } from 'react-router-config';
 import {
   selectRouteEntry,
   selectRouteEntryContentTypeId,
+  selectRouteLoading,
   selectIsNotFound,
   selectCurrentProject,
   selectCurrentPath,
@@ -34,8 +35,10 @@ const RouteLoader = ({
   projectId,
   contentTypeId,
   entry,
+  isLoading,
   isLoggedIn,
   isNotFound,
+  loading,
   setNavigationPath,
   routes,
   withEvents,
@@ -88,12 +91,19 @@ const RouteLoader = ({
     setPath();
   }, [location, setPath]);
 
+  if (isLoading && loading) {
+    const LoadingComponent = loading.component;
+    if (LoadingComponent)
+      return <LoadingComponent {...(loading.props || {})} />;
+  }
+
   // Render any Static Routes a developer has defined
   if (isStaticRoute(trimmedPath)) {
     return renderRoutes(routes.StaticRoutes, {
       projectId,
       contentTypeId,
       entry,
+      isLoading,
       isLoggedIn,
     });
   }
@@ -114,6 +124,7 @@ const RouteLoader = ({
           projectId={projectId}
           contentTypeId={contentTypeId}
           entry={entry}
+          isLoading={isLoading}
           isLoggedIn={isLoggedIn}
         />
       );
@@ -137,9 +148,11 @@ RouteLoader.propTypes = {
   statePath: PropTypes.string,
   projectId: PropTypes.string,
   contentTypeId: PropTypes.string,
+  loading: PropTypes.object,
   entry: PropTypes.object,
-  isNotFound: PropTypes.bool,
+  isLoading: PropTypes.bool,
   isLoggedIn: PropTypes.bool,
+  isNotFound: PropTypes.bool,
   setNavigationPath: PropTypes.func,
 };
 
@@ -151,6 +164,7 @@ const mapStateToProps = state => {
     contentTypeId: selectRouteEntryContentTypeId(state),
     isNotFound: selectIsNotFound(state),
     isLoggedIn: selectUserLoggedIn(state),
+    isLoading: selectRouteLoading(state),
   };
 };
 

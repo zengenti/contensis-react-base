@@ -226,7 +226,7 @@ var selectCurrentAncestors = function selectCurrentAncestors(state) {
 exports.selectCurrentAncestors = selectCurrentAncestors;
 
 var selectRouteLoading = function selectRouteLoading(state) {
-  return state.getIn(['routing', 'routeLoading']);
+  return state.getIn(['routing', 'isLoading']);
 };
 
 exports.selectRouteLoading = selectRouteLoading;
@@ -241,7 +241,7 @@ exports.selectRouteLoading = selectRouteLoading;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.CALL_HISTORY_METHOD = exports.SET_ROUTE = exports.SET_TARGET_PROJECT = exports.SET_ROUTE_LOADING = exports.SET_NAVIGATION_PATH = exports.SET_NAVIGATION_NOT_FOUND = exports.SET_ENTRY_RELATED_ARTICLES = exports.SET_ENTRY_ID = exports.SET_SIBLINGS = exports.SET_ANCESTORS = exports.SET_NODE = exports.SET_ENTRY = exports.GET_ENTRY = void 0;
+exports.CALL_HISTORY_METHOD = exports.SET_ROUTE = exports.SET_TARGET_PROJECT = exports.SET_NAVIGATION_PATH = exports.SET_NAVIGATION_NOT_FOUND = exports.SET_ENTRY_RELATED_ARTICLES = exports.SET_ENTRY_ID = exports.SET_SIBLINGS = exports.SET_ANCESTORS = exports.SET_NODE = exports.SET_ENTRY = exports.GET_ENTRY = void 0;
 var ROUTING_PREFIX = '@ROUTING/';
 var GET_ENTRY = "".concat(ROUTING_PREFIX, "_GET_ENTRY");
 exports.GET_ENTRY = GET_ENTRY;
@@ -261,8 +261,6 @@ var SET_NAVIGATION_NOT_FOUND = "".concat(ROUTING_PREFIX, "_SET_NOT_FOUND");
 exports.SET_NAVIGATION_NOT_FOUND = SET_NAVIGATION_NOT_FOUND;
 var SET_NAVIGATION_PATH = "".concat(ROUTING_PREFIX, "_SET_NAVIGATION_PATH");
 exports.SET_NAVIGATION_PATH = SET_NAVIGATION_PATH;
-var SET_ROUTE_LOADING = "".concat(ROUTING_PREFIX, "_SET_ROUTE_LOADING");
-exports.SET_ROUTE_LOADING = SET_ROUTE_LOADING;
 var SET_TARGET_PROJECT = "".concat(ROUTING_PREFIX, "_SET_TARGET_PROJECT");
 exports.SET_TARGET_PROJECT = SET_TARGET_PROJECT;
 var SET_ROUTE = "".concat(ROUTING_PREFIX, "_SET_ROUTE");

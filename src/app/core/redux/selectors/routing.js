@@ -44,5 +44,5 @@ export const selectCurrentAncestors = state => {
   return state.getIn(['routing', 'currentNodeAncestors']);
 };
 export const selectRouteLoading = state => {
-  return state.getIn(['routing', 'routeLoading']);
+  return state.getIn(['routing', 'isLoading']);
 };
