@@ -26,6 +26,9 @@ let initialState = Map({
 });
 
 export default (state = initialState, action) => {
+  const isLoading =
+    typeof action.isLoading === 'undefined' ? false : action.isLoading;
+
   switch (action.type) {
     case SET_ANCESTORS: {
       if (action.ancestors) {
@@ -45,14 +48,12 @@ export default (state = initialState, action) => {
       return state.set('currentNodeAncestors', fromJS(action.ancestors));
     }
     case SET_ENTRY: {
+      if (!action.entry) return state;
       const entryDepends = GetAllResponseGuids(action.entry);
       return state
         .set('entryDepends', fromJS(entryDepends))
         .set('entry', fromJS(action.entry))
-        .set(
-          'isLoading',
-          typeof action.isLoading === 'undefined' ? false : action.isLoading
-        );
+        .set('isLoading', isLoading);
     }
     case SET_ENTRY_ID: {
       if (action.id === '') {
@@ -66,10 +67,7 @@ export default (state = initialState, action) => {
           .set('currentPath', fromJS(action.path))
           .set('location', fromJS(action.location))
           .set('staticRoute', fromJS(action.staticRoute))
-          .set(
-            'isLoading',
-            typeof action.isLoading === 'undefined' ? true : action.isLoading
-          );
+          .set('isLoading', isLoading);
       }
       return state;
     }

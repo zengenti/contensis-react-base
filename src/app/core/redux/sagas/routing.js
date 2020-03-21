@@ -71,6 +71,7 @@ function* getRouteSaga(action) {
       // - all staticRoutes (where custom 'route.fetchNode' attribute is falsey)
       // - standard Contensis SiteView Routing where we already have that entry in state
       if (routeEntry) entry = routeEntry.toJS();
+      else yield call(setRouteEntry);
     } else {
       const currentPath = selectCurrentPath(state);
       const deliveryApiStatus = selectVersionStatus(state);
@@ -217,7 +218,7 @@ function* setRouteEntry(entry, node, ancestors, siblings) {
     }),
     put({
       type: SET_ENTRY_ID,
-      id: entry.sys.id,
+      id: (entry && entry.sys.id) || null,
     }),
     put({
       type: SET_ANCESTORS,
