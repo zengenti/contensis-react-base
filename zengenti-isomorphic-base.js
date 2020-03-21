@@ -3267,7 +3267,7 @@ var RouteLoader = function RouteLoader(_ref) {
     setPath();
   }, [location, setPath]);
 
-  if (isLoading && loading) {
+  if (isLoading && !isNotFound && loading) {
     var LoadingComponent = loading.component;
     if (LoadingComponent) return _react["default"].createElement(LoadingComponent, loading.props || {});
   } // Render any Static Routes a developer has defined

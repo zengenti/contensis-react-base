@@ -91,7 +91,7 @@ const RouteLoader = ({
     setPath();
   }, [location, setPath]);
 
-  if (isLoading && loading) {
+  if (isLoading && !isNotFound && loading) {
     const LoadingComponent = loading.component;
     if (LoadingComponent)
       return <LoadingComponent {...(loading.props || {})} />;
