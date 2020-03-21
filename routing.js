@@ -683,7 +683,7 @@ var RouteLoader = function RouteLoader(_ref) {
   var setPath = (0, _react.useCallback)(function () {
     var serverPath = null;
 
-    if (staticRoute) {
+    if (staticRoute && staticRoute.match && staticRoute.match.isExact) {
       serverPath = staticRoute.route.path.split('/').filter(function (p) {
         return !p.startsWith(':');
       }).join('/');

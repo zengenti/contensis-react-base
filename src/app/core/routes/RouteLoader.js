@@ -56,7 +56,7 @@ const RouteLoader = ({
 
   const setPath = useCallback(() => {
     let serverPath = null;
-    if (staticRoute) {
+    if (staticRoute && staticRoute.match && staticRoute.match.isExact) {
       serverPath = staticRoute.route.path
         .split('/')
         .filter(p => !p.startsWith(':'))
