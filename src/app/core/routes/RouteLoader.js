@@ -35,10 +35,8 @@ const RouteLoader = ({
   projectId,
   contentTypeId,
   entry,
-  isLoading,
   isLoggedIn,
   isNotFound,
-  loading,
   setNavigationPath,
   routes,
   withEvents,
@@ -91,19 +89,12 @@ const RouteLoader = ({
     setPath();
   }, [location, setPath]);
 
-  if (isLoading && !isNotFound && loading) {
-    const LoadingComponent = loading.component;
-    if (LoadingComponent)
-      return <LoadingComponent {...(loading.props || {})} />;
-  }
-
   // Render any Static Routes a developer has defined
   if (isStaticRoute(trimmedPath)) {
     return renderRoutes(routes.StaticRoutes, {
       projectId,
       contentTypeId,
       entry,
-      isLoading,
       isLoggedIn,
     });
   }
@@ -124,7 +115,6 @@ const RouteLoader = ({
           projectId={projectId}
           contentTypeId={contentTypeId}
           entry={entry}
-          isLoading={isLoading}
           isLoggedIn={isLoggedIn}
         />
       );
@@ -150,7 +140,6 @@ RouteLoader.propTypes = {
   contentTypeId: PropTypes.string,
   loading: PropTypes.object,
   entry: PropTypes.object,
-  isLoading: PropTypes.bool,
   isLoggedIn: PropTypes.bool,
   isNotFound: PropTypes.bool,
   setNavigationPath: PropTypes.func,

@@ -663,10 +663,8 @@ var RouteLoader = function RouteLoader(_ref) {
       projectId = _ref.projectId,
       contentTypeId = _ref.contentTypeId,
       entry = _ref.entry,
-      isLoading = _ref.isLoading,
       isLoggedIn = _ref.isLoggedIn,
       isNotFound = _ref.isNotFound,
-      loading = _ref.loading,
       setNavigationPath = _ref.setNavigationPath,
       routes = _ref.routes,
       withEvents = _ref.withEvents;
@@ -698,20 +696,13 @@ var RouteLoader = function RouteLoader(_ref) {
   if (typeof window == 'undefined') setPath();
   (0, _react.useEffect)(function () {
     setPath();
-  }, [location, setPath]);
-
-  if (isLoading && !isNotFound && loading) {
-    var LoadingComponent = loading.component;
-    if (LoadingComponent) return _react["default"].createElement(LoadingComponent, loading.props || {});
-  } // Render any Static Routes a developer has defined
-
+  }, [location, setPath]); // Render any Static Routes a developer has defined
 
   if (isStaticRoute(trimmedPath)) {
     return (0, _reactRouterConfig.renderRoutes)(routes.StaticRoutes, {
       projectId: projectId,
       contentTypeId: contentTypeId,
       entry: entry,
-      isLoading: isLoading,
       isLoggedIn: isLoggedIn
     });
   } // Need to redirect when url endswith a /
@@ -734,7 +725,6 @@ var RouteLoader = function RouteLoader(_ref) {
         projectId: projectId,
         contentTypeId: contentTypeId,
         entry: entry,
-        isLoading: isLoading,
         isLoggedIn: isLoggedIn
       });
     }
@@ -757,7 +747,6 @@ RouteLoader.propTypes = {
   contentTypeId: _propTypes["default"].string,
   loading: _propTypes["default"].object,
   entry: _propTypes["default"].object,
-  isLoading: _propTypes["default"].bool,
   isLoggedIn: _propTypes["default"].bool,
   isNotFound: _propTypes["default"].bool,
   setNavigationPath: _propTypes["default"].func
