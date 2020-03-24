@@ -3767,7 +3767,7 @@ var _default = function _default() {
 
     case _routing.SET_ENTRY:
       {
-        if (!action.entry) return state;
+        if (!action.entry) return state.set('isLoading', false);
         var entryDepends = (0, _ContensisDeliveryApi.GetAllResponseGuids)(action.entry);
         return state.set('entryDepends', (0, _immutable.fromJS)(entryDepends)).set('entry', (0, _immutable.fromJS)(action.entry)).set('isLoading', false);
       }

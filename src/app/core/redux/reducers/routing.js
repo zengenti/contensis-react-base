@@ -45,7 +45,7 @@ export default (state = initialState, action) => {
       return state.set('currentNodeAncestors', fromJS(action.ancestors));
     }
     case SET_ENTRY: {
-      if (!action.entry) return state;
+      if (!action.entry) return state.set('isLoading', false);
       const entryDepends = GetAllResponseGuids(action.entry);
       return state
         .set('entryDepends', fromJS(entryDepends))
