@@ -3792,7 +3792,7 @@ var _default = function _default() {
 
     case _routing.SET_NAVIGATION_NOT_FOUND:
       {
-        return state.set('notFound', (0, _immutable.fromJS)(action.notFound));
+        return state.set('notFound', (0, _immutable.fromJS)(action.notFound)).set('isLoading', false);
       }
 
     case _routing.SET_NODE:

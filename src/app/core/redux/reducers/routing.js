@@ -69,7 +69,9 @@ export default (state = initialState, action) => {
       return state;
     }
     case SET_NAVIGATION_NOT_FOUND: {
-      return state.set('notFound', fromJS(action.notFound));
+      return state
+        .set('notFound', fromJS(action.notFound))
+        .set('isLoading', false);
     }
     case SET_NODE: {
       const { node } = action;
