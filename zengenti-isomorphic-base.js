@@ -3784,7 +3784,7 @@ var _default = function _default() {
     case _routing.SET_NAVIGATION_PATH:
       {
         if (action.path) {
-          return state.set('currentPath', (0, _immutable.fromJS)(action.path)).set('location', (0, _immutable.fromJS)(action.location)).set('staticRoute', (0, _immutable.fromJS)(action.staticRoute)).set('isLoading', true);
+          return state.set('currentPath', (0, _immutable.fromJS)(action.path)).set('location', (0, _immutable.fromJS)(action.location)).set('staticRoute', (0, _immutable.fromJS)(action.staticRoute)).set('isLoading', typeof window !== 'undefined');
         }
 
         return state;

@@ -64,7 +64,7 @@ export default (state = initialState, action) => {
           .set('currentPath', fromJS(action.path))
           .set('location', fromJS(action.location))
           .set('staticRoute', fromJS(action.staticRoute))
-          .set('isLoading', true);
+          .set('isLoading', typeof window !== 'undefined');
       }
       return state;
     }
