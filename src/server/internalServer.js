@@ -16,9 +16,6 @@ const start = (ReactApp, config, ServerFeatures) => {
   // Output some information about the used build/startup configuration
   DisplayStartupConfiguration(config);
 
-  // Configure DNS to make life easier
-  ConfigureLocalDNS();
-
   // Set-up local proxy for images from cms, to save doing rewrites and extra code
   ServerFeatures(app);
   ConfigureReverseProxies(app, config.reverseProxyPaths);
@@ -26,7 +23,10 @@ const start = (ReactApp, config, ServerFeatures) => {
 
   app.use('/static', express.static('dist/static', { maxage: '31557600h' }));
 
-  app.on('ready', () => {
+  app.on('ready', async () => {
+    // Configure DNS to make life easier
+    await ConfigureLocalDNS();
+
     Loadable.preloadAll().then(() => {
       var server = app.listen(3001, () => {
         console.info(`HTTP server is listening @ port 3001`);

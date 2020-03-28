@@ -4,7 +4,7 @@ import fetchMyIp from '../util/fetchMyIp';
 const servers = SERVERS; /* global SERVERS */
 const apiConfig = DELIVERY_API_CONFIG; /* global DELIVERY_API_CONFIG */
 
-const localDns = () => {
+const localDns = async () => {
   const disableDnsChanges = false;
 
   const configureLocalEndpoint = () => {
@@ -18,7 +18,7 @@ const localDns = () => {
 
   // Break api.ipify to test
   // evilDns.add('api.ipify.org', '8.8.8.8');
-  fetchMyIp(servers, configureLocalEndpoint);
+  await fetchMyIp(servers, configureLocalEndpoint);
 };
 
 export default localDns;
