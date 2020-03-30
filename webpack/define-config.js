@@ -1,6 +1,6 @@
 const packagejson = require('../package.json');
-// const urls = require('../src/app/core/util/urls').urls;
-const { urls } = require('../util');
+const urls = require('../src/app/core/util/urls');
+//const { urls } = require('../util');
 
 require('custom-env').env(process.env.env || process.env.npm_config_env);
 
