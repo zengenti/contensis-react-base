@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("@babel/runtime/helpers/interopRequireDefault"), require("@babel/runtime/helpers/typeof"), require("@babel/runtime/helpers/slicedToArray"), require("awesome-json2json"));
+		module.exports = factory(require("@babel/runtime/helpers/interopRequireDefault"), require("@babel/runtime/helpers/slicedToArray"), require("@babel/runtime/helpers/typeof"), require("jsonpath-mapper"));
 	else if(typeof define === 'function' && define.amd)
-		define(["@babel/runtime/helpers/interopRequireDefault", "@babel/runtime/helpers/typeof", "@babel/runtime/helpers/slicedToArray", "awesome-json2json"], factory);
+		define(["@babel/runtime/helpers/interopRequireDefault", "@babel/runtime/helpers/slicedToArray", "@babel/runtime/helpers/typeof", "jsonpath-mapper"], factory);
 	else {
-		var a = typeof exports === 'object' ? factory(require("@babel/runtime/helpers/interopRequireDefault"), require("@babel/runtime/helpers/typeof"), require("@babel/runtime/helpers/slicedToArray"), require("awesome-json2json")) : factory(root["@babel/runtime/helpers/interopRequireDefault"], root["@babel/runtime/helpers/typeof"], root["@babel/runtime/helpers/slicedToArray"], root["awesome-json2json"]);
+		var a = typeof exports === 'object' ? factory(require("@babel/runtime/helpers/interopRequireDefault"), require("@babel/runtime/helpers/slicedToArray"), require("@babel/runtime/helpers/typeof"), require("jsonpath-mapper")) : factory(root["@babel/runtime/helpers/interopRequireDefault"], root["@babel/runtime/helpers/slicedToArray"], root["@babel/runtime/helpers/typeof"], root["jsonpath-mapper"]);
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(global, function(__WEBPACK_EXTERNAL_MODULE__0__, __WEBPACK_EXTERNAL_MODULE__40__, __WEBPACK_EXTERNAL_MODULE__72__, __WEBPACK_EXTERNAL_MODULE__106__) {
+})(global, function(__WEBPACK_EXTERNAL_MODULE__0__, __WEBPACK_EXTERNAL_MODULE__40__, __WEBPACK_EXTERNAL_MODULE__41__, __WEBPACK_EXTERNAL_MODULE__106__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -152,9 +152,9 @@ module.exports = setCachingHeaders;
 
 var _interopRequireDefault = __webpack_require__(0);
 
-var _typeof2 = _interopRequireDefault(__webpack_require__(40));
+var _typeof2 = _interopRequireDefault(__webpack_require__(41));
 
-var _slicedToArray2 = _interopRequireDefault(__webpack_require__(72));
+var _slicedToArray2 = _interopRequireDefault(__webpack_require__(40));
 
 var stringifyStrings = function stringifyStrings(obj) {
   var returnObj = Array.isArray(obj) ? [] : {};
@@ -212,10 +212,10 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__40__;
 
 /***/ }),
 
-/***/ 72:
+/***/ 41:
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__72__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__41__;
 
 /***/ }),
 
@@ -232,14 +232,14 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = exports.useMapper = void 0;
 
-var _awesomeJson2json = _interopRequireDefault(__webpack_require__(106));
+var _jsonpathMapper = _interopRequireDefault(__webpack_require__(106));
 
 var useMapper = function useMapper(json, template) {
-  return (0, _awesomeJson2json["default"])(json, template);
+  return (0, _jsonpathMapper["default"])(json, template);
 };
 
 exports.useMapper = useMapper;
-var _default = _awesomeJson2json["default"];
+var _default = _jsonpathMapper["default"];
 exports["default"] = _default;
 
 /***/ })

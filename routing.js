@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("@babel/runtime/helpers/interopRequireDefault"), require("@babel/runtime/regenerator"), require("immutable"), require("react"), require("@babel/runtime/helpers/defineProperty"), require("@babel/runtime/helpers/asyncToGenerator"), require("@babel/runtime/helpers/interopRequireWildcard"), require("query-string"), require("react-redux"), require("react-router-dom"), require("react-hot-loader"), require("prop-types"), require("react-router-config"));
+		module.exports = factory(require("@babel/runtime/helpers/interopRequireDefault"), require("@babel/runtime/regenerator"), require("immutable"), require("@babel/runtime/helpers/defineProperty"), require("react"), require("@babel/runtime/helpers/asyncToGenerator"), require("@babel/runtime/helpers/interopRequireWildcard"), require("query-string"), require("react-redux"), require("react-router-dom"), require("react-hot-loader"), require("prop-types"), require("react-router-config"));
 	else if(typeof define === 'function' && define.amd)
-		define(["@babel/runtime/helpers/interopRequireDefault", "@babel/runtime/regenerator", "immutable", "react", "@babel/runtime/helpers/defineProperty", "@babel/runtime/helpers/asyncToGenerator", "@babel/runtime/helpers/interopRequireWildcard", "query-string", "react-redux", "react-router-dom", "react-hot-loader", "prop-types", "react-router-config"], factory);
+		define(["@babel/runtime/helpers/interopRequireDefault", "@babel/runtime/regenerator", "immutable", "@babel/runtime/helpers/defineProperty", "react", "@babel/runtime/helpers/asyncToGenerator", "@babel/runtime/helpers/interopRequireWildcard", "query-string", "react-redux", "react-router-dom", "react-hot-loader", "prop-types", "react-router-config"], factory);
 	else {
-		var a = typeof exports === 'object' ? factory(require("@babel/runtime/helpers/interopRequireDefault"), require("@babel/runtime/regenerator"), require("immutable"), require("react"), require("@babel/runtime/helpers/defineProperty"), require("@babel/runtime/helpers/asyncToGenerator"), require("@babel/runtime/helpers/interopRequireWildcard"), require("query-string"), require("react-redux"), require("react-router-dom"), require("react-hot-loader"), require("prop-types"), require("react-router-config")) : factory(root["@babel/runtime/helpers/interopRequireDefault"], root["@babel/runtime/regenerator"], root["immutable"], root["react"], root["@babel/runtime/helpers/defineProperty"], root["@babel/runtime/helpers/asyncToGenerator"], root["@babel/runtime/helpers/interopRequireWildcard"], root["query-string"], root["react-redux"], root["react-router-dom"], root["react-hot-loader"], root["prop-types"], root["react-router-config"]);
+		var a = typeof exports === 'object' ? factory(require("@babel/runtime/helpers/interopRequireDefault"), require("@babel/runtime/regenerator"), require("immutable"), require("@babel/runtime/helpers/defineProperty"), require("react"), require("@babel/runtime/helpers/asyncToGenerator"), require("@babel/runtime/helpers/interopRequireWildcard"), require("query-string"), require("react-redux"), require("react-router-dom"), require("react-hot-loader"), require("prop-types"), require("react-router-config")) : factory(root["@babel/runtime/helpers/interopRequireDefault"], root["@babel/runtime/regenerator"], root["immutable"], root["@babel/runtime/helpers/defineProperty"], root["react"], root["@babel/runtime/helpers/asyncToGenerator"], root["@babel/runtime/helpers/interopRequireWildcard"], root["query-string"], root["react-redux"], root["react-router-dom"], root["react-hot-loader"], root["prop-types"], root["react-router-config"]);
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(global, function(__WEBPACK_EXTERNAL_MODULE__0__, __WEBPACK_EXTERNAL_MODULE__1__, __WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__3__, __WEBPACK_EXTERNAL_MODULE__4__, __WEBPACK_EXTERNAL_MODULE__5__, __WEBPACK_EXTERNAL_MODULE__8__, __WEBPACK_EXTERNAL_MODULE__15__, __WEBPACK_EXTERNAL_MODULE__17__, __WEBPACK_EXTERNAL_MODULE__26__, __WEBPACK_EXTERNAL_MODULE__30__, __WEBPACK_EXTERNAL_MODULE__33__, __WEBPACK_EXTERNAL_MODULE__45__) {
+})(global, function(__WEBPACK_EXTERNAL_MODULE__0__, __WEBPACK_EXTERNAL_MODULE__1__, __WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__3__, __WEBPACK_EXTERNAL_MODULE__4__, __WEBPACK_EXTERNAL_MODULE__5__, __WEBPACK_EXTERNAL_MODULE__8__, __WEBPACK_EXTERNAL_MODULE__15__, __WEBPACK_EXTERNAL_MODULE__17__, __WEBPACK_EXTERNAL_MODULE__26__, __WEBPACK_EXTERNAL_MODULE__30__, __WEBPACK_EXTERNAL_MODULE__33__, __WEBPACK_EXTERNAL_MODULE__46__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -205,7 +205,7 @@ exports.types = __webpack_require__(7);
 exports.actions = __webpack_require__(27);
 exports.selectors = __webpack_require__(6);
 
-var ReactApp = __webpack_require__(43)["default"];
+var ReactApp = __webpack_require__(44)["default"];
 
 var RouteLoader = __webpack_require__(39)["default"];
 
@@ -235,7 +235,7 @@ var _regenerator = _interopRequireDefault(__webpack_require__(1));
 
 var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(5));
 
-var _defineProperty2 = _interopRequireDefault(__webpack_require__(4));
+var _defineProperty2 = _interopRequireDefault(__webpack_require__(3));
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
@@ -495,7 +495,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.toJS = void 0;
 
-var _react = _interopRequireDefault(__webpack_require__(3));
+var _react = _interopRequireDefault(__webpack_require__(4));
 
 var _immutable = __webpack_require__(2);
 
@@ -622,7 +622,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
-var _react = _interopRequireWildcard(__webpack_require__(3));
+var _react = _interopRequireWildcard(__webpack_require__(4));
 
 var _propTypes = _interopRequireDefault(__webpack_require__(33));
 
@@ -632,15 +632,15 @@ var _reactHotLoader = __webpack_require__(30);
 
 var _reactRouterDom = __webpack_require__(26);
 
-var _reactRouterConfig = __webpack_require__(45);
+var _reactRouterConfig = __webpack_require__(46);
 
 var _routing = __webpack_require__(6);
 
 var _routing2 = __webpack_require__(27);
 
-var _NotFound = _interopRequireDefault(__webpack_require__(46));
+var _NotFound = _interopRequireDefault(__webpack_require__(47));
 
-var _Status = __webpack_require__(47);
+var _Status = __webpack_require__(48);
 
 var _ToJs = __webpack_require__(25);
 
@@ -771,7 +771,7 @@ var mapDispatchToProps = {
 var _default = (0, _reactHotLoader.hot)(module)((0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)((0, _ToJs.toJS)(RouteLoader)));
 
 exports["default"] = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(44)(module)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(45)(module)))
 
 /***/ }),
 
@@ -782,7 +782,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__4__;
 
 /***/ }),
 
-/***/ 43:
+/***/ 44:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -795,7 +795,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
-var _react = _interopRequireDefault(__webpack_require__(3));
+var _react = _interopRequireDefault(__webpack_require__(4));
 
 var _reactHotLoader = __webpack_require__(30);
 
@@ -810,7 +810,7 @@ exports["default"] = _default;
 
 /***/ }),
 
-/***/ 44:
+/***/ 45:
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -839,34 +839,10 @@ module.exports = function(module) {
 
 /***/ }),
 
-/***/ 45:
+/***/ 46:
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__45__;
-
-/***/ }),
-
-/***/ 46:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(0);
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
-
-var _react = _interopRequireDefault(__webpack_require__(3));
-
-var NotFound = function NotFound() {
-  return _react["default"].createElement(_react["default"].Fragment, null, _react["default"].createElement("header", null, _react["default"].createElement("h1", null, "404 Page Not Found")));
-};
-
-var _default = NotFound;
-exports["default"] = _default;
+module.exports = __WEBPACK_EXTERNAL_MODULE__46__;
 
 /***/ }),
 
@@ -881,9 +857,33 @@ var _interopRequireDefault = __webpack_require__(0);
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports["default"] = void 0;
+
+var _react = _interopRequireDefault(__webpack_require__(4));
+
+var NotFound = function NotFound() {
+  return _react["default"].createElement(_react["default"].Fragment, null, _react["default"].createElement("header", null, _react["default"].createElement("h1", null, "404 Page Not Found")));
+};
+
+var _default = NotFound;
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ 48:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(0);
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.Status = void 0;
 
-var _react = _interopRequireDefault(__webpack_require__(3));
+var _react = _interopRequireDefault(__webpack_require__(4));
 
 var _propTypes = _interopRequireDefault(__webpack_require__(33));
 

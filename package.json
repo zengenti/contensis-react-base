@@ -33,10 +33,8 @@
   "author": "http://Zengenti.com",
   "browserslist": {
     "modern": [
-      "Firefox >= 53",
-      "Edge >= 15",
-      "Chrome >= 58",
-      "iOS >= 10.1"
+      "Firefox >= 72",
+      "Chrome >= 78"
     ],
     "legacy": [
       "IE >= 11",
@@ -54,9 +52,11 @@
     "contensis-delivery-api": "^1.1.0",
     "evil-dns": "^0.2.0",
     "express": "^4.17.1",
+    "fromentries": "^1.2.0",
     "http-proxy": "^1.17.0",
     "immutable": "^4.0.0-rc.12",
     "isomorphic-fetch": "2.2.1",
+    "jsonpath-mapper": "^1.0.0-beta.3",
     "minify-css-string": "1.0.0",
     "query-string": "^5.1.1",
     "react": "16.11.0",
@@ -145,18 +145,18 @@
   },
   "dependencies": {
     "@hot-loader/react-dom": "16.11.0",
-    "awesome-json2json": "^0.5.2",
-    "browserslist-useragent": "^3.0.2",
     "contensis-delivery-api": "^1.1.0",
     "custom-env": "^1.0.2",
     "dateformat": "^3.0.3",
     "evil-dns": "^0.2.0",
     "express": "^4.17.1",
     "file-loader": "^4.0.0",
+    "fromentries": "^1.2.0",
     "http-proxy": "^1.17.0",
     "immutable": "^4.0.0-rc.12",
     "isomorphic-fetch": "2.2.1",
     "js-cookie": "^2.2.1",
+    "jsonpath-mapper": "^1.0.0-beta.3",
     "leaflet": "^1.5.1",
     "loglevel": "^1.6.3",
     "minify-css-string": "1.0.0",

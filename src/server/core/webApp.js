@@ -7,10 +7,10 @@ import { renderToString } from 'react-dom/server';
 import { getBundles } from 'react-loadable/webpack';
 import { ServerStyleSheet } from 'styled-components';
 import Helmet from 'react-helmet';
-import { matchesUA } from 'browserslist-useragent';
 import serialize from 'serialize-javascript';
 import minifyCssString from 'minify-css-string';
 import { fromJS } from 'immutable';
+import fromEntries from 'fromentries';
 
 import { history } from '~/core/redux/history';
 
@@ -40,7 +40,7 @@ const addStandardHeaders = (state, response, packagejson, groups) => {
     try {
       console.log('About to add header');
       let entryDepends = selectEntryDepends(state);
-      entryDepends = Array.from(entryDepends);
+      entryDepends = Array.from(entryDepends || {});
       console.log(`entryDepends count: ${entryDepends.length}`);
 
       let nodeDepends = selectNodeDepends(state).toJS();
@@ -59,12 +59,13 @@ const addStandardHeaders = (state, response, packagejson, groups) => {
       console.log(`depends hashed: ${allDepends.join(' ')}`);
 
       addVarnishAuthenticationHeaders(state, response, groups);
+
+      response.setHeader('Surrogate-Control', 'max-age=3600');
     } catch (e) {
-      console.log('Error Adding headers');
-      console.log(e);
+      console.log('Error Adding headers', e.message);
+      // console.log(e);
     }
   }
-  response.setHeader('Surrogate-Control', 'max-age=3600');
 };
 
 const addVarnishAuthenticationHeaders = (state, response, groups = {}) => {
@@ -73,7 +74,7 @@ const addVarnishAuthenticationHeaders = (state, response, groups = {}) => {
       const stateEntry = selectRouteEntry(state);
       const project = selectCurrentProject(state);
       const { globalGroups, allowedGroups } = groups;
-      console.log(globalGroups, allowedGroups);
+      // console.log(globalGroups, allowedGroups);
       let allGroups = [...((globalGroups && globalGroups[project]) || [])];
       if (
         stateEntry &&
@@ -94,11 +95,15 @@ const addVarnishAuthenticationHeaders = (state, response, groups = {}) => {
 const readFileSync = path => fs.readFileSync(path, 'utf8');
 
 const loadBundleData = ({ stats, templates }, build) => {
+  const bundle = {};
   try {
-    const bundle = {};
     bundle.stats = JSON.parse(
       readFileSync(stats.replace('/target', build ? `/${build}` : ''))
     );
+  } catch {
+    //console.log(ex);
+  }
+  try {
     bundle.templates = {
       templateHTML: readFileSync(
         templates.html.replace('/target', build ? `/${build}` : '')
@@ -110,10 +115,10 @@ const loadBundleData = ({ stats, templates }, build) => {
         templates.fragment.replace('/target', build ? `/${build}` : '')
       ),
     };
-    return bundle;
   } catch {
     //console.log(ex);
   }
+  return bundle;
 };
 
 const webApp = (app, ReactApp, config) => {
@@ -124,6 +129,7 @@ const webApp = (app, ReactApp, config) => {
     withEvents,
     packagejson,
     versionData,
+    differentialBundles,
     dynamicPaths,
     allowedGroups,
     globalGroups,
@@ -135,18 +141,13 @@ const webApp = (app, ReactApp, config) => {
     legacy: loadBundleData(config, 'legacy'),
     modern: loadBundleData(config, 'modern'),
   };
-  if (!bundles.default) bundles.default = bundles.legacy || bundles.modern;
+  if (!bundles.default || bundles.default === {})
+    bundles.default = bundles.legacy || bundles.modern;
 
   const versionInfo = JSON.parse(fs.readFileSync(versionData, 'utf8'));
 
   app.get('/*', (request, response, next) => {
     if (request.originalUrl.startsWith('/static/')) return next();
-    const useragent = request.headers['user-agent'];
-    const isModernUser = matchesUA(useragent, {
-      env: 'modern',
-      allowHigherVersions: true,
-    });
-
     const { url } = request;
 
     // Determine functional params and set access methods
@@ -224,9 +225,18 @@ const webApp = (app, ReactApp, config) => {
     );
     /* eslint-enable no-console */
 
-    const target = isModernUser ? bundles.modern : bundles.legacy;
-
-    const { templates, stats } = target || bundles.default;
+    const templates = bundles.default.templates || bundles.legacy.templates;
+    const stats =
+      bundles.modern.stats && bundles.legacy.stats
+        ? fromEntries(
+            Object.entries(bundles.modern.stats).map(([lib, paths]) => [
+              lib,
+              bundles.legacy.stats[lib]
+                ? [...paths, ...bundles.legacy.stats[lib]]
+                : paths,
+            ])
+          )
+        : bundles.default.stats;
 
     const {
       templateHTML,
@@ -242,7 +252,14 @@ const webApp = (app, ReactApp, config) => {
       const isDynamicHint = `<script>window.isDynamic = true;</script>`;
       const dynamicBundles = getBundles(stats, modules);
       const dynamicBundleScripts = dynamicBundles
-        .map(bundle => `<script src="${bundle.publicPath}"></script>`)
+        .map(bundle => {
+          if (bundle.publicPath.includes('/modern/'))
+            return differentialBundles
+              ? `<script type="module" src="${bundle.publicPath}"></script>`
+              : null;
+          return `<script nomodule src="${bundle.publicPath}"></script>`;
+        })
+        .filter(f => f)
         .join('');
       const responseHtmlDynamic = templateHTML
         .replace('{{TITLE}}', '')
@@ -286,7 +303,14 @@ const webApp = (app, ReactApp, config) => {
           const bundles = getBundles(stats, modules);
 
           const bundleScripts = bundles
-            .map(bundle => `<script src="${bundle.publicPath}"></script>`)
+            .map(bundle => {
+              if (bundle.publicPath.includes('/modern/'))
+                return differentialBundles
+                  ? `<script type="module" src="${bundle.publicPath}"></script>`
+                  : null;
+              return `<script nomodule src="${bundle.publicPath}"></script>`;
+            })
+            .filter(f => f)
             .join('');
 
           let serialisedReduxData = '';
@@ -356,7 +380,12 @@ const webApp = (app, ReactApp, config) => {
             allowedGroups,
             globalGroups,
           });
-          response.status(status).send(responseHTML);
+          try {
+            response.status(status).send(responseHTML);
+          } catch (err) {
+            // eslint-disable-next-line no-console
+            console.log(err.message);
+          }
         })
         .catch(err => {
           // Handle any error that occurred in any of the previous
