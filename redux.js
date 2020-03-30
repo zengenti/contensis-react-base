@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("@babel/runtime/helpers/interopRequireDefault"), require("@babel/runtime/regenerator"), require("immutable"), require("@babel/runtime/helpers/defineProperty"), require("react"), require("@babel/runtime/helpers/asyncToGenerator"), require("@babel/runtime/helpers/interopRequireWildcard"), require("@babel/runtime/helpers/classCallCheck"), require("@babel/runtime/helpers/createClass"), require("query-string"), require("react-redux"), require("@redux-saga/core/effects"), require("js-cookie"), require("@babel/runtime/helpers/slicedToArray"));
+		module.exports = factory(require("@babel/runtime/helpers/interopRequireDefault"), require("@babel/runtime/regenerator"), require("immutable"), require("@babel/runtime/helpers/defineProperty"), require("react"), require("@babel/runtime/helpers/asyncToGenerator"), require("@babel/runtime/helpers/interopRequireWildcard"), require("@babel/runtime/helpers/classCallCheck"), require("@babel/runtime/helpers/createClass"), require("query-string"), require("react-redux"), require("@redux-saga/core/effects"), require("@babel/runtime/helpers/slicedToArray"), require("js-cookie"));
 	else if(typeof define === 'function' && define.amd)
-		define(["@babel/runtime/helpers/interopRequireDefault", "@babel/runtime/regenerator", "immutable", "@babel/runtime/helpers/defineProperty", "react", "@babel/runtime/helpers/asyncToGenerator", "@babel/runtime/helpers/interopRequireWildcard", "@babel/runtime/helpers/classCallCheck", "@babel/runtime/helpers/createClass", "query-string", "react-redux", "@redux-saga/core/effects", "js-cookie", "@babel/runtime/helpers/slicedToArray"], factory);
+		define(["@babel/runtime/helpers/interopRequireDefault", "@babel/runtime/regenerator", "immutable", "@babel/runtime/helpers/defineProperty", "react", "@babel/runtime/helpers/asyncToGenerator", "@babel/runtime/helpers/interopRequireWildcard", "@babel/runtime/helpers/classCallCheck", "@babel/runtime/helpers/createClass", "query-string", "react-redux", "@redux-saga/core/effects", "@babel/runtime/helpers/slicedToArray", "js-cookie"], factory);
 	else {
-		var a = typeof exports === 'object' ? factory(require("@babel/runtime/helpers/interopRequireDefault"), require("@babel/runtime/regenerator"), require("immutable"), require("@babel/runtime/helpers/defineProperty"), require("react"), require("@babel/runtime/helpers/asyncToGenerator"), require("@babel/runtime/helpers/interopRequireWildcard"), require("@babel/runtime/helpers/classCallCheck"), require("@babel/runtime/helpers/createClass"), require("query-string"), require("react-redux"), require("@redux-saga/core/effects"), require("js-cookie"), require("@babel/runtime/helpers/slicedToArray")) : factory(root["@babel/runtime/helpers/interopRequireDefault"], root["@babel/runtime/regenerator"], root["immutable"], root["@babel/runtime/helpers/defineProperty"], root["react"], root["@babel/runtime/helpers/asyncToGenerator"], root["@babel/runtime/helpers/interopRequireWildcard"], root["@babel/runtime/helpers/classCallCheck"], root["@babel/runtime/helpers/createClass"], root["query-string"], root["react-redux"], root["@redux-saga/core/effects"], root["js-cookie"], root["@babel/runtime/helpers/slicedToArray"]);
+		var a = typeof exports === 'object' ? factory(require("@babel/runtime/helpers/interopRequireDefault"), require("@babel/runtime/regenerator"), require("immutable"), require("@babel/runtime/helpers/defineProperty"), require("react"), require("@babel/runtime/helpers/asyncToGenerator"), require("@babel/runtime/helpers/interopRequireWildcard"), require("@babel/runtime/helpers/classCallCheck"), require("@babel/runtime/helpers/createClass"), require("query-string"), require("react-redux"), require("@redux-saga/core/effects"), require("@babel/runtime/helpers/slicedToArray"), require("js-cookie")) : factory(root["@babel/runtime/helpers/interopRequireDefault"], root["@babel/runtime/regenerator"], root["immutable"], root["@babel/runtime/helpers/defineProperty"], root["react"], root["@babel/runtime/helpers/asyncToGenerator"], root["@babel/runtime/helpers/interopRequireWildcard"], root["@babel/runtime/helpers/classCallCheck"], root["@babel/runtime/helpers/createClass"], root["query-string"], root["react-redux"], root["@redux-saga/core/effects"], root["@babel/runtime/helpers/slicedToArray"], root["js-cookie"]);
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(global, function(__WEBPACK_EXTERNAL_MODULE__0__, __WEBPACK_EXTERNAL_MODULE__1__, __WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__3__, __WEBPACK_EXTERNAL_MODULE__4__, __WEBPACK_EXTERNAL_MODULE__5__, __WEBPACK_EXTERNAL_MODULE__8__, __WEBPACK_EXTERNAL_MODULE__11__, __WEBPACK_EXTERNAL_MODULE__12__, __WEBPACK_EXTERNAL_MODULE__15__, __WEBPACK_EXTERNAL_MODULE__17__, __WEBPACK_EXTERNAL_MODULE__23__, __WEBPACK_EXTERNAL_MODULE__35__, __WEBPACK_EXTERNAL_MODULE__40__) {
+})(global, function(__WEBPACK_EXTERNAL_MODULE__0__, __WEBPACK_EXTERNAL_MODULE__1__, __WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__3__, __WEBPACK_EXTERNAL_MODULE__4__, __WEBPACK_EXTERNAL_MODULE__5__, __WEBPACK_EXTERNAL_MODULE__8__, __WEBPACK_EXTERNAL_MODULE__11__, __WEBPACK_EXTERNAL_MODULE__12__, __WEBPACK_EXTERNAL_MODULE__15__, __WEBPACK_EXTERNAL_MODULE__17__, __WEBPACK_EXTERNAL_MODULE__23__, __WEBPACK_EXTERNAL_MODULE__26__, __WEBPACK_EXTERNAL_MODULE__36__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -750,9 +750,9 @@ exports.types = types;
 
 var _reducers = _interopRequireDefault(__webpack_require__(14));
 
-var _sagas = __webpack_require__(29);
+var _sagas = __webpack_require__(30);
 
-var _withLogin = _interopRequireDefault(__webpack_require__(36));
+var _withLogin = _interopRequireDefault(__webpack_require__(37));
 
 /***/ }),
 /* 17 */
@@ -1448,8 +1448,14 @@ var toJS = function toJS(WrappedComponent) {
 exports.toJS = toJS;
 
 /***/ }),
-/* 26 */,
-/* 27 */
+/* 26 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__26__;
+
+/***/ }),
+/* 27 */,
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1512,7 +1518,7 @@ var setRouteEntry = function setRouteEntry(entry) {
 exports.setRouteEntry = setRouteEntry;
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1531,7 +1537,7 @@ var GET_NODE_TREE_ERROR = "".concat(ACTION_PREFIX, "_GET_NODE_TREE_ERROR");
 exports.GET_NODE_TREE_ERROR = GET_NODE_TREE_ERROR;
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1563,7 +1569,7 @@ var _routing2 = __webpack_require__(6);
 
 var _selectors = __webpack_require__(10);
 
-var _LoginHelper = __webpack_require__(32);
+var _LoginHelper = __webpack_require__(33);
 
 var _SecurityApi = __webpack_require__(24);
 
@@ -1940,8 +1946,8 @@ function createUserAccountSaga() {
 }
 
 /***/ }),
-/* 30 */,
-/* 31 */
+/* 31 */,
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1958,7 +1964,7 @@ var SET_VERSION_STATUS = "".concat(VERSION_PREFIX, "SET_VERSION_STATUS");
 exports.SET_VERSION_STATUS = SET_VERSION_STATUS;
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1979,7 +1985,7 @@ var _classCallCheck2 = _interopRequireDefault(__webpack_require__(11));
 
 var _createClass2 = _interopRequireDefault(__webpack_require__(12));
 
-var _CookieHelper = __webpack_require__(34);
+var _CookieHelper = __webpack_require__(35);
 
 var _SecurityApi = __webpack_require__(24);
 
@@ -2538,8 +2544,8 @@ function () {
 exports.LoginHelper = LoginHelper;
 
 /***/ }),
-/* 33 */,
-/* 34 */
+/* 34 */,
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2556,7 +2562,7 @@ var _classCallCheck2 = _interopRequireDefault(__webpack_require__(11));
 
 var _createClass2 = _interopRequireDefault(__webpack_require__(12));
 
-var _jsCookie = _interopRequireDefault(__webpack_require__(35));
+var _jsCookie = _interopRequireDefault(__webpack_require__(36));
 
 var COOKIE_VALID_DAYS = 1; // 0 = Session cookie
 // Override the default js-cookie conversion / encoding
@@ -2603,13 +2609,13 @@ function () {
 exports.CookieHelper = CookieHelper;
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__35__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__36__;
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2674,7 +2680,7 @@ var _default = withLogin;
 exports["default"] = _default;
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2704,7 +2710,7 @@ var selectVersionStatus = function selectVersionStatus(state) {
 exports.selectVersionStatus = selectVersionStatus;
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2734,13 +2740,7 @@ var selectNavigationDepends = function selectNavigationDepends(state) {
 exports.selectNavigationDepends = selectNavigationDepends;
 
 /***/ }),
-/* 39 */,
-/* 40 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__40__;
-
-/***/ }),
+/* 40 */,
 /* 41 */,
 /* 42 */,
 /* 43 */
@@ -2756,7 +2756,7 @@ exports.setVersionStatus = exports.setVersion = void 0;
 
 var _helpers = __webpack_require__(13);
 
-var _version = __webpack_require__(31);
+var _version = __webpack_require__(32);
 
 var setVersion = function setVersion(commitRef, buildNo) {
   return (0, _helpers.action)(_version.SET_VERSION, {
@@ -2838,7 +2838,7 @@ exports.setVersionStatus = setVersionStatus;
 
 var _interopRequireDefault = __webpack_require__(0);
 
-var _slicedToArray2 = _interopRequireDefault(__webpack_require__(40));
+var _slicedToArray2 = _interopRequireDefault(__webpack_require__(26));
 
 var types = __webpack_require__(99)["default"];
 
@@ -2875,13 +2875,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
-var navigation = _interopRequireWildcard(__webpack_require__(28));
+var navigation = _interopRequireWildcard(__webpack_require__(29));
 
 var routing = _interopRequireWildcard(__webpack_require__(7));
 
 var _login = __webpack_require__(16);
 
-var version = _interopRequireWildcard(__webpack_require__(31));
+var version = _interopRequireWildcard(__webpack_require__(32));
 
 var _default = {
   navigation: navigation,
@@ -2909,7 +2909,7 @@ var _login = __webpack_require__(16);
 
 var navigation = _interopRequireWildcard(__webpack_require__(101));
 
-var routing = _interopRequireWildcard(__webpack_require__(27));
+var routing = _interopRequireWildcard(__webpack_require__(28));
 
 var version = _interopRequireWildcard(__webpack_require__(43));
 
@@ -2935,7 +2935,7 @@ exports.loadNavigationTree = void 0;
 
 var _helpers = __webpack_require__(13);
 
-var _navigation = __webpack_require__(28);
+var _navigation = __webpack_require__(29);
 
 var loadNavigationTree = function loadNavigationTree() {
   return (0, _helpers.action)(_navigation.GET_NODE_TREE);
@@ -2957,13 +2957,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
-var navigation = _interopRequireWildcard(__webpack_require__(38));
+var navigation = _interopRequireWildcard(__webpack_require__(39));
 
 var routing = _interopRequireWildcard(__webpack_require__(6));
 
 var _login = __webpack_require__(16);
 
-var version = _interopRequireWildcard(__webpack_require__(37));
+var version = _interopRequireWildcard(__webpack_require__(38));
 
 var _default = {
   navigation: navigation,

@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("@babel/runtime/helpers/interopRequireDefault"), require("@babel/runtime/regenerator"), require("immutable"), require("@babel/runtime/helpers/defineProperty"), require("react"), require("@babel/runtime/helpers/asyncToGenerator"), require("@babel/runtime/helpers/interopRequireWildcard"), require("@babel/runtime/helpers/classCallCheck"), require("@babel/runtime/helpers/createClass"), require("query-string"), require("react-redux"), require("@babel/runtime/helpers/toConsumableArray"), require("@redux-saga/core/effects"), require("react-router-dom"), require("react-hot-loader"), require("prop-types"), require("js-cookie"), require("@babel/runtime/helpers/typeof"), require("contensis-delivery-api"), require("react-router-config"), require("react-loadable"), require("isomorphic-fetch"), require("history"), require("redux"), require("redux-immutable"), require("redux-thunk"), require("redux-saga"), require("loglevel"), require("@babel/runtime/helpers/construct"), require("react-dom"));
+		module.exports = factory(require("@babel/runtime/helpers/interopRequireDefault"), require("@babel/runtime/regenerator"), require("immutable"), require("@babel/runtime/helpers/defineProperty"), require("react"), require("@babel/runtime/helpers/asyncToGenerator"), require("@babel/runtime/helpers/interopRequireWildcard"), require("@babel/runtime/helpers/classCallCheck"), require("@babel/runtime/helpers/createClass"), require("query-string"), require("react-redux"), require("@babel/runtime/helpers/toConsumableArray"), require("@redux-saga/core/effects"), require("@babel/runtime/helpers/slicedToArray"), require("react-router-dom"), require("react-hot-loader"), require("prop-types"), require("js-cookie"), require("@babel/runtime/helpers/typeof"), require("contensis-delivery-api"), require("react-router-config"), require("react-loadable"), require("isomorphic-fetch"), require("history"), require("redux"), require("redux-immutable"), require("redux-thunk"), require("redux-saga"), require("loglevel"), require("@babel/runtime/helpers/construct"), require("react-dom"));
 	else if(typeof define === 'function' && define.amd)
-		define(["@babel/runtime/helpers/interopRequireDefault", "@babel/runtime/regenerator", "immutable", "@babel/runtime/helpers/defineProperty", "react", "@babel/runtime/helpers/asyncToGenerator", "@babel/runtime/helpers/interopRequireWildcard", "@babel/runtime/helpers/classCallCheck", "@babel/runtime/helpers/createClass", "query-string", "react-redux", "@babel/runtime/helpers/toConsumableArray", "@redux-saga/core/effects", "react-router-dom", "react-hot-loader", "prop-types", "js-cookie", "@babel/runtime/helpers/typeof", "contensis-delivery-api", "react-router-config", "react-loadable", "isomorphic-fetch", "history", "redux", "redux-immutable", "redux-thunk", "redux-saga", "loglevel", "@babel/runtime/helpers/construct", "react-dom"], factory);
+		define(["@babel/runtime/helpers/interopRequireDefault", "@babel/runtime/regenerator", "immutable", "@babel/runtime/helpers/defineProperty", "react", "@babel/runtime/helpers/asyncToGenerator", "@babel/runtime/helpers/interopRequireWildcard", "@babel/runtime/helpers/classCallCheck", "@babel/runtime/helpers/createClass", "query-string", "react-redux", "@babel/runtime/helpers/toConsumableArray", "@redux-saga/core/effects", "@babel/runtime/helpers/slicedToArray", "react-router-dom", "react-hot-loader", "prop-types", "js-cookie", "@babel/runtime/helpers/typeof", "contensis-delivery-api", "react-router-config", "react-loadable", "isomorphic-fetch", "history", "redux", "redux-immutable", "redux-thunk", "redux-saga", "loglevel", "@babel/runtime/helpers/construct", "react-dom"], factory);
 	else {
-		var a = typeof exports === 'object' ? factory(require("@babel/runtime/helpers/interopRequireDefault"), require("@babel/runtime/regenerator"), require("immutable"), require("@babel/runtime/helpers/defineProperty"), require("react"), require("@babel/runtime/helpers/asyncToGenerator"), require("@babel/runtime/helpers/interopRequireWildcard"), require("@babel/runtime/helpers/classCallCheck"), require("@babel/runtime/helpers/createClass"), require("query-string"), require("react-redux"), require("@babel/runtime/helpers/toConsumableArray"), require("@redux-saga/core/effects"), require("react-router-dom"), require("react-hot-loader"), require("prop-types"), require("js-cookie"), require("@babel/runtime/helpers/typeof"), require("contensis-delivery-api"), require("react-router-config"), require("react-loadable"), require("isomorphic-fetch"), require("history"), require("redux"), require("redux-immutable"), require("redux-thunk"), require("redux-saga"), require("loglevel"), require("@babel/runtime/helpers/construct"), require("react-dom")) : factory(root["@babel/runtime/helpers/interopRequireDefault"], root["@babel/runtime/regenerator"], root["immutable"], root["@babel/runtime/helpers/defineProperty"], root["react"], root["@babel/runtime/helpers/asyncToGenerator"], root["@babel/runtime/helpers/interopRequireWildcard"], root["@babel/runtime/helpers/classCallCheck"], root["@babel/runtime/helpers/createClass"], root["query-string"], root["react-redux"], root["@babel/runtime/helpers/toConsumableArray"], root["@redux-saga/core/effects"], root["react-router-dom"], root["react-hot-loader"], root["prop-types"], root["js-cookie"], root["@babel/runtime/helpers/typeof"], root["contensis-delivery-api"], root["react-router-config"], root["react-loadable"], root["isomorphic-fetch"], root["history"], root["redux"], root["redux-immutable"], root["redux-thunk"], root["redux-saga"], root["loglevel"], root["@babel/runtime/helpers/construct"], root["react-dom"]);
+		var a = typeof exports === 'object' ? factory(require("@babel/runtime/helpers/interopRequireDefault"), require("@babel/runtime/regenerator"), require("immutable"), require("@babel/runtime/helpers/defineProperty"), require("react"), require("@babel/runtime/helpers/asyncToGenerator"), require("@babel/runtime/helpers/interopRequireWildcard"), require("@babel/runtime/helpers/classCallCheck"), require("@babel/runtime/helpers/createClass"), require("query-string"), require("react-redux"), require("@babel/runtime/helpers/toConsumableArray"), require("@redux-saga/core/effects"), require("@babel/runtime/helpers/slicedToArray"), require("react-router-dom"), require("react-hot-loader"), require("prop-types"), require("js-cookie"), require("@babel/runtime/helpers/typeof"), require("contensis-delivery-api"), require("react-router-config"), require("react-loadable"), require("isomorphic-fetch"), require("history"), require("redux"), require("redux-immutable"), require("redux-thunk"), require("redux-saga"), require("loglevel"), require("@babel/runtime/helpers/construct"), require("react-dom")) : factory(root["@babel/runtime/helpers/interopRequireDefault"], root["@babel/runtime/regenerator"], root["immutable"], root["@babel/runtime/helpers/defineProperty"], root["react"], root["@babel/runtime/helpers/asyncToGenerator"], root["@babel/runtime/helpers/interopRequireWildcard"], root["@babel/runtime/helpers/classCallCheck"], root["@babel/runtime/helpers/createClass"], root["query-string"], root["react-redux"], root["@babel/runtime/helpers/toConsumableArray"], root["@redux-saga/core/effects"], root["@babel/runtime/helpers/slicedToArray"], root["react-router-dom"], root["react-hot-loader"], root["prop-types"], root["js-cookie"], root["@babel/runtime/helpers/typeof"], root["contensis-delivery-api"], root["react-router-config"], root["react-loadable"], root["isomorphic-fetch"], root["history"], root["redux"], root["redux-immutable"], root["redux-thunk"], root["redux-saga"], root["loglevel"], root["@babel/runtime/helpers/construct"], root["react-dom"]);
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(global, function(__WEBPACK_EXTERNAL_MODULE__0__, __WEBPACK_EXTERNAL_MODULE__1__, __WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__3__, __WEBPACK_EXTERNAL_MODULE__4__, __WEBPACK_EXTERNAL_MODULE__5__, __WEBPACK_EXTERNAL_MODULE__8__, __WEBPACK_EXTERNAL_MODULE__11__, __WEBPACK_EXTERNAL_MODULE__12__, __WEBPACK_EXTERNAL_MODULE__15__, __WEBPACK_EXTERNAL_MODULE__17__, __WEBPACK_EXTERNAL_MODULE__20__, __WEBPACK_EXTERNAL_MODULE__23__, __WEBPACK_EXTERNAL_MODULE__26__, __WEBPACK_EXTERNAL_MODULE__30__, __WEBPACK_EXTERNAL_MODULE__33__, __WEBPACK_EXTERNAL_MODULE__35__, __WEBPACK_EXTERNAL_MODULE__41__, __WEBPACK_EXTERNAL_MODULE__42__, __WEBPACK_EXTERNAL_MODULE__46__, __WEBPACK_EXTERNAL_MODULE__49__, __WEBPACK_EXTERNAL_MODULE__50__, __WEBPACK_EXTERNAL_MODULE__52__, __WEBPACK_EXTERNAL_MODULE__55__, __WEBPACK_EXTERNAL_MODULE__56__, __WEBPACK_EXTERNAL_MODULE__57__, __WEBPACK_EXTERNAL_MODULE__58__, __WEBPACK_EXTERNAL_MODULE__65__, __WEBPACK_EXTERNAL_MODULE__67__, __WEBPACK_EXTERNAL_MODULE__97__) {
+})(global, function(__WEBPACK_EXTERNAL_MODULE__0__, __WEBPACK_EXTERNAL_MODULE__1__, __WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__3__, __WEBPACK_EXTERNAL_MODULE__4__, __WEBPACK_EXTERNAL_MODULE__5__, __WEBPACK_EXTERNAL_MODULE__8__, __WEBPACK_EXTERNAL_MODULE__11__, __WEBPACK_EXTERNAL_MODULE__12__, __WEBPACK_EXTERNAL_MODULE__15__, __WEBPACK_EXTERNAL_MODULE__17__, __WEBPACK_EXTERNAL_MODULE__20__, __WEBPACK_EXTERNAL_MODULE__23__, __WEBPACK_EXTERNAL_MODULE__26__, __WEBPACK_EXTERNAL_MODULE__27__, __WEBPACK_EXTERNAL_MODULE__31__, __WEBPACK_EXTERNAL_MODULE__34__, __WEBPACK_EXTERNAL_MODULE__36__, __WEBPACK_EXTERNAL_MODULE__41__, __WEBPACK_EXTERNAL_MODULE__42__, __WEBPACK_EXTERNAL_MODULE__46__, __WEBPACK_EXTERNAL_MODULE__49__, __WEBPACK_EXTERNAL_MODULE__50__, __WEBPACK_EXTERNAL_MODULE__52__, __WEBPACK_EXTERNAL_MODULE__55__, __WEBPACK_EXTERNAL_MODULE__56__, __WEBPACK_EXTERNAL_MODULE__57__, __WEBPACK_EXTERNAL_MODULE__58__, __WEBPACK_EXTERNAL_MODULE__65__, __WEBPACK_EXTERNAL_MODULE__67__, __WEBPACK_EXTERNAL_MODULE__97__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -750,9 +750,9 @@ exports.types = types;
 
 var _reducers = _interopRequireDefault(__webpack_require__(14));
 
-var _sagas = __webpack_require__(29);
+var _sagas = __webpack_require__(30);
 
-var _withLogin = _interopRequireDefault(__webpack_require__(36));
+var _withLogin = _interopRequireDefault(__webpack_require__(37));
 
 /***/ }),
 /* 17 */
@@ -1880,6 +1880,12 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__26__;
 
 /***/ }),
 /* 27 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__27__;
+
+/***/ }),
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1942,7 +1948,7 @@ var setRouteEntry = function setRouteEntry(entry) {
 exports.setRouteEntry = setRouteEntry;
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1961,7 +1967,7 @@ var GET_NODE_TREE_ERROR = "".concat(ACTION_PREFIX, "_GET_NODE_TREE_ERROR");
 exports.GET_NODE_TREE_ERROR = GET_NODE_TREE_ERROR;
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1993,7 +1999,7 @@ var _routing2 = __webpack_require__(6);
 
 var _selectors = __webpack_require__(10);
 
-var _LoginHelper = __webpack_require__(32);
+var _LoginHelper = __webpack_require__(33);
 
 var _SecurityApi = __webpack_require__(24);
 
@@ -2370,13 +2376,13 @@ function createUserAccountSaga() {
 }
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__30__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__31__;
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2393,7 +2399,7 @@ var SET_VERSION_STATUS = "".concat(VERSION_PREFIX, "SET_VERSION_STATUS");
 exports.SET_VERSION_STATUS = SET_VERSION_STATUS;
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2414,7 +2420,7 @@ var _classCallCheck2 = _interopRequireDefault(__webpack_require__(11));
 
 var _createClass2 = _interopRequireDefault(__webpack_require__(12));
 
-var _CookieHelper = __webpack_require__(34);
+var _CookieHelper = __webpack_require__(35);
 
 var _SecurityApi = __webpack_require__(24);
 
@@ -2973,13 +2979,13 @@ function () {
 exports.LoginHelper = LoginHelper;
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__33__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__34__;
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2996,7 +3002,7 @@ var _classCallCheck2 = _interopRequireDefault(__webpack_require__(11));
 
 var _createClass2 = _interopRequireDefault(__webpack_require__(12));
 
-var _jsCookie = _interopRequireDefault(__webpack_require__(35));
+var _jsCookie = _interopRequireDefault(__webpack_require__(36));
 
 var COOKIE_VALID_DAYS = 1; // 0 = Session cookie
 // Override the default js-cookie conversion / encoding
@@ -3043,13 +3049,13 @@ function () {
 exports.CookieHelper = CookieHelper;
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__35__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__36__;
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3114,7 +3120,7 @@ var _default = withLogin;
 exports["default"] = _default;
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3144,7 +3150,7 @@ var selectVersionStatus = function selectVersionStatus(state) {
 exports.selectVersionStatus = selectVersionStatus;
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3174,36 +3180,38 @@ var selectNavigationDepends = function selectNavigationDepends(state) {
 exports.selectNavigationDepends = selectNavigationDepends;
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(module) {
 
-var _interopRequireDefault = __webpack_require__(0);
-
 var _interopRequireWildcard = __webpack_require__(8);
+
+var _interopRequireDefault = __webpack_require__(0);
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
 
+var _slicedToArray2 = _interopRequireDefault(__webpack_require__(26));
+
 var _react = _interopRequireWildcard(__webpack_require__(4));
 
-var _propTypes = _interopRequireDefault(__webpack_require__(33));
+var _propTypes = _interopRequireDefault(__webpack_require__(34));
 
 var _reactRedux = __webpack_require__(17);
 
-var _reactHotLoader = __webpack_require__(30);
+var _reactHotLoader = __webpack_require__(31);
 
-var _reactRouterDom = __webpack_require__(26);
+var _reactRouterDom = __webpack_require__(27);
 
 var _reactRouterConfig = __webpack_require__(46);
 
 var _routing = __webpack_require__(6);
 
-var _routing2 = __webpack_require__(27);
+var _routing2 = __webpack_require__(28);
 
 var _NotFound = _interopRequireDefault(__webpack_require__(47));
 
@@ -3237,16 +3245,16 @@ var RouteLoader = function RouteLoader(_ref) {
       withEvents = _ref.withEvents;
   var location = (0, _reactRouterDom.useLocation)(); // Match any Static Routes a developer has defined
 
-  var matchedStaticRoute = function matchedStaticRoute(pathname) {
-    return (0, _reactRouterConfig.matchRoutes)(routes.StaticRoutes, typeof window != 'undefined' ? window.location.pathname : pathname);
+  var matchedStaticRoute = function matchedStaticRoute() {
+    return (0, _reactRouterConfig.matchRoutes)(routes.StaticRoutes, location.pathname);
   };
 
-  var isStaticRoute = function isStaticRoute(pathname) {
-    return matchedStaticRoute(pathname).length > 0;
+  var isStaticRoute = function isStaticRoute() {
+    return matchedStaticRoute().length > 0;
   };
 
   var trimmedPath = getTrimmedPath(location.pathname);
-  var staticRoute = isStaticRoute(trimmedPath) && matchedStaticRoute(trimmedPath)[0];
+  var staticRoute = isStaticRoute() && matchedStaticRoute()[0];
   var setPath = (0, _react.useCallback)(function () {
     var serverPath = null;
 
@@ -3263,7 +3271,27 @@ var RouteLoader = function RouteLoader(_ref) {
   if (typeof window == 'undefined') setPath();
   (0, _react.useEffect)(function () {
     setPath();
-  }, [location, setPath]); // Render any Static Routes a developer has defined
+  }, [location, setPath]);
+
+  var _useState = (0, _react.useState)(false),
+      _useState2 = (0, _slicedToArray2["default"])(_useState, 2),
+      MatchedComponent = _useState2[0],
+      setMatchedComponent = _useState2[1];
+
+  (0, _react.useEffect)(function () {
+    setMatchedComponent(function () {
+      return routes.ContentTypeMappings.find(function (item) {
+        return item.contentTypeID == contentTypeId;
+      });
+    });
+  }, [contentTypeId, routes.ContentTypeMappings]); // Need to redirect when url endswith a /
+
+  if (location.pathname.length > trimmedPath.length) {
+    return _react["default"].createElement(_reactRouterDom.Redirect, {
+      to: trimmedPath
+    });
+  } // Render any Static Routes a developer has defined
+
 
   if (isStaticRoute(trimmedPath)) {
     return (0, _reactRouterConfig.renderRoutes)(routes.StaticRoutes, {
@@ -3272,29 +3300,16 @@ var RouteLoader = function RouteLoader(_ref) {
       entry: entry,
       isLoggedIn: isLoggedIn
     });
-  } // Need to redirect when url endswith a /
-
-
-  if (location.pathname.length > trimmedPath.length) {
-    return _react["default"].createElement(_reactRouterDom.Redirect, {
-      to: trimmedPath
-    });
   } // Match any Defined Content Type Mappings
 
 
-  if (contentTypeId) {
-    var MatchedComponent = routes.ContentTypeMappings.find(function (item) {
-      return item.contentTypeID == contentTypeId;
+  if (MatchedComponent) {
+    return _react["default"].createElement(MatchedComponent.component, {
+      projectId: projectId,
+      contentTypeId: contentTypeId,
+      entry: entry,
+      isLoggedIn: isLoggedIn
     });
-
-    if (MatchedComponent) {
-      return _react["default"].createElement(MatchedComponent.component, {
-        projectId: projectId,
-        contentTypeId: contentTypeId,
-        entry: entry,
-        isLoggedIn: isLoggedIn
-      });
-    }
   }
 
   if (isNotFound) {
@@ -3341,7 +3356,6 @@ exports["default"] = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(45)(module)))
 
 /***/ }),
-/* 40 */,
 /* 41 */
 /***/ (function(module, exports) {
 
@@ -3367,7 +3381,7 @@ exports.setVersionStatus = exports.setVersion = void 0;
 
 var _helpers = __webpack_require__(13);
 
-var _version = __webpack_require__(31);
+var _version = __webpack_require__(32);
 
 var setVersion = function setVersion(commitRef, buildNo) {
   return (0, _helpers.action)(_version.SET_VERSION, {
@@ -3402,9 +3416,9 @@ exports["default"] = void 0;
 
 var _react = _interopRequireDefault(__webpack_require__(4));
 
-var _reactHotLoader = __webpack_require__(30);
+var _reactHotLoader = __webpack_require__(31);
 
-var _RouteLoader = _interopRequireDefault(__webpack_require__(39));
+var _RouteLoader = _interopRequireDefault(__webpack_require__(40));
 
 var AppRoot = function AppRoot(props) {
   return _react["default"].createElement(_RouteLoader["default"], props);
@@ -3486,9 +3500,9 @@ exports.Status = void 0;
 
 var _react = _interopRequireDefault(__webpack_require__(4));
 
-var _propTypes = _interopRequireDefault(__webpack_require__(33));
+var _propTypes = _interopRequireDefault(__webpack_require__(34));
 
-var _reactRouterDom = __webpack_require__(26);
+var _reactRouterDom = __webpack_require__(27);
 
 var Status = function Status(_ref) {
   var code = _ref.code,
@@ -3776,9 +3790,9 @@ var _default = function _default() {
 
     case _routing.SET_ENTRY:
       {
-        if (!action.entry) return state.set('entry', null).set('entryDepends', null).set('isLoading', false);
+        if (!action.entry) return state.set('entry', null).set('entryDepends', null).set('isLoading', action.isLoading);
         var entryDepends = (0, _ContensisDeliveryApi.GetAllResponseGuids)(action.entry);
-        return state.set('entryDepends', (0, _immutable.fromJS)(entryDepends)).set('entry', (0, _immutable.fromJS)(action.entry)).set('isLoading', false);
+        return state.set('entryDepends', (0, _immutable.fromJS)(entryDepends)).set('entry', (0, _immutable.fromJS)(action.entry)).set('isLoading', action.isLoading);
       }
 
     case _routing.SET_ENTRY_ID:
@@ -3877,7 +3891,7 @@ exports["default"] = void 0;
 
 var _immutable = __webpack_require__(2);
 
-var _version = __webpack_require__(31);
+var _version = __webpack_require__(32);
 
 var initialState = (0, _immutable.Map)({
   commitRef: null,
@@ -3921,7 +3935,7 @@ exports["default"] = void 0;
 
 var _immutable = __webpack_require__(2);
 
-var _navigation = __webpack_require__(28);
+var _navigation = __webpack_require__(29);
 
 var initialState = (0, _immutable.Map)({
   root: null,
@@ -4023,7 +4037,7 @@ var _login = __webpack_require__(16);
 
 var _navigation = __webpack_require__(72);
 
-var _sagas = __webpack_require__(29);
+var _sagas = __webpack_require__(30);
 
 // index.js
 function _default() {
@@ -4078,13 +4092,13 @@ var _routing = __webpack_require__(7);
 
 var _ContensisDeliveryApi = __webpack_require__(18);
 
-var _version = __webpack_require__(37);
+var _version = __webpack_require__(38);
 
 var _routing2 = __webpack_require__(6);
 
-var _navigation = __webpack_require__(28);
+var _navigation = __webpack_require__(29);
 
-var _navigation2 = __webpack_require__(38);
+var _navigation2 = __webpack_require__(39);
 
 var _queries = __webpack_require__(66);
 
@@ -4172,28 +4186,36 @@ function getRouteSaga(action) {
           routeEntry = (0, _routing2.selectRouteEntry)(state);
 
           if (!(appsays && appsays.customRouting || action.staticRoute && !action.staticRoute.route.fetchNode || routeEntry && action.statePath === action.path)) {
-            _context2.next = 23;
+            _context2.next = 25;
             break;
           }
 
           if (!routeEntry) {
-            _context2.next = 19;
+            _context2.next = 21;
             break;
           }
 
           entry = routeEntry.toJS();
-          _context2.next = 21;
-          break;
+          _context2.next = 19;
+          return (0, _effects.put)({
+            type: _routing.SET_ENTRY,
+            entry: entry,
+            isLoading: false
+          });
 
         case 19:
-          _context2.next = 21;
-          return (0, _effects.call)(setRouteEntry);
-
-        case 21:
-          _context2.next = 78;
+          _context2.next = 23;
           break;
 
+        case 21:
+          _context2.next = 23;
+          return (0, _effects.call)(setRouteEntry);
+
         case 23:
+          _context2.next = 80;
+          break;
+
+        case 25:
           currentPath = (0, _routing2.selectCurrentPath)(state);
           deliveryApiStatus = (0, _version.selectVersionStatus)(state);
           project = (0, _routing2.selectCurrentProject)(state);
@@ -4209,11 +4231,11 @@ function getRouteSaga(action) {
           if (currentPath === '/') currentPathDepth = 0; // Handle homepage
 
           if (!(currentPath === '/')) {
-            _context2.next = 36;
+            _context2.next = 38;
             break;
           }
 
-          _context2.next = 33;
+          _context2.next = 35;
           return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiStatus, project).nodes.getRoot({
             depth: 0,
             entryFields: '*',
@@ -4221,14 +4243,14 @@ function getRouteSaga(action) {
             language: 'en-GB'
           });
 
-        case 33:
+        case 35:
           pathNode = _context2.sent;
-          _context2.next = 70;
+          _context2.next = 72;
           break;
 
-        case 36:
+        case 38:
           if (!(currentPath && currentPath.startsWith('/preview/'))) {
-            _context2.next = 52;
+            _context2.next = 54;
             break;
           }
 
@@ -4236,41 +4258,41 @@ function getRouteSaga(action) {
           entryGuid = splitPath[2];
 
           if (!(splitPath.length == 3)) {
-            _context2.next = 50;
+            _context2.next = 52;
             break;
           }
 
-          _context2.next = 42;
+          _context2.next = 44;
           return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiStatus, project).entries.get({
             id: entryGuid,
             linkDepth: 4
           });
 
-        case 42:
+        case 44:
           previewEntry = _context2.sent;
 
           if (!previewEntry) {
-            _context2.next = 48;
+            _context2.next = 50;
             break;
           }
 
-          _context2.next = 46;
+          _context2.next = 48;
           return (0, _effects.call)(setRouteEntry, previewEntry);
 
-        case 46:
-          _context2.next = 50;
-          break;
-
         case 48:
-          _context2.next = 50;
-          return (0, _effects.call)(do404);
+          _context2.next = 52;
+          break;
 
         case 50:
-          _context2.next = 62;
-          break;
+          _context2.next = 52;
+          return (0, _effects.call)(do404);
 
         case 52:
-          _context2.next = 54;
+          _context2.next = 64;
+          break;
+
+        case 54:
+          _context2.next = 56;
           return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiStatus, project).nodes.get({
             depth: 0,
             path: currentPath,
@@ -4278,11 +4300,11 @@ function getRouteSaga(action) {
             entryLinkDepth: setContentTypeLimits ? 0 : entryLinkDepth
           });
 
-        case 54:
+        case 56:
           pathNode = _context2.sent;
 
           if (!(setContentTypeLimits && pathNode && pathNode.entry && pathNode.entry.sys && pathNode.entry.sys.id)) {
-            _context2.next = 62;
+            _context2.next = 64;
             break;
           }
 
@@ -4290,99 +4312,99 @@ function getRouteSaga(action) {
             return ct.contentTypeID === pathNode.entry.sys.contentTypeId;
           });
           query = (0, _queries.routeEntryByFields)(pathNode.entry.sys.id, contentType && contentType.fields, deliveryApiStatus);
-          _context2.next = 60;
+          _context2.next = 62;
           return _ContensisDeliveryApi.deliveryApi.search(query, contentType && contentType.linkDepth || 3, project);
 
-        case 60:
+        case 62:
           payload = _context2.sent;
 
           if (payload && payload.items && payload.items.length > 0) {
             pathNode.entry = payload.items[0];
           }
 
-        case 62:
+        case 64:
           if (!(pathNode && pathNode.id && doNavigation)) {
-            _context2.next = 70;
+            _context2.next = 72;
             break;
           }
 
-          _context2.next = 65;
+          _context2.next = 67;
           return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiStatus, project).nodes.getAncestors(pathNode.id);
 
-        case 65:
+        case 67:
           ancestors = _context2.sent;
 
           if (!(currentPathDepth > 1)) {
-            _context2.next = 70;
+            _context2.next = 72;
             break;
           }
 
-          _context2.next = 69;
+          _context2.next = 71;
           return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiStatus, project).nodes.getSiblings({
             id: pathNode.id,
             entryFields: ['sys.contentTypeId', 'url']
           });
 
-        case 69:
+        case 71:
           siblings = _context2.sent;
 
-        case 70:
+        case 72:
           if (!(pathNode && pathNode.entry && pathNode.entry.sys && pathNode.entry.sys.id)) {
-            _context2.next = 76;
+            _context2.next = 78;
             break;
           }
 
           entry = pathNode.entry;
-          _context2.next = 74;
+          _context2.next = 76;
           return (0, _effects.call)(setRouteEntry, entry, pathNode, ancestors, siblings);
 
-        case 74:
-          _context2.next = 78;
+        case 76:
+          _context2.next = 80;
           break;
 
-        case 76:
-          _context2.next = 78;
+        case 78:
+          _context2.next = 80;
           return (0, _effects.call)(do404);
 
-        case 78:
+        case 80:
           if (!(withEvents && withEvents.onRouteLoaded)) {
-            _context2.next = 81;
+            _context2.next = 83;
             break;
           }
 
-          _context2.next = 81;
+          _context2.next = 83;
           return withEvents.onRouteLoaded(_objectSpread({}, action, {
             entry: entry
           }));
 
-        case 81:
+        case 83:
           if (!(!(0, _navigation2.hasNavigationTree)(state) && doNavigation)) {
-            _context2.next = 84;
+            _context2.next = 86;
             break;
           }
 
-          _context2.next = 84;
+          _context2.next = 86;
           return (0, _effects.put)({
             type: _navigation.GET_NODE_TREE
           });
 
-        case 84:
-          _context2.next = 91;
+        case 86:
+          _context2.next = 93;
           break;
 
-        case 86:
-          _context2.prev = 86;
+        case 88:
+          _context2.prev = 88;
           _context2.t0 = _context2["catch"](1);
           log.error.apply(log, ['Error running route saga:', _context2.t0, _context2.t0.stack]);
-          _context2.next = 91;
+          _context2.next = 93;
           return (0, _effects.call)(do404);
 
-        case 91:
+        case 93:
         case "end":
           return _context2.stop();
       }
     }
-  }, _marked2, null, [[1, 86]]);
+  }, _marked2, null, [[1, 88]]);
 }
 
 function setRouteEntry(entry, node, ancestors, siblings) {
@@ -4943,11 +4965,11 @@ var _effects = __webpack_require__(19);
 
 var _ContensisDeliveryApi = __webpack_require__(18);
 
-var _navigation = __webpack_require__(28);
+var _navigation = __webpack_require__(29);
 
-var _navigation2 = __webpack_require__(38);
+var _navigation2 = __webpack_require__(39);
 
-var _version = __webpack_require__(37);
+var _version = __webpack_require__(38);
 
 var _routing = __webpack_require__(6);
 
@@ -5101,11 +5123,11 @@ var _react = _interopRequireDefault(__webpack_require__(4));
 
 var _reactDom = __webpack_require__(97);
 
-var _reactRouterDom = __webpack_require__(26);
+var _reactRouterDom = __webpack_require__(27);
 
 var _reactLoadable = __webpack_require__(49);
 
-var _reactHotLoader = __webpack_require__(30);
+var _reactHotLoader = __webpack_require__(31);
 
 var _reactRedux = __webpack_require__(17);
 
@@ -5121,7 +5143,7 @@ var _version = __webpack_require__(43);
 
 var _ContensisDeliveryApi = __webpack_require__(18);
 
-var _routing = __webpack_require__(27);
+var _routing = __webpack_require__(28);
 
 var _pickProject = _interopRequireDefault(__webpack_require__(53));
 

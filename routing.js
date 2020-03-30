@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("@babel/runtime/helpers/interopRequireDefault"), require("@babel/runtime/regenerator"), require("immutable"), require("@babel/runtime/helpers/defineProperty"), require("react"), require("@babel/runtime/helpers/asyncToGenerator"), require("@babel/runtime/helpers/interopRequireWildcard"), require("query-string"), require("react-redux"), require("react-router-dom"), require("react-hot-loader"), require("prop-types"), require("react-router-config"));
+		module.exports = factory(require("@babel/runtime/helpers/interopRequireDefault"), require("@babel/runtime/regenerator"), require("immutable"), require("@babel/runtime/helpers/defineProperty"), require("react"), require("@babel/runtime/helpers/asyncToGenerator"), require("@babel/runtime/helpers/interopRequireWildcard"), require("query-string"), require("react-redux"), require("@babel/runtime/helpers/slicedToArray"), require("react-router-dom"), require("react-hot-loader"), require("prop-types"), require("react-router-config"));
 	else if(typeof define === 'function' && define.amd)
-		define(["@babel/runtime/helpers/interopRequireDefault", "@babel/runtime/regenerator", "immutable", "@babel/runtime/helpers/defineProperty", "react", "@babel/runtime/helpers/asyncToGenerator", "@babel/runtime/helpers/interopRequireWildcard", "query-string", "react-redux", "react-router-dom", "react-hot-loader", "prop-types", "react-router-config"], factory);
+		define(["@babel/runtime/helpers/interopRequireDefault", "@babel/runtime/regenerator", "immutable", "@babel/runtime/helpers/defineProperty", "react", "@babel/runtime/helpers/asyncToGenerator", "@babel/runtime/helpers/interopRequireWildcard", "query-string", "react-redux", "@babel/runtime/helpers/slicedToArray", "react-router-dom", "react-hot-loader", "prop-types", "react-router-config"], factory);
 	else {
-		var a = typeof exports === 'object' ? factory(require("@babel/runtime/helpers/interopRequireDefault"), require("@babel/runtime/regenerator"), require("immutable"), require("@babel/runtime/helpers/defineProperty"), require("react"), require("@babel/runtime/helpers/asyncToGenerator"), require("@babel/runtime/helpers/interopRequireWildcard"), require("query-string"), require("react-redux"), require("react-router-dom"), require("react-hot-loader"), require("prop-types"), require("react-router-config")) : factory(root["@babel/runtime/helpers/interopRequireDefault"], root["@babel/runtime/regenerator"], root["immutable"], root["@babel/runtime/helpers/defineProperty"], root["react"], root["@babel/runtime/helpers/asyncToGenerator"], root["@babel/runtime/helpers/interopRequireWildcard"], root["query-string"], root["react-redux"], root["react-router-dom"], root["react-hot-loader"], root["prop-types"], root["react-router-config"]);
+		var a = typeof exports === 'object' ? factory(require("@babel/runtime/helpers/interopRequireDefault"), require("@babel/runtime/regenerator"), require("immutable"), require("@babel/runtime/helpers/defineProperty"), require("react"), require("@babel/runtime/helpers/asyncToGenerator"), require("@babel/runtime/helpers/interopRequireWildcard"), require("query-string"), require("react-redux"), require("@babel/runtime/helpers/slicedToArray"), require("react-router-dom"), require("react-hot-loader"), require("prop-types"), require("react-router-config")) : factory(root["@babel/runtime/helpers/interopRequireDefault"], root["@babel/runtime/regenerator"], root["immutable"], root["@babel/runtime/helpers/defineProperty"], root["react"], root["@babel/runtime/helpers/asyncToGenerator"], root["@babel/runtime/helpers/interopRequireWildcard"], root["query-string"], root["react-redux"], root["@babel/runtime/helpers/slicedToArray"], root["react-router-dom"], root["react-hot-loader"], root["prop-types"], root["react-router-config"]);
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(global, function(__WEBPACK_EXTERNAL_MODULE__0__, __WEBPACK_EXTERNAL_MODULE__1__, __WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__3__, __WEBPACK_EXTERNAL_MODULE__4__, __WEBPACK_EXTERNAL_MODULE__5__, __WEBPACK_EXTERNAL_MODULE__8__, __WEBPACK_EXTERNAL_MODULE__15__, __WEBPACK_EXTERNAL_MODULE__17__, __WEBPACK_EXTERNAL_MODULE__26__, __WEBPACK_EXTERNAL_MODULE__30__, __WEBPACK_EXTERNAL_MODULE__33__, __WEBPACK_EXTERNAL_MODULE__46__) {
+})(global, function(__WEBPACK_EXTERNAL_MODULE__0__, __WEBPACK_EXTERNAL_MODULE__1__, __WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__3__, __WEBPACK_EXTERNAL_MODULE__4__, __WEBPACK_EXTERNAL_MODULE__5__, __WEBPACK_EXTERNAL_MODULE__8__, __WEBPACK_EXTERNAL_MODULE__15__, __WEBPACK_EXTERNAL_MODULE__17__, __WEBPACK_EXTERNAL_MODULE__26__, __WEBPACK_EXTERNAL_MODULE__27__, __WEBPACK_EXTERNAL_MODULE__31__, __WEBPACK_EXTERNAL_MODULE__34__, __WEBPACK_EXTERNAL_MODULE__46__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -202,12 +202,12 @@ exports.selectCaptchaToken = selectCaptchaToken;
 
 
 exports.types = __webpack_require__(7);
-exports.actions = __webpack_require__(27);
+exports.actions = __webpack_require__(28);
 exports.selectors = __webpack_require__(6);
 
 var ReactApp = __webpack_require__(44)["default"];
 
-var RouteLoader = __webpack_require__(39)["default"];
+var RouteLoader = __webpack_require__(40)["default"];
 
 exports.ReactApp = ReactApp;
 exports.RouteLoader = RouteLoader;
@@ -523,6 +523,13 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__26__;
 /***/ }),
 
 /***/ 27:
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__27__;
+
+/***/ }),
+
+/***/ 28:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -593,50 +600,59 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__3__;
 
 /***/ }),
 
-/***/ 30:
+/***/ 31:
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__30__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__31__;
 
 /***/ }),
 
-/***/ 33:
+/***/ 34:
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__33__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__34__;
 
 /***/ }),
 
-/***/ 39:
+/***/ 4:
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__4__;
+
+/***/ }),
+
+/***/ 40:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(module) {
 
-var _interopRequireDefault = __webpack_require__(0);
-
 var _interopRequireWildcard = __webpack_require__(8);
+
+var _interopRequireDefault = __webpack_require__(0);
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
 
+var _slicedToArray2 = _interopRequireDefault(__webpack_require__(26));
+
 var _react = _interopRequireWildcard(__webpack_require__(4));
 
-var _propTypes = _interopRequireDefault(__webpack_require__(33));
+var _propTypes = _interopRequireDefault(__webpack_require__(34));
 
 var _reactRedux = __webpack_require__(17);
 
-var _reactHotLoader = __webpack_require__(30);
+var _reactHotLoader = __webpack_require__(31);
 
-var _reactRouterDom = __webpack_require__(26);
+var _reactRouterDom = __webpack_require__(27);
 
 var _reactRouterConfig = __webpack_require__(46);
 
 var _routing = __webpack_require__(6);
 
-var _routing2 = __webpack_require__(27);
+var _routing2 = __webpack_require__(28);
 
 var _NotFound = _interopRequireDefault(__webpack_require__(47));
 
@@ -670,16 +686,16 @@ var RouteLoader = function RouteLoader(_ref) {
       withEvents = _ref.withEvents;
   var location = (0, _reactRouterDom.useLocation)(); // Match any Static Routes a developer has defined
 
-  var matchedStaticRoute = function matchedStaticRoute(pathname) {
-    return (0, _reactRouterConfig.matchRoutes)(routes.StaticRoutes, typeof window != 'undefined' ? window.location.pathname : pathname);
+  var matchedStaticRoute = function matchedStaticRoute() {
+    return (0, _reactRouterConfig.matchRoutes)(routes.StaticRoutes, location.pathname);
   };
 
-  var isStaticRoute = function isStaticRoute(pathname) {
-    return matchedStaticRoute(pathname).length > 0;
+  var isStaticRoute = function isStaticRoute() {
+    return matchedStaticRoute().length > 0;
   };
 
   var trimmedPath = getTrimmedPath(location.pathname);
-  var staticRoute = isStaticRoute(trimmedPath) && matchedStaticRoute(trimmedPath)[0];
+  var staticRoute = isStaticRoute() && matchedStaticRoute()[0];
   var setPath = (0, _react.useCallback)(function () {
     var serverPath = null;
 
@@ -696,7 +712,27 @@ var RouteLoader = function RouteLoader(_ref) {
   if (typeof window == 'undefined') setPath();
   (0, _react.useEffect)(function () {
     setPath();
-  }, [location, setPath]); // Render any Static Routes a developer has defined
+  }, [location, setPath]);
+
+  var _useState = (0, _react.useState)(false),
+      _useState2 = (0, _slicedToArray2["default"])(_useState, 2),
+      MatchedComponent = _useState2[0],
+      setMatchedComponent = _useState2[1];
+
+  (0, _react.useEffect)(function () {
+    setMatchedComponent(function () {
+      return routes.ContentTypeMappings.find(function (item) {
+        return item.contentTypeID == contentTypeId;
+      });
+    });
+  }, [contentTypeId, routes.ContentTypeMappings]); // Need to redirect when url endswith a /
+
+  if (location.pathname.length > trimmedPath.length) {
+    return _react["default"].createElement(_reactRouterDom.Redirect, {
+      to: trimmedPath
+    });
+  } // Render any Static Routes a developer has defined
+
 
   if (isStaticRoute(trimmedPath)) {
     return (0, _reactRouterConfig.renderRoutes)(routes.StaticRoutes, {
@@ -705,29 +741,16 @@ var RouteLoader = function RouteLoader(_ref) {
       entry: entry,
       isLoggedIn: isLoggedIn
     });
-  } // Need to redirect when url endswith a /
-
-
-  if (location.pathname.length > trimmedPath.length) {
-    return _react["default"].createElement(_reactRouterDom.Redirect, {
-      to: trimmedPath
-    });
   } // Match any Defined Content Type Mappings
 
 
-  if (contentTypeId) {
-    var MatchedComponent = routes.ContentTypeMappings.find(function (item) {
-      return item.contentTypeID == contentTypeId;
+  if (MatchedComponent) {
+    return _react["default"].createElement(MatchedComponent.component, {
+      projectId: projectId,
+      contentTypeId: contentTypeId,
+      entry: entry,
+      isLoggedIn: isLoggedIn
     });
-
-    if (MatchedComponent) {
-      return _react["default"].createElement(MatchedComponent.component, {
-        projectId: projectId,
-        contentTypeId: contentTypeId,
-        entry: entry,
-        isLoggedIn: isLoggedIn
-      });
-    }
   }
 
   if (isNotFound) {
@@ -775,13 +798,6 @@ exports["default"] = _default;
 
 /***/ }),
 
-/***/ 4:
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__4__;
-
-/***/ }),
-
 /***/ 44:
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -797,9 +813,9 @@ exports["default"] = void 0;
 
 var _react = _interopRequireDefault(__webpack_require__(4));
 
-var _reactHotLoader = __webpack_require__(30);
+var _reactHotLoader = __webpack_require__(31);
 
-var _RouteLoader = _interopRequireDefault(__webpack_require__(39));
+var _RouteLoader = _interopRequireDefault(__webpack_require__(40));
 
 var AppRoot = function AppRoot(props) {
   return _react["default"].createElement(_RouteLoader["default"], props);
@@ -885,9 +901,9 @@ exports.Status = void 0;
 
 var _react = _interopRequireDefault(__webpack_require__(4));
 
-var _propTypes = _interopRequireDefault(__webpack_require__(33));
+var _propTypes = _interopRequireDefault(__webpack_require__(34));
 
-var _reactRouterDom = __webpack_require__(26);
+var _reactRouterDom = __webpack_require__(27);
 
 var Status = function Status(_ref) {
   var code = _ref.code,

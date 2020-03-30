@@ -75,14 +75,14 @@ const addVarnishAuthenticationHeaders = (state, response, groups = {}) => {
       const project = selectCurrentProject(state);
       const { globalGroups, allowedGroups } = groups;
       // console.log(globalGroups, allowedGroups);
-      let allGroups = [...((globalGroups && globalGroups[project]) || [])];
+      let allGroups = Array.from((globalGroups && globalGroups[project]) || {});
       if (
         stateEntry &&
         stateEntry.getIn(['authentication', 'isLoginRequired']) &&
         allowedGroups &&
         allowedGroups[project]
       ) {
-        allGroups = [...allGroups, allowedGroups[project]];
+        allGroups = [...allGroups, ...allowedGroups[project]];
       }
       response.header('x-contensis-viewer-groups', allGroups.join('|'));
     } catch (e) {
