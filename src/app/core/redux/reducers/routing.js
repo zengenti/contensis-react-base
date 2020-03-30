@@ -49,12 +49,12 @@ export default (state = initialState, action) => {
         return state
           .set('entry', null)
           .set('entryDepends', null)
-          .set('isLoading', false);
+          .set('isLoading', action.isLoading);
       const entryDepends = GetAllResponseGuids(action.entry);
       return state
         .set('entryDepends', fromJS(entryDepends))
         .set('entry', fromJS(action.entry))
-        .set('isLoading', false);
+        .set('isLoading', action.isLoading);
     }
     case SET_ENTRY_ID: {
       if (action.id === '') {

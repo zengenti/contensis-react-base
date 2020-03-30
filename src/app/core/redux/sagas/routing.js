@@ -70,8 +70,14 @@ function* getRouteSaga(action) {
       // - appsays customRouting and does SET_ENTRY etc. via the consuming app
       // - all staticRoutes (where custom 'route.fetchNode' attribute is falsey)
       // - standard Contensis SiteView Routing where we already have that entry in state
-      if (routeEntry) entry = routeEntry.toJS();
-      else yield call(setRouteEntry);
+      if (routeEntry) {
+        entry = routeEntry.toJS();
+        yield put({
+          type: SET_ENTRY,
+          entry,
+          isLoading: false,
+        });
+      } else yield call(setRouteEntry);
     } else {
       const currentPath = selectCurrentPath(state);
       const deliveryApiStatus = selectVersionStatus(state);
