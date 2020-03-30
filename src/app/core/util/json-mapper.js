@@ -1,5 +1,7 @@
-import json2json from 'awesome-json2json';
+import mapJson from 'jsonpath-mapper';
 
-export const useMapper = (json, template) => json2json(json, template);
+export const useMapper = (json, template) => {
+  return mapJson(json, template);
+};
 
-export default json2json;
+export default mapJson;
