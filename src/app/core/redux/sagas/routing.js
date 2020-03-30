@@ -240,4 +240,8 @@ function* do404() {
     type: SET_ENTRY_ID,
     id: null,
   });
+  yield put({
+    type: SET_ENTRY,
+    entry: null,
+  });
 }

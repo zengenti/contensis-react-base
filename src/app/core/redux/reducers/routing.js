@@ -45,7 +45,11 @@ export default (state = initialState, action) => {
       return state.set('currentNodeAncestors', fromJS(action.ancestors));
     }
     case SET_ENTRY: {
-      if (!action.entry) return state.set('isLoading', false);
+      if (!action.entry)
+        return state
+          .set('entry', null)
+          .set('entryDepends', null)
+          .set('isLoading', false);
       const entryDepends = GetAllResponseGuids(action.entry);
       return state
         .set('entryDepends', fromJS(entryDepends))
@@ -59,11 +63,21 @@ export default (state = initialState, action) => {
       return state.set('entryID', action.id);
     }
     case SET_NAVIGATION_PATH: {
+      let staticRoute = false;
+      if (action.staticRoute) {
+        staticRoute = { ...action.staticRoute };
+      }
       if (action.path) {
         return state
           .set('currentPath', fromJS(action.path))
           .set('location', fromJS(action.location))
-          .set('staticRoute', fromJS(action.staticRoute))
+          .set(
+            'staticRoute',
+            fromJS({
+              ...staticRoute,
+              route: { ...staticRoute.route, component: null },
+            })
+          )
           .set('isLoading', typeof window !== 'undefined');
       }
       return state;
