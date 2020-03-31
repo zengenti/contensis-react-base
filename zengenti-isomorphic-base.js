@@ -4406,7 +4406,7 @@ function setRouteEntry(entry, node, ancestors, siblings) {
           _context3.next = 2;
           return (0, _effects.all)([(0, _effects.put)({
             type: _routing.SET_NAVIGATION_NOT_FOUND,
-            notFound: false
+            notFound: !(entry && entry.sys.id)
           }), (0, _effects.put)({
             type: _routing.SET_NODE,
             node: node

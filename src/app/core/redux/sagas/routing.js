@@ -212,7 +212,7 @@ function* setRouteEntry(entry, node, ancestors, siblings) {
   yield all([
     put({
       type: SET_NAVIGATION_NOT_FOUND,
-      notFound: false,
+      notFound: !(entry && entry.sys.id),
     }),
     put({
       type: SET_NODE,
