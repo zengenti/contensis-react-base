@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("@babel/runtime/helpers/interopRequireDefault"), require("@babel/runtime/regenerator"), require("immutable"), require("@babel/runtime/helpers/defineProperty"), require("react"), require("@babel/runtime/helpers/asyncToGenerator"), require("@babel/runtime/helpers/interopRequireWildcard"), require("@babel/runtime/helpers/classCallCheck"), require("@babel/runtime/helpers/createClass"), require("query-string"), require("react-redux"), require("@babel/runtime/helpers/toConsumableArray"), require("@redux-saga/core/effects"), require("@babel/runtime/helpers/slicedToArray"), require("react-router-dom"), require("react-hot-loader"), require("prop-types"), require("js-cookie"), require("@babel/runtime/helpers/typeof"), require("contensis-delivery-api"), require("react-router-config"), require("react-loadable"), require("isomorphic-fetch"), require("history"), require("redux"), require("redux-immutable"), require("redux-thunk"), require("redux-saga"), require("loglevel"), require("@babel/runtime/helpers/construct"), require("express"), require("evil-dns"), require("http-proxy"), require("react-dom/server"), require("react-loadable/webpack"), require("styled-components"), require("react-helmet"), require("serialize-javascript"), require("minify-css-string"), require("fromentries"), require("xxhashjs"));
+		module.exports = factory(require("@babel/runtime/helpers/interopRequireDefault"), require("@babel/runtime/regenerator"), require("immutable"), require("@babel/runtime/helpers/defineProperty"), require("react"), require("@babel/runtime/helpers/asyncToGenerator"), require("@babel/runtime/helpers/interopRequireWildcard"), require("@babel/runtime/helpers/classCallCheck"), require("@babel/runtime/helpers/createClass"), require("query-string"), require("react-redux"), require("@babel/runtime/helpers/toConsumableArray"), require("@redux-saga/core/effects"), require("react-router-dom"), require("react-hot-loader"), require("prop-types"), require("js-cookie"), require("@babel/runtime/helpers/slicedToArray"), require("@babel/runtime/helpers/typeof"), require("contensis-delivery-api"), require("react-router-config"), require("react-loadable"), require("isomorphic-fetch"), require("history"), require("redux"), require("redux-immutable"), require("redux-thunk"), require("redux-saga"), require("loglevel"), require("@babel/runtime/helpers/construct"), require("express"), require("evil-dns"), require("http-proxy"), require("react-dom/server"), require("react-loadable/webpack"), require("styled-components"), require("react-helmet"), require("serialize-javascript"), require("minify-css-string"), require("fromentries"), require("xxhashjs"));
 	else if(typeof define === 'function' && define.amd)
-		define(["@babel/runtime/helpers/interopRequireDefault", "@babel/runtime/regenerator", "immutable", "@babel/runtime/helpers/defineProperty", "react", "@babel/runtime/helpers/asyncToGenerator", "@babel/runtime/helpers/interopRequireWildcard", "@babel/runtime/helpers/classCallCheck", "@babel/runtime/helpers/createClass", "query-string", "react-redux", "@babel/runtime/helpers/toConsumableArray", "@redux-saga/core/effects", "@babel/runtime/helpers/slicedToArray", "react-router-dom", "react-hot-loader", "prop-types", "js-cookie", "@babel/runtime/helpers/typeof", "contensis-delivery-api", "react-router-config", "react-loadable", "isomorphic-fetch", "history", "redux", "redux-immutable", "redux-thunk", "redux-saga", "loglevel", "@babel/runtime/helpers/construct", "express", "evil-dns", "http-proxy", "react-dom/server", "react-loadable/webpack", "styled-components", "react-helmet", "serialize-javascript", "minify-css-string", "fromentries", "xxhashjs"], factory);
+		define(["@babel/runtime/helpers/interopRequireDefault", "@babel/runtime/regenerator", "immutable", "@babel/runtime/helpers/defineProperty", "react", "@babel/runtime/helpers/asyncToGenerator", "@babel/runtime/helpers/interopRequireWildcard", "@babel/runtime/helpers/classCallCheck", "@babel/runtime/helpers/createClass", "query-string", "react-redux", "@babel/runtime/helpers/toConsumableArray", "@redux-saga/core/effects", "react-router-dom", "react-hot-loader", "prop-types", "js-cookie", "@babel/runtime/helpers/slicedToArray", "@babel/runtime/helpers/typeof", "contensis-delivery-api", "react-router-config", "react-loadable", "isomorphic-fetch", "history", "redux", "redux-immutable", "redux-thunk", "redux-saga", "loglevel", "@babel/runtime/helpers/construct", "express", "evil-dns", "http-proxy", "react-dom/server", "react-loadable/webpack", "styled-components", "react-helmet", "serialize-javascript", "minify-css-string", "fromentries", "xxhashjs"], factory);
 	else {
-		var a = typeof exports === 'object' ? factory(require("@babel/runtime/helpers/interopRequireDefault"), require("@babel/runtime/regenerator"), require("immutable"), require("@babel/runtime/helpers/defineProperty"), require("react"), require("@babel/runtime/helpers/asyncToGenerator"), require("@babel/runtime/helpers/interopRequireWildcard"), require("@babel/runtime/helpers/classCallCheck"), require("@babel/runtime/helpers/createClass"), require("query-string"), require("react-redux"), require("@babel/runtime/helpers/toConsumableArray"), require("@redux-saga/core/effects"), require("@babel/runtime/helpers/slicedToArray"), require("react-router-dom"), require("react-hot-loader"), require("prop-types"), require("js-cookie"), require("@babel/runtime/helpers/typeof"), require("contensis-delivery-api"), require("react-router-config"), require("react-loadable"), require("isomorphic-fetch"), require("history"), require("redux"), require("redux-immutable"), require("redux-thunk"), require("redux-saga"), require("loglevel"), require("@babel/runtime/helpers/construct"), require("express"), require("evil-dns"), require("http-proxy"), require("react-dom/server"), require("react-loadable/webpack"), require("styled-components"), require("react-helmet"), require("serialize-javascript"), require("minify-css-string"), require("fromentries"), require("xxhashjs")) : factory(root["@babel/runtime/helpers/interopRequireDefault"], root["@babel/runtime/regenerator"], root["immutable"], root["@babel/runtime/helpers/defineProperty"], root["react"], root["@babel/runtime/helpers/asyncToGenerator"], root["@babel/runtime/helpers/interopRequireWildcard"], root["@babel/runtime/helpers/classCallCheck"], root["@babel/runtime/helpers/createClass"], root["query-string"], root["react-redux"], root["@babel/runtime/helpers/toConsumableArray"], root["@redux-saga/core/effects"], root["@babel/runtime/helpers/slicedToArray"], root["react-router-dom"], root["react-hot-loader"], root["prop-types"], root["js-cookie"], root["@babel/runtime/helpers/typeof"], root["contensis-delivery-api"], root["react-router-config"], root["react-loadable"], root["isomorphic-fetch"], root["history"], root["redux"], root["redux-immutable"], root["redux-thunk"], root["redux-saga"], root["loglevel"], root["@babel/runtime/helpers/construct"], root["express"], root["evil-dns"], root["http-proxy"], root["react-dom/server"], root["react-loadable/webpack"], root["styled-components"], root["react-helmet"], root["serialize-javascript"], root["minify-css-string"], root["fromentries"], root["xxhashjs"]);
+		var a = typeof exports === 'object' ? factory(require("@babel/runtime/helpers/interopRequireDefault"), require("@babel/runtime/regenerator"), require("immutable"), require("@babel/runtime/helpers/defineProperty"), require("react"), require("@babel/runtime/helpers/asyncToGenerator"), require("@babel/runtime/helpers/interopRequireWildcard"), require("@babel/runtime/helpers/classCallCheck"), require("@babel/runtime/helpers/createClass"), require("query-string"), require("react-redux"), require("@babel/runtime/helpers/toConsumableArray"), require("@redux-saga/core/effects"), require("react-router-dom"), require("react-hot-loader"), require("prop-types"), require("js-cookie"), require("@babel/runtime/helpers/slicedToArray"), require("@babel/runtime/helpers/typeof"), require("contensis-delivery-api"), require("react-router-config"), require("react-loadable"), require("isomorphic-fetch"), require("history"), require("redux"), require("redux-immutable"), require("redux-thunk"), require("redux-saga"), require("loglevel"), require("@babel/runtime/helpers/construct"), require("express"), require("evil-dns"), require("http-proxy"), require("react-dom/server"), require("react-loadable/webpack"), require("styled-components"), require("react-helmet"), require("serialize-javascript"), require("minify-css-string"), require("fromentries"), require("xxhashjs")) : factory(root["@babel/runtime/helpers/interopRequireDefault"], root["@babel/runtime/regenerator"], root["immutable"], root["@babel/runtime/helpers/defineProperty"], root["react"], root["@babel/runtime/helpers/asyncToGenerator"], root["@babel/runtime/helpers/interopRequireWildcard"], root["@babel/runtime/helpers/classCallCheck"], root["@babel/runtime/helpers/createClass"], root["query-string"], root["react-redux"], root["@babel/runtime/helpers/toConsumableArray"], root["@redux-saga/core/effects"], root["react-router-dom"], root["react-hot-loader"], root["prop-types"], root["js-cookie"], root["@babel/runtime/helpers/slicedToArray"], root["@babel/runtime/helpers/typeof"], root["contensis-delivery-api"], root["react-router-config"], root["react-loadable"], root["isomorphic-fetch"], root["history"], root["redux"], root["redux-immutable"], root["redux-thunk"], root["redux-saga"], root["loglevel"], root["@babel/runtime/helpers/construct"], root["express"], root["evil-dns"], root["http-proxy"], root["react-dom/server"], root["react-loadable/webpack"], root["styled-components"], root["react-helmet"], root["serialize-javascript"], root["minify-css-string"], root["fromentries"], root["xxhashjs"]);
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(global, function(__WEBPACK_EXTERNAL_MODULE__0__, __WEBPACK_EXTERNAL_MODULE__1__, __WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__3__, __WEBPACK_EXTERNAL_MODULE__4__, __WEBPACK_EXTERNAL_MODULE__5__, __WEBPACK_EXTERNAL_MODULE__8__, __WEBPACK_EXTERNAL_MODULE__11__, __WEBPACK_EXTERNAL_MODULE__12__, __WEBPACK_EXTERNAL_MODULE__15__, __WEBPACK_EXTERNAL_MODULE__17__, __WEBPACK_EXTERNAL_MODULE__20__, __WEBPACK_EXTERNAL_MODULE__23__, __WEBPACK_EXTERNAL_MODULE__26__, __WEBPACK_EXTERNAL_MODULE__27__, __WEBPACK_EXTERNAL_MODULE__31__, __WEBPACK_EXTERNAL_MODULE__34__, __WEBPACK_EXTERNAL_MODULE__36__, __WEBPACK_EXTERNAL_MODULE__41__, __WEBPACK_EXTERNAL_MODULE__42__, __WEBPACK_EXTERNAL_MODULE__46__, __WEBPACK_EXTERNAL_MODULE__49__, __WEBPACK_EXTERNAL_MODULE__50__, __WEBPACK_EXTERNAL_MODULE__52__, __WEBPACK_EXTERNAL_MODULE__55__, __WEBPACK_EXTERNAL_MODULE__56__, __WEBPACK_EXTERNAL_MODULE__57__, __WEBPACK_EXTERNAL_MODULE__58__, __WEBPACK_EXTERNAL_MODULE__65__, __WEBPACK_EXTERNAL_MODULE__67__, __WEBPACK_EXTERNAL_MODULE__76__, __WEBPACK_EXTERNAL_MODULE__79__, __WEBPACK_EXTERNAL_MODULE__82__, __WEBPACK_EXTERNAL_MODULE__85__, __WEBPACK_EXTERNAL_MODULE__86__, __WEBPACK_EXTERNAL_MODULE__87__, __WEBPACK_EXTERNAL_MODULE__88__, __WEBPACK_EXTERNAL_MODULE__89__, __WEBPACK_EXTERNAL_MODULE__90__, __WEBPACK_EXTERNAL_MODULE__91__, __WEBPACK_EXTERNAL_MODULE__94__) {
+})(global, function(__WEBPACK_EXTERNAL_MODULE__0__, __WEBPACK_EXTERNAL_MODULE__1__, __WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__3__, __WEBPACK_EXTERNAL_MODULE__4__, __WEBPACK_EXTERNAL_MODULE__5__, __WEBPACK_EXTERNAL_MODULE__8__, __WEBPACK_EXTERNAL_MODULE__11__, __WEBPACK_EXTERNAL_MODULE__12__, __WEBPACK_EXTERNAL_MODULE__15__, __WEBPACK_EXTERNAL_MODULE__17__, __WEBPACK_EXTERNAL_MODULE__20__, __WEBPACK_EXTERNAL_MODULE__23__, __WEBPACK_EXTERNAL_MODULE__26__, __WEBPACK_EXTERNAL_MODULE__30__, __WEBPACK_EXTERNAL_MODULE__33__, __WEBPACK_EXTERNAL_MODULE__35__, __WEBPACK_EXTERNAL_MODULE__40__, __WEBPACK_EXTERNAL_MODULE__41__, __WEBPACK_EXTERNAL_MODULE__42__, __WEBPACK_EXTERNAL_MODULE__46__, __WEBPACK_EXTERNAL_MODULE__49__, __WEBPACK_EXTERNAL_MODULE__50__, __WEBPACK_EXTERNAL_MODULE__52__, __WEBPACK_EXTERNAL_MODULE__55__, __WEBPACK_EXTERNAL_MODULE__56__, __WEBPACK_EXTERNAL_MODULE__57__, __WEBPACK_EXTERNAL_MODULE__58__, __WEBPACK_EXTERNAL_MODULE__65__, __WEBPACK_EXTERNAL_MODULE__67__, __WEBPACK_EXTERNAL_MODULE__76__, __WEBPACK_EXTERNAL_MODULE__79__, __WEBPACK_EXTERNAL_MODULE__82__, __WEBPACK_EXTERNAL_MODULE__85__, __WEBPACK_EXTERNAL_MODULE__86__, __WEBPACK_EXTERNAL_MODULE__87__, __WEBPACK_EXTERNAL_MODULE__88__, __WEBPACK_EXTERNAL_MODULE__89__, __WEBPACK_EXTERNAL_MODULE__90__, __WEBPACK_EXTERNAL_MODULE__91__, __WEBPACK_EXTERNAL_MODULE__94__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -750,9 +750,9 @@ exports.types = types;
 
 var _reducers = _interopRequireDefault(__webpack_require__(14));
 
-var _sagas = __webpack_require__(30);
+var _sagas = __webpack_require__(29);
 
-var _withLogin = _interopRequireDefault(__webpack_require__(37));
+var _withLogin = _interopRequireDefault(__webpack_require__(36));
 
 /***/ }),
 /* 17 */
@@ -1880,12 +1880,6 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__26__;
 
 /***/ }),
 /* 27 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__27__;
-
-/***/ }),
-/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1948,7 +1942,7 @@ var setRouteEntry = function setRouteEntry(entry) {
 exports.setRouteEntry = setRouteEntry;
 
 /***/ }),
-/* 29 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1967,7 +1961,7 @@ var GET_NODE_TREE_ERROR = "".concat(ACTION_PREFIX, "_GET_NODE_TREE_ERROR");
 exports.GET_NODE_TREE_ERROR = GET_NODE_TREE_ERROR;
 
 /***/ }),
-/* 30 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1999,7 +1993,7 @@ var _routing2 = __webpack_require__(6);
 
 var _selectors = __webpack_require__(10);
 
-var _LoginHelper = __webpack_require__(33);
+var _LoginHelper = __webpack_require__(32);
 
 var _SecurityApi = __webpack_require__(24);
 
@@ -2376,13 +2370,13 @@ function createUserAccountSaga() {
 }
 
 /***/ }),
-/* 31 */
+/* 30 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__31__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__30__;
 
 /***/ }),
-/* 32 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2399,7 +2393,7 @@ var SET_VERSION_STATUS = "".concat(VERSION_PREFIX, "SET_VERSION_STATUS");
 exports.SET_VERSION_STATUS = SET_VERSION_STATUS;
 
 /***/ }),
-/* 33 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2420,7 +2414,7 @@ var _classCallCheck2 = _interopRequireDefault(__webpack_require__(11));
 
 var _createClass2 = _interopRequireDefault(__webpack_require__(12));
 
-var _CookieHelper = __webpack_require__(35);
+var _CookieHelper = __webpack_require__(34);
 
 var _SecurityApi = __webpack_require__(24);
 
@@ -2979,13 +2973,13 @@ function () {
 exports.LoginHelper = LoginHelper;
 
 /***/ }),
-/* 34 */
+/* 33 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__34__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__33__;
 
 /***/ }),
-/* 35 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3002,7 +2996,7 @@ var _classCallCheck2 = _interopRequireDefault(__webpack_require__(11));
 
 var _createClass2 = _interopRequireDefault(__webpack_require__(12));
 
-var _jsCookie = _interopRequireDefault(__webpack_require__(36));
+var _jsCookie = _interopRequireDefault(__webpack_require__(35));
 
 var COOKIE_VALID_DAYS = 1; // 0 = Session cookie
 // Override the default js-cookie conversion / encoding
@@ -3049,13 +3043,13 @@ function () {
 exports.CookieHelper = CookieHelper;
 
 /***/ }),
-/* 36 */
+/* 35 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__36__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__35__;
 
 /***/ }),
-/* 37 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3120,7 +3114,7 @@ var _default = withLogin;
 exports["default"] = _default;
 
 /***/ }),
-/* 38 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3150,7 +3144,7 @@ var selectVersionStatus = function selectVersionStatus(state) {
 exports.selectVersionStatus = selectVersionStatus;
 
 /***/ }),
-/* 39 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3180,38 +3174,36 @@ var selectNavigationDepends = function selectNavigationDepends(state) {
 exports.selectNavigationDepends = selectNavigationDepends;
 
 /***/ }),
-/* 40 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(module) {
 
-var _interopRequireWildcard = __webpack_require__(8);
-
 var _interopRequireDefault = __webpack_require__(0);
+
+var _interopRequireWildcard = __webpack_require__(8);
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
 
-var _slicedToArray2 = _interopRequireDefault(__webpack_require__(26));
-
 var _react = _interopRequireWildcard(__webpack_require__(4));
 
-var _propTypes = _interopRequireDefault(__webpack_require__(34));
+var _propTypes = _interopRequireDefault(__webpack_require__(33));
 
 var _reactRedux = __webpack_require__(17);
 
-var _reactHotLoader = __webpack_require__(31);
+var _reactHotLoader = __webpack_require__(30);
 
-var _reactRouterDom = __webpack_require__(27);
+var _reactRouterDom = __webpack_require__(26);
 
 var _reactRouterConfig = __webpack_require__(46);
 
 var _routing = __webpack_require__(6);
 
-var _routing2 = __webpack_require__(28);
+var _routing2 = __webpack_require__(27);
 
 var _NotFound = _interopRequireDefault(__webpack_require__(47));
 
@@ -3271,20 +3263,7 @@ var RouteLoader = function RouteLoader(_ref) {
   if (typeof window == 'undefined') setPath();
   (0, _react.useEffect)(function () {
     setPath();
-  }, [location, setPath]);
-
-  var _useState = (0, _react.useState)(false),
-      _useState2 = (0, _slicedToArray2["default"])(_useState, 2),
-      MatchedComponent = _useState2[0],
-      setMatchedComponent = _useState2[1];
-
-  (0, _react.useEffect)(function () {
-    setMatchedComponent(function () {
-      return routes.ContentTypeMappings.find(function (item) {
-        return item.contentTypeID == contentTypeId;
-      });
-    });
-  }, [contentTypeId, routes.ContentTypeMappings]); // Need to redirect when url endswith a /
+  }, [location, setPath]); // Need to redirect when url endswith a /
 
   if (location.pathname.length > trimmedPath.length) {
     return _react["default"].createElement(_reactRouterDom.Redirect, {
@@ -3303,13 +3282,19 @@ var RouteLoader = function RouteLoader(_ref) {
   } // Match any Defined Content Type Mappings
 
 
-  if (MatchedComponent) {
-    return _react["default"].createElement(MatchedComponent.component, {
-      projectId: projectId,
-      contentTypeId: contentTypeId,
-      entry: entry,
-      isLoggedIn: isLoggedIn
+  if (contentTypeId) {
+    var MatchedComponent = routes.ContentTypeMappings.find(function (item) {
+      return item.contentTypeID == contentTypeId;
     });
+
+    if (MatchedComponent) {
+      return _react["default"].createElement(MatchedComponent.component, {
+        projectId: projectId,
+        contentTypeId: contentTypeId,
+        entry: entry,
+        isLoggedIn: isLoggedIn
+      });
+    }
   }
 
   if (isNotFound) {
@@ -3356,6 +3341,12 @@ exports["default"] = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(45)(module)))
 
 /***/ }),
+/* 40 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__40__;
+
+/***/ }),
 /* 41 */
 /***/ (function(module, exports) {
 
@@ -3381,7 +3372,7 @@ exports.setVersionStatus = exports.setVersion = void 0;
 
 var _helpers = __webpack_require__(13);
 
-var _version = __webpack_require__(32);
+var _version = __webpack_require__(31);
 
 var setVersion = function setVersion(commitRef, buildNo) {
   return (0, _helpers.action)(_version.SET_VERSION, {
@@ -3416,9 +3407,9 @@ exports["default"] = void 0;
 
 var _react = _interopRequireDefault(__webpack_require__(4));
 
-var _reactHotLoader = __webpack_require__(31);
+var _reactHotLoader = __webpack_require__(30);
 
-var _RouteLoader = _interopRequireDefault(__webpack_require__(40));
+var _RouteLoader = _interopRequireDefault(__webpack_require__(39));
 
 var AppRoot = function AppRoot(props) {
   return _react["default"].createElement(_RouteLoader["default"], props);
@@ -3500,9 +3491,9 @@ exports.Status = void 0;
 
 var _react = _interopRequireDefault(__webpack_require__(4));
 
-var _propTypes = _interopRequireDefault(__webpack_require__(34));
+var _propTypes = _interopRequireDefault(__webpack_require__(33));
 
-var _reactRouterDom = __webpack_require__(27);
+var _reactRouterDom = __webpack_require__(26);
 
 var Status = function Status(_ref) {
   var code = _ref.code,
@@ -3891,7 +3882,7 @@ exports["default"] = void 0;
 
 var _immutable = __webpack_require__(2);
 
-var _version = __webpack_require__(32);
+var _version = __webpack_require__(31);
 
 var initialState = (0, _immutable.Map)({
   commitRef: null,
@@ -3935,7 +3926,7 @@ exports["default"] = void 0;
 
 var _immutable = __webpack_require__(2);
 
-var _navigation = __webpack_require__(29);
+var _navigation = __webpack_require__(28);
 
 var initialState = (0, _immutable.Map)({
   root: null,
@@ -4037,7 +4028,7 @@ var _login = __webpack_require__(16);
 
 var _navigation = __webpack_require__(72);
 
-var _sagas = __webpack_require__(30);
+var _sagas = __webpack_require__(29);
 
 // index.js
 function _default() {
@@ -4092,13 +4083,13 @@ var _routing = __webpack_require__(7);
 
 var _ContensisDeliveryApi = __webpack_require__(18);
 
-var _version = __webpack_require__(38);
+var _version = __webpack_require__(37);
 
 var _routing2 = __webpack_require__(6);
 
-var _navigation = __webpack_require__(29);
+var _navigation = __webpack_require__(28);
 
-var _navigation2 = __webpack_require__(39);
+var _navigation2 = __webpack_require__(38);
 
 var _queries = __webpack_require__(66);
 
@@ -4965,11 +4956,11 @@ var _effects = __webpack_require__(19);
 
 var _ContensisDeliveryApi = __webpack_require__(18);
 
-var _navigation = __webpack_require__(29);
+var _navigation = __webpack_require__(28);
 
-var _navigation2 = __webpack_require__(39);
+var _navigation2 = __webpack_require__(38);
 
-var _version = __webpack_require__(38);
+var _version = __webpack_require__(37);
 
 var _routing = __webpack_require__(6);
 
@@ -5441,7 +5432,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
-var _slicedToArray2 = _interopRequireDefault(__webpack_require__(26));
+var _slicedToArray2 = _interopRequireDefault(__webpack_require__(40));
 
 var _toConsumableArray2 = _interopRequireDefault(__webpack_require__(20));
 
@@ -5449,7 +5440,7 @@ var _fs = _interopRequireDefault(__webpack_require__(84));
 
 var _react = _interopRequireDefault(__webpack_require__(4));
 
-var _reactRouterDom = __webpack_require__(27);
+var _reactRouterDom = __webpack_require__(26);
 
 var _reactRedux = __webpack_require__(17);
 
@@ -5481,7 +5472,7 @@ var _pickProject = _interopRequireDefault(__webpack_require__(53));
 
 var _ContensisDeliveryApi = __webpack_require__(18);
 
-var _routing = __webpack_require__(28);
+var _routing = __webpack_require__(27);
 
 var _version = __webpack_require__(43);
 

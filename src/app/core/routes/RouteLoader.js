@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { hot } from 'react-hot-loader';
@@ -86,16 +86,6 @@ const RouteLoader = ({
     setPath();
   }, [location, setPath]);
 
-  const [MatchedComponent, setMatchedComponent] = useState(false);
-
-  useEffect(() => {
-    setMatchedComponent(() =>
-      routes.ContentTypeMappings.find(
-        item => item.contentTypeID == contentTypeId
-      )
-    );
-  }, [contentTypeId, routes.ContentTypeMappings]);
-
   // Need to redirect when url endswith a /
   if (location.pathname.length > trimmedPath.length) {
     return <Redirect to={trimmedPath} />;
@@ -111,16 +101,21 @@ const RouteLoader = ({
   }
 
   // Match any Defined Content Type Mappings
-
-  if (MatchedComponent) {
-    return (
-      <MatchedComponent.component
-        projectId={projectId}
-        contentTypeId={contentTypeId}
-        entry={entry}
-        isLoggedIn={isLoggedIn}
-      />
+  if (contentTypeId) {
+    const MatchedComponent = routes.ContentTypeMappings.find(
+      item => item.contentTypeID == contentTypeId
     );
+
+    if (MatchedComponent) {
+      return (
+        <MatchedComponent.component
+          projectId={projectId}
+          contentTypeId={contentTypeId}
+          entry={entry}
+          isLoggedIn={isLoggedIn}
+        />
+      );
+    }
   }
 
   if (isNotFound) {
