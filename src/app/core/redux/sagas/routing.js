@@ -51,8 +51,14 @@ function* getRouteSaga(action) {
       appsays = yield withEvents.onRouteLoad(action);
     }
     // if appsays customNavigation: true, we will set doNavigation to false
+    // if appsays customNavigation: { ... }, we will set doNavigation to the customNavigation object and check for child elements
     // if appsays nothing we will set doNavigation to true and continue to do navigation calls
-    const doNavigation = !appsays || (appsays && !appsays.customNavigation);
+    const doNavigation =
+      !appsays ||
+      (appsays && appsays.customNavigation === true
+        ? false
+        : (appsays && appsays.customNavigation) || true);
+
     const entryLinkDepth = (appsays && appsays.entryLinkDepth) || 3;
     const setContentTypeLimits =
       routes &&
@@ -119,7 +125,7 @@ function* getRouteSaga(action) {
             // with Node API
             let previewEntry = yield deliveryApi
               .getClient(deliveryApiStatus, project)
-              .entries.get({ id: entryGuid, linkDepth: 4 });
+              .entries.get({ id: entryGuid, linkDepth: 3 });
             if (previewEntry) {
               yield call(setRouteEntry, previewEntry);
             } else {
@@ -131,7 +137,10 @@ function* getRouteSaga(action) {
           pathNode = yield deliveryApi
             .getClient(deliveryApiStatus, project)
             .nodes.get({
-              depth: 0,
+              depth:
+                doNavigation === true || doNavigation.children === true
+                  ? 3
+                  : (doNavigation && doNavigation.children) || 0,
               path: currentPath,
               entryFields: setContentTypeLimits
                 ? ['sys.contentTypeId', 'sys.id']
@@ -167,12 +176,19 @@ function* getRouteSaga(action) {
           }
         }
 
-        if (pathNode && pathNode.id && doNavigation) {
+        if (
+          pathNode &&
+          pathNode.id &&
+          (doNavigation === true || doNavigation.ancestors)
+        ) {
           ancestors = yield deliveryApi
             .getClient(deliveryApiStatus, project)
             .nodes.getAncestors(pathNode.id);
           // No menu shows the  siblings at this level, so no need to load them.
-          if (currentPathDepth > 1) {
+          if (
+            currentPathDepth > 1 &&
+            (doNavigation === true || doNavigation.siblings)
+          ) {
             siblings = yield deliveryApi
               .getClient(deliveryApiStatus, project)
               .nodes.getSiblings({
@@ -199,9 +215,20 @@ function* getRouteSaga(action) {
       yield withEvents.onRouteLoaded({ ...action, entry });
     }
 
-    if (!hasNavigationTree(state) && doNavigation)
+    if (
+      !hasNavigationTree(state) &&
+      (doNavigation === true || doNavigation.tree)
+    )
       // Load navigation clientside only, a put() should help that work
-      yield put({ type: GET_NODE_TREE });
+      yield put({
+        type: GET_NODE_TREE,
+        treeDepth:
+          doNavigation === true ||
+          !doNavigation.tree ||
+          doNavigation.tree === true
+            ? 2
+            : doNavigation.tree,
+      });
   } catch (e) {
     log.error(...['Error running route saga:', e, e.stack]);
     yield call(do404);

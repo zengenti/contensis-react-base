@@ -4162,8 +4162,9 @@ function getRouteSaga(action) {
 
         case 7:
           // if appsays customNavigation: true, we will set doNavigation to false
+          // if appsays customNavigation: { ... }, we will set doNavigation to the customNavigation object and check for child elements
           // if appsays nothing we will set doNavigation to true and continue to do navigation calls
-          doNavigation = !appsays || appsays && !appsays.customNavigation;
+          doNavigation = !appsays || (appsays && appsays.customNavigation === true ? false : appsays && appsays.customNavigation || true);
           entryLinkDepth = appsays && appsays.entryLinkDepth || 3;
           setContentTypeLimits = routes && routes.ContentTypeMappings && !!routes.ContentTypeMappings.find(function (ct) {
             return ct.fields || ct.linkDepth;
@@ -4255,7 +4256,7 @@ function getRouteSaga(action) {
           _context2.next = 44;
           return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiStatus, project).entries.get({
             id: entryGuid,
-            linkDepth: 4
+            linkDepth: 3
           });
 
         case 44:
@@ -4284,7 +4285,7 @@ function getRouteSaga(action) {
         case 54:
           _context2.next = 56;
           return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiStatus, project).nodes.get({
-            depth: 0,
+            depth: doNavigation === true || doNavigation.children === true ? 3 : doNavigation && doNavigation.children || 0,
             path: currentPath,
             entryFields: setContentTypeLimits ? ['sys.contentTypeId', 'sys.id'] : '*',
             entryLinkDepth: setContentTypeLimits ? 0 : entryLinkDepth
@@ -4313,7 +4314,7 @@ function getRouteSaga(action) {
           }
 
         case 64:
-          if (!(pathNode && pathNode.id && doNavigation)) {
+          if (!(pathNode && pathNode.id && (doNavigation === true || doNavigation.ancestors))) {
             _context2.next = 72;
             break;
           }
@@ -4324,7 +4325,7 @@ function getRouteSaga(action) {
         case 67:
           ancestors = _context2.sent;
 
-          if (!(currentPathDepth > 1)) {
+          if (!(currentPathDepth > 1 && (doNavigation === true || doNavigation.siblings))) {
             _context2.next = 72;
             break;
           }
@@ -4368,14 +4369,15 @@ function getRouteSaga(action) {
           }));
 
         case 83:
-          if (!(!(0, _navigation2.hasNavigationTree)(state) && doNavigation)) {
+          if (!(!(0, _navigation2.hasNavigationTree)(state) && (doNavigation === true || doNavigation.tree))) {
             _context2.next = 86;
             break;
           }
 
           _context2.next = 86;
           return (0, _effects.put)({
-            type: _navigation.GET_NODE_TREE
+            type: _navigation.GET_NODE_TREE,
+            treeDepth: doNavigation === true || !doNavigation.tree || doNavigation.tree === true ? 2 : doNavigation.tree
           });
 
         case 86:
@@ -4970,7 +4972,7 @@ _regenerator["default"].mark(ensureNodeTreeSaga);
 var navigationSagas = [(0, _effects.takeEvery)(_navigation.GET_NODE_TREE, ensureNodeTreeSaga)];
 exports.navigationSagas = navigationSagas;
 
-function ensureNodeTreeSaga() {
+function ensureNodeTreeSaga(action) {
   var state, deliveryApiVersionStatus, project, nodes;
   return _regenerator["default"].wrap(function ensureNodeTreeSaga$(_context) {
     while (1) {
@@ -5000,7 +5002,7 @@ function ensureNodeTreeSaga() {
           project = _context.sent;
           _context.next = 13;
           return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiVersionStatus, project).nodes.getRoot({
-            depth: 2,
+            depth: action.treeDepth || 2,
             entryFields: 'entryTitle, metaInformation, sys.contentTypeId'
           });
 

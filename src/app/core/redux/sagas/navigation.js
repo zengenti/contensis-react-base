@@ -12,7 +12,7 @@ import { selectCurrentProject } from '../selectors/routing';
 
 export const navigationSagas = [takeEvery(GET_NODE_TREE, ensureNodeTreeSaga)];
 
-export function* ensureNodeTreeSaga() {
+export function* ensureNodeTreeSaga(action) {
   const state = yield select();
   try {
     if (!hasNavigationTree(state)) {
@@ -21,7 +21,7 @@ export function* ensureNodeTreeSaga() {
       const nodes = yield deliveryApi
         .getClient(deliveryApiVersionStatus, project)
         .nodes.getRoot({
-          depth: 2,
+          depth: action.treeDepth || 2,
           entryFields: 'entryTitle, metaInformation, sys.contentTypeId',
         });
       if (nodes) {
