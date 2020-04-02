@@ -665,6 +665,7 @@ var RouteLoader = function RouteLoader(_ref) {
       entry = _ref.entry,
       isLoggedIn = _ref.isLoggedIn,
       isNotFound = _ref.isNotFound,
+      notFoundComponent = _ref.notFoundComponent,
       setNavigationPath = _ref.setNavigationPath,
       routes = _ref.routes,
       withEvents = _ref.withEvents;
@@ -730,10 +731,12 @@ var RouteLoader = function RouteLoader(_ref) {
     }
   }
 
+  var NotFoundComponent = notFoundComponent ? notFoundComponent : _NotFound["default"];
+
   if (isNotFound) {
     return _react["default"].createElement(_Status.Status, {
       code: 404
-    }, _react["default"].createElement(_NotFound["default"], null));
+    }, _react["default"].createElement(NotFoundComponent, null));
   }
 
   return null;
@@ -749,6 +752,7 @@ RouteLoader.propTypes = {
   entry: _propTypes["default"].object,
   isLoggedIn: _propTypes["default"].bool,
   isNotFound: _propTypes["default"].bool,
+  notFoundComponent: _propTypes["default"].func,
   setNavigationPath: _propTypes["default"].func
 };
 

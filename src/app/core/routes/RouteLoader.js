@@ -37,6 +37,7 @@ const RouteLoader = ({
   entry,
   isLoggedIn,
   isNotFound,
+  notFoundComponent,
   setNavigationPath,
   routes,
   withEvents,
@@ -118,10 +119,11 @@ const RouteLoader = ({
     }
   }
 
+  const NotFoundComponent = notFoundComponent ? notFoundComponent : NotFound;
   if (isNotFound) {
     return (
       <Status code={404}>
-        <NotFound />
+        <NotFoundComponent />
       </Status>
     );
   }
@@ -139,6 +141,7 @@ RouteLoader.propTypes = {
   entry: PropTypes.object,
   isLoggedIn: PropTypes.bool,
   isNotFound: PropTypes.bool,
+  notFoundComponent: PropTypes.func,
   setNavigationPath: PropTypes.func,
 };
 
