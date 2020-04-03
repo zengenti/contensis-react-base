@@ -113,7 +113,10 @@ export const GetAllResponseGuids = object => {
 class DeliveryApi {
   search(query, linkDepth, project, env) {
     const client = Client.create(getClientConfig(project, env));
-    return client.entries.search(query, linkDepth || 1);
+    return client.entries.search(
+      query,
+      typeof linkDepth !== 'undefined' ? linkDepth : 1
+    );
   }
 
   getClient(deliveryApiStatus = 'published', project, env) {
@@ -121,7 +124,7 @@ class DeliveryApi {
     baseConfig.versionStatus = deliveryApiStatus;
     return Client.create(baseConfig);
   }
-  getEntry(id, linkDepth = 1, deliveryApiStatus = 'published', project, env) {
+  getEntry(id, linkDepth = 0, deliveryApiStatus = 'published', project, env) {
     const baseConfig = getClientConfig(project, env);
     baseConfig.versionStatus = deliveryApiStatus;
     const client = Client.create(baseConfig);

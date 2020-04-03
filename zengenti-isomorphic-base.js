@@ -140,7 +140,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__5__;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.selectRouteLoading = exports.selectCurrentAncestors = exports.selectIsNotFound = exports.selectCurrentProject = exports.selectQueryStringAsObject = exports.selectCurrentSearch = exports.selectCurrentPath = exports.selectRouteEntryID = exports.selectRouteEntrySlug = exports.selectRouteEntryContentTypeId = exports.selectRouteEntryEntryId = exports.selectEntryDepends = exports.selectCurrentTreeID = exports.selectNodeDepends = exports.selectRouteEntry = void 0;
+exports.selectRouteLoading = exports.selectBreadcrumb = exports.selectCurrentNode = exports.selectCurrentAncestors = exports.selectIsNotFound = exports.selectCurrentProject = exports.selectQueryStringAsObject = exports.selectCurrentSearch = exports.selectCurrentPath = exports.selectRouteEntryID = exports.selectRouteEntrySlug = exports.selectRouteEntryContentTypeId = exports.selectRouteEntryEntryId = exports.selectEntryDepends = exports.selectCurrentTreeID = exports.selectNodeDepends = exports.selectRouteEntry = void 0;
 
 var _immutable = __webpack_require__(2);
 
@@ -226,10 +226,22 @@ var selectIsNotFound = function selectIsNotFound(state) {
 exports.selectIsNotFound = selectIsNotFound;
 
 var selectCurrentAncestors = function selectCurrentAncestors(state) {
-  return state.getIn(['routing', 'currentNodeAncestors']);
+  return state.getIn(['routing', 'currentNodeAncestors'], new _immutable.List());
 };
 
 exports.selectCurrentAncestors = selectCurrentAncestors;
+
+var selectCurrentNode = function selectCurrentNode(state) {
+  return state.getIn(['routing', 'currentNode']);
+};
+
+exports.selectCurrentNode = selectCurrentNode;
+
+var selectBreadcrumb = function selectBreadcrumb(state) {
+  return (selectCurrentAncestors(state) || new _immutable.List()).push(selectCurrentNode(state));
+};
+
+exports.selectBreadcrumb = selectBreadcrumb;
 
 var selectRouteLoading = function selectRouteLoading(state) {
   return state.getIn(['routing', 'isLoading']);
@@ -947,7 +959,7 @@ function () {
     value: function search(query, linkDepth, project, env) {
       var client = _contensisDeliveryApi.Client.create(getClientConfig(project, env));
 
-      return client.entries.search(query, linkDepth || 1);
+      return client.entries.search(query, typeof linkDepth !== 'undefined' ? linkDepth : 1);
     }
   }, {
     key: "getClient",
@@ -962,7 +974,7 @@ function () {
   }, {
     key: "getEntry",
     value: function getEntry(id) {
-      var linkDepth = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+      var linkDepth = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
       var deliveryApiStatus = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'published';
       var project = arguments.length > 3 ? arguments[3] : undefined;
       var env = arguments.length > 4 ? arguments[4] : undefined;
@@ -4309,7 +4321,7 @@ function getRouteSaga(action) {
           });
           query = (0, _queries.routeEntryByFields)(pathNode.entry.sys.id, contentType && contentType.fields, deliveryApiStatus);
           _context2.next = 62;
-          return _ContensisDeliveryApi.deliveryApi.search(query, contentType && contentType.linkDepth || 3, project);
+          return _ContensisDeliveryApi.deliveryApi.search(query, contentType && typeof contentType.linkDepth !== 'undefined' ? contentType.linkDepth : 3, project);
 
         case 62:
           payload = _context2.sent;

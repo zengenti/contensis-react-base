@@ -140,7 +140,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__5__;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.selectRouteLoading = exports.selectCurrentAncestors = exports.selectIsNotFound = exports.selectCurrentProject = exports.selectQueryStringAsObject = exports.selectCurrentSearch = exports.selectCurrentPath = exports.selectRouteEntryID = exports.selectRouteEntrySlug = exports.selectRouteEntryContentTypeId = exports.selectRouteEntryEntryId = exports.selectEntryDepends = exports.selectCurrentTreeID = exports.selectNodeDepends = exports.selectRouteEntry = void 0;
+exports.selectRouteLoading = exports.selectBreadcrumb = exports.selectCurrentNode = exports.selectCurrentAncestors = exports.selectIsNotFound = exports.selectCurrentProject = exports.selectQueryStringAsObject = exports.selectCurrentSearch = exports.selectCurrentPath = exports.selectRouteEntryID = exports.selectRouteEntrySlug = exports.selectRouteEntryContentTypeId = exports.selectRouteEntryEntryId = exports.selectEntryDepends = exports.selectCurrentTreeID = exports.selectNodeDepends = exports.selectRouteEntry = void 0;
 
 var _immutable = __webpack_require__(2);
 
@@ -226,10 +226,22 @@ var selectIsNotFound = function selectIsNotFound(state) {
 exports.selectIsNotFound = selectIsNotFound;
 
 var selectCurrentAncestors = function selectCurrentAncestors(state) {
-  return state.getIn(['routing', 'currentNodeAncestors']);
+  return state.getIn(['routing', 'currentNodeAncestors'], new _immutable.List());
 };
 
 exports.selectCurrentAncestors = selectCurrentAncestors;
+
+var selectCurrentNode = function selectCurrentNode(state) {
+  return state.getIn(['routing', 'currentNode']);
+};
+
+exports.selectCurrentNode = selectCurrentNode;
+
+var selectBreadcrumb = function selectBreadcrumb(state) {
+  return (selectCurrentAncestors(state) || new _immutable.List()).push(selectCurrentNode(state));
+};
+
+exports.selectBreadcrumb = selectBreadcrumb;
 
 var selectRouteLoading = function selectRouteLoading(state) {
   return state.getIn(['routing', 'isLoading']);

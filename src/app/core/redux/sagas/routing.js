@@ -167,7 +167,9 @@ function* getRouteSaga(action) {
             );
             const payload = yield deliveryApi.search(
               query,
-              (contentType && contentType.linkDepth) || 3,
+              contentType && typeof contentType.linkDepth !== 'undefined'
+                ? contentType.linkDepth
+                : 3,
               project
             );
             if (payload && payload.items && payload.items.length > 0) {
