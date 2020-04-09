@@ -90,13 +90,12 @@ export default (state = initialState, action) => {
     case SET_NODE: {
       const { node } = action;
       if (!node) return state;
-      // We have the entry stored elsewhere, so lets not keep it twice.
       // On Set Node, we reset all dependants.
       const nodeDepends = Set([node.id]);
-      if (node && node.entry) delete node.entry;
       return state
         .set('nodeDepends', nodeDepends)
-        .set('currentNode', fromJS(action.node));
+        .set('currentNode', fromJS(action.node))
+        .removeIn(['currentNode', 'entry']); // We have the entry stored elsewhere, so lets not keep it twice.
     }
     case SET_ROUTE: {
       return state.set('nextPath', action.path);

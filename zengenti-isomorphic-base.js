@@ -787,13 +787,12 @@ Object.defineProperty(exports, "__esModule", {
 var _exportNames = {
   GetClientSideDeliveryApiStatus: true,
   GetDeliveryApiStatusFromHostname: true,
-  fixImageUri: true,
   GetResponseGuids: true,
   GetAllResponseGuids: true,
   deliveryApi: true,
   cachedSearch: true
 };
-exports.cachedSearch = exports.deliveryApi = exports.GetAllResponseGuids = exports.GetResponseGuids = exports.fixImageUri = exports.GetDeliveryApiStatusFromHostname = exports.GetClientSideDeliveryApiStatus = void 0;
+exports.cachedSearch = exports.deliveryApi = exports.GetAllResponseGuids = exports.GetResponseGuids = exports.GetDeliveryApiStatusFromHostname = exports.GetClientSideDeliveryApiStatus = void 0;
 
 var _defineProperty2 = _interopRequireDefault(__webpack_require__(3));
 
@@ -880,28 +879,6 @@ var GetDeliveryApiStatusFromHostname = function GetDeliveryApiStatusFromHostname
 };
 
 exports.GetDeliveryApiStatusFromHostname = GetDeliveryApiStatusFromHostname;
-
-var fixImageUri = function fixImageUri(object) {
-  Object.keys(object).some(function (k) {
-    if (k === 'asset') {
-      //Should always have an ID, but lets check...
-      if (object[k].sys && object[k].sys.id) {
-        // We can exclude assets here i think... ?
-        var userTransforms = object[k].transformations ? "&".concat(object[k].transformations) : '';
-        object[k].sys.uri = "/api/image/".concat(object[k].sys.id, "?invalidationKey=").concat(object[k].sys && object[k].sys.version.versionNo).concat(userTransforms);
-      }
-
-      return false;
-    }
-
-    if (object[k] && (0, _typeof2["default"])(object[k]) === 'object') {
-      fixImageUri(object[k]);
-      return false;
-    }
-  });
-};
-
-exports.fixImageUri = fixImageUri;
 
 var GetResponseGuids = function GetResponseGuids(object) {
   var Ids = [];
@@ -1140,6 +1117,51 @@ function () {
         return client.taxonomy.resolveChildren(key).then(function (node) {
           return _this.extendTaxonomyNode(node);
         });
+      });
+    }
+  }, {
+    key: "getRootNode",
+    value: function getRootNode(options, project, env) {
+      var client = _contensisDeliveryApi.Client.create(getClientConfig(project, env));
+
+      return this.request("".concat(project, " / ").concat(JSON.stringify(options)), function () {
+        return client.nodes.getRoot(options);
+      });
+    }
+  }, {
+    key: "getNode",
+    value: function getNode(options, project, env) {
+      var client = _contensisDeliveryApi.Client.create(getClientConfig(project, env));
+
+      return this.request("".concat(project, " ").concat(options && options.path || options, " ").concat(JSON.stringify(options)), function () {
+        return client.nodes.get(options);
+      });
+    }
+  }, {
+    key: "getAncestors",
+    value: function getAncestors(options, project, env) {
+      var client = _contensisDeliveryApi.Client.create(getClientConfig(project, env));
+
+      return this.request("".concat(project, " [A] ").concat(options && options.id || options, " ").concat(JSON.stringify(options)), function () {
+        return client.nodes.getAncestors(options);
+      });
+    }
+  }, {
+    key: "getChildren",
+    value: function getChildren(options, project, env) {
+      var client = _contensisDeliveryApi.Client.create(getClientConfig(project, env));
+
+      return this.request("".concat(project, " [C] ").concat(options && options.id || options, " ").concat(JSON.stringify(options)), function () {
+        return client.nodes.getChildren(options);
+      });
+    }
+  }, {
+    key: "getSiblings",
+    value: function getSiblings(options, project, env) {
+      var client = _contensisDeliveryApi.Client.create(getClientConfig(project, env));
+
+      return this.request("".concat(project, " [S] ").concat(options && options.id || options, " ").concat(JSON.stringify(options)), function () {
+        return client.nodes.getSiblings(options);
       });
     }
   }, {
@@ -3838,12 +3860,11 @@ var _default = function _default() {
     case _routing.SET_NODE:
       {
         var node = action.node;
-        if (!node) return state; // We have the entry stored elsewhere, so lets not keep it twice.
-        // On Set Node, we reset all dependants.
+        if (!node) return state; // On Set Node, we reset all dependants.
 
-        var nodeDepends = (0, _immutable.Set)([node.id]);
-        if (node && node.entry) delete node.entry;
-        return state.set('nodeDepends', nodeDepends).set('currentNode', (0, _immutable.fromJS)(action.node));
+        var nodeDepends = (0, _immutable.Set)([node.id]); // if (node && node.entry) delete node.entry;
+
+        return state.set('nodeDepends', nodeDepends).set('currentNode', (0, _immutable.fromJS)(action.node)).removeIn(['currentNode', 'entry']); // We have the entry stored elsewhere, so lets not keep it twice.
       }
 
     case _routing.SET_ROUTE:
@@ -4244,12 +4265,12 @@ function getRouteSaga(action) {
           }
 
           _context2.next = 35;
-          return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiStatus, project).nodes.getRoot({
+          return _ContensisDeliveryApi.cachedSearch.getRootNode({
             depth: 0,
             entryFields: '*',
             entryLinkDepth: entryLinkDepth,
             language: 'en-GB'
-          });
+          }, project);
 
         case 35:
           pathNode = _context2.sent;
@@ -4301,12 +4322,12 @@ function getRouteSaga(action) {
 
         case 54:
           _context2.next = 56;
-          return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiStatus, project).nodes.get({
+          return _ContensisDeliveryApi.cachedSearch.getNode({
             depth: doNavigation === true || doNavigation.children === true ? 3 : doNavigation && doNavigation.children || 0,
             path: currentPath,
             entryFields: setContentTypeLimits ? ['sys.contentTypeId', 'sys.id'] : '*',
             entryLinkDepth: setContentTypeLimits ? 0 : entryLinkDepth
-          });
+          }, project);
 
         case 56:
           pathNode = _context2.sent;
@@ -4321,7 +4342,7 @@ function getRouteSaga(action) {
           });
           query = (0, _queries.routeEntryByFields)(pathNode.entry.sys.id, contentType && contentType.fields, deliveryApiStatus);
           _context2.next = 62;
-          return _ContensisDeliveryApi.deliveryApi.search(query, contentType && typeof contentType.linkDepth !== 'undefined' ? contentType.linkDepth : 3, project);
+          return _ContensisDeliveryApi.cachedSearch.search(query, contentType && typeof contentType.linkDepth !== 'undefined' ? contentType.linkDepth : 3, project);
 
         case 62:
           payload = _context2.sent;
@@ -4337,7 +4358,7 @@ function getRouteSaga(action) {
           }
 
           _context2.next = 67;
-          return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiStatus, project).nodes.getAncestors(pathNode.id);
+          return _ContensisDeliveryApi.cachedSearch.getAncestors(pathNode.id, project);
 
         case 67:
           ancestors = _context2.sent;
@@ -4348,10 +4369,10 @@ function getRouteSaga(action) {
           }
 
           _context2.next = 71;
-          return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiStatus, project).nodes.getSiblings({
+          return _ContensisDeliveryApi.cachedSearch.getSiblings({
             id: pathNode.id,
             entryFields: ['sys.contentTypeId', 'url']
-          });
+          }, project);
 
         case 71:
           siblings = _context2.sent;

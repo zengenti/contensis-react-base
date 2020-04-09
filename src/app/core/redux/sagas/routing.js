@@ -12,7 +12,7 @@ import {
   CALL_HISTORY_METHOD,
   SET_SIBLINGS,
 } from '~/core/redux/types/routing';
-import { deliveryApi } from '~/core/util/ContensisDeliveryApi';
+import { cachedSearch, deliveryApi } from '~/core/util/ContensisDeliveryApi';
 import { selectVersionStatus } from '~/core/redux/selectors/version';
 import {
   selectCurrentPath,
@@ -105,14 +105,15 @@ function* getRouteSaga(action) {
 
       // Handle homepage
       if (currentPath === '/') {
-        pathNode = yield deliveryApi
-          .getClient(deliveryApiStatus, project)
-          .nodes.getRoot({
+        pathNode = yield cachedSearch.getRootNode(
+          {
             depth: 0,
             entryFields: '*',
             entryLinkDepth,
             language: 'en-GB',
-          });
+          },
+          project
+        );
       } else {
         // Handle preview routes
         if (currentPath && currentPath.startsWith('/preview/')) {
@@ -134,9 +135,8 @@ function* getRouteSaga(action) {
           }
         } else {
           // Handle all other routes
-          pathNode = yield deliveryApi
-            .getClient(deliveryApiStatus, project)
-            .nodes.get({
+          pathNode = yield cachedSearch.getNode(
+            {
               depth:
                 doNavigation === true || doNavigation.children === true
                   ? 3
@@ -146,7 +146,9 @@ function* getRouteSaga(action) {
                 ? ['sys.contentTypeId', 'sys.id']
                 : '*',
               entryLinkDepth: setContentTypeLimits ? 0 : entryLinkDepth,
-            });
+            },
+            project
+          );
           if (
             setContentTypeLimits &&
             pathNode &&
@@ -165,7 +167,7 @@ function* getRouteSaga(action) {
               contentType && contentType.fields,
               deliveryApiStatus
             );
-            const payload = yield deliveryApi.search(
+            const payload = yield cachedSearch.search(
               query,
               contentType && typeof contentType.linkDepth !== 'undefined'
                 ? contentType.linkDepth
@@ -183,20 +185,19 @@ function* getRouteSaga(action) {
           pathNode.id &&
           (doNavigation === true || doNavigation.ancestors)
         ) {
-          ancestors = yield deliveryApi
-            .getClient(deliveryApiStatus, project)
-            .nodes.getAncestors(pathNode.id);
+          ancestors = yield cachedSearch.getAncestors(pathNode.id, project);
           // No menu shows the  siblings at this level, so no need to load them.
           if (
             currentPathDepth > 1 &&
             (doNavigation === true || doNavigation.siblings)
           ) {
-            siblings = yield deliveryApi
-              .getClient(deliveryApiStatus, project)
-              .nodes.getSiblings({
+            siblings = yield cachedSearch.getSiblings(
+              {
                 id: pathNode.id,
                 entryFields: ['sys.contentTypeId', 'url'],
-              });
+              },
+              project
+            );
           }
         }
       }

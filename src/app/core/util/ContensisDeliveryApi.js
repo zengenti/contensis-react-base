@@ -18,6 +18,7 @@ const getClientConfig = project => {
   }
   return config;
 };
+
 export * from 'contensis-delivery-api';
 
 // This should only be executed on the client as it relies on the window.
@@ -49,30 +50,6 @@ export const GetDeliveryApiStatusFromHostname = currentHostname => {
   }
 
   return 'published';
-};
-
-export const fixImageUri = object => {
-  Object.keys(object).some(function(k) {
-    if (k === 'asset') {
-      //Should always have an ID, but lets check...
-      if (object[k].sys && object[k].sys.id) {
-        // We can exclude assets here i think... ?
-        let userTransforms = object[k].transformations
-          ? `&${object[k].transformations}`
-          : '';
-
-        object[k].sys.uri = `/api/image/${
-          object[k].sys.id
-        }?invalidationKey=${object[k].sys &&
-          object[k].sys.version.versionNo}${userTransforms}`;
-      }
-      return false;
-    }
-    if (object[k] && typeof object[k] === 'object') {
-      fixImageUri(object[k]);
-      return false;
-    }
-  });
 };
 
 export const GetResponseGuids = object => {
@@ -240,6 +217,53 @@ class CachedSearch {
       client.taxonomy
         .resolveChildren(key)
         .then(node => this.extendTaxonomyNode(node))
+    );
+  }
+
+  getRootNode(options, project, env) {
+    const client = Client.create(getClientConfig(project, env));
+    return this.request(`${project} / ${JSON.stringify(options)}`, () =>
+      client.nodes.getRoot(options)
+    );
+  }
+
+  getNode(options, project, env) {
+    const client = Client.create(getClientConfig(project, env));
+    return this.request(
+      `${project} ${(options && options.path) || options} ${JSON.stringify(
+        options
+      )}`,
+      () => client.nodes.get(options)
+    );
+  }
+
+  getAncestors(options, project, env) {
+    const client = Client.create(getClientConfig(project, env));
+    return this.request(
+      `${project} [A] ${(options && options.id) || options} ${JSON.stringify(
+        options
+      )}`,
+      () => client.nodes.getAncestors(options)
+    );
+  }
+
+  getChildren(options, project, env) {
+    const client = Client.create(getClientConfig(project, env));
+    return this.request(
+      `${project} [C] ${(options && options.id) || options} ${JSON.stringify(
+        options
+      )}`,
+      () => client.nodes.getChildren(options)
+    );
+  }
+
+  getSiblings(options, project, env) {
+    const client = Client.create(getClientConfig(project, env));
+    return this.request(
+      `${project} [S] ${(options && options.id) || options} ${JSON.stringify(
+        options
+      )}`,
+      () => client.nodes.getSiblings(options)
     );
   }
 
