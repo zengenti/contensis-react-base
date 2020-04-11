@@ -114,6 +114,7 @@ exports.setCachingHeaders = __webpack_require__(107);
 exports.stringifyStrings = __webpack_require__(108);
 exports.urls = __webpack_require__(109);
 exports.useMapper = __webpack_require__(73).useMapper;
+exports.useEntryMapper = __webpack_require__(73).useEntryMapper;
 
 /***/ }),
 
@@ -230,15 +231,32 @@ var _interopRequireDefault = __webpack_require__(0);
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = exports.useMapper = void 0;
+exports["default"] = exports.useEntryMapper = exports.useMapper = void 0;
 
 var _jsonpathMapper = _interopRequireDefault(__webpack_require__(106));
 
 var useMapper = function useMapper(json, template) {
   return (0, _jsonpathMapper["default"])(json, template);
 };
+/**
+ * useEntryMapper hook
+ * @param {any} entry The source entry we wish to transform
+ * @param {object} mappers Object with keys containing mapper templates,
+ * the key name matching entry.sys.contentTypeId
+ * @returns {object} Object transformed using a matched content type or
+ * a default mapper template, returns an empty object if no mapper template
+ * couild be applied.
+ */
+
 
 exports.useMapper = useMapper;
+
+var useEntryMapper = function useEntryMapper(entry, mappers) {
+  var mapper = entry && entry.sys.contentTypeId ? mappers[entry.sys.contentTypeId] : mappers['default'];
+  return useMapper(entry || {}, mapper);
+};
+
+exports.useEntryMapper = useEntryMapper;
 var _default = _jsonpathMapper["default"];
 exports["default"] = _default;
 

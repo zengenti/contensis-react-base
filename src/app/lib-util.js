@@ -3,3 +3,4 @@ exports.setCachingHeaders = require('~/../server/util/setCachingHeaders');
 exports.stringifyStrings = require('~/core/util/stringifyStrings');
 exports.urls = require('~/core/util/urls');
 exports.useMapper = require('~/core/util/json-mapper').useMapper;
+exports.useEntryMapper = require('~/core/util/json-mapper').useEntryMapper;

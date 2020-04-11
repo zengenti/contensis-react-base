@@ -3862,8 +3862,7 @@ var _default = function _default() {
         var node = action.node;
         if (!node) return state; // On Set Node, we reset all dependants.
 
-        var nodeDepends = (0, _immutable.Set)([node.id]); // if (node && node.entry) delete node.entry;
-
+        var nodeDepends = (0, _immutable.Set)([node.id]);
         return state.set('nodeDepends', nodeDepends).set('currentNode', (0, _immutable.fromJS)(action.node)).removeIn(['currentNode', 'entry']); // We have the entry stored elsewhere, so lets not keep it twice.
       }
 
