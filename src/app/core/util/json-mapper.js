@@ -1,7 +1,7 @@
-import mapJson from 'jsonpath-mapper';
+import mapJson, { jpath } from 'jsonpath-mapper';
 
 export const useMapper = (json, template) => {
-  return mapJson(json, template);
+  return template ? mapJson(json, template) : json;
 };
 
 /**
@@ -13,11 +13,9 @@ export const useMapper = (json, template) => {
  * a default mapper template, returns an empty object if no mapper template
  * couild be applied.
  */
-export const useEntryMapper = (entry, mappers) => {
-  const mapper =
-    entry && entry.sys.contentTypeId
-      ? mappers[entry.sys.contentTypeId]
-      : mappers['default'];
+export const useEntryMapper = (entry, mappers, field = 'sys.contentTypeId') => {
+  const fieldValue = jpath(field, entry || {});
+  const mapper = mappers[fieldValue] || mappers['default'];
   return useMapper(entry || {}, mapper);
 };
 

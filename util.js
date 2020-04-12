@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("@babel/runtime/helpers/interopRequireDefault"), require("@babel/runtime/helpers/slicedToArray"), require("@babel/runtime/helpers/typeof"), require("jsonpath-mapper"));
+		module.exports = factory(require("@babel/runtime/helpers/interopRequireDefault"), require("@babel/runtime/helpers/interopRequireWildcard"), require("@babel/runtime/helpers/slicedToArray"), require("@babel/runtime/helpers/typeof"), require("jsonpath-mapper"));
 	else if(typeof define === 'function' && define.amd)
-		define(["@babel/runtime/helpers/interopRequireDefault", "@babel/runtime/helpers/slicedToArray", "@babel/runtime/helpers/typeof", "jsonpath-mapper"], factory);
+		define(["@babel/runtime/helpers/interopRequireDefault", "@babel/runtime/helpers/interopRequireWildcard", "@babel/runtime/helpers/slicedToArray", "@babel/runtime/helpers/typeof", "jsonpath-mapper"], factory);
 	else {
-		var a = typeof exports === 'object' ? factory(require("@babel/runtime/helpers/interopRequireDefault"), require("@babel/runtime/helpers/slicedToArray"), require("@babel/runtime/helpers/typeof"), require("jsonpath-mapper")) : factory(root["@babel/runtime/helpers/interopRequireDefault"], root["@babel/runtime/helpers/slicedToArray"], root["@babel/runtime/helpers/typeof"], root["jsonpath-mapper"]);
+		var a = typeof exports === 'object' ? factory(require("@babel/runtime/helpers/interopRequireDefault"), require("@babel/runtime/helpers/interopRequireWildcard"), require("@babel/runtime/helpers/slicedToArray"), require("@babel/runtime/helpers/typeof"), require("jsonpath-mapper")) : factory(root["@babel/runtime/helpers/interopRequireDefault"], root["@babel/runtime/helpers/interopRequireWildcard"], root["@babel/runtime/helpers/slicedToArray"], root["@babel/runtime/helpers/typeof"], root["jsonpath-mapper"]);
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(global, function(__WEBPACK_EXTERNAL_MODULE__0__, __WEBPACK_EXTERNAL_MODULE__40__, __WEBPACK_EXTERNAL_MODULE__41__, __WEBPACK_EXTERNAL_MODULE__106__) {
+})(global, function(__WEBPACK_EXTERNAL_MODULE__0__, __WEBPACK_EXTERNAL_MODULE__7__, __WEBPACK_EXTERNAL_MODULE__40__, __WEBPACK_EXTERNAL_MODULE__41__, __WEBPACK_EXTERNAL_MODULE__106__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -220,23 +220,30 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__41__;
 
 /***/ }),
 
+/***/ 7:
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__7__;
+
+/***/ }),
+
 /***/ 73:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _interopRequireDefault = __webpack_require__(0);
+var _interopRequireWildcard = __webpack_require__(7);
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = exports.useEntryMapper = exports.useMapper = void 0;
 
-var _jsonpathMapper = _interopRequireDefault(__webpack_require__(106));
+var _jsonpathMapper = _interopRequireWildcard(__webpack_require__(106));
 
 var useMapper = function useMapper(json, template) {
-  return (0, _jsonpathMapper["default"])(json, template);
+  return template ? (0, _jsonpathMapper["default"])(json, template) : json;
 };
 /**
  * useEntryMapper hook
@@ -252,7 +259,9 @@ var useMapper = function useMapper(json, template) {
 exports.useMapper = useMapper;
 
 var useEntryMapper = function useEntryMapper(entry, mappers) {
-  var mapper = entry && entry.sys.contentTypeId ? mappers[entry.sys.contentTypeId] : mappers['default'];
+  var field = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'sys.contentTypeId';
+  var fieldValue = (0, _jsonpathMapper.jpath)(field, entry || {});
+  var mapper = mappers[fieldValue] || mappers['default'];
   return useMapper(entry || {}, mapper);
 };
 
