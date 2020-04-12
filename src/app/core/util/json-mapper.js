@@ -1,8 +1,8 @@
 import mapJson, { jpath } from 'jsonpath-mapper';
-export {default as mapJson, jpath } from 'jsonpath-mapper';
+export { default as mapJson, jpath } from 'jsonpath-mapper';
 
 export const useMapper = (json, template) => {
-  return template ? mapJson(json, template) : ;
+  return template ? mapJson(json, template) : json;
 };
 
 /**

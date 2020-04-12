@@ -7,7 +7,7 @@
 		var a = typeof exports === 'object' ? factory(require("@babel/runtime/helpers/interopRequireDefault"), require("@babel/runtime/helpers/interopRequireWildcard"), require("@babel/runtime/helpers/slicedToArray"), require("@babel/runtime/helpers/typeof"), require("jsonpath-mapper")) : factory(root["@babel/runtime/helpers/interopRequireDefault"], root["@babel/runtime/helpers/interopRequireWildcard"], root["@babel/runtime/helpers/slicedToArray"], root["@babel/runtime/helpers/typeof"], root["jsonpath-mapper"]);
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(global, function(__WEBPACK_EXTERNAL_MODULE__0__, __WEBPACK_EXTERNAL_MODULE__7__, __WEBPACK_EXTERNAL_MODULE__40__, __WEBPACK_EXTERNAL_MODULE__41__, __WEBPACK_EXTERNAL_MODULE__106__) {
+})(global, function(__WEBPACK_EXTERNAL_MODULE__0__, __WEBPACK_EXTERNAL_MODULE__7__, __WEBPACK_EXTERNAL_MODULE__40__, __WEBPACK_EXTERNAL_MODULE__41__, __WEBPACK_EXTERNAL_MODULE__109__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -109,23 +109,20 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__0__;
 "use strict";
 
 
-exports.mapJson = __webpack_require__(73)["default"];
-exports.setCachingHeaders = __webpack_require__(107);
-exports.stringifyStrings = __webpack_require__(108);
-exports.urls = __webpack_require__(109);
-exports.useMapper = __webpack_require__(73).useMapper;
-exports.useEntryMapper = __webpack_require__(73).useEntryMapper;
+// Global server and build utils
+exports.setCachingHeaders = __webpack_require__(106);
+exports.stringifyStrings = __webpack_require__(107);
+exports.urls = __webpack_require__(108); // JSON mapping functions
+
+exports.jpath = __webpack_require__(50).jpath;
+exports.mapJson = __webpack_require__(50).mapJson; // JSON mapping hooks
+
+exports.useMapper = __webpack_require__(50).useMapper;
+exports.useEntryMapper = __webpack_require__(50).useEntryMapper;
 
 /***/ }),
 
 /***/ 106:
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__106__;
-
-/***/ }),
-
-/***/ 107:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -145,7 +142,7 @@ module.exports = setCachingHeaders;
 
 /***/ }),
 
-/***/ 108:
+/***/ 107:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -185,7 +182,7 @@ module.exports = stringifyStrings;
 
 /***/ }),
 
-/***/ 109:
+/***/ 108:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -206,6 +203,13 @@ module.exports = url;
 
 /***/ }),
 
+/***/ 109:
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__109__;
+
+/***/ }),
+
 /***/ 40:
 /***/ (function(module, exports) {
 
@@ -220,14 +224,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__41__;
 
 /***/ }),
 
-/***/ 7:
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__7__;
-
-/***/ }),
-
-/***/ 73:
+/***/ 50:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -238,9 +235,21 @@ var _interopRequireWildcard = __webpack_require__(7);
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+Object.defineProperty(exports, "mapJson", {
+  enumerable: true,
+  get: function get() {
+    return _jsonpathMapper["default"];
+  }
+});
+Object.defineProperty(exports, "jpath", {
+  enumerable: true,
+  get: function get() {
+    return _jsonpathMapper.jpath;
+  }
+});
 exports["default"] = exports.useEntryMapper = exports.useMapper = void 0;
 
-var _jsonpathMapper = _interopRequireWildcard(__webpack_require__(106));
+var _jsonpathMapper = _interopRequireWildcard(__webpack_require__(109));
 
 var useMapper = function useMapper(json, template) {
   return template ? (0, _jsonpathMapper["default"])(json, template) : json;
@@ -268,6 +277,13 @@ var useEntryMapper = function useEntryMapper(entry, mappers) {
 exports.useEntryMapper = useEntryMapper;
 var _default = _jsonpathMapper["default"];
 exports["default"] = _default;
+
+/***/ }),
+
+/***/ 7:
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__7__;
 
 /***/ })
 
