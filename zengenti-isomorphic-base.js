@@ -5535,7 +5535,8 @@ var addStandardHeaders = function addStandardHeaders(state, response, packagejso
       });
       var allDepends = [].concat((0, _toConsumableArray2["default"])(entryDepends), (0, _toConsumableArray2["default"])(nodeDependsKeys));
       var allDependsHashed = (0, _cacheHashing.hashKeys)(allDepends);
-      response.header('surrogate-key', " ".concat(packagejson.name, "-app ").concat(allDependsHashed.join(' ')));
+      var surrogateKeyHeader = packagejson.name == 'os-main' ? " ".concat(packagejson.name, "-app ").concat(allDependsHashed.join(' '), " ").concat(allDepends.join(' ')) : " ".concat(packagejson.name, "-app ").concat(allDependsHashed.join(' '));
+      response.header('surrogate-key', surrogateKeyHeader);
       console.log("depends hashed: ".concat(allDependsHashed.join(' ')));
       console.log("depends hashed: ".concat(allDepends.join(' ')));
       addVarnishAuthenticationHeaders(state, response, groups);

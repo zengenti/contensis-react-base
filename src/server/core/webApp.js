@@ -51,10 +51,15 @@ const addStandardHeaders = (state, response, packagejson, groups) => {
       const allDepends = [...entryDepends, ...nodeDependsKeys];
       const allDependsHashed = hashKeys(allDepends);
 
-      response.header(
-        'surrogate-key',
-        ` ${packagejson.name}-app ${allDependsHashed.join(' ')}`
-      );
+      const surrogateKeyHeader =
+        packagejson.name == 'os-main'
+          ? ` ${packagejson.name}-app ${allDependsHashed.join(
+              ' '
+            )} ${allDepends.join(' ')}`
+          : ` ${packagejson.name}-app ${allDependsHashed.join(' ')}`;
+
+      response.header('surrogate-key', surrogateKeyHeader);
+
       console.log(`depends hashed: ${allDependsHashed.join(' ')}`);
       console.log(`depends hashed: ${allDepends.join(' ')}`);
 
