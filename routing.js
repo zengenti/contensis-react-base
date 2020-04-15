@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("@babel/runtime/helpers/interopRequireDefault"), require("@babel/runtime/regenerator"), require("immutable"), require("@babel/runtime/helpers/defineProperty"), require("react"), require("@babel/runtime/helpers/asyncToGenerator"), require("@babel/runtime/helpers/interopRequireWildcard"), require("query-string"), require("react-redux"), require("react-router-dom"), require("react-hot-loader"), require("prop-types"), require("react-router-config"));
+		module.exports = factory(require("immutable"), require("react"), require("prop-types"), require("query-string"), require("react-redux"), require("react-router-dom"), require("react-hot-loader"), require("react-router-config"));
 	else if(typeof define === 'function' && define.amd)
-		define(["@babel/runtime/helpers/interopRequireDefault", "@babel/runtime/regenerator", "immutable", "@babel/runtime/helpers/defineProperty", "react", "@babel/runtime/helpers/asyncToGenerator", "@babel/runtime/helpers/interopRequireWildcard", "query-string", "react-redux", "react-router-dom", "react-hot-loader", "prop-types", "react-router-config"], factory);
+		define(["immutable", "react", "prop-types", "query-string", "react-redux", "react-router-dom", "react-hot-loader", "react-router-config"], factory);
 	else {
-		var a = typeof exports === 'object' ? factory(require("@babel/runtime/helpers/interopRequireDefault"), require("@babel/runtime/regenerator"), require("immutable"), require("@babel/runtime/helpers/defineProperty"), require("react"), require("@babel/runtime/helpers/asyncToGenerator"), require("@babel/runtime/helpers/interopRequireWildcard"), require("query-string"), require("react-redux"), require("react-router-dom"), require("react-hot-loader"), require("prop-types"), require("react-router-config")) : factory(root["@babel/runtime/helpers/interopRequireDefault"], root["@babel/runtime/regenerator"], root["immutable"], root["@babel/runtime/helpers/defineProperty"], root["react"], root["@babel/runtime/helpers/asyncToGenerator"], root["@babel/runtime/helpers/interopRequireWildcard"], root["query-string"], root["react-redux"], root["react-router-dom"], root["react-hot-loader"], root["prop-types"], root["react-router-config"]);
+		var a = typeof exports === 'object' ? factory(require("immutable"), require("react"), require("prop-types"), require("query-string"), require("react-redux"), require("react-router-dom"), require("react-hot-loader"), require("react-router-config")) : factory(root["immutable"], root["react"], root["prop-types"], root["query-string"], root["react-redux"], root["react-router-dom"], root["react-hot-loader"], root["react-router-config"]);
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(global, function(__WEBPACK_EXTERNAL_MODULE__0__, __WEBPACK_EXTERNAL_MODULE__1__, __WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__3__, __WEBPACK_EXTERNAL_MODULE__4__, __WEBPACK_EXTERNAL_MODULE__5__, __WEBPACK_EXTERNAL_MODULE__7__, __WEBPACK_EXTERNAL_MODULE__15__, __WEBPACK_EXTERNAL_MODULE__17__, __WEBPACK_EXTERNAL_MODULE__26__, __WEBPACK_EXTERNAL_MODULE__30__, __WEBPACK_EXTERNAL_MODULE__33__, __WEBPACK_EXTERNAL_MODULE__46__) {
+})(global, function(__WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__5__, __WEBPACK_EXTERNAL_MODULE__9__, __WEBPACK_EXTERNAL_MODULE__13__, __WEBPACK_EXTERNAL_MODULE__16__, __WEBPACK_EXTERNAL_MODULE__18__, __WEBPACK_EXTERNAL_MODULE__24__, __WEBPACK_EXTERNAL_MODULE__29__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -91,200 +91,99 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 103);
+/******/ 	return __webpack_require__(__webpack_require__.s = 69);
 /******/ })
 /************************************************************************/
-/******/ ({
-
-/***/ 0:
+/******/ ([
+/* 0 */,
+/* 1 */,
+/* 2 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__0__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__2__;
 
 /***/ }),
-
-/***/ 1:
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__1__;
-
-/***/ }),
-
-/***/ 10:
-/***/ (function(module, exports, __webpack_require__) {
+/* 3 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.selectCaptchaToken = exports.selectCaptchaResponse = exports.selectCaptchaData = exports.selectCaptchaSiteKey = exports.selectChangePasswordMessage = exports.selectPasswordMessage = exports.selectLoginScreenMode = exports.selectUserMessage = exports.selectUserGroups = exports.selectUserLoggedIn = exports.selectUsername = exports.selectUser = void 0;
-
-var selectUser = function selectUser(state) {
-  return state.get('user');
-};
-
-exports.selectUser = selectUser;
-
-var selectUsername = function selectUsername(state) {
-  return state.getIn(['user', 'username']);
-};
-
-exports.selectUsername = selectUsername;
-
-var selectUserLoggedIn = function selectUserLoggedIn(state) {
-  return state.getIn(['user', 'loggedIn']);
-};
-
-exports.selectUserLoggedIn = selectUserLoggedIn;
-
-var selectUserGroups = function selectUserGroups(state) {
-  return state.getIn(['user', 'groups']);
-};
-
-exports.selectUserGroups = selectUserGroups;
-
-var selectUserMessage = function selectUserMessage(state) {
-  return state.getIn(['user', 'logonResult']);
-};
-
-exports.selectUserMessage = selectUserMessage;
-
-var selectLoginScreenMode = function selectLoginScreenMode(state) {
-  return state.getIn(['user', 'loginScreenMode']);
-};
-
-exports.selectLoginScreenMode = selectLoginScreenMode;
-
-var selectPasswordMessage = function selectPasswordMessage(state) {
-  return state.getIn(['user', 'passwordResetMessage']);
-};
-
-exports.selectPasswordMessage = selectPasswordMessage;
-
-var selectChangePasswordMessage = function selectChangePasswordMessage(state) {
-  return state.getIn(['user', 'changePasswordMessage']);
-};
-
-exports.selectChangePasswordMessage = selectChangePasswordMessage;
-
-var selectCaptchaSiteKey = function selectCaptchaSiteKey(state) {
-  return state.getIn(['user', 'recaptcha', 'key']);
-};
-
-exports.selectCaptchaSiteKey = selectCaptchaSiteKey;
-
-var selectCaptchaData = function selectCaptchaData(state) {
-  return state.getIn(['user', 'recaptcha', 'response']);
-};
-
-exports.selectCaptchaData = selectCaptchaData;
-
-var selectCaptchaResponse = function selectCaptchaResponse(state) {
-  return state.getIn(['user', 'recaptcha', 'response', 'isHuman']);
-};
-
-exports.selectCaptchaResponse = selectCaptchaResponse;
-
-var selectCaptchaToken = function selectCaptchaToken(state) {
-  return state.getIn(['user', 'recaptcha', 'response', 'token']);
-};
-
-exports.selectCaptchaToken = selectCaptchaToken;
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GET_ENTRY", function() { return GET_ENTRY; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_ENTRY", function() { return SET_ENTRY; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_NODE", function() { return SET_NODE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_ANCESTORS", function() { return SET_ANCESTORS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_SIBLINGS", function() { return SET_SIBLINGS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_ENTRY_ID", function() { return SET_ENTRY_ID; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_ENTRY_RELATED_ARTICLES", function() { return SET_ENTRY_RELATED_ARTICLES; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_NAVIGATION_NOT_FOUND", function() { return SET_NAVIGATION_NOT_FOUND; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_NAVIGATION_PATH", function() { return SET_NAVIGATION_PATH; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_TARGET_PROJECT", function() { return SET_TARGET_PROJECT; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_ROUTE", function() { return SET_ROUTE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CALL_HISTORY_METHOD", function() { return CALL_HISTORY_METHOD; });
+const ROUTING_PREFIX = '@ROUTING/';
+const GET_ENTRY = `${ROUTING_PREFIX}_GET_ENTRY`;
+const SET_ENTRY = `${ROUTING_PREFIX}_SET_ENTRY`;
+const SET_NODE = `${ROUTING_PREFIX}_SET_NODE`;
+const SET_ANCESTORS = `${ROUTING_PREFIX}_SET_ANCESTORS`;
+const SET_SIBLINGS = `${ROUTING_PREFIX}_SET_SIBLINGS`;
+const SET_ENTRY_ID = `${ROUTING_PREFIX}_SET_ENTRY_ID`;
+const SET_ENTRY_RELATED_ARTICLES = `${ROUTING_PREFIX}_SET_ENTRY_RELATED_ARTICLES`;
+const SET_NAVIGATION_NOT_FOUND = `${ROUTING_PREFIX}_SET_NOT_FOUND`;
+const SET_NAVIGATION_PATH = `${ROUTING_PREFIX}_SET_NAVIGATION_PATH`;
+const SET_TARGET_PROJECT = `${ROUTING_PREFIX}_SET_TARGET_PROJECT`;
+const SET_ROUTE = `${ROUTING_PREFIX}_SET_ROUTE`;
+const CALL_HISTORY_METHOD = `${ROUTING_PREFIX}_CALL_HISTORY_METHOD`;
 
 /***/ }),
-
-/***/ 103:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-exports.types = __webpack_require__(8);
-exports.actions = __webpack_require__(27);
-exports.selectors = __webpack_require__(6);
-
-var ReactApp = __webpack_require__(44)["default"];
-
-var RouteLoader = __webpack_require__(39)["default"];
-
-exports.ReactApp = ReactApp;
-exports.RouteLoader = RouteLoader;
-
-/***/ }),
-
-/***/ 13:
-/***/ (function(module, exports, __webpack_require__) {
+/* 4 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
-
-var _interopRequireDefault = __webpack_require__(0);
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.action = action;
-exports.flattenArray = flattenArray;
-exports.api = api;
-exports.dynamicSort = dynamicSort;
-exports.randomString = exports.resizeImageUri = exports.resizeImage = exports.getWebPImageUri = void 0;
-
-var _regenerator = _interopRequireDefault(__webpack_require__(1));
-
-var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(5));
-
-var _defineProperty2 = _interopRequireDefault(__webpack_require__(3));
-
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function action(type) {
-  var payload = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-  return _objectSpread({
-    type: type
-  }, payload);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return action; });
+/* unused harmony export getWebPImageUri */
+/* unused harmony export resizeImage */
+/* unused harmony export resizeImageUri */
+/* unused harmony export flattenArray */
+/* unused harmony export api */
+/* unused harmony export dynamicSort */
+/* unused harmony export randomString */
+function action(type, payload = {}) {
+  return {
+    type,
+    ...payload
+  };
 }
-
-var getWebPImageUri = function getWebPImageUri(uri) {
-  var formatedUri = uri;
+const getWebPImageUri = uri => {
+  let formatedUri = uri;
 
   if (uri.indexOf('.gif') == -1) {
     if (uri.indexOf('f=') == -1 && uri.indexOf('format=') == -1) {
       if (uri.indexOf('?') > -1) {
-        formatedUri = "".concat(uri, "&f=webp");
+        formatedUri = `${uri}&f=webp`;
       } else {
-        formatedUri = "".concat(uri, "?f=webp");
+        formatedUri = `${uri}?f=webp`;
       }
     }
 
     if (formatedUri.indexOf('q=') == -1 && formatedUri.indexOf('quality=') == -1) {
       if (formatedUri.indexOf('?') > -1) {
-        formatedUri = "".concat(formatedUri, "&q=70");
+        formatedUri = `${formatedUri}&q=70`;
       } else {
-        formatedUri = "".concat(formatedUri, "?q=70");
+        formatedUri = `${formatedUri}?q=70`;
       }
     }
   }
 
   return formatedUri;
 };
-
-exports.getWebPImageUri = getWebPImageUri;
-
-var resizeImage = function resizeImage(image, height, width) {
+const resizeImage = (image, height, width) => {
   if (image.asset && image.asset.sys && image.asset.sys.uri) {
     image.asset.sys.uri = resizeImageUri(image.asset.sys.uri, height, width);
   }
 };
-
-exports.resizeImage = resizeImage;
-
-var resizeImageUri = function resizeImageUri(uri, height, width) {
-  var formatedUri = uri;
-  var paramDelimeter = '?';
+const resizeImageUri = (uri, height, width) => {
+  let formatedUri = uri;
+  let paramDelimeter = '?';
 
   if (uri.indexOf('?') > -1) {
     paramDelimeter = '&';
@@ -292,96 +191,38 @@ var resizeImageUri = function resizeImageUri(uri, height, width) {
 
   if (width) {
     if (formatedUri.indexOf('w=') == -1 && formatedUri.indexOf('width=') == -1) {
-      formatedUri = "".concat(formatedUri).concat(paramDelimeter, "w=").concat(width);
+      formatedUri = `${formatedUri}${paramDelimeter}w=${width}`;
       paramDelimeter = '&';
     }
   }
 
   if (height) {
     if (formatedUri.indexOf('h=') == -1 && formatedUri.indexOf('height=') == -1) {
-      formatedUri = "".concat(formatedUri).concat(paramDelimeter, "h=").concat(height);
+      formatedUri = `${formatedUri}${paramDelimeter}h=${height}`;
     }
   }
 
   return formatedUri;
 };
-
-exports.resizeImageUri = resizeImageUri;
-
 function flattenArray(arr) {
   // flatten arrays inside the supplied array and
   // remove duplicates from the result
-  return arr.reduce(function (acc, val) {
-    return acc.concat(val);
-  }, []).filter(function (elem, pos, arr) {
-    return arr.indexOf(elem) == pos;
+  return arr.reduce((acc, val) => acc.concat(val), []).filter((elem, pos, arr) => arr.indexOf(elem) == pos);
+}
+async function api(url, options) {
+  return fetch(url, options).then(async response => {
+    setTimeout(() => null, 0);
+
+    if (!response.ok) {
+      throw new Error(response.statusText);
+    }
+
+    return response.json().then(data => data);
+  }).catch(error => {
+    //console.log(error);
+    throw error;
   });
 }
-
-function api(_x, _x2) {
-  return _api.apply(this, arguments);
-}
-
-function _api() {
-  _api = (0, _asyncToGenerator2["default"])(
-  /*#__PURE__*/
-  _regenerator["default"].mark(function _callee2(url, options) {
-    return _regenerator["default"].wrap(function _callee2$(_context2) {
-      while (1) {
-        switch (_context2.prev = _context2.next) {
-          case 0:
-            return _context2.abrupt("return", fetch(url, options).then(
-            /*#__PURE__*/
-            function () {
-              var _ref = (0, _asyncToGenerator2["default"])(
-              /*#__PURE__*/
-              _regenerator["default"].mark(function _callee(response) {
-                return _regenerator["default"].wrap(function _callee$(_context) {
-                  while (1) {
-                    switch (_context.prev = _context.next) {
-                      case 0:
-                        setTimeout(function () {
-                          return null;
-                        }, 0);
-
-                        if (response.ok) {
-                          _context.next = 3;
-                          break;
-                        }
-
-                        throw new Error(response.statusText);
-
-                      case 3:
-                        return _context.abrupt("return", response.json().then(function (data) {
-                          return data;
-                        }));
-
-                      case 4:
-                      case "end":
-                        return _context.stop();
-                    }
-                  }
-                }, _callee);
-              }));
-
-              return function (_x3) {
-                return _ref.apply(this, arguments);
-              };
-            }())["catch"](function (error) {
-              //console.log(error);
-              throw error;
-            }));
-
-          case 1:
-          case "end":
-            return _context2.stop();
-        }
-      }
-    }, _callee2);
-  }));
-  return _api.apply(this, arguments);
-}
-
 function dynamicSort(property) {
   var sortOrder = 1;
 
@@ -398,10 +239,9 @@ function dynamicSort(property) {
     return result * sortOrder;
   };
 }
-
-var randomString = function randomString(length) {
-  var text = '';
-  var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+const randomString = length => {
+  let text = '';
+  const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
   for (var i = 0; i < length; i++) {
     text += possible.charAt(Math.floor(Math.random() * possible.length));
@@ -410,245 +250,322 @@ var randomString = function randomString(length) {
   return text;
 };
 
-exports.randomString = randomString;
-
 /***/ }),
-
-/***/ 15:
+/* 5 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__15__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__5__;
 
 /***/ }),
-
-/***/ 17:
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__17__;
-
-/***/ }),
-
-/***/ 2:
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__2__;
-
-/***/ }),
-
-/***/ 21:
-/***/ (function(module, exports, __webpack_require__) {
+/* 6 */,
+/* 7 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectUser", function() { return selectUser; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectUsername", function() { return selectUsername; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectUserLoggedIn", function() { return selectUserLoggedIn; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectUserGroups", function() { return selectUserGroups; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectUserMessage", function() { return selectUserMessage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectLoginScreenMode", function() { return selectLoginScreenMode; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectPasswordMessage", function() { return selectPasswordMessage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectChangePasswordMessage", function() { return selectChangePasswordMessage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectCaptchaSiteKey", function() { return selectCaptchaSiteKey; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectCaptchaData", function() { return selectCaptchaData; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectCaptchaResponse", function() { return selectCaptchaResponse; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectCaptchaToken", function() { return selectCaptchaToken; });
+const selectUser = state => {
+  return state.get('user');
+};
+const selectUsername = state => {
+  return state.getIn(['user', 'username']);
+};
+const selectUserLoggedIn = state => {
+  return state.getIn(['user', 'loggedIn']);
+};
+const selectUserGroups = state => {
+  return state.getIn(['user', 'groups']);
+};
+const selectUserMessage = state => {
+  return state.getIn(['user', 'logonResult']);
+};
+const selectLoginScreenMode = state => {
+  return state.getIn(['user', 'loginScreenMode']);
+};
+const selectPasswordMessage = state => {
+  return state.getIn(['user', 'passwordResetMessage']);
+};
+const selectChangePasswordMessage = state => {
+  return state.getIn(['user', 'changePasswordMessage']);
+};
+const selectCaptchaSiteKey = state => {
+  return state.getIn(['user', 'recaptcha', 'key']);
+};
+const selectCaptchaData = state => {
+  return state.getIn(['user', 'recaptcha', 'response']);
+};
+const selectCaptchaResponse = state => {
+  return state.getIn(['user', 'recaptcha', 'response', 'isHuman']);
+};
+const selectCaptchaToken = state => {
+  return state.getIn(['user', 'recaptcha', 'response', 'token']);
+};
+
+/***/ }),
+/* 8 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectRouteEntry", function() { return selectRouteEntry; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectNodeDepends", function() { return selectNodeDepends; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectCurrentTreeID", function() { return selectCurrentTreeID; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectEntryDepends", function() { return selectEntryDepends; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectRouteEntryEntryId", function() { return selectRouteEntryEntryId; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectRouteEntryContentTypeId", function() { return selectRouteEntryContentTypeId; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectRouteEntrySlug", function() { return selectRouteEntrySlug; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectRouteEntryID", function() { return selectRouteEntryID; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectCurrentPath", function() { return selectCurrentPath; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectCurrentSearch", function() { return selectCurrentSearch; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectQueryStringAsObject", function() { return selectQueryStringAsObject; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectCurrentProject", function() { return selectCurrentProject; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectIsNotFound", function() { return selectIsNotFound; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectCurrentAncestors", function() { return selectCurrentAncestors; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectCurrentNode", function() { return selectCurrentNode; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectBreadcrumb", function() { return selectBreadcrumb; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectRouteLoading", function() { return selectRouteLoading; });
+/* harmony import */ var immutable__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
+/* harmony import */ var immutable__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(immutable__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _util_navigation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(20);
 
 
-var _interopRequireDefault = __webpack_require__(0);
+const selectRouteEntry = state => {
+  return state.getIn(['routing', 'entry'], Object(immutable__WEBPACK_IMPORTED_MODULE_0__["Map"])({}));
+};
+const selectNodeDepends = state => {
+  return state.getIn(['routing', 'nodeDepends'], new immutable__WEBPACK_IMPORTED_MODULE_0__["List"]([]));
+};
+const selectCurrentTreeID = state => {
+  return state.getIn(['routing', 'currentTreeId']);
+};
+const selectEntryDepends = state => {
+  return state.getIn(['routing', 'entryDepends']);
+};
+const selectRouteEntryEntryId = state => {
+  return state.getIn(['routing', 'entry', 'sys', 'id'], null);
+};
+const selectRouteEntryContentTypeId = state => {
+  const entry = selectRouteEntry(state);
+  return entry && entry.getIn(['sys', 'contentTypeId'], null);
+};
+const selectRouteEntrySlug = state => {
+  return state.getIn(['routing', 'entry', 'sys', 'slug'], null);
+};
+const selectRouteEntryID = state => {
+  return state.getIn(['routing', 'entryID']);
+};
+const selectCurrentPath = state => {
+  return state.getIn(['routing', 'currentPath']);
+};
+const selectCurrentSearch = state => {
+  return state.getIn(['routing', 'location', 'search']);
+};
+const selectQueryStringAsObject = state => Object(_util_navigation__WEBPACK_IMPORTED_MODULE_1__[/* queryParams */ "b"])(selectCurrentSearch(state));
+const selectCurrentProject = state => {
+  return state.getIn(['routing', 'currentProject']);
+};
+const selectIsNotFound = state => {
+  return state.getIn(['routing', 'notFound']);
+};
+const selectCurrentAncestors = state => {
+  return state.getIn(['routing', 'currentNodeAncestors'], new immutable__WEBPACK_IMPORTED_MODULE_0__["List"]());
+};
+const selectCurrentNode = state => {
+  return state.getIn(['routing', 'currentNode']);
+};
+const selectBreadcrumb = state => {
+  return (selectCurrentAncestors(state) || new immutable__WEBPACK_IMPORTED_MODULE_0__["List"]()).push(selectCurrentNode(state));
+};
+const selectRouteLoading = state => {
+  return state.getIn(['routing', 'isLoading']);
+};
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.queryParams = queryParams;
-exports.addHostname = exports.clientHostname = exports.buildUrl = exports.routeParams = void 0;
+/***/ }),
+/* 9 */
+/***/ (function(module, exports) {
 
-var _queryString = _interopRequireDefault(__webpack_require__(15));
+module.exports = __WEBPACK_EXTERNAL_MODULE__9__;
+
+/***/ }),
+/* 10 */,
+/* 11 */,
+/* 12 */,
+/* 13 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__13__;
+
+/***/ }),
+/* 14 */,
+/* 15 */,
+/* 16 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__16__;
+
+/***/ }),
+/* 17 */,
+/* 18 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__18__;
+
+/***/ }),
+/* 19 */,
+/* 20 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return queryParams; });
+/* unused harmony export routeParams */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return buildUrl; });
+/* unused harmony export clientHostname */
+/* unused harmony export addHostname */
+/* harmony import */ var query_string__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(13);
+/* harmony import */ var query_string__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(query_string__WEBPACK_IMPORTED_MODULE_0__);
 
 function queryParams(search) {
-  return _queryString["default"].parse(typeof window != 'undefined' ? window.location.search : search);
+  return query_string__WEBPACK_IMPORTED_MODULE_0___default.a.parse(typeof window != 'undefined' ? window.location.search : search);
 }
-
-var routeParams = function routeParams(staticRoute) {
-  return staticRoute && staticRoute.match ? staticRoute.match.params : {};
-};
-
-exports.routeParams = routeParams;
-
-var buildUrl = function buildUrl(route, params) {
-  var qs = _queryString["default"].stringify(params);
-
-  var path = qs ? "".concat(route, "?").concat(qs) : route;
+const routeParams = staticRoute => staticRoute && staticRoute.match ? staticRoute.match.params : {};
+const buildUrl = (route, params) => {
+  const qs = query_string__WEBPACK_IMPORTED_MODULE_0___default.a.stringify(params);
+  const path = qs ? `${route}?${qs}` : route;
   return path;
 };
-
-exports.buildUrl = buildUrl;
-
-var clientHostname = function clientHostname() {
-  return "".concat(window.location.protocol, "//").concat(window.location.hostname, ":").concat(window.location.port);
-};
-
-exports.clientHostname = clientHostname;
-var addHostname = typeof window == 'undefined' || window.location.host == 'localhost:3000' ? "https://".concat(PUBLIC_URI
+const clientHostname = () => `${window.location.protocol}//${window.location.hostname}:${window.location.port}`;
+const addHostname = typeof window == 'undefined' || window.location.host == 'localhost:3000' ? `https://${PUBLIC_URI
 /* global PUBLIC_URI */
-) : clientHostname();
-exports.addHostname = addHostname;
+}` : clientHostname();
 
 /***/ }),
-
-/***/ 25:
-/***/ (function(module, exports, __webpack_require__) {
+/* 21 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return toJS; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var immutable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
+/* harmony import */ var immutable__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(immutable__WEBPACK_IMPORTED_MODULE_1__);
 
 
-var _interopRequireDefault = __webpack_require__(0);
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.toJS = void 0;
-
-var _react = _interopRequireDefault(__webpack_require__(4));
-
-var _immutable = __webpack_require__(2);
-
-var toJS = function toJS(WrappedComponent) {
-  return function (wrappedComponentProps) {
-    var KEY = 0;
-    var VALUE = 1;
-    var propsJS = Object.entries(wrappedComponentProps).reduce(function (newProps, wrappedComponentProp) {
-      newProps[wrappedComponentProp[KEY]] = _immutable.Iterable.isIterable(wrappedComponentProp[VALUE]) ? wrappedComponentProp[VALUE].toJS() : wrappedComponentProp[VALUE];
-      return newProps;
-    }, {});
-    return _react["default"].createElement(WrappedComponent, propsJS);
-  };
+const toJS = WrappedComponent => wrappedComponentProps => {
+  const KEY = 0;
+  const VALUE = 1;
+  const propsJS = Object.entries(wrappedComponentProps).reduce((newProps, wrappedComponentProp) => {
+    newProps[wrappedComponentProp[KEY]] = immutable__WEBPACK_IMPORTED_MODULE_1__["Iterable"].isIterable(wrappedComponentProp[VALUE]) ? wrappedComponentProp[VALUE].toJS() : wrappedComponentProp[VALUE];
+    return newProps;
+  }, {});
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(WrappedComponent, propsJS);
 };
 
-exports.toJS = toJS;
-
 /***/ }),
-
-/***/ 26:
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__26__;
-
-/***/ }),
-
-/***/ 27:
-/***/ (function(module, exports, __webpack_require__) {
+/* 22 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setNotFound", function() { return setNotFound; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setNavigationPath", function() { return setNavigationPath; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setCurrentProject", function() { return setCurrentProject; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setRoute", function() { return setRoute; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setRouteEntry", function() { return setRouteEntry; });
+/* harmony import */ var _util_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(4);
+/* harmony import */ var _types_routing__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
 
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
+const setNotFound = notFound => Object(_util_helpers__WEBPACK_IMPORTED_MODULE_0__[/* action */ "a"])(_types_routing__WEBPACK_IMPORTED_MODULE_1__["SET_NAVIGATION_NOT_FOUND"], {
+  notFound
 });
-exports.setRouteEntry = exports.setRoute = exports.setCurrentProject = exports.setNavigationPath = exports.setNotFound = void 0;
-
-var _helpers = __webpack_require__(13);
-
-var _routing = __webpack_require__(8);
-
-var setNotFound = function setNotFound(notFound) {
-  return (0, _helpers.action)(_routing.SET_NAVIGATION_NOT_FOUND, {
-    notFound: notFound
-  });
-};
-
-exports.setNotFound = setNotFound;
-
-var setNavigationPath = function setNavigationPath(path, location, staticRoute, withEvents, statePath, routes) {
-  return (0, _helpers.action)(_routing.SET_NAVIGATION_PATH, {
-    path: path,
-    location: location,
-    staticRoute: staticRoute,
-    withEvents: withEvents,
-    statePath: statePath,
-    routes: routes
-  });
-};
-
-exports.setNavigationPath = setNavigationPath;
-
-var setCurrentProject = function setCurrentProject(project, allowedGroups) {
-  return (0, _helpers.action)(_routing.SET_TARGET_PROJECT, {
-    project: project,
-    allowedGroups: allowedGroups
-  });
-};
-
-exports.setCurrentProject = setCurrentProject;
-
-var setRoute = function setRoute(path, state) {
-  return (0, _helpers.action)(_routing.SET_ROUTE, {
-    path: path,
-    state: state
-  });
-};
-
-exports.setRoute = setRoute;
-
-var setRouteEntry = function setRouteEntry(entry) {
-  return (0, _helpers.action)(_routing.SET_ENTRY, {
-    entry: entry
-  });
-};
-
-exports.setRouteEntry = setRouteEntry;
+const setNavigationPath = (path, location, staticRoute, withEvents, statePath, routes) => Object(_util_helpers__WEBPACK_IMPORTED_MODULE_0__[/* action */ "a"])(_types_routing__WEBPACK_IMPORTED_MODULE_1__["SET_NAVIGATION_PATH"], {
+  path,
+  location,
+  staticRoute,
+  withEvents,
+  statePath,
+  routes
+});
+const setCurrentProject = (project, allowedGroups) => Object(_util_helpers__WEBPACK_IMPORTED_MODULE_0__[/* action */ "a"])(_types_routing__WEBPACK_IMPORTED_MODULE_1__["SET_TARGET_PROJECT"], {
+  project,
+  allowedGroups
+});
+const setRoute = (path, state) => Object(_util_helpers__WEBPACK_IMPORTED_MODULE_0__[/* action */ "a"])(_types_routing__WEBPACK_IMPORTED_MODULE_1__["SET_ROUTE"], {
+  path,
+  state
+});
+const setRouteEntry = entry => Object(_util_helpers__WEBPACK_IMPORTED_MODULE_0__[/* action */ "a"])(_types_routing__WEBPACK_IMPORTED_MODULE_1__["SET_ENTRY"], {
+  entry
+});
 
 /***/ }),
-
-/***/ 3:
+/* 23 */,
+/* 24 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__3__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__24__;
 
 /***/ }),
-
-/***/ 30:
+/* 25 */,
+/* 26 */,
+/* 27 */,
+/* 28 */,
+/* 29 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__30__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__29__;
 
 /***/ }),
-
-/***/ 33:
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__33__;
-
-/***/ }),
-
-/***/ 39:
-/***/ (function(module, exports, __webpack_require__) {
+/* 30 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(module) {
+__webpack_require__.r(__webpack_exports__);
+/* WEBPACK VAR INJECTION */(function(module) {/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(9);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(16);
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_redux__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var react_hot_loader__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(24);
+/* harmony import */ var react_hot_loader__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react_hot_loader__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(18);
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(react_router_dom__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var react_router_config__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(29);
+/* harmony import */ var react_router_config__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(react_router_config__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _redux_selectors_routing__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(8);
+/* harmony import */ var _redux_actions_routing__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(22);
+/* harmony import */ var _pages_NotFound__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(33);
+/* harmony import */ var _Status__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(34);
+/* harmony import */ var _util_ToJs__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(21);
+/* harmony import */ var _features_login_redux_selectors__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(7);
 
-var _interopRequireDefault = __webpack_require__(0);
 
-var _interopRequireWildcard = __webpack_require__(7);
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
 
-var _react = _interopRequireWildcard(__webpack_require__(4));
 
-var _propTypes = _interopRequireDefault(__webpack_require__(33));
 
-var _reactRedux = __webpack_require__(17);
 
-var _reactHotLoader = __webpack_require__(30);
 
-var _reactRouterDom = __webpack_require__(26);
 
-var _reactRouterConfig = __webpack_require__(46);
 
-var _routing = __webpack_require__(6);
 
-var _routing2 = __webpack_require__(27);
 
-var _NotFound = _interopRequireDefault(__webpack_require__(47));
 
-var _Status = __webpack_require__(48);
-
-var _ToJs = __webpack_require__(25);
-
-var _selectors = __webpack_require__(10);
-
-var getTrimmedPath = function getTrimmedPath(path) {
+const getTrimmedPath = path => {
   if (path !== '/') {
-    var lastChar = path[path.length - 1];
+    const lastChar = path[path.length - 1];
 
     if (lastChar == '/') {
       return path.substring(0, path.length - 1);
@@ -658,36 +575,31 @@ var getTrimmedPath = function getTrimmedPath(path) {
   return path;
 };
 
-var RouteLoader = function RouteLoader(_ref) {
-  var statePath = _ref.statePath,
-      projectId = _ref.projectId,
-      contentTypeId = _ref.contentTypeId,
-      entry = _ref.entry,
-      isLoggedIn = _ref.isLoggedIn,
-      isNotFound = _ref.isNotFound,
-      notFoundComponent = _ref.notFoundComponent,
-      setNavigationPath = _ref.setNavigationPath,
-      routes = _ref.routes,
-      withEvents = _ref.withEvents;
-  var location = (0, _reactRouterDom.useLocation)(); // Match any Static Routes a developer has defined
+const RouteLoader = ({
+  statePath,
+  projectId,
+  contentTypeId,
+  entry,
+  isLoggedIn,
+  isNotFound,
+  notFoundComponent,
+  setNavigationPath,
+  routes,
+  withEvents
+}) => {
+  const location = Object(react_router_dom__WEBPACK_IMPORTED_MODULE_4__["useLocation"])(); // Match any Static Routes a developer has defined
 
-  var matchedStaticRoute = function matchedStaticRoute() {
-    return (0, _reactRouterConfig.matchRoutes)(routes.StaticRoutes, location.pathname);
-  };
+  const matchedStaticRoute = () => Object(react_router_config__WEBPACK_IMPORTED_MODULE_5__["matchRoutes"])(routes.StaticRoutes, location.pathname);
 
-  var isStaticRoute = function isStaticRoute() {
-    return matchedStaticRoute().length > 0;
-  };
+  const isStaticRoute = () => matchedStaticRoute().length > 0;
 
-  var trimmedPath = getTrimmedPath(location.pathname);
-  var staticRoute = isStaticRoute() && matchedStaticRoute()[0];
-  var setPath = (0, _react.useCallback)(function () {
-    var serverPath = null;
+  const trimmedPath = getTrimmedPath(location.pathname);
+  const staticRoute = isStaticRoute() && matchedStaticRoute()[0];
+  const setPath = Object(react__WEBPACK_IMPORTED_MODULE_0__["useCallback"])(() => {
+    let serverPath = null;
 
     if (staticRoute && staticRoute.match && staticRoute.match.isExact) {
-      serverPath = staticRoute.route.path.split('/').filter(function (p) {
-        return !p.startsWith(':');
-      }).join('/');
+      serverPath = staticRoute.route.path.split('/').filter(p => !p.startsWith(':')).join('/');
     }
 
     setNavigationPath(serverPath || trimmedPath, location, staticRoute, withEvents, statePath, routes); // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -695,34 +607,32 @@ var RouteLoader = function RouteLoader(_ref) {
   withEvents, location, routes, // statePath,
   trimmedPath]);
   if (typeof window == 'undefined') setPath();
-  (0, _react.useEffect)(function () {
+  Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
     setPath();
   }, [location, setPath]); // Need to redirect when url endswith a /
 
   if (location.pathname.length > trimmedPath.length) {
-    return _react["default"].createElement(_reactRouterDom.Redirect, {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__["Redirect"], {
       to: trimmedPath
     });
   } // Render any Static Routes a developer has defined
 
 
   if (isStaticRoute(trimmedPath)) {
-    return (0, _reactRouterConfig.renderRoutes)(routes.StaticRoutes, {
-      projectId: projectId,
-      contentTypeId: contentTypeId,
-      entry: entry,
-      isLoggedIn: isLoggedIn
+    return Object(react_router_config__WEBPACK_IMPORTED_MODULE_5__["renderRoutes"])(routes.StaticRoutes, {
+      projectId,
+      contentTypeId,
+      entry,
+      isLoggedIn
     });
   } // Match any Defined Content Type Mappings
 
 
   if (contentTypeId) {
-    var MatchedComponent = routes.ContentTypeMappings.find(function (item) {
-      return item.contentTypeID == contentTypeId;
-    });
+    const MatchedComponent = routes.ContentTypeMappings.find(item => item.contentTypeID == contentTypeId);
 
     if (MatchedComponent) {
-      return _react["default"].createElement(MatchedComponent.component, {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(MatchedComponent.component, {
         projectId: projectId,
         contentTypeId: contentTypeId,
         entry: entry,
@@ -731,96 +641,133 @@ var RouteLoader = function RouteLoader(_ref) {
     }
   }
 
-  var NotFoundComponent = notFoundComponent ? notFoundComponent : _NotFound["default"];
+  const NotFoundComponent = notFoundComponent ? notFoundComponent : _pages_NotFound__WEBPACK_IMPORTED_MODULE_8__[/* default */ "a"];
 
   if (isNotFound) {
-    return _react["default"].createElement(_Status.Status, {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Status__WEBPACK_IMPORTED_MODULE_9__[/* Status */ "a"], {
       code: 404
-    }, _react["default"].createElement(NotFoundComponent, null));
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(NotFoundComponent, null));
   }
 
   return null;
 };
 
 RouteLoader.propTypes = {
-  routes: _propTypes["default"].objectOf(_propTypes["default"].array, _propTypes["default"].array),
-  withEvents: _propTypes["default"].object,
-  statePath: _propTypes["default"].string,
-  projectId: _propTypes["default"].string,
-  contentTypeId: _propTypes["default"].string,
-  loading: _propTypes["default"].object,
-  entry: _propTypes["default"].object,
-  isLoggedIn: _propTypes["default"].bool,
-  isNotFound: _propTypes["default"].bool,
-  notFoundComponent: _propTypes["default"].func,
-  setNavigationPath: _propTypes["default"].func
+  routes: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.objectOf(prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.array, prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.array),
+  withEvents: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.object,
+  statePath: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
+  projectId: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
+  contentTypeId: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
+  loading: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.object,
+  entry: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.object,
+  isLoggedIn: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,
+  isNotFound: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,
+  notFoundComponent: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func,
+  setNavigationPath: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func
 };
 
-var mapStateToProps = function mapStateToProps(state) {
+const mapStateToProps = state => {
   return {
-    statePath: (0, _routing.selectCurrentPath)(state),
-    projectId: (0, _routing.selectCurrentProject)(state),
-    entry: (0, _routing.selectRouteEntry)(state),
-    contentTypeId: (0, _routing.selectRouteEntryContentTypeId)(state),
-    isNotFound: (0, _routing.selectIsNotFound)(state),
-    isLoggedIn: (0, _selectors.selectUserLoggedIn)(state),
-    isLoading: (0, _routing.selectRouteLoading)(state)
+    statePath: Object(_redux_selectors_routing__WEBPACK_IMPORTED_MODULE_6__["selectCurrentPath"])(state),
+    projectId: Object(_redux_selectors_routing__WEBPACK_IMPORTED_MODULE_6__["selectCurrentProject"])(state),
+    entry: Object(_redux_selectors_routing__WEBPACK_IMPORTED_MODULE_6__["selectRouteEntry"])(state),
+    contentTypeId: Object(_redux_selectors_routing__WEBPACK_IMPORTED_MODULE_6__["selectRouteEntryContentTypeId"])(state),
+    isNotFound: Object(_redux_selectors_routing__WEBPACK_IMPORTED_MODULE_6__["selectIsNotFound"])(state),
+    isLoggedIn: Object(_features_login_redux_selectors__WEBPACK_IMPORTED_MODULE_11__["selectUserLoggedIn"])(state),
+    isLoading: Object(_redux_selectors_routing__WEBPACK_IMPORTED_MODULE_6__["selectRouteLoading"])(state)
   };
 };
 
-var mapDispatchToProps = {
-  setNavigationPath: _routing2.setNavigationPath
+const mapDispatchToProps = {
+  setNavigationPath: _redux_actions_routing__WEBPACK_IMPORTED_MODULE_7__["setNavigationPath"]
 };
-
-var _default = (0, _reactHotLoader.hot)(module)((0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)((0, _ToJs.toJS)(RouteLoader)));
-
-exports["default"] = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(45)(module)))
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_hot_loader__WEBPACK_IMPORTED_MODULE_3__["hot"])(module)(Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["connect"])(mapStateToProps, mapDispatchToProps)(Object(_util_ToJs__WEBPACK_IMPORTED_MODULE_10__[/* toJS */ "a"])(RouteLoader))));
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(44)(module)))
 
 /***/ }),
-
-/***/ 4:
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__4__;
-
-/***/ }),
-
-/***/ 44:
-/***/ (function(module, exports, __webpack_require__) {
+/* 31 */,
+/* 32 */,
+/* 33 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 
 
-var _interopRequireDefault = __webpack_require__(0);
+const NotFound = () => react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("header", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "404 Page Not Found")));
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
-
-var _react = _interopRequireDefault(__webpack_require__(4));
-
-var _reactHotLoader = __webpack_require__(30);
-
-var _RouteLoader = _interopRequireDefault(__webpack_require__(39));
-
-var AppRoot = function AppRoot(props) {
-  return _react["default"].createElement(_RouteLoader["default"], props);
-};
-
-var _default = AppRoot;
-exports["default"] = _default;
+/* harmony default export */ __webpack_exports__["a"] = (NotFound);
 
 /***/ }),
+/* 34 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-/***/ 45:
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Status; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(9);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(18);
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_router_dom__WEBPACK_IMPORTED_MODULE_2__);
+
+
+
+const Status = ({
+  code,
+  children
+}) => {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
+    render: ({
+      staticContext
+    }) => {
+      if (staticContext) staticContext.status = code;
+      return children;
+    }
+  });
+};
+Status.propTypes = {
+  code: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.number.isRequired,
+  children: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.element
+};
+
+/***/ }),
+/* 35 */,
+/* 36 */,
+/* 37 */,
+/* 38 */,
+/* 39 */,
+/* 40 */,
+/* 41 */,
+/* 42 */,
+/* 43 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_hot_loader__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(24);
+/* harmony import */ var react_hot_loader__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_hot_loader__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _core_routes_RouteLoader__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(30);
+
+
+
+
+const AppRoot = props => {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_core_routes_RouteLoader__WEBPACK_IMPORTED_MODULE_2__["default"], props);
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (AppRoot);
+
+/***/ }),
+/* 44 */
 /***/ (function(module, exports) {
 
-module.exports = function(module) {
-	if (!module.webpackPolyfill) {
-		module.deprecate = function() {};
-		module.paths = [];
+module.exports = function(originalModule) {
+	if (!originalModule.webpackPolyfill) {
+		var module = Object.create(originalModule);
 		// module.parent = undefined by default
 		if (!module.children) module.children = [];
 		Object.defineProperty(module, "loaded", {
@@ -835,6 +782,9 @@ module.exports = function(module) {
 				return module.i;
 			}
 		});
+		Object.defineProperty(module, "exports", {
+			enumerable: true
+		});
 		module.webpackPolyfill = 1;
 	}
 	return module;
@@ -842,249 +792,45 @@ module.exports = function(module) {
 
 
 /***/ }),
-
-/***/ 46:
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__46__;
-
-/***/ }),
-
-/***/ 47:
+/* 45 */,
+/* 46 */,
+/* 47 */,
+/* 48 */,
+/* 49 */,
+/* 50 */,
+/* 51 */,
+/* 52 */,
+/* 53 */,
+/* 54 */,
+/* 55 */,
+/* 56 */,
+/* 57 */,
+/* 58 */,
+/* 59 */,
+/* 60 */,
+/* 61 */,
+/* 62 */,
+/* 63 */,
+/* 64 */,
+/* 65 */,
+/* 66 */,
+/* 67 */,
+/* 68 */,
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
+exports.types = __webpack_require__(3);
+exports.actions = __webpack_require__(22);
+exports.selectors = __webpack_require__(8);
 
+const ReactApp = __webpack_require__(43).default;
 
-var _interopRequireDefault = __webpack_require__(0);
+const RouteLoader = __webpack_require__(30).default;
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
-
-var _react = _interopRequireDefault(__webpack_require__(4));
-
-var NotFound = function NotFound() {
-  return _react["default"].createElement(_react["default"].Fragment, null, _react["default"].createElement("header", null, _react["default"].createElement("h1", null, "404 Page Not Found")));
-};
-
-var _default = NotFound;
-exports["default"] = _default;
-
-/***/ }),
-
-/***/ 48:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(0);
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Status = void 0;
-
-var _react = _interopRequireDefault(__webpack_require__(4));
-
-var _propTypes = _interopRequireDefault(__webpack_require__(33));
-
-var _reactRouterDom = __webpack_require__(26);
-
-var Status = function Status(_ref) {
-  var code = _ref.code,
-      children = _ref.children;
-  return _react["default"].createElement(_reactRouterDom.Route, {
-    render: function render(_ref2) {
-      var staticContext = _ref2.staticContext;
-      if (staticContext) staticContext.status = code;
-      return children;
-    }
-  });
-};
-
-exports.Status = Status;
-Status.propTypes = {
-  code: _propTypes["default"].number.isRequired,
-  children: _propTypes["default"].element
-};
-
-/***/ }),
-
-/***/ 5:
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__5__;
-
-/***/ }),
-
-/***/ 6:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.selectRouteLoading = exports.selectBreadcrumb = exports.selectCurrentNode = exports.selectCurrentAncestors = exports.selectIsNotFound = exports.selectCurrentProject = exports.selectQueryStringAsObject = exports.selectCurrentSearch = exports.selectCurrentPath = exports.selectRouteEntryID = exports.selectRouteEntrySlug = exports.selectRouteEntryContentTypeId = exports.selectRouteEntryEntryId = exports.selectEntryDepends = exports.selectCurrentTreeID = exports.selectNodeDepends = exports.selectRouteEntry = void 0;
-
-var _immutable = __webpack_require__(2);
-
-var _navigation = __webpack_require__(21);
-
-var selectRouteEntry = function selectRouteEntry(state) {
-  return state.getIn(['routing', 'entry'], (0, _immutable.Map)({}));
-};
-
-exports.selectRouteEntry = selectRouteEntry;
-
-var selectNodeDepends = function selectNodeDepends(state) {
-  return state.getIn(['routing', 'nodeDepends'], new _immutable.List([]));
-};
-
-exports.selectNodeDepends = selectNodeDepends;
-
-var selectCurrentTreeID = function selectCurrentTreeID(state) {
-  return state.getIn(['routing', 'currentTreeId']);
-};
-
-exports.selectCurrentTreeID = selectCurrentTreeID;
-
-var selectEntryDepends = function selectEntryDepends(state) {
-  return state.getIn(['routing', 'entryDepends']);
-};
-
-exports.selectEntryDepends = selectEntryDepends;
-
-var selectRouteEntryEntryId = function selectRouteEntryEntryId(state) {
-  return state.getIn(['routing', 'entry', 'sys', 'id'], null);
-};
-
-exports.selectRouteEntryEntryId = selectRouteEntryEntryId;
-
-var selectRouteEntryContentTypeId = function selectRouteEntryContentTypeId(state) {
-  var entry = selectRouteEntry(state);
-  return entry && entry.getIn(['sys', 'contentTypeId'], null);
-};
-
-exports.selectRouteEntryContentTypeId = selectRouteEntryContentTypeId;
-
-var selectRouteEntrySlug = function selectRouteEntrySlug(state) {
-  return state.getIn(['routing', 'entry', 'sys', 'slug'], null);
-};
-
-exports.selectRouteEntrySlug = selectRouteEntrySlug;
-
-var selectRouteEntryID = function selectRouteEntryID(state) {
-  return state.getIn(['routing', 'entryID']);
-};
-
-exports.selectRouteEntryID = selectRouteEntryID;
-
-var selectCurrentPath = function selectCurrentPath(state) {
-  return state.getIn(['routing', 'currentPath']);
-};
-
-exports.selectCurrentPath = selectCurrentPath;
-
-var selectCurrentSearch = function selectCurrentSearch(state) {
-  return state.getIn(['routing', 'location', 'search']);
-};
-
-exports.selectCurrentSearch = selectCurrentSearch;
-
-var selectQueryStringAsObject = function selectQueryStringAsObject(state) {
-  return (0, _navigation.queryParams)(selectCurrentSearch(state));
-};
-
-exports.selectQueryStringAsObject = selectQueryStringAsObject;
-
-var selectCurrentProject = function selectCurrentProject(state) {
-  return state.getIn(['routing', 'currentProject']);
-};
-
-exports.selectCurrentProject = selectCurrentProject;
-
-var selectIsNotFound = function selectIsNotFound(state) {
-  return state.getIn(['routing', 'notFound']);
-};
-
-exports.selectIsNotFound = selectIsNotFound;
-
-var selectCurrentAncestors = function selectCurrentAncestors(state) {
-  return state.getIn(['routing', 'currentNodeAncestors'], new _immutable.List());
-};
-
-exports.selectCurrentAncestors = selectCurrentAncestors;
-
-var selectCurrentNode = function selectCurrentNode(state) {
-  return state.getIn(['routing', 'currentNode']);
-};
-
-exports.selectCurrentNode = selectCurrentNode;
-
-var selectBreadcrumb = function selectBreadcrumb(state) {
-  return (selectCurrentAncestors(state) || new _immutable.List()).push(selectCurrentNode(state));
-};
-
-exports.selectBreadcrumb = selectBreadcrumb;
-
-var selectRouteLoading = function selectRouteLoading(state) {
-  return state.getIn(['routing', 'isLoading']);
-};
-
-exports.selectRouteLoading = selectRouteLoading;
-
-/***/ }),
-
-/***/ 7:
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__7__;
-
-/***/ }),
-
-/***/ 8:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.CALL_HISTORY_METHOD = exports.SET_ROUTE = exports.SET_TARGET_PROJECT = exports.SET_NAVIGATION_PATH = exports.SET_NAVIGATION_NOT_FOUND = exports.SET_ENTRY_RELATED_ARTICLES = exports.SET_ENTRY_ID = exports.SET_SIBLINGS = exports.SET_ANCESTORS = exports.SET_NODE = exports.SET_ENTRY = exports.GET_ENTRY = void 0;
-var ROUTING_PREFIX = '@ROUTING/';
-var GET_ENTRY = "".concat(ROUTING_PREFIX, "_GET_ENTRY");
-exports.GET_ENTRY = GET_ENTRY;
-var SET_ENTRY = "".concat(ROUTING_PREFIX, "_SET_ENTRY");
-exports.SET_ENTRY = SET_ENTRY;
-var SET_NODE = "".concat(ROUTING_PREFIX, "_SET_NODE");
-exports.SET_NODE = SET_NODE;
-var SET_ANCESTORS = "".concat(ROUTING_PREFIX, "_SET_ANCESTORS");
-exports.SET_ANCESTORS = SET_ANCESTORS;
-var SET_SIBLINGS = "".concat(ROUTING_PREFIX, "_SET_SIBLINGS");
-exports.SET_SIBLINGS = SET_SIBLINGS;
-var SET_ENTRY_ID = "".concat(ROUTING_PREFIX, "_SET_ENTRY_ID");
-exports.SET_ENTRY_ID = SET_ENTRY_ID;
-var SET_ENTRY_RELATED_ARTICLES = "".concat(ROUTING_PREFIX, "_SET_ENTRY_RELATED_ARTICLES");
-exports.SET_ENTRY_RELATED_ARTICLES = SET_ENTRY_RELATED_ARTICLES;
-var SET_NAVIGATION_NOT_FOUND = "".concat(ROUTING_PREFIX, "_SET_NOT_FOUND");
-exports.SET_NAVIGATION_NOT_FOUND = SET_NAVIGATION_NOT_FOUND;
-var SET_NAVIGATION_PATH = "".concat(ROUTING_PREFIX, "_SET_NAVIGATION_PATH");
-exports.SET_NAVIGATION_PATH = SET_NAVIGATION_PATH;
-var SET_TARGET_PROJECT = "".concat(ROUTING_PREFIX, "_SET_TARGET_PROJECT");
-exports.SET_TARGET_PROJECT = SET_TARGET_PROJECT;
-var SET_ROUTE = "".concat(ROUTING_PREFIX, "_SET_ROUTE");
-exports.SET_ROUTE = SET_ROUTE;
-var CALL_HISTORY_METHOD = "".concat(ROUTING_PREFIX, "_CALL_HISTORY_METHOD");
-exports.CALL_HISTORY_METHOD = CALL_HISTORY_METHOD;
+exports.ReactApp = ReactApp;
+exports.RouteLoader = RouteLoader;
 
 /***/ })
-
-/******/ });
+/******/ ]);
 });
 //# sourceMappingURL=routing.js.map

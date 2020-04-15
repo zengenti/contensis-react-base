@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("@babel/runtime/helpers/interopRequireDefault"), require("@babel/runtime/regenerator"), require("immutable"), require("@babel/runtime/helpers/defineProperty"), require("react"), require("@babel/runtime/helpers/asyncToGenerator"), require("@babel/runtime/helpers/interopRequireWildcard"), require("@babel/runtime/helpers/classCallCheck"), require("@babel/runtime/helpers/createClass"), require("query-string"), require("react-redux"), require("@redux-saga/core/effects"), require("js-cookie"));
+		module.exports = factory(require("immutable"), require("react"), require("query-string"), require("react-redux"), require("@redux-saga/core/effects"), require("js-cookie"));
 	else if(typeof define === 'function' && define.amd)
-		define(["@babel/runtime/helpers/interopRequireDefault", "@babel/runtime/regenerator", "immutable", "@babel/runtime/helpers/defineProperty", "react", "@babel/runtime/helpers/asyncToGenerator", "@babel/runtime/helpers/interopRequireWildcard", "@babel/runtime/helpers/classCallCheck", "@babel/runtime/helpers/createClass", "query-string", "react-redux", "@redux-saga/core/effects", "js-cookie"], factory);
+		define(["immutable", "react", "query-string", "react-redux", "@redux-saga/core/effects", "js-cookie"], factory);
 	else {
-		var a = typeof exports === 'object' ? factory(require("@babel/runtime/helpers/interopRequireDefault"), require("@babel/runtime/regenerator"), require("immutable"), require("@babel/runtime/helpers/defineProperty"), require("react"), require("@babel/runtime/helpers/asyncToGenerator"), require("@babel/runtime/helpers/interopRequireWildcard"), require("@babel/runtime/helpers/classCallCheck"), require("@babel/runtime/helpers/createClass"), require("query-string"), require("react-redux"), require("@redux-saga/core/effects"), require("js-cookie")) : factory(root["@babel/runtime/helpers/interopRequireDefault"], root["@babel/runtime/regenerator"], root["immutable"], root["@babel/runtime/helpers/defineProperty"], root["react"], root["@babel/runtime/helpers/asyncToGenerator"], root["@babel/runtime/helpers/interopRequireWildcard"], root["@babel/runtime/helpers/classCallCheck"], root["@babel/runtime/helpers/createClass"], root["query-string"], root["react-redux"], root["@redux-saga/core/effects"], root["js-cookie"]);
+		var a = typeof exports === 'object' ? factory(require("immutable"), require("react"), require("query-string"), require("react-redux"), require("@redux-saga/core/effects"), require("js-cookie")) : factory(root["immutable"], root["react"], root["query-string"], root["react-redux"], root["@redux-saga/core/effects"], root["js-cookie"]);
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(global, function(__WEBPACK_EXTERNAL_MODULE__0__, __WEBPACK_EXTERNAL_MODULE__1__, __WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__3__, __WEBPACK_EXTERNAL_MODULE__4__, __WEBPACK_EXTERNAL_MODULE__5__, __WEBPACK_EXTERNAL_MODULE__7__, __WEBPACK_EXTERNAL_MODULE__11__, __WEBPACK_EXTERNAL_MODULE__12__, __WEBPACK_EXTERNAL_MODULE__15__, __WEBPACK_EXTERNAL_MODULE__17__, __WEBPACK_EXTERNAL_MODULE__23__, __WEBPACK_EXTERNAL_MODULE__35__) {
+})(global, function(__WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__5__, __WEBPACK_EXTERNAL_MODULE__13__, __WEBPACK_EXTERNAL_MODULE__16__, __WEBPACK_EXTERNAL_MODULE__27__, __WEBPACK_EXTERNAL_MODULE__28__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -91,20 +91,72 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 104);
+/******/ 	return __webpack_require__(__webpack_require__.s = 70);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__0__;
+"use strict";
+/* harmony import */ var _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(27);
+/* harmony import */ var _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (checked) */ if(__webpack_require__.o(_redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__, "all")) __webpack_require__.d(__webpack_exports__, "all", function() { return _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__["all"]; });
+
+/* harmony reexport (checked) */ if(__webpack_require__.o(_redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__, "call")) __webpack_require__.d(__webpack_exports__, "call", function() { return _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__["call"]; });
+
+/* harmony reexport (checked) */ if(__webpack_require__.o(_redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__, "fork")) __webpack_require__.d(__webpack_exports__, "fork", function() { return _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__["fork"]; });
+
+/* harmony reexport (checked) */ if(__webpack_require__.o(_redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__, "put")) __webpack_require__.d(__webpack_exports__, "put", function() { return _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__["put"]; });
+
+/* harmony reexport (checked) */ if(__webpack_require__.o(_redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__, "select")) __webpack_require__.d(__webpack_exports__, "select", function() { return _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__["select"]; });
+
+/* harmony reexport (checked) */ if(__webpack_require__.o(_redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__, "takeEvery")) __webpack_require__.d(__webpack_exports__, "takeEvery", function() { return _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__["takeEvery"]; });
+
+
+
 
 /***/ }),
 /* 1 */
-/***/ (function(module, exports) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__1__;
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UPDATE_USER", function() { return UPDATE_USER; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOGIN_USER", function() { return LOGIN_USER; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOGIN_SUCCESSFUL", function() { return LOGIN_SUCCESSFUL; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOGIN_FAILED", function() { return LOGIN_FAILED; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOGOUT_USER", function() { return LOGOUT_USER; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TOGGLE_LOGIN_MODE", function() { return TOGGLE_LOGIN_MODE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CREATE_USER_ACCOUNT", function() { return CREATE_USER_ACCOUNT; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "VALIDATE_USER", function() { return VALIDATE_USER; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "VALIDATE_USER_SUCCESS", function() { return VALIDATE_USER_SUCCESS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "VALIDATE_USER_FAILED", function() { return VALIDATE_USER_FAILED; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FORGOT_USER_PASSWORD", function() { return FORGOT_USER_PASSWORD; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FORGOT_USER_PASSWORD_COMPLETE", function() { return FORGOT_USER_PASSWORD_COMPLETE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CHANGE_USER_PASSWORD", function() { return CHANGE_USER_PASSWORD; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CHANGE_USER_PASSWORD_FAILED", function() { return CHANGE_USER_PASSWORD_FAILED; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CHANGE_USER_PASSWORD_COMPLETE", function() { return CHANGE_USER_PASSWORD_COMPLETE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_RECAPTCHA_KEY", function() { return SET_RECAPTCHA_KEY; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_RECAPTCHA_RESPONSE", function() { return SET_RECAPTCHA_RESPONSE; });
+const ACTION_PREFIX = '@USER/';
+const UPDATE_USER = `${ACTION_PREFIX}UPDATE_USER`;
+const LOGIN_USER = `${ACTION_PREFIX}LOGIN_USER`;
+const LOGIN_SUCCESSFUL = `${ACTION_PREFIX}LOGIN_SUCCESSFUL`;
+const LOGIN_FAILED = `${ACTION_PREFIX}LOGIN_FAILED`;
+const LOGOUT_USER = `${ACTION_PREFIX}LOGOUT_USER`;
+const TOGGLE_LOGIN_MODE = `${ACTION_PREFIX}TOGGLE_LOGIN_MODE`;
+const CREATE_USER_ACCOUNT = `${ACTION_PREFIX}CREATE_USER_ACCOUNT`;
+const VALIDATE_USER = `${ACTION_PREFIX}VALIDATE_USER`;
+const VALIDATE_USER_SUCCESS = `${ACTION_PREFIX}VALIDATE_USER_SUCCESS`;
+const VALIDATE_USER_FAILED = `${ACTION_PREFIX}VALIDATE_USER_FAILED`;
+const FORGOT_USER_PASSWORD = `${ACTION_PREFIX}FORGOT_USER_PASSWORD`;
+const FORGOT_USER_PASSWORD_COMPLETE = `${ACTION_PREFIX}FORGOT_USER_PASSWORD_COMPLETE`;
+const CHANGE_USER_PASSWORD = `${ACTION_PREFIX}CHANGE_USER_PASSWORD`;
+const CHANGE_USER_PASSWORD_FAILED = `${ACTION_PREFIX}CHANGE_USER_PASSWORD_FAILED`;
+const CHANGE_USER_PASSWORD_COMPLETE = `${ACTION_PREFIX}CHANGE_USER_PASSWORD_COMPLETE`;
+const SET_RECAPTCHA_KEY = `${ACTION_PREFIX}SET_RECAPTCHA_KEY`;
+const SET_RECAPTCHA_RESPONSE = `${ACTION_PREFIX}SET_RECAPTCHA_RESPONSE`;
 
 /***/ }),
 /* 2 */
@@ -114,399 +166,86 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__2__;
 
 /***/ }),
 /* 3 */
-/***/ (function(module, exports) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__3__;
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GET_ENTRY", function() { return GET_ENTRY; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_ENTRY", function() { return SET_ENTRY; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_NODE", function() { return SET_NODE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_ANCESTORS", function() { return SET_ANCESTORS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_SIBLINGS", function() { return SET_SIBLINGS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_ENTRY_ID", function() { return SET_ENTRY_ID; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_ENTRY_RELATED_ARTICLES", function() { return SET_ENTRY_RELATED_ARTICLES; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_NAVIGATION_NOT_FOUND", function() { return SET_NAVIGATION_NOT_FOUND; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_NAVIGATION_PATH", function() { return SET_NAVIGATION_PATH; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_TARGET_PROJECT", function() { return SET_TARGET_PROJECT; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_ROUTE", function() { return SET_ROUTE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CALL_HISTORY_METHOD", function() { return CALL_HISTORY_METHOD; });
+const ROUTING_PREFIX = '@ROUTING/';
+const GET_ENTRY = `${ROUTING_PREFIX}_GET_ENTRY`;
+const SET_ENTRY = `${ROUTING_PREFIX}_SET_ENTRY`;
+const SET_NODE = `${ROUTING_PREFIX}_SET_NODE`;
+const SET_ANCESTORS = `${ROUTING_PREFIX}_SET_ANCESTORS`;
+const SET_SIBLINGS = `${ROUTING_PREFIX}_SET_SIBLINGS`;
+const SET_ENTRY_ID = `${ROUTING_PREFIX}_SET_ENTRY_ID`;
+const SET_ENTRY_RELATED_ARTICLES = `${ROUTING_PREFIX}_SET_ENTRY_RELATED_ARTICLES`;
+const SET_NAVIGATION_NOT_FOUND = `${ROUTING_PREFIX}_SET_NOT_FOUND`;
+const SET_NAVIGATION_PATH = `${ROUTING_PREFIX}_SET_NAVIGATION_PATH`;
+const SET_TARGET_PROJECT = `${ROUTING_PREFIX}_SET_TARGET_PROJECT`;
+const SET_ROUTE = `${ROUTING_PREFIX}_SET_ROUTE`;
+const CALL_HISTORY_METHOD = `${ROUTING_PREFIX}_CALL_HISTORY_METHOD`;
 
 /***/ }),
 /* 4 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__4__;
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__5__;
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.selectRouteLoading = exports.selectBreadcrumb = exports.selectCurrentNode = exports.selectCurrentAncestors = exports.selectIsNotFound = exports.selectCurrentProject = exports.selectQueryStringAsObject = exports.selectCurrentSearch = exports.selectCurrentPath = exports.selectRouteEntryID = exports.selectRouteEntrySlug = exports.selectRouteEntryContentTypeId = exports.selectRouteEntryEntryId = exports.selectEntryDepends = exports.selectCurrentTreeID = exports.selectNodeDepends = exports.selectRouteEntry = void 0;
-
-var _immutable = __webpack_require__(2);
-
-var _navigation = __webpack_require__(21);
-
-var selectRouteEntry = function selectRouteEntry(state) {
-  return state.getIn(['routing', 'entry'], (0, _immutable.Map)({}));
-};
-
-exports.selectRouteEntry = selectRouteEntry;
-
-var selectNodeDepends = function selectNodeDepends(state) {
-  return state.getIn(['routing', 'nodeDepends'], new _immutable.List([]));
-};
-
-exports.selectNodeDepends = selectNodeDepends;
-
-var selectCurrentTreeID = function selectCurrentTreeID(state) {
-  return state.getIn(['routing', 'currentTreeId']);
-};
-
-exports.selectCurrentTreeID = selectCurrentTreeID;
-
-var selectEntryDepends = function selectEntryDepends(state) {
-  return state.getIn(['routing', 'entryDepends']);
-};
-
-exports.selectEntryDepends = selectEntryDepends;
-
-var selectRouteEntryEntryId = function selectRouteEntryEntryId(state) {
-  return state.getIn(['routing', 'entry', 'sys', 'id'], null);
-};
-
-exports.selectRouteEntryEntryId = selectRouteEntryEntryId;
-
-var selectRouteEntryContentTypeId = function selectRouteEntryContentTypeId(state) {
-  var entry = selectRouteEntry(state);
-  return entry && entry.getIn(['sys', 'contentTypeId'], null);
-};
-
-exports.selectRouteEntryContentTypeId = selectRouteEntryContentTypeId;
-
-var selectRouteEntrySlug = function selectRouteEntrySlug(state) {
-  return state.getIn(['routing', 'entry', 'sys', 'slug'], null);
-};
-
-exports.selectRouteEntrySlug = selectRouteEntrySlug;
-
-var selectRouteEntryID = function selectRouteEntryID(state) {
-  return state.getIn(['routing', 'entryID']);
-};
-
-exports.selectRouteEntryID = selectRouteEntryID;
-
-var selectCurrentPath = function selectCurrentPath(state) {
-  return state.getIn(['routing', 'currentPath']);
-};
-
-exports.selectCurrentPath = selectCurrentPath;
-
-var selectCurrentSearch = function selectCurrentSearch(state) {
-  return state.getIn(['routing', 'location', 'search']);
-};
-
-exports.selectCurrentSearch = selectCurrentSearch;
-
-var selectQueryStringAsObject = function selectQueryStringAsObject(state) {
-  return (0, _navigation.queryParams)(selectCurrentSearch(state));
-};
-
-exports.selectQueryStringAsObject = selectQueryStringAsObject;
-
-var selectCurrentProject = function selectCurrentProject(state) {
-  return state.getIn(['routing', 'currentProject']);
-};
-
-exports.selectCurrentProject = selectCurrentProject;
-
-var selectIsNotFound = function selectIsNotFound(state) {
-  return state.getIn(['routing', 'notFound']);
-};
-
-exports.selectIsNotFound = selectIsNotFound;
-
-var selectCurrentAncestors = function selectCurrentAncestors(state) {
-  return state.getIn(['routing', 'currentNodeAncestors'], new _immutable.List());
-};
-
-exports.selectCurrentAncestors = selectCurrentAncestors;
-
-var selectCurrentNode = function selectCurrentNode(state) {
-  return state.getIn(['routing', 'currentNode']);
-};
-
-exports.selectCurrentNode = selectCurrentNode;
-
-var selectBreadcrumb = function selectBreadcrumb(state) {
-  return (selectCurrentAncestors(state) || new _immutable.List()).push(selectCurrentNode(state));
-};
-
-exports.selectBreadcrumb = selectBreadcrumb;
-
-var selectRouteLoading = function selectRouteLoading(state) {
-  return state.getIn(['routing', 'isLoading']);
-};
-
-exports.selectRouteLoading = selectRouteLoading;
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__7__;
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.CALL_HISTORY_METHOD = exports.SET_ROUTE = exports.SET_TARGET_PROJECT = exports.SET_NAVIGATION_PATH = exports.SET_NAVIGATION_NOT_FOUND = exports.SET_ENTRY_RELATED_ARTICLES = exports.SET_ENTRY_ID = exports.SET_SIBLINGS = exports.SET_ANCESTORS = exports.SET_NODE = exports.SET_ENTRY = exports.GET_ENTRY = void 0;
-var ROUTING_PREFIX = '@ROUTING/';
-var GET_ENTRY = "".concat(ROUTING_PREFIX, "_GET_ENTRY");
-exports.GET_ENTRY = GET_ENTRY;
-var SET_ENTRY = "".concat(ROUTING_PREFIX, "_SET_ENTRY");
-exports.SET_ENTRY = SET_ENTRY;
-var SET_NODE = "".concat(ROUTING_PREFIX, "_SET_NODE");
-exports.SET_NODE = SET_NODE;
-var SET_ANCESTORS = "".concat(ROUTING_PREFIX, "_SET_ANCESTORS");
-exports.SET_ANCESTORS = SET_ANCESTORS;
-var SET_SIBLINGS = "".concat(ROUTING_PREFIX, "_SET_SIBLINGS");
-exports.SET_SIBLINGS = SET_SIBLINGS;
-var SET_ENTRY_ID = "".concat(ROUTING_PREFIX, "_SET_ENTRY_ID");
-exports.SET_ENTRY_ID = SET_ENTRY_ID;
-var SET_ENTRY_RELATED_ARTICLES = "".concat(ROUTING_PREFIX, "_SET_ENTRY_RELATED_ARTICLES");
-exports.SET_ENTRY_RELATED_ARTICLES = SET_ENTRY_RELATED_ARTICLES;
-var SET_NAVIGATION_NOT_FOUND = "".concat(ROUTING_PREFIX, "_SET_NOT_FOUND");
-exports.SET_NAVIGATION_NOT_FOUND = SET_NAVIGATION_NOT_FOUND;
-var SET_NAVIGATION_PATH = "".concat(ROUTING_PREFIX, "_SET_NAVIGATION_PATH");
-exports.SET_NAVIGATION_PATH = SET_NAVIGATION_PATH;
-var SET_TARGET_PROJECT = "".concat(ROUTING_PREFIX, "_SET_TARGET_PROJECT");
-exports.SET_TARGET_PROJECT = SET_TARGET_PROJECT;
-var SET_ROUTE = "".concat(ROUTING_PREFIX, "_SET_ROUTE");
-exports.SET_ROUTE = SET_ROUTE;
-var CALL_HISTORY_METHOD = "".concat(ROUTING_PREFIX, "_CALL_HISTORY_METHOD");
-exports.CALL_HISTORY_METHOD = CALL_HISTORY_METHOD;
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.SET_RECAPTCHA_RESPONSE = exports.SET_RECAPTCHA_KEY = exports.CHANGE_USER_PASSWORD_COMPLETE = exports.CHANGE_USER_PASSWORD_FAILED = exports.CHANGE_USER_PASSWORD = exports.FORGOT_USER_PASSWORD_COMPLETE = exports.FORGOT_USER_PASSWORD = exports.VALIDATE_USER_FAILED = exports.VALIDATE_USER_SUCCESS = exports.VALIDATE_USER = exports.CREATE_USER_ACCOUNT = exports.TOGGLE_LOGIN_MODE = exports.LOGOUT_USER = exports.LOGIN_FAILED = exports.LOGIN_SUCCESSFUL = exports.LOGIN_USER = exports.UPDATE_USER = void 0;
-var ACTION_PREFIX = '@USER/';
-var UPDATE_USER = "".concat(ACTION_PREFIX, "UPDATE_USER");
-exports.UPDATE_USER = UPDATE_USER;
-var LOGIN_USER = "".concat(ACTION_PREFIX, "LOGIN_USER");
-exports.LOGIN_USER = LOGIN_USER;
-var LOGIN_SUCCESSFUL = "".concat(ACTION_PREFIX, "LOGIN_SUCCESSFUL");
-exports.LOGIN_SUCCESSFUL = LOGIN_SUCCESSFUL;
-var LOGIN_FAILED = "".concat(ACTION_PREFIX, "LOGIN_FAILED");
-exports.LOGIN_FAILED = LOGIN_FAILED;
-var LOGOUT_USER = "".concat(ACTION_PREFIX, "LOGOUT_USER");
-exports.LOGOUT_USER = LOGOUT_USER;
-var TOGGLE_LOGIN_MODE = "".concat(ACTION_PREFIX, "TOGGLE_LOGIN_MODE");
-exports.TOGGLE_LOGIN_MODE = TOGGLE_LOGIN_MODE;
-var CREATE_USER_ACCOUNT = "".concat(ACTION_PREFIX, "CREATE_USER_ACCOUNT");
-exports.CREATE_USER_ACCOUNT = CREATE_USER_ACCOUNT;
-var VALIDATE_USER = "".concat(ACTION_PREFIX, "VALIDATE_USER");
-exports.VALIDATE_USER = VALIDATE_USER;
-var VALIDATE_USER_SUCCESS = "".concat(ACTION_PREFIX, "VALIDATE_USER_SUCCESS");
-exports.VALIDATE_USER_SUCCESS = VALIDATE_USER_SUCCESS;
-var VALIDATE_USER_FAILED = "".concat(ACTION_PREFIX, "VALIDATE_USER_FAILED");
-exports.VALIDATE_USER_FAILED = VALIDATE_USER_FAILED;
-var FORGOT_USER_PASSWORD = "".concat(ACTION_PREFIX, "FORGOT_USER_PASSWORD");
-exports.FORGOT_USER_PASSWORD = FORGOT_USER_PASSWORD;
-var FORGOT_USER_PASSWORD_COMPLETE = "".concat(ACTION_PREFIX, "FORGOT_USER_PASSWORD_COMPLETE");
-exports.FORGOT_USER_PASSWORD_COMPLETE = FORGOT_USER_PASSWORD_COMPLETE;
-var CHANGE_USER_PASSWORD = "".concat(ACTION_PREFIX, "CHANGE_USER_PASSWORD");
-exports.CHANGE_USER_PASSWORD = CHANGE_USER_PASSWORD;
-var CHANGE_USER_PASSWORD_FAILED = "".concat(ACTION_PREFIX, "CHANGE_USER_PASSWORD_FAILED");
-exports.CHANGE_USER_PASSWORD_FAILED = CHANGE_USER_PASSWORD_FAILED;
-var CHANGE_USER_PASSWORD_COMPLETE = "".concat(ACTION_PREFIX, "CHANGE_USER_PASSWORD_COMPLETE");
-exports.CHANGE_USER_PASSWORD_COMPLETE = CHANGE_USER_PASSWORD_COMPLETE;
-var SET_RECAPTCHA_KEY = "".concat(ACTION_PREFIX, "SET_RECAPTCHA_KEY");
-exports.SET_RECAPTCHA_KEY = SET_RECAPTCHA_KEY;
-var SET_RECAPTCHA_RESPONSE = "".concat(ACTION_PREFIX, "SET_RECAPTCHA_RESPONSE");
-exports.SET_RECAPTCHA_RESPONSE = SET_RECAPTCHA_RESPONSE;
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.selectCaptchaToken = exports.selectCaptchaResponse = exports.selectCaptchaData = exports.selectCaptchaSiteKey = exports.selectChangePasswordMessage = exports.selectPasswordMessage = exports.selectLoginScreenMode = exports.selectUserMessage = exports.selectUserGroups = exports.selectUserLoggedIn = exports.selectUsername = exports.selectUser = void 0;
-
-var selectUser = function selectUser(state) {
-  return state.get('user');
-};
-
-exports.selectUser = selectUser;
-
-var selectUsername = function selectUsername(state) {
-  return state.getIn(['user', 'username']);
-};
-
-exports.selectUsername = selectUsername;
-
-var selectUserLoggedIn = function selectUserLoggedIn(state) {
-  return state.getIn(['user', 'loggedIn']);
-};
-
-exports.selectUserLoggedIn = selectUserLoggedIn;
-
-var selectUserGroups = function selectUserGroups(state) {
-  return state.getIn(['user', 'groups']);
-};
-
-exports.selectUserGroups = selectUserGroups;
-
-var selectUserMessage = function selectUserMessage(state) {
-  return state.getIn(['user', 'logonResult']);
-};
-
-exports.selectUserMessage = selectUserMessage;
-
-var selectLoginScreenMode = function selectLoginScreenMode(state) {
-  return state.getIn(['user', 'loginScreenMode']);
-};
-
-exports.selectLoginScreenMode = selectLoginScreenMode;
-
-var selectPasswordMessage = function selectPasswordMessage(state) {
-  return state.getIn(['user', 'passwordResetMessage']);
-};
-
-exports.selectPasswordMessage = selectPasswordMessage;
-
-var selectChangePasswordMessage = function selectChangePasswordMessage(state) {
-  return state.getIn(['user', 'changePasswordMessage']);
-};
-
-exports.selectChangePasswordMessage = selectChangePasswordMessage;
-
-var selectCaptchaSiteKey = function selectCaptchaSiteKey(state) {
-  return state.getIn(['user', 'recaptcha', 'key']);
-};
-
-exports.selectCaptchaSiteKey = selectCaptchaSiteKey;
-
-var selectCaptchaData = function selectCaptchaData(state) {
-  return state.getIn(['user', 'recaptcha', 'response']);
-};
-
-exports.selectCaptchaData = selectCaptchaData;
-
-var selectCaptchaResponse = function selectCaptchaResponse(state) {
-  return state.getIn(['user', 'recaptcha', 'response', 'isHuman']);
-};
-
-exports.selectCaptchaResponse = selectCaptchaResponse;
-
-var selectCaptchaToken = function selectCaptchaToken(state) {
-  return state.getIn(['user', 'recaptcha', 'response', 'token']);
-};
-
-exports.selectCaptchaToken = selectCaptchaToken;
-
-/***/ }),
-/* 11 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__11__;
-
-/***/ }),
-/* 12 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__12__;
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(0);
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.action = action;
-exports.flattenArray = flattenArray;
-exports.api = api;
-exports.dynamicSort = dynamicSort;
-exports.randomString = exports.resizeImageUri = exports.resizeImage = exports.getWebPImageUri = void 0;
-
-var _regenerator = _interopRequireDefault(__webpack_require__(1));
-
-var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(5));
-
-var _defineProperty2 = _interopRequireDefault(__webpack_require__(3));
-
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function action(type) {
-  var payload = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-  return _objectSpread({
-    type: type
-  }, payload);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return action; });
+/* unused harmony export getWebPImageUri */
+/* unused harmony export resizeImage */
+/* unused harmony export resizeImageUri */
+/* unused harmony export flattenArray */
+/* unused harmony export api */
+/* unused harmony export dynamicSort */
+/* unused harmony export randomString */
+function action(type, payload = {}) {
+  return {
+    type,
+    ...payload
+  };
 }
-
-var getWebPImageUri = function getWebPImageUri(uri) {
-  var formatedUri = uri;
+const getWebPImageUri = uri => {
+  let formatedUri = uri;
 
   if (uri.indexOf('.gif') == -1) {
     if (uri.indexOf('f=') == -1 && uri.indexOf('format=') == -1) {
       if (uri.indexOf('?') > -1) {
-        formatedUri = "".concat(uri, "&f=webp");
+        formatedUri = `${uri}&f=webp`;
       } else {
-        formatedUri = "".concat(uri, "?f=webp");
+        formatedUri = `${uri}?f=webp`;
       }
     }
 
     if (formatedUri.indexOf('q=') == -1 && formatedUri.indexOf('quality=') == -1) {
       if (formatedUri.indexOf('?') > -1) {
-        formatedUri = "".concat(formatedUri, "&q=70");
+        formatedUri = `${formatedUri}&q=70`;
       } else {
-        formatedUri = "".concat(formatedUri, "?q=70");
+        formatedUri = `${formatedUri}?q=70`;
       }
     }
   }
 
   return formatedUri;
 };
-
-exports.getWebPImageUri = getWebPImageUri;
-
-var resizeImage = function resizeImage(image, height, width) {
+const resizeImage = (image, height, width) => {
   if (image.asset && image.asset.sys && image.asset.sys.uri) {
     image.asset.sys.uri = resizeImageUri(image.asset.sys.uri, height, width);
   }
 };
-
-exports.resizeImage = resizeImage;
-
-var resizeImageUri = function resizeImageUri(uri, height, width) {
-  var formatedUri = uri;
-  var paramDelimeter = '?';
+const resizeImageUri = (uri, height, width) => {
+  let formatedUri = uri;
+  let paramDelimeter = '?';
 
   if (uri.indexOf('?') > -1) {
     paramDelimeter = '&';
@@ -514,96 +253,38 @@ var resizeImageUri = function resizeImageUri(uri, height, width) {
 
   if (width) {
     if (formatedUri.indexOf('w=') == -1 && formatedUri.indexOf('width=') == -1) {
-      formatedUri = "".concat(formatedUri).concat(paramDelimeter, "w=").concat(width);
+      formatedUri = `${formatedUri}${paramDelimeter}w=${width}`;
       paramDelimeter = '&';
     }
   }
 
   if (height) {
     if (formatedUri.indexOf('h=') == -1 && formatedUri.indexOf('height=') == -1) {
-      formatedUri = "".concat(formatedUri).concat(paramDelimeter, "h=").concat(height);
+      formatedUri = `${formatedUri}${paramDelimeter}h=${height}`;
     }
   }
 
   return formatedUri;
 };
-
-exports.resizeImageUri = resizeImageUri;
-
 function flattenArray(arr) {
   // flatten arrays inside the supplied array and
   // remove duplicates from the result
-  return arr.reduce(function (acc, val) {
-    return acc.concat(val);
-  }, []).filter(function (elem, pos, arr) {
-    return arr.indexOf(elem) == pos;
+  return arr.reduce((acc, val) => acc.concat(val), []).filter((elem, pos, arr) => arr.indexOf(elem) == pos);
+}
+async function api(url, options) {
+  return fetch(url, options).then(async response => {
+    setTimeout(() => null, 0);
+
+    if (!response.ok) {
+      throw new Error(response.statusText);
+    }
+
+    return response.json().then(data => data);
+  }).catch(error => {
+    //console.log(error);
+    throw error;
   });
 }
-
-function api(_x, _x2) {
-  return _api.apply(this, arguments);
-}
-
-function _api() {
-  _api = (0, _asyncToGenerator2["default"])(
-  /*#__PURE__*/
-  _regenerator["default"].mark(function _callee2(url, options) {
-    return _regenerator["default"].wrap(function _callee2$(_context2) {
-      while (1) {
-        switch (_context2.prev = _context2.next) {
-          case 0:
-            return _context2.abrupt("return", fetch(url, options).then(
-            /*#__PURE__*/
-            function () {
-              var _ref = (0, _asyncToGenerator2["default"])(
-              /*#__PURE__*/
-              _regenerator["default"].mark(function _callee(response) {
-                return _regenerator["default"].wrap(function _callee$(_context) {
-                  while (1) {
-                    switch (_context.prev = _context.next) {
-                      case 0:
-                        setTimeout(function () {
-                          return null;
-                        }, 0);
-
-                        if (response.ok) {
-                          _context.next = 3;
-                          break;
-                        }
-
-                        throw new Error(response.statusText);
-
-                      case 3:
-                        return _context.abrupt("return", response.json().then(function (data) {
-                          return data;
-                        }));
-
-                      case 4:
-                      case "end":
-                        return _context.stop();
-                    }
-                  }
-                }, _callee);
-              }));
-
-              return function (_x3) {
-                return _ref.apply(this, arguments);
-              };
-            }())["catch"](function (error) {
-              //console.log(error);
-              throw error;
-            }));
-
-          case 1:
-          case "end":
-            return _context2.stop();
-        }
-      }
-    }, _callee2);
-  }));
-  return _api.apply(this, arguments);
-}
-
 function dynamicSort(property) {
   var sortOrder = 1;
 
@@ -620,10 +301,9 @@ function dynamicSort(property) {
     return result * sortOrder;
   };
 }
-
-var randomString = function randomString(length) {
-  var text = '';
-  var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+const randomString = length => {
+  let text = '';
+  const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
   for (var i = 0; i < length; i++) {
     text += possible.charAt(Math.floor(Math.random() * possible.length));
@@ -632,342 +312,479 @@ var randomString = function randomString(length) {
   return text;
 };
 
-exports.randomString = randomString;
-
 /***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = exports.initialUserState = void 0;
-
-var _immutable = __webpack_require__(2);
-
-var _types = __webpack_require__(9);
-
-var initialUserState = (0, _immutable.Map)({
-  loggedIn: false,
-  failedLogin: null,
-  username: null,
-  id: null,
-  securityToken: null,
-  logonResult: null,
-  groups: new _immutable.List([]),
-  emailAddress: null,
-  fullName: null,
-  loginScreenMode: 'login',
-  passwordReset: false,
-  passwordResetMessage: null,
-  changePasswordMessage: null,
-  recaptcha: new _immutable.Map({
-    key: null,
-    response: new _immutable.Map({
-      isHuman: false,
-      token: null
-    })
-  })
-});
-exports.initialUserState = initialUserState;
-
-var _default = function _default() {
-  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialUserState;
-  var action = arguments.length > 1 ? arguments[1] : undefined;
-
-  switch (action.type) {
-    case _types.UPDATE_USER:
-      {
-        var user = action.user;
-        return state.set('loggedIn', typeof user.loggedIn !== 'undefined' ? user.loggedIn : state.get('loggedIn')).set('failedLogin', typeof user.failedLogin !== 'undefined' ? user.failedLogin : state.get('failedLogin')).set('username', user.username || state.get('username')).set('id', user.id || state.get('id')).set('securityToken', user.securityToken || state.get('securityToken')).set('logonResult', user.logonResult || state.get('logonResult')).set('groups', (0, _immutable.fromJS)(user.groups) || state.get('groups')).set('emailAddress', user.emailAddress || state.get('emailAddress')).set('fullName', user.fullName || state.get('fullName')).set('passwordReset', typeof user.passwordReset !== 'undefined' ? user.passwordReset : state.get('passwordReset')).set('passwordResetMessage', user.passwordResetMessage || state.get('passwordResetMessage')).set('changePasswordMessage', user.changePasswordMessage || state.get('changePasswordMessage'));
-      }
-
-    case _types.TOGGLE_LOGIN_MODE:
-      {
-        var newMode = action.loginMode;
-        return state.set('loginScreenMode', newMode);
-      }
-
-    case _types.SET_RECAPTCHA_KEY:
-      {
-        return state.setIn(['recaptcha', 'key'], action.key);
-      }
-
-    case _types.SET_RECAPTCHA_RESPONSE:
-      {
-        return state.setIn(['recaptcha', 'response', 'isHuman'], action.isHuman).setIn(['recaptcha', 'response', 'token'], action.token);
-      }
-
-    default:
-      return state;
-  }
-};
-
-exports["default"] = _default;
-
-/***/ }),
-/* 15 */
+/* 5 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__15__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__5__;
 
 /***/ }),
-/* 16 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(0);
-
-var _interopRequireWildcard = __webpack_require__(7);
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-Object.defineProperty(exports, "reducer", {
-  enumerable: true,
-  get: function get() {
-    return _reducers["default"];
-  }
-});
-Object.defineProperty(exports, "sagas", {
-  enumerable: true,
-  get: function get() {
-    return _sagas.userSagas;
-  }
-});
-Object.defineProperty(exports, "withLogin", {
-  enumerable: true,
-  get: function get() {
-    return _withLogin["default"];
-  }
-});
-exports.types = exports.selectors = exports.actions = void 0;
-
-var actions = _interopRequireWildcard(__webpack_require__(22));
-
-exports.actions = actions;
-
-var selectors = _interopRequireWildcard(__webpack_require__(10));
-
-exports.selectors = selectors;
-
-var types = _interopRequireWildcard(__webpack_require__(9));
-
-exports.types = types;
-
-var _reducers = _interopRequireDefault(__webpack_require__(14));
-
-var _sagas = __webpack_require__(29);
-
-var _withLogin = _interopRequireDefault(__webpack_require__(36));
-
-/***/ }),
-/* 17 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__17__;
-
-/***/ }),
-/* 18 */,
-/* 19 */
+/* 6 */,
+/* 7 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(23);
-/* harmony import */ var _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-
-
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectUser", function() { return selectUser; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectUsername", function() { return selectUsername; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectUserLoggedIn", function() { return selectUserLoggedIn; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectUserGroups", function() { return selectUserGroups; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectUserMessage", function() { return selectUserMessage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectLoginScreenMode", function() { return selectLoginScreenMode; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectPasswordMessage", function() { return selectPasswordMessage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectChangePasswordMessage", function() { return selectChangePasswordMessage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectCaptchaSiteKey", function() { return selectCaptchaSiteKey; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectCaptchaData", function() { return selectCaptchaData; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectCaptchaResponse", function() { return selectCaptchaResponse; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectCaptchaToken", function() { return selectCaptchaToken; });
+const selectUser = state => {
+  return state.get('user');
+};
+const selectUsername = state => {
+  return state.getIn(['user', 'username']);
+};
+const selectUserLoggedIn = state => {
+  return state.getIn(['user', 'loggedIn']);
+};
+const selectUserGroups = state => {
+  return state.getIn(['user', 'groups']);
+};
+const selectUserMessage = state => {
+  return state.getIn(['user', 'logonResult']);
+};
+const selectLoginScreenMode = state => {
+  return state.getIn(['user', 'loginScreenMode']);
+};
+const selectPasswordMessage = state => {
+  return state.getIn(['user', 'passwordResetMessage']);
+};
+const selectChangePasswordMessage = state => {
+  return state.getIn(['user', 'changePasswordMessage']);
+};
+const selectCaptchaSiteKey = state => {
+  return state.getIn(['user', 'recaptcha', 'key']);
+};
+const selectCaptchaData = state => {
+  return state.getIn(['user', 'recaptcha', 'response']);
+};
+const selectCaptchaResponse = state => {
+  return state.getIn(['user', 'recaptcha', 'response', 'isHuman']);
+};
+const selectCaptchaToken = state => {
+  return state.getIn(['user', 'recaptcha', 'response', 'token']);
+};
 
 /***/ }),
-/* 20 */,
-/* 21 */
-/***/ (function(module, exports, __webpack_require__) {
+/* 8 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectRouteEntry", function() { return selectRouteEntry; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectNodeDepends", function() { return selectNodeDepends; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectCurrentTreeID", function() { return selectCurrentTreeID; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectEntryDepends", function() { return selectEntryDepends; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectRouteEntryEntryId", function() { return selectRouteEntryEntryId; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectRouteEntryContentTypeId", function() { return selectRouteEntryContentTypeId; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectRouteEntrySlug", function() { return selectRouteEntrySlug; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectRouteEntryID", function() { return selectRouteEntryID; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectCurrentPath", function() { return selectCurrentPath; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectCurrentSearch", function() { return selectCurrentSearch; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectQueryStringAsObject", function() { return selectQueryStringAsObject; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectCurrentProject", function() { return selectCurrentProject; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectIsNotFound", function() { return selectIsNotFound; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectCurrentAncestors", function() { return selectCurrentAncestors; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectCurrentNode", function() { return selectCurrentNode; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectBreadcrumb", function() { return selectBreadcrumb; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectRouteLoading", function() { return selectRouteLoading; });
+/* harmony import */ var immutable__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
+/* harmony import */ var immutable__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(immutable__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _util_navigation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(20);
 
 
-var _interopRequireDefault = __webpack_require__(0);
+const selectRouteEntry = state => {
+  return state.getIn(['routing', 'entry'], Object(immutable__WEBPACK_IMPORTED_MODULE_0__["Map"])({}));
+};
+const selectNodeDepends = state => {
+  return state.getIn(['routing', 'nodeDepends'], new immutable__WEBPACK_IMPORTED_MODULE_0__["List"]([]));
+};
+const selectCurrentTreeID = state => {
+  return state.getIn(['routing', 'currentTreeId']);
+};
+const selectEntryDepends = state => {
+  return state.getIn(['routing', 'entryDepends']);
+};
+const selectRouteEntryEntryId = state => {
+  return state.getIn(['routing', 'entry', 'sys', 'id'], null);
+};
+const selectRouteEntryContentTypeId = state => {
+  const entry = selectRouteEntry(state);
+  return entry && entry.getIn(['sys', 'contentTypeId'], null);
+};
+const selectRouteEntrySlug = state => {
+  return state.getIn(['routing', 'entry', 'sys', 'slug'], null);
+};
+const selectRouteEntryID = state => {
+  return state.getIn(['routing', 'entryID']);
+};
+const selectCurrentPath = state => {
+  return state.getIn(['routing', 'currentPath']);
+};
+const selectCurrentSearch = state => {
+  return state.getIn(['routing', 'location', 'search']);
+};
+const selectQueryStringAsObject = state => Object(_util_navigation__WEBPACK_IMPORTED_MODULE_1__[/* queryParams */ "b"])(selectCurrentSearch(state));
+const selectCurrentProject = state => {
+  return state.getIn(['routing', 'currentProject']);
+};
+const selectIsNotFound = state => {
+  return state.getIn(['routing', 'notFound']);
+};
+const selectCurrentAncestors = state => {
+  return state.getIn(['routing', 'currentNodeAncestors'], new immutable__WEBPACK_IMPORTED_MODULE_0__["List"]());
+};
+const selectCurrentNode = state => {
+  return state.getIn(['routing', 'currentNode']);
+};
+const selectBreadcrumb = state => {
+  return (selectCurrentAncestors(state) || new immutable__WEBPACK_IMPORTED_MODULE_0__["List"]()).push(selectCurrentNode(state));
+};
+const selectRouteLoading = state => {
+  return state.getIn(['routing', 'isLoading']);
+};
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
+/***/ }),
+/* 9 */,
+/* 10 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
+// EXTERNAL MODULE: external "js-cookie"
+var external_js_cookie_ = __webpack_require__(28);
+var external_js_cookie_default = /*#__PURE__*/__webpack_require__.n(external_js_cookie_);
+
+// CONCATENATED MODULE: ./src/app/features/login/util/CookieHelper.class.js
+
+const COOKIE_VALID_DAYS = 1; // 0 = Session cookie
+// Override the default js-cookie conversion / encoding
+// methods so the written values work with Contensis sites
+
+const _cookie = external_js_cookie_default.a.withConverter({
+  read: value => decodeURIComponent(value),
+  write: value => encodeURIComponent(value)
 });
-exports.queryParams = queryParams;
-exports.addHostname = exports.clientHostname = exports.buildUrl = exports.routeParams = void 0;
 
-var _queryString = _interopRequireDefault(__webpack_require__(15));
+class CookieHelper {
+  static GetCookie(name) {
+    return _cookie.get(name);
+  }
 
-function queryParams(search) {
-  return _queryString["default"].parse(typeof window != 'undefined' ? window.location.search : search);
+  static SetCookie(name, value, maxAgeDays = COOKIE_VALID_DAYS) {
+    maxAgeDays === 0 ? _cookie.set(name, value) : _cookie.set(name, value, {
+      expires: maxAgeDays
+    });
+  }
+
+  static DeleteCookie(name) {
+    _cookie.remove(name);
+  }
+
+}
+// EXTERNAL MODULE: ./src/app/features/login/util/SecurityApi.class.js
+var SecurityApi_class = __webpack_require__(11);
+
+// EXTERNAL MODULE: ./src/app/features/login/redux/reducers.js
+var reducers = __webpack_require__(14);
+
+// CONCATENATED MODULE: ./src/app/features/login/util/LoginHelper.class.js
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LoginHelper", function() { return LoginHelper_class_LoginHelper; });
+// import { ajax } from 'jquery';
+// import queryString from 'query-string';
+
+
+ // import { randomString } from '~/core/util/helpers';
+// import userManager from './oidc/userManager';
+
+const LOGIN_COOKIE = 'ContensisCMSUserName';
+const LAST_USERNAME_COOKIE = 'ContensisLastUserName';
+const DISPLAY_NAME_COOKIE = 'ContensisDisplayName';
+const USER_LANGUAGE_COOKIE = 'User_LanguageID';
+const AVATAR_COOKIE = 'ContensisAvatar'; // const contensis = CONTENSIS; /* global CONTENSIS */
+
+class LoginHelper_class_LoginHelper {
+  static GetLoginCookie() {
+    return CookieHelper.GetCookie(LOGIN_COOKIE);
+  }
+
+  static SetLoginCookies(user) {
+    if (user.securityToken) CookieHelper.SetCookie(LOGIN_COOKIE, user.securityToken);
+
+    if (user.username) {
+      CookieHelper.SetCookie(LAST_USERNAME_COOKIE, user.username);
+      CookieHelper.SetCookie(DISPLAY_NAME_COOKIE, user.username);
+    }
+  }
+
+  static GetCachedCredentials() {
+    return {
+      securityToken: CookieHelper.GetCookie(LOGIN_COOKIE),
+      username: CookieHelper.GetCookie(LAST_USERNAME_COOKIE),
+      displayName: CookieHelper.GetCookie(DISPLAY_NAME_COOKIE),
+      languageId: CookieHelper.GetCookie(USER_LANGUAGE_COOKIE),
+      avatar: CookieHelper.GetCookie(AVATAR_COOKIE)
+    };
+  }
+
+  static GetCachedCredentialsSSR(cookies) {
+    return {
+      securityToken: cookies[LOGIN_COOKIE],
+      username: cookies[LAST_USERNAME_COOKIE],
+      displayName: cookies[DISPLAY_NAME_COOKIE],
+      languageId: cookies[USER_LANGUAGE_COOKIE],
+      avatar: cookies[AVATAR_COOKIE]
+    };
+  }
+
+  static ClearCachedCredentials() {
+    CookieHelper.DeleteCookie(LOGIN_COOKIE);
+    CookieHelper.DeleteCookie(LAST_USERNAME_COOKIE);
+    CookieHelper.DeleteCookie(DISPLAY_NAME_COOKIE);
+    CookieHelper.DeleteCookie(USER_LANGUAGE_COOKIE);
+    CookieHelper.DeleteCookie(AVATAR_COOKIE);
+  }
+
+  static async ValidateUser(groups = false, cookies = null) {
+    const cached = cookies ? this.GetCachedCredentialsSSR(cookies) : this.GetCachedCredentials();
+
+    if (cached.securityToken) {
+      const response = await SecurityApi_class["a" /* SecurityApi */].ValidateUser(cached.securityToken);
+      if (!response) return false; // Convert result to a User object
+
+      const user = {
+        username: cached.username,
+        securityToken: encodeURIComponent(response.SecurityToken),
+        logonResult: response.LogonResult,
+        id: response.UserID,
+        loginScreenMode: 'login'
+      };
+
+      if (user.logonResult !== 0) {
+        // Clear the cookie cache so we don't need to validate again
+        LoginHelper_class_LoginHelper.ClearCachedCredentials();
+      } else {
+        // Set logged in flag
+        user.loggedIn = true;
+
+        if (groups) {
+          const userWithGroups = await this.GetGroups(user);
+          return userWithGroups;
+        }
+      }
+
+      return user;
+    }
+
+    return false;
+  }
+
+  static async LoginUser(username, password, groups = false) {
+    if (username && password) {
+      // Call LogonUser API
+      const loginResponse = await SecurityApi_class["a" /* SecurityApi */].LogonUser(username, password);
+
+      if (loginResponse) {
+        // Extract the elements we need from the response
+        const {
+          SecurityToken,
+          LogonResult,
+          UserID
+        } = loginResponse;
+        const failedLogin = !!LogonResult; // 0 is successful
+        // Map response to new user object
+
+        const user = {
+          username,
+          failedLogin,
+          loggedIn: !!SecurityToken && !failedLogin,
+          securityToken: SecurityToken,
+          id: UserID,
+          logonResult: this.CheckResult(LogonResult)
+        };
+
+        if (!user.failedLogin && !!user.securityToken) {
+          this.SetLoginCookies(user);
+
+          if (groups) {
+            const userWithGroups = await this.GetGroups(user);
+            return userWithGroups;
+          }
+        }
+
+        return user;
+      } else {
+        // Create user object to show login failed due to service fault
+        return {
+          securityToken: null,
+          loggedIn: false,
+          failedLogin: true,
+          logonResult: 'Service Fault'
+        };
+      }
+    }
+  }
+
+  static async GetGroups(user) {
+    if (!user.securityToken) {
+      return user;
+    }
+
+    const userInfoResponse = await SecurityApi_class["a" /* SecurityApi */].GetUserInfo(user.securityToken);
+
+    if (userInfoResponse) {
+      const response = JSON.parse(userInfoResponse);
+
+      if (response.Error || !response.GroupCollection) {
+        user.errorMessage = `Problem fetching user info: ${response.Error}`;
+      } else {
+        user.groups = response.GroupCollection.map(group => ({
+          name: group.GroupName,
+          id: group.GroupId
+        }));
+        user.fullName = response.Fullname;
+        user.emailAddress = response.Email;
+      }
+    }
+
+    return user;
+  }
+
+  static LogoutUser() {
+    this.ClearCachedCredentials();
+    return reducers["b" /* initialUserState */].toJS();
+  }
+
+  static ClientRedirectToLogin(uri) {
+    if (typeof window != 'undefined') {
+      window.location.href = LoginHelper_class_LoginHelper.LoginPageUrl(uri); // LoginHelper.IsWsFedSignin()
+      // ? LoginHelper.WsFedLoginPageUrl(window.location)
+      // : LoginHelper.LoginPageUrl(uri);
+    }
+  }
+
+  static LoginPageUrl(uri) {
+    return `${uri || '/login'}?redirect_uri=${window.location.pathname + window.location.search}`;
+  } // static WsFedLoginPageUrl(currentLocation) {
+  //   const loginPage = contensis.ADFS_LOGIN_PAGE.replace(
+  //     '{redirect_uri}',
+  //     encodeURIComponent(currentLocation.toString().split('#')[0])
+  //   ).replace('{nonce}', randomString(5));
+  //   return `${contensis.URL}${loginPage}`.replace(/([^:]\/)\/+/g, '$1');
+  // }
+  // static IsWsFedSignin() {
+  //   return contensis.WSFED_SIGNIN;
+  // }
+  // static WsFedSignin(redirectUri) {
+  //   userManager.signinRedirect({
+  //     scope: 'openid',
+  //     response_type: 'id_token',
+  //     redirect_uri: redirectUri || window.location.toString(),
+  //   });
+  // }
+  // static WsFedLogout() {
+  //   ajax(`${contensis.URL}authenticate/logout/`, {
+  //     dataType: 'jsonp',
+  //     jsonp: false,
+  //     async: false,
+  //   });
+  // }
+
+
+  static async ForgotPassword(username) {
+    if (username) {
+      const currentUrl = window.location.protocol + '//' + window.location.host;
+      const passwordResponse = await SecurityApi_class["a" /* SecurityApi */].ForgotPassword(username, currentUrl);
+
+      if (passwordResponse) {
+        // Extract the elements we need from the response
+        return passwordResponse;
+      }
+    }
+  }
+
+  static async ChangePassword(username, oldPassword, newPassword, newPasswordConfirm) {
+    if (newPassword && newPasswordConfirm) {
+      if (this.ValidatePassword(newPassword)) {
+        const passwordResponse = await SecurityApi_class["a" /* SecurityApi */].ChangePassword(username, oldPassword, newPassword, newPasswordConfirm); //const passwordResponse = await SecurityApi.ChangePassword(btoa(username), btoa(oldPassword), btoa(newPassword), btoa(newPasswordConfirm));
+
+        if (passwordResponse) {
+          // Extract the elements we need from the response
+          return passwordResponse;
+        }
+      } else {
+        return 'New password does not meet the requirements: \r\n\r\n - Must be a minimum of 8 characters long \r\n - Must contain at least 1 uppercase character \r\n - Must contain at least 1 special character or number';
+      }
+    }
+  }
+
+  static async ChangePasswordWithToken(token, newPassword, newPasswordConfirm) {
+    if (newPassword && newPasswordConfirm) {
+      if (this.ValidatePassword(newPassword)) {
+        const passwordResponse = await SecurityApi_class["a" /* SecurityApi */].ChangePasswordWithToken(token, btoa(newPassword), btoa(newPasswordConfirm)); //const passwordResponse = await SecurityApi.ChangePassword(btoa(username), btoa(oldPassword), btoa(newPassword), btoa(newPasswordConfirm));
+
+        if (passwordResponse) {
+          // Extract the elements we need from the response
+          return passwordResponse;
+        }
+      } else {
+        return 'New password does not meet the requirements: \r\n\r\n - Must be a minimum of 8 characters long \r\n - Must contain at least 1 uppercase character \r\n - Must contain at least 1 special character or number';
+      }
+    }
+  }
+
+  static ValidatePassword(pword) {
+    //Password must be over 8 characters long
+    if (pword.length < 8) return false; //This only returns true if the following criteria is met:
+    //  *8 chars or more
+    //  *Must contain at least 1 capital letter
+    //  *Must contain at least 1 number or special character
+
+    return /^(?:(?=.*[a-z])(?:(?=.*[A-Z])(?=.*[\d\W])|(?=.*\W)(?=.*\d))|(?=.*\W)(?=.*[A-Z])(?=.*\d)).{8,}$/.test(pword);
+  }
+
+  static CheckResult(result) {
+    const Results = {
+      '0': 'OK',
+      '-2': 'Incorrect username or password',
+      '-3': 'Account disabled',
+      '-4': 'Account locked',
+      '-5': 'Log on from this PC is denied',
+      '-6': 'Log on at this time is denied',
+      '-7': 'Account already logged in',
+      '-9': 'Unspecified error',
+      '2': 'Password change required',
+      '3': 'Insufficient privileges',
+      '-10': 'Account expired',
+      '-11': 'Maintenance mode',
+      '4': 'Security token expired',
+      '': 'An error has occured'
+    };
+    return Results[result];
+  }
+
 }
 
-var routeParams = function routeParams(staticRoute) {
-  return staticRoute && staticRoute.match ? staticRoute.match.params : {};
-};
-
-exports.routeParams = routeParams;
-
-var buildUrl = function buildUrl(route, params) {
-  var qs = _queryString["default"].stringify(params);
-
-  var path = qs ? "".concat(route, "?").concat(qs) : route;
-  return path;
-};
-
-exports.buildUrl = buildUrl;
-
-var clientHostname = function clientHostname() {
-  return "".concat(window.location.protocol, "//").concat(window.location.hostname, ":").concat(window.location.port);
-};
-
-exports.clientHostname = clientHostname;
-var addHostname = typeof window == 'undefined' || window.location.host == 'localhost:3000' ? "https://".concat(PUBLIC_URI
-/* global PUBLIC_URI */
-) : clientHostname();
-exports.addHostname = addHostname;
-
 /***/ }),
-/* 22 */
-/***/ (function(module, exports, __webpack_require__) {
+/* 11 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.setRecaptchaResponse = exports.setRecaptchaKey = exports.changePasswordWithToken = exports.changePassword = exports.forgotPassword = exports.createUserAccount = exports.toggleLoginMode = exports.logoutUser = exports.validateUser = exports.loginUser = void 0;
-
-var _helpers = __webpack_require__(13);
-
-var _types = __webpack_require__(9);
-
-var loginUser = function loginUser(username, password) {
-  return (0, _helpers.action)(_types.LOGIN_USER, {
-    username: username,
-    password: password
-  });
-};
-
-exports.loginUser = loginUser;
-
-var validateUser = function validateUser(cookies) {
-  return (0, _helpers.action)(_types.VALIDATE_USER, {
-    cookies: cookies
-  });
-};
-
-exports.validateUser = validateUser;
-
-var logoutUser = function logoutUser() {
-  return (0, _helpers.action)(_types.LOGOUT_USER);
-};
-
-exports.logoutUser = logoutUser;
-
-var toggleLoginMode = function toggleLoginMode(loginMode) {
-  return (0, _helpers.action)(_types.TOGGLE_LOGIN_MODE, {
-    loginMode: loginMode
-  });
-};
-
-exports.toggleLoginMode = toggleLoginMode;
-
-var createUserAccount = function createUserAccount() {
-  return (0, _helpers.action)(_types.CREATE_USER_ACCOUNT);
-};
-
-exports.createUserAccount = createUserAccount;
-
-var forgotPassword = function forgotPassword(username) {
-  return (0, _helpers.action)(_types.FORGOT_USER_PASSWORD, {
-    username: username
-  });
-};
-
-exports.forgotPassword = forgotPassword;
-
-var changePassword = function changePassword(oldPassword, newPassword, newPasswordConfirm) {
-  return (0, _helpers.action)(_types.CHANGE_USER_PASSWORD, {
-    oldPassword: oldPassword,
-    newPassword: newPassword,
-    newPasswordConfirm: newPasswordConfirm
-  });
-};
-
-exports.changePassword = changePassword;
-
-var changePasswordWithToken = function changePasswordWithToken(token, newPassword, newPasswordConfirm) {
-  return (0, _helpers.action)(_types.CHANGE_USER_PASSWORD, {
-    token: token,
-    newPassword: newPassword,
-    newPasswordConfirm: newPasswordConfirm
-  });
-};
-
-exports.changePasswordWithToken = changePasswordWithToken;
-
-var setRecaptchaKey = function setRecaptchaKey(key) {
-  return (0, _helpers.action)(_types.SET_RECAPTCHA_KEY, {
-    key: key
-  });
-};
-
-exports.setRecaptchaKey = setRecaptchaKey;
-
-var setRecaptchaResponse = function setRecaptchaResponse(isHuman, token) {
-  return (0, _helpers.action)(_types.SET_RECAPTCHA_RESPONSE, {
-    isHuman: isHuman,
-    token: token
-  });
-};
-
-exports.setRecaptchaResponse = setRecaptchaResponse;
-
-/***/ }),
-/* 23 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__23__;
-
-/***/ }),
-/* 24 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(0);
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.SecurityApi = void 0;
-
-var _defineProperty2 = _interopRequireDefault(__webpack_require__(3));
-
-var _regenerator = _interopRequireDefault(__webpack_require__(1));
-
-var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(5));
-
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__(11));
-
-var _createClass2 = _interopRequireDefault(__webpack_require__(12));
-
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-var CMS_URL = SERVERS.cms;
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SecurityApi; });
+const CMS_URL = SERVERS.cms;
 /* global SERVERS */
 
-var config = {
+const config = {
   REGISTER_USER_URI: 'Security/RegisterUser',
   LOGON_USER_URI: 'REST/Contensis/Security/AuthenticateApplication',
   VALIDATE_USER_URI: 'REST/Contensis/Security/IsAuthenticated',
@@ -978,1618 +795,625 @@ var config = {
   AUTH_CAPTCHA_URI: 'Security/AuthenticateCaptcha',
   LOGIN_URL: '/business-government/partner'
 };
-var REGISTER_USER_URL = "".concat(CMS_URL, "/").concat(config.REGISTER_USER_URI);
-var LOGON_USER_URL = "".concat(CMS_URL, "/").concat(config.LOGON_USER_URI);
-var VALIDATE_USER_URL = "".concat(CMS_URL, "/").concat(config.VALIDATE_USER_URI);
-var USER_INFO_URL = "".concat(CMS_URL, "/").concat(config.USER_INFO_URI);
-var FORGOT_PASSWORD_URI = "/".concat(config.FORGOT_PASSWORD_URI);
-var CHANGE_PASSWORD_URI = "/".concat(config.CHANGE_PASSWORD_URI);
-var AUTH_CAPTCHA_URI = "/".concat(config.AUTH_CAPTCHA_URI);
-var CHANGE_PASSWORD_TOKEN_URI = "/".concat(config.CHANGE_PASSWORD_TOKEN_URI);
-var BASE_OPTIONS = {
+const REGISTER_USER_URL = `${CMS_URL}/${config.REGISTER_USER_URI}`;
+const LOGON_USER_URL = `${CMS_URL}/${config.LOGON_USER_URI}`;
+const VALIDATE_USER_URL = `${CMS_URL}/${config.VALIDATE_USER_URI}`;
+const USER_INFO_URL = `${CMS_URL}/${config.USER_INFO_URI}`;
+const FORGOT_PASSWORD_URI = `/${config.FORGOT_PASSWORD_URI}`;
+const CHANGE_PASSWORD_URI = `/${config.CHANGE_PASSWORD_URI}`;
+const AUTH_CAPTCHA_URI = `/${config.AUTH_CAPTCHA_URI}`;
+const CHANGE_PASSWORD_TOKEN_URI = `/${config.CHANGE_PASSWORD_TOKEN_URI}`;
+const BASE_OPTIONS = {
   method: 'GET',
   headers: {
     'Content-Type': 'application/json'
   }
 };
-
-var SecurityApi =
-/*#__PURE__*/
-function () {
-  function SecurityApi() {
-    (0, _classCallCheck2["default"])(this, SecurityApi);
+class SecurityApi {
+  static async AuthoriseRecaptcha(token) {
+    const url = `${AUTH_CAPTCHA_URI}?captchaToken=${encodeURIComponent(token)}`;
+    const options = {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'POST'
+    };
+    return await SecurityApi.get(url, options);
   }
 
-  (0, _createClass2["default"])(SecurityApi, null, [{
-    key: "AuthoriseRecaptcha",
-    value: function () {
-      var _AuthoriseRecaptcha = (0, _asyncToGenerator2["default"])(
-      /*#__PURE__*/
-      _regenerator["default"].mark(function _callee(token) {
-        var url, options;
-        return _regenerator["default"].wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                url = "".concat(AUTH_CAPTCHA_URI, "?captchaToken=").concat(encodeURIComponent(token));
-                options = {
-                  headers: {
-                    'Content-Type': 'application/json'
-                  },
-                  method: 'POST'
-                };
-                _context.next = 4;
-                return SecurityApi.get(url, options);
-
-              case 4:
-                return _context.abrupt("return", _context.sent);
-
-              case 5:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee);
-      }));
-
-      function AuthoriseRecaptcha(_x) {
-        return _AuthoriseRecaptcha.apply(this, arguments);
-      }
-
-      return AuthoriseRecaptcha;
-    }()
-  }, {
-    key: "LogonUser",
-    value: function () {
-      var _LogonUser = (0, _asyncToGenerator2["default"])(
-      /*#__PURE__*/
-      _regenerator["default"].mark(function _callee2(username, password) {
-        var body, options;
-        return _regenerator["default"].wrap(function _callee2$(_context2) {
-          while (1) {
-            switch (_context2.prev = _context2.next) {
-              case 0:
-                body = {
-                  username: username,
-                  password: password,
-                  ip: '127.0.0.1',
-                  applicationName: 'DesktopTool'
-                };
-                options = _objectSpread({}, BASE_OPTIONS, {
-                  method: 'POST',
-                  body: JSON.stringify(body)
-                });
-                _context2.next = 4;
-                return SecurityApi.get(LOGON_USER_URL, options);
-
-              case 4:
-                return _context2.abrupt("return", _context2.sent);
-
-              case 5:
-              case "end":
-                return _context2.stop();
-            }
-          }
-        }, _callee2);
-      }));
-
-      function LogonUser(_x2, _x3) {
-        return _LogonUser.apply(this, arguments);
-      }
-
-      return LogonUser;
-    }()
-  }, {
-    key: "ValidateUser",
-    value: function () {
-      var _ValidateUser = (0, _asyncToGenerator2["default"])(
-      /*#__PURE__*/
-      _regenerator["default"].mark(function _callee3(securityToken) {
-        var url, bodyToken, options;
-        return _regenerator["default"].wrap(function _callee3$(_context3) {
-          while (1) {
-            switch (_context3.prev = _context3.next) {
-              case 0:
-                url = "".concat(VALIDATE_USER_URL, "?token=").concat(encodeURIComponent(securityToken));
-                bodyToken = encodeURIComponent(decodeURIComponent(decodeURIComponent(securityToken)));
-                options = _objectSpread({}, BASE_OPTIONS, {
-                  method: 'POST',
-                  body: JSON.stringify({
-                    securityToken: bodyToken
-                  })
-                });
-                _context3.next = 5;
-                return SecurityApi.get(url, options);
-
-              case 5:
-                return _context3.abrupt("return", _context3.sent);
-
-              case 6:
-              case "end":
-                return _context3.stop();
-            }
-          }
-        }, _callee3);
-      }));
-
-      function ValidateUser(_x4) {
-        return _ValidateUser.apply(this, arguments);
-      }
-
-      return ValidateUser;
-    }()
-  }, {
-    key: "GetUserInfo",
-    value: function () {
-      var _GetUserInfo = (0, _asyncToGenerator2["default"])(
-      /*#__PURE__*/
-      _regenerator["default"].mark(function _callee4(securityToken) {
-        var _headers;
-
-        var options;
-        return _regenerator["default"].wrap(function _callee4$(_context4) {
-          while (1) {
-            switch (_context4.prev = _context4.next) {
-              case 0:
-                options = _objectSpread({}, BASE_OPTIONS, {
-                  headers: (_headers = {}, (0, _defineProperty2["default"])(_headers, 'Content-Type', 'text/plain'), (0, _defineProperty2["default"])(_headers, "ContensisCMSUserName", securityToken), _headers)
-                });
-                _context4.next = 3;
-                return SecurityApi.get(USER_INFO_URL, options);
-
-              case 3:
-                return _context4.abrupt("return", _context4.sent);
-
-              case 4:
-              case "end":
-                return _context4.stop();
-            }
-          }
-        }, _callee4);
-      }));
-
-      function GetUserInfo(_x5) {
-        return _GetUserInfo.apply(this, arguments);
-      }
-
-      return GetUserInfo;
-    }()
-  }, {
-    key: "RegisterUser",
-    value: function () {
-      var _RegisterUser = (0, _asyncToGenerator2["default"])(
-      /*#__PURE__*/
-      _regenerator["default"].mark(function _callee5(email, password) {
-        var body, options;
-        return _regenerator["default"].wrap(function _callee5$(_context5) {
-          while (1) {
-            switch (_context5.prev = _context5.next) {
-              case 0:
-                body = {
-                  email: email,
-                  password: password
-                };
-                options = _objectSpread({}, BASE_OPTIONS, {
-                  method: 'POST',
-                  body: JSON.stringify(body)
-                });
-                _context5.next = 4;
-                return SecurityApi.get(REGISTER_USER_URL, options);
-
-              case 4:
-                return _context5.abrupt("return", _context5.sent);
-
-              case 5:
-              case "end":
-                return _context5.stop();
-            }
-          }
-        }, _callee5);
-      }));
-
-      function RegisterUser(_x6, _x7) {
-        return _RegisterUser.apply(this, arguments);
-      }
-
-      return RegisterUser;
-    }()
-  }, {
-    key: "ChangePassword",
-    value: function () {
-      var _ChangePassword = (0, _asyncToGenerator2["default"])(
-      /*#__PURE__*/
-      _regenerator["default"].mark(function _callee6(username, oldPassword, newPassword, newPasswordConfirm) {
-        var url, options;
-        return _regenerator["default"].wrap(function _callee6$(_context6) {
-          while (1) {
-            switch (_context6.prev = _context6.next) {
-              case 0:
-                url = "".concat(CHANGE_PASSWORD_URI, "?username=").concat(encodeURIComponent(username), "&oldPassword=").concat(encodeURIComponent(oldPassword), "&newPassword=").concat(encodeURIComponent(newPassword), "&newPasswordConfirm=").concat(encodeURIComponent(newPasswordConfirm));
-                options = {
-                  headers: {
-                    'Content-Type': 'application/json'
-                  },
-                  method: 'POST'
-                };
-                _context6.next = 4;
-                return SecurityApi.get(url, options);
-
-              case 4:
-                return _context6.abrupt("return", _context6.sent);
-
-              case 5:
-              case "end":
-                return _context6.stop();
-            }
-          }
-        }, _callee6);
-      }));
-
-      function ChangePassword(_x8, _x9, _x10, _x11) {
-        return _ChangePassword.apply(this, arguments);
-      }
-
-      return ChangePassword;
-    }()
-  }, {
-    key: "ChangePasswordWithToken",
-    value: function () {
-      var _ChangePasswordWithToken = (0, _asyncToGenerator2["default"])(
-      /*#__PURE__*/
-      _regenerator["default"].mark(function _callee7(token, newPassword, newPasswordConfirm) {
-        var url, options;
-        return _regenerator["default"].wrap(function _callee7$(_context7) {
-          while (1) {
-            switch (_context7.prev = _context7.next) {
-              case 0:
-                url = "".concat(CHANGE_PASSWORD_TOKEN_URI, "?token=").concat(token, "&newPassword=").concat(encodeURIComponent(newPassword), "&confirmPassword=").concat(encodeURIComponent(newPasswordConfirm));
-                options = {
-                  headers: {
-                    'Content-Type': 'application/json'
-                  },
-                  method: 'POST'
-                };
-                _context7.next = 4;
-                return SecurityApi.get(url, options);
-
-              case 4:
-                return _context7.abrupt("return", _context7.sent);
-
-              case 5:
-              case "end":
-                return _context7.stop();
-            }
-          }
-        }, _callee7);
-      }));
-
-      function ChangePasswordWithToken(_x12, _x13, _x14) {
-        return _ChangePasswordWithToken.apply(this, arguments);
-      }
-
-      return ChangePasswordWithToken;
-    }()
-  }, {
-    key: "ForgotPassword",
-    value: function () {
-      var _ForgotPassword = (0, _asyncToGenerator2["default"])(
-      /*#__PURE__*/
-      _regenerator["default"].mark(function _callee8(username, currentUrl) {
-        var url, options;
-        return _regenerator["default"].wrap(function _callee8$(_context8) {
-          while (1) {
-            switch (_context8.prev = _context8.next) {
-              case 0:
-                url = "".concat(FORGOT_PASSWORD_URI, "?username=").concat(encodeURIComponent(username), "&currentUrl=").concat(encodeURIComponent(currentUrl));
-                options = {
-                  headers: {
-                    'Content-Type': 'application/json'
-                  },
-                  method: 'POST'
-                };
-                _context8.next = 4;
-                return SecurityApi.get(url, options);
-
-              case 4:
-                return _context8.abrupt("return", _context8.sent);
-
-              case 5:
-              case "end":
-                return _context8.stop();
-            }
-          }
-        }, _callee8);
-      }));
-
-      function ForgotPassword(_x15, _x16) {
-        return _ForgotPassword.apply(this, arguments);
-      }
-
-      return ForgotPassword;
-    }()
-  }, {
-    key: "get",
-    value: function () {
-      var _get = (0, _asyncToGenerator2["default"])(
-      /*#__PURE__*/
-      _regenerator["default"].mark(function _callee9(url) {
-        var options,
-            responseBody,
-            _args9 = arguments;
-        return _regenerator["default"].wrap(function _callee9$(_context9) {
-          while (1) {
-            switch (_context9.prev = _context9.next) {
-              case 0:
-                options = _args9.length > 1 && _args9[1] !== undefined ? _args9[1] : BASE_OPTIONS;
-                _context9.prev = 1;
-                _context9.next = 4;
-                return api(url, options);
-
-              case 4:
-                responseBody = _context9.sent;
-
-                if (!responseBody) {
-                  _context9.next = 7;
-                  break;
-                }
-
-                return _context9.abrupt("return", responseBody);
-
-              case 7:
-                return _context9.abrupt("return", false);
-
-              case 10:
-                _context9.prev = 10;
-                _context9.t0 = _context9["catch"](1);
-                return _context9.abrupt("return", false);
-
-              case 13:
-              case "end":
-                return _context9.stop();
-            }
-          }
-        }, _callee9, null, [[1, 10]]);
-      }));
-
-      function get(_x17) {
-        return _get.apply(this, arguments);
-      }
-
-      return get;
-    }()
-  }]);
-  return SecurityApi;
-}();
-
-exports.SecurityApi = SecurityApi;
-
-function api(_x18, _x19) {
-  return _api.apply(this, arguments);
-}
-
-function _api() {
-  _api = (0, _asyncToGenerator2["default"])(
-  /*#__PURE__*/
-  _regenerator["default"].mark(function _callee11(url, options) {
-    return _regenerator["default"].wrap(function _callee11$(_context11) {
-      while (1) {
-        switch (_context11.prev = _context11.next) {
-          case 0:
-            return _context11.abrupt("return", fetch(url, options).then(
-            /*#__PURE__*/
-            function () {
-              var _ref = (0, _asyncToGenerator2["default"])(
-              /*#__PURE__*/
-              _regenerator["default"].mark(function _callee10(response) {
-                return _regenerator["default"].wrap(function _callee10$(_context10) {
-                  while (1) {
-                    switch (_context10.prev = _context10.next) {
-                      case 0:
-                        setTimeout(function () {
-                          return null;
-                        }, 0);
-
-                        if (response.ok) {
-                          _context10.next = 3;
-                          break;
-                        }
-
-                        throw new Error(response.statusText);
-
-                      case 3:
-                        return _context10.abrupt("return", response.json().then(function (data) {
-                          return data;
-                        }));
-
-                      case 4:
-                      case "end":
-                        return _context10.stop();
-                    }
-                  }
-                }, _callee10);
-              }));
-
-              return function (_x20) {
-                return _ref.apply(this, arguments);
-              };
-            }())["catch"](function (error) {
-              //console.log(error);
-              throw error;
-            }));
-
-          case 1:
-          case "end":
-            return _context11.stop();
-        }
-      }
-    }, _callee11);
-  }));
-  return _api.apply(this, arguments);
-}
-
-/***/ }),
-/* 25 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(0);
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.toJS = void 0;
-
-var _react = _interopRequireDefault(__webpack_require__(4));
-
-var _immutable = __webpack_require__(2);
-
-var toJS = function toJS(WrappedComponent) {
-  return function (wrappedComponentProps) {
-    var KEY = 0;
-    var VALUE = 1;
-    var propsJS = Object.entries(wrappedComponentProps).reduce(function (newProps, wrappedComponentProp) {
-      newProps[wrappedComponentProp[KEY]] = _immutable.Iterable.isIterable(wrappedComponentProp[VALUE]) ? wrappedComponentProp[VALUE].toJS() : wrappedComponentProp[VALUE];
-      return newProps;
-    }, {});
-    return _react["default"].createElement(WrappedComponent, propsJS);
-  };
-};
-
-exports.toJS = toJS;
-
-/***/ }),
-/* 26 */,
-/* 27 */,
-/* 28 */,
-/* 29 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(0);
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.validateUserSaga = validateUserSaga;
-exports.userSagas = void 0;
-
-var _defineProperty2 = _interopRequireDefault(__webpack_require__(3));
-
-var _regenerator = _interopRequireDefault(__webpack_require__(1));
-
-var _effects = __webpack_require__(19);
-
-var _queryString = _interopRequireDefault(__webpack_require__(15));
-
-var _types = __webpack_require__(9);
-
-var _reducers = __webpack_require__(14);
-
-var _routing = __webpack_require__(8);
-
-var _routing2 = __webpack_require__(6);
-
-var _selectors = __webpack_require__(10);
-
-var _LoginHelper = __webpack_require__(32);
-
-var _SecurityApi = __webpack_require__(24);
-
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-var _marked =
-/*#__PURE__*/
-_regenerator["default"].mark(loginUserSaga),
-    _marked2 =
-/*#__PURE__*/
-_regenerator["default"].mark(logoutUserSaga),
-    _marked3 =
-/*#__PURE__*/
-_regenerator["default"].mark(validateUserSaga),
-    _marked4 =
-/*#__PURE__*/
-_regenerator["default"].mark(updateUserSaga),
-    _marked5 =
-/*#__PURE__*/
-_regenerator["default"].mark(forgotPassword),
-    _marked6 =
-/*#__PURE__*/
-_regenerator["default"].mark(changePassword),
-    _marked7 =
-/*#__PURE__*/
-_regenerator["default"].mark(createUserAccountSaga);
-
-var userSagas = [(0, _effects.takeEvery)(_types.LOGIN_USER, loginUserSaga), (0, _effects.takeEvery)(_types.LOGOUT_USER, logoutUserSaga), (0, _effects.takeEvery)(_types.VALIDATE_USER, validateUserSaga), (0, _effects.takeEvery)(_types.CREATE_USER_ACCOUNT, createUserAccountSaga), (0, _effects.takeEvery)(_types.FORGOT_USER_PASSWORD, forgotPassword), (0, _effects.takeEvery)(_types.CHANGE_USER_PASSWORD, changePassword)];
-exports.userSagas = userSagas;
-
-function loginUserSaga(action) {
-  var getGroups, username, password, user;
-  return _regenerator["default"].wrap(function loginUserSaga$(_context) {
-    while (1) {
-      switch (_context.prev = _context.next) {
-        case 0:
-          getGroups = true;
-          username = action.username, password = action.password;
-
-          if (!(username && password)) {
-            _context.next = 10;
-            break;
-          }
-
-          _context.next = 5;
-          return _LoginHelper.LoginHelper.LoginUser(username, password, getGroups);
-
-        case 5:
-          user = _context.sent;
-          _context.next = 8;
-          return (0, _effects.call)(updateUserSaga, {
-            type: user.failedLogin ? _types.LOGIN_FAILED : _types.LOGIN_SUCCESSFUL,
-            user: user,
-            redirect: !user.failedLogin
-          });
-
-        case 8:
-          _context.next = 12;
-          break;
-
-        case 10:
-          _context.next = 12;
-          return _LoginHelper.LoginHelper.ClientRedirectToLogin();
-
-        case 12:
-        case "end":
-          return _context.stop();
-      }
-    }
-  }, _marked);
-}
-
-function logoutUserSaga() {
-  var user, state;
-  return _regenerator["default"].wrap(function logoutUserSaga$(_context2) {
-    while (1) {
-      switch (_context2.prev = _context2.next) {
-        case 0:
-          user = _LoginHelper.LoginHelper.LogoutUser();
-          _context2.next = 3;
-          return (0, _effects.fork)(updateUserSaga, {
-            user: user
-          });
-
-        case 3:
-          _context2.next = 5;
-          return (0, _effects.select)();
-
-        case 5:
-          state = _context2.sent;
-          _context2.next = 8;
-          return _LoginHelper.LoginHelper.ClientRedirectToHome(state.getIn(['router', 'location']));
-
-        case 8:
-        case "end":
-          return _context2.stop();
-      }
-    }
-  }, _marked2);
-}
-
-function validateUserSaga(action) {
-  var getGroups, state, currentQs, qsToken, cookies, user, type;
-  return _regenerator["default"].wrap(function validateUserSaga$(_context3) {
-    while (1) {
-      switch (_context3.prev = _context3.next) {
-        case 0:
-          getGroups = true;
-          _context3.next = 3;
-          return (0, _effects.select)();
-
-        case 3:
-          state = _context3.sent;
-          currentQs = _queryString["default"].parse(state.getIn(['router', 'location', 'search']));
-          qsToken = currentQs.securityToken || currentQs.securitytoken;
-
-          if (qsToken) {
-            _LoginHelper.LoginHelper.SetLoginCookies({
-              securityToken: qsToken
-            });
-          }
-
-          cookies = !qsToken ? action.cookies : _objectSpread({
-            ContensisCMSUserName: encodeURIComponent(qsToken)
-          }, action.cookies);
-          _context3.next = 10;
-          return _LoginHelper.LoginHelper.ValidateUser(getGroups, cookies);
-
-        case 10:
-          user = _context3.sent;
-          type = user && user.loggedIn ? _types.VALIDATE_USER_SUCCESS : _types.VALIDATE_USER_FAILED;
-          _context3.next = 14;
-          return (0, _effects.call)(updateUserSaga, {
-            type: type,
-            user: user && !user.loggedIn ? _reducers.initialUserState : user
-          });
-
-        case 14:
-        case "end":
-          return _context3.stop();
-      }
-    }
-  }, _marked3);
-}
-
-function updateUserSaga(action) {
-  var userState, currentSearch, qs, redirectUri;
-  return _regenerator["default"].wrap(function updateUserSaga$(_context4) {
-    while (1) {
-      switch (_context4.prev = _context4.next) {
-        case 0:
-          _context4.next = 2;
-          return (0, _effects.select)(_selectors.selectUser);
-
-        case 2:
-          userState = _context4.sent;
-          _context4.next = 5;
-          return (0, _effects.put)({
-            type: _types.UPDATE_USER,
-            from: action.type,
-            user: _objectSpread({}, userState.toJS(), {}, action.user)
-          });
-
-        case 5:
-          if (!action.redirect) {
-            _context4.next = 14;
-            break;
-          }
-
-          _context4.next = 8;
-          return (0, _effects.select)(_routing2.selectCurrentSearch);
-
-        case 8:
-          currentSearch = _context4.sent;
-          qs = _queryString["default"].parse(currentSearch);
-          redirectUri = qs.redirect_uri;
-
-          if (!redirectUri) {
-            _context4.next = 14;
-            break;
-          }
-
-          _context4.next = 14;
-          return (0, _effects.put)({
-            type: _routing.SET_ROUTE,
-            path: redirectUri
-          });
-
-        case 14:
-        case "end":
-          return _context4.stop();
-      }
-    }
-  }, _marked4);
-}
-
-function forgotPassword(action) {
-  var message;
-  return _regenerator["default"].wrap(function forgotPassword$(_context5) {
-    while (1) {
-      switch (_context5.prev = _context5.next) {
-        case 0:
-          _context5.next = 2;
-          return _LoginHelper.LoginHelper.ForgotPassword(action.username);
-
-        case 2:
-          message = _context5.sent;
-          _context5.next = 5;
-          return (0, _effects.put)({
-            type: _types.UPDATE_USER,
-            user: {
-              passwordReset: true,
-              passwordResetMessage: message
-            },
-            history: history
-          });
-
-        case 5:
-        case "end":
-          return _context5.stop();
-      }
-    }
-  }, _marked5);
-}
-
-function changePassword(action) {
-  var state, userState, message;
-  return _regenerator["default"].wrap(function changePassword$(_context6) {
-    while (1) {
-      switch (_context6.prev = _context6.next) {
-        case 0:
-          _context6.next = 2;
-          return (0, _effects.select)();
-
-        case 2:
-          state = _context6.sent;
-          _context6.next = 5;
-          return state.get('user');
-
-        case 5:
-          userState = _context6.sent;
-          message = '';
-
-          if (!action.token) {
-            _context6.next = 13;
-            break;
-          }
-
-          _context6.next = 10;
-          return _LoginHelper.LoginHelper.ChangePasswordWithToken(action.token, action.newPassword, action.newPasswordConfirm);
-
-        case 10:
-          message = _context6.sent;
-          _context6.next = 16;
-          break;
-
-        case 13:
-          _context6.next = 15;
-          return _LoginHelper.LoginHelper.ChangePassword(userState.username, action.oldPassword, action.newPassword, action.newPasswordConfirm);
-
-        case 15:
-          message = _context6.sent;
-
-        case 16:
-          _context6.next = 18;
-          return (0, _effects.put)({
-            type: _types.UPDATE_USER,
-            user: {
-              logonResult: message
-            },
-            history: history
-          });
-
-        case 18:
-        case "end":
-          return _context6.stop();
-      }
-    }
-  }, _marked6);
-}
-
-function createUserAccountSaga() {
-  var userState, registerResponse, securityToken, registrationResult, id, user, _user;
-
-  return _regenerator["default"].wrap(function createUserAccountSaga$(_context7) {
-    while (1) {
-      switch (_context7.prev = _context7.next) {
-        case 0:
-          _context7.next = 2;
-          return (0, _effects.select)(_selectors.selectUser);
-
-        case 2:
-          userState = _context7.sent;
-
-          if (!(userState.username && userState.password)) {
-            _context7.next = 22;
-            break;
-          }
-
-          _context7.next = 6;
-          return _SecurityApi.SecurityApi.RegisterUser(userState.username, userState.password);
-
-        case 6:
-          registerResponse = _context7.sent;
-
-          if (!registerResponse) {
-            _context7.next = 20;
-            break;
-          }
-
-          securityToken = registerResponse.securityToken, registrationResult = registerResponse.registrationResult, id = registerResponse.id;
-
-          if (!securityToken) {
-            _context7.next = 15;
-            break;
-          }
-
-          user = _objectSpread({}, userState, {
-            id: id,
-            securityToken: securityToken,
-            password: null,
-            loggedIn: true,
-            verifiedEmail: false,
-            failedLogin: false,
-            failedToCreateAccount: false,
-            registrationResult: registrationResult
-          });
-          _context7.next = 13;
-          return (0, _effects.put)({
-            type: _types.UPDATE_USER,
-            user: user
-          });
-
-        case 13:
-          _context7.next = 18;
-          break;
-
-        case 15:
-          _user = _objectSpread({}, userState, {
-            securityToken: null,
-            loggedIn: false,
-            verifiedEmail: false,
-            failedLogin: true,
-            failedToCreateAccount: true,
-            registrationResult: registrationResult
-          });
-          _context7.next = 18;
-          return (0, _effects.put)({
-            type: _types.UPDATE_USER,
-            user: _user
-          });
-
-        case 18:
-          _context7.next = 22;
-          break;
-
-        case 20:
-          _context7.next = 22;
-          return (0, _effects.put)({
-            type: _types.UPDATE_USER,
-            user: _objectSpread({}, userState, {
-              registrationResult: 'ServiceFault'
-            })
-          });
-
-        case 22:
-        case "end":
-          return _context7.stop();
-      }
-    }
-  }, _marked7);
-}
-
-/***/ }),
-/* 30 */,
-/* 31 */,
-/* 32 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(0);
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.LoginHelper = void 0;
-
-var _regenerator = _interopRequireDefault(__webpack_require__(1));
-
-var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(5));
-
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__(11));
-
-var _createClass2 = _interopRequireDefault(__webpack_require__(12));
-
-var _CookieHelper = __webpack_require__(34);
-
-var _SecurityApi = __webpack_require__(24);
-
-var _reducers = __webpack_require__(14);
-
-// import { ajax } from 'jquery';
-// import queryString from 'query-string';
-// import { randomString } from '~/core/util/helpers';
-// import userManager from './oidc/userManager';
-var LOGIN_COOKIE = 'ContensisCMSUserName';
-var LAST_USERNAME_COOKIE = 'ContensisLastUserName';
-var DISPLAY_NAME_COOKIE = 'ContensisDisplayName';
-var USER_LANGUAGE_COOKIE = 'User_LanguageID';
-var AVATAR_COOKIE = 'ContensisAvatar'; // const contensis = CONTENSIS; /* global CONTENSIS */
-
-var LoginHelper =
-/*#__PURE__*/
-function () {
-  function LoginHelper() {
-    (0, _classCallCheck2["default"])(this, LoginHelper);
+  static async LogonUser(username, password) {
+    const body = {
+      username,
+      password,
+      ip: '127.0.0.1',
+      applicationName: 'DesktopTool'
+    };
+    const options = { ...BASE_OPTIONS,
+      method: 'POST',
+      body: JSON.stringify(body)
+    };
+    return await SecurityApi.get(LOGON_USER_URL, options);
   }
 
-  (0, _createClass2["default"])(LoginHelper, null, [{
-    key: "GetLoginCookie",
-    value: function GetLoginCookie() {
-      return _CookieHelper.CookieHelper.GetCookie(LOGIN_COOKIE);
-    }
-  }, {
-    key: "SetLoginCookies",
-    value: function SetLoginCookies(user) {
-      if (user.securityToken) _CookieHelper.CookieHelper.SetCookie(LOGIN_COOKIE, user.securityToken);
-
-      if (user.username) {
-        _CookieHelper.CookieHelper.SetCookie(LAST_USERNAME_COOKIE, user.username);
-
-        _CookieHelper.CookieHelper.SetCookie(DISPLAY_NAME_COOKIE, user.username);
-      }
-    }
-  }, {
-    key: "GetCachedCredentials",
-    value: function GetCachedCredentials() {
-      return {
-        securityToken: _CookieHelper.CookieHelper.GetCookie(LOGIN_COOKIE),
-        username: _CookieHelper.CookieHelper.GetCookie(LAST_USERNAME_COOKIE),
-        displayName: _CookieHelper.CookieHelper.GetCookie(DISPLAY_NAME_COOKIE),
-        languageId: _CookieHelper.CookieHelper.GetCookie(USER_LANGUAGE_COOKIE),
-        avatar: _CookieHelper.CookieHelper.GetCookie(AVATAR_COOKIE)
-      };
-    }
-  }, {
-    key: "GetCachedCredentialsSSR",
-    value: function GetCachedCredentialsSSR(cookies) {
-      return {
-        securityToken: cookies[LOGIN_COOKIE],
-        username: cookies[LAST_USERNAME_COOKIE],
-        displayName: cookies[DISPLAY_NAME_COOKIE],
-        languageId: cookies[USER_LANGUAGE_COOKIE],
-        avatar: cookies[AVATAR_COOKIE]
-      };
-    }
-  }, {
-    key: "ClearCachedCredentials",
-    value: function ClearCachedCredentials() {
-      _CookieHelper.CookieHelper.DeleteCookie(LOGIN_COOKIE);
-
-      _CookieHelper.CookieHelper.DeleteCookie(LAST_USERNAME_COOKIE);
-
-      _CookieHelper.CookieHelper.DeleteCookie(DISPLAY_NAME_COOKIE);
-
-      _CookieHelper.CookieHelper.DeleteCookie(USER_LANGUAGE_COOKIE);
-
-      _CookieHelper.CookieHelper.DeleteCookie(AVATAR_COOKIE);
-    }
-  }, {
-    key: "ValidateUser",
-    value: function () {
-      var _ValidateUser = (0, _asyncToGenerator2["default"])(
-      /*#__PURE__*/
-      _regenerator["default"].mark(function _callee() {
-        var groups,
-            cookies,
-            cached,
-            response,
-            user,
-            userWithGroups,
-            _args = arguments;
-        return _regenerator["default"].wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                groups = _args.length > 0 && _args[0] !== undefined ? _args[0] : false;
-                cookies = _args.length > 1 && _args[1] !== undefined ? _args[1] : null;
-                cached = cookies ? this.GetCachedCredentialsSSR(cookies) : this.GetCachedCredentials();
-
-                if (!cached.securityToken) {
-                  _context.next = 21;
-                  break;
-                }
-
-                _context.next = 6;
-                return _SecurityApi.SecurityApi.ValidateUser(cached.securityToken);
-
-              case 6:
-                response = _context.sent;
-
-                if (response) {
-                  _context.next = 9;
-                  break;
-                }
-
-                return _context.abrupt("return", false);
-
-              case 9:
-                // Convert result to a User object
-                user = {
-                  username: cached.username,
-                  securityToken: encodeURIComponent(response.SecurityToken),
-                  logonResult: response.LogonResult,
-                  id: response.UserID,
-                  loginScreenMode: 'login'
-                };
-
-                if (!(user.logonResult !== 0)) {
-                  _context.next = 14;
-                  break;
-                }
-
-                // Clear the cookie cache so we don't need to validate again
-                LoginHelper.ClearCachedCredentials();
-                _context.next = 20;
-                break;
-
-              case 14:
-                // Set logged in flag
-                user.loggedIn = true;
-
-                if (!groups) {
-                  _context.next = 20;
-                  break;
-                }
-
-                _context.next = 18;
-                return this.GetGroups(user);
-
-              case 18:
-                userWithGroups = _context.sent;
-                return _context.abrupt("return", userWithGroups);
-
-              case 20:
-                return _context.abrupt("return", user);
-
-              case 21:
-                return _context.abrupt("return", false);
-
-              case 22:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee, this);
-      }));
-
-      function ValidateUser() {
-        return _ValidateUser.apply(this, arguments);
-      }
-
-      return ValidateUser;
-    }()
-  }, {
-    key: "LoginUser",
-    value: function () {
-      var _LoginUser = (0, _asyncToGenerator2["default"])(
-      /*#__PURE__*/
-      _regenerator["default"].mark(function _callee2(username, password) {
-        var groups,
-            loginResponse,
-            SecurityToken,
-            LogonResult,
-            UserID,
-            failedLogin,
-            user,
-            userWithGroups,
-            _args2 = arguments;
-        return _regenerator["default"].wrap(function _callee2$(_context2) {
-          while (1) {
-            switch (_context2.prev = _context2.next) {
-              case 0:
-                groups = _args2.length > 2 && _args2[2] !== undefined ? _args2[2] : false;
-
-                if (!(username && password)) {
-                  _context2.next = 20;
-                  break;
-                }
-
-                _context2.next = 4;
-                return _SecurityApi.SecurityApi.LogonUser(username, password);
-
-              case 4:
-                loginResponse = _context2.sent;
-
-                if (!loginResponse) {
-                  _context2.next = 19;
-                  break;
-                }
-
-                // Extract the elements we need from the response
-                SecurityToken = loginResponse.SecurityToken, LogonResult = loginResponse.LogonResult, UserID = loginResponse.UserID;
-                failedLogin = !!LogonResult; // 0 is successful
-                // Map response to new user object
-
-                user = {
-                  username: username,
-                  failedLogin: failedLogin,
-                  loggedIn: !!SecurityToken && !failedLogin,
-                  securityToken: SecurityToken,
-                  id: UserID,
-                  logonResult: this.CheckResult(LogonResult)
-                };
-
-                if (!(!user.failedLogin && !!user.securityToken)) {
-                  _context2.next = 16;
-                  break;
-                }
-
-                this.SetLoginCookies(user);
-
-                if (!groups) {
-                  _context2.next = 16;
-                  break;
-                }
-
-                _context2.next = 14;
-                return this.GetGroups(user);
-
-              case 14:
-                userWithGroups = _context2.sent;
-                return _context2.abrupt("return", userWithGroups);
-
-              case 16:
-                return _context2.abrupt("return", user);
-
-              case 19:
-                return _context2.abrupt("return", {
-                  securityToken: null,
-                  loggedIn: false,
-                  failedLogin: true,
-                  logonResult: 'Service Fault'
-                });
-
-              case 20:
-              case "end":
-                return _context2.stop();
-            }
-          }
-        }, _callee2, this);
-      }));
-
-      function LoginUser(_x, _x2) {
-        return _LoginUser.apply(this, arguments);
-      }
-
-      return LoginUser;
-    }()
-  }, {
-    key: "GetGroups",
-    value: function () {
-      var _GetGroups = (0, _asyncToGenerator2["default"])(
-      /*#__PURE__*/
-      _regenerator["default"].mark(function _callee3(user) {
-        var userInfoResponse, response;
-        return _regenerator["default"].wrap(function _callee3$(_context3) {
-          while (1) {
-            switch (_context3.prev = _context3.next) {
-              case 0:
-                if (user.securityToken) {
-                  _context3.next = 2;
-                  break;
-                }
-
-                return _context3.abrupt("return", user);
-
-              case 2:
-                _context3.next = 4;
-                return _SecurityApi.SecurityApi.GetUserInfo(user.securityToken);
-
-              case 4:
-                userInfoResponse = _context3.sent;
-
-                if (userInfoResponse) {
-                  response = JSON.parse(userInfoResponse);
-
-                  if (response.Error || !response.GroupCollection) {
-                    user.errorMessage = "Problem fetching user info: ".concat(response.Error);
-                  } else {
-                    user.groups = response.GroupCollection.map(function (group) {
-                      return {
-                        name: group.GroupName,
-                        id: group.GroupId
-                      };
-                    });
-                    user.fullName = response.Fullname;
-                    user.emailAddress = response.Email;
-                  }
-                }
-
-                return _context3.abrupt("return", user);
-
-              case 7:
-              case "end":
-                return _context3.stop();
-            }
-          }
-        }, _callee3);
-      }));
-
-      function GetGroups(_x3) {
-        return _GetGroups.apply(this, arguments);
-      }
-
-      return GetGroups;
-    }()
-  }, {
-    key: "LogoutUser",
-    value: function LogoutUser() {
-      this.ClearCachedCredentials();
-      return _reducers.initialUserState.toJS();
-    }
-  }, {
-    key: "ClientRedirectToLogin",
-    value: function ClientRedirectToLogin(uri) {
-      if (typeof window != 'undefined') {
-        window.location.href = LoginHelper.LoginPageUrl(uri); // LoginHelper.IsWsFedSignin()
-        // ? LoginHelper.WsFedLoginPageUrl(window.location)
-        // : LoginHelper.LoginPageUrl(uri);
-      }
-    }
-  }, {
-    key: "LoginPageUrl",
-    value: function LoginPageUrl(uri) {
-      return "".concat(uri || '/login', "?redirect_uri=").concat(window.location.pathname + window.location.search);
-    } // static WsFedLoginPageUrl(currentLocation) {
-    //   const loginPage = contensis.ADFS_LOGIN_PAGE.replace(
-    //     '{redirect_uri}',
-    //     encodeURIComponent(currentLocation.toString().split('#')[0])
-    //   ).replace('{nonce}', randomString(5));
-    //   return `${contensis.URL}${loginPage}`.replace(/([^:]\/)\/+/g, '$1');
-    // }
-    // static IsWsFedSignin() {
-    //   return contensis.WSFED_SIGNIN;
-    // }
-    // static WsFedSignin(redirectUri) {
-    //   userManager.signinRedirect({
-    //     scope: 'openid',
-    //     response_type: 'id_token',
-    //     redirect_uri: redirectUri || window.location.toString(),
-    //   });
-    // }
-    // static WsFedLogout() {
-    //   ajax(`${contensis.URL}authenticate/logout/`, {
-    //     dataType: 'jsonp',
-    //     jsonp: false,
-    //     async: false,
-    //   });
-    // }
-
-  }, {
-    key: "ForgotPassword",
-    value: function () {
-      var _ForgotPassword = (0, _asyncToGenerator2["default"])(
-      /*#__PURE__*/
-      _regenerator["default"].mark(function _callee4(username) {
-        var currentUrl, passwordResponse;
-        return _regenerator["default"].wrap(function _callee4$(_context4) {
-          while (1) {
-            switch (_context4.prev = _context4.next) {
-              case 0:
-                if (!username) {
-                  _context4.next = 7;
-                  break;
-                }
-
-                currentUrl = window.location.protocol + '//' + window.location.host;
-                _context4.next = 4;
-                return _SecurityApi.SecurityApi.ForgotPassword(username, currentUrl);
-
-              case 4:
-                passwordResponse = _context4.sent;
-
-                if (!passwordResponse) {
-                  _context4.next = 7;
-                  break;
-                }
-
-                return _context4.abrupt("return", passwordResponse);
-
-              case 7:
-              case "end":
-                return _context4.stop();
-            }
-          }
-        }, _callee4);
-      }));
-
-      function ForgotPassword(_x4) {
-        return _ForgotPassword.apply(this, arguments);
-      }
-
-      return ForgotPassword;
-    }()
-  }, {
-    key: "ChangePassword",
-    value: function () {
-      var _ChangePassword = (0, _asyncToGenerator2["default"])(
-      /*#__PURE__*/
-      _regenerator["default"].mark(function _callee5(username, oldPassword, newPassword, newPasswordConfirm) {
-        var passwordResponse;
-        return _regenerator["default"].wrap(function _callee5$(_context5) {
-          while (1) {
-            switch (_context5.prev = _context5.next) {
-              case 0:
-                if (!(newPassword && newPasswordConfirm)) {
-                  _context5.next = 10;
-                  break;
-                }
-
-                if (!this.ValidatePassword(newPassword)) {
-                  _context5.next = 9;
-                  break;
-                }
-
-                _context5.next = 4;
-                return _SecurityApi.SecurityApi.ChangePassword(username, oldPassword, newPassword, newPasswordConfirm);
-
-              case 4:
-                passwordResponse = _context5.sent;
-
-                if (!passwordResponse) {
-                  _context5.next = 7;
-                  break;
-                }
-
-                return _context5.abrupt("return", passwordResponse);
-
-              case 7:
-                _context5.next = 10;
-                break;
-
-              case 9:
-                return _context5.abrupt("return", 'New password does not meet the requirements: \r\n\r\n - Must be a minimum of 8 characters long \r\n - Must contain at least 1 uppercase character \r\n - Must contain at least 1 special character or number');
-
-              case 10:
-              case "end":
-                return _context5.stop();
-            }
-          }
-        }, _callee5, this);
-      }));
-
-      function ChangePassword(_x5, _x6, _x7, _x8) {
-        return _ChangePassword.apply(this, arguments);
-      }
-
-      return ChangePassword;
-    }()
-  }, {
-    key: "ChangePasswordWithToken",
-    value: function () {
-      var _ChangePasswordWithToken = (0, _asyncToGenerator2["default"])(
-      /*#__PURE__*/
-      _regenerator["default"].mark(function _callee6(token, newPassword, newPasswordConfirm) {
-        var passwordResponse;
-        return _regenerator["default"].wrap(function _callee6$(_context6) {
-          while (1) {
-            switch (_context6.prev = _context6.next) {
-              case 0:
-                if (!(newPassword && newPasswordConfirm)) {
-                  _context6.next = 10;
-                  break;
-                }
-
-                if (!this.ValidatePassword(newPassword)) {
-                  _context6.next = 9;
-                  break;
-                }
-
-                _context6.next = 4;
-                return _SecurityApi.SecurityApi.ChangePasswordWithToken(token, btoa(newPassword), btoa(newPasswordConfirm));
-
-              case 4:
-                passwordResponse = _context6.sent;
-
-                if (!passwordResponse) {
-                  _context6.next = 7;
-                  break;
-                }
-
-                return _context6.abrupt("return", passwordResponse);
-
-              case 7:
-                _context6.next = 10;
-                break;
-
-              case 9:
-                return _context6.abrupt("return", 'New password does not meet the requirements: \r\n\r\n - Must be a minimum of 8 characters long \r\n - Must contain at least 1 uppercase character \r\n - Must contain at least 1 special character or number');
-
-              case 10:
-              case "end":
-                return _context6.stop();
-            }
-          }
-        }, _callee6, this);
-      }));
-
-      function ChangePasswordWithToken(_x9, _x10, _x11) {
-        return _ChangePasswordWithToken.apply(this, arguments);
-      }
-
-      return ChangePasswordWithToken;
-    }()
-  }, {
-    key: "ValidatePassword",
-    value: function ValidatePassword(pword) {
-      //Password must be over 8 characters long
-      if (pword.length < 8) return false; //This only returns true if the following criteria is met:
-      //  *8 chars or more
-      //  *Must contain at least 1 capital letter
-      //  *Must contain at least 1 number or special character
-
-      return /^(?:(?=.*[a-z])(?:(?=.*[A-Z])(?=.*[\d\W])|(?=.*\W)(?=.*\d))|(?=.*\W)(?=.*[A-Z])(?=.*\d)).{8,}$/.test(pword);
-    }
-  }, {
-    key: "CheckResult",
-    value: function CheckResult(result) {
-      var Results = {
-        '0': 'OK',
-        '-2': 'Incorrect username or password',
-        '-3': 'Account disabled',
-        '-4': 'Account locked',
-        '-5': 'Log on from this PC is denied',
-        '-6': 'Log on at this time is denied',
-        '-7': 'Account already logged in',
-        '-9': 'Unspecified error',
-        '2': 'Password change required',
-        '3': 'Insufficient privileges',
-        '-10': 'Account expired',
-        '-11': 'Maintenance mode',
-        '4': 'Security token expired',
-        '': 'An error has occured'
-      };
-      return Results[result];
-    }
-  }]);
-  return LoginHelper;
-}();
-
-exports.LoginHelper = LoginHelper;
-
-/***/ }),
-/* 33 */,
-/* 34 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(0);
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.CookieHelper = void 0;
-
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__(11));
-
-var _createClass2 = _interopRequireDefault(__webpack_require__(12));
-
-var _jsCookie = _interopRequireDefault(__webpack_require__(35));
-
-var COOKIE_VALID_DAYS = 1; // 0 = Session cookie
-// Override the default js-cookie conversion / encoding
-// methods so the written values work with Contensis sites
-
-var _cookie = _jsCookie["default"].withConverter({
-  read: function read(value) {
-    return decodeURIComponent(value);
-  },
-  write: function write(value) {
-    return encodeURIComponent(value);
-  }
-});
-
-var CookieHelper =
-/*#__PURE__*/
-function () {
-  function CookieHelper() {
-    (0, _classCallCheck2["default"])(this, CookieHelper);
+  static async ValidateUser(securityToken) {
+    const url = `${VALIDATE_USER_URL}?token=${encodeURIComponent(securityToken)}`;
+    const bodyToken = encodeURIComponent(decodeURIComponent(decodeURIComponent(securityToken)));
+    const options = { ...BASE_OPTIONS,
+      method: 'POST',
+      body: JSON.stringify({
+        securityToken: bodyToken
+      })
+    };
+    return await SecurityApi.get(url, options);
   }
 
-  (0, _createClass2["default"])(CookieHelper, null, [{
-    key: "GetCookie",
-    value: function GetCookie(name) {
-      return _cookie.get(name);
-    }
-  }, {
-    key: "SetCookie",
-    value: function SetCookie(name, value) {
-      var maxAgeDays = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : COOKIE_VALID_DAYS;
-      maxAgeDays === 0 ? _cookie.set(name, value) : _cookie.set(name, value, {
-        expires: maxAgeDays
-      });
-    }
-  }, {
-    key: "DeleteCookie",
-    value: function DeleteCookie(name) {
-      _cookie.remove(name);
-    }
-  }]);
-  return CookieHelper;
-}();
+  static async GetUserInfo(securityToken) {
+    const options = { ...BASE_OPTIONS,
+      headers: {
+        ['Content-Type']: 'text/plain',
+        ContensisCMSUserName: securityToken
+      }
+    };
+    return await SecurityApi.get(USER_INFO_URL, options);
+  }
 
-exports.CookieHelper = CookieHelper;
+  static async RegisterUser(email, password) {
+    const body = {
+      email,
+      password
+    };
+    const options = { ...BASE_OPTIONS,
+      method: 'POST',
+      body: JSON.stringify(body)
+    };
+    return await SecurityApi.get(REGISTER_USER_URL, options);
+  }
+
+  static async ChangePassword(username, oldPassword, newPassword, newPasswordConfirm) {
+    const url = `${CHANGE_PASSWORD_URI}?username=${encodeURIComponent(username)}&oldPassword=${encodeURIComponent(oldPassword)}&newPassword=${encodeURIComponent(newPassword)}&newPasswordConfirm=${encodeURIComponent(newPasswordConfirm)}`;
+    const options = {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'POST'
+    };
+    return await SecurityApi.get(url, options);
+  }
+
+  static async ChangePasswordWithToken(token, newPassword, newPasswordConfirm) {
+    const url = `${CHANGE_PASSWORD_TOKEN_URI}?token=${token}&newPassword=${encodeURIComponent(newPassword)}&confirmPassword=${encodeURIComponent(newPasswordConfirm)}`;
+    const options = {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'POST'
+    };
+    return await SecurityApi.get(url, options);
+  }
+
+  static async ForgotPassword(username, currentUrl) {
+    const url = `${FORGOT_PASSWORD_URI}?username=${encodeURIComponent(username)}&currentUrl=${encodeURIComponent(currentUrl)}`;
+    const options = {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'POST'
+    };
+    return await SecurityApi.get(url, options);
+  }
+
+  static async get(url, options = BASE_OPTIONS) {
+    try {
+      const responseBody = await api(url, options);
+      if (responseBody) return responseBody;
+      return false;
+    } catch (error) {
+      return false;
+    }
+  }
+
+}
+
+async function api(url, options) {
+  return fetch(url, options).then(async response => {
+    setTimeout(() => null, 0);
+
+    if (!response.ok) {
+      throw new Error(response.statusText);
+    }
+
+    return response.json().then(data => data);
+  }).catch(error => {
+    //console.log(error);
+    throw error;
+  });
+}
 
 /***/ }),
-/* 35 */
+/* 12 */,
+/* 13 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__35__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__13__;
 
 /***/ }),
-/* 36 */
-/***/ (function(module, exports, __webpack_require__) {
+/* 14 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return initialUserState; });
+/* harmony import */ var immutable__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
+/* harmony import */ var immutable__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(immutable__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
 
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
+const initialUserState = Object(immutable__WEBPACK_IMPORTED_MODULE_0__["Map"])({
+  loggedIn: false,
+  failedLogin: null,
+  username: null,
+  id: null,
+  securityToken: null,
+  logonResult: null,
+  groups: new immutable__WEBPACK_IMPORTED_MODULE_0__["List"]([]),
+  emailAddress: null,
+  fullName: null,
+  loginScreenMode: 'login',
+  passwordReset: false,
+  passwordResetMessage: null,
+  changePasswordMessage: null,
+  recaptcha: new immutable__WEBPACK_IMPORTED_MODULE_0__["Map"]({
+    key: null,
+    response: new immutable__WEBPACK_IMPORTED_MODULE_0__["Map"]({
+      isHuman: false,
+      token: null
+    })
+  })
 });
-exports["default"] = void 0;
+/* harmony default export */ __webpack_exports__["a"] = ((state = initialUserState, action) => {
+  switch (action.type) {
+    case _types__WEBPACK_IMPORTED_MODULE_1__["UPDATE_USER"]:
+      {
+        const {
+          user
+        } = action;
+        return state.set('loggedIn', typeof user.loggedIn !== 'undefined' ? user.loggedIn : state.get('loggedIn')).set('failedLogin', typeof user.failedLogin !== 'undefined' ? user.failedLogin : state.get('failedLogin')).set('username', user.username || state.get('username')).set('id', user.id || state.get('id')).set('securityToken', user.securityToken || state.get('securityToken')).set('logonResult', user.logonResult || state.get('logonResult')).set('groups', Object(immutable__WEBPACK_IMPORTED_MODULE_0__["fromJS"])(user.groups) || state.get('groups')).set('emailAddress', user.emailAddress || state.get('emailAddress')).set('fullName', user.fullName || state.get('fullName')).set('passwordReset', typeof user.passwordReset !== 'undefined' ? user.passwordReset : state.get('passwordReset')).set('passwordResetMessage', user.passwordResetMessage || state.get('passwordResetMessage')).set('changePasswordMessage', user.changePasswordMessage || state.get('changePasswordMessage'));
+      }
 
-var _reactRedux = __webpack_require__(17);
+    case _types__WEBPACK_IMPORTED_MODULE_1__["TOGGLE_LOGIN_MODE"]:
+      {
+        const newMode = action.loginMode;
+        return state.set('loginScreenMode', newMode);
+      }
 
-var _actions = __webpack_require__(22);
+    case _types__WEBPACK_IMPORTED_MODULE_1__["SET_RECAPTCHA_KEY"]:
+      {
+        return state.setIn(['recaptcha', 'key'], action.key);
+      }
 
-var _selectors = __webpack_require__(10);
+    case _types__WEBPACK_IMPORTED_MODULE_1__["SET_RECAPTCHA_RESPONSE"]:
+      {
+        return state.setIn(['recaptcha', 'response', 'isHuman'], action.isHuman).setIn(['recaptcha', 'response', 'token'], action.token);
+      }
 
-var _ToJs = __webpack_require__(25);
+    default:
+      return state;
+  }
+});
 
-var _routing = __webpack_require__(6);
+/***/ }),
+/* 15 */,
+/* 16 */
+/***/ (function(module, exports) {
 
-var getDisplayName = function getDisplayName(WrappedComponent) {
+module.exports = __WEBPACK_EXTERNAL_MODULE__16__;
+
+/***/ }),
+/* 17 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+var actions_namespaceObject = {};
+__webpack_require__.r(actions_namespaceObject);
+__webpack_require__.d(actions_namespaceObject, "loginUser", function() { return loginUser; });
+__webpack_require__.d(actions_namespaceObject, "validateUser", function() { return validateUser; });
+__webpack_require__.d(actions_namespaceObject, "logoutUser", function() { return logoutUser; });
+__webpack_require__.d(actions_namespaceObject, "toggleLoginMode", function() { return toggleLoginMode; });
+__webpack_require__.d(actions_namespaceObject, "createUserAccount", function() { return createUserAccount; });
+__webpack_require__.d(actions_namespaceObject, "forgotPassword", function() { return forgotPassword; });
+__webpack_require__.d(actions_namespaceObject, "changePassword", function() { return changePassword; });
+__webpack_require__.d(actions_namespaceObject, "changePasswordWithToken", function() { return changePasswordWithToken; });
+__webpack_require__.d(actions_namespaceObject, "setRecaptchaKey", function() { return setRecaptchaKey; });
+__webpack_require__.d(actions_namespaceObject, "setRecaptchaResponse", function() { return setRecaptchaResponse; });
+
+// EXTERNAL MODULE: ./src/app/core/util/helpers.js
+var helpers = __webpack_require__(4);
+
+// EXTERNAL MODULE: ./src/app/features/login/redux/types.js
+var types = __webpack_require__(1);
+
+// CONCATENATED MODULE: ./src/app/features/login/redux/actions.js
+
+
+const loginUser = (username, password) => Object(helpers["a" /* action */])(types["LOGIN_USER"], {
+  username,
+  password
+});
+const validateUser = cookies => Object(helpers["a" /* action */])(types["VALIDATE_USER"], {
+  cookies
+});
+const logoutUser = () => Object(helpers["a" /* action */])(types["LOGOUT_USER"]);
+const toggleLoginMode = loginMode => Object(helpers["a" /* action */])(types["TOGGLE_LOGIN_MODE"], {
+  loginMode
+});
+const createUserAccount = () => Object(helpers["a" /* action */])(types["CREATE_USER_ACCOUNT"]);
+const forgotPassword = username => Object(helpers["a" /* action */])(types["FORGOT_USER_PASSWORD"], {
+  username
+});
+const changePassword = (oldPassword, newPassword, newPasswordConfirm) => Object(helpers["a" /* action */])(types["CHANGE_USER_PASSWORD"], {
+  oldPassword,
+  newPassword,
+  newPasswordConfirm
+});
+const changePasswordWithToken = (token, newPassword, newPasswordConfirm) => Object(helpers["a" /* action */])(types["CHANGE_USER_PASSWORD"], {
+  token,
+  newPassword,
+  newPasswordConfirm
+});
+const setRecaptchaKey = key => Object(helpers["a" /* action */])(types["SET_RECAPTCHA_KEY"], {
+  key
+});
+const setRecaptchaResponse = (isHuman, token) => Object(helpers["a" /* action */])(types["SET_RECAPTCHA_RESPONSE"], {
+  isHuman,
+  token
+});
+// EXTERNAL MODULE: ./src/app/features/login/redux/selectors.js
+var selectors = __webpack_require__(7);
+
+// EXTERNAL MODULE: ./src/app/features/login/redux/reducers.js
+var reducers = __webpack_require__(14);
+
+// EXTERNAL MODULE: ./src/app/features/login/redux/sagas.js
+var sagas = __webpack_require__(23);
+
+// EXTERNAL MODULE: external "react-redux"
+var external_react_redux_ = __webpack_require__(16);
+
+// EXTERNAL MODULE: ./src/app/core/util/ToJs.js
+var ToJs = __webpack_require__(21);
+
+// EXTERNAL MODULE: ./src/app/core/redux/selectors/routing.js
+var routing = __webpack_require__(8);
+
+// CONCATENATED MODULE: ./src/app/features/login/components/withLogin.js
+
+
+
+
+
+
+const getDisplayName = WrappedComponent => {
   return WrappedComponent.displayName || WrappedComponent.name || 'Component';
 };
 
-var withLogin = function withLogin(WrappedComponent) {
+const withLogin = WrappedComponent => {
   // Returns a redux-connected component with the following props:
   // this.propTypes = {
   //   loginUser: PropTypes.func,
   //   logoutUser: PropTypes.func,
   //   user: PropTypes.object,
   // };
-  var mapStateToProps = function mapStateToProps(state) {
+  const mapStateToProps = state => {
     return {
-      user: (0, _selectors.selectUser)(state),
-      userMessage: (0, _selectors.selectUserMessage)(state),
-      screenMode: (0, _selectors.selectLoginScreenMode)(state),
-      passwordMessage: (0, _selectors.selectPasswordMessage)(state),
-      changePasswordMessage: (0, _selectors.selectChangePasswordMessage)(state),
-      captchaSiteKey: (0, _selectors.selectCaptchaSiteKey)(state),
-      isHuman: (0, _selectors.selectCaptchaResponse)(state),
-      isLoggedIn: (0, _selectors.selectUserLoggedIn)(state),
-      currentPath: (0, _routing.selectCurrentPath)(state),
-      queryString: (0, _routing.selectQueryStringAsObject)(state)
+      user: Object(selectors["selectUser"])(state),
+      userMessage: Object(selectors["selectUserMessage"])(state),
+      screenMode: Object(selectors["selectLoginScreenMode"])(state),
+      passwordMessage: Object(selectors["selectPasswordMessage"])(state),
+      changePasswordMessage: Object(selectors["selectChangePasswordMessage"])(state),
+      captchaSiteKey: Object(selectors["selectCaptchaSiteKey"])(state),
+      isHuman: Object(selectors["selectCaptchaResponse"])(state),
+      isLoggedIn: Object(selectors["selectUserLoggedIn"])(state),
+      currentPath: Object(routing["selectCurrentPath"])(state),
+      queryString: Object(routing["selectQueryStringAsObject"])(state)
     };
   };
 
-  var mapDispatchToProps = {
-    loginUser: _actions.loginUser,
-    logoutUser: _actions.logoutUser,
-    toggleLoginMode: _actions.toggleLoginMode,
-    forgotPassword: _actions.forgotPassword,
-    changePassword: _actions.changePassword,
-    changePasswordWithToken: _actions.changePasswordWithToken,
-    captchaResponse: _actions.setRecaptchaResponse
+  const mapDispatchToProps = {
+    loginUser: loginUser,
+    logoutUser: logoutUser,
+    toggleLoginMode: toggleLoginMode,
+    forgotPassword: forgotPassword,
+    changePassword: changePassword,
+    changePasswordWithToken: changePasswordWithToken,
+    captchaResponse: setRecaptchaResponse
   };
-  var ConnectedComponent = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)((0, _ToJs.toJS)(WrappedComponent));
-  ConnectedComponent.displayName = "".concat(getDisplayName(WrappedComponent));
+  const ConnectedComponent = Object(external_react_redux_["connect"])(mapStateToProps, mapDispatchToProps)(Object(ToJs["a" /* toJS */])(WrappedComponent));
+  ConnectedComponent.displayName = `${getDisplayName(WrappedComponent)}`;
   return ConnectedComponent;
 };
 
-var _default = withLogin;
-exports["default"] = _default;
+/* harmony default export */ var components_withLogin = (withLogin);
+// CONCATENATED MODULE: ./src/app/features/login/index.js
+/* concated harmony reexport actions */__webpack_require__.d(__webpack_exports__, "actions", function() { return actions_namespaceObject; });
+/* concated harmony reexport selectors */__webpack_require__.d(__webpack_exports__, "selectors", function() { return selectors; });
+/* concated harmony reexport types */__webpack_require__.d(__webpack_exports__, "types", function() { return types; });
+/* concated harmony reexport reducer */__webpack_require__.d(__webpack_exports__, "reducer", function() { return reducers["a" /* default */]; });
+/* concated harmony reexport sagas */__webpack_require__.d(__webpack_exports__, "sagas", function() { return sagas["a" /* userSagas */]; });
+/* concated harmony reexport withLogin */__webpack_require__.d(__webpack_exports__, "withLogin", function() { return components_withLogin; });
+
+
+
+
+
+
+
 
 /***/ }),
+/* 18 */,
+/* 19 */,
+/* 20 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return queryParams; });
+/* unused harmony export routeParams */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return buildUrl; });
+/* unused harmony export clientHostname */
+/* unused harmony export addHostname */
+/* harmony import */ var query_string__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(13);
+/* harmony import */ var query_string__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(query_string__WEBPACK_IMPORTED_MODULE_0__);
+
+function queryParams(search) {
+  return query_string__WEBPACK_IMPORTED_MODULE_0___default.a.parse(typeof window != 'undefined' ? window.location.search : search);
+}
+const routeParams = staticRoute => staticRoute && staticRoute.match ? staticRoute.match.params : {};
+const buildUrl = (route, params) => {
+  const qs = query_string__WEBPACK_IMPORTED_MODULE_0___default.a.stringify(params);
+  const path = qs ? `${route}?${qs}` : route;
+  return path;
+};
+const clientHostname = () => `${window.location.protocol}//${window.location.hostname}:${window.location.port}`;
+const addHostname = typeof window == 'undefined' || window.location.host == 'localhost:3000' ? `https://${PUBLIC_URI
+/* global PUBLIC_URI */
+}` : clientHostname();
+
+/***/ }),
+/* 21 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return toJS; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var immutable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
+/* harmony import */ var immutable__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(immutable__WEBPACK_IMPORTED_MODULE_1__);
+
+
+const toJS = WrappedComponent => wrappedComponentProps => {
+  const KEY = 0;
+  const VALUE = 1;
+  const propsJS = Object.entries(wrappedComponentProps).reduce((newProps, wrappedComponentProp) => {
+    newProps[wrappedComponentProp[KEY]] = immutable__WEBPACK_IMPORTED_MODULE_1__["Iterable"].isIterable(wrappedComponentProp[VALUE]) ? wrappedComponentProp[VALUE].toJS() : wrappedComponentProp[VALUE];
+    return newProps;
+  }, {});
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(WrappedComponent, propsJS);
+};
+
+/***/ }),
+/* 22 */,
+/* 23 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return userSagas; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return validateUserSaga; });
+/* harmony import */ var redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
+/* harmony import */ var query_string__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(13);
+/* harmony import */ var query_string__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(query_string__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(1);
+/* harmony import */ var _reducers__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(14);
+/* harmony import */ var _core_redux_types_routing__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(3);
+/* harmony import */ var _core_redux_selectors_routing__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(8);
+/* harmony import */ var _selectors__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(7);
+/* harmony import */ var _util_LoginHelper_class__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(10);
+/* harmony import */ var _util_SecurityApi_class__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(11);
+
+
+
+
+
+
+
+
+
+const userSagas = [Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["takeEvery"])(_types__WEBPACK_IMPORTED_MODULE_2__["LOGIN_USER"], loginUserSaga), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["takeEvery"])(_types__WEBPACK_IMPORTED_MODULE_2__["LOGOUT_USER"], logoutUserSaga), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["takeEvery"])(_types__WEBPACK_IMPORTED_MODULE_2__["VALIDATE_USER"], validateUserSaga), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["takeEvery"])(_types__WEBPACK_IMPORTED_MODULE_2__["CREATE_USER_ACCOUNT"], createUserAccountSaga), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["takeEvery"])(_types__WEBPACK_IMPORTED_MODULE_2__["FORGOT_USER_PASSWORD"], forgotPassword), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["takeEvery"])(_types__WEBPACK_IMPORTED_MODULE_2__["CHANGE_USER_PASSWORD"], changePassword)];
+
+function* loginUserSaga(action) {
+  const getGroups = true;
+  const {
+    username,
+    password
+  } = action;
+
+  if (username && password) {
+    const user = yield _util_LoginHelper_class__WEBPACK_IMPORTED_MODULE_7__["LoginHelper"].LoginUser(username, password, getGroups);
+    yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["call"])(updateUserSaga, {
+      type: user.failedLogin ? _types__WEBPACK_IMPORTED_MODULE_2__["LOGIN_FAILED"] : _types__WEBPACK_IMPORTED_MODULE_2__["LOGIN_SUCCESSFUL"],
+      user,
+      redirect: !user.failedLogin
+    });
+  } else {
+    yield _util_LoginHelper_class__WEBPACK_IMPORTED_MODULE_7__["LoginHelper"].ClientRedirectToLogin();
+  }
+}
+
+function* logoutUserSaga() {
+  const user = _util_LoginHelper_class__WEBPACK_IMPORTED_MODULE_7__["LoginHelper"].LogoutUser();
+  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(updateUserSaga, {
+    user
+  });
+  const state = yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["select"])();
+  yield _util_LoginHelper_class__WEBPACK_IMPORTED_MODULE_7__["LoginHelper"].ClientRedirectToHome(state.getIn(['router', 'location']));
+}
+
+function* validateUserSaga(action) {
+  const getGroups = true;
+  const state = yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["select"])();
+  const currentQs = query_string__WEBPACK_IMPORTED_MODULE_1___default.a.parse(state.getIn(['router', 'location', 'search']));
+  const qsToken = currentQs.securityToken || currentQs.securitytoken;
+
+  if (qsToken) {
+    _util_LoginHelper_class__WEBPACK_IMPORTED_MODULE_7__["LoginHelper"].SetLoginCookies({
+      securityToken: qsToken
+    });
+  }
+
+  const cookies = !qsToken ? action.cookies : {
+    ContensisCMSUserName: encodeURIComponent(qsToken),
+    ...action.cookies
+  };
+  const user = yield _util_LoginHelper_class__WEBPACK_IMPORTED_MODULE_7__["LoginHelper"].ValidateUser(getGroups, cookies);
+  const type = user && user.loggedIn ? _types__WEBPACK_IMPORTED_MODULE_2__["VALIDATE_USER_SUCCESS"] : _types__WEBPACK_IMPORTED_MODULE_2__["VALIDATE_USER_FAILED"];
+  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["call"])(updateUserSaga, {
+    type,
+    user: user && !user.loggedIn ? _reducers__WEBPACK_IMPORTED_MODULE_3__[/* initialUserState */ "b"] : user
+  });
+}
+
+function* updateUserSaga(action) {
+  const userState = yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["select"])(_selectors__WEBPACK_IMPORTED_MODULE_6__["selectUser"]);
+  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+    type: _types__WEBPACK_IMPORTED_MODULE_2__["UPDATE_USER"],
+    from: action.type,
+    user: { ...userState.toJS(),
+      ...action.user
+    }
+  });
+
+  if (action.redirect) {
+    const currentSearch = yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["select"])(_core_redux_selectors_routing__WEBPACK_IMPORTED_MODULE_5__["selectCurrentSearch"]);
+    const qs = query_string__WEBPACK_IMPORTED_MODULE_1___default.a.parse(currentSearch);
+    const redirectUri = qs.redirect_uri;
+
+    if (redirectUri) {
+      yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+        type: _core_redux_types_routing__WEBPACK_IMPORTED_MODULE_4__["SET_ROUTE"],
+        path: redirectUri
+      });
+    }
+  }
+}
+
+function* forgotPassword(action) {
+  const message = yield _util_LoginHelper_class__WEBPACK_IMPORTED_MODULE_7__["LoginHelper"].ForgotPassword(action.username);
+  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+    type: _types__WEBPACK_IMPORTED_MODULE_2__["UPDATE_USER"],
+    user: {
+      passwordReset: true,
+      passwordResetMessage: message
+    },
+    history
+  });
+}
+
+function* changePassword(action) {
+  const state = yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["select"])();
+  const userState = yield state.get('user');
+  let message = '';
+
+  if (action.token) {
+    message = yield _util_LoginHelper_class__WEBPACK_IMPORTED_MODULE_7__["LoginHelper"].ChangePasswordWithToken(action.token, action.newPassword, action.newPasswordConfirm);
+  } else {
+    message = yield _util_LoginHelper_class__WEBPACK_IMPORTED_MODULE_7__["LoginHelper"].ChangePassword(userState.username, action.oldPassword, action.newPassword, action.newPasswordConfirm);
+  }
+
+  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+    type: _types__WEBPACK_IMPORTED_MODULE_2__["UPDATE_USER"],
+    user: {
+      logonResult: message
+    },
+    history
+  });
+}
+
+function* createUserAccountSaga() {
+  const userState = yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["select"])(_selectors__WEBPACK_IMPORTED_MODULE_6__["selectUser"]);
+
+  if (userState.username && userState.password) {
+    // Call RegisterUser API
+    const registerResponse = yield _util_SecurityApi_class__WEBPACK_IMPORTED_MODULE_8__[/* SecurityApi */ "a"].RegisterUser(userState.username, userState.password);
+
+    if (registerResponse) {
+      const {
+        securityToken,
+        registrationResult,
+        id
+      } = registerResponse;
+
+      if (securityToken) {
+        const user = { ...userState,
+          id,
+          securityToken,
+          password: null,
+          loggedIn: true,
+          verifiedEmail: false,
+          failedLogin: false,
+          failedToCreateAccount: false,
+          registrationResult
+        };
+        yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+          type: _types__WEBPACK_IMPORTED_MODULE_2__["UPDATE_USER"],
+          user
+        });
+      } else {
+        const user = { ...userState,
+          securityToken: null,
+          loggedIn: false,
+          verifiedEmail: false,
+          failedLogin: true,
+          failedToCreateAccount: true,
+          registrationResult
+        };
+        yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+          type: _types__WEBPACK_IMPORTED_MODULE_2__["UPDATE_USER"],
+          user
+        });
+      }
+    } else {
+      yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+        type: _types__WEBPACK_IMPORTED_MODULE_2__["UPDATE_USER"],
+        user: { ...userState,
+          registrationResult: 'ServiceFault'
+        }
+      });
+    }
+  }
+}
+
+/***/ }),
+/* 24 */,
+/* 25 */,
+/* 26 */,
+/* 27 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__27__;
+
+/***/ }),
+/* 28 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__28__;
+
+/***/ }),
+/* 29 */,
+/* 30 */,
+/* 31 */,
+/* 32 */,
+/* 33 */,
+/* 34 */,
+/* 35 */,
+/* 36 */,
 /* 37 */,
 /* 38 */,
 /* 39 */,
@@ -2623,54 +1447,17 @@ exports["default"] = _default;
 /* 67 */,
 /* 68 */,
 /* 69 */,
-/* 70 */,
-/* 71 */,
-/* 72 */,
-/* 73 */,
-/* 74 */,
-/* 75 */,
-/* 76 */,
-/* 77 */,
-/* 78 */,
-/* 79 */,
-/* 80 */,
-/* 81 */,
-/* 82 */,
-/* 83 */,
-/* 84 */,
-/* 85 */,
-/* 86 */,
-/* 87 */,
-/* 88 */,
-/* 89 */,
-/* 90 */,
-/* 91 */,
-/* 92 */,
-/* 93 */,
-/* 94 */,
-/* 95 */,
-/* 96 */,
-/* 97 */,
-/* 98 */,
-/* 99 */,
-/* 100 */,
-/* 101 */,
-/* 102 */,
-/* 103 */,
-/* 104 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
 // Redux
-exports.actions = __webpack_require__(16).actions;
-exports.selectors = __webpack_require__(16).selectors;
-exports.types = __webpack_require__(16).types; // HOC
+exports.actions = __webpack_require__(17).actions;
+exports.selectors = __webpack_require__(17).selectors;
+exports.types = __webpack_require__(17).types; // HOC
 
-exports.withLogin = __webpack_require__(16).withLogin; // Classes
+exports.withLogin = __webpack_require__(17).withLogin; // Classes
 
-exports.LoginHelper = __webpack_require__(32);
+exports.LoginHelper = __webpack_require__(10);
 
 /***/ })
 /******/ ]);

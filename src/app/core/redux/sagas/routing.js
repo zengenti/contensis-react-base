@@ -45,7 +45,7 @@ function* setRouteSaga(action) {
 function* getRouteSaga(action) {
   let entry = null;
   try {
-    const { withEvents, routes } = action;
+    const { withEvents, routes, staticRoute } = action;
     let appsays;
     if (withEvents && withEvents.onRouteLoad) {
       appsays = yield withEvents.onRouteLoad(action);
@@ -69,14 +69,17 @@ function* getRouteSaga(action) {
     const routeEntry = selectRouteEntry(state);
     if (
       (appsays && appsays.customRouting) ||
-      (action.staticRoute && !action.staticRoute.route.fetchNode) ||
+      (staticRoute && !staticRoute.route.fetchNode) ||
       (routeEntry && action.statePath === action.path)
     ) {
       // To prevent erroneous 404s and wasted network calls, this covers
       // - appsays customRouting and does SET_ENTRY etc. via the consuming app
       // - all staticRoutes (where custom 'route.fetchNode' attribute is falsey)
       // - standard Contensis SiteView Routing where we already have that entry in state
-      if (routeEntry) {
+      if (
+        routeEntry &&
+        (!staticRoute || (staticRoute.route && staticRoute.route.fetchNode))
+      ) {
         entry = routeEntry.toJS();
         yield put({
           type: SET_ENTRY,

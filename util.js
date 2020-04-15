@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("@babel/runtime/helpers/interopRequireDefault"), require("@babel/runtime/helpers/interopRequireWildcard"), require("@babel/runtime/helpers/slicedToArray"), require("@babel/runtime/helpers/typeof"), require("jsonpath-mapper"));
+		module.exports = factory(require("jsonpath-mapper"));
 	else if(typeof define === 'function' && define.amd)
-		define(["@babel/runtime/helpers/interopRequireDefault", "@babel/runtime/helpers/interopRequireWildcard", "@babel/runtime/helpers/slicedToArray", "@babel/runtime/helpers/typeof", "jsonpath-mapper"], factory);
+		define(["jsonpath-mapper"], factory);
 	else {
-		var a = typeof exports === 'object' ? factory(require("@babel/runtime/helpers/interopRequireDefault"), require("@babel/runtime/helpers/interopRequireWildcard"), require("@babel/runtime/helpers/slicedToArray"), require("@babel/runtime/helpers/typeof"), require("jsonpath-mapper")) : factory(root["@babel/runtime/helpers/interopRequireDefault"], root["@babel/runtime/helpers/interopRequireWildcard"], root["@babel/runtime/helpers/slicedToArray"], root["@babel/runtime/helpers/typeof"], root["jsonpath-mapper"]);
+		var a = typeof exports === 'object' ? factory(require("jsonpath-mapper")) : factory(root["jsonpath-mapper"]);
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(global, function(__WEBPACK_EXTERNAL_MODULE__0__, __WEBPACK_EXTERNAL_MODULE__7__, __WEBPACK_EXTERNAL_MODULE__40__, __WEBPACK_EXTERNAL_MODULE__41__, __WEBPACK_EXTERNAL_MODULE__109__) {
+})(global, function(__WEBPACK_EXTERNAL_MODULE__36__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -91,77 +91,92 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 105);
+/******/ 	return __webpack_require__(__webpack_require__.s = 71);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 0:
+/***/ 36:
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__0__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__36__;
 
 /***/ }),
 
-/***/ 105:
-/***/ (function(module, exports, __webpack_require__) {
+/***/ 48:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useMapper", function() { return useMapper; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useEntryMapper", function() { return useEntryMapper; });
+/* harmony import */ var jsonpath_mapper__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(36);
+/* harmony import */ var jsonpath_mapper__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jsonpath_mapper__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (default from non-harmony) */ __webpack_require__.d(__webpack_exports__, "mapJson", function() { return jsonpath_mapper__WEBPACK_IMPORTED_MODULE_0___default.a; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "jpath", function() { return jsonpath_mapper__WEBPACK_IMPORTED_MODULE_0__["jpath"]; });
 
+
+
+const useMapper = (json, template) => {
+  return template ? jsonpath_mapper__WEBPACK_IMPORTED_MODULE_0___default()(json, template) : json;
+};
+/**
+ * useEntryMapper hook
+ * @param {any} entry The source entry we wish to transform
+ * @param {object} mappers Object with keys containing mapper templates,
+ * the key name matching entry.sys.contentTypeId
+ * @returns {object} Object transformed using a matched content type or
+ * a default mapper template, returns an empty object if no mapper template
+ * couild be applied.
+ */
+
+const useEntryMapper = (entry, mappers, field = 'sys.contentTypeId') => {
+  const fieldValue = Object(jsonpath_mapper__WEBPACK_IMPORTED_MODULE_0__["jpath"])(field, entry || {});
+  const mapper = mappers[fieldValue] || mappers['default'];
+  return useMapper(entry || {}, mapper);
+};
+/* harmony default export */ __webpack_exports__["default"] = (jsonpath_mapper__WEBPACK_IMPORTED_MODULE_0___default.a);
+
+/***/ }),
+
+/***/ 71:
+/***/ (function(module, exports, __webpack_require__) {
 
 // Global server and build utils
-exports.setCachingHeaders = __webpack_require__(106);
-exports.stringifyStrings = __webpack_require__(107);
-exports.urls = __webpack_require__(108); // JSON mapping functions
+exports.setCachingHeaders = __webpack_require__(72);
+exports.stringifyStrings = __webpack_require__(73);
+exports.urls = __webpack_require__(74); // JSON mapping functions
 
-exports.jpath = __webpack_require__(50).jpath;
-exports.mapJson = __webpack_require__(50).mapJson; // JSON mapping hooks
+exports.jpath = __webpack_require__(48).jpath;
+exports.mapJson = __webpack_require__(48).mapJson; // JSON mapping hooks
 
-exports.useMapper = __webpack_require__(50).useMapper;
-exports.useEntryMapper = __webpack_require__(50).useEntryMapper;
+exports.useMapper = __webpack_require__(48).useMapper;
+exports.useEntryMapper = __webpack_require__(48).useEntryMapper;
 
 /***/ }),
 
-/***/ 106:
-/***/ (function(module, exports, __webpack_require__) {
+/***/ 72:
+/***/ (function(module, exports) {
 
-"use strict";
-
-
-var setCachingHeaders = function setCachingHeaders(response, _ref) {
-  var _ref$cacheControl = _ref.cacheControl,
-      cacheControl = _ref$cacheControl === void 0 ? 'private' : _ref$cacheControl,
-      _ref$surrogateControl = _ref.surrogateControl,
-      surrogateControl = _ref$surrogateControl === void 0 ? '3600' : _ref$surrogateControl;
-  var method = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'header';
+const setCachingHeaders = (response, {
+  cacheControl = 'private',
+  surrogateControl = '3600'
+}, method = 'header') => {
   if (cacheControl) response[method]('Cache-Control', cacheControl);
-  if (surrogateControl) response[method]('Surrogate-Control', "max-age=".concat(surrogateControl.toString()));
+  if (surrogateControl) response[method]('Surrogate-Control', `max-age=${surrogateControl.toString()}`);
 };
 
 module.exports = setCachingHeaders;
 
 /***/ }),
 
-/***/ 107:
-/***/ (function(module, exports, __webpack_require__) {
+/***/ 73:
+/***/ (function(module, exports) {
 
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(0);
-
-var _typeof2 = _interopRequireDefault(__webpack_require__(41));
-
-var _slicedToArray2 = _interopRequireDefault(__webpack_require__(40));
-
-var stringifyStrings = function stringifyStrings(obj) {
-  var returnObj = Array.isArray(obj) ? [] : {};
-  Object.entries(obj).forEach(function (_ref) {
-    var _ref2 = (0, _slicedToArray2["default"])(_ref, 2),
-        key = _ref2[0],
-        value = _ref2[1];
-
-    switch ((0, _typeof2["default"])(value)) {
+const stringifyStrings = obj => {
+  const returnObj = Array.isArray(obj) ? [] : {};
+  Object.entries(obj).forEach(([key, value]) => {
+    switch (typeof value) {
       case 'string':
         returnObj[key] = JSON.stringify(value);
         break;
@@ -182,108 +197,21 @@ module.exports = stringifyStrings;
 
 /***/ }),
 
-/***/ 108:
-/***/ (function(module, exports, __webpack_require__) {
+/***/ 74:
+/***/ (function(module, exports) {
 
-"use strict";
-
-
-var url = function url(alias, project) {
-  var projectAndAlias = project && project.toLowerCase() != 'website' ? "".concat(project.toLowerCase(), "-").concat(alias) : alias;
+const url = (alias, project) => {
+  const projectAndAlias = project && project.toLowerCase() != 'website' ? `${project.toLowerCase()}-${alias}` : alias;
   return {
-    cms: "https://cms-".concat(alias, ".cloud.contensis.com"),
-    liveWeb: "https://live-".concat(projectAndAlias, ".cloud.contensis.com"),
-    previewWeb: "https://preview-".concat(projectAndAlias, ".cloud.contensis.com"),
-    iisWeb: "https://iis-live-".concat(projectAndAlias, ".cloud.contensis.com"),
-    iisPreviewWeb: "https://iis-preview-".concat(projectAndAlias, ".cloud.contensis.com")
+    cms: `https://cms-${alias}.cloud.contensis.com`,
+    liveWeb: `https://live-${projectAndAlias}.cloud.contensis.com`,
+    previewWeb: `https://preview-${projectAndAlias}.cloud.contensis.com`,
+    iisWeb: `https://iis-live-${projectAndAlias}.cloud.contensis.com`,
+    iisPreviewWeb: `https://iis-preview-${projectAndAlias}.cloud.contensis.com`
   };
 };
 
 module.exports = url;
-
-/***/ }),
-
-/***/ 109:
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__109__;
-
-/***/ }),
-
-/***/ 40:
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__40__;
-
-/***/ }),
-
-/***/ 41:
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__41__;
-
-/***/ }),
-
-/***/ 50:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireWildcard = __webpack_require__(7);
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-Object.defineProperty(exports, "mapJson", {
-  enumerable: true,
-  get: function get() {
-    return _jsonpathMapper["default"];
-  }
-});
-Object.defineProperty(exports, "jpath", {
-  enumerable: true,
-  get: function get() {
-    return _jsonpathMapper.jpath;
-  }
-});
-exports["default"] = exports.useEntryMapper = exports.useMapper = void 0;
-
-var _jsonpathMapper = _interopRequireWildcard(__webpack_require__(109));
-
-var useMapper = function useMapper(json, template) {
-  return template ? (0, _jsonpathMapper["default"])(json, template) : json;
-};
-/**
- * useEntryMapper hook
- * @param {any} entry The source entry we wish to transform
- * @param {object} mappers Object with keys containing mapper templates,
- * the key name matching entry.sys.contentTypeId
- * @returns {object} Object transformed using a matched content type or
- * a default mapper template, returns an empty object if no mapper template
- * couild be applied.
- */
-
-
-exports.useMapper = useMapper;
-
-var useEntryMapper = function useEntryMapper(entry, mappers) {
-  var field = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'sys.contentTypeId';
-  var fieldValue = (0, _jsonpathMapper.jpath)(field, entry || {});
-  var mapper = mappers[fieldValue] || mappers['default'];
-  return useMapper(entry || {}, mapper);
-};
-
-exports.useEntryMapper = useEntryMapper;
-var _default = _jsonpathMapper["default"];
-exports["default"] = _default;
-
-/***/ }),
-
-/***/ 7:
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__7__;
 
 /***/ })
 

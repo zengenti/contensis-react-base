@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("@babel/runtime/helpers/interopRequireDefault"), require("@babel/runtime/regenerator"), require("immutable"), require("@babel/runtime/helpers/defineProperty"), require("react"), require("@babel/runtime/helpers/asyncToGenerator"), require("@babel/runtime/helpers/interopRequireWildcard"), require("@babel/runtime/helpers/classCallCheck"), require("@babel/runtime/helpers/createClass"), require("query-string"), require("react-redux"), require("@babel/runtime/helpers/toConsumableArray"), require("@redux-saga/core/effects"), require("react-router-dom"), require("react-hot-loader"), require("prop-types"), require("js-cookie"), require("@babel/runtime/helpers/slicedToArray"), require("@babel/runtime/helpers/typeof"), require("contensis-delivery-api"), require("react-router-config"), require("react-loadable"), require("isomorphic-fetch"), require("history"), require("redux"), require("redux-immutable"), require("redux-thunk"), require("redux-saga"), require("loglevel"), require("@babel/runtime/helpers/construct"), require("express"), require("evil-dns"), require("http-proxy"), require("react-dom/server"), require("react-loadable/webpack"), require("styled-components"), require("react-helmet"), require("serialize-javascript"), require("minify-css-string"), require("fromentries"), require("xxhashjs"));
+		module.exports = factory(require("immutable"), require("react"), require("contensis-delivery-api"), require("prop-types"), require("query-string"), require("react-redux"), require("react-router-dom"), require("react-hot-loader"), require("@redux-saga/core/effects"), require("js-cookie"), require("react-router-config"), require("redux"), require("react-loadable"), require("history"), require("redux-saga"), require("redux-immutable"), require("redux-thunk"), require("loglevel"), require("react-dom/server"), require("minify-css-string"), require("isomorphic-fetch"), require("express"), require("evil-dns"), require("react-loadable/webpack"), require("react-helmet"), require("serialize-javascript"), require("http-proxy"), require("styled-components"), require("fromentries"), require("xxhashjs"));
 	else if(typeof define === 'function' && define.amd)
-		define(["@babel/runtime/helpers/interopRequireDefault", "@babel/runtime/regenerator", "immutable", "@babel/runtime/helpers/defineProperty", "react", "@babel/runtime/helpers/asyncToGenerator", "@babel/runtime/helpers/interopRequireWildcard", "@babel/runtime/helpers/classCallCheck", "@babel/runtime/helpers/createClass", "query-string", "react-redux", "@babel/runtime/helpers/toConsumableArray", "@redux-saga/core/effects", "react-router-dom", "react-hot-loader", "prop-types", "js-cookie", "@babel/runtime/helpers/slicedToArray", "@babel/runtime/helpers/typeof", "contensis-delivery-api", "react-router-config", "react-loadable", "isomorphic-fetch", "history", "redux", "redux-immutable", "redux-thunk", "redux-saga", "loglevel", "@babel/runtime/helpers/construct", "express", "evil-dns", "http-proxy", "react-dom/server", "react-loadable/webpack", "styled-components", "react-helmet", "serialize-javascript", "minify-css-string", "fromentries", "xxhashjs"], factory);
+		define(["immutable", "react", "contensis-delivery-api", "prop-types", "query-string", "react-redux", "react-router-dom", "react-hot-loader", "@redux-saga/core/effects", "js-cookie", "react-router-config", "redux", "react-loadable", "history", "redux-saga", "redux-immutable", "redux-thunk", "loglevel", "react-dom/server", "minify-css-string", "isomorphic-fetch", "express", "evil-dns", "react-loadable/webpack", "react-helmet", "serialize-javascript", "http-proxy", "styled-components", "fromentries", "xxhashjs"], factory);
 	else {
-		var a = typeof exports === 'object' ? factory(require("@babel/runtime/helpers/interopRequireDefault"), require("@babel/runtime/regenerator"), require("immutable"), require("@babel/runtime/helpers/defineProperty"), require("react"), require("@babel/runtime/helpers/asyncToGenerator"), require("@babel/runtime/helpers/interopRequireWildcard"), require("@babel/runtime/helpers/classCallCheck"), require("@babel/runtime/helpers/createClass"), require("query-string"), require("react-redux"), require("@babel/runtime/helpers/toConsumableArray"), require("@redux-saga/core/effects"), require("react-router-dom"), require("react-hot-loader"), require("prop-types"), require("js-cookie"), require("@babel/runtime/helpers/slicedToArray"), require("@babel/runtime/helpers/typeof"), require("contensis-delivery-api"), require("react-router-config"), require("react-loadable"), require("isomorphic-fetch"), require("history"), require("redux"), require("redux-immutable"), require("redux-thunk"), require("redux-saga"), require("loglevel"), require("@babel/runtime/helpers/construct"), require("express"), require("evil-dns"), require("http-proxy"), require("react-dom/server"), require("react-loadable/webpack"), require("styled-components"), require("react-helmet"), require("serialize-javascript"), require("minify-css-string"), require("fromentries"), require("xxhashjs")) : factory(root["@babel/runtime/helpers/interopRequireDefault"], root["@babel/runtime/regenerator"], root["immutable"], root["@babel/runtime/helpers/defineProperty"], root["react"], root["@babel/runtime/helpers/asyncToGenerator"], root["@babel/runtime/helpers/interopRequireWildcard"], root["@babel/runtime/helpers/classCallCheck"], root["@babel/runtime/helpers/createClass"], root["query-string"], root["react-redux"], root["@babel/runtime/helpers/toConsumableArray"], root["@redux-saga/core/effects"], root["react-router-dom"], root["react-hot-loader"], root["prop-types"], root["js-cookie"], root["@babel/runtime/helpers/slicedToArray"], root["@babel/runtime/helpers/typeof"], root["contensis-delivery-api"], root["react-router-config"], root["react-loadable"], root["isomorphic-fetch"], root["history"], root["redux"], root["redux-immutable"], root["redux-thunk"], root["redux-saga"], root["loglevel"], root["@babel/runtime/helpers/construct"], root["express"], root["evil-dns"], root["http-proxy"], root["react-dom/server"], root["react-loadable/webpack"], root["styled-components"], root["react-helmet"], root["serialize-javascript"], root["minify-css-string"], root["fromentries"], root["xxhashjs"]);
+		var a = typeof exports === 'object' ? factory(require("immutable"), require("react"), require("contensis-delivery-api"), require("prop-types"), require("query-string"), require("react-redux"), require("react-router-dom"), require("react-hot-loader"), require("@redux-saga/core/effects"), require("js-cookie"), require("react-router-config"), require("redux"), require("react-loadable"), require("history"), require("redux-saga"), require("redux-immutable"), require("redux-thunk"), require("loglevel"), require("react-dom/server"), require("minify-css-string"), require("isomorphic-fetch"), require("express"), require("evil-dns"), require("react-loadable/webpack"), require("react-helmet"), require("serialize-javascript"), require("http-proxy"), require("styled-components"), require("fromentries"), require("xxhashjs")) : factory(root["immutable"], root["react"], root["contensis-delivery-api"], root["prop-types"], root["query-string"], root["react-redux"], root["react-router-dom"], root["react-hot-loader"], root["@redux-saga/core/effects"], root["js-cookie"], root["react-router-config"], root["redux"], root["react-loadable"], root["history"], root["redux-saga"], root["redux-immutable"], root["redux-thunk"], root["loglevel"], root["react-dom/server"], root["minify-css-string"], root["isomorphic-fetch"], root["express"], root["evil-dns"], root["react-loadable/webpack"], root["react-helmet"], root["serialize-javascript"], root["http-proxy"], root["styled-components"], root["fromentries"], root["xxhashjs"]);
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(global, function(__WEBPACK_EXTERNAL_MODULE__0__, __WEBPACK_EXTERNAL_MODULE__1__, __WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__3__, __WEBPACK_EXTERNAL_MODULE__4__, __WEBPACK_EXTERNAL_MODULE__5__, __WEBPACK_EXTERNAL_MODULE__7__, __WEBPACK_EXTERNAL_MODULE__11__, __WEBPACK_EXTERNAL_MODULE__12__, __WEBPACK_EXTERNAL_MODULE__15__, __WEBPACK_EXTERNAL_MODULE__17__, __WEBPACK_EXTERNAL_MODULE__20__, __WEBPACK_EXTERNAL_MODULE__23__, __WEBPACK_EXTERNAL_MODULE__26__, __WEBPACK_EXTERNAL_MODULE__30__, __WEBPACK_EXTERNAL_MODULE__33__, __WEBPACK_EXTERNAL_MODULE__35__, __WEBPACK_EXTERNAL_MODULE__40__, __WEBPACK_EXTERNAL_MODULE__41__, __WEBPACK_EXTERNAL_MODULE__42__, __WEBPACK_EXTERNAL_MODULE__46__, __WEBPACK_EXTERNAL_MODULE__49__, __WEBPACK_EXTERNAL_MODULE__51__, __WEBPACK_EXTERNAL_MODULE__53__, __WEBPACK_EXTERNAL_MODULE__56__, __WEBPACK_EXTERNAL_MODULE__57__, __WEBPACK_EXTERNAL_MODULE__58__, __WEBPACK_EXTERNAL_MODULE__59__, __WEBPACK_EXTERNAL_MODULE__66__, __WEBPACK_EXTERNAL_MODULE__68__, __WEBPACK_EXTERNAL_MODULE__76__, __WEBPACK_EXTERNAL_MODULE__79__, __WEBPACK_EXTERNAL_MODULE__82__, __WEBPACK_EXTERNAL_MODULE__85__, __WEBPACK_EXTERNAL_MODULE__86__, __WEBPACK_EXTERNAL_MODULE__87__, __WEBPACK_EXTERNAL_MODULE__88__, __WEBPACK_EXTERNAL_MODULE__89__, __WEBPACK_EXTERNAL_MODULE__90__, __WEBPACK_EXTERNAL_MODULE__91__, __WEBPACK_EXTERNAL_MODULE__94__) {
+})(global, function(__WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__5__, __WEBPACK_EXTERNAL_MODULE__6__, __WEBPACK_EXTERNAL_MODULE__9__, __WEBPACK_EXTERNAL_MODULE__13__, __WEBPACK_EXTERNAL_MODULE__16__, __WEBPACK_EXTERNAL_MODULE__18__, __WEBPACK_EXTERNAL_MODULE__24__, __WEBPACK_EXTERNAL_MODULE__27__, __WEBPACK_EXTERNAL_MODULE__28__, __WEBPACK_EXTERNAL_MODULE__29__, __WEBPACK_EXTERNAL_MODULE__32__, __WEBPACK_EXTERNAL_MODULE__35__, __WEBPACK_EXTERNAL_MODULE__38__, __WEBPACK_EXTERNAL_MODULE__39__, __WEBPACK_EXTERNAL_MODULE__45__, __WEBPACK_EXTERNAL_MODULE__46__, __WEBPACK_EXTERNAL_MODULE__47__, __WEBPACK_EXTERNAL_MODULE__49__, __WEBPACK_EXTERNAL_MODULE__50__, __WEBPACK_EXTERNAL_MODULE__51__, __WEBPACK_EXTERNAL_MODULE__52__, __WEBPACK_EXTERNAL_MODULE__53__, __WEBPACK_EXTERNAL_MODULE__55__, __WEBPACK_EXTERNAL_MODULE__56__, __WEBPACK_EXTERNAL_MODULE__57__, __WEBPACK_EXTERNAL_MODULE__59__, __WEBPACK_EXTERNAL_MODULE__60__, __WEBPACK_EXTERNAL_MODULE__61__, __WEBPACK_EXTERNAL_MODULE__63__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -91,20 +91,72 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 74);
+/******/ 	return __webpack_require__(__webpack_require__.s = 62);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__0__;
+"use strict";
+/* harmony import */ var _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(27);
+/* harmony import */ var _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (checked) */ if(__webpack_require__.o(_redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__, "all")) __webpack_require__.d(__webpack_exports__, "all", function() { return _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__["all"]; });
+
+/* harmony reexport (checked) */ if(__webpack_require__.o(_redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__, "call")) __webpack_require__.d(__webpack_exports__, "call", function() { return _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__["call"]; });
+
+/* harmony reexport (checked) */ if(__webpack_require__.o(_redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__, "fork")) __webpack_require__.d(__webpack_exports__, "fork", function() { return _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__["fork"]; });
+
+/* harmony reexport (checked) */ if(__webpack_require__.o(_redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__, "put")) __webpack_require__.d(__webpack_exports__, "put", function() { return _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__["put"]; });
+
+/* harmony reexport (checked) */ if(__webpack_require__.o(_redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__, "select")) __webpack_require__.d(__webpack_exports__, "select", function() { return _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__["select"]; });
+
+/* harmony reexport (checked) */ if(__webpack_require__.o(_redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__, "takeEvery")) __webpack_require__.d(__webpack_exports__, "takeEvery", function() { return _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__["takeEvery"]; });
+
+
+
 
 /***/ }),
 /* 1 */
-/***/ (function(module, exports) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__1__;
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UPDATE_USER", function() { return UPDATE_USER; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOGIN_USER", function() { return LOGIN_USER; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOGIN_SUCCESSFUL", function() { return LOGIN_SUCCESSFUL; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOGIN_FAILED", function() { return LOGIN_FAILED; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOGOUT_USER", function() { return LOGOUT_USER; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TOGGLE_LOGIN_MODE", function() { return TOGGLE_LOGIN_MODE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CREATE_USER_ACCOUNT", function() { return CREATE_USER_ACCOUNT; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "VALIDATE_USER", function() { return VALIDATE_USER; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "VALIDATE_USER_SUCCESS", function() { return VALIDATE_USER_SUCCESS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "VALIDATE_USER_FAILED", function() { return VALIDATE_USER_FAILED; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FORGOT_USER_PASSWORD", function() { return FORGOT_USER_PASSWORD; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FORGOT_USER_PASSWORD_COMPLETE", function() { return FORGOT_USER_PASSWORD_COMPLETE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CHANGE_USER_PASSWORD", function() { return CHANGE_USER_PASSWORD; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CHANGE_USER_PASSWORD_FAILED", function() { return CHANGE_USER_PASSWORD_FAILED; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CHANGE_USER_PASSWORD_COMPLETE", function() { return CHANGE_USER_PASSWORD_COMPLETE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_RECAPTCHA_KEY", function() { return SET_RECAPTCHA_KEY; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_RECAPTCHA_RESPONSE", function() { return SET_RECAPTCHA_RESPONSE; });
+const ACTION_PREFIX = '@USER/';
+const UPDATE_USER = `${ACTION_PREFIX}UPDATE_USER`;
+const LOGIN_USER = `${ACTION_PREFIX}LOGIN_USER`;
+const LOGIN_SUCCESSFUL = `${ACTION_PREFIX}LOGIN_SUCCESSFUL`;
+const LOGIN_FAILED = `${ACTION_PREFIX}LOGIN_FAILED`;
+const LOGOUT_USER = `${ACTION_PREFIX}LOGOUT_USER`;
+const TOGGLE_LOGIN_MODE = `${ACTION_PREFIX}TOGGLE_LOGIN_MODE`;
+const CREATE_USER_ACCOUNT = `${ACTION_PREFIX}CREATE_USER_ACCOUNT`;
+const VALIDATE_USER = `${ACTION_PREFIX}VALIDATE_USER`;
+const VALIDATE_USER_SUCCESS = `${ACTION_PREFIX}VALIDATE_USER_SUCCESS`;
+const VALIDATE_USER_FAILED = `${ACTION_PREFIX}VALIDATE_USER_FAILED`;
+const FORGOT_USER_PASSWORD = `${ACTION_PREFIX}FORGOT_USER_PASSWORD`;
+const FORGOT_USER_PASSWORD_COMPLETE = `${ACTION_PREFIX}FORGOT_USER_PASSWORD_COMPLETE`;
+const CHANGE_USER_PASSWORD = `${ACTION_PREFIX}CHANGE_USER_PASSWORD`;
+const CHANGE_USER_PASSWORD_FAILED = `${ACTION_PREFIX}CHANGE_USER_PASSWORD_FAILED`;
+const CHANGE_USER_PASSWORD_COMPLETE = `${ACTION_PREFIX}CHANGE_USER_PASSWORD_COMPLETE`;
+const SET_RECAPTCHA_KEY = `${ACTION_PREFIX}SET_RECAPTCHA_KEY`;
+const SET_RECAPTCHA_RESPONSE = `${ACTION_PREFIX}SET_RECAPTCHA_RESPONSE`;
 
 /***/ }),
 /* 2 */
@@ -114,399 +166,86 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__2__;
 
 /***/ }),
 /* 3 */
-/***/ (function(module, exports) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__3__;
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GET_ENTRY", function() { return GET_ENTRY; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_ENTRY", function() { return SET_ENTRY; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_NODE", function() { return SET_NODE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_ANCESTORS", function() { return SET_ANCESTORS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_SIBLINGS", function() { return SET_SIBLINGS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_ENTRY_ID", function() { return SET_ENTRY_ID; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_ENTRY_RELATED_ARTICLES", function() { return SET_ENTRY_RELATED_ARTICLES; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_NAVIGATION_NOT_FOUND", function() { return SET_NAVIGATION_NOT_FOUND; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_NAVIGATION_PATH", function() { return SET_NAVIGATION_PATH; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_TARGET_PROJECT", function() { return SET_TARGET_PROJECT; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_ROUTE", function() { return SET_ROUTE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CALL_HISTORY_METHOD", function() { return CALL_HISTORY_METHOD; });
+const ROUTING_PREFIX = '@ROUTING/';
+const GET_ENTRY = `${ROUTING_PREFIX}_GET_ENTRY`;
+const SET_ENTRY = `${ROUTING_PREFIX}_SET_ENTRY`;
+const SET_NODE = `${ROUTING_PREFIX}_SET_NODE`;
+const SET_ANCESTORS = `${ROUTING_PREFIX}_SET_ANCESTORS`;
+const SET_SIBLINGS = `${ROUTING_PREFIX}_SET_SIBLINGS`;
+const SET_ENTRY_ID = `${ROUTING_PREFIX}_SET_ENTRY_ID`;
+const SET_ENTRY_RELATED_ARTICLES = `${ROUTING_PREFIX}_SET_ENTRY_RELATED_ARTICLES`;
+const SET_NAVIGATION_NOT_FOUND = `${ROUTING_PREFIX}_SET_NOT_FOUND`;
+const SET_NAVIGATION_PATH = `${ROUTING_PREFIX}_SET_NAVIGATION_PATH`;
+const SET_TARGET_PROJECT = `${ROUTING_PREFIX}_SET_TARGET_PROJECT`;
+const SET_ROUTE = `${ROUTING_PREFIX}_SET_ROUTE`;
+const CALL_HISTORY_METHOD = `${ROUTING_PREFIX}_CALL_HISTORY_METHOD`;
 
 /***/ }),
 /* 4 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__4__;
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__5__;
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.selectRouteLoading = exports.selectBreadcrumb = exports.selectCurrentNode = exports.selectCurrentAncestors = exports.selectIsNotFound = exports.selectCurrentProject = exports.selectQueryStringAsObject = exports.selectCurrentSearch = exports.selectCurrentPath = exports.selectRouteEntryID = exports.selectRouteEntrySlug = exports.selectRouteEntryContentTypeId = exports.selectRouteEntryEntryId = exports.selectEntryDepends = exports.selectCurrentTreeID = exports.selectNodeDepends = exports.selectRouteEntry = void 0;
-
-var _immutable = __webpack_require__(2);
-
-var _navigation = __webpack_require__(21);
-
-var selectRouteEntry = function selectRouteEntry(state) {
-  return state.getIn(['routing', 'entry'], (0, _immutable.Map)({}));
-};
-
-exports.selectRouteEntry = selectRouteEntry;
-
-var selectNodeDepends = function selectNodeDepends(state) {
-  return state.getIn(['routing', 'nodeDepends'], new _immutable.List([]));
-};
-
-exports.selectNodeDepends = selectNodeDepends;
-
-var selectCurrentTreeID = function selectCurrentTreeID(state) {
-  return state.getIn(['routing', 'currentTreeId']);
-};
-
-exports.selectCurrentTreeID = selectCurrentTreeID;
-
-var selectEntryDepends = function selectEntryDepends(state) {
-  return state.getIn(['routing', 'entryDepends']);
-};
-
-exports.selectEntryDepends = selectEntryDepends;
-
-var selectRouteEntryEntryId = function selectRouteEntryEntryId(state) {
-  return state.getIn(['routing', 'entry', 'sys', 'id'], null);
-};
-
-exports.selectRouteEntryEntryId = selectRouteEntryEntryId;
-
-var selectRouteEntryContentTypeId = function selectRouteEntryContentTypeId(state) {
-  var entry = selectRouteEntry(state);
-  return entry && entry.getIn(['sys', 'contentTypeId'], null);
-};
-
-exports.selectRouteEntryContentTypeId = selectRouteEntryContentTypeId;
-
-var selectRouteEntrySlug = function selectRouteEntrySlug(state) {
-  return state.getIn(['routing', 'entry', 'sys', 'slug'], null);
-};
-
-exports.selectRouteEntrySlug = selectRouteEntrySlug;
-
-var selectRouteEntryID = function selectRouteEntryID(state) {
-  return state.getIn(['routing', 'entryID']);
-};
-
-exports.selectRouteEntryID = selectRouteEntryID;
-
-var selectCurrentPath = function selectCurrentPath(state) {
-  return state.getIn(['routing', 'currentPath']);
-};
-
-exports.selectCurrentPath = selectCurrentPath;
-
-var selectCurrentSearch = function selectCurrentSearch(state) {
-  return state.getIn(['routing', 'location', 'search']);
-};
-
-exports.selectCurrentSearch = selectCurrentSearch;
-
-var selectQueryStringAsObject = function selectQueryStringAsObject(state) {
-  return (0, _navigation.queryParams)(selectCurrentSearch(state));
-};
-
-exports.selectQueryStringAsObject = selectQueryStringAsObject;
-
-var selectCurrentProject = function selectCurrentProject(state) {
-  return state.getIn(['routing', 'currentProject']);
-};
-
-exports.selectCurrentProject = selectCurrentProject;
-
-var selectIsNotFound = function selectIsNotFound(state) {
-  return state.getIn(['routing', 'notFound']);
-};
-
-exports.selectIsNotFound = selectIsNotFound;
-
-var selectCurrentAncestors = function selectCurrentAncestors(state) {
-  return state.getIn(['routing', 'currentNodeAncestors'], new _immutable.List());
-};
-
-exports.selectCurrentAncestors = selectCurrentAncestors;
-
-var selectCurrentNode = function selectCurrentNode(state) {
-  return state.getIn(['routing', 'currentNode']);
-};
-
-exports.selectCurrentNode = selectCurrentNode;
-
-var selectBreadcrumb = function selectBreadcrumb(state) {
-  return (selectCurrentAncestors(state) || new _immutable.List()).push(selectCurrentNode(state));
-};
-
-exports.selectBreadcrumb = selectBreadcrumb;
-
-var selectRouteLoading = function selectRouteLoading(state) {
-  return state.getIn(['routing', 'isLoading']);
-};
-
-exports.selectRouteLoading = selectRouteLoading;
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__7__;
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.CALL_HISTORY_METHOD = exports.SET_ROUTE = exports.SET_TARGET_PROJECT = exports.SET_NAVIGATION_PATH = exports.SET_NAVIGATION_NOT_FOUND = exports.SET_ENTRY_RELATED_ARTICLES = exports.SET_ENTRY_ID = exports.SET_SIBLINGS = exports.SET_ANCESTORS = exports.SET_NODE = exports.SET_ENTRY = exports.GET_ENTRY = void 0;
-var ROUTING_PREFIX = '@ROUTING/';
-var GET_ENTRY = "".concat(ROUTING_PREFIX, "_GET_ENTRY");
-exports.GET_ENTRY = GET_ENTRY;
-var SET_ENTRY = "".concat(ROUTING_PREFIX, "_SET_ENTRY");
-exports.SET_ENTRY = SET_ENTRY;
-var SET_NODE = "".concat(ROUTING_PREFIX, "_SET_NODE");
-exports.SET_NODE = SET_NODE;
-var SET_ANCESTORS = "".concat(ROUTING_PREFIX, "_SET_ANCESTORS");
-exports.SET_ANCESTORS = SET_ANCESTORS;
-var SET_SIBLINGS = "".concat(ROUTING_PREFIX, "_SET_SIBLINGS");
-exports.SET_SIBLINGS = SET_SIBLINGS;
-var SET_ENTRY_ID = "".concat(ROUTING_PREFIX, "_SET_ENTRY_ID");
-exports.SET_ENTRY_ID = SET_ENTRY_ID;
-var SET_ENTRY_RELATED_ARTICLES = "".concat(ROUTING_PREFIX, "_SET_ENTRY_RELATED_ARTICLES");
-exports.SET_ENTRY_RELATED_ARTICLES = SET_ENTRY_RELATED_ARTICLES;
-var SET_NAVIGATION_NOT_FOUND = "".concat(ROUTING_PREFIX, "_SET_NOT_FOUND");
-exports.SET_NAVIGATION_NOT_FOUND = SET_NAVIGATION_NOT_FOUND;
-var SET_NAVIGATION_PATH = "".concat(ROUTING_PREFIX, "_SET_NAVIGATION_PATH");
-exports.SET_NAVIGATION_PATH = SET_NAVIGATION_PATH;
-var SET_TARGET_PROJECT = "".concat(ROUTING_PREFIX, "_SET_TARGET_PROJECT");
-exports.SET_TARGET_PROJECT = SET_TARGET_PROJECT;
-var SET_ROUTE = "".concat(ROUTING_PREFIX, "_SET_ROUTE");
-exports.SET_ROUTE = SET_ROUTE;
-var CALL_HISTORY_METHOD = "".concat(ROUTING_PREFIX, "_CALL_HISTORY_METHOD");
-exports.CALL_HISTORY_METHOD = CALL_HISTORY_METHOD;
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.SET_RECAPTCHA_RESPONSE = exports.SET_RECAPTCHA_KEY = exports.CHANGE_USER_PASSWORD_COMPLETE = exports.CHANGE_USER_PASSWORD_FAILED = exports.CHANGE_USER_PASSWORD = exports.FORGOT_USER_PASSWORD_COMPLETE = exports.FORGOT_USER_PASSWORD = exports.VALIDATE_USER_FAILED = exports.VALIDATE_USER_SUCCESS = exports.VALIDATE_USER = exports.CREATE_USER_ACCOUNT = exports.TOGGLE_LOGIN_MODE = exports.LOGOUT_USER = exports.LOGIN_FAILED = exports.LOGIN_SUCCESSFUL = exports.LOGIN_USER = exports.UPDATE_USER = void 0;
-var ACTION_PREFIX = '@USER/';
-var UPDATE_USER = "".concat(ACTION_PREFIX, "UPDATE_USER");
-exports.UPDATE_USER = UPDATE_USER;
-var LOGIN_USER = "".concat(ACTION_PREFIX, "LOGIN_USER");
-exports.LOGIN_USER = LOGIN_USER;
-var LOGIN_SUCCESSFUL = "".concat(ACTION_PREFIX, "LOGIN_SUCCESSFUL");
-exports.LOGIN_SUCCESSFUL = LOGIN_SUCCESSFUL;
-var LOGIN_FAILED = "".concat(ACTION_PREFIX, "LOGIN_FAILED");
-exports.LOGIN_FAILED = LOGIN_FAILED;
-var LOGOUT_USER = "".concat(ACTION_PREFIX, "LOGOUT_USER");
-exports.LOGOUT_USER = LOGOUT_USER;
-var TOGGLE_LOGIN_MODE = "".concat(ACTION_PREFIX, "TOGGLE_LOGIN_MODE");
-exports.TOGGLE_LOGIN_MODE = TOGGLE_LOGIN_MODE;
-var CREATE_USER_ACCOUNT = "".concat(ACTION_PREFIX, "CREATE_USER_ACCOUNT");
-exports.CREATE_USER_ACCOUNT = CREATE_USER_ACCOUNT;
-var VALIDATE_USER = "".concat(ACTION_PREFIX, "VALIDATE_USER");
-exports.VALIDATE_USER = VALIDATE_USER;
-var VALIDATE_USER_SUCCESS = "".concat(ACTION_PREFIX, "VALIDATE_USER_SUCCESS");
-exports.VALIDATE_USER_SUCCESS = VALIDATE_USER_SUCCESS;
-var VALIDATE_USER_FAILED = "".concat(ACTION_PREFIX, "VALIDATE_USER_FAILED");
-exports.VALIDATE_USER_FAILED = VALIDATE_USER_FAILED;
-var FORGOT_USER_PASSWORD = "".concat(ACTION_PREFIX, "FORGOT_USER_PASSWORD");
-exports.FORGOT_USER_PASSWORD = FORGOT_USER_PASSWORD;
-var FORGOT_USER_PASSWORD_COMPLETE = "".concat(ACTION_PREFIX, "FORGOT_USER_PASSWORD_COMPLETE");
-exports.FORGOT_USER_PASSWORD_COMPLETE = FORGOT_USER_PASSWORD_COMPLETE;
-var CHANGE_USER_PASSWORD = "".concat(ACTION_PREFIX, "CHANGE_USER_PASSWORD");
-exports.CHANGE_USER_PASSWORD = CHANGE_USER_PASSWORD;
-var CHANGE_USER_PASSWORD_FAILED = "".concat(ACTION_PREFIX, "CHANGE_USER_PASSWORD_FAILED");
-exports.CHANGE_USER_PASSWORD_FAILED = CHANGE_USER_PASSWORD_FAILED;
-var CHANGE_USER_PASSWORD_COMPLETE = "".concat(ACTION_PREFIX, "CHANGE_USER_PASSWORD_COMPLETE");
-exports.CHANGE_USER_PASSWORD_COMPLETE = CHANGE_USER_PASSWORD_COMPLETE;
-var SET_RECAPTCHA_KEY = "".concat(ACTION_PREFIX, "SET_RECAPTCHA_KEY");
-exports.SET_RECAPTCHA_KEY = SET_RECAPTCHA_KEY;
-var SET_RECAPTCHA_RESPONSE = "".concat(ACTION_PREFIX, "SET_RECAPTCHA_RESPONSE");
-exports.SET_RECAPTCHA_RESPONSE = SET_RECAPTCHA_RESPONSE;
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.selectCaptchaToken = exports.selectCaptchaResponse = exports.selectCaptchaData = exports.selectCaptchaSiteKey = exports.selectChangePasswordMessage = exports.selectPasswordMessage = exports.selectLoginScreenMode = exports.selectUserMessage = exports.selectUserGroups = exports.selectUserLoggedIn = exports.selectUsername = exports.selectUser = void 0;
-
-var selectUser = function selectUser(state) {
-  return state.get('user');
-};
-
-exports.selectUser = selectUser;
-
-var selectUsername = function selectUsername(state) {
-  return state.getIn(['user', 'username']);
-};
-
-exports.selectUsername = selectUsername;
-
-var selectUserLoggedIn = function selectUserLoggedIn(state) {
-  return state.getIn(['user', 'loggedIn']);
-};
-
-exports.selectUserLoggedIn = selectUserLoggedIn;
-
-var selectUserGroups = function selectUserGroups(state) {
-  return state.getIn(['user', 'groups']);
-};
-
-exports.selectUserGroups = selectUserGroups;
-
-var selectUserMessage = function selectUserMessage(state) {
-  return state.getIn(['user', 'logonResult']);
-};
-
-exports.selectUserMessage = selectUserMessage;
-
-var selectLoginScreenMode = function selectLoginScreenMode(state) {
-  return state.getIn(['user', 'loginScreenMode']);
-};
-
-exports.selectLoginScreenMode = selectLoginScreenMode;
-
-var selectPasswordMessage = function selectPasswordMessage(state) {
-  return state.getIn(['user', 'passwordResetMessage']);
-};
-
-exports.selectPasswordMessage = selectPasswordMessage;
-
-var selectChangePasswordMessage = function selectChangePasswordMessage(state) {
-  return state.getIn(['user', 'changePasswordMessage']);
-};
-
-exports.selectChangePasswordMessage = selectChangePasswordMessage;
-
-var selectCaptchaSiteKey = function selectCaptchaSiteKey(state) {
-  return state.getIn(['user', 'recaptcha', 'key']);
-};
-
-exports.selectCaptchaSiteKey = selectCaptchaSiteKey;
-
-var selectCaptchaData = function selectCaptchaData(state) {
-  return state.getIn(['user', 'recaptcha', 'response']);
-};
-
-exports.selectCaptchaData = selectCaptchaData;
-
-var selectCaptchaResponse = function selectCaptchaResponse(state) {
-  return state.getIn(['user', 'recaptcha', 'response', 'isHuman']);
-};
-
-exports.selectCaptchaResponse = selectCaptchaResponse;
-
-var selectCaptchaToken = function selectCaptchaToken(state) {
-  return state.getIn(['user', 'recaptcha', 'response', 'token']);
-};
-
-exports.selectCaptchaToken = selectCaptchaToken;
-
-/***/ }),
-/* 11 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__11__;
-
-/***/ }),
-/* 12 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__12__;
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(0);
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.action = action;
-exports.flattenArray = flattenArray;
-exports.api = api;
-exports.dynamicSort = dynamicSort;
-exports.randomString = exports.resizeImageUri = exports.resizeImage = exports.getWebPImageUri = void 0;
-
-var _regenerator = _interopRequireDefault(__webpack_require__(1));
-
-var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(5));
-
-var _defineProperty2 = _interopRequireDefault(__webpack_require__(3));
-
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function action(type) {
-  var payload = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-  return _objectSpread({
-    type: type
-  }, payload);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return action; });
+/* unused harmony export getWebPImageUri */
+/* unused harmony export resizeImage */
+/* unused harmony export resizeImageUri */
+/* unused harmony export flattenArray */
+/* unused harmony export api */
+/* unused harmony export dynamicSort */
+/* unused harmony export randomString */
+function action(type, payload = {}) {
+  return {
+    type,
+    ...payload
+  };
 }
-
-var getWebPImageUri = function getWebPImageUri(uri) {
-  var formatedUri = uri;
+const getWebPImageUri = uri => {
+  let formatedUri = uri;
 
   if (uri.indexOf('.gif') == -1) {
     if (uri.indexOf('f=') == -1 && uri.indexOf('format=') == -1) {
       if (uri.indexOf('?') > -1) {
-        formatedUri = "".concat(uri, "&f=webp");
+        formatedUri = `${uri}&f=webp`;
       } else {
-        formatedUri = "".concat(uri, "?f=webp");
+        formatedUri = `${uri}?f=webp`;
       }
     }
 
     if (formatedUri.indexOf('q=') == -1 && formatedUri.indexOf('quality=') == -1) {
       if (formatedUri.indexOf('?') > -1) {
-        formatedUri = "".concat(formatedUri, "&q=70");
+        formatedUri = `${formatedUri}&q=70`;
       } else {
-        formatedUri = "".concat(formatedUri, "?q=70");
+        formatedUri = `${formatedUri}?q=70`;
       }
     }
   }
 
   return formatedUri;
 };
-
-exports.getWebPImageUri = getWebPImageUri;
-
-var resizeImage = function resizeImage(image, height, width) {
+const resizeImage = (image, height, width) => {
   if (image.asset && image.asset.sys && image.asset.sys.uri) {
     image.asset.sys.uri = resizeImageUri(image.asset.sys.uri, height, width);
   }
 };
-
-exports.resizeImage = resizeImage;
-
-var resizeImageUri = function resizeImageUri(uri, height, width) {
-  var formatedUri = uri;
-  var paramDelimeter = '?';
+const resizeImageUri = (uri, height, width) => {
+  let formatedUri = uri;
+  let paramDelimeter = '?';
 
   if (uri.indexOf('?') > -1) {
     paramDelimeter = '&';
@@ -514,96 +253,38 @@ var resizeImageUri = function resizeImageUri(uri, height, width) {
 
   if (width) {
     if (formatedUri.indexOf('w=') == -1 && formatedUri.indexOf('width=') == -1) {
-      formatedUri = "".concat(formatedUri).concat(paramDelimeter, "w=").concat(width);
+      formatedUri = `${formatedUri}${paramDelimeter}w=${width}`;
       paramDelimeter = '&';
     }
   }
 
   if (height) {
     if (formatedUri.indexOf('h=') == -1 && formatedUri.indexOf('height=') == -1) {
-      formatedUri = "".concat(formatedUri).concat(paramDelimeter, "h=").concat(height);
+      formatedUri = `${formatedUri}${paramDelimeter}h=${height}`;
     }
   }
 
   return formatedUri;
 };
-
-exports.resizeImageUri = resizeImageUri;
-
 function flattenArray(arr) {
   // flatten arrays inside the supplied array and
   // remove duplicates from the result
-  return arr.reduce(function (acc, val) {
-    return acc.concat(val);
-  }, []).filter(function (elem, pos, arr) {
-    return arr.indexOf(elem) == pos;
+  return arr.reduce((acc, val) => acc.concat(val), []).filter((elem, pos, arr) => arr.indexOf(elem) == pos);
+}
+async function api(url, options) {
+  return fetch(url, options).then(async response => {
+    setTimeout(() => null, 0);
+
+    if (!response.ok) {
+      throw new Error(response.statusText);
+    }
+
+    return response.json().then(data => data);
+  }).catch(error => {
+    //console.log(error);
+    throw error;
   });
 }
-
-function api(_x, _x2) {
-  return _api.apply(this, arguments);
-}
-
-function _api() {
-  _api = (0, _asyncToGenerator2["default"])(
-  /*#__PURE__*/
-  _regenerator["default"].mark(function _callee2(url, options) {
-    return _regenerator["default"].wrap(function _callee2$(_context2) {
-      while (1) {
-        switch (_context2.prev = _context2.next) {
-          case 0:
-            return _context2.abrupt("return", fetch(url, options).then(
-            /*#__PURE__*/
-            function () {
-              var _ref = (0, _asyncToGenerator2["default"])(
-              /*#__PURE__*/
-              _regenerator["default"].mark(function _callee(response) {
-                return _regenerator["default"].wrap(function _callee$(_context) {
-                  while (1) {
-                    switch (_context.prev = _context.next) {
-                      case 0:
-                        setTimeout(function () {
-                          return null;
-                        }, 0);
-
-                        if (response.ok) {
-                          _context.next = 3;
-                          break;
-                        }
-
-                        throw new Error(response.statusText);
-
-                      case 3:
-                        return _context.abrupt("return", response.json().then(function (data) {
-                          return data;
-                        }));
-
-                      case 4:
-                      case "end":
-                        return _context.stop();
-                    }
-                  }
-                }, _callee);
-              }));
-
-              return function (_x3) {
-                return _ref.apply(this, arguments);
-              };
-            }())["catch"](function (error) {
-              //console.log(error);
-              throw error;
-            }));
-
-          case 1:
-          case "end":
-            return _context2.stop();
-        }
-      }
-    }, _callee2);
-  }));
-  return _api.apply(this, arguments);
-}
-
 function dynamicSort(property) {
   var sortOrder = 1;
 
@@ -620,10 +301,9 @@ function dynamicSort(property) {
     return result * sortOrder;
   };
 }
-
-var randomString = function randomString(length) {
-  var text = '';
-  var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+const randomString = length => {
+  let text = '';
+  const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
   for (var i = 0; i < length; i++) {
     text += possible.charAt(Math.floor(Math.random() * possible.length));
@@ -632,197 +312,652 @@ var randomString = function randomString(length) {
   return text;
 };
 
-exports.randomString = randomString;
-
 /***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = exports.initialUserState = void 0;
-
-var _immutable = __webpack_require__(2);
-
-var _types = __webpack_require__(9);
-
-var initialUserState = (0, _immutable.Map)({
-  loggedIn: false,
-  failedLogin: null,
-  username: null,
-  id: null,
-  securityToken: null,
-  logonResult: null,
-  groups: new _immutable.List([]),
-  emailAddress: null,
-  fullName: null,
-  loginScreenMode: 'login',
-  passwordReset: false,
-  passwordResetMessage: null,
-  changePasswordMessage: null,
-  recaptcha: new _immutable.Map({
-    key: null,
-    response: new _immutable.Map({
-      isHuman: false,
-      token: null
-    })
-  })
-});
-exports.initialUserState = initialUserState;
-
-var _default = function _default() {
-  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialUserState;
-  var action = arguments.length > 1 ? arguments[1] : undefined;
-
-  switch (action.type) {
-    case _types.UPDATE_USER:
-      {
-        var user = action.user;
-        return state.set('loggedIn', typeof user.loggedIn !== 'undefined' ? user.loggedIn : state.get('loggedIn')).set('failedLogin', typeof user.failedLogin !== 'undefined' ? user.failedLogin : state.get('failedLogin')).set('username', user.username || state.get('username')).set('id', user.id || state.get('id')).set('securityToken', user.securityToken || state.get('securityToken')).set('logonResult', user.logonResult || state.get('logonResult')).set('groups', (0, _immutable.fromJS)(user.groups) || state.get('groups')).set('emailAddress', user.emailAddress || state.get('emailAddress')).set('fullName', user.fullName || state.get('fullName')).set('passwordReset', typeof user.passwordReset !== 'undefined' ? user.passwordReset : state.get('passwordReset')).set('passwordResetMessage', user.passwordResetMessage || state.get('passwordResetMessage')).set('changePasswordMessage', user.changePasswordMessage || state.get('changePasswordMessage'));
-      }
-
-    case _types.TOGGLE_LOGIN_MODE:
-      {
-        var newMode = action.loginMode;
-        return state.set('loginScreenMode', newMode);
-      }
-
-    case _types.SET_RECAPTCHA_KEY:
-      {
-        return state.setIn(['recaptcha', 'key'], action.key);
-      }
-
-    case _types.SET_RECAPTCHA_RESPONSE:
-      {
-        return state.setIn(['recaptcha', 'response', 'isHuman'], action.isHuman).setIn(['recaptcha', 'response', 'token'], action.token);
-      }
-
-    default:
-      return state;
-  }
-};
-
-exports["default"] = _default;
-
-/***/ }),
-/* 15 */
+/* 5 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__15__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__5__;
 
 /***/ }),
-/* 16 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(0);
-
-var _interopRequireWildcard = __webpack_require__(7);
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-Object.defineProperty(exports, "reducer", {
-  enumerable: true,
-  get: function get() {
-    return _reducers["default"];
-  }
-});
-Object.defineProperty(exports, "sagas", {
-  enumerable: true,
-  get: function get() {
-    return _sagas.userSagas;
-  }
-});
-Object.defineProperty(exports, "withLogin", {
-  enumerable: true,
-  get: function get() {
-    return _withLogin["default"];
-  }
-});
-exports.types = exports.selectors = exports.actions = void 0;
-
-var actions = _interopRequireWildcard(__webpack_require__(22));
-
-exports.actions = actions;
-
-var selectors = _interopRequireWildcard(__webpack_require__(10));
-
-exports.selectors = selectors;
-
-var types = _interopRequireWildcard(__webpack_require__(9));
-
-exports.types = types;
-
-var _reducers = _interopRequireDefault(__webpack_require__(14));
-
-var _sagas = __webpack_require__(29);
-
-var _withLogin = _interopRequireDefault(__webpack_require__(36));
-
-/***/ }),
-/* 17 */
+/* 6 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__17__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__6__;
 
 /***/ }),
-/* 18 */
-/***/ (function(module, exports, __webpack_require__) {
+/* 7 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
-
-var _interopRequireDefault = __webpack_require__(0);
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-var _exportNames = {
-  GetClientSideDeliveryApiStatus: true,
-  GetDeliveryApiStatusFromHostname: true,
-  GetResponseGuids: true,
-  GetAllResponseGuids: true,
-  deliveryApi: true,
-  cachedSearch: true
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectUser", function() { return selectUser; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectUsername", function() { return selectUsername; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectUserLoggedIn", function() { return selectUserLoggedIn; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectUserGroups", function() { return selectUserGroups; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectUserMessage", function() { return selectUserMessage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectLoginScreenMode", function() { return selectLoginScreenMode; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectPasswordMessage", function() { return selectPasswordMessage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectChangePasswordMessage", function() { return selectChangePasswordMessage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectCaptchaSiteKey", function() { return selectCaptchaSiteKey; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectCaptchaData", function() { return selectCaptchaData; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectCaptchaResponse", function() { return selectCaptchaResponse; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectCaptchaToken", function() { return selectCaptchaToken; });
+const selectUser = state => {
+  return state.get('user');
 };
-exports.cachedSearch = exports.deliveryApi = exports.GetAllResponseGuids = exports.GetResponseGuids = exports.GetDeliveryApiStatusFromHostname = exports.GetClientSideDeliveryApiStatus = void 0;
+const selectUsername = state => {
+  return state.getIn(['user', 'username']);
+};
+const selectUserLoggedIn = state => {
+  return state.getIn(['user', 'loggedIn']);
+};
+const selectUserGroups = state => {
+  return state.getIn(['user', 'groups']);
+};
+const selectUserMessage = state => {
+  return state.getIn(['user', 'logonResult']);
+};
+const selectLoginScreenMode = state => {
+  return state.getIn(['user', 'loginScreenMode']);
+};
+const selectPasswordMessage = state => {
+  return state.getIn(['user', 'passwordResetMessage']);
+};
+const selectChangePasswordMessage = state => {
+  return state.getIn(['user', 'changePasswordMessage']);
+};
+const selectCaptchaSiteKey = state => {
+  return state.getIn(['user', 'recaptcha', 'key']);
+};
+const selectCaptchaData = state => {
+  return state.getIn(['user', 'recaptcha', 'response']);
+};
+const selectCaptchaResponse = state => {
+  return state.getIn(['user', 'recaptcha', 'response', 'isHuman']);
+};
+const selectCaptchaToken = state => {
+  return state.getIn(['user', 'recaptcha', 'response', 'token']);
+};
 
-var _defineProperty2 = _interopRequireDefault(__webpack_require__(3));
+/***/ }),
+/* 8 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__(11));
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectRouteEntry", function() { return selectRouteEntry; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectNodeDepends", function() { return selectNodeDepends; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectCurrentTreeID", function() { return selectCurrentTreeID; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectEntryDepends", function() { return selectEntryDepends; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectRouteEntryEntryId", function() { return selectRouteEntryEntryId; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectRouteEntryContentTypeId", function() { return selectRouteEntryContentTypeId; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectRouteEntrySlug", function() { return selectRouteEntrySlug; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectRouteEntryID", function() { return selectRouteEntryID; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectCurrentPath", function() { return selectCurrentPath; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectCurrentSearch", function() { return selectCurrentSearch; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectQueryStringAsObject", function() { return selectQueryStringAsObject; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectCurrentProject", function() { return selectCurrentProject; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectIsNotFound", function() { return selectIsNotFound; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectCurrentAncestors", function() { return selectCurrentAncestors; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectCurrentNode", function() { return selectCurrentNode; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectBreadcrumb", function() { return selectBreadcrumb; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectRouteLoading", function() { return selectRouteLoading; });
+/* harmony import */ var immutable__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
+/* harmony import */ var immutable__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(immutable__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _util_navigation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(20);
 
-var _createClass2 = _interopRequireDefault(__webpack_require__(12));
 
-var _toConsumableArray2 = _interopRequireDefault(__webpack_require__(20));
+const selectRouteEntry = state => {
+  return state.getIn(['routing', 'entry'], Object(immutable__WEBPACK_IMPORTED_MODULE_0__["Map"])({}));
+};
+const selectNodeDepends = state => {
+  return state.getIn(['routing', 'nodeDepends'], new immutable__WEBPACK_IMPORTED_MODULE_0__["List"]([]));
+};
+const selectCurrentTreeID = state => {
+  return state.getIn(['routing', 'currentTreeId']);
+};
+const selectEntryDepends = state => {
+  return state.getIn(['routing', 'entryDepends']);
+};
+const selectRouteEntryEntryId = state => {
+  return state.getIn(['routing', 'entry', 'sys', 'id'], null);
+};
+const selectRouteEntryContentTypeId = state => {
+  const entry = selectRouteEntry(state);
+  return entry && entry.getIn(['sys', 'contentTypeId'], null);
+};
+const selectRouteEntrySlug = state => {
+  return state.getIn(['routing', 'entry', 'sys', 'slug'], null);
+};
+const selectRouteEntryID = state => {
+  return state.getIn(['routing', 'entryID']);
+};
+const selectCurrentPath = state => {
+  return state.getIn(['routing', 'currentPath']);
+};
+const selectCurrentSearch = state => {
+  return state.getIn(['routing', 'location', 'search']);
+};
+const selectQueryStringAsObject = state => Object(_util_navigation__WEBPACK_IMPORTED_MODULE_1__[/* queryParams */ "b"])(selectCurrentSearch(state));
+const selectCurrentProject = state => {
+  return state.getIn(['routing', 'currentProject']);
+};
+const selectIsNotFound = state => {
+  return state.getIn(['routing', 'notFound']);
+};
+const selectCurrentAncestors = state => {
+  return state.getIn(['routing', 'currentNodeAncestors'], new immutable__WEBPACK_IMPORTED_MODULE_0__["List"]());
+};
+const selectCurrentNode = state => {
+  return state.getIn(['routing', 'currentNode']);
+};
+const selectBreadcrumb = state => {
+  return (selectCurrentAncestors(state) || new immutable__WEBPACK_IMPORTED_MODULE_0__["List"]()).push(selectCurrentNode(state));
+};
+const selectRouteLoading = state => {
+  return state.getIn(['routing', 'isLoading']);
+};
 
-var _typeof2 = _interopRequireDefault(__webpack_require__(41));
+/***/ }),
+/* 9 */
+/***/ (function(module, exports) {
 
-var _contensisDeliveryApi = __webpack_require__(42);
+module.exports = __WEBPACK_EXTERNAL_MODULE__9__;
 
-Object.keys(_contensisDeliveryApi).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _contensisDeliveryApi[key];
+/***/ }),
+/* 10 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
+// EXTERNAL MODULE: external "js-cookie"
+var external_js_cookie_ = __webpack_require__(28);
+var external_js_cookie_default = /*#__PURE__*/__webpack_require__.n(external_js_cookie_);
+
+// CONCATENATED MODULE: ./src/app/features/login/util/CookieHelper.class.js
+
+const COOKIE_VALID_DAYS = 1; // 0 = Session cookie
+// Override the default js-cookie conversion / encoding
+// methods so the written values work with Contensis sites
+
+const _cookie = external_js_cookie_default.a.withConverter({
+  read: value => decodeURIComponent(value),
+  write: value => encodeURIComponent(value)
+});
+
+class CookieHelper {
+  static GetCookie(name) {
+    return _cookie.get(name);
+  }
+
+  static SetCookie(name, value, maxAgeDays = COOKIE_VALID_DAYS) {
+    maxAgeDays === 0 ? _cookie.set(name, value) : _cookie.set(name, value, {
+      expires: maxAgeDays
+    });
+  }
+
+  static DeleteCookie(name) {
+    _cookie.remove(name);
+  }
+
+}
+// EXTERNAL MODULE: ./src/app/features/login/util/SecurityApi.class.js
+var SecurityApi_class = __webpack_require__(11);
+
+// EXTERNAL MODULE: ./src/app/features/login/redux/reducers.js
+var reducers = __webpack_require__(14);
+
+// CONCATENATED MODULE: ./src/app/features/login/util/LoginHelper.class.js
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LoginHelper", function() { return LoginHelper_class_LoginHelper; });
+// import { ajax } from 'jquery';
+// import queryString from 'query-string';
+
+
+ // import { randomString } from '~/core/util/helpers';
+// import userManager from './oidc/userManager';
+
+const LOGIN_COOKIE = 'ContensisCMSUserName';
+const LAST_USERNAME_COOKIE = 'ContensisLastUserName';
+const DISPLAY_NAME_COOKIE = 'ContensisDisplayName';
+const USER_LANGUAGE_COOKIE = 'User_LanguageID';
+const AVATAR_COOKIE = 'ContensisAvatar'; // const contensis = CONTENSIS; /* global CONTENSIS */
+
+class LoginHelper_class_LoginHelper {
+  static GetLoginCookie() {
+    return CookieHelper.GetCookie(LOGIN_COOKIE);
+  }
+
+  static SetLoginCookies(user) {
+    if (user.securityToken) CookieHelper.SetCookie(LOGIN_COOKIE, user.securityToken);
+
+    if (user.username) {
+      CookieHelper.SetCookie(LAST_USERNAME_COOKIE, user.username);
+      CookieHelper.SetCookie(DISPLAY_NAME_COOKIE, user.username);
     }
+  }
+
+  static GetCachedCredentials() {
+    return {
+      securityToken: CookieHelper.GetCookie(LOGIN_COOKIE),
+      username: CookieHelper.GetCookie(LAST_USERNAME_COOKIE),
+      displayName: CookieHelper.GetCookie(DISPLAY_NAME_COOKIE),
+      languageId: CookieHelper.GetCookie(USER_LANGUAGE_COOKIE),
+      avatar: CookieHelper.GetCookie(AVATAR_COOKIE)
+    };
+  }
+
+  static GetCachedCredentialsSSR(cookies) {
+    return {
+      securityToken: cookies[LOGIN_COOKIE],
+      username: cookies[LAST_USERNAME_COOKIE],
+      displayName: cookies[DISPLAY_NAME_COOKIE],
+      languageId: cookies[USER_LANGUAGE_COOKIE],
+      avatar: cookies[AVATAR_COOKIE]
+    };
+  }
+
+  static ClearCachedCredentials() {
+    CookieHelper.DeleteCookie(LOGIN_COOKIE);
+    CookieHelper.DeleteCookie(LAST_USERNAME_COOKIE);
+    CookieHelper.DeleteCookie(DISPLAY_NAME_COOKIE);
+    CookieHelper.DeleteCookie(USER_LANGUAGE_COOKIE);
+    CookieHelper.DeleteCookie(AVATAR_COOKIE);
+  }
+
+  static async ValidateUser(groups = false, cookies = null) {
+    const cached = cookies ? this.GetCachedCredentialsSSR(cookies) : this.GetCachedCredentials();
+
+    if (cached.securityToken) {
+      const response = await SecurityApi_class["a" /* SecurityApi */].ValidateUser(cached.securityToken);
+      if (!response) return false; // Convert result to a User object
+
+      const user = {
+        username: cached.username,
+        securityToken: encodeURIComponent(response.SecurityToken),
+        logonResult: response.LogonResult,
+        id: response.UserID,
+        loginScreenMode: 'login'
+      };
+
+      if (user.logonResult !== 0) {
+        // Clear the cookie cache so we don't need to validate again
+        LoginHelper_class_LoginHelper.ClearCachedCredentials();
+      } else {
+        // Set logged in flag
+        user.loggedIn = true;
+
+        if (groups) {
+          const userWithGroups = await this.GetGroups(user);
+          return userWithGroups;
+        }
+      }
+
+      return user;
+    }
+
+    return false;
+  }
+
+  static async LoginUser(username, password, groups = false) {
+    if (username && password) {
+      // Call LogonUser API
+      const loginResponse = await SecurityApi_class["a" /* SecurityApi */].LogonUser(username, password);
+
+      if (loginResponse) {
+        // Extract the elements we need from the response
+        const {
+          SecurityToken,
+          LogonResult,
+          UserID
+        } = loginResponse;
+        const failedLogin = !!LogonResult; // 0 is successful
+        // Map response to new user object
+
+        const user = {
+          username,
+          failedLogin,
+          loggedIn: !!SecurityToken && !failedLogin,
+          securityToken: SecurityToken,
+          id: UserID,
+          logonResult: this.CheckResult(LogonResult)
+        };
+
+        if (!user.failedLogin && !!user.securityToken) {
+          this.SetLoginCookies(user);
+
+          if (groups) {
+            const userWithGroups = await this.GetGroups(user);
+            return userWithGroups;
+          }
+        }
+
+        return user;
+      } else {
+        // Create user object to show login failed due to service fault
+        return {
+          securityToken: null,
+          loggedIn: false,
+          failedLogin: true,
+          logonResult: 'Service Fault'
+        };
+      }
+    }
+  }
+
+  static async GetGroups(user) {
+    if (!user.securityToken) {
+      return user;
+    }
+
+    const userInfoResponse = await SecurityApi_class["a" /* SecurityApi */].GetUserInfo(user.securityToken);
+
+    if (userInfoResponse) {
+      const response = JSON.parse(userInfoResponse);
+
+      if (response.Error || !response.GroupCollection) {
+        user.errorMessage = `Problem fetching user info: ${response.Error}`;
+      } else {
+        user.groups = response.GroupCollection.map(group => ({
+          name: group.GroupName,
+          id: group.GroupId
+        }));
+        user.fullName = response.Fullname;
+        user.emailAddress = response.Email;
+      }
+    }
+
+    return user;
+  }
+
+  static LogoutUser() {
+    this.ClearCachedCredentials();
+    return reducers["b" /* initialUserState */].toJS();
+  }
+
+  static ClientRedirectToLogin(uri) {
+    if (typeof window != 'undefined') {
+      window.location.href = LoginHelper_class_LoginHelper.LoginPageUrl(uri); // LoginHelper.IsWsFedSignin()
+      // ? LoginHelper.WsFedLoginPageUrl(window.location)
+      // : LoginHelper.LoginPageUrl(uri);
+    }
+  }
+
+  static LoginPageUrl(uri) {
+    return `${uri || '/login'}?redirect_uri=${window.location.pathname + window.location.search}`;
+  } // static WsFedLoginPageUrl(currentLocation) {
+  //   const loginPage = contensis.ADFS_LOGIN_PAGE.replace(
+  //     '{redirect_uri}',
+  //     encodeURIComponent(currentLocation.toString().split('#')[0])
+  //   ).replace('{nonce}', randomString(5));
+  //   return `${contensis.URL}${loginPage}`.replace(/([^:]\/)\/+/g, '$1');
+  // }
+  // static IsWsFedSignin() {
+  //   return contensis.WSFED_SIGNIN;
+  // }
+  // static WsFedSignin(redirectUri) {
+  //   userManager.signinRedirect({
+  //     scope: 'openid',
+  //     response_type: 'id_token',
+  //     redirect_uri: redirectUri || window.location.toString(),
+  //   });
+  // }
+  // static WsFedLogout() {
+  //   ajax(`${contensis.URL}authenticate/logout/`, {
+  //     dataType: 'jsonp',
+  //     jsonp: false,
+  //     async: false,
+  //   });
+  // }
+
+
+  static async ForgotPassword(username) {
+    if (username) {
+      const currentUrl = window.location.protocol + '//' + window.location.host;
+      const passwordResponse = await SecurityApi_class["a" /* SecurityApi */].ForgotPassword(username, currentUrl);
+
+      if (passwordResponse) {
+        // Extract the elements we need from the response
+        return passwordResponse;
+      }
+    }
+  }
+
+  static async ChangePassword(username, oldPassword, newPassword, newPasswordConfirm) {
+    if (newPassword && newPasswordConfirm) {
+      if (this.ValidatePassword(newPassword)) {
+        const passwordResponse = await SecurityApi_class["a" /* SecurityApi */].ChangePassword(username, oldPassword, newPassword, newPasswordConfirm); //const passwordResponse = await SecurityApi.ChangePassword(btoa(username), btoa(oldPassword), btoa(newPassword), btoa(newPasswordConfirm));
+
+        if (passwordResponse) {
+          // Extract the elements we need from the response
+          return passwordResponse;
+        }
+      } else {
+        return 'New password does not meet the requirements: \r\n\r\n - Must be a minimum of 8 characters long \r\n - Must contain at least 1 uppercase character \r\n - Must contain at least 1 special character or number';
+      }
+    }
+  }
+
+  static async ChangePasswordWithToken(token, newPassword, newPasswordConfirm) {
+    if (newPassword && newPasswordConfirm) {
+      if (this.ValidatePassword(newPassword)) {
+        const passwordResponse = await SecurityApi_class["a" /* SecurityApi */].ChangePasswordWithToken(token, btoa(newPassword), btoa(newPasswordConfirm)); //const passwordResponse = await SecurityApi.ChangePassword(btoa(username), btoa(oldPassword), btoa(newPassword), btoa(newPasswordConfirm));
+
+        if (passwordResponse) {
+          // Extract the elements we need from the response
+          return passwordResponse;
+        }
+      } else {
+        return 'New password does not meet the requirements: \r\n\r\n - Must be a minimum of 8 characters long \r\n - Must contain at least 1 uppercase character \r\n - Must contain at least 1 special character or number';
+      }
+    }
+  }
+
+  static ValidatePassword(pword) {
+    //Password must be over 8 characters long
+    if (pword.length < 8) return false; //This only returns true if the following criteria is met:
+    //  *8 chars or more
+    //  *Must contain at least 1 capital letter
+    //  *Must contain at least 1 number or special character
+
+    return /^(?:(?=.*[a-z])(?:(?=.*[A-Z])(?=.*[\d\W])|(?=.*\W)(?=.*\d))|(?=.*\W)(?=.*[A-Z])(?=.*\d)).{8,}$/.test(pword);
+  }
+
+  static CheckResult(result) {
+    const Results = {
+      '0': 'OK',
+      '-2': 'Incorrect username or password',
+      '-3': 'Account disabled',
+      '-4': 'Account locked',
+      '-5': 'Log on from this PC is denied',
+      '-6': 'Log on at this time is denied',
+      '-7': 'Account already logged in',
+      '-9': 'Unspecified error',
+      '2': 'Password change required',
+      '3': 'Insufficient privileges',
+      '-10': 'Account expired',
+      '-11': 'Maintenance mode',
+      '4': 'Security token expired',
+      '': 'An error has occured'
+    };
+    return Results[result];
+  }
+
+}
+
+/***/ }),
+/* 11 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SecurityApi; });
+const CMS_URL = SERVERS.cms;
+/* global SERVERS */
+
+const config = {
+  REGISTER_USER_URI: 'Security/RegisterUser',
+  LOGON_USER_URI: 'REST/Contensis/Security/AuthenticateApplication',
+  VALIDATE_USER_URI: 'REST/Contensis/Security/IsAuthenticated',
+  USER_INFO_URI: 'REST/Contensis/Security/GetUserInfo',
+  FORGOT_PASSWORD_URI: 'Security/ResetPasswordEmail',
+  CHANGE_PASSWORD_URI: 'Security/ChangePassword',
+  CHANGE_PASSWORD_TOKEN_URI: 'Security/ChangePasswordWithToken',
+  AUTH_CAPTCHA_URI: 'Security/AuthenticateCaptcha',
+  LOGIN_URL: '/business-government/partner'
+};
+const REGISTER_USER_URL = `${CMS_URL}/${config.REGISTER_USER_URI}`;
+const LOGON_USER_URL = `${CMS_URL}/${config.LOGON_USER_URI}`;
+const VALIDATE_USER_URL = `${CMS_URL}/${config.VALIDATE_USER_URI}`;
+const USER_INFO_URL = `${CMS_URL}/${config.USER_INFO_URI}`;
+const FORGOT_PASSWORD_URI = `/${config.FORGOT_PASSWORD_URI}`;
+const CHANGE_PASSWORD_URI = `/${config.CHANGE_PASSWORD_URI}`;
+const AUTH_CAPTCHA_URI = `/${config.AUTH_CAPTCHA_URI}`;
+const CHANGE_PASSWORD_TOKEN_URI = `/${config.CHANGE_PASSWORD_TOKEN_URI}`;
+const BASE_OPTIONS = {
+  method: 'GET',
+  headers: {
+    'Content-Type': 'application/json'
+  }
+};
+class SecurityApi {
+  static async AuthoriseRecaptcha(token) {
+    const url = `${AUTH_CAPTCHA_URI}?captchaToken=${encodeURIComponent(token)}`;
+    const options = {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'POST'
+    };
+    return await SecurityApi.get(url, options);
+  }
+
+  static async LogonUser(username, password) {
+    const body = {
+      username,
+      password,
+      ip: '127.0.0.1',
+      applicationName: 'DesktopTool'
+    };
+    const options = { ...BASE_OPTIONS,
+      method: 'POST',
+      body: JSON.stringify(body)
+    };
+    return await SecurityApi.get(LOGON_USER_URL, options);
+  }
+
+  static async ValidateUser(securityToken) {
+    const url = `${VALIDATE_USER_URL}?token=${encodeURIComponent(securityToken)}`;
+    const bodyToken = encodeURIComponent(decodeURIComponent(decodeURIComponent(securityToken)));
+    const options = { ...BASE_OPTIONS,
+      method: 'POST',
+      body: JSON.stringify({
+        securityToken: bodyToken
+      })
+    };
+    return await SecurityApi.get(url, options);
+  }
+
+  static async GetUserInfo(securityToken) {
+    const options = { ...BASE_OPTIONS,
+      headers: {
+        ['Content-Type']: 'text/plain',
+        ContensisCMSUserName: securityToken
+      }
+    };
+    return await SecurityApi.get(USER_INFO_URL, options);
+  }
+
+  static async RegisterUser(email, password) {
+    const body = {
+      email,
+      password
+    };
+    const options = { ...BASE_OPTIONS,
+      method: 'POST',
+      body: JSON.stringify(body)
+    };
+    return await SecurityApi.get(REGISTER_USER_URL, options);
+  }
+
+  static async ChangePassword(username, oldPassword, newPassword, newPasswordConfirm) {
+    const url = `${CHANGE_PASSWORD_URI}?username=${encodeURIComponent(username)}&oldPassword=${encodeURIComponent(oldPassword)}&newPassword=${encodeURIComponent(newPassword)}&newPasswordConfirm=${encodeURIComponent(newPasswordConfirm)}`;
+    const options = {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'POST'
+    };
+    return await SecurityApi.get(url, options);
+  }
+
+  static async ChangePasswordWithToken(token, newPassword, newPasswordConfirm) {
+    const url = `${CHANGE_PASSWORD_TOKEN_URI}?token=${token}&newPassword=${encodeURIComponent(newPassword)}&confirmPassword=${encodeURIComponent(newPasswordConfirm)}`;
+    const options = {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'POST'
+    };
+    return await SecurityApi.get(url, options);
+  }
+
+  static async ForgotPassword(username, currentUrl) {
+    const url = `${FORGOT_PASSWORD_URI}?username=${encodeURIComponent(username)}&currentUrl=${encodeURIComponent(currentUrl)}`;
+    const options = {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'POST'
+    };
+    return await SecurityApi.get(url, options);
+  }
+
+  static async get(url, options = BASE_OPTIONS) {
+    try {
+      const responseBody = await api(url, options);
+      if (responseBody) return responseBody;
+      return false;
+    } catch (error) {
+      return false;
+    }
+  }
+
+}
+
+async function api(url, options) {
+  return fetch(url, options).then(async response => {
+    setTimeout(() => null, 0);
+
+    if (!response.ok) {
+      throw new Error(response.statusText);
+    }
+
+    return response.json().then(data => data);
+  }).catch(error => {
+    //console.log(error);
+    throw error;
   });
-});
+}
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+/***/ }),
+/* 12 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GetClientSideDeliveryApiStatus", function() { return GetClientSideDeliveryApiStatus; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GetDeliveryApiStatusFromHostname", function() { return GetDeliveryApiStatusFromHostname; });
+/* unused harmony export GetResponseGuids */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GetAllResponseGuids", function() { return GetAllResponseGuids; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "deliveryApi", function() { return deliveryApi; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "cachedSearch", function() { return cachedSearch; });
+/* harmony import */ var contensis_delivery_api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(6);
+/* harmony import */ var contensis_delivery_api__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(contensis_delivery_api__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (checked) */ if(__webpack_require__.o(contensis_delivery_api__WEBPACK_IMPORTED_MODULE_0__, "Query")) __webpack_require__.d(__webpack_exports__, "Query", function() { return contensis_delivery_api__WEBPACK_IMPORTED_MODULE_0__["Query"]; });
 
-var getClientConfig = function getClientConfig(project) {
-  var config = DELIVERY_API_CONFIG;
+
+
+const getClientConfig = project => {
+  let config = DELIVERY_API_CONFIG;
   /* global DELIVERY_API_CONFIG */
 
   if (project) {
@@ -835,28 +970,24 @@ var getClientConfig = function getClientConfig(project) {
       // ensure a relative url is used to bypass the need for CORS (separate OPTIONS calls)
       config.rootUrl = '';
       config.responseHandler = {
-        404: function _() {
-          return null;
-        }
+        404: () => null
       };
     }
 
   return config;
 };
 
-// This should only be executed on the client as it relies on the window.
-var GetClientSideDeliveryApiStatus = function GetClientSideDeliveryApiStatus() {
+ // This should only be executed on the client as it relies on the window.
+
+const GetClientSideDeliveryApiStatus = () => {
   if (typeof window != 'undefined') {
-    var currentHostname = window.location.hostname;
+    const currentHostname = window.location.hostname;
     return GetDeliveryApiStatusFromHostname(currentHostname);
   }
 
   return null;
 };
-
-exports.GetClientSideDeliveryApiStatus = GetClientSideDeliveryApiStatus;
-
-var GetDeliveryApiStatusFromHostname = function GetDeliveryApiStatusFromHostname(currentHostname) {
+const GetDeliveryApiStatusFromHostname = currentHostname => {
   if (currentHostname.indexOf('localhost') > -1) return 'latest';
 
   if (currentHostname.endsWith('contensis.cloud')) {
@@ -877,11 +1008,8 @@ var GetDeliveryApiStatusFromHostname = function GetDeliveryApiStatusFromHostname
 
   return 'published';
 };
-
-exports.GetDeliveryApiStatusFromHostname = GetDeliveryApiStatusFromHostname;
-
-var GetResponseGuids = function GetResponseGuids(object) {
-  var Ids = [];
+const GetResponseGuids = object => {
+  let Ids = [];
   Object.keys(object).some(function (k) {
     if (k === 'sys') {
       //Should always have an ID, but lets check...
@@ -889,22 +1017,22 @@ var GetResponseGuids = function GetResponseGuids(object) {
         // We can exclude assets here i think... ?
         if (object[k].dataFormat) {
           if (object[k].dataFormat !== 'asset') {
-            Ids.push("".concat(object[k].id, "_").concat(object[k].language.toLowerCase()));
+            Ids.push(`${object[k].id}_${object[k].language.toLowerCase()}`);
           }
         } else {
           // If we don't have a dataformat add it anyhow, for safety
-          Ids.push("".concat(object[k].id, "_").concat(object[k].language.toLowerCase()));
+          Ids.push(`${object[k].id}_${object[k].language.toLowerCase()}`);
         }
       }
 
       return false;
     }
 
-    if (object[k] && (0, _typeof2["default"])(object[k]) === 'object') {
-      var subIds = GetResponseGuids(object[k]);
+    if (object[k] && typeof object[k] === 'object') {
+      let subIds = GetResponseGuids(object[k]);
 
       if (subIds.length > 0) {
-        Ids.push.apply(Ids, (0, _toConsumableArray2["default"])(subIds));
+        Ids.push(...subIds);
       }
 
       return false;
@@ -912,81 +1040,52 @@ var GetResponseGuids = function GetResponseGuids(object) {
   });
   return Ids;
 };
-
-exports.GetResponseGuids = GetResponseGuids;
-
-var GetAllResponseGuids = function GetAllResponseGuids(object) {
+const GetAllResponseGuids = object => {
   if (!object) return [];
-  var returnItems = GetResponseGuids(object);
-  var unique = new Set(returnItems);
+  let returnItems = GetResponseGuids(object);
+  let unique = new Set(returnItems);
   return unique;
 };
 
-exports.GetAllResponseGuids = GetAllResponseGuids;
-
-var DeliveryApi =
-/*#__PURE__*/
-function () {
-  function DeliveryApi() {
-    (0, _classCallCheck2["default"])(this, DeliveryApi);
+class DeliveryApi {
+  search(query, linkDepth, project, env) {
+    const client = contensis_delivery_api__WEBPACK_IMPORTED_MODULE_0__["Client"].create(getClientConfig(project, env));
+    return client.entries.search(query, typeof linkDepth !== 'undefined' ? linkDepth : 1);
   }
 
-  (0, _createClass2["default"])(DeliveryApi, [{
-    key: "search",
-    value: function search(query, linkDepth, project, env) {
-      var client = _contensisDeliveryApi.Client.create(getClientConfig(project, env));
+  getClient(deliveryApiStatus = 'published', project, env) {
+    const baseConfig = getClientConfig(project, env);
+    baseConfig.versionStatus = deliveryApiStatus;
+    return contensis_delivery_api__WEBPACK_IMPORTED_MODULE_0__["Client"].create(baseConfig);
+  }
 
-      return client.entries.search(query, typeof linkDepth !== 'undefined' ? linkDepth : 1);
-    }
-  }, {
-    key: "getClient",
-    value: function getClient() {
-      var deliveryApiStatus = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'published';
-      var project = arguments.length > 1 ? arguments[1] : undefined;
-      var env = arguments.length > 2 ? arguments[2] : undefined;
-      var baseConfig = getClientConfig(project, env);
-      baseConfig.versionStatus = deliveryApiStatus;
-      return _contensisDeliveryApi.Client.create(baseConfig);
-    }
-  }, {
-    key: "getEntry",
-    value: function getEntry(id) {
-      var linkDepth = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
-      var deliveryApiStatus = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'published';
-      var project = arguments.length > 3 ? arguments[3] : undefined;
-      var env = arguments.length > 4 ? arguments[4] : undefined;
-      var baseConfig = getClientConfig(project, env);
-      baseConfig.versionStatus = deliveryApiStatus;
+  getEntry(id, linkDepth = 0, deliveryApiStatus = 'published', project, env) {
+    const baseConfig = getClientConfig(project, env);
+    baseConfig.versionStatus = deliveryApiStatus;
+    const client = contensis_delivery_api__WEBPACK_IMPORTED_MODULE_0__["Client"].create(baseConfig); // return client.entries.get(id, linkDepth);
 
-      var client = _contensisDeliveryApi.Client.create(baseConfig); // return client.entries.get(id, linkDepth);
+    return client.entries.get({
+      id,
+      linkDepth
+    });
+  }
 
+}
 
-      return client.entries.get({
-        id: id,
-        linkDepth: linkDepth
-      });
-    }
-  }]);
-  return DeliveryApi;
-}();
+const deliveryApi = new DeliveryApi();
 
-var deliveryApi = new DeliveryApi();
-exports.deliveryApi = deliveryApi;
+class CacheNode {
+  constructor(key, value) {
+    this.key = key;
+    this.value = value;
+    this.next = null;
+    this.prev = null;
+  }
 
-var CacheNode = function CacheNode(key, value) {
-  (0, _classCallCheck2["default"])(this, CacheNode);
-  this.key = key;
-  this.value = value;
-  this.next = null;
-  this.prev = null;
-};
+}
 
-var LruCache =
-/*#__PURE__*/
-function () {
-  function LruCache() {
-    var limit = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 100;
-    (0, _classCallCheck2["default"])(this, LruCache);
+class LruCache {
+  constructor(limit = 100) {
     this.map = {};
     this.head = null;
     this.tail = null;
@@ -994,226 +1093,401 @@ function () {
     this.size = 0;
   }
 
-  (0, _createClass2["default"])(LruCache, [{
-    key: "get",
-    value: function get(key) {
-      if (this.map[key]) {
-        var value = this.map[key].value;
-        var node = new CacheNode(key, value);
-        this.remove(key);
-        this.setHead(node);
-        return value;
-      }
-    }
-  }, {
-    key: "set",
-    value: function set(key, value) {
-      var node = new CacheNode(key, value);
-
-      if (this.map[key]) {
-        this.remove(key);
-      } else {
-        if (this.size >= this.limit) {
-          delete this.map[this.tail.key];
-          this.size--;
-          this.tail = this.tail.prev;
-          this.tail.next = null;
-        }
-      }
-
+  get(key) {
+    if (this.map[key]) {
+      let value = this.map[key].value;
+      let node = new CacheNode(key, value);
+      this.remove(key);
       this.setHead(node);
+      return value;
     }
-  }, {
-    key: "setHead",
-    value: function setHead(node) {
-      node.next = this.head;
-      node.prev = null;
-
-      if (this.head) {
-        this.head.prev = node;
-      }
-
-      this.head = node;
-
-      if (!this.tail) {
-        this.tail = node;
-      }
-
-      this.size++;
-      this.map[node.key] = node;
-    }
-  }, {
-    key: "remove",
-    value: function remove(key) {
-      var node = this.map[key];
-
-      if (node.prev) {
-        node.prev.next = node.next;
-      } else {
-        this.head = node.next;
-      }
-
-      if (node.next) {
-        node.next.prev = node.prev;
-      } else {
-        this.tail = node.prev;
-      }
-
-      delete this.map[key];
-      this.size--;
-    }
-  }]);
-  return LruCache;
-}();
-
-var CachedSearch =
-/*#__PURE__*/
-function () {
-  function CachedSearch() {
-    (0, _classCallCheck2["default"])(this, CachedSearch);
-    (0, _defineProperty2["default"])(this, "cache", new LruCache());
-    (0, _defineProperty2["default"])(this, "taxonomyLookup", {});
   }
 
-  (0, _createClass2["default"])(CachedSearch, [{
-    key: "search",
-    value: function search(query, linkDepth, project, env) {
-      var client = _contensisDeliveryApi.Client.create(getClientConfig(project, env));
+  set(key, value) {
+    let node = new CacheNode(key, value);
 
-      return this.request(project + JSON.stringify(query) + linkDepth.toString(), function () {
-        return client.entries.search(query, linkDepth);
+    if (this.map[key]) {
+      this.remove(key);
+    } else {
+      if (this.size >= this.limit) {
+        delete this.map[this.tail.key];
+        this.size--;
+        this.tail = this.tail.prev;
+        this.tail.next = null;
+      }
+    }
+
+    this.setHead(node);
+  }
+
+  setHead(node) {
+    node.next = this.head;
+    node.prev = null;
+
+    if (this.head) {
+      this.head.prev = node;
+    }
+
+    this.head = node;
+
+    if (!this.tail) {
+      this.tail = node;
+    }
+
+    this.size++;
+    this.map[node.key] = node;
+  }
+
+  remove(key) {
+    let node = this.map[key];
+
+    if (node.prev) {
+      node.prev.next = node.next;
+    } else {
+      this.head = node.next;
+    }
+
+    if (node.next) {
+      node.next.prev = node.prev;
+    } else {
+      this.tail = node.prev;
+    }
+
+    delete this.map[key];
+    this.size--;
+  }
+
+}
+
+class CachedSearch {
+  constructor() {
+    this.cache = new LruCache();
+    this.taxonomyLookup = {};
+  }
+
+  search(query, linkDepth, project, env) {
+    const client = contensis_delivery_api__WEBPACK_IMPORTED_MODULE_0__["Client"].create(getClientConfig(project, env));
+    return this.request(project + JSON.stringify(query) + linkDepth.toString(), () => client.entries.search(query, linkDepth));
+  }
+
+  get(id, linkDepth, versionStatus, project, env) {
+    const client = contensis_delivery_api__WEBPACK_IMPORTED_MODULE_0__["Client"].create(getClientConfig(project, env));
+    client.clientConfig.versionStatus = versionStatus;
+    return this.request(id, () => client.entries.get({
+      id,
+      linkDepth
+    }));
+  }
+
+  getContentType(id, project, env) {
+    const client = contensis_delivery_api__WEBPACK_IMPORTED_MODULE_0__["Client"].create(getClientConfig(project, env));
+    return this.request(`[CONTENT TYPE] ${id} ${project}`, () => client.contentTypes.get(id));
+  }
+
+  getTaxonomyNode(key, project, env) {
+    const client = contensis_delivery_api__WEBPACK_IMPORTED_MODULE_0__["Client"].create(getClientConfig(project, env));
+    return this.request(`[TAXONOMY NODE] ${key}`, () => client.taxonomy.resolveChildren(key).then(node => this.extendTaxonomyNode(node)));
+  }
+
+  getRootNode(options, project, env) {
+    const client = contensis_delivery_api__WEBPACK_IMPORTED_MODULE_0__["Client"].create(getClientConfig(project, env));
+    return this.request(`${project} / ${JSON.stringify(options)}`, () => client.nodes.getRoot(options));
+  }
+
+  getNode(options, project, env) {
+    const client = contensis_delivery_api__WEBPACK_IMPORTED_MODULE_0__["Client"].create(getClientConfig(project, env));
+    return this.request(`${project} ${options && options.path || options} ${JSON.stringify(options)}`, () => client.nodes.get(options));
+  }
+
+  getAncestors(options, project, env) {
+    const client = contensis_delivery_api__WEBPACK_IMPORTED_MODULE_0__["Client"].create(getClientConfig(project, env));
+    return this.request(`${project} [A] ${options && options.id || options} ${JSON.stringify(options)}`, () => client.nodes.getAncestors(options));
+  }
+
+  getChildren(options, project, env) {
+    const client = contensis_delivery_api__WEBPACK_IMPORTED_MODULE_0__["Client"].create(getClientConfig(project, env));
+    return this.request(`${project} [C] ${options && options.id || options} ${JSON.stringify(options)}`, () => client.nodes.getChildren(options));
+  }
+
+  getSiblings(options, project, env) {
+    const client = contensis_delivery_api__WEBPACK_IMPORTED_MODULE_0__["Client"].create(getClientConfig(project, env));
+    return this.request(`${project} [S] ${options && options.id || options} ${JSON.stringify(options)}`, () => client.nodes.getSiblings(options));
+  }
+
+  request(key, execute) {
+    if (!this.cache.get(key) || typeof window == 'undefined') {
+      let promise = execute();
+      this.cache.set(key, promise);
+      promise.catch(() => {
+        this.cache.remove(key);
       });
     }
-  }, {
-    key: "get",
-    value: function get(id, linkDepth, versionStatus, project, env) {
-      var client = _contensisDeliveryApi.Client.create(getClientConfig(project, env));
 
-      client.clientConfig.versionStatus = versionStatus;
-      return this.request(id, function () {
-        return client.entries.get({
-          id: id,
-          linkDepth: linkDepth
-        });
-      });
+    return this.cache.get(key);
+  }
+
+  extendTaxonomyNode(node) {
+    let id = this.getTaxonomyId(node);
+    this.taxonomyLookup[id] = node.key;
+    return { ...node,
+      id,
+      children: node.children ? node.children.map(n => this.extendTaxonomyNode(n)) : null
+    };
+  }
+
+  getTaxonomyId(node) {
+    if (node.key) {
+      let parts = node.key.split('/');
+      return parts[parts.length - 1];
     }
-  }, {
-    key: "getContentType",
-    value: function getContentType(id, project, env) {
-      var client = _contensisDeliveryApi.Client.create(getClientConfig(project, env));
 
-      return this.request("[CONTENT TYPE] ".concat(id, " ").concat(project), function () {
-        return client.contentTypes.get(id);
-      });
-    }
-  }, {
-    key: "getTaxonomyNode",
-    value: function getTaxonomyNode(key, project, env) {
-      var _this = this;
+    return '';
+  }
 
-      var client = _contensisDeliveryApi.Client.create(getClientConfig(project, env));
+  getTaxonomyKey(id) {
+    return this.taxonomyLookup[id];
+  }
 
-      return this.request("[TAXONOMY NODE] ".concat(key), function () {
-        return client.taxonomy.resolveChildren(key).then(function (node) {
-          return _this.extendTaxonomyNode(node);
-        });
-      });
-    }
-  }, {
-    key: "getRootNode",
-    value: function getRootNode(options, project, env) {
-      var client = _contensisDeliveryApi.Client.create(getClientConfig(project, env));
+}
 
-      return this.request("".concat(project, " / ").concat(JSON.stringify(options)), function () {
-        return client.nodes.getRoot(options);
-      });
-    }
-  }, {
-    key: "getNode",
-    value: function getNode(options, project, env) {
-      var client = _contensisDeliveryApi.Client.create(getClientConfig(project, env));
+const cachedSearch = new CachedSearch();
 
-      return this.request("".concat(project, " ").concat(options && options.path || options, " ").concat(JSON.stringify(options)), function () {
-        return client.nodes.get(options);
-      });
-    }
-  }, {
-    key: "getAncestors",
-    value: function getAncestors(options, project, env) {
-      var client = _contensisDeliveryApi.Client.create(getClientConfig(project, env));
+/***/ }),
+/* 13 */
+/***/ (function(module, exports) {
 
-      return this.request("".concat(project, " [A] ").concat(options && options.id || options, " ").concat(JSON.stringify(options)), function () {
-        return client.nodes.getAncestors(options);
-      });
-    }
-  }, {
-    key: "getChildren",
-    value: function getChildren(options, project, env) {
-      var client = _contensisDeliveryApi.Client.create(getClientConfig(project, env));
+module.exports = __WEBPACK_EXTERNAL_MODULE__13__;
 
-      return this.request("".concat(project, " [C] ").concat(options && options.id || options, " ").concat(JSON.stringify(options)), function () {
-        return client.nodes.getChildren(options);
-      });
-    }
-  }, {
-    key: "getSiblings",
-    value: function getSiblings(options, project, env) {
-      var client = _contensisDeliveryApi.Client.create(getClientConfig(project, env));
+/***/ }),
+/* 14 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-      return this.request("".concat(project, " [S] ").concat(options && options.id || options, " ").concat(JSON.stringify(options)), function () {
-        return client.nodes.getSiblings(options);
-      });
-    }
-  }, {
-    key: "request",
-    value: function request(key, execute) {
-      var _this2 = this;
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return initialUserState; });
+/* harmony import */ var immutable__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
+/* harmony import */ var immutable__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(immutable__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
 
-      if (!this.cache.get(key) || typeof window == 'undefined') {
-        var promise = execute();
-        this.cache.set(key, promise);
-        promise["catch"](function () {
-          _this2.cache.remove(key);
-        });
+
+const initialUserState = Object(immutable__WEBPACK_IMPORTED_MODULE_0__["Map"])({
+  loggedIn: false,
+  failedLogin: null,
+  username: null,
+  id: null,
+  securityToken: null,
+  logonResult: null,
+  groups: new immutable__WEBPACK_IMPORTED_MODULE_0__["List"]([]),
+  emailAddress: null,
+  fullName: null,
+  loginScreenMode: 'login',
+  passwordReset: false,
+  passwordResetMessage: null,
+  changePasswordMessage: null,
+  recaptcha: new immutable__WEBPACK_IMPORTED_MODULE_0__["Map"]({
+    key: null,
+    response: new immutable__WEBPACK_IMPORTED_MODULE_0__["Map"]({
+      isHuman: false,
+      token: null
+    })
+  })
+});
+/* harmony default export */ __webpack_exports__["a"] = ((state = initialUserState, action) => {
+  switch (action.type) {
+    case _types__WEBPACK_IMPORTED_MODULE_1__["UPDATE_USER"]:
+      {
+        const {
+          user
+        } = action;
+        return state.set('loggedIn', typeof user.loggedIn !== 'undefined' ? user.loggedIn : state.get('loggedIn')).set('failedLogin', typeof user.failedLogin !== 'undefined' ? user.failedLogin : state.get('failedLogin')).set('username', user.username || state.get('username')).set('id', user.id || state.get('id')).set('securityToken', user.securityToken || state.get('securityToken')).set('logonResult', user.logonResult || state.get('logonResult')).set('groups', Object(immutable__WEBPACK_IMPORTED_MODULE_0__["fromJS"])(user.groups) || state.get('groups')).set('emailAddress', user.emailAddress || state.get('emailAddress')).set('fullName', user.fullName || state.get('fullName')).set('passwordReset', typeof user.passwordReset !== 'undefined' ? user.passwordReset : state.get('passwordReset')).set('passwordResetMessage', user.passwordResetMessage || state.get('passwordResetMessage')).set('changePasswordMessage', user.changePasswordMessage || state.get('changePasswordMessage'));
       }
 
-      return this.cache.get(key);
-    }
-  }, {
-    key: "extendTaxonomyNode",
-    value: function extendTaxonomyNode(node) {
-      var _this3 = this;
-
-      var id = this.getTaxonomyId(node);
-      this.taxonomyLookup[id] = node.key;
-      return _objectSpread({}, node, {
-        id: id,
-        children: node.children ? node.children.map(function (n) {
-          return _this3.extendTaxonomyNode(n);
-        }) : null
-      });
-    }
-  }, {
-    key: "getTaxonomyId",
-    value: function getTaxonomyId(node) {
-      if (node.key) {
-        var parts = node.key.split('/');
-        return parts[parts.length - 1];
+    case _types__WEBPACK_IMPORTED_MODULE_1__["TOGGLE_LOGIN_MODE"]:
+      {
+        const newMode = action.loginMode;
+        return state.set('loginScreenMode', newMode);
       }
 
-      return '';
-    }
-  }, {
-    key: "getTaxonomyKey",
-    value: function getTaxonomyKey(id) {
-      return this.taxonomyLookup[id];
-    }
-  }]);
-  return CachedSearch;
-}();
+    case _types__WEBPACK_IMPORTED_MODULE_1__["SET_RECAPTCHA_KEY"]:
+      {
+        return state.setIn(['recaptcha', 'key'], action.key);
+      }
 
-var cachedSearch = new CachedSearch();
-exports.cachedSearch = cachedSearch;
+    case _types__WEBPACK_IMPORTED_MODULE_1__["SET_RECAPTCHA_RESPONSE"]:
+      {
+        return state.setIn(['recaptcha', 'response', 'isHuman'], action.isHuman).setIn(['recaptcha', 'response', 'token'], action.token);
+      }
+
+    default:
+      return state;
+  }
+});
+
+/***/ }),
+/* 15 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GET_NODE_TREE", function() { return GET_NODE_TREE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_NODE_TREE", function() { return SET_NODE_TREE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GET_NODE_TREE_ERROR", function() { return GET_NODE_TREE_ERROR; });
+const ACTION_PREFIX = '@NAVIGATION/';
+const GET_NODE_TREE = `${ACTION_PREFIX}_GET_NODE_TREE`;
+const SET_NODE_TREE = `${ACTION_PREFIX}_SET_NODE_TREE`;
+const GET_NODE_TREE_ERROR = `${ACTION_PREFIX}_GET_NODE_TREE_ERROR`;
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__16__;
+
+/***/ }),
+/* 17 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+var actions_namespaceObject = {};
+__webpack_require__.r(actions_namespaceObject);
+__webpack_require__.d(actions_namespaceObject, "loginUser", function() { return loginUser; });
+__webpack_require__.d(actions_namespaceObject, "validateUser", function() { return validateUser; });
+__webpack_require__.d(actions_namespaceObject, "logoutUser", function() { return logoutUser; });
+__webpack_require__.d(actions_namespaceObject, "toggleLoginMode", function() { return toggleLoginMode; });
+__webpack_require__.d(actions_namespaceObject, "createUserAccount", function() { return createUserAccount; });
+__webpack_require__.d(actions_namespaceObject, "forgotPassword", function() { return forgotPassword; });
+__webpack_require__.d(actions_namespaceObject, "changePassword", function() { return changePassword; });
+__webpack_require__.d(actions_namespaceObject, "changePasswordWithToken", function() { return changePasswordWithToken; });
+__webpack_require__.d(actions_namespaceObject, "setRecaptchaKey", function() { return setRecaptchaKey; });
+__webpack_require__.d(actions_namespaceObject, "setRecaptchaResponse", function() { return setRecaptchaResponse; });
+
+// EXTERNAL MODULE: ./src/app/core/util/helpers.js
+var helpers = __webpack_require__(4);
+
+// EXTERNAL MODULE: ./src/app/features/login/redux/types.js
+var types = __webpack_require__(1);
+
+// CONCATENATED MODULE: ./src/app/features/login/redux/actions.js
+
+
+const loginUser = (username, password) => Object(helpers["a" /* action */])(types["LOGIN_USER"], {
+  username,
+  password
+});
+const validateUser = cookies => Object(helpers["a" /* action */])(types["VALIDATE_USER"], {
+  cookies
+});
+const logoutUser = () => Object(helpers["a" /* action */])(types["LOGOUT_USER"]);
+const toggleLoginMode = loginMode => Object(helpers["a" /* action */])(types["TOGGLE_LOGIN_MODE"], {
+  loginMode
+});
+const createUserAccount = () => Object(helpers["a" /* action */])(types["CREATE_USER_ACCOUNT"]);
+const forgotPassword = username => Object(helpers["a" /* action */])(types["FORGOT_USER_PASSWORD"], {
+  username
+});
+const changePassword = (oldPassword, newPassword, newPasswordConfirm) => Object(helpers["a" /* action */])(types["CHANGE_USER_PASSWORD"], {
+  oldPassword,
+  newPassword,
+  newPasswordConfirm
+});
+const changePasswordWithToken = (token, newPassword, newPasswordConfirm) => Object(helpers["a" /* action */])(types["CHANGE_USER_PASSWORD"], {
+  token,
+  newPassword,
+  newPasswordConfirm
+});
+const setRecaptchaKey = key => Object(helpers["a" /* action */])(types["SET_RECAPTCHA_KEY"], {
+  key
+});
+const setRecaptchaResponse = (isHuman, token) => Object(helpers["a" /* action */])(types["SET_RECAPTCHA_RESPONSE"], {
+  isHuman,
+  token
+});
+// EXTERNAL MODULE: ./src/app/features/login/redux/selectors.js
+var selectors = __webpack_require__(7);
+
+// EXTERNAL MODULE: ./src/app/features/login/redux/reducers.js
+var reducers = __webpack_require__(14);
+
+// EXTERNAL MODULE: ./src/app/features/login/redux/sagas.js
+var sagas = __webpack_require__(23);
+
+// EXTERNAL MODULE: external "react-redux"
+var external_react_redux_ = __webpack_require__(16);
+
+// EXTERNAL MODULE: ./src/app/core/util/ToJs.js
+var ToJs = __webpack_require__(21);
+
+// EXTERNAL MODULE: ./src/app/core/redux/selectors/routing.js
+var routing = __webpack_require__(8);
+
+// CONCATENATED MODULE: ./src/app/features/login/components/withLogin.js
+
+
+
+
+
+
+const getDisplayName = WrappedComponent => {
+  return WrappedComponent.displayName || WrappedComponent.name || 'Component';
+};
+
+const withLogin = WrappedComponent => {
+  // Returns a redux-connected component with the following props:
+  // this.propTypes = {
+  //   loginUser: PropTypes.func,
+  //   logoutUser: PropTypes.func,
+  //   user: PropTypes.object,
+  // };
+  const mapStateToProps = state => {
+    return {
+      user: Object(selectors["selectUser"])(state),
+      userMessage: Object(selectors["selectUserMessage"])(state),
+      screenMode: Object(selectors["selectLoginScreenMode"])(state),
+      passwordMessage: Object(selectors["selectPasswordMessage"])(state),
+      changePasswordMessage: Object(selectors["selectChangePasswordMessage"])(state),
+      captchaSiteKey: Object(selectors["selectCaptchaSiteKey"])(state),
+      isHuman: Object(selectors["selectCaptchaResponse"])(state),
+      isLoggedIn: Object(selectors["selectUserLoggedIn"])(state),
+      currentPath: Object(routing["selectCurrentPath"])(state),
+      queryString: Object(routing["selectQueryStringAsObject"])(state)
+    };
+  };
+
+  const mapDispatchToProps = {
+    loginUser: loginUser,
+    logoutUser: logoutUser,
+    toggleLoginMode: toggleLoginMode,
+    forgotPassword: forgotPassword,
+    changePassword: changePassword,
+    changePasswordWithToken: changePasswordWithToken,
+    captchaResponse: setRecaptchaResponse
+  };
+  const ConnectedComponent = Object(external_react_redux_["connect"])(mapStateToProps, mapDispatchToProps)(Object(ToJs["a" /* toJS */])(WrappedComponent));
+  ConnectedComponent.displayName = `${getDisplayName(WrappedComponent)}`;
+  return ConnectedComponent;
+};
+
+/* harmony default export */ var components_withLogin = (withLogin);
+// CONCATENATED MODULE: ./src/app/features/login/index.js
+/* concated harmony reexport actions */__webpack_require__.d(__webpack_exports__, "actions", function() { return actions_namespaceObject; });
+/* concated harmony reexport selectors */__webpack_require__.d(__webpack_exports__, "selectors", function() { return selectors; });
+/* concated harmony reexport types */__webpack_require__.d(__webpack_exports__, "types", function() { return types; });
+/* concated harmony reexport reducer */__webpack_require__.d(__webpack_exports__, "reducer", function() { return reducers["a" /* default */]; });
+/* concated harmony reexport sagas */__webpack_require__.d(__webpack_exports__, "sagas", function() { return sagas["a" /* userSagas */]; });
+/* concated harmony reexport withLogin */__webpack_require__.d(__webpack_exports__, "withLogin", function() { return components_withLogin; });
+
+
+
+
+
+
+
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__18__;
 
 /***/ }),
 /* 19 */
@@ -1221,2035 +1495,391 @@ exports.cachedSearch = cachedSearch;
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(23);
-/* harmony import */ var _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-
-
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_VERSION", function() { return SET_VERSION; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_VERSION_STATUS", function() { return SET_VERSION_STATUS; });
+const VERSION_PREFIX = '@VERSION/';
+const SET_VERSION = `${VERSION_PREFIX}SET_VERSION`;
+const SET_VERSION_STATUS = `${VERSION_PREFIX}SET_VERSION_STATUS`;
 
 /***/ }),
 /* 20 */
-/***/ (function(module, exports) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__20__;
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return queryParams; });
+/* unused harmony export routeParams */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return buildUrl; });
+/* unused harmony export clientHostname */
+/* unused harmony export addHostname */
+/* harmony import */ var query_string__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(13);
+/* harmony import */ var query_string__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(query_string__WEBPACK_IMPORTED_MODULE_0__);
+
+function queryParams(search) {
+  return query_string__WEBPACK_IMPORTED_MODULE_0___default.a.parse(typeof window != 'undefined' ? window.location.search : search);
+}
+const routeParams = staticRoute => staticRoute && staticRoute.match ? staticRoute.match.params : {};
+const buildUrl = (route, params) => {
+  const qs = query_string__WEBPACK_IMPORTED_MODULE_0___default.a.stringify(params);
+  const path = qs ? `${route}?${qs}` : route;
+  return path;
+};
+const clientHostname = () => `${window.location.protocol}//${window.location.hostname}:${window.location.port}`;
+const addHostname = typeof window == 'undefined' || window.location.host == 'localhost:3000' ? `https://${PUBLIC_URI
+/* global PUBLIC_URI */
+}` : clientHostname();
 
 /***/ }),
 /* 21 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return toJS; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var immutable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
+/* harmony import */ var immutable__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(immutable__WEBPACK_IMPORTED_MODULE_1__);
 
 
-var _interopRequireDefault = __webpack_require__(0);
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.queryParams = queryParams;
-exports.addHostname = exports.clientHostname = exports.buildUrl = exports.routeParams = void 0;
-
-var _queryString = _interopRequireDefault(__webpack_require__(15));
-
-function queryParams(search) {
-  return _queryString["default"].parse(typeof window != 'undefined' ? window.location.search : search);
-}
-
-var routeParams = function routeParams(staticRoute) {
-  return staticRoute && staticRoute.match ? staticRoute.match.params : {};
+const toJS = WrappedComponent => wrappedComponentProps => {
+  const KEY = 0;
+  const VALUE = 1;
+  const propsJS = Object.entries(wrappedComponentProps).reduce((newProps, wrappedComponentProp) => {
+    newProps[wrappedComponentProp[KEY]] = immutable__WEBPACK_IMPORTED_MODULE_1__["Iterable"].isIterable(wrappedComponentProp[VALUE]) ? wrappedComponentProp[VALUE].toJS() : wrappedComponentProp[VALUE];
+    return newProps;
+  }, {});
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(WrappedComponent, propsJS);
 };
-
-exports.routeParams = routeParams;
-
-var buildUrl = function buildUrl(route, params) {
-  var qs = _queryString["default"].stringify(params);
-
-  var path = qs ? "".concat(route, "?").concat(qs) : route;
-  return path;
-};
-
-exports.buildUrl = buildUrl;
-
-var clientHostname = function clientHostname() {
-  return "".concat(window.location.protocol, "//").concat(window.location.hostname, ":").concat(window.location.port);
-};
-
-exports.clientHostname = clientHostname;
-var addHostname = typeof window == 'undefined' || window.location.host == 'localhost:3000' ? "https://".concat(PUBLIC_URI
-/* global PUBLIC_URI */
-) : clientHostname();
-exports.addHostname = addHostname;
 
 /***/ }),
 /* 22 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setNotFound", function() { return setNotFound; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setNavigationPath", function() { return setNavigationPath; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setCurrentProject", function() { return setCurrentProject; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setRoute", function() { return setRoute; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setRouteEntry", function() { return setRouteEntry; });
+/* harmony import */ var _util_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(4);
+/* harmony import */ var _types_routing__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
 
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
+const setNotFound = notFound => Object(_util_helpers__WEBPACK_IMPORTED_MODULE_0__[/* action */ "a"])(_types_routing__WEBPACK_IMPORTED_MODULE_1__["SET_NAVIGATION_NOT_FOUND"], {
+  notFound
 });
-exports.setRecaptchaResponse = exports.setRecaptchaKey = exports.changePasswordWithToken = exports.changePassword = exports.forgotPassword = exports.createUserAccount = exports.toggleLoginMode = exports.logoutUser = exports.validateUser = exports.loginUser = void 0;
-
-var _helpers = __webpack_require__(13);
-
-var _types = __webpack_require__(9);
-
-var loginUser = function loginUser(username, password) {
-  return (0, _helpers.action)(_types.LOGIN_USER, {
-    username: username,
-    password: password
-  });
-};
-
-exports.loginUser = loginUser;
-
-var validateUser = function validateUser(cookies) {
-  return (0, _helpers.action)(_types.VALIDATE_USER, {
-    cookies: cookies
-  });
-};
-
-exports.validateUser = validateUser;
-
-var logoutUser = function logoutUser() {
-  return (0, _helpers.action)(_types.LOGOUT_USER);
-};
-
-exports.logoutUser = logoutUser;
-
-var toggleLoginMode = function toggleLoginMode(loginMode) {
-  return (0, _helpers.action)(_types.TOGGLE_LOGIN_MODE, {
-    loginMode: loginMode
-  });
-};
-
-exports.toggleLoginMode = toggleLoginMode;
-
-var createUserAccount = function createUserAccount() {
-  return (0, _helpers.action)(_types.CREATE_USER_ACCOUNT);
-};
-
-exports.createUserAccount = createUserAccount;
-
-var forgotPassword = function forgotPassword(username) {
-  return (0, _helpers.action)(_types.FORGOT_USER_PASSWORD, {
-    username: username
-  });
-};
-
-exports.forgotPassword = forgotPassword;
-
-var changePassword = function changePassword(oldPassword, newPassword, newPasswordConfirm) {
-  return (0, _helpers.action)(_types.CHANGE_USER_PASSWORD, {
-    oldPassword: oldPassword,
-    newPassword: newPassword,
-    newPasswordConfirm: newPasswordConfirm
-  });
-};
-
-exports.changePassword = changePassword;
-
-var changePasswordWithToken = function changePasswordWithToken(token, newPassword, newPasswordConfirm) {
-  return (0, _helpers.action)(_types.CHANGE_USER_PASSWORD, {
-    token: token,
-    newPassword: newPassword,
-    newPasswordConfirm: newPasswordConfirm
-  });
-};
-
-exports.changePasswordWithToken = changePasswordWithToken;
-
-var setRecaptchaKey = function setRecaptchaKey(key) {
-  return (0, _helpers.action)(_types.SET_RECAPTCHA_KEY, {
-    key: key
-  });
-};
-
-exports.setRecaptchaKey = setRecaptchaKey;
-
-var setRecaptchaResponse = function setRecaptchaResponse(isHuman, token) {
-  return (0, _helpers.action)(_types.SET_RECAPTCHA_RESPONSE, {
-    isHuman: isHuman,
-    token: token
-  });
-};
-
-exports.setRecaptchaResponse = setRecaptchaResponse;
+const setNavigationPath = (path, location, staticRoute, withEvents, statePath, routes) => Object(_util_helpers__WEBPACK_IMPORTED_MODULE_0__[/* action */ "a"])(_types_routing__WEBPACK_IMPORTED_MODULE_1__["SET_NAVIGATION_PATH"], {
+  path,
+  location,
+  staticRoute,
+  withEvents,
+  statePath,
+  routes
+});
+const setCurrentProject = (project, allowedGroups) => Object(_util_helpers__WEBPACK_IMPORTED_MODULE_0__[/* action */ "a"])(_types_routing__WEBPACK_IMPORTED_MODULE_1__["SET_TARGET_PROJECT"], {
+  project,
+  allowedGroups
+});
+const setRoute = (path, state) => Object(_util_helpers__WEBPACK_IMPORTED_MODULE_0__[/* action */ "a"])(_types_routing__WEBPACK_IMPORTED_MODULE_1__["SET_ROUTE"], {
+  path,
+  state
+});
+const setRouteEntry = entry => Object(_util_helpers__WEBPACK_IMPORTED_MODULE_0__[/* action */ "a"])(_types_routing__WEBPACK_IMPORTED_MODULE_1__["SET_ENTRY"], {
+  entry
+});
 
 /***/ }),
 /* 23 */
-/***/ (function(module, exports) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__23__;
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return userSagas; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return validateUserSaga; });
+/* harmony import */ var redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
+/* harmony import */ var query_string__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(13);
+/* harmony import */ var query_string__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(query_string__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(1);
+/* harmony import */ var _reducers__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(14);
+/* harmony import */ var _core_redux_types_routing__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(3);
+/* harmony import */ var _core_redux_selectors_routing__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(8);
+/* harmony import */ var _selectors__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(7);
+/* harmony import */ var _util_LoginHelper_class__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(10);
+/* harmony import */ var _util_SecurityApi_class__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(11);
+
+
+
+
+
+
+
+
+
+const userSagas = [Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["takeEvery"])(_types__WEBPACK_IMPORTED_MODULE_2__["LOGIN_USER"], loginUserSaga), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["takeEvery"])(_types__WEBPACK_IMPORTED_MODULE_2__["LOGOUT_USER"], logoutUserSaga), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["takeEvery"])(_types__WEBPACK_IMPORTED_MODULE_2__["VALIDATE_USER"], validateUserSaga), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["takeEvery"])(_types__WEBPACK_IMPORTED_MODULE_2__["CREATE_USER_ACCOUNT"], createUserAccountSaga), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["takeEvery"])(_types__WEBPACK_IMPORTED_MODULE_2__["FORGOT_USER_PASSWORD"], forgotPassword), Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["takeEvery"])(_types__WEBPACK_IMPORTED_MODULE_2__["CHANGE_USER_PASSWORD"], changePassword)];
+
+function* loginUserSaga(action) {
+  const getGroups = true;
+  const {
+    username,
+    password
+  } = action;
+
+  if (username && password) {
+    const user = yield _util_LoginHelper_class__WEBPACK_IMPORTED_MODULE_7__["LoginHelper"].LoginUser(username, password, getGroups);
+    yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["call"])(updateUserSaga, {
+      type: user.failedLogin ? _types__WEBPACK_IMPORTED_MODULE_2__["LOGIN_FAILED"] : _types__WEBPACK_IMPORTED_MODULE_2__["LOGIN_SUCCESSFUL"],
+      user,
+      redirect: !user.failedLogin
+    });
+  } else {
+    yield _util_LoginHelper_class__WEBPACK_IMPORTED_MODULE_7__["LoginHelper"].ClientRedirectToLogin();
+  }
+}
+
+function* logoutUserSaga() {
+  const user = _util_LoginHelper_class__WEBPACK_IMPORTED_MODULE_7__["LoginHelper"].LogoutUser();
+  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["fork"])(updateUserSaga, {
+    user
+  });
+  const state = yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["select"])();
+  yield _util_LoginHelper_class__WEBPACK_IMPORTED_MODULE_7__["LoginHelper"].ClientRedirectToHome(state.getIn(['router', 'location']));
+}
+
+function* validateUserSaga(action) {
+  const getGroups = true;
+  const state = yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["select"])();
+  const currentQs = query_string__WEBPACK_IMPORTED_MODULE_1___default.a.parse(state.getIn(['router', 'location', 'search']));
+  const qsToken = currentQs.securityToken || currentQs.securitytoken;
+
+  if (qsToken) {
+    _util_LoginHelper_class__WEBPACK_IMPORTED_MODULE_7__["LoginHelper"].SetLoginCookies({
+      securityToken: qsToken
+    });
+  }
+
+  const cookies = !qsToken ? action.cookies : {
+    ContensisCMSUserName: encodeURIComponent(qsToken),
+    ...action.cookies
+  };
+  const user = yield _util_LoginHelper_class__WEBPACK_IMPORTED_MODULE_7__["LoginHelper"].ValidateUser(getGroups, cookies);
+  const type = user && user.loggedIn ? _types__WEBPACK_IMPORTED_MODULE_2__["VALIDATE_USER_SUCCESS"] : _types__WEBPACK_IMPORTED_MODULE_2__["VALIDATE_USER_FAILED"];
+  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["call"])(updateUserSaga, {
+    type,
+    user: user && !user.loggedIn ? _reducers__WEBPACK_IMPORTED_MODULE_3__[/* initialUserState */ "b"] : user
+  });
+}
+
+function* updateUserSaga(action) {
+  const userState = yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["select"])(_selectors__WEBPACK_IMPORTED_MODULE_6__["selectUser"]);
+  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+    type: _types__WEBPACK_IMPORTED_MODULE_2__["UPDATE_USER"],
+    from: action.type,
+    user: { ...userState.toJS(),
+      ...action.user
+    }
+  });
+
+  if (action.redirect) {
+    const currentSearch = yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["select"])(_core_redux_selectors_routing__WEBPACK_IMPORTED_MODULE_5__["selectCurrentSearch"]);
+    const qs = query_string__WEBPACK_IMPORTED_MODULE_1___default.a.parse(currentSearch);
+    const redirectUri = qs.redirect_uri;
+
+    if (redirectUri) {
+      yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+        type: _core_redux_types_routing__WEBPACK_IMPORTED_MODULE_4__["SET_ROUTE"],
+        path: redirectUri
+      });
+    }
+  }
+}
+
+function* forgotPassword(action) {
+  const message = yield _util_LoginHelper_class__WEBPACK_IMPORTED_MODULE_7__["LoginHelper"].ForgotPassword(action.username);
+  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+    type: _types__WEBPACK_IMPORTED_MODULE_2__["UPDATE_USER"],
+    user: {
+      passwordReset: true,
+      passwordResetMessage: message
+    },
+    history
+  });
+}
+
+function* changePassword(action) {
+  const state = yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["select"])();
+  const userState = yield state.get('user');
+  let message = '';
+
+  if (action.token) {
+    message = yield _util_LoginHelper_class__WEBPACK_IMPORTED_MODULE_7__["LoginHelper"].ChangePasswordWithToken(action.token, action.newPassword, action.newPasswordConfirm);
+  } else {
+    message = yield _util_LoginHelper_class__WEBPACK_IMPORTED_MODULE_7__["LoginHelper"].ChangePassword(userState.username, action.oldPassword, action.newPassword, action.newPasswordConfirm);
+  }
+
+  yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+    type: _types__WEBPACK_IMPORTED_MODULE_2__["UPDATE_USER"],
+    user: {
+      logonResult: message
+    },
+    history
+  });
+}
+
+function* createUserAccountSaga() {
+  const userState = yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["select"])(_selectors__WEBPACK_IMPORTED_MODULE_6__["selectUser"]);
+
+  if (userState.username && userState.password) {
+    // Call RegisterUser API
+    const registerResponse = yield _util_SecurityApi_class__WEBPACK_IMPORTED_MODULE_8__[/* SecurityApi */ "a"].RegisterUser(userState.username, userState.password);
+
+    if (registerResponse) {
+      const {
+        securityToken,
+        registrationResult,
+        id
+      } = registerResponse;
+
+      if (securityToken) {
+        const user = { ...userState,
+          id,
+          securityToken,
+          password: null,
+          loggedIn: true,
+          verifiedEmail: false,
+          failedLogin: false,
+          failedToCreateAccount: false,
+          registrationResult
+        };
+        yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+          type: _types__WEBPACK_IMPORTED_MODULE_2__["UPDATE_USER"],
+          user
+        });
+      } else {
+        const user = { ...userState,
+          securityToken: null,
+          loggedIn: false,
+          verifiedEmail: false,
+          failedLogin: true,
+          failedToCreateAccount: true,
+          registrationResult
+        };
+        yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+          type: _types__WEBPACK_IMPORTED_MODULE_2__["UPDATE_USER"],
+          user
+        });
+      }
+    } else {
+      yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({
+        type: _types__WEBPACK_IMPORTED_MODULE_2__["UPDATE_USER"],
+        user: { ...userState,
+          registrationResult: 'ServiceFault'
+        }
+      });
+    }
+  }
+}
 
 /***/ }),
 /* 24 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(0);
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.SecurityApi = void 0;
-
-var _defineProperty2 = _interopRequireDefault(__webpack_require__(3));
-
-var _regenerator = _interopRequireDefault(__webpack_require__(1));
-
-var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(5));
-
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__(11));
-
-var _createClass2 = _interopRequireDefault(__webpack_require__(12));
-
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-var CMS_URL = SERVERS.cms;
-/* global SERVERS */
-
-var config = {
-  REGISTER_USER_URI: 'Security/RegisterUser',
-  LOGON_USER_URI: 'REST/Contensis/Security/AuthenticateApplication',
-  VALIDATE_USER_URI: 'REST/Contensis/Security/IsAuthenticated',
-  USER_INFO_URI: 'REST/Contensis/Security/GetUserInfo',
-  FORGOT_PASSWORD_URI: 'Security/ResetPasswordEmail',
-  CHANGE_PASSWORD_URI: 'Security/ChangePassword',
-  CHANGE_PASSWORD_TOKEN_URI: 'Security/ChangePasswordWithToken',
-  AUTH_CAPTCHA_URI: 'Security/AuthenticateCaptcha',
-  LOGIN_URL: '/business-government/partner'
-};
-var REGISTER_USER_URL = "".concat(CMS_URL, "/").concat(config.REGISTER_USER_URI);
-var LOGON_USER_URL = "".concat(CMS_URL, "/").concat(config.LOGON_USER_URI);
-var VALIDATE_USER_URL = "".concat(CMS_URL, "/").concat(config.VALIDATE_USER_URI);
-var USER_INFO_URL = "".concat(CMS_URL, "/").concat(config.USER_INFO_URI);
-var FORGOT_PASSWORD_URI = "/".concat(config.FORGOT_PASSWORD_URI);
-var CHANGE_PASSWORD_URI = "/".concat(config.CHANGE_PASSWORD_URI);
-var AUTH_CAPTCHA_URI = "/".concat(config.AUTH_CAPTCHA_URI);
-var CHANGE_PASSWORD_TOKEN_URI = "/".concat(config.CHANGE_PASSWORD_TOKEN_URI);
-var BASE_OPTIONS = {
-  method: 'GET',
-  headers: {
-    'Content-Type': 'application/json'
-  }
-};
-
-var SecurityApi =
-/*#__PURE__*/
-function () {
-  function SecurityApi() {
-    (0, _classCallCheck2["default"])(this, SecurityApi);
-  }
-
-  (0, _createClass2["default"])(SecurityApi, null, [{
-    key: "AuthoriseRecaptcha",
-    value: function () {
-      var _AuthoriseRecaptcha = (0, _asyncToGenerator2["default"])(
-      /*#__PURE__*/
-      _regenerator["default"].mark(function _callee(token) {
-        var url, options;
-        return _regenerator["default"].wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                url = "".concat(AUTH_CAPTCHA_URI, "?captchaToken=").concat(encodeURIComponent(token));
-                options = {
-                  headers: {
-                    'Content-Type': 'application/json'
-                  },
-                  method: 'POST'
-                };
-                _context.next = 4;
-                return SecurityApi.get(url, options);
-
-              case 4:
-                return _context.abrupt("return", _context.sent);
-
-              case 5:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee);
-      }));
-
-      function AuthoriseRecaptcha(_x) {
-        return _AuthoriseRecaptcha.apply(this, arguments);
-      }
-
-      return AuthoriseRecaptcha;
-    }()
-  }, {
-    key: "LogonUser",
-    value: function () {
-      var _LogonUser = (0, _asyncToGenerator2["default"])(
-      /*#__PURE__*/
-      _regenerator["default"].mark(function _callee2(username, password) {
-        var body, options;
-        return _regenerator["default"].wrap(function _callee2$(_context2) {
-          while (1) {
-            switch (_context2.prev = _context2.next) {
-              case 0:
-                body = {
-                  username: username,
-                  password: password,
-                  ip: '127.0.0.1',
-                  applicationName: 'DesktopTool'
-                };
-                options = _objectSpread({}, BASE_OPTIONS, {
-                  method: 'POST',
-                  body: JSON.stringify(body)
-                });
-                _context2.next = 4;
-                return SecurityApi.get(LOGON_USER_URL, options);
-
-              case 4:
-                return _context2.abrupt("return", _context2.sent);
-
-              case 5:
-              case "end":
-                return _context2.stop();
-            }
-          }
-        }, _callee2);
-      }));
-
-      function LogonUser(_x2, _x3) {
-        return _LogonUser.apply(this, arguments);
-      }
-
-      return LogonUser;
-    }()
-  }, {
-    key: "ValidateUser",
-    value: function () {
-      var _ValidateUser = (0, _asyncToGenerator2["default"])(
-      /*#__PURE__*/
-      _regenerator["default"].mark(function _callee3(securityToken) {
-        var url, bodyToken, options;
-        return _regenerator["default"].wrap(function _callee3$(_context3) {
-          while (1) {
-            switch (_context3.prev = _context3.next) {
-              case 0:
-                url = "".concat(VALIDATE_USER_URL, "?token=").concat(encodeURIComponent(securityToken));
-                bodyToken = encodeURIComponent(decodeURIComponent(decodeURIComponent(securityToken)));
-                options = _objectSpread({}, BASE_OPTIONS, {
-                  method: 'POST',
-                  body: JSON.stringify({
-                    securityToken: bodyToken
-                  })
-                });
-                _context3.next = 5;
-                return SecurityApi.get(url, options);
-
-              case 5:
-                return _context3.abrupt("return", _context3.sent);
-
-              case 6:
-              case "end":
-                return _context3.stop();
-            }
-          }
-        }, _callee3);
-      }));
-
-      function ValidateUser(_x4) {
-        return _ValidateUser.apply(this, arguments);
-      }
-
-      return ValidateUser;
-    }()
-  }, {
-    key: "GetUserInfo",
-    value: function () {
-      var _GetUserInfo = (0, _asyncToGenerator2["default"])(
-      /*#__PURE__*/
-      _regenerator["default"].mark(function _callee4(securityToken) {
-        var _headers;
-
-        var options;
-        return _regenerator["default"].wrap(function _callee4$(_context4) {
-          while (1) {
-            switch (_context4.prev = _context4.next) {
-              case 0:
-                options = _objectSpread({}, BASE_OPTIONS, {
-                  headers: (_headers = {}, (0, _defineProperty2["default"])(_headers, 'Content-Type', 'text/plain'), (0, _defineProperty2["default"])(_headers, "ContensisCMSUserName", securityToken), _headers)
-                });
-                _context4.next = 3;
-                return SecurityApi.get(USER_INFO_URL, options);
-
-              case 3:
-                return _context4.abrupt("return", _context4.sent);
-
-              case 4:
-              case "end":
-                return _context4.stop();
-            }
-          }
-        }, _callee4);
-      }));
-
-      function GetUserInfo(_x5) {
-        return _GetUserInfo.apply(this, arguments);
-      }
-
-      return GetUserInfo;
-    }()
-  }, {
-    key: "RegisterUser",
-    value: function () {
-      var _RegisterUser = (0, _asyncToGenerator2["default"])(
-      /*#__PURE__*/
-      _regenerator["default"].mark(function _callee5(email, password) {
-        var body, options;
-        return _regenerator["default"].wrap(function _callee5$(_context5) {
-          while (1) {
-            switch (_context5.prev = _context5.next) {
-              case 0:
-                body = {
-                  email: email,
-                  password: password
-                };
-                options = _objectSpread({}, BASE_OPTIONS, {
-                  method: 'POST',
-                  body: JSON.stringify(body)
-                });
-                _context5.next = 4;
-                return SecurityApi.get(REGISTER_USER_URL, options);
-
-              case 4:
-                return _context5.abrupt("return", _context5.sent);
-
-              case 5:
-              case "end":
-                return _context5.stop();
-            }
-          }
-        }, _callee5);
-      }));
-
-      function RegisterUser(_x6, _x7) {
-        return _RegisterUser.apply(this, arguments);
-      }
-
-      return RegisterUser;
-    }()
-  }, {
-    key: "ChangePassword",
-    value: function () {
-      var _ChangePassword = (0, _asyncToGenerator2["default"])(
-      /*#__PURE__*/
-      _regenerator["default"].mark(function _callee6(username, oldPassword, newPassword, newPasswordConfirm) {
-        var url, options;
-        return _regenerator["default"].wrap(function _callee6$(_context6) {
-          while (1) {
-            switch (_context6.prev = _context6.next) {
-              case 0:
-                url = "".concat(CHANGE_PASSWORD_URI, "?username=").concat(encodeURIComponent(username), "&oldPassword=").concat(encodeURIComponent(oldPassword), "&newPassword=").concat(encodeURIComponent(newPassword), "&newPasswordConfirm=").concat(encodeURIComponent(newPasswordConfirm));
-                options = {
-                  headers: {
-                    'Content-Type': 'application/json'
-                  },
-                  method: 'POST'
-                };
-                _context6.next = 4;
-                return SecurityApi.get(url, options);
-
-              case 4:
-                return _context6.abrupt("return", _context6.sent);
-
-              case 5:
-              case "end":
-                return _context6.stop();
-            }
-          }
-        }, _callee6);
-      }));
-
-      function ChangePassword(_x8, _x9, _x10, _x11) {
-        return _ChangePassword.apply(this, arguments);
-      }
-
-      return ChangePassword;
-    }()
-  }, {
-    key: "ChangePasswordWithToken",
-    value: function () {
-      var _ChangePasswordWithToken = (0, _asyncToGenerator2["default"])(
-      /*#__PURE__*/
-      _regenerator["default"].mark(function _callee7(token, newPassword, newPasswordConfirm) {
-        var url, options;
-        return _regenerator["default"].wrap(function _callee7$(_context7) {
-          while (1) {
-            switch (_context7.prev = _context7.next) {
-              case 0:
-                url = "".concat(CHANGE_PASSWORD_TOKEN_URI, "?token=").concat(token, "&newPassword=").concat(encodeURIComponent(newPassword), "&confirmPassword=").concat(encodeURIComponent(newPasswordConfirm));
-                options = {
-                  headers: {
-                    'Content-Type': 'application/json'
-                  },
-                  method: 'POST'
-                };
-                _context7.next = 4;
-                return SecurityApi.get(url, options);
-
-              case 4:
-                return _context7.abrupt("return", _context7.sent);
-
-              case 5:
-              case "end":
-                return _context7.stop();
-            }
-          }
-        }, _callee7);
-      }));
-
-      function ChangePasswordWithToken(_x12, _x13, _x14) {
-        return _ChangePasswordWithToken.apply(this, arguments);
-      }
-
-      return ChangePasswordWithToken;
-    }()
-  }, {
-    key: "ForgotPassword",
-    value: function () {
-      var _ForgotPassword = (0, _asyncToGenerator2["default"])(
-      /*#__PURE__*/
-      _regenerator["default"].mark(function _callee8(username, currentUrl) {
-        var url, options;
-        return _regenerator["default"].wrap(function _callee8$(_context8) {
-          while (1) {
-            switch (_context8.prev = _context8.next) {
-              case 0:
-                url = "".concat(FORGOT_PASSWORD_URI, "?username=").concat(encodeURIComponent(username), "&currentUrl=").concat(encodeURIComponent(currentUrl));
-                options = {
-                  headers: {
-                    'Content-Type': 'application/json'
-                  },
-                  method: 'POST'
-                };
-                _context8.next = 4;
-                return SecurityApi.get(url, options);
-
-              case 4:
-                return _context8.abrupt("return", _context8.sent);
-
-              case 5:
-              case "end":
-                return _context8.stop();
-            }
-          }
-        }, _callee8);
-      }));
-
-      function ForgotPassword(_x15, _x16) {
-        return _ForgotPassword.apply(this, arguments);
-      }
-
-      return ForgotPassword;
-    }()
-  }, {
-    key: "get",
-    value: function () {
-      var _get = (0, _asyncToGenerator2["default"])(
-      /*#__PURE__*/
-      _regenerator["default"].mark(function _callee9(url) {
-        var options,
-            responseBody,
-            _args9 = arguments;
-        return _regenerator["default"].wrap(function _callee9$(_context9) {
-          while (1) {
-            switch (_context9.prev = _context9.next) {
-              case 0:
-                options = _args9.length > 1 && _args9[1] !== undefined ? _args9[1] : BASE_OPTIONS;
-                _context9.prev = 1;
-                _context9.next = 4;
-                return api(url, options);
-
-              case 4:
-                responseBody = _context9.sent;
-
-                if (!responseBody) {
-                  _context9.next = 7;
-                  break;
-                }
-
-                return _context9.abrupt("return", responseBody);
-
-              case 7:
-                return _context9.abrupt("return", false);
-
-              case 10:
-                _context9.prev = 10;
-                _context9.t0 = _context9["catch"](1);
-                return _context9.abrupt("return", false);
-
-              case 13:
-              case "end":
-                return _context9.stop();
-            }
-          }
-        }, _callee9, null, [[1, 10]]);
-      }));
-
-      function get(_x17) {
-        return _get.apply(this, arguments);
-      }
-
-      return get;
-    }()
-  }]);
-  return SecurityApi;
-}();
-
-exports.SecurityApi = SecurityApi;
-
-function api(_x18, _x19) {
-  return _api.apply(this, arguments);
-}
-
-function _api() {
-  _api = (0, _asyncToGenerator2["default"])(
-  /*#__PURE__*/
-  _regenerator["default"].mark(function _callee11(url, options) {
-    return _regenerator["default"].wrap(function _callee11$(_context11) {
-      while (1) {
-        switch (_context11.prev = _context11.next) {
-          case 0:
-            return _context11.abrupt("return", fetch(url, options).then(
-            /*#__PURE__*/
-            function () {
-              var _ref = (0, _asyncToGenerator2["default"])(
-              /*#__PURE__*/
-              _regenerator["default"].mark(function _callee10(response) {
-                return _regenerator["default"].wrap(function _callee10$(_context10) {
-                  while (1) {
-                    switch (_context10.prev = _context10.next) {
-                      case 0:
-                        setTimeout(function () {
-                          return null;
-                        }, 0);
-
-                        if (response.ok) {
-                          _context10.next = 3;
-                          break;
-                        }
-
-                        throw new Error(response.statusText);
-
-                      case 3:
-                        return _context10.abrupt("return", response.json().then(function (data) {
-                          return data;
-                        }));
-
-                      case 4:
-                      case "end":
-                        return _context10.stop();
-                    }
-                  }
-                }, _callee10);
-              }));
-
-              return function (_x20) {
-                return _ref.apply(this, arguments);
-              };
-            }())["catch"](function (error) {
-              //console.log(error);
-              throw error;
-            }));
-
-          case 1:
-          case "end":
-            return _context11.stop();
-        }
-      }
-    }, _callee11);
-  }));
-  return _api.apply(this, arguments);
-}
+module.exports = __WEBPACK_EXTERNAL_MODULE__24__;
 
 /***/ }),
 /* 25 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
-
-var _interopRequireDefault = __webpack_require__(0);
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.toJS = void 0;
-
-var _react = _interopRequireDefault(__webpack_require__(4));
-
-var _immutable = __webpack_require__(2);
-
-var toJS = function toJS(WrappedComponent) {
-  return function (wrappedComponentProps) {
-    var KEY = 0;
-    var VALUE = 1;
-    var propsJS = Object.entries(wrappedComponentProps).reduce(function (newProps, wrappedComponentProp) {
-      newProps[wrappedComponentProp[KEY]] = _immutable.Iterable.isIterable(wrappedComponentProp[VALUE]) ? wrappedComponentProp[VALUE].toJS() : wrappedComponentProp[VALUE];
-      return newProps;
-    }, {});
-    return _react["default"].createElement(WrappedComponent, propsJS);
-  };
-};
-
-exports.toJS = toJS;
-
-/***/ }),
-/* 26 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__26__;
-
-/***/ }),
-/* 27 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.setRouteEntry = exports.setRoute = exports.setCurrentProject = exports.setNavigationPath = exports.setNotFound = void 0;
-
-var _helpers = __webpack_require__(13);
-
-var _routing = __webpack_require__(8);
-
-var setNotFound = function setNotFound(notFound) {
-  return (0, _helpers.action)(_routing.SET_NAVIGATION_NOT_FOUND, {
-    notFound: notFound
-  });
-};
-
-exports.setNotFound = setNotFound;
-
-var setNavigationPath = function setNavigationPath(path, location, staticRoute, withEvents, statePath, routes) {
-  return (0, _helpers.action)(_routing.SET_NAVIGATION_PATH, {
-    path: path,
-    location: location,
-    staticRoute: staticRoute,
-    withEvents: withEvents,
-    statePath: statePath,
-    routes: routes
-  });
-};
-
-exports.setNavigationPath = setNavigationPath;
-
-var setCurrentProject = function setCurrentProject(project, allowedGroups) {
-  return (0, _helpers.action)(_routing.SET_TARGET_PROJECT, {
-    project: project,
-    allowedGroups: allowedGroups
-  });
-};
-
-exports.setCurrentProject = setCurrentProject;
-
-var setRoute = function setRoute(path, state) {
-  return (0, _helpers.action)(_routing.SET_ROUTE, {
-    path: path,
-    state: state
-  });
-};
-
-exports.setRoute = setRoute;
-
-var setRouteEntry = function setRouteEntry(entry) {
-  return (0, _helpers.action)(_routing.SET_ENTRY, {
-    entry: entry
-  });
-};
-
-exports.setRouteEntry = setRouteEntry;
-
-/***/ }),
-/* 28 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.GET_NODE_TREE_ERROR = exports.SET_NODE_TREE = exports.GET_NODE_TREE = void 0;
-var ACTION_PREFIX = '@NAVIGATION/';
-var GET_NODE_TREE = "".concat(ACTION_PREFIX, "_GET_NODE_TREE");
-exports.GET_NODE_TREE = GET_NODE_TREE;
-var SET_NODE_TREE = "".concat(ACTION_PREFIX, "_SET_NODE_TREE");
-exports.SET_NODE_TREE = SET_NODE_TREE;
-var GET_NODE_TREE_ERROR = "".concat(ACTION_PREFIX, "_GET_NODE_TREE_ERROR");
-exports.GET_NODE_TREE_ERROR = GET_NODE_TREE_ERROR;
-
-/***/ }),
-/* 29 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(0);
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.validateUserSaga = validateUserSaga;
-exports.userSagas = void 0;
-
-var _defineProperty2 = _interopRequireDefault(__webpack_require__(3));
-
-var _regenerator = _interopRequireDefault(__webpack_require__(1));
-
-var _effects = __webpack_require__(19);
-
-var _queryString = _interopRequireDefault(__webpack_require__(15));
-
-var _types = __webpack_require__(9);
-
-var _reducers = __webpack_require__(14);
-
-var _routing = __webpack_require__(8);
-
-var _routing2 = __webpack_require__(6);
-
-var _selectors = __webpack_require__(10);
-
-var _LoginHelper = __webpack_require__(32);
-
-var _SecurityApi = __webpack_require__(24);
-
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-var _marked =
-/*#__PURE__*/
-_regenerator["default"].mark(loginUserSaga),
-    _marked2 =
-/*#__PURE__*/
-_regenerator["default"].mark(logoutUserSaga),
-    _marked3 =
-/*#__PURE__*/
-_regenerator["default"].mark(validateUserSaga),
-    _marked4 =
-/*#__PURE__*/
-_regenerator["default"].mark(updateUserSaga),
-    _marked5 =
-/*#__PURE__*/
-_regenerator["default"].mark(forgotPassword),
-    _marked6 =
-/*#__PURE__*/
-_regenerator["default"].mark(changePassword),
-    _marked7 =
-/*#__PURE__*/
-_regenerator["default"].mark(createUserAccountSaga);
-
-var userSagas = [(0, _effects.takeEvery)(_types.LOGIN_USER, loginUserSaga), (0, _effects.takeEvery)(_types.LOGOUT_USER, logoutUserSaga), (0, _effects.takeEvery)(_types.VALIDATE_USER, validateUserSaga), (0, _effects.takeEvery)(_types.CREATE_USER_ACCOUNT, createUserAccountSaga), (0, _effects.takeEvery)(_types.FORGOT_USER_PASSWORD, forgotPassword), (0, _effects.takeEvery)(_types.CHANGE_USER_PASSWORD, changePassword)];
-exports.userSagas = userSagas;
-
-function loginUserSaga(action) {
-  var getGroups, username, password, user;
-  return _regenerator["default"].wrap(function loginUserSaga$(_context) {
-    while (1) {
-      switch (_context.prev = _context.next) {
-        case 0:
-          getGroups = true;
-          username = action.username, password = action.password;
-
-          if (!(username && password)) {
-            _context.next = 10;
-            break;
-          }
-
-          _context.next = 5;
-          return _LoginHelper.LoginHelper.LoginUser(username, password, getGroups);
-
-        case 5:
-          user = _context.sent;
-          _context.next = 8;
-          return (0, _effects.call)(updateUserSaga, {
-            type: user.failedLogin ? _types.LOGIN_FAILED : _types.LOGIN_SUCCESSFUL,
-            user: user,
-            redirect: !user.failedLogin
-          });
-
-        case 8:
-          _context.next = 12;
-          break;
-
-        case 10:
-          _context.next = 12;
-          return _LoginHelper.LoginHelper.ClientRedirectToLogin();
-
-        case 12:
-        case "end":
-          return _context.stop();
-      }
-    }
-  }, _marked);
-}
-
-function logoutUserSaga() {
-  var user, state;
-  return _regenerator["default"].wrap(function logoutUserSaga$(_context2) {
-    while (1) {
-      switch (_context2.prev = _context2.next) {
-        case 0:
-          user = _LoginHelper.LoginHelper.LogoutUser();
-          _context2.next = 3;
-          return (0, _effects.fork)(updateUserSaga, {
-            user: user
-          });
-
-        case 3:
-          _context2.next = 5;
-          return (0, _effects.select)();
-
-        case 5:
-          state = _context2.sent;
-          _context2.next = 8;
-          return _LoginHelper.LoginHelper.ClientRedirectToHome(state.getIn(['router', 'location']));
-
-        case 8:
-        case "end":
-          return _context2.stop();
-      }
-    }
-  }, _marked2);
-}
-
-function validateUserSaga(action) {
-  var getGroups, state, currentQs, qsToken, cookies, user, type;
-  return _regenerator["default"].wrap(function validateUserSaga$(_context3) {
-    while (1) {
-      switch (_context3.prev = _context3.next) {
-        case 0:
-          getGroups = true;
-          _context3.next = 3;
-          return (0, _effects.select)();
-
-        case 3:
-          state = _context3.sent;
-          currentQs = _queryString["default"].parse(state.getIn(['router', 'location', 'search']));
-          qsToken = currentQs.securityToken || currentQs.securitytoken;
-
-          if (qsToken) {
-            _LoginHelper.LoginHelper.SetLoginCookies({
-              securityToken: qsToken
-            });
-          }
-
-          cookies = !qsToken ? action.cookies : _objectSpread({
-            ContensisCMSUserName: encodeURIComponent(qsToken)
-          }, action.cookies);
-          _context3.next = 10;
-          return _LoginHelper.LoginHelper.ValidateUser(getGroups, cookies);
-
-        case 10:
-          user = _context3.sent;
-          type = user && user.loggedIn ? _types.VALIDATE_USER_SUCCESS : _types.VALIDATE_USER_FAILED;
-          _context3.next = 14;
-          return (0, _effects.call)(updateUserSaga, {
-            type: type,
-            user: user && !user.loggedIn ? _reducers.initialUserState : user
-          });
-
-        case 14:
-        case "end":
-          return _context3.stop();
-      }
-    }
-  }, _marked3);
-}
-
-function updateUserSaga(action) {
-  var userState, currentSearch, qs, redirectUri;
-  return _regenerator["default"].wrap(function updateUserSaga$(_context4) {
-    while (1) {
-      switch (_context4.prev = _context4.next) {
-        case 0:
-          _context4.next = 2;
-          return (0, _effects.select)(_selectors.selectUser);
-
-        case 2:
-          userState = _context4.sent;
-          _context4.next = 5;
-          return (0, _effects.put)({
-            type: _types.UPDATE_USER,
-            from: action.type,
-            user: _objectSpread({}, userState.toJS(), {}, action.user)
-          });
-
-        case 5:
-          if (!action.redirect) {
-            _context4.next = 14;
-            break;
-          }
-
-          _context4.next = 8;
-          return (0, _effects.select)(_routing2.selectCurrentSearch);
-
-        case 8:
-          currentSearch = _context4.sent;
-          qs = _queryString["default"].parse(currentSearch);
-          redirectUri = qs.redirect_uri;
-
-          if (!redirectUri) {
-            _context4.next = 14;
-            break;
-          }
-
-          _context4.next = 14;
-          return (0, _effects.put)({
-            type: _routing.SET_ROUTE,
-            path: redirectUri
-          });
-
-        case 14:
-        case "end":
-          return _context4.stop();
-      }
-    }
-  }, _marked4);
-}
-
-function forgotPassword(action) {
-  var message;
-  return _regenerator["default"].wrap(function forgotPassword$(_context5) {
-    while (1) {
-      switch (_context5.prev = _context5.next) {
-        case 0:
-          _context5.next = 2;
-          return _LoginHelper.LoginHelper.ForgotPassword(action.username);
-
-        case 2:
-          message = _context5.sent;
-          _context5.next = 5;
-          return (0, _effects.put)({
-            type: _types.UPDATE_USER,
-            user: {
-              passwordReset: true,
-              passwordResetMessage: message
-            },
-            history: history
-          });
-
-        case 5:
-        case "end":
-          return _context5.stop();
-      }
-    }
-  }, _marked5);
-}
-
-function changePassword(action) {
-  var state, userState, message;
-  return _regenerator["default"].wrap(function changePassword$(_context6) {
-    while (1) {
-      switch (_context6.prev = _context6.next) {
-        case 0:
-          _context6.next = 2;
-          return (0, _effects.select)();
-
-        case 2:
-          state = _context6.sent;
-          _context6.next = 5;
-          return state.get('user');
-
-        case 5:
-          userState = _context6.sent;
-          message = '';
-
-          if (!action.token) {
-            _context6.next = 13;
-            break;
-          }
-
-          _context6.next = 10;
-          return _LoginHelper.LoginHelper.ChangePasswordWithToken(action.token, action.newPassword, action.newPasswordConfirm);
-
-        case 10:
-          message = _context6.sent;
-          _context6.next = 16;
-          break;
-
-        case 13:
-          _context6.next = 15;
-          return _LoginHelper.LoginHelper.ChangePassword(userState.username, action.oldPassword, action.newPassword, action.newPasswordConfirm);
-
-        case 15:
-          message = _context6.sent;
-
-        case 16:
-          _context6.next = 18;
-          return (0, _effects.put)({
-            type: _types.UPDATE_USER,
-            user: {
-              logonResult: message
-            },
-            history: history
-          });
-
-        case 18:
-        case "end":
-          return _context6.stop();
-      }
-    }
-  }, _marked6);
-}
-
-function createUserAccountSaga() {
-  var userState, registerResponse, securityToken, registrationResult, id, user, _user;
-
-  return _regenerator["default"].wrap(function createUserAccountSaga$(_context7) {
-    while (1) {
-      switch (_context7.prev = _context7.next) {
-        case 0:
-          _context7.next = 2;
-          return (0, _effects.select)(_selectors.selectUser);
-
-        case 2:
-          userState = _context7.sent;
-
-          if (!(userState.username && userState.password)) {
-            _context7.next = 22;
-            break;
-          }
-
-          _context7.next = 6;
-          return _SecurityApi.SecurityApi.RegisterUser(userState.username, userState.password);
-
-        case 6:
-          registerResponse = _context7.sent;
-
-          if (!registerResponse) {
-            _context7.next = 20;
-            break;
-          }
-
-          securityToken = registerResponse.securityToken, registrationResult = registerResponse.registrationResult, id = registerResponse.id;
-
-          if (!securityToken) {
-            _context7.next = 15;
-            break;
-          }
-
-          user = _objectSpread({}, userState, {
-            id: id,
-            securityToken: securityToken,
-            password: null,
-            loggedIn: true,
-            verifiedEmail: false,
-            failedLogin: false,
-            failedToCreateAccount: false,
-            registrationResult: registrationResult
-          });
-          _context7.next = 13;
-          return (0, _effects.put)({
-            type: _types.UPDATE_USER,
-            user: user
-          });
-
-        case 13:
-          _context7.next = 18;
-          break;
-
-        case 15:
-          _user = _objectSpread({}, userState, {
-            securityToken: null,
-            loggedIn: false,
-            verifiedEmail: false,
-            failedLogin: true,
-            failedToCreateAccount: true,
-            registrationResult: registrationResult
-          });
-          _context7.next = 18;
-          return (0, _effects.put)({
-            type: _types.UPDATE_USER,
-            user: _user
-          });
-
-        case 18:
-          _context7.next = 22;
-          break;
-
-        case 20:
-          _context7.next = 22;
-          return (0, _effects.put)({
-            type: _types.UPDATE_USER,
-            user: _objectSpread({}, userState, {
-              registrationResult: 'ServiceFault'
-            })
-          });
-
-        case 22:
-        case "end":
-          return _context7.stop();
-      }
-    }
-  }, _marked7);
-}
-
-/***/ }),
-/* 30 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__30__;
-
-/***/ }),
-/* 31 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.SET_VERSION_STATUS = exports.SET_VERSION = void 0;
-var VERSION_PREFIX = '@VERSION/';
-var SET_VERSION = "".concat(VERSION_PREFIX, "SET_VERSION");
-exports.SET_VERSION = SET_VERSION;
-var SET_VERSION_STATUS = "".concat(VERSION_PREFIX, "SET_VERSION_STATUS");
-exports.SET_VERSION_STATUS = SET_VERSION_STATUS;
-
-/***/ }),
-/* 32 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(0);
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.LoginHelper = void 0;
-
-var _regenerator = _interopRequireDefault(__webpack_require__(1));
-
-var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(5));
-
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__(11));
-
-var _createClass2 = _interopRequireDefault(__webpack_require__(12));
-
-var _CookieHelper = __webpack_require__(34);
-
-var _SecurityApi = __webpack_require__(24);
-
-var _reducers = __webpack_require__(14);
-
-// import { ajax } from 'jquery';
-// import queryString from 'query-string';
-// import { randomString } from '~/core/util/helpers';
-// import userManager from './oidc/userManager';
-var LOGIN_COOKIE = 'ContensisCMSUserName';
-var LAST_USERNAME_COOKIE = 'ContensisLastUserName';
-var DISPLAY_NAME_COOKIE = 'ContensisDisplayName';
-var USER_LANGUAGE_COOKIE = 'User_LanguageID';
-var AVATAR_COOKIE = 'ContensisAvatar'; // const contensis = CONTENSIS; /* global CONTENSIS */
-
-var LoginHelper =
-/*#__PURE__*/
-function () {
-  function LoginHelper() {
-    (0, _classCallCheck2["default"])(this, LoginHelper);
-  }
-
-  (0, _createClass2["default"])(LoginHelper, null, [{
-    key: "GetLoginCookie",
-    value: function GetLoginCookie() {
-      return _CookieHelper.CookieHelper.GetCookie(LOGIN_COOKIE);
-    }
-  }, {
-    key: "SetLoginCookies",
-    value: function SetLoginCookies(user) {
-      if (user.securityToken) _CookieHelper.CookieHelper.SetCookie(LOGIN_COOKIE, user.securityToken);
-
-      if (user.username) {
-        _CookieHelper.CookieHelper.SetCookie(LAST_USERNAME_COOKIE, user.username);
-
-        _CookieHelper.CookieHelper.SetCookie(DISPLAY_NAME_COOKIE, user.username);
-      }
-    }
-  }, {
-    key: "GetCachedCredentials",
-    value: function GetCachedCredentials() {
-      return {
-        securityToken: _CookieHelper.CookieHelper.GetCookie(LOGIN_COOKIE),
-        username: _CookieHelper.CookieHelper.GetCookie(LAST_USERNAME_COOKIE),
-        displayName: _CookieHelper.CookieHelper.GetCookie(DISPLAY_NAME_COOKIE),
-        languageId: _CookieHelper.CookieHelper.GetCookie(USER_LANGUAGE_COOKIE),
-        avatar: _CookieHelper.CookieHelper.GetCookie(AVATAR_COOKIE)
-      };
-    }
-  }, {
-    key: "GetCachedCredentialsSSR",
-    value: function GetCachedCredentialsSSR(cookies) {
-      return {
-        securityToken: cookies[LOGIN_COOKIE],
-        username: cookies[LAST_USERNAME_COOKIE],
-        displayName: cookies[DISPLAY_NAME_COOKIE],
-        languageId: cookies[USER_LANGUAGE_COOKIE],
-        avatar: cookies[AVATAR_COOKIE]
-      };
-    }
-  }, {
-    key: "ClearCachedCredentials",
-    value: function ClearCachedCredentials() {
-      _CookieHelper.CookieHelper.DeleteCookie(LOGIN_COOKIE);
-
-      _CookieHelper.CookieHelper.DeleteCookie(LAST_USERNAME_COOKIE);
-
-      _CookieHelper.CookieHelper.DeleteCookie(DISPLAY_NAME_COOKIE);
-
-      _CookieHelper.CookieHelper.DeleteCookie(USER_LANGUAGE_COOKIE);
-
-      _CookieHelper.CookieHelper.DeleteCookie(AVATAR_COOKIE);
-    }
-  }, {
-    key: "ValidateUser",
-    value: function () {
-      var _ValidateUser = (0, _asyncToGenerator2["default"])(
-      /*#__PURE__*/
-      _regenerator["default"].mark(function _callee() {
-        var groups,
-            cookies,
-            cached,
-            response,
-            user,
-            userWithGroups,
-            _args = arguments;
-        return _regenerator["default"].wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                groups = _args.length > 0 && _args[0] !== undefined ? _args[0] : false;
-                cookies = _args.length > 1 && _args[1] !== undefined ? _args[1] : null;
-                cached = cookies ? this.GetCachedCredentialsSSR(cookies) : this.GetCachedCredentials();
-
-                if (!cached.securityToken) {
-                  _context.next = 21;
-                  break;
-                }
-
-                _context.next = 6;
-                return _SecurityApi.SecurityApi.ValidateUser(cached.securityToken);
-
-              case 6:
-                response = _context.sent;
-
-                if (response) {
-                  _context.next = 9;
-                  break;
-                }
-
-                return _context.abrupt("return", false);
-
-              case 9:
-                // Convert result to a User object
-                user = {
-                  username: cached.username,
-                  securityToken: encodeURIComponent(response.SecurityToken),
-                  logonResult: response.LogonResult,
-                  id: response.UserID,
-                  loginScreenMode: 'login'
-                };
-
-                if (!(user.logonResult !== 0)) {
-                  _context.next = 14;
-                  break;
-                }
-
-                // Clear the cookie cache so we don't need to validate again
-                LoginHelper.ClearCachedCredentials();
-                _context.next = 20;
-                break;
-
-              case 14:
-                // Set logged in flag
-                user.loggedIn = true;
-
-                if (!groups) {
-                  _context.next = 20;
-                  break;
-                }
-
-                _context.next = 18;
-                return this.GetGroups(user);
-
-              case 18:
-                userWithGroups = _context.sent;
-                return _context.abrupt("return", userWithGroups);
-
-              case 20:
-                return _context.abrupt("return", user);
-
-              case 21:
-                return _context.abrupt("return", false);
-
-              case 22:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee, this);
-      }));
-
-      function ValidateUser() {
-        return _ValidateUser.apply(this, arguments);
-      }
-
-      return ValidateUser;
-    }()
-  }, {
-    key: "LoginUser",
-    value: function () {
-      var _LoginUser = (0, _asyncToGenerator2["default"])(
-      /*#__PURE__*/
-      _regenerator["default"].mark(function _callee2(username, password) {
-        var groups,
-            loginResponse,
-            SecurityToken,
-            LogonResult,
-            UserID,
-            failedLogin,
-            user,
-            userWithGroups,
-            _args2 = arguments;
-        return _regenerator["default"].wrap(function _callee2$(_context2) {
-          while (1) {
-            switch (_context2.prev = _context2.next) {
-              case 0:
-                groups = _args2.length > 2 && _args2[2] !== undefined ? _args2[2] : false;
-
-                if (!(username && password)) {
-                  _context2.next = 20;
-                  break;
-                }
-
-                _context2.next = 4;
-                return _SecurityApi.SecurityApi.LogonUser(username, password);
-
-              case 4:
-                loginResponse = _context2.sent;
-
-                if (!loginResponse) {
-                  _context2.next = 19;
-                  break;
-                }
-
-                // Extract the elements we need from the response
-                SecurityToken = loginResponse.SecurityToken, LogonResult = loginResponse.LogonResult, UserID = loginResponse.UserID;
-                failedLogin = !!LogonResult; // 0 is successful
-                // Map response to new user object
-
-                user = {
-                  username: username,
-                  failedLogin: failedLogin,
-                  loggedIn: !!SecurityToken && !failedLogin,
-                  securityToken: SecurityToken,
-                  id: UserID,
-                  logonResult: this.CheckResult(LogonResult)
-                };
-
-                if (!(!user.failedLogin && !!user.securityToken)) {
-                  _context2.next = 16;
-                  break;
-                }
-
-                this.SetLoginCookies(user);
-
-                if (!groups) {
-                  _context2.next = 16;
-                  break;
-                }
-
-                _context2.next = 14;
-                return this.GetGroups(user);
-
-              case 14:
-                userWithGroups = _context2.sent;
-                return _context2.abrupt("return", userWithGroups);
-
-              case 16:
-                return _context2.abrupt("return", user);
-
-              case 19:
-                return _context2.abrupt("return", {
-                  securityToken: null,
-                  loggedIn: false,
-                  failedLogin: true,
-                  logonResult: 'Service Fault'
-                });
-
-              case 20:
-              case "end":
-                return _context2.stop();
-            }
-          }
-        }, _callee2, this);
-      }));
-
-      function LoginUser(_x, _x2) {
-        return _LoginUser.apply(this, arguments);
-      }
-
-      return LoginUser;
-    }()
-  }, {
-    key: "GetGroups",
-    value: function () {
-      var _GetGroups = (0, _asyncToGenerator2["default"])(
-      /*#__PURE__*/
-      _regenerator["default"].mark(function _callee3(user) {
-        var userInfoResponse, response;
-        return _regenerator["default"].wrap(function _callee3$(_context3) {
-          while (1) {
-            switch (_context3.prev = _context3.next) {
-              case 0:
-                if (user.securityToken) {
-                  _context3.next = 2;
-                  break;
-                }
-
-                return _context3.abrupt("return", user);
-
-              case 2:
-                _context3.next = 4;
-                return _SecurityApi.SecurityApi.GetUserInfo(user.securityToken);
-
-              case 4:
-                userInfoResponse = _context3.sent;
-
-                if (userInfoResponse) {
-                  response = JSON.parse(userInfoResponse);
-
-                  if (response.Error || !response.GroupCollection) {
-                    user.errorMessage = "Problem fetching user info: ".concat(response.Error);
-                  } else {
-                    user.groups = response.GroupCollection.map(function (group) {
-                      return {
-                        name: group.GroupName,
-                        id: group.GroupId
-                      };
-                    });
-                    user.fullName = response.Fullname;
-                    user.emailAddress = response.Email;
-                  }
-                }
-
-                return _context3.abrupt("return", user);
-
-              case 7:
-              case "end":
-                return _context3.stop();
-            }
-          }
-        }, _callee3);
-      }));
-
-      function GetGroups(_x3) {
-        return _GetGroups.apply(this, arguments);
-      }
-
-      return GetGroups;
-    }()
-  }, {
-    key: "LogoutUser",
-    value: function LogoutUser() {
-      this.ClearCachedCredentials();
-      return _reducers.initialUserState.toJS();
-    }
-  }, {
-    key: "ClientRedirectToLogin",
-    value: function ClientRedirectToLogin(uri) {
-      if (typeof window != 'undefined') {
-        window.location.href = LoginHelper.LoginPageUrl(uri); // LoginHelper.IsWsFedSignin()
-        // ? LoginHelper.WsFedLoginPageUrl(window.location)
-        // : LoginHelper.LoginPageUrl(uri);
-      }
-    }
-  }, {
-    key: "LoginPageUrl",
-    value: function LoginPageUrl(uri) {
-      return "".concat(uri || '/login', "?redirect_uri=").concat(window.location.pathname + window.location.search);
-    } // static WsFedLoginPageUrl(currentLocation) {
-    //   const loginPage = contensis.ADFS_LOGIN_PAGE.replace(
-    //     '{redirect_uri}',
-    //     encodeURIComponent(currentLocation.toString().split('#')[0])
-    //   ).replace('{nonce}', randomString(5));
-    //   return `${contensis.URL}${loginPage}`.replace(/([^:]\/)\/+/g, '$1');
-    // }
-    // static IsWsFedSignin() {
-    //   return contensis.WSFED_SIGNIN;
-    // }
-    // static WsFedSignin(redirectUri) {
-    //   userManager.signinRedirect({
-    //     scope: 'openid',
-    //     response_type: 'id_token',
-    //     redirect_uri: redirectUri || window.location.toString(),
-    //   });
-    // }
-    // static WsFedLogout() {
-    //   ajax(`${contensis.URL}authenticate/logout/`, {
-    //     dataType: 'jsonp',
-    //     jsonp: false,
-    //     async: false,
-    //   });
-    // }
-
-  }, {
-    key: "ForgotPassword",
-    value: function () {
-      var _ForgotPassword = (0, _asyncToGenerator2["default"])(
-      /*#__PURE__*/
-      _regenerator["default"].mark(function _callee4(username) {
-        var currentUrl, passwordResponse;
-        return _regenerator["default"].wrap(function _callee4$(_context4) {
-          while (1) {
-            switch (_context4.prev = _context4.next) {
-              case 0:
-                if (!username) {
-                  _context4.next = 7;
-                  break;
-                }
-
-                currentUrl = window.location.protocol + '//' + window.location.host;
-                _context4.next = 4;
-                return _SecurityApi.SecurityApi.ForgotPassword(username, currentUrl);
-
-              case 4:
-                passwordResponse = _context4.sent;
-
-                if (!passwordResponse) {
-                  _context4.next = 7;
-                  break;
-                }
-
-                return _context4.abrupt("return", passwordResponse);
-
-              case 7:
-              case "end":
-                return _context4.stop();
-            }
-          }
-        }, _callee4);
-      }));
-
-      function ForgotPassword(_x4) {
-        return _ForgotPassword.apply(this, arguments);
-      }
-
-      return ForgotPassword;
-    }()
-  }, {
-    key: "ChangePassword",
-    value: function () {
-      var _ChangePassword = (0, _asyncToGenerator2["default"])(
-      /*#__PURE__*/
-      _regenerator["default"].mark(function _callee5(username, oldPassword, newPassword, newPasswordConfirm) {
-        var passwordResponse;
-        return _regenerator["default"].wrap(function _callee5$(_context5) {
-          while (1) {
-            switch (_context5.prev = _context5.next) {
-              case 0:
-                if (!(newPassword && newPasswordConfirm)) {
-                  _context5.next = 10;
-                  break;
-                }
-
-                if (!this.ValidatePassword(newPassword)) {
-                  _context5.next = 9;
-                  break;
-                }
-
-                _context5.next = 4;
-                return _SecurityApi.SecurityApi.ChangePassword(username, oldPassword, newPassword, newPasswordConfirm);
-
-              case 4:
-                passwordResponse = _context5.sent;
-
-                if (!passwordResponse) {
-                  _context5.next = 7;
-                  break;
-                }
-
-                return _context5.abrupt("return", passwordResponse);
-
-              case 7:
-                _context5.next = 10;
-                break;
-
-              case 9:
-                return _context5.abrupt("return", 'New password does not meet the requirements: \r\n\r\n - Must be a minimum of 8 characters long \r\n - Must contain at least 1 uppercase character \r\n - Must contain at least 1 special character or number');
-
-              case 10:
-              case "end":
-                return _context5.stop();
-            }
-          }
-        }, _callee5, this);
-      }));
-
-      function ChangePassword(_x5, _x6, _x7, _x8) {
-        return _ChangePassword.apply(this, arguments);
-      }
-
-      return ChangePassword;
-    }()
-  }, {
-    key: "ChangePasswordWithToken",
-    value: function () {
-      var _ChangePasswordWithToken = (0, _asyncToGenerator2["default"])(
-      /*#__PURE__*/
-      _regenerator["default"].mark(function _callee6(token, newPassword, newPasswordConfirm) {
-        var passwordResponse;
-        return _regenerator["default"].wrap(function _callee6$(_context6) {
-          while (1) {
-            switch (_context6.prev = _context6.next) {
-              case 0:
-                if (!(newPassword && newPasswordConfirm)) {
-                  _context6.next = 10;
-                  break;
-                }
-
-                if (!this.ValidatePassword(newPassword)) {
-                  _context6.next = 9;
-                  break;
-                }
-
-                _context6.next = 4;
-                return _SecurityApi.SecurityApi.ChangePasswordWithToken(token, btoa(newPassword), btoa(newPasswordConfirm));
-
-              case 4:
-                passwordResponse = _context6.sent;
-
-                if (!passwordResponse) {
-                  _context6.next = 7;
-                  break;
-                }
-
-                return _context6.abrupt("return", passwordResponse);
-
-              case 7:
-                _context6.next = 10;
-                break;
-
-              case 9:
-                return _context6.abrupt("return", 'New password does not meet the requirements: \r\n\r\n - Must be a minimum of 8 characters long \r\n - Must contain at least 1 uppercase character \r\n - Must contain at least 1 special character or number');
-
-              case 10:
-              case "end":
-                return _context6.stop();
-            }
-          }
-        }, _callee6, this);
-      }));
-
-      function ChangePasswordWithToken(_x9, _x10, _x11) {
-        return _ChangePasswordWithToken.apply(this, arguments);
-      }
-
-      return ChangePasswordWithToken;
-    }()
-  }, {
-    key: "ValidatePassword",
-    value: function ValidatePassword(pword) {
-      //Password must be over 8 characters long
-      if (pword.length < 8) return false; //This only returns true if the following criteria is met:
-      //  *8 chars or more
-      //  *Must contain at least 1 capital letter
-      //  *Must contain at least 1 number or special character
-
-      return /^(?:(?=.*[a-z])(?:(?=.*[A-Z])(?=.*[\d\W])|(?=.*\W)(?=.*\d))|(?=.*\W)(?=.*[A-Z])(?=.*\d)).{8,}$/.test(pword);
-    }
-  }, {
-    key: "CheckResult",
-    value: function CheckResult(result) {
-      var Results = {
-        '0': 'OK',
-        '-2': 'Incorrect username or password',
-        '-3': 'Account disabled',
-        '-4': 'Account locked',
-        '-5': 'Log on from this PC is denied',
-        '-6': 'Log on at this time is denied',
-        '-7': 'Account already logged in',
-        '-9': 'Unspecified error',
-        '2': 'Password change required',
-        '3': 'Insufficient privileges',
-        '-10': 'Account expired',
-        '-11': 'Maintenance mode',
-        '4': 'Security token expired',
-        '': 'An error has occured'
-      };
-      return Results[result];
-    }
-  }]);
-  return LoginHelper;
-}();
-
-exports.LoginHelper = LoginHelper;
-
-/***/ }),
-/* 33 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__33__;
-
-/***/ }),
-/* 34 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(0);
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.CookieHelper = void 0;
-
-var _classCallCheck2 = _interopRequireDefault(__webpack_require__(11));
-
-var _createClass2 = _interopRequireDefault(__webpack_require__(12));
-
-var _jsCookie = _interopRequireDefault(__webpack_require__(35));
-
-var COOKIE_VALID_DAYS = 1; // 0 = Session cookie
-// Override the default js-cookie conversion / encoding
-// methods so the written values work with Contensis sites
-
-var _cookie = _jsCookie["default"].withConverter({
-  read: function read(value) {
-    return decodeURIComponent(value);
-  },
-  write: function write(value) {
-    return encodeURIComponent(value);
-  }
-});
-
-var CookieHelper =
-/*#__PURE__*/
-function () {
-  function CookieHelper() {
-    (0, _classCallCheck2["default"])(this, CookieHelper);
-  }
-
-  (0, _createClass2["default"])(CookieHelper, null, [{
-    key: "GetCookie",
-    value: function GetCookie(name) {
-      return _cookie.get(name);
-    }
-  }, {
-    key: "SetCookie",
-    value: function SetCookie(name, value) {
-      var maxAgeDays = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : COOKIE_VALID_DAYS;
-      maxAgeDays === 0 ? _cookie.set(name, value) : _cookie.set(name, value, {
-        expires: maxAgeDays
-      });
-    }
-  }, {
-    key: "DeleteCookie",
-    value: function DeleteCookie(name) {
-      _cookie.remove(name);
-    }
-  }]);
-  return CookieHelper;
-}();
-
-exports.CookieHelper = CookieHelper;
-
-/***/ }),
-/* 35 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__35__;
-
-/***/ }),
-/* 36 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
-
-var _reactRedux = __webpack_require__(17);
-
-var _actions = __webpack_require__(22);
-
-var _selectors = __webpack_require__(10);
-
-var _ToJs = __webpack_require__(25);
-
-var _routing = __webpack_require__(6);
-
-var getDisplayName = function getDisplayName(WrappedComponent) {
-  return WrappedComponent.displayName || WrappedComponent.name || 'Component';
-};
-
-var withLogin = function withLogin(WrappedComponent) {
-  // Returns a redux-connected component with the following props:
-  // this.propTypes = {
-  //   loginUser: PropTypes.func,
-  //   logoutUser: PropTypes.func,
-  //   user: PropTypes.object,
-  // };
-  var mapStateToProps = function mapStateToProps(state) {
-    return {
-      user: (0, _selectors.selectUser)(state),
-      userMessage: (0, _selectors.selectUserMessage)(state),
-      screenMode: (0, _selectors.selectLoginScreenMode)(state),
-      passwordMessage: (0, _selectors.selectPasswordMessage)(state),
-      changePasswordMessage: (0, _selectors.selectChangePasswordMessage)(state),
-      captchaSiteKey: (0, _selectors.selectCaptchaSiteKey)(state),
-      isHuman: (0, _selectors.selectCaptchaResponse)(state),
-      isLoggedIn: (0, _selectors.selectUserLoggedIn)(state),
-      currentPath: (0, _routing.selectCurrentPath)(state),
-      queryString: (0, _routing.selectQueryStringAsObject)(state)
-    };
-  };
-
-  var mapDispatchToProps = {
-    loginUser: _actions.loginUser,
-    logoutUser: _actions.logoutUser,
-    toggleLoginMode: _actions.toggleLoginMode,
-    forgotPassword: _actions.forgotPassword,
-    changePassword: _actions.changePassword,
-    changePasswordWithToken: _actions.changePasswordWithToken,
-    captchaResponse: _actions.setRecaptchaResponse
-  };
-  var ConnectedComponent = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)((0, _ToJs.toJS)(WrappedComponent));
-  ConnectedComponent.displayName = "".concat(getDisplayName(WrappedComponent));
-  return ConnectedComponent;
-};
-
-var _default = withLogin;
-exports["default"] = _default;
-
-/***/ }),
-/* 37 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.selectVersionStatus = exports.selectBuildNumber = exports.selectCommitRef = void 0;
-
-var selectCommitRef = function selectCommitRef(state) {
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectCommitRef", function() { return selectCommitRef; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectBuildNumber", function() { return selectBuildNumber; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectVersionStatus", function() { return selectVersionStatus; });
+const selectCommitRef = state => {
   return state.getIn(['version', 'commitRef']);
 };
-
-exports.selectCommitRef = selectCommitRef;
-
-var selectBuildNumber = function selectBuildNumber(state) {
+const selectBuildNumber = state => {
   return state.getIn(['version', 'buildNo']);
 };
-
-exports.selectBuildNumber = selectBuildNumber;
-
-var selectVersionStatus = function selectVersionStatus(state) {
+const selectVersionStatus = state => {
   return state.getIn(['version', 'contensisVersionStatus']);
 };
 
-exports.selectVersionStatus = selectVersionStatus;
-
 /***/ }),
-/* 38 */
-/***/ (function(module, exports, __webpack_require__) {
+/* 26 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.selectNavigationDepends = exports.selectNavigationRoot = exports.hasNavigationTree = void 0;
-
-var hasNavigationTree = function hasNavigationTree(state) {
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "hasNavigationTree", function() { return hasNavigationTree; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectNavigationRoot", function() { return selectNavigationRoot; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectNavigationDepends", function() { return selectNavigationDepends; });
+const hasNavigationTree = state => {
   return state.getIn(['navigation', 'isReady']);
 };
-
-exports.hasNavigationTree = hasNavigationTree;
-
-var selectNavigationRoot = function selectNavigationRoot(state) {
+const selectNavigationRoot = state => {
   return state.getIn(['navigation', 'root']);
 };
-
-exports.selectNavigationRoot = selectNavigationRoot;
-
-var selectNavigationDepends = function selectNavigationDepends(state) {
+const selectNavigationDepends = state => {
   return state.getIn(['navigation', 'treeDepends']);
 };
 
-exports.selectNavigationDepends = selectNavigationDepends;
+/***/ }),
+/* 27 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__27__;
 
 /***/ }),
-/* 39 */
-/***/ (function(module, exports, __webpack_require__) {
+/* 28 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__28__;
+
+/***/ }),
+/* 29 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__29__;
+
+/***/ }),
+/* 30 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(module) {
+__webpack_require__.r(__webpack_exports__);
+/* WEBPACK VAR INJECTION */(function(module) {/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(9);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(16);
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_redux__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var react_hot_loader__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(24);
+/* harmony import */ var react_hot_loader__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react_hot_loader__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(18);
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(react_router_dom__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var react_router_config__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(29);
+/* harmony import */ var react_router_config__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(react_router_config__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _redux_selectors_routing__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(8);
+/* harmony import */ var _redux_actions_routing__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(22);
+/* harmony import */ var _pages_NotFound__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(33);
+/* harmony import */ var _Status__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(34);
+/* harmony import */ var _util_ToJs__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(21);
+/* harmony import */ var _features_login_redux_selectors__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(7);
 
-var _interopRequireDefault = __webpack_require__(0);
 
-var _interopRequireWildcard = __webpack_require__(7);
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
 
-var _react = _interopRequireWildcard(__webpack_require__(4));
 
-var _propTypes = _interopRequireDefault(__webpack_require__(33));
 
-var _reactRedux = __webpack_require__(17);
 
-var _reactHotLoader = __webpack_require__(30);
 
-var _reactRouterDom = __webpack_require__(26);
 
-var _reactRouterConfig = __webpack_require__(46);
 
-var _routing = __webpack_require__(6);
 
-var _routing2 = __webpack_require__(27);
 
-var _NotFound = _interopRequireDefault(__webpack_require__(47));
 
-var _Status = __webpack_require__(48);
-
-var _ToJs = __webpack_require__(25);
-
-var _selectors = __webpack_require__(10);
-
-var getTrimmedPath = function getTrimmedPath(path) {
+const getTrimmedPath = path => {
   if (path !== '/') {
-    var lastChar = path[path.length - 1];
+    const lastChar = path[path.length - 1];
 
     if (lastChar == '/') {
       return path.substring(0, path.length - 1);
@@ -3259,36 +1889,31 @@ var getTrimmedPath = function getTrimmedPath(path) {
   return path;
 };
 
-var RouteLoader = function RouteLoader(_ref) {
-  var statePath = _ref.statePath,
-      projectId = _ref.projectId,
-      contentTypeId = _ref.contentTypeId,
-      entry = _ref.entry,
-      isLoggedIn = _ref.isLoggedIn,
-      isNotFound = _ref.isNotFound,
-      notFoundComponent = _ref.notFoundComponent,
-      setNavigationPath = _ref.setNavigationPath,
-      routes = _ref.routes,
-      withEvents = _ref.withEvents;
-  var location = (0, _reactRouterDom.useLocation)(); // Match any Static Routes a developer has defined
+const RouteLoader = ({
+  statePath,
+  projectId,
+  contentTypeId,
+  entry,
+  isLoggedIn,
+  isNotFound,
+  notFoundComponent,
+  setNavigationPath,
+  routes,
+  withEvents
+}) => {
+  const location = Object(react_router_dom__WEBPACK_IMPORTED_MODULE_4__["useLocation"])(); // Match any Static Routes a developer has defined
 
-  var matchedStaticRoute = function matchedStaticRoute() {
-    return (0, _reactRouterConfig.matchRoutes)(routes.StaticRoutes, location.pathname);
-  };
+  const matchedStaticRoute = () => Object(react_router_config__WEBPACK_IMPORTED_MODULE_5__["matchRoutes"])(routes.StaticRoutes, location.pathname);
 
-  var isStaticRoute = function isStaticRoute() {
-    return matchedStaticRoute().length > 0;
-  };
+  const isStaticRoute = () => matchedStaticRoute().length > 0;
 
-  var trimmedPath = getTrimmedPath(location.pathname);
-  var staticRoute = isStaticRoute() && matchedStaticRoute()[0];
-  var setPath = (0, _react.useCallback)(function () {
-    var serverPath = null;
+  const trimmedPath = getTrimmedPath(location.pathname);
+  const staticRoute = isStaticRoute() && matchedStaticRoute()[0];
+  const setPath = Object(react__WEBPACK_IMPORTED_MODULE_0__["useCallback"])(() => {
+    let serverPath = null;
 
     if (staticRoute && staticRoute.match && staticRoute.match.isExact) {
-      serverPath = staticRoute.route.path.split('/').filter(function (p) {
-        return !p.startsWith(':');
-      }).join('/');
+      serverPath = staticRoute.route.path.split('/').filter(p => !p.startsWith(':')).join('/');
     }
 
     setNavigationPath(serverPath || trimmedPath, location, staticRoute, withEvents, statePath, routes); // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -3296,34 +1921,32 @@ var RouteLoader = function RouteLoader(_ref) {
   withEvents, location, routes, // statePath,
   trimmedPath]);
   if (typeof window == 'undefined') setPath();
-  (0, _react.useEffect)(function () {
+  Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
     setPath();
   }, [location, setPath]); // Need to redirect when url endswith a /
 
   if (location.pathname.length > trimmedPath.length) {
-    return _react["default"].createElement(_reactRouterDom.Redirect, {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__["Redirect"], {
       to: trimmedPath
     });
   } // Render any Static Routes a developer has defined
 
 
   if (isStaticRoute(trimmedPath)) {
-    return (0, _reactRouterConfig.renderRoutes)(routes.StaticRoutes, {
-      projectId: projectId,
-      contentTypeId: contentTypeId,
-      entry: entry,
-      isLoggedIn: isLoggedIn
+    return Object(react_router_config__WEBPACK_IMPORTED_MODULE_5__["renderRoutes"])(routes.StaticRoutes, {
+      projectId,
+      contentTypeId,
+      entry,
+      isLoggedIn
     });
   } // Match any Defined Content Type Mappings
 
 
   if (contentTypeId) {
-    var MatchedComponent = routes.ContentTypeMappings.find(function (item) {
-      return item.contentTypeID == contentTypeId;
-    });
+    const MatchedComponent = routes.ContentTypeMappings.find(item => item.contentTypeID == contentTypeId);
 
     if (MatchedComponent) {
-      return _react["default"].createElement(MatchedComponent.component, {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(MatchedComponent.component, {
         projectId: projectId,
         contentTypeId: contentTypeId,
         entry: entry,
@@ -3332,138 +1955,1028 @@ var RouteLoader = function RouteLoader(_ref) {
     }
   }
 
-  var NotFoundComponent = notFoundComponent ? notFoundComponent : _NotFound["default"];
+  const NotFoundComponent = notFoundComponent ? notFoundComponent : _pages_NotFound__WEBPACK_IMPORTED_MODULE_8__[/* default */ "a"];
 
   if (isNotFound) {
-    return _react["default"].createElement(_Status.Status, {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Status__WEBPACK_IMPORTED_MODULE_9__[/* Status */ "a"], {
       code: 404
-    }, _react["default"].createElement(NotFoundComponent, null));
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(NotFoundComponent, null));
   }
 
   return null;
 };
 
 RouteLoader.propTypes = {
-  routes: _propTypes["default"].objectOf(_propTypes["default"].array, _propTypes["default"].array),
-  withEvents: _propTypes["default"].object,
-  statePath: _propTypes["default"].string,
-  projectId: _propTypes["default"].string,
-  contentTypeId: _propTypes["default"].string,
-  loading: _propTypes["default"].object,
-  entry: _propTypes["default"].object,
-  isLoggedIn: _propTypes["default"].bool,
-  isNotFound: _propTypes["default"].bool,
-  notFoundComponent: _propTypes["default"].func,
-  setNavigationPath: _propTypes["default"].func
+  routes: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.objectOf(prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.array, prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.array),
+  withEvents: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.object,
+  statePath: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
+  projectId: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
+  contentTypeId: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
+  loading: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.object,
+  entry: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.object,
+  isLoggedIn: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,
+  isNotFound: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,
+  notFoundComponent: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func,
+  setNavigationPath: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func
 };
 
-var mapStateToProps = function mapStateToProps(state) {
+const mapStateToProps = state => {
   return {
-    statePath: (0, _routing.selectCurrentPath)(state),
-    projectId: (0, _routing.selectCurrentProject)(state),
-    entry: (0, _routing.selectRouteEntry)(state),
-    contentTypeId: (0, _routing.selectRouteEntryContentTypeId)(state),
-    isNotFound: (0, _routing.selectIsNotFound)(state),
-    isLoggedIn: (0, _selectors.selectUserLoggedIn)(state),
-    isLoading: (0, _routing.selectRouteLoading)(state)
+    statePath: Object(_redux_selectors_routing__WEBPACK_IMPORTED_MODULE_6__["selectCurrentPath"])(state),
+    projectId: Object(_redux_selectors_routing__WEBPACK_IMPORTED_MODULE_6__["selectCurrentProject"])(state),
+    entry: Object(_redux_selectors_routing__WEBPACK_IMPORTED_MODULE_6__["selectRouteEntry"])(state),
+    contentTypeId: Object(_redux_selectors_routing__WEBPACK_IMPORTED_MODULE_6__["selectRouteEntryContentTypeId"])(state),
+    isNotFound: Object(_redux_selectors_routing__WEBPACK_IMPORTED_MODULE_6__["selectIsNotFound"])(state),
+    isLoggedIn: Object(_features_login_redux_selectors__WEBPACK_IMPORTED_MODULE_11__["selectUserLoggedIn"])(state),
+    isLoading: Object(_redux_selectors_routing__WEBPACK_IMPORTED_MODULE_6__["selectRouteLoading"])(state)
   };
 };
 
-var mapDispatchToProps = {
-  setNavigationPath: _routing2.setNavigationPath
+const mapDispatchToProps = {
+  setNavigationPath: _redux_actions_routing__WEBPACK_IMPORTED_MODULE_7__["setNavigationPath"]
+};
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_hot_loader__WEBPACK_IMPORTED_MODULE_3__["hot"])(module)(Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["connect"])(mapStateToProps, mapDispatchToProps)(Object(_util_ToJs__WEBPACK_IMPORTED_MODULE_10__[/* toJS */ "a"])(RouteLoader))));
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(44)(module)))
+
+/***/ }),
+/* 31 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setVersion", function() { return setVersion; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setVersionStatus", function() { return setVersionStatus; });
+/* harmony import */ var _util_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(4);
+/* harmony import */ var _types_version__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(19);
+
+
+const setVersion = (commitRef, buildNo) => Object(_util_helpers__WEBPACK_IMPORTED_MODULE_0__[/* action */ "a"])(_types_version__WEBPACK_IMPORTED_MODULE_1__["SET_VERSION"], {
+  commitRef,
+  buildNo
+});
+const setVersionStatus = status => Object(_util_helpers__WEBPACK_IMPORTED_MODULE_0__[/* action */ "a"])(_types_version__WEBPACK_IMPORTED_MODULE_1__["SET_VERSION_STATUS"], {
+  status
+});
+
+/***/ }),
+/* 32 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__32__;
+
+/***/ }),
+/* 33 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+
+const NotFound = () => react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("header", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "404 Page Not Found")));
+
+/* harmony default export */ __webpack_exports__["a"] = (NotFound);
+
+/***/ }),
+/* 34 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Status; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(9);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(18);
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_router_dom__WEBPACK_IMPORTED_MODULE_2__);
+
+
+
+const Status = ({
+  code,
+  children
+}) => {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
+    render: ({
+      staticContext
+    }) => {
+      if (staticContext) staticContext.status = code;
+      return children;
+    }
+  });
+};
+Status.propTypes = {
+  code: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.number.isRequired,
+  children: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.element
 };
 
-var _default = (0, _reactHotLoader.hot)(module)((0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)((0, _ToJs.toJS)(RouteLoader)));
+/***/ }),
+/* 35 */
+/***/ (function(module, exports) {
 
-exports["default"] = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(45)(module)))
+module.exports = __WEBPACK_EXTERNAL_MODULE__35__;
+
+/***/ }),
+/* 36 */,
+/* 37 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return history; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return browserHistory; });
+/* harmony import */ var history__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(38);
+/* harmony import */ var history__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(history__WEBPACK_IMPORTED_MODULE_0__);
+ // Create a history depending on the environment
+
+const selectedHistory = typeof window !== 'undefined' ? history__WEBPACK_IMPORTED_MODULE_0__["createBrowserHistory"] : history__WEBPACK_IMPORTED_MODULE_0__["createMemoryHistory"];
+const history = (options = {}) => selectedHistory(options);
+const browserHistory = selectedHistory();
+
+/***/ }),
+/* 38 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__38__;
+
+/***/ }),
+/* 39 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__39__;
 
 /***/ }),
 /* 40 */
-/***/ (function(module, exports) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__40__;
+"use strict";
+const servers = SERVERS;
+/* global SERVERS */
+
+const alias = servers.alias.toLowerCase();
+const publicUri = PUBLIC_URI;
+/* global PUBLIC_URI */
+
+const projects = PROJECTS;
+/* global PROJECTS */
+// return a projectId via the request hostname
+
+const pickProject = (hostname, query) => {
+  // if localhost we can only infer via a querystring, and take your word for it
+  if (hostname == 'localhost') {
+    return query && query.p || projects[0].id;
+  } // if hostname is the actual public uri we can return the first project from the list
+
+
+  if (hostname == publicUri) {
+    return projects[0].id;
+  }
+
+  let project = 'unknown'; // // go through all the defined projects
+  // Object.entries(projects).map(([, p]) => {
+
+  const p = projects[0]; // check if we're accessing via the project's public uri
+
+  if (hostname.includes(p.publicUri)) project = p.id; // the url structure is different for website (we don't prefix)
+
+  if (p.id.startsWith('website')) {
+    // check for internal and external hostnames
+    // we check live and preview distinctly so our rule does not clash with
+    // hostnames that use a project prefix
+    if (hostname.includes(`live-${alias}.cloud.contensis.com`) || hostname.includes(`live.${alias}.contensis.cloud`) || hostname.includes(`preview-${alias}.cloud.contensis.com`) || hostname.includes(`preview.${alias}.contensis.cloud`)) project = p.id;
+  } else {
+    // check for internal and external hostnames, prefixed with the projectId
+    if (hostname.includes(`${p.id.toLowerCase()}-${alias}.cloud.contensis.com`) || hostname.includes(`${p.id.toLowerCase()}.${alias}.contensis.cloud`)) project = p.id;
+  } // });
+
+
+  return project === 'unknown' ? p.id : project;
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (pickProject);
 
 /***/ }),
 /* 41 */
-/***/ (function(module, exports) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__41__;
+"use strict";
+
+// EXTERNAL MODULE: ./node_modules/redux-saga/dist/redux-saga-effects-npm-proxy.esm.js
+var redux_saga_effects_npm_proxy_esm = __webpack_require__(0);
+
+// EXTERNAL MODULE: external "loglevel"
+var external_loglevel_ = __webpack_require__(47);
+
+// EXTERNAL MODULE: ./src/app/core/redux/types/routing.js
+var routing = __webpack_require__(3);
+
+// EXTERNAL MODULE: ./src/app/core/util/ContensisDeliveryApi.js
+var ContensisDeliveryApi = __webpack_require__(12);
+
+// EXTERNAL MODULE: ./src/app/core/redux/selectors/version.js
+var version = __webpack_require__(25);
+
+// EXTERNAL MODULE: ./src/app/core/redux/selectors/routing.js
+var selectors_routing = __webpack_require__(8);
+
+// EXTERNAL MODULE: ./src/app/core/redux/types/navigation.js
+var navigation = __webpack_require__(15);
+
+// EXTERNAL MODULE: ./src/app/core/redux/selectors/navigation.js
+var selectors_navigation = __webpack_require__(26);
+
+// EXTERNAL MODULE: external "contensis-delivery-api"
+var external_contensis_delivery_api_ = __webpack_require__(6);
+
+// CONCATENATED MODULE: ./src/app/core/schema.js
+const DataFormats = {
+  entry: 'entry',
+  webpage: 'webpage'
+};
+const sys = {
+  contentTypeId: 'sys.contentTypeId',
+  dataFormat: 'sys.dataFormat',
+  filename: 'sys.properties.filename',
+  id: 'sys.id',
+  includeInSearch: 'sys.metadata.includeInSearch',
+  slug: 'sys.slug',
+  uri: 'sys.uri',
+  versionStatus: 'sys.versionStatus'
+};
+const Fields = {
+  entryTitle: 'entryTitle',
+  entryDescription: 'entryDescription',
+  keywords: 'keywords',
+  sys,
+  contentTypeId: 'sys.contentTypeId',
+  wildcard: '*'
+};
+const Projects = {
+  website: 'website'
+};
+const VersionStatus = {
+  published: 'published',
+  latest: 'latest'
+};
+const ContentTypes = {
+  contentPage: 'contentPage'
+};
+const WebpageFormats = {};
+const FilterExpressionTypes = {
+  contentType: 'contentType',
+  field: 'field'
+};
+// CONCATENATED MODULE: ./src/app/core/util/performance.js
+const now = () => {
+  if (typeof window == 'undefined') {
+    return Date.now();
+  }
+
+  return window.performance.now();
+};
+// EXTERNAL MODULE: ./src/app/core/util/navigation.js
+var util_navigation = __webpack_require__(20);
+
+// CONCATENATED MODULE: ./src/app/core/search/util.js
+
+
+
+function fixFreeTextForElastic(s) {
+  let illegalChars = ['>', '<'];
+  let encodedChars = ['+', '-', '=', '&', '|', '!', '(', ')', '{', '}', '[', ']', '^', '"', '~', '*', '?', ':', '\\', '/'];
+  let illegalRegEx = new RegExp(illegalChars.map(c => '\\' + c).join('|'), 'g');
+  let encodedRegEx = new RegExp(encodedChars.map(c => '\\' + c).join('|'), 'g');
+  s = s.replace(illegalRegEx, '');
+  s = s.replace(encodedRegEx, ''); // (m) => '\\\\' + m);
+
+  return s;
+}
+const timedSearch = async (query, linkDepth, projectId) => {
+  let duration = 0;
+  const start = now();
+  const payload = await ContensisDeliveryApi["cachedSearch"].search(query, linkDepth, projectId);
+  const end = now();
+  duration = end - start;
+  return {
+    duration,
+    payload
+  };
+};
+const extractQuotedPhrases = searchTerm => {
+  const pattern = new RegExp(/(?=["'])(?:"[^"\\]*(?:\\[\s\S][^"\\]*)*"|'[^'\\]*(?:\\[\s\S][^'\\]*)*')/gm);
+  return (searchTerm.match(pattern) || []).map(match => match.replace(/"/g, ''));
+};
+const callCustomApi = async (customApi, filters) => {
+  let uri = Object(util_navigation["a" /* buildUrl */])(customApi.get('uri'), filters);
+  if (!uri) return null;
+  if (typeof window == 'undefined' && uri.startsWith('/')) uri = `http://localhost:3001${uri}`;
+  const response = await fetch(uri);
+  return await response.json();
+};
+// CONCATENATED MODULE: ./src/app/core/search/expressions.js
+
+
+
+const fieldExpression = (field, value, operator = 'equalTo', weight = null) => {
+  if (!field || !value) return [];
+  if (Array.isArray(value)) return equalToOrIn(field, value, operator);else return !weight ? [external_contensis_delivery_api_["Op"][operator](field, value)] : [external_contensis_delivery_api_["Op"][operator](field, value).weight(weight)];
+};
+const contentTypeIdExpression = (contentTypeIds, webpageTemplates) => {
+  const expressions = [];
+  if (!contentTypeIds && !webpageTemplates) return expressions;
+
+  if (contentTypeIds && contentTypeIds.length > 0) {
+    expressions.push(...dataFormatExpression(contentTypeIds, DataFormats.entry));
+  }
+
+  if (webpageTemplates && webpageTemplates.length > 0) {
+    expressions.push(...dataFormatExpression(webpageTemplates, DataFormats.webpage));
+  }
+
+  if (expressions.length > 1) return [external_contensis_delivery_api_["Op"].or(...expressions)];
+  return expressions;
+};
+const filterExpressions = filters => {
+  if (!filters) return [];
+  const expressions = [];
+  filters.map(param => {
+    expressions.push(...fieldExpression(param.key, param.value, 'contains'));
+  });
+  return expressions;
+};
+const dataFormatExpression = (contentTypeIds, dataFormat = DataFormats.entry) => {
+  if (contentTypeIds && contentTypeIds.length > 0) {
+    /**
+     * We have an array of contentTypeIds some may be prefixed with a "!"
+     * to indicate this is a "not" expression
+     */
+    const withContentTypeIds = contentTypeIds.filter(c => !c.startsWith('!'));
+    const notContentTypeIds = contentTypeIds.filter(c => c.startsWith('!')).map(id => id.substring(1));
+    const andExpr = external_contensis_delivery_api_["Op"].and();
+    const dataFormatExpr = fieldExpression(Fields.sys.dataFormat, dataFormat);
+    const withExpr = fieldExpression(Fields.sys.contentTypeId, withContentTypeIds);
+    const notExpr = [external_contensis_delivery_api_["Op"].not(...fieldExpression(Fields.sys.contentTypeId, notContentTypeIds))];
+    andExpr.add(...dataFormatExpr);
+    if (withContentTypeIds.length > 0) andExpr.add(...withExpr);
+    if (notContentTypeIds.length > 0) andExpr.add(...notExpr);
+    return [andExpr];
+  }
+
+  return [];
+};
+const defaultExpressions = versionStatus => {
+  return [external_contensis_delivery_api_["Op"].equalTo(Fields.sys.versionStatus, versionStatus)];
+};
+const defaultSearchExpressions = versionStatus => {
+  return [...defaultExpressions(versionStatus), ...includeInSearchExpressions()];
+};
+const includeInSearchExpressions = () => [external_contensis_delivery_api_["Op"].or(external_contensis_delivery_api_["Op"].and(external_contensis_delivery_api_["Op"].exists(Fields.sys.includeInSearch, true), external_contensis_delivery_api_["Op"].equalTo(Fields.sys.includeInSearch, true)), external_contensis_delivery_api_["Op"].exists(Fields.sys.includeInSearch, false))];
+const orderByExpression = orderBy => {
+  let expression = external_contensis_delivery_api_["OrderBy"];
+
+  if (orderBy && orderBy.length > 0) {
+    orderBy.map(ob => expression = ob.startsWith('-') ? expression.desc(ob.substring(1)) : expression.asc(ob));
+  }
+
+  return expression;
+};
+
+const equalToOrIn = (field, arr, operator = 'equalTo') => arr.length === 0 ? [] : arr.length === 1 ? [external_contensis_delivery_api_["Op"][operator](field, arr[0])] : [external_contensis_delivery_api_["Op"].in(field, ...arr)];
+
+const customWhereExpressions = where => {
+  if (!where || !Array.isArray(where)) return []; // Accept HTTP style objects and map them to
+  // their equivalent JS client "Op" expressions
+
+  return where.map(clause => {
+    let expression;
+    Object.keys(clause).map((key, idx) => {
+      if (idx === 1) {
+        const operator = key;
+        const value = clause[key];
+        expression = external_contensis_delivery_api_["Op"][operator](clause.field, value, clause.weight);
+      }
+    });
+    return expression;
+  });
+};
+const termExpressions = (searchTerm, weightedSearchFields) => {
+  if (searchTerm && weightedSearchFields && weightedSearchFields.length > 0) {
+    // Extract any phrases in quotes to array
+    const quotedPhrases = extractQuotedPhrases(searchTerm); // Modify the search term to remove any quoted phrases to leave any remaining terms
+
+    let modifiedSearchTerm = searchTerm;
+    quotedPhrases.forEach(qp => modifiedSearchTerm = modifiedSearchTerm.replace(qp, '').replace('""', '').trim()); // Push to the operators array to include in the query
+
+    const operators = []; // Helper functions to generate Op expressions
+
+    const containsOp = (f, term) => fieldExpression(f.fieldId, fixFreeTextForElastic(term), 'contains', f.weight);
+
+    const freeTextOp = (f, term) => fieldExpression(f.fieldId, fixFreeTextForElastic(term), 'freeText', f.weight); // For each weighted search field
+
+
+    weightedSearchFields.forEach(f => {
+      // Push to field operators
+      const fieldOperators = []; // Add operator expressions for modified search term
+
+      if (modifiedSearchTerm) {
+        if ([Fields.keywords, Fields.sys.filename, Fields.sys.uri].includes(f.fieldId)) {
+          fieldOperators.push(...containsOp(f, modifiedSearchTerm));
+        } else {
+          if ([Fields.entryTitle].includes(f.fieldId)) {
+            fieldOperators.push(external_contensis_delivery_api_["Op"].or(...containsOp(f, modifiedSearchTerm), ...freeTextOp(f, modifiedSearchTerm)));
+          } else {
+            fieldOperators.push(...freeTextOp(f, modifiedSearchTerm));
+          }
+        }
+      } // Add operator expressions for any quoted phrases
+
+
+      quotedPhrases.forEach(qp => fieldOperators.push(...containsOp(f, qp))); // If we are using multiple operators for a field we will
+      // wrap each field inside an And operator so we will match
+      // all terms/phrases rather than any terms/phrases
+
+      if (fieldOperators.length > 1) {
+        operators.push(external_contensis_delivery_api_["Op"].and(...fieldOperators));
+      } else {
+        operators.push(...fieldOperators);
+      }
+    }); // Wrap operators in an Or operator
+
+    return [external_contensis_delivery_api_["Op"].or().addRange(operators)];
+  } else if (searchTerm) {
+    return [external_contensis_delivery_api_["Op"].contains(Fields.wildcard, searchTerm)];
+  } else {
+    return [];
+  }
+};
+// CONCATENATED MODULE: ./src/app/core/redux/sagas/queries.js
+// eslint-disable-next-line import/named
+
+
+const routeEntryByFields = (id, fields = [], versionStatus = 'published') => {
+  const query = new ContensisDeliveryApi["Query"](...[...fieldExpression('sys.id', id), ...defaultExpressions(versionStatus)]);
+  query.fields = fields;
+  return query;
+};
+// CONCATENATED MODULE: ./src/app/core/redux/sagas/routing.js
+// load-entries.js
+
+
+
+
+
+
+
+
+
+const routingSagas = [Object(redux_saga_effects_npm_proxy_esm["takeEvery"])(routing["SET_NAVIGATION_PATH"], getRouteSaga), Object(redux_saga_effects_npm_proxy_esm["takeEvery"])(routing["SET_ROUTE"], setRouteSaga)];
+/**
+ * To navigate / push a specific route via redux middleware
+ * @param {path, state} action
+ */
+
+function* setRouteSaga(action) {
+  yield Object(redux_saga_effects_npm_proxy_esm["put"])({
+    type: routing["CALL_HISTORY_METHOD"],
+    payload: {
+      method: 'push',
+      args: [action.path, action.state]
+    }
+  });
+}
+
+function* getRouteSaga(action) {
+  let entry = null;
+
+  try {
+    const {
+      withEvents,
+      routes
+    } = action;
+    let appsays;
+
+    if (withEvents && withEvents.onRouteLoad) {
+      appsays = yield withEvents.onRouteLoad(action);
+    } // if appsays customNavigation: true, we will set doNavigation to false
+    // if appsays customNavigation: { ... }, we will set doNavigation to the customNavigation object and check for child elements
+    // if appsays nothing we will set doNavigation to true and continue to do navigation calls
+
+
+    const doNavigation = !appsays || (appsays && appsays.customNavigation === true ? false : appsays && appsays.customNavigation || true);
+    const entryLinkDepth = appsays && appsays.entryLinkDepth || 3;
+    const setContentTypeLimits = routes && routes.ContentTypeMappings && !!routes.ContentTypeMappings.find(ct => ct.fields || ct.linkDepth);
+    const state = yield Object(redux_saga_effects_npm_proxy_esm["select"])();
+    const routeEntry = Object(selectors_routing["selectRouteEntry"])(state);
+
+    if (appsays && appsays.customRouting || action.staticRoute && !action.staticRoute.route.fetchNode || routeEntry && action.statePath === action.path) {
+      // To prevent erroneous 404s and wasted network calls, this covers
+      // - appsays customRouting and does SET_ENTRY etc. via the consuming app
+      // - all staticRoutes (where custom 'route.fetchNode' attribute is falsey)
+      // - standard Contensis SiteView Routing where we already have that entry in state
+      if (routeEntry && (!action.staticRoute || action.staticRoute.route && action.staticRoute.route.fetchNode)) {
+        entry = routeEntry.toJS();
+        yield Object(redux_saga_effects_npm_proxy_esm["put"])({
+          type: routing["SET_ENTRY"],
+          entry,
+          isLoading: false
+        });
+      } else yield Object(redux_saga_effects_npm_proxy_esm["call"])(setRouteEntry);
+    } else {
+      const currentPath = Object(selectors_routing["selectCurrentPath"])(state);
+      const deliveryApiStatus = Object(version["selectVersionStatus"])(state);
+      const project = Object(selectors_routing["selectCurrentProject"])(state);
+      let pathNode = null,
+          ancestors = null,
+          siblings = null; // Scroll into View
+
+      if (typeof window !== 'undefined') {
+        window.scroll({
+          top: 0
+        });
+      }
+
+      let currentPathDepth = currentPath.split('/').length - 1;
+      if (currentPath === '/') currentPathDepth = 0; // Handle homepage
+
+      if (currentPath === '/') {
+        pathNode = yield ContensisDeliveryApi["cachedSearch"].getRootNode({
+          depth: 0,
+          entryFields: '*',
+          entryLinkDepth,
+          language: 'en-GB'
+        }, project);
+      } else {
+        // Handle preview routes
+        if (currentPath && currentPath.startsWith('/preview/')) {
+          let splitPath = currentPath.split('/');
+          let entryGuid = splitPath[2];
+
+          if (splitPath.length == 3) {
+            // According to product dev we cannot use Node API
+            // for previewing entries as it gives a response of []
+            // -- apparently it is not correct to request latest content
+            // with Node API
+            let previewEntry = yield ContensisDeliveryApi["deliveryApi"].getClient(deliveryApiStatus, project).entries.get({
+              id: entryGuid,
+              linkDepth: 3
+            });
+
+            if (previewEntry) {
+              yield Object(redux_saga_effects_npm_proxy_esm["call"])(setRouteEntry, previewEntry);
+            } else {
+              yield Object(redux_saga_effects_npm_proxy_esm["call"])(do404);
+            }
+          }
+        } else {
+          // Handle all other routes
+          pathNode = yield ContensisDeliveryApi["cachedSearch"].getNode({
+            depth: doNavigation === true || doNavigation.children === true ? 3 : doNavigation && doNavigation.children || 0,
+            path: currentPath,
+            entryFields: setContentTypeLimits ? ['sys.contentTypeId', 'sys.id'] : '*',
+            entryLinkDepth: setContentTypeLimits ? 0 : entryLinkDepth
+          }, project);
+
+          if (setContentTypeLimits && pathNode && pathNode.entry && pathNode.entry.sys && pathNode.entry.sys.id) {
+            const contentType = routes && routes.ContentTypeMappings && routes.ContentTypeMappings.find(ct => ct.contentTypeID === pathNode.entry.sys.contentTypeId);
+            const query = routeEntryByFields(pathNode.entry.sys.id, contentType && contentType.fields, deliveryApiStatus);
+            const payload = yield ContensisDeliveryApi["cachedSearch"].search(query, contentType && typeof contentType.linkDepth !== 'undefined' ? contentType.linkDepth : 3, project);
+
+            if (payload && payload.items && payload.items.length > 0) {
+              pathNode.entry = payload.items[0];
+            }
+          }
+        }
+
+        if (pathNode && pathNode.id && (doNavigation === true || doNavigation.ancestors)) {
+          ancestors = yield ContensisDeliveryApi["cachedSearch"].getAncestors(pathNode.id, project); // No menu shows the  siblings at this level, so no need to load them.
+
+          if (currentPathDepth > 1 && (doNavigation === true || doNavigation.siblings)) {
+            siblings = yield ContensisDeliveryApi["cachedSearch"].getSiblings({
+              id: pathNode.id,
+              entryFields: ['sys.contentTypeId', 'url']
+            }, project);
+          }
+        }
+      }
+
+      if (pathNode && pathNode.entry && pathNode.entry.sys && pathNode.entry.sys.id) {
+        entry = pathNode.entry;
+        yield Object(redux_saga_effects_npm_proxy_esm["call"])(setRouteEntry, entry, pathNode, ancestors, siblings);
+      } else {
+        yield Object(redux_saga_effects_npm_proxy_esm["call"])(do404);
+      }
+    }
+
+    if (withEvents && withEvents.onRouteLoaded) {
+      yield withEvents.onRouteLoaded({ ...action,
+        entry
+      });
+    }
+
+    if (!Object(selectors_navigation["hasNavigationTree"])(state) && (doNavigation === true || doNavigation.tree)) // Load navigation clientside only, a put() should help that work
+      yield Object(redux_saga_effects_npm_proxy_esm["put"])({
+        type: navigation["GET_NODE_TREE"],
+        treeDepth: doNavigation === true || !doNavigation.tree || doNavigation.tree === true ? 2 : doNavigation.tree
+      });
+  } catch (e) {
+    external_loglevel_["error"](...['Error running route saga:', e, e.stack]);
+    yield Object(redux_saga_effects_npm_proxy_esm["call"])(do404);
+  }
+}
+
+function* setRouteEntry(entry, node, ancestors, siblings) {
+  yield Object(redux_saga_effects_npm_proxy_esm["all"])([Object(redux_saga_effects_npm_proxy_esm["put"])({
+    type: routing["SET_NAVIGATION_NOT_FOUND"],
+    notFound: !(entry && entry.sys.id)
+  }), Object(redux_saga_effects_npm_proxy_esm["put"])({
+    type: routing["SET_NODE"],
+    node
+  }), Object(redux_saga_effects_npm_proxy_esm["put"])({
+    type: routing["SET_ENTRY"],
+    entry: entry
+  }), Object(redux_saga_effects_npm_proxy_esm["put"])({
+    type: routing["SET_ENTRY_ID"],
+    id: entry && entry.sys.id || null
+  }), Object(redux_saga_effects_npm_proxy_esm["put"])({
+    type: routing["SET_ANCESTORS"],
+    ancestors
+  }), Object(redux_saga_effects_npm_proxy_esm["put"])({
+    type: routing["SET_SIBLINGS"],
+    siblings
+  })]);
+}
+
+function* do404() {
+  yield Object(redux_saga_effects_npm_proxy_esm["put"])({
+    type: routing["SET_NAVIGATION_NOT_FOUND"],
+    notFound: true
+  });
+  yield Object(redux_saga_effects_npm_proxy_esm["put"])({
+    type: routing["SET_ENTRY_ID"],
+    id: null
+  });
+  yield Object(redux_saga_effects_npm_proxy_esm["put"])({
+    type: routing["SET_ENTRY"],
+    entry: null
+  });
+}
+// EXTERNAL MODULE: ./src/app/features/login/index.js + 2 modules
+var login = __webpack_require__(17);
+
+// CONCATENATED MODULE: ./src/app/core/redux/sagas/navigation.js
+
+
+
+
+
+
+const navigationSagas = [Object(redux_saga_effects_npm_proxy_esm["takeEvery"])(navigation["GET_NODE_TREE"], ensureNodeTreeSaga)];
+function* ensureNodeTreeSaga(action) {
+  const state = yield Object(redux_saga_effects_npm_proxy_esm["select"])();
+
+  try {
+    if (!Object(selectors_navigation["hasNavigationTree"])(state)) {
+      const deliveryApiVersionStatus = yield Object(redux_saga_effects_npm_proxy_esm["select"])(version["selectVersionStatus"]);
+      const project = yield Object(redux_saga_effects_npm_proxy_esm["select"])(selectors_routing["selectCurrentProject"]);
+      const nodes = yield ContensisDeliveryApi["deliveryApi"].getClient(deliveryApiVersionStatus, project).nodes.getRoot({
+        depth: action.treeDepth || 2,
+        entryFields: 'entryTitle, metaInformation, sys.contentTypeId'
+      });
+
+      if (nodes) {
+        yield Object(redux_saga_effects_npm_proxy_esm["put"])({
+          type: navigation["SET_NODE_TREE"],
+          nodes
+        });
+      } else {
+        yield Object(redux_saga_effects_npm_proxy_esm["put"])({
+          type: navigation["GET_NODE_TREE_ERROR"]
+        });
+      }
+    }
+  } catch (ex) {
+    yield Object(redux_saga_effects_npm_proxy_esm["put"])({
+      type: navigation["GET_NODE_TREE_ERROR"],
+      error: ex.toString()
+    });
+  }
+}
+// EXTERNAL MODULE: ./src/app/features/login/redux/sagas.js
+var sagas = __webpack_require__(23);
+
+// CONCATENATED MODULE: ./src/app/core/redux/sagas/index.js
+// index.js
+
+
+
+
+
+/* harmony default export */ var redux_sagas = __webpack_exports__["a"] = (function (featureSagas = []) {
+  return function* rootSaga() {
+    const subSagas = [...routingSagas, ...navigationSagas, ...login["sagas"]];
+    yield Object(redux_saga_effects_npm_proxy_esm["all"])([Object(sagas["b" /* validateUserSaga */])({}), ...subSagas, ...featureSagas]);
+  };
+});
 
 /***/ }),
 /* 42 */
-/***/ (function(module, exports) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__42__;
+"use strict";
+
+// EXTERNAL MODULE: external "redux"
+var external_redux_ = __webpack_require__(32);
+
+// EXTERNAL MODULE: external "redux-immutable"
+var external_redux_immutable_ = __webpack_require__(45);
+
+// EXTERNAL MODULE: external "redux-thunk"
+var external_redux_thunk_ = __webpack_require__(46);
+var external_redux_thunk_default = /*#__PURE__*/__webpack_require__.n(external_redux_thunk_);
+
+// EXTERNAL MODULE: external "redux-saga"
+var external_redux_saga_ = __webpack_require__(39);
+var external_redux_saga_default = /*#__PURE__*/__webpack_require__.n(external_redux_saga_);
+
+// EXTERNAL MODULE: external "immutable"
+var external_immutable_ = __webpack_require__(2);
+
+// EXTERNAL MODULE: ./src/app/core/redux/types/routing.js
+var routing = __webpack_require__(3);
+
+// EXTERNAL MODULE: ./src/app/core/util/ContensisDeliveryApi.js
+var ContensisDeliveryApi = __webpack_require__(12);
+
+// CONCATENATED MODULE: ./src/app/core/redux/reducers/routing.js
+
+
+
+let routing_initialState = Object(external_immutable_["Map"])({
+  currentPath: '/',
+  currentNode: [],
+  currentProject: 'unknown',
+  notFound: false,
+  entryID: null,
+  entry: null,
+  entryDepends: new external_immutable_["List"](),
+  contentTypeId: null,
+  currentNodeAncestors: new external_immutable_["List"](),
+  currentTreeId: null
+});
+/* harmony default export */ var reducers_routing = ((state = routing_initialState, action) => {
+  switch (action.type) {
+    case routing["SET_ANCESTORS"]:
+      {
+        if (action.ancestors) {
+          let ancestorIDs = action.ancestors.map(node => {
+            return node.id;
+          });
+          let currentNodeDepends = state.get('nodeDepends');
+          const allNodeDepends = external_immutable_["Set"].union([Object(external_immutable_["Set"])(ancestorIDs), currentNodeDepends]);
+          return state.set('nodeDepends', allNodeDepends).set('currentNodeAncestors', Object(external_immutable_["fromJS"])(action.ancestors));
+        }
+
+        return state.set('currentNodeAncestors', Object(external_immutable_["fromJS"])(action.ancestors));
+      }
+
+    case routing["SET_ENTRY"]:
+      {
+        if (!action.entry) return state.set('entry', null).set('entryDepends', null).set('isLoading', action.isLoading);
+        const entryDepends = Object(ContensisDeliveryApi["GetAllResponseGuids"])(action.entry);
+        return state.set('entryDepends', Object(external_immutable_["fromJS"])(entryDepends)).set('entry', Object(external_immutable_["fromJS"])(action.entry)).set('isLoading', action.isLoading);
+      }
+
+    case routing["SET_ENTRY_ID"]:
+      {
+        if (action.id === '') {
+          return state;
+        }
+
+        return state.set('entryID', action.id);
+      }
+
+    case routing["SET_NAVIGATION_PATH"]:
+      {
+        let staticRoute = false;
+
+        if (action.staticRoute) {
+          staticRoute = { ...action.staticRoute
+          };
+        }
+
+        if (action.path) {
+          return state.set('currentPath', Object(external_immutable_["fromJS"])(action.path)).set('location', Object(external_immutable_["fromJS"])(action.location)).set('staticRoute', Object(external_immutable_["fromJS"])({ ...staticRoute,
+            route: { ...staticRoute.route,
+              component: null
+            }
+          })).set('isLoading', typeof window !== 'undefined');
+        }
+
+        return state;
+      }
+
+    case routing["SET_NAVIGATION_NOT_FOUND"]:
+      {
+        return state.set('notFound', Object(external_immutable_["fromJS"])(action.notFound)).set('isLoading', false);
+      }
+
+    case routing["SET_NODE"]:
+      {
+        const {
+          node
+        } = action;
+        if (!node) return state; // On Set Node, we reset all dependants.
+
+        const nodeDepends = Object(external_immutable_["Set"])([node.id]);
+        return state.set('nodeDepends', nodeDepends).set('currentNode', Object(external_immutable_["fromJS"])(action.node)).removeIn(['currentNode', 'entry']); // We have the entry stored elsewhere, so lets not keep it twice.
+      }
+
+    case routing["SET_ROUTE"]:
+      {
+        return state.set('nextPath', action.path);
+      }
+
+    case routing["SET_SIBLINGS"]:
+      {
+        // Can be null in some cases like the homepage.
+        let currentNodeSiblingParent = null;
+        let siblingIDs = [];
+
+        if (action.siblings && action.siblings.length > 0) {
+          currentNodeSiblingParent = action.siblings[0].parentId;
+          siblingIDs = action.siblings.map(node => {
+            return node.id;
+          });
+        }
+
+        let currentNodeDepends = state.get('nodeDepends');
+        const allNodeDepends = external_immutable_["Set"].union([Object(external_immutable_["Set"])(siblingIDs), currentNodeDepends]);
+        return state.set('nodeDepends', allNodeDepends).set('currentNodeSiblings', Object(external_immutable_["fromJS"])(action.siblings)).set('currentNodeSiblingsParent', currentNodeSiblingParent);
+      }
+
+    case routing["SET_TARGET_PROJECT"]:
+      {
+        return state.set('currentProject', action.project).set('currentTreeId', '') //getTreeID(action.project))
+        .set('allowedGroups', Object(external_immutable_["fromJS"])(action.allowedGroups));
+      }
+
+    default:
+      return state;
+  }
+});
+// EXTERNAL MODULE: ./src/app/features/login/index.js + 2 modules
+var login = __webpack_require__(17);
+
+// EXTERNAL MODULE: ./src/app/core/redux/types/version.js
+var version = __webpack_require__(19);
+
+// CONCATENATED MODULE: ./src/app/core/redux/reducers/version.js
+
+
+let version_initialState = Object(external_immutable_["Map"])({
+  commitRef: null,
+  buildNo: null,
+  contensisVersionStatus: 'published'
+});
+/* harmony default export */ var reducers_version = ((state = version_initialState, action) => {
+  switch (action.type) {
+    case version["SET_VERSION_STATUS"]:
+      {
+        return state.set('contensisVersionStatus', action.status);
+      }
+
+    case version["SET_VERSION"]:
+      {
+        return state.set('commitRef', action.commitRef).set('buildNo', action.buildNo);
+      }
+
+    default:
+      return state;
+  }
+});
+// EXTERNAL MODULE: ./src/app/core/redux/types/navigation.js
+var navigation = __webpack_require__(15);
+
+// CONCATENATED MODULE: ./src/app/core/redux/reducers/navigation.js
+
+
+const navigation_initialState = Object(external_immutable_["Map"])({
+  root: null,
+  treeDepends: new external_immutable_["List"]([]),
+  isError: false,
+  isReady: false
+});
+/* harmony default export */ var reducers_navigation = ((state = navigation_initialState, action) => {
+  switch (action.type) {
+    case navigation["SET_NODE_TREE"]:
+      {
+        return state.set('root', Object(external_immutable_["fromJS"])(action.nodes)).set('isReady', true);
+      }
+
+    case navigation["GET_NODE_TREE_ERROR"]:
+      {
+        return state.set('isError', true);
+      }
+
+    default:
+      return state;
+  }
+});
+// CONCATENATED MODULE: ./src/app/core/redux/routerMiddleware.js
+
+/**
+ * This middleware captures CALL_HISTORY_METHOD actions to redirect to the
+ * provided history object. This will prevent these actions from reaching your
+ * reducer or any middleware that comes after this one.
+ */
+
+/* eslint-disable no-unused-vars */
+
+const routerMiddleware = history => store => next => action => {
+  if (action.type !== routing["CALL_HISTORY_METHOD"]) {
+    return next(action);
+  }
+
+  const {
+    payload: {
+      method,
+      args
+    }
+  } = action;
+  history[method](...args);
+};
+
+/* harmony default export */ var redux_routerMiddleware = (routerMiddleware);
+// CONCATENATED MODULE: ./src/app/core/redux/store.js
+
+
+
+ // Core reducers
+
+
+
+
+
+
+/* harmony default export */ var redux_store = __webpack_exports__["a"] = ((featureReducers, initialState, history) => {
+  const thunkMiddleware = [external_redux_thunk_default.a];
+
+  let reduxDevToolsMiddleware = f => f;
+
+  if (typeof window != 'undefined') {
+    reduxDevToolsMiddleware = window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f;
+  }
+
+  const sagaMiddleware = external_redux_saga_default()();
+  const middleware = Object(external_redux_["compose"])(Object(external_redux_["applyMiddleware"])(...thunkMiddleware, sagaMiddleware, redux_routerMiddleware(history)), reduxDevToolsMiddleware);
+  let reducers = {
+    navigation: reducers_navigation,
+    routing: reducers_routing,
+    user: login["reducer"],
+    version: reducers_version,
+    ...featureReducers
+  };
+  const combinedReducers = Object(external_redux_immutable_["combineReducers"])(reducers);
+
+  const store = initialState => {
+    const store = Object(external_redux_["createStore"])(combinedReducers, initialState, middleware);
+    store.runSaga = sagaMiddleware.run;
+
+    store.close = () => store.dispatch(external_redux_saga_["END"]);
+
+    return store;
+  };
+
+  return store(initialState);
+});
 
 /***/ }),
 /* 43 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_hot_loader__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(24);
+/* harmony import */ var react_hot_loader__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_hot_loader__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _core_routes_RouteLoader__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(30);
 
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.setVersionStatus = exports.setVersion = void 0;
 
-var _helpers = __webpack_require__(13);
 
-var _version = __webpack_require__(31);
-
-var setVersion = function setVersion(commitRef, buildNo) {
-  return (0, _helpers.action)(_version.SET_VERSION, {
-    commitRef: commitRef,
-    buildNo: buildNo
-  });
+const AppRoot = props => {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_core_routes_RouteLoader__WEBPACK_IMPORTED_MODULE_2__["default"], props);
 };
 
-exports.setVersion = setVersion;
-
-var setVersionStatus = function setVersionStatus(status) {
-  return (0, _helpers.action)(_version.SET_VERSION_STATUS, {
-    status: status
-  });
-};
-
-exports.setVersionStatus = setVersionStatus;
+/* harmony default export */ __webpack_exports__["default"] = (AppRoot);
 
 /***/ }),
 /* 44 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(0);
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
-
-var _react = _interopRequireDefault(__webpack_require__(4));
-
-var _reactHotLoader = __webpack_require__(30);
-
-var _RouteLoader = _interopRequireDefault(__webpack_require__(39));
-
-var AppRoot = function AppRoot(props) {
-  return _react["default"].createElement(_RouteLoader["default"], props);
-};
-
-var _default = AppRoot;
-exports["default"] = _default;
-
-/***/ }),
-/* 45 */
 /***/ (function(module, exports) {
 
-module.exports = function(module) {
-	if (!module.webpackPolyfill) {
-		module.deprecate = function() {};
-		module.paths = [];
+module.exports = function(originalModule) {
+	if (!originalModule.webpackPolyfill) {
+		var module = Object.create(originalModule);
 		// module.parent = undefined by default
 		if (!module.children) module.children = [];
 		Object.defineProperty(module, "loaded", {
@@ -3478,11 +2991,20 @@ module.exports = function(module) {
 				return module.i;
 			}
 		});
+		Object.defineProperty(module, "exports", {
+			enumerable: true
+		});
 		module.webpackPolyfill = 1;
 	}
 	return module;
 };
 
+
+/***/ }),
+/* 45 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__45__;
 
 /***/ }),
 /* 46 */
@@ -3492,73 +3014,24 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__46__;
 
 /***/ }),
 /* 47 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(0);
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
-
-var _react = _interopRequireDefault(__webpack_require__(4));
-
-var NotFound = function NotFound() {
-  return _react["default"].createElement(_react["default"].Fragment, null, _react["default"].createElement("header", null, _react["default"].createElement("h1", null, "404 Page Not Found")));
-};
-
-var _default = NotFound;
-exports["default"] = _default;
+module.exports = __WEBPACK_EXTERNAL_MODULE__47__;
 
 /***/ }),
-/* 48 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(0);
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Status = void 0;
-
-var _react = _interopRequireDefault(__webpack_require__(4));
-
-var _propTypes = _interopRequireDefault(__webpack_require__(33));
-
-var _reactRouterDom = __webpack_require__(26);
-
-var Status = function Status(_ref) {
-  var code = _ref.code,
-      children = _ref.children;
-  return _react["default"].createElement(_reactRouterDom.Route, {
-    render: function render(_ref2) {
-      var staticContext = _ref2.staticContext;
-      if (staticContext) staticContext.status = code;
-      return children;
-    }
-  });
-};
-
-exports.Status = Status;
-Status.propTypes = {
-  code: _propTypes["default"].number.isRequired,
-  children: _propTypes["default"].element
-};
-
-/***/ }),
+/* 48 */,
 /* 49 */
 /***/ (function(module, exports) {
 
 module.exports = __WEBPACK_EXTERNAL_MODULE__49__;
 
 /***/ }),
-/* 50 */,
+/* 50 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__50__;
+
+/***/ }),
 /* 51 */
 /***/ (function(module, exports) {
 
@@ -3566,29 +3039,9 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__51__;
 
 /***/ }),
 /* 52 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.browserHistory = exports.history = void 0;
-
-var _history = __webpack_require__(53);
-
-// Create a history depending on the environment
-var selectedHistory = typeof window !== 'undefined' ? _history.createBrowserHistory : _history.createMemoryHistory;
-
-var history = function history() {
-  var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-  return selectedHistory(options);
-};
-
-exports.history = history;
-var browserHistory = selectedHistory();
-exports.browserHistory = browserHistory;
+module.exports = __WEBPACK_EXTERNAL_MODULE__52__;
 
 /***/ }),
 /* 53 */
@@ -3598,141 +3051,15 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__53__;
 
 /***/ }),
 /* 54 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
-var servers = SERVERS;
-/* global SERVERS */
-
-var alias = servers.alias.toLowerCase();
-var publicUri = PUBLIC_URI;
-/* global PUBLIC_URI */
-
-var projects = PROJECTS;
-/* global PROJECTS */
-// return a projectId via the request hostname
-
-var pickProject = function pickProject(hostname, query) {
-  // if localhost we can only infer via a querystring, and take your word for it
-  if (hostname == 'localhost') {
-    return query && query.p || projects[0].id;
-  } // if hostname is the actual public uri we can return the first project from the list
-
-
-  if (hostname == publicUri) {
-    return projects[0].id;
-  }
-
-  var project = 'unknown'; // // go through all the defined projects
-  // Object.entries(projects).map(([, p]) => {
-
-  var p = projects[0]; // check if we're accessing via the project's public uri
-
-  if (hostname.includes(p.publicUri)) project = p.id; // the url structure is different for website (we don't prefix)
-
-  if (p.id.startsWith('website')) {
-    // check for internal and external hostnames
-    // we check live and preview distinctly so our rule does not clash with
-    // hostnames that use a project prefix
-    if (hostname.includes("live-".concat(alias, ".cloud.contensis.com")) || hostname.includes("live.".concat(alias, ".contensis.cloud")) || hostname.includes("preview-".concat(alias, ".cloud.contensis.com")) || hostname.includes("preview.".concat(alias, ".contensis.cloud"))) project = p.id;
-  } else {
-    // check for internal and external hostnames, prefixed with the projectId
-    if (hostname.includes("".concat(p.id.toLowerCase(), "-").concat(alias, ".cloud.contensis.com")) || hostname.includes("".concat(p.id.toLowerCase(), ".").concat(alias, ".contensis.cloud"))) project = p.id;
-  } // });
-
-
-  return project === 'unknown' ? p.id : project;
-};
-
-var _default = pickProject;
-exports["default"] = _default;
+module.exports = require("fs");
 
 /***/ }),
 /* 55 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-
-
-var _interopRequireWildcard = __webpack_require__(7);
-
-var _interopRequireDefault = __webpack_require__(0);
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
-
-var _defineProperty2 = _interopRequireDefault(__webpack_require__(3));
-
-var _redux = __webpack_require__(56);
-
-var _reduxImmutable = __webpack_require__(57);
-
-var _reduxThunk = _interopRequireDefault(__webpack_require__(58));
-
-var _reduxSaga = _interopRequireWildcard(__webpack_require__(59));
-
-var _routing = _interopRequireDefault(__webpack_require__(60));
-
-var _login = __webpack_require__(16);
-
-var _version = _interopRequireDefault(__webpack_require__(61));
-
-var _navigation = _interopRequireDefault(__webpack_require__(62));
-
-var _routerMiddleware = _interopRequireDefault(__webpack_require__(63));
-
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-var _default = function _default(featureReducers, initialState, history) {
-  var thunkMiddleware = [_reduxThunk["default"]];
-
-  var reduxDevToolsMiddleware = function reduxDevToolsMiddleware(f) {
-    return f;
-  };
-
-  if (typeof window != 'undefined') {
-    reduxDevToolsMiddleware = window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : function (f) {
-      return f;
-    };
-  }
-
-  var sagaMiddleware = (0, _reduxSaga["default"])();
-  var middleware = (0, _redux.compose)(_redux.applyMiddleware.apply(void 0, thunkMiddleware.concat([sagaMiddleware, (0, _routerMiddleware["default"])(history)])), reduxDevToolsMiddleware);
-
-  var reducers = _objectSpread({
-    navigation: _navigation["default"],
-    routing: _routing["default"],
-    user: _login.reducer,
-    version: _version["default"]
-  }, featureReducers);
-
-  var combinedReducers = (0, _reduxImmutable.combineReducers)(reducers);
-
-  var store = function store(initialState) {
-    var store = (0, _redux.createStore)(combinedReducers, initialState, middleware);
-    store.runSaga = sagaMiddleware.run;
-
-    store.close = function () {
-      return store.dispatch(_reduxSaga.END);
-    };
-
-    return store;
-  };
-
-  return store(initialState);
-};
-
-exports["default"] = _default;
+module.exports = __WEBPACK_EXTERNAL_MODULE__55__;
 
 /***/ }),
 /* 56 */
@@ -3747,12 +3074,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__56__;
 module.exports = __WEBPACK_EXTERNAL_MODULE__57__;
 
 /***/ }),
-/* 58 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__58__;
-
-/***/ }),
+/* 58 */,
 /* 59 */
 /***/ (function(module, exports) {
 
@@ -3760,1785 +3082,321 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__59__;
 
 /***/ }),
 /* 60 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(0);
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
-
-var _defineProperty2 = _interopRequireDefault(__webpack_require__(3));
-
-var _immutable = __webpack_require__(2);
-
-var _routing = __webpack_require__(8);
-
-var _ContensisDeliveryApi = __webpack_require__(18);
-
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-var initialState = (0, _immutable.Map)({
-  currentPath: '/',
-  currentNode: [],
-  currentProject: 'unknown',
-  notFound: false,
-  entryID: null,
-  entry: null,
-  entryDepends: new _immutable.List(),
-  contentTypeId: null,
-  currentNodeAncestors: new _immutable.List(),
-  currentTreeId: null
-});
-
-var _default = function _default() {
-  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
-  var action = arguments.length > 1 ? arguments[1] : undefined;
-
-  switch (action.type) {
-    case _routing.SET_ANCESTORS:
-      {
-        if (action.ancestors) {
-          var ancestorIDs = action.ancestors.map(function (node) {
-            return node.id;
-          });
-          var currentNodeDepends = state.get('nodeDepends');
-
-          var allNodeDepends = _immutable.Set.union([(0, _immutable.Set)(ancestorIDs), currentNodeDepends]);
-
-          return state.set('nodeDepends', allNodeDepends).set('currentNodeAncestors', (0, _immutable.fromJS)(action.ancestors));
-        }
-
-        return state.set('currentNodeAncestors', (0, _immutable.fromJS)(action.ancestors));
-      }
-
-    case _routing.SET_ENTRY:
-      {
-        if (!action.entry) return state.set('entry', null).set('entryDepends', null).set('isLoading', action.isLoading);
-        var entryDepends = (0, _ContensisDeliveryApi.GetAllResponseGuids)(action.entry);
-        return state.set('entryDepends', (0, _immutable.fromJS)(entryDepends)).set('entry', (0, _immutable.fromJS)(action.entry)).set('isLoading', action.isLoading);
-      }
-
-    case _routing.SET_ENTRY_ID:
-      {
-        if (action.id === '') {
-          return state;
-        }
-
-        return state.set('entryID', action.id);
-      }
-
-    case _routing.SET_NAVIGATION_PATH:
-      {
-        var staticRoute = false;
-
-        if (action.staticRoute) {
-          staticRoute = _objectSpread({}, action.staticRoute);
-        }
-
-        if (action.path) {
-          return state.set('currentPath', (0, _immutable.fromJS)(action.path)).set('location', (0, _immutable.fromJS)(action.location)).set('staticRoute', (0, _immutable.fromJS)(_objectSpread({}, staticRoute, {
-            route: _objectSpread({}, staticRoute.route, {
-              component: null
-            })
-          }))).set('isLoading', typeof window !== 'undefined');
-        }
-
-        return state;
-      }
-
-    case _routing.SET_NAVIGATION_NOT_FOUND:
-      {
-        return state.set('notFound', (0, _immutable.fromJS)(action.notFound)).set('isLoading', false);
-      }
-
-    case _routing.SET_NODE:
-      {
-        var node = action.node;
-        if (!node) return state; // On Set Node, we reset all dependants.
-
-        var nodeDepends = (0, _immutable.Set)([node.id]);
-        return state.set('nodeDepends', nodeDepends).set('currentNode', (0, _immutable.fromJS)(action.node)).removeIn(['currentNode', 'entry']); // We have the entry stored elsewhere, so lets not keep it twice.
-      }
-
-    case _routing.SET_ROUTE:
-      {
-        return state.set('nextPath', action.path);
-      }
-
-    case _routing.SET_SIBLINGS:
-      {
-        // Can be null in some cases like the homepage.
-        var currentNodeSiblingParent = null;
-        var siblingIDs = [];
-
-        if (action.siblings && action.siblings.length > 0) {
-          currentNodeSiblingParent = action.siblings[0].parentId;
-          siblingIDs = action.siblings.map(function (node) {
-            return node.id;
-          });
-        }
-
-        var _currentNodeDepends = state.get('nodeDepends');
-
-        var _allNodeDepends = _immutable.Set.union([(0, _immutable.Set)(siblingIDs), _currentNodeDepends]);
-
-        return state.set('nodeDepends', _allNodeDepends).set('currentNodeSiblings', (0, _immutable.fromJS)(action.siblings)).set('currentNodeSiblingsParent', currentNodeSiblingParent);
-      }
-
-    case _routing.SET_TARGET_PROJECT:
-      {
-        return state.set('currentProject', action.project).set('currentTreeId', '') //getTreeID(action.project))
-        .set('allowedGroups', (0, _immutable.fromJS)(action.allowedGroups));
-      }
-
-    default:
-      return state;
-  }
-};
-
-exports["default"] = _default;
+module.exports = __WEBPACK_EXTERNAL_MODULE__60__;
 
 /***/ }),
 /* 61 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
-
-var _immutable = __webpack_require__(2);
-
-var _version = __webpack_require__(31);
-
-var initialState = (0, _immutable.Map)({
-  commitRef: null,
-  buildNo: null,
-  contensisVersionStatus: 'published'
-});
-
-var _default = function _default() {
-  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
-  var action = arguments.length > 1 ? arguments[1] : undefined;
-
-  switch (action.type) {
-    case _version.SET_VERSION_STATUS:
-      {
-        return state.set('contensisVersionStatus', action.status);
-      }
-
-    case _version.SET_VERSION:
-      {
-        return state.set('commitRef', action.commitRef).set('buildNo', action.buildNo);
-      }
-
-    default:
-      return state;
-  }
-};
-
-exports["default"] = _default;
+module.exports = __WEBPACK_EXTERNAL_MODULE__61__;
 
 /***/ }),
 /* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
-
-var _immutable = __webpack_require__(2);
-
-var _navigation = __webpack_require__(28);
-
-var initialState = (0, _immutable.Map)({
-  root: null,
-  treeDepends: new _immutable.List([]),
-  isError: false,
-  isReady: false
-});
-
-var _default = function _default() {
-  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
-  var action = arguments.length > 1 ? arguments[1] : undefined;
-
-  switch (action.type) {
-    case _navigation.SET_NODE_TREE:
-      {
-        return state.set('root', (0, _immutable.fromJS)(action.nodes)).set('isReady', true);
-      }
-
-    case _navigation.GET_NODE_TREE_ERROR:
-      {
-        return state.set('isError', true);
-      }
-
-    default:
-      return state;
-  }
-};
-
-exports["default"] = _default;
-
-/***/ }),
-/* 63 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(0);
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
-
-var _toConsumableArray2 = _interopRequireDefault(__webpack_require__(20));
-
-var _routing = __webpack_require__(8);
-
-/**
- * This middleware captures CALL_HISTORY_METHOD actions to redirect to the
- * provided history object. This will prevent these actions from reaching your
- * reducer or any middleware that comes after this one.
- */
-
-/* eslint-disable no-unused-vars */
-var routerMiddleware = function routerMiddleware(history) {
-  return function (store) {
-    return function (next) {
-      return function (action) {
-        if (action.type !== _routing.CALL_HISTORY_METHOD) {
-          return next(action);
-        }
-
-        var _action$payload = action.payload,
-            method = _action$payload.method,
-            args = _action$payload.args;
-        history[method].apply(history, (0, _toConsumableArray2["default"])(args));
-      };
-    };
-  };
-};
-
-var _default = routerMiddleware;
-exports["default"] = _default;
-
-/***/ }),
-/* 64 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(0);
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = _default;
-
-var _regenerator = _interopRequireDefault(__webpack_require__(1));
-
-var _toConsumableArray2 = _interopRequireDefault(__webpack_require__(20));
-
-var _effects = __webpack_require__(19);
-
-var _routing = __webpack_require__(65);
-
-var _login = __webpack_require__(16);
-
-var _navigation = __webpack_require__(73);
-
-var _sagas = __webpack_require__(29);
-
-// index.js
-function _default() {
-  var featureSagas = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-  return (
-    /*#__PURE__*/
-    _regenerator["default"].mark(function rootSaga() {
-      var subSagas;
-      return _regenerator["default"].wrap(function rootSaga$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              subSagas = [].concat((0, _toConsumableArray2["default"])(_routing.routingSagas), (0, _toConsumableArray2["default"])(_navigation.navigationSagas), (0, _toConsumableArray2["default"])(_login.sagas));
-              _context.next = 3;
-              return (0, _effects.all)([(0, _sagas.validateUserSaga)({})].concat((0, _toConsumableArray2["default"])(subSagas), (0, _toConsumableArray2["default"])(featureSagas)));
-
-            case 3:
-            case "end":
-              return _context.stop();
-          }
-        }
-      }, rootSaga);
-    })
-  );
-}
-
-/***/ }),
-/* 65 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireWildcard = __webpack_require__(7);
-
-var _interopRequireDefault = __webpack_require__(0);
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.routingSagas = void 0;
-
-var _defineProperty2 = _interopRequireDefault(__webpack_require__(3));
-
-var _regenerator = _interopRequireDefault(__webpack_require__(1));
-
-var log = _interopRequireWildcard(__webpack_require__(66));
-
-var _effects = __webpack_require__(19);
-
-var _routing = __webpack_require__(8);
-
-var _ContensisDeliveryApi = __webpack_require__(18);
-
-var _version = __webpack_require__(37);
-
-var _routing2 = __webpack_require__(6);
-
-var _navigation = __webpack_require__(28);
-
-var _navigation2 = __webpack_require__(38);
-
-var _queries = __webpack_require__(67);
-
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-var _marked =
-/*#__PURE__*/
-_regenerator["default"].mark(setRouteSaga),
-    _marked2 =
-/*#__PURE__*/
-_regenerator["default"].mark(getRouteSaga),
-    _marked3 =
-/*#__PURE__*/
-_regenerator["default"].mark(setRouteEntry),
-    _marked4 =
-/*#__PURE__*/
-_regenerator["default"].mark(do404);
-
-var routingSagas = [(0, _effects.takeEvery)(_routing.SET_NAVIGATION_PATH, getRouteSaga), (0, _effects.takeEvery)(_routing.SET_ROUTE, setRouteSaga)];
-/**
- * To navigate / push a specific route via redux middleware
- * @param {path, state} action
- */
-
-exports.routingSagas = routingSagas;
-
-function setRouteSaga(action) {
-  return _regenerator["default"].wrap(function setRouteSaga$(_context) {
-    while (1) {
-      switch (_context.prev = _context.next) {
-        case 0:
-          _context.next = 2;
-          return (0, _effects.put)({
-            type: _routing.CALL_HISTORY_METHOD,
-            payload: {
-              method: 'push',
-              args: [action.path, action.state]
-            }
-          });
-
-        case 2:
-        case "end":
-          return _context.stop();
-      }
-    }
-  }, _marked);
-}
-
-function getRouteSaga(action) {
-  var entry, withEvents, routes, appsays, doNavigation, entryLinkDepth, setContentTypeLimits, state, routeEntry, currentPath, deliveryApiStatus, project, pathNode, ancestors, siblings, currentPathDepth, splitPath, entryGuid, previewEntry, contentType, query, payload;
-  return _regenerator["default"].wrap(function getRouteSaga$(_context2) {
-    while (1) {
-      switch (_context2.prev = _context2.next) {
-        case 0:
-          entry = null;
-          _context2.prev = 1;
-          withEvents = action.withEvents, routes = action.routes;
-
-          if (!(withEvents && withEvents.onRouteLoad)) {
-            _context2.next = 7;
-            break;
-          }
-
-          _context2.next = 6;
-          return withEvents.onRouteLoad(action);
-
-        case 6:
-          appsays = _context2.sent;
-
-        case 7:
-          // if appsays customNavigation: true, we will set doNavigation to false
-          // if appsays customNavigation: { ... }, we will set doNavigation to the customNavigation object and check for child elements
-          // if appsays nothing we will set doNavigation to true and continue to do navigation calls
-          doNavigation = !appsays || (appsays && appsays.customNavigation === true ? false : appsays && appsays.customNavigation || true);
-          entryLinkDepth = appsays && appsays.entryLinkDepth || 3;
-          setContentTypeLimits = routes && routes.ContentTypeMappings && !!routes.ContentTypeMappings.find(function (ct) {
-            return ct.fields || ct.linkDepth;
-          });
-          _context2.next = 12;
-          return (0, _effects.select)();
-
-        case 12:
-          state = _context2.sent;
-          routeEntry = (0, _routing2.selectRouteEntry)(state);
-
-          if (!(appsays && appsays.customRouting || action.staticRoute && !action.staticRoute.route.fetchNode || routeEntry && action.statePath === action.path)) {
-            _context2.next = 25;
-            break;
-          }
-
-          if (!routeEntry) {
-            _context2.next = 21;
-            break;
-          }
-
-          entry = routeEntry.toJS();
-          _context2.next = 19;
-          return (0, _effects.put)({
-            type: _routing.SET_ENTRY,
-            entry: entry,
-            isLoading: false
-          });
-
-        case 19:
-          _context2.next = 23;
-          break;
-
-        case 21:
-          _context2.next = 23;
-          return (0, _effects.call)(setRouteEntry);
-
-        case 23:
-          _context2.next = 80;
-          break;
-
-        case 25:
-          currentPath = (0, _routing2.selectCurrentPath)(state);
-          deliveryApiStatus = (0, _version.selectVersionStatus)(state);
-          project = (0, _routing2.selectCurrentProject)(state);
-          pathNode = null, ancestors = null, siblings = null; // Scroll into View
-
-          if (typeof window !== 'undefined') {
-            window.scroll({
-              top: 0
-            });
-          }
-
-          currentPathDepth = currentPath.split('/').length - 1;
-          if (currentPath === '/') currentPathDepth = 0; // Handle homepage
-
-          if (!(currentPath === '/')) {
-            _context2.next = 38;
-            break;
-          }
-
-          _context2.next = 35;
-          return _ContensisDeliveryApi.cachedSearch.getRootNode({
-            depth: 0,
-            entryFields: '*',
-            entryLinkDepth: entryLinkDepth,
-            language: 'en-GB'
-          }, project);
-
-        case 35:
-          pathNode = _context2.sent;
-          _context2.next = 72;
-          break;
-
-        case 38:
-          if (!(currentPath && currentPath.startsWith('/preview/'))) {
-            _context2.next = 54;
-            break;
-          }
-
-          splitPath = currentPath.split('/');
-          entryGuid = splitPath[2];
-
-          if (!(splitPath.length == 3)) {
-            _context2.next = 52;
-            break;
-          }
-
-          _context2.next = 44;
-          return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiStatus, project).entries.get({
-            id: entryGuid,
-            linkDepth: 3
-          });
-
-        case 44:
-          previewEntry = _context2.sent;
-
-          if (!previewEntry) {
-            _context2.next = 50;
-            break;
-          }
-
-          _context2.next = 48;
-          return (0, _effects.call)(setRouteEntry, previewEntry);
-
-        case 48:
-          _context2.next = 52;
-          break;
-
-        case 50:
-          _context2.next = 52;
-          return (0, _effects.call)(do404);
-
-        case 52:
-          _context2.next = 64;
-          break;
-
-        case 54:
-          _context2.next = 56;
-          return _ContensisDeliveryApi.cachedSearch.getNode({
-            depth: doNavigation === true || doNavigation.children === true ? 3 : doNavigation && doNavigation.children || 0,
-            path: currentPath,
-            entryFields: setContentTypeLimits ? ['sys.contentTypeId', 'sys.id'] : '*',
-            entryLinkDepth: setContentTypeLimits ? 0 : entryLinkDepth
-          }, project);
-
-        case 56:
-          pathNode = _context2.sent;
-
-          if (!(setContentTypeLimits && pathNode && pathNode.entry && pathNode.entry.sys && pathNode.entry.sys.id)) {
-            _context2.next = 64;
-            break;
-          }
-
-          contentType = routes && routes.ContentTypeMappings && routes.ContentTypeMappings.find(function (ct) {
-            return ct.contentTypeID === pathNode.entry.sys.contentTypeId;
-          });
-          query = (0, _queries.routeEntryByFields)(pathNode.entry.sys.id, contentType && contentType.fields, deliveryApiStatus);
-          _context2.next = 62;
-          return _ContensisDeliveryApi.cachedSearch.search(query, contentType && typeof contentType.linkDepth !== 'undefined' ? contentType.linkDepth : 3, project);
-
-        case 62:
-          payload = _context2.sent;
-
-          if (payload && payload.items && payload.items.length > 0) {
-            pathNode.entry = payload.items[0];
-          }
-
-        case 64:
-          if (!(pathNode && pathNode.id && (doNavigation === true || doNavigation.ancestors))) {
-            _context2.next = 72;
-            break;
-          }
-
-          _context2.next = 67;
-          return _ContensisDeliveryApi.cachedSearch.getAncestors(pathNode.id, project);
-
-        case 67:
-          ancestors = _context2.sent;
-
-          if (!(currentPathDepth > 1 && (doNavigation === true || doNavigation.siblings))) {
-            _context2.next = 72;
-            break;
-          }
-
-          _context2.next = 71;
-          return _ContensisDeliveryApi.cachedSearch.getSiblings({
-            id: pathNode.id,
-            entryFields: ['sys.contentTypeId', 'url']
-          }, project);
-
-        case 71:
-          siblings = _context2.sent;
-
-        case 72:
-          if (!(pathNode && pathNode.entry && pathNode.entry.sys && pathNode.entry.sys.id)) {
-            _context2.next = 78;
-            break;
-          }
-
-          entry = pathNode.entry;
-          _context2.next = 76;
-          return (0, _effects.call)(setRouteEntry, entry, pathNode, ancestors, siblings);
-
-        case 76:
-          _context2.next = 80;
-          break;
-
-        case 78:
-          _context2.next = 80;
-          return (0, _effects.call)(do404);
-
-        case 80:
-          if (!(withEvents && withEvents.onRouteLoaded)) {
-            _context2.next = 83;
-            break;
-          }
-
-          _context2.next = 83;
-          return withEvents.onRouteLoaded(_objectSpread({}, action, {
-            entry: entry
-          }));
-
-        case 83:
-          if (!(!(0, _navigation2.hasNavigationTree)(state) && (doNavigation === true || doNavigation.tree))) {
-            _context2.next = 86;
-            break;
-          }
-
-          _context2.next = 86;
-          return (0, _effects.put)({
-            type: _navigation.GET_NODE_TREE,
-            treeDepth: doNavigation === true || !doNavigation.tree || doNavigation.tree === true ? 2 : doNavigation.tree
-          });
-
-        case 86:
-          _context2.next = 93;
-          break;
-
-        case 88:
-          _context2.prev = 88;
-          _context2.t0 = _context2["catch"](1);
-          log.error.apply(log, ['Error running route saga:', _context2.t0, _context2.t0.stack]);
-          _context2.next = 93;
-          return (0, _effects.call)(do404);
-
-        case 93:
-        case "end":
-          return _context2.stop();
-      }
-    }
-  }, _marked2, null, [[1, 88]]);
-}
-
-function setRouteEntry(entry, node, ancestors, siblings) {
-  return _regenerator["default"].wrap(function setRouteEntry$(_context3) {
-    while (1) {
-      switch (_context3.prev = _context3.next) {
-        case 0:
-          _context3.next = 2;
-          return (0, _effects.all)([(0, _effects.put)({
-            type: _routing.SET_NAVIGATION_NOT_FOUND,
-            notFound: !(entry && entry.sys.id)
-          }), (0, _effects.put)({
-            type: _routing.SET_NODE,
-            node: node
-          }), (0, _effects.put)({
-            type: _routing.SET_ENTRY,
-            entry: entry
-          }), (0, _effects.put)({
-            type: _routing.SET_ENTRY_ID,
-            id: entry && entry.sys.id || null
-          }), (0, _effects.put)({
-            type: _routing.SET_ANCESTORS,
-            ancestors: ancestors
-          }), (0, _effects.put)({
-            type: _routing.SET_SIBLINGS,
-            siblings: siblings
-          })]);
-
-        case 2:
-        case "end":
-          return _context3.stop();
-      }
-    }
-  }, _marked3);
-}
-
-function do404() {
-  return _regenerator["default"].wrap(function do404$(_context4) {
-    while (1) {
-      switch (_context4.prev = _context4.next) {
-        case 0:
-          _context4.next = 2;
-          return (0, _effects.put)({
-            type: _routing.SET_NAVIGATION_NOT_FOUND,
-            notFound: true
-          });
-
-        case 2:
-          _context4.next = 4;
-          return (0, _effects.put)({
-            type: _routing.SET_ENTRY_ID,
-            id: null
-          });
-
-        case 4:
-          _context4.next = 6;
-          return (0, _effects.put)({
-            type: _routing.SET_ENTRY,
-            entry: null
-          });
-
-        case 6:
-        case "end":
-          return _context4.stop();
-      }
-    }
-  }, _marked4);
-}
-
-/***/ }),
-/* 66 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__66__;
-
-/***/ }),
-/* 67 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(0);
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.routeEntryByFields = void 0;
-
-var _toConsumableArray2 = _interopRequireDefault(__webpack_require__(20));
-
-var _construct2 = _interopRequireDefault(__webpack_require__(68));
-
-var _ContensisDeliveryApi = __webpack_require__(18);
-
-var _expressions = __webpack_require__(69);
-
-// eslint-disable-next-line import/named
-var routeEntryByFields = function routeEntryByFields(id) {
-  var fields = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
-  var versionStatus = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'published';
-  var query = (0, _construct2["default"])(_ContensisDeliveryApi.Query, [].concat((0, _toConsumableArray2["default"])((0, _expressions.fieldExpression)('sys.id', id)), (0, _toConsumableArray2["default"])((0, _expressions.defaultExpressions)(versionStatus))));
-  query.fields = fields;
-  return query;
-};
-
-exports.routeEntryByFields = routeEntryByFields;
-
-/***/ }),
-/* 68 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__68__;
-
-/***/ }),
-/* 69 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(0);
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.termExpressions = exports.customWhereExpressions = exports.orderByExpression = exports.includeInSearchExpressions = exports.defaultSearchExpressions = exports.defaultExpressions = exports.dataFormatExpression = exports.filterExpressions = exports.contentTypeIdExpression = exports.fieldExpression = void 0;
-
-var _toConsumableArray2 = _interopRequireDefault(__webpack_require__(20));
-
-var _contensisDeliveryApi = __webpack_require__(42);
-
-var _schema = __webpack_require__(70);
-
-var _util = __webpack_require__(71);
-
-var fieldExpression = function fieldExpression(field, value) {
-  var operator = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'equalTo';
-  var weight = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
-  if (!field || !value) return [];
-  if (Array.isArray(value)) return equalToOrIn(field, value, operator);else return !weight ? [_contensisDeliveryApi.Op[operator](field, value)] : [_contensisDeliveryApi.Op[operator](field, value).weight(weight)];
-};
-
-exports.fieldExpression = fieldExpression;
-
-var contentTypeIdExpression = function contentTypeIdExpression(contentTypeIds, webpageTemplates) {
-  var expressions = [];
-  if (!contentTypeIds && !webpageTemplates) return expressions;
-
-  if (contentTypeIds && contentTypeIds.length > 0) {
-    expressions.push.apply(expressions, (0, _toConsumableArray2["default"])(dataFormatExpression(contentTypeIds, _schema.DataFormats.entry)));
-  }
-
-  if (webpageTemplates && webpageTemplates.length > 0) {
-    expressions.push.apply(expressions, (0, _toConsumableArray2["default"])(dataFormatExpression(webpageTemplates, _schema.DataFormats.webpage)));
-  }
-
-  if (expressions.length > 1) return [_contensisDeliveryApi.Op.or.apply(_contensisDeliveryApi.Op, expressions)];
-  return expressions;
-};
-
-exports.contentTypeIdExpression = contentTypeIdExpression;
-
-var filterExpressions = function filterExpressions(filters) {
-  if (!filters) return [];
-  var expressions = [];
-  filters.map(function (param) {
-    expressions.push.apply(expressions, (0, _toConsumableArray2["default"])(fieldExpression(param.key, param.value, 'contains')));
-  });
-  return expressions;
-};
-
-exports.filterExpressions = filterExpressions;
-
-var dataFormatExpression = function dataFormatExpression(contentTypeIds) {
-  var dataFormat = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : _schema.DataFormats.entry;
-
-  if (contentTypeIds && contentTypeIds.length > 0) {
-    /**
-     * We have an array of contentTypeIds some may be prefixed with a "!"
-     * to indicate this is a "not" expression
-     */
-    var withContentTypeIds = contentTypeIds.filter(function (c) {
-      return !c.startsWith('!');
-    });
-    var notContentTypeIds = contentTypeIds.filter(function (c) {
-      return c.startsWith('!');
-    }).map(function (id) {
-      return id.substring(1);
-    });
-
-    var andExpr = _contensisDeliveryApi.Op.and();
-
-    var dataFormatExpr = fieldExpression(_schema.Fields.sys.dataFormat, dataFormat);
-    var withExpr = fieldExpression(_schema.Fields.sys.contentTypeId, withContentTypeIds);
-    var notExpr = [_contensisDeliveryApi.Op.not.apply(_contensisDeliveryApi.Op, (0, _toConsumableArray2["default"])(fieldExpression(_schema.Fields.sys.contentTypeId, notContentTypeIds)))];
-    andExpr.add.apply(andExpr, (0, _toConsumableArray2["default"])(dataFormatExpr));
-    if (withContentTypeIds.length > 0) andExpr.add.apply(andExpr, (0, _toConsumableArray2["default"])(withExpr));
-    if (notContentTypeIds.length > 0) andExpr.add.apply(andExpr, notExpr);
-    return [andExpr];
-  }
-
-  return [];
-};
-
-exports.dataFormatExpression = dataFormatExpression;
-
-var defaultExpressions = function defaultExpressions(versionStatus) {
-  return [_contensisDeliveryApi.Op.equalTo(_schema.Fields.sys.versionStatus, versionStatus)];
-};
-
-exports.defaultExpressions = defaultExpressions;
-
-var defaultSearchExpressions = function defaultSearchExpressions(versionStatus) {
-  return [].concat((0, _toConsumableArray2["default"])(defaultExpressions(versionStatus)), (0, _toConsumableArray2["default"])(includeInSearchExpressions()));
-};
-
-exports.defaultSearchExpressions = defaultSearchExpressions;
-
-var includeInSearchExpressions = function includeInSearchExpressions() {
-  return [_contensisDeliveryApi.Op.or(_contensisDeliveryApi.Op.and(_contensisDeliveryApi.Op.exists(_schema.Fields.sys.includeInSearch, true), _contensisDeliveryApi.Op.equalTo(_schema.Fields.sys.includeInSearch, true)), _contensisDeliveryApi.Op.exists(_schema.Fields.sys.includeInSearch, false))];
-};
-
-exports.includeInSearchExpressions = includeInSearchExpressions;
-
-var orderByExpression = function orderByExpression(orderBy) {
-  var expression = _contensisDeliveryApi.OrderBy;
-
-  if (orderBy && orderBy.length > 0) {
-    orderBy.map(function (ob) {
-      return expression = ob.startsWith('-') ? expression.desc(ob.substring(1)) : expression.asc(ob);
-    });
-  }
-
-  return expression;
-};
-
-exports.orderByExpression = orderByExpression;
-
-var equalToOrIn = function equalToOrIn(field, arr) {
-  var operator = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'equalTo';
-  return arr.length === 0 ? [] : arr.length === 1 ? [_contensisDeliveryApi.Op[operator](field, arr[0])] : [_contensisDeliveryApi.Op["in"].apply(_contensisDeliveryApi.Op, [field].concat((0, _toConsumableArray2["default"])(arr)))];
-};
-
-var customWhereExpressions = function customWhereExpressions(where) {
-  if (!where || !Array.isArray(where)) return []; // Accept HTTP style objects and map them to
-  // their equivalent JS client "Op" expressions
-
-  return where.map(function (clause) {
-    var expression;
-    Object.keys(clause).map(function (key, idx) {
-      if (idx === 1) {
-        var operator = key;
-        var value = clause[key];
-        expression = _contensisDeliveryApi.Op[operator](clause.field, value, clause.weight);
-      }
-    });
-    return expression;
-  });
-};
-
-exports.customWhereExpressions = customWhereExpressions;
-
-var termExpressions = function termExpressions(searchTerm, weightedSearchFields) {
-  if (searchTerm && weightedSearchFields && weightedSearchFields.length > 0) {
-    // Extract any phrases in quotes to array
-    var quotedPhrases = (0, _util.extractQuotedPhrases)(searchTerm); // Modify the search term to remove any quoted phrases to leave any remaining terms
-
-    var modifiedSearchTerm = searchTerm;
-    quotedPhrases.forEach(function (qp) {
-      return modifiedSearchTerm = modifiedSearchTerm.replace(qp, '').replace('""', '').trim();
-    }); // Push to the operators array to include in the query
-
-    var operators = []; // Helper functions to generate Op expressions
-
-    var containsOp = function containsOp(f, term) {
-      return fieldExpression(f.fieldId, (0, _util.fixFreeTextForElastic)(term), 'contains', f.weight);
-    };
-
-    var freeTextOp = function freeTextOp(f, term) {
-      return fieldExpression(f.fieldId, (0, _util.fixFreeTextForElastic)(term), 'freeText', f.weight);
-    }; // For each weighted search field
-
-
-    weightedSearchFields.forEach(function (f) {
-      // Push to field operators
-      var fieldOperators = []; // Add operator expressions for modified search term
-
-      if (modifiedSearchTerm) {
-        if ([_schema.Fields.keywords, _schema.Fields.sys.filename, _schema.Fields.sys.uri].includes(f.fieldId)) {
-          fieldOperators.push.apply(fieldOperators, (0, _toConsumableArray2["default"])(containsOp(f, modifiedSearchTerm)));
-        } else {
-          if ([_schema.Fields.entryTitle].includes(f.fieldId)) {
-            fieldOperators.push(_contensisDeliveryApi.Op.or.apply(_contensisDeliveryApi.Op, (0, _toConsumableArray2["default"])(containsOp(f, modifiedSearchTerm)).concat((0, _toConsumableArray2["default"])(freeTextOp(f, modifiedSearchTerm)))));
-          } else {
-            fieldOperators.push.apply(fieldOperators, (0, _toConsumableArray2["default"])(freeTextOp(f, modifiedSearchTerm)));
-          }
-        }
-      } // Add operator expressions for any quoted phrases
-
-
-      quotedPhrases.forEach(function (qp) {
-        return fieldOperators.push.apply(fieldOperators, (0, _toConsumableArray2["default"])(containsOp(f, qp)));
-      }); // If we are using multiple operators for a field we will
-      // wrap each field inside an And operator so we will match
-      // all terms/phrases rather than any terms/phrases
-
-      if (fieldOperators.length > 1) {
-        operators.push(_contensisDeliveryApi.Op.and.apply(_contensisDeliveryApi.Op, fieldOperators));
-      } else {
-        operators.push.apply(operators, fieldOperators);
-      }
-    }); // Wrap operators in an Or operator
-
-    return [_contensisDeliveryApi.Op.or().addRange(operators)];
-  } else if (searchTerm) {
-    return [_contensisDeliveryApi.Op.contains(_schema.Fields.wildcard, searchTerm)];
-  } else {
-    return [];
-  }
-};
-
-exports.termExpressions = termExpressions;
-
-/***/ }),
-/* 70 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.FilterExpressionTypes = exports.WebpageFormats = exports.ContentTypes = exports.VersionStatus = exports.Projects = exports.Fields = exports.DataFormats = void 0;
-var DataFormats = {
-  entry: 'entry',
-  webpage: 'webpage'
-};
-exports.DataFormats = DataFormats;
-var sys = {
-  contentTypeId: 'sys.contentTypeId',
-  dataFormat: 'sys.dataFormat',
-  filename: 'sys.properties.filename',
-  id: 'sys.id',
-  includeInSearch: 'sys.metadata.includeInSearch',
-  slug: 'sys.slug',
-  uri: 'sys.uri',
-  versionStatus: 'sys.versionStatus'
-};
-var Fields = {
-  entryTitle: 'entryTitle',
-  entryDescription: 'entryDescription',
-  keywords: 'keywords',
-  sys: sys,
-  contentTypeId: 'sys.contentTypeId',
-  wildcard: '*'
-};
-exports.Fields = Fields;
-var Projects = {
-  website: 'website'
-};
-exports.Projects = Projects;
-var VersionStatus = {
-  published: 'published',
-  latest: 'latest'
-};
-exports.VersionStatus = VersionStatus;
-var ContentTypes = {
-  contentPage: 'contentPage'
-};
-exports.ContentTypes = ContentTypes;
-var WebpageFormats = {};
-exports.WebpageFormats = WebpageFormats;
-var FilterExpressionTypes = {
-  contentType: 'contentType',
-  field: 'field'
-};
-exports.FilterExpressionTypes = FilterExpressionTypes;
-
-/***/ }),
-/* 71 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(0);
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.fixFreeTextForElastic = fixFreeTextForElastic;
-exports.callCustomApi = exports.extractQuotedPhrases = exports.timedSearch = void 0;
-
-var _regenerator = _interopRequireDefault(__webpack_require__(1));
-
-var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(5));
-
-var _performance = __webpack_require__(72);
-
-var _ContensisDeliveryApi = __webpack_require__(18);
-
-var _navigation = __webpack_require__(21);
-
-function fixFreeTextForElastic(s) {
-  var illegalChars = ['>', '<'];
-  var encodedChars = ['+', '-', '=', '&', '|', '!', '(', ')', '{', '}', '[', ']', '^', '"', '~', '*', '?', ':', '\\', '/'];
-  var illegalRegEx = new RegExp(illegalChars.map(function (c) {
-    return '\\' + c;
-  }).join('|'), 'g');
-  var encodedRegEx = new RegExp(encodedChars.map(function (c) {
-    return '\\' + c;
-  }).join('|'), 'g');
-  s = s.replace(illegalRegEx, '');
-  s = s.replace(encodedRegEx, ''); // (m) => '\\\\' + m);
-
-  return s;
-}
-
-var timedSearch =
-/*#__PURE__*/
-function () {
-  var _ref = (0, _asyncToGenerator2["default"])(
-  /*#__PURE__*/
-  _regenerator["default"].mark(function _callee(query, linkDepth, projectId) {
-    var duration, start, payload, end;
-    return _regenerator["default"].wrap(function _callee$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            duration = 0;
-            start = (0, _performance.now)();
-            _context.next = 4;
-            return _ContensisDeliveryApi.cachedSearch.search(query, linkDepth, projectId);
-
-          case 4:
-            payload = _context.sent;
-            end = (0, _performance.now)();
-            duration = end - start;
-            return _context.abrupt("return", {
-              duration: duration,
-              payload: payload
-            });
-
-          case 8:
-          case "end":
-            return _context.stop();
-        }
-      }
-    }, _callee);
-  }));
-
-  return function timedSearch(_x, _x2, _x3) {
-    return _ref.apply(this, arguments);
-  };
-}();
-
-exports.timedSearch = timedSearch;
-
-var extractQuotedPhrases = function extractQuotedPhrases(searchTerm) {
-  var pattern = new RegExp(/(?=["'])(?:"[^"\\]*(?:\\[\s\S][^"\\]*)*"|'[^'\\]*(?:\\[\s\S][^'\\]*)*')/gm);
-  return (searchTerm.match(pattern) || []).map(function (match) {
-    return match.replace(/"/g, '');
-  });
-};
-
-exports.extractQuotedPhrases = extractQuotedPhrases;
-
-var callCustomApi =
-/*#__PURE__*/
-function () {
-  var _ref2 = (0, _asyncToGenerator2["default"])(
-  /*#__PURE__*/
-  _regenerator["default"].mark(function _callee2(customApi, filters) {
-    var uri, response;
-    return _regenerator["default"].wrap(function _callee2$(_context2) {
-      while (1) {
-        switch (_context2.prev = _context2.next) {
-          case 0:
-            uri = (0, _navigation.buildUrl)(customApi.get('uri'), filters);
-
-            if (uri) {
-              _context2.next = 3;
-              break;
-            }
-
-            return _context2.abrupt("return", null);
-
-          case 3:
-            if (typeof window == 'undefined' && uri.startsWith('/')) uri = "http://localhost:3001".concat(uri);
-            _context2.next = 6;
-            return fetch(uri);
-
-          case 6:
-            response = _context2.sent;
-            _context2.next = 9;
-            return response.json();
-
-          case 9:
-            return _context2.abrupt("return", _context2.sent);
-
-          case 10:
-          case "end":
-            return _context2.stop();
-        }
-      }
-    }, _callee2);
-  }));
-
-  return function callCustomApi(_x4, _x5) {
-    return _ref2.apply(this, arguments);
-  };
-}();
-
-exports.callCustomApi = callCustomApi;
-
-/***/ }),
-/* 72 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.now = void 0;
-
-var now = function now() {
-  if (typeof window == 'undefined') {
-    return Date.now();
-  }
-
-  return window.performance.now();
-};
-
-exports.now = now;
-
-/***/ }),
-/* 73 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(0);
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.ensureNodeTreeSaga = ensureNodeTreeSaga;
-exports.navigationSagas = void 0;
-
-var _regenerator = _interopRequireDefault(__webpack_require__(1));
-
-var _effects = __webpack_require__(19);
-
-var _ContensisDeliveryApi = __webpack_require__(18);
-
-var _navigation = __webpack_require__(28);
-
-var _navigation2 = __webpack_require__(38);
-
-var _version = __webpack_require__(37);
-
-var _routing = __webpack_require__(6);
-
-var _marked =
-/*#__PURE__*/
-_regenerator["default"].mark(ensureNodeTreeSaga);
-
-var navigationSagas = [(0, _effects.takeEvery)(_navigation.GET_NODE_TREE, ensureNodeTreeSaga)];
-exports.navigationSagas = navigationSagas;
-
-function ensureNodeTreeSaga(action) {
-  var state, deliveryApiVersionStatus, project, nodes;
-  return _regenerator["default"].wrap(function ensureNodeTreeSaga$(_context) {
-    while (1) {
-      switch (_context.prev = _context.next) {
-        case 0:
-          _context.next = 2;
-          return (0, _effects.select)();
-
-        case 2:
-          state = _context.sent;
-          _context.prev = 3;
-
-          if ((0, _navigation2.hasNavigationTree)(state)) {
-            _context.next = 21;
-            break;
-          }
-
-          _context.next = 7;
-          return (0, _effects.select)(_version.selectVersionStatus);
-
-        case 7:
-          deliveryApiVersionStatus = _context.sent;
-          _context.next = 10;
-          return (0, _effects.select)(_routing.selectCurrentProject);
-
-        case 10:
-          project = _context.sent;
-          _context.next = 13;
-          return _ContensisDeliveryApi.deliveryApi.getClient(deliveryApiVersionStatus, project).nodes.getRoot({
-            depth: action.treeDepth || 2,
-            entryFields: 'entryTitle, metaInformation, sys.contentTypeId'
-          });
-
-        case 13:
-          nodes = _context.sent;
-
-          if (!nodes) {
-            _context.next = 19;
-            break;
-          }
-
-          _context.next = 17;
-          return (0, _effects.put)({
-            type: _navigation.SET_NODE_TREE,
-            nodes: nodes
-          });
-
-        case 17:
-          _context.next = 21;
-          break;
-
-        case 19:
-          _context.next = 21;
-          return (0, _effects.put)({
-            type: _navigation.GET_NODE_TREE_ERROR
-          });
-
-        case 21:
-          _context.next = 27;
-          break;
-
-        case 23:
-          _context.prev = 23;
-          _context.t0 = _context["catch"](3);
-          _context.next = 27;
-          return (0, _effects.put)({
-            type: _navigation.GET_NODE_TREE_ERROR,
-            error: _context.t0.toString()
-          });
-
-        case 27:
-        case "end":
-          return _context.stop();
-      }
-    }
-  }, _marked, null, [[3, 23]]);
-}
-
-/***/ }),
-/* 74 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var internalServer = __webpack_require__(75)["default"];
+const internalServer = __webpack_require__(75).default;
 
 exports.app = internalServer.app;
 exports.httpProxy = internalServer.apiProxy;
 exports.start = internalServer.start;
 
-var ReactApp = __webpack_require__(44)["default"];
+const ReactApp = __webpack_require__(43).default;
 
 exports.ReactApp = ReactApp;
 
 /***/ }),
-/* 75 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireWildcard = __webpack_require__(7);
-
-var _interopRequireDefault = __webpack_require__(0);
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
-
-var _regenerator = _interopRequireDefault(__webpack_require__(1));
-
-var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(5));
-
-__webpack_require__(51);
-
-var _express = _interopRequireDefault(__webpack_require__(76));
-
-var _reactLoadable = _interopRequireDefault(__webpack_require__(49));
-
-var _displayStartupConfiguration = _interopRequireDefault(__webpack_require__(77));
-
-var _localDns = _interopRequireDefault(__webpack_require__(78));
-
-var _reverseProxies = _interopRequireWildcard(__webpack_require__(81));
-
-var _webApp = _interopRequireDefault(__webpack_require__(83));
-
-// import ServerFeatures from './features/configure';
-var app = (0, _express["default"])();
-
-var start = function start(ReactApp, config, ServerFeatures) {
-  app.disable('x-powered-by'); // Output some information about the used build/startup configuration
-
-  (0, _displayStartupConfiguration["default"])(config); // Set-up local proxy for images from cms, to save doing rewrites and extra code
-
-  ServerFeatures(app);
-  (0, _reverseProxies["default"])(app, config.reverseProxyPaths);
-  (0, _webApp["default"])(app, ReactApp, config);
-  app.use('/static', _express["default"]["static"]('dist/static', {
-    maxage: '31557600h'
-  }));
-  app.on('ready',
-  /*#__PURE__*/
-  (0, _asyncToGenerator2["default"])(
-  /*#__PURE__*/
-  _regenerator["default"].mark(function _callee() {
-    return _regenerator["default"].wrap(function _callee$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            _context.next = 2;
-            return (0, _localDns["default"])();
-
-          case 2:
-            _reactLoadable["default"].preloadAll().then(function () {
-              var server = app.listen(3001, function () {
-                console.info("HTTP server is listening @ port 3001");
-                setTimeout(function () {
-                  app.emit('app_started');
-                }, 500);
-              });
-              app.on('stop', function () {
-                server.close(function () {
-                  console.info('GoodBye :(');
-                });
-              });
-            });
-
-          case 3:
-          case "end":
-            return _context.stop();
-        }
-      }
-    }, _callee);
-  })));
-};
-
-var _default = {
-  app: app,
-  apiProxy: _reverseProxies.apiProxy,
-  start: start
-};
-exports["default"] = _default;
-
-/***/ }),
-/* 76 */
+/* 63 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__76__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__63__;
 
 /***/ }),
-/* 77 */
-/***/ (function(module, exports, __webpack_require__) {
+/* 64 */,
+/* 65 */,
+/* 66 */,
+/* 67 */,
+/* 68 */,
+/* 69 */,
+/* 70 */,
+/* 71 */,
+/* 72 */,
+/* 73 */,
+/* 74 */,
+/* 75 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+__webpack_require__.r(__webpack_exports__);
 
+// EXTERNAL MODULE: external "isomorphic-fetch"
+var external_isomorphic_fetch_ = __webpack_require__(51);
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
-var servers = SERVERS;
+// EXTERNAL MODULE: external "express"
+var external_express_ = __webpack_require__(52);
+var external_express_default = /*#__PURE__*/__webpack_require__.n(external_express_);
+
+// EXTERNAL MODULE: external "react-loadable"
+var external_react_loadable_ = __webpack_require__(35);
+var external_react_loadable_default = /*#__PURE__*/__webpack_require__.n(external_react_loadable_);
+
+// CONCATENATED MODULE: ./src/server/util/displayStartupConfiguration.js
+const servers = SERVERS;
 /* global SERVERS */
 
-var projects = PROJECTS;
+const projects = PROJECTS;
 /* global PROJECTS */
 
-var DisplayStartupConfiguration = function DisplayStartupConfiguration(config) {
+const DisplayStartupConfiguration = config => {
   /* eslint-disable no-console */
   console.log();
-  console.log("Configured servers:\n", JSON.stringify(servers, null, 2));
+  console.log(`Configured servers:
+`, JSON.stringify(servers, null, 2));
   console.log();
-  console.log("Configured projects:\n", JSON.stringify(projects, null, 2));
+  console.log(`Configured projects:
+`, JSON.stringify(projects, null, 2));
   console.log();
   console.log('Reverse proxy paths: ', JSON.stringify(config.reverseProxyPaths, null, 2));
   console.log();
   /* eslint-enable no-console */
 };
 
-var _default = DisplayStartupConfiguration;
-exports["default"] = _default;
+/* harmony default export */ var displayStartupConfiguration = (DisplayStartupConfiguration);
+// EXTERNAL MODULE: external "evil-dns"
+var external_evil_dns_ = __webpack_require__(53);
+var external_evil_dns_default = /*#__PURE__*/__webpack_require__.n(external_evil_dns_);
 
-/***/ }),
-/* 78 */
-/***/ (function(module, exports, __webpack_require__) {
+// CONCATENATED MODULE: ./src/server/util/fetchMyIp.js
+const fetchMyIp = async (env, configureLocalEndpoint) => {
+  /* eslint-disable no-console */
+  try {
+    const response = await fetch('https://api.ipify.org?format=json', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    const ipJson = await response.json();
+    console.log(`Current public ip -> ${JSON.stringify(ipJson)}`);
 
-"use strict";
+    if (ipJson.ip.startsWith('185.18.13')) {
+      console.log(`Using local endpoint for ${env.alias} -> ${env.internalVip}`);
+      configureLocalEndpoint();
+    } else {
+      console.log(`Outside Zengenti network, use real DNS.`);
+    }
+  } catch (error) {
+    console.log(`Could not work out where I am so defaulting to local DNS, as I am probably running as a container this is what matters most. Not developers at home or tests :( Sorry. error: ${error}`);
+    configureLocalEndpoint();
+  }
+  /* eslint-enable no-console */
+
+};
+
+/* harmony default export */ var util_fetchMyIp = (fetchMyIp);
+// CONCATENATED MODULE: ./src/server/core/localDns.js
 
 
-var _interopRequireDefault = __webpack_require__(0);
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
-
-var _regenerator = _interopRequireDefault(__webpack_require__(1));
-
-var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(5));
-
-var _evilDns = _interopRequireDefault(__webpack_require__(79));
-
-var _fetchMyIp = _interopRequireDefault(__webpack_require__(80));
-
-var servers = SERVERS;
+const localDns_servers = SERVERS;
 /* global SERVERS */
 
-var apiConfig = DELIVERY_API_CONFIG;
+const apiConfig = DELIVERY_API_CONFIG;
 /* global DELIVERY_API_CONFIG */
 
-var localDns =
-/*#__PURE__*/
-function () {
-  var _ref = (0, _asyncToGenerator2["default"])(
-  /*#__PURE__*/
-  _regenerator["default"].mark(function _callee() {
-    var disableDnsChanges, configureLocalEndpoint;
-    return _regenerator["default"].wrap(function _callee$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            disableDnsChanges = false;
+const localDns = async () => {
+  const disableDnsChanges = false;
 
-            configureLocalEndpoint = function configureLocalEndpoint() {
-              if (!disableDnsChanges) {
-                _evilDns["default"].add("*".concat(servers.alias, ".cloud.contensis.com"), servers.internalVip);
-
-                if (apiConfig.internalIp) _evilDns["default"].add(apiConfig.rootUrl, apiConfig.internalIp);
-              }
-            }; // Break api.ipify to test
-            // evilDns.add('api.ipify.org', '8.8.8.8');
+  const configureLocalEndpoint = () => {
+    if (!disableDnsChanges) {
+      external_evil_dns_default.a.add(`*${localDns_servers.alias}.cloud.contensis.com`, localDns_servers.internalVip);
+      if (apiConfig.internalIp) external_evil_dns_default.a.add(apiConfig.rootUrl, apiConfig.internalIp);
+    }
+  }; // Break api.ipify to test
+  // evilDns.add('api.ipify.org', '8.8.8.8');
 
 
-            _context.next = 4;
-            return (0, _fetchMyIp["default"])(servers, configureLocalEndpoint);
+  await util_fetchMyIp(localDns_servers, configureLocalEndpoint);
+};
 
-          case 4:
-          case "end":
-            return _context.stop();
-        }
-      }
-    }, _callee);
-  }));
+/* harmony default export */ var core_localDns = (localDns);
+// EXTERNAL MODULE: external "http-proxy"
+var external_http_proxy_ = __webpack_require__(59);
+var external_http_proxy_default = /*#__PURE__*/__webpack_require__.n(external_http_proxy_);
 
-  return function localDns() {
-    return _ref.apply(this, arguments);
-  };
-}();
+// CONCATENATED MODULE: ./src/server/core/reverseProxies.js
 
-var _default = localDns;
-exports["default"] = _default;
-
-/***/ }),
-/* 79 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__79__;
-
-/***/ }),
-/* 80 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(0);
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
-
-var _regenerator = _interopRequireDefault(__webpack_require__(1));
-
-var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(5));
-
-var fetchMyIp =
-/*#__PURE__*/
-function () {
-  var _ref = (0, _asyncToGenerator2["default"])(
-  /*#__PURE__*/
-  _regenerator["default"].mark(function _callee(env, configureLocalEndpoint) {
-    var response, ipJson;
-    return _regenerator["default"].wrap(function _callee$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            _context.prev = 0;
-            _context.next = 3;
-            return fetch('https://api.ipify.org?format=json', {
-              method: 'GET',
-              headers: {
-                'Content-Type': 'application/json'
-              }
-            });
-
-          case 3:
-            response = _context.sent;
-            _context.next = 6;
-            return response.json();
-
-          case 6:
-            ipJson = _context.sent;
-            console.log("Current public ip -> ".concat(JSON.stringify(ipJson)));
-
-            if (ipJson.ip.startsWith('185.18.13')) {
-              console.log("Using local endpoint for ".concat(env.alias, " -> ").concat(env.internalVip));
-              configureLocalEndpoint();
-            } else {
-              console.log("Outside Zengenti network, use real DNS.");
-            }
-
-            _context.next = 15;
-            break;
-
-          case 11:
-            _context.prev = 11;
-            _context.t0 = _context["catch"](0);
-            console.log("Could not work out where I am so defaulting to local DNS, as I am probably running as a container this is what matters most. Not developers at home or tests :( Sorry. error: ".concat(_context.t0));
-            configureLocalEndpoint();
-
-          case 15:
-          case "end":
-            return _context.stop();
-        }
-      }
-    }, _callee, null, [[0, 11]]);
-  }));
-
-  return function fetchMyIp(_x, _x2) {
-    return _ref.apply(this, arguments);
-  };
-}();
-
-var _default = fetchMyIp;
-exports["default"] = _default;
-
-/***/ }),
-/* 81 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(0);
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = exports.apiProxy = void 0;
-
-var _httpProxy = _interopRequireDefault(__webpack_require__(82));
-
-var servers = SERVERS;
+const reverseProxies_servers = SERVERS;
 /* global SERVERS */
 
-var apiProxy = _httpProxy["default"].createProxyServer();
+const apiProxy = external_http_proxy_default.a.createProxyServer();
 
-exports.apiProxy = apiProxy;
-
-var reverseProxies = function reverseProxies(app, reverseProxyPaths) {
+const reverseProxies = (app, reverseProxyPaths) => {
   deliveryApiProxy(apiProxy, app);
-  app.all(reverseProxyPaths, function (req, res) {
-    var target = servers.iis;
+  app.all(reverseProxyPaths, (req, res) => {
+    const target = reverseProxies_servers.iis;
     apiProxy.web(req, res, {
-      target: target,
+      target,
       changeOrigin: true
     });
-    apiProxy.on('error', function (e) {
+    apiProxy.on('error', e => {
       /* eslint-disable no-console */
-      console.log("Proxy Request for ".concat(req.path, " HostName:").concat(req.hostname, " failed with ").concat(e));
+      console.log(`Proxy Request for ${req.path} HostName:${req.hostname} failed with ${e}`);
       /* eslint-enable no-console */
     });
   });
 };
 
-var deliveryApiProxy = function deliveryApiProxy(apiProxy, app) {
+const deliveryApiProxy = (apiProxy, app) => {
   // This is just here to stop cors requests on localhost. In Production this is mapped using varnish.
-  app.all(['/api/delivery/*', '/api/image/*'], function (req, res) {
+  app.all(['/api/delivery/*', '/api/image/*'], (req, res) => {
     /* eslint-disable no-console */
-    var target = servers.cms;
-    console.log("Proxying api request to ".concat(servers.alias));
+    const target = reverseProxies_servers.cms;
+    console.log(`Proxying api request to ${reverseProxies_servers.alias}`);
     apiProxy.web(req, res, {
-      target: target,
+      target,
       changeOrigin: true
     });
-    apiProxy.on('error', function (e) {
+    apiProxy.on('error', e => {
       /* eslint-disable no-console */
-      console.log("Proxy request for ".concat(req.path, " HostName:").concat(req.hostname, " failed with ").concat(e));
+      console.log(`Proxy request for ${req.path} HostName:${req.hostname} failed with ${e}`);
       /* eslint-enable no-console */
     });
   });
 };
 
-var _default = reverseProxies;
-exports["default"] = _default;
+/* harmony default export */ var core_reverseProxies = (reverseProxies);
+// EXTERNAL MODULE: external "fs"
+var external_fs_ = __webpack_require__(54);
+var external_fs_default = /*#__PURE__*/__webpack_require__.n(external_fs_);
 
-/***/ }),
-/* 82 */
-/***/ (function(module, exports) {
+// EXTERNAL MODULE: external "react"
+var external_react_ = __webpack_require__(5);
+var external_react_default = /*#__PURE__*/__webpack_require__.n(external_react_);
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__82__;
+// EXTERNAL MODULE: external "react-router-dom"
+var external_react_router_dom_ = __webpack_require__(18);
 
-/***/ }),
-/* 83 */
-/***/ (function(module, exports, __webpack_require__) {
+// EXTERNAL MODULE: external "react-redux"
+var external_react_redux_ = __webpack_require__(16);
 
-"use strict";
+// EXTERNAL MODULE: external "react-dom/server"
+var server_ = __webpack_require__(49);
+
+// EXTERNAL MODULE: external "react-loadable/webpack"
+var webpack_ = __webpack_require__(55);
+
+// EXTERNAL MODULE: external "styled-components"
+var external_styled_components_ = __webpack_require__(60);
+
+// EXTERNAL MODULE: external "react-helmet"
+var external_react_helmet_ = __webpack_require__(56);
+var external_react_helmet_default = /*#__PURE__*/__webpack_require__.n(external_react_helmet_);
+
+// EXTERNAL MODULE: external "serialize-javascript"
+var external_serialize_javascript_ = __webpack_require__(57);
+var external_serialize_javascript_default = /*#__PURE__*/__webpack_require__.n(external_serialize_javascript_);
+
+// EXTERNAL MODULE: external "minify-css-string"
+var external_minify_css_string_ = __webpack_require__(50);
+var external_minify_css_string_default = /*#__PURE__*/__webpack_require__.n(external_minify_css_string_);
+
+// EXTERNAL MODULE: external "immutable"
+var external_immutable_ = __webpack_require__(2);
+
+// EXTERNAL MODULE: external "fromentries"
+var external_fromentries_ = __webpack_require__(61);
+var external_fromentries_default = /*#__PURE__*/__webpack_require__.n(external_fromentries_);
+
+// EXTERNAL MODULE: ./src/app/core/redux/history.js
+var redux_history = __webpack_require__(37);
+
+// CONCATENATED MODULE: ./src/server/util/types.js
+const AccessMethods = {
+  DYNAMIC: 'dynamic',
+  STATIC: 'static',
+  FRAGMENT: 'fragment',
+  REDUX: 'redux'
+};
+// CONCATENATED MODULE: ./src/server/util/cacheHashing.js
+const hashKeys = keys => {
+  const XXHash = __webpack_require__(63);
+
+  const returnKeys = [];
+  keys.forEach(cacheKey => {
+    const inputBuffer = Buffer.from(cacheKey.toLowerCase(), 'utf-8');
+    const hashed = XXHash.h32(inputBuffer, 0x0).toString(16);
+    const reversedhex = hashed.match(/[a-fA-F0-9]{2}/g).reverse().join('');
+    const outputBuffer = Buffer.from(reversedhex, 'hex');
+    returnKeys.push(outputBuffer.toString('base64').substring(0, 6));
+  });
+  return returnKeys;
+};
+// EXTERNAL MODULE: ./src/app/core/util/pickProject.js
+var pickProject = __webpack_require__(40);
+
+// EXTERNAL MODULE: ./src/app/core/util/ContensisDeliveryApi.js
+var ContensisDeliveryApi = __webpack_require__(12);
+
+// EXTERNAL MODULE: ./src/app/core/redux/actions/routing.js
+var routing = __webpack_require__(22);
+
+// EXTERNAL MODULE: ./src/app/core/redux/actions/version.js
+var version = __webpack_require__(31);
+
+// EXTERNAL MODULE: ./src/app/core/redux/selectors/routing.js
+var selectors_routing = __webpack_require__(8);
+
+// EXTERNAL MODULE: ./src/app/core/redux/store.js + 4 modules
+var redux_store = __webpack_require__(42);
+
+// EXTERNAL MODULE: ./src/app/core/redux/sagas/index.js + 7 modules
+var sagas = __webpack_require__(41);
+
+// CONCATENATED MODULE: ./src/server/core/webApp.js
 
 
-var _interopRequireDefault = __webpack_require__(0);
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
 
-var _slicedToArray2 = _interopRequireDefault(__webpack_require__(40));
 
-var _toConsumableArray2 = _interopRequireDefault(__webpack_require__(20));
 
-var _fs = _interopRequireDefault(__webpack_require__(84));
 
-var _react = _interopRequireDefault(__webpack_require__(4));
 
-var _reactRouterDom = __webpack_require__(26);
 
-var _reactRedux = __webpack_require__(17);
 
-var _reactLoadable = _interopRequireDefault(__webpack_require__(49));
 
-var _server = __webpack_require__(85);
 
-var _webpack = __webpack_require__(86);
 
-var _styledComponents = __webpack_require__(87);
 
-var _reactHelmet = _interopRequireDefault(__webpack_require__(88));
 
-var _serializeJavascript = _interopRequireDefault(__webpack_require__(89));
 
-var _minifyCssString = _interopRequireDefault(__webpack_require__(90));
 
-var _immutable = __webpack_require__(2);
 
-var _fromentries = _interopRequireDefault(__webpack_require__(91));
 
-var _history = __webpack_require__(52);
 
-var _types = __webpack_require__(92);
 
-var _cacheHashing = __webpack_require__(93);
 
-var _pickProject = _interopRequireDefault(__webpack_require__(54));
 
-var _ContensisDeliveryApi = __webpack_require__(18);
 
-var _routing = __webpack_require__(27);
-
-var _version = __webpack_require__(43);
-
-var _routing2 = __webpack_require__(6);
-
-var _store = _interopRequireDefault(__webpack_require__(55));
-
-var _index = _interopRequireDefault(__webpack_require__(64));
-
-var addStandardHeaders = function addStandardHeaders(state, response, packagejson, groups) {
+const addStandardHeaders = (state, response, packagejson, groups) => {
   if (state) {
     /* eslint-disable no-console */
     try {
       console.log('About to add header');
-      var entryDepends = (0, _routing2.selectEntryDepends)(state);
+      let entryDepends = Object(selectors_routing["selectEntryDepends"])(state);
       entryDepends = Array.from(entryDepends || {});
-      console.log("entryDepends count: ".concat(entryDepends.length));
-      var nodeDepends = (0, _routing2.selectNodeDepends)(state).toJS();
-      var currentTreeId = (0, _routing2.selectCurrentTreeID)(state);
-      var nodeDependsKeys = nodeDepends.map(function (nodeKey) {
-        return "".concat(currentTreeId, "_").concat(nodeKey);
+      console.log(`entryDepends count: ${entryDepends.length}`);
+      let nodeDepends = Object(selectors_routing["selectNodeDepends"])(state).toJS();
+      let currentTreeId = Object(selectors_routing["selectCurrentTreeID"])(state);
+      let nodeDependsKeys = nodeDepends.map(nodeKey => {
+        return `${currentTreeId}_${nodeKey}`;
       });
-      var allDepends = [].concat((0, _toConsumableArray2["default"])(entryDepends), (0, _toConsumableArray2["default"])(nodeDependsKeys));
-      var allDependsHashed = (0, _cacheHashing.hashKeys)(allDepends);
-      var surrogateKeyHeader = packagejson.name == 'os-main' ? " ".concat(packagejson.name, "-app ").concat(allDependsHashed.join(' '), " ").concat(allDepends.join(' ')) : " ".concat(packagejson.name, "-app ").concat(allDependsHashed.join(' '));
+      const allDepends = [...entryDepends, ...nodeDependsKeys];
+      const allDependsHashed = hashKeys(allDepends);
+      const surrogateKeyHeader = packagejson.name == 'os-main' ? ` ${packagejson.name}-app ${allDependsHashed.join(' ')} ${allDepends.join(' ')}` : ` ${packagejson.name}-app ${allDependsHashed.join(' ')}`;
       response.header('surrogate-key', surrogateKeyHeader);
-      console.log("depends hashed: ".concat(allDependsHashed.join(' ')));
-      console.log("depends hashed: ".concat(allDepends.join(' ')));
+      console.log(`depends hashed: ${allDependsHashed.join(' ')}`);
+      console.log(`depends hashed: ${allDepends.join(' ')}`);
       addVarnishAuthenticationHeaders(state, response, groups);
       response.setHeader('Surrogate-Control', 'max-age=3600');
     } catch (e) {
@@ -5547,20 +3405,20 @@ var addStandardHeaders = function addStandardHeaders(state, response, packagejso
   }
 };
 
-var addVarnishAuthenticationHeaders = function addVarnishAuthenticationHeaders(state, response) {
-  var groups = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-
+const addVarnishAuthenticationHeaders = (state, response, groups = {}) => {
   if (state) {
     try {
-      var stateEntry = (0, _routing2.selectRouteEntry)(state);
-      var project = (0, _routing2.selectCurrentProject)(state);
-      var globalGroups = groups.globalGroups,
-          allowedGroups = groups.allowedGroups; // console.log(globalGroups, allowedGroups);
+      const stateEntry = Object(selectors_routing["selectRouteEntry"])(state);
+      const project = Object(selectors_routing["selectCurrentProject"])(state);
+      const {
+        globalGroups,
+        allowedGroups
+      } = groups; // console.log(globalGroups, allowedGroups);
 
-      var allGroups = Array.from(globalGroups && globalGroups[project] || {});
+      let allGroups = Array.from(globalGroups && globalGroups[project] || {});
 
       if (stateEntry && stateEntry.getIn(['authentication', 'isLoginRequired']) && allowedGroups && allowedGroups[project]) {
-        allGroups = [].concat((0, _toConsumableArray2["default"])(allGroups), (0, _toConsumableArray2["default"])(allowedGroups[project]));
+        allGroups = [...allGroups, ...allowedGroups[project]];
       }
 
       response.header('x-contensis-viewer-groups', allGroups.join('|'));
@@ -5571,141 +3429,131 @@ var addVarnishAuthenticationHeaders = function addVarnishAuthenticationHeaders(s
   }
 };
 
-var readFileSync = function readFileSync(path) {
-  return _fs["default"].readFileSync(path, 'utf8');
-};
+const readFileSync = path => external_fs_default.a.readFileSync(path, 'utf8');
 
-var loadBundleData = function loadBundleData(_ref, build) {
-  var stats = _ref.stats,
-      templates = _ref.templates;
-  var bundle = {};
+const loadBundleData = ({
+  stats,
+  templates
+}, build) => {
+  const bundle = {};
 
   try {
-    bundle.stats = JSON.parse(readFileSync(stats.replace('/target', build ? "/".concat(build) : '')));
-  } catch (_unused) {//console.log(ex);
+    bundle.stats = JSON.parse(readFileSync(stats.replace('/target', build ? `/${build}` : '')));
+  } catch {//console.log(ex);
   }
 
   try {
     bundle.templates = {
-      templateHTML: readFileSync(templates.html.replace('/target', build ? "/".concat(build) : '')),
-      templateHTMLStatic: readFileSync(templates["static"].replace('/target', build ? "/".concat(build) : '')),
-      templateHTMLFragment: readFileSync(templates.fragment.replace('/target', build ? "/".concat(build) : ''))
+      templateHTML: readFileSync(templates.html.replace('/target', build ? `/${build}` : '')),
+      templateHTMLStatic: readFileSync(templates.static.replace('/target', build ? `/${build}` : '')),
+      templateHTMLFragment: readFileSync(templates.fragment.replace('/target', build ? `/${build}` : ''))
     };
-  } catch (_unused2) {//console.log(ex);
+  } catch {//console.log(ex);
   }
 
   return bundle;
 };
 
-var webApp = function webApp(app, ReactApp, config) {
-  var routes = config.routes,
-      withReducers = config.withReducers,
-      withSagas = config.withSagas,
-      withEvents = config.withEvents,
-      packagejson = config.packagejson,
-      versionData = config.versionData,
-      differentialBundles = config.differentialBundles,
-      dynamicPaths = config.dynamicPaths,
-      allowedGroups = config.allowedGroups,
-      globalGroups = config.globalGroups,
-      disableSsrRedux = config.disableSsrRedux;
-  var bundles = {
-    "default": loadBundleData(config),
+const webApp = (app, ReactApp, config) => {
+  const {
+    routes,
+    withReducers,
+    withSagas,
+    withEvents,
+    packagejson,
+    versionData,
+    differentialBundles,
+    dynamicPaths,
+    allowedGroups,
+    globalGroups,
+    disableSsrRedux
+  } = config;
+  const bundles = {
+    default: loadBundleData(config),
     legacy: loadBundleData(config, 'legacy'),
     modern: loadBundleData(config, 'modern')
   };
-  if (!bundles["default"] || bundles["default"] === {}) bundles["default"] = bundles.legacy || bundles.modern;
-  var versionInfo = JSON.parse(_fs["default"].readFileSync(versionData, 'utf8'));
-  app.get('/*', function (request, response, next) {
+  if (!bundles.default || bundles.default === {}) bundles.default = bundles.legacy || bundles.modern;
+  const versionInfo = JSON.parse(external_fs_default.a.readFileSync(versionData, 'utf8'));
+  app.get('/*', (request, response, next) => {
     if (request.originalUrl.startsWith('/static/')) return next();
-    var url = request.url; // Determine functional params and set access methods
+    const {
+      url
+    } = request; // Determine functional params and set access methods
 
-    var accessMethod = {};
-    var isDynamicNormalised = request.query.dynamic ? request.query.dynamic.toLowerCase() : 'false'; // Hack for certain pages to avoid SSR
+    let accessMethod = {};
+    const isDynamicNormalised = request.query.dynamic ? request.query.dynamic.toLowerCase() : 'false'; // Hack for certain pages to avoid SSR
 
-    var onlyDynamic = dynamicPaths.includes(request.path);
-    var isReduxRequestNormalised = request.query.redux ? request.query.redux.toLowerCase() : 'false';
-    var isFragmentNormalised = request.query.fragment ? request.query.fragment.toLowerCase() : 'false';
-    var isStaticNormalised = request.query["static"] ? request.query["static"].toLowerCase() : 'false';
-    if (onlyDynamic || isDynamicNormalised === 'true') accessMethod.DYNAMIC = _types.AccessMethods.DYNAMIC;
-    if (isReduxRequestNormalised === 'true') accessMethod.REDUX = _types.AccessMethods.REDUX;
-    if (isFragmentNormalised === 'true') accessMethod.FRAGMENT = _types.AccessMethods.FRAGMENT;
-    if (isStaticNormalised === 'true') accessMethod.STATIC = _types.AccessMethods.STATIC;
-    var context = {};
-    var status = 200; // Create a store (with a memory history) from our current url
+    const onlyDynamic = dynamicPaths.includes(request.path);
+    const isReduxRequestNormalised = request.query.redux ? request.query.redux.toLowerCase() : 'false';
+    const isFragmentNormalised = request.query.fragment ? request.query.fragment.toLowerCase() : 'false';
+    const isStaticNormalised = request.query.static ? request.query.static.toLowerCase() : 'false';
+    if (onlyDynamic || isDynamicNormalised === 'true') accessMethod.DYNAMIC = AccessMethods.DYNAMIC;
+    if (isReduxRequestNormalised === 'true') accessMethod.REDUX = AccessMethods.REDUX;
+    if (isFragmentNormalised === 'true') accessMethod.FRAGMENT = AccessMethods.FRAGMENT;
+    if (isStaticNormalised === 'true') accessMethod.STATIC = AccessMethods.STATIC;
+    const context = {};
+    let status = 200; // Create a store (with a memory history) from our current url
 
-    var store = (0, _store["default"])(withReducers, (0, _immutable.fromJS)({}), (0, _history.history)({
+    const store = Object(redux_store["a" /* default */])(withReducers, Object(external_immutable_["fromJS"])({}), Object(redux_history["b" /* history */])({
       initialEntries: [url]
     })); //const store = createStore(withReducers);
     // dispatch any global and non-saga related actions before calling our JSX
 
-    var versionStatusFromHostname = (0, _ContensisDeliveryApi.GetDeliveryApiStatusFromHostname)(request.hostname);
-    store.dispatch((0, _version.setVersionStatus)(request.query.versionStatus || versionStatusFromHostname));
-    store.dispatch((0, _version.setVersion)(versionInfo.commitRef, versionInfo.buildNo));
-    var project = (0, _pickProject["default"])(request.hostname, request.query);
-    var groups = allowedGroups && allowedGroups[project];
-    store.dispatch((0, _routing.setCurrentProject)(project, groups));
-    var modules = [];
-
-    var jsx = _react["default"].createElement(_reactLoadable["default"].Capture, {
-      report: function report(moduleName) {
-        return modules.push(moduleName);
-      }
-    }, _react["default"].createElement(_reactRedux.Provider, {
+    const versionStatusFromHostname = Object(ContensisDeliveryApi["GetDeliveryApiStatusFromHostname"])(request.hostname);
+    store.dispatch(Object(version["setVersionStatus"])(request.query.versionStatus || versionStatusFromHostname));
+    store.dispatch(Object(version["setVersion"])(versionInfo.commitRef, versionInfo.buildNo));
+    const project = Object(pickProject["a" /* default */])(request.hostname, request.query);
+    const groups = allowedGroups && allowedGroups[project];
+    store.dispatch(Object(routing["setCurrentProject"])(project, groups));
+    const modules = [];
+    const jsx = external_react_default.a.createElement(external_react_loadable_default.a.Capture, {
+      report: moduleName => modules.push(moduleName)
+    }, external_react_default.a.createElement(external_react_redux_["Provider"], {
       store: store
-    }, _react["default"].createElement(_reactRouterDom.StaticRouter, {
+    }, external_react_default.a.createElement(external_react_router_dom_["StaticRouter"], {
       context: context,
       location: url
-    }, _react["default"].createElement(ReactApp, {
+    }, external_react_default.a.createElement(ReactApp, {
       routes: routes,
       withEvents: withEvents
     }))));
     /* eslint-disable no-console */
 
-
-    console.log("Request for ".concat(request.path, " hostname: ").concat(request.hostname, " versionStatus: ").concat(versionStatusFromHostname));
+    console.log(`Request for ${request.path} hostname: ${request.hostname} versionStatus: ${versionStatusFromHostname}`);
     /* eslint-enable no-console */
 
-    var templates = bundles["default"].templates || bundles.legacy.templates;
-    var stats = bundles.modern.stats && bundles.legacy.stats ? (0, _fromentries["default"])(Object.entries(bundles.modern.stats).map(function (_ref2) {
-      var _ref3 = (0, _slicedToArray2["default"])(_ref2, 2),
-          lib = _ref3[0],
-          paths = _ref3[1];
-
-      return [lib, bundles.legacy.stats[lib] ? [].concat((0, _toConsumableArray2["default"])(paths), (0, _toConsumableArray2["default"])(bundles.legacy.stats[lib])) : paths];
-    })) : bundles["default"].stats;
-    var templateHTML = templates.templateHTML,
-        templateHTMLFragment = templates.templateHTMLFragment,
-        templateHTMLStatic = templates.templateHTMLStatic; // Serve a blank HTML page with client scripts to load the app in the browser
+    const templates = bundles.default.templates || bundles.legacy.templates;
+    const stats = bundles.modern.stats && bundles.legacy.stats ? external_fromentries_default()(Object.entries(bundles.modern.stats).map(([lib, paths]) => [lib, bundles.legacy.stats[lib] ? [...paths, ...bundles.legacy.stats[lib]] : paths])) : bundles.default.stats;
+    const {
+      templateHTML,
+      templateHTMLFragment,
+      templateHTMLStatic
+    } = templates; // Serve a blank HTML page with client scripts to load the app in the browser
 
     if (accessMethod.DYNAMIC) {
       // Dynamic doesn't need sagas
-      (0, _server.renderToString)(jsx);
-      var isDynamicHint = "<script>window.isDynamic = true;</script>";
-      var dynamicBundles = (0, _webpack.getBundles)(stats, modules);
-      var dynamicBundleScripts = dynamicBundles.map(function (bundle) {
-        if (bundle.publicPath.includes('/modern/')) return differentialBundles ? "<script type=\"module\" src=\"".concat(bundle.publicPath, "\"></script>") : null;
-        return "<script nomodule src=\"".concat(bundle.publicPath, "\"></script>");
-      }).filter(function (f) {
-        return f;
-      }).join('');
-      var responseHtmlDynamic = templateHTML.replace('{{TITLE}}', '').replace('{{SEO_CRITICAL_METADATA}}', '').replace('{{CRITICAL_CSS}}', '').replace('{{APP}}', '').replace('{{LOADABLE_CHUNKS}}', dynamicBundleScripts).replace('{{REDUX_DATA}}', isDynamicHint);
+      Object(server_["renderToString"])(jsx);
+      const isDynamicHint = `<script>window.isDynamic = true;</script>`;
+      const dynamicBundles = Object(webpack_["getBundles"])(stats, modules);
+      const dynamicBundleScripts = dynamicBundles.map(bundle => {
+        if (bundle.publicPath.includes('/modern/')) return differentialBundles ? `<script type="module" src="${bundle.publicPath}"></script>` : null;
+        return `<script nomodule src="${bundle.publicPath}"></script>`;
+      }).filter(f => f).join('');
+      const responseHtmlDynamic = templateHTML.replace('{{TITLE}}', '').replace('{{SEO_CRITICAL_METADATA}}', '').replace('{{CRITICAL_CSS}}', '').replace('{{APP}}', '').replace('{{LOADABLE_CHUNKS}}', dynamicBundleScripts).replace('{{REDUX_DATA}}', isDynamicHint);
       response.setHeader('Surrogate-Control', 'max-age=3600');
       response.status(status).send(responseHtmlDynamic);
     } // Render the JSX server side and send response as per access method options
 
 
     if (!accessMethod.DYNAMIC) {
-      store.runSaga((0, _index["default"])(withSagas)).toPromise().then(function () {
-        var sheet = new _styledComponents.ServerStyleSheet();
-        var html = (0, _server.renderToString)(sheet.collectStyles(jsx));
-
-        var helmet = _reactHelmet["default"].renderStatic();
-
-        _reactHelmet["default"].rewind();
-
-        var title = helmet.title.toString();
-        var metadata = helmet.meta.toString();
+      store.runSaga(Object(sagas["a" /* default */])(withSagas)).toPromise().then(() => {
+        const sheet = new external_styled_components_["ServerStyleSheet"]();
+        const html = Object(server_["renderToString"])(sheet.collectStyles(jsx));
+        const helmet = external_react_helmet_default.a.renderStatic();
+        external_react_helmet_default.a.rewind();
+        let title = helmet.title.toString();
+        const metadata = helmet.meta.toString();
 
         if (context.status === 404) {
           status = 404;
@@ -5716,57 +3564,55 @@ var webApp = function webApp(app, ReactApp, config) {
           return response.redirect(302, context.url);
         }
 
-        var reduxState = store.getState();
-        var styleTags = sheet.getStyleTags();
-        var bundles = (0, _webpack.getBundles)(stats, modules);
-        var bundleScripts = bundles.map(function (bundle) {
-          if (bundle.publicPath.includes('/modern/')) return differentialBundles ? "<script type=\"module\" src=\"".concat(bundle.publicPath, "\"></script>") : null;
-          return "<script nomodule src=\"".concat(bundle.publicPath, "\"></script>");
-        }).filter(function (f) {
-          return f;
-        }).join('');
-        var serialisedReduxData = '';
+        const reduxState = store.getState();
+        const styleTags = sheet.getStyleTags();
+        const bundles = Object(webpack_["getBundles"])(stats, modules);
+        const bundleScripts = bundles.map(bundle => {
+          if (bundle.publicPath.includes('/modern/')) return differentialBundles ? `<script type="module" src="${bundle.publicPath}"></script>` : null;
+          return `<script nomodule src="${bundle.publicPath}"></script>`;
+        }).filter(f => f).join('');
+        let serialisedReduxData = '';
 
         if (context.status !== 404) {
           if (accessMethod.REDUX) {
-            serialisedReduxData = (0, _serializeJavascript["default"])(reduxState);
+            serialisedReduxData = external_serialize_javascript_default()(reduxState);
             addStandardHeaders(reduxState, response, packagejson, {
-              allowedGroups: allowedGroups,
-              globalGroups: globalGroups
+              allowedGroups,
+              globalGroups
             });
             response.status(status).json(serialisedReduxData);
             return true;
           }
 
           if (!disableSsrRedux) {
-            serialisedReduxData = (0, _serializeJavascript["default"])(reduxState);
-            serialisedReduxData = "<script>window.REDUX_DATA = ".concat(serialisedReduxData, "</script>");
+            serialisedReduxData = external_serialize_javascript_default()(reduxState);
+            serialisedReduxData = `<script>window.REDUX_DATA = ${serialisedReduxData}</script>`;
           }
         }
 
         if (context.status === 404) {
-          accessMethod.STATIC = _types.AccessMethods.STATIC;
+          accessMethod.STATIC = AccessMethods.STATIC;
         } // Responses
 
 
-        var responseHTML = ''; // Static page served as a fragment
+        let responseHTML = ''; // Static page served as a fragment
 
         if (accessMethod.FRAGMENT && accessMethod.STATIC) {
           addStandardHeaders(reduxState, response, packagejson, {
-            allowedGroups: allowedGroups,
-            globalGroups: globalGroups
+            allowedGroups,
+            globalGroups
           });
-          responseHTML = (0, _minifyCssString["default"])(styleTags) + html;
+          responseHTML = external_minify_css_string_default()(styleTags) + html;
         } // Page fragment served with client scripts and redux data that hydrate the app client side
 
 
         if (accessMethod.FRAGMENT && !accessMethod.STATIC) {
-          responseHTML = templateHTMLFragment.replace('{{TITLE}}', title).replace('{{SEO_CRITICAL_METADATA}}', metadata).replace('{{CRITICAL_CSS}}', (0, _minifyCssString["default"])(styleTags)).replace('{{APP}}', html).replace('{{LOADABLE_CHUNKS}}', bundleScripts).replace('{{REDUX_DATA}}', serialisedReduxData);
+          responseHTML = templateHTMLFragment.replace('{{TITLE}}', title).replace('{{SEO_CRITICAL_METADATA}}', metadata).replace('{{CRITICAL_CSS}}', external_minify_css_string_default()(styleTags)).replace('{{APP}}', html).replace('{{LOADABLE_CHUNKS}}', bundleScripts).replace('{{REDUX_DATA}}', serialisedReduxData);
         } // Full HTML page served statically
 
 
         if (!accessMethod.FRAGMENT && accessMethod.STATIC) {
-          responseHTML = templateHTMLStatic.replace('{{TITLE}}', title).replace('{{SEO_CRITICAL_METADATA}}', metadata).replace('{{CRITICAL_CSS}}', (0, _minifyCssString["default"])(styleTags)).replace('{{APP}}', html).replace('{{LOADABLE_CHUNKS}}', '');
+          responseHTML = templateHTMLStatic.replace('{{TITLE}}', title).replace('{{SEO_CRITICAL_METADATA}}', metadata).replace('{{CRITICAL_CSS}}', external_minify_css_string_default()(styleTags)).replace('{{APP}}', html).replace('{{LOADABLE_CHUNKS}}', '');
         } // Full HTML page served with client scripts and redux data that hydrate the app client side
 
 
@@ -5775,8 +3621,8 @@ var webApp = function webApp(app, ReactApp, config) {
         }
 
         addStandardHeaders(reduxState, response, packagejson, {
-          allowedGroups: allowedGroups,
-          globalGroups: globalGroups
+          allowedGroups,
+          globalGroups
         });
 
         try {
@@ -5785,7 +3631,7 @@ var webApp = function webApp(app, ReactApp, config) {
           // eslint-disable-next-line no-console
           console.log(err.message);
         }
-      })["catch"](function (err) {
+      }).catch(err => {
         // Handle any error that occurred in any of the previous
         // promises in the chain.
 
@@ -5793,117 +3639,61 @@ var webApp = function webApp(app, ReactApp, config) {
         console.log(err);
         /* eslint-enable no-console */
 
-        response.status(500).send("Error occurred: <br />".concat(err.stack, " <br />").concat(JSON.stringify(err)));
+        response.status(500).send(`Error occurred: <br />${err.stack} <br />${JSON.stringify(err)}`);
       });
-      (0, _server.renderToString)(jsx);
+      Object(server_["renderToString"])(jsx);
       store.close();
     }
   });
 };
 
-var _default = webApp;
-exports["default"] = _default;
-
-/***/ }),
-/* 84 */
-/***/ (function(module, exports) {
-
-module.exports = require("fs");
-
-/***/ }),
-/* 85 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__85__;
-
-/***/ }),
-/* 86 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__86__;
-
-/***/ }),
-/* 87 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__87__;
-
-/***/ }),
-/* 88 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__88__;
-
-/***/ }),
-/* 89 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__89__;
-
-/***/ }),
-/* 90 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__90__;
-
-/***/ }),
-/* 91 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__91__;
-
-/***/ }),
-/* 92 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
+/* harmony default export */ var core_webApp = (webApp);
+// CONCATENATED MODULE: ./src/server/internalServer.js
 
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.AccessMethods = void 0;
-var AccessMethods = {
-  DYNAMIC: 'dynamic',
-  STATIC: 'static',
-  FRAGMENT: 'fragment',
-  REDUX: 'redux'
-};
-exports.AccessMethods = AccessMethods;
-
-/***/ }),
-/* 93 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
 
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.hashKeys = void 0;
 
-var hashKeys = function hashKeys(keys) {
-  var XXHash = __webpack_require__(94);
+ // import ServerFeatures from './features/configure';
 
-  var returnKeys = [];
-  keys.forEach(function (cacheKey) {
-    var inputBuffer = Buffer.from(cacheKey.toLowerCase(), 'utf-8');
-    var hashed = XXHash.h32(inputBuffer, 0x0).toString(16);
-    var reversedhex = hashed.match(/[a-fA-F0-9]{2}/g).reverse().join('');
-    var outputBuffer = Buffer.from(reversedhex, 'hex');
-    returnKeys.push(outputBuffer.toString('base64').substring(0, 6));
+
+const internalServer_app = external_express_default()();
+
+const start = (ReactApp, config, ServerFeatures) => {
+  internalServer_app.disable('x-powered-by'); // Output some information about the used build/startup configuration
+
+  displayStartupConfiguration(config); // Set-up local proxy for images from cms, to save doing rewrites and extra code
+
+  ServerFeatures(internalServer_app);
+  core_reverseProxies(internalServer_app, config.reverseProxyPaths);
+  core_webApp(internalServer_app, ReactApp, config);
+  internalServer_app.use('/static', external_express_default.a.static('dist/static', {
+    maxage: '31557600h'
+  }));
+  internalServer_app.on('ready', async () => {
+    // Configure DNS to make life easier
+    await core_localDns();
+    external_react_loadable_default.a.preloadAll().then(() => {
+      var server = internalServer_app.listen(3001, () => {
+        console.info(`HTTP server is listening @ port 3001`);
+        setTimeout(function () {
+          internalServer_app.emit('app_started');
+        }, 500);
+      });
+      internalServer_app.on('stop', () => {
+        server.close(function () {
+          console.info('GoodBye :(');
+        });
+      });
+    });
   });
-  return returnKeys;
 };
 
-exports.hashKeys = hashKeys;
-
-/***/ }),
-/* 94 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__94__;
+/* harmony default export */ var internalServer = __webpack_exports__["default"] = ({
+  app: internalServer_app,
+  apiProxy: apiProxy,
+  start
+});
 
 /***/ })
 /******/ ]);
