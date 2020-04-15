@@ -105,9 +105,8 @@ const loadBundleData = ({ stats, templates }, build) => {
     bundle.stats = JSON.parse(
       readFileSync(stats.replace('/target', build ? `/${build}` : ''))
     );
-  } catch {
-    //console.log(ex);
-  }
+    // eslint-disable-next-line no-empty
+  } catch {}
   try {
     bundle.templates = {
       templateHTML: readFileSync(
@@ -120,9 +119,8 @@ const loadBundleData = ({ stats, templates }, build) => {
         templates.fragment.replace('/target', build ? `/${build}` : '')
       ),
     };
-  } catch {
-    //console.log(ex);
-  }
+    // eslint-disable-next-line no-empty
+  } catch {}
   return bundle;
 };
 
