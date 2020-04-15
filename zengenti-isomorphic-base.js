@@ -3439,16 +3439,22 @@ const loadBundleData = ({
   const bundle = {};
 
   try {
-    bundle.stats = JSON.parse(readFileSync(stats.replace('/target', build ? `/${build}` : ''))); // eslint-disable-next-line no-empty
-  } catch {}
+    bundle.stats = JSON.parse(readFileSync(stats.replace('/target', build ? `/${build}` : '')));
+  } catch (ex) {
+    //console.log(ex);
+    bundle.stats = null;
+  }
 
   try {
     bundle.templates = {
       templateHTML: readFileSync(templates.html.replace('/target', build ? `/${build}` : '')),
       templateHTMLStatic: readFileSync(templates.static.replace('/target', build ? `/${build}` : '')),
       templateHTMLFragment: readFileSync(templates.fragment.replace('/target', build ? `/${build}` : ''))
-    }; // eslint-disable-next-line no-empty
-  } catch {}
+    };
+  } catch (ex) {
+    //console.log(ex);
+    bundle.templates = null;
+  }
 
   return bundle;
 };
