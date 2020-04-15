@@ -1,7 +1,7 @@
 {
-  "name": "zengenti-isomorphic-base",
-  "version": "0.0.1",
-  "repository": "https://gitlab.zengenti.com/ps-projects/zengenti-base/zen-base/tree/isomorphic-base",
+  "name": "@zengenti/contensis-react-base",
+  "version": "1.0.0-beta.0",
+  "repository": "https://gitlab.zengenti.com/ps-projects/zengenti-base/zen-base/tree/isomorphic-base-rc",
   "license": "None",
   "description": "",
   "main": "zengenti-isomorphic-base.js",
@@ -24,7 +24,8 @@
     "test:generate-output": "jest --json --outputFile=.jest-test-results.json || true",
     "test": "jest  -c ./config/jest.config.js --detectOpenHandles --forceExit",
     "test:watch": "jest --config=./config/jest.config.js --watch",
-    "test:coverage": "jest --config=./config/jest.config.js --coverage"
+    "test:coverage": "jest --config=./config/jest.config.js --coverage",
+    "publish:test": "npm pack && tar -xvzf *.tgz && rm -rf package *.tgz"
   },
   "keywords": [],
   "author": "http://Zengenti.com",

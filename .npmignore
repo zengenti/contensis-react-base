@@ -1,0 +1,16 @@
+*
+!lib/*
+!package.json
+!package-lock.json
+!zengenti-isomorphic-base.js
+!zengenti-isomorphic-base.js.map
+!client.js
+!client.js.map
+!redux.js
+!redux.js.map
+!routing.js
+!routing.js.map
+!user.js
+!user.js.map
+!util.js
+!util.js.map
