@@ -7,11 +7,7 @@ const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const BASE_CONFIG = require('./webpack.config.base');
-const {
-  BABEL_CONFIG,
-  DEVSERVER_PROXIES,
-  WEBPACK_DEFINE_CONFIG,
-} = require('./bundle-info');
+const { DEVSERVER_PROXIES, WEBPACK_DEFINE_CONFIG } = require('./bundle-info');
 
 const CLIENT_DEV_CONFIG = {
   name: 'webpack-dev-config',
@@ -41,7 +37,7 @@ const CLIENT_DEV_CONFIG = {
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
-          options: BABEL_CONFIG,
+          options: { envName: 'modern' },
         },
       },
       {

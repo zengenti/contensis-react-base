@@ -18,10 +18,11 @@ ZengentiAppServer.start(
     withEvents,
     // The HTML templates we will render the app into
     templates: {
-      html: 'dist/target/index.html',
-      static: 'dist/target/index_static.html',
-      fragment: 'dist/target/index_fragment.html',
+      html: 'dist/index.html',
+      static: 'dist/index_static.html',
+      fragment: 'dist/index_fragment.html',
     },
+    differentialBundles: true,
     dynamicPaths: [],
     reverseProxyPaths: Object.values(
       REVERSE_PROXY_PATHS /* global REVERSE_PROXY_PATHS */

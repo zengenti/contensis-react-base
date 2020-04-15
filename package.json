@@ -5,20 +5,17 @@
   "license": "None",
   "description": "",
   "main": "zengenti-isomorphic-base.js",
+  "module": "./src/app/lib.js",
   "config": {
     "startup": ""
   },
   "scripts": {
-    "start": "cross-env NODE_ENV=development BROWSERSLIST_ENV=modern webpack-dev-server --config webpack/webpack.config.dev.js",
-    "build": "rimraf ./dist && concurrently \"npm run build:modern\" \"npm run build:legacy\" \"npm run build:node\" && npm run build:startup",
-    "build:local": "rimraf ./dist && concurrently \"npm run build:modern\" \"npm run build:node\" && npm run build:startup",
-    "build:node": "cross-env NODE_ENV=production BROWSERSLIST_ENV=node webpack --config webpack/webpack.config.server.js",
-    "build:modern": "rimraf ./dist/modern && rimraf ./dist/static/modern && mkdirp ./dist/modern && cross-env NODE_ENV=production BROWSERSLIST_ENV=modern webpack --config webpack/webpack.config.prod.js",
-    "build:legacy": "rimraf ./dist/legacy && rimraf ./dist/static/legacy && mkdirp ./dist/legacy && cross-env NODE_ENV=production BROWSERSLIST_ENV=legacy webpack --config webpack/webpack.config.prod.js",
+    "start": "cross-env NODE_ENV=development webpack-dev-server --config webpack/webpack.config.dev.js",
+    "build": "rimraf ./dist && cross-env NODE_ENV=production parallel-webpack --config webpack/webpack.config.prod.js && npm run build:startup",
     "build:startup": "node node_modules/zengenti-buildstartup-package",
     "server": "node --max-http-header-size=800000 dist/start.js",
-    "dev:server": "cross-env NODE_ENV=test BROWSERSLIST_ENV=node NODE_TLS_REJECT_UNAUTHORIZED=0 NODE_OPTIONS=--max-http-header-size=80000 babel-node --inspect=9229 src/server/debug.js",
-    "debug:server": "nodemon --exec cross-env NODE_ENV=test BROWSERSLIST_ENV=node NODE_TLS_REJECT_UNAUTHORIZED=0 NODE_OPTIONS=--max-http-header-size=80000 babel-node --inspect=9229 src/server/debug.js",
+    "dev:server": "cross-env NODE_ENV=test NODE_OPTIONS=--max-http-header-size=80000 babel-node --inspect=9229 src/server/debug.js",
+    "debug:server": "nodemon --exec cross-env NODE_ENV=test NODE_OPTIONS=--max-http-header-size=80000 babel-node --inspect=9229 src/server/debug.js",
     "build:server": "npm run build && npm run server",
     "build:lib": "rimraf ./lib && cross-env NODE_ENV=production webpack --config webpack/webpack.config.lib.js",
     "postinstall": "patch-package",
@@ -31,24 +28,8 @@
   },
   "keywords": [],
   "author": "http://Zengenti.com",
-  "browserslist": {
-    "modern": [
-      "Firefox >= 72",
-      "Chrome >= 78"
-    ],
-    "legacy": [
-      "IE >= 11",
-      "> 1%"
-    ],
-    "node": [
-      "node 8",
-      "IE >= 11",
-      "> 1%"
-    ]
-  },
   "peerDependencies": {
     "@hot-loader/react-dom": "16.11.0",
-    "browserslist-useragent": "^3.0.2",
     "contensis-delivery-api": "^1.1.0",
     "evil-dns": "^0.2.0",
     "express": "^4.17.1",
@@ -103,7 +84,6 @@
     "chai": "^4.2.0",
     "chai-http": "^4.2.1",
     "clean-webpack-plugin": "0.1.19",
-    "concurrently": "^5.1.0",
     "copy-webpack-plugin": "5.0.3",
     "core-js": "^3.6.4",
     "cross-env": "5.2.0",
@@ -126,7 +106,7 @@
     "jest": "^24.9.0",
     "mocha": "^6.1.4",
     "nodemon": "^1.19.1",
-    "parallel-webpack": "^2.4.0",
+    "parallel-webpack": "^2.6.0",
     "prettier": "1.18.2",
     "rimraf": "^3.0.2",
     "stylelint": "^11.0.0",
@@ -138,10 +118,12 @@
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.7.1",
     "webpack-merge": "4.2.1",
+    "webpack-module-nomodule-plugin": "^0.3.1",
+    "webpack-modules": "^1.0.0",
     "webpack-node-externals": "1.7.2",
     "webpack-shell-plugin": "^0.5.0",
     "webpack-visualizer-plugin": "^0.1.11",
-    "zengenti-buildstartup-package": "0.0.7"
+    "zengenti-buildstartup-package": "0.0.9"
   },
   "dependencies": {
     "@hot-loader/react-dom": "16.11.0",

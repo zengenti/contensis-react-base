@@ -3,7 +3,7 @@ const webpack = require('webpack');
 
 const ASSET_PATH = '/';
 
-const { BABEL_CONFIG, WEBPACK_DEFINE_CONFIG } = require('./bundle-info');
+const { WEBPACK_DEFINE_CONFIG } = require('./bundle-info');
 
 module.exports = {
   output: {
@@ -40,11 +40,10 @@ module.exports = {
           path.resolve('src'),
           // These dependencies have es6 syntax which ie11 doesn't like.
           path.resolve('node_modules/contensis-delivery-api'),
-          path.resolve('node_modules/zengenti-isomorphic-base'),
         ],
         use: {
           loader: 'babel-loader',
-          options: BABEL_CONFIG,
+          options: { envName: 'modern' },
         },
       },
       {

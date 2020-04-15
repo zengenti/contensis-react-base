@@ -4,9 +4,16 @@ const urls = require('../src/app/core/util/urls');
 
 require('custom-env').env(process.env.env || process.env.npm_config_env);
 
-const { PUBLIC_URL, ALIAS, INTERNAL_VIP, ACCESS_TOKEN, PROJECT } = process.env;
+const {
+  PUBLIC_URL,
+  ALIAS,
+  INTERNAL_VIP,
+  ACCESS_TOKEN,
+  PROJECT,
+  CONTENSIS_VERSION,
+} = process.env;
 
-const PROJECTS = env => [
+const PROJECTS = (env) => [
   {
     id: env.PROJECT,
     publicUri: env.PUBLIC_URL,
@@ -54,6 +61,7 @@ const DELIVERY_API_CONFIG = {
 
 const development = {
   __isBrowser__: true,
+  CONTENSIS_VERSION,
   DELIVERY_API_CONFIG,
   DISABLE_SSR_REDUX: false,
   PROJECTS: PROJECTS(process.env),
