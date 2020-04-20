@@ -20,4 +20,11 @@ export const useEntryMapper = (entry, mappers, field = 'sys.contentTypeId') => {
   return useMapper(entry || {}, mapper);
 };
 
+export const mapEntries = (entries, mappers, field = 'sys.contentTypeId') =>
+  entries.map(entry => {
+    const fieldValue = jpath(field, entry || {});
+    const mapper = mappers[fieldValue] || mappers['default'];
+    return mapper ? mapJson(entry || {}, mapper) : entry;
+  });
+
 export default mapJson;

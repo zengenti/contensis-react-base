@@ -67,10 +67,16 @@ function* getRouteSaga(action) {
 
     const state = yield select();
     const routeEntry = selectRouteEntry(state);
+    const currentPath = selectCurrentPath(state);
+    const deliveryApiStatus = selectVersionStatus(state);
+    const project = selectCurrentProject(state);
+    const isHome = currentPath === '/';
+    const isPreview = currentPath && currentPath.startsWith('/preview/');
     if (
-      (appsays && appsays.customRouting) ||
-      (staticRoute && !staticRoute.route.fetchNode) ||
-      (routeEntry && action.statePath === action.path)
+      !isPreview &&
+      ((appsays && appsays.customRouting) ||
+        (staticRoute && !staticRoute.route.fetchNode) ||
+        (routeEntry && action.statePath === action.path))
     ) {
       // To prevent erroneous 404s and wasted network calls, this covers
       // - appsays customRouting and does SET_ENTRY etc. via the consuming app
@@ -88,10 +94,6 @@ function* getRouteSaga(action) {
         });
       } else yield call(setRouteEntry);
     } else {
-      const currentPath = selectCurrentPath(state);
-      const deliveryApiStatus = selectVersionStatus(state);
-      const project = selectCurrentProject(state);
-
       let pathNode = null,
         ancestors = null,
         siblings = null;
@@ -104,10 +106,10 @@ function* getRouteSaga(action) {
       }
 
       let currentPathDepth = currentPath.split('/').length - 1;
-      if (currentPath === '/') currentPathDepth = 0;
+      if (isHome) currentPathDepth = 0;
 
       // Handle homepage
-      if (currentPath === '/') {
+      if (isHome) {
         pathNode = yield cachedSearch.getRootNode(
           {
             depth: 0,
@@ -119,7 +121,7 @@ function* getRouteSaga(action) {
         );
       } else {
         // Handle preview routes
-        if (currentPath && currentPath.startsWith('/preview/')) {
+        if (isPreview) {
           let splitPath = currentPath.split('/');
           let entryGuid = splitPath[2];
           if (splitPath.length == 3) {
@@ -131,9 +133,10 @@ function* getRouteSaga(action) {
               .getClient(deliveryApiStatus, project)
               .entries.get({ id: entryGuid, linkDepth: 3 });
             if (previewEntry) {
-              yield call(setRouteEntry, previewEntry);
-            } else {
-              yield call(do404);
+              pathNode = { entry: previewEntry };
+              // yield call(setRouteEntry, previewEntry);
+              // } else {
+              // yield call(do404);
             }
           }
         } else {

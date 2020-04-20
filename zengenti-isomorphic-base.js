@@ -7,7 +7,7 @@
 		var a = typeof exports === 'object' ? factory(require("immutable"), require("react"), require("contensis-delivery-api"), require("prop-types"), require("query-string"), require("react-redux"), require("react-router-dom"), require("react-hot-loader"), require("@redux-saga/core/effects"), require("js-cookie"), require("react-router-config"), require("redux"), require("react-loadable"), require("history"), require("redux-saga"), require("redux-immutable"), require("redux-thunk"), require("loglevel"), require("react-dom/server"), require("minify-css-string"), require("isomorphic-fetch"), require("express"), require("evil-dns"), require("react-loadable/webpack"), require("react-helmet"), require("serialize-javascript"), require("http-proxy"), require("styled-components"), require("fromentries"), require("xxhashjs")) : factory(root["immutable"], root["react"], root["contensis-delivery-api"], root["prop-types"], root["query-string"], root["react-redux"], root["react-router-dom"], root["react-hot-loader"], root["@redux-saga/core/effects"], root["js-cookie"], root["react-router-config"], root["redux"], root["react-loadable"], root["history"], root["redux-saga"], root["redux-immutable"], root["redux-thunk"], root["loglevel"], root["react-dom/server"], root["minify-css-string"], root["isomorphic-fetch"], root["express"], root["evil-dns"], root["react-loadable/webpack"], root["react-helmet"], root["serialize-javascript"], root["http-proxy"], root["styled-components"], root["fromentries"], root["xxhashjs"]);
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(global, function(__WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__5__, __WEBPACK_EXTERNAL_MODULE__6__, __WEBPACK_EXTERNAL_MODULE__9__, __WEBPACK_EXTERNAL_MODULE__13__, __WEBPACK_EXTERNAL_MODULE__16__, __WEBPACK_EXTERNAL_MODULE__18__, __WEBPACK_EXTERNAL_MODULE__24__, __WEBPACK_EXTERNAL_MODULE__27__, __WEBPACK_EXTERNAL_MODULE__28__, __WEBPACK_EXTERNAL_MODULE__29__, __WEBPACK_EXTERNAL_MODULE__32__, __WEBPACK_EXTERNAL_MODULE__35__, __WEBPACK_EXTERNAL_MODULE__38__, __WEBPACK_EXTERNAL_MODULE__39__, __WEBPACK_EXTERNAL_MODULE__45__, __WEBPACK_EXTERNAL_MODULE__46__, __WEBPACK_EXTERNAL_MODULE__47__, __WEBPACK_EXTERNAL_MODULE__49__, __WEBPACK_EXTERNAL_MODULE__50__, __WEBPACK_EXTERNAL_MODULE__51__, __WEBPACK_EXTERNAL_MODULE__52__, __WEBPACK_EXTERNAL_MODULE__53__, __WEBPACK_EXTERNAL_MODULE__55__, __WEBPACK_EXTERNAL_MODULE__56__, __WEBPACK_EXTERNAL_MODULE__57__, __WEBPACK_EXTERNAL_MODULE__59__, __WEBPACK_EXTERNAL_MODULE__60__, __WEBPACK_EXTERNAL_MODULE__61__, __WEBPACK_EXTERNAL_MODULE__63__) {
+})(global, function(__WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__5__, __WEBPACK_EXTERNAL_MODULE__6__, __WEBPACK_EXTERNAL_MODULE__9__, __WEBPACK_EXTERNAL_MODULE__13__, __WEBPACK_EXTERNAL_MODULE__16__, __WEBPACK_EXTERNAL_MODULE__18__, __WEBPACK_EXTERNAL_MODULE__24__, __WEBPACK_EXTERNAL_MODULE__27__, __WEBPACK_EXTERNAL_MODULE__28__, __WEBPACK_EXTERNAL_MODULE__29__, __WEBPACK_EXTERNAL_MODULE__33__, __WEBPACK_EXTERNAL_MODULE__36__, __WEBPACK_EXTERNAL_MODULE__38__, __WEBPACK_EXTERNAL_MODULE__39__, __WEBPACK_EXTERNAL_MODULE__46__, __WEBPACK_EXTERNAL_MODULE__47__, __WEBPACK_EXTERNAL_MODULE__48__, __WEBPACK_EXTERNAL_MODULE__49__, __WEBPACK_EXTERNAL_MODULE__50__, __WEBPACK_EXTERNAL_MODULE__51__, __WEBPACK_EXTERNAL_MODULE__52__, __WEBPACK_EXTERNAL_MODULE__53__, __WEBPACK_EXTERNAL_MODULE__55__, __WEBPACK_EXTERNAL_MODULE__56__, __WEBPACK_EXTERNAL_MODULE__57__, __WEBPACK_EXTERNAL_MODULE__59__, __WEBPACK_EXTERNAL_MODULE__60__, __WEBPACK_EXTERNAL_MODULE__61__, __WEBPACK_EXTERNAL_MODULE__63__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -1860,8 +1860,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_router_config__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(react_router_config__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var _redux_selectors_routing__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(8);
 /* harmony import */ var _redux_actions_routing__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(22);
-/* harmony import */ var _pages_NotFound__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(33);
-/* harmony import */ var _Status__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(34);
+/* harmony import */ var _pages_NotFound__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(34);
+/* harmony import */ var _Status__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(35);
 /* harmony import */ var _util_ToJs__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(21);
 /* harmony import */ var _features_login_redux_selectors__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(7);
 
@@ -2019,13 +2019,14 @@ const setVersionStatus = status => Object(_util_helpers__WEBPACK_IMPORTED_MODULE
 });
 
 /***/ }),
-/* 32 */
+/* 32 */,
+/* 33 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__32__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__33__;
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2038,7 +2039,7 @@ const NotFound = () => react__WEBPACK_IMPORTED_MODULE_0___default.a.createElemen
 /* harmony default export */ __webpack_exports__["a"] = (NotFound);
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2071,13 +2072,12 @@ Status.propTypes = {
 };
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__35__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__36__;
 
 /***/ }),
-/* 36 */,
 /* 37 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -2164,7 +2164,7 @@ const pickProject = (hostname, query) => {
 var redux_saga_effects_npm_proxy_esm = __webpack_require__(0);
 
 // EXTERNAL MODULE: external "loglevel"
-var external_loglevel_ = __webpack_require__(47);
+var external_loglevel_ = __webpack_require__(48);
 
 // EXTERNAL MODULE: ./src/app/core/redux/types/routing.js
 var routing = __webpack_require__(3);
@@ -2467,8 +2467,13 @@ function* getRouteSaga(action) {
     const setContentTypeLimits = routes && routes.ContentTypeMappings && !!routes.ContentTypeMappings.find(ct => ct.fields || ct.linkDepth);
     const state = yield Object(redux_saga_effects_npm_proxy_esm["select"])();
     const routeEntry = Object(selectors_routing["selectRouteEntry"])(state);
+    const currentPath = Object(selectors_routing["selectCurrentPath"])(state);
+    const deliveryApiStatus = Object(version["selectVersionStatus"])(state);
+    const project = Object(selectors_routing["selectCurrentProject"])(state);
+    const isHome = currentPath === '/';
+    const isPreview = currentPath && currentPath.startsWith('/preview/');
 
-    if (appsays && appsays.customRouting || staticRoute && !staticRoute.route.fetchNode || routeEntry && action.statePath === action.path) {
+    if (!isPreview && (appsays && appsays.customRouting || staticRoute && !staticRoute.route.fetchNode || routeEntry && action.statePath === action.path)) {
       // To prevent erroneous 404s and wasted network calls, this covers
       // - appsays customRouting and does SET_ENTRY etc. via the consuming app
       // - all staticRoutes (where custom 'route.fetchNode' attribute is falsey)
@@ -2482,9 +2487,6 @@ function* getRouteSaga(action) {
         });
       } else yield Object(redux_saga_effects_npm_proxy_esm["call"])(setRouteEntry);
     } else {
-      const currentPath = Object(selectors_routing["selectCurrentPath"])(state);
-      const deliveryApiStatus = Object(version["selectVersionStatus"])(state);
-      const project = Object(selectors_routing["selectCurrentProject"])(state);
       let pathNode = null,
           ancestors = null,
           siblings = null; // Scroll into View
@@ -2496,9 +2498,9 @@ function* getRouteSaga(action) {
       }
 
       let currentPathDepth = currentPath.split('/').length - 1;
-      if (currentPath === '/') currentPathDepth = 0; // Handle homepage
+      if (isHome) currentPathDepth = 0; // Handle homepage
 
-      if (currentPath === '/') {
+      if (isHome) {
         pathNode = yield ContensisDeliveryApi["cachedSearch"].getRootNode({
           depth: 0,
           entryFields: '*',
@@ -2507,7 +2509,7 @@ function* getRouteSaga(action) {
         }, project);
       } else {
         // Handle preview routes
-        if (currentPath && currentPath.startsWith('/preview/')) {
+        if (isPreview) {
           let splitPath = currentPath.split('/');
           let entryGuid = splitPath[2];
 
@@ -2522,9 +2524,11 @@ function* getRouteSaga(action) {
             });
 
             if (previewEntry) {
-              yield Object(redux_saga_effects_npm_proxy_esm["call"])(setRouteEntry, previewEntry);
-            } else {
-              yield Object(redux_saga_effects_npm_proxy_esm["call"])(do404);
+              pathNode = {
+                entry: previewEntry
+              }; // yield call(setRouteEntry, previewEntry);
+              // } else {
+              // yield call(do404);
             }
           }
         } else {
@@ -2685,13 +2689,13 @@ var sagas = __webpack_require__(23);
 "use strict";
 
 // EXTERNAL MODULE: external "redux"
-var external_redux_ = __webpack_require__(32);
+var external_redux_ = __webpack_require__(33);
 
 // EXTERNAL MODULE: external "redux-immutable"
-var external_redux_immutable_ = __webpack_require__(45);
+var external_redux_immutable_ = __webpack_require__(46);
 
 // EXTERNAL MODULE: external "redux-thunk"
-var external_redux_thunk_ = __webpack_require__(46);
+var external_redux_thunk_ = __webpack_require__(47);
 var external_redux_thunk_default = /*#__PURE__*/__webpack_require__.n(external_redux_thunk_);
 
 // EXTERNAL MODULE: external "redux-saga"
@@ -3002,12 +3006,7 @@ module.exports = function(originalModule) {
 
 
 /***/ }),
-/* 45 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__45__;
-
-/***/ }),
+/* 45 */,
 /* 46 */
 /***/ (function(module, exports) {
 
@@ -3020,7 +3019,12 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__46__;
 module.exports = __WEBPACK_EXTERNAL_MODULE__47__;
 
 /***/ }),
-/* 48 */,
+/* 48 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__48__;
+
+/***/ }),
 /* 49 */
 /***/ (function(module, exports) {
 
@@ -3139,7 +3143,7 @@ var external_express_ = __webpack_require__(52);
 var external_express_default = /*#__PURE__*/__webpack_require__.n(external_express_);
 
 // EXTERNAL MODULE: external "react-loadable"
-var external_react_loadable_ = __webpack_require__(35);
+var external_react_loadable_ = __webpack_require__(36);
 var external_react_loadable_default = /*#__PURE__*/__webpack_require__.n(external_react_loadable_);
 
 // CONCATENATED MODULE: ./src/server/util/displayStartupConfiguration.js

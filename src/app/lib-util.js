@@ -6,6 +6,7 @@ exports.urls = require('~/core/util/urls');
 // JSON mapping functions
 exports.jpath = require('~/core/util/json-mapper').jpath;
 exports.mapJson = require('~/core/util/json-mapper').mapJson;
+exports.mapEntries = require('~/core/util/json-mapper').mapEntries;
 
 // JSON mapping hooks
 exports.useMapper = require('~/core/util/json-mapper').useMapper;
