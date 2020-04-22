@@ -116,6 +116,7 @@ function* getRouteSaga(action) {
             entryFields: '*',
             entryLinkDepth,
             language: 'en-GB',
+            versionStatus: deliveryApiStatus,
           },
           project
         );
@@ -152,6 +153,7 @@ function* getRouteSaga(action) {
                 ? ['sys.contentTypeId', 'sys.id']
                 : '*',
               entryLinkDepth: setContentTypeLimits ? 0 : entryLinkDepth,
+              versionStatus: deliveryApiStatus,
             },
             project
           );

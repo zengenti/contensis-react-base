@@ -2505,7 +2505,8 @@ function* getRouteSaga(action) {
           depth: 0,
           entryFields: '*',
           entryLinkDepth,
-          language: 'en-GB'
+          language: 'en-GB',
+          versionStatus: deliveryApiStatus
         }, project);
       } else {
         // Handle preview routes
@@ -2537,7 +2538,8 @@ function* getRouteSaga(action) {
             depth: doNavigation === true || doNavigation.children === true ? 3 : doNavigation && doNavigation.children || 0,
             path: currentPath,
             entryFields: setContentTypeLimits ? ['sys.contentTypeId', 'sys.id'] : '*',
-            entryLinkDepth: setContentTypeLimits ? 0 : entryLinkDepth
+            entryLinkDepth: setContentTypeLimits ? 0 : entryLinkDepth,
+            versionStatus: deliveryApiStatus
           }, project);
 
           if (setContentTypeLimits && pathNode && pathNode.entry && pathNode.entry.sys && pathNode.entry.sys.id) {
