@@ -1379,13 +1379,13 @@ function* forgotPassword(action) {
 
 function* changePassword(action) {
   const state = yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["select"])();
-  const userState = yield state.get('user');
+  const username = Object(_selectors__WEBPACK_IMPORTED_MODULE_6__["selectUsername"])(state);
   let message = '';
 
   if (action.token) {
     message = yield _util_LoginHelper_class__WEBPACK_IMPORTED_MODULE_7__["LoginHelper"].ChangePasswordWithToken(action.token, action.newPassword, action.newPasswordConfirm);
   } else {
-    message = yield _util_LoginHelper_class__WEBPACK_IMPORTED_MODULE_7__["LoginHelper"].ChangePassword(userState.username, action.oldPassword, action.newPassword, action.newPasswordConfirm);
+    message = yield _util_LoginHelper_class__WEBPACK_IMPORTED_MODULE_7__["LoginHelper"].ChangePassword(username, action.oldPassword, action.newPassword, action.newPasswordConfirm);
   }
 
   yield Object(redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__["put"])({

@@ -16,7 +16,7 @@ import {
 import { initialUserState } from './reducers';
 import { SET_ROUTE } from '~/core/redux/types/routing';
 import { selectCurrentSearch } from '~/core/redux/selectors/routing';
-import { selectUser } from './selectors';
+import { selectUser, selectUsername } from './selectors';
 import { LoginHelper } from '../util/LoginHelper.class';
 import { SecurityApi } from '../util/SecurityApi.class';
 
@@ -118,7 +118,7 @@ function* forgotPassword(action) {
 
 function* changePassword(action) {
   const state = yield select();
-  const userState = yield state.get('user');
+  const username = selectUsername(state);
   let message = '';
   if (action.token) {
     message = yield LoginHelper.ChangePasswordWithToken(
@@ -128,7 +128,7 @@ function* changePassword(action) {
     );
   } else {
     message = yield LoginHelper.ChangePassword(
-      userState.username,
+      username,
       action.oldPassword,
       action.newPassword,
       action.newPasswordConfirm
