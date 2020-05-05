@@ -8,6 +8,7 @@ export default [
     path: '/',
     exact: true,
     fetchNode: true,
+    ssr: true,
     component: Homepage,
   },
   // ********************************

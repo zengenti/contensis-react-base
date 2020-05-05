@@ -33,6 +33,7 @@ import {
 
 import createStore from '~/core/redux/store';
 import rootSaga from '~/core/redux/sagas/index.js';
+import { matchRoutes } from 'react-router-config';
 
 const addStandardHeaders = (state, response, packagejson, groups) => {
   if (state) {
@@ -157,6 +158,11 @@ const webApp = (app, ReactApp, config) => {
     if (request.originalUrl.startsWith('/static/')) return next();
     const { url } = request;
 
+    const matchedStaticRoute = () =>
+      matchRoutes(routes.StaticRoutes, request.path);
+    const isStaticRoute = () => matchedStaticRoute().length > 0;
+    const staticRoute = isStaticRoute() && matchedStaticRoute()[0];
+
     // Determine functional params and set access methods
     let accessMethod = {};
 
@@ -165,7 +171,9 @@ const webApp = (app, ReactApp, config) => {
       : 'false';
 
     // Hack for certain pages to avoid SSR
-    const onlyDynamic = dynamicPaths.includes(request.path);
+    const onlyDynamic =
+      dynamicPaths.includes(request.path) ||
+      (staticRoute && staticRoute.route.ssr === false);
 
     const isReduxRequestNormalised = request.query.redux
       ? request.query.redux.toLowerCase()
