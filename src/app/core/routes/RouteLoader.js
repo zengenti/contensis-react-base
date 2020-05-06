@@ -35,8 +35,10 @@ const RouteLoader = ({
   projectId,
   contentTypeId,
   entry,
+  isLoading,
   isLoggedIn,
   isNotFound,
+  loadingComponent,
   notFoundComponent,
   setNavigationPath,
   routes,
@@ -101,7 +103,14 @@ const RouteLoader = ({
     });
   }
 
-  // Match any Defined Content Type Mappings
+  // Render a supplied Loading component if the route
+  // is not a static route and is in a loading state
+  if (isLoading && !isNotFound && loadingComponent) {
+    const LoadingComponent = loadingComponent;
+    return <LoadingComponent />;
+  }
+
+  // Match any defined Content Type Mappings
   if (contentTypeId) {
     const MatchedComponent = routes.ContentTypeMappings.find(
       item => item.contentTypeID == contentTypeId
@@ -132,17 +141,18 @@ const RouteLoader = ({
 };
 
 RouteLoader.propTypes = {
-  routes: PropTypes.objectOf(PropTypes.array, PropTypes.array),
-  withEvents: PropTypes.object,
-  statePath: PropTypes.string,
-  projectId: PropTypes.string,
   contentTypeId: PropTypes.string,
-  loading: PropTypes.object,
   entry: PropTypes.object,
+  isLoading: PropTypes.bool,
   isLoggedIn: PropTypes.bool,
   isNotFound: PropTypes.bool,
+  loadingComponent: PropTypes.func,
   notFoundComponent: PropTypes.func,
+  projectId: PropTypes.string,
+  routes: PropTypes.objectOf(PropTypes.array, PropTypes.array),
   setNavigationPath: PropTypes.func,
+  statePath: PropTypes.string,
+  withEvents: PropTypes.object,
 };
 
 const mapStateToProps = state => {

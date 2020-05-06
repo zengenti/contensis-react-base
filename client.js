@@ -1894,8 +1894,10 @@ const RouteLoader = ({
   projectId,
   contentTypeId,
   entry,
+  isLoading,
   isLoggedIn,
   isNotFound,
+  loadingComponent,
   notFoundComponent,
   setNavigationPath,
   routes,
@@ -1939,7 +1941,14 @@ const RouteLoader = ({
       entry,
       isLoggedIn
     });
-  } // Match any Defined Content Type Mappings
+  } // Render a supplied Loading component if the route
+  // is not a static route and is in a loading state
+
+
+  if (isLoading && !isNotFound && loadingComponent) {
+    const LoadingComponent = loadingComponent;
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(LoadingComponent, null);
+  } // Match any defined Content Type Mappings
 
 
   if (contentTypeId) {
@@ -1967,17 +1976,18 @@ const RouteLoader = ({
 };
 
 RouteLoader.propTypes = {
-  routes: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.objectOf(prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.array, prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.array),
-  withEvents: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.object,
-  statePath: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
-  projectId: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
   contentTypeId: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
-  loading: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.object,
   entry: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.object,
+  isLoading: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,
   isLoggedIn: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,
   isNotFound: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,
+  loadingComponent: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func,
   notFoundComponent: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func,
-  setNavigationPath: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func
+  projectId: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
+  routes: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.objectOf(prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.array, prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.array),
+  setNavigationPath: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func,
+  statePath: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
+  withEvents: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.object
 };
 
 const mapStateToProps = state => {
