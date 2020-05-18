@@ -3335,6 +3335,29 @@ const AccessMethods = {
   FRAGMENT: 'fragment',
   REDUX: 'redux'
 };
+const ResponseMethod = {
+  send: 'send',
+  json: 'json',
+  end: 'end'
+};
+// CONCATENATED MODULE: ./src/server/util/handleResponse.js
+/* eslint-disable no-console */
+
+/**
+ * Web Application Response handler, sends a prepared express js response
+ * with the supplied content sending in the specified manner
+ * @param {response} request express js request object
+ * @param {response} response express js response object
+ * @param {string | object} content the content to send in the response body
+ * @param {function} send the response function to call e.g res.send() res.json() res.end()
+ */
+
+const handleResponse = (request, response, content, send = ResponseMethod.send) => {
+  // console.log('---', response.statusCode, '---');
+  response[send](content);
+};
+
+/* harmony default export */ var util_handleResponse = (handleResponse);
 // CONCATENATED MODULE: ./src/server/util/cacheHashing.js
 const hashKeys = keys => {
   const XXHash = __webpack_require__(63);
@@ -3374,6 +3397,7 @@ var sagas = __webpack_require__(41);
 var external_react_router_config_ = __webpack_require__(25);
 
 // CONCATENATED MODULE: ./src/server/core/webApp.js
+
 
 
 
@@ -3491,7 +3515,8 @@ const webApp = (app, ReactApp, config) => {
     dynamicPaths,
     allowedGroups,
     globalGroups,
-    disableSsrRedux
+    disableSsrRedux,
+    handleResponses
   } = config;
   const bundles = {
     default: loadBundleData(config),
@@ -3500,6 +3525,7 @@ const webApp = (app, ReactApp, config) => {
   };
   if (!bundles.default || bundles.default === {}) bundles.default = bundles.legacy || bundles.modern;
   const versionInfo = JSON.parse(external_fs_default.a.readFileSync(versionData, 'utf8'));
+  const responseHandler = typeof handleResponses === 'function' ? handleResponses : util_handleResponse;
   app.get('/*', (request, response, next) => {
     if (request.originalUrl.startsWith('/static/')) return next();
     const {
@@ -3573,7 +3599,9 @@ const webApp = (app, ReactApp, config) => {
       }).filter(f => f).join('');
       const responseHtmlDynamic = templateHTML.replace('{{TITLE}}', '').replace('{{SEO_CRITICAL_METADATA}}', '').replace('{{CRITICAL_CSS}}', '').replace('{{APP}}', '').replace('{{LOADABLE_CHUNKS}}', dynamicBundleScripts).replace('{{REDUX_DATA}}', isDynamicHint);
       response.setHeader('Surrogate-Control', 'max-age=3600');
-      response.status(status).send(responseHtmlDynamic);
+      response.status(status); //.send(responseHtmlDynamic);
+
+      responseHandler(request, response, responseHtmlDynamic);
     } // Render the JSX server side and send response as per access method options
 
 
@@ -3611,7 +3639,9 @@ const webApp = (app, ReactApp, config) => {
               allowedGroups,
               globalGroups
             });
-            response.status(status).json(serialisedReduxData);
+            response.status(status); //.json(serialisedReduxData);
+
+            responseHandler(request, response, serialisedReduxData, 'json');
             return true;
           }
 
@@ -3657,7 +3687,9 @@ const webApp = (app, ReactApp, config) => {
         });
 
         try {
-          response.status(status).send(responseHTML);
+          response.status(status); //.send(responseHTML);
+
+          responseHandler(request, response, responseHTML);
         } catch (err) {
           // eslint-disable-next-line no-console
           console.log(err.message);
@@ -3670,7 +3702,10 @@ const webApp = (app, ReactApp, config) => {
         console.log(err);
         /* eslint-enable no-console */
 
-        response.status(500).send(`Error occurred: <br />${err.stack} <br />${JSON.stringify(err)}`);
+        response.status(500);
+        responseHandler(request, response, `Error occurred: <br />${err.stack} <br />${JSON.stringify(err)}`); // .send(
+        //   `Error occurred: <br />${err.stack} <br />${JSON.stringify(err)}`
+        // );
       });
       Object(server_["renderToString"])(jsx);
       store.close();
