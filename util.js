@@ -7,7 +7,7 @@
 		var a = typeof exports === 'object' ? factory(require("jsonpath-mapper")) : factory(root["jsonpath-mapper"]);
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(global, function(__WEBPACK_EXTERNAL_MODULE__32__) {
+})(global, function(__WEBPACK_EXTERNAL_MODULE__30__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -91,19 +91,19 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 71);
+/******/ 	return __webpack_require__(__webpack_require__.s = 73);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 32:
+/***/ 30:
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__32__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__30__;
 
 /***/ }),
 
-/***/ 45:
+/***/ 46:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -111,7 +111,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useMapper", function() { return useMapper; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useEntryMapper", function() { return useEntryMapper; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapEntries", function() { return mapEntries; });
-/* harmony import */ var jsonpath_mapper__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(32);
+/* harmony import */ var jsonpath_mapper__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(30);
 /* harmony import */ var jsonpath_mapper__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jsonpath_mapper__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony reexport (default from non-harmony) */ __webpack_require__.d(__webpack_exports__, "mapJson", function() { return jsonpath_mapper__WEBPACK_IMPORTED_MODULE_0___default.a; });
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "jpath", function() { return jsonpath_mapper__WEBPACK_IMPORTED_MODULE_0__["jpath"]; });
@@ -145,24 +145,24 @@ const mapEntries = (entries, mappers, field = 'sys.contentTypeId') => entries.ma
 
 /***/ }),
 
-/***/ 71:
+/***/ 73:
 /***/ (function(module, exports, __webpack_require__) {
 
 // Global server and build utils
-exports.setCachingHeaders = __webpack_require__(72);
-exports.stringifyStrings = __webpack_require__(73);
-exports.urls = __webpack_require__(74); // JSON mapping functions
+exports.setCachingHeaders = __webpack_require__(74);
+exports.stringifyStrings = __webpack_require__(75);
+exports.urls = __webpack_require__(76); // JSON mapping functions
 
-exports.jpath = __webpack_require__(45).jpath;
-exports.mapJson = __webpack_require__(45).mapJson;
-exports.mapEntries = __webpack_require__(45).mapEntries; // JSON mapping hooks
+exports.jpath = __webpack_require__(46).jpath;
+exports.mapJson = __webpack_require__(46).mapJson;
+exports.mapEntries = __webpack_require__(46).mapEntries; // JSON mapping hooks
 
-exports.useMapper = __webpack_require__(45).useMapper;
-exports.useEntryMapper = __webpack_require__(45).useEntryMapper;
+exports.useMapper = __webpack_require__(46).useMapper;
+exports.useEntryMapper = __webpack_require__(46).useEntryMapper;
 
 /***/ }),
 
-/***/ 72:
+/***/ 74:
 /***/ (function(module, exports) {
 
 const setCachingHeaders = (response, {
@@ -177,7 +177,7 @@ module.exports = setCachingHeaders;
 
 /***/ }),
 
-/***/ 73:
+/***/ 75:
 /***/ (function(module, exports) {
 
 const stringifyStrings = obj => {
@@ -204,7 +204,7 @@ module.exports = stringifyStrings;
 
 /***/ }),
 
-/***/ 74:
+/***/ 76:
 /***/ (function(module, exports) {
 
 const url = (alias, project) => {

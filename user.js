@@ -7,7 +7,7 @@
 		var a = typeof exports === 'object' ? factory(require("immutable"), require("react"), require("query-string"), require("react-redux"), require("@redux-saga/core/effects"), require("js-cookie")) : factory(root["immutable"], root["react"], root["query-string"], root["react-redux"], root["@redux-saga/core/effects"], root["js-cookie"]);
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(global, function(__WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__5__, __WEBPACK_EXTERNAL_MODULE__13__, __WEBPACK_EXTERNAL_MODULE__16__, __WEBPACK_EXTERNAL_MODULE__28__, __WEBPACK_EXTERNAL_MODULE__29__) {
+})(global, function(__WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__5__, __WEBPACK_EXTERNAL_MODULE__12__, __WEBPACK_EXTERNAL_MODULE__16__, __WEBPACK_EXTERNAL_MODULE__26__, __WEBPACK_EXTERNAL_MODULE__27__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -91,15 +91,16 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 70);
+/******/ 	return __webpack_require__(__webpack_require__.s = 72);
 /******/ })
 /************************************************************************/
-/******/ ([
-/* 0 */
+/******/ ({
+
+/***/ 0:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(28);
+/* harmony import */ var _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(26);
 /* harmony import */ var _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony reexport (checked) */ if(__webpack_require__.o(_redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__, "all")) __webpack_require__.d(__webpack_exports__, "all", function() { return _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__["all"]; });
 
@@ -117,7 +118,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 1 */
+
+/***/ 1:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -159,310 +161,15 @@ const SET_RECAPTCHA_KEY = `${ACTION_PREFIX}SET_RECAPTCHA_KEY`;
 const SET_RECAPTCHA_RESPONSE = `${ACTION_PREFIX}SET_RECAPTCHA_RESPONSE`;
 
 /***/ }),
-/* 2 */
-/***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__2__;
-
-/***/ }),
-/* 3 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GET_ENTRY", function() { return GET_ENTRY; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_ENTRY", function() { return SET_ENTRY; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_NODE", function() { return SET_NODE; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_ANCESTORS", function() { return SET_ANCESTORS; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_SIBLINGS", function() { return SET_SIBLINGS; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_ENTRY_ID", function() { return SET_ENTRY_ID; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_ENTRY_RELATED_ARTICLES", function() { return SET_ENTRY_RELATED_ARTICLES; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_NAVIGATION_NOT_FOUND", function() { return SET_NAVIGATION_NOT_FOUND; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_NAVIGATION_PATH", function() { return SET_NAVIGATION_PATH; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_TARGET_PROJECT", function() { return SET_TARGET_PROJECT; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_ROUTE", function() { return SET_ROUTE; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CALL_HISTORY_METHOD", function() { return CALL_HISTORY_METHOD; });
-const ROUTING_PREFIX = '@ROUTING/';
-const GET_ENTRY = `${ROUTING_PREFIX}_GET_ENTRY`;
-const SET_ENTRY = `${ROUTING_PREFIX}_SET_ENTRY`;
-const SET_NODE = `${ROUTING_PREFIX}_SET_NODE`;
-const SET_ANCESTORS = `${ROUTING_PREFIX}_SET_ANCESTORS`;
-const SET_SIBLINGS = `${ROUTING_PREFIX}_SET_SIBLINGS`;
-const SET_ENTRY_ID = `${ROUTING_PREFIX}_SET_ENTRY_ID`;
-const SET_ENTRY_RELATED_ARTICLES = `${ROUTING_PREFIX}_SET_ENTRY_RELATED_ARTICLES`;
-const SET_NAVIGATION_NOT_FOUND = `${ROUTING_PREFIX}_SET_NOT_FOUND`;
-const SET_NAVIGATION_PATH = `${ROUTING_PREFIX}_SET_NAVIGATION_PATH`;
-const SET_TARGET_PROJECT = `${ROUTING_PREFIX}_SET_TARGET_PROJECT`;
-const SET_ROUTE = `${ROUTING_PREFIX}_SET_ROUTE`;
-const CALL_HISTORY_METHOD = `${ROUTING_PREFIX}_CALL_HISTORY_METHOD`;
-
-/***/ }),
-/* 4 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return action; });
-/* unused harmony export getWebPImageUri */
-/* unused harmony export resizeImage */
-/* unused harmony export resizeImageUri */
-/* unused harmony export flattenArray */
-/* unused harmony export api */
-/* unused harmony export dynamicSort */
-/* unused harmony export randomString */
-function action(type, payload = {}) {
-  return {
-    type,
-    ...payload
-  };
-}
-const getWebPImageUri = uri => {
-  let formatedUri = uri;
-
-  if (uri.indexOf('.gif') == -1) {
-    if (uri.indexOf('f=') == -1 && uri.indexOf('format=') == -1) {
-      if (uri.indexOf('?') > -1) {
-        formatedUri = `${uri}&f=webp`;
-      } else {
-        formatedUri = `${uri}?f=webp`;
-      }
-    }
-
-    if (formatedUri.indexOf('q=') == -1 && formatedUri.indexOf('quality=') == -1) {
-      if (formatedUri.indexOf('?') > -1) {
-        formatedUri = `${formatedUri}&q=70`;
-      } else {
-        formatedUri = `${formatedUri}?q=70`;
-      }
-    }
-  }
-
-  return formatedUri;
-};
-const resizeImage = (image, height, width) => {
-  if (image.asset && image.asset.sys && image.asset.sys.uri) {
-    image.asset.sys.uri = resizeImageUri(image.asset.sys.uri, height, width);
-  }
-};
-const resizeImageUri = (uri, height, width) => {
-  let formatedUri = uri;
-  let paramDelimeter = '?';
-
-  if (uri.indexOf('?') > -1) {
-    paramDelimeter = '&';
-  }
-
-  if (width) {
-    if (formatedUri.indexOf('w=') == -1 && formatedUri.indexOf('width=') == -1) {
-      formatedUri = `${formatedUri}${paramDelimeter}w=${width}`;
-      paramDelimeter = '&';
-    }
-  }
-
-  if (height) {
-    if (formatedUri.indexOf('h=') == -1 && formatedUri.indexOf('height=') == -1) {
-      formatedUri = `${formatedUri}${paramDelimeter}h=${height}`;
-    }
-  }
-
-  return formatedUri;
-};
-function flattenArray(arr) {
-  // flatten arrays inside the supplied array and
-  // remove duplicates from the result
-  return arr.reduce((acc, val) => acc.concat(val), []).filter((elem, pos, arr) => arr.indexOf(elem) == pos);
-}
-async function api(url, options) {
-  return fetch(url, options).then(async response => {
-    setTimeout(() => null, 0);
-
-    if (!response.ok) {
-      throw new Error(response.statusText);
-    }
-
-    return response.json().then(data => data);
-  }).catch(error => {
-    //console.log(error);
-    throw error;
-  });
-}
-function dynamicSort(property) {
-  var sortOrder = 1;
-
-  if (property[0] === '-') {
-    sortOrder = -1;
-    property = property.substr(1);
-  }
-
-  return function (a, b) {
-    /* next line works with strings and numbers,
-     * and you may want to customize it to your needs
-     */
-    var result = a[property] < b[property] ? -1 : a[property] > b[property] ? 1 : 0;
-    return result * sortOrder;
-  };
-}
-const randomString = length => {
-  let text = '';
-  const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-  for (var i = 0; i < length; i++) {
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
-  }
-
-  return text;
-};
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__5__;
-
-/***/ }),
-/* 6 */,
-/* 7 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectUser", function() { return selectUser; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectUsername", function() { return selectUsername; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectUserLoggedIn", function() { return selectUserLoggedIn; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectUserGroups", function() { return selectUserGroups; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectUserMessage", function() { return selectUserMessage; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectLoginScreenMode", function() { return selectLoginScreenMode; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectPasswordMessage", function() { return selectPasswordMessage; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectChangePasswordMessage", function() { return selectChangePasswordMessage; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectCaptchaSiteKey", function() { return selectCaptchaSiteKey; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectCaptchaData", function() { return selectCaptchaData; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectCaptchaResponse", function() { return selectCaptchaResponse; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectCaptchaToken", function() { return selectCaptchaToken; });
-const selectUser = state => {
-  return state.get('user');
-};
-const selectUsername = state => {
-  return state.getIn(['user', 'username']);
-};
-const selectUserLoggedIn = state => {
-  return state.getIn(['user', 'loggedIn']);
-};
-const selectUserGroups = state => {
-  return state.getIn(['user', 'groups']);
-};
-const selectUserMessage = state => {
-  return state.getIn(['user', 'logonResult']);
-};
-const selectLoginScreenMode = state => {
-  return state.getIn(['user', 'loginScreenMode']);
-};
-const selectPasswordMessage = state => {
-  return state.getIn(['user', 'passwordResetMessage']);
-};
-const selectChangePasswordMessage = state => {
-  return state.getIn(['user', 'changePasswordMessage']);
-};
-const selectCaptchaSiteKey = state => {
-  return state.getIn(['user', 'recaptcha', 'key']);
-};
-const selectCaptchaData = state => {
-  return state.getIn(['user', 'recaptcha', 'response']);
-};
-const selectCaptchaResponse = state => {
-  return state.getIn(['user', 'recaptcha', 'response', 'isHuman']);
-};
-const selectCaptchaToken = state => {
-  return state.getIn(['user', 'recaptcha', 'response', 'token']);
-};
-
-/***/ }),
-/* 8 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectRouteEntry", function() { return selectRouteEntry; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectNodeDepends", function() { return selectNodeDepends; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectCurrentTreeID", function() { return selectCurrentTreeID; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectEntryDepends", function() { return selectEntryDepends; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectRouteEntryEntryId", function() { return selectRouteEntryEntryId; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectRouteEntryContentTypeId", function() { return selectRouteEntryContentTypeId; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectRouteEntrySlug", function() { return selectRouteEntrySlug; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectRouteEntryID", function() { return selectRouteEntryID; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectCurrentPath", function() { return selectCurrentPath; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectCurrentSearch", function() { return selectCurrentSearch; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectQueryStringAsObject", function() { return selectQueryStringAsObject; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectCurrentProject", function() { return selectCurrentProject; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectIsNotFound", function() { return selectIsNotFound; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectCurrentAncestors", function() { return selectCurrentAncestors; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectCurrentNode", function() { return selectCurrentNode; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectBreadcrumb", function() { return selectBreadcrumb; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectRouteLoading", function() { return selectRouteLoading; });
-/* harmony import */ var immutable__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
-/* harmony import */ var immutable__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(immutable__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _util_navigation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(20);
-
-
-const selectRouteEntry = state => {
-  return state.getIn(['routing', 'entry'], Object(immutable__WEBPACK_IMPORTED_MODULE_0__["Map"])({}));
-};
-const selectNodeDepends = state => {
-  return state.getIn(['routing', 'nodeDepends'], new immutable__WEBPACK_IMPORTED_MODULE_0__["List"]([]));
-};
-const selectCurrentTreeID = state => {
-  return state.getIn(['routing', 'currentTreeId']);
-};
-const selectEntryDepends = state => {
-  return state.getIn(['routing', 'entryDepends']);
-};
-const selectRouteEntryEntryId = state => {
-  return state.getIn(['routing', 'entry', 'sys', 'id'], null);
-};
-const selectRouteEntryContentTypeId = state => {
-  const entry = selectRouteEntry(state);
-  return entry && entry.getIn(['sys', 'contentTypeId'], null);
-};
-const selectRouteEntrySlug = state => {
-  return state.getIn(['routing', 'entry', 'sys', 'slug'], null);
-};
-const selectRouteEntryID = state => {
-  return state.getIn(['routing', 'entryID']);
-};
-const selectCurrentPath = state => {
-  return state.getIn(['routing', 'currentPath']);
-};
-const selectCurrentSearch = state => {
-  return state.getIn(['routing', 'location', 'search']);
-};
-const selectQueryStringAsObject = state => Object(_util_navigation__WEBPACK_IMPORTED_MODULE_1__[/* queryParams */ "b"])(selectCurrentSearch(state));
-const selectCurrentProject = state => {
-  return state.getIn(['routing', 'currentProject']);
-};
-const selectIsNotFound = state => {
-  return state.getIn(['routing', 'notFound']);
-};
-const selectCurrentAncestors = state => {
-  return state.getIn(['routing', 'currentNodeAncestors'], new immutable__WEBPACK_IMPORTED_MODULE_0__["List"]());
-};
-const selectCurrentNode = state => {
-  return state.getIn(['routing', 'currentNode']);
-};
-const selectBreadcrumb = state => {
-  return (selectCurrentAncestors(state) || new immutable__WEBPACK_IMPORTED_MODULE_0__["List"]()).push(selectCurrentNode(state));
-};
-const selectRouteLoading = state => {
-  return state.getIn(['routing', 'isLoading']);
-};
-
-/***/ }),
-/* 9 */,
-/* 10 */
+/***/ 10:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 
 // EXTERNAL MODULE: external "js-cookie"
-var external_js_cookie_ = __webpack_require__(29);
+var external_js_cookie_ = __webpack_require__(27);
 var external_js_cookie_default = /*#__PURE__*/__webpack_require__.n(external_js_cookie_);
 
 // CONCATENATED MODULE: ./src/app/features/login/util/CookieHelper.class.js
@@ -776,7 +483,8 @@ class LoginHelper_class_LoginHelper {
 }
 
 /***/ }),
-/* 11 */
+
+/***/ 11:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -930,14 +638,15 @@ async function api(url, options) {
 }
 
 /***/ }),
-/* 12 */,
-/* 13 */
+
+/***/ 12:
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__13__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__12__;
 
 /***/ }),
-/* 14 */
+
+/***/ 14:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1001,14 +710,15 @@ const initialUserState = Object(immutable__WEBPACK_IMPORTED_MODULE_0__["Map"])({
 });
 
 /***/ }),
-/* 15 */,
-/* 16 */
+
+/***/ 16:
 /***/ (function(module, exports) {
 
 module.exports = __WEBPACK_EXTERNAL_MODULE__16__;
 
 /***/ }),
-/* 17 */
+
+/***/ 18:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1149,9 +859,15 @@ const withLogin = WrappedComponent => {
 
 
 /***/ }),
-/* 18 */,
-/* 19 */,
-/* 20 */
+
+/***/ 2:
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__2__;
+
+/***/ }),
+
+/***/ 20:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1160,7 +876,7 @@ const withLogin = WrappedComponent => {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return buildUrl; });
 /* unused harmony export clientHostname */
 /* unused harmony export addHostname */
-/* harmony import */ var query_string__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(13);
+/* harmony import */ var query_string__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(12);
 /* harmony import */ var query_string__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(query_string__WEBPACK_IMPORTED_MODULE_0__);
 
 function queryParams(search) {
@@ -1178,7 +894,8 @@ const addHostname = typeof window == 'undefined' || window.location.host == 'loc
 }` : clientHostname();
 
 /***/ }),
-/* 21 */
+
+/***/ 21:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1200,15 +917,15 @@ const toJS = WrappedComponent => wrappedComponentProps => {
 };
 
 /***/ }),
-/* 22 */,
-/* 23 */
+
+/***/ 23:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return userSagas; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return validateUserSaga; });
 /* harmony import */ var redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
-/* harmony import */ var query_string__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(13);
+/* harmony import */ var query_string__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(12);
 /* harmony import */ var query_string__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(query_string__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(1);
 /* harmony import */ var _reducers__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(14);
@@ -1391,75 +1108,328 @@ function* createUserAccountSaga() {
 }
 
 /***/ }),
-/* 24 */,
-/* 25 */,
-/* 26 */,
-/* 27 */,
-/* 28 */
+
+/***/ 26:
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__28__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__26__;
 
 /***/ }),
-/* 29 */
+
+/***/ 27:
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__29__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__27__;
 
 /***/ }),
-/* 30 */,
-/* 31 */,
-/* 32 */,
-/* 33 */,
-/* 34 */,
-/* 35 */,
-/* 36 */,
-/* 37 */,
-/* 38 */,
-/* 39 */,
-/* 40 */,
-/* 41 */,
-/* 42 */,
-/* 43 */,
-/* 44 */,
-/* 45 */,
-/* 46 */,
-/* 47 */,
-/* 48 */,
-/* 49 */,
-/* 50 */,
-/* 51 */,
-/* 52 */,
-/* 53 */,
-/* 54 */,
-/* 55 */,
-/* 56 */,
-/* 57 */,
-/* 58 */,
-/* 59 */,
-/* 60 */,
-/* 61 */,
-/* 62 */,
-/* 63 */,
-/* 64 */,
-/* 65 */,
-/* 66 */,
-/* 67 */,
-/* 68 */,
-/* 69 */,
-/* 70 */
+
+/***/ 3:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GET_ENTRY", function() { return GET_ENTRY; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_ENTRY", function() { return SET_ENTRY; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_NODE", function() { return SET_NODE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_ANCESTORS", function() { return SET_ANCESTORS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_SIBLINGS", function() { return SET_SIBLINGS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_ENTRY_ID", function() { return SET_ENTRY_ID; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_ENTRY_RELATED_ARTICLES", function() { return SET_ENTRY_RELATED_ARTICLES; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_NAVIGATION_NOT_FOUND", function() { return SET_NAVIGATION_NOT_FOUND; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_NAVIGATION_PATH", function() { return SET_NAVIGATION_PATH; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_TARGET_PROJECT", function() { return SET_TARGET_PROJECT; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_ROUTE", function() { return SET_ROUTE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CALL_HISTORY_METHOD", function() { return CALL_HISTORY_METHOD; });
+const ROUTING_PREFIX = '@ROUTING/';
+const GET_ENTRY = `${ROUTING_PREFIX}_GET_ENTRY`;
+const SET_ENTRY = `${ROUTING_PREFIX}_SET_ENTRY`;
+const SET_NODE = `${ROUTING_PREFIX}_SET_NODE`;
+const SET_ANCESTORS = `${ROUTING_PREFIX}_SET_ANCESTORS`;
+const SET_SIBLINGS = `${ROUTING_PREFIX}_SET_SIBLINGS`;
+const SET_ENTRY_ID = `${ROUTING_PREFIX}_SET_ENTRY_ID`;
+const SET_ENTRY_RELATED_ARTICLES = `${ROUTING_PREFIX}_SET_ENTRY_RELATED_ARTICLES`;
+const SET_NAVIGATION_NOT_FOUND = `${ROUTING_PREFIX}_SET_NOT_FOUND`;
+const SET_NAVIGATION_PATH = `${ROUTING_PREFIX}_SET_NAVIGATION_PATH`;
+const SET_TARGET_PROJECT = `${ROUTING_PREFIX}_SET_TARGET_PROJECT`;
+const SET_ROUTE = `${ROUTING_PREFIX}_SET_ROUTE`;
+const CALL_HISTORY_METHOD = `${ROUTING_PREFIX}_CALL_HISTORY_METHOD`;
+
+/***/ }),
+
+/***/ 4:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return action; });
+/* unused harmony export getWebPImageUri */
+/* unused harmony export resizeImage */
+/* unused harmony export resizeImageUri */
+/* unused harmony export flattenArray */
+/* unused harmony export api */
+/* unused harmony export dynamicSort */
+/* unused harmony export randomString */
+function action(type, payload = {}) {
+  return {
+    type,
+    ...payload
+  };
+}
+const getWebPImageUri = uri => {
+  let formatedUri = uri;
+
+  if (uri.indexOf('.gif') == -1) {
+    if (uri.indexOf('f=') == -1 && uri.indexOf('format=') == -1) {
+      if (uri.indexOf('?') > -1) {
+        formatedUri = `${uri}&f=webp`;
+      } else {
+        formatedUri = `${uri}?f=webp`;
+      }
+    }
+
+    if (formatedUri.indexOf('q=') == -1 && formatedUri.indexOf('quality=') == -1) {
+      if (formatedUri.indexOf('?') > -1) {
+        formatedUri = `${formatedUri}&q=70`;
+      } else {
+        formatedUri = `${formatedUri}?q=70`;
+      }
+    }
+  }
+
+  return formatedUri;
+};
+const resizeImage = (image, height, width) => {
+  if (image.asset && image.asset.sys && image.asset.sys.uri) {
+    image.asset.sys.uri = resizeImageUri(image.asset.sys.uri, height, width);
+  }
+};
+const resizeImageUri = (uri, height, width) => {
+  let formatedUri = uri;
+  let paramDelimeter = '?';
+
+  if (uri.indexOf('?') > -1) {
+    paramDelimeter = '&';
+  }
+
+  if (width) {
+    if (formatedUri.indexOf('w=') == -1 && formatedUri.indexOf('width=') == -1) {
+      formatedUri = `${formatedUri}${paramDelimeter}w=${width}`;
+      paramDelimeter = '&';
+    }
+  }
+
+  if (height) {
+    if (formatedUri.indexOf('h=') == -1 && formatedUri.indexOf('height=') == -1) {
+      formatedUri = `${formatedUri}${paramDelimeter}h=${height}`;
+    }
+  }
+
+  return formatedUri;
+};
+function flattenArray(arr) {
+  // flatten arrays inside the supplied array and
+  // remove duplicates from the result
+  return arr.reduce((acc, val) => acc.concat(val), []).filter((elem, pos, arr) => arr.indexOf(elem) == pos);
+}
+async function api(url, options) {
+  return fetch(url, options).then(async response => {
+    setTimeout(() => null, 0);
+
+    if (!response.ok) {
+      throw new Error(response.statusText);
+    }
+
+    return response.json().then(data => data);
+  }).catch(error => {
+    //console.log(error);
+    throw error;
+  });
+}
+function dynamicSort(property) {
+  var sortOrder = 1;
+
+  if (property[0] === '-') {
+    sortOrder = -1;
+    property = property.substr(1);
+  }
+
+  return function (a, b) {
+    /* next line works with strings and numbers,
+     * and you may want to customize it to your needs
+     */
+    var result = a[property] < b[property] ? -1 : a[property] > b[property] ? 1 : 0;
+    return result * sortOrder;
+  };
+}
+const randomString = length => {
+  let text = '';
+  const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+  for (var i = 0; i < length; i++) {
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+  }
+
+  return text;
+};
+
+/***/ }),
+
+/***/ 5:
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__5__;
+
+/***/ }),
+
+/***/ 7:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectUser", function() { return selectUser; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectUsername", function() { return selectUsername; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectUserLoggedIn", function() { return selectUserLoggedIn; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectUserGroups", function() { return selectUserGroups; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectUserMessage", function() { return selectUserMessage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectLoginScreenMode", function() { return selectLoginScreenMode; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectPasswordMessage", function() { return selectPasswordMessage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectChangePasswordMessage", function() { return selectChangePasswordMessage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectCaptchaSiteKey", function() { return selectCaptchaSiteKey; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectCaptchaData", function() { return selectCaptchaData; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectCaptchaResponse", function() { return selectCaptchaResponse; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectCaptchaToken", function() { return selectCaptchaToken; });
+const selectUser = state => {
+  return state.get('user');
+};
+const selectUsername = state => {
+  return state.getIn(['user', 'username']);
+};
+const selectUserLoggedIn = state => {
+  return state.getIn(['user', 'loggedIn']);
+};
+const selectUserGroups = state => {
+  return state.getIn(['user', 'groups']);
+};
+const selectUserMessage = state => {
+  return state.getIn(['user', 'logonResult']);
+};
+const selectLoginScreenMode = state => {
+  return state.getIn(['user', 'loginScreenMode']);
+};
+const selectPasswordMessage = state => {
+  return state.getIn(['user', 'passwordResetMessage']);
+};
+const selectChangePasswordMessage = state => {
+  return state.getIn(['user', 'changePasswordMessage']);
+};
+const selectCaptchaSiteKey = state => {
+  return state.getIn(['user', 'recaptcha', 'key']);
+};
+const selectCaptchaData = state => {
+  return state.getIn(['user', 'recaptcha', 'response']);
+};
+const selectCaptchaResponse = state => {
+  return state.getIn(['user', 'recaptcha', 'response', 'isHuman']);
+};
+const selectCaptchaToken = state => {
+  return state.getIn(['user', 'recaptcha', 'response', 'token']);
+};
+
+/***/ }),
+
+/***/ 72:
 /***/ (function(module, exports, __webpack_require__) {
 
 // Redux
-exports.actions = __webpack_require__(17).actions;
-exports.selectors = __webpack_require__(17).selectors;
-exports.types = __webpack_require__(17).types; // HOC
+exports.actions = __webpack_require__(18).actions;
+exports.selectors = __webpack_require__(18).selectors;
+exports.types = __webpack_require__(18).types; // HOC
 
-exports.withLogin = __webpack_require__(17).withLogin; // Classes
+exports.withLogin = __webpack_require__(18).withLogin; // Classes
 
 exports.LoginHelper = __webpack_require__(10);
 
+/***/ }),
+
+/***/ 8:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectRouteEntry", function() { return selectRouteEntry; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectNodeDepends", function() { return selectNodeDepends; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectCurrentTreeID", function() { return selectCurrentTreeID; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectEntryDepends", function() { return selectEntryDepends; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectRouteEntryEntryId", function() { return selectRouteEntryEntryId; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectRouteEntryContentTypeId", function() { return selectRouteEntryContentTypeId; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectRouteEntrySlug", function() { return selectRouteEntrySlug; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectRouteEntryID", function() { return selectRouteEntryID; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectCurrentPath", function() { return selectCurrentPath; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectCurrentSearch", function() { return selectCurrentSearch; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectQueryStringAsObject", function() { return selectQueryStringAsObject; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectCurrentProject", function() { return selectCurrentProject; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectIsNotFound", function() { return selectIsNotFound; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectCurrentAncestors", function() { return selectCurrentAncestors; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectCurrentNode", function() { return selectCurrentNode; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectBreadcrumb", function() { return selectBreadcrumb; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectRouteLoading", function() { return selectRouteLoading; });
+/* harmony import */ var immutable__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
+/* harmony import */ var immutable__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(immutable__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _util_navigation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(20);
+
+
+const selectRouteEntry = state => {
+  return state.getIn(['routing', 'entry'], Object(immutable__WEBPACK_IMPORTED_MODULE_0__["Map"])({}));
+};
+const selectNodeDepends = state => {
+  return state.getIn(['routing', 'nodeDepends'], new immutable__WEBPACK_IMPORTED_MODULE_0__["List"]([]));
+};
+const selectCurrentTreeID = state => {
+  return state.getIn(['routing', 'currentTreeId']);
+};
+const selectEntryDepends = state => {
+  return state.getIn(['routing', 'entryDepends']);
+};
+const selectRouteEntryEntryId = state => {
+  return state.getIn(['routing', 'entry', 'sys', 'id'], null);
+};
+const selectRouteEntryContentTypeId = state => {
+  const entry = selectRouteEntry(state);
+  return entry && entry.getIn(['sys', 'contentTypeId'], null);
+};
+const selectRouteEntrySlug = state => {
+  return state.getIn(['routing', 'entry', 'sys', 'slug'], null);
+};
+const selectRouteEntryID = state => {
+  return state.getIn(['routing', 'entryID']);
+};
+const selectCurrentPath = state => {
+  return state.getIn(['routing', 'currentPath']);
+};
+const selectCurrentSearch = state => {
+  return state.getIn(['routing', 'location', 'search']);
+};
+const selectQueryStringAsObject = state => Object(_util_navigation__WEBPACK_IMPORTED_MODULE_1__[/* queryParams */ "b"])(selectCurrentSearch(state));
+const selectCurrentProject = state => {
+  return state.getIn(['routing', 'currentProject']);
+};
+const selectIsNotFound = state => {
+  return state.getIn(['routing', 'notFound']);
+};
+const selectCurrentAncestors = state => {
+  return state.getIn(['routing', 'currentNodeAncestors'], new immutable__WEBPACK_IMPORTED_MODULE_0__["List"]());
+};
+const selectCurrentNode = state => {
+  return state.getIn(['routing', 'currentNode']);
+};
+const selectBreadcrumb = state => {
+  return (selectCurrentAncestors(state) || new immutable__WEBPACK_IMPORTED_MODULE_0__["List"]()).push(selectCurrentNode(state));
+};
+const selectRouteLoading = state => {
+  return state.getIn(['routing', 'isLoading']);
+};
+
 /***/ })
-/******/ ]);
+
+/******/ });
 });
 //# sourceMappingURL=user.js.map
