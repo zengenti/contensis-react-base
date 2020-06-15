@@ -331,6 +331,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getPaging", function() { return getPaging; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getPageIndex", function() { return getPageIndex; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getPrevPageIndex", function() { return getPrevPageIndex; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getPageIsLoading", function() { return getPageIsLoading; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getPagesLoaded", function() { return getPagesLoaded; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getTotalCount", function() { return getTotalCount; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getFacetAuthentication", function() { return getFacetAuthentication; });
@@ -350,9 +351,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var immutable__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(immutable__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _schema__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
 
- // export const hasSearchConfig = state => {
-//   return state.getIn(['search', 'config', 'isLoaded']);
-// };
 
 const getSearchContext = state => state.getIn(['search', 'context'], _schema__WEBPACK_IMPORTED_MODULE_1__["Context"].facets);
 const getCurrent = (state, context = _schema__WEBPACK_IMPORTED_MODULE_1__["Context"].facets) => context == _schema__WEBPACK_IMPORTED_MODULE_1__["Context"].facets ? getCurrentFacet(state) : getCurrentListing(state);
@@ -406,7 +404,7 @@ const getIsSsr = state => {
   return state.getIn(['search', 'config', 'ssr'], false);
 };
 const getFeaturedResults = (state, current, context = _schema__WEBPACK_IMPORTED_MODULE_1__["Context"].facets) => {
-  return state.getIn(['search', context, current || getCurrent(state, context), 'featuredEntries', 'items']);
+  return state.getIn(['search', context, current || getCurrent(state, context), 'featuredEntries', 'items'], new immutable__WEBPACK_IMPORTED_MODULE_0__["List"]([]));
 };
 const getPaging = (state, current, context = _schema__WEBPACK_IMPORTED_MODULE_1__["Context"].facets) => {
   return state.getIn(['search', context, current || getCurrent(state, context), 'pagingInfo']);
@@ -416,6 +414,9 @@ const getPageIndex = (state, current, context = _schema__WEBPACK_IMPORTED_MODULE
 };
 const getPrevPageIndex = (state, current, context = _schema__WEBPACK_IMPORTED_MODULE_1__["Context"].facets) => {
   return state.getIn(['search', context, current || getCurrent(state, context), 'pagingInfo', 'prevPageIndex']);
+};
+const getPageIsLoading = (state, current, context = _schema__WEBPACK_IMPORTED_MODULE_1__["Context"].facets) => {
+  return state.getIn(['search', context, current || getCurrent(state, context), 'pagingInfo', 'isLoading'], new immutable__WEBPACK_IMPORTED_MODULE_0__["Set"]());
 };
 const getPagesLoaded = (state, current, context = _schema__WEBPACK_IMPORTED_MODULE_1__["Context"].facets) => {
   return state.getIn(['search', context, current || getCurrent(state, context), 'pagingInfo', 'pagesLoaded'], new immutable__WEBPACK_IMPORTED_MODULE_0__["Set"]());
@@ -487,6 +488,7 @@ const selectFacets = {
   getIsLoaded,
   getIsLoading,
   getPageIndex,
+  getPageIsLoading,
   getPagesLoaded,
   getPaging,
   getQueryParams: (state, facet) => getQueryParams(state, facet, _schema__WEBPACK_IMPORTED_MODULE_1__["Context"].facets),
@@ -518,6 +520,7 @@ const selectListing = {
   getIsLoading: state => getIsLoading(state, _schema__WEBPACK_IMPORTED_MODULE_1__["Context"].listings),
   getPageIndex: (state, listing) => getPageIndex(state, listing, _schema__WEBPACK_IMPORTED_MODULE_1__["Context"].listings),
   getPaging: (state, listing) => getPaging(state, listing, _schema__WEBPACK_IMPORTED_MODULE_1__["Context"].listings),
+  getPageIsLoading: (state, listing) => getPageIsLoading(state, listing, _schema__WEBPACK_IMPORTED_MODULE_1__["Context"].listings),
   getPagesLoaded: (state, listing) => getPagesLoaded(state, listing, _schema__WEBPACK_IMPORTED_MODULE_1__["Context"].listings),
   getQueryParams: (state, listing) => getQueryParams(state, listing, _schema__WEBPACK_IMPORTED_MODULE_1__["Context"].listings),
   getQueryParameter: ({
@@ -561,6 +564,7 @@ const entries = Object(immutable__WEBPACK_IMPORTED_MODULE_0__["Map"])({
   items: new immutable__WEBPACK_IMPORTED_MODULE_0__["List"]()
 });
 const pagingInfo = Object(immutable__WEBPACK_IMPORTED_MODULE_0__["Map"])({
+  isLoading: false,
   pageCount: 0,
   pageIndex: 0,
   pageSize: 0,
@@ -6069,12 +6073,13 @@ const withSearch = mappers => SearchComponent => {
     entry: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.object,
     facet: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.object,
     facets: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.object,
-    featured: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.array,
+    featuredResults: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.array,
     filters: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.object,
     isLoading: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.bool,
+    results: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.array,
     resultsInfo: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.object,
     paging: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.object,
-    pagesLoaded: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.array,
+    pageIsLoading: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.bool,
     searchTerm: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.string,
     sortOrder: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.array,
     tabsAndFacets: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.array,
@@ -6094,10 +6099,11 @@ const withSearch = mappers => SearchComponent => {
       facets: Object(_redux_selectors__WEBPACK_IMPORTED_MODULE_5__["getTabFacets"])(state),
       facetsTotalCount: Object(_redux_selectors__WEBPACK_IMPORTED_MODULE_5__["getFacetsTotalCount"])(state),
       facetTitles: Object(_redux_selectors__WEBPACK_IMPORTED_MODULE_5__["getFacetTitles"])(state),
-      featured: Object(_redux_selectors__WEBPACK_IMPORTED_MODULE_5__["getFeaturedResults"])(state),
+      featuredResults: Object(_redux_selectors__WEBPACK_IMPORTED_MODULE_5__["getFeaturedResults"])(state),
       filters: Object(_redux_selectors__WEBPACK_IMPORTED_MODULE_5__["getFilters"])(state),
       isLoading: Object(_redux_selectors__WEBPACK_IMPORTED_MODULE_5__["getIsLoading"])(state),
       paging: Object(_redux_selectors__WEBPACK_IMPORTED_MODULE_5__["getPaging"])(state),
+      pageIsLoading: Object(_redux_selectors__WEBPACK_IMPORTED_MODULE_5__["getPageIsLoading"])(state),
       results: Object(_redux_selectors__WEBPACK_IMPORTED_MODULE_5__["getResults"])(state),
       resultsInfo: mappers.resultsInfo(state),
       searchTerm: Object(_redux_selectors__WEBPACK_IMPORTED_MODULE_5__["getSearchTerm"])(state),
@@ -6456,7 +6462,7 @@ const generateFiltersState = ({
           } = action;
           const internalPaging = state.getIn([context, current, 'queryParams', 'internalPaging'], false);
           const currentPageIndex = state.getIn([context, current, 'pagingInfo', 'pageIndex'], 0);
-          const nextState = state.setIn([context, current, 'pagingInfo', 'pageIndex'], Number(pageIndex) || 0).setIn([context, current, 'pagingInfo', 'prevPageIndex'], currentPageIndex);
+          const nextState = state.setIn([context, current, 'pagingInfo', 'pageIndex'], Number(pageIndex) || 0).setIn([context, current, 'pagingInfo', 'prevPageIndex'], currentPageIndex).setIn([context, current, 'pagingInfo', 'isLoading'], true);
           if (internalPaging) return nextState;
           return nextState.setIn([context, current, 'queryDuration'], 0);
         }
@@ -6699,6 +6705,7 @@ const facetTemplate = {
     }) => mapEntriesToSearchResults(action, Object(util["d" /* getItemsFromResult */])(featuredResult)),
     queryDuration: 'result.duration',
     pagingInfo: {
+      isLoading: () => false,
       pageCount: {
         $path: 'result.payload.pageCount',
         $default: 0

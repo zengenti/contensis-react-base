@@ -1,4 +1,4 @@
-FROM node:8 as builder
+FROM node:12 as builder
 # The following prevents errors when cwebp is installing.
 RUN apt-get update
 RUN apt-get install libglu1 -y
