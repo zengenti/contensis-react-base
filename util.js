@@ -119,7 +119,12 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const useMapper = (json, template) => {
-  return template ? jsonpath_mapper__WEBPACK_IMPORTED_MODULE_0___default()(json, template) : json;
+  return template ? jsonpath_mapper__WEBPACK_IMPORTED_MODULE_0___default()(json || {}, template) : json;
+};
+
+const chooseMapperByFieldValue = (entry, mappers, field = 'sys.contentTypeId') => {
+  const fieldValue = Object(jsonpath_mapper__WEBPACK_IMPORTED_MODULE_0__["jpath"])(field, entry || {});
+  return mappers[fieldValue] || mappers['default'] || {};
 };
 /**
  * useEntryMapper hook
@@ -131,14 +136,13 @@ const useMapper = (json, template) => {
  * couild be applied.
  */
 
+
 const useEntryMapper = (entry, mappers, field = 'sys.contentTypeId') => {
-  const fieldValue = Object(jsonpath_mapper__WEBPACK_IMPORTED_MODULE_0__["jpath"])(field, entry || {});
-  const mapper = mappers[fieldValue] || mappers['default'];
+  const mapper = chooseMapperByFieldValue(entry, mappers, field);
   return useMapper(entry || {}, mapper);
 };
 const mapEntries = (entries, mappers, field = 'sys.contentTypeId') => entries.map(entry => {
-  const fieldValue = Object(jsonpath_mapper__WEBPACK_IMPORTED_MODULE_0__["jpath"])(field, entry || {});
-  const mapper = mappers[fieldValue] || mappers['default'];
+  const mapper = chooseMapperByFieldValue(entry, mappers, field);
   return mapper ? jsonpath_mapper__WEBPACK_IMPORTED_MODULE_0___default()(entry || {}, mapper) : entry;
 });
 /* harmony default export */ __webpack_exports__["default"] = (jsonpath_mapper__WEBPACK_IMPORTED_MODULE_0___default.a);

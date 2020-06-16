@@ -2,7 +2,16 @@ import mapJson, { jpath } from 'jsonpath-mapper';
 export { default as mapJson, jpath } from 'jsonpath-mapper';
 
 export const useMapper = (json, template) => {
-  return template ? mapJson(json, template) : json;
+  return template ? mapJson(json || {}, template) : json;
+};
+
+const chooseMapperByFieldValue = (
+  entry,
+  mappers,
+  field = 'sys.contentTypeId'
+) => {
+  const fieldValue = jpath(field, entry || {});
+  return mappers[fieldValue] || mappers['default'] || {};
 };
 
 /**
@@ -15,15 +24,13 @@ export const useMapper = (json, template) => {
  * couild be applied.
  */
 export const useEntryMapper = (entry, mappers, field = 'sys.contentTypeId') => {
-  const fieldValue = jpath(field, entry || {});
-  const mapper = mappers[fieldValue] || mappers['default'];
+  const mapper = chooseMapperByFieldValue(entry, mappers, field);
   return useMapper(entry || {}, mapper);
 };
 
 export const mapEntries = (entries, mappers, field = 'sys.contentTypeId') =>
   entries.map(entry => {
-    const fieldValue = jpath(field, entry || {});
-    const mapper = mappers[fieldValue] || mappers['default'];
+    const mapper = chooseMapperByFieldValue(entry, mappers, field);
     return mapper ? mapJson(entry || {}, mapper) : entry;
   });
 
