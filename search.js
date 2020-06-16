@@ -407,7 +407,7 @@ const getFeaturedResults = (state, current, context = _schema__WEBPACK_IMPORTED_
   return state.getIn(['search', context, current || getCurrent(state, context), 'featuredEntries', 'items'], new immutable__WEBPACK_IMPORTED_MODULE_0__["List"]([]));
 };
 const getPaging = (state, current, context = _schema__WEBPACK_IMPORTED_MODULE_1__["Context"].facets) => {
-  return state.getIn(['search', context, current || getCurrent(state, context), 'pagingInfo']);
+  return state.getIn(['search', context, current || getCurrent(state, context), 'pagingInfo'], new immutable__WEBPACK_IMPORTED_MODULE_0__["Map"]({}));
 };
 const getPageIndex = (state, current, context = _schema__WEBPACK_IMPORTED_MODULE_1__["Context"].facets) => {
   return state.getIn(['search', context, current || getCurrent(state, context), 'pagingInfo', 'pageIndex']);
@@ -416,7 +416,7 @@ const getPrevPageIndex = (state, current, context = _schema__WEBPACK_IMPORTED_MO
   return state.getIn(['search', context, current || getCurrent(state, context), 'pagingInfo', 'prevPageIndex']);
 };
 const getPageIsLoading = (state, current, context = _schema__WEBPACK_IMPORTED_MODULE_1__["Context"].facets) => {
-  return state.getIn(['search', context, current || getCurrent(state, context), 'pagingInfo', 'isLoading'], new immutable__WEBPACK_IMPORTED_MODULE_0__["Set"]());
+  return state.getIn(['search', context, current || getCurrent(state, context), 'pagingInfo', 'isLoading']);
 };
 const getPagesLoaded = (state, current, context = _schema__WEBPACK_IMPORTED_MODULE_1__["Context"].facets) => {
   return state.getIn(['search', context, current || getCurrent(state, context), 'pagingInfo', 'pagesLoaded'], new immutable__WEBPACK_IMPORTED_MODULE_0__["Set"]());
@@ -1642,9 +1642,14 @@ const customWhereExpressions = where => {
   return where.map(clause => {
     let expression;
     Object.keys(clause).map((key, idx) => {
+      const operator = key;
+      const value = clause[key];
+
+      if (['and', 'or'].includes(operator)) {
+        expression = external_contensis_delivery_api_["Op"][operator](...customWhereExpressions(value));
+      }
+
       if (idx === 1) {
-        const operator = key;
-        const value = clause[key];
         expression = external_contensis_delivery_api_["Op"][operator](clause.field, value, clause.weight);
       }
     });
