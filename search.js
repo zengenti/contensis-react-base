@@ -183,29 +183,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__6__;
 /***/ 70:
 /***/ (function(module, exports, __webpack_require__) {
 
-const {
-  actions,
-  queries,
-  reducer,
-  sagas,
-  selectors,
-  types,
-  setRouteFilters,
-  withSearch,
-  withListing
-} = __webpack_require__(71);
-
-module.exports = {
-  actions,
-  queries,
-  reducer,
-  sagas,
-  selectors,
-  types,
-  setRouteFilters,
-  withSearch,
-  withListing
-};
+module.exports = __webpack_require__(71);
 
 /***/ }),
 
