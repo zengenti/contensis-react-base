@@ -397,8 +397,8 @@ const getIsInternalPaging = (state, current, context = _schema__WEBPACK_IMPORTED
 const getIsLoaded = (state, context = _schema__WEBPACK_IMPORTED_MODULE_1__["Context"].facets) => {
   return !!state.getIn(['search', context, getCurrent(state, context), 'queryDuration'], 0);
 };
-const getIsLoading = (state, context = _schema__WEBPACK_IMPORTED_MODULE_1__["Context"].facets) => {
-  return state.getIn(['search', context, getCurrent(state, context), 'entries', 'isLoading']);
+const getIsLoading = (state, context = _schema__WEBPACK_IMPORTED_MODULE_1__["Context"].facets, facet) => {
+  return state.getIn(['search', context, facet || getCurrent(state, context), 'entries', 'isLoading']);
 };
 const getIsSsr = state => {
   return state.getIn(['search', 'config', 'ssr'], false);
@@ -586,6 +586,7 @@ const searchFacet = Object(immutable__WEBPACK_IMPORTED_MODULE_0__["Map"])({
 const filtering = Object(immutable__WEBPACK_IMPORTED_MODULE_0__["Map"])({
   isLoading: false,
   isError: false,
+  isGrouped: false,
   title: null,
   contentTypeId: null,
   customWhere: new immutable__WEBPACK_IMPORTED_MODULE_0__["List"](),
@@ -1582,7 +1583,7 @@ const filterExpressions = filters => {
   if (!filters) return [];
   const expressions = [];
   filters.map(param => {
-    expressions.push(...fieldExpression(param.key, param.value, 'contains'));
+    expressions.push(...fieldExpression(param.key, param.value, 'in'));
   });
   return expressions;
 };
@@ -6285,6 +6286,7 @@ const useMinilist = ({
 } = {}) => {
   const dispatch = Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["useDispatch"])();
   const results = Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["useSelector"])(state => Object(_redux_selectors__WEBPACK_IMPORTED_MODULE_3__["getResults"])(state, id, _redux_schema__WEBPACK_IMPORTED_MODULE_4__["Context"].minilist).toJS());
+  const isLoading = Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["useSelector"])(state => Object(_redux_selectors__WEBPACK_IMPORTED_MODULE_3__["getIsLoading"])(state, _redux_schema__WEBPACK_IMPORTED_MODULE_4__["Context"].minilist, id));
   Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
     if (id && mapper) {
       dispatch(Object(_redux_actions__WEBPACK_IMPORTED_MODULE_2__["triggerSearch"])({
@@ -6297,7 +6299,10 @@ const useMinilist = ({
       }));
     }
   }, [dispatch, excludeIds, id, params]);
-  return results;
+  return {
+    isLoading,
+    results
+  };
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (useMinilist);
@@ -6337,7 +6342,8 @@ const generateSearchFacets = (context, config) => {
 const generateFiltersState = ({
   facet,
   params,
-  context
+  context,
+  isCurrentFacet
 }, state) => {
   // Remove filters we know about from params
   const filterParams = Object(immutable__WEBPACK_IMPORTED_MODULE_0__["fromJS"])({ ...params,
@@ -6348,7 +6354,7 @@ const generateFiltersState = ({
   }); // Get any existing filters and normalise the items[]
   // so we can start off with isSelected is false
 
-  let filters = state.getIn([context, facet, 'filters'], Object(immutable__WEBPACK_IMPORTED_MODULE_0__["Map"])({})).map(filter => filter.set('items', filter.get('items').map(item => item.set('isSelected', false))));
+  let filters = state.getIn([context, facet, 'filters'], Object(immutable__WEBPACK_IMPORTED_MODULE_0__["Map"])({})).map(filter => !isCurrentFacet && filter.get('isGrouped') ? filter.set('items', filter.get('items').map(item => item.set('isSelected', false))) : filter);
 
   const addFilterItem = (filters, paramKey, paramValue) => // Iterate through all filters within the facet,
   // if the paramKey matches the filter key
@@ -6357,7 +6363,7 @@ const generateFiltersState = ({
   // if not create a new filterItem, setting the key only
   // so we can match this key later on when we load the filters
   filters.map((filter, key) => {
-    if (paramKey !== key) {
+    if (paramKey !== key || !isCurrentFacet && !filter.get('isGrouped')) {
       return filter;
     } else {
       const items = filter.get('items', Object(immutable__WEBPACK_IMPORTED_MODULE_0__["List"])([]));
@@ -6376,6 +6382,10 @@ const generateFiltersState = ({
   filterParams.map((paramValue, paramName) => paramValue && paramValue.split(',').map(pVal => filters = addFilterItem(filters, paramName, pVal)));
   return filters;
 };
+
+const resetFacets = (state, context) => Object(immutable__WEBPACK_IMPORTED_MODULE_0__["Map"])(state.get(context).map(resetFacet));
+
+const resetFacet = facet => facet.setIn(['pagingInfo', 'pagesLoaded'], Object(immutable__WEBPACK_IMPORTED_MODULE_0__["fromJS"])([])).setIn(['queryDuration'], 0);
 
 /* harmony default export */ __webpack_exports__["default"] = (config => {
   // Add facets from SearchConfig to initialState
@@ -6448,9 +6458,16 @@ const generateFiltersState = ({
             pageIndex,
             orderBy
           } = params;
-          const filters = generateFiltersState(action, state);
+          const nextFacets = state.get(context).map((stateFacet, facetName) => {
+            return stateFacet.set('filters', generateFiltersState({
+              facet: facetName,
+              params,
+              context,
+              isCurrentFacet: facetName === facet
+            }, state)).setIn(['queryParams', 'dynamicOrderBy'], Object(_core_util_helpers__WEBPACK_IMPORTED_MODULE_3__[/* toArray */ "c"])(orderBy));
+          });
           const tabId = state.getIn([context, facet, 'tabId']);
-          return state.set('context', context).set(action.context === _schema__WEBPACK_IMPORTED_MODULE_1__["Context"].facets ? 'currentFacet' : 'currentListing', facet).set('term', term || '').setIn(['tabs', tabId, 'currentFacet'], facet).setIn([context, facet, 'pagingInfo', 'pageIndex'], Number(pageIndex) && Number(pageIndex) - 1 || 0).setIn([context, facet, 'filters'], filters).setIn([context, facet, 'queryParams', 'dynamicOrderBy'], Object(_core_util_helpers__WEBPACK_IMPORTED_MODULE_3__[/* toArray */ "c"])(orderBy)).setIn(['config', 'isLoaded'], true).setIn(['config', 'ssr'], typeof window === 'undefined');
+          return state.set('context', context).set(context, nextFacets).set(action.context === _schema__WEBPACK_IMPORTED_MODULE_1__["Context"].facets ? 'currentFacet' : 'currentListing', facet).set('term', term || '').setIn(['tabs', tabId, 'currentFacet'], facet).setIn([context, facet, 'pagingInfo', 'pageIndex'], Number(pageIndex) && Number(pageIndex) - 1 || 0).setIn(['config', 'isLoaded'], true).setIn(['config', 'ssr'], typeof window === 'undefined');
         }
 
       case _types__WEBPACK_IMPORTED_MODULE_2__["SET_SEARCH_ENTRIES"]:
@@ -6474,8 +6491,7 @@ const generateFiltersState = ({
 
       case _types__WEBPACK_IMPORTED_MODULE_2__["UPDATE_SEARCH_TERM"]:
         {
-          const facets = Object(immutable__WEBPACK_IMPORTED_MODULE_0__["Map"])(state.get(context).map(facet => facet.setIn(['pagingInfo', 'pagesLoaded'], Object(immutable__WEBPACK_IMPORTED_MODULE_0__["fromJS"])([])).setIn(['queryDuration'], 0)));
-          return state.set('term', action.term).set(context, facets);
+          return state.set('term', action.term).set(context, resetFacets(state, context));
         }
 
       case _types__WEBPACK_IMPORTED_MODULE_2__["UPDATE_SELECTED_FILTERS"]:
@@ -6485,14 +6501,15 @@ const generateFiltersState = ({
             key
           } = action;
           const isSingleSelect = state.getIn([context, current, 'filters', filter, 'isSingleSelect'], false);
+          const isGrouped = state.getIn([context, current, 'filters', filter, 'isGrouped'], false);
           const currentItems = state.getIn([context, current, 'filters', filter, 'items']);
-          return state.setIn([context, current, 'filters', filter, 'items'], currentItems.map(item => {
+          return state.set(context, isGrouped ? resetFacets(state, context) : state.get(context)).setIn([context, current], resetFacet(state.getIn([context, current]))).setIn([context, current, 'filters', filter, 'items'], currentItems.map(item => {
             if (item.get('key') == key) {
               return item.set('isSelected', !item.get('isSelected'));
             }
 
             return isSingleSelect ? item.set('isSelected', false) : item;
-          })).setIn([context, current, 'queryDuration'], 0).setIn([context, current, 'pagingInfo', 'pagesLoaded'], Object(immutable__WEBPACK_IMPORTED_MODULE_0__["fromJS"])([]));
+          }));
         }
 
       case _types__WEBPACK_IMPORTED_MODULE_2__["UPDATE_SORT_ORDER"]:
@@ -6501,7 +6518,7 @@ const generateFiltersState = ({
             orderBy,
             facet
           } = action;
-          return state.setIn([context, facet || current, 'queryParams', 'dynamicOrderBy'], orderBy ? Object(immutable__WEBPACK_IMPORTED_MODULE_0__["fromJS"])(Object(_core_util_helpers__WEBPACK_IMPORTED_MODULE_3__[/* toArray */ "c"])(orderBy)) : '').setIn([context, facet || current, 'queryDuration'], 0).setIn([context, facet || current, 'pagingInfo', 'pagesLoaded'], Object(immutable__WEBPACK_IMPORTED_MODULE_0__["fromJS"])([]));
+          return state.set(context, resetFacets(state, context)).setIn([context, facet || current, 'queryParams', 'dynamicOrderBy'], orderBy ? Object(immutable__WEBPACK_IMPORTED_MODULE_0__["fromJS"])(Object(_core_util_helpers__WEBPACK_IMPORTED_MODULE_3__[/* toArray */ "c"])(orderBy)) : '');
         }
 
       default:
