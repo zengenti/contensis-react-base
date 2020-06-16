@@ -10,6 +10,8 @@
 !redux.js.map
 !routing.js
 !routing.js.map
+!search.js
+!search.js.map
 !user.js
 !user.js.map
 !util.js
