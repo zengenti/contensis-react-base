@@ -404,7 +404,7 @@ const getIsSsr = state => {
   return state.getIn(['search', 'config', 'ssr'], false);
 };
 const getFeaturedResults = (state, current, context = _schema__WEBPACK_IMPORTED_MODULE_1__["Context"].facets) => {
-  return state.getIn(['search', context, current || getCurrent(state, context), 'featuredEntries', 'items'], new immutable__WEBPACK_IMPORTED_MODULE_0__["List"]([]));
+  return state.getIn(['search', context, current || getCurrent(state, context), 'featuredResults'], new immutable__WEBPACK_IMPORTED_MODULE_0__["List"]([]));
 };
 const getPaging = (state, current, context = _schema__WEBPACK_IMPORTED_MODULE_1__["Context"].facets) => {
   return state.getIn(['search', context, current || getCurrent(state, context), 'pagingInfo'], new immutable__WEBPACK_IMPORTED_MODULE_0__["Map"]({}));
