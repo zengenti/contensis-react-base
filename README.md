@@ -32,10 +32,32 @@ Staging branch is used for reviwing features that are ready to be merged into ma
 
 This branch is the master branch, it shoould only contain code that is ready to be released.
 
-## Jira Integration
+## Jira Integration :calendar:
 
 If your commit message contains a Jira task ID gitlab will automatically add a comment to the Jira task, you can also add the following to your commit messages:
 
 - `Resolves PSBP-1`
 - `Closes PSBP-1`
 - `Fixes PSBP-1`
+
+# What's goin' on under the hood? :wrench:
+
+The core of the application is in package `@zengenti/contensis-react-base` this must be installed as a 'production' dependency, i.e. lives in the `dependencies` section of your `package.json`
+
+The package handles things such as:
+
+- Peer dependencies such as React, react-router-dom, immutable, react-redux... etc.
+- Server side express application serving an isomorphic web app
+- Client side sub-package to handle client-side rendering and hydration
+- Creation of redux store and global state management for core features
+- Routing handled automatically via RouteLoader component which will load entries based on a given url
+- Navigation data is automatically retrieved from the Node api to load the Site View into the state
+
+# What you need to do next
+
+- Define your CMS environment in the `.env` file
+- Develop your features inside the `/src/app/features/` folder, create a new folder for each feature
+- Tell the application to load any feature `reducers` and `sagas` when it starts
+- Create pages in the `/src/app/pages/` folder to set your page layouts and load your components
+- Define routes in your application, there are 'Static routes' and 'Content type mappings' which tell the application what pages are to be loaded when certain routes / content type entries are loaded
+- Import components using the import aliases e.g. `~/pages/MyPage` avoid importing components like `/src/app/pages/MyPage` or `../../../pages/MyPage`

@@ -7,7 +7,7 @@
 		var a = typeof exports === 'object' ? factory(require("jsonpath-mapper")) : factory(root["jsonpath-mapper"]);
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(global, function(__WEBPACK_EXTERNAL_MODULE__32__) {
+})(global, function(__WEBPACK_EXTERNAL_MODULE__30__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -91,78 +91,145 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 71);
+/******/ 	return __webpack_require__(__webpack_require__.s = 73);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 32:
+/***/ 30:
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__32__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__30__;
 
 /***/ }),
 
-/***/ 45:
+/***/ 34:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useMapper", function() { return useMapper; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useEntriesMapper", function() { return useEntriesMapper; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useEntryMapper", function() { return useEntryMapper; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapEntries", function() { return mapEntries; });
-/* harmony import */ var jsonpath_mapper__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(32);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapComposer", function() { return mapComposer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useComposerMapper", function() { return useComposerMapper; });
+/* harmony import */ var jsonpath_mapper__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(30);
 /* harmony import */ var jsonpath_mapper__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jsonpath_mapper__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony reexport (default from non-harmony) */ __webpack_require__.d(__webpack_exports__, "mapJson", function() { return jsonpath_mapper__WEBPACK_IMPORTED_MODULE_0___default.a; });
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "jpath", function() { return jsonpath_mapper__WEBPACK_IMPORTED_MODULE_0__["jpath"]; });
 
 
 
+/**
+ *
+ * @param {object} json The source object we wish to transform
+ * @param {object} template The mapping template we wish to apply to the source
+ * object to generate the intended target object
+ */
+
 const useMapper = (json, template) => {
-  return template ? jsonpath_mapper__WEBPACK_IMPORTED_MODULE_0___default()(json, template) : json;
+  return template ? jsonpath_mapper__WEBPACK_IMPORTED_MODULE_0___default()(json || {}, template) : json;
+};
+
+const chooseMapperByFieldValue = (entry, mappers, field = 'sys.contentTypeId') => {
+  const fieldValue = Object(jsonpath_mapper__WEBPACK_IMPORTED_MODULE_0__["jpath"])(field, entry || {});
+  return mappers[fieldValue] || mappers['default'] || {};
 };
 /**
- * useEntryMapper hook
+ * useEntriesMapper hook to take a list of entries from Delivery API along
+ * with mappers for each contentTypeId and return an array of mapped objects
  * @param {any} entry The source entry we wish to transform
  * @param {object} mappers Object with keys containing mapper templates,
- * the key name matching entry.sys.contentTypeId
+ * the key name matching sys.contentTypeId
+ * @param {string} field Only include if we need to match content based on
+ * a field other than sys.contentTypeId in the source data
  * @returns {object} Object transformed using a matched content type or
  * a default mapper template, returns an empty object if no mapper template
  * couild be applied.
  */
 
-const useEntryMapper = (entry, mappers, field = 'sys.contentTypeId') => {
-  const fieldValue = Object(jsonpath_mapper__WEBPACK_IMPORTED_MODULE_0__["jpath"])(field, entry || {});
-  const mapper = mappers[fieldValue] || mappers['default'];
+
+const useEntriesMapper = (entry, mappers, field = 'sys.contentTypeId') => {
+  const mapper = chooseMapperByFieldValue(entry, mappers, field);
   return useMapper(entry || {}, mapper);
 };
+/**
+ * Deprecated: due to misleading name, use the hook useEntriesMapper instead
+ */
+
+const useEntryMapper = useEntriesMapper;
+/**
+ * mapEntries mapping function to take a list of entries from Delivery API along
+ * with mappers for each contentTypeId and return an array of mapped objects
+ * @param {any} entry The source entry we wish to transform
+ * @param {object} mappers Object with keys containing mapper templates,
+ * the key name matching sys.contentTypeId
+ * @param {string} field Only include if we need to match content based on
+ * a field other than sys.contentTypeId in the source data
+ * @returns {object} Object transformed using a matched content type or
+ * a default mapper template, returns an empty object if no mapper template
+ * couild be applied.
+ */
+
 const mapEntries = (entries, mappers, field = 'sys.contentTypeId') => entries.map(entry => {
-  const fieldValue = Object(jsonpath_mapper__WEBPACK_IMPORTED_MODULE_0__["jpath"])(field, entry || {});
-  const mapper = mappers[fieldValue] || mappers['default'];
+  const mapper = chooseMapperByFieldValue(entry, mappers, field);
   return mapper ? jsonpath_mapper__WEBPACK_IMPORTED_MODULE_0___default()(entry || {}, mapper) : entry;
 });
+/**
+ * mapComposer mapping function to take a composer field from Delivery API along
+ * with mappers for each Composer Item "type" and return an array of mapped components
+ * @param {array} composer Composer field array of Composer Items
+ * @param {object} mappers A keyed object with each key matching the Composer Item "type"
+ * @returns {array} Array of mapped objects transformed using a matched Composer Item "type" mapping
+ * or null. Injects a "_type" property into each transformed object in the array to indicate
+ * where the mapping originated and for what component the mapped object is representing
+ */
+
+const mapComposer = (composer, mappers) => Array.isArray(composer) ? composer.map(composerItem => {
+  const fieldValue = composerItem.type;
+  const mapper = mappers[fieldValue] || mappers['default'];
+  return mapper ? {
+    _type: fieldValue,
+    ...jsonpath_mapper__WEBPACK_IMPORTED_MODULE_0___default()(composerItem.value || {}, mapper)
+  } : composerItem;
+}) : null;
+/**
+ * useComposerMapper hook to take a composer field from Delivery API along
+ * with mappers for each Composer Item "type" and return an array of mapped components
+ * @param {array} composer Composer field array of Composer Items
+ * @param {object} mappers A keyed object with each key matching the Composer Item "type"
+ * @returns {array} Array of mapped objects transformed using a matched Composer Item "type" mapping
+ * or null. Injects a "_type" property into each transformed object in the array to indicate
+ * where the mapping originated and for what component the mapped object is representing
+ */
+
+const useComposerMapper = (composer = [], mappers = {}) => mapComposer(composer, mappers);
 /* harmony default export */ __webpack_exports__["default"] = (jsonpath_mapper__WEBPACK_IMPORTED_MODULE_0___default.a);
 
 /***/ }),
 
-/***/ 71:
+/***/ 73:
 /***/ (function(module, exports, __webpack_require__) {
 
 // Global server and build utils
-exports.setCachingHeaders = __webpack_require__(72);
-exports.stringifyStrings = __webpack_require__(73);
-exports.urls = __webpack_require__(74); // JSON mapping functions
+exports.setCachingHeaders = __webpack_require__(74);
+exports.stringifyStrings = __webpack_require__(75);
+exports.urls = __webpack_require__(76); // JSON mapping functions
 
-exports.jpath = __webpack_require__(45).jpath;
-exports.mapJson = __webpack_require__(45).mapJson;
-exports.mapEntries = __webpack_require__(45).mapEntries; // JSON mapping hooks
+exports.jpath = __webpack_require__(34).jpath;
+exports.mapJson = __webpack_require__(34).mapJson;
+exports.mapEntries = __webpack_require__(34).mapEntries;
+exports.mapComposer = __webpack_require__(34).mapComposer; // JSON mapping hooks
 
-exports.useMapper = __webpack_require__(45).useMapper;
-exports.useEntryMapper = __webpack_require__(45).useEntryMapper;
+exports.useMapper = __webpack_require__(34).useMapper;
+exports.useEntriesMapper = __webpack_require__(34).useEntriesMapper;
+exports.useEntryMapper = __webpack_require__(34).useEntryMapper;
+exports.useComposerMapper = __webpack_require__(34).useComposerMapper;
 
 /***/ }),
 
-/***/ 72:
+/***/ 74:
 /***/ (function(module, exports) {
 
 const setCachingHeaders = (response, {
@@ -177,7 +244,7 @@ module.exports = setCachingHeaders;
 
 /***/ }),
 
-/***/ 73:
+/***/ 75:
 /***/ (function(module, exports) {
 
 const stringifyStrings = obj => {
@@ -204,7 +271,7 @@ module.exports = stringifyStrings;
 
 /***/ }),
 
-/***/ 74:
+/***/ 76:
 /***/ (function(module, exports) {
 
 const url = (alias, project) => {

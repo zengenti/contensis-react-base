@@ -15,6 +15,7 @@ import fromEntries from 'fromentries';
 import { history } from '~/core/redux/history';
 
 import { AccessMethods } from '../util/types';
+import handleResponse from '../util/handleResponse';
 import { hashKeys } from '../util/cacheHashing';
 
 import pickProject from '~/core/util/pickProject';
@@ -142,6 +143,7 @@ const webApp = (app, ReactApp, config) => {
     allowedGroups,
     globalGroups,
     disableSsrRedux,
+    handleResponses,
   } = config;
 
   const bundles = {
@@ -153,6 +155,9 @@ const webApp = (app, ReactApp, config) => {
     bundles.default = bundles.legacy || bundles.modern;
 
   const versionInfo = JSON.parse(fs.readFileSync(versionData, 'utf8'));
+
+  const responseHandler =
+    typeof handleResponses === 'function' ? handleResponses : handleResponse;
 
   app.get('/*', (request, response, next) => {
     if (request.originalUrl.startsWith('/static/')) return next();
@@ -284,7 +289,8 @@ const webApp = (app, ReactApp, config) => {
         .replace('{{LOADABLE_CHUNKS}}', dynamicBundleScripts)
         .replace('{{REDUX_DATA}}', isDynamicHint);
       response.setHeader('Surrogate-Control', 'max-age=3600');
-      response.status(status).send(responseHtmlDynamic);
+      response.status(status); //.send(responseHtmlDynamic);
+      responseHandler(request, response, responseHtmlDynamic);
     }
 
     // Render the JSX server side and send response as per access method options
@@ -336,7 +342,8 @@ const webApp = (app, ReactApp, config) => {
                 allowedGroups,
                 globalGroups,
               });
-              response.status(status).json(serialisedReduxData);
+              response.status(status); //.json(serialisedReduxData);
+              responseHandler(request, response, serialisedReduxData, 'json');
               return true;
             }
             if (!disableSsrRedux) {
@@ -396,7 +403,8 @@ const webApp = (app, ReactApp, config) => {
             globalGroups,
           });
           try {
-            response.status(status).send(responseHTML);
+            response.status(status); //.send(responseHTML);
+            responseHandler(request, response, responseHTML);
           } catch (err) {
             // eslint-disable-next-line no-console
             console.log(err.message);
@@ -408,11 +416,15 @@ const webApp = (app, ReactApp, config) => {
           /* eslint-disable no-console */
           console.log(err);
           /* eslint-enable no-console */
-          response
-            .status(500)
-            .send(
-              `Error occurred: <br />${err.stack} <br />${JSON.stringify(err)}`
-            );
+          response.status(500);
+          responseHandler(
+            request,
+            response,
+            `Error occurred: <br />${err.stack} <br />${JSON.stringify(err)}`
+          );
+          // .send(
+          //   `Error occurred: <br />${err.stack} <br />${JSON.stringify(err)}`
+          // );
         });
       renderToString(jsx);
 
