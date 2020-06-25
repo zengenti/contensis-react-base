@@ -7,7 +7,7 @@
 		var a = typeof exports === 'object' ? factory(require("immutable"), require("react"), require("contensis-delivery-api"), require("prop-types"), require("query-string"), require("react-redux"), require("react-router-dom"), require("react-hot-loader"), require("react-router-config"), require("@redux-saga/core/effects"), require("js-cookie"), require("redux"), require("loglevel"), require("react-loadable"), require("history"), require("redux-saga"), require("redux-immutable"), require("redux-thunk"), require("react-dom/server"), require("minify-css-string"), require("isomorphic-fetch"), require("express"), require("evil-dns"), require("react-loadable/webpack"), require("react-helmet"), require("serialize-javascript"), require("http-proxy"), require("styled-components"), require("fromentries"), require("xxhashjs")) : factory(root["immutable"], root["react"], root["contensis-delivery-api"], root["prop-types"], root["query-string"], root["react-redux"], root["react-router-dom"], root["react-hot-loader"], root["react-router-config"], root["@redux-saga/core/effects"], root["js-cookie"], root["redux"], root["loglevel"], root["react-loadable"], root["history"], root["redux-saga"], root["redux-immutable"], root["redux-thunk"], root["react-dom/server"], root["minify-css-string"], root["isomorphic-fetch"], root["express"], root["evil-dns"], root["react-loadable/webpack"], root["react-helmet"], root["serialize-javascript"], root["http-proxy"], root["styled-components"], root["fromentries"], root["xxhashjs"]);
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(global, function(__WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__5__, __WEBPACK_EXTERNAL_MODULE__6__, __WEBPACK_EXTERNAL_MODULE__9__, __WEBPACK_EXTERNAL_MODULE__12__, __WEBPACK_EXTERNAL_MODULE__16__, __WEBPACK_EXTERNAL_MODULE__17__, __WEBPACK_EXTERNAL_MODULE__24__, __WEBPACK_EXTERNAL_MODULE__25__, __WEBPACK_EXTERNAL_MODULE__26__, __WEBPACK_EXTERNAL_MODULE__27__, __WEBPACK_EXTERNAL_MODULE__33__, __WEBPACK_EXTERNAL_MODULE__36__, __WEBPACK_EXTERNAL_MODULE__37__, __WEBPACK_EXTERNAL_MODULE__39__, __WEBPACK_EXTERNAL_MODULE__40__, __WEBPACK_EXTERNAL_MODULE__47__, __WEBPACK_EXTERNAL_MODULE__48__, __WEBPACK_EXTERNAL_MODULE__49__, __WEBPACK_EXTERNAL_MODULE__50__, __WEBPACK_EXTERNAL_MODULE__51__, __WEBPACK_EXTERNAL_MODULE__52__, __WEBPACK_EXTERNAL_MODULE__53__, __WEBPACK_EXTERNAL_MODULE__55__, __WEBPACK_EXTERNAL_MODULE__56__, __WEBPACK_EXTERNAL_MODULE__57__, __WEBPACK_EXTERNAL_MODULE__59__, __WEBPACK_EXTERNAL_MODULE__60__, __WEBPACK_EXTERNAL_MODULE__61__, __WEBPACK_EXTERNAL_MODULE__63__) {
+})(global, function(__WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__5__, __WEBPACK_EXTERNAL_MODULE__6__, __WEBPACK_EXTERNAL_MODULE__9__, __WEBPACK_EXTERNAL_MODULE__12__, __WEBPACK_EXTERNAL_MODULE__16__, __WEBPACK_EXTERNAL_MODULE__17__, __WEBPACK_EXTERNAL_MODULE__24__, __WEBPACK_EXTERNAL_MODULE__25__, __WEBPACK_EXTERNAL_MODULE__26__, __WEBPACK_EXTERNAL_MODULE__27__, __WEBPACK_EXTERNAL_MODULE__33__, __WEBPACK_EXTERNAL_MODULE__37__, __WEBPACK_EXTERNAL_MODULE__38__, __WEBPACK_EXTERNAL_MODULE__40__, __WEBPACK_EXTERNAL_MODULE__41__, __WEBPACK_EXTERNAL_MODULE__47__, __WEBPACK_EXTERNAL_MODULE__48__, __WEBPACK_EXTERNAL_MODULE__49__, __WEBPACK_EXTERNAL_MODULE__50__, __WEBPACK_EXTERNAL_MODULE__51__, __WEBPACK_EXTERNAL_MODULE__52__, __WEBPACK_EXTERNAL_MODULE__53__, __WEBPACK_EXTERNAL_MODULE__55__, __WEBPACK_EXTERNAL_MODULE__56__, __WEBPACK_EXTERNAL_MODULE__57__, __WEBPACK_EXTERNAL_MODULE__59__, __WEBPACK_EXTERNAL_MODULE__60__, __WEBPACK_EXTERNAL_MODULE__61__, __WEBPACK_EXTERNAL_MODULE__63__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -1861,8 +1861,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_router_config__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(react_router_config__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var _redux_selectors_routing__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(8);
 /* harmony import */ var _redux_actions_routing__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(22);
-/* harmony import */ var _pages_NotFound__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(34);
-/* harmony import */ var _Status__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(35);
+/* harmony import */ var _pages_NotFound__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(35);
+/* harmony import */ var _Status__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(36);
 /* harmony import */ var _util_ToJs__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(21);
 /* harmony import */ var _features_login_redux_selectors__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(7);
 
@@ -2007,7 +2007,7 @@ const mapDispatchToProps = {
   setNavigationPath: _redux_actions_routing__WEBPACK_IMPORTED_MODULE_7__["setNavigationPath"]
 };
 /* harmony default export */ __webpack_exports__["default"] = (Object(react_hot_loader__WEBPACK_IMPORTED_MODULE_3__["hot"])(module)(Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["connect"])(mapStateToProps, mapDispatchToProps)(Object(_util_ToJs__WEBPACK_IMPORTED_MODULE_10__[/* toJS */ "a"])(RouteLoader))));
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(45)(module)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(46)(module)))
 
 /***/ }),
 /* 32 */
@@ -2036,7 +2036,8 @@ const setVersionStatus = status => Object(_util_helpers__WEBPACK_IMPORTED_MODULE
 module.exports = __WEBPACK_EXTERNAL_MODULE__33__;
 
 /***/ }),
-/* 34 */
+/* 34 */,
+/* 35 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2049,7 +2050,7 @@ const NotFound = () => react__WEBPACK_IMPORTED_MODULE_0___default.a.createElemen
 /* harmony default export */ __webpack_exports__["a"] = (NotFound);
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2082,12 +2083,6 @@ Status.propTypes = {
 };
 
 /***/ }),
-/* 36 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__36__;
-
-/***/ }),
 /* 37 */
 /***/ (function(module, exports) {
 
@@ -2095,24 +2090,24 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__37__;
 
 /***/ }),
 /* 38 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__38__;
+
+/***/ }),
+/* 39 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return history; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return browserHistory; });
-/* harmony import */ var history__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(39);
+/* harmony import */ var history__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(40);
 /* harmony import */ var history__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(history__WEBPACK_IMPORTED_MODULE_0__);
  // Create a history depending on the environment
 
 const selectedHistory = typeof window !== 'undefined' ? history__WEBPACK_IMPORTED_MODULE_0__["createBrowserHistory"] : history__WEBPACK_IMPORTED_MODULE_0__["createMemoryHistory"];
 const history = (options = {}) => selectedHistory(options);
 const browserHistory = selectedHistory();
-
-/***/ }),
-/* 39 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__39__;
 
 /***/ }),
 /* 40 */
@@ -2122,6 +2117,12 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__40__;
 
 /***/ }),
 /* 41 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__41__;
+
+/***/ }),
+/* 42 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2171,7 +2172,7 @@ const pickProject = (hostname, query) => {
 /* harmony default export */ __webpack_exports__["a"] = (pickProject);
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2180,7 +2181,7 @@ const pickProject = (hostname, query) => {
 var redux_saga_effects_npm_proxy_esm = __webpack_require__(0);
 
 // EXTERNAL MODULE: external "loglevel"
-var external_loglevel_ = __webpack_require__(36);
+var external_loglevel_ = __webpack_require__(37);
 
 // EXTERNAL MODULE: ./src/app/core/redux/types/routing.js
 var routing = __webpack_require__(3);
@@ -2701,7 +2702,7 @@ var sagas = __webpack_require__(23);
 });
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2717,7 +2718,7 @@ var external_redux_thunk_ = __webpack_require__(48);
 var external_redux_thunk_default = /*#__PURE__*/__webpack_require__.n(external_redux_thunk_);
 
 // EXTERNAL MODULE: external "redux-saga"
-var external_redux_saga_ = __webpack_require__(40);
+var external_redux_saga_ = __webpack_require__(41);
 var external_redux_saga_default = /*#__PURE__*/__webpack_require__.n(external_redux_saga_);
 
 // EXTERNAL MODULE: external "immutable"
@@ -2973,7 +2974,7 @@ const routerMiddleware = history => store => next => action => {
 });
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2994,7 +2995,7 @@ const AppRoot = props => {
 /* harmony default export */ __webpack_exports__["default"] = (AppRoot);
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports) {
 
 module.exports = function(originalModule) {
@@ -3024,7 +3025,6 @@ module.exports = function(originalModule) {
 
 
 /***/ }),
-/* 46 */,
 /* 47 */
 /***/ (function(module, exports) {
 
@@ -3119,7 +3119,7 @@ exports.app = internalServer.app;
 exports.httpProxy = internalServer.apiProxy;
 exports.start = internalServer.start;
 
-const ReactApp = __webpack_require__(44).default;
+const ReactApp = __webpack_require__(45).default;
 
 exports.ReactApp = ReactApp;
 
@@ -3157,7 +3157,7 @@ var external_express_ = __webpack_require__(52);
 var external_express_default = /*#__PURE__*/__webpack_require__.n(external_express_);
 
 // EXTERNAL MODULE: external "react-loadable"
-var external_react_loadable_ = __webpack_require__(37);
+var external_react_loadable_ = __webpack_require__(38);
 var external_react_loadable_default = /*#__PURE__*/__webpack_require__.n(external_react_loadable_);
 
 // CONCATENATED MODULE: ./src/server/util/displayStartupConfiguration.js
@@ -3328,7 +3328,7 @@ var external_fromentries_ = __webpack_require__(61);
 var external_fromentries_default = /*#__PURE__*/__webpack_require__.n(external_fromentries_);
 
 // EXTERNAL MODULE: ./src/app/core/redux/history.js
-var redux_history = __webpack_require__(38);
+var redux_history = __webpack_require__(39);
 
 // CONCATENATED MODULE: ./src/server/util/types.js
 const AccessMethods = {
@@ -3375,7 +3375,7 @@ const hashKeys = keys => {
   return returnKeys;
 };
 // EXTERNAL MODULE: ./src/app/core/util/pickProject.js
-var pickProject = __webpack_require__(41);
+var pickProject = __webpack_require__(42);
 
 // EXTERNAL MODULE: ./src/app/core/util/ContensisDeliveryApi.js
 var ContensisDeliveryApi = __webpack_require__(13);
@@ -3390,10 +3390,10 @@ var version = __webpack_require__(32);
 var selectors_routing = __webpack_require__(8);
 
 // EXTERNAL MODULE: ./src/app/core/redux/store.js + 4 modules
-var redux_store = __webpack_require__(43);
+var redux_store = __webpack_require__(44);
 
 // EXTERNAL MODULE: ./src/app/core/redux/sagas/index.js + 7 modules
-var sagas = __webpack_require__(42);
+var sagas = __webpack_require__(43);
 
 // EXTERNAL MODULE: external "react-router-config"
 var external_react_router_config_ = __webpack_require__(25);
