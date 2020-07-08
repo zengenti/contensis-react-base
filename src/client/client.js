@@ -63,18 +63,6 @@ class ClientApp {
         fromJSOrdered(window.REDUX_DATA),
         history
       );
-      /* eslint-disable no-console */
-      console.log('window.REDUX_DATA', window.REDUX_DATA);
-      /* eslint-disable no-console */
-      console.log(
-        'fromJS(window.REDUX_DATA)',
-        fromJS(window.REDUX_DATA).toJS()
-      );
-      /* eslint-disable no-console */
-      console.log(
-        'fromJSOrdered(window.REDUX_DATA)',
-        fromJSOrdered(window.REDUX_DATA).toJS()
-      );
       store.dispatch(
         setVersionStatus(qs.versionStatus || versionStatusFromHostname)
       );
