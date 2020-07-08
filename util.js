@@ -91,7 +91,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 73);
+/******/ 	return __webpack_require__(__webpack_require__.s = 72);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -209,13 +209,13 @@ const useComposerMapper = (composer = [], mappers = {}) => mapComposer(composer,
 
 /***/ }),
 
-/***/ 73:
+/***/ 72:
 /***/ (function(module, exports, __webpack_require__) {
 
 // Global server and build utils
-exports.setCachingHeaders = __webpack_require__(74);
-exports.stringifyStrings = __webpack_require__(75);
-exports.urls = __webpack_require__(76); // JSON mapping functions
+exports.setCachingHeaders = __webpack_require__(73);
+exports.stringifyStrings = __webpack_require__(74);
+exports.urls = __webpack_require__(75); // JSON mapping functions
 
 exports.jpath = __webpack_require__(34).jpath;
 exports.mapJson = __webpack_require__(34).mapJson;
@@ -229,7 +229,7 @@ exports.useComposerMapper = __webpack_require__(34).useComposerMapper;
 
 /***/ }),
 
-/***/ 74:
+/***/ 73:
 /***/ (function(module, exports) {
 
 const setCachingHeaders = (response, {
@@ -244,7 +244,7 @@ module.exports = setCachingHeaders;
 
 /***/ }),
 
-/***/ 75:
+/***/ 74:
 /***/ (function(module, exports) {
 
 const stringifyStrings = obj => {
@@ -271,7 +271,7 @@ module.exports = stringifyStrings;
 
 /***/ }),
 
-/***/ 76:
+/***/ 75:
 /***/ (function(module, exports) {
 
 const url = (alias, project) => {

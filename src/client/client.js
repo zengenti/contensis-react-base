@@ -15,6 +15,7 @@ import { setVersionStatus } from '~/core/redux/actions/version';
 import { GetClientSideDeliveryApiStatus } from '~/core/util/ContensisDeliveryApi';
 import { setCurrentProject } from '~/core/redux/actions/routing';
 import pickProject from '~/core/util/pickProject';
+import fromJSOrdered from '~/core/util/fromJSOrdered';
 import { browserHistory as history } from '~/core/redux/history';
 
 class ClientApp {
@@ -57,7 +58,23 @@ class ClientApp {
       window.REDUX_DATA ||
       process.env.NODE_ENV !== 'production'
     ) {
-      store = createStore(withReducers, fromJS(window.REDUX_DATA), history);
+      store = createStore(
+        withReducers,
+        fromJSOrdered(window.REDUX_DATA),
+        history
+      );
+      /* eslint-disable no-console */
+      console.log('window.REDUX_DATA', window.REDUX_DATA);
+      /* eslint-disable no-console */
+      console.log(
+        'fromJS(window.REDUX_DATA)',
+        fromJS(window.REDUX_DATA).toJS()
+      );
+      /* eslint-disable no-console */
+      console.log(
+        'fromJSOrdered(window.REDUX_DATA)',
+        fromJSOrdered(window.REDUX_DATA).toJS()
+      );
       store.dispatch(
         setVersionStatus(qs.versionStatus || versionStatusFromHostname)
       );
