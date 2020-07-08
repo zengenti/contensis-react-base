@@ -3208,15 +3208,6 @@ class client_ClientApp {
 
     if (window.isDynamic || window.REDUX_DATA || process.env.NODE_ENV !== 'production') {
       store = Object(redux_store["a" /* default */])(withReducers, util_fromJSOrdered(window.REDUX_DATA), redux_history["a" /* browserHistory */]);
-      /* eslint-disable no-console */
-
-      console.log('window.REDUX_DATA', window.REDUX_DATA);
-      /* eslint-disable no-console */
-
-      console.log('fromJS(window.REDUX_DATA)', Object(external_immutable_["fromJS"])(window.REDUX_DATA).toJS());
-      /* eslint-disable no-console */
-
-      console.log('fromJSOrdered(window.REDUX_DATA)', util_fromJSOrdered(window.REDUX_DATA).toJS());
       store.dispatch(Object(version["setVersionStatus"])(qs.versionStatus || versionStatusFromHostname));
       /* eslint-disable no-console */
 
