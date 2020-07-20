@@ -2506,14 +2506,7 @@ function* getRouteSaga(action) {
     } else {
       let pathNode = null,
           ancestors = null,
-          siblings = null; // Scroll into View
-
-      if (typeof window !== 'undefined') {
-        window.scroll({
-          top: 0
-        });
-      }
-
+          siblings = null;
       let currentPathDepth = currentPath.split('/').length - 1;
       if (isHome) currentPathDepth = 0; // Handle homepage
 
@@ -2587,6 +2580,15 @@ function* getRouteSaga(action) {
         yield Object(redux_saga_effects_npm_proxy_esm["call"])(setRouteEntry, entry, pathNode, ancestors, siblings);
       } else {
         yield Object(redux_saga_effects_npm_proxy_esm["call"])(do404);
+      }
+
+      if (!appsays || !appsays.preventScrollTop) {
+        // Scroll into View
+        if (typeof window !== 'undefined') {
+          window.scroll({
+            top: 0
+          });
+        }
       }
     }
 
