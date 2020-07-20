@@ -91,7 +91,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 70);
+/******/ 	return __webpack_require__(__webpack_require__.s = 69);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -180,14 +180,14 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__6__;
 
 /***/ }),
 
-/***/ 70:
+/***/ 69:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(71);
+module.exports = __webpack_require__(70);
 
 /***/ }),
 
-/***/ 71:
+/***/ 70:
 /***/ (function(module, exports, __webpack_require__) {
 
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -1561,7 +1561,7 @@ const filterExpressions = filters => {
   if (!filters) return [];
   const expressions = [];
   filters.map(param => {
-    expressions.push(...fieldExpression(param.key, param.value, 'in'));
+    expressions.push(...fieldExpression(param.key, param.value, param.operator || 'in'));
   });
   return expressions;
 };
@@ -1613,23 +1613,52 @@ const orderByExpression = orderBy => {
 };
 
 const equalToOrIn = (field, arr, operator = 'equalTo') => arr.length === 0 ? [] : arr.length === 1 ? [external_contensis_delivery_api_["Op"][operator](field, arr[0])] : [external_contensis_delivery_api_["Op"].in(field, ...arr)];
+/**
+ * Accept HTTP style objects and map them to
+ * their equivalent JS client "Op" expressions
+ * @param {array} where the where array as you'd provide it to the HTTP API
+ * @returns {array} array of constructed Delivery API Operators
+ */
+
 
 const customWhereExpressions = where => {
-  if (!where || !Array.isArray(where)) return []; // Accept HTTP style objects and map them to
-  // their equivalent JS client "Op" expressions
+  if (!where || !Array.isArray(where)) return []; // Map each clause inside the where array
 
   return where.map(clause => {
-    let expression;
+    let expression; // Map through each property in the clause so we can
+    // capture the values required and reconstruct them as
+    // a Delivery API expression
+
     Object.keys(clause).map((key, idx) => {
       const operator = key;
+      const field = clause.field;
       const value = clause[key];
+      const weight = clause.weight;
 
       if (['and', 'or'].includes(operator)) {
+        // These are array expressions so we can call ourself recursively
+        // to map these inner values to expressions
         expression = external_contensis_delivery_api_["Op"][operator](...customWhereExpressions(value));
       }
 
+      if (['not'].includes(operator)) {
+        // A 'not' expression is an object with only one inner field and inner operator
+        Object.keys(value).map((key, idx) => {
+          const innerOperator = key;
+          const innerValue = value[key];
+          const innerField = value.field; // Map the expression when we've looped and scoped to
+          // the second property inside the clause
+
+          if (idx === 1) {
+            expression = external_contensis_delivery_api_["Op"][operator](external_contensis_delivery_api_["Op"][innerOperator](innerField, innerValue));
+          }
+        });
+      } // Map the expression when we've looped and scoped to
+      // the second property inside the clause
+
+
       if (idx === 1) {
-        expression = external_contensis_delivery_api_["Op"][operator](clause.field, value, clause.weight);
+        expression = external_contensis_delivery_api_["Op"][operator](field, value, weight);
       }
     });
     return expression;
@@ -1741,7 +1770,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__17__;
 
 (function webpackUniversalModuleDefinition(root, factory) {
   if (true) module.exports = factory(__webpack_require__(2), __webpack_require__(10), __webpack_require__(12), __webpack_require__(11), __webpack_require__(20), __webpack_require__(28));else { var i, a; }
-})(global, function (__WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__5__, __WEBPACK_EXTERNAL_MODULE__13__, __WEBPACK_EXTERNAL_MODULE__16__, __WEBPACK_EXTERNAL_MODULE__27__, __WEBPACK_EXTERNAL_MODULE__28__) {
+})(global, function (__WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__5__, __WEBPACK_EXTERNAL_MODULE__12__, __WEBPACK_EXTERNAL_MODULE__16__, __WEBPACK_EXTERNAL_MODULE__26__, __WEBPACK_EXTERNAL_MODULE__27__) {
   return (
     /******/
     function (modules) {
@@ -2002,7 +2031,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__17__;
       "use strict";
       /* harmony import */
 
-      var _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(27);
+      var _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(26);
       /* harmony import */
 
 
@@ -2756,7 +2785,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__17__;
       __webpack_require__.r(__webpack_exports__); // EXTERNAL MODULE: external "js-cookie"
 
 
-      var external_js_cookie_ = __webpack_require__(28);
+      var external_js_cookie_ = __webpack_require__(27);
 
       var external_js_cookie_default =
       /*#__PURE__*/
@@ -3251,16 +3280,16 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__17__;
       }
       /***/
 
-    },,
+    },
     /* 12 */
-
-    /* 13 */
 
     /***/
     function (module, exports) {
-      module.exports = __WEBPACK_EXTERNAL_MODULE__13__;
+      module.exports = __WEBPACK_EXTERNAL_MODULE__12__;
       /***/
-    },
+    },,
+    /* 13 */
+
     /* 14 */
 
     /***/
@@ -3381,8 +3410,10 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__17__;
     function (module, exports) {
       module.exports = __WEBPACK_EXTERNAL_MODULE__16__;
       /***/
-    },
+    },,
     /* 17 */
+
+    /* 18 */
 
     /***/
     function (module, __webpack_exports__, __webpack_require__) {
@@ -3609,9 +3640,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__17__;
       });
       /***/
 
-    },,
-    /* 18 */
-
+    },
     /* 19 */
 
     /***/
@@ -3662,7 +3691,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__17__;
       /* harmony import */
 
 
-      var query_string__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(13);
+      var query_string__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(12);
       /* harmony import */
 
 
@@ -3840,7 +3869,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__17__;
       /* harmony import */
 
 
-      var query_string__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(13);
+      var query_string__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(12);
       /* harmony import */
 
 
@@ -4046,10 +4075,26 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__17__;
       }
       /***/
 
-    },,
+    },,,
     /* 24 */
 
     /* 25 */
+
+    /* 26 */
+
+    /***/
+    function (module, exports) {
+      module.exports = __WEBPACK_EXTERNAL_MODULE__26__;
+      /***/
+    },
+    /* 27 */
+
+    /***/
+    function (module, exports) {
+      module.exports = __WEBPACK_EXTERNAL_MODULE__27__;
+      /***/
+    },
+    /* 28 */
 
     /***/
     function (module, __webpack_exports__, __webpack_require__) {
@@ -4089,7 +4134,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__17__;
       /***/
 
     },
-    /* 26 */
+    /* 29 */
 
     /***/
     function (module, __webpack_exports__, __webpack_require__) {
@@ -4128,26 +4173,12 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__17__;
       };
       /***/
 
-    },
-    /* 27 */
-
-    /***/
-    function (module, exports) {
-      module.exports = __WEBPACK_EXTERNAL_MODULE__27__;
-      /***/
-    },
-    /* 28 */
-
-    /***/
-    function (module, exports) {
-      module.exports = __WEBPACK_EXTERNAL_MODULE__28__;
-      /***/
     },,,
-    /* 29 */
-
     /* 30 */
 
     /* 31 */
+
+    /* 32 */
 
     /***/
     function (module, __webpack_exports__, __webpack_require__) {
@@ -4189,9 +4220,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__17__;
       });
       /***/
 
-    },,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-    /* 32 */
-
+    },,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
     /* 33 */
 
     /* 34 */
@@ -4264,7 +4293,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__17__;
     function (module, exports, __webpack_require__) {
       const types = __webpack_require__(67).default;
 
-      const actions = __webpack_require__(76).default;
+      const actions = __webpack_require__(78).default;
 
       const selectors = __webpack_require__(68).default; // Remap the objects so they are presented in "feature" hierarchy
       // e.g. { routing: { types, actions }, navigation: { types, actions } }
@@ -4298,7 +4327,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__17__;
       /* harmony import */
 
 
-      var _features_login__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(17);
+      var _features_login__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(18);
       /* harmony import */
 
 
@@ -4324,7 +4353,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__17__;
       /* harmony import */
 
 
-      var _navigation__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(26);
+      var _navigation__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(29);
       /* harmony import */
 
 
@@ -4332,11 +4361,11 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__17__;
       /* harmony import */
 
 
-      var _features_login__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(17);
+      var _features_login__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(18);
       /* harmony import */
 
 
-      var _version__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(25);
+      var _version__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(28);
       /* harmony default export */
 
 
@@ -4347,7 +4376,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__17__;
         version: _version__WEBPACK_IMPORTED_MODULE_3__
       };
       /***/
-    },,,,,,,,
+    },,,,,,,,,,
     /* 69 */
 
     /* 70 */
@@ -4364,6 +4393,10 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__17__;
 
     /* 76 */
 
+    /* 77 */
+
+    /* 78 */
+
     /***/
     function (module, __webpack_exports__, __webpack_require__) {
       "use strict";
@@ -4379,7 +4412,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__17__;
       }); // EXTERNAL MODULE: ./src/app/features/login/index.js + 2 modules
 
 
-      var login = __webpack_require__(17); // EXTERNAL MODULE: ./src/app/core/util/helpers.js
+      var login = __webpack_require__(18); // EXTERNAL MODULE: ./src/app/core/util/helpers.js
 
 
       var helpers = __webpack_require__(4); // EXTERNAL MODULE: ./src/app/core/redux/types/navigation.js
@@ -4396,7 +4429,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__17__;
       var routing = __webpack_require__(22); // EXTERNAL MODULE: ./src/app/core/redux/actions/version.js
 
 
-      var version = __webpack_require__(31); // CONCATENATED MODULE: ./src/app/core/redux/actions/index.js
+      var version = __webpack_require__(32); // CONCATENATED MODULE: ./src/app/core/redux/actions/index.js
 
       /* harmony default export */
 
@@ -4448,7 +4481,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__20__;
 
 (function webpackUniversalModuleDefinition(root, factory) {
   if (true) module.exports = factory(__webpack_require__(2), __webpack_require__(10), __webpack_require__(4), __webpack_require__(12), __webpack_require__(11), __webpack_require__(24), __webpack_require__(25), __webpack_require__(26));else { var i, a; }
-})(global, function (__WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__5__, __WEBPACK_EXTERNAL_MODULE__9__, __WEBPACK_EXTERNAL_MODULE__13__, __WEBPACK_EXTERNAL_MODULE__16__, __WEBPACK_EXTERNAL_MODULE__18__, __WEBPACK_EXTERNAL_MODULE__24__, __WEBPACK_EXTERNAL_MODULE__29__) {
+})(global, function (__WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__5__, __WEBPACK_EXTERNAL_MODULE__9__, __WEBPACK_EXTERNAL_MODULE__12__, __WEBPACK_EXTERNAL_MODULE__16__, __WEBPACK_EXTERNAL_MODULE__17__, __WEBPACK_EXTERNAL_MODULE__24__, __WEBPACK_EXTERNAL_MODULE__25__) {
   return (
     /******/
     function (modules) {
@@ -5285,20 +5318,20 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__20__;
     function (module, exports) {
       module.exports = __WEBPACK_EXTERNAL_MODULE__9__;
       /***/
-    },,,,
+    },,,
     /* 10 */
 
     /* 11 */
 
     /* 12 */
 
-    /* 13 */
-
     /***/
     function (module, exports) {
-      module.exports = __WEBPACK_EXTERNAL_MODULE__13__;
+      module.exports = __WEBPACK_EXTERNAL_MODULE__12__;
       /***/
-    },,,
+    },,,,
+    /* 13 */
+
     /* 14 */
 
     /* 15 */
@@ -5309,16 +5342,16 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__20__;
     function (module, exports) {
       module.exports = __WEBPACK_EXTERNAL_MODULE__16__;
       /***/
-    },,
+    },
     /* 17 */
-
-    /* 18 */
 
     /***/
     function (module, exports) {
-      module.exports = __WEBPACK_EXTERNAL_MODULE__18__;
+      module.exports = __WEBPACK_EXTERNAL_MODULE__17__;
       /***/
-    },,
+    },,,
+    /* 18 */
+
     /* 19 */
 
     /* 20 */
@@ -5346,7 +5379,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__20__;
       /* harmony import */
 
 
-      var query_string__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(13);
+      var query_string__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(12);
       /* harmony import */
 
 
@@ -5509,9 +5542,14 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__20__;
     function (module, exports) {
       module.exports = __WEBPACK_EXTERNAL_MODULE__24__;
       /***/
-    },,,,,
+    },
     /* 25 */
 
+    /***/
+    function (module, exports) {
+      module.exports = __WEBPACK_EXTERNAL_MODULE__25__;
+      /***/
+    },,,,,,
     /* 26 */
 
     /* 27 */
@@ -5520,12 +5558,9 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__20__;
 
     /* 29 */
 
-    /***/
-    function (module, exports) {
-      module.exports = __WEBPACK_EXTERNAL_MODULE__29__;
-      /***/
-    },
     /* 30 */
+
+    /* 31 */
 
     /***/
     function (module, __webpack_exports__, __webpack_require__) {
@@ -5577,7 +5612,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__20__;
         /* harmony import */
 
 
-        var react_router_dom__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(18);
+        var react_router_dom__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(17);
         /* harmony import */
 
 
@@ -5587,7 +5622,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__20__;
         /* harmony import */
 
 
-        var react_router_config__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(29);
+        var react_router_config__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(25);
         /* harmony import */
 
 
@@ -5605,11 +5640,11 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__20__;
         /* harmony import */
 
 
-        var _pages_NotFound__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(34);
+        var _pages_NotFound__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(35);
         /* harmony import */
 
 
-        var _Status__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(35);
+        var _Status__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(36);
         /* harmony import */
 
 
@@ -5636,8 +5671,10 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__20__;
           projectId,
           contentTypeId,
           entry,
+          isLoading,
           isLoggedIn,
           isNotFound,
+          loadingComponent,
           notFoundComponent,
           setNavigationPath,
           routes,
@@ -5681,7 +5718,14 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__20__;
               entry,
               isLoggedIn
             });
-          } // Match any Defined Content Type Mappings
+          } // Render a supplied Loading component if the route
+          // is not a static route and is in a loading state
+
+
+          if (isLoading && !isNotFound && loadingComponent) {
+            const LoadingComponent = loadingComponent;
+            return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(LoadingComponent, null);
+          } // Match any defined Content Type Mappings
 
 
           if (contentTypeId) {
@@ -5713,17 +5757,18 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__20__;
         };
 
         RouteLoader.propTypes = {
-          routes: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.objectOf(prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.array, prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.array),
-          withEvents: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.object,
-          statePath: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
-          projectId: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
           contentTypeId: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
-          loading: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.object,
           entry: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.object,
+          isLoading: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,
           isLoggedIn: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,
           isNotFound: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,
+          loadingComponent: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func,
           notFoundComponent: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func,
-          setNavigationPath: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func
+          projectId: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
+          routes: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.objectOf(prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.array, prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.array),
+          setNavigationPath: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func,
+          statePath: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
+          withEvents: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.object
         };
 
         const mapStateToProps = state => {
@@ -5747,16 +5792,16 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__20__;
         /* toJS */
         "a"])(RouteLoader)));
         /* WEBPACK VAR INJECTION */
-      }).call(this, __webpack_require__(44)(module));
+      }).call(this, __webpack_require__(46)(module));
       /***/
     },,,,
-    /* 31 */
-
     /* 32 */
 
     /* 33 */
 
     /* 34 */
+
+    /* 35 */
 
     /***/
     function (module, __webpack_exports__, __webpack_require__) {
@@ -5778,7 +5823,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__20__;
       __webpack_exports__["a"] = NotFound;
       /***/
     },
-    /* 35 */
+    /* 36 */
 
     /***/
     function (module, __webpack_exports__, __webpack_require__) {
@@ -5811,7 +5856,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__20__;
       /* harmony import */
 
 
-      var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(18);
+      var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(17);
       /* harmony import */
 
 
@@ -5838,9 +5883,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__20__;
         children: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.element
       };
       /***/
-    },,,,,,,,
-    /* 36 */
-
+    },,,,,,,,,
     /* 37 */
 
     /* 38 */
@@ -5854,6 +5897,10 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__20__;
     /* 42 */
 
     /* 43 */
+
+    /* 44 */
+
+    /* 45 */
 
     /***/
     function (module, __webpack_exports__, __webpack_require__) {
@@ -5883,7 +5930,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__20__;
       /* harmony import */
 
 
-      var _core_routes_RouteLoader__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(30);
+      var _core_routes_RouteLoader__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(31);
 
       const AppRoot = props => {
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_core_routes_RouteLoader__WEBPACK_IMPORTED_MODULE_2__["default"], props);
@@ -5894,7 +5941,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__20__;
       __webpack_exports__["default"] = AppRoot;
       /***/
     },
-    /* 44 */
+    /* 46 */
 
     /***/
     function (module, exports) {
@@ -5925,11 +5972,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__20__;
       };
       /***/
 
-    },,,,,,,,,,,,,,,,,,,,,,,,,
-    /* 45 */
-
-    /* 46 */
-
+    },,,,,,,,,,,,,,,,,,,,,,,
     /* 47 */
 
     /* 48 */
@@ -5982,9 +6025,9 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__20__;
       exports.actions = __webpack_require__(22);
       exports.selectors = __webpack_require__(8);
 
-      const ReactApp = __webpack_require__(43).default;
+      const ReactApp = __webpack_require__(45).default;
 
-      const RouteLoader = __webpack_require__(30).default;
+      const RouteLoader = __webpack_require__(31).default;
 
       exports.ReactApp = ReactApp;
       exports.RouteLoader = RouteLoader;
@@ -6444,8 +6487,10 @@ const resetFacet = facet => facet.setIn(['pagingInfo', 'pagesLoaded'], Object(im
               isCurrentFacet: facetName === facet
             }, state)).setIn(['queryParams', 'dynamicOrderBy'], Object(_core_util_helpers__WEBPACK_IMPORTED_MODULE_3__[/* toArray */ "c"])(orderBy));
           });
-          const tabId = state.getIn([context, facet, 'tabId']);
-          return state.set('context', context).set(context, nextFacets).set(action.context === _schema__WEBPACK_IMPORTED_MODULE_1__["Context"].facets ? 'currentFacet' : 'currentListing', facet).set('term', term || '').setIn(['tabs', tabId, 'currentFacet'], facet).setIn([context, facet, 'pagingInfo', 'pageIndex'], Number(pageIndex) && Number(pageIndex) - 1 || 0).setIn(['config', 'isLoaded'], true).setIn(['config', 'ssr'], typeof window === 'undefined');
+          const tabId = state.getIn([context, facet, 'tabId'], 0);
+          const stateTerm = state.get('term');
+          const nextState = state.set('context', context).set(context, nextFacets).set(action.context === _schema__WEBPACK_IMPORTED_MODULE_1__["Context"].facets ? 'currentFacet' : 'currentListing', facet).set('term', term || '').setIn(['tabs', tabId, 'currentFacet'], facet).setIn([context, facet, 'pagingInfo', 'pageIndex'], Number(pageIndex) && Number(pageIndex) - 1 || state.getIn([context, facet, 'pagingInfo', 'pageIndex']) || 0).setIn(['config', 'isLoaded'], true).setIn(['config', 'ssr'], typeof window === 'undefined');
+          return term !== stateTerm ? nextState.set(context, resetFacets(nextState, context)) : nextState;
         }
 
       case _types__WEBPACK_IMPORTED_MODULE_2__["SET_SEARCH_ENTRIES"]:
@@ -6809,30 +6854,19 @@ var core_schema = __webpack_require__(8);
 
 // CONCATENATED MODULE: ./src/app/zengenti-search-package/transformations/filters-to-filterexpression.mapper.js
 
+
 const filterExpressionMapper = {
   // Expression type: so we can identify how to build the query
   expressionType: ({
     filter
   }) => filter.contentTypeId ? core_schema["c" /* FilterExpressionTypes */].contentType : core_schema["c" /* FilterExpressionTypes */].field,
   // Key: so we can target the query to a specific field
-  key: ({
-    filter //selectedItems
-
-  }) => {
-    // // check for any contentTypeIds in the selectedItems
-    // if (selectedItems.find(si => si.contentTypeId))
-    //   return Fields.sys.contentTypeId;
-    // otherwise return the specified fieldId
-    // from the filter object
-    return filter.fieldId;
-  },
+  key: 'filter.fieldId',
   // Value: so we can filter a specific field by an array of values
   // e.g. taxonomy key or contentTypeId array
-  value: ({
-    selectedValue
-  }) => selectedValue
+  value: 'selectedValue',
+  operator: 'filter.fieldOperator'
 };
-
 
 const mapFilterToFilterExpression = filter => json_mapper(filter, filterExpressionMapper);
 

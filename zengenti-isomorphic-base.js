@@ -2506,14 +2506,7 @@ function* getRouteSaga(action) {
     } else {
       let pathNode = null,
           ancestors = null,
-          siblings = null; // Scroll into View
-
-      if (typeof window !== 'undefined') {
-        window.scroll({
-          top: 0
-        });
-      }
-
+          siblings = null;
       let currentPathDepth = currentPath.split('/').length - 1;
       if (isHome) currentPathDepth = 0; // Handle homepage
 
@@ -2587,6 +2580,15 @@ function* getRouteSaga(action) {
         yield Object(redux_saga_effects_npm_proxy_esm["call"])(setRouteEntry, entry, pathNode, ancestors, siblings);
       } else {
         yield Object(redux_saga_effects_npm_proxy_esm["call"])(do404);
+      }
+
+      if (!appsays || !appsays.preventScrollTop) {
+        // Scroll into View
+        if (typeof window !== 'undefined') {
+          window.scroll({
+            top: 0
+          });
+        }
       }
     }
 
@@ -3113,7 +3115,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__61__;
 /* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const internalServer = __webpack_require__(77).default;
+const internalServer = __webpack_require__(76).default;
 
 exports.app = internalServer.app;
 exports.httpProxy = internalServer.apiProxy;
@@ -3142,8 +3144,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__63__;
 /* 73 */,
 /* 74 */,
 /* 75 */,
-/* 76 */,
-/* 77 */
+/* 76 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

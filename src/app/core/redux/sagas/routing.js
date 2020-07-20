@@ -98,13 +98,6 @@ function* getRouteSaga(action) {
         ancestors = null,
         siblings = null;
 
-      // Scroll into View
-      if (typeof window !== 'undefined') {
-        window.scroll({
-          top: 0,
-        });
-      }
-
       let currentPathDepth = currentPath.split('/').length - 1;
       if (isHome) currentPathDepth = 0;
 
@@ -220,6 +213,14 @@ function* getRouteSaga(action) {
         yield call(setRouteEntry, entry, pathNode, ancestors, siblings);
       } else {
         yield call(do404);
+      }
+      if (!appsays || !appsays.preventScrollTop) {
+        // Scroll into View
+        if (typeof window !== 'undefined') {
+          window.scroll({
+            top: 0,
+          });
+        }
       }
     }
     if (withEvents && withEvents.onRouteLoaded) {

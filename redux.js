@@ -91,7 +91,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 66);
+/******/ 	return __webpack_require__(__webpack_require__.s = 65);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -1558,15 +1558,14 @@ const setVersionStatus = status => Object(_util_helpers__WEBPACK_IMPORTED_MODULE
 /* 62 */,
 /* 63 */,
 /* 64 */,
-/* 65 */,
-/* 66 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const types = __webpack_require__(67).default;
+const types = __webpack_require__(66).default;
 
 const actions = __webpack_require__(78).default;
 
-const selectors = __webpack_require__(68).default; // Remap the objects so they are presented in "feature" hierarchy
+const selectors = __webpack_require__(67).default; // Remap the objects so they are presented in "feature" hierarchy
 // e.g. { routing: { types, actions }, navigation: { types, actions } }
 // instead of { types: { routing, navigation }, actions: { routing, navigation } }
 
@@ -1580,7 +1579,7 @@ Object.entries(types).map(([key, v]) => {
 });
 
 /***/ }),
-/* 67 */
+/* 66 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1601,7 +1600,7 @@ __webpack_require__.r(__webpack_exports__);
 });
 
 /***/ }),
-/* 68 */
+/* 67 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1622,6 +1621,7 @@ __webpack_require__.r(__webpack_exports__);
 });
 
 /***/ }),
+/* 68 */,
 /* 69 */,
 /* 70 */,
 /* 71 */,
