@@ -298,7 +298,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getFacet", function() { return getFacet; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getListing", function() { return getListing; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getFilters", function() { return getFilters; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getFiltersIsLoaded", function() { return getFiltersIsLoaded; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getRenderableFilters", function() { return getRenderableFilters; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getFiltersToLoad", function() { return getFiltersToLoad; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getSelectedFilters", function() { return getSelectedFilters; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getResults", function() { return getResults; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getIsInternalPaging", function() { return getIsInternalPaging; });
@@ -344,30 +345,31 @@ const getFacetTitles = state => getFacets(state).map((facet, key) => ({
 })).toIndexedSeq().toArray();
 const getFacet = (state, facetName, context = _schema__WEBPACK_IMPORTED_MODULE_1__["Context"].facets) => {
   const currentFacet = facetName || getCurrentFacet(state);
-  return state.getIn(['search', context, currentFacet], new immutable__WEBPACK_IMPORTED_MODULE_0__["Map"]({}));
+  return state.getIn(['search', context, currentFacet], Object(immutable__WEBPACK_IMPORTED_MODULE_0__["Map"])());
 };
 const getListing = (state, listing) => {
   const currentListing = listing || getCurrentListing(state);
-  return state.getIn(['search', _schema__WEBPACK_IMPORTED_MODULE_1__["Context"].listings, currentListing], new immutable__WEBPACK_IMPORTED_MODULE_0__["Map"]({}));
+  return state.getIn(['search', _schema__WEBPACK_IMPORTED_MODULE_1__["Context"].listings, currentListing], Object(immutable__WEBPACK_IMPORTED_MODULE_0__["Map"])());
 };
 const getFilters = (state, facet, context = _schema__WEBPACK_IMPORTED_MODULE_1__["Context"].facets) => {
-  return state.getIn(['search', context, facet || getCurrent(state, context), 'filters'], new immutable__WEBPACK_IMPORTED_MODULE_0__["Map"]());
+  return state.getIn(['search', context, facet || getCurrent(state, context), 'filters'], Object(immutable__WEBPACK_IMPORTED_MODULE_0__["Map"])());
 };
-const getFiltersIsLoaded = (state, facet, context = _schema__WEBPACK_IMPORTED_MODULE_1__["Context"].facets) => {
+const getRenderableFilters = (state, facet, context = _schema__WEBPACK_IMPORTED_MODULE_1__["Context"].facets) => getFilters(state, facet, context).filter(f => f.get('renderable', true));
+const getFiltersToLoad = (state, facet, context = _schema__WEBPACK_IMPORTED_MODULE_1__["Context"].facets) => {
   const filters = getFilters(state, facet, context);
-  const loadedFilters = filters.map(f => f.get('items', new immutable__WEBPACK_IMPORTED_MODULE_0__["List"]([])).filter(i => {
+  const loadedFilters = filters.map(f => f.get('items', Object(immutable__WEBPACK_IMPORTED_MODULE_0__["List"])()).filter(i => {
     const title = i.get('title');
     return title !== null && title;
   }).size > 0 && f.get('isError', false) === false);
-  return !!loadedFilters.filter(f => f).size;
+  return loadedFilters.map((isLoaded, filterKey) => !isLoaded ? filterKey : null).toList().filter(f => f);
 };
 const getSelectedFilters = (state, facet, context = _schema__WEBPACK_IMPORTED_MODULE_1__["Context"].facets) => {
   const filters = getFilters(state, facet, context);
-  const selectedFilters = filters.map(value => value.get('items', new immutable__WEBPACK_IMPORTED_MODULE_0__["List"]([])).filter(item => item.get('isSelected', false)).map(item => item.get('key', '').toLowerCase()));
+  const selectedFilters = filters.map(value => value.get('items', Object(immutable__WEBPACK_IMPORTED_MODULE_0__["List"])()).filter(item => item.get('isSelected', false)).map(item => item.get('key', '').toLowerCase()));
   return selectedFilters;
 };
 const getResults = (state, current, context = _schema__WEBPACK_IMPORTED_MODULE_1__["Context"].facets) => {
-  return state.getIn(['search', context, current || getCurrent(state, context), 'results'], new immutable__WEBPACK_IMPORTED_MODULE_0__["List"]([]));
+  return state.getIn(['search', context, current || getCurrent(state, context), 'results'], Object(immutable__WEBPACK_IMPORTED_MODULE_0__["List"])());
 };
 const getIsInternalPaging = (state, current, context = _schema__WEBPACK_IMPORTED_MODULE_1__["Context"].facets) => {
   return state.getIn(['search', context, current || getCurrent(state, context), 'queryParams', 'internalPaging'], false);
@@ -382,10 +384,10 @@ const getIsSsr = state => {
   return state.getIn(['search', 'config', 'ssr'], false);
 };
 const getFeaturedResults = (state, current, context = _schema__WEBPACK_IMPORTED_MODULE_1__["Context"].facets) => {
-  return state.getIn(['search', context, current || getCurrent(state, context), 'featuredResults'], new immutable__WEBPACK_IMPORTED_MODULE_0__["List"]([]));
+  return state.getIn(['search', context, current || getCurrent(state, context), 'featuredResults'], Object(immutable__WEBPACK_IMPORTED_MODULE_0__["List"])());
 };
 const getPaging = (state, current, context = _schema__WEBPACK_IMPORTED_MODULE_1__["Context"].facets) => {
-  return state.getIn(['search', context, current || getCurrent(state, context), 'pagingInfo'], new immutable__WEBPACK_IMPORTED_MODULE_0__["Map"]({}));
+  return state.getIn(['search', context, current || getCurrent(state, context), 'pagingInfo'], Object(immutable__WEBPACK_IMPORTED_MODULE_0__["Map"])());
 };
 const getPageIndex = (state, current, context = _schema__WEBPACK_IMPORTED_MODULE_1__["Context"].facets) => {
   return state.getIn(['search', context, current || getCurrent(state, context), 'pagingInfo', 'pageIndex']);
@@ -397,7 +399,7 @@ const getPageIsLoading = (state, current, context = _schema__WEBPACK_IMPORTED_MO
   return state.getIn(['search', context, current || getCurrent(state, context), 'pagingInfo', 'isLoading']);
 };
 const getPagesLoaded = (state, current, context = _schema__WEBPACK_IMPORTED_MODULE_1__["Context"].facets) => {
-  return state.getIn(['search', context, current || getCurrent(state, context), 'pagingInfo', 'pagesLoaded'], new immutable__WEBPACK_IMPORTED_MODULE_0__["Set"]());
+  return state.getIn(['search', context, current || getCurrent(state, context), 'pagingInfo', 'pagesLoaded'], Object(immutable__WEBPACK_IMPORTED_MODULE_0__["Set"])());
 };
 const getTotalCount = (state, current, context = _schema__WEBPACK_IMPORTED_MODULE_1__["Context"].facets) => {
   return state.getIn(['search', context, current || getCurrent(state, context), 'pagingInfo', 'totalCount']);
@@ -411,7 +413,7 @@ const getFeaturedEntryIds = state => {
 const getSearchTerm = state => state.getIn(['search', 'term']);
 const getSearchTabs = state => state.getIn(['search', 'tabs']);
 const getQueryParams = (state, current, context = _schema__WEBPACK_IMPORTED_MODULE_1__["Context"].facets) => {
-  return state.getIn(['search', context, current || getCurrent(state, context), 'queryParams'], new immutable__WEBPACK_IMPORTED_MODULE_0__["Map"]());
+  return state.getIn(['search', context, current || getCurrent(state, context), 'queryParams'], Object(immutable__WEBPACK_IMPORTED_MODULE_0__["Map"])());
 };
 const getQueryParameter = ({
   state,
@@ -431,7 +433,7 @@ const getTabsAndFacets = state => {
   const facets = getFacets(state);
   return tabs.map(tab => {
     let countFields = tab.get('totalCount');
-    if (typeof countFields === 'string') countFields = new immutable__WEBPACK_IMPORTED_MODULE_0__["List"]([new immutable__WEBPACK_IMPORTED_MODULE_0__["List"]([countFields])]);
+    if (typeof countFields === 'string') countFields = Object(immutable__WEBPACK_IMPORTED_MODULE_0__["List"])([Object(immutable__WEBPACK_IMPORTED_MODULE_0__["List"])([countFields])]);
     const thisTabFacets = facets.filter((v, key) => facets.getIn([key, 'tabId'], 0) === tab.get('id'));
     const thisTabTotal = thisTabFacets.map((facet, facetName) => {
       if (!countFields || countFields.find(f => f.first() === facetName)) return facet.getIn(['pagingInfo', 'totalCount']);
@@ -462,7 +464,7 @@ const selectFacets = {
   getFacetsTotalCount,
   getFeaturedResults,
   getFilters,
-  getFiltersIsLoaded,
+  getFiltersToLoad,
   getIsLoaded,
   getIsLoading,
   getPageIndex,
@@ -478,6 +480,7 @@ const selectFacets = {
     facet,
     context: _schema__WEBPACK_IMPORTED_MODULE_1__["Context"].facets
   }, key, ifnull),
+  getRenderableFilters,
   getResults,
   getTabFacets,
   getTabsAndFacets,
@@ -492,7 +495,7 @@ const selectListing = {
   getCurrent: getCurrentListing,
   getFeaturedResults: (state, listing) => getFeaturedResults(state, listing, _schema__WEBPACK_IMPORTED_MODULE_1__["Context"].listings),
   getFilters: (state, listing) => getFilters(state, listing, _schema__WEBPACK_IMPORTED_MODULE_1__["Context"].listings),
-  getFiltersIsLoaded: (state, listing) => getFiltersIsLoaded(state, listing, _schema__WEBPACK_IMPORTED_MODULE_1__["Context"].listings),
+  getFiltersToLoad: (state, listing) => getFiltersToLoad(state, listing, _schema__WEBPACK_IMPORTED_MODULE_1__["Context"].listings),
   getListing,
   getIsLoaded: state => getIsLoaded(state, _schema__WEBPACK_IMPORTED_MODULE_1__["Context"].listings),
   getIsLoading: state => getIsLoading(state, _schema__WEBPACK_IMPORTED_MODULE_1__["Context"].listings),
@@ -509,6 +512,7 @@ const selectListing = {
     facet,
     context: _schema__WEBPACK_IMPORTED_MODULE_1__["Context"].listings
   }, key, ifnull),
+  getRenderableFilters: (state, listing) => getRenderableFilters(state, listing, _schema__WEBPACK_IMPORTED_MODULE_1__["Context"].listings),
   getResults: (state, listing) => getResults(state, listing, _schema__WEBPACK_IMPORTED_MODULE_1__["Context"].listings),
   getSearchTerm,
   getTotalCount: (state, listing) => getTotalCount(state, listing, _schema__WEBPACK_IMPORTED_MODULE_1__["Context"].listings),
@@ -539,25 +543,25 @@ const Context = {
 const entries = Object(immutable__WEBPACK_IMPORTED_MODULE_0__["Map"])({
   isLoading: false,
   isError: false,
-  items: new immutable__WEBPACK_IMPORTED_MODULE_0__["List"]()
+  items: Object(immutable__WEBPACK_IMPORTED_MODULE_0__["List"])()
 });
 const pagingInfo = Object(immutable__WEBPACK_IMPORTED_MODULE_0__["Map"])({
   isLoading: false,
   pageCount: 0,
   pageIndex: 0,
   pageSize: 0,
-  pagesLoaded: new immutable__WEBPACK_IMPORTED_MODULE_0__["List"](),
+  pagesLoaded: Object(immutable__WEBPACK_IMPORTED_MODULE_0__["List"])(),
   prevPageIndex: 0,
   totalCount: 0
 });
-const searchFacet = Object(immutable__WEBPACK_IMPORTED_MODULE_0__["Map"])({
+const searchFacet = Object(immutable__WEBPACK_IMPORTED_MODULE_0__["OrderedMap"])({
   title: null,
   featuredEntries: entries,
-  featuredResults: new immutable__WEBPACK_IMPORTED_MODULE_0__["List"](),
+  featuredResults: Object(immutable__WEBPACK_IMPORTED_MODULE_0__["List"])(),
   entries,
-  results: new immutable__WEBPACK_IMPORTED_MODULE_0__["List"](),
+  results: Object(immutable__WEBPACK_IMPORTED_MODULE_0__["List"])(),
   queryParams: null,
-  filters: new immutable__WEBPACK_IMPORTED_MODULE_0__["Map"](),
+  filters: Object(immutable__WEBPACK_IMPORTED_MODULE_0__["Map"])(),
   queryDuration: 0,
   pagingInfo
 });
@@ -567,9 +571,9 @@ const filtering = Object(immutable__WEBPACK_IMPORTED_MODULE_0__["Map"])({
   isGrouped: false,
   title: null,
   contentTypeId: null,
-  customWhere: new immutable__WEBPACK_IMPORTED_MODULE_0__["List"](),
+  customWhere: Object(immutable__WEBPACK_IMPORTED_MODULE_0__["List"])(),
   fieldId: null,
-  items: new immutable__WEBPACK_IMPORTED_MODULE_0__["List"]()
+  items: Object(immutable__WEBPACK_IMPORTED_MODULE_0__["List"])()
 });
 const filterItem = Object(immutable__WEBPACK_IMPORTED_MODULE_0__["Map"])({
   key: null,
@@ -578,12 +582,12 @@ const filterItem = Object(immutable__WEBPACK_IMPORTED_MODULE_0__["Map"])({
   path: null,
   isSelected: false
 });
-const initialState = Object(immutable__WEBPACK_IMPORTED_MODULE_0__["Map"])({
+const initialState = Object(immutable__WEBPACK_IMPORTED_MODULE_0__["OrderedMap"])({
   currentFacet: null,
   term: '',
-  facets: new immutable__WEBPACK_IMPORTED_MODULE_0__["OrderedMap"](),
-  tabs: new immutable__WEBPACK_IMPORTED_MODULE_0__["List"](),
-  config: new immutable__WEBPACK_IMPORTED_MODULE_0__["Map"]({
+  facets: Object(immutable__WEBPACK_IMPORTED_MODULE_0__["OrderedMap"])(),
+  tabs: Object(immutable__WEBPACK_IMPORTED_MODULE_0__["List"])(),
+  config: Object(immutable__WEBPACK_IMPORTED_MODULE_0__["Map"])({
     isLoaded: false,
     isError: false
   })
@@ -6127,7 +6131,7 @@ const withSearch = mappers => SearchComponent => {
       facetsTotalCount: Object(_redux_selectors__WEBPACK_IMPORTED_MODULE_5__["getFacetsTotalCount"])(state),
       facetTitles: Object(_redux_selectors__WEBPACK_IMPORTED_MODULE_5__["getFacetTitles"])(state),
       featuredResults: Object(_redux_selectors__WEBPACK_IMPORTED_MODULE_5__["getFeaturedResults"])(state),
-      filters: Object(_redux_selectors__WEBPACK_IMPORTED_MODULE_5__["getFilters"])(state),
+      filters: Object(_redux_selectors__WEBPACK_IMPORTED_MODULE_5__["getRenderableFilters"])(state),
       isLoading: Object(_redux_selectors__WEBPACK_IMPORTED_MODULE_5__["getIsLoading"])(state),
       paging: Object(_redux_selectors__WEBPACK_IMPORTED_MODULE_5__["getPaging"])(state),
       pageIsLoading: Object(_redux_selectors__WEBPACK_IMPORTED_MODULE_5__["getPageIsLoading"])(state),
@@ -6199,11 +6203,6 @@ __webpack_require__.r(__webpack_exports__);
 
 const withListing = mappers => ListingComponent => {
   const Wrapper = props => {
-    // useEffect(() => {
-    //   if (props.currentListing !== listingType) {
-    //     updateCurrentFacet(listingType);
-    //   }
-    // }, [props.currentListing, listingType, updateCurrentFacet]);
     return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(ListingComponent, props);
   };
 
@@ -6232,12 +6231,12 @@ const withListing = mappers => ListingComponent => {
   const {
     getCurrent,
     getFeaturedResults,
-    getFilters,
     getIsLoading,
     getListing,
     getPageIndex,
     getPaging,
     getQueryParameter,
+    getRenderableFilters,
     getResults,
     getSearchTerm
   } = _redux_selectors__WEBPACK_IMPORTED_MODULE_5__["selectListing"];
@@ -6248,7 +6247,7 @@ const withListing = mappers => ListingComponent => {
       currentPageIndex: getPageIndex(state),
       listing: getListing(state),
       featured: getFeaturedResults(state),
-      filters: getFilters(state),
+      filters: getRenderableFilters(state),
       isLoading: getIsLoading(state),
       paging: getPaging(state),
       results: getResults(state),
@@ -6266,7 +6265,7 @@ const withListing = mappers => ListingComponent => {
     updatePageIndex: pageIndex => Object(_redux_actions__WEBPACK_IMPORTED_MODULE_4__["withMappers"])(Object(_redux_actions__WEBPACK_IMPORTED_MODULE_4__["updatePageIndex"])(pageIndex), mappers),
     updateSearchTerm: term => Object(_redux_actions__WEBPACK_IMPORTED_MODULE_4__["withMappers"])(Object(_redux_actions__WEBPACK_IMPORTED_MODULE_4__["updateSearchTerm"])(term), mappers),
     updateSelectedFilters: (filter, key) => Object(_redux_actions__WEBPACK_IMPORTED_MODULE_4__["withMappers"])(Object(_redux_actions__WEBPACK_IMPORTED_MODULE_4__["updateSelectedFilters"])(filter, key), mappers),
-    updateSortOrder: orderBy => Object(_redux_actions__WEBPACK_IMPORTED_MODULE_4__["withMappers"])(Object(_redux_actions__WEBPACK_IMPORTED_MODULE_4__["updateSortOrder"])(orderBy))
+    updateSortOrder: orderBy => Object(_redux_actions__WEBPACK_IMPORTED_MODULE_4__["withMappers"])(Object(_redux_actions__WEBPACK_IMPORTED_MODULE_4__["updateSortOrder"])(orderBy), mappers)
   };
   return Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["connect"])(mapStateToProps, mapDispatchToProps)(Object(_core_util_ToJs__WEBPACK_IMPORTED_MODULE_3__[/* toJS */ "a"])(Wrapper));
 };
@@ -6346,7 +6345,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const generateSearchFacets = (context, config) => {
-  let facets = new immutable__WEBPACK_IMPORTED_MODULE_0__["OrderedMap"]({});
+  let facets = Object(immutable__WEBPACK_IMPORTED_MODULE_0__["OrderedMap"])({});
 
   if (config) {
     if (config[context]) {
@@ -6404,7 +6403,7 @@ const generateFiltersState = ({
   return filters;
 };
 
-const resetFacets = (state, context) => Object(immutable__WEBPACK_IMPORTED_MODULE_0__["Map"])(state.get(context).map(resetFacet));
+const resetFacets = (state, context) => Object(immutable__WEBPACK_IMPORTED_MODULE_0__["OrderedMap"])(state.get(context).map(resetFacet));
 
 const resetFacet = facet => facet.setIn(['pagingInfo', 'pagesLoaded'], Object(immutable__WEBPACK_IMPORTED_MODULE_0__["fromJS"])([])).setIn(['queryDuration'], 0);
 
@@ -6447,10 +6446,11 @@ const resetFacet = facet => facet.setIn(['pagingInfo', 'pagesLoaded'], Object(im
       case _types__WEBPACK_IMPORTED_MODULE_2__["LOAD_FILTERS"]:
         {
           const {
-            facetKey
+            facetKey,
+            filtersToLoad
           } = action;
           const filters = state.getIn([action.context, facetKey, 'filters']);
-          return state.setIn([action.context, facetKey, 'filters'], filters.map(filter => filter.set('isLoading', true)));
+          return state.setIn([action.context, facetKey, 'filters'], filters.map((filter, filterKey) => filtersToLoad.find(f => f === filterKey) ? filter.set('isLoading', true) : filter));
         }
 
       case _types__WEBPACK_IMPORTED_MODULE_2__["LOAD_FILTERS_ERROR"]:
@@ -7182,11 +7182,12 @@ function* loadFilters(action) {
     context,
     mappers = {}
   } = action;
-  const filtersIsLoaded = yield Object(redux_saga_effects_npm_proxy_esm["select"])(selectors["getFiltersIsLoaded"], facetKey, context);
+  const filtersToLoad = yield Object(redux_saga_effects_npm_proxy_esm["select"])(selectors["getFiltersToLoad"], facetKey, context);
 
-  if (!filtersIsLoaded) {
+  if (filtersToLoad.size > 0) {
     yield Object(redux_saga_effects_npm_proxy_esm["put"])({
       type: types["LOAD_FILTERS"],
+      filtersToLoad,
       facetKey,
       context
     });
@@ -7194,18 +7195,18 @@ function* loadFilters(action) {
     const facet = yield Object(redux_saga_effects_npm_proxy_esm["select"])(selectors["getFacet"], facetKey, context);
     const filters = facet.get('filters');
     const projectId = facet.get('projectId');
-    const filtersToLoad = filters && filters.map((filter, filterKey) => {
+    const filtersToLoadSagas = filters && filtersToLoad.map(filterKey => {
       return Object(redux_saga_effects_npm_proxy_esm["call"])(loadFilter, {
         facetKey,
         filterKey,
-        filter,
+        filter: filters.get(filterKey),
         projectId,
         selectedKeys: selectedKeys.get(filterKey),
         context,
         mapper: mappers.filterItems || entry_to_filteritem_mapper
       });
     }).toJS();
-    if (filtersToLoad) yield Object(redux_saga_effects_npm_proxy_esm["all"])(filtersToLoad);
+    if (filtersToLoadSagas) yield Object(redux_saga_effects_npm_proxy_esm["all"])(filtersToLoadSagas);
   }
 }
 
