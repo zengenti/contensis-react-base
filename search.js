@@ -6490,7 +6490,6 @@ const resetFacet = facet => facet.setIn(['pagingInfo', 'pagesLoaded'], Object(im
           const tabId = state.getIn([context, facet, 'tabId'], 0);
           const stateTerm = state.get('term');
           const nextState = state.set('context', context).set(context, nextFacets).set(action.context === _schema__WEBPACK_IMPORTED_MODULE_1__["Context"].facets ? 'currentFacet' : 'currentListing', facet).set('term', term).setIn(['tabs', tabId, 'currentFacet'], facet).setIn([context, facet, 'pagingInfo', 'pageIndex'], Number(pageIndex) && Number(pageIndex) - 1 || state.getIn([context, facet, 'pagingInfo', 'pageIndex']) || 0).setIn(['config', 'isLoaded'], true).setIn(['config', 'ssr'], typeof window === 'undefined');
-          debugger;
           return term !== stateTerm ? nextState.set(context, resetFacets(nextState, context)) : nextState;
         }
 
