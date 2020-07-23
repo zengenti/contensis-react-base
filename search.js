@@ -6405,7 +6405,7 @@ const generateFiltersState = ({
 
 const resetFacets = (state, context) => Object(immutable__WEBPACK_IMPORTED_MODULE_0__["OrderedMap"])(state.get(context).map(resetFacet));
 
-const resetFacet = facet => facet.setIn(['pagingInfo', 'pagesLoaded'], Object(immutable__WEBPACK_IMPORTED_MODULE_0__["fromJS"])([])).setIn(['queryDuration'], 0);
+const resetFacet = facet => facet.setIn(['pagingInfo', 'pagesLoaded'], Object(immutable__WEBPACK_IMPORTED_MODULE_0__["fromJS"])([])).setIn(['pagingInfo', 'pageIndex'], 0).setIn(['queryDuration'], 0);
 
 /* harmony default export */ __webpack_exports__["default"] = (config => {
   // Add facets from SearchConfig to initialState
@@ -6475,7 +6475,7 @@ const resetFacet = facet => facet.setIn(['pagingInfo', 'pagesLoaded'], Object(im
             context
           } = action;
           const {
-            term,
+            term = '',
             pageIndex,
             orderBy
           } = params;
@@ -6489,7 +6489,8 @@ const resetFacet = facet => facet.setIn(['pagingInfo', 'pagesLoaded'], Object(im
           });
           const tabId = state.getIn([context, facet, 'tabId'], 0);
           const stateTerm = state.get('term');
-          const nextState = state.set('context', context).set(context, nextFacets).set(action.context === _schema__WEBPACK_IMPORTED_MODULE_1__["Context"].facets ? 'currentFacet' : 'currentListing', facet).set('term', term || '').setIn(['tabs', tabId, 'currentFacet'], facet).setIn([context, facet, 'pagingInfo', 'pageIndex'], Number(pageIndex) && Number(pageIndex) - 1 || state.getIn([context, facet, 'pagingInfo', 'pageIndex']) || 0).setIn(['config', 'isLoaded'], true).setIn(['config', 'ssr'], typeof window === 'undefined');
+          const nextState = state.set('context', context).set(context, nextFacets).set(action.context === _schema__WEBPACK_IMPORTED_MODULE_1__["Context"].facets ? 'currentFacet' : 'currentListing', facet).set('term', term).setIn(['tabs', tabId, 'currentFacet'], facet).setIn([context, facet, 'pagingInfo', 'pageIndex'], Number(pageIndex) && Number(pageIndex) - 1 || state.getIn([context, facet, 'pagingInfo', 'pageIndex']) || 0).setIn(['config', 'isLoaded'], true).setIn(['config', 'ssr'], typeof window === 'undefined');
+          debugger;
           return term !== stateTerm ? nextState.set(context, resetFacets(nextState, context)) : nextState;
         }
 
