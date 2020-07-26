@@ -11,5 +11,6 @@ export default [
       },
       loading: Loading,
     }),
+    entryMapper: node => node.entry,
   },
 ];

@@ -1,14 +1,15 @@
 import { Map, fromJS, List, Set } from 'immutable';
 import {
-  SET_ENTRY_ID,
+  // SET_ENTRY_ID,
+  // SET_NAVIGATION_NOT_FOUND,
+  // SET_NODE,
   SET_ENTRY,
   SET_NAVIGATION_PATH,
-  SET_NAVIGATION_NOT_FOUND,
-  SET_NODE,
   SET_ANCESTORS,
   SET_TARGET_PROJECT,
   SET_ROUTE,
   SET_SIBLINGS,
+  MAP_ENTRY,
 } from '~/core/redux/types/routing';
 import { GetAllResponseGuids } from '~/core/util/ContensisDeliveryApi';
 
@@ -27,6 +28,9 @@ let initialState = Map({
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case MAP_ENTRY: {
+      return state.set('mappedEntry', fromJS(action.mappedEntry));
+    }
     case SET_ANCESTORS: {
       if (action.ancestors) {
         let ancestorIDs = action.ancestors.map(node => {
@@ -45,23 +49,42 @@ export default (state = initialState, action) => {
       return state.set('currentNodeAncestors', fromJS(action.ancestors));
     }
     case SET_ENTRY: {
-      if (!action.entry)
-        return state
-          .set('entry', null)
+      const { entry, node = {}, isLoading = false } = action;
+      let nextState;
+
+      if (!entry) {
+        nextState = state
+          .set('entryID', null)
           .set('entryDepends', null)
-          .set('isLoading', action.isLoading);
-      const entryDepends = GetAllResponseGuids(action.entry);
-      return state
-        .set('entryDepends', fromJS(entryDepends))
-        .set('entry', fromJS(action.entry))
-        .set('isLoading', action.isLoading);
-    }
-    case SET_ENTRY_ID: {
-      if (action.id === '') {
-        return state;
+          .set('entry', null)
+          .set('mappedEntry', null)
+          .set('isLoading', isLoading);
+      } else {
+        const entryDepends = GetAllResponseGuids(entry);
+        nextState = state
+          .set('entryID', action.id)
+          .set('entryDepends', fromJS(entryDepends))
+          .set('entry', fromJS(entry))
+          .set('isLoading', isLoading);
       }
-      return state.set('entryID', action.id);
+
+      if (!node) {
+        return nextState.set('nodeDepends', null).set('currentNode', null);
+      } else {
+        // On Set Node, we reset all dependants.
+        const nodeDepends = Set([node.id]);
+        return nextState
+          .set('nodeDepends', nodeDepends)
+          .set('currentNode', fromJS(node))
+          .removeIn(['currentNode', 'entry']); // We have the entry stored elsewhere, so lets not keep it twice.
+      }
     }
+    // case SET_ENTRY_ID: {
+    //   if (action.id === '') {
+    //     return state;
+    //   }
+    //   return state.set('entryID', action.id);
+    // }
     case SET_NAVIGATION_PATH: {
       let staticRoute = false;
       if (action.staticRoute) {
@@ -82,21 +105,21 @@ export default (state = initialState, action) => {
       }
       return state;
     }
-    case SET_NAVIGATION_NOT_FOUND: {
-      return state
-        .set('notFound', fromJS(action.notFound))
-        .set('isLoading', false);
-    }
-    case SET_NODE: {
-      const { node } = action;
-      if (!node) return state;
-      // On Set Node, we reset all dependants.
-      const nodeDepends = Set([node.id]);
-      return state
-        .set('nodeDepends', nodeDepends)
-        .set('currentNode', fromJS(action.node))
-        .removeIn(['currentNode', 'entry']); // We have the entry stored elsewhere, so lets not keep it twice.
-    }
+    // case SET_NAVIGATION_NOT_FOUND: {
+    //   return state
+    //     .set('notFound', fromJS(action.notFound))
+    //     .set('isLoading', false);
+    // }
+    // case SET_NODE: {
+    //   const { node } = action;
+    //   if (!node) return state;
+    //   // On Set Node, we reset all dependants.
+    //   const nodeDepends = Set([node.id]);
+    //   return state
+    //     .set('nodeDepends', nodeDepends)
+    //     .set('currentNode', fromJS(action.node))
+    //     .removeIn(['currentNode', 'entry']); // We have the entry stored elsewhere, so lets not keep it twice.
+    // }
     case SET_ROUTE: {
       return state.set('nextPath', action.path);
     }

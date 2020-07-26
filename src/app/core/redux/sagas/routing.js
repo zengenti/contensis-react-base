@@ -2,15 +2,16 @@
 import * as log from 'loglevel';
 import { takeEvery, put, select, call, all } from 'redux-saga/effects';
 import {
-  SET_ENTRY_ID,
+  // SET_ENTRY_ID,
+  // SET_NAVIGATION_NOT_FOUND,
+  // SET_NODE,
   SET_ENTRY,
-  SET_NAVIGATION_NOT_FOUND,
-  SET_NODE,
   SET_ANCESTORS,
   SET_NAVIGATION_PATH,
   SET_ROUTE,
   CALL_HISTORY_METHOD,
   SET_SIBLINGS,
+  MAP_ENTRY,
 } from '~/core/redux/types/routing';
 import { cachedSearch, deliveryApi } from '~/core/util/ContensisDeliveryApi';
 import { selectVersionStatus } from '~/core/redux/selectors/version';
@@ -21,7 +22,7 @@ import {
 } from '~/core/redux/selectors/routing';
 import { GET_NODE_TREE } from '../types/navigation';
 import { hasNavigationTree } from '../selectors/navigation';
-import { routeEntryByFields } from './queries';
+import { routeEntryByFieldsQuery } from './queries';
 
 export const routingSagas = [
   takeEvery(SET_NAVIGATION_PATH, getRouteSaga),
@@ -43,9 +44,14 @@ function* setRouteSaga(action) {
 }
 
 function* getRouteSaga(action) {
-  let entry = null;
+  let entry = null,
+    mappedEntry = null;
   try {
-    const { withEvents, routes, staticRoute } = action;
+    const {
+      withEvents,
+      routes: { ContentTypeMappings = {} } = {},
+      staticRoute,
+    } = action;
     let appsays;
     if (withEvents && withEvents.onRouteLoad) {
       appsays = yield withEvents.onRouteLoad(action);
@@ -60,10 +66,9 @@ function* getRouteSaga(action) {
         : (appsays && appsays.customNavigation) || true);
 
     const entryLinkDepth = (appsays && appsays.entryLinkDepth) || 3;
-    const setContentTypeLimits =
-      routes &&
-      routes.ContentTypeMappings &&
-      !!routes.ContentTypeMappings.find(ct => ct.fields || ct.linkDepth);
+    const setContentTypeLimits = !!ContentTypeMappings.find(
+      ct => ct.fields || ct.linkDepth
+    );
 
     const state = yield select();
     const routeEntry = selectRouteEntry(state);
@@ -157,13 +162,10 @@ function* getRouteSaga(action) {
             pathNode.entry.sys &&
             pathNode.entry.sys.id
           ) {
-            const contentType =
-              routes &&
-              routes.ContentTypeMappings &&
-              routes.ContentTypeMappings.find(
-                ct => ct.contentTypeID === pathNode.entry.sys.contentTypeId
-              );
-            const query = routeEntryByFields(
+            const contentType = ContentTypeMappings.find(
+              ct => ct.contentTypeID === pathNode.entry.sys.contentTypeId
+            );
+            const query = routeEntryByFieldsQuery(
               pathNode.entry.sys.id,
               contentType && contentType.fields,
               deliveryApiStatus
@@ -210,7 +212,26 @@ function* getRouteSaga(action) {
         pathNode.entry.sys.id
       ) {
         entry = pathNode.entry;
-        yield call(setRouteEntry, entry, pathNode, ancestors, siblings);
+        const entryMapper = (
+          ContentTypeMappings.find(
+            ct => ct.contentTypeID === pathNode.entry.sys.contentTypeId
+          ) || {}
+        ).entryMapper;
+
+        yield all([
+          call(
+            mapRouteEntry,
+            { ...pathNode, ancestors, siblings },
+            entryMapper
+          ),
+          call(
+            setRouteEntry,
+            mappedEntry || entry,
+            pathNode,
+            ancestors,
+            siblings
+          ),
+        ]);
       } else {
         yield call(do404);
       }
@@ -249,44 +270,56 @@ function* getRouteSaga(action) {
 
 function* setRouteEntry(entry, node, ancestors, siblings) {
   yield all([
-    put({
-      type: SET_NAVIGATION_NOT_FOUND,
-      notFound: !(entry && entry.sys.id),
-    }),
-    put({
-      type: SET_NODE,
-      node,
-    }),
+    // put({
+    //   type: SET_NAVIGATION_NOT_FOUND,
+    //   notFound: !(entry && entry.sys.id),
+    // }),
+    // put({
+    //   type: SET_NODE,
+    //   node,
+    // }),
     put({
       type: SET_ENTRY,
-      entry: entry,
-    }),
-    put({
-      type: SET_ENTRY_ID,
       id: (entry && entry.sys.id) || null,
+      entry,
+      node,
     }),
-    put({
-      type: SET_ANCESTORS,
-      ancestors,
-    }),
-    put({
-      type: SET_SIBLINGS,
-      siblings,
-    }),
+    // put({
+    //   type: SET_ENTRY_ID,
+    //   id: (entry && entry.sys.id) || null,
+    // }),
+    ancestors &&
+      put({
+        type: SET_ANCESTORS,
+        ancestors,
+      }),
+    siblings &&
+      put({
+        type: SET_SIBLINGS,
+        siblings,
+      }),
   ]);
 }
 
+function* mapRouteEntry(node, entryMapper) {
+  if (typeof entryMapper === 'function') {
+    const mappedEntry = entryMapper(node);
+    yield put({ type: MAP_ENTRY, mappedEntry, node, entryMapper });
+  }
+}
 function* do404() {
-  yield put({
-    type: SET_NAVIGATION_NOT_FOUND,
-    notFound: true,
-  });
-  yield put({
-    type: SET_ENTRY_ID,
-    id: null,
-  });
+  // yield put({
+  //   type: SET_NAVIGATION_NOT_FOUND,
+  //   notFound: true,
+  // });
+  // yield put({
+  //   type: SET_ENTRY_ID,
+  //   id: null,
+  // });
   yield put({
     type: SET_ENTRY,
+    id: null,
     entry: null,
+    notFound: true,
   });
 }

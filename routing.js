@@ -107,38 +107,6 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__2__;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GET_ENTRY", function() { return GET_ENTRY; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_ENTRY", function() { return SET_ENTRY; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_NODE", function() { return SET_NODE; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_ANCESTORS", function() { return SET_ANCESTORS; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_SIBLINGS", function() { return SET_SIBLINGS; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_ENTRY_ID", function() { return SET_ENTRY_ID; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_ENTRY_RELATED_ARTICLES", function() { return SET_ENTRY_RELATED_ARTICLES; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_NAVIGATION_NOT_FOUND", function() { return SET_NAVIGATION_NOT_FOUND; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_NAVIGATION_PATH", function() { return SET_NAVIGATION_PATH; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_TARGET_PROJECT", function() { return SET_TARGET_PROJECT; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_ROUTE", function() { return SET_ROUTE; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CALL_HISTORY_METHOD", function() { return CALL_HISTORY_METHOD; });
-const ROUTING_PREFIX = '@ROUTING/';
-const GET_ENTRY = `${ROUTING_PREFIX}_GET_ENTRY`;
-const SET_ENTRY = `${ROUTING_PREFIX}_SET_ENTRY`;
-const SET_NODE = `${ROUTING_PREFIX}_SET_NODE`;
-const SET_ANCESTORS = `${ROUTING_PREFIX}_SET_ANCESTORS`;
-const SET_SIBLINGS = `${ROUTING_PREFIX}_SET_SIBLINGS`;
-const SET_ENTRY_ID = `${ROUTING_PREFIX}_SET_ENTRY_ID`;
-const SET_ENTRY_RELATED_ARTICLES = `${ROUTING_PREFIX}_SET_ENTRY_RELATED_ARTICLES`;
-const SET_NAVIGATION_NOT_FOUND = `${ROUTING_PREFIX}_SET_NOT_FOUND`;
-const SET_NAVIGATION_PATH = `${ROUTING_PREFIX}_SET_NAVIGATION_PATH`;
-const SET_TARGET_PROJECT = `${ROUTING_PREFIX}_SET_TARGET_PROJECT`;
-const SET_ROUTE = `${ROUTING_PREFIX}_SET_ROUTE`;
-const CALL_HISTORY_METHOD = `${ROUTING_PREFIX}_CALL_HISTORY_METHOD`;
-
-/***/ }),
-/* 4 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return action; });
 /* unused harmony export getWebPImageUri */
 /* unused harmony export resizeImage */
@@ -251,6 +219,40 @@ const randomString = length => {
 };
 
 /***/ }),
+/* 4 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GET_ENTRY", function() { return GET_ENTRY; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_ENTRY", function() { return SET_ENTRY; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MAP_ENTRY", function() { return MAP_ENTRY; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_NODE", function() { return SET_NODE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_ANCESTORS", function() { return SET_ANCESTORS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_SIBLINGS", function() { return SET_SIBLINGS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_ENTRY_ID", function() { return SET_ENTRY_ID; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_ENTRY_RELATED_ARTICLES", function() { return SET_ENTRY_RELATED_ARTICLES; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_NAVIGATION_NOT_FOUND", function() { return SET_NAVIGATION_NOT_FOUND; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_NAVIGATION_PATH", function() { return SET_NAVIGATION_PATH; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_TARGET_PROJECT", function() { return SET_TARGET_PROJECT; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_ROUTE", function() { return SET_ROUTE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CALL_HISTORY_METHOD", function() { return CALL_HISTORY_METHOD; });
+const ROUTING_PREFIX = '@ROUTING/';
+const GET_ENTRY = `${ROUTING_PREFIX}_GET_ENTRY`;
+const SET_ENTRY = `${ROUTING_PREFIX}_SET_ENTRY`;
+const MAP_ENTRY = `${ROUTING_PREFIX}_MAP_ENTRY`;
+const SET_NODE = `${ROUTING_PREFIX}_SET_NODE`;
+const SET_ANCESTORS = `${ROUTING_PREFIX}_SET_ANCESTORS`;
+const SET_SIBLINGS = `${ROUTING_PREFIX}_SET_SIBLINGS`;
+const SET_ENTRY_ID = `${ROUTING_PREFIX}_SET_ENTRY_ID`;
+const SET_ENTRY_RELATED_ARTICLES = `${ROUTING_PREFIX}_SET_ENTRY_RELATED_ARTICLES`;
+const SET_NAVIGATION_NOT_FOUND = `${ROUTING_PREFIX}_SET_NOT_FOUND`;
+const SET_NAVIGATION_PATH = `${ROUTING_PREFIX}_SET_NAVIGATION_PATH`;
+const SET_TARGET_PROJECT = `${ROUTING_PREFIX}_SET_TARGET_PROJECT`;
+const SET_ROUTE = `${ROUTING_PREFIX}_SET_ROUTE`;
+const CALL_HISTORY_METHOD = `${ROUTING_PREFIX}_CALL_HISTORY_METHOD`;
+
+/***/ }),
 /* 5 */
 /***/ (function(module, exports) {
 
@@ -319,6 +321,7 @@ const selectCaptchaToken = state => {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectRouteEntry", function() { return selectRouteEntry; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectMappedEntry", function() { return selectMappedEntry; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectNodeDepends", function() { return selectNodeDepends; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectCurrentTreeID", function() { return selectCurrentTreeID; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectEntryDepends", function() { return selectEntryDepends; });
@@ -341,10 +344,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const selectRouteEntry = state => {
-  return state.getIn(['routing', 'entry'], Object(immutable__WEBPACK_IMPORTED_MODULE_0__["Map"])({}));
+  return state.getIn(['routing', 'entry'], Object(immutable__WEBPACK_IMPORTED_MODULE_0__["Map"])());
+};
+const selectMappedEntry = state => {
+  return state.getIn(['routing', 'mappedEntry'], Object(immutable__WEBPACK_IMPORTED_MODULE_0__["Map"])());
 };
 const selectNodeDepends = state => {
-  return state.getIn(['routing', 'nodeDepends'], new immutable__WEBPACK_IMPORTED_MODULE_0__["List"]([]));
+  return state.getIn(['routing', 'nodeDepends'], Object(immutable__WEBPACK_IMPORTED_MODULE_0__["List"])());
 };
 const selectCurrentTreeID = state => {
   return state.getIn(['routing', 'currentTreeId']);
@@ -379,13 +385,13 @@ const selectIsNotFound = state => {
   return state.getIn(['routing', 'notFound']);
 };
 const selectCurrentAncestors = state => {
-  return state.getIn(['routing', 'currentNodeAncestors'], new immutable__WEBPACK_IMPORTED_MODULE_0__["List"]());
+  return state.getIn(['routing', 'currentNodeAncestors'], Object(immutable__WEBPACK_IMPORTED_MODULE_0__["List"])());
 };
 const selectCurrentNode = state => {
   return state.getIn(['routing', 'currentNode']);
 };
 const selectBreadcrumb = state => {
-  return (selectCurrentAncestors(state) || new immutable__WEBPACK_IMPORTED_MODULE_0__["List"]()).push(selectCurrentNode(state));
+  return (selectCurrentAncestors(state) || Object(immutable__WEBPACK_IMPORTED_MODULE_0__["List"])()).push(selectCurrentNode(state));
 };
 const selectRouteLoading = state => {
   return state.getIn(['routing', 'isLoading']);
@@ -482,8 +488,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setCurrentProject", function() { return setCurrentProject; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setRoute", function() { return setRoute; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setRouteEntry", function() { return setRouteEntry; });
-/* harmony import */ var _util_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(4);
-/* harmony import */ var _types_routing__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
+/* harmony import */ var _util_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
+/* harmony import */ var _types_routing__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(4);
 
 
 const setNotFound = notFound => Object(_util_helpers__WEBPACK_IMPORTED_MODULE_0__[/* action */ "a"])(_types_routing__WEBPACK_IMPORTED_MODULE_1__["SET_NAVIGATION_NOT_FOUND"], {
@@ -828,7 +834,7 @@ module.exports = function(originalModule) {
 /* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports.types = __webpack_require__(3);
+exports.types = __webpack_require__(4);
 exports.actions = __webpack_require__(22);
 exports.selectors = __webpack_require__(8);
 

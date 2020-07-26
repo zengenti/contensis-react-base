@@ -169,38 +169,6 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__2__;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GET_ENTRY", function() { return GET_ENTRY; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_ENTRY", function() { return SET_ENTRY; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_NODE", function() { return SET_NODE; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_ANCESTORS", function() { return SET_ANCESTORS; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_SIBLINGS", function() { return SET_SIBLINGS; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_ENTRY_ID", function() { return SET_ENTRY_ID; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_ENTRY_RELATED_ARTICLES", function() { return SET_ENTRY_RELATED_ARTICLES; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_NAVIGATION_NOT_FOUND", function() { return SET_NAVIGATION_NOT_FOUND; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_NAVIGATION_PATH", function() { return SET_NAVIGATION_PATH; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_TARGET_PROJECT", function() { return SET_TARGET_PROJECT; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_ROUTE", function() { return SET_ROUTE; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CALL_HISTORY_METHOD", function() { return CALL_HISTORY_METHOD; });
-const ROUTING_PREFIX = '@ROUTING/';
-const GET_ENTRY = `${ROUTING_PREFIX}_GET_ENTRY`;
-const SET_ENTRY = `${ROUTING_PREFIX}_SET_ENTRY`;
-const SET_NODE = `${ROUTING_PREFIX}_SET_NODE`;
-const SET_ANCESTORS = `${ROUTING_PREFIX}_SET_ANCESTORS`;
-const SET_SIBLINGS = `${ROUTING_PREFIX}_SET_SIBLINGS`;
-const SET_ENTRY_ID = `${ROUTING_PREFIX}_SET_ENTRY_ID`;
-const SET_ENTRY_RELATED_ARTICLES = `${ROUTING_PREFIX}_SET_ENTRY_RELATED_ARTICLES`;
-const SET_NAVIGATION_NOT_FOUND = `${ROUTING_PREFIX}_SET_NOT_FOUND`;
-const SET_NAVIGATION_PATH = `${ROUTING_PREFIX}_SET_NAVIGATION_PATH`;
-const SET_TARGET_PROJECT = `${ROUTING_PREFIX}_SET_TARGET_PROJECT`;
-const SET_ROUTE = `${ROUTING_PREFIX}_SET_ROUTE`;
-const CALL_HISTORY_METHOD = `${ROUTING_PREFIX}_CALL_HISTORY_METHOD`;
-
-/***/ }),
-/* 4 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return action; });
 /* unused harmony export getWebPImageUri */
 /* unused harmony export resizeImage */
@@ -313,6 +281,40 @@ const randomString = length => {
 };
 
 /***/ }),
+/* 4 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GET_ENTRY", function() { return GET_ENTRY; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_ENTRY", function() { return SET_ENTRY; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MAP_ENTRY", function() { return MAP_ENTRY; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_NODE", function() { return SET_NODE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_ANCESTORS", function() { return SET_ANCESTORS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_SIBLINGS", function() { return SET_SIBLINGS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_ENTRY_ID", function() { return SET_ENTRY_ID; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_ENTRY_RELATED_ARTICLES", function() { return SET_ENTRY_RELATED_ARTICLES; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_NAVIGATION_NOT_FOUND", function() { return SET_NAVIGATION_NOT_FOUND; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_NAVIGATION_PATH", function() { return SET_NAVIGATION_PATH; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_TARGET_PROJECT", function() { return SET_TARGET_PROJECT; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_ROUTE", function() { return SET_ROUTE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CALL_HISTORY_METHOD", function() { return CALL_HISTORY_METHOD; });
+const ROUTING_PREFIX = '@ROUTING/';
+const GET_ENTRY = `${ROUTING_PREFIX}_GET_ENTRY`;
+const SET_ENTRY = `${ROUTING_PREFIX}_SET_ENTRY`;
+const MAP_ENTRY = `${ROUTING_PREFIX}_MAP_ENTRY`;
+const SET_NODE = `${ROUTING_PREFIX}_SET_NODE`;
+const SET_ANCESTORS = `${ROUTING_PREFIX}_SET_ANCESTORS`;
+const SET_SIBLINGS = `${ROUTING_PREFIX}_SET_SIBLINGS`;
+const SET_ENTRY_ID = `${ROUTING_PREFIX}_SET_ENTRY_ID`;
+const SET_ENTRY_RELATED_ARTICLES = `${ROUTING_PREFIX}_SET_ENTRY_RELATED_ARTICLES`;
+const SET_NAVIGATION_NOT_FOUND = `${ROUTING_PREFIX}_SET_NOT_FOUND`;
+const SET_NAVIGATION_PATH = `${ROUTING_PREFIX}_SET_NAVIGATION_PATH`;
+const SET_TARGET_PROJECT = `${ROUTING_PREFIX}_SET_TARGET_PROJECT`;
+const SET_ROUTE = `${ROUTING_PREFIX}_SET_ROUTE`;
+const CALL_HISTORY_METHOD = `${ROUTING_PREFIX}_CALL_HISTORY_METHOD`;
+
+/***/ }),
 /* 5 */
 /***/ (function(module, exports) {
 
@@ -386,6 +388,7 @@ const selectCaptchaToken = state => {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectRouteEntry", function() { return selectRouteEntry; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectMappedEntry", function() { return selectMappedEntry; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectNodeDepends", function() { return selectNodeDepends; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectCurrentTreeID", function() { return selectCurrentTreeID; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectEntryDepends", function() { return selectEntryDepends; });
@@ -408,10 +411,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const selectRouteEntry = state => {
-  return state.getIn(['routing', 'entry'], Object(immutable__WEBPACK_IMPORTED_MODULE_0__["Map"])({}));
+  return state.getIn(['routing', 'entry'], Object(immutable__WEBPACK_IMPORTED_MODULE_0__["Map"])());
+};
+const selectMappedEntry = state => {
+  return state.getIn(['routing', 'mappedEntry'], Object(immutable__WEBPACK_IMPORTED_MODULE_0__["Map"])());
 };
 const selectNodeDepends = state => {
-  return state.getIn(['routing', 'nodeDepends'], new immutable__WEBPACK_IMPORTED_MODULE_0__["List"]([]));
+  return state.getIn(['routing', 'nodeDepends'], Object(immutable__WEBPACK_IMPORTED_MODULE_0__["List"])());
 };
 const selectCurrentTreeID = state => {
   return state.getIn(['routing', 'currentTreeId']);
@@ -446,13 +452,13 @@ const selectIsNotFound = state => {
   return state.getIn(['routing', 'notFound']);
 };
 const selectCurrentAncestors = state => {
-  return state.getIn(['routing', 'currentNodeAncestors'], new immutable__WEBPACK_IMPORTED_MODULE_0__["List"]());
+  return state.getIn(['routing', 'currentNodeAncestors'], Object(immutable__WEBPACK_IMPORTED_MODULE_0__["List"])());
 };
 const selectCurrentNode = state => {
   return state.getIn(['routing', 'currentNode']);
 };
 const selectBreadcrumb = state => {
-  return (selectCurrentAncestors(state) || new immutable__WEBPACK_IMPORTED_MODULE_0__["List"]()).push(selectCurrentNode(state));
+  return (selectCurrentAncestors(state) || Object(immutable__WEBPACK_IMPORTED_MODULE_0__["List"])()).push(selectCurrentNode(state));
 };
 const selectRouteLoading = state => {
   return state.getIn(['routing', 'isLoading']);
@@ -1368,7 +1374,7 @@ __webpack_require__.d(actions_namespaceObject, "setRecaptchaKey", function() { r
 __webpack_require__.d(actions_namespaceObject, "setRecaptchaResponse", function() { return setRecaptchaResponse; });
 
 // EXTERNAL MODULE: ./src/app/core/util/helpers.js
-var helpers = __webpack_require__(4);
+var helpers = __webpack_require__(3);
 
 // EXTERNAL MODULE: ./src/app/features/login/redux/types.js
 var types = __webpack_require__(1);
@@ -1561,8 +1567,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setCurrentProject", function() { return setCurrentProject; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setRoute", function() { return setRoute; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setRouteEntry", function() { return setRouteEntry; });
-/* harmony import */ var _util_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(4);
-/* harmony import */ var _types_routing__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
+/* harmony import */ var _util_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
+/* harmony import */ var _types_routing__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(4);
 
 
 const setNotFound = notFound => Object(_util_helpers__WEBPACK_IMPORTED_MODULE_0__[/* action */ "a"])(_types_routing__WEBPACK_IMPORTED_MODULE_1__["SET_NAVIGATION_NOT_FOUND"], {
@@ -1600,7 +1606,7 @@ const setRouteEntry = entry => Object(_util_helpers__WEBPACK_IMPORTED_MODULE_0__
 /* harmony import */ var query_string__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(query_string__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(1);
 /* harmony import */ var _reducers__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(14);
-/* harmony import */ var _core_redux_types_routing__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(3);
+/* harmony import */ var _core_redux_types_routing__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(4);
 /* harmony import */ var _core_redux_selectors_routing__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(8);
 /* harmony import */ var _selectors__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(7);
 /* harmony import */ var _util_LoginHelper_class__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(10);
@@ -2017,7 +2023,7 @@ const mapDispatchToProps = {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setVersion", function() { return setVersion; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setVersionStatus", function() { return setVersionStatus; });
-/* harmony import */ var _util_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(4);
+/* harmony import */ var _util_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
 /* harmony import */ var _types_version__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(19);
 
 
@@ -2184,7 +2190,7 @@ var redux_saga_effects_npm_proxy_esm = __webpack_require__(0);
 var external_loglevel_ = __webpack_require__(37);
 
 // EXTERNAL MODULE: ./src/app/core/redux/types/routing.js
-var routing = __webpack_require__(3);
+var routing = __webpack_require__(4);
 
 // EXTERNAL MODULE: ./src/app/core/util/ContensisDeliveryApi.js
 var ContensisDeliveryApi = __webpack_require__(13);
@@ -2429,7 +2435,7 @@ const termExpressions = (searchTerm, weightedSearchFields) => {
 // eslint-disable-next-line import/named
 
 
-const routeEntryByFields = (id, fields = [], versionStatus = 'published') => {
+const routeEntryByFieldsQuery = (id, fields = [], versionStatus = 'published') => {
   const query = new ContensisDeliveryApi["Query"](...[...fieldExpression('sys.id', id), ...defaultExpressions(versionStatus)]);
   query.fields = fields;
   return query;
@@ -2462,12 +2468,15 @@ function* setRouteSaga(action) {
 }
 
 function* getRouteSaga(action) {
-  let entry = null;
+  let entry = null,
+      mappedEntry = null;
 
   try {
     const {
       withEvents,
-      routes,
+      routes: {
+        ContentTypeMappings = {}
+      } = {},
       staticRoute
     } = action;
     let appsays;
@@ -2481,7 +2490,7 @@ function* getRouteSaga(action) {
 
     const doNavigation = !appsays || (appsays && appsays.customNavigation === true ? false : appsays && appsays.customNavigation || true);
     const entryLinkDepth = appsays && appsays.entryLinkDepth || 3;
-    const setContentTypeLimits = routes && routes.ContentTypeMappings && !!routes.ContentTypeMappings.find(ct => ct.fields || ct.linkDepth);
+    const setContentTypeLimits = !!ContentTypeMappings.find(ct => ct.fields || ct.linkDepth);
     const state = yield Object(redux_saga_effects_npm_proxy_esm["select"])();
     const routeEntry = Object(selectors_routing["selectRouteEntry"])(state);
     const currentPath = Object(selectors_routing["selectCurrentPath"])(state);
@@ -2553,8 +2562,8 @@ function* getRouteSaga(action) {
           }, project);
 
           if (setContentTypeLimits && pathNode && pathNode.entry && pathNode.entry.sys && pathNode.entry.sys.id) {
-            const contentType = routes && routes.ContentTypeMappings && routes.ContentTypeMappings.find(ct => ct.contentTypeID === pathNode.entry.sys.contentTypeId);
-            const query = routeEntryByFields(pathNode.entry.sys.id, contentType && contentType.fields, deliveryApiStatus);
+            const contentType = ContentTypeMappings.find(ct => ct.contentTypeID === pathNode.entry.sys.contentTypeId);
+            const query = routeEntryByFieldsQuery(pathNode.entry.sys.id, contentType && contentType.fields, deliveryApiStatus);
             const payload = yield ContensisDeliveryApi["cachedSearch"].search(query, contentType && typeof contentType.linkDepth !== 'undefined' ? contentType.linkDepth : 3, project);
 
             if (payload && payload.items && payload.items.length > 0) {
@@ -2577,7 +2586,11 @@ function* getRouteSaga(action) {
 
       if (pathNode && pathNode.entry && pathNode.entry.sys && pathNode.entry.sys.id) {
         entry = pathNode.entry;
-        yield Object(redux_saga_effects_npm_proxy_esm["call"])(setRouteEntry, entry, pathNode, ancestors, siblings);
+        const entryMapper = (ContentTypeMappings.find(ct => ct.contentTypeID === pathNode.entry.sys.contentTypeId) || {}).entryMapper;
+        yield Object(redux_saga_effects_npm_proxy_esm["all"])([Object(redux_saga_effects_npm_proxy_esm["call"])(mapRouteEntry, { ...pathNode,
+          ancestors,
+          siblings
+        }, entryMapper), Object(redux_saga_effects_npm_proxy_esm["call"])(setRouteEntry, mappedEntry || entry, pathNode, ancestors, siblings)]);
       } else {
         yield Object(redux_saga_effects_npm_proxy_esm["call"])(do404);
       }
@@ -2610,39 +2623,58 @@ function* getRouteSaga(action) {
 }
 
 function* setRouteEntry(entry, node, ancestors, siblings) {
-  yield Object(redux_saga_effects_npm_proxy_esm["all"])([Object(redux_saga_effects_npm_proxy_esm["put"])({
-    type: routing["SET_NAVIGATION_NOT_FOUND"],
-    notFound: !(entry && entry.sys.id)
-  }), Object(redux_saga_effects_npm_proxy_esm["put"])({
-    type: routing["SET_NODE"],
-    node
-  }), Object(redux_saga_effects_npm_proxy_esm["put"])({
+  yield Object(redux_saga_effects_npm_proxy_esm["all"])([// put({
+  //   type: SET_NAVIGATION_NOT_FOUND,
+  //   notFound: !(entry && entry.sys.id),
+  // }),
+  // put({
+  //   type: SET_NODE,
+  //   node,
+  // }),
+  Object(redux_saga_effects_npm_proxy_esm["put"])({
     type: routing["SET_ENTRY"],
-    entry: entry
-  }), Object(redux_saga_effects_npm_proxy_esm["put"])({
-    type: routing["SET_ENTRY_ID"],
-    id: entry && entry.sys.id || null
-  }), Object(redux_saga_effects_npm_proxy_esm["put"])({
+    id: entry && entry.sys.id || null,
+    entry,
+    node
+  }), // put({
+  //   type: SET_ENTRY_ID,
+  //   id: (entry && entry.sys.id) || null,
+  // }),
+  ancestors && Object(redux_saga_effects_npm_proxy_esm["put"])({
     type: routing["SET_ANCESTORS"],
     ancestors
-  }), Object(redux_saga_effects_npm_proxy_esm["put"])({
+  }), siblings && Object(redux_saga_effects_npm_proxy_esm["put"])({
     type: routing["SET_SIBLINGS"],
     siblings
   })]);
 }
 
+function* mapRouteEntry(node, entryMapper) {
+  if (typeof entryMapper === 'function') {
+    const mappedEntry = entryMapper(node);
+    yield Object(redux_saga_effects_npm_proxy_esm["put"])({
+      type: routing["MAP_ENTRY"],
+      mappedEntry,
+      node,
+      entryMapper
+    });
+  }
+}
+
 function* do404() {
-  yield Object(redux_saga_effects_npm_proxy_esm["put"])({
-    type: routing["SET_NAVIGATION_NOT_FOUND"],
-    notFound: true
-  });
-  yield Object(redux_saga_effects_npm_proxy_esm["put"])({
-    type: routing["SET_ENTRY_ID"],
-    id: null
-  });
+  // yield put({
+  //   type: SET_NAVIGATION_NOT_FOUND,
+  //   notFound: true,
+  // });
+  // yield put({
+  //   type: SET_ENTRY_ID,
+  //   id: null,
+  // });
   yield Object(redux_saga_effects_npm_proxy_esm["put"])({
     type: routing["SET_ENTRY"],
-    entry: null
+    id: null,
+    entry: null,
+    notFound: true
   });
 }
 // EXTERNAL MODULE: ./src/app/features/login/index.js + 2 modules
@@ -2727,7 +2759,7 @@ var external_redux_saga_default = /*#__PURE__*/__webpack_require__.n(external_re
 var external_immutable_ = __webpack_require__(2);
 
 // EXTERNAL MODULE: ./src/app/core/redux/types/routing.js
-var routing = __webpack_require__(3);
+var routing = __webpack_require__(4);
 
 // EXTERNAL MODULE: ./src/app/core/util/ContensisDeliveryApi.js
 var ContensisDeliveryApi = __webpack_require__(13);
@@ -2750,6 +2782,11 @@ let routing_initialState = Object(external_immutable_["Map"])({
 });
 /* harmony default export */ var reducers_routing = ((state = routing_initialState, action) => {
   switch (action.type) {
+    case routing["MAP_ENTRY"]:
+      {
+        return state.set('mappedEntry', Object(external_immutable_["fromJS"])(action.mappedEntry));
+      }
+
     case routing["SET_ANCESTORS"]:
       {
         if (action.ancestors) {
@@ -2766,19 +2803,34 @@ let routing_initialState = Object(external_immutable_["Map"])({
 
     case routing["SET_ENTRY"]:
       {
-        if (!action.entry) return state.set('entry', null).set('entryDepends', null).set('isLoading', action.isLoading);
-        const entryDepends = Object(ContensisDeliveryApi["GetAllResponseGuids"])(action.entry);
-        return state.set('entryDepends', Object(external_immutable_["fromJS"])(entryDepends)).set('entry', Object(external_immutable_["fromJS"])(action.entry)).set('isLoading', action.isLoading);
-      }
+        const {
+          entry,
+          node = {},
+          isLoading = false
+        } = action;
+        let nextState;
 
-    case routing["SET_ENTRY_ID"]:
-      {
-        if (action.id === '') {
-          return state;
+        if (!entry) {
+          nextState = state.set('entryID', null).set('entryDepends', null).set('entry', null).set('mappedEntry', null).set('isLoading', isLoading);
+        } else {
+          const entryDepends = Object(ContensisDeliveryApi["GetAllResponseGuids"])(entry);
+          nextState = state.set('entryID', action.id).set('entryDepends', Object(external_immutable_["fromJS"])(entryDepends)).set('entry', Object(external_immutable_["fromJS"])(entry)).set('isLoading', isLoading);
         }
 
-        return state.set('entryID', action.id);
+        if (!node) {
+          return nextState.set('nodeDepends', null).set('currentNode', null);
+        } else {
+          // On Set Node, we reset all dependants.
+          const nodeDepends = Object(external_immutable_["Set"])([node.id]);
+          return nextState.set('nodeDepends', nodeDepends).set('currentNode', Object(external_immutable_["fromJS"])(node)).removeIn(['currentNode', 'entry']); // We have the entry stored elsewhere, so lets not keep it twice.
+        }
       }
+    // case SET_ENTRY_ID: {
+    //   if (action.id === '') {
+    //     return state;
+    //   }
+    //   return state.set('entryID', action.id);
+    // }
 
     case routing["SET_NAVIGATION_PATH"]:
       {
@@ -2799,22 +2851,21 @@ let routing_initialState = Object(external_immutable_["Map"])({
 
         return state;
       }
-
-    case routing["SET_NAVIGATION_NOT_FOUND"]:
-      {
-        return state.set('notFound', Object(external_immutable_["fromJS"])(action.notFound)).set('isLoading', false);
-      }
-
-    case routing["SET_NODE"]:
-      {
-        const {
-          node
-        } = action;
-        if (!node) return state; // On Set Node, we reset all dependants.
-
-        const nodeDepends = Object(external_immutable_["Set"])([node.id]);
-        return state.set('nodeDepends', nodeDepends).set('currentNode', Object(external_immutable_["fromJS"])(action.node)).removeIn(['currentNode', 'entry']); // We have the entry stored elsewhere, so lets not keep it twice.
-      }
+    // case SET_NAVIGATION_NOT_FOUND: {
+    //   return state
+    //     .set('notFound', fromJS(action.notFound))
+    //     .set('isLoading', false);
+    // }
+    // case SET_NODE: {
+    //   const { node } = action;
+    //   if (!node) return state;
+    //   // On Set Node, we reset all dependants.
+    //   const nodeDepends = Set([node.id]);
+    //   return state
+    //     .set('nodeDepends', nodeDepends)
+    //     .set('currentNode', fromJS(action.node))
+    //     .removeIn(['currentNode', 'entry']); // We have the entry stored elsewhere, so lets not keep it twice.
+    // }
 
     case routing["SET_ROUTE"]:
       {

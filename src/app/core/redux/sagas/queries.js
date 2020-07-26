@@ -2,7 +2,7 @@
 import { Query } from '~/core/util/ContensisDeliveryApi';
 import { fieldExpression, defaultExpressions } from '~/core/search/expressions';
 
-export const routeEntryByFields = (
+export const routeEntryByFieldsQuery = (
   id,
   fields = [],
   versionStatus = 'published'
