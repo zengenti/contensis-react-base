@@ -44,8 +44,7 @@ function* setRouteSaga(action) {
 }
 
 function* getRouteSaga(action) {
-  let entry = null,
-    mappedEntry = null;
+  let entry = null;
   try {
     const {
       withEvents,
@@ -77,6 +76,7 @@ function* getRouteSaga(action) {
     const project = selectCurrentProject(state);
     const isHome = currentPath === '/';
     const isPreview = currentPath && currentPath.startsWith('/preview/');
+
     if (
       !isPreview &&
       ((appsays && appsays.customRouting) ||
@@ -224,13 +224,7 @@ function* getRouteSaga(action) {
             { ...pathNode, ancestors, siblings },
             entryMapper
           ),
-          call(
-            setRouteEntry,
-            mappedEntry || entry,
-            pathNode,
-            ancestors,
-            siblings
-          ),
+          call(setRouteEntry, entry, pathNode, ancestors, siblings),
         ]);
       } else {
         yield call(do404);

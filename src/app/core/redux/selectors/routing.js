@@ -5,7 +5,7 @@ export const selectRouteEntry = state => {
   return state.getIn(['routing', 'entry'], Map());
 };
 export const selectMappedEntry = state => {
-  return state.getIn(['routing', 'mappedEntry'], Map());
+  return state.getIn(['routing', 'mappedEntry'], null);
 };
 export const selectNodeDepends = state => {
   return state.getIn(['routing', 'nodeDepends'], List());

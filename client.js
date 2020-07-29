@@ -414,7 +414,7 @@ const selectRouteEntry = state => {
   return state.getIn(['routing', 'entry'], Object(immutable__WEBPACK_IMPORTED_MODULE_0__["Map"])());
 };
 const selectMappedEntry = state => {
-  return state.getIn(['routing', 'mappedEntry'], Object(immutable__WEBPACK_IMPORTED_MODULE_0__["Map"])());
+  return state.getIn(['routing', 'mappedEntry'], null);
 };
 const selectNodeDepends = state => {
   return state.getIn(['routing', 'nodeDepends'], Object(immutable__WEBPACK_IMPORTED_MODULE_0__["List"])());
@@ -1905,6 +1905,7 @@ const RouteLoader = ({
   isLoggedIn,
   isNotFound,
   loadingComponent,
+  mappedEntry,
   notFoundComponent,
   setNavigationPath,
   routes,
@@ -1946,6 +1947,7 @@ const RouteLoader = ({
       projectId,
       contentTypeId,
       entry,
+      mappedEntry,
       isLoggedIn
     });
   } // Render a supplied Loading component if the route
@@ -1966,6 +1968,7 @@ const RouteLoader = ({
         projectId: projectId,
         contentTypeId: contentTypeId,
         entry: entry,
+        mappedEntry: mappedEntry,
         isLoggedIn: isLoggedIn
       });
     }
@@ -1989,6 +1992,7 @@ RouteLoader.propTypes = {
   isLoggedIn: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,
   isNotFound: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.bool,
   loadingComponent: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func,
+  mappedEntry: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.object,
   notFoundComponent: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func,
   projectId: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
   routes: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.objectOf(prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.array, prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.array),
@@ -1999,13 +2003,14 @@ RouteLoader.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    statePath: Object(_redux_selectors_routing__WEBPACK_IMPORTED_MODULE_6__["selectCurrentPath"])(state),
-    projectId: Object(_redux_selectors_routing__WEBPACK_IMPORTED_MODULE_6__["selectCurrentProject"])(state),
-    entry: Object(_redux_selectors_routing__WEBPACK_IMPORTED_MODULE_6__["selectRouteEntry"])(state),
     contentTypeId: Object(_redux_selectors_routing__WEBPACK_IMPORTED_MODULE_6__["selectRouteEntryContentTypeId"])(state),
+    entry: Object(_redux_selectors_routing__WEBPACK_IMPORTED_MODULE_6__["selectRouteEntry"])(state),
     isNotFound: Object(_redux_selectors_routing__WEBPACK_IMPORTED_MODULE_6__["selectIsNotFound"])(state),
     isLoggedIn: Object(_features_login_redux_selectors__WEBPACK_IMPORTED_MODULE_11__["selectUserLoggedIn"])(state),
-    isLoading: Object(_redux_selectors_routing__WEBPACK_IMPORTED_MODULE_6__["selectRouteLoading"])(state)
+    isLoading: Object(_redux_selectors_routing__WEBPACK_IMPORTED_MODULE_6__["selectRouteLoading"])(state),
+    mappedEntry: Object(_redux_selectors_routing__WEBPACK_IMPORTED_MODULE_6__["selectMappedEntry"])(state),
+    projectId: Object(_redux_selectors_routing__WEBPACK_IMPORTED_MODULE_6__["selectCurrentProject"])(state),
+    statePath: Object(_redux_selectors_routing__WEBPACK_IMPORTED_MODULE_6__["selectCurrentPath"])(state)
   };
 };
 
@@ -2468,8 +2473,7 @@ function* setRouteSaga(action) {
 }
 
 function* getRouteSaga(action) {
-  let entry = null,
-      mappedEntry = null;
+  let entry = null;
 
   try {
     const {
@@ -2590,7 +2594,7 @@ function* getRouteSaga(action) {
         yield Object(redux_saga_effects_npm_proxy_esm["all"])([Object(redux_saga_effects_npm_proxy_esm["call"])(mapRouteEntry, { ...pathNode,
           ancestors,
           siblings
-        }, entryMapper), Object(redux_saga_effects_npm_proxy_esm["call"])(setRouteEntry, mappedEntry || entry, pathNode, ancestors, siblings)]);
+        }, entryMapper), Object(redux_saga_effects_npm_proxy_esm["call"])(setRouteEntry, entry, pathNode, ancestors, siblings)]);
       } else {
         yield Object(redux_saga_effects_npm_proxy_esm["call"])(do404);
       }

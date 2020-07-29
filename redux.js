@@ -409,7 +409,7 @@ const selectRouteEntry = state => {
   return state.getIn(['routing', 'entry'], Object(immutable__WEBPACK_IMPORTED_MODULE_0__["Map"])());
 };
 const selectMappedEntry = state => {
-  return state.getIn(['routing', 'mappedEntry'], Object(immutable__WEBPACK_IMPORTED_MODULE_0__["Map"])());
+  return state.getIn(['routing', 'mappedEntry'], null);
 };
 const selectNodeDepends = state => {
   return state.getIn(['routing', 'nodeDepends'], Object(immutable__WEBPACK_IMPORTED_MODULE_0__["List"])());
