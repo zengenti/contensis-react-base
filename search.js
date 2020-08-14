@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("immutable"), require("react"), require("contensis-delivery-api"), require("prop-types"), require("query-string"), require("react-redux"), require("react-router-dom"), require("react-hot-loader"), require("react-router-config"), require("@redux-saga/core/effects"), require("js-cookie"), require("jsonpath-mapper"), require("loglevel"));
+		module.exports = factory(require("immutable"), require("react"), require("contensis-delivery-api"), require("prop-types"), require("query-string"), require("react-redux"), require("react-router-dom"), require("react-router-config"), require("react-hot-loader"), require("@redux-saga/core/effects"), require("js-cookie"), require("jsonpath-mapper"), require("loglevel"));
 	else if(typeof define === 'function' && define.amd)
-		define(["immutable", "react", "contensis-delivery-api", "prop-types", "query-string", "react-redux", "react-router-dom", "react-hot-loader", "react-router-config", "@redux-saga/core/effects", "js-cookie", "jsonpath-mapper", "loglevel"], factory);
+		define(["immutable", "react", "contensis-delivery-api", "prop-types", "query-string", "react-redux", "react-router-dom", "react-router-config", "react-hot-loader", "@redux-saga/core/effects", "js-cookie", "jsonpath-mapper", "loglevel"], factory);
 	else {
-		var a = typeof exports === 'object' ? factory(require("immutable"), require("react"), require("contensis-delivery-api"), require("prop-types"), require("query-string"), require("react-redux"), require("react-router-dom"), require("react-hot-loader"), require("react-router-config"), require("@redux-saga/core/effects"), require("js-cookie"), require("jsonpath-mapper"), require("loglevel")) : factory(root["immutable"], root["react"], root["contensis-delivery-api"], root["prop-types"], root["query-string"], root["react-redux"], root["react-router-dom"], root["react-hot-loader"], root["react-router-config"], root["@redux-saga/core/effects"], root["js-cookie"], root["jsonpath-mapper"], root["loglevel"]);
+		var a = typeof exports === 'object' ? factory(require("immutable"), require("react"), require("contensis-delivery-api"), require("prop-types"), require("query-string"), require("react-redux"), require("react-router-dom"), require("react-router-config"), require("react-hot-loader"), require("@redux-saga/core/effects"), require("js-cookie"), require("jsonpath-mapper"), require("loglevel")) : factory(root["immutable"], root["react"], root["contensis-delivery-api"], root["prop-types"], root["query-string"], root["react-redux"], root["react-router-dom"], root["react-router-config"], root["react-hot-loader"], root["@redux-saga/core/effects"], root["js-cookie"], root["jsonpath-mapper"], root["loglevel"]);
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(global, function(__WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__5__, __WEBPACK_EXTERNAL_MODULE__6__, __WEBPACK_EXTERNAL_MODULE__9__, __WEBPACK_EXTERNAL_MODULE__12__, __WEBPACK_EXTERNAL_MODULE__16__, __WEBPACK_EXTERNAL_MODULE__17__, __WEBPACK_EXTERNAL_MODULE__24__, __WEBPACK_EXTERNAL_MODULE__25__, __WEBPACK_EXTERNAL_MODULE__26__, __WEBPACK_EXTERNAL_MODULE__27__, __WEBPACK_EXTERNAL_MODULE__30__, __WEBPACK_EXTERNAL_MODULE__37__) {
+})(global, function(__WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__5__, __WEBPACK_EXTERNAL_MODULE__6__, __WEBPACK_EXTERNAL_MODULE__9__, __WEBPACK_EXTERNAL_MODULE__12__, __WEBPACK_EXTERNAL_MODULE__16__, __WEBPACK_EXTERNAL_MODULE__17__, __WEBPACK_EXTERNAL_MODULE__24__, __WEBPACK_EXTERNAL_MODULE__25__, __WEBPACK_EXTERNAL_MODULE__26__, __WEBPACK_EXTERNAL_MODULE__27__, __WEBPACK_EXTERNAL_MODULE__30__, __WEBPACK_EXTERNAL_MODULE__36__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -159,10 +159,10 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__30__;
 
 /***/ }),
 
-/***/ 37:
+/***/ 36:
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__37__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__36__;
 
 /***/ }),
 
@@ -192,7 +192,7 @@ module.exports = __webpack_require__(70);
 
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(true)
-		module.exports = factory(__webpack_require__(2), __webpack_require__(9), __webpack_require__(6), __webpack_require__(5), __webpack_require__(16), __webpack_require__(12), __webpack_require__(30), __webpack_require__(37), __webpack_require__(26), __webpack_require__(17), __webpack_require__(24), __webpack_require__(25), __webpack_require__(27));
+		module.exports = factory(__webpack_require__(2), __webpack_require__(9), __webpack_require__(6), __webpack_require__(5), __webpack_require__(16), __webpack_require__(12), __webpack_require__(30), __webpack_require__(36), __webpack_require__(26), __webpack_require__(17), __webpack_require__(25), __webpack_require__(24), __webpack_require__(27));
 	else { var i, a; }
 })(global, function(__WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__4__, __WEBPACK_EXTERNAL_MODULE__7__, __WEBPACK_EXTERNAL_MODULE__10__, __WEBPACK_EXTERNAL_MODULE__11__, __WEBPACK_EXTERNAL_MODULE__12__, __WEBPACK_EXTERNAL_MODULE__14__, __WEBPACK_EXTERNAL_MODULE__17__, __WEBPACK_EXTERNAL_MODULE__20__, __WEBPACK_EXTERNAL_MODULE__24__, __WEBPACK_EXTERNAL_MODULE__25__, __WEBPACK_EXTERNAL_MODULE__26__, __WEBPACK_EXTERNAL_MODULE__28__) {
 return /******/ (function(modules) { // webpackBootstrap
@@ -362,10 +362,16 @@ const getFiltersToLoad = (state, facet, context = _schema__WEBPACK_IMPORTED_MODU
     return title !== null && title;
   }).size > 0 && f.get('isError', false) === false);
   return loadedFilters.map((isLoaded, filterKey) => !isLoaded ? filterKey : null).toList().filter(f => f);
-};
+}; // We lowercase the filter key unless it's an ISO date string where the T must be uppercase
+
 const getSelectedFilters = (state, facet, context = _schema__WEBPACK_IMPORTED_MODULE_1__["Context"].facets) => {
   const filters = getFilters(state, facet, context);
-  const selectedFilters = filters.map(value => value.get('items', Object(immutable__WEBPACK_IMPORTED_MODULE_0__["List"])()).filter(item => item.get('isSelected', false)).map(item => item.get('key', '').toLowerCase()));
+  const isoDateRegex = RegExp(/\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d/);
+  const selectedFilters = filters.map(value => value.get('items', Object(immutable__WEBPACK_IMPORTED_MODULE_0__["List"])()).filter(item => item.get('isSelected', false)).map(item => {
+    const key = item.get('key', '');
+    const isIsoDate = isoDateRegex.test(key);
+    return isIsoDate ? key : key.toLowerCase();
+  }));
   return selectedFilters;
 };
 const getResults = (state, current, context = _schema__WEBPACK_IMPORTED_MODULE_1__["Context"].facets) => {
@@ -6374,7 +6380,7 @@ const generateFiltersState = ({
   }); // Get any existing filters and normalise the items[]
   // so we can start off with isSelected is false
 
-  let filters = state.getIn([context, facet, 'filters'], Object(immutable__WEBPACK_IMPORTED_MODULE_0__["Map"])({})).map(filter => !isCurrentFacet && filter.get('isGrouped') ? filter.set('items', filter.get('items').map(item => item.set('isSelected', false))) : filter);
+  let filters = state.getIn([context, facet, 'filters'], Object(immutable__WEBPACK_IMPORTED_MODULE_0__["Map"])({})).map(filter => isCurrentFacet || filter.get('isGrouped') ? filter.set('items', filter.get('items').map(item => item.set('isSelected', false))) : filter);
 
   const addFilterItem = (filters, paramKey, paramValue) => // Iterate through all filters within the facet,
   // if the paramKey matches the filter key
@@ -6875,12 +6881,13 @@ const mapFilterToFilterExpression = filter => json_mapper(filter, filterExpressi
 
 const mapFiltersToFilterExpression = (filters, selectedFilters) => {
   if (!selectedFilters || Object.keys(selectedFilters).length === 0) return [];
-  const filterExpressions = []; // Iterate through the keys in selectedFilters
+  const filterExpressions = []; // Iterate through the keys in selectedFilters and locate
+  // the items that are selected and queryable
 
-  Object.entries(selectedFilters).map(([key, value]) => {
-    const filter = filters[key];
+  Object.entries(selectedFilters).map(([fkey, selectedValue]) => {
+    const filter = filters[fkey];
 
-    if (value && filter) {
+    if (selectedValue && filter) {
       const selectedItems = filter.items && filter.items.filter(itm => itm.isSelected) || []; // Where we have a value for a selectedFilter
       // and a filter is found for the current key
       // map the filter to a filterExpression object
@@ -6888,7 +6895,7 @@ const mapFiltersToFilterExpression = (filters, selectedFilters) => {
       const expr = filters_to_filterexpression_mapper({
         filter,
         selectedItems,
-        selectedValue: value
+        selectedValue
       });
       filterExpressions.push(expr);
     }
@@ -6934,7 +6941,7 @@ const queryParamsTemplate = {
     context
   }) => {
     const stateFilters = Object(selectors["getFilters"])(state, facet, context).toJS();
-    const selectedFilters = Object(selectors["getSelectedFilters"])(state, facet, context).toJS(); // Use a mapper inside a mapper to map the object properties
+    const selectedFilters = Object(selectors["getSelectedFilters"])(state, facet, context).toJS(); // Use another mapping function to map the filter parameters for the query
 
     const filterParams = mapFiltersToFilterExpression(stateFilters, selectedFilters);
     return filterParams;

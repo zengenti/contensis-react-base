@@ -32,6 +32,9 @@ export const selectCurrentPath = state => {
 export const selectCurrentSearch = state => {
   return state.getIn(['routing', 'location', 'search']);
 };
+export const selectCurrentHash = state => {
+  return state.getIn(['routing', 'location', 'hash']);
+};
 export const selectQueryStringAsObject = state =>
   queryParams(selectCurrentSearch(state));
 export const selectCurrentProject = state => {
