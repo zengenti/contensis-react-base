@@ -390,6 +390,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectRouteEntryID", function() { return selectRouteEntryID; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectCurrentPath", function() { return selectCurrentPath; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectCurrentSearch", function() { return selectCurrentSearch; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectCurrentHash", function() { return selectCurrentHash; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectQueryStringAsObject", function() { return selectQueryStringAsObject; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectCurrentProject", function() { return selectCurrentProject; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectIsNotFound", function() { return selectIsNotFound; });
@@ -432,6 +433,9 @@ const selectCurrentPath = state => {
 };
 const selectCurrentSearch = state => {
   return state.getIn(['routing', 'location', 'search']);
+};
+const selectCurrentHash = state => {
+  return state.getIn(['routing', 'location', 'hash']);
 };
 const selectQueryStringAsObject = state => Object(_util_navigation__WEBPACK_IMPORTED_MODULE_1__[/* queryParams */ "b"])(selectCurrentSearch(state));
 const selectCurrentProject = state => {
@@ -1505,8 +1509,7 @@ const selectNavigationDepends = state => {
 
 /***/ }),
 /* 30 */,
-/* 31 */,
-/* 32 */
+/* 31 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1526,6 +1529,7 @@ const setVersionStatus = status => Object(_util_helpers__WEBPACK_IMPORTED_MODULE
 });
 
 /***/ }),
+/* 32 */,
 /* 33 */,
 /* 34 */,
 /* 35 */,
@@ -1657,7 +1661,7 @@ const loadNavigationTree = () => Object(helpers["a" /* action */])(navigation["G
 var routing = __webpack_require__(22);
 
 // EXTERNAL MODULE: ./src/app/core/redux/actions/version.js
-var version = __webpack_require__(32);
+var version = __webpack_require__(31);
 
 // CONCATENATED MODULE: ./src/app/core/redux/actions/index.js
 
