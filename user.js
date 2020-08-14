@@ -1368,6 +1368,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectRouteEntryID", function() { return selectRouteEntryID; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectCurrentPath", function() { return selectCurrentPath; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectCurrentSearch", function() { return selectCurrentSearch; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectCurrentHash", function() { return selectCurrentHash; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectQueryStringAsObject", function() { return selectQueryStringAsObject; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectCurrentProject", function() { return selectCurrentProject; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectIsNotFound", function() { return selectIsNotFound; });
@@ -1413,6 +1414,9 @@ const selectCurrentPath = state => {
 };
 const selectCurrentSearch = state => {
   return state.getIn(['routing', 'location', 'search']);
+};
+const selectCurrentHash = state => {
+  return state.getIn(['routing', 'location', 'hash']);
 };
 const selectQueryStringAsObject = state => Object(_util_navigation__WEBPACK_IMPORTED_MODULE_1__[/* queryParams */ "b"])(selectCurrentSearch(state));
 const selectCurrentProject = state => {

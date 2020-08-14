@@ -103,9 +103,6 @@ function* getRouteSaga(action) {
         ancestors = null,
         siblings = null;
 
-      let currentPathDepth = currentPath.split('/').length - 1;
-      if (isHome) currentPathDepth = 0;
-
       // Handle homepage
       if (isHome) {
         pathNode = yield cachedSearch.getRootNode(
@@ -189,11 +186,8 @@ function* getRouteSaga(action) {
           (doNavigation === true || doNavigation.ancestors)
         ) {
           ancestors = yield cachedSearch.getAncestors(pathNode.id, project);
-          // No menu shows the  siblings at this level, so no need to load them.
-          if (
-            currentPathDepth > 1 &&
-            (doNavigation === true || doNavigation.siblings)
-          ) {
+
+          if (doNavigation === true || doNavigation.siblings) {
             siblings = yield cachedSearch.getSiblings(
               {
                 id: pathNode.id,
