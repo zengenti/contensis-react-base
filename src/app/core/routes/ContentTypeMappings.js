@@ -4,7 +4,7 @@ import { Loading } from './Loading';
 
 export default [
   {
-    contentTypeID: 'homepage',
+    contentTypeID: 'zenbaseHomePage',
     component: Loadable({
       loader: () => {
         return import('~/pages/Home/Homepage');
