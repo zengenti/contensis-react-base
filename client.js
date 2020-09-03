@@ -2499,13 +2499,13 @@ function* getRouteSaga(action) {
       // - appsays customRouting and does SET_ENTRY etc. via the consuming app
       // - all staticRoutes (where custom 'route.fetchNode' attribute is falsey)
       // - standard Contensis SiteView Routing where we already have that entry in state
-      if (routeEntry && (!staticRoute || staticRoute.route && staticRoute.route.fetchNode)) {
-        entry = routeEntry.toJS();
-        yield Object(redux_saga_effects_npm_proxy_esm["put"])({
-          type: routing["SET_ENTRY"],
-          entry,
-          isLoading: false
-        });
+      if (routeEntry && (!staticRoute || staticRoute.route && staticRoute.route.fetchNode)) {// entry = routeEntry.toJS();
+        // yield put({
+        //   type: SET_ENTRY,
+        //   entry,
+        //   isLoading: false,
+        // });
+        //Do nothing, the entry is allready the right one.
       } else yield Object(redux_saga_effects_npm_proxy_esm["call"])(setRouteEntry);
     } else {
       let pathNode = null,
@@ -2792,11 +2792,22 @@ let routing_initialState = Object(external_immutable_["Map"])({
         }
 
         if (action.path) {
-          return state.set('currentPath', Object(external_immutable_["fromJS"])(action.path)).set('location', Object(external_immutable_["fromJS"])(action.location)).set('staticRoute', Object(external_immutable_["fromJS"])({ ...staticRoute,
-            route: { ...staticRoute.route,
-              component: null
-            }
-          })).set('isLoading', typeof window !== 'undefined');
+          // Don't run a path update on iniutial load as we allready should have it in redux
+          const entryUri = state.getIn(['entry', 'sys', 'uri']);
+
+          if (entryUri != action.path) {
+            return state.set('currentPath', Object(external_immutable_["fromJS"])(action.path)).set('location', Object(external_immutable_["fromJS"])(action.location)).set('staticRoute', Object(external_immutable_["fromJS"])({ ...staticRoute,
+              route: { ...staticRoute.route,
+                component: null
+              }
+            })).set('isLoading', typeof window !== 'undefined');
+          } else {
+            return state.set('location', Object(external_immutable_["fromJS"])(action.location)).set('staticRoute', Object(external_immutable_["fromJS"])({ ...staticRoute,
+              route: { ...staticRoute.route,
+                component: null
+              }
+            }));
+          }
         }
 
         return state;
