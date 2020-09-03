@@ -3267,7 +3267,7 @@ const apiProxy = external_http_proxy_default.a.createProxyServer();
 const reverseProxies = (app, reverseProxyPaths) => {
   deliveryApiProxy(apiProxy, app);
   app.all(reverseProxyPaths, (req, res) => {
-    const target = req.hostname.indexOf('preview-') || req.hostname.indexOf('preview.') || req.hostname === 'localhost' ? reverseProxies_servers.previewIis : reverseProxies_servers.iis;
+    const target = req.hostname.indexOf('preview-') || req.hostname.indexOf('preview.') || req.hostname === 'localhost' ? reverseProxies_servers.previewIis || reverseProxies_servers.iis : reverseProxies_servers.iis;
     apiProxy.web(req, res, {
       target,
       changeOrigin: true

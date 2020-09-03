@@ -11,7 +11,7 @@ const reverseProxies = (app, reverseProxyPaths) => {
       req.hostname.indexOf('preview-') ||
       req.hostname.indexOf('preview.') ||
       req.hostname === 'localhost'
-        ? servers.previewIis
+        ? servers.previewIis || servers.iis
         : servers.iis;
 
     apiProxy.web(req, res, { target, changeOrigin: true });
