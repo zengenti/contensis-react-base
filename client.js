@@ -7,7 +7,7 @@
 		var a = typeof exports === 'object' ? factory(require("immutable"), require("react"), require("contensis-delivery-api"), require("prop-types"), require("query-string"), require("react-redux"), require("react-router-dom"), require("react-router-config"), require("react-hot-loader"), require("@redux-saga/core/effects"), require("js-cookie"), require("redux"), require("loglevel"), require("react-loadable"), require("history"), require("redux-saga"), require("redux-immutable"), require("redux-thunk"), require("isomorphic-fetch"), require("react-dom")) : factory(root["immutable"], root["react"], root["contensis-delivery-api"], root["prop-types"], root["query-string"], root["react-redux"], root["react-router-dom"], root["react-router-config"], root["react-hot-loader"], root["@redux-saga/core/effects"], root["js-cookie"], root["redux"], root["loglevel"], root["react-loadable"], root["history"], root["redux-saga"], root["redux-immutable"], root["redux-thunk"], root["isomorphic-fetch"], root["react-dom"]);
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(global, function(__WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__5__, __WEBPACK_EXTERNAL_MODULE__6__, __WEBPACK_EXTERNAL_MODULE__9__, __WEBPACK_EXTERNAL_MODULE__12__, __WEBPACK_EXTERNAL_MODULE__16__, __WEBPACK_EXTERNAL_MODULE__17__, __WEBPACK_EXTERNAL_MODULE__24__, __WEBPACK_EXTERNAL_MODULE__25__, __WEBPACK_EXTERNAL_MODULE__26__, __WEBPACK_EXTERNAL_MODULE__27__, __WEBPACK_EXTERNAL_MODULE__32__, __WEBPACK_EXTERNAL_MODULE__36__, __WEBPACK_EXTERNAL_MODULE__38__, __WEBPACK_EXTERNAL_MODULE__40__, __WEBPACK_EXTERNAL_MODULE__41__, __WEBPACK_EXTERNAL_MODULE__46__, __WEBPACK_EXTERNAL_MODULE__47__, __WEBPACK_EXTERNAL_MODULE__50__, __WEBPACK_EXTERNAL_MODULE__58__) {
+})(global, function(__WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__5__, __WEBPACK_EXTERNAL_MODULE__6__, __WEBPACK_EXTERNAL_MODULE__9__, __WEBPACK_EXTERNAL_MODULE__12__, __WEBPACK_EXTERNAL_MODULE__16__, __WEBPACK_EXTERNAL_MODULE__17__, __WEBPACK_EXTERNAL_MODULE__24__, __WEBPACK_EXTERNAL_MODULE__25__, __WEBPACK_EXTERNAL_MODULE__26__, __WEBPACK_EXTERNAL_MODULE__27__, __WEBPACK_EXTERNAL_MODULE__32__, __WEBPACK_EXTERNAL_MODULE__36__, __WEBPACK_EXTERNAL_MODULE__38__, __WEBPACK_EXTERNAL_MODULE__40__, __WEBPACK_EXTERNAL_MODULE__41__, __WEBPACK_EXTERNAL_MODULE__46__, __WEBPACK_EXTERNAL_MODULE__47__, __WEBPACK_EXTERNAL_MODULE__51__, __WEBPACK_EXTERNAL_MODULE__58__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -3033,13 +3033,14 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__47__;
 /***/ }),
 /* 48 */,
 /* 49 */,
-/* 50 */
+/* 50 */,
+/* 51 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__50__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__51__;
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3060,7 +3061,6 @@ const AppRoot = props => {
 /* harmony default export */ __webpack_exports__["default"] = (AppRoot);
 
 /***/ }),
-/* 52 */,
 /* 53 */,
 /* 54 */,
 /* 55 */,
@@ -3085,7 +3085,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ReactApp", function() { return ReactApp; });
 const client = __webpack_require__(77).default;
 
-const ReactApp = __webpack_require__(51).default;
+const ReactApp = __webpack_require__(52).default;
 /* harmony default export */ __webpack_exports__["default"] = (client);
 
 /***/ }),
@@ -3108,7 +3108,7 @@ const ReactApp = __webpack_require__(51).default;
 __webpack_require__.r(__webpack_exports__);
 
 // EXTERNAL MODULE: external "isomorphic-fetch"
-var external_isomorphic_fetch_ = __webpack_require__(50);
+var external_isomorphic_fetch_ = __webpack_require__(51);
 
 // EXTERNAL MODULE: external "react"
 var external_react_ = __webpack_require__(5);

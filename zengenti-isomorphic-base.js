@@ -7,7 +7,7 @@
 		var a = typeof exports === 'object' ? factory(require("immutable"), require("react"), require("contensis-delivery-api"), require("prop-types"), require("query-string"), require("react-redux"), require("react-router-dom"), require("react-router-config"), require("react-hot-loader"), require("@redux-saga/core/effects"), require("js-cookie"), require("redux"), require("loglevel"), require("react-loadable"), require("history"), require("redux-saga"), require("redux-immutable"), require("redux-thunk"), require("react-dom/server"), require("minify-css-string"), require("isomorphic-fetch"), require("express"), require("evil-dns"), require("react-loadable/webpack"), require("react-helmet"), require("serialize-javascript"), require("http-proxy"), require("styled-components"), require("fromentries"), require("xxhashjs")) : factory(root["immutable"], root["react"], root["contensis-delivery-api"], root["prop-types"], root["query-string"], root["react-redux"], root["react-router-dom"], root["react-router-config"], root["react-hot-loader"], root["@redux-saga/core/effects"], root["js-cookie"], root["redux"], root["loglevel"], root["react-loadable"], root["history"], root["redux-saga"], root["redux-immutable"], root["redux-thunk"], root["react-dom/server"], root["minify-css-string"], root["isomorphic-fetch"], root["express"], root["evil-dns"], root["react-loadable/webpack"], root["react-helmet"], root["serialize-javascript"], root["http-proxy"], root["styled-components"], root["fromentries"], root["xxhashjs"]);
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(global, function(__WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__5__, __WEBPACK_EXTERNAL_MODULE__6__, __WEBPACK_EXTERNAL_MODULE__9__, __WEBPACK_EXTERNAL_MODULE__12__, __WEBPACK_EXTERNAL_MODULE__16__, __WEBPACK_EXTERNAL_MODULE__17__, __WEBPACK_EXTERNAL_MODULE__24__, __WEBPACK_EXTERNAL_MODULE__25__, __WEBPACK_EXTERNAL_MODULE__26__, __WEBPACK_EXTERNAL_MODULE__27__, __WEBPACK_EXTERNAL_MODULE__32__, __WEBPACK_EXTERNAL_MODULE__36__, __WEBPACK_EXTERNAL_MODULE__38__, __WEBPACK_EXTERNAL_MODULE__40__, __WEBPACK_EXTERNAL_MODULE__41__, __WEBPACK_EXTERNAL_MODULE__46__, __WEBPACK_EXTERNAL_MODULE__47__, __WEBPACK_EXTERNAL_MODULE__48__, __WEBPACK_EXTERNAL_MODULE__49__, __WEBPACK_EXTERNAL_MODULE__50__, __WEBPACK_EXTERNAL_MODULE__52__, __WEBPACK_EXTERNAL_MODULE__53__, __WEBPACK_EXTERNAL_MODULE__55__, __WEBPACK_EXTERNAL_MODULE__56__, __WEBPACK_EXTERNAL_MODULE__57__, __WEBPACK_EXTERNAL_MODULE__59__, __WEBPACK_EXTERNAL_MODULE__60__, __WEBPACK_EXTERNAL_MODULE__61__, __WEBPACK_EXTERNAL_MODULE__63__) {
+})(global, function(__WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__5__, __WEBPACK_EXTERNAL_MODULE__6__, __WEBPACK_EXTERNAL_MODULE__9__, __WEBPACK_EXTERNAL_MODULE__12__, __WEBPACK_EXTERNAL_MODULE__16__, __WEBPACK_EXTERNAL_MODULE__17__, __WEBPACK_EXTERNAL_MODULE__24__, __WEBPACK_EXTERNAL_MODULE__25__, __WEBPACK_EXTERNAL_MODULE__26__, __WEBPACK_EXTERNAL_MODULE__27__, __WEBPACK_EXTERNAL_MODULE__32__, __WEBPACK_EXTERNAL_MODULE__36__, __WEBPACK_EXTERNAL_MODULE__38__, __WEBPACK_EXTERNAL_MODULE__40__, __WEBPACK_EXTERNAL_MODULE__41__, __WEBPACK_EXTERNAL_MODULE__46__, __WEBPACK_EXTERNAL_MODULE__47__, __WEBPACK_EXTERNAL_MODULE__49__, __WEBPACK_EXTERNAL_MODULE__50__, __WEBPACK_EXTERNAL_MODULE__51__, __WEBPACK_EXTERNAL_MODULE__53__, __WEBPACK_EXTERNAL_MODULE__54__, __WEBPACK_EXTERNAL_MODULE__55__, __WEBPACK_EXTERNAL_MODULE__56__, __WEBPACK_EXTERNAL_MODULE__57__, __WEBPACK_EXTERNAL_MODULE__59__, __WEBPACK_EXTERNAL_MODULE__60__, __WEBPACK_EXTERNAL_MODULE__61__, __WEBPACK_EXTERNAL_MODULE__63__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -3034,7 +3034,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__47__;
 /* 48 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__48__;
+module.exports = require("fs");
 
 /***/ }),
 /* 49 */
@@ -3050,6 +3050,12 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__50__;
 
 /***/ }),
 /* 51 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__51__;
+
+/***/ }),
+/* 52 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3070,12 +3076,6 @@ const AppRoot = props => {
 /* harmony default export */ __webpack_exports__["default"] = (AppRoot);
 
 /***/ }),
-/* 52 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__52__;
-
-/***/ }),
 /* 53 */
 /***/ (function(module, exports) {
 
@@ -3085,7 +3085,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__53__;
 /* 54 */
 /***/ (function(module, exports) {
 
-module.exports = require("fs");
+module.exports = __WEBPACK_EXTERNAL_MODULE__54__;
 
 /***/ }),
 /* 55 */
@@ -3134,7 +3134,7 @@ exports.app = internalServer.app;
 exports.httpProxy = internalServer.apiProxy;
 exports.start = internalServer.start;
 
-const ReactApp = __webpack_require__(51).default;
+const ReactApp = __webpack_require__(52).default;
 
 exports.ReactApp = ReactApp;
 
@@ -3164,10 +3164,10 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__63__;
 __webpack_require__.r(__webpack_exports__);
 
 // EXTERNAL MODULE: external "isomorphic-fetch"
-var external_isomorphic_fetch_ = __webpack_require__(50);
+var external_isomorphic_fetch_ = __webpack_require__(51);
 
 // EXTERNAL MODULE: external "express"
-var external_express_ = __webpack_require__(52);
+var external_express_ = __webpack_require__(53);
 var external_express_default = /*#__PURE__*/__webpack_require__.n(external_express_);
 
 // EXTERNAL MODULE: external "react-loadable"
@@ -3197,7 +3197,7 @@ const DisplayStartupConfiguration = config => {
 
 /* harmony default export */ var displayStartupConfiguration = (DisplayStartupConfiguration);
 // EXTERNAL MODULE: external "evil-dns"
-var external_evil_dns_ = __webpack_require__(53);
+var external_evil_dns_ = __webpack_require__(54);
 var external_evil_dns_default = /*#__PURE__*/__webpack_require__.n(external_evil_dns_);
 
 // CONCATENATED MODULE: ./src/server/util/fetchMyIp.js
@@ -3300,7 +3300,7 @@ const deliveryApiProxy = (apiProxy, app) => {
 
 /* harmony default export */ var core_reverseProxies = (reverseProxies);
 // EXTERNAL MODULE: external "fs"
-var external_fs_ = __webpack_require__(54);
+var external_fs_ = __webpack_require__(48);
 var external_fs_default = /*#__PURE__*/__webpack_require__.n(external_fs_);
 
 // EXTERNAL MODULE: external "react"
@@ -3314,7 +3314,7 @@ var external_react_router_dom_ = __webpack_require__(17);
 var external_react_redux_ = __webpack_require__(16);
 
 // EXTERNAL MODULE: external "react-dom/server"
-var server_ = __webpack_require__(48);
+var server_ = __webpack_require__(49);
 
 // EXTERNAL MODULE: external "react-loadable/webpack"
 var webpack_ = __webpack_require__(55);
@@ -3331,7 +3331,7 @@ var external_serialize_javascript_ = __webpack_require__(57);
 var external_serialize_javascript_default = /*#__PURE__*/__webpack_require__.n(external_serialize_javascript_);
 
 // EXTERNAL MODULE: external "minify-css-string"
-var external_minify_css_string_ = __webpack_require__(49);
+var external_minify_css_string_ = __webpack_require__(50);
 var external_minify_css_string_default = /*#__PURE__*/__webpack_require__.n(external_minify_css_string_);
 
 // EXTERNAL MODULE: external "immutable"
@@ -3438,6 +3438,8 @@ var external_react_router_config_ = __webpack_require__(24);
 
 
 
+const moduleBundles = external_fs_default.a.readdirSync('./dist/static/modern/js', 'utf8');
+const coreModules = moduleBundles.filter(m => m.startsWith('app.') || m.startsWith('vendor.') || m.startsWith('runtime.'));
 
 const addStandardHeaders = (state, response, packagejson, groups) => {
   if (state) {
@@ -3460,6 +3462,7 @@ const addStandardHeaders = (state, response, packagejson, groups) => {
       console.log(`depends hashed: ${allDepends.join(' ')}`);
       addVarnishAuthenticationHeaders(state, response, groups);
       response.setHeader('Surrogate-Control', 'max-age=3600');
+      response.setHeader('Link', coreModules.map(m => `</static/modern/js/${m}>;rel="preload";as="script"`).join(','));
     } catch (e) {
       console.log('Error Adding headers', e.message); // console.log(e);
     }
