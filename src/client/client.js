@@ -18,6 +18,8 @@ import pickProject from '~/core/util/pickProject';
 import fromJSOrdered from '~/core/util/fromJSOrdered';
 import { browserHistory as history } from '~/core/redux/history';
 
+export { default as ReactApp } from '~/App';
+
 class ClientApp {
   constructor(ReactApp, config) {
     const documentRoot = document.getElementById('root');
@@ -107,7 +109,7 @@ class ClientApp {
 
     // webpack Hot Module Replacement API
     if (module.hot) {
-      module.hot.accept('~/App', () => {
+      module.hot.accept(ReactApp, () => {
         // if you are using harmony modules ({modules:false})
         HMRRenderer(GetClientJSX(store));
       });
