@@ -1,0 +1,4 @@
+{
+  "main": "../cjs/redux.js",
+  "module": "../esm/redux.js"
+}

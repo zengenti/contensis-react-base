@@ -1,0 +1,4 @@
+{
+  "main": "../cjs/routing.js",
+  "module": "../esm/routing.js"
+}
