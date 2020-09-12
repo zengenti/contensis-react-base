@@ -2099,7 +2099,7 @@ var reducers = (config => {
           });
           const tabId = state.getIn([context, facet, 'tabId'], 0);
           const stateTerm = state.get('term');
-          const nextState = state.set('context', context).set(context, nextFacets).set(action.context === Context.facets ? 'currentFacet' : 'currentListing', facet).set('term', term).setIn(['tabs', tabId, 'currentFacet'], facet).setIn([context, facet, 'pagingInfo', 'pageIndex'], Number(pageIndex) && Number(pageIndex) - 1 || state.getIn([context, facet, 'pagingInfo', 'pageIndex']) || 0).setIn(['config', 'isLoaded'], true).setIn(['config', 'ssr'], typeof window === 'undefined');
+          const nextState = state.set('context', context).set(context, nextFacets).set(action.context === Context.facets ? 'currentFacet' : 'currentListing', facet).set('term', term).setIn(['tabs', tabId, 'currentFacet'], facet).setIn([context, facet, 'pagingInfo', 'pageIndex'], Number(pageIndex) - 1 || (state.getIn([context, facet, 'queryParams', 'loadMorePaging']) ? state.getIn([context, facet, 'pagingInfo', 'pageIndex'], 0) : 0)).setIn(['config', 'isLoaded'], true).setIn(['config', 'ssr'], typeof window === 'undefined');
           return term !== stateTerm ? nextState.set(context, resetFacets(nextState, context)) : nextState;
         }
 

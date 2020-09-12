@@ -132,7 +132,6 @@
     "webpack-modules": "^1.0.0",
     "webpack-node-externals": "1.7.2",
     "webpack-shell-plugin": "^0.5.0",
-    "webpack-visualizer-plugin": "^0.1.11",
     "zengenti-buildstartup-package": "0.0.9",
     "zengenti-search-package": "git+https://gitlab+deploy-token-5:XKRGRE1p2PrFAxnWwLNz@gitlab.zengenti.com/zengenti-packages/search.git#develop"
   },
