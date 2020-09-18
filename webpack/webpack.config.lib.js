@@ -16,7 +16,6 @@ const LIB_CONFIG = {
     redux: './src/app/lib-redux.js',
     routing: './src/app/lib-routing.js',
     search: './src/app/lib-search.js',
-    user: './src/app/lib-user.js',
     util: './src/app/lib-util.js',
   },
   output: {

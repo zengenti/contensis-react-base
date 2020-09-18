@@ -22,15 +22,6 @@ export default [
     }),
   },
   {
-    path: '/login',
-    exact: true,
-    component: Loadable({
-      loader: () =>
-        import(/* webpackChunkName: "Login" */ '~/pages/Login/Login'),
-      loading: Loading,
-    }),
-  },
-  {
     path: '/zenInfo',
     exact: true,
     component: Loadable({

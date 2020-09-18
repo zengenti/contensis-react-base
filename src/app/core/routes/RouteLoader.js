@@ -19,7 +19,6 @@ import NotFound from '~/pages/NotFound';
 
 import { Status } from './Status';
 import { toJS } from '../util/ToJs';
-import { selectUserLoggedIn } from '~/features/login/redux/selectors';
 
 const getTrimmedPath = path => {
   if (path !== '/') {
@@ -165,7 +164,6 @@ const mapStateToProps = state => {
     contentTypeId: selectRouteEntryContentTypeId(state),
     entry: selectRouteEntry(state),
     isNotFound: selectIsNotFound(state),
-    isLoggedIn: selectUserLoggedIn(state),
     isLoading: selectRouteLoading(state),
     mappedEntry: selectMappedEntry(state),
     projectId: selectCurrentProject(state),

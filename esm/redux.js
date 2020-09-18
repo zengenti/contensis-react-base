@@ -1,19 +1,11 @@
-import 'react';
-import 'react-redux';
 import 'immutable';
-import { v as routing$1, p as action, w as routing$3, x as user$3 } from './selectors-2a60ce64.js';
-import { r as routing$2 } from './routing-460dc179.js';
-import { n as navigation$2, v as version$1, e as GET_NODE_TREE, f as version$2, g as navigation$3, i as version$3 } from './navigation-5ea573fd.js';
+import { r as routing$1, q as action, t as routing$2, u as routing$3 } from './routing-79ebf51a.js';
+import { n as navigation$2, v as version$1, e as GET_NODE_TREE, f as version$2, g as navigation$3, i as version$3 } from './navigation-4a24199a.js';
 import 'query-string';
-import { a as user$1 } from './sagas-3de8772b.js';
-import { u as user$2 } from './actions-9bc56300.js';
-import 'redux-saga/effects';
-import 'js-cookie';
 
 var types = {
   navigation: navigation$2,
   routing: routing$1,
-  user: user$1,
   version: version$1
 };
 
@@ -27,14 +19,12 @@ var navigation = /*#__PURE__*/Object.freeze({
 var actions = {
   navigation,
   routing: routing$2,
-  user: user$2,
   version: version$2
 };
 
 var selectors = {
   navigation: navigation$3,
   routing: routing$3,
-  user: user$3,
   version: version$3
 };
 
