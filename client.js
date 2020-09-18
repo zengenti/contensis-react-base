@@ -2499,8 +2499,8 @@ function* getRouteSaga(action) {
       // - appsays customRouting and does SET_ENTRY etc. via the consuming app
       // - all staticRoutes (where custom 'route.fetchNode' attribute is falsey)
       // - standard Contensis SiteView Routing where we already have that entry in state
-      if (routeEntry && (!staticRoute || staticRoute.route && staticRoute.route.fetchNode)) {// entry = routeEntry.toJS();
-        // yield put({
+      if (routeEntry && (!staticRoute || staticRoute.route && staticRoute.route.fetchNode)) {
+        entry = routeEntry.toJS(); // yield put({
         //   type: SET_ENTRY,
         //   entry,
         //   isLoading: false,
@@ -2603,7 +2603,7 @@ function* getRouteSaga(action) {
     if (!Object(selectors_navigation["hasNavigationTree"])(state) && (doNavigation === true || doNavigation.tree)) // Load navigation clientside only, a put() should help that work
       yield Object(redux_saga_effects_npm_proxy_esm["put"])({
         type: navigation["GET_NODE_TREE"],
-        treeDepth: doNavigation === true || !doNavigation.tree || doNavigation.tree === true ? 2 : doNavigation.tree
+        treeDepth: doNavigation === true || !doNavigation.tree || doNavigation.tree === true ? 0 : doNavigation.tree
       });
   } catch (e) {
     external_loglevel_["error"](...['Error running route saga:', e, e.stack]);
@@ -2666,8 +2666,7 @@ function* ensureNodeTreeSaga(action) {
       const deliveryApiVersionStatus = yield Object(redux_saga_effects_npm_proxy_esm["select"])(version["selectVersionStatus"]);
       const project = yield Object(redux_saga_effects_npm_proxy_esm["select"])(selectors_routing["selectCurrentProject"]);
       const nodes = yield ContensisDeliveryApi["deliveryApi"].getClient(deliveryApiVersionStatus, project).nodes.getRoot({
-        depth: action.treeDepth || 2,
-        entryFields: 'entryTitle, metaInformation, sys.contentTypeId'
+        depth: action.treeDepth || 0
       });
 
       if (nodes) {

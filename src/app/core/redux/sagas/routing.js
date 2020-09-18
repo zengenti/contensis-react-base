@@ -86,7 +86,7 @@ function* getRouteSaga(action) {
         routeEntry &&
         (!staticRoute || (staticRoute.route && staticRoute.route.fetchNode))
       ) {
-        // entry = routeEntry.toJS();
+        entry = routeEntry.toJS();
         // yield put({
         //   type: SET_ENTRY,
         //   entry,
@@ -233,7 +233,7 @@ function* getRouteSaga(action) {
           doNavigation === true ||
           !doNavigation.tree ||
           doNavigation.tree === true
-            ? 2
+            ? 0
             : doNavigation.tree,
       });
   } catch (e) {
