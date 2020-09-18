@@ -4,16 +4,16 @@ var React = require('react');
 var immutable = require('immutable');
 var history$1 = require('history');
 var contensisDeliveryApi = require('contensis-delivery-api');
-var routing = require('./routing-b8284518.js');
-var navigation = require('./navigation-dc5dcf7e.js');
+var routing = require('./routing-aad9c993.js');
 var redux = require('redux');
 var reduxImmutable = require('redux-immutable');
 var thunk = require('redux-thunk');
 var createSagaMiddleware = require('redux-saga');
+var navigation = require('./navigation-0482d226.js');
 var effects = require('redux-saga/effects');
 var log = require('loglevel');
 require('react-hot-loader');
-var RouteLoader = require('./RouteLoader-3226b7d1.js');
+var RouteLoader = require('./RouteLoader-f9f4cdf9.js');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -68,55 +68,288 @@ const pickProject = (hostname, query) => {
   return project === 'unknown' ? p.id : project;
 };
 
+let initialState = immutable.Map({
+  currentPath: '/',
+  currentNode: [],
+  currentProject: 'unknown',
+  notFound: false,
+  entryID: null,
+  entry: null,
+  entryDepends: new immutable.List(),
+  contentTypeId: null,
+  currentNodeAncestors: new immutable.List(),
+  currentTreeId: null
+});
+var RoutingReducer = ((state = initialState, action) => {
+  switch (action.type) {
+    case routing.MAP_ENTRY:
+      {
+        return state.set('mappedEntry', immutable.fromJS(action.mappedEntry));
+      }
+
+    case routing.SET_ANCESTORS:
+      {
+        if (action.ancestors) {
+          let ancestorIDs = action.ancestors.map(node => {
+            return node.id;
+          });
+          let currentNodeDepends = state.get('nodeDepends');
+          const allNodeDepends = immutable.Set.union([immutable.Set(ancestorIDs), currentNodeDepends]);
+          return state.set('nodeDepends', allNodeDepends).set('currentNodeAncestors', immutable.fromJS(action.ancestors));
+        }
+
+        return state.set('currentNodeAncestors', immutable.fromJS(action.ancestors));
+      }
+
+    case routing.SET_ENTRY:
+      {
+        const {
+          entry,
+          node = {},
+          isLoading = false
+        } = action;
+        let nextState;
+
+        if (!entry) {
+          nextState = state.set('entryID', null).set('entryDepends', null).set('entry', null).set('mappedEntry', null).set('isLoading', isLoading);
+        } else {
+          const entryDepends = GetAllResponseGuids(entry);
+          nextState = state.set('entryID', action.id).set('entryDepends', immutable.fromJS(entryDepends)).set('entry', immutable.fromJS(entry)).set('isLoading', isLoading);
+        }
+
+        if (!node) {
+          return nextState.set('nodeDepends', null).set('currentNode', null);
+        } else {
+          // On Set Node, we reset all dependants.
+          const nodeDepends = immutable.Set([node.id]);
+          return nextState.set('nodeDepends', nodeDepends).set('currentNode', immutable.fromJS(node)).removeIn(['currentNode', 'entry']); // We have the entry stored elsewhere, so lets not keep it twice.
+        }
+      }
+    // case SET_ENTRY_ID: {
+    //   if (action.id === '') {
+    //     return state;
+    //   }
+    //   return state.set('entryID', action.id);
+    // }
+
+    case routing.SET_NAVIGATION_PATH:
+      {
+        let staticRoute = false;
+
+        if (action.staticRoute) {
+          staticRoute = { ...action.staticRoute
+          };
+        }
+
+        if (action.path) {
+          // Don't run a path update on iniutial load as we allready should have it in redux
+          const entryUri = state.getIn(['entry', 'sys', 'uri']);
+
+          if (entryUri != action.path) {
+            return state.set('currentPath', immutable.fromJS(action.path)).set('location', immutable.fromJS(action.location)).set('staticRoute', immutable.fromJS({ ...staticRoute,
+              route: { ...staticRoute.route,
+                component: null
+              }
+            })).set('isLoading', typeof window !== 'undefined');
+          } else {
+            return state.set('location', immutable.fromJS(action.location)).set('staticRoute', immutable.fromJS({ ...staticRoute,
+              route: { ...staticRoute.route,
+                component: null
+              }
+            }));
+          }
+        }
+
+        return state;
+      }
+    // case SET_NAVIGATION_NOT_FOUND: {
+    //   return state
+    //     .set('notFound', fromJS(action.notFound))
+    //     .set('isLoading', false);
+    // }
+    // case SET_NODE: {
+    //   const { node } = action;
+    //   if (!node) return state;
+    //   // On Set Node, we reset all dependants.
+    //   const nodeDepends = Set([node.id]);
+    //   return state
+    //     .set('nodeDepends', nodeDepends)
+    //     .set('currentNode', fromJS(action.node))
+    //     .removeIn(['currentNode', 'entry']); // We have the entry stored elsewhere, so lets not keep it twice.
+    // }
+
+    case routing.SET_ROUTE:
+      {
+        return state.set('nextPath', action.path);
+      }
+
+    case routing.SET_SIBLINGS:
+      {
+        // Can be null in some cases like the homepage.
+        let currentNodeSiblingParent = null;
+        let siblingIDs = [];
+
+        if (action.siblings && action.siblings.length > 0) {
+          currentNodeSiblingParent = action.siblings[0].parentId;
+          siblingIDs = action.siblings.map(node => {
+            return node.id;
+          });
+        }
+
+        let currentNodeDepends = state.get('nodeDepends');
+        const allNodeDepends = immutable.Set.union([immutable.Set(siblingIDs), currentNodeDepends]);
+        return state.set('nodeDepends', allNodeDepends).set('currentNodeSiblings', immutable.fromJS(action.siblings)).set('currentNodeSiblingsParent', currentNodeSiblingParent);
+      }
+
+    case routing.SET_SURROGATE_KEYS:
+      {
+        return state.set('surrogateKeys', action.keys);
+      }
+
+    case routing.SET_TARGET_PROJECT:
+      {
+        return state.set('currentProject', action.project).set('currentTreeId', '') //getTreeID(action.project))
+        .set('allowedGroups', immutable.fromJS(action.allowedGroups));
+      }
+
+    default:
+      return state;
+  }
+});
+
+let initialState$1 = immutable.Map({
+  commitRef: null,
+  buildNo: null,
+  contensisVersionStatus: 'published'
+});
+var VersionReducer = ((state = initialState$1, action) => {
+  switch (action.type) {
+    case navigation.SET_VERSION_STATUS:
+      {
+        return state.set('contensisVersionStatus', action.status);
+      }
+
+    case navigation.SET_VERSION:
+      {
+        return state.set('commitRef', action.commitRef).set('buildNo', action.buildNo);
+      }
+
+    default:
+      return state;
+  }
+});
+
+const initialState$2 = immutable.Map({
+  root: null,
+  treeDepends: new immutable.List([]),
+  isError: false,
+  isReady: false
+});
+var NavigationReducer = ((state = initialState$2, action) => {
+  switch (action.type) {
+    case navigation.SET_NODE_TREE:
+      {
+        return state.set('root', immutable.fromJS(action.nodes)).set('isReady', true);
+      }
+
+    case navigation.GET_NODE_TREE_ERROR:
+      {
+        return state.set('isError', true);
+      }
+
+    default:
+      return state;
+  }
+});
+
+/**
+ * This middleware captures CALL_HISTORY_METHOD actions to redirect to the
+ * provided history object. This will prevent these actions from reaching your
+ * reducer or any middleware that comes after this one.
+ */
+
+/* eslint-disable no-unused-vars */
+
+const routerMiddleware = history => store => next => action => {
+  if (action.type !== routing.CALL_HISTORY_METHOD) {
+    return next(action);
+  }
+
+  const {
+    payload: {
+      method,
+      args
+    }
+  } = action;
+  history[method](...args);
+};
+
+let reduxStore = null;
+var createStore = ((featureReducers, initialState, history) => {
+  const thunkMiddleware = [thunk__default['default']];
+
+  let reduxDevToolsMiddleware = f => f;
+
+  if (typeof window != 'undefined') {
+    reduxDevToolsMiddleware = window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f;
+  }
+
+  const sagaMiddleware = createSagaMiddleware__default['default']();
+  const middleware = redux.compose(redux.applyMiddleware(...thunkMiddleware, sagaMiddleware, routerMiddleware(history)), reduxDevToolsMiddleware);
+  let reducers = {
+    navigation: NavigationReducer,
+    routing: RoutingReducer,
+    version: VersionReducer,
+    ...featureReducers
+  };
+  const combinedReducers = reduxImmutable.combineReducers(reducers);
+
+  const store = initialState => {
+    const store = redux.createStore(combinedReducers, initialState, middleware);
+    store.runSaga = sagaMiddleware.run;
+
+    store.close = () => store.dispatch(createSagaMiddleware.END);
+
+    return store;
+  };
+
+  reduxStore = store(initialState);
+  return reduxStore;
+});
+
+const storeSurrogateKeys = response => {
+  const keys = response.headers.get ? response.headers.get('surrogate-key') : response.headers.map['surrogate-key'];
+  if (keys) reduxStore.dispatch(routing.setSurrogateKeys(keys));
+};
+
 const getClientConfig = project => {
   let config = DELIVERY_API_CONFIG;
   /* global DELIVERY_API_CONFIG */
 
+  config.responseHandler = {};
+
   if (project) {
     config.projectId = project;
+  } // // we only want the surrogate key header in a server context
+
+
+  if (typeof window === 'undefined') {
+    config.defaultHeaders = {
+      'x-require-surrogate-key': true
+    };
+    config.responseHandler[200] = storeSurrogateKeys;
   }
 
-  if (typeof window != 'undefined' && PROXY_DELIVERY_API
+  if (typeof window !== 'undefined' && PROXY_DELIVERY_API
   /* global PROXY_DELIVERY_API */
   ) {
       // ensure a relative url is used to bypass the need for CORS (separate OPTIONS calls)
       config.rootUrl = '';
-      config.responseHandler = {
-        404: () => null
-      };
+
+      config.responseHandler[404] = () => null;
     }
 
   return config;
-};
-
-const GetClientSideDeliveryApiStatus = () => {
-  if (typeof window != 'undefined') {
-    const currentHostname = window.location.hostname;
-    return GetDeliveryApiStatusFromHostname(currentHostname);
-  }
-
-  return null;
-};
-const GetDeliveryApiStatusFromHostname = currentHostname => {
-  if (currentHostname.indexOf('localhost') > -1) return 'latest';
-
-  if (currentHostname.endsWith('contensis.cloud')) {
-    if (currentHostname.indexOf('preview.') > -1) {
-      return 'latest';
-    } else {
-      return 'published';
-    }
-  }
-
-  if (currentHostname.endsWith('cloud.contensis.com')) {
-    if (currentHostname.indexOf('preview-') > -1) {
-      return 'latest';
-    } else {
-      return 'published';
-    }
-  }
-
-  return 'published';
 };
 const GetResponseGuids = object => {
   let Ids = [];
@@ -158,26 +391,59 @@ const GetAllResponseGuids = object => {
 };
 
 class DeliveryApi {
-  search(query, linkDepth, project, env) {
-    const client = contensisDeliveryApi.Client.create(getClientConfig(project));
-    return client.entries.search(query, typeof linkDepth !== 'undefined' ? linkDepth : 1);
-  }
+  constructor() {
+    this.getClientSideVersionStatus = () => {
+      if (typeof window != 'undefined') {
+        const currentHostname = window.location.hostname;
+        return this.getVersionStatusFromHostname(currentHostname);
+      }
 
-  getClient(deliveryApiStatus = 'published', project, env) {
-    const baseConfig = getClientConfig(project);
-    baseConfig.versionStatus = deliveryApiStatus;
-    return contensisDeliveryApi.Client.create(baseConfig);
-  }
+      return null;
+    };
 
-  getEntry(id, linkDepth = 0, deliveryApiStatus = 'published', project, env) {
-    const baseConfig = getClientConfig(project);
-    baseConfig.versionStatus = deliveryApiStatus;
-    const client = contensisDeliveryApi.Client.create(baseConfig); // return client.entries.get(id, linkDepth);
+    this.getVersionStatusFromHostname = currentHostname => {
+      if (currentHostname.indexOf('localhost') > -1) return 'latest';
 
-    return client.entries.get({
-      id,
-      linkDepth
-    });
+      if (currentHostname.endsWith('contensis.cloud')) {
+        if (currentHostname.indexOf('preview.') > -1) {
+          return 'latest';
+        } else {
+          return 'published';
+        }
+      }
+
+      if (currentHostname.endsWith('cloud.contensis.com')) {
+        if (currentHostname.indexOf('preview-') > -1) {
+          return 'latest';
+        } else {
+          return 'published';
+        }
+      }
+
+      return 'published';
+    };
+
+    this.search = (query, linkDepth, project, env) => {
+      const client = contensisDeliveryApi.Client.create(getClientConfig(project));
+      return client.entries.search(query, typeof linkDepth !== 'undefined' ? linkDepth : 1);
+    };
+
+    this.getClient = (deliveryApiStatus = 'published', project, env) => {
+      const baseConfig = getClientConfig(project);
+      baseConfig.versionStatus = deliveryApiStatus;
+      return contensisDeliveryApi.Client.create(baseConfig);
+    };
+
+    this.getEntry = (id, linkDepth = 0, deliveryApiStatus = 'published', project, env) => {
+      const baseConfig = getClientConfig(project);
+      baseConfig.versionStatus = deliveryApiStatus;
+      const client = contensisDeliveryApi.Client.create(baseConfig); // return client.entries.get(id, linkDepth);
+
+      return client.entries.get({
+        id,
+        linkDepth
+      });
+    };
   }
 
 }
@@ -362,237 +628,6 @@ class CachedSearch {
 
 const cachedSearch = new CachedSearch();
 
-let initialState = immutable.Map({
-  currentPath: '/',
-  currentNode: [],
-  currentProject: 'unknown',
-  notFound: false,
-  entryID: null,
-  entry: null,
-  entryDepends: new immutable.List(),
-  contentTypeId: null,
-  currentNodeAncestors: new immutable.List(),
-  currentTreeId: null
-});
-var RoutingReducer = ((state = initialState, action) => {
-  switch (action.type) {
-    case routing.MAP_ENTRY:
-      {
-        return state.set('mappedEntry', immutable.fromJS(action.mappedEntry));
-      }
-
-    case routing.SET_ANCESTORS:
-      {
-        if (action.ancestors) {
-          let ancestorIDs = action.ancestors.map(node => {
-            return node.id;
-          });
-          let currentNodeDepends = state.get('nodeDepends');
-          const allNodeDepends = immutable.Set.union([immutable.Set(ancestorIDs), currentNodeDepends]);
-          return state.set('nodeDepends', allNodeDepends).set('currentNodeAncestors', immutable.fromJS(action.ancestors));
-        }
-
-        return state.set('currentNodeAncestors', immutable.fromJS(action.ancestors));
-      }
-
-    case routing.SET_ENTRY:
-      {
-        const {
-          entry,
-          node = {},
-          isLoading = false
-        } = action;
-        let nextState;
-
-        if (!entry) {
-          nextState = state.set('entryID', null).set('entryDepends', null).set('entry', null).set('mappedEntry', null).set('isLoading', isLoading);
-        } else {
-          const entryDepends = GetAllResponseGuids(entry);
-          nextState = state.set('entryID', action.id).set('entryDepends', immutable.fromJS(entryDepends)).set('entry', immutable.fromJS(entry)).set('isLoading', isLoading);
-        }
-
-        if (!node) {
-          return nextState.set('nodeDepends', null).set('currentNode', null);
-        } else {
-          // On Set Node, we reset all dependants.
-          const nodeDepends = immutable.Set([node.id]);
-          return nextState.set('nodeDepends', nodeDepends).set('currentNode', immutable.fromJS(node)).removeIn(['currentNode', 'entry']); // We have the entry stored elsewhere, so lets not keep it twice.
-        }
-      }
-    // case SET_ENTRY_ID: {
-    //   if (action.id === '') {
-    //     return state;
-    //   }
-    //   return state.set('entryID', action.id);
-    // }
-
-    case routing.SET_NAVIGATION_PATH:
-      {
-        let staticRoute = false;
-
-        if (action.staticRoute) {
-          staticRoute = { ...action.staticRoute
-          };
-        }
-
-        if (action.path) {
-          return state.set('currentPath', immutable.fromJS(action.path)).set('location', immutable.fromJS(action.location)).set('staticRoute', immutable.fromJS({ ...staticRoute,
-            route: { ...staticRoute.route,
-              component: null
-            }
-          })).set('isLoading', typeof window !== 'undefined');
-        }
-
-        return state;
-      }
-    // case SET_NAVIGATION_NOT_FOUND: {
-    //   return state
-    //     .set('notFound', fromJS(action.notFound))
-    //     .set('isLoading', false);
-    // }
-    // case SET_NODE: {
-    //   const { node } = action;
-    //   if (!node) return state;
-    //   // On Set Node, we reset all dependants.
-    //   const nodeDepends = Set([node.id]);
-    //   return state
-    //     .set('nodeDepends', nodeDepends)
-    //     .set('currentNode', fromJS(action.node))
-    //     .removeIn(['currentNode', 'entry']); // We have the entry stored elsewhere, so lets not keep it twice.
-    // }
-
-    case routing.SET_ROUTE:
-      {
-        return state.set('nextPath', action.path);
-      }
-
-    case routing.SET_SIBLINGS:
-      {
-        // Can be null in some cases like the homepage.
-        let currentNodeSiblingParent = null;
-        let siblingIDs = [];
-
-        if (action.siblings && action.siblings.length > 0) {
-          currentNodeSiblingParent = action.siblings[0].parentId;
-          siblingIDs = action.siblings.map(node => {
-            return node.id;
-          });
-        }
-
-        let currentNodeDepends = state.get('nodeDepends');
-        const allNodeDepends = immutable.Set.union([immutable.Set(siblingIDs), currentNodeDepends]);
-        return state.set('nodeDepends', allNodeDepends).set('currentNodeSiblings', immutable.fromJS(action.siblings)).set('currentNodeSiblingsParent', currentNodeSiblingParent);
-      }
-
-    case routing.SET_TARGET_PROJECT:
-      {
-        return state.set('currentProject', action.project).set('currentTreeId', '') //getTreeID(action.project))
-        .set('allowedGroups', immutable.fromJS(action.allowedGroups));
-      }
-
-    default:
-      return state;
-  }
-});
-
-let initialState$1 = immutable.Map({
-  commitRef: null,
-  buildNo: null,
-  contensisVersionStatus: 'published'
-});
-var VersionReducer = ((state = initialState$1, action) => {
-  switch (action.type) {
-    case navigation.SET_VERSION_STATUS:
-      {
-        return state.set('contensisVersionStatus', action.status);
-      }
-
-    case navigation.SET_VERSION:
-      {
-        return state.set('commitRef', action.commitRef).set('buildNo', action.buildNo);
-      }
-
-    default:
-      return state;
-  }
-});
-
-const initialState$2 = immutable.Map({
-  root: null,
-  treeDepends: new immutable.List([]),
-  isError: false,
-  isReady: false
-});
-var NavigationReducer = ((state = initialState$2, action) => {
-  switch (action.type) {
-    case navigation.SET_NODE_TREE:
-      {
-        return state.set('root', immutable.fromJS(action.nodes)).set('isReady', true);
-      }
-
-    case navigation.GET_NODE_TREE_ERROR:
-      {
-        return state.set('isError', true);
-      }
-
-    default:
-      return state;
-  }
-});
-
-/**
- * This middleware captures CALL_HISTORY_METHOD actions to redirect to the
- * provided history object. This will prevent these actions from reaching your
- * reducer or any middleware that comes after this one.
- */
-
-/* eslint-disable no-unused-vars */
-
-const routerMiddleware = history => store => next => action => {
-  if (action.type !== routing.CALL_HISTORY_METHOD) {
-    return next(action);
-  }
-
-  const {
-    payload: {
-      method,
-      args
-    }
-  } = action;
-  history[method](...args);
-};
-
-var createStore = ((featureReducers, initialState, history) => {
-  const thunkMiddleware = [thunk__default['default']];
-
-  let reduxDevToolsMiddleware = f => f;
-
-  if (typeof window != 'undefined') {
-    reduxDevToolsMiddleware = window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f;
-  }
-
-  const sagaMiddleware = createSagaMiddleware__default['default']();
-  const middleware = redux.compose(redux.applyMiddleware(...thunkMiddleware, sagaMiddleware, routerMiddleware(history)), reduxDevToolsMiddleware);
-  let reducers = {
-    navigation: NavigationReducer,
-    routing: RoutingReducer,
-    version: VersionReducer,
-    ...featureReducers
-  };
-  const combinedReducers = reduxImmutable.combineReducers(reducers);
-
-  const store = initialState => {
-    const store = redux.createStore(combinedReducers, initialState, middleware);
-    store.runSaga = sagaMiddleware.run;
-
-    store.close = () => store.dispatch(createSagaMiddleware.END);
-
-    return store;
-  };
-
-  return store(initialState);
-});
-
 const sys = {
   contentTypeId: 'sys.contentTypeId',
   dataFormat: 'sys.dataFormat',
@@ -644,7 +679,11 @@ function* setRouteSaga(action) {
       args: [action.path, action.state]
     }
   });
-}
+} // function* deliveryApiResponseHandler(response) {
+//   debugger;
+//   yield put({ type: 'HANDLE_RESPONSE', headers: response.headers });
+// }
+
 
 function* getRouteSaga(action) {
   let entry = null;
@@ -682,13 +721,13 @@ function* getRouteSaga(action) {
       // - appsays customRouting and does SET_ENTRY etc. via the consuming app
       // - all staticRoutes (where custom 'route.fetchNode' attribute is falsey)
       // - standard Contensis SiteView Routing where we already have that entry in state
-      if (routeEntry && (!staticRoute || staticRoute.route && staticRoute.route.fetchNode)) {
-        entry = routeEntry.toJS();
-        yield effects.put({
-          type: routing.SET_ENTRY,
-          entry,
-          isLoading: false
-        });
+      if (routeEntry && (!staticRoute || staticRoute.route && staticRoute.route.fetchNode)) {// entry = routeEntry.toJS();
+        // yield put({
+        //   type: SET_ENTRY,
+        //   entry,
+        //   isLoading: false,
+        // });
+        //Do nothing, the entry is allready the right one.
       } else yield effects.call(setRouteEntry);
     } else {
       let pathNode = null,
@@ -899,11 +938,10 @@ const AppRoot = props => {
 };
 
 exports.AppRoot = AppRoot;
-exports.GetClientSideDeliveryApiStatus = GetClientSideDeliveryApiStatus;
-exports.GetDeliveryApiStatusFromHostname = GetDeliveryApiStatusFromHostname;
 exports.browserHistory = browserHistory;
 exports.createStore = createStore;
+exports.deliveryApi = deliveryApi;
 exports.history = history;
 exports.pickProject = pickProject;
 exports.rootSaga = rootSaga;
-//# sourceMappingURL=App-c39347b8.js.map
+//# sourceMappingURL=App-94c1e782.js.map

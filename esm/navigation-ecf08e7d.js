@@ -1,4 +1,4 @@
-import { q as action } from './routing-79ebf51a.js';
+import { t as action } from './routing-cd189bd3.js';
 
 const VERSION_PREFIX = '@VERSION/';
 const SET_VERSION = `${VERSION_PREFIX}SET_VERSION`;
@@ -8,6 +8,18 @@ var version = /*#__PURE__*/Object.freeze({
   __proto__: null,
   SET_VERSION: SET_VERSION,
   SET_VERSION_STATUS: SET_VERSION_STATUS
+});
+
+const ACTION_PREFIX = '@NAVIGATION/';
+const GET_NODE_TREE = `${ACTION_PREFIX}_GET_NODE_TREE`;
+const SET_NODE_TREE = `${ACTION_PREFIX}_SET_NODE_TREE`;
+const GET_NODE_TREE_ERROR = `${ACTION_PREFIX}_GET_NODE_TREE_ERROR`;
+
+var navigation = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  GET_NODE_TREE: GET_NODE_TREE,
+  SET_NODE_TREE: SET_NODE_TREE,
+  GET_NODE_TREE_ERROR: GET_NODE_TREE_ERROR
 });
 
 const setVersion = (commitRef, buildNo) => action(SET_VERSION, {
@@ -22,18 +34,6 @@ var version$1 = /*#__PURE__*/Object.freeze({
   __proto__: null,
   setVersion: setVersion,
   setVersionStatus: setVersionStatus
-});
-
-const ACTION_PREFIX = '@NAVIGATION/';
-const GET_NODE_TREE = `${ACTION_PREFIX}_GET_NODE_TREE`;
-const SET_NODE_TREE = `${ACTION_PREFIX}_SET_NODE_TREE`;
-const GET_NODE_TREE_ERROR = `${ACTION_PREFIX}_GET_NODE_TREE_ERROR`;
-
-var navigation = /*#__PURE__*/Object.freeze({
-  __proto__: null,
-  GET_NODE_TREE: GET_NODE_TREE,
-  SET_NODE_TREE: SET_NODE_TREE,
-  GET_NODE_TREE_ERROR: GET_NODE_TREE_ERROR
 });
 
 const selectCommitRef = state => {
@@ -71,4 +71,4 @@ var navigation$1 = /*#__PURE__*/Object.freeze({
 });
 
 export { GET_NODE_TREE_ERROR as G, SET_VERSION as S, setVersion as a, SET_VERSION_STATUS as b, SET_NODE_TREE as c, selectVersionStatus as d, GET_NODE_TREE as e, version$1 as f, navigation$1 as g, hasNavigationTree as h, version$2 as i, navigation as n, setVersionStatus as s, version as v };
-//# sourceMappingURL=navigation-4a24199a.js.map
+//# sourceMappingURL=navigation-ecf08e7d.js.map

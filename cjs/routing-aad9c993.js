@@ -22,7 +22,7 @@ const SET_NODE = `${ROUTING_PREFIX}_SET_NODE`;
 const SET_ANCESTORS = `${ROUTING_PREFIX}_SET_ANCESTORS`;
 const SET_SIBLINGS = `${ROUTING_PREFIX}_SET_SIBLINGS`;
 const SET_ENTRY_ID = `${ROUTING_PREFIX}_SET_ENTRY_ID`;
-const SET_ENTRY_RELATED_ARTICLES = `${ROUTING_PREFIX}_SET_ENTRY_RELATED_ARTICLES`;
+const SET_SURROGATE_KEYS = `${ROUTING_PREFIX}_SET_SURROGATE_KEYS`;
 const SET_NAVIGATION_NOT_FOUND = `${ROUTING_PREFIX}_SET_NOT_FOUND`;
 const SET_NAVIGATION_PATH = `${ROUTING_PREFIX}_SET_NAVIGATION_PATH`;
 const SET_TARGET_PROJECT = `${ROUTING_PREFIX}_SET_TARGET_PROJECT`;
@@ -38,7 +38,7 @@ var routing = /*#__PURE__*/Object.freeze({
   SET_ANCESTORS: SET_ANCESTORS,
   SET_SIBLINGS: SET_SIBLINGS,
   SET_ENTRY_ID: SET_ENTRY_ID,
-  SET_ENTRY_RELATED_ARTICLES: SET_ENTRY_RELATED_ARTICLES,
+  SET_SURROGATE_KEYS: SET_SURROGATE_KEYS,
   SET_NAVIGATION_NOT_FOUND: SET_NAVIGATION_NOT_FOUND,
   SET_NAVIGATION_PATH: SET_NAVIGATION_PATH,
   SET_TARGET_PROJECT: SET_TARGET_PROJECT,
@@ -68,6 +68,9 @@ const setRoute = (path, state) => action(SET_ROUTE, {
 const setRouteEntry = entry => action(SET_ENTRY, {
   entry
 });
+const setSurrogateKeys = keys => action(SET_SURROGATE_KEYS, {
+  keys
+});
 
 var routing$1 = /*#__PURE__*/Object.freeze({
   __proto__: null,
@@ -75,7 +78,8 @@ var routing$1 = /*#__PURE__*/Object.freeze({
   setNavigationPath: setNavigationPath,
   setCurrentProject: setCurrentProject,
   setRoute: setRoute,
-  setRouteEntry: setRouteEntry
+  setRouteEntry: setRouteEntry,
+  setSurrogateKeys: setSurrogateKeys
 });
 
 function queryParams(search) {
@@ -173,6 +177,7 @@ exports.SET_ENTRY = SET_ENTRY;
 exports.SET_NAVIGATION_PATH = SET_NAVIGATION_PATH;
 exports.SET_ROUTE = SET_ROUTE;
 exports.SET_SIBLINGS = SET_SIBLINGS;
+exports.SET_SURROGATE_KEYS = SET_SURROGATE_KEYS;
 exports.SET_TARGET_PROJECT = SET_TARGET_PROJECT;
 exports.action = action;
 exports.routing = routing;
@@ -190,4 +195,5 @@ exports.selectRouteEntryContentTypeId = selectRouteEntryContentTypeId;
 exports.selectRouteLoading = selectRouteLoading;
 exports.setCurrentProject = setCurrentProject;
 exports.setNavigationPath = setNavigationPath;
-//# sourceMappingURL=routing-b8284518.js.map
+exports.setSurrogateKeys = setSurrogateKeys;
+//# sourceMappingURL=routing-aad9c993.js.map

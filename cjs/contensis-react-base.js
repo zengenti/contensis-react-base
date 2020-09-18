@@ -19,21 +19,21 @@ var minifyCssString = require('minify-css-string');
 var immutable = require('immutable');
 var fromEntries = require('fromentries');
 require('history');
-var App = require('./App-c39347b8.js');
+var App = require('./App-94c1e782.js');
 require('contensis-delivery-api');
-var routing = require('./routing-b8284518.js');
-var navigation = require('./navigation-dc5dcf7e.js');
-require('query-string');
+var routing = require('./routing-aad9c993.js');
 require('redux');
 require('redux-immutable');
 require('redux-thunk');
 require('redux-saga');
+var navigation = require('./navigation-0482d226.js');
+require('query-string');
 require('redux-saga/effects');
 require('loglevel');
 var reactRouterConfig = require('react-router-config');
 require('react-hot-loader');
 require('prop-types');
-require('./RouteLoader-3226b7d1.js');
+require('./RouteLoader-f9f4cdf9.js');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -75,7 +75,7 @@ const apiProxy = httpProxy__default['default'].createProxyServer();
 const reverseProxies = (app, reverseProxyPaths) => {
   deliveryApiProxy(apiProxy, app);
   app.all(reverseProxyPaths, (req, res) => {
-    const target = servers$1.iis;
+    const target = req.hostname.indexOf('preview-') || req.hostname.indexOf('preview.') || req.hostname === 'localhost' ? servers$1.previewIis || servers$1.iis : servers$1.iis;
     apiProxy.web(req, res, {
       target,
       changeOrigin: true
@@ -147,6 +147,11 @@ const hashKeys = keys => {
   return returnKeys;
 };
 
+// const coreModules = moduleBundles.filter(
+//   m =>
+//     m.startsWith('app.') || m.startsWith('vendor.') || m.startsWith('runtime.')
+// );
+
 const addStandardHeaders = (state, response, packagejson, groups) => {
   if (state) {
     /* eslint-disable no-console */
@@ -161,10 +166,11 @@ const addStandardHeaders = (state, response, packagejson, groups) => {
         return `${currentTreeId}_${nodeKey}`;
       });
       const allDepends = [...entryDepends, ...nodeDependsKeys];
-      const allDependsHashed = hashKeys(allDepends);
-      const surrogateKeyHeader = packagejson.name == 'os-main' ? ` ${packagejson.name}-app ${allDependsHashed.join(' ')} ${allDepends.join(' ')}` : ` ${packagejson.name}-app ${allDependsHashed.join(' ')}`;
+      const allDependsHashed = hashKeys(allDepends).join(' ');
+      const routingSurrogateKeys = state.getIn(['routing', 'surrogateKeys'], '');
+      const surrogateKeyHeader = ` ${packagejson.name}-app ${allDependsHashed} ${routingSurrogateKeys}`;
       response.header('surrogate-key', surrogateKeyHeader);
-      console.log(`depends hashed: ${allDependsHashed.join(' ')}`);
+      console.log(`depends hashed: ${allDependsHashed}`);
       console.log(`depends hashed: ${allDepends.join(' ')}`);
       addVarnishAuthenticationHeaders(state, response, groups);
       response.setHeader('Surrogate-Control', 'max-age=3600');
@@ -281,7 +287,7 @@ const webApp = (app, ReactApp, config) => {
     })); //const store = createStore(withReducers);
     // dispatch any global and non-saga related actions before calling our JSX
 
-    const versionStatusFromHostname = App.GetDeliveryApiStatusFromHostname(request.hostname);
+    const versionStatusFromHostname = App.deliveryApi.getVersionStatusFromHostname(request.hostname);
     store.dispatch(navigation.setVersionStatus(request.query.versionStatus || versionStatusFromHostname));
     store.dispatch(navigation.setVersion(versionInfo.commitRef, versionInfo.buildNo));
     const project = App.pickProject(request.hostname, request.query);

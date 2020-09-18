@@ -16,7 +16,7 @@ const SET_NODE = `${ROUTING_PREFIX}_SET_NODE`;
 const SET_ANCESTORS = `${ROUTING_PREFIX}_SET_ANCESTORS`;
 const SET_SIBLINGS = `${ROUTING_PREFIX}_SET_SIBLINGS`;
 const SET_ENTRY_ID = `${ROUTING_PREFIX}_SET_ENTRY_ID`;
-const SET_ENTRY_RELATED_ARTICLES = `${ROUTING_PREFIX}_SET_ENTRY_RELATED_ARTICLES`;
+const SET_SURROGATE_KEYS = `${ROUTING_PREFIX}_SET_SURROGATE_KEYS`;
 const SET_NAVIGATION_NOT_FOUND = `${ROUTING_PREFIX}_SET_NOT_FOUND`;
 const SET_NAVIGATION_PATH = `${ROUTING_PREFIX}_SET_NAVIGATION_PATH`;
 const SET_TARGET_PROJECT = `${ROUTING_PREFIX}_SET_TARGET_PROJECT`;
@@ -32,7 +32,7 @@ var routing = /*#__PURE__*/Object.freeze({
   SET_ANCESTORS: SET_ANCESTORS,
   SET_SIBLINGS: SET_SIBLINGS,
   SET_ENTRY_ID: SET_ENTRY_ID,
-  SET_ENTRY_RELATED_ARTICLES: SET_ENTRY_RELATED_ARTICLES,
+  SET_SURROGATE_KEYS: SET_SURROGATE_KEYS,
   SET_NAVIGATION_NOT_FOUND: SET_NAVIGATION_NOT_FOUND,
   SET_NAVIGATION_PATH: SET_NAVIGATION_PATH,
   SET_TARGET_PROJECT: SET_TARGET_PROJECT,
@@ -62,6 +62,9 @@ const setRoute = (path, state) => action(SET_ROUTE, {
 const setRouteEntry = entry => action(SET_ENTRY, {
   entry
 });
+const setSurrogateKeys = keys => action(SET_SURROGATE_KEYS, {
+  keys
+});
 
 var routing$1 = /*#__PURE__*/Object.freeze({
   __proto__: null,
@@ -69,7 +72,8 @@ var routing$1 = /*#__PURE__*/Object.freeze({
   setNavigationPath: setNavigationPath,
   setCurrentProject: setCurrentProject,
   setRoute: setRoute,
-  setRouteEntry: setRouteEntry
+  setRouteEntry: setRouteEntry,
+  setSurrogateKeys: setSurrogateKeys
 });
 
 function queryParams(search) {
@@ -160,5 +164,5 @@ var routing$2 = /*#__PURE__*/Object.freeze({
   selectRouteLoading: selectRouteLoading
 });
 
-export { CALL_HISTORY_METHOD as C, MAP_ENTRY as M, SET_TARGET_PROJECT as S, selectEntryDepends as a, selectNodeDepends as b, selectCurrentTreeID as c, selectRouteEntry as d, selectCurrentProject as e, SET_SIBLINGS as f, SET_ROUTE as g, SET_NAVIGATION_PATH as h, SET_ENTRY as i, SET_ANCESTORS as j, selectCurrentPath as k, selectRouteEntryContentTypeId as l, selectIsNotFound as m, selectRouteLoading as n, selectMappedEntry as o, setNavigationPath as p, action as q, routing as r, setCurrentProject as s, routing$1 as t, routing$2 as u };
-//# sourceMappingURL=routing-79ebf51a.js.map
+export { CALL_HISTORY_METHOD as C, MAP_ENTRY as M, SET_TARGET_PROJECT as S, selectEntryDepends as a, selectNodeDepends as b, selectCurrentTreeID as c, selectRouteEntry as d, selectCurrentProject as e, SET_SURROGATE_KEYS as f, SET_SIBLINGS as g, SET_ROUTE as h, SET_NAVIGATION_PATH as i, SET_ENTRY as j, SET_ANCESTORS as k, setSurrogateKeys as l, selectCurrentPath as m, selectRouteEntryContentTypeId as n, selectIsNotFound as o, selectRouteLoading as p, selectMappedEntry as q, setNavigationPath as r, setCurrentProject as s, action as t, routing as u, routing$1 as v, routing$2 as w };
+//# sourceMappingURL=routing-cd189bd3.js.map

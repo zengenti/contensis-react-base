@@ -5,22 +5,22 @@ import { Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { Seq, fromJS } from 'immutable';
 import 'history';
-import { a as GetClientSideDeliveryApiStatus, c as createStore, r as rootSaga, p as pickProject, b as browserHistory } from './App-917f63e1.js';
-export { A as ReactApp } from './App-917f63e1.js';
+import { d as deliveryApi, c as createStore, r as rootSaga, p as pickProject, b as browserHistory } from './App-3666d871.js';
+export { A as ReactApp } from './App-3666d871.js';
 import 'contensis-delivery-api';
-import { s as setCurrentProject } from './routing-79ebf51a.js';
-import { s as setVersionStatus } from './navigation-4a24199a.js';
-import queryString from 'query-string';
+import { s as setCurrentProject } from './routing-cd189bd3.js';
 import 'redux';
 import 'redux-immutable';
 import 'redux-thunk';
 import 'redux-saga';
+import { s as setVersionStatus } from './navigation-ecf08e7d.js';
+import queryString from 'query-string';
 import 'redux-saga/effects';
 import 'loglevel';
 import 'react-router-config';
 import { AppContainer } from 'react-hot-loader';
 import 'prop-types';
-import './RouteLoader-952df30e.js';
+import './RouteLoader-b5847f41.js';
 import { hydrate, render } from 'react-dom';
 
 const fromJSOrdered = js => {
@@ -62,7 +62,7 @@ class ClientApp {
 
     let store = null;
     const qs = queryString.parse(window.location.search);
-    const versionStatusFromHostname = GetClientSideDeliveryApiStatus();
+    const versionStatusFromHostname = deliveryApi.getClientSideVersionStatus();
 
     if (window.isDynamic || window.REDUX_DATA || process.env.NODE_ENV !== 'production') {
       store = createStore(withReducers, fromJSOrdered(window.REDUX_DATA), browserHistory);

@@ -15,22 +15,22 @@ import minifyCssString from 'minify-css-string';
 import { fromJS } from 'immutable';
 import fromEntries from 'fromentries';
 import 'history';
-import { c as createStore, h as history, G as GetDeliveryApiStatusFromHostname, p as pickProject, r as rootSaga } from './App-917f63e1.js';
-export { A as ReactApp } from './App-917f63e1.js';
+import { c as createStore, h as history, d as deliveryApi, p as pickProject, r as rootSaga } from './App-3666d871.js';
+export { A as ReactApp } from './App-3666d871.js';
 import 'contensis-delivery-api';
-import { s as setCurrentProject, a as selectEntryDepends, b as selectNodeDepends, c as selectCurrentTreeID, d as selectRouteEntry, e as selectCurrentProject } from './routing-79ebf51a.js';
-import { s as setVersionStatus, a as setVersion } from './navigation-4a24199a.js';
-import 'query-string';
+import { s as setCurrentProject, a as selectEntryDepends, b as selectNodeDepends, c as selectCurrentTreeID, d as selectRouteEntry, e as selectCurrentProject } from './routing-cd189bd3.js';
 import 'redux';
 import 'redux-immutable';
 import 'redux-thunk';
 import 'redux-saga';
+import { s as setVersionStatus, a as setVersion } from './navigation-ecf08e7d.js';
+import 'query-string';
 import 'redux-saga/effects';
 import 'loglevel';
 import { matchRoutes } from 'react-router-config';
 import 'react-hot-loader';
 import 'prop-types';
-import './RouteLoader-952df30e.js';
+import './RouteLoader-b5847f41.js';
 
 const servers = SERVERS;
 /* global SERVERS */
@@ -60,7 +60,7 @@ const apiProxy = httpProxy.createProxyServer();
 const reverseProxies = (app, reverseProxyPaths) => {
   deliveryApiProxy(apiProxy, app);
   app.all(reverseProxyPaths, (req, res) => {
-    const target = servers$1.iis;
+    const target = req.hostname.indexOf('preview-') || req.hostname.indexOf('preview.') || req.hostname === 'localhost' ? servers$1.previewIis || servers$1.iis : servers$1.iis;
     apiProxy.web(req, res, {
       target,
       changeOrigin: true
@@ -132,6 +132,11 @@ const hashKeys = keys => {
   return returnKeys;
 };
 
+// const coreModules = moduleBundles.filter(
+//   m =>
+//     m.startsWith('app.') || m.startsWith('vendor.') || m.startsWith('runtime.')
+// );
+
 const addStandardHeaders = (state, response, packagejson, groups) => {
   if (state) {
     /* eslint-disable no-console */
@@ -146,10 +151,11 @@ const addStandardHeaders = (state, response, packagejson, groups) => {
         return `${currentTreeId}_${nodeKey}`;
       });
       const allDepends = [...entryDepends, ...nodeDependsKeys];
-      const allDependsHashed = hashKeys(allDepends);
-      const surrogateKeyHeader = packagejson.name == 'os-main' ? ` ${packagejson.name}-app ${allDependsHashed.join(' ')} ${allDepends.join(' ')}` : ` ${packagejson.name}-app ${allDependsHashed.join(' ')}`;
+      const allDependsHashed = hashKeys(allDepends).join(' ');
+      const routingSurrogateKeys = state.getIn(['routing', 'surrogateKeys'], '');
+      const surrogateKeyHeader = ` ${packagejson.name}-app ${allDependsHashed} ${routingSurrogateKeys}`;
       response.header('surrogate-key', surrogateKeyHeader);
-      console.log(`depends hashed: ${allDependsHashed.join(' ')}`);
+      console.log(`depends hashed: ${allDependsHashed}`);
       console.log(`depends hashed: ${allDepends.join(' ')}`);
       addVarnishAuthenticationHeaders(state, response, groups);
       response.setHeader('Surrogate-Control', 'max-age=3600');
@@ -266,7 +272,7 @@ const webApp = (app, ReactApp, config) => {
     })); //const store = createStore(withReducers);
     // dispatch any global and non-saga related actions before calling our JSX
 
-    const versionStatusFromHostname = GetDeliveryApiStatusFromHostname(request.hostname);
+    const versionStatusFromHostname = deliveryApi.getVersionStatusFromHostname(request.hostname);
     store.dispatch(setVersionStatus(request.query.versionStatus || versionStatusFromHostname));
     store.dispatch(setVersion(versionInfo.commitRef, versionInfo.buildNo));
     const project = pickProject(request.hostname, request.query);
