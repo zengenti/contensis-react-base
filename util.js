@@ -964,7 +964,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const storeSurrogateKeys = response => {
-  const keys = response.headers.map['surrogate-key'];
+  const keys = response.headers.get ? response.headers.get('surrogate-key') : response.headers.map['surrogate-key'];
   if (keys) _redux_store__WEBPACK_IMPORTED_MODULE_2__[/* reduxStore */ "b"].dispatch(Object(_redux_actions_routing__WEBPACK_IMPORTED_MODULE_1__["setSurrogateKeys"])(keys));
 };
 
@@ -977,13 +977,14 @@ const getClientConfig = project => {
   if (project) {
     config.projectId = project;
   } // // we only want the surrogate key header in a server context
-  // if (typeof window === 'undefined')
 
 
-  config.defaultHeaders = {
-    'x-require-surrogate-key': true
-  };
-  config.responseHandler[200] = storeSurrogateKeys;
+  if (typeof window === 'undefined') {
+    config.defaultHeaders = {
+      'x-require-surrogate-key': true
+    };
+    config.responseHandler[200] = storeSurrogateKeys;
+  }
 
   if (typeof window !== 'undefined' && PROXY_DELIVERY_API
   /* global PROXY_DELIVERY_API */

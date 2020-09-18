@@ -7,7 +7,7 @@
 		var a = typeof exports === 'object' ? factory(require("immutable"), require("contensis-delivery-api"), require("react"), require("prop-types"), require("query-string"), require("react-redux"), require("react-router-dom"), require("@redux-saga/core/effects"), require("js-cookie"), require("react-router-config"), require("react-hot-loader"), require("redux"), require("redux-saga"), require("redux-immutable"), require("redux-thunk"), require("loglevel"), require("react-loadable"), require("history"), require("isomorphic-fetch"), require("react-dom")) : factory(root["immutable"], root["contensis-delivery-api"], root["react"], root["prop-types"], root["query-string"], root["react-redux"], root["react-router-dom"], root["@redux-saga/core/effects"], root["js-cookie"], root["react-router-config"], root["react-hot-loader"], root["redux"], root["redux-saga"], root["redux-immutable"], root["redux-thunk"], root["loglevel"], root["react-loadable"], root["history"], root["isomorphic-fetch"], root["react-dom"]);
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(global, function(__WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__5__, __WEBPACK_EXTERNAL_MODULE__7__, __WEBPACK_EXTERNAL_MODULE__9__, __WEBPACK_EXTERNAL_MODULE__12__, __WEBPACK_EXTERNAL_MODULE__16__, __WEBPACK_EXTERNAL_MODULE__19__, __WEBPACK_EXTERNAL_MODULE__24__, __WEBPACK_EXTERNAL_MODULE__25__, __WEBPACK_EXTERNAL_MODULE__26__, __WEBPACK_EXTERNAL_MODULE__27__, __WEBPACK_EXTERNAL_MODULE__28__, __WEBPACK_EXTERNAL_MODULE__33__, __WEBPACK_EXTERNAL_MODULE__36__, __WEBPACK_EXTERNAL_MODULE__37__, __WEBPACK_EXTERNAL_MODULE__40__, __WEBPACK_EXTERNAL_MODULE__42__, __WEBPACK_EXTERNAL_MODULE__44__, __WEBPACK_EXTERNAL_MODULE__51__, __WEBPACK_EXTERNAL_MODULE__58__) {
+})(global, function(__WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__5__, __WEBPACK_EXTERNAL_MODULE__7__, __WEBPACK_EXTERNAL_MODULE__9__, __WEBPACK_EXTERNAL_MODULE__12__, __WEBPACK_EXTERNAL_MODULE__16__, __WEBPACK_EXTERNAL_MODULE__19__, __WEBPACK_EXTERNAL_MODULE__24__, __WEBPACK_EXTERNAL_MODULE__25__, __WEBPACK_EXTERNAL_MODULE__26__, __WEBPACK_EXTERNAL_MODULE__27__, __WEBPACK_EXTERNAL_MODULE__28__, __WEBPACK_EXTERNAL_MODULE__33__, __WEBPACK_EXTERNAL_MODULE__36__, __WEBPACK_EXTERNAL_MODULE__37__, __WEBPACK_EXTERNAL_MODULE__40__, __WEBPACK_EXTERNAL_MODULE__42__, __WEBPACK_EXTERNAL_MODULE__44__, __WEBPACK_EXTERNAL_MODULE__50__, __WEBPACK_EXTERNAL_MODULE__58__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -969,7 +969,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const storeSurrogateKeys = response => {
-  const keys = response.headers.map['surrogate-key'];
+  const keys = response.headers.get ? response.headers.get('surrogate-key') : response.headers.map['surrogate-key'];
   if (keys) _redux_store__WEBPACK_IMPORTED_MODULE_2__[/* reduxStore */ "b"].dispatch(Object(_redux_actions_routing__WEBPACK_IMPORTED_MODULE_1__["setSurrogateKeys"])(keys));
 };
 
@@ -982,13 +982,14 @@ const getClientConfig = project => {
   if (project) {
     config.projectId = project;
   } // // we only want the surrogate key header in a server context
-  // if (typeof window === 'undefined')
 
 
-  config.defaultHeaders = {
-    'x-require-surrogate-key': true
-  };
-  config.responseHandler[200] = storeSurrogateKeys;
+  if (typeof window === 'undefined') {
+    config.defaultHeaders = {
+      'x-require-surrogate-key': true
+    };
+    config.responseHandler[200] = storeSurrogateKeys;
+  }
 
   if (typeof window !== 'undefined' && PROXY_DELIVERY_API
   /* global PROXY_DELIVERY_API */
@@ -3067,14 +3068,13 @@ module.exports = function(originalModule) {
 /***/ }),
 /* 48 */,
 /* 49 */,
-/* 50 */,
-/* 51 */
+/* 50 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__51__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__50__;
 
 /***/ }),
-/* 52 */
+/* 51 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3095,6 +3095,7 @@ const AppRoot = props => {
 /* harmony default export */ __webpack_exports__["default"] = (AppRoot);
 
 /***/ }),
+/* 52 */,
 /* 53 */,
 /* 54 */,
 /* 55 */,
@@ -3119,7 +3120,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ReactApp", function() { return ReactApp; });
 const client = __webpack_require__(77).default;
 
-const ReactApp = __webpack_require__(52).default;
+const ReactApp = __webpack_require__(51).default;
 /* harmony default export */ __webpack_exports__["default"] = (client);
 
 /***/ }),
@@ -3142,7 +3143,7 @@ const ReactApp = __webpack_require__(52).default;
 __webpack_require__.r(__webpack_exports__);
 
 // EXTERNAL MODULE: external "isomorphic-fetch"
-var external_isomorphic_fetch_ = __webpack_require__(51);
+var external_isomorphic_fetch_ = __webpack_require__(50);
 
 // EXTERNAL MODULE: external "react"
 var external_react_ = __webpack_require__(7);

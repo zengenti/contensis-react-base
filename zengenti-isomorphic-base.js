@@ -7,7 +7,7 @@
 		var a = typeof exports === 'object' ? factory(require("immutable"), require("contensis-delivery-api"), require("react"), require("prop-types"), require("query-string"), require("react-redux"), require("react-router-dom"), require("@redux-saga/core/effects"), require("js-cookie"), require("react-router-config"), require("react-hot-loader"), require("redux"), require("redux-saga"), require("redux-immutable"), require("redux-thunk"), require("loglevel"), require("react-loadable"), require("history"), require("react-dom/server"), require("minify-css-string"), require("isomorphic-fetch"), require("express"), require("evil-dns"), require("react-loadable/webpack"), require("react-helmet"), require("serialize-javascript"), require("http-proxy"), require("styled-components"), require("fromentries"), require("xxhashjs")) : factory(root["immutable"], root["contensis-delivery-api"], root["react"], root["prop-types"], root["query-string"], root["react-redux"], root["react-router-dom"], root["@redux-saga/core/effects"], root["js-cookie"], root["react-router-config"], root["react-hot-loader"], root["redux"], root["redux-saga"], root["redux-immutable"], root["redux-thunk"], root["loglevel"], root["react-loadable"], root["history"], root["react-dom/server"], root["minify-css-string"], root["isomorphic-fetch"], root["express"], root["evil-dns"], root["react-loadable/webpack"], root["react-helmet"], root["serialize-javascript"], root["http-proxy"], root["styled-components"], root["fromentries"], root["xxhashjs"]);
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(global, function(__WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__5__, __WEBPACK_EXTERNAL_MODULE__7__, __WEBPACK_EXTERNAL_MODULE__9__, __WEBPACK_EXTERNAL_MODULE__12__, __WEBPACK_EXTERNAL_MODULE__16__, __WEBPACK_EXTERNAL_MODULE__19__, __WEBPACK_EXTERNAL_MODULE__24__, __WEBPACK_EXTERNAL_MODULE__25__, __WEBPACK_EXTERNAL_MODULE__26__, __WEBPACK_EXTERNAL_MODULE__27__, __WEBPACK_EXTERNAL_MODULE__28__, __WEBPACK_EXTERNAL_MODULE__33__, __WEBPACK_EXTERNAL_MODULE__36__, __WEBPACK_EXTERNAL_MODULE__37__, __WEBPACK_EXTERNAL_MODULE__40__, __WEBPACK_EXTERNAL_MODULE__42__, __WEBPACK_EXTERNAL_MODULE__44__, __WEBPACK_EXTERNAL_MODULE__49__, __WEBPACK_EXTERNAL_MODULE__50__, __WEBPACK_EXTERNAL_MODULE__51__, __WEBPACK_EXTERNAL_MODULE__53__, __WEBPACK_EXTERNAL_MODULE__54__, __WEBPACK_EXTERNAL_MODULE__55__, __WEBPACK_EXTERNAL_MODULE__56__, __WEBPACK_EXTERNAL_MODULE__57__, __WEBPACK_EXTERNAL_MODULE__59__, __WEBPACK_EXTERNAL_MODULE__60__, __WEBPACK_EXTERNAL_MODULE__61__, __WEBPACK_EXTERNAL_MODULE__63__) {
+})(global, function(__WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__5__, __WEBPACK_EXTERNAL_MODULE__7__, __WEBPACK_EXTERNAL_MODULE__9__, __WEBPACK_EXTERNAL_MODULE__12__, __WEBPACK_EXTERNAL_MODULE__16__, __WEBPACK_EXTERNAL_MODULE__19__, __WEBPACK_EXTERNAL_MODULE__24__, __WEBPACK_EXTERNAL_MODULE__25__, __WEBPACK_EXTERNAL_MODULE__26__, __WEBPACK_EXTERNAL_MODULE__27__, __WEBPACK_EXTERNAL_MODULE__28__, __WEBPACK_EXTERNAL_MODULE__33__, __WEBPACK_EXTERNAL_MODULE__36__, __WEBPACK_EXTERNAL_MODULE__37__, __WEBPACK_EXTERNAL_MODULE__40__, __WEBPACK_EXTERNAL_MODULE__42__, __WEBPACK_EXTERNAL_MODULE__44__, __WEBPACK_EXTERNAL_MODULE__48__, __WEBPACK_EXTERNAL_MODULE__49__, __WEBPACK_EXTERNAL_MODULE__50__, __WEBPACK_EXTERNAL_MODULE__52__, __WEBPACK_EXTERNAL_MODULE__53__, __WEBPACK_EXTERNAL_MODULE__55__, __WEBPACK_EXTERNAL_MODULE__56__, __WEBPACK_EXTERNAL_MODULE__57__, __WEBPACK_EXTERNAL_MODULE__59__, __WEBPACK_EXTERNAL_MODULE__60__, __WEBPACK_EXTERNAL_MODULE__61__, __WEBPACK_EXTERNAL_MODULE__63__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -969,7 +969,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const storeSurrogateKeys = response => {
-  const keys = response.headers.map['surrogate-key'];
+  const keys = response.headers.get ? response.headers.get('surrogate-key') : response.headers.map['surrogate-key'];
   if (keys) _redux_store__WEBPACK_IMPORTED_MODULE_2__[/* reduxStore */ "b"].dispatch(Object(_redux_actions_routing__WEBPACK_IMPORTED_MODULE_1__["setSurrogateKeys"])(keys));
 };
 
@@ -982,13 +982,14 @@ const getClientConfig = project => {
   if (project) {
     config.projectId = project;
   } // // we only want the surrogate key header in a server context
-  // if (typeof window === 'undefined')
 
 
-  config.defaultHeaders = {
-    'x-require-surrogate-key': true
-  };
-  config.responseHandler[200] = storeSurrogateKeys;
+  if (typeof window === 'undefined') {
+    config.defaultHeaders = {
+      'x-require-surrogate-key': true
+    };
+    config.responseHandler[200] = storeSurrogateKeys;
+  }
 
   if (typeof window !== 'undefined' && PROXY_DELIVERY_API
   /* global PROXY_DELIVERY_API */
@@ -3068,7 +3069,7 @@ module.exports = function(originalModule) {
 /* 48 */
 /***/ (function(module, exports) {
 
-module.exports = require("fs");
+module.exports = __WEBPACK_EXTERNAL_MODULE__48__;
 
 /***/ }),
 /* 49 */
@@ -3084,12 +3085,6 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__50__;
 
 /***/ }),
 /* 51 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__51__;
-
-/***/ }),
-/* 52 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3110,6 +3105,12 @@ const AppRoot = props => {
 /* harmony default export */ __webpack_exports__["default"] = (AppRoot);
 
 /***/ }),
+/* 52 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__52__;
+
+/***/ }),
 /* 53 */
 /***/ (function(module, exports) {
 
@@ -3119,7 +3120,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__53__;
 /* 54 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__54__;
+module.exports = require("fs");
 
 /***/ }),
 /* 55 */
@@ -3168,7 +3169,7 @@ exports.app = internalServer.app;
 exports.httpProxy = internalServer.apiProxy;
 exports.start = internalServer.start;
 
-const ReactApp = __webpack_require__(52).default;
+const ReactApp = __webpack_require__(51).default;
 
 exports.ReactApp = ReactApp;
 
@@ -3198,10 +3199,10 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__63__;
 __webpack_require__.r(__webpack_exports__);
 
 // EXTERNAL MODULE: external "isomorphic-fetch"
-var external_isomorphic_fetch_ = __webpack_require__(51);
+var external_isomorphic_fetch_ = __webpack_require__(50);
 
 // EXTERNAL MODULE: external "express"
-var external_express_ = __webpack_require__(53);
+var external_express_ = __webpack_require__(52);
 var external_express_default = /*#__PURE__*/__webpack_require__.n(external_express_);
 
 // EXTERNAL MODULE: external "react-loadable"
@@ -3231,7 +3232,7 @@ const DisplayStartupConfiguration = config => {
 
 /* harmony default export */ var displayStartupConfiguration = (DisplayStartupConfiguration);
 // EXTERNAL MODULE: external "evil-dns"
-var external_evil_dns_ = __webpack_require__(54);
+var external_evil_dns_ = __webpack_require__(53);
 var external_evil_dns_default = /*#__PURE__*/__webpack_require__.n(external_evil_dns_);
 
 // CONCATENATED MODULE: ./src/server/util/fetchMyIp.js
@@ -3334,7 +3335,7 @@ const deliveryApiProxy = (apiProxy, app) => {
 
 /* harmony default export */ var core_reverseProxies = (reverseProxies);
 // EXTERNAL MODULE: external "fs"
-var external_fs_ = __webpack_require__(48);
+var external_fs_ = __webpack_require__(54);
 var external_fs_default = /*#__PURE__*/__webpack_require__.n(external_fs_);
 
 // EXTERNAL MODULE: external "react"
@@ -3348,7 +3349,7 @@ var external_react_router_dom_ = __webpack_require__(19);
 var external_react_redux_ = __webpack_require__(16);
 
 // EXTERNAL MODULE: external "react-dom/server"
-var server_ = __webpack_require__(49);
+var server_ = __webpack_require__(48);
 
 // EXTERNAL MODULE: external "react-loadable/webpack"
 var webpack_ = __webpack_require__(55);
@@ -3365,7 +3366,7 @@ var external_serialize_javascript_ = __webpack_require__(57);
 var external_serialize_javascript_default = /*#__PURE__*/__webpack_require__.n(external_serialize_javascript_);
 
 // EXTERNAL MODULE: external "minify-css-string"
-var external_minify_css_string_ = __webpack_require__(50);
+var external_minify_css_string_ = __webpack_require__(49);
 var external_minify_css_string_default = /*#__PURE__*/__webpack_require__.n(external_minify_css_string_);
 
 // EXTERNAL MODULE: external "immutable"
@@ -3471,9 +3472,11 @@ var external_react_router_config_ = __webpack_require__(26);
 
 
 
-
-const moduleBundles = external_fs_default.a.readdirSync('./dist/static/modern/js', 'utf8');
-const coreModules = moduleBundles.filter(m => m.startsWith('app.') || m.startsWith('vendor.') || m.startsWith('runtime.'));
+ // const moduleBundles = fs.readdirSync('./dist/static/modern/js', 'utf8');
+// const coreModules = moduleBundles.filter(
+//   m =>
+//     m.startsWith('app.') || m.startsWith('vendor.') || m.startsWith('runtime.')
+// );
 
 const addStandardHeaders = (state, response, packagejson, groups) => {
   if (state) {
@@ -3489,14 +3492,14 @@ const addStandardHeaders = (state, response, packagejson, groups) => {
         return `${currentTreeId}_${nodeKey}`;
       });
       const allDepends = [...entryDepends, ...nodeDependsKeys];
-      const allDependsHashed = hashKeys(allDepends);
-      const surrogateKeyHeader = packagejson.name == 'os-main' ? ` ${packagejson.name}-app ${allDependsHashed.join(' ')} ${allDepends.join(' ')}` : ` ${packagejson.name}-app ${allDependsHashed.join(' ')}`;
+      const allDependsHashed = hashKeys(allDepends).join(' ');
+      const routingSurrogateKeys = state.getIn(['routing', 'surrogateKeys'], '');
+      const surrogateKeyHeader = ` ${packagejson.name}-app ${allDependsHashed} ${routingSurrogateKeys}`;
       response.header('surrogate-key', surrogateKeyHeader);
-      console.log(`depends hashed: ${allDependsHashed.join(' ')}`);
+      console.log(`depends hashed: ${allDependsHashed}`);
       console.log(`depends hashed: ${allDepends.join(' ')}`);
       addVarnishAuthenticationHeaders(state, response, groups);
       response.setHeader('Surrogate-Control', 'max-age=3600');
-      response.setHeader('Link', coreModules.map(m => `</static/modern/js/${m}>;rel="preload";as="script"`).join(','));
     } catch (e) {
       console.log('Error Adding headers', e.message); // console.log(e);
     }

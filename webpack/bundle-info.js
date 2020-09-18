@@ -14,9 +14,9 @@ const {
 const apiProxies = PROXY_DELIVERY_API
   ? {
       '/api/*': {
-        target: 'http://localhost:3001',
-        // target: SERVERS.cms,
-        // changeOrigin: true,
+        // target: 'http://localhost:3001',
+        target: SERVERS.cms,
+        changeOrigin: true,
       },
     }
   : {};

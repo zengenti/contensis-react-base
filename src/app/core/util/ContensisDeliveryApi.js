@@ -3,7 +3,9 @@ import { setSurrogateKeys } from '../redux/actions/routing';
 import { reduxStore } from '../redux/store';
 
 const storeSurrogateKeys = response => {
-  const keys = response.headers.map['surrogate-key'];
+  const keys = response.headers.get
+    ? response.headers.get('surrogate-key')
+    : response.headers.map['surrogate-key'];
   if (keys) reduxStore.dispatch(setSurrogateKeys(keys));
 };
 
@@ -16,11 +18,12 @@ const getClientConfig = project => {
   }
 
   // // we only want the surrogate key header in a server context
-  // if (typeof window === 'undefined')
-  config.defaultHeaders = {
-    'x-require-surrogate-key': true,
-  };
-  config.responseHandler[200] = storeSurrogateKeys;
+  if (typeof window === 'undefined') {
+    config.defaultHeaders = {
+      'x-require-surrogate-key': true,
+    };
+    config.responseHandler[200] = storeSurrogateKeys;
+  }
 
   if (
     typeof window !== 'undefined' &&
