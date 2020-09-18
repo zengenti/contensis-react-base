@@ -3,7 +3,6 @@ import express from 'express';
 import Loadable from 'react-loadable';
 
 import DisplayStartupConfiguration from './util/displayStartupConfiguration';
-import ConfigureLocalDNS from './core/localDns';
 import ConfigureReverseProxies, { apiProxy } from './core/reverseProxies';
 // import ServerFeatures from './features/configure';
 import ConfigureWebApp from './core/webApp';
@@ -25,7 +24,7 @@ const start = (ReactApp, config, ServerFeatures) => {
 
   app.on('ready', async () => {
     // Configure DNS to make life easier
-    await ConfigureLocalDNS();
+    //await ConfigureLocalDNS();
 
     Loadable.preloadAll().then(() => {
       var server = app.listen(3001, () => {
