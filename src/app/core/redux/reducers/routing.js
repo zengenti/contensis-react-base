@@ -1,29 +1,31 @@
-import { Map, fromJS, List, Set } from 'immutable';
+import { OrderedMap, fromJS, List, Set } from 'immutable';
 import {
-  // SET_ENTRY_ID,
-  // SET_NAVIGATION_NOT_FOUND,
-  // SET_NODE,
+  MAP_ENTRY,
   SET_ENTRY,
   SET_NAVIGATION_PATH,
   SET_ANCESTORS,
   SET_TARGET_PROJECT,
   SET_ROUTE,
   SET_SIBLINGS,
-  MAP_ENTRY,
 } from '~/core/redux/types/routing';
 import { GetAllResponseGuids } from '~/core/util/ContensisDeliveryApi';
 
-let initialState = Map({
+let initialState = OrderedMap({
+  contentTypeId: null,
   currentPath: '/',
   currentNode: [],
+  currentNodeAncestors: List(),
   currentProject: 'unknown',
-  notFound: false,
-  entryID: null,
-  entry: null,
-  entryDepends: new List(),
-  contentTypeId: null,
-  currentNodeAncestors: new List(),
   currentTreeId: null,
+  entry: null,
+  entryDepends: List(),
+  entryID: null,
+  isLoading: false,
+  location: null,
+  mappedEntry: null,
+  nodeDepends: List(),
+  notFound: false,
+  staticRoute: null,
 });
 
 export default (state = initialState, action) => {

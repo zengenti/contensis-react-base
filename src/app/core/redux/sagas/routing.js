@@ -221,7 +221,9 @@ function* getRouteSaga(action) {
           call(setRouteEntry, entry, pathNode, ancestors, siblings),
         ]);
       } else {
-        yield call(do404);
+        if (pathNode)
+          yield call(setRouteEntry, null, pathNode, ancestors, siblings);
+        else yield call(do404);
       }
       if (!appsays || !appsays.preventScrollTop) {
         // Scroll into View
@@ -258,24 +260,12 @@ function* getRouteSaga(action) {
 
 function* setRouteEntry(entry, node, ancestors, siblings) {
   yield all([
-    // put({
-    //   type: SET_NAVIGATION_NOT_FOUND,
-    //   notFound: !(entry && entry.sys.id),
-    // }),
-    // put({
-    //   type: SET_NODE,
-    //   node,
-    // }),
     put({
       type: SET_ENTRY,
       id: (entry && entry.sys.id) || null,
       entry,
       node,
     }),
-    // put({
-    //   type: SET_ENTRY_ID,
-    //   id: (entry && entry.sys.id) || null,
-    // }),
     ancestors &&
       put({
         type: SET_ANCESTORS,
@@ -291,19 +281,11 @@ function* setRouteEntry(entry, node, ancestors, siblings) {
 
 function* mapRouteEntry(node, entryMapper) {
   if (typeof entryMapper === 'function') {
-    const mappedEntry = entryMapper(node);
+    const mappedEntry = yield entryMapper(node);
     yield put({ type: MAP_ENTRY, mappedEntry, node, entryMapper });
   }
 }
 function* do404() {
-  // yield put({
-  //   type: SET_NAVIGATION_NOT_FOUND,
-  //   notFound: true,
-  // });
-  // yield put({
-  //   type: SET_ENTRY_ID,
-  //   id: null,
-  // });
   yield put({
     type: SET_ENTRY,
     id: null,
