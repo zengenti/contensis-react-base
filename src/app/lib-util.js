@@ -3,6 +3,11 @@ exports.setCachingHeaders = require('~/../server/util/setCachingHeaders');
 exports.stringifyStrings = require('~/core/util/stringifyStrings');
 exports.urls = require('~/core/util/urls');
 
+// Delivery API functions
+const contensisDeliveryApi = require('~/core/util/ContensisDeliveryApi');
+exports.cachedSearch = contensisDeliveryApi.cachedSearch;
+exports.deliveryApi = contensisDeliveryApi.deliveryApi;
+
 // JSON mapping functions
 exports.jpath = require('~/core/util/json-mapper').jpath;
 exports.mapJson = require('~/core/util/json-mapper').mapJson;

@@ -9,6 +9,7 @@ import {
   SET_TARGET_PROJECT,
   SET_ROUTE,
   SET_SIBLINGS,
+  SET_SURROGATE_KEYS,
 } from '~/core/redux/types/routing';
 import { GetAllResponseGuids } from '~/core/util/ContensisDeliveryApi';
 
@@ -128,6 +129,9 @@ export default (state = initialState, action) => {
         .set('nodeDepends', allNodeDepends)
         .set('currentNodeSiblings', fromJS(action.siblings))
         .set('currentNodeSiblingsParent', currentNodeSiblingParent);
+    }
+    case SET_SURROGATE_KEYS: {
+      return state.set('surrogateKeys', action.keys);
     }
     case SET_TARGET_PROJECT: {
       return state

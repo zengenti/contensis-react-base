@@ -19,7 +19,7 @@ import handleResponse from '../util/handleResponse';
 import { hashKeys } from '../util/cacheHashing';
 
 import pickProject from '~/core/util/pickProject';
-import { GetDeliveryApiStatusFromHostname } from '~/core/util/ContensisDeliveryApi';
+import { deliveryApi } from '~/core/util/ContensisDeliveryApi';
 
 import { setCurrentProject } from '~/core/redux/actions/routing';
 import { setVersion, setVersionStatus } from '~/core/redux/actions/version';
@@ -225,7 +225,7 @@ const webApp = (app, ReactApp, config) => {
     //const store = createStore(withReducers);
 
     // dispatch any global and non-saga related actions before calling our JSX
-    const versionStatusFromHostname = GetDeliveryApiStatusFromHostname(
+    const versionStatusFromHostname = deliveryApi.getVersionStatusFromHostname(
       request.hostname
     );
 

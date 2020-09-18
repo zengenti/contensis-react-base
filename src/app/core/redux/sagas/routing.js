@@ -42,6 +42,12 @@ function* setRouteSaga(action) {
   });
 }
 
+// function* deliveryApiResponseHandler(response) {
+//   debugger;
+
+//   yield put({ type: 'HANDLE_RESPONSE', headers: response.headers });
+// }
+
 function* getRouteSaga(action) {
   let entry = null;
   try {

@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("immutable"), require("react"), require("contensis-delivery-api"), require("prop-types"), require("query-string"), require("react-redux"), require("react-router-dom"), require("react-router-config"), require("react-hot-loader"), require("@redux-saga/core/effects"), require("js-cookie"), require("redux"), require("loglevel"), require("react-loadable"), require("history"), require("redux-saga"), require("redux-immutable"), require("redux-thunk"), require("isomorphic-fetch"), require("react-dom"));
+		module.exports = factory(require("immutable"), require("contensis-delivery-api"), require("react"), require("prop-types"), require("query-string"), require("react-redux"), require("react-router-dom"), require("@redux-saga/core/effects"), require("js-cookie"), require("react-router-config"), require("react-hot-loader"), require("redux"), require("redux-saga"), require("redux-immutable"), require("redux-thunk"), require("loglevel"), require("react-loadable"), require("history"), require("isomorphic-fetch"), require("react-dom"));
 	else if(typeof define === 'function' && define.amd)
-		define(["immutable", "react", "contensis-delivery-api", "prop-types", "query-string", "react-redux", "react-router-dom", "react-router-config", "react-hot-loader", "@redux-saga/core/effects", "js-cookie", "redux", "loglevel", "react-loadable", "history", "redux-saga", "redux-immutable", "redux-thunk", "isomorphic-fetch", "react-dom"], factory);
+		define(["immutable", "contensis-delivery-api", "react", "prop-types", "query-string", "react-redux", "react-router-dom", "@redux-saga/core/effects", "js-cookie", "react-router-config", "react-hot-loader", "redux", "redux-saga", "redux-immutable", "redux-thunk", "loglevel", "react-loadable", "history", "isomorphic-fetch", "react-dom"], factory);
 	else {
-		var a = typeof exports === 'object' ? factory(require("immutable"), require("react"), require("contensis-delivery-api"), require("prop-types"), require("query-string"), require("react-redux"), require("react-router-dom"), require("react-router-config"), require("react-hot-loader"), require("@redux-saga/core/effects"), require("js-cookie"), require("redux"), require("loglevel"), require("react-loadable"), require("history"), require("redux-saga"), require("redux-immutable"), require("redux-thunk"), require("isomorphic-fetch"), require("react-dom")) : factory(root["immutable"], root["react"], root["contensis-delivery-api"], root["prop-types"], root["query-string"], root["react-redux"], root["react-router-dom"], root["react-router-config"], root["react-hot-loader"], root["@redux-saga/core/effects"], root["js-cookie"], root["redux"], root["loglevel"], root["react-loadable"], root["history"], root["redux-saga"], root["redux-immutable"], root["redux-thunk"], root["isomorphic-fetch"], root["react-dom"]);
+		var a = typeof exports === 'object' ? factory(require("immutable"), require("contensis-delivery-api"), require("react"), require("prop-types"), require("query-string"), require("react-redux"), require("react-router-dom"), require("@redux-saga/core/effects"), require("js-cookie"), require("react-router-config"), require("react-hot-loader"), require("redux"), require("redux-saga"), require("redux-immutable"), require("redux-thunk"), require("loglevel"), require("react-loadable"), require("history"), require("isomorphic-fetch"), require("react-dom")) : factory(root["immutable"], root["contensis-delivery-api"], root["react"], root["prop-types"], root["query-string"], root["react-redux"], root["react-router-dom"], root["@redux-saga/core/effects"], root["js-cookie"], root["react-router-config"], root["react-hot-loader"], root["redux"], root["redux-saga"], root["redux-immutable"], root["redux-thunk"], root["loglevel"], root["react-loadable"], root["history"], root["isomorphic-fetch"], root["react-dom"]);
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(global, function(__WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__5__, __WEBPACK_EXTERNAL_MODULE__6__, __WEBPACK_EXTERNAL_MODULE__9__, __WEBPACK_EXTERNAL_MODULE__12__, __WEBPACK_EXTERNAL_MODULE__16__, __WEBPACK_EXTERNAL_MODULE__17__, __WEBPACK_EXTERNAL_MODULE__24__, __WEBPACK_EXTERNAL_MODULE__25__, __WEBPACK_EXTERNAL_MODULE__26__, __WEBPACK_EXTERNAL_MODULE__27__, __WEBPACK_EXTERNAL_MODULE__32__, __WEBPACK_EXTERNAL_MODULE__36__, __WEBPACK_EXTERNAL_MODULE__38__, __WEBPACK_EXTERNAL_MODULE__40__, __WEBPACK_EXTERNAL_MODULE__41__, __WEBPACK_EXTERNAL_MODULE__46__, __WEBPACK_EXTERNAL_MODULE__47__, __WEBPACK_EXTERNAL_MODULE__51__, __WEBPACK_EXTERNAL_MODULE__58__) {
+})(global, function(__WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__5__, __WEBPACK_EXTERNAL_MODULE__7__, __WEBPACK_EXTERNAL_MODULE__9__, __WEBPACK_EXTERNAL_MODULE__12__, __WEBPACK_EXTERNAL_MODULE__16__, __WEBPACK_EXTERNAL_MODULE__19__, __WEBPACK_EXTERNAL_MODULE__24__, __WEBPACK_EXTERNAL_MODULE__25__, __WEBPACK_EXTERNAL_MODULE__26__, __WEBPACK_EXTERNAL_MODULE__27__, __WEBPACK_EXTERNAL_MODULE__28__, __WEBPACK_EXTERNAL_MODULE__33__, __WEBPACK_EXTERNAL_MODULE__36__, __WEBPACK_EXTERNAL_MODULE__37__, __WEBPACK_EXTERNAL_MODULE__40__, __WEBPACK_EXTERNAL_MODULE__42__, __WEBPACK_EXTERNAL_MODULE__44__, __WEBPACK_EXTERNAL_MODULE__51__, __WEBPACK_EXTERNAL_MODULE__58__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -99,28 +99,6 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(26);
-/* harmony import */ var _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony reexport (checked) */ if(__webpack_require__.o(_redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__, "all")) __webpack_require__.d(__webpack_exports__, "all", function() { return _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__["all"]; });
-
-/* harmony reexport (checked) */ if(__webpack_require__.o(_redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__, "call")) __webpack_require__.d(__webpack_exports__, "call", function() { return _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__["call"]; });
-
-/* harmony reexport (checked) */ if(__webpack_require__.o(_redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__, "fork")) __webpack_require__.d(__webpack_exports__, "fork", function() { return _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__["fork"]; });
-
-/* harmony reexport (checked) */ if(__webpack_require__.o(_redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__, "put")) __webpack_require__.d(__webpack_exports__, "put", function() { return _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__["put"]; });
-
-/* harmony reexport (checked) */ if(__webpack_require__.o(_redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__, "select")) __webpack_require__.d(__webpack_exports__, "select", function() { return _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__["select"]; });
-
-/* harmony reexport (checked) */ if(__webpack_require__.o(_redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__, "takeEvery")) __webpack_require__.d(__webpack_exports__, "takeEvery", function() { return _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__["takeEvery"]; });
-
-
-
-
-/***/ }),
-/* 1 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UPDATE_USER", function() { return UPDATE_USER; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOGIN_USER", function() { return LOGIN_USER; });
@@ -159,6 +137,28 @@ const SET_RECAPTCHA_KEY = `${ACTION_PREFIX}SET_RECAPTCHA_KEY`;
 const SET_RECAPTCHA_RESPONSE = `${ACTION_PREFIX}SET_RECAPTCHA_RESPONSE`;
 
 /***/ }),
+/* 1 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(24);
+/* harmony import */ var _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (checked) */ if(__webpack_require__.o(_redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__, "all")) __webpack_require__.d(__webpack_exports__, "all", function() { return _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__["all"]; });
+
+/* harmony reexport (checked) */ if(__webpack_require__.o(_redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__, "call")) __webpack_require__.d(__webpack_exports__, "call", function() { return _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__["call"]; });
+
+/* harmony reexport (checked) */ if(__webpack_require__.o(_redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__, "fork")) __webpack_require__.d(__webpack_exports__, "fork", function() { return _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__["fork"]; });
+
+/* harmony reexport (checked) */ if(__webpack_require__.o(_redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__, "put")) __webpack_require__.d(__webpack_exports__, "put", function() { return _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__["put"]; });
+
+/* harmony reexport (checked) */ if(__webpack_require__.o(_redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__, "select")) __webpack_require__.d(__webpack_exports__, "select", function() { return _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__["select"]; });
+
+/* harmony reexport (checked) */ if(__webpack_require__.o(_redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__, "takeEvery")) __webpack_require__.d(__webpack_exports__, "takeEvery", function() { return _redux_saga_core_effects__WEBPACK_IMPORTED_MODULE_0__["takeEvery"]; });
+
+
+
+
+/***/ }),
 /* 2 */
 /***/ (function(module, exports) {
 
@@ -176,7 +176,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_ANCESTORS", function() { return SET_ANCESTORS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_SIBLINGS", function() { return SET_SIBLINGS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_ENTRY_ID", function() { return SET_ENTRY_ID; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_ENTRY_RELATED_ARTICLES", function() { return SET_ENTRY_RELATED_ARTICLES; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_SURROGATE_KEYS", function() { return SET_SURROGATE_KEYS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_NAVIGATION_NOT_FOUND", function() { return SET_NAVIGATION_NOT_FOUND; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_NAVIGATION_PATH", function() { return SET_NAVIGATION_PATH; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_TARGET_PROJECT", function() { return SET_TARGET_PROJECT; });
@@ -189,7 +189,7 @@ const SET_NODE = `${ROUTING_PREFIX}_SET_NODE`;
 const SET_ANCESTORS = `${ROUTING_PREFIX}_SET_ANCESTORS`;
 const SET_SIBLINGS = `${ROUTING_PREFIX}_SET_SIBLINGS`;
 const SET_ENTRY_ID = `${ROUTING_PREFIX}_SET_ENTRY_ID`;
-const SET_ENTRY_RELATED_ARTICLES = `${ROUTING_PREFIX}_SET_ENTRY_RELATED_ARTICLES`;
+const SET_SURROGATE_KEYS = `${ROUTING_PREFIX}_SET_SURROGATE_KEYS`;
 const SET_NAVIGATION_NOT_FOUND = `${ROUTING_PREFIX}_SET_NOT_FOUND`;
 const SET_NAVIGATION_PATH = `${ROUTING_PREFIX}_SET_NAVIGATION_PATH`;
 const SET_TARGET_PROJECT = `${ROUTING_PREFIX}_SET_TARGET_PROJECT`;
@@ -320,12 +320,6 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__5__;
 
 /***/ }),
 /* 6 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__6__;
-
-/***/ }),
-/* 7 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -380,6 +374,12 @@ const selectCaptchaToken = state => {
 };
 
 /***/ }),
+/* 7 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__7__;
+
+/***/ }),
 /* 8 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -405,7 +405,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectRouteLoading", function() { return selectRouteLoading; });
 /* harmony import */ var immutable__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
 /* harmony import */ var immutable__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(immutable__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _util_navigation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(20);
+/* harmony import */ var _util_navigation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(21);
 
 
 const selectRouteEntry = state => {
@@ -476,7 +476,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__9__;
 __webpack_require__.r(__webpack_exports__);
 
 // EXTERNAL MODULE: external "js-cookie"
-var external_js_cookie_ = __webpack_require__(27);
+var external_js_cookie_ = __webpack_require__(25);
 var external_js_cookie_default = /*#__PURE__*/__webpack_require__.n(external_js_cookie_);
 
 // CONCATENATED MODULE: ./src/app/features/login/util/CookieHelper.class.js
@@ -954,70 +954,55 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__12__;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GetClientSideDeliveryApiStatus", function() { return GetClientSideDeliveryApiStatus; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GetDeliveryApiStatusFromHostname", function() { return GetDeliveryApiStatusFromHostname; });
-/* unused harmony export GetResponseGuids */
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GetResponseGuids", function() { return GetResponseGuids; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GetAllResponseGuids", function() { return GetAllResponseGuids; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "deliveryApi", function() { return deliveryApi; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "cachedSearch", function() { return cachedSearch; });
-/* harmony import */ var contensis_delivery_api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(6);
+/* harmony import */ var contensis_delivery_api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
 /* harmony import */ var contensis_delivery_api__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(contensis_delivery_api__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony reexport (checked) */ if(__webpack_require__.o(contensis_delivery_api__WEBPACK_IMPORTED_MODULE_0__, "Query")) __webpack_require__.d(__webpack_exports__, "Query", function() { return contensis_delivery_api__WEBPACK_IMPORTED_MODULE_0__["Query"]; });
+/* harmony import */ var _redux_actions_routing__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(18);
+/* harmony import */ var _redux_store__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(29);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in contensis_delivery_api__WEBPACK_IMPORTED_MODULE_0__) if(["GetResponseGuids","GetAllResponseGuids","deliveryApi","cachedSearch","default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return contensis_delivery_api__WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 
 
+
+
+const storeSurrogateKeys = response => {
+  const keys = response.headers.map['surrogate-key'];
+  if (keys) _redux_store__WEBPACK_IMPORTED_MODULE_2__[/* reduxStore */ "b"].dispatch(Object(_redux_actions_routing__WEBPACK_IMPORTED_MODULE_1__["setSurrogateKeys"])(keys));
+};
 
 const getClientConfig = project => {
   let config = DELIVERY_API_CONFIG;
   /* global DELIVERY_API_CONFIG */
 
+  config.responseHandler = {};
+
   if (project) {
     config.projectId = project;
-  }
+  } // // we only want the surrogate key header in a server context
+  // if (typeof window === 'undefined')
 
-  if (typeof window != 'undefined' && PROXY_DELIVERY_API
+
+  config.defaultHeaders = {
+    'x-require-surrogate-key': true
+  };
+  config.responseHandler[200] = storeSurrogateKeys;
+
+  if (typeof window !== 'undefined' && PROXY_DELIVERY_API
   /* global PROXY_DELIVERY_API */
   ) {
       // ensure a relative url is used to bypass the need for CORS (separate OPTIONS calls)
       config.rootUrl = '';
-      config.responseHandler = {
-        404: () => null
-      };
+
+      config.responseHandler[404] = () => null;
     }
 
   return config;
 };
 
- // This should only be executed on the client as it relies on the window.
 
-const GetClientSideDeliveryApiStatus = () => {
-  if (typeof window != 'undefined') {
-    const currentHostname = window.location.hostname;
-    return GetDeliveryApiStatusFromHostname(currentHostname);
-  }
-
-  return null;
-};
-const GetDeliveryApiStatusFromHostname = currentHostname => {
-  if (currentHostname.indexOf('localhost') > -1) return 'latest';
-
-  if (currentHostname.endsWith('contensis.cloud')) {
-    if (currentHostname.indexOf('preview.') > -1) {
-      return 'latest';
-    } else {
-      return 'published';
-    }
-  }
-
-  if (currentHostname.endsWith('cloud.contensis.com')) {
-    if (currentHostname.indexOf('preview-') > -1) {
-      return 'latest';
-    } else {
-      return 'published';
-    }
-  }
-
-  return 'published';
-};
 const GetResponseGuids = object => {
   let Ids = [];
   Object.keys(object).some(function (k) {
@@ -1058,26 +1043,59 @@ const GetAllResponseGuids = object => {
 };
 
 class DeliveryApi {
-  search(query, linkDepth, project, env) {
-    const client = contensis_delivery_api__WEBPACK_IMPORTED_MODULE_0__["Client"].create(getClientConfig(project, env));
-    return client.entries.search(query, typeof linkDepth !== 'undefined' ? linkDepth : 1);
-  }
+  constructor() {
+    this.getClientSideVersionStatus = () => {
+      if (typeof window != 'undefined') {
+        const currentHostname = window.location.hostname;
+        return this.getVersionStatusFromHostname(currentHostname);
+      }
 
-  getClient(deliveryApiStatus = 'published', project, env) {
-    const baseConfig = getClientConfig(project, env);
-    baseConfig.versionStatus = deliveryApiStatus;
-    return contensis_delivery_api__WEBPACK_IMPORTED_MODULE_0__["Client"].create(baseConfig);
-  }
+      return null;
+    };
 
-  getEntry(id, linkDepth = 0, deliveryApiStatus = 'published', project, env) {
-    const baseConfig = getClientConfig(project, env);
-    baseConfig.versionStatus = deliveryApiStatus;
-    const client = contensis_delivery_api__WEBPACK_IMPORTED_MODULE_0__["Client"].create(baseConfig); // return client.entries.get(id, linkDepth);
+    this.getVersionStatusFromHostname = currentHostname => {
+      if (currentHostname.indexOf('localhost') > -1) return 'latest';
 
-    return client.entries.get({
-      id,
-      linkDepth
-    });
+      if (currentHostname.endsWith('contensis.cloud')) {
+        if (currentHostname.indexOf('preview.') > -1) {
+          return 'latest';
+        } else {
+          return 'published';
+        }
+      }
+
+      if (currentHostname.endsWith('cloud.contensis.com')) {
+        if (currentHostname.indexOf('preview-') > -1) {
+          return 'latest';
+        } else {
+          return 'published';
+        }
+      }
+
+      return 'published';
+    };
+
+    this.search = (query, linkDepth, project, env) => {
+      const client = contensis_delivery_api__WEBPACK_IMPORTED_MODULE_0__["Client"].create(getClientConfig(project, env));
+      return client.entries.search(query, typeof linkDepth !== 'undefined' ? linkDepth : 1);
+    };
+
+    this.getClient = (deliveryApiStatus = 'published', project, env) => {
+      const baseConfig = getClientConfig(project, env);
+      baseConfig.versionStatus = deliveryApiStatus;
+      return contensis_delivery_api__WEBPACK_IMPORTED_MODULE_0__["Client"].create(baseConfig);
+    };
+
+    this.getEntry = (id, linkDepth = 0, deliveryApiStatus = 'published', project, env) => {
+      const baseConfig = getClientConfig(project, env);
+      baseConfig.versionStatus = deliveryApiStatus;
+      const client = contensis_delivery_api__WEBPACK_IMPORTED_MODULE_0__["Client"].create(baseConfig); // return client.entries.get(id, linkDepth);
+
+      return client.entries.get({
+        id,
+        linkDepth
+      });
+    };
   }
 
 }
@@ -1270,7 +1288,7 @@ const cachedSearch = new CachedSearch();
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return initialUserState; });
 /* harmony import */ var immutable__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
 /* harmony import */ var immutable__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(immutable__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
+/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(0);
 
 
 const initialUserState = Object(immutable__WEBPACK_IMPORTED_MODULE_0__["Map"])({
@@ -1348,12 +1366,6 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__16__;
 
 /***/ }),
 /* 17 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__17__;
-
-/***/ }),
-/* 18 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1375,7 +1387,7 @@ __webpack_require__.d(actions_namespaceObject, "setRecaptchaResponse", function(
 var helpers = __webpack_require__(4);
 
 // EXTERNAL MODULE: ./src/app/features/login/redux/types.js
-var types = __webpack_require__(1);
+var types = __webpack_require__(0);
 
 // CONCATENATED MODULE: ./src/app/features/login/redux/actions.js
 
@@ -1413,7 +1425,7 @@ const setRecaptchaResponse = (isHuman, token) => Object(helpers["a" /* action */
   token
 });
 // EXTERNAL MODULE: ./src/app/features/login/redux/selectors.js
-var selectors = __webpack_require__(7);
+var selectors = __webpack_require__(6);
 
 // EXTERNAL MODULE: ./src/app/features/login/redux/reducers.js
 var reducers = __webpack_require__(14);
@@ -1425,7 +1437,7 @@ var sagas = __webpack_require__(23);
 var external_react_redux_ = __webpack_require__(16);
 
 // EXTERNAL MODULE: ./src/app/core/util/ToJs.js
-var ToJs = __webpack_require__(21);
+var ToJs = __webpack_require__(22);
 
 // EXTERNAL MODULE: ./src/app/core/redux/selectors/routing.js
 var routing = __webpack_require__(8);
@@ -1494,68 +1506,7 @@ const withLogin = WrappedComponent => {
 
 
 /***/ }),
-/* 19 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_VERSION", function() { return SET_VERSION; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_VERSION_STATUS", function() { return SET_VERSION_STATUS; });
-const VERSION_PREFIX = '@VERSION/';
-const SET_VERSION = `${VERSION_PREFIX}SET_VERSION`;
-const SET_VERSION_STATUS = `${VERSION_PREFIX}SET_VERSION_STATUS`;
-
-/***/ }),
-/* 20 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return queryParams; });
-/* unused harmony export routeParams */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return buildUrl; });
-/* unused harmony export clientHostname */
-/* unused harmony export addHostname */
-/* harmony import */ var query_string__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(12);
-/* harmony import */ var query_string__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(query_string__WEBPACK_IMPORTED_MODULE_0__);
-
-function queryParams(search) {
-  return query_string__WEBPACK_IMPORTED_MODULE_0___default.a.parse(typeof window != 'undefined' ? window.location.search : search);
-}
-const routeParams = staticRoute => staticRoute && staticRoute.match ? staticRoute.match.params : {};
-const buildUrl = (route, params) => {
-  const qs = query_string__WEBPACK_IMPORTED_MODULE_0___default.a.stringify(params);
-  const path = qs ? `${route}?${qs}` : route;
-  return path;
-};
-const clientHostname = () => `${window.location.protocol}//${window.location.hostname}:${window.location.port}`;
-const addHostname = typeof window == 'undefined' || window.location.host == 'localhost:3000' ? `https://${PUBLIC_URI
-/* global PUBLIC_URI */
-}` : clientHostname();
-
-/***/ }),
-/* 21 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return toJS; });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var immutable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
-/* harmony import */ var immutable__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(immutable__WEBPACK_IMPORTED_MODULE_1__);
-
-
-const toJS = WrappedComponent => wrappedComponentProps => {
-  const KEY = 0;
-  const VALUE = 1;
-  const propsJS = Object.entries(wrappedComponentProps).reduce((newProps, wrappedComponentProp) => {
-    newProps[wrappedComponentProp[KEY]] = immutable__WEBPACK_IMPORTED_MODULE_1__["Iterable"].isIterable(wrappedComponentProp[VALUE]) ? wrappedComponentProp[VALUE].toJS() : wrappedComponentProp[VALUE];
-    return newProps;
-  }, {});
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(WrappedComponent, propsJS);
-};
-
-/***/ }),
-/* 22 */
+/* 18 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1565,6 +1516,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setCurrentProject", function() { return setCurrentProject; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setRoute", function() { return setRoute; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setRouteEntry", function() { return setRouteEntry; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setSurrogateKeys", function() { return setSurrogateKeys; });
 /* harmony import */ var _util_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(4);
 /* harmony import */ var _types_routing__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
 
@@ -1591,6 +1543,76 @@ const setRoute = (path, state) => Object(_util_helpers__WEBPACK_IMPORTED_MODULE_
 const setRouteEntry = entry => Object(_util_helpers__WEBPACK_IMPORTED_MODULE_0__[/* action */ "a"])(_types_routing__WEBPACK_IMPORTED_MODULE_1__["SET_ENTRY"], {
   entry
 });
+const setSurrogateKeys = keys => Object(_util_helpers__WEBPACK_IMPORTED_MODULE_0__[/* action */ "a"])(_types_routing__WEBPACK_IMPORTED_MODULE_1__["SET_SURROGATE_KEYS"], {
+  keys
+});
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__19__;
+
+/***/ }),
+/* 20 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_VERSION", function() { return SET_VERSION; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_VERSION_STATUS", function() { return SET_VERSION_STATUS; });
+const VERSION_PREFIX = '@VERSION/';
+const SET_VERSION = `${VERSION_PREFIX}SET_VERSION`;
+const SET_VERSION_STATUS = `${VERSION_PREFIX}SET_VERSION_STATUS`;
+
+/***/ }),
+/* 21 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return queryParams; });
+/* unused harmony export routeParams */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return buildUrl; });
+/* unused harmony export clientHostname */
+/* unused harmony export addHostname */
+/* harmony import */ var query_string__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(12);
+/* harmony import */ var query_string__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(query_string__WEBPACK_IMPORTED_MODULE_0__);
+
+function queryParams(search) {
+  return query_string__WEBPACK_IMPORTED_MODULE_0___default.a.parse(typeof window != 'undefined' ? window.location.search : search);
+}
+const routeParams = staticRoute => staticRoute && staticRoute.match ? staticRoute.match.params : {};
+const buildUrl = (route, params) => {
+  const qs = query_string__WEBPACK_IMPORTED_MODULE_0___default.a.stringify(params);
+  const path = qs ? `${route}?${qs}` : route;
+  return path;
+};
+const clientHostname = () => `${window.location.protocol}//${window.location.hostname}:${window.location.port}`;
+const addHostname = typeof window == 'undefined' || window.location.host == 'localhost:3000' ? `https://${PUBLIC_URI
+/* global PUBLIC_URI */
+}` : clientHostname();
+
+/***/ }),
+/* 22 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return toJS; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var immutable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
+/* harmony import */ var immutable__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(immutable__WEBPACK_IMPORTED_MODULE_1__);
+
+
+const toJS = WrappedComponent => wrappedComponentProps => {
+  const KEY = 0;
+  const VALUE = 1;
+  const propsJS = Object.entries(wrappedComponentProps).reduce((newProps, wrappedComponentProp) => {
+    newProps[wrappedComponentProp[KEY]] = immutable__WEBPACK_IMPORTED_MODULE_1__["Iterable"].isIterable(wrappedComponentProp[VALUE]) ? wrappedComponentProp[VALUE].toJS() : wrappedComponentProp[VALUE];
+    return newProps;
+  }, {});
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(WrappedComponent, propsJS);
+};
 
 /***/ }),
 /* 23 */
@@ -1599,14 +1621,14 @@ const setRouteEntry = entry => Object(_util_helpers__WEBPACK_IMPORTED_MODULE_0__
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return userSagas; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return validateUserSaga; });
-/* harmony import */ var redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
+/* harmony import */ var redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
 /* harmony import */ var query_string__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(12);
 /* harmony import */ var query_string__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(query_string__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(1);
+/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(0);
 /* harmony import */ var _reducers__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(14);
 /* harmony import */ var _core_redux_types_routing__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(3);
 /* harmony import */ var _core_redux_selectors_routing__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(8);
-/* harmony import */ var _selectors__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(7);
+/* harmony import */ var _selectors__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(6);
 /* harmony import */ var _util_LoginHelper_class__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(10);
 /* harmony import */ var _util_SecurityApi_class__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(11);
 
@@ -1808,6 +1830,303 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__27__;
 
 /***/ }),
 /* 28 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__28__;
+
+/***/ }),
+/* 29 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// EXTERNAL MODULE: external "redux"
+var external_redux_ = __webpack_require__(28);
+
+// EXTERNAL MODULE: external "redux-immutable"
+var external_redux_immutable_ = __webpack_require__(36);
+
+// EXTERNAL MODULE: external "redux-thunk"
+var external_redux_thunk_ = __webpack_require__(37);
+var external_redux_thunk_default = /*#__PURE__*/__webpack_require__.n(external_redux_thunk_);
+
+// EXTERNAL MODULE: external "redux-saga"
+var external_redux_saga_ = __webpack_require__(33);
+var external_redux_saga_default = /*#__PURE__*/__webpack_require__.n(external_redux_saga_);
+
+// EXTERNAL MODULE: external "immutable"
+var external_immutable_ = __webpack_require__(2);
+
+// EXTERNAL MODULE: ./src/app/core/redux/types/routing.js
+var routing = __webpack_require__(3);
+
+// EXTERNAL MODULE: ./src/app/core/util/ContensisDeliveryApi.js
+var ContensisDeliveryApi = __webpack_require__(13);
+
+// CONCATENATED MODULE: ./src/app/core/redux/reducers/routing.js
+
+
+
+let routing_initialState = Object(external_immutable_["Map"])({
+  currentPath: '/',
+  currentNode: [],
+  currentProject: 'unknown',
+  notFound: false,
+  entryID: null,
+  entry: null,
+  entryDepends: new external_immutable_["List"](),
+  contentTypeId: null,
+  currentNodeAncestors: new external_immutable_["List"](),
+  currentTreeId: null
+});
+/* harmony default export */ var reducers_routing = ((state = routing_initialState, action) => {
+  switch (action.type) {
+    case routing["SET_ANCESTORS"]:
+      {
+        if (action.ancestors) {
+          let ancestorIDs = action.ancestors.map(node => {
+            return node.id;
+          });
+          let currentNodeDepends = state.get('nodeDepends');
+          const allNodeDepends = external_immutable_["Set"].union([Object(external_immutable_["Set"])(ancestorIDs), currentNodeDepends]);
+          return state.set('nodeDepends', allNodeDepends).set('currentNodeAncestors', Object(external_immutable_["fromJS"])(action.ancestors));
+        }
+
+        return state.set('currentNodeAncestors', Object(external_immutable_["fromJS"])(action.ancestors));
+      }
+
+    case routing["SET_ENTRY"]:
+      {
+        if (!action.entry) return state.set('entry', null).set('entryDepends', null).set('isLoading', action.isLoading);
+        const entryDepends = Object(ContensisDeliveryApi["GetAllResponseGuids"])(action.entry);
+        return state.set('entryDepends', Object(external_immutable_["fromJS"])(entryDepends)).set('entry', Object(external_immutable_["fromJS"])(action.entry)).set('isLoading', action.isLoading);
+      }
+
+    case routing["SET_ENTRY_ID"]:
+      {
+        if (action.id === '') {
+          return state;
+        }
+
+        return state.set('entryID', action.id);
+      }
+
+    case routing["SET_NAVIGATION_PATH"]:
+      {
+        let staticRoute = false;
+
+        if (action.staticRoute) {
+          staticRoute = { ...action.staticRoute
+          };
+        }
+
+        if (action.path) {
+          // Don't run a path update on iniutial load as we allready should have it in redux
+          const entryUri = state.getIn(['entry', 'sys', 'uri']);
+
+          if (entryUri != action.path) {
+            return state.set('currentPath', Object(external_immutable_["fromJS"])(action.path)).set('location', Object(external_immutable_["fromJS"])(action.location)).set('staticRoute', Object(external_immutable_["fromJS"])({ ...staticRoute,
+              route: { ...staticRoute.route,
+                component: null
+              }
+            })).set('isLoading', typeof window !== 'undefined');
+          } else {
+            return state.set('location', Object(external_immutable_["fromJS"])(action.location)).set('staticRoute', Object(external_immutable_["fromJS"])({ ...staticRoute,
+              route: { ...staticRoute.route,
+                component: null
+              }
+            }));
+          }
+        }
+
+        return state;
+      }
+
+    case routing["SET_NAVIGATION_NOT_FOUND"]:
+      {
+        return state.set('notFound', Object(external_immutable_["fromJS"])(action.notFound)).set('isLoading', false);
+      }
+
+    case routing["SET_NODE"]:
+      {
+        const {
+          node
+        } = action;
+        if (!node) return state; // On Set Node, we reset all dependants.
+
+        const nodeDepends = Object(external_immutable_["Set"])([node.id]);
+        return state.set('nodeDepends', nodeDepends).set('currentNode', Object(external_immutable_["fromJS"])(action.node)).removeIn(['currentNode', 'entry']); // We have the entry stored elsewhere, so lets not keep it twice.
+      }
+
+    case routing["SET_ROUTE"]:
+      {
+        return state.set('nextPath', action.path);
+      }
+
+    case routing["SET_SIBLINGS"]:
+      {
+        // Can be null in some cases like the homepage.
+        let currentNodeSiblingParent = null;
+        let siblingIDs = [];
+
+        if (action.siblings && action.siblings.length > 0) {
+          currentNodeSiblingParent = action.siblings[0].parentId;
+          siblingIDs = action.siblings.map(node => {
+            return node.id;
+          });
+        }
+
+        let currentNodeDepends = state.get('nodeDepends');
+        const allNodeDepends = external_immutable_["Set"].union([Object(external_immutable_["Set"])(siblingIDs), currentNodeDepends]);
+        return state.set('nodeDepends', allNodeDepends).set('currentNodeSiblings', Object(external_immutable_["fromJS"])(action.siblings)).set('currentNodeSiblingsParent', currentNodeSiblingParent);
+      }
+
+    case routing["SET_SURROGATE_KEYS"]:
+      {
+        return state.set('surrogateKeys', action.keys);
+      }
+
+    case routing["SET_TARGET_PROJECT"]:
+      {
+        return state.set('currentProject', action.project).set('currentTreeId', '') //getTreeID(action.project))
+        .set('allowedGroups', Object(external_immutable_["fromJS"])(action.allowedGroups));
+      }
+
+    default:
+      return state;
+  }
+});
+// EXTERNAL MODULE: ./src/app/features/login/index.js + 2 modules
+var login = __webpack_require__(17);
+
+// EXTERNAL MODULE: ./src/app/core/redux/types/version.js
+var version = __webpack_require__(20);
+
+// CONCATENATED MODULE: ./src/app/core/redux/reducers/version.js
+
+
+let version_initialState = Object(external_immutable_["Map"])({
+  commitRef: null,
+  buildNo: null,
+  contensisVersionStatus: 'published'
+});
+/* harmony default export */ var reducers_version = ((state = version_initialState, action) => {
+  switch (action.type) {
+    case version["SET_VERSION_STATUS"]:
+      {
+        return state.set('contensisVersionStatus', action.status);
+      }
+
+    case version["SET_VERSION"]:
+      {
+        return state.set('commitRef', action.commitRef).set('buildNo', action.buildNo);
+      }
+
+    default:
+      return state;
+  }
+});
+// EXTERNAL MODULE: ./src/app/core/redux/types/navigation.js
+var navigation = __webpack_require__(15);
+
+// CONCATENATED MODULE: ./src/app/core/redux/reducers/navigation.js
+
+
+const navigation_initialState = Object(external_immutable_["Map"])({
+  root: null,
+  treeDepends: new external_immutable_["List"]([]),
+  isError: false,
+  isReady: false
+});
+/* harmony default export */ var reducers_navigation = ((state = navigation_initialState, action) => {
+  switch (action.type) {
+    case navigation["SET_NODE_TREE"]:
+      {
+        return state.set('root', Object(external_immutable_["fromJS"])(action.nodes)).set('isReady', true);
+      }
+
+    case navigation["GET_NODE_TREE_ERROR"]:
+      {
+        return state.set('isError', true);
+      }
+
+    default:
+      return state;
+  }
+});
+// CONCATENATED MODULE: ./src/app/core/redux/routerMiddleware.js
+
+/**
+ * This middleware captures CALL_HISTORY_METHOD actions to redirect to the
+ * provided history object. This will prevent these actions from reaching your
+ * reducer or any middleware that comes after this one.
+ */
+
+/* eslint-disable no-unused-vars */
+
+const routerMiddleware = history => store => next => action => {
+  if (action.type !== routing["CALL_HISTORY_METHOD"]) {
+    return next(action);
+  }
+
+  const {
+    payload: {
+      method,
+      args
+    }
+  } = action;
+  history[method](...args);
+};
+
+/* harmony default export */ var redux_routerMiddleware = (routerMiddleware);
+// CONCATENATED MODULE: ./src/app/core/redux/store.js
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return reduxStore; });
+
+
+
+ // Core reducers
+
+
+
+
+
+
+let reduxStore = null;
+/* harmony default export */ var redux_store = __webpack_exports__["a"] = ((featureReducers, initialState, history) => {
+  const thunkMiddleware = [external_redux_thunk_default.a];
+
+  let reduxDevToolsMiddleware = f => f;
+
+  if (typeof window != 'undefined') {
+    reduxDevToolsMiddleware = window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f;
+  }
+
+  const sagaMiddleware = external_redux_saga_default()();
+  const middleware = Object(external_redux_["compose"])(Object(external_redux_["applyMiddleware"])(...thunkMiddleware, sagaMiddleware, redux_routerMiddleware(history)), reduxDevToolsMiddleware);
+  let reducers = {
+    navigation: reducers_navigation,
+    routing: reducers_routing,
+    user: login["reducer"],
+    version: reducers_version,
+    ...featureReducers
+  };
+  const combinedReducers = Object(external_redux_immutable_["combineReducers"])(reducers);
+
+  const store = initialState => {
+    const store = Object(external_redux_["createStore"])(combinedReducers, initialState, middleware);
+    store.runSaga = sagaMiddleware.run;
+
+    store.close = () => store.dispatch(external_redux_saga_["END"]);
+
+    return store;
+  };
+
+  reduxStore = store(initialState);
+  return reduxStore;
+});
+
+/***/ }),
+/* 30 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1826,7 +2145,7 @@ const selectVersionStatus = state => {
 };
 
 /***/ }),
-/* 29 */
+/* 31 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1845,8 +2164,14 @@ const selectNavigationDepends = state => {
 };
 
 /***/ }),
-/* 30 */,
-/* 31 */
+/* 32 */,
+/* 33 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__33__;
+
+/***/ }),
+/* 34 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1854,7 +2179,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setVersion", function() { return setVersion; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setVersionStatus", function() { return setVersionStatus; });
 /* harmony import */ var _util_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(4);
-/* harmony import */ var _types_version__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(19);
+/* harmony import */ var _types_version__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(20);
 
 
 const setVersion = (commitRef, buildNo) => Object(_util_helpers__WEBPACK_IMPORTED_MODULE_0__[/* action */ "a"])(_types_version__WEBPACK_IMPORTED_MODULE_1__["SET_VERSION"], {
@@ -1866,18 +2191,24 @@ const setVersionStatus = status => Object(_util_helpers__WEBPACK_IMPORTED_MODULE
 });
 
 /***/ }),
-/* 32 */
+/* 35 */,
+/* 36 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__32__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__36__;
 
 /***/ }),
-/* 33 */,
-/* 34 */
+/* 37 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__37__;
+
+/***/ }),
+/* 38 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 
 
@@ -1886,16 +2217,16 @@ const NotFound = () => react__WEBPACK_IMPORTED_MODULE_0___default.a.createElemen
 /* harmony default export */ __webpack_exports__["a"] = (NotFound);
 
 /***/ }),
-/* 35 */
+/* 39 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Status; });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(9);
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(17);
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(19);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_router_dom__WEBPACK_IMPORTED_MODULE_2__);
 
 
@@ -1919,35 +2250,35 @@ Status.propTypes = {
 };
 
 /***/ }),
-/* 36 */
+/* 40 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__36__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__40__;
 
 /***/ }),
-/* 37 */
+/* 41 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* WEBPACK VAR INJECTION */(function(module) {/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
+/* WEBPACK VAR INJECTION */(function(module) {/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(9);
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(16);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_redux__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var react_hot_loader__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(25);
+/* harmony import */ var react_hot_loader__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(27);
 /* harmony import */ var react_hot_loader__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react_hot_loader__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(17);
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(19);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(react_router_dom__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var react_router_config__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(24);
+/* harmony import */ var react_router_config__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(26);
 /* harmony import */ var react_router_config__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(react_router_config__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var _redux_selectors_routing__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(8);
-/* harmony import */ var _redux_actions_routing__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(22);
-/* harmony import */ var _pages_NotFound__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(34);
-/* harmony import */ var _Status__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(35);
-/* harmony import */ var _util_ToJs__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(21);
-/* harmony import */ var _features_login_redux_selectors__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(7);
+/* harmony import */ var _redux_actions_routing__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(18);
+/* harmony import */ var _pages_NotFound__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(38);
+/* harmony import */ var _Status__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(39);
+/* harmony import */ var _util_ToJs__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(22);
+/* harmony import */ var _features_login_redux_selectors__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(6);
 
 
 
@@ -2090,22 +2421,22 @@ const mapDispatchToProps = {
   setNavigationPath: _redux_actions_routing__WEBPACK_IMPORTED_MODULE_7__["setNavigationPath"]
 };
 /* harmony default export */ __webpack_exports__["default"] = (Object(react_hot_loader__WEBPACK_IMPORTED_MODULE_3__["hot"])(module)(Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["connect"])(mapStateToProps, mapDispatchToProps)(Object(_util_ToJs__WEBPACK_IMPORTED_MODULE_10__[/* toJS */ "a"])(RouteLoader))));
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(45)(module)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(47)(module)))
 
 /***/ }),
-/* 38 */
+/* 42 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__38__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__42__;
 
 /***/ }),
-/* 39 */
+/* 43 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return history; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return browserHistory; });
-/* harmony import */ var history__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(40);
+/* harmony import */ var history__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(44);
 /* harmony import */ var history__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(history__WEBPACK_IMPORTED_MODULE_0__);
  // Create a history depending on the environment
 
@@ -2114,19 +2445,13 @@ const history = (options = {}) => selectedHistory(options);
 const browserHistory = selectedHistory();
 
 /***/ }),
-/* 40 */
+/* 44 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__40__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__44__;
 
 /***/ }),
-/* 41 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__41__;
-
-/***/ }),
-/* 42 */
+/* 45 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2176,16 +2501,16 @@ const pickProject = (hostname, query) => {
 /* harmony default export */ __webpack_exports__["a"] = (pickProject);
 
 /***/ }),
-/* 43 */
+/* 46 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 
 // EXTERNAL MODULE: ./node_modules/redux-saga/dist/redux-saga-effects-npm-proxy.esm.js
-var redux_saga_effects_npm_proxy_esm = __webpack_require__(0);
+var redux_saga_effects_npm_proxy_esm = __webpack_require__(1);
 
 // EXTERNAL MODULE: external "loglevel"
-var external_loglevel_ = __webpack_require__(36);
+var external_loglevel_ = __webpack_require__(40);
 
 // EXTERNAL MODULE: ./src/app/core/redux/types/routing.js
 var routing = __webpack_require__(3);
@@ -2194,7 +2519,7 @@ var routing = __webpack_require__(3);
 var ContensisDeliveryApi = __webpack_require__(13);
 
 // EXTERNAL MODULE: ./src/app/core/redux/selectors/version.js
-var version = __webpack_require__(28);
+var version = __webpack_require__(30);
 
 // EXTERNAL MODULE: ./src/app/core/redux/selectors/routing.js
 var selectors_routing = __webpack_require__(8);
@@ -2203,10 +2528,10 @@ var selectors_routing = __webpack_require__(8);
 var navigation = __webpack_require__(15);
 
 // EXTERNAL MODULE: ./src/app/core/redux/selectors/navigation.js
-var selectors_navigation = __webpack_require__(29);
+var selectors_navigation = __webpack_require__(31);
 
 // EXTERNAL MODULE: external "contensis-delivery-api"
-var external_contensis_delivery_api_ = __webpack_require__(6);
+var external_contensis_delivery_api_ = __webpack_require__(5);
 
 // CONCATENATED MODULE: ./src/app/core/schema.js
 const DataFormats = {
@@ -2255,7 +2580,7 @@ const now = () => {
   return window.performance.now();
 };
 // EXTERNAL MODULE: ./src/app/core/util/navigation.js
-var util_navigation = __webpack_require__(20);
+var util_navigation = __webpack_require__(21);
 
 // CONCATENATED MODULE: ./src/app/core/search/util.js
 
@@ -2463,7 +2788,11 @@ function* setRouteSaga(action) {
       args: [action.path, action.state]
     }
   });
-}
+} // function* deliveryApiResponseHandler(response) {
+//   debugger;
+//   yield put({ type: 'HANDLE_RESPONSE', headers: response.headers });
+// }
+
 
 function* getRouteSaga(action) {
   let entry = null;
@@ -2648,7 +2977,7 @@ function* do404() {
   });
 }
 // EXTERNAL MODULE: ./src/app/features/login/index.js + 2 modules
-var login = __webpack_require__(18);
+var login = __webpack_require__(17);
 
 // CONCATENATED MODULE: ./src/app/core/redux/sagas/navigation.js
 
@@ -2706,290 +3035,7 @@ var sagas = __webpack_require__(23);
 });
 
 /***/ }),
-/* 44 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-// EXTERNAL MODULE: external "redux"
-var external_redux_ = __webpack_require__(32);
-
-// EXTERNAL MODULE: external "redux-immutable"
-var external_redux_immutable_ = __webpack_require__(46);
-
-// EXTERNAL MODULE: external "redux-thunk"
-var external_redux_thunk_ = __webpack_require__(47);
-var external_redux_thunk_default = /*#__PURE__*/__webpack_require__.n(external_redux_thunk_);
-
-// EXTERNAL MODULE: external "redux-saga"
-var external_redux_saga_ = __webpack_require__(41);
-var external_redux_saga_default = /*#__PURE__*/__webpack_require__.n(external_redux_saga_);
-
-// EXTERNAL MODULE: external "immutable"
-var external_immutable_ = __webpack_require__(2);
-
-// EXTERNAL MODULE: ./src/app/core/redux/types/routing.js
-var routing = __webpack_require__(3);
-
-// EXTERNAL MODULE: ./src/app/core/util/ContensisDeliveryApi.js
-var ContensisDeliveryApi = __webpack_require__(13);
-
-// CONCATENATED MODULE: ./src/app/core/redux/reducers/routing.js
-
-
-
-let routing_initialState = Object(external_immutable_["Map"])({
-  currentPath: '/',
-  currentNode: [],
-  currentProject: 'unknown',
-  notFound: false,
-  entryID: null,
-  entry: null,
-  entryDepends: new external_immutable_["List"](),
-  contentTypeId: null,
-  currentNodeAncestors: new external_immutable_["List"](),
-  currentTreeId: null
-});
-/* harmony default export */ var reducers_routing = ((state = routing_initialState, action) => {
-  switch (action.type) {
-    case routing["SET_ANCESTORS"]:
-      {
-        if (action.ancestors) {
-          let ancestorIDs = action.ancestors.map(node => {
-            return node.id;
-          });
-          let currentNodeDepends = state.get('nodeDepends');
-          const allNodeDepends = external_immutable_["Set"].union([Object(external_immutable_["Set"])(ancestorIDs), currentNodeDepends]);
-          return state.set('nodeDepends', allNodeDepends).set('currentNodeAncestors', Object(external_immutable_["fromJS"])(action.ancestors));
-        }
-
-        return state.set('currentNodeAncestors', Object(external_immutable_["fromJS"])(action.ancestors));
-      }
-
-    case routing["SET_ENTRY"]:
-      {
-        if (!action.entry) return state.set('entry', null).set('entryDepends', null).set('isLoading', action.isLoading);
-        const entryDepends = Object(ContensisDeliveryApi["GetAllResponseGuids"])(action.entry);
-        return state.set('entryDepends', Object(external_immutable_["fromJS"])(entryDepends)).set('entry', Object(external_immutable_["fromJS"])(action.entry)).set('isLoading', action.isLoading);
-      }
-
-    case routing["SET_ENTRY_ID"]:
-      {
-        if (action.id === '') {
-          return state;
-        }
-
-        return state.set('entryID', action.id);
-      }
-
-    case routing["SET_NAVIGATION_PATH"]:
-      {
-        let staticRoute = false;
-
-        if (action.staticRoute) {
-          staticRoute = { ...action.staticRoute
-          };
-        }
-
-        if (action.path) {
-          // Don't run a path update on iniutial load as we allready should have it in redux
-          const entryUri = state.getIn(['entry', 'sys', 'uri']);
-
-          if (entryUri != action.path) {
-            return state.set('currentPath', Object(external_immutable_["fromJS"])(action.path)).set('location', Object(external_immutable_["fromJS"])(action.location)).set('staticRoute', Object(external_immutable_["fromJS"])({ ...staticRoute,
-              route: { ...staticRoute.route,
-                component: null
-              }
-            })).set('isLoading', typeof window !== 'undefined');
-          } else {
-            return state.set('location', Object(external_immutable_["fromJS"])(action.location)).set('staticRoute', Object(external_immutable_["fromJS"])({ ...staticRoute,
-              route: { ...staticRoute.route,
-                component: null
-              }
-            }));
-          }
-        }
-
-        return state;
-      }
-
-    case routing["SET_NAVIGATION_NOT_FOUND"]:
-      {
-        return state.set('notFound', Object(external_immutable_["fromJS"])(action.notFound)).set('isLoading', false);
-      }
-
-    case routing["SET_NODE"]:
-      {
-        const {
-          node
-        } = action;
-        if (!node) return state; // On Set Node, we reset all dependants.
-
-        const nodeDepends = Object(external_immutable_["Set"])([node.id]);
-        return state.set('nodeDepends', nodeDepends).set('currentNode', Object(external_immutable_["fromJS"])(action.node)).removeIn(['currentNode', 'entry']); // We have the entry stored elsewhere, so lets not keep it twice.
-      }
-
-    case routing["SET_ROUTE"]:
-      {
-        return state.set('nextPath', action.path);
-      }
-
-    case routing["SET_SIBLINGS"]:
-      {
-        // Can be null in some cases like the homepage.
-        let currentNodeSiblingParent = null;
-        let siblingIDs = [];
-
-        if (action.siblings && action.siblings.length > 0) {
-          currentNodeSiblingParent = action.siblings[0].parentId;
-          siblingIDs = action.siblings.map(node => {
-            return node.id;
-          });
-        }
-
-        let currentNodeDepends = state.get('nodeDepends');
-        const allNodeDepends = external_immutable_["Set"].union([Object(external_immutable_["Set"])(siblingIDs), currentNodeDepends]);
-        return state.set('nodeDepends', allNodeDepends).set('currentNodeSiblings', Object(external_immutable_["fromJS"])(action.siblings)).set('currentNodeSiblingsParent', currentNodeSiblingParent);
-      }
-
-    case routing["SET_TARGET_PROJECT"]:
-      {
-        return state.set('currentProject', action.project).set('currentTreeId', '') //getTreeID(action.project))
-        .set('allowedGroups', Object(external_immutable_["fromJS"])(action.allowedGroups));
-      }
-
-    default:
-      return state;
-  }
-});
-// EXTERNAL MODULE: ./src/app/features/login/index.js + 2 modules
-var login = __webpack_require__(18);
-
-// EXTERNAL MODULE: ./src/app/core/redux/types/version.js
-var version = __webpack_require__(19);
-
-// CONCATENATED MODULE: ./src/app/core/redux/reducers/version.js
-
-
-let version_initialState = Object(external_immutable_["Map"])({
-  commitRef: null,
-  buildNo: null,
-  contensisVersionStatus: 'published'
-});
-/* harmony default export */ var reducers_version = ((state = version_initialState, action) => {
-  switch (action.type) {
-    case version["SET_VERSION_STATUS"]:
-      {
-        return state.set('contensisVersionStatus', action.status);
-      }
-
-    case version["SET_VERSION"]:
-      {
-        return state.set('commitRef', action.commitRef).set('buildNo', action.buildNo);
-      }
-
-    default:
-      return state;
-  }
-});
-// EXTERNAL MODULE: ./src/app/core/redux/types/navigation.js
-var navigation = __webpack_require__(15);
-
-// CONCATENATED MODULE: ./src/app/core/redux/reducers/navigation.js
-
-
-const navigation_initialState = Object(external_immutable_["Map"])({
-  root: null,
-  treeDepends: new external_immutable_["List"]([]),
-  isError: false,
-  isReady: false
-});
-/* harmony default export */ var reducers_navigation = ((state = navigation_initialState, action) => {
-  switch (action.type) {
-    case navigation["SET_NODE_TREE"]:
-      {
-        return state.set('root', Object(external_immutable_["fromJS"])(action.nodes)).set('isReady', true);
-      }
-
-    case navigation["GET_NODE_TREE_ERROR"]:
-      {
-        return state.set('isError', true);
-      }
-
-    default:
-      return state;
-  }
-});
-// CONCATENATED MODULE: ./src/app/core/redux/routerMiddleware.js
-
-/**
- * This middleware captures CALL_HISTORY_METHOD actions to redirect to the
- * provided history object. This will prevent these actions from reaching your
- * reducer or any middleware that comes after this one.
- */
-
-/* eslint-disable no-unused-vars */
-
-const routerMiddleware = history => store => next => action => {
-  if (action.type !== routing["CALL_HISTORY_METHOD"]) {
-    return next(action);
-  }
-
-  const {
-    payload: {
-      method,
-      args
-    }
-  } = action;
-  history[method](...args);
-};
-
-/* harmony default export */ var redux_routerMiddleware = (routerMiddleware);
-// CONCATENATED MODULE: ./src/app/core/redux/store.js
-
-
-
- // Core reducers
-
-
-
-
-
-
-/* harmony default export */ var redux_store = __webpack_exports__["a"] = ((featureReducers, initialState, history) => {
-  const thunkMiddleware = [external_redux_thunk_default.a];
-
-  let reduxDevToolsMiddleware = f => f;
-
-  if (typeof window != 'undefined') {
-    reduxDevToolsMiddleware = window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f;
-  }
-
-  const sagaMiddleware = external_redux_saga_default()();
-  const middleware = Object(external_redux_["compose"])(Object(external_redux_["applyMiddleware"])(...thunkMiddleware, sagaMiddleware, redux_routerMiddleware(history)), reduxDevToolsMiddleware);
-  let reducers = {
-    navigation: reducers_navigation,
-    routing: reducers_routing,
-    user: login["reducer"],
-    version: reducers_version,
-    ...featureReducers
-  };
-  const combinedReducers = Object(external_redux_immutable_["combineReducers"])(reducers);
-
-  const store = initialState => {
-    const store = Object(external_redux_["createStore"])(combinedReducers, initialState, middleware);
-    store.runSaga = sagaMiddleware.run;
-
-    store.close = () => store.dispatch(external_redux_saga_["END"]);
-
-    return store;
-  };
-
-  return store(initialState);
-});
-
-/***/ }),
-/* 45 */
+/* 47 */
 /***/ (function(module, exports) {
 
 module.exports = function(originalModule) {
@@ -3019,18 +3065,6 @@ module.exports = function(originalModule) {
 
 
 /***/ }),
-/* 46 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__46__;
-
-/***/ }),
-/* 47 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__47__;
-
-/***/ }),
 /* 48 */,
 /* 49 */,
 /* 50 */,
@@ -3045,11 +3079,11 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__51__;
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_hot_loader__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(25);
+/* harmony import */ var react_hot_loader__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(27);
 /* harmony import */ var react_hot_loader__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_hot_loader__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _core_routes_RouteLoader__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(37);
+/* harmony import */ var _core_routes_RouteLoader__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(41);
 
 
 
@@ -3111,20 +3145,20 @@ __webpack_require__.r(__webpack_exports__);
 var external_isomorphic_fetch_ = __webpack_require__(51);
 
 // EXTERNAL MODULE: external "react"
-var external_react_ = __webpack_require__(5);
+var external_react_ = __webpack_require__(7);
 var external_react_default = /*#__PURE__*/__webpack_require__.n(external_react_);
 
 // EXTERNAL MODULE: external "react-dom"
 var external_react_dom_ = __webpack_require__(58);
 
 // EXTERNAL MODULE: external "react-router-dom"
-var external_react_router_dom_ = __webpack_require__(17);
+var external_react_router_dom_ = __webpack_require__(19);
 
 // EXTERNAL MODULE: external "react-loadable"
-var external_react_loadable_ = __webpack_require__(38);
+var external_react_loadable_ = __webpack_require__(42);
 
 // EXTERNAL MODULE: external "react-hot-loader"
-var external_react_hot_loader_ = __webpack_require__(25);
+var external_react_hot_loader_ = __webpack_require__(27);
 
 // EXTERNAL MODULE: external "react-redux"
 var external_react_redux_ = __webpack_require__(16);
@@ -3137,22 +3171,22 @@ var external_query_string_default = /*#__PURE__*/__webpack_require__.n(external_
 var external_immutable_ = __webpack_require__(2);
 
 // EXTERNAL MODULE: ./src/app/core/redux/store.js + 4 modules
-var redux_store = __webpack_require__(44);
+var redux_store = __webpack_require__(29);
 
 // EXTERNAL MODULE: ./src/app/core/redux/sagas/index.js + 7 modules
-var sagas = __webpack_require__(43);
+var sagas = __webpack_require__(46);
 
 // EXTERNAL MODULE: ./src/app/core/redux/actions/version.js
-var version = __webpack_require__(31);
+var version = __webpack_require__(34);
 
 // EXTERNAL MODULE: ./src/app/core/util/ContensisDeliveryApi.js
 var ContensisDeliveryApi = __webpack_require__(13);
 
 // EXTERNAL MODULE: ./src/app/core/redux/actions/routing.js
-var routing = __webpack_require__(22);
+var routing = __webpack_require__(18);
 
 // EXTERNAL MODULE: ./src/app/core/util/pickProject.js
-var pickProject = __webpack_require__(42);
+var pickProject = __webpack_require__(45);
 
 // CONCATENATED MODULE: ./src/app/core/util/fromJSOrdered.js
 
@@ -3163,7 +3197,7 @@ const fromJSOrdered = js => {
 
 /* harmony default export */ var util_fromJSOrdered = (fromJSOrdered);
 // EXTERNAL MODULE: ./src/app/core/redux/history.js
-var redux_history = __webpack_require__(39);
+var redux_history = __webpack_require__(43);
 
 // CONCATENATED MODULE: ./src/client/client.js
 
@@ -3219,7 +3253,7 @@ class client_ClientApp {
 
     let store = null;
     const qs = external_query_string_default.a.parse(window.location.search);
-    const versionStatusFromHostname = Object(ContensisDeliveryApi["GetClientSideDeliveryApiStatus"])();
+    const versionStatusFromHostname = ContensisDeliveryApi["deliveryApi"].getClientSideVersionStatus();
 
     if (window.isDynamic || window.REDUX_DATA || process.env.NODE_ENV !== 'production') {
       store = Object(redux_store["a" /* default */])(withReducers, util_fromJSOrdered(window.REDUX_DATA), redux_history["a" /* browserHistory */]);

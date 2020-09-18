@@ -68,7 +68,7 @@ const development = {
   DISABLE_SSR_REDUX: false,
   PROJECTS: PROJECTS(process.env),
   ALLOWED_GROUPS,
-  PROXY_DELIVERY_API: false,
+  PROXY_DELIVERY_API: true,
   PUBLIC_URI: PUBLIC_URL,
   REVERSE_PROXY_PATHS,
   SERVERS,
@@ -79,7 +79,7 @@ const production = {
   __isBrowser__: false,
   DISABLE_SSR_REDUX: false,
   ALLOWED_GROUPS,
-  PROXY_DELIVERY_API: false,
+  PROXY_DELIVERY_API: true,
   REVERSE_PROXY_PATHS,
   VERSION: packagejson.version,
 };

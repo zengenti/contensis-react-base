@@ -5,6 +5,7 @@ import {
   SET_NAVIGATION_PATH,
   SET_TARGET_PROJECT,
   SET_ROUTE,
+  SET_SURROGATE_KEYS,
 } from '~/core/redux/types/routing';
 
 export const setNotFound = notFound =>
@@ -29,3 +30,4 @@ export const setCurrentProject = (project, allowedGroups) =>
   action(SET_TARGET_PROJECT, { project, allowedGroups });
 export const setRoute = (path, state) => action(SET_ROUTE, { path, state });
 export const setRouteEntry = entry => action(SET_ENTRY, { entry });
+export const setSurrogateKeys = keys => action(SET_SURROGATE_KEYS, { keys });

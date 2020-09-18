@@ -12,7 +12,7 @@ import createStore from '~/core/redux/store';
 import rootSaga from '~/core/redux/sagas/index.js';
 
 import { setVersionStatus } from '~/core/redux/actions/version';
-import { GetClientSideDeliveryApiStatus } from '~/core/util/ContensisDeliveryApi';
+import { deliveryApi } from '~/core/util/ContensisDeliveryApi';
 import { setCurrentProject } from '~/core/redux/actions/routing';
 import pickProject from '~/core/util/pickProject';
 import fromJSOrdered from '~/core/util/fromJSOrdered';
@@ -52,7 +52,7 @@ class ClientApp {
     let store = null;
     const qs = queryString.parse(window.location.search);
 
-    const versionStatusFromHostname = GetClientSideDeliveryApiStatus();
+    const versionStatusFromHostname = deliveryApi.getClientSideVersionStatus();
     if (
       window.isDynamic ||
       window.REDUX_DATA ||

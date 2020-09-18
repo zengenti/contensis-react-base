@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("immutable"), require("react"), require("contensis-delivery-api"), require("prop-types"), require("query-string"), require("react-redux"), require("react-router-dom"), require("react-router-config"), require("react-hot-loader"), require("@redux-saga/core/effects"), require("js-cookie"), require("jsonpath-mapper"), require("loglevel"));
+		module.exports = factory(require("immutable"), require("contensis-delivery-api"), require("react"), require("prop-types"), require("query-string"), require("react-redux"), require("react-router-dom"), require("@redux-saga/core/effects"), require("js-cookie"), require("react-router-config"), require("react-hot-loader"), require("jsonpath-mapper"), require("loglevel"));
 	else if(typeof define === 'function' && define.amd)
-		define(["immutable", "react", "contensis-delivery-api", "prop-types", "query-string", "react-redux", "react-router-dom", "react-router-config", "react-hot-loader", "@redux-saga/core/effects", "js-cookie", "jsonpath-mapper", "loglevel"], factory);
+		define(["immutable", "contensis-delivery-api", "react", "prop-types", "query-string", "react-redux", "react-router-dom", "@redux-saga/core/effects", "js-cookie", "react-router-config", "react-hot-loader", "jsonpath-mapper", "loglevel"], factory);
 	else {
-		var a = typeof exports === 'object' ? factory(require("immutable"), require("react"), require("contensis-delivery-api"), require("prop-types"), require("query-string"), require("react-redux"), require("react-router-dom"), require("react-router-config"), require("react-hot-loader"), require("@redux-saga/core/effects"), require("js-cookie"), require("jsonpath-mapper"), require("loglevel")) : factory(root["immutable"], root["react"], root["contensis-delivery-api"], root["prop-types"], root["query-string"], root["react-redux"], root["react-router-dom"], root["react-router-config"], root["react-hot-loader"], root["@redux-saga/core/effects"], root["js-cookie"], root["jsonpath-mapper"], root["loglevel"]);
+		var a = typeof exports === 'object' ? factory(require("immutable"), require("contensis-delivery-api"), require("react"), require("prop-types"), require("query-string"), require("react-redux"), require("react-router-dom"), require("@redux-saga/core/effects"), require("js-cookie"), require("react-router-config"), require("react-hot-loader"), require("jsonpath-mapper"), require("loglevel")) : factory(root["immutable"], root["contensis-delivery-api"], root["react"], root["prop-types"], root["query-string"], root["react-redux"], root["react-router-dom"], root["@redux-saga/core/effects"], root["js-cookie"], root["react-router-config"], root["react-hot-loader"], root["jsonpath-mapper"], root["loglevel"]);
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(global, function(__WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__5__, __WEBPACK_EXTERNAL_MODULE__6__, __WEBPACK_EXTERNAL_MODULE__9__, __WEBPACK_EXTERNAL_MODULE__12__, __WEBPACK_EXTERNAL_MODULE__16__, __WEBPACK_EXTERNAL_MODULE__17__, __WEBPACK_EXTERNAL_MODULE__24__, __WEBPACK_EXTERNAL_MODULE__25__, __WEBPACK_EXTERNAL_MODULE__26__, __WEBPACK_EXTERNAL_MODULE__27__, __WEBPACK_EXTERNAL_MODULE__30__, __WEBPACK_EXTERNAL_MODULE__36__) {
+})(global, function(__WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__5__, __WEBPACK_EXTERNAL_MODULE__7__, __WEBPACK_EXTERNAL_MODULE__9__, __WEBPACK_EXTERNAL_MODULE__12__, __WEBPACK_EXTERNAL_MODULE__16__, __WEBPACK_EXTERNAL_MODULE__19__, __WEBPACK_EXTERNAL_MODULE__24__, __WEBPACK_EXTERNAL_MODULE__25__, __WEBPACK_EXTERNAL_MODULE__26__, __WEBPACK_EXTERNAL_MODULE__27__, __WEBPACK_EXTERNAL_MODULE__32__, __WEBPACK_EXTERNAL_MODULE__40__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -110,10 +110,10 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__16__;
 
 /***/ }),
 
-/***/ 17:
+/***/ 19:
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__17__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__19__;
 
 /***/ }),
 
@@ -152,17 +152,17 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__27__;
 
 /***/ }),
 
-/***/ 30:
+/***/ 32:
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__30__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__32__;
 
 /***/ }),
 
-/***/ 36:
+/***/ 40:
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__36__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__40__;
 
 /***/ }),
 
@@ -173,17 +173,17 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__5__;
 
 /***/ }),
 
-/***/ 6:
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__6__;
-
-/***/ }),
-
 /***/ 69:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(70);
+
+/***/ }),
+
+/***/ 7:
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__7__;
 
 /***/ }),
 
@@ -192,7 +192,7 @@ module.exports = __webpack_require__(70);
 
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(true)
-		module.exports = factory(__webpack_require__(2), __webpack_require__(9), __webpack_require__(6), __webpack_require__(5), __webpack_require__(16), __webpack_require__(12), __webpack_require__(30), __webpack_require__(36), __webpack_require__(26), __webpack_require__(17), __webpack_require__(25), __webpack_require__(24), __webpack_require__(27));
+		module.exports = factory(__webpack_require__(2), __webpack_require__(9), __webpack_require__(5), __webpack_require__(7), __webpack_require__(16), __webpack_require__(12), __webpack_require__(32), __webpack_require__(40), __webpack_require__(24), __webpack_require__(19), __webpack_require__(27), __webpack_require__(26), __webpack_require__(25));
 	else { var i, a; }
 })(global, function(__WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__4__, __WEBPACK_EXTERNAL_MODULE__7__, __WEBPACK_EXTERNAL_MODULE__10__, __WEBPACK_EXTERNAL_MODULE__11__, __WEBPACK_EXTERNAL_MODULE__12__, __WEBPACK_EXTERNAL_MODULE__14__, __WEBPACK_EXTERNAL_MODULE__17__, __WEBPACK_EXTERNAL_MODULE__20__, __WEBPACK_EXTERNAL_MODULE__24__, __WEBPACK_EXTERNAL_MODULE__25__, __WEBPACK_EXTERNAL_MODULE__26__, __WEBPACK_EXTERNAL_MODULE__28__) {
 return /******/ (function(modules) { // webpackBootstrap
