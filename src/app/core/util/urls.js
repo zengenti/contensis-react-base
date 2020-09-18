@@ -4,6 +4,7 @@ const url = (alias, project) => {
       ? `${project.toLowerCase()}-${alias}`
       : alias;
   return {
+    api: `https://api-${alias}.cloud.contensis.com`,
     cms: `https://cms-${alias}.cloud.contensis.com`,
     liveWeb: `https://live-${projectAndAlias}.cloud.contensis.com`,
     previewWeb: `https://preview-${projectAndAlias}.cloud.contensis.com`,

@@ -13,7 +13,7 @@ const {
   CONTENSIS_VERSION,
 } = process.env;
 
-const PROJECTS = (env) => [
+const PROJECTS = env => [
   {
     id: env.PROJECT,
     publicUri: env.PUBLIC_URL,
@@ -50,10 +50,11 @@ const SERVERS = {
   cms: url.cms,
   web: url.liveWeb,
   iis: url.iisWeb,
+  api: url.api,
 };
 
 const DELIVERY_API_CONFIG = {
-  rootUrl: url.cms,
+  rootUrl: url.api,
   accessToken: ACCESS_TOKEN,
   projectId: PROJECTS(process.env)[0].id,
   livePublishingRootUrl: url.previewWeb,
