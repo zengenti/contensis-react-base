@@ -1,7 +1,6 @@
 import 'isomorphic-fetch';
 import express from 'express';
 import Loadable from 'react-loadable';
-import evilDns from 'evil-dns';
 import httpProxy from 'http-proxy';
 import fs from 'fs';
 import React from 'react';
@@ -53,53 +52,7 @@ const DisplayStartupConfiguration = config => {
   /* eslint-enable no-console */
 };
 
-const fetchMyIp = async (env, configureLocalEndpoint) => {
-  /* eslint-disable no-console */
-  try {
-    const response = await fetch('https://api.ipify.org?format=json', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
-    const ipJson = await response.json();
-    console.log(`Current public ip -> ${JSON.stringify(ipJson)}`);
-
-    if (ipJson.ip.startsWith('185.18.13')) {
-      console.log(`Using local endpoint for ${env.alias} -> ${env.internalVip}`);
-      configureLocalEndpoint();
-    } else {
-      console.log(`Outside Zengenti network, use real DNS.`);
-    }
-  } catch (error) {
-    console.log(`Could not work out where I am so defaulting to local DNS, as I am probably running as a container this is what matters most. Not developers at home or tests :( Sorry. error: ${error}`);
-    configureLocalEndpoint();
-  }
-  /* eslint-enable no-console */
-
-};
-
 const servers$1 = SERVERS;
-/* global SERVERS */
-
-const apiConfig = DELIVERY_API_CONFIG;
-/* global DELIVERY_API_CONFIG */
-
-const localDns = async () => {
-
-  const configureLocalEndpoint = () => {
-    {
-      evilDns.add(`*${servers$1.alias}.cloud.contensis.com`, servers$1.internalVip);
-      if (apiConfig.internalIp) evilDns.add(apiConfig.rootUrl, apiConfig.internalIp);
-    }
-  }; // Break api.ipify to test
-  // evilDns.add('api.ipify.org', '8.8.8.8');
-
-
-  await fetchMyIp(servers$1, configureLocalEndpoint);
-};
-
-const servers$2 = SERVERS;
 /* global SERVERS */
 
 const apiProxy = httpProxy.createProxyServer();
@@ -107,7 +60,7 @@ const apiProxy = httpProxy.createProxyServer();
 const reverseProxies = (app, reverseProxyPaths) => {
   deliveryApiProxy(apiProxy, app);
   app.all(reverseProxyPaths, (req, res) => {
-    const target = servers$2.iis;
+    const target = servers$1.iis;
     apiProxy.web(req, res, {
       target,
       changeOrigin: true
@@ -124,8 +77,8 @@ const deliveryApiProxy = (apiProxy, app) => {
   // This is just here to stop cors requests on localhost. In Production this is mapped using varnish.
   app.all(['/api/delivery/*', '/api/image/*'], (req, res) => {
     /* eslint-disable no-console */
-    const target = servers$2.cms;
-    console.log(`Proxying api request to ${servers$2.alias}`);
+    const target = servers$1.cms;
+    console.log(`Proxying api request to ${servers$1.alias}`);
     apiProxy.web(req, res, {
       target,
       changeOrigin: true
@@ -484,7 +437,7 @@ const start = (ReactApp, config, ServerFeatures) => {
   }));
   app.on('ready', async () => {
     // Configure DNS to make life easier
-    await localDns();
+    //await ConfigureLocalDNS();
     Loadable.preloadAll().then(() => {
       var server = app.listen(3001, () => {
         console.info(`HTTP server is listening @ port 3001`);
