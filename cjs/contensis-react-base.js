@@ -9,21 +9,21 @@ var evilDns = require('evil-dns');
 var httpProxy = require('http-proxy');
 var fs = require('fs');
 var React = require('react');
-var require$$9 = require('react-router-dom');
-var require$$4 = require('react-redux');
+var reactRouterDom = require('react-router-dom');
+var reactRedux = require('react-redux');
 var server = require('react-dom/server');
 var webpack = require('react-loadable/webpack');
 var styledComponents = require('styled-components');
 var Helmet = require('react-helmet');
 var serialize = require('serialize-javascript');
 var minifyCssString = require('minify-css-string');
-var require$$0 = require('immutable');
+var immutable = require('immutable');
 var fromEntries = require('fromentries');
 require('history');
-var App = require('./App-aa8401f6.js');
+var App = require('./App-c39347b8.js');
 require('contensis-delivery-api');
-var routing = require('./routing-6c78c96b.js');
-var navigation = require('./navigation-43dc4781.js');
+var routing = require('./routing-b8284518.js');
+var navigation = require('./navigation-dc5dcf7e.js');
 require('query-string');
 require('redux');
 require('redux-immutable');
@@ -31,10 +31,10 @@ require('redux-thunk');
 require('redux-saga');
 require('redux-saga/effects');
 require('loglevel');
-var require$$11 = require('react-router-config');
+var reactRouterConfig = require('react-router-config');
 require('react-hot-loader');
 require('prop-types');
-require('./RouteLoader-6458943a.js');
+require('./RouteLoader-3226b7d1.js');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -304,7 +304,7 @@ const webApp = (app, ReactApp, config) => {
       url
     } = request;
 
-    const matchedStaticRoute = () => require$$11.matchRoutes(routes.StaticRoutes, request.path);
+    const matchedStaticRoute = () => reactRouterConfig.matchRoutes(routes.StaticRoutes, request.path);
 
     const isStaticRoute = () => matchedStaticRoute().length > 0;
 
@@ -324,7 +324,7 @@ const webApp = (app, ReactApp, config) => {
     const context = {};
     let status = 200; // Create a store (with a memory history) from our current url
 
-    const store = App.createStore(withReducers, require$$0.fromJS({}), App.history({
+    const store = App.createStore(withReducers, immutable.fromJS({}), App.history({
       initialEntries: [url]
     })); //const store = createStore(withReducers);
     // dispatch any global and non-saga related actions before calling our JSX
@@ -338,9 +338,9 @@ const webApp = (app, ReactApp, config) => {
     const modules = [];
     const jsx = React__default['default'].createElement(Loadable__default['default'].Capture, {
       report: moduleName => modules.push(moduleName)
-    }, React__default['default'].createElement(require$$4.Provider, {
+    }, React__default['default'].createElement(reactRedux.Provider, {
       store: store
-    }, React__default['default'].createElement(require$$9.StaticRouter, {
+    }, React__default['default'].createElement(reactRouterDom.StaticRouter, {
       context: context,
       location: url
     }, React__default['default'].createElement(ReactApp, {
