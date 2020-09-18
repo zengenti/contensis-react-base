@@ -9,6 +9,8 @@ import VersionReducer from './reducers/version';
 import NavigationReducer from './reducers/navigation';
 import routerMiddleware from './routerMiddleware';
 
+export let reduxStore = null;
+
 export default (featureReducers, initialState, history) => {
   const thunkMiddleware = [thunk];
 
@@ -46,5 +48,6 @@ export default (featureReducers, initialState, history) => {
     return store;
   };
 
-  return store(initialState);
+  reduxStore = store(initialState);
+  return reduxStore;
 };

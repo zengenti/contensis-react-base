@@ -1,0 +1,17 @@
+npm run build:lib
+cp package.json ~/src/client-projects/contensis/node_modules/@zengenti/contensis-react-base/
+cp package-lock.json ~/src/client-projects/contensis/node_modules/@zengenti/contensis-react-base/
+cp zengenti-isomorphic-base.js ~/src/client-projects/contensis/node_modules/@zengenti/contensis-react-base/
+cp zengenti-isomorphic-base.js.map ~/src/client-projects/contensis/node_modules/@zengenti/contensis-react-base/
+cp client.js ~/src/client-projects/contensis/node_modules/@zengenti/contensis-react-base/
+cp client.js.map ~/src/client-projects/contensis/node_modules/@zengenti/contensis-react-base/
+cp redux.js ~/src/client-projects/contensis/node_modules/@zengenti/contensis-react-base/
+cp redux.js.map ~/src/client-projects/contensis/node_modules/@zengenti/contensis-react-base/
+cp routing.js ~/src/client-projects/contensis/node_modules/@zengenti/contensis-react-base/
+cp routing.js.map ~/src/client-projects/contensis/node_modules/@zengenti/contensis-react-base/
+cp search.js ~/src/client-projects/contensis/node_modules/@zengenti/contensis-react-base/
+cp search.js.map ~/src/client-projects/contensis/node_modules/@zengenti/contensis-react-base/
+cp user.js ~/src/client-projects/contensis/node_modules/@zengenti/contensis-react-base/
+cp user.js.map ~/src/client-projects/contensis/node_modules/@zengenti/contensis-react-base/
+cp util.js ~/src/client-projects/contensis/node_modules/@zengenti/contensis-react-base/
+cp util.js.map ~/src/client-projects/contensis/node_modules/@zengenti/contensis-react-base/

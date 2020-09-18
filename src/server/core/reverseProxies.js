@@ -7,7 +7,12 @@ const reverseProxies = (app, reverseProxyPaths) => {
   deliveryApiProxy(apiProxy, app);
 
   app.all(reverseProxyPaths, (req, res) => {
-    const target = servers.iis;
+    const target =
+      req.hostname.indexOf('preview-') ||
+      req.hostname.indexOf('preview.') ||
+      req.hostname === 'localhost'
+        ? servers.previewIis || servers.iis
+        : servers.iis;
 
     apiProxy.web(req, res, { target, changeOrigin: true });
     apiProxy.on('error', e => {

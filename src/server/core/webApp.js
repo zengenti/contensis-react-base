@@ -19,7 +19,7 @@ import handleResponse from '../util/handleResponse';
 import { hashKeys } from '../util/cacheHashing';
 
 import pickProject from '~/core/util/pickProject';
-import { GetDeliveryApiStatusFromHostname } from '~/core/util/ContensisDeliveryApi';
+import { deliveryApi } from '~/core/util/ContensisDeliveryApi';
 
 import { setCurrentProject } from '~/core/redux/actions/routing';
 import { setVersion, setVersionStatus } from '~/core/redux/actions/version';
@@ -36,6 +36,12 @@ import createStore from '~/core/redux/store';
 import rootSaga from '~/core/redux/sagas/index.js';
 import { matchRoutes } from 'react-router-config';
 
+// const moduleBundles = fs.readdirSync('./dist/static/modern/js', 'utf8');
+// const coreModules = moduleBundles.filter(
+//   m =>
+//     m.startsWith('app.') || m.startsWith('vendor.') || m.startsWith('runtime.')
+// );
+
 const addStandardHeaders = (state, response, packagejson, groups) => {
   if (state) {
     /* eslint-disable no-console */
@@ -51,18 +57,17 @@ const addStandardHeaders = (state, response, packagejson, groups) => {
         return `${currentTreeId}_${nodeKey}`;
       });
       const allDepends = [...entryDepends, ...nodeDependsKeys];
-      const allDependsHashed = hashKeys(allDepends);
+      const allDependsHashed = hashKeys(allDepends).join(' ');
+      const routingSurrogateKeys = state.getIn(
+        ['routing', 'surrogateKeys'],
+        ''
+      );
 
-      const surrogateKeyHeader =
-        packagejson.name == 'os-main'
-          ? ` ${packagejson.name}-app ${allDependsHashed.join(
-              ' '
-            )} ${allDepends.join(' ')}`
-          : ` ${packagejson.name}-app ${allDependsHashed.join(' ')}`;
+      const surrogateKeyHeader = ` ${packagejson.name}-app ${allDependsHashed} ${routingSurrogateKeys}`;
 
       response.header('surrogate-key', surrogateKeyHeader);
 
-      console.log(`depends hashed: ${allDependsHashed.join(' ')}`);
+      console.log(`depends hashed: ${allDependsHashed}`);
       console.log(`depends hashed: ${allDepends.join(' ')}`);
 
       addVarnishAuthenticationHeaders(state, response, groups);
@@ -213,7 +218,7 @@ const webApp = (app, ReactApp, config) => {
     //const store = createStore(withReducers);
 
     // dispatch any global and non-saga related actions before calling our JSX
-    const versionStatusFromHostname = GetDeliveryApiStatusFromHostname(
+    const versionStatusFromHostname = deliveryApi.getVersionStatusFromHostname(
       request.hostname
     );
 

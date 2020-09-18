@@ -23,7 +23,7 @@ const apiProxies = PROXY_DELIVERY_API
 
 const reverseProxies = {};
 
-REVERSE_PROXY_PATHS.forEach((path) => {
+REVERSE_PROXY_PATHS.forEach(path => {
   reverseProxies[path] = {
     // Change your devServer proxy target here
     target: SERVERS.iis || SERVERS.web,

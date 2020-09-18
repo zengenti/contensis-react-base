@@ -43,6 +43,12 @@ function* setRouteSaga(action) {
   });
 }
 
+// function* deliveryApiResponseHandler(response) {
+//   debugger;
+
+//   yield put({ type: 'HANDLE_RESPONSE', headers: response.headers });
+// }
+
 function* getRouteSaga(action) {
   let entry = null;
   try {
@@ -91,12 +97,13 @@ function* getRouteSaga(action) {
         routeEntry &&
         (!staticRoute || (staticRoute.route && staticRoute.route.fetchNode))
       ) {
-        entry = routeEntry.toJS();
-        yield put({
-          type: SET_ENTRY,
-          entry,
-          isLoading: false,
-        });
+        // entry = routeEntry.toJS();
+        // yield put({
+        //   type: SET_ENTRY,
+        //   entry,
+        //   isLoading: false,
+        // });
+        //Do nothing, the entry is allready the right one.
       } else yield call(setRouteEntry);
     } else {
       let pathNode = null,

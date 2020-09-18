@@ -10,6 +10,7 @@ import {
   SET_ROUTE,
   SET_SIBLINGS,
   MAP_ENTRY,
+  SET_SURROGATE_KEYS,
 } from '~/core/redux/types/routing';
 import { GetAllResponseGuids } from '~/core/util/ContensisDeliveryApi';
 
@@ -91,17 +92,29 @@ export default (state = initialState, action) => {
         staticRoute = { ...action.staticRoute };
       }
       if (action.path) {
-        return state
-          .set('currentPath', fromJS(action.path))
-          .set('location', fromJS(action.location))
-          .set(
+        // Don't run a path update on iniutial load as we allready should have it in redux
+        const entryUri = state.getIn(['entry', 'sys', 'uri']);
+        if (entryUri != action.path) {
+          return state
+            .set('currentPath', fromJS(action.path))
+            .set('location', fromJS(action.location))
+            .set(
+              'staticRoute',
+              fromJS({
+                ...staticRoute,
+                route: { ...staticRoute.route, component: null },
+              })
+            )
+            .set('isLoading', typeof window !== 'undefined');
+        } else {
+          return state.set('location', fromJS(action.location)).set(
             'staticRoute',
             fromJS({
               ...staticRoute,
               route: { ...staticRoute.route, component: null },
             })
-          )
-          .set('isLoading', typeof window !== 'undefined');
+          );
+        }
       }
       return state;
     }
@@ -139,6 +152,9 @@ export default (state = initialState, action) => {
         .set('nodeDepends', allNodeDepends)
         .set('currentNodeSiblings', fromJS(action.siblings))
         .set('currentNodeSiblingsParent', currentNodeSiblingParent);
+    }
+    case SET_SURROGATE_KEYS: {
+      return state.set('surrogateKeys', action.keys);
     }
     case SET_TARGET_PROJECT: {
       return state
