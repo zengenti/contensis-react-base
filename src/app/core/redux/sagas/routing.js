@@ -179,18 +179,15 @@ function* getRouteSaga(action) {
           }
         }
 
-        if (
-          pathNode &&
-          pathNode.id &&
-          (doNavigation === true || doNavigation.ancestors)
-        ) {
-          ancestors = yield cachedSearch.getAncestors(pathNode.id, project);
+        if (pathNode && pathNode.id) {
+          if (doNavigation === true || doNavigation.ancestors) {
+            ancestors = yield cachedSearch.getAncestors(pathNode.id, project);
+          }
 
           if (doNavigation === true || doNavigation.siblings) {
             siblings = yield cachedSearch.getSiblings(
               {
                 id: pathNode.id,
-                entryFields: ['sys.contentTypeId', 'url'],
               },
               project
             );

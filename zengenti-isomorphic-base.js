@@ -2565,13 +2565,14 @@ function* getRouteSaga(action) {
           }
         }
 
-        if (pathNode && pathNode.id && (doNavigation === true || doNavigation.ancestors)) {
-          ancestors = yield ContensisDeliveryApi["cachedSearch"].getAncestors(pathNode.id, project);
+        if (pathNode && pathNode.id) {
+          if (doNavigation === true || doNavigation.ancestors) {
+            ancestors = yield ContensisDeliveryApi["cachedSearch"].getAncestors(pathNode.id, project);
+          }
 
           if (doNavigation === true || doNavigation.siblings) {
             siblings = yield ContensisDeliveryApi["cachedSearch"].getSiblings({
-              id: pathNode.id,
-              entryFields: ['sys.contentTypeId', 'url']
+              id: pathNode.id
             }, project);
           }
         }
