@@ -1,11 +1,5 @@
-'use strict';
-
-var immutable = require('immutable');
-var queryString = require('query-string');
-
-function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
-
-var queryString__default = /*#__PURE__*/_interopDefaultLegacy(queryString);
+import { Map, List } from 'immutable';
+import queryString from 'query-string';
 
 function action(type, payload = {}) {
   return {
@@ -47,7 +41,7 @@ var routing = /*#__PURE__*/Object.freeze({
 });
 
 function queryParams(search) {
-  return queryString__default['default'].parse(typeof window != 'undefined' ? window.location.search : search);
+  return queryString.parse(typeof window != 'undefined' ? window.location.search : search);
 }
 const clientHostname = () => `${window.location.protocol}//${window.location.hostname}:${window.location.port}`;
 const addHostname = typeof window == 'undefined' || window.location.host == 'localhost:3000' ? `https://${PUBLIC_URI
@@ -55,13 +49,13 @@ const addHostname = typeof window == 'undefined' || window.location.host == 'loc
 }` : clientHostname();
 
 const selectRouteEntry = state => {
-  return state.getIn(['routing', 'entry'], immutable.Map());
+  return state.getIn(['routing', 'entry'], Map());
 };
 const selectMappedEntry = state => {
   return state.getIn(['routing', 'mappedEntry'], null);
 };
 const selectNodeDepends = state => {
-  return state.getIn(['routing', 'nodeDepends'], immutable.List());
+  return state.getIn(['routing', 'nodeDepends'], List());
 };
 const selectCurrentTreeID = state => {
   return state.getIn(['routing', 'currentTreeId']);
@@ -99,13 +93,13 @@ const selectIsNotFound = state => {
   return state.getIn(['routing', 'notFound']);
 };
 const selectCurrentAncestors = state => {
-  return state.getIn(['routing', 'currentNodeAncestors'], immutable.List());
+  return state.getIn(['routing', 'currentNodeAncestors'], List());
 };
 const selectCurrentNode = state => {
   return state.getIn(['routing', 'currentNode']);
 };
 const selectBreadcrumb = state => {
-  return (selectCurrentAncestors(state) || immutable.List()).push(selectCurrentNode(state));
+  return (selectCurrentAncestors(state) || List()).push(selectCurrentNode(state));
 };
 const selectRouteLoading = state => {
   return state.getIn(['routing', 'isLoading']);
@@ -187,38 +181,5 @@ var user = /*#__PURE__*/Object.freeze({
   selectCaptchaToken: selectCaptchaToken
 });
 
-exports.CALL_HISTORY_METHOD = CALL_HISTORY_METHOD;
-exports.MAP_ENTRY = MAP_ENTRY;
-exports.SET_ANCESTORS = SET_ANCESTORS;
-exports.SET_ENTRY = SET_ENTRY;
-exports.SET_NAVIGATION_NOT_FOUND = SET_NAVIGATION_NOT_FOUND;
-exports.SET_NAVIGATION_PATH = SET_NAVIGATION_PATH;
-exports.SET_ROUTE = SET_ROUTE;
-exports.SET_SIBLINGS = SET_SIBLINGS;
-exports.SET_TARGET_PROJECT = SET_TARGET_PROJECT;
-exports.action = action;
-exports.routing = routing;
-exports.routing$1 = routing$1;
-exports.selectCaptchaResponse = selectCaptchaResponse;
-exports.selectCaptchaSiteKey = selectCaptchaSiteKey;
-exports.selectChangePasswordMessage = selectChangePasswordMessage;
-exports.selectCurrentPath = selectCurrentPath;
-exports.selectCurrentProject = selectCurrentProject;
-exports.selectCurrentSearch = selectCurrentSearch;
-exports.selectCurrentTreeID = selectCurrentTreeID;
-exports.selectEntryDepends = selectEntryDepends;
-exports.selectIsNotFound = selectIsNotFound;
-exports.selectLoginScreenMode = selectLoginScreenMode;
-exports.selectMappedEntry = selectMappedEntry;
-exports.selectNodeDepends = selectNodeDepends;
-exports.selectPasswordMessage = selectPasswordMessage;
-exports.selectQueryStringAsObject = selectQueryStringAsObject;
-exports.selectRouteEntry = selectRouteEntry;
-exports.selectRouteEntryContentTypeId = selectRouteEntryContentTypeId;
-exports.selectRouteLoading = selectRouteLoading;
-exports.selectUser = selectUser;
-exports.selectUserLoggedIn = selectUserLoggedIn;
-exports.selectUserMessage = selectUserMessage;
-exports.selectUsername = selectUsername;
-exports.user = user;
-//# sourceMappingURL=selectors-9c15031e.js.map
+export { selectLoginScreenMode as A, selectPasswordMessage as B, CALL_HISTORY_METHOD as C, selectChangePasswordMessage as D, selectCaptchaSiteKey as E, selectCaptchaResponse as F, selectQueryStringAsObject as G, MAP_ENTRY as M, SET_TARGET_PROJECT as S, selectNodeDepends as a, selectCurrentTreeID as b, selectRouteEntry as c, selectCurrentProject as d, SET_SIBLINGS as e, SET_ROUTE as f, SET_NAVIGATION_PATH as g, SET_ENTRY as h, SET_ANCESTORS as i, selectCurrentNode as j, selectCurrentPath as k, selectRouteEntryContentTypeId as l, selectIsNotFound as m, selectUserLoggedIn as n, selectRouteLoading as o, selectMappedEntry as p, action as q, SET_NAVIGATION_NOT_FOUND as r, selectEntryDepends as s, selectUser as t, selectCurrentSearch as u, selectUsername as v, routing as w, routing$1 as x, user as y, selectUserMessage as z };
+//# sourceMappingURL=selectors-9caa4dc1.js.map
