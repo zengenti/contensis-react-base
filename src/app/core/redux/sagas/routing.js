@@ -16,6 +16,7 @@ import {
 import { cachedSearch, deliveryApi } from '~/core/util/ContensisDeliveryApi';
 import { selectVersionStatus } from '~/core/redux/selectors/version';
 import {
+  selectCurrentNode,
   selectCurrentPath,
   selectCurrentProject,
   selectRouteEntry,
@@ -71,6 +72,7 @@ function* getRouteSaga(action) {
 
     const state = yield select();
     const routeEntry = selectRouteEntry(state);
+    const routeNode = selectCurrentNode(state);
     const currentPath = selectCurrentPath(state);
     const deliveryApiStatus = selectVersionStatus(state);
     const project = selectCurrentProject(state);
@@ -95,6 +97,7 @@ function* getRouteSaga(action) {
         yield put({
           type: SET_ENTRY,
           entry,
+          node: routeNode,
           isLoading: false,
         });
       } else yield call(setRouteEntry);
