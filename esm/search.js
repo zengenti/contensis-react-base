@@ -6,7 +6,7 @@ import queryString from 'query-string';
 import { error, warn, info } from 'loglevel';
 import PropTypes from 'prop-types';
 import { takeEvery, select, put, call, all } from '@redux-saga/core/effects';
-import { navigation, routing, user, version } from '@zengenti/contensis-react-base/redux';
+import { navigation, routing, version } from '@zengenti/contensis-react-base/redux';
 import mapJson from 'jsonpath-mapper';
 
 const toJS = WrappedComponent => wrappedComponentProps => {
@@ -641,20 +641,6 @@ const {
   selectRouteEntrySlug,
   selectRouteLoading
 } = routing.selectors;
-const {
-  selectUser,
-  selectUsername,
-  selectUserLoggedIn,
-  selectUserGroups,
-  selectUserMessage,
-  selectLoginScreenMode,
-  selectPasswordMessage,
-  selectChangePasswordMessage,
-  selectCaptchaResponse,
-  selectCaptchaData,
-  selectCaptchaToken,
-  selectCaptchaSiteKey
-} = user.selectors;
 const {
   selectCommitRef,
   selectBuildNumber,
@@ -2039,7 +2025,9 @@ var reducers = (config => {
           // DO SEARCH is used when we cannot use SET_ROUTE_FILTERS
           // for example in a minilist scenario where the route filters
           // are used for the primary page / listing navigation
-          const filters = generateFiltersState(action, state);
+          const filters = generateFiltersState({ ...action,
+            isCurrentFacet: true
+          }, state);
           return state.setIn([action.context || Context.minilist, action.facet, 'filters'], filters);
         }
 

@@ -364,22 +364,17 @@ class CachedSearch {
 
 const cachedSearch = new CachedSearch();
 
-let initialState = immutable.OrderedMap({
-  contentTypeId: null,
+let initialState = immutable.Map({
   currentPath: '/',
   currentNode: [],
-  currentNodeAncestors: immutable.List(),
   currentProject: 'unknown',
-  currentTreeId: null,
-  entry: null,
-  entryDepends: immutable.List(),
-  entryID: null,
-  isLoading: false,
-  location: null,
-  mappedEntry: null,
-  nodeDepends: immutable.List(),
   notFound: false,
-  staticRoute: null
+  entryID: null,
+  entry: null,
+  entryDepends: new immutable.List(),
+  contentTypeId: null,
+  currentNodeAncestors: new immutable.List(),
+  currentTreeId: null
 });
 var RoutingReducer = ((state = initialState, action) => {
   switch (action.type) {
@@ -776,7 +771,7 @@ function* getRouteSaga(action) {
           siblings
         }, entryMapper), effects.call(setRouteEntry, entry, pathNode, ancestors, siblings)]);
       } else {
-        if (pathNode) yield effects.call(setRouteEntry, null, pathNode, ancestors, siblings);else yield effects.call(do404);
+        yield effects.call(do404);
       }
 
       if (!appsays || !appsays.preventScrollTop) {
@@ -807,12 +802,24 @@ function* getRouteSaga(action) {
 }
 
 function* setRouteEntry(entry, node, ancestors, siblings) {
-  yield effects.all([effects.put({
+  yield effects.all([// put({
+  //   type: SET_NAVIGATION_NOT_FOUND,
+  //   notFound: !(entry && entry.sys.id),
+  // }),
+  // put({
+  //   type: SET_NODE,
+  //   node,
+  // }),
+  effects.put({
     type: selectors.SET_ENTRY,
     id: entry && entry.sys.id || null,
     entry,
     node
-  }), ancestors && effects.put({
+  }), // put({
+  //   type: SET_ENTRY_ID,
+  //   id: (entry && entry.sys.id) || null,
+  // }),
+  ancestors && effects.put({
     type: selectors.SET_ANCESTORS,
     ancestors
   }), siblings && effects.put({
@@ -823,7 +830,7 @@ function* setRouteEntry(entry, node, ancestors, siblings) {
 
 function* mapRouteEntry(node, entryMapper) {
   if (typeof entryMapper === 'function') {
-    const mappedEntry = yield entryMapper(node);
+    const mappedEntry = entryMapper(node);
     yield effects.put({
       type: selectors.MAP_ENTRY,
       mappedEntry,
@@ -834,6 +841,14 @@ function* mapRouteEntry(node, entryMapper) {
 }
 
 function* do404() {
+  // yield put({
+  //   type: SET_NAVIGATION_NOT_FOUND,
+  //   notFound: true,
+  // });
+  // yield put({
+  //   type: SET_ENTRY_ID,
+  //   id: null,
+  // });
   yield effects.put({
     type: selectors.SET_ENTRY,
     id: null,
@@ -894,4 +909,4 @@ exports.createStore = createStore;
 exports.history = history;
 exports.pickProject = pickProject;
 exports.rootSaga = rootSaga;
-//# sourceMappingURL=App-5dbcb580.js.map
+//# sourceMappingURL=App-9c8007f9.js.map

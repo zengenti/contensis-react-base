@@ -653,20 +653,6 @@ const {
   selectRouteLoading
 } = redux.routing.selectors;
 const {
-  selectUser,
-  selectUsername,
-  selectUserLoggedIn,
-  selectUserGroups,
-  selectUserMessage,
-  selectLoginScreenMode,
-  selectPasswordMessage,
-  selectChangePasswordMessage,
-  selectCaptchaResponse,
-  selectCaptchaData,
-  selectCaptchaToken,
-  selectCaptchaSiteKey
-} = redux.user.selectors;
-const {
   selectCommitRef,
   selectBuildNumber,
   selectVersionStatus
@@ -2050,7 +2036,9 @@ var reducers = (config => {
           // DO SEARCH is used when we cannot use SET_ROUTE_FILTERS
           // for example in a minilist scenario where the route filters
           // are used for the primary page / listing navigation
-          const filters = generateFiltersState(action, state);
+          const filters = generateFiltersState({ ...action,
+            isCurrentFacet: true
+          }, state);
           return state.setIn([action.context || Context.minilist, action.facet, 'filters'], filters);
         }
 
