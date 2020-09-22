@@ -218,8 +218,9 @@ function* getRouteSaga(action) {
         yield all([
           call(
             mapRouteEntry,
+            entryMapper,
             { ...pathNode, ancestors, siblings },
-            entryMapper
+            state
           ),
           call(setRouteEntry, entry, pathNode, ancestors, siblings),
         ]);
@@ -292,9 +293,9 @@ function* setRouteEntry(entry, node, ancestors, siblings) {
   ]);
 }
 
-function* mapRouteEntry(node, entryMapper) {
+function* mapRouteEntry(entryMapper, node, state) {
   if (typeof entryMapper === 'function') {
-    const mappedEntry = entryMapper(node);
+    const mappedEntry = yield call(entryMapper, node, state);
     yield put({ type: MAP_ENTRY, mappedEntry, node, entryMapper });
   }
 }
