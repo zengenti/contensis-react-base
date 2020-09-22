@@ -760,10 +760,10 @@ function* getRouteSaga(action) {
       if (pathNode && pathNode.entry && pathNode.entry.sys && pathNode.entry.sys.id) {
         entry = pathNode.entry;
         const entryMapper = (ContentTypeMappings.find(ct => ct.contentTypeID === pathNode.entry.sys.contentTypeId) || {}).entryMapper;
-        yield all([call(mapRouteEntry, { ...pathNode,
+        yield all([call(mapRouteEntry, entryMapper, { ...pathNode,
           ancestors,
           siblings
-        }, entryMapper), call(setRouteEntry, entry, pathNode, ancestors, siblings)]);
+        }, state), call(setRouteEntry, entry, pathNode, ancestors, siblings)]);
       } else {
         yield call(do404);
       }
@@ -822,9 +822,9 @@ function* setRouteEntry(entry, node, ancestors, siblings) {
   })]);
 }
 
-function* mapRouteEntry(node, entryMapper) {
+function* mapRouteEntry(entryMapper, node, state) {
   if (typeof entryMapper === 'function') {
-    const mappedEntry = entryMapper(node);
+    const mappedEntry = yield call(entryMapper, node, state);
     yield put({
       type: MAP_ENTRY,
       mappedEntry,
@@ -896,4 +896,4 @@ const AppRoot = props => {
 };
 
 export { AppRoot as A, GetDeliveryApiStatusFromHostname as G, GetClientSideDeliveryApiStatus as a, browserHistory as b, createStore as c, history as h, pickProject as p, rootSaga as r };
-//# sourceMappingURL=App-022c43a3.js.map
+//# sourceMappingURL=App-418664ec.js.map

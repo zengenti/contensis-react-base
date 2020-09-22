@@ -768,10 +768,10 @@ function* getRouteSaga(action) {
       if (pathNode && pathNode.entry && pathNode.entry.sys && pathNode.entry.sys.id) {
         entry = pathNode.entry;
         const entryMapper = (ContentTypeMappings.find(ct => ct.contentTypeID === pathNode.entry.sys.contentTypeId) || {}).entryMapper;
-        yield effects.all([effects.call(mapRouteEntry, { ...pathNode,
+        yield effects.all([effects.call(mapRouteEntry, entryMapper, { ...pathNode,
           ancestors,
           siblings
-        }, entryMapper), effects.call(setRouteEntry, entry, pathNode, ancestors, siblings)]);
+        }, state), effects.call(setRouteEntry, entry, pathNode, ancestors, siblings)]);
       } else {
         yield effects.call(do404);
       }
@@ -830,9 +830,9 @@ function* setRouteEntry(entry, node, ancestors, siblings) {
   })]);
 }
 
-function* mapRouteEntry(node, entryMapper) {
+function* mapRouteEntry(entryMapper, node, state) {
   if (typeof entryMapper === 'function') {
-    const mappedEntry = entryMapper(node);
+    const mappedEntry = yield effects.call(entryMapper, node, state);
     yield effects.put({
       type: selectors.MAP_ENTRY,
       mappedEntry,
@@ -911,4 +911,4 @@ exports.createStore = createStore;
 exports.history = history;
 exports.pickProject = pickProject;
 exports.rootSaga = rootSaga;
-//# sourceMappingURL=App-877e279f.js.map
+//# sourceMappingURL=App-1731d5ca.js.map
