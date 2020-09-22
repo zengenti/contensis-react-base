@@ -364,17 +364,22 @@ class CachedSearch {
 
 const cachedSearch = new CachedSearch();
 
-let initialState = immutable.Map({
+let initialState = immutable.OrderedMap({
+  contentTypeId: null,
   currentPath: '/',
   currentNode: [],
+  currentNodeAncestors: immutable.List(),
   currentProject: 'unknown',
-  notFound: false,
-  entryID: null,
+  currentTreeId: null,
   entry: null,
-  entryDepends: new immutable.List(),
-  contentTypeId: null,
-  currentNodeAncestors: new immutable.List(),
-  currentTreeId: null
+  entryDepends: immutable.List(),
+  entryID: null,
+  isLoading: false,
+  location: null,
+  mappedEntry: null,
+  nodeDepends: immutable.List(),
+  notFound: false,
+  staticRoute: null
 });
 var RoutingReducer = ((state = initialState, action) => {
   switch (action.type) {
@@ -773,7 +778,7 @@ function* getRouteSaga(action) {
           siblings
         }, state), effects.call(setRouteEntry, entry, pathNode, ancestors, siblings)]);
       } else {
-        yield effects.call(do404);
+        if (pathNode) yield effects.call(setRouteEntry, null, pathNode, ancestors, siblings);else yield effects.call(do404);
       }
 
       if (!appsays || !appsays.preventScrollTop) {
@@ -804,24 +809,12 @@ function* getRouteSaga(action) {
 }
 
 function* setRouteEntry(entry, node, ancestors, siblings) {
-  yield effects.all([// put({
-  //   type: SET_NAVIGATION_NOT_FOUND,
-  //   notFound: !(entry && entry.sys.id),
-  // }),
-  // put({
-  //   type: SET_NODE,
-  //   node,
-  // }),
-  effects.put({
+  yield effects.all([effects.put({
     type: selectors.SET_ENTRY,
     id: entry && entry.sys.id || null,
     entry,
     node
-  }), // put({
-  //   type: SET_ENTRY_ID,
-  //   id: (entry && entry.sys.id) || null,
-  // }),
-  ancestors && effects.put({
+  }), ancestors && effects.put({
     type: selectors.SET_ANCESTORS,
     ancestors
   }), siblings && effects.put({
@@ -843,14 +836,6 @@ function* mapRouteEntry(entryMapper, node, state) {
 }
 
 function* do404() {
-  // yield put({
-  //   type: SET_NAVIGATION_NOT_FOUND,
-  //   notFound: true,
-  // });
-  // yield put({
-  //   type: SET_ENTRY_ID,
-  //   id: null,
-  // });
   yield effects.put({
     type: selectors.SET_ENTRY,
     id: null,
@@ -911,4 +896,4 @@ exports.createStore = createStore;
 exports.history = history;
 exports.pickProject = pickProject;
 exports.rootSaga = rootSaga;
-//# sourceMappingURL=App-1731d5ca.js.map
+//# sourceMappingURL=App-3721da36.js.map

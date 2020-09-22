@@ -1,6 +1,6 @@
 import React from 'react';
 import 'react-redux';
-import { Map, List, fromJS, Set as Set$1 } from 'immutable';
+import { OrderedMap, List, fromJS, Set as Set$1, Map } from 'immutable';
 import { createBrowserHistory, createMemoryHistory } from 'history';
 import { Client, Op, Query } from 'contensis-delivery-api';
 import { S as SET_TARGET_PROJECT, e as SET_SIBLINGS, f as SET_ROUTE, g as SET_NAVIGATION_PATH, h as SET_ENTRY, i as SET_ANCESTORS, M as MAP_ENTRY, C as CALL_HISTORY_METHOD, c as selectRouteEntry, j as selectCurrentNode, k as selectCurrentPath, d as selectCurrentProject } from './selectors-9caa4dc1.js';
@@ -356,17 +356,22 @@ class CachedSearch {
 
 const cachedSearch = new CachedSearch();
 
-let initialState = Map({
+let initialState = OrderedMap({
+  contentTypeId: null,
   currentPath: '/',
   currentNode: [],
+  currentNodeAncestors: List(),
   currentProject: 'unknown',
-  notFound: false,
-  entryID: null,
+  currentTreeId: null,
   entry: null,
-  entryDepends: new List(),
-  contentTypeId: null,
-  currentNodeAncestors: new List(),
-  currentTreeId: null
+  entryDepends: List(),
+  entryID: null,
+  isLoading: false,
+  location: null,
+  mappedEntry: null,
+  nodeDepends: List(),
+  notFound: false,
+  staticRoute: null
 });
 var RoutingReducer = ((state = initialState, action) => {
   switch (action.type) {
@@ -765,7 +770,7 @@ function* getRouteSaga(action) {
           siblings
         }, state), call(setRouteEntry, entry, pathNode, ancestors, siblings)]);
       } else {
-        yield call(do404);
+        if (pathNode) yield call(setRouteEntry, null, pathNode, ancestors, siblings);else yield call(do404);
       }
 
       if (!appsays || !appsays.preventScrollTop) {
@@ -796,24 +801,12 @@ function* getRouteSaga(action) {
 }
 
 function* setRouteEntry(entry, node, ancestors, siblings) {
-  yield all([// put({
-  //   type: SET_NAVIGATION_NOT_FOUND,
-  //   notFound: !(entry && entry.sys.id),
-  // }),
-  // put({
-  //   type: SET_NODE,
-  //   node,
-  // }),
-  put({
+  yield all([put({
     type: SET_ENTRY,
     id: entry && entry.sys.id || null,
     entry,
     node
-  }), // put({
-  //   type: SET_ENTRY_ID,
-  //   id: (entry && entry.sys.id) || null,
-  // }),
-  ancestors && put({
+  }), ancestors && put({
     type: SET_ANCESTORS,
     ancestors
   }), siblings && put({
@@ -835,14 +828,6 @@ function* mapRouteEntry(entryMapper, node, state) {
 }
 
 function* do404() {
-  // yield put({
-  //   type: SET_NAVIGATION_NOT_FOUND,
-  //   notFound: true,
-  // });
-  // yield put({
-  //   type: SET_ENTRY_ID,
-  //   id: null,
-  // });
   yield put({
     type: SET_ENTRY,
     id: null,
@@ -896,4 +881,4 @@ const AppRoot = props => {
 };
 
 export { AppRoot as A, GetDeliveryApiStatusFromHostname as G, GetClientSideDeliveryApiStatus as a, browserHistory as b, createStore as c, history as h, pickProject as p, rootSaga as r };
-//# sourceMappingURL=App-418664ec.js.map
+//# sourceMappingURL=App-22ddfbd3.js.map
