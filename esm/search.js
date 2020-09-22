@@ -1215,9 +1215,9 @@ const mapEntriesToSearchResults = ({
   mapper,
   context,
   facet
-}, items) => {
+}, items, state) => {
   const mapperFunc = mapper || mappers.results;
-  return items && typeof mapperFunc === 'function' ? mapperFunc(items, facet, context) : [];
+  return items && typeof mapperFunc === 'function' ? mapperFunc(items, facet, context, state) : [];
 };
 
 const facetTemplate = {
@@ -1236,8 +1236,9 @@ const facetTemplate = {
     },
     featuredResults: ({
       action,
-      featuredResult
-    }) => mapEntriesToSearchResults(action, getItemsFromResult(featuredResult)),
+      featuredResult,
+      state
+    }) => mapEntriesToSearchResults(action, getItemsFromResult(featuredResult), state),
     queryDuration: 'result.duration',
     pagingInfo: {
       isLoading: () => false,
@@ -1275,14 +1276,15 @@ const facetTemplate = {
       action,
       pageIndex,
       result,
-      prevResults
+      prevResults,
+      state
     }) => {
       const {
         loadMorePaging,
         pagesLoaded,
         prevPageIndex
       } = action.queryParams;
-      const results = mapEntriesToSearchResults(action, getItemsFromResult(result));
+      const results = mapEntriesToSearchResults(action, getItemsFromResult(result), state);
       if (!loadMorePaging) return results; // add a _pageIndex property to the returned results to help us later
 
       const nextResults = results.map((r, idx) => ({
@@ -1770,7 +1772,8 @@ function* executeSearch(action) {
       featuredResult,
       pageIndex: queryParams.internalPaging && queryParams.internalPageIndex || queryParams.pageIndex,
       prevResults: getResults(state, facet, action.context),
-      result
+      result,
+      state
     };
     const nextAction = mapJson(createStateFrom, facetTemplate);
     yield put(nextAction);
