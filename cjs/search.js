@@ -1460,8 +1460,9 @@ const queryParamsTemplate = {
     facet
   }) => getFacet(state, facet).get('projectId'),
   searchTerm: ({
-    state
-  }) => getSearchTerm(state),
+    state,
+    context
+  }) => context !== Context.minilist ? getSearchTerm(state) : null,
   selectedFilters: ({
     state,
     facet,
