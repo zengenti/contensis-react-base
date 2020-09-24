@@ -1,0 +1,4 @@
+{
+  "main": "../cjs/search.js",
+  "module": "../esm/search.js"
+}

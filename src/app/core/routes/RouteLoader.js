@@ -6,12 +6,13 @@ import { Redirect, useLocation } from 'react-router-dom';
 import { renderRoutes, matchRoutes } from 'react-router-config';
 
 import {
+  selectCurrentPath,
+  selectCurrentProject,
+  selectIsNotFound,
+  selectMappedEntry,
   selectRouteEntry,
   selectRouteEntryContentTypeId,
   selectRouteLoading,
-  selectIsNotFound,
-  selectCurrentProject,
-  selectCurrentPath,
 } from '~/core/redux/selectors/routing';
 import { setNavigationPath } from '~/core/redux/actions/routing';
 import NotFound from '~/pages/NotFound';
@@ -39,6 +40,7 @@ const RouteLoader = ({
   isLoggedIn,
   isNotFound,
   loadingComponent,
+  mappedEntry,
   notFoundComponent,
   setNavigationPath,
   routes,
@@ -99,6 +101,7 @@ const RouteLoader = ({
       projectId,
       contentTypeId,
       entry,
+      mappedEntry,
       isLoggedIn,
     });
   }
@@ -122,6 +125,7 @@ const RouteLoader = ({
           projectId={projectId}
           contentTypeId={contentTypeId}
           entry={entry}
+          mappedEntry={mappedEntry}
           isLoggedIn={isLoggedIn}
         />
       );
@@ -147,6 +151,7 @@ RouteLoader.propTypes = {
   isLoggedIn: PropTypes.bool,
   isNotFound: PropTypes.bool,
   loadingComponent: PropTypes.func,
+  mappedEntry: PropTypes.object,
   notFoundComponent: PropTypes.func,
   projectId: PropTypes.string,
   routes: PropTypes.objectOf(PropTypes.array, PropTypes.array),
@@ -157,13 +162,14 @@ RouteLoader.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    statePath: selectCurrentPath(state),
-    projectId: selectCurrentProject(state),
-    entry: selectRouteEntry(state),
     contentTypeId: selectRouteEntryContentTypeId(state),
+    entry: selectRouteEntry(state),
     isNotFound: selectIsNotFound(state),
     isLoggedIn: selectUserLoggedIn(state),
     isLoading: selectRouteLoading(state),
+    mappedEntry: selectMappedEntry(state),
+    projectId: selectCurrentProject(state),
+    statePath: selectCurrentPath(state),
   };
 };
 
