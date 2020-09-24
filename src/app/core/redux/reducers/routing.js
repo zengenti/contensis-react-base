@@ -1,6 +1,5 @@
 import { OrderedMap, fromJS, List, Set } from 'immutable';
 import {
-  MAP_ENTRY,
   SET_ENTRY,
   SET_NAVIGATION_PATH,
   SET_ANCESTORS,
@@ -30,9 +29,6 @@ let initialState = OrderedMap({
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case MAP_ENTRY: {
-      return state.set('mappedEntry', fromJS(action.mappedEntry));
-    }
     case SET_ANCESTORS: {
       if (action.ancestors) {
         let ancestorIDs = action.ancestors.map(node => {
@@ -51,7 +47,7 @@ export default (state = initialState, action) => {
       return state.set('currentNodeAncestors', fromJS(action.ancestors));
     }
     case SET_ENTRY: {
-      const { entry, node = {}, isLoading = false } = action;
+      const { entry, mappedEntry, node = {}, isLoading = false } = action;
       let nextState;
 
       if (!entry) {
@@ -63,11 +59,17 @@ export default (state = initialState, action) => {
           .set('isLoading', isLoading);
       } else {
         const entryDepends = GetAllResponseGuids(entry);
+
         nextState = state
           .set('entryID', action.id)
           .set('entryDepends', fromJS(entryDepends))
           .set('entry', fromJS(entry))
           .set('isLoading', isLoading);
+
+        if (mappedEntry)
+          nextState = nextState
+            .set('mappedEntry', fromJS(mappedEntry))
+            .set('entry', fromJS({ sys: entry.sys }));
       }
 
       if (!node) {
@@ -81,12 +83,6 @@ export default (state = initialState, action) => {
           .removeIn(['currentNode', 'entry']); // We have the entry stored elsewhere, so lets not keep it twice.
       }
     }
-    // case SET_ENTRY_ID: {
-    //   if (action.id === '') {
-    //     return state;
-    //   }
-    //   return state.set('entryID', action.id);
-    // }
     case SET_NAVIGATION_PATH: {
       let staticRoute = false;
       if (action.staticRoute) {
@@ -119,21 +115,6 @@ export default (state = initialState, action) => {
       }
       return state;
     }
-    // case SET_NAVIGATION_NOT_FOUND: {
-    //   return state
-    //     .set('notFound', fromJS(action.notFound))
-    //     .set('isLoading', false);
-    // }
-    // case SET_NODE: {
-    //   const { node } = action;
-    //   if (!node) return state;
-    //   // On Set Node, we reset all dependants.
-    //   const nodeDepends = Set([node.id]);
-    //   return state
-    //     .set('nodeDepends', nodeDepends)
-    //     .set('currentNode', fromJS(action.node))
-    //     .removeIn(['currentNode', 'entry']); // We have the entry stored elsewhere, so lets not keep it twice.
-    // }
     case SET_ROUTE: {
       return state.set('nextPath', action.path);
     }

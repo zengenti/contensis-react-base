@@ -20,17 +20,17 @@ var minifyCssString = require('minify-css-string');
 var immutable = require('immutable');
 var fromEntries = require('fromentries');
 require('history');
-var App = require('./App-3721da36.js');
+var App = require('./App-1152d089.js');
 require('contensis-delivery-api');
-var selectors = require('./selectors-afa7afd5.js');
-var routing = require('./routing-75532f21.js');
-var navigation = require('./navigation-01e16d0d.js');
+var selectors = require('./selectors-0fe2c691.js');
+var routing = require('./routing-1f9fac1b.js');
+var navigation = require('./navigation-d1239577.js');
 require('query-string');
 require('redux');
 require('redux-immutable');
 require('redux-thunk');
 require('redux-saga');
-require('./sagas-5385dda8.js');
+require('./sagas-6cbd425c.js');
 require('redux-saga/effects');
 require('js-cookie');
 require('./ToJs-d548b71b.js');
@@ -38,7 +38,7 @@ require('loglevel');
 var reactRouterConfig = require('react-router-config');
 require('react-hot-loader');
 require('prop-types');
-require('./RouteLoader-4600e669.js');
+require('./RouteLoader-03b08238.js');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -127,7 +127,7 @@ const apiProxy = httpProxy__default['default'].createProxyServer();
 const reverseProxies = (app, reverseProxyPaths) => {
   deliveryApiProxy(apiProxy, app);
   app.all(reverseProxyPaths, (req, res) => {
-    const target = servers$2.iis;
+    const target = req.hostname.indexOf('preview-') || req.hostname.indexOf('preview.') || req.hostname === 'localhost' ? servers$2.previewIis || servers$2.iis : servers$2.iis;
     apiProxy.web(req, res, {
       target,
       changeOrigin: true
@@ -199,6 +199,9 @@ const hashKeys = keys => {
   return returnKeys;
 };
 
+const moduleBundles = fs__default['default'].readdirSync('./dist/static/modern/js', 'utf8');
+const coreModules = moduleBundles.filter(m => m.startsWith('app.') || m.startsWith('vendor.') || m.startsWith('runtime.'));
+
 const addStandardHeaders = (state, response, packagejson, groups) => {
   if (state) {
     /* eslint-disable no-console */
@@ -220,6 +223,7 @@ const addStandardHeaders = (state, response, packagejson, groups) => {
       console.log(`depends hashed: ${allDepends.join(' ')}`);
       addVarnishAuthenticationHeaders(state, response, groups);
       response.setHeader('Surrogate-Control', 'max-age=3600');
+      response.setHeader('Link', coreModules.map(m => `</static/modern/js/${m}>;rel="preload";as="script"`).join(','));
     } catch (e) {
       console.log('Error Adding headers', e.message); // console.log(e);
     }

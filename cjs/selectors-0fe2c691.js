@@ -17,7 +17,6 @@ function action(type, payload = {}) {
 const ROUTING_PREFIX = '@ROUTING/';
 const GET_ENTRY = `${ROUTING_PREFIX}_GET_ENTRY`;
 const SET_ENTRY = `${ROUTING_PREFIX}_SET_ENTRY`;
-const MAP_ENTRY = `${ROUTING_PREFIX}_MAP_ENTRY`;
 const SET_NODE = `${ROUTING_PREFIX}_SET_NODE`;
 const SET_ANCESTORS = `${ROUTING_PREFIX}_SET_ANCESTORS`;
 const SET_SIBLINGS = `${ROUTING_PREFIX}_SET_SIBLINGS`;
@@ -33,7 +32,6 @@ var routing = /*#__PURE__*/Object.freeze({
   __proto__: null,
   GET_ENTRY: GET_ENTRY,
   SET_ENTRY: SET_ENTRY,
-  MAP_ENTRY: MAP_ENTRY,
   SET_NODE: SET_NODE,
   SET_ANCESTORS: SET_ANCESTORS,
   SET_SIBLINGS: SET_SIBLINGS,
@@ -188,7 +186,6 @@ var user = /*#__PURE__*/Object.freeze({
 });
 
 exports.CALL_HISTORY_METHOD = CALL_HISTORY_METHOD;
-exports.MAP_ENTRY = MAP_ENTRY;
 exports.SET_ANCESTORS = SET_ANCESTORS;
 exports.SET_ENTRY = SET_ENTRY;
 exports.SET_NAVIGATION_NOT_FOUND = SET_NAVIGATION_NOT_FOUND;
@@ -202,7 +199,6 @@ exports.routing$1 = routing$1;
 exports.selectCaptchaResponse = selectCaptchaResponse;
 exports.selectCaptchaSiteKey = selectCaptchaSiteKey;
 exports.selectChangePasswordMessage = selectChangePasswordMessage;
-exports.selectCurrentNode = selectCurrentNode;
 exports.selectCurrentPath = selectCurrentPath;
 exports.selectCurrentProject = selectCurrentProject;
 exports.selectCurrentSearch = selectCurrentSearch;
@@ -222,4 +218,4 @@ exports.selectUserLoggedIn = selectUserLoggedIn;
 exports.selectUserMessage = selectUserMessage;
 exports.selectUsername = selectUsername;
 exports.user = user;
-//# sourceMappingURL=selectors-afa7afd5.js.map
+//# sourceMappingURL=selectors-0fe2c691.js.map

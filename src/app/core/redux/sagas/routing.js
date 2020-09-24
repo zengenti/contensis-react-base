@@ -282,9 +282,10 @@ function* setRouteEntry(entry, node, ancestors, siblings, entryMapper) {
   ]);
 }
 
-function* mapRouteEntry(entryMapper, node, state) {
+function* mapRouteEntry(entryMapper, node) {
   try {
     if (typeof entryMapper === 'function') {
+      const state = yield select();
       const mappedEntry = yield call(entryMapper, node, state);
       return mappedEntry;
     }
