@@ -5,22 +5,22 @@ import { Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { Seq, fromJS } from 'immutable';
 import 'history';
-import { d as deliveryApi, c as createStore, r as rootSaga, p as pickProject, b as browserHistory } from './App-3666d871.js';
-export { A as ReactApp } from './App-3666d871.js';
+import { d as deliveryApi, c as createStore, r as rootSaga, p as pickProject, b as browserHistory } from './App-ab2123e4.js';
+export { A as ReactApp } from './App-ab2123e4.js';
 import 'contensis-delivery-api';
-import { s as setCurrentProject } from './routing-cd189bd3.js';
+import { s as setCurrentProject } from './routing-995ec526.js';
 import 'redux';
 import 'redux-immutable';
 import 'redux-thunk';
 import 'redux-saga';
-import { s as setVersionStatus } from './navigation-ecf08e7d.js';
+import { s as setVersionStatus } from './navigation-ad2a43e9.js';
 import queryString from 'query-string';
 import 'redux-saga/effects';
 import 'loglevel';
 import 'react-router-config';
 import { AppContainer } from 'react-hot-loader';
 import 'prop-types';
-import './RouteLoader-b5847f41.js';
+import './RouteLoader-25040a91.js';
 import { hydrate, render } from 'react-dom';
 
 const fromJSOrdered = js => {

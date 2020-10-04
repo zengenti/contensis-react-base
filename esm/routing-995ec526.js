@@ -96,9 +96,6 @@ const selectNodeDepends = state => {
 const selectCurrentTreeID = state => {
   return state.getIn(['routing', 'currentTreeId']);
 };
-const selectEntryDepends = state => {
-  return state.getIn(['routing', 'entryDepends']);
-};
 const selectRouteEntryEntryId = state => {
   return state.getIn(['routing', 'entry', 'sys', 'id'], null);
 };
@@ -147,7 +144,6 @@ var routing$2 = /*#__PURE__*/Object.freeze({
   selectMappedEntry: selectMappedEntry,
   selectNodeDepends: selectNodeDepends,
   selectCurrentTreeID: selectCurrentTreeID,
-  selectEntryDepends: selectEntryDepends,
   selectRouteEntryEntryId: selectRouteEntryEntryId,
   selectRouteEntryContentTypeId: selectRouteEntryContentTypeId,
   selectRouteEntrySlug: selectRouteEntrySlug,
@@ -164,5 +160,5 @@ var routing$2 = /*#__PURE__*/Object.freeze({
   selectRouteLoading: selectRouteLoading
 });
 
-export { CALL_HISTORY_METHOD as C, MAP_ENTRY as M, SET_TARGET_PROJECT as S, selectEntryDepends as a, selectNodeDepends as b, selectCurrentTreeID as c, selectRouteEntry as d, selectCurrentProject as e, SET_SURROGATE_KEYS as f, SET_SIBLINGS as g, SET_ROUTE as h, SET_NAVIGATION_PATH as i, SET_ENTRY as j, SET_ANCESTORS as k, setSurrogateKeys as l, selectCurrentPath as m, selectRouteEntryContentTypeId as n, selectIsNotFound as o, selectRouteLoading as p, selectMappedEntry as q, setNavigationPath as r, setCurrentProject as s, action as t, routing as u, routing$1 as v, routing$2 as w };
-//# sourceMappingURL=routing-cd189bd3.js.map
+export { CALL_HISTORY_METHOD as C, MAP_ENTRY as M, SET_TARGET_PROJECT as S, selectRouteEntry as a, selectCurrentProject as b, SET_SURROGATE_KEYS as c, SET_SIBLINGS as d, SET_ROUTE as e, SET_NAVIGATION_PATH as f, SET_ENTRY as g, SET_ANCESTORS as h, setSurrogateKeys as i, selectCurrentPath as j, selectRouteEntryContentTypeId as k, selectIsNotFound as l, selectRouteLoading as m, selectMappedEntry as n, setNavigationPath as o, action as p, routing$1 as q, routing as r, setCurrentProject as s, routing$2 as t };
+//# sourceMappingURL=routing-995ec526.js.map

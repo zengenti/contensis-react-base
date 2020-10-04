@@ -19,21 +19,21 @@ var minifyCssString = require('minify-css-string');
 var immutable = require('immutable');
 var fromEntries = require('fromentries');
 require('history');
-var App = require('./App-94c1e782.js');
+var App = require('./App-f0a6d8e9.js');
 require('contensis-delivery-api');
-var routing = require('./routing-aad9c993.js');
+var routing = require('./routing-6209c9fc.js');
 require('redux');
 require('redux-immutable');
 require('redux-thunk');
 require('redux-saga');
-var navigation = require('./navigation-0482d226.js');
+var navigation = require('./navigation-7ed350d5.js');
 require('query-string');
 require('redux-saga/effects');
 require('loglevel');
 var reactRouterConfig = require('react-router-config');
 require('react-hot-loader');
 require('prop-types');
-require('./RouteLoader-f9f4cdf9.js');
+require('./RouteLoader-96e581b3.js');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -133,20 +133,6 @@ const handleResponse = (request, response, content, send = ResponseMethod.send) 
   response[send](content);
 };
 
-const hashKeys = keys => {
-  const XXHash = require('xxhashjs');
-
-  const returnKeys = [];
-  keys.forEach(cacheKey => {
-    const inputBuffer = Buffer.from(cacheKey.toLowerCase(), 'utf-8');
-    const hashed = XXHash.h32(inputBuffer, 0x0).toString(16);
-    const reversedhex = hashed.match(/[a-fA-F0-9]{2}/g).reverse().join('');
-    const outputBuffer = Buffer.from(reversedhex, 'hex');
-    returnKeys.push(outputBuffer.toString('base64').substring(0, 6));
-  });
-  return returnKeys;
-};
-
 // const coreModules = moduleBundles.filter(
 //   m =>
 //     m.startsWith('app.') || m.startsWith('vendor.') || m.startsWith('runtime.')
@@ -156,22 +142,10 @@ const addStandardHeaders = (state, response, packagejson, groups) => {
   if (state) {
     /* eslint-disable no-console */
     try {
-      console.log('About to add header');
-      let entryDepends = routing.selectEntryDepends(state);
-      entryDepends = Array.from(entryDepends || {});
-      console.log(`entryDepends count: ${entryDepends.length}`);
-      let nodeDepends = routing.selectNodeDepends(state).toJS();
-      let currentTreeId = routing.selectCurrentTreeID(state);
-      let nodeDependsKeys = nodeDepends.map(nodeKey => {
-        return `${currentTreeId}_${nodeKey}`;
-      });
-      const allDepends = [...entryDepends, ...nodeDependsKeys];
-      const allDependsHashed = hashKeys(allDepends).join(' ');
+      console.log('About to add headers');
       const routingSurrogateKeys = state.getIn(['routing', 'surrogateKeys'], '');
-      const surrogateKeyHeader = ` ${packagejson.name}-app ${allDependsHashed} ${routingSurrogateKeys}`;
+      const surrogateKeyHeader = ` ${packagejson.name}-app ${routingSurrogateKeys}`;
       response.header('surrogate-key', surrogateKeyHeader);
-      console.log(`depends hashed: ${allDependsHashed}`);
-      console.log(`depends hashed: ${allDepends.join(' ')}`);
       addVarnishAuthenticationHeaders(state, response, groups);
       response.setHeader('Surrogate-Control', 'max-age=3600');
     } catch (e) {
@@ -364,7 +338,9 @@ const webApp = (app, ReactApp, config) => {
 
         if (context.status !== 404) {
           if (accessMethod.REDUX) {
-            serialisedReduxData = serialize__default['default'](reduxState);
+            serialisedReduxData = serialize__default['default'](reduxState, {
+              ignoreFunction: true
+            });
             addStandardHeaders(reduxState, response, packagejson, {
               allowedGroups,
               globalGroups
@@ -376,7 +352,9 @@ const webApp = (app, ReactApp, config) => {
           }
 
           if (!disableSsrRedux) {
-            serialisedReduxData = serialize__default['default'](reduxState);
+            serialisedReduxData = serialize__default['default'](reduxState, {
+              ignoreFunction: true
+            });
             serialisedReduxData = `<script>window.REDUX_DATA = ${serialisedReduxData}</script>`;
           }
         }

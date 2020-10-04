@@ -653,20 +653,6 @@ const {
   selectRouteLoading
 } = redux.routing.selectors;
 const {
-  selectUser,
-  selectUsername,
-  selectUserLoggedIn,
-  selectUserGroups,
-  selectUserMessage,
-  selectLoginScreenMode,
-  selectPasswordMessage,
-  selectChangePasswordMessage,
-  selectCaptchaResponse,
-  selectCaptchaData,
-  selectCaptchaToken,
-  selectCaptchaSiteKey
-} = redux.user.selectors;
-const {
   selectCommitRef,
   selectBuildNumber,
   selectVersionStatus

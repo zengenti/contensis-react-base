@@ -15,22 +15,22 @@ import minifyCssString from 'minify-css-string';
 import { fromJS } from 'immutable';
 import fromEntries from 'fromentries';
 import 'history';
-import { c as createStore, h as history, d as deliveryApi, p as pickProject, r as rootSaga } from './App-3666d871.js';
-export { A as ReactApp } from './App-3666d871.js';
+import { c as createStore, h as history, d as deliveryApi, p as pickProject, r as rootSaga } from './App-ab2123e4.js';
+export { A as ReactApp } from './App-ab2123e4.js';
 import 'contensis-delivery-api';
-import { s as setCurrentProject, a as selectEntryDepends, b as selectNodeDepends, c as selectCurrentTreeID, d as selectRouteEntry, e as selectCurrentProject } from './routing-cd189bd3.js';
+import { s as setCurrentProject, a as selectRouteEntry, b as selectCurrentProject } from './routing-995ec526.js';
 import 'redux';
 import 'redux-immutable';
 import 'redux-thunk';
 import 'redux-saga';
-import { s as setVersionStatus, a as setVersion } from './navigation-ecf08e7d.js';
+import { s as setVersionStatus, a as setVersion } from './navigation-ad2a43e9.js';
 import 'query-string';
 import 'redux-saga/effects';
 import 'loglevel';
 import { matchRoutes } from 'react-router-config';
 import 'react-hot-loader';
 import 'prop-types';
-import './RouteLoader-b5847f41.js';
+import './RouteLoader-25040a91.js';
 
 const servers = SERVERS;
 /* global SERVERS */
@@ -118,20 +118,6 @@ const handleResponse = (request, response, content, send = ResponseMethod.send) 
   response[send](content);
 };
 
-const hashKeys = keys => {
-  const XXHash = require('xxhashjs');
-
-  const returnKeys = [];
-  keys.forEach(cacheKey => {
-    const inputBuffer = Buffer.from(cacheKey.toLowerCase(), 'utf-8');
-    const hashed = XXHash.h32(inputBuffer, 0x0).toString(16);
-    const reversedhex = hashed.match(/[a-fA-F0-9]{2}/g).reverse().join('');
-    const outputBuffer = Buffer.from(reversedhex, 'hex');
-    returnKeys.push(outputBuffer.toString('base64').substring(0, 6));
-  });
-  return returnKeys;
-};
-
 // const coreModules = moduleBundles.filter(
 //   m =>
 //     m.startsWith('app.') || m.startsWith('vendor.') || m.startsWith('runtime.')
@@ -141,22 +127,10 @@ const addStandardHeaders = (state, response, packagejson, groups) => {
   if (state) {
     /* eslint-disable no-console */
     try {
-      console.log('About to add header');
-      let entryDepends = selectEntryDepends(state);
-      entryDepends = Array.from(entryDepends || {});
-      console.log(`entryDepends count: ${entryDepends.length}`);
-      let nodeDepends = selectNodeDepends(state).toJS();
-      let currentTreeId = selectCurrentTreeID(state);
-      let nodeDependsKeys = nodeDepends.map(nodeKey => {
-        return `${currentTreeId}_${nodeKey}`;
-      });
-      const allDepends = [...entryDepends, ...nodeDependsKeys];
-      const allDependsHashed = hashKeys(allDepends).join(' ');
+      console.log('About to add headers');
       const routingSurrogateKeys = state.getIn(['routing', 'surrogateKeys'], '');
-      const surrogateKeyHeader = ` ${packagejson.name}-app ${allDependsHashed} ${routingSurrogateKeys}`;
+      const surrogateKeyHeader = ` ${packagejson.name}-app ${routingSurrogateKeys}`;
       response.header('surrogate-key', surrogateKeyHeader);
-      console.log(`depends hashed: ${allDependsHashed}`);
-      console.log(`depends hashed: ${allDepends.join(' ')}`);
       addVarnishAuthenticationHeaders(state, response, groups);
       response.setHeader('Surrogate-Control', 'max-age=3600');
     } catch (e) {
@@ -349,7 +323,9 @@ const webApp = (app, ReactApp, config) => {
 
         if (context.status !== 404) {
           if (accessMethod.REDUX) {
-            serialisedReduxData = serialize(reduxState);
+            serialisedReduxData = serialize(reduxState, {
+              ignoreFunction: true
+            });
             addStandardHeaders(reduxState, response, packagejson, {
               allowedGroups,
               globalGroups
@@ -361,7 +337,9 @@ const webApp = (app, ReactApp, config) => {
           }
 
           if (!disableSsrRedux) {
-            serialisedReduxData = serialize(reduxState);
+            serialisedReduxData = serialize(reduxState, {
+              ignoreFunction: true
+            });
             serialisedReduxData = `<script>window.REDUX_DATA = ${serialisedReduxData}</script>`;
           }
         }

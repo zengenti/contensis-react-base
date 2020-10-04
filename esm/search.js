@@ -6,7 +6,7 @@ import queryString from 'query-string';
 import { error, warn, info } from 'loglevel';
 import PropTypes from 'prop-types';
 import { takeEvery, select, put, call, all } from '@redux-saga/core/effects';
-import { navigation, routing, user, version } from '@zengenti/contensis-react-base/redux';
+import { navigation, routing, version } from '@zengenti/contensis-react-base/redux';
 import mapJson from 'jsonpath-mapper';
 
 const toJS = WrappedComponent => wrappedComponentProps => {
@@ -641,20 +641,6 @@ const {
   selectRouteEntrySlug,
   selectRouteLoading
 } = routing.selectors;
-const {
-  selectUser,
-  selectUsername,
-  selectUserLoggedIn,
-  selectUserGroups,
-  selectUserMessage,
-  selectLoginScreenMode,
-  selectPasswordMessage,
-  selectChangePasswordMessage,
-  selectCaptchaResponse,
-  selectCaptchaData,
-  selectCaptchaToken,
-  selectCaptchaSiteKey
-} = user.selectors;
 const {
   selectCommitRef,
   selectBuildNumber,

@@ -102,9 +102,6 @@ const selectNodeDepends = state => {
 const selectCurrentTreeID = state => {
   return state.getIn(['routing', 'currentTreeId']);
 };
-const selectEntryDepends = state => {
-  return state.getIn(['routing', 'entryDepends']);
-};
 const selectRouteEntryEntryId = state => {
   return state.getIn(['routing', 'entry', 'sys', 'id'], null);
 };
@@ -153,7 +150,6 @@ var routing$2 = /*#__PURE__*/Object.freeze({
   selectMappedEntry: selectMappedEntry,
   selectNodeDepends: selectNodeDepends,
   selectCurrentTreeID: selectCurrentTreeID,
-  selectEntryDepends: selectEntryDepends,
   selectRouteEntryEntryId: selectRouteEntryEntryId,
   selectRouteEntryContentTypeId: selectRouteEntryContentTypeId,
   selectRouteEntrySlug: selectRouteEntrySlug,
@@ -185,15 +181,12 @@ exports.routing$1 = routing$1;
 exports.routing$2 = routing$2;
 exports.selectCurrentPath = selectCurrentPath;
 exports.selectCurrentProject = selectCurrentProject;
-exports.selectCurrentTreeID = selectCurrentTreeID;
-exports.selectEntryDepends = selectEntryDepends;
 exports.selectIsNotFound = selectIsNotFound;
 exports.selectMappedEntry = selectMappedEntry;
-exports.selectNodeDepends = selectNodeDepends;
 exports.selectRouteEntry = selectRouteEntry;
 exports.selectRouteEntryContentTypeId = selectRouteEntryContentTypeId;
 exports.selectRouteLoading = selectRouteLoading;
 exports.setCurrentProject = setCurrentProject;
 exports.setNavigationPath = setNavigationPath;
 exports.setSurrogateKeys = setSurrogateKeys;
-//# sourceMappingURL=routing-aad9c993.js.map
+//# sourceMappingURL=routing-6209c9fc.js.map
