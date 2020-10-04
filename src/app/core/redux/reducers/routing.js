@@ -12,7 +12,6 @@ import {
   MAP_ENTRY,
   SET_SURROGATE_KEYS,
 } from '~/core/redux/types/routing';
-import { GetAllResponseGuids } from '~/core/util/ContensisDeliveryApi';
 
 let initialState = Map({
   currentPath: '/',
@@ -33,10 +32,6 @@ export default (state = initialState, action) => {
     }
     case SET_ANCESTORS: {
       if (action.ancestors) {
-        let ancestorIDs = action.ancestors.map(node => {
-          return node.id;
-        });
-
         return state.set('currentNodeAncestors', fromJS(action.ancestors));
       }
       return state.set('currentNodeAncestors', fromJS(action.ancestors));
