@@ -13,9 +13,6 @@ export const selectNodeDepends = state => {
 export const selectCurrentTreeID = state => {
   return state.getIn(['routing', 'currentTreeId']);
 };
-export const selectEntryDepends = state => {
-  return state.getIn(['routing', 'entryDepends']);
-};
 export const selectRouteEntryEntryId = state => {
   return state.getIn(['routing', 'entry', 'sys', 'id'], null);
 };

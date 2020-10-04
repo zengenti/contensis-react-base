@@ -38,41 +38,6 @@ const getClientConfig = project => {
 
 export * from 'contensis-delivery-api';
 
-export const GetResponseGuids = object => {
-  let Ids = [];
-  Object.keys(object).some(function(k) {
-    if (k === 'sys') {
-      //Should always have an ID, but lets check...
-      if (object[k].id && object[k].language) {
-        // We can exclude assets here i think... ?
-        if (object[k].dataFormat) {
-          if (object[k].dataFormat !== 'asset') {
-            Ids.push(`${object[k].id}_${object[k].language.toLowerCase()}`);
-          }
-        } else {
-          // If we don't have a dataformat add it anyhow, for safety
-          Ids.push(`${object[k].id}_${object[k].language.toLowerCase()}`);
-        }
-      }
-      return false;
-    }
-    if (object[k] && typeof object[k] === 'object') {
-      let subIds = GetResponseGuids(object[k]);
-      if (subIds.length > 0) {
-        Ids.push(...subIds);
-      }
-      return false;
-    }
-  });
-  return Ids;
-};
-
-export const GetAllResponseGuids = object => {
-  if (!object) return [];
-  let returnItems = GetResponseGuids(object);
-  let unique = new Set(returnItems);
-  return unique;
-};
 class DeliveryApi {
   getClientSideVersionStatus = () => {
     if (typeof window != 'undefined') {

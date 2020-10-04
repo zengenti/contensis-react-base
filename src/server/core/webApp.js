@@ -16,7 +16,6 @@ import { history } from '~/core/redux/history';
 
 import { AccessMethods } from '../util/types';
 import handleResponse from '../util/handleResponse';
-import { hashKeys } from '../util/cacheHashing';
 
 import pickProject from '~/core/util/pickProject';
 import { deliveryApi } from '~/core/util/ContensisDeliveryApi';
@@ -26,9 +25,6 @@ import { setVersion, setVersionStatus } from '~/core/redux/actions/version';
 
 import {
   selectCurrentProject,
-  selectCurrentTreeID,
-  selectEntryDepends,
-  selectNodeDepends,
   selectRouteEntry,
 } from '~/core/redux/selectors/routing';
 
@@ -46,29 +42,15 @@ const addStandardHeaders = (state, response, packagejson, groups) => {
   if (state) {
     /* eslint-disable no-console */
     try {
-      console.log('About to add header');
-      let entryDepends = selectEntryDepends(state);
-      entryDepends = Array.from(entryDepends || {});
-      console.log(`entryDepends count: ${entryDepends.length}`);
-
-      let nodeDepends = selectNodeDepends(state).toJS();
-      let currentTreeId = selectCurrentTreeID(state);
-      let nodeDependsKeys = nodeDepends.map(nodeKey => {
-        return `${currentTreeId}_${nodeKey}`;
-      });
-      const allDepends = [...entryDepends, ...nodeDependsKeys];
-      const allDependsHashed = hashKeys(allDepends).join(' ');
+      console.log('About to add headers');
       const routingSurrogateKeys = state.getIn(
         ['routing', 'surrogateKeys'],
         ''
       );
 
-      const surrogateKeyHeader = ` ${packagejson.name}-app ${allDependsHashed} ${routingSurrogateKeys}`;
+      const surrogateKeyHeader = ` ${packagejson.name}-app ${routingSurrogateKeys}`;
 
       response.header('surrogate-key', surrogateKeyHeader);
-
-      console.log(`depends hashed: ${allDependsHashed}`);
-      console.log(`depends hashed: ${allDepends.join(' ')}`);
 
       addVarnishAuthenticationHeaders(state, response, groups);
 
@@ -342,7 +324,9 @@ const webApp = (app, ReactApp, config) => {
           let serialisedReduxData = '';
           if (context.status !== 404) {
             if (accessMethod.REDUX) {
-              serialisedReduxData = serialize(reduxState);
+              serialisedReduxData = serialize(reduxState, {
+                ignoreFunction: true,
+              });
               addStandardHeaders(reduxState, response, packagejson, {
                 allowedGroups,
                 globalGroups,
@@ -352,7 +336,9 @@ const webApp = (app, ReactApp, config) => {
               return true;
             }
             if (!disableSsrRedux) {
-              serialisedReduxData = serialize(reduxState);
+              serialisedReduxData = serialize(reduxState, {
+                ignoreFunction: true,
+              });
               serialisedReduxData = `<script>window.REDUX_DATA = ${serialisedReduxData}</script>`;
             }
           }

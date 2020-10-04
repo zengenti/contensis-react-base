@@ -21,7 +21,6 @@ let initialState = Map({
   notFound: false,
   entryID: null,
   entry: null,
-  entryDepends: new List(),
   contentTypeId: null,
   currentNodeAncestors: new List(),
   currentTreeId: null,
@@ -38,14 +37,7 @@ export default (state = initialState, action) => {
           return node.id;
         });
 
-        let currentNodeDepends = state.get('nodeDepends');
-        const allNodeDepends = Set.union([
-          Set(ancestorIDs),
-          currentNodeDepends,
-        ]);
-        return state
-          .set('nodeDepends', allNodeDepends)
-          .set('currentNodeAncestors', fromJS(action.ancestors));
+        return state.set('currentNodeAncestors', fromJS(action.ancestors));
       }
       return state.set('currentNodeAncestors', fromJS(action.ancestors));
     }
@@ -56,15 +48,12 @@ export default (state = initialState, action) => {
       if (!entry) {
         nextState = state
           .set('entryID', null)
-          .set('entryDepends', null)
           .set('entry', null)
           .set('mappedEntry', null)
           .set('isLoading', isLoading);
       } else {
-        const entryDepends = GetAllResponseGuids(entry);
         nextState = state
           .set('entryID', action.id)
-          .set('entryDepends', fromJS(entryDepends))
           .set('entry', fromJS(entry))
           .set('isLoading', isLoading);
       }
@@ -73,19 +62,11 @@ export default (state = initialState, action) => {
         return nextState.set('nodeDepends', null).set('currentNode', null);
       } else {
         // On Set Node, we reset all dependants.
-        const nodeDepends = Set([node.id]);
         return nextState
-          .set('nodeDepends', nodeDepends)
           .set('currentNode', fromJS(node))
           .removeIn(['currentNode', 'entry']); // We have the entry stored elsewhere, so lets not keep it twice.
       }
     }
-    // case SET_ENTRY_ID: {
-    //   if (action.id === '') {
-    //     return state;
-    //   }
-    //   return state.set('entryID', action.id);
-    // }
     case SET_NAVIGATION_PATH: {
       let staticRoute = false;
       if (action.staticRoute) {
