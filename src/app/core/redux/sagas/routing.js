@@ -23,6 +23,7 @@ import {
 import { GET_NODE_TREE } from '../types/navigation';
 import { hasNavigationTree } from '../selectors/navigation';
 import { routeEntryByFieldsQuery } from './queries';
+import { ensureNodeTreeSaga } from './navigation';
 
 export const routingSagas = [
   takeEvery(SET_NAVIGATION_PATH, getRouteSaga),
@@ -247,16 +248,20 @@ function* getRouteSaga(action) {
       !hasNavigationTree(state) &&
       (doNavigation === true || doNavigation.tree)
     )
-      // Load navigation clientside only, a put() should help that work
-      yield put({
-        type: GET_NODE_TREE,
-        treeDepth:
-          doNavigation === true ||
-          !doNavigation.tree ||
-          doNavigation.tree === true
-            ? 2
-            : doNavigation.tree,
-      });
+      if (typeof window !== 'undefined') {
+        yield put({
+          type: GET_NODE_TREE,
+          treeDepth:
+            doNavigation === true ||
+            !doNavigation.tree ||
+            doNavigation.tree === true
+              ? 2
+              : doNavigation.tree,
+        });
+      } else {
+        yield call(ensureNodeTreeSaga);
+      }
+    // Load navigation clientside only, a put() should help that work
   } catch (e) {
     log.error(...['Error running route saga:', e, e.stack]);
     yield call(do404);
