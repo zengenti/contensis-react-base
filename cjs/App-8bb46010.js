@@ -89,9 +89,6 @@ var RoutingReducer = ((state = initialState, action) => {
     case routing.SET_ANCESTORS:
       {
         if (action.ancestors) {
-          let ancestorIDs = action.ancestors.map(node => {
-            return node.id;
-          });
           return state.set('currentNodeAncestors', immutable.fromJS(action.ancestors));
         }
 
@@ -615,6 +612,38 @@ const routeEntryByFieldsQuery = (id, fields = [], versionStatus = 'published') =
   return query;
 };
 
+const navigationSagas = [effects.takeEvery(navigation.GET_NODE_TREE, ensureNodeTreeSaga)];
+function* ensureNodeTreeSaga(action) {
+  const state = yield effects.select();
+
+  try {
+    if (!navigation.hasNavigationTree(state)) {
+      const deliveryApiVersionStatus = yield effects.select(navigation.selectVersionStatus);
+      const project = yield effects.select(routing.selectCurrentProject);
+      const nodes = yield deliveryApi.getClient(deliveryApiVersionStatus, project).nodes.getRoot({
+        depth: action.treeDepth || 2,
+        entryFields: 'entryTitle, metaInformation, sys.contentTypeId'
+      });
+
+      if (nodes) {
+        yield effects.put({
+          type: navigation.SET_NODE_TREE,
+          nodes
+        });
+      } else {
+        yield effects.put({
+          type: navigation.GET_NODE_TREE_ERROR
+        });
+      }
+    }
+  } catch (ex) {
+    yield effects.put({
+      type: navigation.GET_NODE_TREE_ERROR,
+      error: ex.toString()
+    });
+  }
+}
+
 // load-entries.js
 const routingSagas = [effects.takeEvery(routing.SET_NAVIGATION_PATH, getRouteSaga), effects.takeEvery(routing.SET_ROUTE, setRouteSaga)];
 /**
@@ -777,11 +806,14 @@ function* getRouteSaga(action) {
       });
     }
 
-    if (!navigation.hasNavigationTree(state) && (doNavigation === true || doNavigation.tree)) // Load navigation clientside only, a put() should help that work
+    if (!navigation.hasNavigationTree(state) && (doNavigation === true || doNavigation.tree)) if (typeof window !== 'undefined') {
       yield effects.put({
         type: navigation.GET_NODE_TREE,
         treeDepth: doNavigation === true || !doNavigation.tree || doNavigation.tree === true ? 2 : doNavigation.tree
       });
+    } else {
+      yield effects.call(ensureNodeTreeSaga);
+    } // Load navigation clientside only, a put() should help that work
   } catch (e) {
     log.error(...['Error running route saga:', e, e.stack]);
     yield effects.call(do404);
@@ -844,38 +876,6 @@ function* do404() {
   });
 }
 
-const navigationSagas = [effects.takeEvery(navigation.GET_NODE_TREE, ensureNodeTreeSaga)];
-function* ensureNodeTreeSaga(action) {
-  const state = yield effects.select();
-
-  try {
-    if (!navigation.hasNavigationTree(state)) {
-      const deliveryApiVersionStatus = yield effects.select(navigation.selectVersionStatus);
-      const project = yield effects.select(routing.selectCurrentProject);
-      const nodes = yield deliveryApi.getClient(deliveryApiVersionStatus, project).nodes.getRoot({
-        depth: action.treeDepth || 2,
-        entryFields: 'entryTitle, metaInformation, sys.contentTypeId'
-      });
-
-      if (nodes) {
-        yield effects.put({
-          type: navigation.SET_NODE_TREE,
-          nodes
-        });
-      } else {
-        yield effects.put({
-          type: navigation.GET_NODE_TREE_ERROR
-        });
-      }
-    }
-  } catch (ex) {
-    yield effects.put({
-      type: navigation.GET_NODE_TREE_ERROR,
-      error: ex.toString()
-    });
-  }
-}
-
 // index.js
 function rootSaga (featureSagas = []) {
   return function* rootSaga() {
@@ -895,4 +895,4 @@ exports.deliveryApi = deliveryApi;
 exports.history = history;
 exports.pickProject = pickProject;
 exports.rootSaga = rootSaga;
-//# sourceMappingURL=App-f0a6d8e9.js.map
+//# sourceMappingURL=App-8bb46010.js.map

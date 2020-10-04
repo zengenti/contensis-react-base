@@ -1,6 +1,6 @@
 import 'immutable';
 import { r as routing$1, p as action, q as routing$2, t as routing$3 } from './routing-995ec526.js';
-import { n as navigation$2, v as version$1, e as GET_NODE_TREE, f as version$2, g as navigation$3, i as version$3 } from './navigation-ad2a43e9.js';
+import { n as navigation$2, v as version$1, d as GET_NODE_TREE, f as version$2, g as navigation$3, i as version$3 } from './navigation-9d59f407.js';
 import 'query-string';
 
 var types = {

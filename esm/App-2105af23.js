@@ -2,13 +2,13 @@ import React from 'react';
 import { Map, List, fromJS, Set } from 'immutable';
 import { createBrowserHistory, createMemoryHistory } from 'history';
 import { Client, Op, Query } from 'contensis-delivery-api';
-import { S as SET_TARGET_PROJECT, c as SET_SURROGATE_KEYS, d as SET_SIBLINGS, e as SET_ROUTE, f as SET_NAVIGATION_PATH, g as SET_ENTRY, h as SET_ANCESTORS, M as MAP_ENTRY, C as CALL_HISTORY_METHOD, i as setSurrogateKeys, a as selectRouteEntry, j as selectCurrentPath, b as selectCurrentProject } from './routing-995ec526.js';
+import { S as SET_TARGET_PROJECT, c as SET_SURROGATE_KEYS, d as SET_SIBLINGS, e as SET_ROUTE, f as SET_NAVIGATION_PATH, g as SET_ENTRY, h as SET_ANCESTORS, M as MAP_ENTRY, C as CALL_HISTORY_METHOD, i as setSurrogateKeys, b as selectCurrentProject, a as selectRouteEntry, j as selectCurrentPath } from './routing-995ec526.js';
 import { compose, applyMiddleware, createStore as createStore$1 } from 'redux';
 import { combineReducers } from 'redux-immutable';
 import thunk from 'redux-thunk';
 import createSagaMiddleware, { END } from 'redux-saga';
-import { S as SET_VERSION, b as SET_VERSION_STATUS, G as GET_NODE_TREE_ERROR, c as SET_NODE_TREE, d as selectVersionStatus, h as hasNavigationTree, e as GET_NODE_TREE } from './navigation-ad2a43e9.js';
-import { takeEvery, put, select, call, all } from 'redux-saga/effects';
+import { S as SET_VERSION, b as SET_VERSION_STATUS, G as GET_NODE_TREE_ERROR, c as SET_NODE_TREE, d as GET_NODE_TREE, h as hasNavigationTree, e as selectVersionStatus } from './navigation-9d59f407.js';
+import { takeEvery, select, put, call, all } from 'redux-saga/effects';
 import { error } from 'loglevel';
 import 'react-hot-loader';
 import { R as RouteLoader } from './RouteLoader-25040a91.js';
@@ -81,9 +81,6 @@ var RoutingReducer = ((state = initialState, action) => {
     case SET_ANCESTORS:
       {
         if (action.ancestors) {
-          let ancestorIDs = action.ancestors.map(node => {
-            return node.id;
-          });
           return state.set('currentNodeAncestors', fromJS(action.ancestors));
         }
 
@@ -607,6 +604,38 @@ const routeEntryByFieldsQuery = (id, fields = [], versionStatus = 'published') =
   return query;
 };
 
+const navigationSagas = [takeEvery(GET_NODE_TREE, ensureNodeTreeSaga)];
+function* ensureNodeTreeSaga(action) {
+  const state = yield select();
+
+  try {
+    if (!hasNavigationTree(state)) {
+      const deliveryApiVersionStatus = yield select(selectVersionStatus);
+      const project = yield select(selectCurrentProject);
+      const nodes = yield deliveryApi.getClient(deliveryApiVersionStatus, project).nodes.getRoot({
+        depth: action.treeDepth || 2,
+        entryFields: 'entryTitle, metaInformation, sys.contentTypeId'
+      });
+
+      if (nodes) {
+        yield put({
+          type: SET_NODE_TREE,
+          nodes
+        });
+      } else {
+        yield put({
+          type: GET_NODE_TREE_ERROR
+        });
+      }
+    }
+  } catch (ex) {
+    yield put({
+      type: GET_NODE_TREE_ERROR,
+      error: ex.toString()
+    });
+  }
+}
+
 // load-entries.js
 const routingSagas = [takeEvery(SET_NAVIGATION_PATH, getRouteSaga), takeEvery(SET_ROUTE, setRouteSaga)];
 /**
@@ -769,11 +798,14 @@ function* getRouteSaga(action) {
       });
     }
 
-    if (!hasNavigationTree(state) && (doNavigation === true || doNavigation.tree)) // Load navigation clientside only, a put() should help that work
+    if (!hasNavigationTree(state) && (doNavigation === true || doNavigation.tree)) if (typeof window !== 'undefined') {
       yield put({
         type: GET_NODE_TREE,
         treeDepth: doNavigation === true || !doNavigation.tree || doNavigation.tree === true ? 2 : doNavigation.tree
       });
+    } else {
+      yield call(ensureNodeTreeSaga);
+    } // Load navigation clientside only, a put() should help that work
   } catch (e) {
     error(...['Error running route saga:', e, e.stack]);
     yield call(do404);
@@ -836,38 +868,6 @@ function* do404() {
   });
 }
 
-const navigationSagas = [takeEvery(GET_NODE_TREE, ensureNodeTreeSaga)];
-function* ensureNodeTreeSaga(action) {
-  const state = yield select();
-
-  try {
-    if (!hasNavigationTree(state)) {
-      const deliveryApiVersionStatus = yield select(selectVersionStatus);
-      const project = yield select(selectCurrentProject);
-      const nodes = yield deliveryApi.getClient(deliveryApiVersionStatus, project).nodes.getRoot({
-        depth: action.treeDepth || 2,
-        entryFields: 'entryTitle, metaInformation, sys.contentTypeId'
-      });
-
-      if (nodes) {
-        yield put({
-          type: SET_NODE_TREE,
-          nodes
-        });
-      } else {
-        yield put({
-          type: GET_NODE_TREE_ERROR
-        });
-      }
-    }
-  } catch (ex) {
-    yield put({
-      type: GET_NODE_TREE_ERROR,
-      error: ex.toString()
-    });
-  }
-}
-
 // index.js
 function rootSaga (featureSagas = []) {
   return function* rootSaga() {
@@ -881,4 +881,4 @@ const AppRoot = props => {
 };
 
 export { AppRoot as A, browserHistory as b, createStore as c, deliveryApi as d, history as h, pickProject as p, rootSaga as r };
-//# sourceMappingURL=App-ab2123e4.js.map
+//# sourceMappingURL=App-2105af23.js.map
