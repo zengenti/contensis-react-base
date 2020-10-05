@@ -1,6 +1,6 @@
 'use strict';
 
-var routing = require('./routing-6209c9fc.js');
+var routing = require('./routing-b229b3c4.js');
 
 const VERSION_PREFIX = '@VERSION/';
 const SET_VERSION = `${VERSION_PREFIX}SET_VERSION`;
@@ -86,4 +86,4 @@ exports.setVersionStatus = setVersionStatus;
 exports.version = version;
 exports.version$1 = version$1;
 exports.version$2 = version$2;
-//# sourceMappingURL=navigation-7ed350d5.js.map
+//# sourceMappingURL=navigation-8a94ff72.js.map

@@ -1,19 +1,27 @@
-import React from 'react';
-import { Map, List, fromJS, Set } from 'immutable';
-import { createBrowserHistory, createMemoryHistory } from 'history';
-import { Client, Op, Query } from 'contensis-delivery-api';
-import { S as SET_TARGET_PROJECT, c as SET_SURROGATE_KEYS, d as SET_SIBLINGS, e as SET_ROUTE, f as SET_NAVIGATION_PATH, g as SET_ENTRY, h as SET_ANCESTORS, M as MAP_ENTRY, C as CALL_HISTORY_METHOD, i as setSurrogateKeys, b as selectCurrentProject, a as selectRouteEntry, j as selectCurrentPath } from './routing-995ec526.js';
-import { compose, applyMiddleware, createStore as createStore$1 } from 'redux';
-import { combineReducers } from 'redux-immutable';
-import thunk from 'redux-thunk';
-import createSagaMiddleware, { END } from 'redux-saga';
-import { S as SET_VERSION, b as SET_VERSION_STATUS, G as GET_NODE_TREE_ERROR, c as SET_NODE_TREE, d as GET_NODE_TREE, h as hasNavigationTree, e as selectVersionStatus } from './navigation-9d59f407.js';
-import { takeEvery, select, put, call, all } from 'redux-saga/effects';
-import { error } from 'loglevel';
-import 'react-hot-loader';
-import { R as RouteLoader } from './RouteLoader-25040a91.js';
+'use strict';
 
-const selectedHistory = typeof window !== 'undefined' ? createBrowserHistory : createMemoryHistory;
+var React = require('react');
+var require$$0 = require('immutable');
+var history$1 = require('history');
+var require$$2 = require('contensis-delivery-api');
+var routing = require('./routing-b229b3c4.js');
+var redux = require('redux');
+var reduxImmutable = require('redux-immutable');
+var thunk = require('redux-thunk');
+var createSagaMiddleware = require('redux-saga');
+var navigation = require('./navigation-8a94ff72.js');
+var effects = require('redux-saga/effects');
+var require$$7 = require('loglevel');
+require('react-hot-loader');
+var RouteLoader = require('./RouteLoader-5287f321.js');
+
+function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+
+var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
+var thunk__default = /*#__PURE__*/_interopDefaultLegacy(thunk);
+var createSagaMiddleware__default = /*#__PURE__*/_interopDefaultLegacy(createSagaMiddleware);
+
+const selectedHistory = typeof window !== 'undefined' ? history$1.createBrowserHistory : history$1.createMemoryHistory;
 const history = (options = {}) => selectedHistory(options);
 const browserHistory = selectedHistory();
 
@@ -60,7 +68,7 @@ const pickProject = (hostname, query) => {
   return project === 'unknown' ? p.id : project;
 };
 
-let initialState = Map({
+let initialState = require$$0.Map({
   currentPath: '/',
   currentNode: [],
   currentProject: 'unknown',
@@ -68,49 +76,50 @@ let initialState = Map({
   entryID: null,
   entry: null,
   contentTypeId: null,
-  currentNodeAncestors: new List(),
+  currentNodeAncestors: new require$$0.List(),
   currentTreeId: null
 });
 var RoutingReducer = ((state = initialState, action) => {
   switch (action.type) {
-    case MAP_ENTRY:
+    case routing.MAP_ENTRY:
       {
-        return state.set('mappedEntry', fromJS(action.mappedEntry));
+        return state.set('mappedEntry', require$$0.fromJS(action.mappedEntry));
       }
 
-    case SET_ANCESTORS:
+    case routing.SET_ANCESTORS:
       {
         if (action.ancestors) {
-          return state.set('currentNodeAncestors', fromJS(action.ancestors));
+          return state.set('currentNodeAncestors', require$$0.fromJS(action.ancestors));
         }
 
-        return state.set('currentNodeAncestors', fromJS(action.ancestors));
+        return state.set('currentNodeAncestors', require$$0.fromJS(action.ancestors));
       }
 
-    case SET_ENTRY:
+    case routing.SET_ENTRY:
       {
         const {
           entry,
           node = {},
-          isLoading = false
+          isLoading = false,
+          notFound
         } = action;
         let nextState;
 
         if (!entry) {
-          nextState = state.set('entryID', null).set('entry', null).set('mappedEntry', null).set('isLoading', isLoading);
+          nextState = state.set('entryID', null).set('entry', null).set('mappedEntry', null).set('isLoading', isLoading).set('notFound', notFound);
         } else {
-          nextState = state.set('entryID', action.id).set('entry', fromJS(entry)).set('isLoading', isLoading);
+          nextState = state.set('entryID', action.id).set('entry', require$$0.fromJS(entry)).set('isLoading', isLoading).set('notFound', notFound);
         }
 
         if (!node) {
           return nextState.set('nodeDepends', null).set('currentNode', null);
         } else {
           // On Set Node, we reset all dependants.
-          return nextState.set('currentNode', fromJS(node)).removeIn(['currentNode', 'entry']); // We have the entry stored elsewhere, so lets not keep it twice.
+          return nextState.set('currentNode', require$$0.fromJS(node)).removeIn(['currentNode', 'entry']); // We have the entry stored elsewhere, so lets not keep it twice.
         }
       }
 
-    case SET_NAVIGATION_PATH:
+    case routing.SET_NAVIGATION_PATH:
       {
         let staticRoute = false;
 
@@ -124,13 +133,13 @@ var RoutingReducer = ((state = initialState, action) => {
           const entryUri = state.getIn(['entry', 'sys', 'uri']);
 
           if (entryUri != action.path) {
-            return state.set('currentPath', fromJS(action.path)).set('location', fromJS(action.location)).set('staticRoute', fromJS({ ...staticRoute,
+            return state.set('currentPath', require$$0.fromJS(action.path)).set('location', require$$0.fromJS(action.location)).set('staticRoute', require$$0.fromJS({ ...staticRoute,
               route: { ...staticRoute.route,
                 component: null
               }
             })).set('isLoading', typeof window !== 'undefined');
           } else {
-            return state.set('location', fromJS(action.location)).set('staticRoute', fromJS({ ...staticRoute,
+            return state.set('location', require$$0.fromJS(action.location)).set('staticRoute', require$$0.fromJS({ ...staticRoute,
               route: { ...staticRoute.route,
                 component: null
               }
@@ -156,12 +165,12 @@ var RoutingReducer = ((state = initialState, action) => {
     //     .removeIn(['currentNode', 'entry']); // We have the entry stored elsewhere, so lets not keep it twice.
     // }
 
-    case SET_ROUTE:
+    case routing.SET_ROUTE:
       {
         return state.set('nextPath', action.path);
       }
 
-    case SET_SIBLINGS:
+    case routing.SET_SIBLINGS:
       {
         // Can be null in some cases like the homepage.
         let currentNodeSiblingParent = null;
@@ -175,19 +184,19 @@ var RoutingReducer = ((state = initialState, action) => {
         }
 
         let currentNodeDepends = state.get('nodeDepends');
-        const allNodeDepends = Set.union([Set(siblingIDs), currentNodeDepends]);
-        return state.set('nodeDepends', allNodeDepends).set('currentNodeSiblings', fromJS(action.siblings)).set('currentNodeSiblingsParent', currentNodeSiblingParent);
+        const allNodeDepends = require$$0.Set.union([require$$0.Set(siblingIDs), currentNodeDepends]);
+        return state.set('nodeDepends', allNodeDepends).set('currentNodeSiblings', require$$0.fromJS(action.siblings)).set('currentNodeSiblingsParent', currentNodeSiblingParent);
       }
 
-    case SET_SURROGATE_KEYS:
+    case routing.SET_SURROGATE_KEYS:
       {
         return state.set('surrogateKeys', action.keys);
       }
 
-    case SET_TARGET_PROJECT:
+    case routing.SET_TARGET_PROJECT:
       {
         return state.set('currentProject', action.project).set('currentTreeId', '') //getTreeID(action.project))
-        .set('allowedGroups', fromJS(action.allowedGroups));
+        .set('allowedGroups', require$$0.fromJS(action.allowedGroups));
       }
 
     default:
@@ -195,19 +204,19 @@ var RoutingReducer = ((state = initialState, action) => {
   }
 });
 
-let initialState$1 = Map({
+let initialState$1 = require$$0.Map({
   commitRef: null,
   buildNo: null,
   contensisVersionStatus: 'published'
 });
 var VersionReducer = ((state = initialState$1, action) => {
   switch (action.type) {
-    case SET_VERSION_STATUS:
+    case navigation.SET_VERSION_STATUS:
       {
         return state.set('contensisVersionStatus', action.status);
       }
 
-    case SET_VERSION:
+    case navigation.SET_VERSION:
       {
         return state.set('commitRef', action.commitRef).set('buildNo', action.buildNo);
       }
@@ -217,20 +226,20 @@ var VersionReducer = ((state = initialState$1, action) => {
   }
 });
 
-const initialState$2 = Map({
+const initialState$2 = require$$0.Map({
   root: null,
-  treeDepends: new List([]),
+  treeDepends: new require$$0.List([]),
   isError: false,
   isReady: false
 });
 var NavigationReducer = ((state = initialState$2, action) => {
   switch (action.type) {
-    case SET_NODE_TREE:
+    case navigation.SET_NODE_TREE:
       {
-        return state.set('root', fromJS(action.nodes)).set('isReady', true);
+        return state.set('root', require$$0.fromJS(action.nodes)).set('isReady', true);
       }
 
-    case GET_NODE_TREE_ERROR:
+    case navigation.GET_NODE_TREE_ERROR:
       {
         return state.set('isError', true);
       }
@@ -249,7 +258,7 @@ var NavigationReducer = ((state = initialState$2, action) => {
 /* eslint-disable no-unused-vars */
 
 const routerMiddleware = history => store => next => action => {
-  if (action.type !== CALL_HISTORY_METHOD) {
+  if (action.type !== routing.CALL_HISTORY_METHOD) {
     return next(action);
   }
 
@@ -264,7 +273,7 @@ const routerMiddleware = history => store => next => action => {
 
 let reduxStore = null;
 var createStore = ((featureReducers, initialState, history) => {
-  const thunkMiddleware = [thunk];
+  const thunkMiddleware = [thunk__default['default']];
 
   let reduxDevToolsMiddleware = f => f;
 
@@ -272,21 +281,21 @@ var createStore = ((featureReducers, initialState, history) => {
     reduxDevToolsMiddleware = window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f;
   }
 
-  const sagaMiddleware = createSagaMiddleware();
-  const middleware = compose(applyMiddleware(...thunkMiddleware, sagaMiddleware, routerMiddleware(history)), reduxDevToolsMiddleware);
+  const sagaMiddleware = createSagaMiddleware__default['default']();
+  const middleware = redux.compose(redux.applyMiddleware(...thunkMiddleware, sagaMiddleware, routerMiddleware(history)), reduxDevToolsMiddleware);
   let reducers = {
     navigation: NavigationReducer,
     routing: RoutingReducer,
     version: VersionReducer,
     ...featureReducers
   };
-  const combinedReducers = combineReducers(reducers);
+  const combinedReducers = reduxImmutable.combineReducers(reducers);
 
   const store = initialState => {
-    const store = createStore$1(combinedReducers, initialState, middleware);
+    const store = redux.createStore(combinedReducers, initialState, middleware);
     store.runSaga = sagaMiddleware.run;
 
-    store.close = () => store.dispatch(END);
+    store.close = () => store.dispatch(createSagaMiddleware.END);
 
     return store;
   };
@@ -297,7 +306,7 @@ var createStore = ((featureReducers, initialState, history) => {
 
 const storeSurrogateKeys = response => {
   const keys = response.headers.get ? response.headers.get('surrogate-key') : response.headers.map['surrogate-key'];
-  if (keys) reduxStore.dispatch(setSurrogateKeys(keys));
+  if (keys) reduxStore.dispatch(routing.setSurrogateKeys(keys));
 };
 
 const getClientConfig = project => {
@@ -364,20 +373,20 @@ class DeliveryApi {
     };
 
     this.search = (query, linkDepth, project, env) => {
-      const client = Client.create(getClientConfig(project));
+      const client = require$$2.Client.create(getClientConfig(project));
       return client.entries.search(query, typeof linkDepth !== 'undefined' ? linkDepth : 1);
     };
 
     this.getClient = (deliveryApiStatus = 'published', project, env) => {
       const baseConfig = getClientConfig(project);
       baseConfig.versionStatus = deliveryApiStatus;
-      return Client.create(baseConfig);
+      return require$$2.Client.create(baseConfig);
     };
 
     this.getEntry = (id, linkDepth = 0, deliveryApiStatus = 'published', project, env) => {
       const baseConfig = getClientConfig(project);
       baseConfig.versionStatus = deliveryApiStatus;
-      const client = Client.create(baseConfig); // return client.entries.get(id, linkDepth);
+      const client = require$$2.Client.create(baseConfig); // return client.entries.get(id, linkDepth);
 
       return client.entries.get({
         id,
@@ -482,12 +491,12 @@ class CachedSearch {
   }
 
   search(query, linkDepth, project, env) {
-    const client = Client.create(getClientConfig(project));
+    const client = require$$2.Client.create(getClientConfig(project));
     return this.request(project + JSON.stringify(query) + linkDepth.toString(), () => client.entries.search(query, linkDepth));
   }
 
   get(id, linkDepth, versionStatus, project, env) {
-    const client = Client.create(getClientConfig(project));
+    const client = require$$2.Client.create(getClientConfig(project));
     client.clientConfig.versionStatus = versionStatus;
     return this.request(id, () => client.entries.get({
       id,
@@ -496,37 +505,37 @@ class CachedSearch {
   }
 
   getContentType(id, project, env) {
-    const client = Client.create(getClientConfig(project));
+    const client = require$$2.Client.create(getClientConfig(project));
     return this.request(`[CONTENT TYPE] ${id} ${project}`, () => client.contentTypes.get(id));
   }
 
   getTaxonomyNode(key, project, env) {
-    const client = Client.create(getClientConfig(project));
+    const client = require$$2.Client.create(getClientConfig(project));
     return this.request(`[TAXONOMY NODE] ${key}`, () => client.taxonomy.resolveChildren(key).then(node => this.extendTaxonomyNode(node)));
   }
 
   getRootNode(options, project, env) {
-    const client = Client.create(getClientConfig(project));
+    const client = require$$2.Client.create(getClientConfig(project));
     return this.request(`${project} / ${JSON.stringify(options)}`, () => client.nodes.getRoot(options));
   }
 
   getNode(options, project, env) {
-    const client = Client.create(getClientConfig(project));
+    const client = require$$2.Client.create(getClientConfig(project));
     return this.request(`${project} ${options && options.path || options} ${JSON.stringify(options)}`, () => client.nodes.get(options));
   }
 
   getAncestors(options, project, env) {
-    const client = Client.create(getClientConfig(project));
+    const client = require$$2.Client.create(getClientConfig(project));
     return this.request(`${project} [A] ${options && options.id || options} ${JSON.stringify(options)}`, () => client.nodes.getAncestors(options));
   }
 
   getChildren(options, project, env) {
-    const client = Client.create(getClientConfig(project));
+    const client = require$$2.Client.create(getClientConfig(project));
     return this.request(`${project} [C] ${options && options.id || options} ${JSON.stringify(options)}`, () => client.nodes.getChildren(options));
   }
 
   getSiblings(options, project, env) {
-    const client = Client.create(getClientConfig(project));
+    const client = require$$2.Client.create(getClientConfig(project));
     return this.request(`${project} [S] ${options && options.id || options} ${JSON.stringify(options)}`, () => client.nodes.getSiblings(options));
   }
 
@@ -589,63 +598,63 @@ const Fields = {
 
 const fieldExpression = (field, value, operator = 'equalTo', weight = null) => {
   if (!field || !value) return [];
-  if (Array.isArray(value)) return equalToOrIn(field, value, operator);else return !weight ? [Op[operator](field, value)] : [Op[operator](field, value).weight(weight)];
+  if (Array.isArray(value)) return equalToOrIn(field, value, operator);else return !weight ? [require$$2.Op[operator](field, value)] : [require$$2.Op[operator](field, value).weight(weight)];
 };
 const defaultExpressions = versionStatus => {
-  return [Op.equalTo(Fields.sys.versionStatus, versionStatus)];
+  return [require$$2.Op.equalTo(Fields.sys.versionStatus, versionStatus)];
 };
 
-const equalToOrIn = (field, arr, operator = 'equalTo') => arr.length === 0 ? [] : arr.length === 1 ? [Op[operator](field, arr[0])] : [Op.in(field, ...arr)];
+const equalToOrIn = (field, arr, operator = 'equalTo') => arr.length === 0 ? [] : arr.length === 1 ? [require$$2.Op[operator](field, arr[0])] : [require$$2.Op.in(field, ...arr)];
 
 // eslint-disable-next-line import/named
 const routeEntryByFieldsQuery = (id, fields = [], versionStatus = 'published') => {
-  const query = new Query(...[...fieldExpression('sys.id', id), ...defaultExpressions(versionStatus)]);
+  const query = new require$$2.Query(...[...fieldExpression('sys.id', id), ...defaultExpressions(versionStatus)]);
   query.fields = fields;
   return query;
 };
 
-const navigationSagas = [takeEvery(GET_NODE_TREE, ensureNodeTreeSaga)];
+const navigationSagas = [effects.takeEvery(navigation.GET_NODE_TREE, ensureNodeTreeSaga)];
 function* ensureNodeTreeSaga(action) {
-  const state = yield select();
+  const state = yield effects.select();
 
   try {
-    if (!hasNavigationTree(state)) {
-      const deliveryApiVersionStatus = yield select(selectVersionStatus);
-      const project = yield select(selectCurrentProject);
+    if (!navigation.hasNavigationTree(state)) {
+      const deliveryApiVersionStatus = yield effects.select(navigation.selectVersionStatus);
+      const project = yield effects.select(routing.selectCurrentProject);
       const nodes = yield deliveryApi.getClient(deliveryApiVersionStatus, project).nodes.getRoot({
         depth: action.treeDepth || 2,
         entryFields: 'entryTitle, metaInformation, sys.contentTypeId'
       });
 
       if (nodes) {
-        yield put({
-          type: SET_NODE_TREE,
+        yield effects.put({
+          type: navigation.SET_NODE_TREE,
           nodes
         });
       } else {
-        yield put({
-          type: GET_NODE_TREE_ERROR
+        yield effects.put({
+          type: navigation.GET_NODE_TREE_ERROR
         });
       }
     }
   } catch (ex) {
-    yield put({
-      type: GET_NODE_TREE_ERROR,
+    yield effects.put({
+      type: navigation.GET_NODE_TREE_ERROR,
       error: ex.toString()
     });
   }
 }
 
 // load-entries.js
-const routingSagas = [takeEvery(SET_NAVIGATION_PATH, getRouteSaga), takeEvery(SET_ROUTE, setRouteSaga)];
+const routingSagas = [effects.takeEvery(routing.SET_NAVIGATION_PATH, getRouteSaga), effects.takeEvery(routing.SET_ROUTE, setRouteSaga)];
 /**
  * To navigate / push a specific route via redux middleware
  * @param {path, state} action
  */
 
 function* setRouteSaga(action) {
-  yield put({
-    type: CALL_HISTORY_METHOD,
+  yield effects.put({
+    type: routing.CALL_HISTORY_METHOD,
     payload: {
       method: 'push',
       args: [action.path, action.state]
@@ -680,11 +689,11 @@ function* getRouteSaga(action) {
     const doNavigation = !appsays || (appsays && appsays.customNavigation === true ? false : appsays && appsays.customNavigation || true);
     const entryLinkDepth = appsays && appsays.entryLinkDepth || 3;
     const setContentTypeLimits = !!ContentTypeMappings.find(ct => ct.fields || ct.linkDepth);
-    const state = yield select();
-    const routeEntry = selectRouteEntry(state);
-    const currentPath = selectCurrentPath(state);
-    const deliveryApiStatus = selectVersionStatus(state);
-    const project = selectCurrentProject(state);
+    const state = yield effects.select();
+    const routeEntry = routing.selectRouteEntry(state);
+    const currentPath = routing.selectCurrentPath(state);
+    const deliveryApiStatus = navigation.selectVersionStatus(state);
+    const project = routing.selectCurrentProject(state);
     const isHome = currentPath === '/';
     const isPreview = currentPath && currentPath.startsWith('/preview/');
 
@@ -693,14 +702,13 @@ function* getRouteSaga(action) {
       // - appsays customRouting and does SET_ENTRY etc. via the consuming app
       // - all staticRoutes (where custom 'route.fetchNode' attribute is falsey)
       // - standard Contensis SiteView Routing where we already have that entry in state
-      if (routeEntry && (!staticRoute || staticRoute.route && staticRoute.route.fetchNode)) {// entry = routeEntry.toJS();
-        // yield put({
-        //   type: SET_ENTRY,
-        //   entry,
-        //   isLoading: false,
-        // });
-        //Do nothing, the entry is allready the right one.
-      } else yield call(setRouteEntry);
+      if (routeEntry && (!staticRoute || staticRoute.route && staticRoute.route.fetchNode)) {//Do nothing, the entry is allready the right one.
+      } else yield effects.call(setRouteEntry, null, // entry = null
+      null, // pathNode = null
+      null, // ancestors = null
+      null, // siblings = null
+      false // notFound = false
+      );
     } else {
       let pathNode = null,
           ancestors = null,
@@ -733,9 +741,7 @@ function* getRouteSaga(action) {
             if (previewEntry) {
               pathNode = {
                 entry: previewEntry
-              }; // yield call(setRouteEntry, previewEntry);
-              // } else {
-              // yield call(do404);
+              };
             }
           }
         } else {
@@ -774,12 +780,12 @@ function* getRouteSaga(action) {
       if (pathNode && pathNode.entry && pathNode.entry.sys && pathNode.entry.sys.id) {
         entry = pathNode.entry;
         const entryMapper = (ContentTypeMappings.find(ct => ct.contentTypeID === pathNode.entry.sys.contentTypeId) || {}).entryMapper;
-        yield all([call(mapRouteEntry, { ...pathNode,
+        yield effects.all([effects.call(mapRouteEntry, { ...pathNode,
           ancestors,
           siblings
-        }, entryMapper), call(setRouteEntry, entry, pathNode, ancestors, siblings)]);
+        }, entryMapper), effects.call(setRouteEntry, entry, pathNode, ancestors, siblings, false)]);
       } else {
-        yield call(do404);
+        yield effects.call(do404);
       }
 
       if (!appsays || !appsays.preventScrollTop) {
@@ -798,22 +804,22 @@ function* getRouteSaga(action) {
       });
     }
 
-    if (!hasNavigationTree(state) && (doNavigation === true || doNavigation.tree)) if (typeof window !== 'undefined') {
-      yield put({
-        type: GET_NODE_TREE,
+    if (!navigation.hasNavigationTree(state) && (doNavigation === true || doNavigation.tree)) if (typeof window !== 'undefined') {
+      yield effects.put({
+        type: navigation.GET_NODE_TREE,
         treeDepth: doNavigation === true || !doNavigation.tree || doNavigation.tree === true ? 2 : doNavigation.tree
       });
     } else {
-      yield call(ensureNodeTreeSaga);
+      yield effects.call(ensureNodeTreeSaga);
     } // Load navigation clientside only, a put() should help that work
   } catch (e) {
-    error(...['Error running route saga:', e, e.stack]);
-    yield call(do404);
+    require$$7.error(...['Error running route saga:', e, e.stack]);
+    yield effects.call(do404);
   }
 }
 
-function* setRouteEntry(entry, node, ancestors, siblings) {
-  yield all([// put({
+function* setRouteEntry(entry, node, ancestors, siblings, notFound) {
+  yield effects.all([// put({
   //   type: SET_NAVIGATION_NOT_FOUND,
   //   notFound: !(entry && entry.sys.id),
   // }),
@@ -821,20 +827,21 @@ function* setRouteEntry(entry, node, ancestors, siblings) {
   //   type: SET_NODE,
   //   node,
   // }),
-  put({
-    type: SET_ENTRY,
+  effects.put({
+    type: routing.SET_ENTRY,
     id: entry && entry.sys.id || null,
     entry,
-    node
+    node,
+    notFound
   }), // put({
   //   type: SET_ENTRY_ID,
   //   id: (entry && entry.sys.id) || null,
   // }),
-  ancestors && put({
-    type: SET_ANCESTORS,
+  ancestors && effects.put({
+    type: routing.SET_ANCESTORS,
     ancestors
-  }), siblings && put({
-    type: SET_SIBLINGS,
+  }), siblings && effects.put({
+    type: routing.SET_SIBLINGS,
     siblings
   })]);
 }
@@ -842,8 +849,8 @@ function* setRouteEntry(entry, node, ancestors, siblings) {
 function* mapRouteEntry(node, entryMapper) {
   if (typeof entryMapper === 'function') {
     const mappedEntry = entryMapper(node);
-    yield put({
-      type: MAP_ENTRY,
+    yield effects.put({
+      type: routing.MAP_ENTRY,
       mappedEntry,
       node,
       entryMapper
@@ -860,8 +867,8 @@ function* do404() {
   //   type: SET_ENTRY_ID,
   //   id: null,
   // });
-  yield put({
-    type: SET_ENTRY,
+  yield effects.put({
+    type: routing.SET_ENTRY,
     id: null,
     entry: null,
     notFound: true
@@ -872,13 +879,19 @@ function* do404() {
 function rootSaga (featureSagas = []) {
   return function* rootSaga() {
     const subSagas = [...routingSagas, ...navigationSagas];
-    yield all([...subSagas, ...featureSagas]);
+    yield effects.all([...subSagas, ...featureSagas]);
   };
 }
 
 const AppRoot = props => {
-  return React.createElement(RouteLoader, props);
+  return React__default['default'].createElement(RouteLoader.RouteLoader, props);
 };
 
-export { AppRoot as A, browserHistory as b, createStore as c, deliveryApi as d, history as h, pickProject as p, rootSaga as r };
-//# sourceMappingURL=App-2105af23.js.map
+exports.AppRoot = AppRoot;
+exports.browserHistory = browserHistory;
+exports.createStore = createStore;
+exports.deliveryApi = deliveryApi;
+exports.history = history;
+exports.pickProject = pickProject;
+exports.rootSaga = rootSaga;
+//# sourceMappingURL=App-29c48e39.js.map
