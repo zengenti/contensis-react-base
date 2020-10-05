@@ -98,14 +98,16 @@ function* getRouteSaga(action) {
         routeEntry &&
         (!staticRoute || (staticRoute.route && staticRoute.route.fetchNode))
       ) {
-        // entry = routeEntry.toJS();
-        // yield put({
-        //   type: SET_ENTRY,
-        //   entry,
-        //   isLoading: false,
-        // });
         //Do nothing, the entry is allready the right one.
-      } else yield call(setRouteEntry);
+      } else
+        yield call(
+          setRouteEntry,
+          null, // entry = null
+          null, // pathNode = null
+          null, // ancestors = null
+          null, // siblings = null
+          false // notFound = false
+        );
     } else {
       let pathNode = null,
         ancestors = null,
@@ -138,9 +140,6 @@ function* getRouteSaga(action) {
               .entries.get({ id: entryGuid, linkDepth: 3 });
             if (previewEntry) {
               pathNode = { entry: previewEntry };
-              // yield call(setRouteEntry, previewEntry);
-              // } else {
-              // yield call(do404);
             }
           }
         } else {
@@ -226,7 +225,7 @@ function* getRouteSaga(action) {
             { ...pathNode, ancestors, siblings },
             entryMapper
           ),
-          call(setRouteEntry, entry, pathNode, ancestors, siblings),
+          call(setRouteEntry, entry, pathNode, ancestors, siblings, false),
         ]);
       } else {
         yield call(do404);
@@ -268,7 +267,7 @@ function* getRouteSaga(action) {
   }
 }
 
-function* setRouteEntry(entry, node, ancestors, siblings) {
+function* setRouteEntry(entry, node, ancestors, siblings, notFound) {
   yield all([
     // put({
     //   type: SET_NAVIGATION_NOT_FOUND,
@@ -283,6 +282,7 @@ function* setRouteEntry(entry, node, ancestors, siblings) {
       id: (entry && entry.sys.id) || null,
       entry,
       node,
+      notFound,
     }),
     // put({
     //   type: SET_ENTRY_ID,

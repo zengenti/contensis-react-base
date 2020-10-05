@@ -37,7 +37,7 @@ export default (state = initialState, action) => {
       return state.set('currentNodeAncestors', fromJS(action.ancestors));
     }
     case SET_ENTRY: {
-      const { entry, node = {}, isLoading = false } = action;
+      const { entry, node = {}, isLoading = false, notFound } = action;
       let nextState;
 
       if (!entry) {
@@ -45,12 +45,14 @@ export default (state = initialState, action) => {
           .set('entryID', null)
           .set('entry', null)
           .set('mappedEntry', null)
-          .set('isLoading', isLoading);
+          .set('isLoading', isLoading)
+          .set('notFound', notFound);
       } else {
         nextState = state
           .set('entryID', action.id)
           .set('entry', fromJS(entry))
-          .set('isLoading', isLoading);
+          .set('isLoading', isLoading)
+          .set('notFound', notFound);
       }
 
       if (!node) {
