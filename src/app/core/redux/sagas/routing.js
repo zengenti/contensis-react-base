@@ -100,7 +100,15 @@ function* getRouteSaga(action) {
           node: routeNode,
           isLoading: false,
         });
-      } else yield call(setRouteEntry);
+      } else
+        yield call(
+          setRouteEntry,
+          null, // entry = null
+          null, // pathNode = null
+          null, // ancestors = null
+          null, // siblings = null
+          false // notFound = false
+        );
     } else {
       let pathNode = null,
         ancestors = null,
@@ -222,11 +230,11 @@ function* getRouteSaga(action) {
             { ...pathNode, ancestors, siblings },
             state
           ),
-          call(setRouteEntry, entry, pathNode, ancestors, siblings),
+          call(setRouteEntry, entry, pathNode, ancestors, siblings, false),
         ]);
       } else {
         if (pathNode)
-          yield call(setRouteEntry, null, pathNode, ancestors, siblings);
+          yield call(setRouteEntry, null, pathNode, ancestors, siblings, false);
         else yield call(do404);
       }
       if (!appsays || !appsays.preventScrollTop) {
@@ -262,13 +270,14 @@ function* getRouteSaga(action) {
   }
 }
 
-function* setRouteEntry(entry, node, ancestors, siblings) {
+function* setRouteEntry(entry, node, ancestors, siblings, notFound) {
   yield all([
     put({
       type: SET_ENTRY,
       id: (entry && entry.sys.id) || null,
       entry,
       node,
+      notFound,
     }),
     ancestors &&
       put({
