@@ -9,7 +9,7 @@ import { compose, applyMiddleware, createStore as createStore$1 } from 'redux';
 import { combineReducers } from 'redux-immutable';
 import thunk from 'redux-thunk';
 import createSagaMiddleware, { END } from 'redux-saga';
-import { U as UserReducer, v as validateUserSaga, u as userSagas } from './sagas-5f2bed74.js';
+import { U as UserReducer, v as validateUserSaga, u as userSagas } from './sagas-4d9364fb.js';
 import { takeEvery, put, select, call, all } from 'redux-saga/effects';
 import { error } from 'loglevel';
 import 'react-hot-loader';
@@ -399,15 +399,16 @@ var RoutingReducer = ((state = initialState, action) => {
         const {
           entry,
           node = {},
-          isLoading = false
+          isLoading = false,
+          notFound
         } = action;
         let nextState;
 
         if (!entry) {
-          nextState = state.set('entryID', null).set('entryDepends', null).set('entry', null).set('mappedEntry', null).set('isLoading', isLoading);
+          nextState = state.set('entryID', null).set('entryDepends', null).set('entry', null).set('mappedEntry', null).set('isLoading', isLoading).set('notFound', notFound);
         } else {
           const entryDepends = GetAllResponseGuids(entry);
-          nextState = state.set('entryID', action.id).set('entryDepends', fromJS(entryDepends)).set('entry', fromJS(entry)).set('isLoading', isLoading);
+          nextState = state.set('entryID', action.id).set('entryDepends', fromJS(entryDepends)).set('entry', fromJS(entry)).set('isLoading', isLoading).set('notFound', notFound);
         }
 
         if (!node) {
@@ -691,7 +692,12 @@ function* getRouteSaga(action) {
           node: routeNode,
           isLoading: false
         });
-      } else yield call(setRouteEntry);
+      } else yield call(setRouteEntry, null, // entry = null
+      null, // pathNode = null
+      null, // ancestors = null
+      null, // siblings = null
+      false // notFound = false
+      );
     } else {
       let pathNode = null,
           ancestors = null,
@@ -768,9 +774,9 @@ function* getRouteSaga(action) {
         yield all([call(mapRouteEntry, entryMapper, { ...pathNode,
           ancestors,
           siblings
-        }, state), call(setRouteEntry, entry, pathNode, ancestors, siblings)]);
+        }, state), call(setRouteEntry, entry, pathNode, ancestors, siblings, false)]);
       } else {
-        if (pathNode) yield call(setRouteEntry, null, pathNode, ancestors, siblings);else yield call(do404);
+        if (pathNode) yield call(setRouteEntry, null, pathNode, ancestors, siblings, false);else yield call(do404);
       }
 
       if (!appsays || !appsays.preventScrollTop) {
@@ -800,12 +806,13 @@ function* getRouteSaga(action) {
   }
 }
 
-function* setRouteEntry(entry, node, ancestors, siblings) {
+function* setRouteEntry(entry, node, ancestors, siblings, notFound) {
   yield all([put({
     type: SET_ENTRY,
     id: entry && entry.sys.id || null,
     entry,
-    node
+    node,
+    notFound
   }), ancestors && put({
     type: SET_ANCESTORS,
     ancestors
@@ -881,4 +888,4 @@ const AppRoot = props => {
 };
 
 export { AppRoot as A, GetDeliveryApiStatusFromHostname as G, GetClientSideDeliveryApiStatus as a, browserHistory as b, createStore as c, history as h, pickProject as p, rootSaga as r };
-//# sourceMappingURL=App-22ddfbd3.js.map
+//# sourceMappingURL=App-919a5a30.js.map

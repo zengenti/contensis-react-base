@@ -3,15 +3,15 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 require('react');
-var reactRedux = require('react-redux');
+var require$$4 = require('react-redux');
 require('immutable');
-var selectors = require('./selectors-afa7afd5.js');
+var selectors = require('./selectors-6a739905.js');
 require('query-string');
-var sagas = require('./sagas-5385dda8.js');
-var actions = require('./actions-956a7e2c.js');
+var sagas = require('./sagas-fc38143f.js');
+var actions = require('./actions-cd7e16c6.js');
 require('redux-saga/effects');
 require('js-cookie');
-var ToJs = require('./ToJs-d548b71b.js');
+var ToJs = require('./ToJs-5960e1fb.js');
 
 const getDisplayName = WrappedComponent => {
   return WrappedComponent.displayName || WrappedComponent.name || 'Component';
@@ -48,7 +48,7 @@ const withLogin = WrappedComponent => {
     changePasswordWithToken: actions.changePasswordWithToken,
     captchaResponse: actions.setRecaptchaResponse
   };
-  const ConnectedComponent = reactRedux.connect(mapStateToProps, mapDispatchToProps)(ToJs.toJS(WrappedComponent));
+  const ConnectedComponent = require$$4.connect(mapStateToProps, mapDispatchToProps)(ToJs.toJS(WrappedComponent));
   ConnectedComponent.displayName = `${getDisplayName(WrappedComponent)}`;
   return ConnectedComponent;
 };

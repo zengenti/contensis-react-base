@@ -1,6 +1,6 @@
 'use strict';
 
-var selectors = require('./selectors-afa7afd5.js');
+var selectors = require('./selectors-6a739905.js');
 
 const VERSION_PREFIX = '@VERSION/';
 const SET_VERSION = `${VERSION_PREFIX}SET_VERSION`;
@@ -86,4 +86,4 @@ exports.setVersionStatus = setVersionStatus;
 exports.version = version;
 exports.version$1 = version$1;
 exports.version$2 = version$2;
-//# sourceMappingURL=navigation-01e16d0d.js.map
+//# sourceMappingURL=navigation-c57ea69c.js.map
