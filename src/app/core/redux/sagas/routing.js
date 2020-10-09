@@ -63,7 +63,7 @@ function* getRouteSaga(action) {
 
     const entryLinkDepth = (appsays && appsays.entryLinkDepth) || 3;
     const setContentTypeLimits = !!ContentTypeMappings.find(
-      ct => ct.fields || ct.linkDepth
+      (ct) => ct.fields || ct.linkDepth
     );
 
     const state = yield select();
@@ -127,7 +127,7 @@ function* getRouteSaga(action) {
             // with Node API
             let previewEntry = yield deliveryApi
               .getClient(deliveryApiStatus, project)
-              .entries.get({ id: entryGuid, linkDepth: 3 });
+              .entries.get({ id: entryGuid, linkDepth: entryLinkDepth });
             if (previewEntry) {
               pathNode = { entry: previewEntry };
               // yield call(setRouteEntry, previewEntry);
@@ -160,7 +160,7 @@ function* getRouteSaga(action) {
             pathNode.entry.sys.id
           ) {
             const contentType = ContentTypeMappings.find(
-              ct => ct.contentTypeID === pathNode.entry.sys.contentTypeId
+              (ct) => ct.contentTypeID === pathNode.entry.sys.contentTypeId
             );
             const query = routeEntryByFieldsQuery(
               pathNode.entry.sys.id,
@@ -205,7 +205,7 @@ function* getRouteSaga(action) {
         entry = pathNode.entry;
         const { entryMapper } =
           ContentTypeMappings.find(
-            ct => ct.contentTypeID === entry.sys.contentTypeId
+            (ct) => ct.contentTypeID === entry.sys.contentTypeId
           ) || {};
         yield call(
           setRouteEntry,
