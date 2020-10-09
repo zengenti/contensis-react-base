@@ -16,18 +16,18 @@ import minifyCssString from 'minify-css-string';
 import { fromJS } from 'immutable';
 import fromEntries from 'fromentries';
 import 'history';
-import { c as createStore, h as history, G as GetDeliveryApiStatusFromHostname, p as pickProject, r as rootSaga } from './App-e908f554.js';
-export { A as ReactApp } from './App-e908f554.js';
+import { c as createStore, h as history, G as GetDeliveryApiStatusFromHostname, p as pickProject, r as rootSaga } from './App-dfb316c2.js';
+export { A as ReactApp } from './App-dfb316c2.js';
 import 'contensis-delivery-api';
-import { s as selectEntryDepends, a as selectNodeDepends, b as selectCurrentTreeID, c as selectRouteEntry, d as selectCurrentProject } from './selectors-9caa4dc1.js';
-import { s as setCurrentProject } from './routing-b4e1203d.js';
-import { s as setVersionStatus, a as setVersion } from './navigation-a71efc4c.js';
+import { s as selectEntryDepends, a as selectNodeDepends, b as selectCurrentTreeID, c as selectRouteEntry, d as selectCurrentProject } from './selectors-f9f11a0b.js';
+import { s as setCurrentProject } from './routing-c8ad5e2f.js';
+import { s as setVersionStatus, a as setVersion } from './navigation-d3f6fd4d.js';
 import 'query-string';
 import 'redux';
 import 'redux-immutable';
 import 'redux-thunk';
 import 'redux-saga';
-import './sagas-5f2bed74.js';
+import './sagas-50529be4.js';
 import 'redux-saga/effects';
 import 'js-cookie';
 import './ToJs-1649f545.js';
@@ -35,7 +35,7 @@ import 'loglevel';
 import { matchRoutes } from 'react-router-config';
 import 'react-hot-loader';
 import 'prop-types';
-import './RouteLoader-e63bc401.js';
+import './RouteLoader-af948821.js';
 
 const servers = SERVERS;
 /* global SERVERS */
@@ -111,7 +111,7 @@ const apiProxy = httpProxy.createProxyServer();
 const reverseProxies = (app, reverseProxyPaths) => {
   deliveryApiProxy(apiProxy, app);
   app.all(reverseProxyPaths, (req, res) => {
-    const target = servers$2.iis;
+    const target = req.hostname.indexOf('preview-') || req.hostname.indexOf('preview.') || req.hostname === 'localhost' ? servers$2.previewIis || servers$2.iis : servers$2.iis;
     apiProxy.web(req, res, {
       target,
       changeOrigin: true
@@ -183,6 +183,9 @@ const hashKeys = keys => {
   return returnKeys;
 };
 
+const moduleBundles = fs.readdirSync('./dist/static/modern/js', 'utf8');
+const coreModules = moduleBundles.filter(m => m.startsWith('app.') || m.startsWith('vendor.') || m.startsWith('runtime.'));
+
 const addStandardHeaders = (state, response, packagejson, groups) => {
   if (state) {
     /* eslint-disable no-console */
@@ -204,6 +207,7 @@ const addStandardHeaders = (state, response, packagejson, groups) => {
       console.log(`depends hashed: ${allDepends.join(' ')}`);
       addVarnishAuthenticationHeaders(state, response, groups);
       response.setHeader('Surrogate-Control', 'max-age=3600');
+      response.setHeader('Link', coreModules.map(m => `</static/modern/js/${m}>;rel="preload";as="script"`).join(','));
     } catch (e) {
       console.log('Error Adding headers', e.message); // console.log(e);
     }

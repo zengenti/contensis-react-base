@@ -3,17 +3,17 @@ import 'react-redux';
 import { OrderedMap, List, fromJS, Set as Set$1, Map } from 'immutable';
 import { createBrowserHistory, createMemoryHistory } from 'history';
 import { Client, Op, Query } from 'contensis-delivery-api';
-import { S as SET_TARGET_PROJECT, e as SET_SIBLINGS, f as SET_ROUTE, g as SET_NAVIGATION_PATH, h as SET_ENTRY, i as SET_ANCESTORS, M as MAP_ENTRY, C as CALL_HISTORY_METHOD, c as selectRouteEntry, j as selectCurrentNode, k as selectCurrentPath, d as selectCurrentProject } from './selectors-9caa4dc1.js';
-import { S as SET_VERSION, b as SET_VERSION_STATUS, G as GET_NODE_TREE_ERROR, c as SET_NODE_TREE, d as selectVersionStatus, h as hasNavigationTree, e as GET_NODE_TREE } from './navigation-a71efc4c.js';
+import { S as SET_TARGET_PROJECT, e as SET_SIBLINGS, f as SET_ROUTE, g as SET_NAVIGATION_PATH, h as SET_ENTRY, i as SET_ANCESTORS, C as CALL_HISTORY_METHOD, c as selectRouteEntry, j as selectCurrentPath, d as selectCurrentProject } from './selectors-f9f11a0b.js';
+import { S as SET_VERSION, b as SET_VERSION_STATUS, G as GET_NODE_TREE_ERROR, c as SET_NODE_TREE, d as selectVersionStatus, h as hasNavigationTree, e as GET_NODE_TREE } from './navigation-d3f6fd4d.js';
 import { compose, applyMiddleware, createStore as createStore$1 } from 'redux';
 import { combineReducers } from 'redux-immutable';
 import thunk from 'redux-thunk';
 import createSagaMiddleware, { END } from 'redux-saga';
-import { U as UserReducer, v as validateUserSaga, u as userSagas } from './sagas-5f2bed74.js';
+import { U as UserReducer, v as validateUserSaga, u as userSagas } from './sagas-50529be4.js';
 import { takeEvery, put, select, call, all } from 'redux-saga/effects';
 import { error } from 'loglevel';
 import 'react-hot-loader';
-import { R as RouteLoader } from './RouteLoader-e63bc401.js';
+import { R as RouteLoader } from './RouteLoader-af948821.js';
 
 const selectedHistory = typeof window !== 'undefined' ? createBrowserHistory : createMemoryHistory;
 const history = (options = {}) => selectedHistory(options);
@@ -375,11 +375,6 @@ let initialState = OrderedMap({
 });
 var RoutingReducer = ((state = initialState, action) => {
   switch (action.type) {
-    case MAP_ENTRY:
-      {
-        return state.set('mappedEntry', fromJS(action.mappedEntry));
-      }
-
     case SET_ANCESTORS:
       {
         if (action.ancestors) {
@@ -398,9 +393,10 @@ var RoutingReducer = ((state = initialState, action) => {
       {
         const {
           entry,
+          mappedEntry,
           node = {},
           isLoading = false,
-          notFound
+          notFound = false
         } = action;
         let nextState;
 
@@ -409,6 +405,9 @@ var RoutingReducer = ((state = initialState, action) => {
         } else {
           const entryDepends = GetAllResponseGuids(entry);
           nextState = state.set('entryID', action.id).set('entryDepends', fromJS(entryDepends)).set('entry', fromJS(entry)).set('isLoading', isLoading).set('notFound', notFound);
+          if (mappedEntry) nextState = nextState.set('mappedEntry', fromJS(mappedEntry)).set('entry', fromJS({
+            sys: entry.sys
+          }));
         }
 
         if (!node) {
@@ -419,12 +418,6 @@ var RoutingReducer = ((state = initialState, action) => {
           return nextState.set('nodeDepends', nodeDepends).set('currentNode', fromJS(node)).removeIn(['currentNode', 'entry']); // We have the entry stored elsewhere, so lets not keep it twice.
         }
       }
-    // case SET_ENTRY_ID: {
-    //   if (action.id === '') {
-    //     return state;
-    //   }
-    //   return state.set('entryID', action.id);
-    // }
 
     case SET_NAVIGATION_PATH:
       {
@@ -436,30 +429,26 @@ var RoutingReducer = ((state = initialState, action) => {
         }
 
         if (action.path) {
-          return state.set('currentPath', fromJS(action.path)).set('location', fromJS(action.location)).set('staticRoute', fromJS({ ...staticRoute,
-            route: { ...staticRoute.route,
-              component: null
-            }
-          })).set('isLoading', typeof window !== 'undefined');
+          // Don't run a path update on iniutial load as we allready should have it in redux
+          const entryUri = state.getIn(['entry', 'sys', 'uri']);
+
+          if (entryUri != action.path) {
+            return state.set('currentPath', fromJS(action.path)).set('location', fromJS(action.location)).set('staticRoute', fromJS({ ...staticRoute,
+              route: { ...staticRoute.route,
+                component: null
+              }
+            })).set('isLoading', typeof window !== 'undefined');
+          } else {
+            return state.set('location', fromJS(action.location)).set('staticRoute', fromJS({ ...staticRoute,
+              route: { ...staticRoute.route,
+                component: null
+              }
+            }));
+          }
         }
 
         return state;
       }
-    // case SET_NAVIGATION_NOT_FOUND: {
-    //   return state
-    //     .set('notFound', fromJS(action.notFound))
-    //     .set('isLoading', false);
-    // }
-    // case SET_NODE: {
-    //   const { node } = action;
-    //   if (!node) return state;
-    //   // On Set Node, we reset all dependants.
-    //   const nodeDepends = Set([node.id]);
-    //   return state
-    //     .set('nodeDepends', nodeDepends)
-    //     .set('currentNode', fromJS(action.node))
-    //     .removeIn(['currentNode', 'entry']); // We have the entry stored elsewhere, so lets not keep it twice.
-    // }
 
     case SET_ROUTE:
       {
@@ -671,8 +660,8 @@ function* getRouteSaga(action) {
     const entryLinkDepth = appsays && appsays.entryLinkDepth || 3;
     const setContentTypeLimits = !!ContentTypeMappings.find(ct => ct.fields || ct.linkDepth);
     const state = yield select();
-    const routeEntry = selectRouteEntry(state);
-    const routeNode = selectCurrentNode(state);
+    const routeEntry = selectRouteEntry(state); // const routeNode = selectCurrentNode(state);
+
     const currentPath = selectCurrentPath(state);
     const deliveryApiStatus = selectVersionStatus(state);
     const project = selectCurrentProject(state);
@@ -685,19 +674,14 @@ function* getRouteSaga(action) {
       // - all staticRoutes (where custom 'route.fetchNode' attribute is falsey)
       // - standard Contensis SiteView Routing where we already have that entry in state
       if (routeEntry && (!staticRoute || staticRoute.route && staticRoute.route.fetchNode)) {
-        entry = routeEntry.toJS();
-        yield put({
-          type: SET_ENTRY,
-          entry,
-          node: routeNode,
-          isLoading: false
-        });
-      } else yield call(setRouteEntry, null, // entry = null
-      null, // pathNode = null
-      null, // ancestors = null
-      null, // siblings = null
-      false // notFound = false
-      );
+        entry = routeEntry.toJS(); //Do nothing, the entry is allready the right one.
+        // yield put({
+        //   type: SET_ENTRY,
+        //   entry,
+        //   node: routeNode,
+        //   isLoading: false,
+        // });
+      } else yield call(setRouteEntry);
     } else {
       let pathNode = null,
           ancestors = null,
@@ -756,13 +740,14 @@ function* getRouteSaga(action) {
           }
         }
 
-        if (pathNode && pathNode.id && (doNavigation === true || doNavigation.ancestors)) {
-          ancestors = yield cachedSearch.getAncestors(pathNode.id, project);
+        if (pathNode && pathNode.id) {
+          if (doNavigation === true || doNavigation.ancestors) {
+            ancestors = yield cachedSearch.getAncestors(pathNode.id, project);
+          }
 
           if (doNavigation === true || doNavigation.siblings) {
             siblings = yield cachedSearch.getSiblings({
-              id: pathNode.id,
-              entryFields: ['sys.contentTypeId', 'url']
+              id: pathNode.id
             }, project);
           }
         }
@@ -770,13 +755,12 @@ function* getRouteSaga(action) {
 
       if (pathNode && pathNode.entry && pathNode.entry.sys && pathNode.entry.sys.id) {
         entry = pathNode.entry;
-        const entryMapper = (ContentTypeMappings.find(ct => ct.contentTypeID === pathNode.entry.sys.contentTypeId) || {}).entryMapper;
-        yield all([call(mapRouteEntry, entryMapper, { ...pathNode,
-          ancestors,
-          siblings
-        }, state), call(setRouteEntry, entry, pathNode, ancestors, siblings, false)]);
+        const {
+          entryMapper
+        } = ContentTypeMappings.find(ct => ct.contentTypeID === entry.sys.contentTypeId) || {};
+        yield call(setRouteEntry, entry, pathNode, ancestors, siblings, entryMapper);
       } else {
-        if (pathNode) yield call(setRouteEntry, null, pathNode, ancestors, siblings, false);else yield call(do404);
+        if (pathNode) yield call(setRouteEntry, null, pathNode, ancestors, siblings);else yield call(do404);
       }
 
       if (!appsays || !appsays.preventScrollTop) {
@@ -798,7 +782,7 @@ function* getRouteSaga(action) {
     if (!hasNavigationTree(state) && (doNavigation === true || doNavigation.tree)) // Load navigation clientside only, a put() should help that work
       yield put({
         type: GET_NODE_TREE,
-        treeDepth: doNavigation === true || !doNavigation.tree || doNavigation.tree === true ? 2 : doNavigation.tree
+        treeDepth: doNavigation === true || !doNavigation.tree || doNavigation.tree === true ? 0 : doNavigation.tree
       });
   } catch (e) {
     error(...['Error running route saga:', e, e.stack]);
@@ -806,11 +790,17 @@ function* getRouteSaga(action) {
   }
 }
 
-function* setRouteEntry(entry, node, ancestors, siblings, notFound) {
+function* setRouteEntry(entry, node, ancestors, siblings, entryMapper, notFound = false) {
+  const mappedEntry = yield mapRouteEntry(entryMapper, { ...node,
+    entry,
+    ancestors,
+    siblings
+  });
   yield all([put({
     type: SET_ENTRY,
     id: entry && entry.sys.id || null,
     entry,
+    mappedEntry,
     node,
     notFound
   }), ancestors && put({
@@ -822,16 +812,18 @@ function* setRouteEntry(entry, node, ancestors, siblings, notFound) {
   })]);
 }
 
-function* mapRouteEntry(entryMapper, node, state) {
-  if (typeof entryMapper === 'function') {
-    const mappedEntry = yield call(entryMapper, node, state);
-    yield put({
-      type: MAP_ENTRY,
-      mappedEntry,
-      node,
-      entryMapper
-    });
+function* mapRouteEntry(entryMapper, node) {
+  try {
+    if (typeof entryMapper === 'function') {
+      const state = yield select();
+      const mappedEntry = yield call(entryMapper, node, state);
+      return mappedEntry;
+    }
+  } catch (e) {
+    error(...['Error running entryMapper:', e, e.stack]);
   }
+
+  return;
 }
 
 function* do404() {
@@ -852,8 +844,7 @@ function* ensureNodeTreeSaga(action) {
       const deliveryApiVersionStatus = yield select(selectVersionStatus);
       const project = yield select(selectCurrentProject);
       const nodes = yield deliveryApi.getClient(deliveryApiVersionStatus, project).nodes.getRoot({
-        depth: action.treeDepth || 2,
-        entryFields: 'entryTitle, metaInformation, sys.contentTypeId'
+        depth: action.treeDepth || 0
       });
 
       if (nodes) {
@@ -888,4 +879,4 @@ const AppRoot = props => {
 };
 
 export { AppRoot as A, GetDeliveryApiStatusFromHostname as G, GetClientSideDeliveryApiStatus as a, browserHistory as b, createStore as c, history as h, pickProject as p, rootSaga as r };
-//# sourceMappingURL=App-e908f554.js.map
+//# sourceMappingURL=App-dfb316c2.js.map
