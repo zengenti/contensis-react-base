@@ -20,6 +20,7 @@ const toJS = WrappedComponent => wrappedComponentProps => {
 };
 
 const ACTION_PREFIX = '@SEARCH/';
+const APPLY_CONFIG = `${ACTION_PREFIX}APPLY_CONFIG`;
 const CLEAR_FILTERS = `${ACTION_PREFIX}CLEAR_FILTERS`;
 const DO_SEARCH = `${ACTION_PREFIX}DO_SEARCH`;
 const EXECUTE_FEATURED_SEARCH = `${ACTION_PREFIX}EXECUTE_FEATURED_SEARCH`;
@@ -43,6 +44,7 @@ const UPDATE_SELECTED_FILTERS = `${ACTION_PREFIX}UPDATE_SELECTED_FILTERS`;
 
 var types = /*#__PURE__*/Object.freeze({
   __proto__: null,
+  APPLY_CONFIG: APPLY_CONFIG,
   CLEAR_FILTERS: CLEAR_FILTERS,
   DO_SEARCH: DO_SEARCH,
   EXECUTE_FEATURED_SEARCH: EXECUTE_FEATURED_SEARCH,
@@ -1035,7 +1037,7 @@ const customWhereExpressions = where => {
 
 
       if (idx === 1) {
-        expression = Op[operator](field, value, weight);
+        expression = ['freeText', 'contains'].includes(operator) ? Op[operator](field, value, weight) : operator === 'in' ? Op[operator](field, ...value) : Op[operator](field, value);
       }
     });
     return expression;
@@ -2015,6 +2017,21 @@ var reducers = (config => {
     const current = state.get(context !== Context.listings ? 'currentFacet' : 'currentListing');
 
     switch (action.type) {
+      case APPLY_CONFIG:
+        {
+          const {
+            context,
+            facet,
+            config
+          } = action;
+
+          if (context && facet) {
+            return state.setIn([context, facet], fromJS(config));
+          }
+
+          return state;
+        }
+
       case CLEAR_FILTERS:
         {
           const currentFilters = state.getIn([context, current, 'filters']);
