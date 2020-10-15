@@ -670,7 +670,8 @@ function* getRouteSaga(action) {
     const state = yield effects.select();
     const routeEntry = selectors.selectRouteEntry(state); // const routeNode = selectCurrentNode(state);
 
-    const currentPath = selectors.selectCurrentPath(state);
+    const currentPath = action.path; //selectCurrentPath(state);
+
     const deliveryApiStatus = navigation.selectVersionStatus(state);
     const project = selectors.selectCurrentProject(state);
     const isHome = currentPath === '/';
@@ -894,4 +895,4 @@ exports.createStore = createStore;
 exports.history = history;
 exports.pickProject = pickProject;
 exports.rootSaga = rootSaga;
-//# sourceMappingURL=App-141a167d.js.map
+//# sourceMappingURL=App-8bbe1aee.js.map

@@ -3,17 +3,17 @@ import 'react-redux';
 import { OrderedMap, List, fromJS, Set as Set$1, Map } from 'immutable';
 import { createBrowserHistory, createMemoryHistory } from 'history';
 import { Client, Op, Query } from 'contensis-delivery-api';
-import { S as SET_TARGET_PROJECT, e as SET_SIBLINGS, f as SET_ROUTE, g as SET_NAVIGATION_PATH, h as SET_ENTRY, i as SET_ANCESTORS, C as CALL_HISTORY_METHOD, c as selectRouteEntry, j as selectCurrentPath, d as selectCurrentProject } from './selectors-f9f11a0b.js';
-import { S as SET_VERSION, b as SET_VERSION_STATUS, G as GET_NODE_TREE_ERROR, c as SET_NODE_TREE, d as selectVersionStatus, h as hasNavigationTree, e as GET_NODE_TREE } from './navigation-d3f6fd4d.js';
+import { S as SET_TARGET_PROJECT, e as SET_SIBLINGS, f as SET_ROUTE, g as SET_NAVIGATION_PATH, h as SET_ENTRY, i as SET_ANCESTORS, C as CALL_HISTORY_METHOD, c as selectRouteEntry, d as selectCurrentProject } from './selectors-99d4c59c.js';
+import { S as SET_VERSION, b as SET_VERSION_STATUS, G as GET_NODE_TREE_ERROR, c as SET_NODE_TREE, d as selectVersionStatus, h as hasNavigationTree, e as GET_NODE_TREE } from './navigation-c5883096.js';
 import { compose, applyMiddleware, createStore as createStore$1 } from 'redux';
 import { combineReducers } from 'redux-immutable';
 import thunk from 'redux-thunk';
 import createSagaMiddleware, { END } from 'redux-saga';
-import { U as UserReducer, v as validateUserSaga, u as userSagas } from './sagas-50529be4.js';
+import { U as UserReducer, v as validateUserSaga, u as userSagas } from './sagas-9eaded2b.js';
 import { takeEvery, put, select, call, all } from 'redux-saga/effects';
 import { error } from 'loglevel';
 import 'react-hot-loader';
-import { R as RouteLoader } from './RouteLoader-af948821.js';
+import { R as RouteLoader } from './RouteLoader-919b2e26.js';
 
 const selectedHistory = typeof window !== 'undefined' ? createBrowserHistory : createMemoryHistory;
 const history = (options = {}) => selectedHistory(options);
@@ -662,7 +662,8 @@ function* getRouteSaga(action) {
     const state = yield select();
     const routeEntry = selectRouteEntry(state); // const routeNode = selectCurrentNode(state);
 
-    const currentPath = selectCurrentPath(state);
+    const currentPath = action.path; //selectCurrentPath(state);
+
     const deliveryApiStatus = selectVersionStatus(state);
     const project = selectCurrentProject(state);
     const isHome = currentPath === '/';
@@ -879,4 +880,4 @@ const AppRoot = props => {
 };
 
 export { AppRoot as A, GetDeliveryApiStatusFromHostname as G, GetClientSideDeliveryApiStatus as a, browserHistory as b, createStore as c, history as h, pickProject as p, rootSaga as r };
-//# sourceMappingURL=App-6e69ee95.js.map
+//# sourceMappingURL=App-0a5d2605.js.map
