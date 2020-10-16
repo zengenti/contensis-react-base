@@ -16,8 +16,8 @@ import minifyCssString from 'minify-css-string';
 import { fromJS } from 'immutable';
 import fromEntries from 'fromentries';
 import 'history';
-import { c as createStore, h as history, G as GetDeliveryApiStatusFromHostname, p as pickProject, r as rootSaga } from './App-0a5d2605.js';
-export { A as ReactApp } from './App-0a5d2605.js';
+import { c as createStore, h as history, G as GetDeliveryApiStatusFromHostname, p as pickProject, r as rootSaga } from './App-be4b2f68.js';
+export { A as ReactApp } from './App-be4b2f68.js';
 import 'contensis-delivery-api';
 import { s as selectEntryDepends, a as selectNodeDepends, b as selectCurrentTreeID, c as selectRouteEntry, d as selectCurrentProject } from './selectors-99d4c59c.js';
 import { s as setCurrentProject } from './routing-35ccdb5f.js';
@@ -183,6 +183,11 @@ const hashKeys = keys => {
   return returnKeys;
 };
 
+const path = require('path');
+
+const moduleAlias = require('module-alias');
+
+moduleAlias.addAlias('styled-components', path.join(__dirname, '../node_modules/styled-components'));
 const moduleBundles = fs.readdirSync('./dist/static/modern/js', 'utf8');
 const coreModules = moduleBundles.filter(m => m.startsWith('app.') || m.startsWith('vendor.') || m.startsWith('runtime.'));
 

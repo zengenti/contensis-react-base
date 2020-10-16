@@ -20,7 +20,7 @@ var minifyCssString = require('minify-css-string');
 var immutable = require('immutable');
 var fromEntries = require('fromentries');
 require('history');
-var App = require('./App-8bbe1aee.js');
+var App = require('./App-c460b5bb.js');
 require('contensis-delivery-api');
 var selectors = require('./selectors-0fe2c691.js');
 var routing = require('./routing-1f9fac1b.js');
@@ -199,6 +199,11 @@ const hashKeys = keys => {
   return returnKeys;
 };
 
+const path = require('path');
+
+const moduleAlias = require('module-alias');
+
+moduleAlias.addAlias('styled-components', path.join(__dirname, '../node_modules/styled-components'));
 const moduleBundles = fs__default['default'].readdirSync('./dist/static/modern/js', 'utf8');
 const coreModules = moduleBundles.filter(m => m.startsWith('app.') || m.startsWith('vendor.') || m.startsWith('runtime.'));
 
