@@ -205,7 +205,7 @@ const moduleAlias = require('module-alias'); // The module alias code fixes an i
 // from an ecternal library using styled components
 
 
-moduleAlias.addAlias('styled-components', path.join(__dirname, '../node_modules/styled-components'));
+moduleAlias.addAlias('styled-components', path.join(__dirname, '../../styled-components'));
 const moduleBundles = fs__default['default'].readdirSync('./dist/static/modern/js', 'utf8');
 const coreModules = moduleBundles.filter(m => m.startsWith('app.') || m.startsWith('vendor.') || m.startsWith('runtime.'));
 
