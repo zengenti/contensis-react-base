@@ -20,7 +20,7 @@ var minifyCssString = require('minify-css-string');
 var immutable = require('immutable');
 var fromEntries = require('fromentries');
 require('history');
-var App = require('./App-c460b5bb.js');
+var App = require('./App-c6eeaa23.js');
 require('contensis-delivery-api');
 var selectors = require('./selectors-0fe2c691.js');
 var routing = require('./routing-1f9fac1b.js');

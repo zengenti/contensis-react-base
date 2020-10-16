@@ -11,7 +11,7 @@ import thunk from 'redux-thunk';
 import createSagaMiddleware, { END } from 'redux-saga';
 import { U as UserReducer, v as validateUserSaga, u as userSagas } from './sagas-9eaded2b.js';
 import { takeEvery, put, select, call, all } from 'redux-saga/effects';
-import { error } from 'loglevel';
+import { info, error } from 'loglevel';
 import 'react-hot-loader';
 import { R as RouteLoader } from './RouteLoader-919b2e26.js';
 
@@ -743,13 +743,25 @@ function* getRouteSaga(action) {
 
         if (pathNode && pathNode.id) {
           if (doNavigation === true || doNavigation.ancestors) {
-            ancestors = yield cachedSearch.getAncestors(pathNode.id, project);
+            try {
+              ancestors = yield cachedSearch.getAncestors({
+                id: pathNode.id,
+                versionStatus: deliveryApiStatus
+              }, project);
+            } catch (ex) {
+              info('Problem fetching ancestors', ex);
+            }
           }
 
           if (doNavigation === true || doNavigation.siblings) {
-            siblings = yield cachedSearch.getSiblings({
-              id: pathNode.id
-            }, project);
+            try {
+              siblings = yield cachedSearch.getSiblings({
+                id: pathNode.id,
+                versionStatus: deliveryApiStatus
+              }, project);
+            } catch (ex) {
+              info('Problem fetching siblings', ex);
+            }
           }
         }
       }
@@ -880,4 +892,4 @@ const AppRoot = props => {
 };
 
 export { AppRoot as A, GetDeliveryApiStatusFromHostname as G, GetClientSideDeliveryApiStatus as a, browserHistory as b, createStore as c, history as h, pickProject as p, rootSaga as r };
-//# sourceMappingURL=App-be4b2f68.js.map
+//# sourceMappingURL=App-f848b5b4.js.map
