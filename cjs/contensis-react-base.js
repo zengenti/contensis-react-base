@@ -201,7 +201,9 @@ const hashKeys = keys => {
 
 const path = require('path');
 
-const moduleAlias = require('module-alias');
+const moduleAlias = require('module-alias'); // The module alias code fixes an issue with server side rendered components
+// from an ecternal library using styled components
+
 
 moduleAlias.addAlias('styled-components', path.join(__dirname, '../node_modules/styled-components'));
 const moduleBundles = fs__default['default'].readdirSync('./dist/static/modern/js', 'utf8');
