@@ -182,16 +182,31 @@ function* getRouteSaga(action) {
 
         if (pathNode && pathNode.id) {
           if (doNavigation === true || doNavigation.ancestors) {
-            ancestors = yield cachedSearch.getAncestors(pathNode.id, project);
+            try {
+              ancestors = yield cachedSearch.getAncestors(
+                {
+                  id: pathNode.id,
+                  versionStatus: deliveryApiStatus,
+                },
+                project
+              );
+            } catch (ex) {
+              log.info('Problem fetching ancestors', ex);
+            }
           }
 
           if (doNavigation === true || doNavigation.siblings) {
-            siblings = yield cachedSearch.getSiblings(
-              {
-                id: pathNode.id,
-              },
-              project
-            );
+            try {
+              siblings = yield cachedSearch.getSiblings(
+                {
+                  id: pathNode.id,
+                  versionStatus: deliveryApiStatus,
+                },
+                project
+              );
+            } catch (ex) {
+              log.info('Problem fetching siblings', ex);
+            }
           }
         }
       }
