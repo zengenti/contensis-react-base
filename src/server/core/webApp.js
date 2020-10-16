@@ -41,7 +41,7 @@ const moduleAlias = require('module-alias');
 // from an ecternal library using styled components
 moduleAlias.addAlias(
   'styled-components',
-  path.join(__dirname, '../node_modules/styled-components')
+  path.join(__dirname, '../../styled-components')
 );
 
 const moduleBundles = fs.readdirSync('./dist/static/modern/js', 'utf8');
