@@ -1,10 +1,4 @@
-'use strict';
-
-<<<<<<< HEAD:cjs/navigation-8a94ff72.js
-var routing = require('./routing-b229b3c4.js');
-=======
-var selectors = require('./selectors-0fe2c691.js');
->>>>>>> isomorphic-base:cjs/navigation-d1239577.js
+import { p as action } from './routing-9688859c.js';
 
 const VERSION_PREFIX = '@VERSION/';
 const SET_VERSION = `${VERSION_PREFIX}SET_VERSION`;
@@ -28,11 +22,11 @@ var navigation = /*#__PURE__*/Object.freeze({
   GET_NODE_TREE_ERROR: GET_NODE_TREE_ERROR
 });
 
-const setVersion = (commitRef, buildNo) => routing.action(SET_VERSION, {
+const setVersion = (commitRef, buildNo) => action(SET_VERSION, {
   commitRef,
   buildNo
 });
-const setVersionStatus = status => routing.action(SET_VERSION_STATUS, {
+const setVersionStatus = status => action(SET_VERSION_STATUS, {
   status
 });
 
@@ -76,22 +70,5 @@ var navigation$1 = /*#__PURE__*/Object.freeze({
   selectNavigationDepends: selectNavigationDepends
 });
 
-exports.GET_NODE_TREE = GET_NODE_TREE;
-exports.GET_NODE_TREE_ERROR = GET_NODE_TREE_ERROR;
-exports.SET_NODE_TREE = SET_NODE_TREE;
-exports.SET_VERSION = SET_VERSION;
-exports.SET_VERSION_STATUS = SET_VERSION_STATUS;
-exports.hasNavigationTree = hasNavigationTree;
-exports.navigation = navigation;
-exports.navigation$1 = navigation$1;
-exports.selectVersionStatus = selectVersionStatus;
-exports.setVersion = setVersion;
-exports.setVersionStatus = setVersionStatus;
-exports.version = version;
-exports.version$1 = version$1;
-exports.version$2 = version$2;
-<<<<<<< HEAD:cjs/navigation-8a94ff72.js
-//# sourceMappingURL=navigation-8a94ff72.js.map
-=======
-//# sourceMappingURL=navigation-d1239577.js.map
->>>>>>> isomorphic-base:cjs/navigation-d1239577.js
+export { GET_NODE_TREE_ERROR as G, SET_VERSION as S, setVersion as a, SET_VERSION_STATUS as b, SET_NODE_TREE as c, GET_NODE_TREE as d, selectVersionStatus as e, version$1 as f, navigation$1 as g, hasNavigationTree as h, version$2 as i, navigation as n, setVersionStatus as s, version as v };
+//# sourceMappingURL=navigation-ed6eea15.js.map

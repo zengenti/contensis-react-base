@@ -1,9 +1,8 @@
 import React, { useCallback, useEffect } from 'react';
 import { Route, useLocation, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { j as selectRouteEntryContentTypeId, c as selectRouteEntry, k as selectIsNotFound, l as selectUserLoggedIn, m as selectRouteLoading, n as selectMappedEntry, d as selectCurrentProject, o as selectCurrentPath } from './selectors-99d4c59c.js';
-import { a as setNavigationPath } from './routing-35ccdb5f.js';
-import { t as toJS } from './ToJs-1649f545.js';
+import { Iterable } from 'immutable';
+import { j as selectRouteEntryContentTypeId, a as selectRouteEntry, k as selectIsNotFound, l as selectRouteLoading, m as selectMappedEntry, b as selectCurrentProject, n as selectCurrentPath, o as setNavigationPath } from './routing-9688859c.js';
 import { matchRoutes, renderRoutes } from 'react-router-config';
 import { hot } from 'react-hot-loader';
 import PropTypes from 'prop-types';
@@ -26,6 +25,16 @@ const Status = ({
 Status.propTypes = {
   code: PropTypes.number.isRequired,
   children: PropTypes.element
+};
+
+const toJS = WrappedComponent => wrappedComponentProps => {
+  const KEY = 0;
+  const VALUE = 1;
+  const propsJS = Object.entries(wrappedComponentProps).reduce((newProps, wrappedComponentProp) => {
+    newProps[wrappedComponentProp[KEY]] = Iterable.isIterable(wrappedComponentProp[VALUE]) ? wrappedComponentProp[VALUE].toJS() : wrappedComponentProp[VALUE];
+    return newProps;
+  }, {});
+  return React.createElement(WrappedComponent, propsJS);
 };
 
 const getTrimmedPath = path => {
@@ -150,7 +159,6 @@ const mapStateToProps = state => {
     contentTypeId: selectRouteEntryContentTypeId(state),
     entry: selectRouteEntry(state),
     isNotFound: selectIsNotFound(state),
-    isLoggedIn: selectUserLoggedIn(state),
     isLoading: selectRouteLoading(state),
     mappedEntry: selectMappedEntry(state),
     projectId: selectCurrentProject(state),
@@ -164,4 +172,4 @@ const mapDispatchToProps = {
 var RouteLoader$1 = hot(module)(connect(mapStateToProps, mapDispatchToProps)(toJS(RouteLoader)));
 
 export { RouteLoader$1 as R };
-//# sourceMappingURL=RouteLoader-919b2e26.js.map
+//# sourceMappingURL=RouteLoader-2dd5e762.js.map

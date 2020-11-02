@@ -8,49 +8,32 @@ var Loadable = require('react-loadable');
 var httpProxy = require('http-proxy');
 var fs = require('fs');
 var React = require('react');
-var require$$9 = require('react-router-dom');
-var require$$4 = require('react-redux');
+var reactRouterDom = require('react-router-dom');
+var reactRedux = require('react-redux');
 var server = require('react-dom/server');
 var webpack = require('react-loadable/webpack');
 var styledComponents = require('styled-components');
 var Helmet = require('react-helmet');
 var serialize = require('serialize-javascript');
 var minifyCssString = require('minify-css-string');
-var require$$0 = require('immutable');
+var immutable = require('immutable');
 var fromEntries = require('fromentries');
 require('history');
-<<<<<<< HEAD
-var App = require('./App-29c48e39.js');
+var App = require('./App-ce68bb24.js');
 require('contensis-delivery-api');
-var routing = require('./routing-b229b3c4.js');
-=======
-var App = require('./App-c6eeaa23.js');
-require('contensis-delivery-api');
-var selectors = require('./selectors-0fe2c691.js');
-var routing = require('./routing-1f9fac1b.js');
-var navigation = require('./navigation-d1239577.js');
-require('query-string');
->>>>>>> isomorphic-base
+var routing = require('./routing-c9c7a209.js');
 require('redux');
 require('redux-immutable');
 require('redux-thunk');
 require('redux-saga');
-<<<<<<< HEAD
-var navigation = require('./navigation-8a94ff72.js');
+var navigation = require('./navigation-181073fe.js');
 require('query-string');
-=======
-require('./sagas-6cbd425c.js');
->>>>>>> isomorphic-base
 require('redux-saga/effects');
 require('loglevel');
-var require$$11 = require('react-router-config');
+var reactRouterConfig = require('react-router-config');
 require('react-hot-loader');
 require('prop-types');
-<<<<<<< HEAD
-require('./RouteLoader-5287f321.js');
-=======
-require('./RouteLoader-03b08238.js');
->>>>>>> isomorphic-base
+require('./RouteLoader-2693ddbd.js');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -92,11 +75,7 @@ const apiProxy = httpProxy__default['default'].createProxyServer();
 const reverseProxies = (app, reverseProxyPaths) => {
   deliveryApiProxy(apiProxy, app);
   app.all(reverseProxyPaths, (req, res) => {
-<<<<<<< HEAD
     const target = req.hostname.indexOf('preview-') || req.hostname.indexOf('preview.') || req.hostname === 'localhost' ? servers$1.previewIis || servers$1.iis : servers$1.iis;
-=======
-    const target = req.hostname.indexOf('preview-') || req.hostname.indexOf('preview.') || req.hostname === 'localhost' ? servers$2.previewIis || servers$2.iis : servers$2.iis;
->>>>>>> isomorphic-base
     apiProxy.web(req, res, {
       target,
       changeOrigin: true
@@ -154,20 +133,17 @@ const handleResponse = (request, response, content, send = ResponseMethod.send) 
   response[send](content);
 };
 
-// const coreModules = moduleBundles.filter(
-//   m =>
-//     m.startsWith('app.') || m.startsWith('vendor.') || m.startsWith('runtime.')
-// );
-
 const path = require('path');
 
 const moduleAlias = require('module-alias'); // The module alias code fixes an issue with server side rendered components
 // from an ecternal library using styled components
 
 
-moduleAlias.addAlias('styled-components', path.join(__dirname, '../../styled-components'));
-const moduleBundles = fs__default['default'].readdirSync('./dist/static/modern/js', 'utf8');
-const coreModules = moduleBundles.filter(m => m.startsWith('app.') || m.startsWith('vendor.') || m.startsWith('runtime.'));
+moduleAlias.addAlias('styled-components', path.join(__dirname, '../../styled-components')); // const moduleBundles = fs.readdirSync('./dist/static/modern/js', 'utf8');
+// const coreModules = moduleBundles.filter(
+//   m =>
+//     m.startsWith('app.') || m.startsWith('vendor.') || m.startsWith('runtime.')
+// );
 
 const addStandardHeaders = (state, response, packagejson, groups) => {
   if (state) {
@@ -179,7 +155,6 @@ const addStandardHeaders = (state, response, packagejson, groups) => {
       response.header('surrogate-key', surrogateKeyHeader);
       addVarnishAuthenticationHeaders(state, response, groups);
       response.setHeader('Surrogate-Control', 'max-age=3600');
-      response.setHeader('Link', coreModules.map(m => `</static/modern/js/${m}>;rel="preload";as="script"`).join(','));
     } catch (e) {
       console.log('Error Adding headers', e.message); // console.log(e);
     }
@@ -268,7 +243,7 @@ const webApp = (app, ReactApp, config) => {
       url
     } = request;
 
-    const matchedStaticRoute = () => require$$11.matchRoutes(routes.StaticRoutes, request.path);
+    const matchedStaticRoute = () => reactRouterConfig.matchRoutes(routes.StaticRoutes, request.path);
 
     const isStaticRoute = () => matchedStaticRoute().length > 0;
 
@@ -288,7 +263,7 @@ const webApp = (app, ReactApp, config) => {
     const context = {};
     let status = 200; // Create a store (with a memory history) from our current url
 
-    const store = App.createStore(withReducers, require$$0.fromJS({}), App.history({
+    const store = App.createStore(withReducers, immutable.fromJS({}), App.history({
       initialEntries: [url]
     })); //const store = createStore(withReducers);
     // dispatch any global and non-saga related actions before calling our JSX
@@ -302,9 +277,9 @@ const webApp = (app, ReactApp, config) => {
     const modules = [];
     const jsx = React__default['default'].createElement(Loadable__default['default'].Capture, {
       report: moduleName => modules.push(moduleName)
-    }, React__default['default'].createElement(require$$4.Provider, {
+    }, React__default['default'].createElement(reactRedux.Provider, {
       store: store
-    }, React__default['default'].createElement(require$$9.StaticRouter, {
+    }, React__default['default'].createElement(reactRouterDom.StaticRouter, {
       context: context,
       location: url
     }, React__default['default'].createElement(ReactApp, {

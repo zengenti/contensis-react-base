@@ -15,40 +15,22 @@ import minifyCssString from 'minify-css-string';
 import { fromJS } from 'immutable';
 import fromEntries from 'fromentries';
 import 'history';
-<<<<<<< HEAD
-import { c as createStore, h as history, d as deliveryApi, p as pickProject, r as rootSaga } from './App-62139d1c.js';
-export { A as ReactApp } from './App-62139d1c.js';
+import { c as createStore, h as history, d as deliveryApi, p as pickProject, r as rootSaga } from './App-80284419.js';
+export { A as ReactApp } from './App-80284419.js';
 import 'contensis-delivery-api';
-import { s as setCurrentProject, a as selectRouteEntry, b as selectCurrentProject } from './routing-995ec526.js';
-=======
-import { c as createStore, h as history, G as GetDeliveryApiStatusFromHostname, p as pickProject, r as rootSaga } from './App-f848b5b4.js';
-export { A as ReactApp } from './App-f848b5b4.js';
-import 'contensis-delivery-api';
-import { s as selectEntryDepends, a as selectNodeDepends, b as selectCurrentTreeID, c as selectRouteEntry, d as selectCurrentProject } from './selectors-99d4c59c.js';
-import { s as setCurrentProject } from './routing-35ccdb5f.js';
-import { s as setVersionStatus, a as setVersion } from './navigation-c5883096.js';
-import 'query-string';
->>>>>>> isomorphic-base
+import { s as setCurrentProject, a as selectRouteEntry, b as selectCurrentProject } from './routing-9688859c.js';
 import 'redux';
 import 'redux-immutable';
 import 'redux-thunk';
 import 'redux-saga';
-<<<<<<< HEAD
-import { s as setVersionStatus, a as setVersion } from './navigation-9d59f407.js';
+import { s as setVersionStatus, a as setVersion } from './navigation-ed6eea15.js';
 import 'query-string';
-=======
-import './sagas-9eaded2b.js';
->>>>>>> isomorphic-base
 import 'redux-saga/effects';
 import 'loglevel';
 import { matchRoutes } from 'react-router-config';
 import 'react-hot-loader';
 import 'prop-types';
-<<<<<<< HEAD
-import './RouteLoader-25040a91.js';
-=======
-import './RouteLoader-919b2e26.js';
->>>>>>> isomorphic-base
+import './RouteLoader-2dd5e762.js';
 
 const servers = SERVERS;
 /* global SERVERS */
@@ -78,11 +60,7 @@ const apiProxy = httpProxy.createProxyServer();
 const reverseProxies = (app, reverseProxyPaths) => {
   deliveryApiProxy(apiProxy, app);
   app.all(reverseProxyPaths, (req, res) => {
-<<<<<<< HEAD
     const target = req.hostname.indexOf('preview-') || req.hostname.indexOf('preview.') || req.hostname === 'localhost' ? servers$1.previewIis || servers$1.iis : servers$1.iis;
-=======
-    const target = req.hostname.indexOf('preview-') || req.hostname.indexOf('preview.') || req.hostname === 'localhost' ? servers$2.previewIis || servers$2.iis : servers$2.iis;
->>>>>>> isomorphic-base
     apiProxy.web(req, res, {
       target,
       changeOrigin: true
@@ -140,20 +118,17 @@ const handleResponse = (request, response, content, send = ResponseMethod.send) 
   response[send](content);
 };
 
-// const coreModules = moduleBundles.filter(
-//   m =>
-//     m.startsWith('app.') || m.startsWith('vendor.') || m.startsWith('runtime.')
-// );
-
 const path = require('path');
 
 const moduleAlias = require('module-alias'); // The module alias code fixes an issue with server side rendered components
 // from an ecternal library using styled components
 
 
-moduleAlias.addAlias('styled-components', path.join(__dirname, '../../styled-components'));
-const moduleBundles = fs.readdirSync('./dist/static/modern/js', 'utf8');
-const coreModules = moduleBundles.filter(m => m.startsWith('app.') || m.startsWith('vendor.') || m.startsWith('runtime.'));
+moduleAlias.addAlias('styled-components', path.join(__dirname, '../../styled-components')); // const moduleBundles = fs.readdirSync('./dist/static/modern/js', 'utf8');
+// const coreModules = moduleBundles.filter(
+//   m =>
+//     m.startsWith('app.') || m.startsWith('vendor.') || m.startsWith('runtime.')
+// );
 
 const addStandardHeaders = (state, response, packagejson, groups) => {
   if (state) {
@@ -165,7 +140,6 @@ const addStandardHeaders = (state, response, packagejson, groups) => {
       response.header('surrogate-key', surrogateKeyHeader);
       addVarnishAuthenticationHeaders(state, response, groups);
       response.setHeader('Surrogate-Control', 'max-age=3600');
-      response.setHeader('Link', coreModules.map(m => `</static/modern/js/${m}>;rel="preload";as="script"`).join(','));
     } catch (e) {
       console.log('Error Adding headers', e.message); // console.log(e);
     }

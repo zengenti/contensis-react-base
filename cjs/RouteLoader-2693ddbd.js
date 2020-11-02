@@ -1,22 +1,12 @@
 'use strict';
 
 var React = require('react');
-<<<<<<< HEAD:cjs/RouteLoader-5287f321.js
-var require$$9 = require('react-router-dom');
-var require$$4 = require('react-redux');
-var require$$0 = require('immutable');
-var routing = require('./routing-b229b3c4.js');
-var require$$11 = require('react-router-config');
-var require$$10 = require('react-hot-loader');
-=======
 var reactRouterDom = require('react-router-dom');
 var reactRedux = require('react-redux');
-var selectors = require('./selectors-0fe2c691.js');
-var routing = require('./routing-1f9fac1b.js');
-var ToJs = require('./ToJs-d548b71b.js');
+var immutable = require('immutable');
+var routing = require('./routing-c9c7a209.js');
 var reactRouterConfig = require('react-router-config');
 var reactHotLoader = require('react-hot-loader');
->>>>>>> isomorphic-base:cjs/RouteLoader-03b08238.js
 var PropTypes = require('prop-types');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
@@ -30,7 +20,7 @@ const Status = ({
   code,
   children
 }) => {
-  return React__default['default'].createElement(require$$9.Route, {
+  return React__default['default'].createElement(reactRouterDom.Route, {
     render: ({
       staticContext
     }) => {
@@ -48,7 +38,7 @@ const toJS = WrappedComponent => wrappedComponentProps => {
   const KEY = 0;
   const VALUE = 1;
   const propsJS = Object.entries(wrappedComponentProps).reduce((newProps, wrappedComponentProp) => {
-    newProps[wrappedComponentProp[KEY]] = require$$0.Iterable.isIterable(wrappedComponentProp[VALUE]) ? wrappedComponentProp[VALUE].toJS() : wrappedComponentProp[VALUE];
+    newProps[wrappedComponentProp[KEY]] = immutable.Iterable.isIterable(wrappedComponentProp[VALUE]) ? wrappedComponentProp[VALUE].toJS() : wrappedComponentProp[VALUE];
     return newProps;
   }, {});
   return React__default['default'].createElement(WrappedComponent, propsJS);
@@ -81,9 +71,9 @@ const RouteLoader = ({
   routes,
   withEvents
 }) => {
-  const location = require$$9.useLocation(); // Match any Static Routes a developer has defined
+  const location = reactRouterDom.useLocation(); // Match any Static Routes a developer has defined
 
-  const matchedStaticRoute = () => require$$11.matchRoutes(routes.StaticRoutes, location.pathname);
+  const matchedStaticRoute = () => reactRouterConfig.matchRoutes(routes.StaticRoutes, location.pathname);
 
   const isStaticRoute = () => matchedStaticRoute().length > 0;
 
@@ -106,14 +96,14 @@ const RouteLoader = ({
   }, [location, setPath]); // Need to redirect when url endswith a /
 
   if (location.pathname.length > trimmedPath.length) {
-    return React__default['default'].createElement(require$$9.Redirect, {
+    return React__default['default'].createElement(reactRouterDom.Redirect, {
       to: trimmedPath
     });
   } // Render any Static Routes a developer has defined
 
 
   if (isStaticRoute()) {
-    return require$$11.renderRoutes(routes.StaticRoutes, {
+    return reactRouterConfig.renderRoutes(routes.StaticRoutes, {
       projectId,
       contentTypeId,
       entry,
@@ -186,11 +176,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = {
   setNavigationPath: routing.setNavigationPath
 };
-var RouteLoader$1 = require$$10.hot(module)(require$$4.connect(mapStateToProps, mapDispatchToProps)(toJS(RouteLoader)));
+var RouteLoader$1 = reactHotLoader.hot(module)(reactRedux.connect(mapStateToProps, mapDispatchToProps)(toJS(RouteLoader)));
 
 exports.RouteLoader = RouteLoader$1;
-<<<<<<< HEAD:cjs/RouteLoader-5287f321.js
-//# sourceMappingURL=RouteLoader-5287f321.js.map
-=======
-//# sourceMappingURL=RouteLoader-03b08238.js.map
->>>>>>> isomorphic-base:cjs/RouteLoader-03b08238.js
+//# sourceMappingURL=RouteLoader-2693ddbd.js.map

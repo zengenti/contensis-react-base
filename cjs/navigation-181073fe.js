@@ -1,10 +1,6 @@
 'use strict';
 
-<<<<<<< HEAD:cjs/navigation-8a94ff72.js
-var routing = require('./routing-b229b3c4.js');
-=======
-var selectors = require('./selectors-0fe2c691.js');
->>>>>>> isomorphic-base:cjs/navigation-d1239577.js
+var routing = require('./routing-c9c7a209.js');
 
 const VERSION_PREFIX = '@VERSION/';
 const SET_VERSION = `${VERSION_PREFIX}SET_VERSION`;
@@ -90,8 +86,4 @@ exports.setVersionStatus = setVersionStatus;
 exports.version = version;
 exports.version$1 = version$1;
 exports.version$2 = version$2;
-<<<<<<< HEAD:cjs/navigation-8a94ff72.js
-//# sourceMappingURL=navigation-8a94ff72.js.map
-=======
-//# sourceMappingURL=navigation-d1239577.js.map
->>>>>>> isomorphic-base:cjs/navigation-d1239577.js
+//# sourceMappingURL=navigation-181073fe.js.map

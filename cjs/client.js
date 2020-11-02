@@ -5,42 +5,25 @@ Object.defineProperty(exports, '__esModule', { value: true });
 require('isomorphic-fetch');
 var Loadable = require('react-loadable');
 var React = require('react');
-var require$$9 = require('react-router-dom');
-var require$$4 = require('react-redux');
-var require$$0 = require('immutable');
+var reactRouterDom = require('react-router-dom');
+var reactRedux = require('react-redux');
+var immutable = require('immutable');
 require('history');
-<<<<<<< HEAD
-var App = require('./App-29c48e39.js');
+var App = require('./App-ce68bb24.js');
 require('contensis-delivery-api');
-var routing = require('./routing-b229b3c4.js');
-=======
-var App = require('./App-c6eeaa23.js');
-require('contensis-delivery-api');
-require('./selectors-0fe2c691.js');
-var routing = require('./routing-1f9fac1b.js');
-var navigation = require('./navigation-d1239577.js');
-var queryString = require('query-string');
->>>>>>> isomorphic-base
+var routing = require('./routing-c9c7a209.js');
 require('redux');
 require('redux-immutable');
 require('redux-thunk');
 require('redux-saga');
-<<<<<<< HEAD
-var navigation = require('./navigation-8a94ff72.js');
+var navigation = require('./navigation-181073fe.js');
 var queryString = require('query-string');
-=======
-require('./sagas-6cbd425c.js');
->>>>>>> isomorphic-base
 require('redux-saga/effects');
 require('loglevel');
 require('react-router-config');
-var require$$10 = require('react-hot-loader');
+var reactHotLoader = require('react-hot-loader');
 require('prop-types');
-<<<<<<< HEAD
-require('./RouteLoader-5287f321.js');
-=======
-require('./RouteLoader-03b08238.js');
->>>>>>> isomorphic-base
+require('./RouteLoader-2693ddbd.js');
 var reactDom = require('react-dom');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
@@ -49,7 +32,7 @@ var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
 var queryString__default = /*#__PURE__*/_interopDefaultLegacy(queryString);
 
 const fromJSOrdered = js => {
-  return typeof js !== 'object' || js === null ? js : Array.isArray(js) ? require$$0.Seq(js).map(fromJSOrdered).toList() : require$$0.Seq(js).map(fromJSOrdered).toOrderedMap();
+  return typeof js !== 'object' || js === null ? js : Array.isArray(js) ? immutable.Seq(js).map(fromJSOrdered).toList() : immutable.Seq(js).map(fromJSOrdered).toOrderedMap();
 };
 
 class ClientApp {
@@ -63,9 +46,9 @@ class ClientApp {
     } = config;
 
     const GetClientJSX = store => {
-      const ClientJsx = React__default['default'].createElement(require$$10.AppContainer, null, React__default['default'].createElement(require$$4.Provider, {
+      const ClientJsx = React__default['default'].createElement(reactHotLoader.AppContainer, null, React__default['default'].createElement(reactRedux.Provider, {
         store: store
-      }, React__default['default'].createElement(require$$9.Router, {
+      }, React__default['default'].createElement(reactRouterDom.Router, {
         history: App.browserHistory
       }, React__default['default'].createElement(ReactApp, {
         routes: routes,
@@ -109,7 +92,7 @@ class ClientApp {
 
         /* eslint-enable no-console */
         const ssRedux = JSON.parse(data);
-        store = App.createStore(withReducers, require$$0.fromJS(ssRedux), App.browserHistory); // store.dispatch(setVersionStatus(versionStatusFromHostname));
+        store = App.createStore(withReducers, immutable.fromJS(ssRedux), App.browserHistory); // store.dispatch(setVersionStatus(versionStatusFromHostname));
 
         store.runSaga(App.rootSaga(withSagas));
         store.dispatch(routing.setCurrentProject(App.pickProject(window.location.hostname, queryString__default['default'].parse(window.location.search)))); // if (typeof window != 'undefined') {

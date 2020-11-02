@@ -276,27 +276,30 @@ function* getRouteSaga(action) {
   }
 }
 
-function* setRouteEntry(entry, node, ancestors, siblings, notFound) {
+function* setRouteEntry(
+  entry,
+  node,
+  ancestors,
+  siblings,
+  entryMapper,
+  notFound = false
+) {
+  const mappedEntry = yield mapRouteEntry(entryMapper, {
+    ...node,
+    entry,
+    ancestors,
+    siblings,
+  });
+
   yield all([
-    // put({
-    //   type: SET_NAVIGATION_NOT_FOUND,
-    //   notFound: !(entry && entry.sys.id),
-    // }),
-    // put({
-    //   type: SET_NODE,
-    //   node,
-    // }),
     put({
       type: SET_ENTRY,
       id: (entry && entry.sys.id) || null,
       entry,
+      mappedEntry,
       node,
       notFound,
     }),
-    // put({
-    //   type: SET_ENTRY_ID,
-    //   id: (entry && entry.sys.id) || null,
-    // }),
     ancestors &&
       put({
         type: SET_ANCESTORS,
