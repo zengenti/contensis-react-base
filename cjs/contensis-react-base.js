@@ -19,21 +19,38 @@ var minifyCssString = require('minify-css-string');
 var require$$0 = require('immutable');
 var fromEntries = require('fromentries');
 require('history');
+<<<<<<< HEAD
 var App = require('./App-29c48e39.js');
 require('contensis-delivery-api');
 var routing = require('./routing-b229b3c4.js');
+=======
+var App = require('./App-c6eeaa23.js');
+require('contensis-delivery-api');
+var selectors = require('./selectors-0fe2c691.js');
+var routing = require('./routing-1f9fac1b.js');
+var navigation = require('./navigation-d1239577.js');
+require('query-string');
+>>>>>>> isomorphic-base
 require('redux');
 require('redux-immutable');
 require('redux-thunk');
 require('redux-saga');
+<<<<<<< HEAD
 var navigation = require('./navigation-8a94ff72.js');
 require('query-string');
+=======
+require('./sagas-6cbd425c.js');
+>>>>>>> isomorphic-base
 require('redux-saga/effects');
 require('loglevel');
 var require$$11 = require('react-router-config');
 require('react-hot-loader');
 require('prop-types');
+<<<<<<< HEAD
 require('./RouteLoader-5287f321.js');
+=======
+require('./RouteLoader-03b08238.js');
+>>>>>>> isomorphic-base
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -75,7 +92,11 @@ const apiProxy = httpProxy__default['default'].createProxyServer();
 const reverseProxies = (app, reverseProxyPaths) => {
   deliveryApiProxy(apiProxy, app);
   app.all(reverseProxyPaths, (req, res) => {
+<<<<<<< HEAD
     const target = req.hostname.indexOf('preview-') || req.hostname.indexOf('preview.') || req.hostname === 'localhost' ? servers$1.previewIis || servers$1.iis : servers$1.iis;
+=======
+    const target = req.hostname.indexOf('preview-') || req.hostname.indexOf('preview.') || req.hostname === 'localhost' ? servers$2.previewIis || servers$2.iis : servers$2.iis;
+>>>>>>> isomorphic-base
     apiProxy.web(req, res, {
       target,
       changeOrigin: true
@@ -138,6 +159,16 @@ const handleResponse = (request, response, content, send = ResponseMethod.send) 
 //     m.startsWith('app.') || m.startsWith('vendor.') || m.startsWith('runtime.')
 // );
 
+const path = require('path');
+
+const moduleAlias = require('module-alias'); // The module alias code fixes an issue with server side rendered components
+// from an ecternal library using styled components
+
+
+moduleAlias.addAlias('styled-components', path.join(__dirname, '../../styled-components'));
+const moduleBundles = fs__default['default'].readdirSync('./dist/static/modern/js', 'utf8');
+const coreModules = moduleBundles.filter(m => m.startsWith('app.') || m.startsWith('vendor.') || m.startsWith('runtime.'));
+
 const addStandardHeaders = (state, response, packagejson, groups) => {
   if (state) {
     /* eslint-disable no-console */
@@ -148,6 +179,7 @@ const addStandardHeaders = (state, response, packagejson, groups) => {
       response.header('surrogate-key', surrogateKeyHeader);
       addVarnishAuthenticationHeaders(state, response, groups);
       response.setHeader('Surrogate-Control', 'max-age=3600');
+      response.setHeader('Link', coreModules.map(m => `</static/modern/js/${m}>;rel="preload";as="script"`).join(','));
     } catch (e) {
       console.log('Error Adding headers', e.message); // console.log(e);
     }

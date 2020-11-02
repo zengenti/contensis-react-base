@@ -31,6 +31,14 @@ import {
 import createStore from '~/core/redux/store';
 import rootSaga from '~/core/redux/sagas/index.js';
 import { matchRoutes } from 'react-router-config';
+const path = require('path');
+const moduleAlias = require('module-alias');
+// The module alias code fixes an issue with server side rendered components
+// from an ecternal library using styled components
+moduleAlias.addAlias(
+  'styled-components',
+  path.join(__dirname, '../../styled-components')
+);
 
 // const moduleBundles = fs.readdirSync('./dist/static/modern/js', 'utf8');
 // const coreModules = moduleBundles.filter(

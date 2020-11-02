@@ -5,22 +5,40 @@ import { Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { Seq, fromJS } from 'immutable';
 import 'history';
+<<<<<<< HEAD
 import { d as deliveryApi, c as createStore, r as rootSaga, p as pickProject, b as browserHistory } from './App-62139d1c.js';
 export { A as ReactApp } from './App-62139d1c.js';
 import 'contensis-delivery-api';
 import { s as setCurrentProject } from './routing-995ec526.js';
+=======
+import { a as GetClientSideDeliveryApiStatus, c as createStore, r as rootSaga, p as pickProject, b as browserHistory } from './App-f848b5b4.js';
+export { A as ReactApp } from './App-f848b5b4.js';
+import 'contensis-delivery-api';
+import './selectors-99d4c59c.js';
+import { s as setCurrentProject } from './routing-35ccdb5f.js';
+import { s as setVersionStatus } from './navigation-c5883096.js';
+import queryString from 'query-string';
+>>>>>>> isomorphic-base
 import 'redux';
 import 'redux-immutable';
 import 'redux-thunk';
 import 'redux-saga';
+<<<<<<< HEAD
 import { s as setVersionStatus } from './navigation-9d59f407.js';
 import queryString from 'query-string';
+=======
+import './sagas-9eaded2b.js';
+>>>>>>> isomorphic-base
 import 'redux-saga/effects';
 import 'loglevel';
 import 'react-router-config';
 import { AppContainer } from 'react-hot-loader';
 import 'prop-types';
+<<<<<<< HEAD
 import './RouteLoader-25040a91.js';
+=======
+import './RouteLoader-919b2e26.js';
+>>>>>>> isomorphic-base
 import { hydrate, render } from 'react-dom';
 
 const fromJSOrdered = js => {

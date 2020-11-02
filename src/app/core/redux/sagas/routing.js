@@ -2,21 +2,18 @@
 import * as log from 'loglevel';
 import { takeEvery, put, select, call, all } from 'redux-saga/effects';
 import {
-  // SET_ENTRY_ID,
-  // SET_NAVIGATION_NOT_FOUND,
-  // SET_NODE,
   SET_ENTRY,
   SET_ANCESTORS,
   SET_NAVIGATION_PATH,
   SET_ROUTE,
   CALL_HISTORY_METHOD,
   SET_SIBLINGS,
-  MAP_ENTRY,
 } from '~/core/redux/types/routing';
 import { cachedSearch, deliveryApi } from '~/core/util/ContensisDeliveryApi';
 import { selectVersionStatus } from '~/core/redux/selectors/version';
 import {
-  selectCurrentPath,
+  // selectCurrentNode,
+  // selectCurrentPath,
   selectCurrentProject,
   selectRouteEntry,
 } from '~/core/redux/selectors/routing';
@@ -78,7 +75,8 @@ function* getRouteSaga(action) {
 
     const state = yield select();
     const routeEntry = selectRouteEntry(state);
-    const currentPath = selectCurrentPath(state);
+    // const routeNode = selectCurrentNode(state);
+    const currentPath = action.path; //selectCurrentPath(state);
     const deliveryApiStatus = selectVersionStatus(state);
     const project = selectCurrentProject(state);
     const isHome = currentPath === '/';
@@ -98,16 +96,15 @@ function* getRouteSaga(action) {
         routeEntry &&
         (!staticRoute || (staticRoute.route && staticRoute.route.fetchNode))
       ) {
+        entry = routeEntry.toJS();
         //Do nothing, the entry is allready the right one.
-      } else
-        yield call(
-          setRouteEntry,
-          null, // entry = null
-          null, // pathNode = null
-          null, // ancestors = null
-          null, // siblings = null
-          false // notFound = false
-        );
+        // yield put({
+        //   type: SET_ENTRY,
+        //   entry,
+        //   node: routeNode,
+        //   isLoading: false,
+        // });
+      } else yield call(setRouteEntry);
     } else {
       let pathNode = null,
         ancestors = null,
@@ -137,7 +134,7 @@ function* getRouteSaga(action) {
             // with Node API
             let previewEntry = yield deliveryApi
               .getClient(deliveryApiStatus, project)
-              .entries.get({ id: entryGuid, linkDepth: 3 });
+              .entries.get({ id: entryGuid, linkDepth: entryLinkDepth });
             if (previewEntry) {
               pathNode = { entry: previewEntry };
             }
@@ -187,21 +184,33 @@ function* getRouteSaga(action) {
           }
         }
 
-        if (
-          pathNode &&
-          pathNode.id &&
-          (doNavigation === true || doNavigation.ancestors)
-        ) {
-          ancestors = yield cachedSearch.getAncestors(pathNode.id, project);
+        if (pathNode && pathNode.id) {
+          if (doNavigation === true || doNavigation.ancestors) {
+            try {
+              ancestors = yield cachedSearch.getAncestors(
+                {
+                  id: pathNode.id,
+                  versionStatus: deliveryApiStatus,
+                },
+                project
+              );
+            } catch (ex) {
+              log.info('Problem fetching ancestors', ex);
+            }
+          }
 
           if (doNavigation === true || doNavigation.siblings) {
-            siblings = yield cachedSearch.getSiblings(
-              {
-                id: pathNode.id,
-                entryFields: ['sys.contentTypeId', 'url'],
-              },
-              project
-            );
+            try {
+              siblings = yield cachedSearch.getSiblings(
+                {
+                  id: pathNode.id,
+                  versionStatus: deliveryApiStatus,
+                },
+                project
+              );
+            } catch (ex) {
+              log.info('Problem fetching siblings', ex);
+            }
           }
         }
       }
@@ -213,22 +222,22 @@ function* getRouteSaga(action) {
         pathNode.entry.sys.id
       ) {
         entry = pathNode.entry;
-        const entryMapper = (
+        const { entryMapper } =
           ContentTypeMappings.find(
-            ct => ct.contentTypeID === pathNode.entry.sys.contentTypeId
-          ) || {}
-        ).entryMapper;
-
-        yield all([
-          call(
-            mapRouteEntry,
-            { ...pathNode, ancestors, siblings },
-            entryMapper
-          ),
-          call(setRouteEntry, entry, pathNode, ancestors, siblings, false),
-        ]);
+            ct => ct.contentTypeID === entry.sys.contentTypeId
+          ) || {};
+        yield call(
+          setRouteEntry,
+          entry,
+          pathNode,
+          ancestors,
+          siblings,
+          entryMapper
+        );
       } else {
-        yield call(do404);
+        if (pathNode)
+          yield call(setRouteEntry, null, pathNode, ancestors, siblings);
+        else yield call(do404);
       }
       if (!appsays || !appsays.preventScrollTop) {
         // Scroll into View
@@ -301,21 +310,19 @@ function* setRouteEntry(entry, node, ancestors, siblings, notFound) {
   ]);
 }
 
-function* mapRouteEntry(node, entryMapper) {
-  if (typeof entryMapper === 'function') {
-    const mappedEntry = entryMapper(node);
-    yield put({ type: MAP_ENTRY, mappedEntry, node, entryMapper });
+function* mapRouteEntry(entryMapper, node) {
+  try {
+    if (typeof entryMapper === 'function') {
+      const state = yield select();
+      const mappedEntry = yield call(entryMapper, node, state);
+      return mappedEntry;
+    }
+  } catch (e) {
+    log.error(...['Error running entryMapper:', e, e.stack]);
   }
+  return;
 }
 function* do404() {
-  // yield put({
-  //   type: SET_NAVIGATION_NOT_FOUND,
-  //   notFound: true,
-  // });
-  // yield put({
-  //   type: SET_ENTRY_ID,
-  //   id: null,
-  // });
   yield put({
     type: SET_ENTRY,
     id: null,

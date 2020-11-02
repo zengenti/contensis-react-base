@@ -60,5 +60,13 @@
   "peacock.color": "#113324",
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
+  },
+  "search.exclude": {
+    "**/.git": true,
+    "**/node_modules": true,
+    "**/bower_components": true,
+    "**/tmp": true,
+    "**/cjs": true,
+    "**/esm": true
   }
 }
