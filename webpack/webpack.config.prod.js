@@ -146,13 +146,15 @@ const CLIENT_PROD_CONFIG = {
   plugins: [
     new webpack.DefinePlugin(WEBPACK_DEFINE_CONFIG.prod),
     // Do these plugins only once per build so we'll do it here instead of base
-    new CopyWebpackPlugin([
-      {
-        ignore: ['index.html', 'index.ejs'],
-        from: path.resolve(__dirname, '../public'),
-        to: path.resolve(__dirname, '../dist/static'),
-      },
-    ]),
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          globOptions: { ignore: ['index.html', 'index.ejs'] },
+          from: path.resolve(__dirname, '../public'),
+          to: path.resolve(__dirname, '../dist/static'),
+        },
+      ],
+    }),
     new ImageminPlugin({
       test: /\.(jpe?g|png|gif|svg)$/i,
       optipng: {

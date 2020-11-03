@@ -9,6 +9,9 @@ module.exports = {
   output: {
     publicPath: ASSET_PATH,
   },
+  node: {
+    fs: 'empty',
+  },
   resolve: {
     extensions: ['.js', '.jsx', '.json'],
     alias: {

@@ -72,7 +72,7 @@ const CLIENT_DEV_CONFIG = {
         server: false,
         host: 'localhost',
         port: 3000,
-        proxy: 'http://localhost:3010',
+        proxy: 'http://localhost:3011',
         ui: { port: 3011 },
         open: 'local',
       },
@@ -83,17 +83,19 @@ const CLIENT_DEV_CONFIG = {
         messages: ['Application is now running at http://localhost:3000'],
       },
     }),
-    new CopyWebpackPlugin([
-      {
-        ignore: ['index.html', 'index.ejs'],
-        from: path.resolve(__dirname, '../public'),
-        to: path.resolve(__dirname, '../dist/static'),
-      },
-    ]),
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          globOptions: { ignore: ['index.html', 'index.ejs'] },
+          from: path.resolve(__dirname, '../public'),
+          to: path.resolve(__dirname, '../dist/static'),
+        },
+      ],
+    }),
   ],
   devServer: {
     host: '0.0.0.0',
-    port: 3010,
+    port: 3011,
     hot: true,
     historyApiFallback: true,
     contentBase: path.join(__dirname, 'src'),
