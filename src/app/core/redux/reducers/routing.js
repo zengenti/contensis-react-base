@@ -21,7 +21,7 @@ let initialState = OrderedMap({
   entryDepends: List(),
   isLoading: false,
   location: null,
-  mappedEntry: null,
+  mappedEntry: OrderedMap(),
   nodeDepends: List(),
   notFound: false,
   staticRoute: null,
@@ -49,7 +49,7 @@ export default (state = initialState, action) => {
         nextState = state
           .set('entryID', null)
           .set('entry', null)
-          .set('mappedEntry', null)
+          .set('mappedEntry', OrderedMap())
           .set('isLoading', isLoading)
           .set('notFound', notFound);
       } else {
@@ -80,7 +80,7 @@ export default (state = initialState, action) => {
         staticRoute = { ...action.staticRoute };
       }
       if (action.path) {
-        // Don't run a path update on iniutial load as we allready should have it in redux
+        // Don't run a path update on initial load as we allready should have it in redux
         const entryUri = state.getIn(['entry', 'sys', 'uri']);
         if (entryUri != action.path) {
           return state
