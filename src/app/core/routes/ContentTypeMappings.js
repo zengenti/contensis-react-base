@@ -3,14 +3,34 @@ import Loadable from 'react-loadable';
 import { Loading } from './Loading';
 
 export default [
+  // {
+  //   contentTypeID: 'zenbaseHomePage',
+  //   component: Loadable({
+  //     loader: () => {
+  //       return import('~/pages/Home/Homepage');
+  //     },
+  //     loading: Loading,
+  //   }),
+  //   entryMapper: node => node.entry,
+  // },
   {
-    contentTypeID: 'zenbaseHomePage',
+    contentTypeID: 'articleImageApi',
     component: Loadable({
       loader: () => {
-        return import('~/pages/Home/Homepage');
+        return import('~/pages/Article');
       },
       loading: Loading,
     }),
-    entryMapper: node => node.entry,
+    entryMapper: ({ entry }) => (entry ? { title: entry.entryTitle } : {}),
+  },
+  {
+    authRequired: true,
+    contentTypeID: 'genericPage',
+    component: Loadable({
+      loader: () => {
+        return import('~/pages/Article');
+      },
+      loading: Loading,
+    }),
   },
 ];

@@ -10,6 +10,36 @@ export default [
     fetchNode: true,
     ssr: true,
     component: Homepage,
+    // authRequired: true,
+  },
+  {
+    path: '/account/login',
+    exact: true,
+    ssr: false,
+    component: Loadable({
+      loader: () => import('~/pages/User/Login'),
+      loading: Loading,
+    }),
+  },
+  {
+    path: '/account/registration',
+    exact: true,
+    ssr: false,
+    component: Loadable({
+      loader: () => import('~/pages/User/RegistrationPage'),
+      loading: Loading,
+    }),
+  },
+  {
+    path: '/help-and-docs/*',
+    fetchNode: true,
+    exact: false,
+    ssr: true,
+    authRequired: true,
+    component: Loadable({
+      loader: () => import('~/pages/Article'),
+      loading: Loading,
+    }),
   },
   // ********************************
   // ˅˅ Do not delete these routes ˅˅
@@ -29,6 +59,7 @@ export default [
         import(/* webpackChunkName: "VersionInfo" */ '~/pages/VersionInfo'),
       loading: Loading,
     }),
+    authRequired: true,
   },
   // ˄˄ Do not delete these routes ˄˄
   // ********************************
