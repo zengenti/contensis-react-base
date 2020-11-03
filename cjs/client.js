@@ -9,31 +9,33 @@ var reactRouterDom = require('react-router-dom');
 var reactRedux = require('react-redux');
 var immutable = require('immutable');
 require('history');
-var App = require('./App-ce68bb24.js');
+var App = require('./App-140938df.js');
 require('contensis-delivery-api');
-var routing = require('./routing-c9c7a209.js');
+var routing = require('./routing-0bbeb721.js');
 require('redux');
 require('redux-immutable');
 require('redux-thunk');
 require('redux-saga');
-var navigation = require('./navigation-181073fe.js');
+var version = require('./version-59ba5d8f.js');
+var sagas = require('./sagas-6255c60b.js');
 var queryString = require('query-string');
 require('redux-saga/effects');
 require('loglevel');
+require('contensis-management-api');
+require('await-to-js');
+require('js-cookie');
+require('jsonpath-mapper');
 require('react-router-config');
 var reactHotLoader = require('react-hot-loader');
 require('prop-types');
-require('./RouteLoader-2693ddbd.js');
+require('./RouteLoader-5dffbec3.js');
+require('./ToJs-d548b71b.js');
 var reactDom = require('react-dom');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
 var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
 var queryString__default = /*#__PURE__*/_interopDefaultLegacy(queryString);
-
-const fromJSOrdered = js => {
-  return typeof js !== 'object' || js === null ? js : Array.isArray(js) ? immutable.Seq(js).map(fromJSOrdered).toList() : immutable.Seq(js).map(fromJSOrdered).toOrderedMap();
-};
 
 class ClientApp {
   constructor(ReactApp, config) {
@@ -73,8 +75,8 @@ class ClientApp {
     const versionStatusFromHostname = App.deliveryApi.getClientSideVersionStatus();
 
     if (window.isDynamic || window.REDUX_DATA || process.env.NODE_ENV !== 'production') {
-      store = App.createStore(withReducers, fromJSOrdered(window.REDUX_DATA), App.browserHistory);
-      store.dispatch(navigation.setVersionStatus(qs.versionStatus || versionStatusFromHostname));
+      store = App.createStore(withReducers, sagas.fromJSOrdered(window.REDUX_DATA), App.browserHistory);
+      store.dispatch(version.setVersionStatus(qs.versionStatus || versionStatusFromHostname));
       /* eslint-disable no-console */
 
       console.log('Hydrating from inline Redux');

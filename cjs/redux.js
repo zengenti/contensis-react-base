@@ -3,17 +3,17 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 require('immutable');
-var routing$1 = require('./routing-c9c7a209.js');
-var navigation$2 = require('./navigation-181073fe.js');
+var routing$1 = require('./routing-0bbeb721.js');
+var version$1 = require('./version-59ba5d8f.js');
 require('query-string');
 
 var types = {
-  navigation: navigation$2.navigation,
+  navigation: version$1.navigation,
   routing: routing$1.routing,
-  version: navigation$2.version
+  version: version$1.version
 };
 
-const loadNavigationTree = () => routing$1.action(navigation$2.GET_NODE_TREE);
+const loadNavigationTree = () => routing$1.action(version$1.GET_NODE_TREE);
 
 var navigation = /*#__PURE__*/Object.freeze({
   __proto__: null,
@@ -23,13 +23,13 @@ var navigation = /*#__PURE__*/Object.freeze({
 var actions = {
   navigation,
   routing: routing$1.routing$1,
-  version: navigation$2.version$1
+  version: version$1.version$1
 };
 
 var selectors = {
-  navigation: navigation$2.navigation$1,
+  navigation: version$1.navigation$1,
   routing: routing$1.routing$2,
-  version: navigation$2.version$2
+  version: version$1.version$2
 };
 
 // e.g. { routing: { types, actions }, navigation: { types, actions } }

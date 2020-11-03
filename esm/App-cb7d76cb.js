@@ -1,17 +1,18 @@
 import React from 'react';
-import { OrderedMap, List, fromJS, Set, Map } from 'immutable';
+import { Map, List, fromJS, OrderedMap, Set } from 'immutable';
 import { createBrowserHistory, createMemoryHistory } from 'history';
 import { Client, Op, Query } from 'contensis-delivery-api';
-import { S as SET_TARGET_PROJECT, c as SET_SURROGATE_KEYS, d as SET_SIBLINGS, e as SET_ROUTE, f as SET_NAVIGATION_PATH, g as SET_ENTRY, h as SET_ANCESTORS, C as CALL_HISTORY_METHOD, i as setSurrogateKeys, b as selectCurrentProject, a as selectRouteEntry } from './routing-9688859c.js';
+import { S as SET_TARGET_PROJECT, c as SET_SURROGATE_KEYS, d as SET_SIBLINGS, e as SET_ROUTE, f as SET_NAVIGATION_PATH, g as SET_ENTRY, h as SET_ANCESTORS, C as CALL_HISTORY_METHOD, i as setSurrogateKeys, b as selectCurrentProject, a as selectRouteEntry } from './routing-a892cf58.js';
 import { compose, applyMiddleware, createStore as createStore$1 } from 'redux';
 import { combineReducers } from 'redux-immutable';
 import thunk from 'redux-thunk';
 import createSagaMiddleware, { END } from 'redux-saga';
-import { S as SET_VERSION, b as SET_VERSION_STATUS, G as GET_NODE_TREE_ERROR, c as SET_NODE_TREE, d as GET_NODE_TREE, h as hasNavigationTree, e as selectVersionStatus } from './navigation-ed6eea15.js';
+import { G as GET_NODE_TREE_ERROR, S as SET_NODE_TREE, b as SET_VERSION, c as SET_VERSION_STATUS, d as GET_NODE_TREE, h as hasNavigationTree, e as selectVersionStatus } from './version-e727344c.js';
+import { U as UserReducer, u as userSagas } from './sagas-d669611c.js';
 import { takeEvery, select, put, call, all } from 'redux-saga/effects';
 import { info, error } from 'loglevel';
 import 'react-hot-loader';
-import { R as RouteLoader } from './RouteLoader-2dd5e762.js';
+import { R as RouteLoader } from './RouteLoader-09e55355.js';
 
 const selectedHistory = typeof window !== 'undefined' ? createBrowserHistory : createMemoryHistory;
 const history = (options = {}) => selectedHistory(options);
@@ -60,7 +61,30 @@ const pickProject = (hostname, query) => {
   return project === 'unknown' ? p.id : project;
 };
 
-let initialState = OrderedMap({
+const initialState = Map({
+  root: null,
+  treeDepends: new List([]),
+  isError: false,
+  isReady: false
+});
+var NavigationReducer = ((state = initialState, action) => {
+  switch (action.type) {
+    case SET_NODE_TREE:
+      {
+        return state.set('root', fromJS(action.nodes)).set('isReady', true);
+      }
+
+    case GET_NODE_TREE_ERROR:
+      {
+        return state.set('isError', true);
+      }
+
+    default:
+      return state;
+  }
+});
+
+let initialState$1 = OrderedMap({
   contentTypeId: null,
   currentPath: '/',
   currentNode: [],
@@ -72,12 +96,12 @@ let initialState = OrderedMap({
   entryDepends: List(),
   isLoading: false,
   location: null,
-  mappedEntry: null,
+  mappedEntry: OrderedMap(),
   nodeDepends: List(),
   notFound: false,
   staticRoute: null
 });
-var RoutingReducer = ((state = initialState, action) => {
+var RoutingReducer = ((state = initialState$1, action) => {
   switch (action.type) {
     case SET_ANCESTORS:
       {
@@ -100,7 +124,7 @@ var RoutingReducer = ((state = initialState, action) => {
         let nextState;
 
         if (!entry) {
-          nextState = state.set('entryID', null).set('entry', null).set('mappedEntry', null).set('isLoading', isLoading).set('notFound', notFound);
+          nextState = state.set('entryID', null).set('entry', null).set('mappedEntry', OrderedMap()).set('isLoading', isLoading).set('notFound', notFound);
         } else {
           nextState = state.set('entryID', action.id).set('entry', fromJS(entry)).set('isLoading', isLoading).set('notFound', notFound);
           if (mappedEntry) nextState = nextState.set('mappedEntry', fromJS(mappedEntry)).set('entry', fromJS({
@@ -126,7 +150,7 @@ var RoutingReducer = ((state = initialState, action) => {
         }
 
         if (action.path) {
-          // Don't run a path update on iniutial load as we allready should have it in redux
+          // Don't run a path update on initial load as we allready should have it in redux
           const entryUri = state.getIn(['entry', 'sys', 'uri']);
 
           if (entryUri != action.path) {
@@ -186,12 +210,12 @@ var RoutingReducer = ((state = initialState, action) => {
   }
 });
 
-let initialState$1 = Map({
+let initialState$2 = Map({
   commitRef: null,
   buildNo: null,
   contensisVersionStatus: 'published'
 });
-var VersionReducer = ((state = initialState$1, action) => {
+var VersionReducer = ((state = initialState$2, action) => {
   switch (action.type) {
     case SET_VERSION_STATUS:
       {
@@ -201,29 +225,6 @@ var VersionReducer = ((state = initialState$1, action) => {
     case SET_VERSION:
       {
         return state.set('commitRef', action.commitRef).set('buildNo', action.buildNo);
-      }
-
-    default:
-      return state;
-  }
-});
-
-const initialState$2 = Map({
-  root: null,
-  treeDepends: new List([]),
-  isError: false,
-  isReady: false
-});
-var NavigationReducer = ((state = initialState$2, action) => {
-  switch (action.type) {
-    case SET_NODE_TREE:
-      {
-        return state.set('root', fromJS(action.nodes)).set('isReady', true);
-      }
-
-    case GET_NODE_TREE_ERROR:
-      {
-        return state.set('isError', true);
       }
 
     default:
@@ -268,6 +269,7 @@ var createStore = ((featureReducers, initialState, history) => {
   let reducers = {
     navigation: NavigationReducer,
     routing: RoutingReducer,
+    user: UserReducer,
     version: VersionReducer,
     ...featureReducers
   };
@@ -559,6 +561,37 @@ class CachedSearch {
 
 const cachedSearch = new CachedSearch();
 
+const navigationSagas = [takeEvery(GET_NODE_TREE, ensureNodeTreeSaga)];
+function* ensureNodeTreeSaga(action) {
+  const state = yield select();
+
+  try {
+    if (!hasNavigationTree(state)) {
+      const deliveryApiVersionStatus = yield select(selectVersionStatus);
+      const project = yield select(selectCurrentProject);
+      const nodes = yield deliveryApi.getClient(deliveryApiVersionStatus, project).nodes.getRoot({
+        depth: action.treeDepth || 0
+      });
+
+      if (nodes) {
+        yield put({
+          type: SET_NODE_TREE,
+          nodes
+        });
+      } else {
+        yield put({
+          type: GET_NODE_TREE_ERROR
+        });
+      }
+    }
+  } catch (ex) {
+    yield put({
+      type: GET_NODE_TREE_ERROR,
+      error: ex.toString()
+    });
+  }
+}
+
 const sys = {
   contentTypeId: 'sys.contentTypeId',
   dataFormat: 'sys.dataFormat',
@@ -594,37 +627,6 @@ const routeEntryByFieldsQuery = (id, fields = [], versionStatus = 'published') =
   query.fields = fields;
   return query;
 };
-
-const navigationSagas = [takeEvery(GET_NODE_TREE, ensureNodeTreeSaga)];
-function* ensureNodeTreeSaga(action) {
-  const state = yield select();
-
-  try {
-    if (!hasNavigationTree(state)) {
-      const deliveryApiVersionStatus = yield select(selectVersionStatus);
-      const project = yield select(selectCurrentProject);
-      const nodes = yield deliveryApi.getClient(deliveryApiVersionStatus, project).nodes.getRoot({
-        depth: action.treeDepth || 0
-      });
-
-      if (nodes) {
-        yield put({
-          type: SET_NODE_TREE,
-          nodes
-        });
-      } else {
-        yield put({
-          type: GET_NODE_TREE_ERROR
-        });
-      }
-    }
-  } catch (ex) {
-    yield put({
-      type: GET_NODE_TREE_ERROR,
-      error: ex.toString()
-    });
-  }
-}
 
 // load-entries.js
 const routingSagas = [takeEvery(SET_NAVIGATION_PATH, getRouteSaga), takeEvery(SET_ROUTE, setRouteSaga)];
@@ -863,7 +865,7 @@ function* do404() {
 // index.js
 function rootSaga (featureSagas = []) {
   return function* rootSaga() {
-    const subSagas = [...routingSagas, ...navigationSagas];
+    const subSagas = [...routingSagas, ...navigationSagas, ...userSagas];
     yield all([...subSagas, ...featureSagas]);
   };
 }
@@ -873,4 +875,4 @@ const AppRoot = props => {
 };
 
 export { AppRoot as A, browserHistory as b, createStore as c, deliveryApi as d, history as h, pickProject as p, rootSaga as r };
-//# sourceMappingURL=App-80284419.js.map
+//# sourceMappingURL=App-cb7d76cb.js.map

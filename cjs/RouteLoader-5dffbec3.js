@@ -3,11 +3,11 @@
 var React = require('react');
 var reactRouterDom = require('react-router-dom');
 var reactRedux = require('react-redux');
-var immutable = require('immutable');
-var routing = require('./routing-c9c7a209.js');
+var routing = require('./routing-0bbeb721.js');
 var reactRouterConfig = require('react-router-config');
 var reactHotLoader = require('react-hot-loader');
 var PropTypes = require('prop-types');
+var ToJs = require('./ToJs-d548b71b.js');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -32,16 +32,6 @@ const Status = ({
 Status.propTypes = {
   code: PropTypes__default['default'].number.isRequired,
   children: PropTypes__default['default'].element
-};
-
-const toJS = WrappedComponent => wrappedComponentProps => {
-  const KEY = 0;
-  const VALUE = 1;
-  const propsJS = Object.entries(wrappedComponentProps).reduce((newProps, wrappedComponentProp) => {
-    newProps[wrappedComponentProp[KEY]] = immutable.Iterable.isIterable(wrappedComponentProp[VALUE]) ? wrappedComponentProp[VALUE].toJS() : wrappedComponentProp[VALUE];
-    return newProps;
-  }, {});
-  return React__default['default'].createElement(WrappedComponent, propsJS);
 };
 
 const getTrimmedPath = path => {
@@ -83,7 +73,7 @@ const RouteLoader = ({
     let serverPath = null;
 
     if (staticRoute && staticRoute.match && staticRoute.match.isExact) {
-      serverPath = staticRoute.route.path.split('/').filter(p => !p.startsWith(':')).join('/');
+      serverPath = staticRoute.route.path.includes('*') ? staticRoute.match.url : staticRoute.route.path.split('/').filter(p => !p.startsWith(':')).join('/');
     }
 
     setNavigationPath(serverPath || trimmedPath, location, staticRoute, withEvents, statePath, routes); // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -176,7 +166,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = {
   setNavigationPath: routing.setNavigationPath
 };
-var RouteLoader$1 = reactHotLoader.hot(module)(reactRedux.connect(mapStateToProps, mapDispatchToProps)(toJS(RouteLoader)));
+var RouteLoader$1 = reactHotLoader.hot(module)(reactRedux.connect(mapStateToProps, mapDispatchToProps)(ToJs.toJS(RouteLoader)));
 
 exports.RouteLoader = RouteLoader$1;
-//# sourceMappingURL=RouteLoader-2693ddbd.js.map
+//# sourceMappingURL=RouteLoader-5dffbec3.js.map

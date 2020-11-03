@@ -19,21 +19,27 @@ var minifyCssString = require('minify-css-string');
 var immutable = require('immutable');
 var fromEntries = require('fromentries');
 require('history');
-var App = require('./App-ce68bb24.js');
+var App = require('./App-140938df.js');
 require('contensis-delivery-api');
-var routing = require('./routing-c9c7a209.js');
+var routing = require('./routing-0bbeb721.js');
 require('redux');
 require('redux-immutable');
 require('redux-thunk');
 require('redux-saga');
-var navigation = require('./navigation-181073fe.js');
+var version = require('./version-59ba5d8f.js');
+require('./sagas-6255c60b.js');
 require('query-string');
 require('redux-saga/effects');
 require('loglevel');
+require('contensis-management-api');
+require('await-to-js');
+require('js-cookie');
+require('jsonpath-mapper');
 var reactRouterConfig = require('react-router-config');
 require('react-hot-loader');
 require('prop-types');
-require('./RouteLoader-2693ddbd.js');
+require('./RouteLoader-5dffbec3.js');
+require('./ToJs-d548b71b.js');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -269,8 +275,8 @@ const webApp = (app, ReactApp, config) => {
     // dispatch any global and non-saga related actions before calling our JSX
 
     const versionStatusFromHostname = App.deliveryApi.getVersionStatusFromHostname(request.hostname);
-    store.dispatch(navigation.setVersionStatus(request.query.versionStatus || versionStatusFromHostname));
-    store.dispatch(navigation.setVersion(versionInfo.commitRef, versionInfo.buildNo));
+    store.dispatch(version.setVersionStatus(request.query.versionStatus || versionStatusFromHostname));
+    store.dispatch(version.setVersion(versionInfo.commitRef, versionInfo.buildNo));
     const project = App.pickProject(request.hostname, request.query);
     const groups = allowedGroups && allowedGroups[project];
     store.dispatch(routing.setCurrentProject(project, groups));

@@ -4,16 +4,17 @@ var React = require('react');
 var immutable = require('immutable');
 var history$1 = require('history');
 var contensisDeliveryApi = require('contensis-delivery-api');
-var routing = require('./routing-c9c7a209.js');
+var routing = require('./routing-0bbeb721.js');
 var redux = require('redux');
 var reduxImmutable = require('redux-immutable');
 var thunk = require('redux-thunk');
 var createSagaMiddleware = require('redux-saga');
-var navigation = require('./navigation-181073fe.js');
+var version = require('./version-59ba5d8f.js');
+var sagas = require('./sagas-6255c60b.js');
 var effects = require('redux-saga/effects');
 var log = require('loglevel');
 require('react-hot-loader');
-var RouteLoader = require('./RouteLoader-2693ddbd.js');
+var RouteLoader = require('./RouteLoader-5dffbec3.js');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -68,7 +69,30 @@ const pickProject = (hostname, query) => {
   return project === 'unknown' ? p.id : project;
 };
 
-let initialState = immutable.OrderedMap({
+const initialState = immutable.Map({
+  root: null,
+  treeDepends: new immutable.List([]),
+  isError: false,
+  isReady: false
+});
+var NavigationReducer = ((state = initialState, action) => {
+  switch (action.type) {
+    case version.SET_NODE_TREE:
+      {
+        return state.set('root', immutable.fromJS(action.nodes)).set('isReady', true);
+      }
+
+    case version.GET_NODE_TREE_ERROR:
+      {
+        return state.set('isError', true);
+      }
+
+    default:
+      return state;
+  }
+});
+
+let initialState$1 = immutable.OrderedMap({
   contentTypeId: null,
   currentPath: '/',
   currentNode: [],
@@ -80,12 +104,12 @@ let initialState = immutable.OrderedMap({
   entryDepends: immutable.List(),
   isLoading: false,
   location: null,
-  mappedEntry: null,
+  mappedEntry: immutable.OrderedMap(),
   nodeDepends: immutable.List(),
   notFound: false,
   staticRoute: null
 });
-var RoutingReducer = ((state = initialState, action) => {
+var RoutingReducer = ((state = initialState$1, action) => {
   switch (action.type) {
     case routing.SET_ANCESTORS:
       {
@@ -108,7 +132,7 @@ var RoutingReducer = ((state = initialState, action) => {
         let nextState;
 
         if (!entry) {
-          nextState = state.set('entryID', null).set('entry', null).set('mappedEntry', null).set('isLoading', isLoading).set('notFound', notFound);
+          nextState = state.set('entryID', null).set('entry', null).set('mappedEntry', immutable.OrderedMap()).set('isLoading', isLoading).set('notFound', notFound);
         } else {
           nextState = state.set('entryID', action.id).set('entry', immutable.fromJS(entry)).set('isLoading', isLoading).set('notFound', notFound);
           if (mappedEntry) nextState = nextState.set('mappedEntry', immutable.fromJS(mappedEntry)).set('entry', immutable.fromJS({
@@ -134,7 +158,7 @@ var RoutingReducer = ((state = initialState, action) => {
         }
 
         if (action.path) {
-          // Don't run a path update on iniutial load as we allready should have it in redux
+          // Don't run a path update on initial load as we allready should have it in redux
           const entryUri = state.getIn(['entry', 'sys', 'uri']);
 
           if (entryUri != action.path) {
@@ -194,44 +218,21 @@ var RoutingReducer = ((state = initialState, action) => {
   }
 });
 
-let initialState$1 = immutable.Map({
+let initialState$2 = immutable.Map({
   commitRef: null,
   buildNo: null,
   contensisVersionStatus: 'published'
 });
-var VersionReducer = ((state = initialState$1, action) => {
+var VersionReducer = ((state = initialState$2, action) => {
   switch (action.type) {
-    case navigation.SET_VERSION_STATUS:
+    case version.SET_VERSION_STATUS:
       {
         return state.set('contensisVersionStatus', action.status);
       }
 
-    case navigation.SET_VERSION:
+    case version.SET_VERSION:
       {
         return state.set('commitRef', action.commitRef).set('buildNo', action.buildNo);
-      }
-
-    default:
-      return state;
-  }
-});
-
-const initialState$2 = immutable.Map({
-  root: null,
-  treeDepends: new immutable.List([]),
-  isError: false,
-  isReady: false
-});
-var NavigationReducer = ((state = initialState$2, action) => {
-  switch (action.type) {
-    case navigation.SET_NODE_TREE:
-      {
-        return state.set('root', immutable.fromJS(action.nodes)).set('isReady', true);
-      }
-
-    case navigation.GET_NODE_TREE_ERROR:
-      {
-        return state.set('isError', true);
       }
 
     default:
@@ -276,6 +277,7 @@ var createStore = ((featureReducers, initialState, history) => {
   let reducers = {
     navigation: NavigationReducer,
     routing: RoutingReducer,
+    user: sagas.UserReducer,
     version: VersionReducer,
     ...featureReducers
   };
@@ -567,6 +569,37 @@ class CachedSearch {
 
 const cachedSearch = new CachedSearch();
 
+const navigationSagas = [effects.takeEvery(version.GET_NODE_TREE, ensureNodeTreeSaga)];
+function* ensureNodeTreeSaga(action) {
+  const state = yield effects.select();
+
+  try {
+    if (!version.hasNavigationTree(state)) {
+      const deliveryApiVersionStatus = yield effects.select(version.selectVersionStatus);
+      const project = yield effects.select(routing.selectCurrentProject);
+      const nodes = yield deliveryApi.getClient(deliveryApiVersionStatus, project).nodes.getRoot({
+        depth: action.treeDepth || 0
+      });
+
+      if (nodes) {
+        yield effects.put({
+          type: version.SET_NODE_TREE,
+          nodes
+        });
+      } else {
+        yield effects.put({
+          type: version.GET_NODE_TREE_ERROR
+        });
+      }
+    }
+  } catch (ex) {
+    yield effects.put({
+      type: version.GET_NODE_TREE_ERROR,
+      error: ex.toString()
+    });
+  }
+}
+
 const sys = {
   contentTypeId: 'sys.contentTypeId',
   dataFormat: 'sys.dataFormat',
@@ -602,37 +635,6 @@ const routeEntryByFieldsQuery = (id, fields = [], versionStatus = 'published') =
   query.fields = fields;
   return query;
 };
-
-const navigationSagas = [effects.takeEvery(navigation.GET_NODE_TREE, ensureNodeTreeSaga)];
-function* ensureNodeTreeSaga(action) {
-  const state = yield effects.select();
-
-  try {
-    if (!navigation.hasNavigationTree(state)) {
-      const deliveryApiVersionStatus = yield effects.select(navigation.selectVersionStatus);
-      const project = yield effects.select(routing.selectCurrentProject);
-      const nodes = yield deliveryApi.getClient(deliveryApiVersionStatus, project).nodes.getRoot({
-        depth: action.treeDepth || 0
-      });
-
-      if (nodes) {
-        yield effects.put({
-          type: navigation.SET_NODE_TREE,
-          nodes
-        });
-      } else {
-        yield effects.put({
-          type: navigation.GET_NODE_TREE_ERROR
-        });
-      }
-    }
-  } catch (ex) {
-    yield effects.put({
-      type: navigation.GET_NODE_TREE_ERROR,
-      error: ex.toString()
-    });
-  }
-}
 
 // load-entries.js
 const routingSagas = [effects.takeEvery(routing.SET_NAVIGATION_PATH, getRouteSaga), effects.takeEvery(routing.SET_ROUTE, setRouteSaga)];
@@ -683,7 +685,7 @@ function* getRouteSaga(action) {
 
     const currentPath = action.path; //selectCurrentPath(state);
 
-    const deliveryApiStatus = navigation.selectVersionStatus(state);
+    const deliveryApiStatus = version.selectVersionStatus(state);
     const project = routing.selectCurrentProject(state);
     const isHome = currentPath === '/';
     const isPreview = currentPath && currentPath.startsWith('/preview/');
@@ -809,9 +811,9 @@ function* getRouteSaga(action) {
       });
     }
 
-    if (!navigation.hasNavigationTree(state) && (doNavigation === true || doNavigation.tree)) if (typeof window !== 'undefined') {
+    if (!version.hasNavigationTree(state) && (doNavigation === true || doNavigation.tree)) if (typeof window !== 'undefined') {
       yield effects.put({
-        type: navigation.GET_NODE_TREE,
+        type: version.GET_NODE_TREE,
         treeDepth: doNavigation === true || !doNavigation.tree || doNavigation.tree === true ? 2 : doNavigation.tree
       });
     } else {
@@ -871,7 +873,7 @@ function* do404() {
 // index.js
 function rootSaga (featureSagas = []) {
   return function* rootSaga() {
-    const subSagas = [...routingSagas, ...navigationSagas];
+    const subSagas = [...routingSagas, ...navigationSagas, ...sagas.userSagas];
     yield effects.all([...subSagas, ...featureSagas]);
   };
 }
@@ -887,4 +889,4 @@ exports.deliveryApi = deliveryApi;
 exports.history = history;
 exports.pickProject = pickProject;
 exports.rootSaga = rootSaga;
-//# sourceMappingURL=App-ce68bb24.js.map
+//# sourceMappingURL=App-140938df.js.map

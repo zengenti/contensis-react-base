@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect } from 'react';
 import { Route, useLocation, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { Iterable } from 'immutable';
-import { j as selectRouteEntryContentTypeId, a as selectRouteEntry, k as selectIsNotFound, l as selectRouteLoading, m as selectMappedEntry, b as selectCurrentProject, n as selectCurrentPath, o as setNavigationPath } from './routing-9688859c.js';
+import { j as selectRouteEntryContentTypeId, a as selectRouteEntry, k as selectIsNotFound, l as selectRouteLoading, m as selectMappedEntry, b as selectCurrentProject, n as selectCurrentPath, o as setNavigationPath } from './routing-a892cf58.js';
 import { matchRoutes, renderRoutes } from 'react-router-config';
 import { hot } from 'react-hot-loader';
 import PropTypes from 'prop-types';
+import { t as toJS } from './ToJs-1649f545.js';
 
 const NotFound = () => React.createElement(React.Fragment, null, React.createElement("header", null, React.createElement("h1", null, "404 Page Not Found")));
 
@@ -25,16 +25,6 @@ const Status = ({
 Status.propTypes = {
   code: PropTypes.number.isRequired,
   children: PropTypes.element
-};
-
-const toJS = WrappedComponent => wrappedComponentProps => {
-  const KEY = 0;
-  const VALUE = 1;
-  const propsJS = Object.entries(wrappedComponentProps).reduce((newProps, wrappedComponentProp) => {
-    newProps[wrappedComponentProp[KEY]] = Iterable.isIterable(wrappedComponentProp[VALUE]) ? wrappedComponentProp[VALUE].toJS() : wrappedComponentProp[VALUE];
-    return newProps;
-  }, {});
-  return React.createElement(WrappedComponent, propsJS);
 };
 
 const getTrimmedPath = path => {
@@ -76,7 +66,7 @@ const RouteLoader = ({
     let serverPath = null;
 
     if (staticRoute && staticRoute.match && staticRoute.match.isExact) {
-      serverPath = staticRoute.route.path.split('/').filter(p => !p.startsWith(':')).join('/');
+      serverPath = staticRoute.route.path.includes('*') ? staticRoute.match.url : staticRoute.route.path.split('/').filter(p => !p.startsWith(':')).join('/');
     }
 
     setNavigationPath(serverPath || trimmedPath, location, staticRoute, withEvents, statePath, routes); // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -172,4 +162,4 @@ const mapDispatchToProps = {
 var RouteLoader$1 = hot(module)(connect(mapStateToProps, mapDispatchToProps)(toJS(RouteLoader)));
 
 export { RouteLoader$1 as R };
-//# sourceMappingURL=RouteLoader-2dd5e762.js.map
+//# sourceMappingURL=RouteLoader-09e55355.js.map

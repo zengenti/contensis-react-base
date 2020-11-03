@@ -4,10 +4,10 @@ import { Map, List, OrderedMap, Iterable, fromJS, Set } from 'immutable';
 import { Query, Op, OrderBy, Client } from 'contensis-delivery-api';
 import queryString from 'query-string';
 import { error, warn, info } from 'loglevel';
+import mapJson from 'jsonpath-mapper';
 import PropTypes from 'prop-types';
 import { takeEvery, select, put, call, all } from '@redux-saga/core/effects';
 import { navigation, routing, version } from '@zengenti/contensis-react-base/redux';
-import mapJson from 'jsonpath-mapper';
 
 const toJS = WrappedComponent => wrappedComponentProps => {
   const KEY = 0;

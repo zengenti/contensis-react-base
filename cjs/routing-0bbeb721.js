@@ -1,5 +1,11 @@
-import { Map, List } from 'immutable';
-import queryString from 'query-string';
+'use strict';
+
+var immutable = require('immutable');
+var queryString = require('query-string');
+
+function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+
+var queryString__default = /*#__PURE__*/_interopDefaultLegacy(queryString);
 
 function action(type, payload = {}) {
   return {
@@ -75,7 +81,7 @@ var routing$1 = /*#__PURE__*/Object.freeze({
 });
 
 function queryParams(search) {
-  return queryString.parse(typeof window != 'undefined' ? window.location.search : search);
+  return queryString__default['default'].parse(typeof window != 'undefined' ? window.location.search : search);
 }
 const clientHostname = () => `${window.location.protocol}//${window.location.hostname}:${window.location.port}`;
 const addHostname = typeof window == 'undefined' || window.location.host == 'localhost:3000' ? `https://${PUBLIC_URI
@@ -83,13 +89,13 @@ const addHostname = typeof window == 'undefined' || window.location.host == 'loc
 }` : clientHostname();
 
 const selectRouteEntry = state => {
-  return state.getIn(['routing', 'entry'], Map());
+  return state.getIn(['routing', 'entry'], immutable.Map());
 };
 const selectMappedEntry = state => {
   return state.getIn(['routing', 'mappedEntry'], null);
 };
 const selectNodeDepends = state => {
-  return state.getIn(['routing', 'nodeDepends'], List());
+  return state.getIn(['routing', 'nodeDepends'], immutable.List());
 };
 const selectCurrentTreeID = state => {
   return state.getIn(['routing', 'currentTreeId']);
@@ -124,13 +130,13 @@ const selectIsNotFound = state => {
   return state.getIn(['routing', 'notFound']);
 };
 const selectCurrentAncestors = state => {
-  return state.getIn(['routing', 'currentNodeAncestors'], List());
+  return state.getIn(['routing', 'currentNodeAncestors'], immutable.List());
 };
 const selectCurrentNode = state => {
   return state.getIn(['routing', 'currentNode']);
 };
 const selectBreadcrumb = state => {
-  return (selectCurrentAncestors(state) || List()).push(selectCurrentNode(state));
+  return (selectCurrentAncestors(state) || immutable.List()).push(selectCurrentNode(state));
 };
 const selectRouteLoading = state => {
   return state.getIn(['routing', 'isLoading']);
@@ -158,5 +164,29 @@ var routing$2 = /*#__PURE__*/Object.freeze({
   selectRouteLoading: selectRouteLoading
 });
 
-export { CALL_HISTORY_METHOD as C, SET_TARGET_PROJECT as S, selectRouteEntry as a, selectCurrentProject as b, SET_SURROGATE_KEYS as c, SET_SIBLINGS as d, SET_ROUTE as e, SET_NAVIGATION_PATH as f, SET_ENTRY as g, SET_ANCESTORS as h, setSurrogateKeys as i, selectRouteEntryContentTypeId as j, selectIsNotFound as k, selectRouteLoading as l, selectMappedEntry as m, selectCurrentPath as n, setNavigationPath as o, action as p, routing$1 as q, routing as r, setCurrentProject as s, routing$2 as t };
-//# sourceMappingURL=routing-9688859c.js.map
+exports.CALL_HISTORY_METHOD = CALL_HISTORY_METHOD;
+exports.SET_ANCESTORS = SET_ANCESTORS;
+exports.SET_ENTRY = SET_ENTRY;
+exports.SET_NAVIGATION_PATH = SET_NAVIGATION_PATH;
+exports.SET_ROUTE = SET_ROUTE;
+exports.SET_SIBLINGS = SET_SIBLINGS;
+exports.SET_SURROGATE_KEYS = SET_SURROGATE_KEYS;
+exports.SET_TARGET_PROJECT = SET_TARGET_PROJECT;
+exports.action = action;
+exports.queryParams = queryParams;
+exports.routing = routing;
+exports.routing$1 = routing$1;
+exports.routing$2 = routing$2;
+exports.selectCurrentPath = selectCurrentPath;
+exports.selectCurrentProject = selectCurrentProject;
+exports.selectCurrentSearch = selectCurrentSearch;
+exports.selectIsNotFound = selectIsNotFound;
+exports.selectMappedEntry = selectMappedEntry;
+exports.selectRouteEntry = selectRouteEntry;
+exports.selectRouteEntryContentTypeId = selectRouteEntryContentTypeId;
+exports.selectRouteLoading = selectRouteLoading;
+exports.setCurrentProject = setCurrentProject;
+exports.setNavigationPath = setNavigationPath;
+exports.setRoute = setRoute;
+exports.setSurrogateKeys = setSurrogateKeys;
+//# sourceMappingURL=routing-0bbeb721.js.map

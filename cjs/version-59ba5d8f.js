@@ -1,16 +1,6 @@
 'use strict';
 
-var routing = require('./routing-c9c7a209.js');
-
-const VERSION_PREFIX = '@VERSION/';
-const SET_VERSION = `${VERSION_PREFIX}SET_VERSION`;
-const SET_VERSION_STATUS = `${VERSION_PREFIX}SET_VERSION_STATUS`;
-
-var version = /*#__PURE__*/Object.freeze({
-  __proto__: null,
-  SET_VERSION: SET_VERSION,
-  SET_VERSION_STATUS: SET_VERSION_STATUS
-});
+var routing = require('./routing-0bbeb721.js');
 
 const ACTION_PREFIX = '@NAVIGATION/';
 const GET_NODE_TREE = `${ACTION_PREFIX}_GET_NODE_TREE`;
@@ -22,6 +12,16 @@ var navigation = /*#__PURE__*/Object.freeze({
   GET_NODE_TREE: GET_NODE_TREE,
   SET_NODE_TREE: SET_NODE_TREE,
   GET_NODE_TREE_ERROR: GET_NODE_TREE_ERROR
+});
+
+const VERSION_PREFIX = '@VERSION/';
+const SET_VERSION = `${VERSION_PREFIX}SET_VERSION`;
+const SET_VERSION_STATUS = `${VERSION_PREFIX}SET_VERSION_STATUS`;
+
+var version = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  SET_VERSION: SET_VERSION,
+  SET_VERSION_STATUS: SET_VERSION_STATUS
 });
 
 const setVersion = (commitRef, buildNo) => routing.action(SET_VERSION, {
@@ -36,23 +36,6 @@ var version$1 = /*#__PURE__*/Object.freeze({
   __proto__: null,
   setVersion: setVersion,
   setVersionStatus: setVersionStatus
-});
-
-const selectCommitRef = state => {
-  return state.getIn(['version', 'commitRef']);
-};
-const selectBuildNumber = state => {
-  return state.getIn(['version', 'buildNo']);
-};
-const selectVersionStatus = state => {
-  return state.getIn(['version', 'contensisVersionStatus']);
-};
-
-var version$2 = /*#__PURE__*/Object.freeze({
-  __proto__: null,
-  selectCommitRef: selectCommitRef,
-  selectBuildNumber: selectBuildNumber,
-  selectVersionStatus: selectVersionStatus
 });
 
 const hasNavigationTree = state => {
@@ -72,6 +55,23 @@ var navigation$1 = /*#__PURE__*/Object.freeze({
   selectNavigationDepends: selectNavigationDepends
 });
 
+const selectCommitRef = state => {
+  return state.getIn(['version', 'commitRef']);
+};
+const selectBuildNumber = state => {
+  return state.getIn(['version', 'buildNo']);
+};
+const selectVersionStatus = state => {
+  return state.getIn(['version', 'contensisVersionStatus']);
+};
+
+var version$2 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  selectCommitRef: selectCommitRef,
+  selectBuildNumber: selectBuildNumber,
+  selectVersionStatus: selectVersionStatus
+});
+
 exports.GET_NODE_TREE = GET_NODE_TREE;
 exports.GET_NODE_TREE_ERROR = GET_NODE_TREE_ERROR;
 exports.SET_NODE_TREE = SET_NODE_TREE;
@@ -86,4 +86,4 @@ exports.setVersionStatus = setVersionStatus;
 exports.version = version;
 exports.version$1 = version$1;
 exports.version$2 = version$2;
-//# sourceMappingURL=navigation-181073fe.js.map
+//# sourceMappingURL=version-59ba5d8f.js.map

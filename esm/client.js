@@ -3,29 +3,31 @@ import { preloadReady } from 'react-loadable';
 import React from 'react';
 import { Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { Seq, fromJS } from 'immutable';
+import { fromJS } from 'immutable';
 import 'history';
-import { d as deliveryApi, c as createStore, r as rootSaga, p as pickProject, b as browserHistory } from './App-80284419.js';
-export { A as ReactApp } from './App-80284419.js';
+import { d as deliveryApi, c as createStore, r as rootSaga, p as pickProject, b as browserHistory } from './App-cb7d76cb.js';
+export { A as ReactApp } from './App-cb7d76cb.js';
 import 'contensis-delivery-api';
-import { s as setCurrentProject } from './routing-9688859c.js';
+import { s as setCurrentProject } from './routing-a892cf58.js';
 import 'redux';
 import 'redux-immutable';
 import 'redux-thunk';
 import 'redux-saga';
-import { s as setVersionStatus } from './navigation-ed6eea15.js';
+import { s as setVersionStatus } from './version-e727344c.js';
+import { f as fromJSOrdered } from './sagas-d669611c.js';
 import queryString from 'query-string';
 import 'redux-saga/effects';
 import 'loglevel';
+import 'contensis-management-api';
+import 'await-to-js';
+import 'js-cookie';
+import 'jsonpath-mapper';
 import 'react-router-config';
 import { AppContainer } from 'react-hot-loader';
 import 'prop-types';
-import './RouteLoader-2dd5e762.js';
+import './RouteLoader-09e55355.js';
+import './ToJs-1649f545.js';
 import { hydrate, render } from 'react-dom';
-
-const fromJSOrdered = js => {
-  return typeof js !== 'object' || js === null ? js : Array.isArray(js) ? Seq(js).map(fromJSOrdered).toList() : Seq(js).map(fromJSOrdered).toOrderedMap();
-};
 
 class ClientApp {
   constructor(ReactApp, config) {
