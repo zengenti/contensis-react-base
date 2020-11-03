@@ -4,9 +4,10 @@ import thunk from 'redux-thunk';
 import createSagaMiddleware, { END } from 'redux-saga';
 
 // Core reducers
-import RoutingReducer from './reducers/routing';
-import VersionReducer from './reducers/version';
 import NavigationReducer from './reducers/navigation';
+import RoutingReducer from './reducers/routing';
+import UserReducer from '~/features/login/redux/reducers';
+import VersionReducer from './reducers/version';
 import routerMiddleware from './routerMiddleware';
 
 export let reduxStore = null;
@@ -35,6 +36,7 @@ export default (featureReducers, initialState, history) => {
   let reducers = {
     navigation: NavigationReducer,
     routing: RoutingReducer,
+    user: UserReducer,
     version: VersionReducer,
     ...featureReducers,
   };

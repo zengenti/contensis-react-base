@@ -19,6 +19,7 @@ export default {
     redux: './src/lib/redux.js',
     routing: './src/lib/routing.js',
     search: 'zengenti-search-package',
+    user: './src/lib/user.js',
     util: './src/lib/util.js',
   },
   output: [
