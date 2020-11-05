@@ -42,7 +42,7 @@ export default (state = initialUserState, action) => {
 
       const nextState = {
         ...initialUserState.toJS(),
-        ...user,
+        ...(user || state.toJS()),
         authenticationState: {
           authenticated:
             authenticated ||

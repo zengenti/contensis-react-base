@@ -1,3 +1,4 @@
+import { Map } from 'immutable';
 import { takeEvery, select, put, call } from 'redux-saga/effects';
 import {
   SET_USER_LOADING,
@@ -178,18 +179,22 @@ function* validateUserSaga() {
 }
 
 export function* refreshSecurityToken() {
-  const clientCredentials = yield select(selectClientCredentials).toJS();
-  const client = getManagementAPIClient(clientCredentials);
-  yield client.authenticate();
+  const clientCredentials = (
+    (yield select(selectClientCredentials)) || Map()
+  ).toJS();
+  if (Object.keys(clientCredentials).length > 0) {
+    const client = getManagementAPIClient(clientCredentials);
+    yield client.authenticate();
 
-  const loginResultObject = {};
+    const authenticationState = {};
 
-  const newClientCredentials = mapClientCredentials(client);
+    const newClientCredentials = mapClientCredentials(client);
 
-  loginResultObject.clientCredentials = newClientCredentials;
+    authenticationState.clientCredentials = newClientCredentials;
 
-  yield put({
-    type: SET_AUTHENTICATION_STATE,
-    loginResultObject,
-  });
+    yield put({
+      type: SET_AUTHENTICATION_STATE,
+      authenticationState,
+    });
+  }
 }
