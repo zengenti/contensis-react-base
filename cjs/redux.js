@@ -3,8 +3,8 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 require('immutable');
-var routing$1 = require('./routing-0bbeb721.js');
-var version$1 = require('./version-59ba5d8f.js');
+var routing$1 = require('./routing-1b06bbe2.js');
+var version$1 = require('./version-781d7ac3.js');
 require('query-string');
 
 var types = {

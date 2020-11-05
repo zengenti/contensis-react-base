@@ -1,13 +1,20 @@
-import { Seq, Map, List } from 'immutable';
-import { q as queryParams, r as selectCurrentSearch, t as setRoute } from './routing-a892cf58.js';
-import { takeEvery, call, select, put } from 'redux-saga/effects';
-import { Client } from 'contensis-management-api';
-import { to } from 'await-to-js';
-import Cookies from 'js-cookie';
-import mapJson from 'jsonpath-mapper';
+'use strict';
+
+var immutable = require('immutable');
+var routing = require('./routing-1b06bbe2.js');
+var effects = require('redux-saga/effects');
+var contensisManagementApi = require('contensis-management-api');
+var awaitToJs = require('await-to-js');
+var Cookies = require('js-cookie');
+var mapJson = require('jsonpath-mapper');
+
+function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+
+var Cookies__default = /*#__PURE__*/_interopDefaultLegacy(Cookies);
+var mapJson__default = /*#__PURE__*/_interopDefaultLegacy(mapJson);
 
 const fromJSOrdered = js => {
-  return typeof js !== 'object' || js === null ? js : Array.isArray(js) ? Seq(js).map(fromJSOrdered).toList() : Seq(js).map(fromJSOrdered).toOrderedMap();
+  return typeof js !== 'object' || js === null ? js : Array.isArray(js) ? immutable.Seq(js).map(fromJSOrdered).toList() : immutable.Seq(js).map(fromJSOrdered).toOrderedMap();
 };
 
 const ACTION_PREFIX = '@USER/';
@@ -34,16 +41,16 @@ var types = /*#__PURE__*/Object.freeze({
   CREATE_USER_ACCOUNT: CREATE_USER_ACCOUNT
 });
 
-const defaultAuthenticationState = Map({
+const defaultAuthenticationState = immutable.Map({
   authenticated: false,
   authenticationError: false,
   clientCredentials: null,
   error: false,
   loading: false
 });
-const initialUserState = Map({
+const initialUserState = immutable.Map({
   authenticationState: defaultAuthenticationState,
-  groups: new List([])
+  groups: new immutable.List([])
 });
 var UserReducer = ((state = initialUserState, action) => {
   switch (action.type) {
@@ -166,7 +173,7 @@ const getManagementAPIClient = ({
   const projectId = PROJECTS[0].id;
   /* global PROJECTS */
 
-  const managementApiClient = Client.create({
+  const managementApiClient = contensisManagementApi.Client.create({
     clientType: 'contensis_classic_refresh_token',
     clientDetails: {
       refreshToken
@@ -186,7 +193,7 @@ const COOKIE_VALID_DAYS = 1; // 0 = Session cookie
 // Override the default js-cookie conversion / encoding
 // methods so the written values work with Contensis sites
 
-const _cookie = Cookies.withConverter({
+const _cookie = Cookies__default['default'].withConverter({
   read: value => decodeURIComponent(value),
   write: value => encodeURIComponent(value)
 });
@@ -221,7 +228,7 @@ const clientCredentials = {
   refreshTokenExpiryDate: 'refreshTokenExpiryDate',
   contensisClassicToken: 'contensisClassicToken'
 };
-var mapClientCredentials = (obj => mapJson(obj, clientCredentials));
+var mapClientCredentials = (obj => mapJson__default['default'](obj, clientCredentials));
 
 /* eslint-disable require-atomic-updates */
 const LOGIN_COOKIE = 'ContensisCMSUserName';
@@ -256,7 +263,7 @@ class LoginHelper {
       const transientClient = LoginHelper.GetClientForAuthentication(username, password); // any error at this point should be treated like a login error
 
       let clientErr, clientBearerToken;
-      [clientErr, clientBearerToken] = await to(transientClient.ensureBearerToken());
+      [clientErr, clientBearerToken] = await awaitToJs.to(transientClient.ensureBearerToken());
 
       if (clientErr) {
         const authenticationError = clientErr.name.includes('ContensisAuthenticationError');
@@ -290,7 +297,7 @@ class LoginHelper {
   }
 
   static LogoutUser() {
-    this.ClearCachedCredentials();
+    LoginHelper.ClearCachedCredentials();
     return initialUserState.toJS();
   }
 
@@ -312,13 +319,21 @@ class LoginHelper {
   }
 
   static ClientRedirectToSignInPage(redirectPath) {
-    let url = '/account/login';
+    let url = LoginHelper.LOGIN_ROUTE;
     if (typeof redirectPath === 'string') url = `${url}?redirect_uri=${redirectPath}`;
-    window.location.href = url;
+    if (typeof location !== 'undefined' && redirectPath !== LoginHelper.LOGIN_ROUTE) location.href = url;
+  }
+
+  static ClientRedirectToAccessDeniedPage(originalPath) {
+    let url = LoginHelper.ACCESS_DENIED_ROUTE;
+    if (typeof originalPath === 'string') url = `${url}?original_uri=${originalPath}`;
+    if (typeof location !== 'undefined') location.href = url;
   }
 
   static ClientRedirectToPath(redirectPath) {
-    if (typeof redirectPath === 'string') window.location.href = redirectPath;else LoginHelper.ClientRedirectToHome();
+    if (typeof redirectPath === 'string') {
+      if (typeof location !== 'undefined') window.location.href = redirectPath;
+    } else LoginHelper.ClientRedirectToHome();
   }
 
   static isZengentiStaff(email) {
@@ -335,12 +350,13 @@ LoginHelper.CMS_URL = SERVERS.api || SERVERS.cms
 /* global SERVERS */
 ;
 LoginHelper.LOGIN_ROUTE = '/account/login';
+LoginHelper.ACCESS_DENIED_ROUTE = '/account/access-denied';
 
 LoginHelper.GetClientForAuthentication = (username, password) => {
   const projectId = PROJECTS[0].id;
   /* global PROJECTS */
 
-  return Client.create({
+  return contensisManagementApi.Client.create({
     clientType: 'contensis_classic',
     clientDetails: {
       username,
@@ -353,7 +369,21 @@ LoginHelper.GetClientForAuthentication = (username, password) => {
 
 LoginHelper.GetUserDetails = async clientCredentials => {
   const client = getManagementAPIClient(clientCredentials);
-  const [error, user] = await to(client.security.users.getCurrent());
+  let error,
+      user = {},
+      groupsResult;
+  [error, user] = await awaitToJs.to(client.security.users.getCurrent());
+
+  if (user && user.id) {
+    [error, groupsResult] = await awaitToJs.to(client.security.users.getUserGroups({
+      userId: user.id,
+      includeInherited: true
+    })); // Set groups attribute in user object to be the items
+    // array from the getUserGroups result
+
+    if (groupsResult && groupsResult.items) user.groups = groupsResult.items;
+  }
+
   return {
     error,
     user,
@@ -361,37 +391,63 @@ LoginHelper.GetUserDetails = async clientCredentials => {
   };
 };
 
-const userSagas = [takeEvery(LOGIN_USER, loginUserSaga), takeEvery(LOGOUT_USER, logoutUserSaga), takeEvery(SET_AUTHENTICATION_STATE, redirectAfterSuccessfulLoginSaga) // takeEvery(LOGIN_SUCCESSFUL, getUserEnvironmentsSaga),
-];
+const userSagas = [effects.takeEvery(LOGIN_USER, loginUserSaga), effects.takeEvery(LOGOUT_USER, logoutUserSaga), effects.takeEvery(SET_AUTHENTICATION_STATE, redirectAfterSuccessfulLoginSaga)];
 function* handleRequiresLoginSaga(action) {
   const {
-    staticRoute,
-    routes,
-    entry
-  } = action; // debugger;
-  // always validate and login user if cookies available on any route change
+    entry,
+    requireLogin,
+    routes: {
+      ContentTypeMappings
+    },
+    staticRoute
+  } = action; // Check if any of the defined routes have "requireLogin" attribute
 
-  yield call(validateUserSaga); // is route listed as needing a login?
+  const {
+    requireLogin: authRoute
+  } = staticRoute && staticRoute.route || {};
+  const {
+    requireLogin: authContentType
+  } = entry && routing.findContentTypeMapping(ContentTypeMappings, entry.sys.contentTypeId) || {}; // if requireLogin, authRoute or authContentType has been specified as an
+  // array of groups we can merge the arrays and accept
+  // any matched group supplied from either approach
 
-  const routeRequiresLogin = staticRoute && staticRoute.route.authRequired || routes && entry && (routes.ContentTypeMappings.find(item => item.contentTypeID == entry.sys.contentTypeId) || {}).authRequired;
+  const routeRequiresGroups = [...(Array.isArray(authContentType) && authContentType || []), ...(Array.isArray(authRoute) && authRoute || []), ...(Array.isArray(requireLogin) && requireLogin || [])];
+  const routeRequiresLogin = !!authContentType || !!authRoute || !!requireLogin; // always validate and login user if cookies available on any route change
+
+  yield effects.call(validateUserSaga);
 
   if (routeRequiresLogin) {
-    const userLoggedIn = yield select(selectUserIsAuthenticated);
+    const userLoggedIn = yield effects.select(selectUserIsAuthenticated);
 
-    if (!userLoggedIn) {
-      LoginHelper.ClientRedirectToSignInPage(action.location.pathname); // yield put(
-      //   navigate(`${LOGIN_ROUTE}?redirect_uri=${action.location.pathname}`)
-      // );
+    if (routeRequiresGroups.length > 0) {
+      const userGroups = (yield effects.select(selectUserGroups)).toJS();
+      const groupMatch = routeRequiresGroups.some(requiredGroup => {
+        return userGroups.some(userGroup => {
+          if (requiredGroup.id === userGroup.id) {
+            return true;
+          }
+
+          if (requiredGroup.name === userGroup.name) {
+            return true;
+          }
+        });
+      });
+      if (!groupMatch) LoginHelper.ClientRedirectToAccessDeniedPage(action.location.pathname);
+    } else if (!userLoggedIn) {
+      // Because we are using the Client only redirects, they will not
+      // take effect during SSR and will cause the page to render the content
+      // (as expected)
+      LoginHelper.ClientRedirectToSignInPage(action.location.pathname);
     }
   }
 }
 
 function* redirectAfterSuccessfulLoginSaga() {
-  const isLoggedIn = yield select(selectUserIsAuthenticated);
-  const redirectPath = queryParams((yield select(selectCurrentSearch))).redirect_uri;
+  const isLoggedIn = yield effects.select(selectUserIsAuthenticated);
+  const redirectPath = routing.queryParams((yield effects.select(routing.selectCurrentSearch))).redirect_uri;
 
   if (isLoggedIn && redirectPath) {
-    yield put(setRoute(redirectPath));
+    yield effects.put(routing.setRoute(redirectPath));
   }
 }
 
@@ -402,7 +458,7 @@ function* loginUserSaga(action = {}) {
   } = action;
 
   if (username) {
-    yield put({
+    yield effects.put({
       type: SET_USER_LOADING
     });
   } // The elements we will eventually load into authenticationState
@@ -451,7 +507,7 @@ function* loginUserSaga(action = {}) {
 
     console.log(e);
   } finally {
-    yield put({
+    yield effects.put({
       type: SET_AUTHENTICATION_STATE,
       authenticationState: {
         clientCredentials,
@@ -473,55 +529,51 @@ function* logoutUserSaga({
   redirectPath
 }) {
   yield LoginHelper.LogoutUser();
-  yield put({
+  yield effects.put({
     type: SET_AUTHENTICATION_STATE,
     user: null
-  }); // yield put({
-  //   type: SET_USER_ENVIRONMENTS,
-  // });
-
+  });
   if (redirectPath) LoginHelper.ClientRedirectToPath(redirectPath);else LoginHelper.ClientRedirectToSignInPage();
-} // function* getUserEnvironmentsSaga() {
-//   yield delay(6000);
-//   const securityToken = yield select(selectUserSecurityToken);
-//   const environments = yield SecurityApi.GetUsersEnvironments(securityToken);
-//   if (!environments.error) {
-//     environments.map((env, idx) => {
-//       if (env.alias.indexOf('-dr') > -1) {
-//         return [...environments.splice(idx, 1)];
-//       }
-//       return [...environments];
-//     });
-//     yield put({
-//       type: SET_USER_ENVIRONMENTS,
-//       environments,
-//     });
-//   }
-// }
-
+}
 
 function* validateUserSaga() {
-  const userLoggedIn = yield select(selectUserIsAuthenticated);
+  const userLoggedIn = yield effects.select(selectUserIsAuthenticated);
   if (userLoggedIn) return;
   const credentials = LoginHelper.GetCachedCredentials();
 
   if (credentials && !userLoggedIn && credentials.refreshToken) {
-    yield call(loginUserSaga);
+    yield effects.call(loginUserSaga);
   }
 }
 
 function* refreshSecurityToken() {
-  const clientCredentials = yield select(selectClientCredentials).toJS();
+  const clientCredentials = yield effects.select(selectClientCredentials).toJS();
   const client = getManagementAPIClient(clientCredentials);
   yield client.authenticate();
   const loginResultObject = {};
   const newClientCredentials = mapClientCredentials(client);
   loginResultObject.clientCredentials = newClientCredentials;
-  yield put({
+  yield effects.put({
     type: SET_AUTHENTICATION_STATE,
     loginResultObject
   });
 }
 
-export { CREATE_USER_ACCOUNT as C, LOGIN_USER as L, UserReducer as U, LOGOUT_USER as a, selectUserError as b, selectUserIsAuthenticated as c, selectUserIsLoading as d, selectUser as e, fromJSOrdered as f, selectors as g, handleRequiresLoginSaga as h, initialUserState as i, LoginHelper as j, refreshSecurityToken as r, selectUserAuthenticationError as s, types as t, userSagas as u };
-//# sourceMappingURL=sagas-d669611c.js.map
+exports.CREATE_USER_ACCOUNT = CREATE_USER_ACCOUNT;
+exports.LOGIN_USER = LOGIN_USER;
+exports.LOGOUT_USER = LOGOUT_USER;
+exports.LoginHelper = LoginHelper;
+exports.UserReducer = UserReducer;
+exports.fromJSOrdered = fromJSOrdered;
+exports.handleRequiresLoginSaga = handleRequiresLoginSaga;
+exports.initialUserState = initialUserState;
+exports.refreshSecurityToken = refreshSecurityToken;
+exports.selectUser = selectUser;
+exports.selectUserAuthenticationError = selectUserAuthenticationError;
+exports.selectUserError = selectUserError;
+exports.selectUserIsAuthenticated = selectUserIsAuthenticated;
+exports.selectUserIsLoading = selectUserIsLoading;
+exports.selectors = selectors;
+exports.types = types;
+exports.userSagas = userSagas;
+//# sourceMappingURL=sagas-c1c7f51e.js.map
