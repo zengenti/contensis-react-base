@@ -4,11 +4,11 @@ import {
   SET_AUTHENTICATION_STATE,
   LOGIN_USER,
   LOGOUT_USER,
-  // SET_USER_ENVIRONMENTS,
 } from './types';
 import {
   selectUserIsAuthenticated,
   selectClientCredentials,
+  selectUserGroups,
 } from './selectors';
 
 import { LoginHelper } from '../util/LoginHelper.class';
@@ -17,39 +17,64 @@ import { getManagementAPIClient } from '~/core/util/ContensisManagementApi';
 import { queryParams } from '~/core/util/navigation';
 import { selectCurrentSearch } from '~/core/redux/selectors/routing';
 import mapClientCredentials from '../transformations/mapClientCredentials';
+import { findContentTypeMapping } from '~/core/util/helpers';
 
 export const userSagas = [
   takeEvery(LOGIN_USER, loginUserSaga),
   takeEvery(LOGOUT_USER, logoutUserSaga),
   takeEvery(SET_AUTHENTICATION_STATE, redirectAfterSuccessfulLoginSaga),
-  // takeEvery(LOGIN_SUCCESSFUL, getUserEnvironmentsSaga),
 ];
 
 export function* handleRequiresLoginSaga(action) {
-  const { staticRoute, routes, entry } = action;
-  // debugger;
+  const {
+    entry,
+    requireLogin,
+    routes: { ContentTypeMappings },
+    staticRoute,
+  } = action;
+
+  // Check if any of the defined routes have "requireLogin" attribute
+  const { requireLogin: authRoute } = (staticRoute && staticRoute.route) || {};
+  const { requireLogin: authContentType } =
+    (entry &&
+      findContentTypeMapping(ContentTypeMappings, entry.sys.contentTypeId)) ||
+    {};
+
+  // if requireLogin, authRoute or authContentType has been specified as an
+  // array of groups we can merge the arrays and accept
+  // any matched group supplied from either approach
+  const routeRequiresGroups = [
+    ...((Array.isArray(authContentType) && authContentType) || []),
+    ...((Array.isArray(authRoute) && authRoute) || []),
+    ...((Array.isArray(requireLogin) && requireLogin) || []),
+  ];
+  const routeRequiresLogin = !!authContentType || !!authRoute || !!requireLogin;
 
   // always validate and login user if cookies available on any route change
   yield call(validateUserSaga);
 
-  // is route listed as needing a login?
-  const routeRequiresLogin =
-    (staticRoute && staticRoute.route.authRequired) ||
-    (routes &&
-      entry &&
-      (
-        routes.ContentTypeMappings.find(
-          item => item.contentTypeID == entry.sys.contentTypeId
-        ) || {}
-      ).authRequired);
-
   if (routeRequiresLogin) {
     const userLoggedIn = yield select(selectUserIsAuthenticated);
-    if (!userLoggedIn) {
+    if (routeRequiresGroups.length > 0) {
+      const userGroups = (yield select(selectUserGroups)).toJS();
+
+      const groupMatch = routeRequiresGroups.some(requiredGroup => {
+        return userGroups.some(userGroup => {
+          if (requiredGroup.id === userGroup.id) {
+            return true;
+          }
+          if (requiredGroup.name === userGroup.name) {
+            return true;
+          }
+        });
+      });
+      if (!groupMatch)
+        LoginHelper.ClientRedirectToAccessDeniedPage(action.location.pathname);
+    } else if (!userLoggedIn) {
+      // Because we are using the Client only redirects, they will not
+      // take effect during SSR and will cause the page to render the content
+      // (as expected)
       LoginHelper.ClientRedirectToSignInPage(action.location.pathname);
-      // yield put(
-      //   navigate(`${LOGIN_ROUTE}?redirect_uri=${action.location.pathname}`)
-      // );
     }
   }
 }
@@ -138,30 +163,9 @@ function* logoutUserSaga({ redirectPath }) {
     type: SET_AUTHENTICATION_STATE,
     user: null,
   });
-  // yield put({
-  //   type: SET_USER_ENVIRONMENTS,
-  // });
   if (redirectPath) LoginHelper.ClientRedirectToPath(redirectPath);
   else LoginHelper.ClientRedirectToSignInPage();
 }
-
-// function* getUserEnvironmentsSaga() {
-//   yield delay(6000);
-//   const securityToken = yield select(selectUserSecurityToken);
-//   const environments = yield SecurityApi.GetUsersEnvironments(securityToken);
-//   if (!environments.error) {
-//     environments.map((env, idx) => {
-//       if (env.alias.indexOf('-dr') > -1) {
-//         return [...environments.splice(idx, 1)];
-//       }
-//       return [...environments];
-//     });
-//     yield put({
-//       type: SET_USER_ENVIRONMENTS,
-//       environments,
-//     });
-//   }
-// }
 
 function* validateUserSaga() {
   const userLoggedIn = yield select(selectUserIsAuthenticated);

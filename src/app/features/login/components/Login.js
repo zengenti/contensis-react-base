@@ -7,8 +7,8 @@ import LogoutForm from './LogoutForm';
 const Login = ({
   error,
   authenticationError,
-  authenticated,
-  loading,
+  isAuthenticated,
+  isLoading,
   user,
   loginUser,
   logoutUser,
@@ -16,18 +16,18 @@ const Login = ({
   return (
     <LoginStyled>
       <div className="lContainer">
-        {!authenticated && (
+        {!isAuthenticated && (
           <>
             <h1 className="lTitle">Log in to Contensis help desk</h1>
             <LoginForm
-              loading={loading}
+              isLoading={isLoading}
               authenticationError={authenticationError}
               loginException={error}
               loginUser={loginUser}
             />
           </>
         )}
-        {authenticated && (
+        {isAuthenticated && (
           <>
             <LogoutForm logoutUser={logoutUser} user={user} />
           </>
@@ -39,10 +39,10 @@ const Login = ({
 Login.propTypes = {
   loginUser: PropTypes.func,
   logoutUser: PropTypes.func,
-  loading: PropTypes.bool,
-  authenticated: PropTypes.bool,
-  authenticationError: PropTypes.bool,
-  error: PropTypes.bool,
+  isLoading: PropTypes.bool,
+  isAuthenticated: PropTypes.bool,
+  authenticationError: PropTypes.string,
+  error: PropTypes.string,
   user: PropTypes.object,
   updateUserLoginState: PropTypes.func,
 };

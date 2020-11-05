@@ -7,7 +7,13 @@ const LogoutForm = ({ logoutUser, user }) => {
   return (
     <div className="logoutContainer">
       <h1 className="logoutTitle">Welcome, {user.name}</h1>
-      <form onSubmit={() => logoutUser('/')} className="login-form">
+      <form
+        onSubmit={e => {
+          e.preventDefault();
+          logoutUser('/');
+        }}
+        className="login-form"
+      >
         <Button type="submit" className="logoutSubmit" label="Logout" />
         <Link className="helpdeskLink" uri="/help-and-docs/help-desk">
           Go to helpdesk

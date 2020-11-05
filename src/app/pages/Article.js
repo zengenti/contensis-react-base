@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Article = ({ mappedEntry: { title } }) => {
-  return <div>{title}</div>;
+const Article = ({ entry, mappedEntry: { title } }) => {
+  return <div>{(entry && entry.entryTitle) || title}</div>;
 };
 
 Article.propTypes = {
+  entry: PropTypes.object,
   mappedEntry: PropTypes.object,
 };
 

@@ -22,9 +22,9 @@ export default [
       loading: Loading,
     }),
     entryMapper: ({ entry }) => (entry ? { title: entry.entryTitle } : {}),
+    requireLogin: [{ name: 'Beta Users' }],
   },
   {
-    authRequired: true,
     contentTypeID: 'genericPage',
     component: Loadable({
       loader: () => {
@@ -32,5 +32,6 @@ export default [
       },
       loading: Loading,
     }),
+    requireLogin: true,
   },
 ];

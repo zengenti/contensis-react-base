@@ -14,6 +14,7 @@ export const REFRESH_TOKEN_COOKIE = 'RefreshToken';
 export class LoginHelper {
   static CMS_URL = SERVERS.api || SERVERS.cms /* global SERVERS */;
   static LOGIN_ROUTE = '/account/login';
+  static ACCESS_DENIED_ROUTE = '/account/access-denied';
 
   static SetLoginCookies(apiClientCredentials) {
     if (apiClientCredentials) {
@@ -106,7 +107,22 @@ export class LoginHelper {
 
   static GetUserDetails = async clientCredentials => {
     const client = getManagementAPIClient(clientCredentials);
-    const [error, user] = await to(client.security.users.getCurrent());
+    let error,
+      user = {},
+      groupsResult;
+
+    [error, user] = await to(client.security.users.getCurrent());
+    if (user && user.id) {
+      [error, groupsResult] = await to(
+        client.security.users.getUserGroups({
+          userId: user.id,
+          includeInherited: true,
+        })
+      );
+      // Set groups attribute in user object to be the items
+      // array from the getUserGroups result
+      if (groupsResult && groupsResult.items) user.groups = groupsResult.items;
+    }
     return {
       error,
       user,
@@ -115,7 +131,7 @@ export class LoginHelper {
   };
 
   static LogoutUser() {
-    this.ClearCachedCredentials();
+    LoginHelper.ClearCachedCredentials();
     return initialUserState.toJS();
   }
 
@@ -132,15 +148,27 @@ export class LoginHelper {
   }
 
   static ClientRedirectToSignInPage(redirectPath) {
-    let url = '/account/login';
+    let url = LoginHelper.LOGIN_ROUTE;
     if (typeof redirectPath === 'string')
       url = `${url}?redirect_uri=${redirectPath}`;
-    window.location.href = url;
+    if (
+      typeof location !== 'undefined' &&
+      redirectPath !== LoginHelper.LOGIN_ROUTE
+    )
+      location.href = url;
+  }
+
+  static ClientRedirectToAccessDeniedPage(originalPath) {
+    let url = LoginHelper.ACCESS_DENIED_ROUTE;
+    if (typeof originalPath === 'string')
+      url = `${url}?original_uri=${originalPath}`;
+    if (typeof location !== 'undefined') location.href = url;
   }
 
   static ClientRedirectToPath(redirectPath) {
-    if (typeof redirectPath === 'string') window.location.href = redirectPath;
-    else LoginHelper.ClientRedirectToHome();
+    if (typeof redirectPath === 'string') {
+      if (typeof location !== 'undefined') window.location.href = redirectPath;
+    } else LoginHelper.ClientRedirectToHome();
   }
 
   static isZengentiStaff(email) {

@@ -10,7 +10,6 @@ export default [
     fetchNode: true,
     ssr: true,
     component: Homepage,
-    // authRequired: true,
   },
   {
     path: '/account/login',
@@ -18,6 +17,15 @@ export default [
     ssr: false,
     component: Loadable({
       loader: () => import('~/pages/User/Login'),
+      loading: Loading,
+    }),
+  },
+  {
+    path: '/account/access-denied',
+    exact: true,
+    ssr: false,
+    component: Loadable({
+      loader: () => import('~/pages/User/AccessDeniedPage'),
       loading: Loading,
     }),
   },
@@ -35,7 +43,7 @@ export default [
     fetchNode: true,
     exact: false,
     ssr: true,
-    authRequired: true,
+    requireLogin: true,
     component: Loadable({
       loader: () => import('~/pages/Article'),
       loading: Loading,
@@ -59,7 +67,6 @@ export default [
         import(/* webpackChunkName: "VersionInfo" */ '~/pages/VersionInfo'),
       loading: Loading,
     }),
-    authRequired: true,
   },
   // ˄˄ Do not delete these routes ˄˄
   // ********************************

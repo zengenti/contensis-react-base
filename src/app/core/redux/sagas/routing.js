@@ -12,8 +12,6 @@ import {
 import { cachedSearch, deliveryApi } from '~/core/util/ContensisDeliveryApi';
 import { selectVersionStatus } from '~/core/redux/selectors/version';
 import {
-  // selectCurrentNode,
-  // selectCurrentPath,
   selectCurrentProject,
   selectRouteEntry,
 } from '~/core/redux/selectors/routing';
@@ -21,6 +19,8 @@ import { GET_NODE_TREE } from '../types/navigation';
 import { hasNavigationTree } from '../selectors/navigation';
 import { routeEntryByFieldsQuery } from './queries';
 import { ensureNodeTreeSaga } from './navigation';
+import { handleRequiresLoginSaga } from '~/features/login/redux/sagas';
+import { findContentTypeMapping } from '~/core/util/helpers';
 
 export const routingSagas = [
   takeEvery(SET_NAVIGATION_PATH, getRouteSaga),
@@ -41,12 +41,6 @@ function* setRouteSaga(action) {
   });
 }
 
-// function* deliveryApiResponseHandler(response) {
-//   debugger;
-
-//   yield put({ type: 'HANDLE_RESPONSE', headers: response.headers });
-// }
-
 function* getRouteSaga(action) {
   let entry = null;
   try {
@@ -55,7 +49,12 @@ function* getRouteSaga(action) {
       routes: { ContentTypeMappings = {} } = {},
       staticRoute,
     } = action;
-    let appsays;
+
+    // These variables are the return values from
+    // calls to withEvents.onRouteLoad and onRouteLoaded
+    let appsays,
+      requireLogin = false;
+
     if (withEvents && withEvents.onRouteLoad) {
       appsays = yield withEvents.onRouteLoad(action);
     }
@@ -163,19 +162,19 @@ function* getRouteSaga(action) {
             pathNode.entry.sys &&
             pathNode.entry.sys.id
           ) {
-            const contentType = ContentTypeMappings.find(
-              ct => ct.contentTypeID === pathNode.entry.sys.contentTypeId
-            );
+            const { fields, linkDepth } =
+              findContentTypeMapping(
+                ContentTypeMappings,
+                pathNode.entry.sys.id
+              ) || {};
             const query = routeEntryByFieldsQuery(
               pathNode.entry.sys.id,
-              contentType && contentType.fields,
+              fields,
               deliveryApiStatus
             );
             const payload = yield cachedSearch.search(
               query,
-              contentType && typeof contentType.linkDepth !== 'undefined'
-                ? contentType.linkDepth
-                : 3,
+              typeof linkDepth !== 'undefined' ? linkDepth : 3,
               project
             );
             if (payload && payload.items && payload.items.length > 0) {
@@ -223,8 +222,9 @@ function* getRouteSaga(action) {
       ) {
         entry = pathNode.entry;
         const { entryMapper } =
-          ContentTypeMappings.find(
-            ct => ct.contentTypeID === entry.sys.contentTypeId
+          findContentTypeMapping(
+            ContentTypeMappings,
+            entry.sys.contentTypeId
           ) || {};
         yield call(
           setRouteEntry,
@@ -248,9 +248,19 @@ function* getRouteSaga(action) {
         }
       }
     }
+
     if (withEvents && withEvents.onRouteLoaded) {
-      yield withEvents.onRouteLoaded({ ...action, entry });
+      // Check if the app has provided a requireLogin boolean flag or groups array
+      // in addition to checking if requireLogin is set in the route definition
+      ({ requireLogin } =
+        (yield withEvents.onRouteLoaded({ ...action, entry })) || {});
     }
+
+    yield call(handleRequiresLoginSaga, {
+      ...action,
+      entry,
+      requireLogin,
+    });
 
     if (
       !hasNavigationTree(state) &&
@@ -269,7 +279,6 @@ function* getRouteSaga(action) {
       } else {
         yield call(ensureNodeTreeSaga);
       }
-    // Load navigation clientside only, a put() should help that work
   } catch (e) {
     log.error(...['Error running route saga:', e, e.stack]);
     yield call(do404);
