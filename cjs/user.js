@@ -6,7 +6,7 @@ require('react');
 var reactRedux = require('react-redux');
 require('immutable');
 var routing = require('./routing-1b06bbe2.js');
-var sagas = require('./sagas-c1c7f51e.js');
+var sagas = require('./sagas-df266b2c.js');
 require('query-string');
 require('redux-saga/effects');
 require('contensis-management-api');

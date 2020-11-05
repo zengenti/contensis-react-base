@@ -71,7 +71,7 @@ var UserReducer = ((state = initialUserState, action) => {
         }
 
         const nextState = { ...initialUserState.toJS(),
-          ...user,
+          ...(user || state.toJS()),
           authenticationState: {
             authenticated: authenticated || state.getIn(['authenticationState', 'authenticated']),
             authenticationError,
@@ -101,7 +101,7 @@ const selectUserError = state => {
   return state.getIn(['user', 'authenticationState', 'error']);
 };
 const selectClientCredentials = state => {
-  return state.getIn(['user', 'authenticationState', 'clientCredentials']);
+  return state.getIn(['user', 'authenticationState', 'clientCredentials'], Map());
 };
 const selectUser = state => {
   return state.getIn(['user']);
@@ -216,9 +216,13 @@ class CookieHelper {
 
 const clientCredentials = {
   bearerToken: 'bearerToken',
-  bearerTokenExpiryDate: 'bearerTokenExpiryDate',
+  bearerTokenExpiryDate: ({
+    bearerTokenExpiryDate
+  }) => bearerTokenExpiryDate.toISOString(),
   refreshToken: 'refreshToken',
-  refreshTokenExpiryDate: 'refreshTokenExpiryDate',
+  refreshTokenExpiryDate: ({
+    refreshTokenExpiryDate
+  }) => refreshTokenExpiryDate.toISOString(),
   contensisClassicToken: 'contensisClassicToken'
 };
 var mapClientCredentials = (obj => mapJson(obj, clientCredentials));
@@ -540,17 +544,20 @@ function* validateUserSaga() {
 }
 
 function* refreshSecurityToken() {
-  const clientCredentials = yield select(selectClientCredentials).toJS();
-  const client = getManagementAPIClient(clientCredentials);
-  yield client.authenticate();
-  const loginResultObject = {};
-  const newClientCredentials = mapClientCredentials(client);
-  loginResultObject.clientCredentials = newClientCredentials;
-  yield put({
-    type: SET_AUTHENTICATION_STATE,
-    loginResultObject
-  });
+  const clientCredentials = ((yield select(selectClientCredentials)) || Map()).toJS();
+
+  if (Object.keys(clientCredentials).length > 0) {
+    const client = getManagementAPIClient(clientCredentials);
+    yield client.authenticate();
+    const authenticationState = {};
+    const newClientCredentials = mapClientCredentials(client);
+    authenticationState.clientCredentials = newClientCredentials;
+    yield put({
+      type: SET_AUTHENTICATION_STATE,
+      authenticationState
+    });
+  }
 }
 
 export { CREATE_USER_ACCOUNT as C, LOGIN_USER as L, UserReducer as U, LOGOUT_USER as a, selectUserError as b, selectUserIsAuthenticated as c, selectUserIsLoading as d, selectUser as e, fromJSOrdered as f, selectors as g, handleRequiresLoginSaga as h, initialUserState as i, LoginHelper as j, refreshSecurityToken as r, selectUserAuthenticationError as s, types as t, userSagas as u };
-//# sourceMappingURL=sagas-bb5be213.js.map
+//# sourceMappingURL=sagas-c59e8024.js.map

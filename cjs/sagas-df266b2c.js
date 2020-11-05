@@ -78,7 +78,7 @@ var UserReducer = ((state = initialUserState, action) => {
         }
 
         const nextState = { ...initialUserState.toJS(),
-          ...user,
+          ...(user || state.toJS()),
           authenticationState: {
             authenticated: authenticated || state.getIn(['authenticationState', 'authenticated']),
             authenticationError,
@@ -108,7 +108,7 @@ const selectUserError = state => {
   return state.getIn(['user', 'authenticationState', 'error']);
 };
 const selectClientCredentials = state => {
-  return state.getIn(['user', 'authenticationState', 'clientCredentials']);
+  return state.getIn(['user', 'authenticationState', 'clientCredentials'], immutable.Map());
 };
 const selectUser = state => {
   return state.getIn(['user']);
@@ -223,9 +223,13 @@ class CookieHelper {
 
 const clientCredentials = {
   bearerToken: 'bearerToken',
-  bearerTokenExpiryDate: 'bearerTokenExpiryDate',
+  bearerTokenExpiryDate: ({
+    bearerTokenExpiryDate
+  }) => bearerTokenExpiryDate.toISOString(),
   refreshToken: 'refreshToken',
-  refreshTokenExpiryDate: 'refreshTokenExpiryDate',
+  refreshTokenExpiryDate: ({
+    refreshTokenExpiryDate
+  }) => refreshTokenExpiryDate.toISOString(),
   contensisClassicToken: 'contensisClassicToken'
 };
 var mapClientCredentials = (obj => mapJson__default['default'](obj, clientCredentials));
@@ -547,16 +551,19 @@ function* validateUserSaga() {
 }
 
 function* refreshSecurityToken() {
-  const clientCredentials = yield effects.select(selectClientCredentials).toJS();
-  const client = getManagementAPIClient(clientCredentials);
-  yield client.authenticate();
-  const loginResultObject = {};
-  const newClientCredentials = mapClientCredentials(client);
-  loginResultObject.clientCredentials = newClientCredentials;
-  yield effects.put({
-    type: SET_AUTHENTICATION_STATE,
-    loginResultObject
-  });
+  const clientCredentials = ((yield effects.select(selectClientCredentials)) || immutable.Map()).toJS();
+
+  if (Object.keys(clientCredentials).length > 0) {
+    const client = getManagementAPIClient(clientCredentials);
+    yield client.authenticate();
+    const authenticationState = {};
+    const newClientCredentials = mapClientCredentials(client);
+    authenticationState.clientCredentials = newClientCredentials;
+    yield effects.put({
+      type: SET_AUTHENTICATION_STATE,
+      authenticationState
+    });
+  }
 }
 
 exports.CREATE_USER_ACCOUNT = CREATE_USER_ACCOUNT;
@@ -576,4 +583,4 @@ exports.selectUserIsLoading = selectUserIsLoading;
 exports.selectors = selectors;
 exports.types = types;
 exports.userSagas = userSagas;
-//# sourceMappingURL=sagas-c1c7f51e.js.map
+//# sourceMappingURL=sagas-df266b2c.js.map

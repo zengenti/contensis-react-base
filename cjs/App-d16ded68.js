@@ -10,7 +10,7 @@ var reduxImmutable = require('redux-immutable');
 var thunk = require('redux-thunk');
 var createSagaMiddleware = require('redux-saga');
 var version = require('./version-781d7ac3.js');
-var sagas = require('./sagas-c1c7f51e.js');
+var sagas = require('./sagas-df266b2c.js');
 var effects = require('redux-saga/effects');
 var log = require('loglevel');
 require('react-hot-loader');
@@ -899,4 +899,4 @@ exports.deliveryApi = deliveryApi;
 exports.history = history;
 exports.pickProject = pickProject;
 exports.rootSaga = rootSaga;
-//# sourceMappingURL=App-93fd0eef.js.map
+//# sourceMappingURL=App-d16ded68.js.map
