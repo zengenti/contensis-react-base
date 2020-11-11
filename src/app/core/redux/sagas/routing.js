@@ -74,6 +74,7 @@ function* getRouteSaga(action) {
     const project = selectCurrentProject(state);
     const isHome = currentPath === '/';
     const isPreview = currentPath && currentPath.startsWith('/preview/');
+    const defaultLang = (appsays && appsays.defaultLang) || 'en-GB';
 
     if (
       !isPreview &&
@@ -110,7 +111,7 @@ function* getRouteSaga(action) {
             depth: 0,
             entryFields: '*',
             entryLinkDepth,
-            language: 'en-GB',
+            language: defaultLang,
             versionStatus: deliveryApiStatus,
           },
           project
@@ -120,16 +121,26 @@ function* getRouteSaga(action) {
         if (isPreview) {
           let splitPath = currentPath.split('/');
           let entryGuid = splitPath[2];
-          if (splitPath.length == 3) {
+          let language = defaultLang;
+          if (splitPath.length >= 3) {
+            //set lang key if available in the path, else use default lang
+            //assumes preview url on content type is: http://preview.ALIAS.contensis.cloud/preview/{GUID}/{LANG}
+            if (splitPath.length == 4) language = splitPath[3];
             // According to product dev we cannot use Node API
             // for previewing entries as it gives a response of []
             // -- apparently it is not correct to request latest content
             // with Node API
+
             let previewEntry = yield deliveryApi
               .getClient(deliveryApiStatus, project)
-              .entries.get({ id: entryGuid, linkDepth: entryLinkDepth });
+              .entries.get({
+                id: entryGuid,
+                language,
+                linkDepth: entryLinkDepth,
+              });
             if (previewEntry) {
               pathNode = { entry: previewEntry };
+
               // yield call(setRouteEntry, previewEntry);
               // } else {
               // yield call(do404);
