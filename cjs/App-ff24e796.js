@@ -676,6 +676,7 @@ function* getRouteSaga(action) {
     const project = selectors.selectCurrentProject(state);
     const isHome = currentPath === '/';
     const isPreview = currentPath && currentPath.startsWith('/preview/');
+    const defaultLang = appsays && appsays.defaultLang || 'en-GB';
 
     if (!isPreview && (appsays && appsays.customRouting || staticRoute && !staticRoute.route.fetchNode || routeEntry && action.statePath === action.path)) {
       // To prevent erroneous 404s and wasted network calls, this covers
@@ -701,7 +702,7 @@ function* getRouteSaga(action) {
           depth: 0,
           entryFields: '*',
           entryLinkDepth,
-          language: 'en-GB',
+          language: defaultLang,
           versionStatus: deliveryApiStatus
         }, project);
       } else {
@@ -709,14 +710,19 @@ function* getRouteSaga(action) {
         if (isPreview) {
           let splitPath = currentPath.split('/');
           let entryGuid = splitPath[2];
+          let language = defaultLang;
 
-          if (splitPath.length == 3) {
-            // According to product dev we cannot use Node API
+          if (splitPath.length >= 3) {
+            //set lang key if available in the path, else use default lang
+            //assumes preview url on content type is: http://preview.ALIAS.contensis.cloud/preview/{GUID}/{LANG}
+            if (splitPath.length == 4) language = splitPath[3]; // According to product dev we cannot use Node API
             // for previewing entries as it gives a response of []
             // -- apparently it is not correct to request latest content
             // with Node API
+
             let previewEntry = yield deliveryApi.getClient(deliveryApiStatus, project).entries.get({
               id: entryGuid,
+              language,
               linkDepth: entryLinkDepth
             });
 
@@ -907,4 +913,4 @@ exports.createStore = createStore;
 exports.history = history;
 exports.pickProject = pickProject;
 exports.rootSaga = rootSaga;
-//# sourceMappingURL=App-c6eeaa23.js.map
+//# sourceMappingURL=App-ff24e796.js.map
