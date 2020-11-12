@@ -2,10 +2,10 @@ import React, { useCallback, useEffect } from 'react';
 import { Route, useLocation, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { k as selectRouteEntryContentTypeId, a as selectRouteEntry, l as selectIsNotFound, m as selectRouteLoading, n as selectMappedEntry, b as selectCurrentProject, o as selectCurrentPath, p as setNavigationPath } from './routing-1f866fda.js';
+import { t as toJS, s as selectUserIsAuthenticated, a as selectUserGroups, m as matchUserGroup } from './ToJs-a61fc8b9.js';
 import { matchRoutes, renderRoutes } from 'react-router-config';
 import { hot } from 'react-hot-loader';
 import PropTypes from 'prop-types';
-import { t as toJS } from './ToJs-1649f545.js';
 
 const NotFound = () => React.createElement(React.Fragment, null, React.createElement("header", null, React.createElement("h1", null, "404 Page Not Found")));
 
@@ -50,18 +50,20 @@ const RouteLoader = ({
   loadingComponent,
   mappedEntry,
   notFoundComponent,
-  setNavigationPath,
   routes,
+  setNavigationPath,
+  userGroups,
   withEvents
 }) => {
-  const location = useLocation(); // Match any Static Routes a developer has defined
+  const location = useLocation();
+  const trimmedPath = getTrimmedPath(location.pathname); // Match any Static Routes a developer has defined
 
   const matchedStaticRoute = () => matchRoutes(routes.StaticRoutes, location.pathname);
 
   const isStaticRoute = () => matchedStaticRoute().length > 0;
 
-  const trimmedPath = getTrimmedPath(location.pathname);
   const staticRoute = isStaticRoute() && matchedStaticRoute()[0];
+  const routeRequiresLogin = staticRoute && staticRoute.route.requireLogin;
   const setPath = useCallback(() => {
     let serverPath = null;
 
@@ -85,8 +87,8 @@ const RouteLoader = ({
   } // Render any Static Routes a developer has defined
 
 
-  if (isStaticRoute()) {
-    return renderRoutes(routes.StaticRoutes, {
+  if (isStaticRoute() && !(!isLoggedIn && routeRequiresLogin)) {
+    if (matchUserGroup(userGroups, routeRequiresLogin)) return renderRoutes(routes.StaticRoutes, {
       projectId,
       contentTypeId,
       entry,
@@ -103,11 +105,11 @@ const RouteLoader = ({
   } // Match any defined Content Type Mappings
 
 
-  if (contentTypeId) {
-    const MatchedComponent = routes.ContentTypeMappings.find(item => item.contentTypeID == contentTypeId);
+  if (contentTypeId && !(!isLoggedIn && routeRequiresLogin)) {
+    const MatchedComponent = routes.ContentTypeMappings.find(item => item.contentTypeID == contentTypeId); // debugger;
 
-    if (MatchedComponent) {
-      return React.createElement(MatchedComponent.component, {
+    if (MatchedComponent && !(MatchedComponent.requireLogin && !isLoggedIn)) {
+      if (matchUserGroup(userGroups, MatchedComponent.requireLogin)) return React.createElement(MatchedComponent.component, {
         projectId: projectId,
         contentTypeId: contentTypeId,
         entry: entry,
@@ -141,6 +143,7 @@ RouteLoader.propTypes = {
   routes: PropTypes.objectOf(PropTypes.array, PropTypes.array),
   setNavigationPath: PropTypes.func,
   statePath: PropTypes.string,
+  userGroups: PropTypes.array,
   withEvents: PropTypes.object
 };
 
@@ -150,9 +153,11 @@ const mapStateToProps = state => {
     entry: selectRouteEntry(state),
     isNotFound: selectIsNotFound(state),
     isLoading: selectRouteLoading(state),
+    isLoggedIn: selectUserIsAuthenticated(state),
     mappedEntry: selectMappedEntry(state),
     projectId: selectCurrentProject(state),
-    statePath: selectCurrentPath(state)
+    statePath: selectCurrentPath(state),
+    userGroups: selectUserGroups(state)
   };
 };
 
@@ -162,4 +167,4 @@ const mapDispatchToProps = {
 var RouteLoader$1 = hot(module)(connect(mapStateToProps, mapDispatchToProps)(toJS(RouteLoader)));
 
 export { RouteLoader$1 as R };
-//# sourceMappingURL=RouteLoader-abf2cdf0.js.map
+//# sourceMappingURL=RouteLoader-7789c53f.js.map

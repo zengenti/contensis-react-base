@@ -4,10 +4,10 @@ var React = require('react');
 var reactRouterDom = require('react-router-dom');
 var reactRedux = require('react-redux');
 var routing = require('./routing-1b06bbe2.js');
+var ToJs = require('./ToJs-8dd77129.js');
 var reactRouterConfig = require('react-router-config');
 var reactHotLoader = require('react-hot-loader');
 var PropTypes = require('prop-types');
-var ToJs = require('./ToJs-d548b71b.js');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -57,18 +57,20 @@ const RouteLoader = ({
   loadingComponent,
   mappedEntry,
   notFoundComponent,
-  setNavigationPath,
   routes,
+  setNavigationPath,
+  userGroups,
   withEvents
 }) => {
-  const location = reactRouterDom.useLocation(); // Match any Static Routes a developer has defined
+  const location = reactRouterDom.useLocation();
+  const trimmedPath = getTrimmedPath(location.pathname); // Match any Static Routes a developer has defined
 
   const matchedStaticRoute = () => reactRouterConfig.matchRoutes(routes.StaticRoutes, location.pathname);
 
   const isStaticRoute = () => matchedStaticRoute().length > 0;
 
-  const trimmedPath = getTrimmedPath(location.pathname);
   const staticRoute = isStaticRoute() && matchedStaticRoute()[0];
+  const routeRequiresLogin = staticRoute && staticRoute.route.requireLogin;
   const setPath = React.useCallback(() => {
     let serverPath = null;
 
@@ -92,8 +94,8 @@ const RouteLoader = ({
   } // Render any Static Routes a developer has defined
 
 
-  if (isStaticRoute()) {
-    return reactRouterConfig.renderRoutes(routes.StaticRoutes, {
+  if (isStaticRoute() && !(!isLoggedIn && routeRequiresLogin)) {
+    if (ToJs.matchUserGroup(userGroups, routeRequiresLogin)) return reactRouterConfig.renderRoutes(routes.StaticRoutes, {
       projectId,
       contentTypeId,
       entry,
@@ -110,11 +112,11 @@ const RouteLoader = ({
   } // Match any defined Content Type Mappings
 
 
-  if (contentTypeId) {
-    const MatchedComponent = routes.ContentTypeMappings.find(item => item.contentTypeID == contentTypeId);
+  if (contentTypeId && !(!isLoggedIn && routeRequiresLogin)) {
+    const MatchedComponent = routes.ContentTypeMappings.find(item => item.contentTypeID == contentTypeId); // debugger;
 
-    if (MatchedComponent) {
-      return React__default['default'].createElement(MatchedComponent.component, {
+    if (MatchedComponent && !(MatchedComponent.requireLogin && !isLoggedIn)) {
+      if (ToJs.matchUserGroup(userGroups, MatchedComponent.requireLogin)) return React__default['default'].createElement(MatchedComponent.component, {
         projectId: projectId,
         contentTypeId: contentTypeId,
         entry: entry,
@@ -148,6 +150,7 @@ RouteLoader.propTypes = {
   routes: PropTypes__default['default'].objectOf(PropTypes__default['default'].array, PropTypes__default['default'].array),
   setNavigationPath: PropTypes__default['default'].func,
   statePath: PropTypes__default['default'].string,
+  userGroups: PropTypes__default['default'].array,
   withEvents: PropTypes__default['default'].object
 };
 
@@ -157,9 +160,11 @@ const mapStateToProps = state => {
     entry: routing.selectRouteEntry(state),
     isNotFound: routing.selectIsNotFound(state),
     isLoading: routing.selectRouteLoading(state),
+    isLoggedIn: ToJs.selectUserIsAuthenticated(state),
     mappedEntry: routing.selectMappedEntry(state),
     projectId: routing.selectCurrentProject(state),
-    statePath: routing.selectCurrentPath(state)
+    statePath: routing.selectCurrentPath(state),
+    userGroups: ToJs.selectUserGroups(state)
   };
 };
 
@@ -169,4 +174,4 @@ const mapDispatchToProps = {
 var RouteLoader$1 = reactHotLoader.hot(module)(reactRedux.connect(mapStateToProps, mapDispatchToProps)(ToJs.toJS(RouteLoader)));
 
 exports.RouteLoader = RouteLoader$1;
-//# sourceMappingURL=RouteLoader-bdd3e57a.js.map
+//# sourceMappingURL=RouteLoader-b44d91c9.js.map

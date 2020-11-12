@@ -6,14 +6,14 @@ require('react');
 var reactRedux = require('react-redux');
 require('immutable');
 var routing = require('./routing-1b06bbe2.js');
-var sagas = require('./sagas-df266b2c.js');
+var sagas = require('./sagas-14aeeb78.js');
 require('query-string');
 require('redux-saga/effects');
+var ToJs = require('./ToJs-8dd77129.js');
 require('contensis-management-api');
 require('await-to-js');
 require('js-cookie');
 require('jsonpath-mapper');
-var ToJs = require('./ToJs-d548b71b.js');
 
 const loginUser = (username, password) => routing.action(sagas.LOGIN_USER, {
   username,
@@ -56,11 +56,11 @@ const withLogin = WrappedComponent => {
   // };
   const mapStateToProps = state => {
     return {
-      authenticationError: sagas.selectUserAuthenticationError(state),
-      error: sagas.selectUserError(state),
-      isAuthenticated: sagas.selectUserIsAuthenticated(state),
-      isLoading: sagas.selectUserIsLoading(state),
-      user: sagas.selectUser(state)
+      authenticationError: ToJs.selectUserAuthenticationError(state),
+      error: ToJs.selectUserError(state),
+      isAuthenticated: ToJs.selectUserIsAuthenticated(state),
+      isLoading: ToJs.selectUserIsLoading(state),
+      user: ToJs.selectUser(state)
     };
   };
 
@@ -85,11 +85,11 @@ const useLogin = () => {
     loginUser: (username, password) => dispatch(loginUser(username, password)),
     logoutUser: redirectPath => dispatch(logoutUser(redirectPath)),
     registerUser: (firstName, lastName, email, password, passwordConfirm) => dispatch(createUserAccount(firstName, lastName, email, password, passwordConfirm)),
-    authenticationError: select(sagas.selectUserAuthenticationError),
-    error: select(sagas.selectUserError),
-    isAuthenticated: select(sagas.selectUserIsAuthenticated),
-    isLoading: select(sagas.selectUserIsLoading),
-    user: select(sagas.selectUser).toJS()
+    authenticationError: select(ToJs.selectUserAuthenticationError),
+    error: select(ToJs.selectUserError),
+    isAuthenticated: select(ToJs.selectUserIsAuthenticated),
+    isLoading: select(ToJs.selectUserIsLoading),
+    user: select(ToJs.selectUser).toJS()
   };
 };
 
@@ -109,8 +109,8 @@ exports.handleRequiresLoginSaga = sagas.handleRequiresLoginSaga;
 exports.initialUserState = sagas.initialUserState;
 exports.reducer = sagas.UserReducer;
 exports.refreshSecurityToken = sagas.refreshSecurityToken;
-exports.selectors = sagas.selectors;
 exports.types = sagas.types;
+exports.selectors = ToJs.selectors;
 exports.LoginContainer = Login_container;
 exports.actions = actions;
 exports.useLogin = useLogin;

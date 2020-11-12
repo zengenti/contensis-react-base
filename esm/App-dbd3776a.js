@@ -8,11 +8,11 @@ import { combineReducers } from 'redux-immutable';
 import thunk from 'redux-thunk';
 import createSagaMiddleware, { END } from 'redux-saga';
 import { G as GET_NODE_TREE_ERROR, S as SET_NODE_TREE, b as SET_VERSION, c as SET_VERSION_STATUS, d as GET_NODE_TREE, h as hasNavigationTree, e as selectVersionStatus } from './version-2febf43a.js';
-import { U as UserReducer, h as handleRequiresLoginSaga, u as userSagas } from './sagas-c59e8024.js';
+import { U as UserReducer, h as handleRequiresLoginSaga, u as userSagas } from './sagas-f12ff4c3.js';
 import { takeEvery, select, put, call, all } from 'redux-saga/effects';
 import { info, error } from 'loglevel';
 import 'react-hot-loader';
-import { R as RouteLoader } from './RouteLoader-abf2cdf0.js';
+import { R as RouteLoader } from './RouteLoader-7789c53f.js';
 
 const selectedHistory = typeof window !== 'undefined' ? createBrowserHistory : createMemoryHistory;
 const history = (options = {}) => selectedHistory(options);
@@ -655,7 +655,11 @@ function* getRouteSaga(action) {
         ContentTypeMappings = {}
       } = {},
       staticRoute
-    } = action; // These variables are the return values from
+    } = action; // Variables we will pass to setRouteEntry
+
+    let pathNode = null,
+        ancestors = null,
+        siblings = null; // These variables are the return values from
     // calls to withEvents.onRouteLoad and onRouteLoaded
 
     let appsays,
@@ -679,7 +683,12 @@ function* getRouteSaga(action) {
     const deliveryApiStatus = selectVersionStatus(state);
     const project = selectCurrentProject(state);
     const isHome = currentPath === '/';
-    const isPreview = currentPath && currentPath.startsWith('/preview/');
+    const isPreview = currentPath && currentPath.startsWith('/preview/'); // debugger;
+    // routeEntry = Map({
+    //   entryTitle: 'fake entry',
+    //   title: 'fakey entry',
+    //   sys: { id: 'abcd', contentTypeId: 'zenbaseHomePage' },
+    // });
 
     if (!isPreview && (appsays && appsays.customRouting || staticRoute && !staticRoute.route.fetchNode || routeEntry && action.statePath === action.path)) {
       // To prevent erroneous 404s and wasted network calls, this covers
@@ -687,7 +696,8 @@ function* getRouteSaga(action) {
       // - all staticRoutes (where custom 'route.fetchNode' attribute is falsey)
       // - standard Contensis SiteView Routing where we already have that entry in state
       if (routeEntry && (!staticRoute || staticRoute.route && staticRoute.route.fetchNode)) {
-        entry = routeEntry.toJS(); //Do nothing, the entry is allready the right one.
+        pathNode = {};
+        pathNode.entry = entry = routeEntry.toJS(); //Do nothing, the entry is allready the right one.
         // yield put({
         //   type: SET_ENTRY,
         //   entry,
@@ -696,10 +706,7 @@ function* getRouteSaga(action) {
         // });
       } else yield call(setRouteEntry);
     } else {
-      let pathNode = null,
-          ancestors = null,
-          siblings = null; // Handle homepage
-
+      // Handle homepage
       if (isHome) {
         pathNode = yield cachedSearch.getRootNode({
           depth: 0,
@@ -708,6 +715,9 @@ function* getRouteSaga(action) {
           language: 'en-GB',
           versionStatus: deliveryApiStatus
         }, project);
+        ({
+          entry
+        } = pathNode);
       } else {
         // Handle preview routes
         if (isPreview) {
@@ -728,6 +738,9 @@ function* getRouteSaga(action) {
               pathNode = {
                 entry: previewEntry
               };
+              ({
+                entry
+              } = pathNode);
             }
           }
         } else {
@@ -739,6 +752,9 @@ function* getRouteSaga(action) {
             entryLinkDepth: setContentTypeLimits ? 0 : entryLinkDepth,
             versionStatus: deliveryApiStatus
           }, project);
+          ({
+            entry
+          } = pathNode);
 
           if (setContentTypeLimits && pathNode && pathNode.entry && pathNode.entry.sys && pathNode.entry.sys.id) {
             const {
@@ -778,25 +794,6 @@ function* getRouteSaga(action) {
           }
         }
       }
-
-      if (pathNode && pathNode.entry && pathNode.entry.sys && pathNode.entry.sys.id) {
-        entry = pathNode.entry;
-        const {
-          entryMapper
-        } = findContentTypeMapping(ContentTypeMappings, entry.sys.contentTypeId) || {};
-        yield call(setRouteEntry, entry, pathNode, ancestors, siblings, entryMapper);
-      } else {
-        if (pathNode) yield call(setRouteEntry, null, pathNode, ancestors, siblings);else yield call(do404);
-      }
-
-      if (!appsays || !appsays.preventScrollTop) {
-        // Scroll into View
-        if (typeof window !== 'undefined') {
-          window.scroll({
-            top: 0
-          });
-        }
-      }
     }
 
     if (withEvents && withEvents.onRouteLoaded) {
@@ -813,6 +810,26 @@ function* getRouteSaga(action) {
       entry,
       requireLogin
     });
+
+    if (pathNode && pathNode.entry && pathNode.entry.sys && pathNode.entry.sys.id) {
+      entry = pathNode.entry;
+      const {
+        entryMapper
+      } = findContentTypeMapping(ContentTypeMappings, entry.sys.contentTypeId) || {};
+      yield call(setRouteEntry, entry, pathNode, ancestors, siblings, entryMapper);
+    } else {
+      if (pathNode) yield call(setRouteEntry, null, pathNode, ancestors, siblings);else if (!staticRoute) yield call(do404);
+    }
+
+    if (!appsays || !appsays.preventScrollTop) {
+      // Scroll into View
+      if (typeof window !== 'undefined') {
+        window.scroll({
+          top: 0
+        });
+      }
+    }
+
     if (!hasNavigationTree(state) && (doNavigation === true || doNavigation.tree)) if (typeof window !== 'undefined') {
       yield put({
         type: GET_NODE_TREE,
@@ -885,4 +902,4 @@ const AppRoot = props => {
 };
 
 export { AppRoot as A, browserHistory as b, createStore as c, deliveryApi as d, history as h, pickProject as p, rootSaga as r };
-//# sourceMappingURL=App-2c52ab24.js.map
+//# sourceMappingURL=App-dbd3776a.js.map

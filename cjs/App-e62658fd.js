@@ -10,11 +10,11 @@ var reduxImmutable = require('redux-immutable');
 var thunk = require('redux-thunk');
 var createSagaMiddleware = require('redux-saga');
 var version = require('./version-781d7ac3.js');
-var sagas = require('./sagas-df266b2c.js');
+var sagas = require('./sagas-14aeeb78.js');
 var effects = require('redux-saga/effects');
 var log = require('loglevel');
 require('react-hot-loader');
-var RouteLoader = require('./RouteLoader-bdd3e57a.js');
+var RouteLoader = require('./RouteLoader-b44d91c9.js');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -663,7 +663,11 @@ function* getRouteSaga(action) {
         ContentTypeMappings = {}
       } = {},
       staticRoute
-    } = action; // These variables are the return values from
+    } = action; // Variables we will pass to setRouteEntry
+
+    let pathNode = null,
+        ancestors = null,
+        siblings = null; // These variables are the return values from
     // calls to withEvents.onRouteLoad and onRouteLoaded
 
     let appsays,
@@ -687,7 +691,12 @@ function* getRouteSaga(action) {
     const deliveryApiStatus = version.selectVersionStatus(state);
     const project = routing.selectCurrentProject(state);
     const isHome = currentPath === '/';
-    const isPreview = currentPath && currentPath.startsWith('/preview/');
+    const isPreview = currentPath && currentPath.startsWith('/preview/'); // debugger;
+    // routeEntry = Map({
+    //   entryTitle: 'fake entry',
+    //   title: 'fakey entry',
+    //   sys: { id: 'abcd', contentTypeId: 'zenbaseHomePage' },
+    // });
 
     if (!isPreview && (appsays && appsays.customRouting || staticRoute && !staticRoute.route.fetchNode || routeEntry && action.statePath === action.path)) {
       // To prevent erroneous 404s and wasted network calls, this covers
@@ -695,7 +704,8 @@ function* getRouteSaga(action) {
       // - all staticRoutes (where custom 'route.fetchNode' attribute is falsey)
       // - standard Contensis SiteView Routing where we already have that entry in state
       if (routeEntry && (!staticRoute || staticRoute.route && staticRoute.route.fetchNode)) {
-        entry = routeEntry.toJS(); //Do nothing, the entry is allready the right one.
+        pathNode = {};
+        pathNode.entry = entry = routeEntry.toJS(); //Do nothing, the entry is allready the right one.
         // yield put({
         //   type: SET_ENTRY,
         //   entry,
@@ -704,10 +714,7 @@ function* getRouteSaga(action) {
         // });
       } else yield effects.call(setRouteEntry);
     } else {
-      let pathNode = null,
-          ancestors = null,
-          siblings = null; // Handle homepage
-
+      // Handle homepage
       if (isHome) {
         pathNode = yield cachedSearch.getRootNode({
           depth: 0,
@@ -716,6 +723,9 @@ function* getRouteSaga(action) {
           language: 'en-GB',
           versionStatus: deliveryApiStatus
         }, project);
+        ({
+          entry
+        } = pathNode);
       } else {
         // Handle preview routes
         if (isPreview) {
@@ -736,6 +746,9 @@ function* getRouteSaga(action) {
               pathNode = {
                 entry: previewEntry
               };
+              ({
+                entry
+              } = pathNode);
             }
           }
         } else {
@@ -747,6 +760,9 @@ function* getRouteSaga(action) {
             entryLinkDepth: setContentTypeLimits ? 0 : entryLinkDepth,
             versionStatus: deliveryApiStatus
           }, project);
+          ({
+            entry
+          } = pathNode);
 
           if (setContentTypeLimits && pathNode && pathNode.entry && pathNode.entry.sys && pathNode.entry.sys.id) {
             const {
@@ -786,25 +802,6 @@ function* getRouteSaga(action) {
           }
         }
       }
-
-      if (pathNode && pathNode.entry && pathNode.entry.sys && pathNode.entry.sys.id) {
-        entry = pathNode.entry;
-        const {
-          entryMapper
-        } = routing.findContentTypeMapping(ContentTypeMappings, entry.sys.contentTypeId) || {};
-        yield effects.call(setRouteEntry, entry, pathNode, ancestors, siblings, entryMapper);
-      } else {
-        if (pathNode) yield effects.call(setRouteEntry, null, pathNode, ancestors, siblings);else yield effects.call(do404);
-      }
-
-      if (!appsays || !appsays.preventScrollTop) {
-        // Scroll into View
-        if (typeof window !== 'undefined') {
-          window.scroll({
-            top: 0
-          });
-        }
-      }
     }
 
     if (withEvents && withEvents.onRouteLoaded) {
@@ -821,6 +818,26 @@ function* getRouteSaga(action) {
       entry,
       requireLogin
     });
+
+    if (pathNode && pathNode.entry && pathNode.entry.sys && pathNode.entry.sys.id) {
+      entry = pathNode.entry;
+      const {
+        entryMapper
+      } = routing.findContentTypeMapping(ContentTypeMappings, entry.sys.contentTypeId) || {};
+      yield effects.call(setRouteEntry, entry, pathNode, ancestors, siblings, entryMapper);
+    } else {
+      if (pathNode) yield effects.call(setRouteEntry, null, pathNode, ancestors, siblings);else if (!staticRoute) yield effects.call(do404);
+    }
+
+    if (!appsays || !appsays.preventScrollTop) {
+      // Scroll into View
+      if (typeof window !== 'undefined') {
+        window.scroll({
+          top: 0
+        });
+      }
+    }
+
     if (!version.hasNavigationTree(state) && (doNavigation === true || doNavigation.tree)) if (typeof window !== 'undefined') {
       yield effects.put({
         type: version.GET_NODE_TREE,
@@ -899,4 +916,4 @@ exports.deliveryApi = deliveryApi;
 exports.history = history;
 exports.pickProject = pickProject;
 exports.rootSaga = rootSaga;
-//# sourceMappingURL=App-d16ded68.js.map
+//# sourceMappingURL=App-e62658fd.js.map
