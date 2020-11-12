@@ -19,6 +19,7 @@ import { queryParams } from '~/core/util/navigation';
 import { selectCurrentSearch } from '~/core/redux/selectors/routing';
 import mapClientCredentials from '../transformations/mapClientCredentials';
 import { findContentTypeMapping } from '~/core/util/helpers';
+import { matchUserGroup } from '../util/matchGroups';
 
 export const userSagas = [
   takeEvery(LOGIN_USER, loginUserSaga),
@@ -56,26 +57,17 @@ export function* handleRequiresLoginSaga(action) {
 
   if (routeRequiresLogin) {
     const userLoggedIn = yield select(selectUserIsAuthenticated);
-    if (routeRequiresGroups.length > 0) {
-      const userGroups = (yield select(selectUserGroups)).toJS();
-
-      const groupMatch = routeRequiresGroups.some(requiredGroup => {
-        return userGroups.some(userGroup => {
-          if (requiredGroup.id === userGroup.id) {
-            return true;
-          }
-          if (requiredGroup.name === userGroup.name) {
-            return true;
-          }
-        });
-      });
-      if (!groupMatch)
-        LoginHelper.ClientRedirectToAccessDeniedPage(action.location.pathname);
-    } else if (!userLoggedIn) {
+    if (!userLoggedIn) {
       // Because we are using the Client only redirects, they will not
       // take effect during SSR and will cause the page to render the content
       // (as expected)
       LoginHelper.ClientRedirectToSignInPage(action.location.pathname);
+    } else if (routeRequiresGroups.length > 0) {
+      const userGroups = (yield select(selectUserGroups)).toJS();
+      const groupMatch = matchUserGroup(userGroups, routeRequiresGroups);
+
+      if (!groupMatch)
+        LoginHelper.ClientRedirectToAccessDeniedPage(action.location.pathname);
     }
   }
 }

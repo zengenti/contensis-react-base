@@ -19,6 +19,11 @@ import NotFound from '~/pages/NotFound';
 
 import { Status } from './Status';
 import { toJS } from '../util/ToJs';
+import {
+  selectUserGroups,
+  selectUserIsAuthenticated,
+} from '~/features/login/redux/selectors';
+import { matchUserGroup } from '~/features/login/util/matchGroups';
 
 const getTrimmedPath = path => {
   if (path !== '/') {
@@ -41,20 +46,21 @@ const RouteLoader = ({
   loadingComponent,
   mappedEntry,
   notFoundComponent,
-  setNavigationPath,
   routes,
+  setNavigationPath,
+  userGroups,
   withEvents,
 }) => {
   const location = useLocation();
+  const trimmedPath = getTrimmedPath(location.pathname);
 
   // Match any Static Routes a developer has defined
   const matchedStaticRoute = () =>
     matchRoutes(routes.StaticRoutes, location.pathname);
   const isStaticRoute = () => matchedStaticRoute().length > 0;
 
-  const trimmedPath = getTrimmedPath(location.pathname);
-
   const staticRoute = isStaticRoute() && matchedStaticRoute()[0];
+  const routeRequiresLogin = staticRoute && staticRoute.route.requireLogin;
 
   const setPath = useCallback(() => {
     let serverPath = null;
@@ -97,14 +103,15 @@ const RouteLoader = ({
     return <Redirect to={trimmedPath} />;
   }
   // Render any Static Routes a developer has defined
-  if (isStaticRoute(trimmedPath)) {
-    return renderRoutes(routes.StaticRoutes, {
-      projectId,
-      contentTypeId,
-      entry,
-      mappedEntry,
-      isLoggedIn,
-    });
+  if (isStaticRoute(trimmedPath) && !(!isLoggedIn && routeRequiresLogin)) {
+    if (matchUserGroup(userGroups, routeRequiresLogin))
+      return renderRoutes(routes.StaticRoutes, {
+        projectId,
+        contentTypeId,
+        entry,
+        mappedEntry,
+        isLoggedIn,
+      });
   }
 
   // Render a supplied Loading component if the route
@@ -115,21 +122,23 @@ const RouteLoader = ({
   }
 
   // Match any defined Content Type Mappings
-  if (contentTypeId) {
+  if (contentTypeId && !(!isLoggedIn && routeRequiresLogin)) {
     const MatchedComponent = routes.ContentTypeMappings.find(
       item => item.contentTypeID == contentTypeId
     );
 
-    if (MatchedComponent) {
-      return (
-        <MatchedComponent.component
-          projectId={projectId}
-          contentTypeId={contentTypeId}
-          entry={entry}
-          mappedEntry={mappedEntry}
-          isLoggedIn={isLoggedIn}
-        />
-      );
+    // debugger;
+    if (MatchedComponent && !(MatchedComponent.requireLogin && !isLoggedIn)) {
+      if (matchUserGroup(userGroups, MatchedComponent.requireLogin))
+        return (
+          <MatchedComponent.component
+            projectId={projectId}
+            contentTypeId={contentTypeId}
+            entry={entry}
+            mappedEntry={mappedEntry}
+            isLoggedIn={isLoggedIn}
+          />
+        );
     }
   }
 
@@ -158,6 +167,7 @@ RouteLoader.propTypes = {
   routes: PropTypes.objectOf(PropTypes.array, PropTypes.array),
   setNavigationPath: PropTypes.func,
   statePath: PropTypes.string,
+  userGroups: PropTypes.array,
   withEvents: PropTypes.object,
 };
 
@@ -167,9 +177,11 @@ const mapStateToProps = state => {
     entry: selectRouteEntry(state),
     isNotFound: selectIsNotFound(state),
     isLoading: selectRouteLoading(state),
+    isLoggedIn: selectUserIsAuthenticated(state),
     mappedEntry: selectMappedEntry(state),
     projectId: selectCurrentProject(state),
     statePath: selectCurrentPath(state),
+    userGroups: selectUserGroups(state),
   };
 };
 

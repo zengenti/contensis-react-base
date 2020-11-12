@@ -13,7 +13,7 @@ export default {
     // yield put({ type: GET_SITE_CONFIG });
 
     return {
-      requireLogin: (action.path !== '/' && [{ name: 'Beta Users' }]) || false,
+      // requireLogin: (action.path !== '/' && [{ name: 'Beta Usersz' }]) || false,
     };
   },
 };

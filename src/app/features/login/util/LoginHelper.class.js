@@ -160,6 +160,8 @@ export class LoginHelper {
 
   static ClientRedirectToAccessDeniedPage(originalPath) {
     let url = LoginHelper.ACCESS_DENIED_ROUTE;
+    if (originalPath === url) return;
+
     if (typeof originalPath === 'string')
       url = `${url}?original_uri=${originalPath}`;
     if (typeof location !== 'undefined') location.href = url;

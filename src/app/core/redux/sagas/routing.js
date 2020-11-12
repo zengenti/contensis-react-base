@@ -50,6 +50,11 @@ function* getRouteSaga(action) {
       staticRoute,
     } = action;
 
+    // Variables we will pass to setRouteEntry
+    let pathNode = null,
+      ancestors = null,
+      siblings = null;
+
     // These variables are the return values from
     // calls to withEvents.onRouteLoad and onRouteLoaded
     let appsays,
@@ -95,7 +100,8 @@ function* getRouteSaga(action) {
         routeEntry &&
         (!staticRoute || (staticRoute.route && staticRoute.route.fetchNode))
       ) {
-        entry = routeEntry.toJS();
+        pathNode = {};
+        pathNode.entry = entry = routeEntry.toJS();
         //Do nothing, the entry is allready the right one.
         // yield put({
         //   type: SET_ENTRY,
@@ -105,10 +111,6 @@ function* getRouteSaga(action) {
         // });
       } else yield call(setRouteEntry);
     } else {
-      let pathNode = null,
-        ancestors = null,
-        siblings = null;
-
       // Handle homepage
       if (isHome) {
         pathNode = yield cachedSearch.getRootNode(
@@ -121,6 +123,7 @@ function* getRouteSaga(action) {
           },
           project
         );
+        ({ entry } = pathNode);
       } else {
         // Handle preview routes
         if (isPreview) {
@@ -136,6 +139,7 @@ function* getRouteSaga(action) {
               .entries.get({ id: entryGuid, linkDepth: entryLinkDepth });
             if (previewEntry) {
               pathNode = { entry: previewEntry };
+              ({ entry } = pathNode);
             }
           }
         } else {
@@ -155,6 +159,8 @@ function* getRouteSaga(action) {
             },
             project
           );
+          ({ entry } = pathNode);
+
           if (
             setContentTypeLimits &&
             pathNode &&
@@ -213,40 +219,6 @@ function* getRouteSaga(action) {
           }
         }
       }
-
-      if (
-        pathNode &&
-        pathNode.entry &&
-        pathNode.entry.sys &&
-        pathNode.entry.sys.id
-      ) {
-        entry = pathNode.entry;
-        const { entryMapper } =
-          findContentTypeMapping(
-            ContentTypeMappings,
-            entry.sys.contentTypeId
-          ) || {};
-        yield call(
-          setRouteEntry,
-          entry,
-          pathNode,
-          ancestors,
-          siblings,
-          entryMapper
-        );
-      } else {
-        if (pathNode)
-          yield call(setRouteEntry, null, pathNode, ancestors, siblings);
-        else yield call(do404);
-      }
-      if (!appsays || !appsays.preventScrollTop) {
-        // Scroll into View
-        if (typeof window !== 'undefined') {
-          window.scroll({
-            top: 0,
-          });
-        }
-      }
     }
 
     if (withEvents && withEvents.onRouteLoaded) {
@@ -261,6 +233,37 @@ function* getRouteSaga(action) {
       entry,
       requireLogin,
     });
+    if (
+      pathNode &&
+      pathNode.entry &&
+      pathNode.entry.sys &&
+      pathNode.entry.sys.id
+    ) {
+      entry = pathNode.entry;
+      const { entryMapper } =
+        findContentTypeMapping(ContentTypeMappings, entry.sys.contentTypeId) ||
+        {};
+      yield call(
+        setRouteEntry,
+        entry,
+        pathNode,
+        ancestors,
+        siblings,
+        entryMapper
+      );
+    } else {
+      if (pathNode)
+        yield call(setRouteEntry, null, pathNode, ancestors, siblings);
+      else if (!staticRoute) yield call(do404);
+    }
+    if (!appsays || !appsays.preventScrollTop) {
+      // Scroll into View
+      if (typeof window !== 'undefined') {
+        window.scroll({
+          top: 0,
+        });
+      }
+    }
 
     if (
       !hasNavigationTree(state) &&

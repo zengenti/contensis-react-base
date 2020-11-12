@@ -7,7 +7,7 @@ const StyledPage = styled.div`
   pre {
     display: inline;
     background: #eee;
-    padding: 3px;p
+    padding: 3px;
   }
 `;
 
