@@ -86,6 +86,13 @@ function* getRouteSaga(action) {
     const isHome = currentPath === '/';
     const isPreview = currentPath && currentPath.startsWith('/preview/');
 
+    // debugger;
+    // routeEntry = Map({
+    //   entryTitle: 'fake entry',
+    //   title: 'fakey entry',
+    //   sys: { id: 'abcd', contentTypeId: 'zenbaseHomePage' },
+    // });
+
     if (
       !isPreview &&
       ((appsays && appsays.customRouting) ||
@@ -123,7 +130,7 @@ function* getRouteSaga(action) {
           },
           project
         );
-        ({ entry } = pathNode);
+        ({ entry } = pathNode || {});
       } else {
         // Handle preview routes
         if (isPreview) {
@@ -139,7 +146,7 @@ function* getRouteSaga(action) {
               .entries.get({ id: entryGuid, linkDepth: entryLinkDepth });
             if (previewEntry) {
               pathNode = { entry: previewEntry };
-              ({ entry } = pathNode);
+              ({ entry } = pathNode || {});
             }
           }
         } else {
@@ -159,7 +166,7 @@ function* getRouteSaga(action) {
             },
             project
           );
-          ({ entry } = pathNode);
+          ({ entry } = pathNode || {});
 
           if (
             setContentTypeLimits &&

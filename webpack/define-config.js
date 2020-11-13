@@ -11,6 +11,7 @@ const {
   ACCESS_TOKEN,
   PROJECT,
   CONTENSIS_VERSION,
+  WSFED_LOGIN,
 } = process.env;
 
 const PROJECTS = env => [
@@ -47,11 +48,11 @@ const url = urls(ALIAS, PROJECT);
 const SERVERS = {
   alias: ALIAS,
   internalVip: INTERNAL_VIP,
+  api: url.api,
   cms: url.cms,
   web: url.liveWeb,
   previewWeb: url.previewWeb,
   iis: url.iisWeb,
-  api: url.api,
   previewIis: url.iisPreviewWeb,
 };
 
@@ -74,6 +75,7 @@ const development = {
   REVERSE_PROXY_PATHS,
   SERVERS,
   VERSION: packagejson.version,
+  WSFED_LOGIN,
 };
 
 const production = {

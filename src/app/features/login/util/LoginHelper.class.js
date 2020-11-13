@@ -5,28 +5,28 @@ import { to } from 'await-to-js';
 
 import { CookieHelper } from './CookieHelper.class';
 
-import { initialUserState } from '../redux/reducers';
 import mapClientCredentials from '../transformations/mapClientCredentials';
+import userManager from './OidcUserManager';
 
 export const LOGIN_COOKIE = 'ContensisCMSUserName';
 export const REFRESH_TOKEN_COOKIE = 'RefreshToken';
 
+const context = typeof window != 'undefined' ? window : global;
+
 export class LoginHelper {
   static CMS_URL = SERVERS.api || SERVERS.cms /* global SERVERS */;
-  static LOGIN_ROUTE = '/account/login';
+  static WSFED_LOGIN =
+    process.env.NODE_ENV === 'development'
+      ? WSFED_LOGIN === 'true' /* global WSFED_LOGIN */
+      : context.WSFED_LOGIN === 'true';
+  static LOGIN_ROUTE = context.WSFED_LOGIN === 'true' ? '/account/login' : '';
   static ACCESS_DENIED_ROUTE = '/account/access-denied';
 
-  static SetLoginCookies(apiClientCredentials) {
-    if (apiClientCredentials) {
-      CookieHelper.SetCookie(
-        LOGIN_COOKIE,
-        apiClientCredentials.contensisClassicToken
-      );
-      CookieHelper.SetCookie(
-        REFRESH_TOKEN_COOKIE,
-        apiClientCredentials.refreshToken
-      );
-    }
+  static SetLoginCookies({ contensisClassicToken, refreshToken }) {
+    if (contensisClassicToken)
+      CookieHelper.SetCookie(LOGIN_COOKIE, contensisClassicToken);
+    if (refreshToken)
+      CookieHelper.SetCookie(REFRESH_TOKEN_COOKIE, refreshToken);
   }
 
   static GetCachedCredentials() {
@@ -130,9 +130,14 @@ export class LoginHelper {
     };
   };
 
-  static LogoutUser() {
+  static LogoutUser(redirectPath) {
     LoginHelper.ClearCachedCredentials();
-    return initialUserState.toJS();
+    if (LoginHelper.WSFED_LOGIN) {
+      LoginHelper.WsFedLogout(redirectPath);
+    } else {
+      if (redirectPath) LoginHelper.ClientRedirectToPath(redirectPath);
+      else LoginHelper.ClientRedirectToSignInPage();
+    }
   }
 
   static ClientRedirectToHome(location) {
@@ -148,14 +153,20 @@ export class LoginHelper {
   }
 
   static ClientRedirectToSignInPage(redirectPath) {
-    let url = LoginHelper.LOGIN_ROUTE;
-    if (typeof redirectPath === 'string')
-      url = `${url}?redirect_uri=${redirectPath}`;
-    if (
-      typeof location !== 'undefined' &&
-      redirectPath !== LoginHelper.LOGIN_ROUTE
-    )
-      location.href = url;
+    debugger;
+    if (LoginHelper.WSFED_LOGIN) {
+      LoginHelper.WsFedLogin();
+    } else {
+      // Standard Contensis Login
+      let url = LoginHelper.LOGIN_ROUTE;
+      if (typeof redirectPath === 'string')
+        url = `${url}?redirect_uri=${redirectPath}`;
+      if (
+        typeof location !== 'undefined' &&
+        redirectPath !== LoginHelper.LOGIN_ROUTE
+      )
+        location.href = url;
+    }
   }
 
   static ClientRedirectToAccessDeniedPage(originalPath) {
@@ -171,6 +182,25 @@ export class LoginHelper {
     if (typeof redirectPath === 'string') {
       if (typeof location !== 'undefined') window.location.href = redirectPath;
     } else LoginHelper.ClientRedirectToHome();
+  }
+
+  static WsFedLogin(redirectUri) {
+    userManager.signinRedirect({
+      scope: 'openid',
+      response_type: 'id_token',
+      redirect_uri: redirectUri || window.location.toString(),
+    });
+  }
+
+  static WsFedLogout(redirectPath) {
+    // Not correct
+    fetch(
+      `${
+        LoginHelper.CMS_URL
+      }/authenticate/connect/endsession?post_logout_redirect_uri=${encodeURIComponent(
+        redirectPath
+      )}`
+    );
   }
 
   static isZengentiStaff(email) {

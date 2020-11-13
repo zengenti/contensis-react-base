@@ -32,6 +32,7 @@ const Login = ({
             <LogoutForm logoutUser={logoutUser} user={user} />
           </>
         )}
+        <LogoutForm logoutUser={logoutUser} user={user} />
       </div>
     </LoginStyled>
   );

@@ -151,21 +151,29 @@ function* loginUserSaga(action = {}) {
   }
 }
 function* logoutUserSaga({ redirectPath }) {
-  yield LoginHelper.LogoutUser();
   yield put({
     type: SET_AUTHENTICATION_STATE,
     user: null,
   });
-  if (redirectPath) LoginHelper.ClientRedirectToPath(redirectPath);
-  else LoginHelper.ClientRedirectToSignInPage();
+  yield LoginHelper.LogoutUser(redirectPath);
 }
 
 function* validateUserSaga() {
+  // Check if querystring contains a securityToken
+  const currentQs = queryParams(yield select(selectCurrentSearch));
+  const securityToken = currentQs.securityToken || currentQs.securitytoken;
+  if (securityToken)
+    LoginHelper.SetLoginCookies({ contensisClassicToken: securityToken });
+
   const userLoggedIn = yield select(selectUserIsAuthenticated);
   if (userLoggedIn) return;
 
   const credentials = LoginHelper.GetCachedCredentials();
-  if (credentials && !userLoggedIn && credentials.refreshToken) {
+
+  if (
+    securityToken ||
+    (credentials && !userLoggedIn && credentials.refreshToken)
+  ) {
     yield call(loginUserSaga);
   }
 }
