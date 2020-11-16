@@ -162,8 +162,42 @@ function* validateUserSaga() {
   // Check if querystring contains a securityToken
   const currentQs = queryParams(yield select(selectCurrentSearch));
   const securityToken = currentQs.securityToken || currentQs.securitytoken;
-  if (securityToken)
+  if (securityToken) {
     LoginHelper.SetLoginCookies({ contensisClassicToken: securityToken });
+    if (LoginHelper.WSFED_LOGIN) {
+      const response = yield fetch(
+        `${LoginHelper.CMS_URL}/REST/Contensis/Security/IsAuthenticated`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            securityToken: encodeURIComponent(securityToken),
+          }),
+        }
+      );
+      if (response.ok) {
+        const responseBody = yield response.json();
+        if (responseBody.LogonResult !== 0) {
+          // TODO : security token invalid
+        }
+        if (
+          !!responseBody.ApplicationData &&
+          !!responseBody.ApplicationData.length &&
+          responseBody.ApplicationData.length > 1 &&
+          // eslint-disable-next-line prettier/prettier
+          responseBody.ApplicationData[1].Key === 'ContensisSecurityRefreshToken'
+        ) {
+          const refreshToken = responseBody.ApplicationData[1].Value;
+          LoginHelper.SetLoginCookies({
+            contensisClassicToken: securityToken,
+            refreshToken,
+          });
+        }
+      }
+    }
+  }
 
   const userLoggedIn = yield select(selectUserIsAuthenticated);
   if (userLoggedIn) return;

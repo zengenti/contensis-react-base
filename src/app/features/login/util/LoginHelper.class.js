@@ -14,7 +14,7 @@ export const REFRESH_TOKEN_COOKIE = 'RefreshToken';
 const context = typeof window != 'undefined' ? window : global;
 
 export class LoginHelper {
-  static CMS_URL = SERVERS.api || SERVERS.cms /* global SERVERS */;
+  static CMS_URL = SERVERS.cms /* global SERVERS */;
   static WSFED_LOGIN =
     process.env.NODE_ENV === 'development'
       ? WSFED_LOGIN === 'true' /* global WSFED_LOGIN */
@@ -152,9 +152,9 @@ export class LoginHelper {
     }
   }
 
-  static ClientRedirectToSignInPage(redirectPath) {
-    debugger;
+  static async ClientRedirectToSignInPage(redirectPath) {
     if (LoginHelper.WSFED_LOGIN) {
+      await LoginHelper.WsFedLogout();
       LoginHelper.WsFedLogin();
     } else {
       // Standard Contensis Login
@@ -192,15 +192,16 @@ export class LoginHelper {
     });
   }
 
-  static WsFedLogout(redirectPath) {
-    // Not correct
-    fetch(
-      `${
-        LoginHelper.CMS_URL
-      }/authenticate/connect/endsession?post_logout_redirect_uri=${encodeURIComponent(
-        redirectPath
-      )}`
+  static async WsFedLogout(redirectPath) {
+    await fetch(
+      `${LoginHelper.CMS_URL}/authenticate/logout?jsonResponseRequired=true`,
+      {
+        credentials: 'include',
+      }
     );
+    if (redirectPath) {
+      window.location = redirectPath;
+    }
   }
 
   static isZengentiStaff(email) {
