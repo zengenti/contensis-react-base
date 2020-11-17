@@ -67,10 +67,7 @@ const LoginForm = ({
           label="Login"
         />
         <span className="lfAvatar" />
-        <Link
-          className="lfNew"
-          uri="https://zenhub.zengenti.com/Login/signup.aspx"
-        >
+        <Link className="lfNew" uri="/account/registration">
           Register a new help desk account
         </Link>
       </form>

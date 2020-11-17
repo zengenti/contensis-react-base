@@ -1,3 +1,5 @@
+import { Map } from 'immutable';
+
 export const selectUserIsLoading = state => {
   return state.getIn(['user', 'authenticationState', 'loading']);
 };
@@ -42,12 +44,15 @@ export const selectUserSecurityToken = state => {
     'contensisClassicToken',
   ]);
 };
-export const selectUserMobile = state => {
-  return state.getIn(['user', 'custom', 'mobile']);
-};
-export const selectUserLandline = state => {
-  return state.getIn(['user', 'custom', 'telephone']);
-};
-export const selectUserCanCallMobileInEmergency = state => {
-  return state.getIn(['user', 'custom', 'canCallMobileInEmergency']);
-};
+
+export const selectUserRegistration = state =>
+  state.getIn(['user', 'registration'], Map());
+
+export const selectUserRegistrationError = state =>
+  state.getIn(['user', 'registration', 'error'], false);
+
+export const selectUserRegistrationIsLoading = state =>
+  state.getIn(['user', 'registration', 'loading'], false);
+
+export const selectUserRegistrationIsSuccess = state =>
+  state.getIn(['user', 'registration', 'success'], false);

@@ -1,8 +1,13 @@
 import React from 'react';
-import { Registration } from '~/features/accountSettings';
+import RegistrationContainer from '~/features/login/containers/Registration.container';
+import Registration from '~/features/accountSettings/components/Registration';
 
 const RegistrationPage = () => {
-  return <Registration />;
+  return (
+    <RegistrationContainer>
+      {registerProps => <Registration {...registerProps} />}
+    </RegistrationContainer>
+  );
 };
 
 export default RegistrationPage;

@@ -39,6 +39,15 @@ export default [
     }),
   },
   {
+    path: '/account/registration/success',
+    exact: true,
+    ssr: false,
+    component: Loadable({
+      loader: () => import('~/pages/User/RegistrationPage'),
+      loading: Loading,
+    }),
+  },
+  {
     path: '/help-and-docs/*',
     fetchNode: true,
     exact: false,

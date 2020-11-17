@@ -1,6 +1,12 @@
 import { List, Map } from 'immutable';
 import fromJSOrdered from '~/core/util/fromJSOrdered';
-import { SET_USER_LOADING, SET_AUTHENTICATION_STATE } from './types';
+import {
+  REGISTER_USER,
+  REGISTER_USER_FAILED,
+  REGISTER_USER_SUCCESS,
+  SET_USER_LOADING,
+  SET_AUTHENTICATION_STATE,
+} from './types';
 
 const defaultAuthenticationState = Map({
   authenticated: false,
@@ -54,6 +60,33 @@ export default (state = initialUserState, action) => {
         },
       };
       return fromJSOrdered(nextState);
+    }
+    // REGISTER_USER is the trigger to set the user.registration initial state
+    // and will set user.registration.loading to true
+    // REGISTER_USER_FAILED will unset user.registration.loading and will set
+    // the value in user.registration.error
+    // REGISTER_USER_SUCCESS will unset user.registration.loading and will
+    // set user.registration to the created user from the api response
+    case REGISTER_USER:
+    case REGISTER_USER_FAILED:
+    case REGISTER_USER_SUCCESS: {
+      const { error, user } = action;
+
+      // Set registration object from the supplied action.user
+      // so we can call these values back later
+      const nextState = state.set(
+        'registration',
+        user ? fromJSOrdered(user) : state.get('registration', Map())
+      );
+
+      // Set registration flags so the UI can track the status
+      return nextState
+        .setIn(
+          ['registration', 'success'],
+          action.type === REGISTER_USER_SUCCESS
+        )
+        .setIn(['registration', 'error'], error || false)
+        .setIn(['registration', 'loading'], action.type === REGISTER_USER);
     }
     default:
       return state;

@@ -19,7 +19,7 @@ export class LoginHelper {
     process.env.NODE_ENV === 'development'
       ? WSFED_LOGIN === 'true' /* global WSFED_LOGIN */
       : context.WSFED_LOGIN === 'true';
-  static LOGIN_ROUTE = context.WSFED_LOGIN === 'true' ? '/account/login' : '';
+  static LOGIN_ROUTE = '/account/login';
   static ACCESS_DENIED_ROUTE = '/account/access-denied';
 
   static SetLoginCookies({ contensisClassicToken, refreshToken }) {

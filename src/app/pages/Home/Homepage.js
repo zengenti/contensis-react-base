@@ -1,14 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { setRoute } from '~/core/redux/actions/routing';
 // import LoginButton from '~/features/login/components/LoginButton';
 
-const Homepage = ({ entry, setRoute }) => {
+const Homepage = ({ entry }) => {
+  const dispatch = useDispatch();
+
   const changeRoute = (path = '/zenInfo') => {
-    setRoute(path);
+    dispatch(setRoute(path));
   };
+
   return (
     <>
       <h1>Hello world {entry && entry.entryTitle}</h1>
@@ -18,6 +21,15 @@ const Homepage = ({ entry, setRoute }) => {
       <button onClick={() => changeRoute()}>Change Route</button>
       <button onClick={() => changeRoute('/account/login?redirect_uri=/')}>
         Go to Login
+      </button>
+      <button
+        onClick={() =>
+          changeRoute(
+            '/account/registration?redirect_uri=/account/registration/success'
+          )
+        }
+      >
+        Go to Registration
       </button>
       <p>Entry pages (at contensis.zenhub)</p>
       <ul>
@@ -42,10 +54,4 @@ Homepage.propTypes = {
   setRoute: PropTypes.func,
 };
 
-const mapDispatchToProps = {
-  setRoute: (path, state) => setRoute(path, state),
-};
-export default connect(
-  null,
-  mapDispatchToProps
-)(Homepage);
+export default Homepage;

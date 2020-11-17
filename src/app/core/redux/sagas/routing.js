@@ -19,7 +19,7 @@ import { GET_NODE_TREE } from '../types/navigation';
 import { hasNavigationTree } from '../selectors/navigation';
 import { routeEntryByFieldsQuery } from './queries';
 import { ensureNodeTreeSaga } from './navigation';
-import { handleRequiresLoginSaga } from '~/features/login/redux/sagas';
+import { handleRequiresLoginSaga } from '~/features/login/redux/sagas/login';
 import { findContentTypeMapping } from '~/core/util/helpers';
 
 export const routingSagas = [

@@ -38,11 +38,6 @@ const withLogin = WrappedComponent => {
   const mapDispatchToProps = {
     loginUser,
     logoutUser,
-    // toggleLoginMode,
-    // forgotPassword,
-    // changePassword,
-    // changePasswordWithToken,
-    // captchaResponse: setRecaptchaResponse,
   };
 
   const ConnectedComponent = connect(
