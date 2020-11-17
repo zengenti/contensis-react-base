@@ -1,5 +1,5 @@
 import React from 'react';
-import { Iterable } from 'immutable';
+import { Map, Iterable } from 'immutable';
 
 const selectUserIsLoading = state => {
   return state.getIn(['user', 'authenticationState', 'loading']);
@@ -37,15 +37,10 @@ const selectUserGroups = state => {
 const selectUserSecurityToken = state => {
   return state.getIn(['user', 'authenticationState', 'clientCredentials', 'contensisClassicToken']);
 };
-const selectUserMobile = state => {
-  return state.getIn(['user', 'custom', 'mobile']);
-};
-const selectUserLandline = state => {
-  return state.getIn(['user', 'custom', 'telephone']);
-};
-const selectUserCanCallMobileInEmergency = state => {
-  return state.getIn(['user', 'custom', 'canCallMobileInEmergency']);
-};
+const selectUserRegistration = state => state.getIn(['user', 'registration'], Map());
+const selectUserRegistrationError = state => state.getIn(['user', 'registration', 'error'], false);
+const selectUserRegistrationIsLoading = state => state.getIn(['user', 'registration', 'loading'], false);
+const selectUserRegistrationIsSuccess = state => state.getIn(['user', 'registration', 'success'], false);
 
 var selectors = /*#__PURE__*/Object.freeze({
   __proto__: null,
@@ -61,9 +56,10 @@ var selectors = /*#__PURE__*/Object.freeze({
   selectUserEmail: selectUserEmail,
   selectUserGroups: selectUserGroups,
   selectUserSecurityToken: selectUserSecurityToken,
-  selectUserMobile: selectUserMobile,
-  selectUserLandline: selectUserLandline,
-  selectUserCanCallMobileInEmergency: selectUserCanCallMobileInEmergency
+  selectUserRegistration: selectUserRegistration,
+  selectUserRegistrationError: selectUserRegistrationError,
+  selectUserRegistrationIsLoading: selectUserRegistrationIsLoading,
+  selectUserRegistrationIsSuccess: selectUserRegistrationIsSuccess
 });
 
 const matchUserGroup = (userGroups = [], requiredGroups = []) => {
@@ -92,5 +88,5 @@ const toJS = WrappedComponent => wrappedComponentProps => {
   return React.createElement(WrappedComponent, propsJS);
 };
 
-export { selectUserGroups as a, selectClientCredentials as b, selectUserAuthenticationError as c, selectUserError as d, selectUserIsLoading as e, selectUser as f, selectors as g, matchUserGroup as m, selectUserIsAuthenticated as s, toJS as t };
-//# sourceMappingURL=ToJs-a61fc8b9.js.map
+export { selectUserGroups as a, selectClientCredentials as b, selectUserAuthenticationError as c, selectUserError as d, selectUserIsLoading as e, selectUser as f, selectUserRegistrationError as g, selectUserRegistrationIsLoading as h, selectUserRegistrationIsSuccess as i, selectUserRegistration as j, selectors as k, matchUserGroup as m, selectUserIsAuthenticated as s, toJS as t };
+//# sourceMappingURL=ToJs-1c73b10a.js.map

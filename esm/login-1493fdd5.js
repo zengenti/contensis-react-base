@@ -1,11 +1,11 @@
 import { Seq, Map, List } from 'immutable';
-import { j as findContentTypeMapping, r as queryParams, t as selectCurrentSearch, u as setRoute } from './routing-1f866fda.js';
+import { j as findContentTypeMapping, q as queryParams, k as selectCurrentSearch, l as setRoute } from './routing-2e22904d.js';
 import { takeEvery, call, select, put } from 'redux-saga/effects';
-import { s as selectUserIsAuthenticated, a as selectUserGroups, m as matchUserGroup, b as selectClientCredentials } from './ToJs-a61fc8b9.js';
+import { s as selectUserIsAuthenticated, a as selectUserGroups, m as matchUserGroup, b as selectClientCredentials } from './ToJs-1c73b10a.js';
 import { Client } from 'contensis-management-api';
+import mapJson from 'jsonpath-mapper';
 import { to } from 'await-to-js';
 import Cookies from 'js-cookie';
-import mapJson from 'jsonpath-mapper';
 
 const fromJSOrdered = js => {
   return typeof js !== 'object' || js === null ? js : Array.isArray(js) ? Seq(js).map(fromJSOrdered).toList() : Seq(js).map(fromJSOrdered).toOrderedMap();
@@ -18,7 +18,9 @@ const LOGIN_USER = `${ACTION_PREFIX}LOGIN_USER`;
 const LOGIN_SUCCESSFUL = `${ACTION_PREFIX}LOGIN_SUCCESSFUL`;
 const LOGIN_FAILED = `${ACTION_PREFIX}LOGIN_FAILED`;
 const LOGOUT_USER = `${ACTION_PREFIX}LOGOUT_USER`;
-const CREATE_USER_ACCOUNT = `${ACTION_PREFIX}CREATE_USER_ACCOUNT`;
+const REGISTER_USER = `${ACTION_PREFIX}REGISTER_USER`;
+const REGISTER_USER_SUCCESS = `${ACTION_PREFIX}REGISTER_USER_SUCCESS`;
+const REGISTER_USER_FAILED = `${ACTION_PREFIX}REGISTER_USER_FAILED`;
 
 var types = /*#__PURE__*/Object.freeze({
   __proto__: null,
@@ -28,7 +30,9 @@ var types = /*#__PURE__*/Object.freeze({
   LOGIN_SUCCESSFUL: LOGIN_SUCCESSFUL,
   LOGIN_FAILED: LOGIN_FAILED,
   LOGOUT_USER: LOGOUT_USER,
-  CREATE_USER_ACCOUNT: CREATE_USER_ACCOUNT
+  REGISTER_USER: REGISTER_USER,
+  REGISTER_USER_SUCCESS: REGISTER_USER_SUCCESS,
+  REGISTER_USER_FAILED: REGISTER_USER_FAILED
 });
 
 const defaultAuthenticationState = Map({
@@ -79,6 +83,27 @@ var UserReducer = ((state = initialUserState, action) => {
         };
         return fromJSOrdered(nextState);
       }
+    // REGISTER_USER is the trigger to set the user.registration initial state
+    // and will set user.registration.loading to true
+    // REGISTER_USER_FAILED will unset user.registration.loading and will set
+    // the value in user.registration.error
+    // REGISTER_USER_SUCCESS will unset user.registration.loading and will
+    // set user.registration to the created user from the api response
+
+    case REGISTER_USER:
+    case REGISTER_USER_FAILED:
+    case REGISTER_USER_SUCCESS:
+      {
+        const {
+          error,
+          user
+        } = action; // Set registration object from the supplied action.user
+        // so we can call these values back later
+
+        const nextState = state.set('registration', user ? fromJSOrdered(user) : state.get('registration', Map())); // Set registration flags so the UI can track the status
+
+        return nextState.setIn(['registration', 'success'], action.type === REGISTER_USER_SUCCESS).setIn(['registration', 'error'], error || false).setIn(['registration', 'loading'], action.type === REGISTER_USER);
+      }
 
     default:
       return state;
@@ -114,6 +139,19 @@ const getManagementAPIClient = ({
   return managementApiClient;
 };
 
+const clientCredentials = {
+  bearerToken: 'bearerToken',
+  bearerTokenExpiryDate: ({
+    bearerTokenExpiryDate
+  }) => bearerTokenExpiryDate.toISOString(),
+  refreshToken: 'refreshToken',
+  refreshTokenExpiryDate: ({
+    refreshTokenExpiryDate
+  }) => refreshTokenExpiryDate.toISOString(),
+  contensisClassicToken: 'contensisClassicToken'
+};
+var mapClientCredentials = (obj => mapJson(obj, clientCredentials));
+
 const COOKIE_VALID_DAYS = 1; // 0 = Session cookie
 // Override the default js-cookie conversion / encoding
 // methods so the written values work with Contensis sites
@@ -146,28 +184,47 @@ class CookieHelper {
 
 }
 
-const clientCredentials = {
-  bearerToken: 'bearerToken',
-  bearerTokenExpiryDate: ({
-    bearerTokenExpiryDate
-  }) => bearerTokenExpiryDate.toISOString(),
-  refreshToken: 'refreshToken',
-  refreshTokenExpiryDate: ({
-    refreshTokenExpiryDate
-  }) => refreshTokenExpiryDate.toISOString(),
-  contensisClassicToken: 'contensisClassicToken'
+const context = typeof window != 'undefined' ? window : global;
+const requireOidc = process.env.NODE_ENV === 'development' ? WSFED_LOGIN === 'true'
+/* global WSFED_LOGIN */
+: context.WSFED_LOGIN === 'true';
+const servers = SERVERS;
+/* global SERVERS */
+
+const userManagerConfig = typeof window !== 'undefined' ? {
+  authority: `${servers.cms}/authenticate/`,
+  client_id: 'WebsiteAdfsClient',
+  redirect_uri: window.location.toString(),
+  post_logout_redirect_uri: window.location.toString(),
+  response_type: 'id_token',
+  scope: 'openid',
+  filterProtocolClaims: false
+} : {};
+
+const createUserManager = config => {
+  if (typeof window !== 'undefined' && requireOidc) {
+    try {
+      const UserManager = require('oidc-client').UserManager;
+
+      return new UserManager(config);
+    } catch (e) {//
+    }
+  } else return {};
 };
-var mapClientCredentials = (obj => mapJson(obj, clientCredentials));
+
+const userManager = createUserManager(userManagerConfig);
 
 /* eslint-disable require-atomic-updates */
 const LOGIN_COOKIE = 'ContensisCMSUserName';
 const REFRESH_TOKEN_COOKIE = 'RefreshToken';
+const context$1 = typeof window != 'undefined' ? window : global;
 class LoginHelper {
-  static SetLoginCookies(apiClientCredentials) {
-    if (apiClientCredentials) {
-      CookieHelper.SetCookie(LOGIN_COOKIE, apiClientCredentials.contensisClassicToken);
-      CookieHelper.SetCookie(REFRESH_TOKEN_COOKIE, apiClientCredentials.refreshToken);
-    }
+  static SetLoginCookies({
+    contensisClassicToken,
+    refreshToken
+  }) {
+    if (contensisClassicToken) CookieHelper.SetCookie(LOGIN_COOKIE, contensisClassicToken);
+    if (refreshToken) CookieHelper.SetCookie(REFRESH_TOKEN_COOKIE, refreshToken);
   }
 
   static GetCachedCredentials() {
@@ -225,9 +282,14 @@ class LoginHelper {
     }
   }
 
-  static LogoutUser() {
+  static LogoutUser(redirectPath) {
     LoginHelper.ClearCachedCredentials();
-    return initialUserState.toJS();
+
+    if (LoginHelper.WSFED_LOGIN) {
+      LoginHelper.WsFedLogout(redirectPath);
+    } else {
+      if (redirectPath) LoginHelper.ClientRedirectToPath(redirectPath);else LoginHelper.ClientRedirectToSignInPage();
+    }
   }
 
   static ClientRedirectToHome(location) {
@@ -247,10 +309,16 @@ class LoginHelper {
     }
   }
 
-  static ClientRedirectToSignInPage(redirectPath) {
-    let url = LoginHelper.LOGIN_ROUTE;
-    if (typeof redirectPath === 'string') url = `${url}?redirect_uri=${redirectPath}`;
-    if (typeof location !== 'undefined' && redirectPath !== LoginHelper.LOGIN_ROUTE) location.href = url;
+  static async ClientRedirectToSignInPage(redirectPath) {
+    if (LoginHelper.WSFED_LOGIN) {
+      await LoginHelper.WsFedLogout();
+      LoginHelper.WsFedLogin();
+    } else {
+      // Standard Contensis Login
+      let url = LoginHelper.LOGIN_ROUTE;
+      if (typeof redirectPath === 'string') url = `${url}?redirect_uri=${redirectPath}`;
+      if (typeof location !== 'undefined' && redirectPath !== LoginHelper.LOGIN_ROUTE) location.href = url;
+    }
   }
 
   static ClientRedirectToAccessDeniedPage(originalPath) {
@@ -266,6 +334,24 @@ class LoginHelper {
     } else LoginHelper.ClientRedirectToHome();
   }
 
+  static WsFedLogin(redirectUri) {
+    userManager.signinRedirect({
+      scope: 'openid',
+      response_type: 'id_token',
+      redirect_uri: redirectUri || window.location.toString()
+    });
+  }
+
+  static async WsFedLogout(redirectPath) {
+    await fetch(`${LoginHelper.CMS_URL}/authenticate/logout?jsonResponseRequired=true`, {
+      credentials: 'include'
+    });
+
+    if (redirectPath) {
+      window.location = redirectPath;
+    }
+  }
+
   static isZengentiStaff(email) {
     const emailRefs = ['@zengenti', '@contensis'];
     return emailRefs.some(emailRef => {
@@ -276,9 +362,12 @@ class LoginHelper {
   }
 
 }
-LoginHelper.CMS_URL = SERVERS.api || SERVERS.cms
+LoginHelper.CMS_URL = SERVERS.cms
 /* global SERVERS */
 ;
+LoginHelper.WSFED_LOGIN = process.env.NODE_ENV === 'development' ? WSFED_LOGIN === 'true'
+/* global WSFED_LOGIN */
+: context$1.WSFED_LOGIN === 'true';
 LoginHelper.LOGIN_ROUTE = '/account/login';
 LoginHelper.ACCESS_DENIED_ROUTE = '/account/access-denied';
 
@@ -321,7 +410,7 @@ LoginHelper.GetUserDetails = async clientCredentials => {
   };
 };
 
-const userSagas = [takeEvery(LOGIN_USER, loginUserSaga), takeEvery(LOGOUT_USER, logoutUserSaga), takeEvery(SET_AUTHENTICATION_STATE, redirectAfterSuccessfulLoginSaga)];
+const loginSagas = [takeEvery(LOGIN_USER, loginUserSaga), takeEvery(LOGOUT_USER, logoutUserSaga), takeEvery(SET_AUTHENTICATION_STATE, redirectAfterSuccessfulLoginSaga)];
 function* handleRequiresLoginSaga(action) {
   const {
     entry,
@@ -351,8 +440,7 @@ function* handleRequiresLoginSaga(action) {
 
     if (!userLoggedIn) {
       // Because we are using the Client only redirects, they will not
-      // take effect during SSR and will cause the page to render the content
-      // (as expected)
+      // take effect during SSR
       LoginHelper.ClientRedirectToSignInPage(action.location.pathname);
     } else if (routeRequiresGroups.length > 0) {
       const userGroups = (yield select(selectUserGroups)).toJS();
@@ -448,20 +536,56 @@ function* loginUserSaga(action = {}) {
 function* logoutUserSaga({
   redirectPath
 }) {
-  yield LoginHelper.LogoutUser();
   yield put({
     type: SET_AUTHENTICATION_STATE,
     user: null
   });
-  if (redirectPath) LoginHelper.ClientRedirectToPath(redirectPath);else LoginHelper.ClientRedirectToSignInPage();
+  yield LoginHelper.LogoutUser(redirectPath);
 }
 
 function* validateUserSaga() {
+  // Check if querystring contains a securityToken
+  const currentQs = queryParams((yield select(selectCurrentSearch)));
+  const securityToken = currentQs.securityToken || currentQs.securitytoken;
+
+  if (securityToken) {
+    LoginHelper.SetLoginCookies({
+      contensisClassicToken: securityToken
+    });
+
+    if (LoginHelper.WSFED_LOGIN) {
+      const response = yield fetch(`${LoginHelper.CMS_URL}/REST/Contensis/Security/IsAuthenticated`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          securityToken: encodeURIComponent(securityToken)
+        })
+      });
+
+      if (response.ok) {
+        const responseBody = yield response.json();
+
+        if (responseBody.LogonResult !== 0) ;
+
+        if (!!responseBody.ApplicationData && !!responseBody.ApplicationData.length && responseBody.ApplicationData.length > 1 && // eslint-disable-next-line prettier/prettier
+        responseBody.ApplicationData[1].Key === 'ContensisSecurityRefreshToken') {
+          const refreshToken = responseBody.ApplicationData[1].Value;
+          LoginHelper.SetLoginCookies({
+            contensisClassicToken: securityToken,
+            refreshToken
+          });
+        }
+      }
+    }
+  }
+
   const userLoggedIn = yield select(selectUserIsAuthenticated);
   if (userLoggedIn) return;
   const credentials = LoginHelper.GetCachedCredentials();
 
-  if (credentials && !userLoggedIn && credentials.refreshToken) {
+  if (securityToken || credentials && !userLoggedIn && credentials.refreshToken) {
     yield call(loginUserSaga);
   }
 }
@@ -482,5 +606,5 @@ function* refreshSecurityToken() {
   }
 }
 
-export { CREATE_USER_ACCOUNT as C, LOGIN_USER as L, UserReducer as U, LOGOUT_USER as a, LoginHelper as b, fromJSOrdered as f, handleRequiresLoginSaga as h, initialUserState as i, refreshSecurityToken as r, types as t, userSagas as u };
-//# sourceMappingURL=sagas-f12ff4c3.js.map
+export { LOGIN_USER as L, REGISTER_USER as R, UserReducer as U, REGISTER_USER_SUCCESS as a, REGISTER_USER_FAILED as b, LOGOUT_USER as c, LoginHelper as d, fromJSOrdered as f, handleRequiresLoginSaga as h, initialUserState as i, loginSagas as l, refreshSecurityToken as r, types as t };
+//# sourceMappingURL=login-1493fdd5.js.map

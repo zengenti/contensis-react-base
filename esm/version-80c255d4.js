@@ -1,4 +1,4 @@
-import { q as action } from './routing-1f866fda.js';
+import { u as action } from './routing-2e22904d.js';
 
 const ACTION_PREFIX = '@NAVIGATION/';
 const GET_NODE_TREE = `${ACTION_PREFIX}_GET_NODE_TREE`;
@@ -71,4 +71,4 @@ var version$2 = /*#__PURE__*/Object.freeze({
 });
 
 export { GET_NODE_TREE_ERROR as G, SET_NODE_TREE as S, setVersion as a, SET_VERSION as b, SET_VERSION_STATUS as c, GET_NODE_TREE as d, selectVersionStatus as e, version$1 as f, navigation$1 as g, hasNavigationTree as h, version$2 as i, navigation as n, setVersionStatus as s, version as v };
-//# sourceMappingURL=version-2febf43a.js.map
+//# sourceMappingURL=version-80c255d4.js.map

@@ -1,41 +1,84 @@
 import 'react';
-import { connect, useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, connect } from 'react-redux';
 import 'immutable';
-import { q as action } from './routing-1f866fda.js';
-import { L as LOGIN_USER, a as LOGOUT_USER, C as CREATE_USER_ACCOUNT } from './sagas-f12ff4c3.js';
-export { b as LoginHelper, h as handleRequiresLoginSaga, i as initialUserState, U as reducer, r as refreshSecurityToken, t as types } from './sagas-f12ff4c3.js';
+import { u as action } from './routing-2e22904d.js';
+import { L as LOGIN_USER, c as LOGOUT_USER, R as REGISTER_USER } from './login-1493fdd5.js';
+export { d as LoginHelper, h as handleRequiresLoginSaga, i as initialUserState, U as reducer, r as refreshSecurityToken, t as types } from './login-1493fdd5.js';
 import 'query-string';
 import 'redux-saga/effects';
-import { t as toJS, c as selectUserAuthenticationError, d as selectUserError, s as selectUserIsAuthenticated, e as selectUserIsLoading, f as selectUser } from './ToJs-a61fc8b9.js';
-export { g as selectors } from './ToJs-a61fc8b9.js';
+import { c as selectUserAuthenticationError, d as selectUserError, s as selectUserIsAuthenticated, e as selectUserIsLoading, f as selectUser, t as toJS, g as selectUserRegistrationError, h as selectUserRegistrationIsLoading, i as selectUserRegistrationIsSuccess, j as selectUserRegistration } from './ToJs-1c73b10a.js';
+export { k as selectors } from './ToJs-1c73b10a.js';
 import 'contensis-management-api';
+import 'jsonpath-mapper';
 import 'await-to-js';
 import 'js-cookie';
-import 'jsonpath-mapper';
 
 const loginUser = (username, password) => action(LOGIN_USER, {
   username,
   password
-}); // export const validateUser = cookies => action(VALIDATE_USER, { cookies });
-
+});
 const logoutUser = redirectPath => action(LOGOUT_USER, {
   redirectPath
-}); // export const toggleLoginMode = () => action(TOGGLE_LOGIN_MODE);
-
-const createUserAccount = (firstName, lastName, email, password, passwordConfirm) => action(CREATE_USER_ACCOUNT, {
-  firstName,
-  lastName,
-  email,
-  password,
-  passwordConfirm
+});
+const registerUser = (user, mappers) => action(REGISTER_USER, {
+  user,
+  mappers
 });
 
 var actions = /*#__PURE__*/Object.freeze({
   __proto__: null,
   loginUser: loginUser,
   logoutUser: logoutUser,
-  createUserAccount: createUserAccount
+  registerUser: registerUser
 });
+
+const useLogin = () => {
+  const dispatch = useDispatch();
+  const select = useSelector;
+  return {
+    loginUser: (username, password) => dispatch(loginUser(username, password)),
+    logoutUser: redirectPath => dispatch(logoutUser(redirectPath)),
+    authenticationError: select(selectUserAuthenticationError),
+    error: select(selectUserError),
+    isAuthenticated: select(selectUserIsAuthenticated),
+    isLoading: select(selectUserIsLoading),
+    user: select(selectUser).toJS()
+  };
+};
+
+const LoginContainer = ({
+  children,
+  ...props
+}) => {
+  const userProps = useLogin();
+  return children(userProps);
+};
+
+LoginContainer.propTypes = {};
+var Login_container = toJS(LoginContainer);
+
+const useLogin$1 = () => {
+  const dispatch = useDispatch();
+  const select = useSelector;
+  return {
+    registerUser: (user, mappers) => dispatch(registerUser(user, mappers)),
+    error: select(selectUserRegistrationError),
+    isLoading: select(selectUserRegistrationIsLoading),
+    isSuccess: select(selectUserRegistrationIsSuccess),
+    user: select(selectUserRegistration).toJS()
+  };
+};
+
+const RegistrationContainer = ({
+  children,
+  ...props
+}) => {
+  const userProps = useLogin$1();
+  return children(userProps);
+};
+
+RegistrationContainer.propTypes = {};
+var Registration_container = toJS(RegistrationContainer);
 
 const getDisplayName = WrappedComponent => {
   return WrappedComponent.displayName || WrappedComponent.name || 'Component';
@@ -64,43 +107,42 @@ const withLogin = WrappedComponent => {
 
   const mapDispatchToProps = {
     loginUser,
-    logoutUser // toggleLoginMode,
-    // forgotPassword,
-    // changePassword,
-    // changePasswordWithToken,
-    // captchaResponse: setRecaptchaResponse,
-
+    logoutUser
   };
   const ConnectedComponent = connect(mapStateToProps, mapDispatchToProps)(toJS(WrappedComponent));
   ConnectedComponent.displayName = `${getDisplayName(WrappedComponent)}`;
   return ConnectedComponent;
 };
 
-const useLogin = () => {
-  const dispatch = useDispatch();
-  const select = useSelector;
-  return {
-    loginUser: (username, password) => dispatch(loginUser(username, password)),
-    logoutUser: redirectPath => dispatch(logoutUser(redirectPath)),
-    registerUser: (firstName, lastName, email, password, passwordConfirm) => dispatch(createUserAccount(firstName, lastName, email, password, passwordConfirm)),
-    authenticationError: select(selectUserAuthenticationError),
-    error: select(selectUserError),
-    isAuthenticated: select(selectUserIsAuthenticated),
-    isLoading: select(selectUserIsLoading),
-    user: select(selectUser).toJS()
+const getDisplayName$1 = WrappedComponent => {
+  return WrappedComponent.displayName || WrappedComponent.name || 'Component';
+};
+
+const withRegistration = WrappedComponent => {
+  // Returns a redux-connected component with the following props:
+  // this.propTypes = {
+  //   registerUser: PropTypes.func,
+  //   isLoading: PropTypes.bool,
+  //   isSuccess: PropTypes.bool,
+  //   error: PropTypes.bool | PropTypes.object,
+  //   user: PropTypes.object,
+  // };
+  const mapStateToProps = state => {
+    return {
+      error: selectUserRegistrationError(state),
+      isLoading: selectUserRegistrationIsLoading(state),
+      isSuccess: selectUserRegistrationIsSuccess(state),
+      user: selectUserRegistration(state)
+    };
   };
+
+  const mapDispatchToProps = {
+    registerUser
+  };
+  const ConnectedComponent = connect(mapStateToProps, mapDispatchToProps)(toJS(WrappedComponent));
+  ConnectedComponent.displayName = `${getDisplayName$1(WrappedComponent)}`;
+  return ConnectedComponent;
 };
 
-const LoginContainer = ({
-  children,
-  ...props
-}) => {
-  const userProps = useLogin();
-  return children(userProps);
-};
-
-LoginContainer.propTypes = {};
-var Login_container = toJS(LoginContainer);
-
-export { Login_container as LoginContainer, actions, useLogin, withLogin };
+export { Login_container as LoginContainer, Registration_container as RegistrationContainer, actions, useLogin, useLogin$1 as useRegistration, withLogin, withRegistration };
 //# sourceMappingURL=user.js.map

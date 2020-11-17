@@ -9,7 +9,7 @@ var reactRouterDom = require('react-router-dom');
 var reactRedux = require('react-redux');
 var immutable = require('immutable');
 require('history');
-var App = require('./App-e62658fd.js');
+var App = require('./App-08b0854e.js');
 require('contensis-delivery-api');
 var routing = require('./routing-1b06bbe2.js');
 require('redux');
@@ -17,19 +17,19 @@ require('redux-immutable');
 require('redux-thunk');
 require('redux-saga');
 var version = require('./version-781d7ac3.js');
-var sagas = require('./sagas-14aeeb78.js');
+var login = require('./login-fc3a2f26.js');
 var queryString = require('query-string');
 require('redux-saga/effects');
 require('loglevel');
-require('./ToJs-8dd77129.js');
+require('./ToJs-8f6b21c9.js');
 require('contensis-management-api');
+require('jsonpath-mapper');
 require('await-to-js');
 require('js-cookie');
-require('jsonpath-mapper');
 require('react-router-config');
 var reactHotLoader = require('react-hot-loader');
 require('prop-types');
-require('./RouteLoader-b44d91c9.js');
+require('./RouteLoader-e28ca70a.js');
 var reactDom = require('react-dom');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
@@ -75,7 +75,7 @@ class ClientApp {
     const versionStatusFromHostname = App.deliveryApi.getClientSideVersionStatus();
 
     if (window.isDynamic || window.REDUX_DATA || process.env.NODE_ENV !== 'production') {
-      store = App.createStore(withReducers, sagas.fromJSOrdered(window.REDUX_DATA), App.browserHistory);
+      store = App.createStore(withReducers, login.fromJSOrdered(window.REDUX_DATA), App.browserHistory);
       store.dispatch(version.setVersionStatus(qs.versionStatus || versionStatusFromHostname));
       /* eslint-disable no-console */
 

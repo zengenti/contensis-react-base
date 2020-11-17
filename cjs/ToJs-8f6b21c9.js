@@ -43,15 +43,10 @@ const selectUserGroups = state => {
 const selectUserSecurityToken = state => {
   return state.getIn(['user', 'authenticationState', 'clientCredentials', 'contensisClassicToken']);
 };
-const selectUserMobile = state => {
-  return state.getIn(['user', 'custom', 'mobile']);
-};
-const selectUserLandline = state => {
-  return state.getIn(['user', 'custom', 'telephone']);
-};
-const selectUserCanCallMobileInEmergency = state => {
-  return state.getIn(['user', 'custom', 'canCallMobileInEmergency']);
-};
+const selectUserRegistration = state => state.getIn(['user', 'registration'], immutable.Map());
+const selectUserRegistrationError = state => state.getIn(['user', 'registration', 'error'], false);
+const selectUserRegistrationIsLoading = state => state.getIn(['user', 'registration', 'loading'], false);
+const selectUserRegistrationIsSuccess = state => state.getIn(['user', 'registration', 'success'], false);
 
 var selectors = /*#__PURE__*/Object.freeze({
   __proto__: null,
@@ -67,9 +62,10 @@ var selectors = /*#__PURE__*/Object.freeze({
   selectUserEmail: selectUserEmail,
   selectUserGroups: selectUserGroups,
   selectUserSecurityToken: selectUserSecurityToken,
-  selectUserMobile: selectUserMobile,
-  selectUserLandline: selectUserLandline,
-  selectUserCanCallMobileInEmergency: selectUserCanCallMobileInEmergency
+  selectUserRegistration: selectUserRegistration,
+  selectUserRegistrationError: selectUserRegistrationError,
+  selectUserRegistrationIsLoading: selectUserRegistrationIsLoading,
+  selectUserRegistrationIsSuccess: selectUserRegistrationIsSuccess
 });
 
 const matchUserGroup = (userGroups = [], requiredGroups = []) => {
@@ -106,6 +102,10 @@ exports.selectUserError = selectUserError;
 exports.selectUserGroups = selectUserGroups;
 exports.selectUserIsAuthenticated = selectUserIsAuthenticated;
 exports.selectUserIsLoading = selectUserIsLoading;
+exports.selectUserRegistration = selectUserRegistration;
+exports.selectUserRegistrationError = selectUserRegistrationError;
+exports.selectUserRegistrationIsLoading = selectUserRegistrationIsLoading;
+exports.selectUserRegistrationIsSuccess = selectUserRegistrationIsSuccess;
 exports.selectors = selectors;
 exports.toJS = toJS;
-//# sourceMappingURL=ToJs-8dd77129.js.map
+//# sourceMappingURL=ToJs-8f6b21c9.js.map
