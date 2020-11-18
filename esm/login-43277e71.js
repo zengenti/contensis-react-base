@@ -557,6 +557,7 @@ function* validateUserSaga() {
       const response = yield fetch(`${LoginHelper.CMS_URL}/REST/Contensis/Security/IsAuthenticated`, {
         method: 'POST',
         headers: {
+          Accept: 'application/json',
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
@@ -607,4 +608,4 @@ function* refreshSecurityToken() {
 }
 
 export { LOGIN_USER as L, REGISTER_USER as R, UserReducer as U, REGISTER_USER_SUCCESS as a, REGISTER_USER_FAILED as b, LOGOUT_USER as c, LoginHelper as d, fromJSOrdered as f, handleRequiresLoginSaga as h, initialUserState as i, loginSagas as l, refreshSecurityToken as r, types as t };
-//# sourceMappingURL=login-1493fdd5.js.map
+//# sourceMappingURL=login-43277e71.js.map
