@@ -4,7 +4,6 @@ import Loadable from 'react-loadable';
 
 import DisplayStartupConfiguration from './util/displayStartupConfiguration';
 import ConfigureReverseProxies, { apiProxy } from './core/reverseProxies';
-// import ServerFeatures from './features/configure';
 import ConfigureWebApp from './core/webApp';
 
 const app = express();

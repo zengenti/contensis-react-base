@@ -31,7 +31,15 @@ REVERSE_PROXY_PATHS.forEach(path => {
   };
 });
 
-const DEVSERVER_PROXIES = { ...apiProxies, ...reverseProxies };
+const registrationProxy = { target: 'http://localhost:4000' };
+
+const DEVSERVER_PROXIES = {
+  ...apiProxies,
+  ...reverseProxies,
+  ...{ '/account/register': registrationProxy },
+  ...{ '/account/verify': registrationProxy },
+  ...{ '/ping': registrationProxy },
+};
 
 module.exports = {
   DEFINE_CONFIG,
