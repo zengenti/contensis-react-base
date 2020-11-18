@@ -1,25 +1,18 @@
-'use strict';
-
-var immutable = require('immutable');
-var routing = require('./routing-1b06bbe2.js');
-var effects = require('redux-saga/effects');
-var ToJs = require('./ToJs-8f6b21c9.js');
-var contensisManagementApi = require('contensis-management-api');
-var mapJson = require('jsonpath-mapper');
-var awaitToJs = require('await-to-js');
-var Cookies = require('js-cookie');
-
-function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
-
-var mapJson__default = /*#__PURE__*/_interopDefaultLegacy(mapJson);
-var Cookies__default = /*#__PURE__*/_interopDefaultLegacy(Cookies);
+import { Seq, Map, List } from 'immutable';
+import { q as queryParams, k as selectCurrentSearch, j as findContentTypeMapping, l as setRoute } from './routing-2e22904d.js';
+import { takeEvery, select, call, put } from 'redux-saga/effects';
+import { s as selectUserIsAuthenticated, a as selectUserGroups, m as matchUserGroup, b as selectClientCredentials } from './ToJs-1c73b10a.js';
+import { Client } from 'contensis-management-api';
+import mapJson from 'jsonpath-mapper';
+import { to } from 'await-to-js';
+import Cookies from 'js-cookie';
 
 const fromJSOrdered = js => {
-  return typeof js !== 'object' || js === null ? js : Array.isArray(js) ? immutable.Seq(js).map(fromJSOrdered).toList() : immutable.Seq(js).map(fromJSOrdered).toOrderedMap();
+  return typeof js !== 'object' || js === null ? js : Array.isArray(js) ? Seq(js).map(fromJSOrdered).toList() : Seq(js).map(fromJSOrdered).toOrderedMap();
 };
 
 const ACTION_PREFIX = '@USER/';
-const SET_USER_LOADING = `${ACTION_PREFIX}SET_USER_LOADING`;
+const VALIDATE_USER = `${ACTION_PREFIX}VALIDATE_USER`;
 const SET_AUTHENTICATION_STATE = `${ACTION_PREFIX}SET_AUTHENTICATION_STATE`;
 const LOGIN_USER = `${ACTION_PREFIX}LOGIN_USER`;
 const LOGIN_SUCCESSFUL = `${ACTION_PREFIX}LOGIN_SUCCESSFUL`;
@@ -31,7 +24,7 @@ const REGISTER_USER_FAILED = `${ACTION_PREFIX}REGISTER_USER_FAILED`;
 
 var types = /*#__PURE__*/Object.freeze({
   __proto__: null,
-  SET_USER_LOADING: SET_USER_LOADING,
+  VALIDATE_USER: VALIDATE_USER,
   SET_AUTHENTICATION_STATE: SET_AUTHENTICATION_STATE,
   LOGIN_USER: LOGIN_USER,
   LOGIN_SUCCESSFUL: LOGIN_SUCCESSFUL,
@@ -42,27 +35,28 @@ var types = /*#__PURE__*/Object.freeze({
   REGISTER_USER_FAILED: REGISTER_USER_FAILED
 });
 
-const defaultAuthenticationState = immutable.Map({
+const defaultAuthenticationState = Map({
   authenticated: false,
   authenticationError: false,
   clientCredentials: null,
   error: false,
   loading: false
 });
-const initialUserState = immutable.Map({
+const initialUserState = Map({
   authenticationState: defaultAuthenticationState,
-  groups: new immutable.List([])
+  groups: new List([])
 });
 var UserReducer = ((state = initialUserState, action) => {
   switch (action.type) {
-    case SET_USER_LOADING:
+    case LOGIN_USER:
+    case LOGOUT_USER:
     case SET_AUTHENTICATION_STATE:
       {
         if (!action.authenticationState) {
           action.authenticationState = defaultAuthenticationState.toJS();
         }
 
-        const loading = action.type === SET_USER_LOADING;
+        const loading = action.type === LOGIN_USER;
         const {
           authenticationState: {
             error = false,
@@ -107,7 +101,7 @@ var UserReducer = ((state = initialUserState, action) => {
         } = action; // Set registration object from the supplied action.user
         // so we can call these values back later
 
-        const nextState = state.set('registration', user ? fromJSOrdered(user) : state.get('registration', immutable.Map())); // Set registration flags so the UI can track the status
+        const nextState = state.set('registration', user ? fromJSOrdered(user) : state.get('registration', Map())); // Set registration flags so the UI can track the status
 
         return nextState.setIn(['registration', 'success'], action.type === REGISTER_USER_SUCCESS).setIn(['registration', 'error'], error || false).setIn(['registration', 'loading'], action.type === REGISTER_USER);
       }
@@ -117,33 +111,50 @@ var UserReducer = ((state = initialUserState, action) => {
   }
 });
 
-const getManagementAPIClient = ({
+const getManagementApiClient = ({
   bearerToken,
   bearerTokenExpiryDate,
   refreshToken,
   refreshTokenExpiryDate,
-  contensisClassicToken
+  contensisClassicToken,
+  username,
+  password
 }) => {
-  const CMS_URL = SERVERS.api;
+  const rootUrl = SERVERS.api || SERVERS.cms;
   /* global SERVERS */
 
   const projectId = PROJECTS[0].id;
   /* global PROJECTS */
 
-  const managementApiClient = contensisManagementApi.Client.create({
-    clientType: 'contensis_classic_refresh_token',
-    clientDetails: {
-      refreshToken
-    },
-    projectId: projectId,
-    rootUrl: CMS_URL
+  let config = {};
+
+  if (refreshToken) {
+    config = {
+      clientType: 'contensis_classic_refresh_token',
+      clientDetails: {
+        refreshToken
+      }
+    };
+  } else {
+    config = {
+      clientType: 'contensis_classic',
+      clientDetails: {
+        username,
+        password
+      }
+    };
+  }
+
+  const client = Client.create({ ...config,
+    projectId,
+    rootUrl
   });
-  if (bearerToken) managementApiClient.bearerToken = bearerToken;
-  if (bearerTokenExpiryDate) managementApiClient.bearerTokenExpiryDate = bearerTokenExpiryDate;
-  if (refreshToken) managementApiClient.refreshToken = refreshToken;
-  if (refreshTokenExpiryDate) managementApiClient.refreshTokenExpiryDate = refreshTokenExpiryDate;
-  if (contensisClassicToken) managementApiClient.contensisClassicToken = contensisClassicToken;
-  return managementApiClient;
+  if (bearerToken) client.bearerToken = bearerToken;
+  if (bearerTokenExpiryDate) client.bearerTokenExpiryDate = bearerTokenExpiryDate;
+  if (refreshToken) client.refreshToken = refreshToken;
+  if (refreshTokenExpiryDate) client.refreshTokenExpiryDate = refreshTokenExpiryDate;
+  if (contensisClassicToken) client.contensisClassicToken = contensisClassicToken;
+  return client;
 };
 
 const clientCredentials = {
@@ -157,13 +168,13 @@ const clientCredentials = {
   }) => refreshTokenExpiryDate.toISOString(),
   contensisClassicToken: 'contensisClassicToken'
 };
-var mapClientCredentials = (obj => mapJson__default['default'](obj, clientCredentials));
+var mapClientCredentials = (obj => mapJson(obj, clientCredentials));
 
 const COOKIE_VALID_DAYS = 1; // 0 = Session cookie
 // Override the default js-cookie conversion / encoding
 // methods so the written values work with Contensis sites
 
-const _cookie = Cookies__default['default'].withConverter({
+const _cookie = Cookies.withConverter({
   read: value => decodeURIComponent(value),
   write: value => encodeURIComponent(value)
 });
@@ -249,44 +260,88 @@ class LoginHelper {
     CookieHelper.DeleteCookie(REFRESH_TOKEN_COOKIE);
   }
 
-  static async LoginUser(username, password) {
+  static async LoginUser({
+    username,
+    password,
+    clientCredentials
+  }) {
+    let credentials = clientCredentials;
+    let authenticationState = {
+      authenticated: false,
+      authenticationError: false,
+      error: false,
+      clientCredentials: null
+    };
+    let transientClient;
+    let user;
+
     if (username && password) {
-      // Call LogonUser API
-      //const loginResponse = await SecurityApi.LogonUser(username, password);
-      const transientClient = LoginHelper.GetClientForAuthentication(username, password); // any error at this point should be treated like a login error
+      // Get a management client with username and password
+      transientClient = getManagementApiClient({
+        username,
+        password
+      }); // Ensure the client has requested a bearer token
 
-      let clientErr, clientBearerToken;
-      [clientErr, clientBearerToken] = await awaitToJs.to(transientClient.ensureBearerToken());
+      const [loginError, clientBearerToken] = await to(transientClient.ensureBearerToken()); // Problem getting token with username and password
 
-      if (clientErr) {
-        const authenticationError = clientErr.name.includes('ContensisAuthenticationError');
-        return {
+      if (loginError) {
+        const authenticationError = loginError.name.includes('ContensisAuthenticationError');
+        authenticationState = {
           authenticated: false,
           authenticationError: authenticationError,
           error: !authenticationError,
           clientCredentials: null
         };
-      }
+        LoginHelper.ClearCachedCredentials();
+      } // Got a token using username and password
+
 
       if (clientBearerToken) {
-        const clientCredentials = mapClientCredentials(transientClient);
-        this.SetLoginCookies(clientCredentials);
-        return {
+        // Set credentials so we can continue to GetUserDetails
+        credentials = mapClientCredentials(transientClient);
+        LoginHelper.SetLoginCookies(credentials);
+        authenticationState = {
           authenticated: true,
           authenticationError: false,
           error: false,
-          clientCredentials
+          clientCredentials: credentials
         };
       }
-    } else {
-      // Don't call API if username and/or password empty
-      return {
-        authenticated: false,
-        authenticationError: false,
-        error: false,
-        clientCredentials: null
-      };
+    } // If we have credentials supplied by a successful username and password login
+    // or clientCredentials supplied in the options argument we can continue to
+    // fetch the user's details
+
+
+    if (credentials) {
+      const client = transientClient || getManagementApiClient(credentials);
+      const [error, userDetails] = await LoginHelper.GetUserDetails(client);
+
+      if (error) {
+        authenticationState = {
+          authenticated: false,
+          authenticationError: false,
+          error: {
+            message: error.message,
+            stack: error.stack
+          },
+          clientCredentials: null
+        };
+        LoginHelper.ClearCachedCredentials();
+      } else {
+        user = userDetails;
+        authenticationState = {
+          authenticated: true,
+          authenticationError: false,
+          error: false,
+          clientCredentials: credentials
+        };
+      }
     }
+
+    return {
+      authenticationState,
+      user
+    };
   }
 
   static LogoutUser(redirectPath) {
@@ -359,6 +414,51 @@ class LoginHelper {
     }
   }
 
+  static async GetCredentialsForSecurityToken(securityToken) {
+    const [error, response] = await to(fetch(`${LoginHelper.CMS_URL}/REST/Contensis/Security/IsAuthenticated`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        securityToken: encodeURIComponent(securityToken)
+      })
+    }));
+    if (error) return [{
+      message: 'Failed to fetch credentials'
+    }];
+
+    if (response.ok) {
+      const [parseError, body] = await to(response.json());
+      if (parseError) return [parseError];
+      const {
+        LogonResult,
+        ApplicationData = []
+      } = body;
+
+      if (LogonResult !== 0) {
+        return [{
+          message: 'Security token is invalid',
+          data: ApplicationData
+        }];
+      }
+
+      if (ApplicationData.length > 1 && ApplicationData[1].Key === 'ContensisSecurityRefreshToken') {
+        const refreshToken = ApplicationData[1].Value;
+        return [undefined, refreshToken];
+      } else {
+        return [{
+          message: 'Fetch credentials: Unable to find ContensisSecurityRefreshToken'
+        }];
+      }
+    } else {
+      return [{
+        message: `Fetch credentials error: ${response.status} ${response.statusText}`
+      }];
+    }
+  }
+
   static isZengentiStaff(email) {
     const emailRefs = ['@zengenti', '@contensis'];
     return emailRefs.some(emailRef => {
@@ -378,30 +478,14 @@ LoginHelper.WSFED_LOGIN = process.env.NODE_ENV === 'development' ? WSFED_LOGIN =
 LoginHelper.LOGIN_ROUTE = '/account/login';
 LoginHelper.ACCESS_DENIED_ROUTE = '/account/access-denied';
 
-LoginHelper.GetClientForAuthentication = (username, password) => {
-  const projectId = PROJECTS[0].id;
-  /* global PROJECTS */
-
-  return contensisManagementApi.Client.create({
-    clientType: 'contensis_classic',
-    clientDetails: {
-      username,
-      password
-    },
-    projectId: projectId,
-    rootUrl: LoginHelper.CMS_URL
-  });
-};
-
-LoginHelper.GetUserDetails = async clientCredentials => {
-  const client = getManagementAPIClient(clientCredentials);
+LoginHelper.GetUserDetails = async client => {
   let error,
       user = {},
       groupsResult;
-  [error, user] = await awaitToJs.to(client.security.users.getCurrent());
+  [error, user] = await to(client.security.users.getCurrent());
 
   if (user && user.id) {
-    [error, groupsResult] = await awaitToJs.to(client.security.users.getUserGroups({
+    [error, groupsResult] = await to(client.security.users.getUserGroups({
       userId: user.id,
       includeInherited: true
     })); // Set groups attribute in user object to be the items
@@ -410,14 +494,10 @@ LoginHelper.GetUserDetails = async clientCredentials => {
     if (groupsResult && groupsResult.items) user.groups = groupsResult.items;
   }
 
-  return {
-    error,
-    user,
-    clientCredentials: mapClientCredentials(client)
-  };
+  return [error, user];
 };
 
-const loginSagas = [effects.takeEvery(LOGIN_USER, loginUserSaga), effects.takeEvery(LOGOUT_USER, logoutUserSaga), effects.takeEvery(SET_AUTHENTICATION_STATE, redirectAfterSuccessfulLoginSaga)];
+const loginSagas = [takeEvery(LOGIN_USER, loginUserSaga), takeEvery(LOGOUT_USER, logoutUserSaga), takeEvery(VALIDATE_USER, validateUserSaga), takeEvery(SET_AUTHENTICATION_STATE, redirectAfterSuccessfulLoginSaga)];
 function* handleRequiresLoginSaga(action) {
   const {
     entry,
@@ -426,205 +506,141 @@ function* handleRequiresLoginSaga(action) {
       ContentTypeMappings
     },
     staticRoute
-  } = action; // Check if any of the defined routes have "requireLogin" attribute
+  } = action;
+  let userLoggedIn = yield select(selectUserIsAuthenticated); // Check for a securityToken in querystring
+
+  const currentQs = queryParams((yield select(selectCurrentSearch)));
+  const securityToken = currentQs.securityToken || currentQs.securitytoken; // Check if any of the defined routes have "requireLogin" attribute
 
   const {
     requireLogin: authRoute
   } = staticRoute && staticRoute.route || {};
   const {
     requireLogin: authContentType
-  } = entry && routing.findContentTypeMapping(ContentTypeMappings, entry.sys.contentTypeId) || {}; // if requireLogin, authRoute or authContentType has been specified as an
-  // array of groups we can merge the arrays and accept
-  // any matched group supplied from either approach
+  } = entry && findContentTypeMapping(ContentTypeMappings, entry.sys.contentTypeId) || {}; // If requireLogin, authRoute or authContentType has been specified as an
+  // array of groups we can merge all the arrays and match on any group supplied
 
   const routeRequiresGroups = [...(Array.isArray(authContentType) && authContentType || []), ...(Array.isArray(authRoute) && authRoute || []), ...(Array.isArray(requireLogin) && requireLogin || [])];
-  const routeRequiresLogin = !!authContentType || !!authRoute || !!requireLogin; // always validate and login user if cookies available on any route change
+  const routeRequiresLogin = !!authContentType || !!authRoute || !!requireLogin;
 
-  yield effects.call(validateUserSaga);
+  if (!userLoggedIn) {
+    // If cookies or securityToken are found on any route change
+    // always validate and login the user
+    if (routeRequiresLogin) {
+      // If routeRequiresLogin do a blocking call that returns userLoggedIn
+      userLoggedIn = yield call(validateUserSaga, {
+        securityToken
+      });
+    } // otherwise do a non blocking put to handle validation in the background
+    else yield put({
+        type: VALIDATE_USER,
+        securityToken
+      });
+  }
 
   if (routeRequiresLogin) {
-    const userLoggedIn = yield effects.select(ToJs.selectUserIsAuthenticated);
-
-    if (!userLoggedIn) {
-      // Because we are using the Client only redirects, they will not
-      // take effect during SSR
+    // If a security token is in the querystring and we are not already
+    // logged in something is wrong and we won't bother going on another redirect loop
+    if (!userLoggedIn && !securityToken) {
       LoginHelper.ClientRedirectToSignInPage(action.location.pathname);
     } else if (routeRequiresGroups.length > 0) {
-      const userGroups = (yield effects.select(ToJs.selectUserGroups)).toJS();
-      const groupMatch = ToJs.matchUserGroup(userGroups, routeRequiresGroups);
+      const userGroups = (yield select(selectUserGroups)).toJS();
+      const groupMatch = matchUserGroup(userGroups, routeRequiresGroups);
       if (!groupMatch) LoginHelper.ClientRedirectToAccessDeniedPage(action.location.pathname);
     }
   }
 }
 
-function* redirectAfterSuccessfulLoginSaga() {
-  const isLoggedIn = yield effects.select(ToJs.selectUserIsAuthenticated);
-  const redirectPath = routing.queryParams((yield effects.select(routing.selectCurrentSearch))).redirect_uri;
+function* validateUserSaga({
+  securityToken
+}) {
+  if (securityToken) {
+    // If we have just a security token we will call a CMS endpoint
+    // and provide us with a RefreshToken cookie we can use during login
+    const [error, refreshToken] = yield LoginHelper.GetCredentialsForSecurityToken(securityToken);
+    if (refreshToken) LoginHelper.SetLoginCookies({
+      contensisClassicToken: securityToken,
+      refreshToken
+    });
+    if (error) yield put({
+      type: SET_AUTHENTICATION_STATE,
+      authenticationState: {
+        error: {
+          message: error.message,
+          stack: error.stack
+        }
+      }
+    });
+  } // Check for refreshToken in cookies
 
-  if (isLoggedIn && redirectPath) {
-    yield effects.put(routing.setRoute(redirectPath));
-  }
+
+  const clientCredentials = LoginHelper.GetCachedCredentials(); // Log the user in if a refreshToken is found
+
+  if (clientCredentials.refreshToken) yield call(loginUserSaga, {
+    clientCredentials
+  }); // Tell any callers have we successfully logged in?
+
+  return yield select(selectUserIsAuthenticated);
 }
 
 function* loginUserSaga(action = {}) {
   const {
     username,
-    password
-  } = action;
+    password,
+    clientCredentials
+  } = action; // If a WSFED_LOGIN site has dispatched the loginUser action
+  // just redirect them to the Identity Provider sign in
 
-  if (username) {
-    yield effects.put({
-      type: SET_USER_LOADING
-    });
-  } // The elements we will eventually load into authenticationState
+  if (action.type === LOGIN_USER && LoginHelper.WSFED_LOGIN) LoginHelper.ClientRedirectToSignInPage();
+  const {
+    authenticationState,
+    user
+  } = yield LoginHelper.LoginUser({
+    username,
+    password,
+    clientCredentials
+  });
+  yield put({
+    type: SET_AUTHENTICATION_STATE,
+    authenticationState,
+    user
+  });
+}
 
+function* redirectAfterSuccessfulLoginSaga() {
+  const isLoggedIn = yield select(selectUserIsAuthenticated);
+  const redirectPath = queryParams((yield select(selectCurrentSearch))).redirect_uri;
 
-  let clientCredentials = LoginHelper.GetCachedCredentials(),
-      error = false,
-      authenticated = false,
-      authenticationError = false,
-      user = null,
-      userError = false;
-
-  try {
-    if (!username) {
-      authenticated = true;
-    } else {
-      // here we are getting credentials from input username and password
-      // and destructuring the return object to our authenticationState elements
-      ({
-        error,
-        authenticated,
-        authenticationError,
-        clientCredentials
-      } = yield LoginHelper.LoginUser(username, password));
-    } // If the authenticated variable is true, we should have some clientCredentials
-    // continue getting the user's details with those credentials
-
-
-    if (authenticated) {
-      ({
-        error: userError,
-        user,
-        clientCredentials
-      } = yield LoginHelper.GetUserDetails(clientCredentials));
-
-      if (userError) {
-        error = userError;
-        authenticated = false;
-        clientCredentials = null;
-      }
-    }
-  } catch (e) {
-    error = e;
-    authenticated = false;
-    clientCredentials = null; // eslint-disable-next-line no-console
-
-    console.log(e);
-  } finally {
-    yield effects.put({
-      type: SET_AUTHENTICATION_STATE,
-      authenticationState: {
-        clientCredentials,
-        authenticated,
-        authenticationError,
-        error
-      },
-      user
-    });
-
-    if (!authenticated || error) {
-      // Clear cookies if auth has failed in any way
-      yield LoginHelper.ClearCachedCredentials();
-    }
+  if (isLoggedIn && redirectPath) {
+    yield put(setRoute(redirectPath));
   }
 }
 
 function* logoutUserSaga({
   redirectPath
 }) {
-  yield effects.put({
+  yield put({
     type: SET_AUTHENTICATION_STATE,
     user: null
   });
   yield LoginHelper.LogoutUser(redirectPath);
 }
 
-function* validateUserSaga() {
-  // Check if querystring contains a securityToken
-  const currentQs = routing.queryParams((yield effects.select(routing.selectCurrentSearch)));
-  const securityToken = currentQs.securityToken || currentQs.securitytoken;
-
-  if (securityToken) {
-    LoginHelper.SetLoginCookies({
-      contensisClassicToken: securityToken
-    });
-
-    if (LoginHelper.WSFED_LOGIN) {
-      const response = yield fetch(`${LoginHelper.CMS_URL}/REST/Contensis/Security/IsAuthenticated`, {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          securityToken: encodeURIComponent(securityToken)
-        })
-      });
-
-      if (response.ok) {
-        const responseBody = yield response.json();
-
-        if (responseBody.LogonResult !== 0) ;
-
-        if (!!responseBody.ApplicationData && !!responseBody.ApplicationData.length && responseBody.ApplicationData.length > 1 && // eslint-disable-next-line prettier/prettier
-        responseBody.ApplicationData[1].Key === 'ContensisSecurityRefreshToken') {
-          const refreshToken = responseBody.ApplicationData[1].Value;
-          LoginHelper.SetLoginCookies({
-            contensisClassicToken: securityToken,
-            refreshToken
-          });
-        }
-      }
-    }
-  }
-
-  const userLoggedIn = yield effects.select(ToJs.selectUserIsAuthenticated);
-  if (userLoggedIn) return;
-  const credentials = LoginHelper.GetCachedCredentials();
-
-  if (securityToken || credentials && !userLoggedIn && credentials.refreshToken) {
-    yield effects.call(loginUserSaga);
-  }
-}
-
 function* refreshSecurityToken() {
-  const clientCredentials = ((yield effects.select(ToJs.selectClientCredentials)) || immutable.Map()).toJS();
+  const clientCredentials = ((yield select(selectClientCredentials)) || Map()).toJS();
 
   if (Object.keys(clientCredentials).length > 0) {
-    const client = getManagementAPIClient(clientCredentials);
+    const client = getManagementApiClient(clientCredentials);
     yield client.authenticate();
     const authenticationState = {};
     const newClientCredentials = mapClientCredentials(client);
     authenticationState.clientCredentials = newClientCredentials;
-    yield effects.put({
+    yield put({
       type: SET_AUTHENTICATION_STATE,
       authenticationState
     });
   }
 }
 
-exports.LOGIN_USER = LOGIN_USER;
-exports.LOGOUT_USER = LOGOUT_USER;
-exports.LoginHelper = LoginHelper;
-exports.REGISTER_USER = REGISTER_USER;
-exports.REGISTER_USER_FAILED = REGISTER_USER_FAILED;
-exports.REGISTER_USER_SUCCESS = REGISTER_USER_SUCCESS;
-exports.UserReducer = UserReducer;
-exports.fromJSOrdered = fromJSOrdered;
-exports.handleRequiresLoginSaga = handleRequiresLoginSaga;
-exports.initialUserState = initialUserState;
-exports.loginSagas = loginSagas;
-exports.refreshSecurityToken = refreshSecurityToken;
-exports.types = types;
-//# sourceMappingURL=login-166d8f0b.js.map
+export { LOGIN_USER as L, REGISTER_USER as R, UserReducer as U, REGISTER_USER_SUCCESS as a, REGISTER_USER_FAILED as b, LOGOUT_USER as c, LoginHelper as d, fromJSOrdered as f, handleRequiresLoginSaga as h, initialUserState as i, loginSagas as l, refreshSecurityToken as r, types as t };
+//# sourceMappingURL=login-c807b306.js.map

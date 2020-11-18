@@ -6,7 +6,7 @@ require('react');
 var reactRedux = require('react-redux');
 require('immutable');
 var routing = require('./routing-1b06bbe2.js');
-var login = require('./login-166d8f0b.js');
+var login = require('./login-1b314796.js');
 require('query-string');
 require('redux-saga/effects');
 var ToJs = require('./ToJs-8f6b21c9.js');
