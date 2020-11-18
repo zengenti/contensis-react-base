@@ -1,6 +1,11 @@
 import { Map } from 'immutable';
 import { takeEvery, select, put, call } from 'redux-saga/effects';
-import { SET_AUTHENTICATION_STATE, LOGIN_USER, LOGOUT_USER } from '../types';
+import {
+  SET_AUTHENTICATION_STATE,
+  LOGIN_USER,
+  LOGOUT_USER,
+  VALIDATE_USER,
+} from '../types';
 import {
   selectUserIsAuthenticated,
   selectClientCredentials,
@@ -19,6 +24,7 @@ import { matchUserGroup } from '../../util/matchGroups';
 export const loginSagas = [
   takeEvery(LOGIN_USER, loginUserSaga),
   takeEvery(LOGOUT_USER, logoutUserSaga),
+  takeEvery(VALIDATE_USER, validateUserSaga),
   takeEvery(SET_AUTHENTICATION_STATE, redirectAfterSuccessfulLoginSaga),
 ];
 
@@ -29,11 +35,11 @@ export function* handleRequiresLoginSaga(action) {
     routes: { ContentTypeMappings },
     staticRoute,
   } = action;
-  const userLoggedIn = yield select(selectUserIsAuthenticated);
+  let userLoggedIn = yield select(selectUserIsAuthenticated);
 
-  // always validate and login the user if cookies
-  // or securityToken is available on any route change
-  if (!userLoggedIn) yield call(validateUserSaga);
+  // Check for a securityToken in querystring
+  const currentQs = queryParams(yield select(selectCurrentSearch));
+  const securityToken = currentQs.securityToken || currentQs.securitytoken;
 
   // Check if any of the defined routes have "requireLogin" attribute
   const { requireLogin: authRoute } = (staticRoute && staticRoute.route) || {};
@@ -42,9 +48,8 @@ export function* handleRequiresLoginSaga(action) {
       findContentTypeMapping(ContentTypeMappings, entry.sys.contentTypeId)) ||
     {};
 
-  // if requireLogin, authRoute or authContentType has been specified as an
-  // array of groups we can merge the arrays and accept
-  // any matched group supplied from either approach
+  // If requireLogin, authRoute or authContentType has been specified as an
+  // array of groups we can merge all the arrays and match on any group supplied
   const routeRequiresGroups = [
     ...((Array.isArray(authContentType) && authContentType) || []),
     ...((Array.isArray(authRoute) && authRoute) || []),
@@ -52,10 +57,21 @@ export function* handleRequiresLoginSaga(action) {
   ];
   const routeRequiresLogin = !!authContentType || !!authRoute || !!requireLogin;
 
+  if (!userLoggedIn) {
+    // If cookies or securityToken are found on any route change
+    // always validate and login the user
+    if (routeRequiresLogin) {
+      // If routeRequiresLogin do a blocking call that returns userLoggedIn
+      userLoggedIn = yield call(validateUserSaga, { securityToken });
+    }
+    // otherwise do a non blocking put to handle validation in the background
+    else yield put({ type: VALIDATE_USER, securityToken });
+  }
+
   if (routeRequiresLogin) {
-    if (!userLoggedIn) {
-      // Because we are using the Client only redirects, they will not
-      // take effect during SSR
+    // If a security token is in the querystring and we are not already
+    // logged in something is wrong and we won't bother going on another redirect loop
+    if (!userLoggedIn && !securityToken) {
       LoginHelper.ClientRedirectToSignInPage(action.location.pathname);
     } else if (routeRequiresGroups.length > 0) {
       const userGroups = (yield select(selectUserGroups)).toJS();
@@ -65,6 +81,60 @@ export function* handleRequiresLoginSaga(action) {
         LoginHelper.ClientRedirectToAccessDeniedPage(action.location.pathname);
     }
   }
+}
+
+function* validateUserSaga({ securityToken }) {
+  if (securityToken) {
+    // If we have just a security token we will call a CMS endpoint
+    // and provide us with a RefreshToken cookie we can use during login
+    const [
+      error,
+      refreshToken,
+    ] = yield LoginHelper.GetCredentialsForSecurityToken(securityToken);
+    if (refreshToken)
+      LoginHelper.SetLoginCookies({
+        contensisClassicToken: securityToken,
+        refreshToken,
+      });
+    if (error)
+      yield put({
+        type: SET_AUTHENTICATION_STATE,
+        authenticationState: {
+          error: { message: error.message, stack: error.stack },
+        },
+      });
+  }
+
+  // Check for refreshToken in cookies
+  const clientCredentials = LoginHelper.GetCachedCredentials();
+
+  // Log the user in if a refreshToken is found
+  if (clientCredentials.refreshToken)
+    yield call(loginUserSaga, { clientCredentials });
+
+  // Tell any callers have we successfully logged in?
+  return yield select(selectUserIsAuthenticated);
+}
+
+function* loginUserSaga(action = {}) {
+  const { username, password, clientCredentials } = action;
+
+  // If a WSFED_LOGIN site has dispatched the loginUser action
+  // just redirect them to the Identity Provider sign in
+  if (action.type === LOGIN_USER && LoginHelper.WSFED_LOGIN)
+    LoginHelper.ClientRedirectToSignInPage();
+
+  const { authenticationState, user } = yield LoginHelper.LoginUser({
+    username,
+    password,
+    clientCredentials,
+  });
+
+  yield put({
+    type: SET_AUTHENTICATION_STATE,
+    authenticationState,
+    user,
+  });
 }
 
 function* redirectAfterSuccessfulLoginSaga() {
@@ -77,93 +147,12 @@ function* redirectAfterSuccessfulLoginSaga() {
   }
 }
 
-function* loginUserSaga(action = {}) {
-  const { username, password } = action;
-
-  // The elements we will eventually load into authenticationState
-  let clientCredentials = LoginHelper.GetCachedCredentials(),
-    error = false,
-    authenticated = false,
-    authenticationError = false,
-    user = null,
-    userError = false;
-
-  try {
-    if (!username) {
-      authenticated = true;
-    } else {
-      // here we are getting credentials from input username and password
-      // and destructuring the return object to our authenticationState elements
-      ({
-        error,
-        authenticated,
-        authenticationError,
-        clientCredentials,
-      } = yield LoginHelper.LoginUser(username, password));
-    }
-
-    // If the authenticated variable is true, we should have some clientCredentials
-    // continue getting the user's details with those credentials
-    if (authenticated) {
-      ({
-        error: userError,
-        user,
-        clientCredentials,
-      } = yield LoginHelper.GetUserDetails(clientCredentials));
-      if (userError) {
-        error = userError;
-        authenticated = false;
-        clientCredentials = null;
-      }
-    }
-  } catch (e) {
-    error = e;
-    authenticated = false;
-    clientCredentials = null;
-
-    // eslint-disable-next-line no-console
-    console.log(e);
-  } finally {
-    yield put({
-      type: SET_AUTHENTICATION_STATE,
-      authenticationState: {
-        clientCredentials,
-        authenticated,
-        authenticationError,
-        error,
-      },
-      user,
-    });
-    if (!authenticated || error) {
-      // Clear cookies if auth has failed in any way
-      yield LoginHelper.ClearCachedCredentials();
-    }
-  }
-}
 function* logoutUserSaga({ redirectPath }) {
   yield put({
     type: SET_AUTHENTICATION_STATE,
     user: null,
   });
   yield LoginHelper.LogoutUser(redirectPath);
-}
-
-function* validateUserSaga() {
-  // Check if querystring contains a securityToken
-  const currentQs = queryParams(yield select(selectCurrentSearch));
-  const securityToken = currentQs.securityToken || currentQs.securitytoken;
-  if (securityToken) {
-    // If we have just a security token this will call a CMS endpoint
-    // to convert this into a RefreshToken we can use during login
-    // and write the necessary cookies
-    yield LoginHelper.GetCredentialsForSecurityToken(securityToken);
-  }
-
-  const credentials = LoginHelper.GetCachedCredentials();
-
-  if (credentials && credentials.refreshToken) {
-    yield call(loginUserSaga);
-  }
 }
 
 export function* refreshSecurityToken() {

@@ -43,18 +43,20 @@ export class LoginHelper {
     CookieHelper.DeleteCookie(REFRESH_TOKEN_COOKIE);
   }
 
-  static async LoginUser(username, password) {
-    if (!username || !password) {
-      // Return a default set of options if no username or password
-      return {
-        authenticated: false,
-        authenticationError: false,
-        error: false,
-        clientCredentials: null,
-      };
-    } else {
+  static async LoginUser({ username, password, clientCredentials }) {
+    let credentials = clientCredentials;
+    let authenticationState = {
+      authenticated: false,
+      authenticationError: false,
+      error: false,
+      clientCredentials: null,
+    };
+    let transientClient;
+    let user;
+
+    if (username && password) {
       // Get a management client with username and password
-      const transientClient = getManagementApiClient({
+      transientClient = getManagementApiClient({
         username,
         password,
       });
@@ -69,30 +71,59 @@ export class LoginHelper {
         const authenticationError = loginError.name.includes(
           'ContensisAuthenticationError'
         );
-        return {
+        authenticationState = {
           authenticated: false,
           authenticationError: authenticationError,
           error: !authenticationError,
           clientCredentials: null,
         };
+        LoginHelper.ClearCachedCredentials();
       }
 
       // Got a token using username and password
       if (clientBearerToken) {
-        const clientCredentials = mapClientCredentials(transientClient);
-        LoginHelper.SetLoginCookies(clientCredentials);
-        return {
+        // Set credentials so we can continue to GetUserDetails
+        credentials = mapClientCredentials(transientClient);
+        LoginHelper.SetLoginCookies(credentials);
+        authenticationState = {
           authenticated: true,
           authenticationError: false,
           error: false,
-          clientCredentials,
+          clientCredentials: credentials,
         };
       }
     }
+
+    // If we have credentials supplied by a successful username and password login
+    // or clientCredentials supplied in the options argument we can continue to
+    // fetch the user's details
+    if (credentials) {
+      const client = transientClient || getManagementApiClient(credentials);
+      const [error, userDetails] = await LoginHelper.GetUserDetails(client);
+
+      if (error) {
+        authenticationState = {
+          authenticated: false,
+          authenticationError: false,
+          error: { message: error.message, stack: error.stack },
+          clientCredentials: null,
+        };
+        LoginHelper.ClearCachedCredentials();
+      } else {
+        user = userDetails;
+        authenticationState = {
+          authenticated: true,
+          authenticationError: false,
+          error: false,
+          clientCredentials: credentials,
+        };
+      }
+    }
+
+    return { authenticationState, user };
   }
 
-  static GetUserDetails = async clientCredentials => {
-    const client = getManagementApiClient(clientCredentials);
+  static GetUserDetails = async client => {
     let error,
       user = {},
       groupsResult;
@@ -109,11 +140,7 @@ export class LoginHelper {
       // array from the getUserGroups result
       if (groupsResult && groupsResult.items) user.groups = groupsResult.items;
     }
-    return {
-      error,
-      user,
-      clientCredentials: mapClientCredentials(client),
-    };
+    return [error, user];
   };
 
   static LogoutUser(redirectPath) {
@@ -191,9 +218,8 @@ export class LoginHelper {
   }
 
   static async GetCredentialsForSecurityToken(securityToken) {
-    const response = await fetch(
-      `${LoginHelper.CMS_URL}/REST/Contensis/Security/IsAuthenticated`,
-      {
+    const [error, response] = await to(
+      fetch(`${LoginHelper.CMS_URL}/REST/Contensis/Security/IsAuthenticated`, {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -202,26 +228,39 @@ export class LoginHelper {
         body: JSON.stringify({
           securityToken: encodeURIComponent(securityToken),
         }),
-      }
+      })
     );
+    if (error) return [{ message: 'Failed to fetch credentials' }];
     if (response.ok) {
-      const responseBody = await response.json();
-      if (responseBody.LogonResult !== 0) {
-        // TODO : security token invalid
+      const [parseError, body] = await to(response.json());
+      if (parseError) return [parseError];
+
+      const { LogonResult, ApplicationData = [] } = body;
+      if (LogonResult !== 0) {
+        return [
+          { message: 'Security token is invalid', data: ApplicationData },
+        ];
       }
       if (
-        !!responseBody.ApplicationData &&
-        !!responseBody.ApplicationData.length &&
-        responseBody.ApplicationData.length > 1 &&
-        // eslint-disable-next-line prettier/prettier
-        responseBody.ApplicationData[1].Key === 'ContensisSecurityRefreshToken'
+        ApplicationData.length > 1 &&
+        ApplicationData[1].Key === 'ContensisSecurityRefreshToken'
       ) {
-        const refreshToken = responseBody.ApplicationData[1].Value;
-        LoginHelper.SetLoginCookies({
-          contensisClassicToken: securityToken,
-          refreshToken,
-        });
+        const refreshToken = ApplicationData[1].Value;
+        return [undefined, refreshToken];
+      } else {
+        return [
+          {
+            message:
+              'Fetch credentials: Unable to find ContensisSecurityRefreshToken',
+          },
+        ];
       }
+    } else {
+      return [
+        {
+          message: `Fetch credentials error: ${response.status} ${response.statusText}`,
+        },
+      ];
     }
   }
 

@@ -6,6 +6,7 @@ import {
   REGISTER_USER_SUCCESS,
   SET_AUTHENTICATION_STATE,
   LOGIN_USER,
+  LOGOUT_USER,
 } from './types';
 
 const defaultAuthenticationState = Map({
@@ -24,6 +25,7 @@ export const initialUserState = Map({
 export default (state = initialUserState, action) => {
   switch (action.type) {
     case LOGIN_USER:
+    case LOGOUT_USER:
     case SET_AUTHENTICATION_STATE: {
       if (!action.authenticationState) {
         action.authenticationState = defaultAuthenticationState.toJS();
