@@ -2,18 +2,18 @@ import React from 'react';
 import { Map, List, fromJS, OrderedMap, Set } from 'immutable';
 import { createBrowserHistory, createMemoryHistory } from 'history';
 import { Client, Op, Query } from 'contensis-delivery-api';
-import { S as SET_TARGET_PROJECT, c as SET_SURROGATE_KEYS, d as SET_SIBLINGS, e as SET_ROUTE, f as SET_NAVIGATION_PATH, g as SET_ENTRY, h as SET_ANCESTORS, C as CALL_HISTORY_METHOD, i as setSurrogateKeys, b as selectCurrentProject, a as selectRouteEntry, j as findContentTypeMapping, q as queryParams, k as selectCurrentSearch, l as setRoute } from './routing-2e22904d.js';
+import { S as SET_TARGET_PROJECT, c as SET_SURROGATE_KEYS, d as SET_SIBLINGS, e as SET_ROUTE, f as SET_NAVIGATION_PATH, g as SET_ENTRY, h as SET_ANCESTORS, C as CALL_HISTORY_METHOD, i as setSurrogateKeys, b as selectCurrentProject, a as selectRouteEntry, j as selectCurrentNode, k as selectCurrentAncestors, l as findContentTypeMapping, m as selectRouteEntryEntryId, n as selectMappedEntry, q as queryParams, o as selectCurrentSearch, p as setRoute } from './routing-8265aea1.js';
 import { compose, applyMiddleware, createStore as createStore$1 } from 'redux';
 import { combineReducers } from 'redux-immutable';
 import thunk from 'redux-thunk';
 import createSagaMiddleware, { END } from 'redux-saga';
-import { G as GET_NODE_TREE_ERROR, S as SET_NODE_TREE, b as SET_VERSION, c as SET_VERSION_STATUS, d as GET_NODE_TREE, h as hasNavigationTree, e as selectVersionStatus } from './version-80c255d4.js';
-import { U as UserReducer, h as handleRequiresLoginSaga, R as REGISTER_USER, a as REGISTER_USER_SUCCESS, b as REGISTER_USER_FAILED, l as loginSagas } from './login-c807b306.js';
+import { G as GET_NODE_TREE_ERROR, S as SET_NODE_TREE, b as SET_VERSION, c as SET_VERSION_STATUS, d as GET_NODE_TREE, h as hasNavigationTree, e as selectVersionStatus } from './version-9c4c6e0e.js';
+import { U as UserReducer, h as handleRequiresLoginSaga, R as REGISTER_USER, a as REGISTER_USER_SUCCESS, b as REGISTER_USER_FAILED, l as loginSagas } from './login-524044e9.js';
 import { takeEvery, select, put, call, all } from 'redux-saga/effects';
 import { info, error } from 'loglevel';
 import { to } from 'await-to-js';
 import 'react-hot-loader';
-import { R as RouteLoader } from './RouteLoader-909ab519.js';
+import { R as RouteLoader } from './RouteLoader-b1969ecd.js';
 
 const selectedHistory = typeof window !== 'undefined' ? createBrowserHistory : createMemoryHistory;
 const history = (options = {}) => selectedHistory(options);
@@ -128,7 +128,7 @@ var RoutingReducer = ((state = initialState$1, action) => {
           nextState = state.set('entryID', null).set('entry', null).set('mappedEntry', OrderedMap()).set('isLoading', isLoading).set('notFound', notFound);
         } else {
           nextState = state.set('entryID', action.id).set('entry', fromJS(entry)).set('isLoading', isLoading).set('notFound', notFound);
-          if (mappedEntry) nextState = nextState.set('mappedEntry', fromJS(mappedEntry)).set('entry', fromJS({
+          if (mappedEntry && Object.keys(mappedEntry) > 0) nextState = nextState.set('mappedEntry', fromJS(mappedEntry)).set('entry', fromJS({
             sys: entry.sys
           }));
         }
@@ -705,7 +705,7 @@ function* getRouteSaga(action) {
         //   node: routeNode,
         //   isLoading: false,
         // });
-      } else yield call(setRouteEntry);
+      } else yield call(setRouteEntry, routeEntry.toJS(), (yield select(selectCurrentNode)), (yield select(selectCurrentAncestors)));
     } else {
       // Handle homepage
       if (isHome) {
@@ -846,14 +846,16 @@ function* getRouteSaga(action) {
 }
 
 function* setRouteEntry(entry, node, ancestors, siblings, entryMapper, notFound = false) {
-  const mappedEntry = yield mapRouteEntry(entryMapper, { ...node,
+  const id = entry && entry.sys.id || null;
+  const currentEntryId = yield select(selectRouteEntryEntryId);
+  const mappedEntry = currentEntryId === id ? (yield select(selectMappedEntry) || Map()).toJS() : yield mapRouteEntry(entryMapper, { ...node,
     entry,
     ancestors,
     siblings
   });
   yield all([put({
     type: SET_ENTRY,
-    id: entry && entry.sys.id || null,
+    id,
     entry,
     mappedEntry,
     node,
@@ -980,4 +982,4 @@ const AppRoot = props => {
 };
 
 export { AppRoot as A, browserHistory as b, createStore as c, deliveryApi as d, history as h, pickProject as p, rootSaga as r };
-//# sourceMappingURL=App-a6897530.js.map
+//# sourceMappingURL=App-2eaac319.js.map

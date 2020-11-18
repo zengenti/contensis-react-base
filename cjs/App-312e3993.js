@@ -4,18 +4,18 @@ var React = require('react');
 var immutable = require('immutable');
 var history$1 = require('history');
 var contensisDeliveryApi = require('contensis-delivery-api');
-var routing = require('./routing-1b06bbe2.js');
+var routing = require('./routing-37e4f287.js');
 var redux = require('redux');
 var reduxImmutable = require('redux-immutable');
 var thunk = require('redux-thunk');
 var createSagaMiddleware = require('redux-saga');
-var version = require('./version-781d7ac3.js');
-var login = require('./login-1b314796.js');
+var version = require('./version-e5fb1848.js');
+var login = require('./login-23882f30.js');
 var effects = require('redux-saga/effects');
 var log = require('loglevel');
 var awaitToJs = require('await-to-js');
 require('react-hot-loader');
-var RouteLoader = require('./RouteLoader-e28ca70a.js');
+var RouteLoader = require('./RouteLoader-e332e4fb.js');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -136,7 +136,7 @@ var RoutingReducer = ((state = initialState$1, action) => {
           nextState = state.set('entryID', null).set('entry', null).set('mappedEntry', immutable.OrderedMap()).set('isLoading', isLoading).set('notFound', notFound);
         } else {
           nextState = state.set('entryID', action.id).set('entry', immutable.fromJS(entry)).set('isLoading', isLoading).set('notFound', notFound);
-          if (mappedEntry) nextState = nextState.set('mappedEntry', immutable.fromJS(mappedEntry)).set('entry', immutable.fromJS({
+          if (mappedEntry && Object.keys(mappedEntry) > 0) nextState = nextState.set('mappedEntry', immutable.fromJS(mappedEntry)).set('entry', immutable.fromJS({
             sys: entry.sys
           }));
         }
@@ -713,7 +713,7 @@ function* getRouteSaga(action) {
         //   node: routeNode,
         //   isLoading: false,
         // });
-      } else yield effects.call(setRouteEntry);
+      } else yield effects.call(setRouteEntry, routeEntry.toJS(), (yield effects.select(routing.selectCurrentNode)), (yield effects.select(routing.selectCurrentAncestors)));
     } else {
       // Handle homepage
       if (isHome) {
@@ -854,14 +854,16 @@ function* getRouteSaga(action) {
 }
 
 function* setRouteEntry(entry, node, ancestors, siblings, entryMapper, notFound = false) {
-  const mappedEntry = yield mapRouteEntry(entryMapper, { ...node,
+  const id = entry && entry.sys.id || null;
+  const currentEntryId = yield effects.select(routing.selectRouteEntryEntryId);
+  const mappedEntry = currentEntryId === id ? (yield effects.select(routing.selectMappedEntry) || immutable.Map()).toJS() : yield mapRouteEntry(entryMapper, { ...node,
     entry,
     ancestors,
     siblings
   });
   yield effects.all([effects.put({
     type: routing.SET_ENTRY,
-    id: entry && entry.sys.id || null,
+    id,
     entry,
     mappedEntry,
     node,
@@ -994,4 +996,4 @@ exports.deliveryApi = deliveryApi;
 exports.history = history;
 exports.pickProject = pickProject;
 exports.rootSaga = rootSaga;
-//# sourceMappingURL=App-ebac4ff7.js.map
+//# sourceMappingURL=App-312e3993.js.map
