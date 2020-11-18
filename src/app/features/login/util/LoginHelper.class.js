@@ -1,6 +1,5 @@
 /* eslint-disable require-atomic-updates */
-import { Client } from 'contensis-management-api';
-import { getManagementAPIClient } from '~/core/util/ContensisManagementApi';
+import { getManagementApiClient } from '~/core/util/ContensisManagementApi';
 import { to } from 'await-to-js';
 
 import { CookieHelper } from './CookieHelper.class';
@@ -44,36 +43,30 @@ export class LoginHelper {
     CookieHelper.DeleteCookie(REFRESH_TOKEN_COOKIE);
   }
 
-  static GetClientForAuthentication = (username, password) => {
-    const projectId = PROJECTS[0].id; /* global PROJECTS */
-    return Client.create({
-      clientType: 'contensis_classic',
-      clientDetails: {
+  static async LoginUser(username, password) {
+    if (!username || !password) {
+      // Return a default set of options if no username or password
+      return {
+        authenticated: false,
+        authenticationError: false,
+        error: false,
+        clientCredentials: null,
+      };
+    } else {
+      // Get a management client with username and password
+      const transientClient = getManagementApiClient({
         username,
         password,
-      },
-      projectId: projectId,
-      rootUrl: LoginHelper.CMS_URL,
-    });
-  };
+      });
 
-  static async LoginUser(username, password) {
-    if (username && password) {
-      // Call LogonUser API
-      //const loginResponse = await SecurityApi.LogonUser(username, password);
-      const transientClient = LoginHelper.GetClientForAuthentication(
-        username,
-        password
-      );
-
-      // any error at this point should be treated like a login error
-      let clientErr, clientBearerToken;
-      [clientErr, clientBearerToken] = await to(
+      // Ensure the client has requested a bearer token
+      const [loginError, clientBearerToken] = await to(
         transientClient.ensureBearerToken()
       );
 
-      if (clientErr) {
-        const authenticationError = clientErr.name.includes(
+      // Problem getting token with username and password
+      if (loginError) {
+        const authenticationError = loginError.name.includes(
           'ContensisAuthenticationError'
         );
         return {
@@ -84,9 +77,10 @@ export class LoginHelper {
         };
       }
 
+      // Got a token using username and password
       if (clientBearerToken) {
         const clientCredentials = mapClientCredentials(transientClient);
-        this.SetLoginCookies(clientCredentials);
+        LoginHelper.SetLoginCookies(clientCredentials);
         return {
           authenticated: true,
           authenticationError: false,
@@ -94,19 +88,11 @@ export class LoginHelper {
           clientCredentials,
         };
       }
-    } else {
-      // Don't call API if username and/or password empty
-      return {
-        authenticated: false,
-        authenticationError: false,
-        error: false,
-        clientCredentials: null,
-      };
     }
   }
 
   static GetUserDetails = async clientCredentials => {
-    const client = getManagementAPIClient(clientCredentials);
+    const client = getManagementApiClient(clientCredentials);
     let error,
       user = {},
       groupsResult;
@@ -201,6 +187,41 @@ export class LoginHelper {
     );
     if (redirectPath) {
       window.location = redirectPath;
+    }
+  }
+
+  static async GetCredentialsForSecurityToken(securityToken) {
+    const response = await fetch(
+      `${LoginHelper.CMS_URL}/REST/Contensis/Security/IsAuthenticated`,
+      {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          securityToken: encodeURIComponent(securityToken),
+        }),
+      }
+    );
+    if (response.ok) {
+      const responseBody = await response.json();
+      if (responseBody.LogonResult !== 0) {
+        // TODO : security token invalid
+      }
+      if (
+        !!responseBody.ApplicationData &&
+        !!responseBody.ApplicationData.length &&
+        responseBody.ApplicationData.length > 1 &&
+        // eslint-disable-next-line prettier/prettier
+        responseBody.ApplicationData[1].Key === 'ContensisSecurityRefreshToken'
+      ) {
+        const refreshToken = responseBody.ApplicationData[1].Value;
+        LoginHelper.SetLoginCookies({
+          contensisClassicToken: securityToken,
+          refreshToken,
+        });
+      }
     }
   }
 

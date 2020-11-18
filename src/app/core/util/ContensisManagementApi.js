@@ -1,32 +1,49 @@
 import { Client } from 'contensis-management-api';
 
-export const getManagementAPIClient = ({
+export const getManagementApiClient = ({
   bearerToken,
   bearerTokenExpiryDate,
   refreshToken,
   refreshTokenExpiryDate,
   contensisClassicToken,
+  username,
+  password,
 }) => {
-  const CMS_URL = SERVERS.api; /* global SERVERS */
+  const rootUrl = SERVERS.api || SERVERS.cms; /* global SERVERS */
   const projectId = PROJECTS[0].id; /* global PROJECTS */
 
-  const managementApiClient = Client.create({
-    clientType: 'contensis_classic_refresh_token',
-    clientDetails: {
-      refreshToken,
-    },
-    projectId: projectId,
-    rootUrl: CMS_URL,
+  let config = {};
+  if (refreshToken) {
+    config = {
+      clientType: 'contensis_classic_refresh_token',
+      clientDetails: {
+        refreshToken,
+      },
+    };
+  } else {
+    config = {
+      clientType: 'contensis_classic',
+      clientDetails: {
+        username,
+        password,
+      },
+    };
+  }
+
+  const client = Client.create({
+    ...config,
+    projectId,
+    rootUrl,
   });
 
-  if (bearerToken) managementApiClient.bearerToken = bearerToken;
+  if (bearerToken) client.bearerToken = bearerToken;
   if (bearerTokenExpiryDate)
-    managementApiClient.bearerTokenExpiryDate = bearerTokenExpiryDate;
-  if (refreshToken) managementApiClient.refreshToken = refreshToken;
+    client.bearerTokenExpiryDate = bearerTokenExpiryDate;
+  if (refreshToken) client.refreshToken = refreshToken;
   if (refreshTokenExpiryDate)
-    managementApiClient.refreshTokenExpiryDate = refreshTokenExpiryDate;
+    client.refreshTokenExpiryDate = refreshTokenExpiryDate;
   if (contensisClassicToken)
-    managementApiClient.contensisClassicToken = contensisClassicToken;
+    client.contensisClassicToken = contensisClassicToken;
 
-  return managementApiClient;
+  return client;
 };
