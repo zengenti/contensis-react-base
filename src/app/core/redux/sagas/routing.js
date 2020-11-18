@@ -12,8 +12,12 @@ import {
 import { cachedSearch, deliveryApi } from '~/core/util/ContensisDeliveryApi';
 import { selectVersionStatus } from '~/core/redux/selectors/version';
 import {
+  selectCurrentAncestors,
+  selectCurrentNode,
   selectCurrentProject,
+  selectMappedEntry,
   selectRouteEntry,
+  selectRouteEntryEntryId,
 } from '~/core/redux/selectors/routing';
 import { GET_NODE_TREE } from '../types/navigation';
 import { hasNavigationTree } from '../selectors/navigation';
@@ -21,6 +25,7 @@ import { routeEntryByFieldsQuery } from './queries';
 import { ensureNodeTreeSaga } from './navigation';
 import { handleRequiresLoginSaga } from '~/features/login/redux/sagas/login';
 import { findContentTypeMapping } from '~/core/util/helpers';
+import { Map } from 'immutable';
 
 export const routingSagas = [
   takeEvery(SET_NAVIGATION_PATH, getRouteSaga),
@@ -116,7 +121,13 @@ function* getRouteSaga(action) {
         //   node: routeNode,
         //   isLoading: false,
         // });
-      } else yield call(setRouteEntry);
+      } else
+        yield call(
+          setRouteEntry,
+          routeEntry.toJS(),
+          yield select(selectCurrentNode),
+          yield select(selectCurrentAncestors)
+        );
     } else {
       // Handle homepage
       if (isHome) {
@@ -303,17 +314,22 @@ function* setRouteEntry(
   entryMapper,
   notFound = false
 ) {
-  const mappedEntry = yield mapRouteEntry(entryMapper, {
-    ...node,
-    entry,
-    ancestors,
-    siblings,
-  });
+  const id = (entry && entry.sys.id) || null;
+  const currentEntryId = yield select(selectRouteEntryEntryId);
+  const mappedEntry =
+    currentEntryId === id
+      ? (yield select(selectMappedEntry) || Map()).toJS()
+      : yield mapRouteEntry(entryMapper, {
+          ...node,
+          entry,
+          ancestors,
+          siblings,
+        });
 
   yield all([
     put({
       type: SET_ENTRY,
-      id: (entry && entry.sys.id) || null,
+      id,
       entry,
       mappedEntry,
       node,

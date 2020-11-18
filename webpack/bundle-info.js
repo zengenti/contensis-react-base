@@ -31,7 +31,10 @@ REVERSE_PROXY_PATHS.forEach(path => {
   };
 });
 
-const registrationProxy = { target: 'http://localhost:4000' };
+const registrationProxy = {
+  target: 'http://register.contensis.zenhub.contensis.cloud',
+  changeOrigin: true,
+};
 
 const DEVSERVER_PROXIES = {
   ...apiProxies,
