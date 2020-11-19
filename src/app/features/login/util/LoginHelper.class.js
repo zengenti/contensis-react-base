@@ -178,7 +178,7 @@ export class LoginHelper {
         typeof location !== 'undefined' &&
         redirectPath !== LoginHelper.LOGIN_ROUTE
       )
-        location.href = url;
+        location.replace(url);
     }
   }
 
