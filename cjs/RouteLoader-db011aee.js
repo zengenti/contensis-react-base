@@ -1,12 +1,12 @@
 'use strict';
 
 var React = require('react');
-var reactRouterDom = require('react-router-dom');
-var reactRedux = require('react-redux');
-var routing = require('./routing-37e4f287.js');
-var ToJs = require('./ToJs-8f6b21c9.js');
-var reactRouterConfig = require('react-router-config');
-var reactHotLoader = require('react-hot-loader');
+var require$$9 = require('react-router-dom');
+var require$$4 = require('react-redux');
+var routing = require('./routing-d329fb9f.js');
+var ToJs = require('./ToJs-caf909b4.js');
+var require$$11 = require('react-router-config');
+var require$$10 = require('react-hot-loader');
 var PropTypes = require('prop-types');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
@@ -20,7 +20,7 @@ const Status = ({
   code,
   children
 }) => {
-  return React__default['default'].createElement(reactRouterDom.Route, {
+  return React__default['default'].createElement(require$$9.Route, {
     render: ({
       staticContext
     }) => {
@@ -62,10 +62,10 @@ const RouteLoader = ({
   userGroups,
   withEvents
 }) => {
-  const location = reactRouterDom.useLocation();
+  const location = require$$9.useLocation();
   const trimmedPath = getTrimmedPath(location.pathname); // Match any Static Routes a developer has defined
 
-  const matchedStaticRoute = () => reactRouterConfig.matchRoutes(routes.StaticRoutes, location.pathname);
+  const matchedStaticRoute = () => require$$11.matchRoutes(routes.StaticRoutes, location.pathname);
 
   const isStaticRoute = () => matchedStaticRoute().length > 0;
 
@@ -88,14 +88,14 @@ const RouteLoader = ({
   }, [location, setPath]); // Need to redirect when url endswith a /
 
   if (location.pathname.length > trimmedPath.length) {
-    return React__default['default'].createElement(reactRouterDom.Redirect, {
+    return React__default['default'].createElement(require$$9.Redirect, {
       to: trimmedPath
     });
   } // Render any Static Routes a developer has defined
 
 
   if (isStaticRoute() && !(!isLoggedIn && routeRequiresLogin)) {
-    if (ToJs.matchUserGroup(userGroups, routeRequiresLogin)) return reactRouterConfig.renderRoutes(routes.StaticRoutes, {
+    if (ToJs.matchUserGroup(userGroups, routeRequiresLogin)) return require$$11.renderRoutes(routes.StaticRoutes, {
       projectId,
       contentTypeId,
       entry,
@@ -171,7 +171,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = {
   setNavigationPath: routing.setNavigationPath
 };
-var RouteLoader$1 = reactHotLoader.hot(module)(reactRedux.connect(mapStateToProps, mapDispatchToProps)(ToJs.toJS(RouteLoader)));
+var RouteLoader$1 = require$$10.hot(module)(require$$4.connect(mapStateToProps, mapDispatchToProps)(ToJs.toJS(RouteLoader)));
 
 exports.RouteLoader = RouteLoader$1;
-//# sourceMappingURL=RouteLoader-e332e4fb.js.map
+//# sourceMappingURL=RouteLoader-db011aee.js.map
