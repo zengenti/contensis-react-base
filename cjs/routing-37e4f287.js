@@ -1,6 +1,6 @@
 'use strict';
 
-var require$$0 = require('immutable');
+var immutable = require('immutable');
 var queryString = require('query-string');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
@@ -90,13 +90,13 @@ const addHostname = typeof window == 'undefined' || window.location.host == 'loc
 }` : clientHostname();
 
 const selectRouteEntry = state => {
-  return state.getIn(['routing', 'entry'], require$$0.Map());
+  return state.getIn(['routing', 'entry'], immutable.Map());
 };
 const selectMappedEntry = state => {
   return state.getIn(['routing', 'mappedEntry'], null);
 };
 const selectNodeDepends = state => {
-  return state.getIn(['routing', 'nodeDepends'], require$$0.List());
+  return state.getIn(['routing', 'nodeDepends'], immutable.List());
 };
 const selectCurrentTreeID = state => {
   return state.getIn(['routing', 'currentTreeId']);
@@ -131,13 +131,13 @@ const selectIsNotFound = state => {
   return state.getIn(['routing', 'notFound']);
 };
 const selectCurrentAncestors = state => {
-  return state.getIn(['routing', 'currentNodeAncestors'], require$$0.List());
+  return state.getIn(['routing', 'currentNodeAncestors'], immutable.List());
 };
 const selectCurrentNode = state => {
   return state.getIn(['routing', 'currentNode']);
 };
 const selectBreadcrumb = state => {
-  return (selectCurrentAncestors(state) || require$$0.List()).push(selectCurrentNode(state));
+  return (selectCurrentAncestors(state) || immutable.List()).push(selectCurrentNode(state));
 };
 const selectRouteLoading = state => {
   return state.getIn(['routing', 'isLoading']);
@@ -194,4 +194,4 @@ exports.setCurrentProject = setCurrentProject;
 exports.setNavigationPath = setNavigationPath;
 exports.setRoute = setRoute;
 exports.setSurrogateKeys = setSurrogateKeys;
-//# sourceMappingURL=routing-d329fb9f.js.map
+//# sourceMappingURL=routing-37e4f287.js.map

@@ -1,21 +1,21 @@
 'use strict';
 
-var require$$0 = require('immutable');
-var routing = require('./routing-d329fb9f.js');
+var immutable = require('immutable');
+var routing = require('./routing-37e4f287.js');
 var effects = require('redux-saga/effects');
-var ToJs = require('./ToJs-caf909b4.js');
+var ToJs = require('./ToJs-8f6b21c9.js');
 var contensisManagementApi = require('contensis-management-api');
 var mapJson = require('jsonpath-mapper');
 var awaitToJs = require('await-to-js');
-var require$$12 = require('js-cookie');
+var Cookies = require('js-cookie');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
 var mapJson__default = /*#__PURE__*/_interopDefaultLegacy(mapJson);
-var require$$12__default = /*#__PURE__*/_interopDefaultLegacy(require$$12);
+var Cookies__default = /*#__PURE__*/_interopDefaultLegacy(Cookies);
 
 const fromJSOrdered = js => {
-  return typeof js !== 'object' || js === null ? js : Array.isArray(js) ? require$$0.Seq(js).map(fromJSOrdered).toList() : require$$0.Seq(js).map(fromJSOrdered).toOrderedMap();
+  return typeof js !== 'object' || js === null ? js : Array.isArray(js) ? immutable.Seq(js).map(fromJSOrdered).toList() : immutable.Seq(js).map(fromJSOrdered).toOrderedMap();
 };
 
 const ACTION_PREFIX = '@USER/';
@@ -42,16 +42,16 @@ var types = /*#__PURE__*/Object.freeze({
   REGISTER_USER_FAILED: REGISTER_USER_FAILED
 });
 
-const defaultAuthenticationState = require$$0.Map({
+const defaultAuthenticationState = immutable.Map({
   authenticated: false,
   authenticationError: false,
   clientCredentials: null,
   error: false,
   loading: false
 });
-const initialUserState = require$$0.Map({
+const initialUserState = immutable.Map({
   authenticationState: defaultAuthenticationState,
-  groups: new require$$0.List([])
+  groups: new immutable.List([])
 });
 var UserReducer = ((state = initialUserState, action) => {
   switch (action.type) {
@@ -108,7 +108,7 @@ var UserReducer = ((state = initialUserState, action) => {
         } = action; // Set registration object from the supplied action.user
         // so we can call these values back later
 
-        const nextState = state.set('registration', user ? fromJSOrdered(user) : state.get('registration', require$$0.Map())); // Set registration flags so the UI can track the status
+        const nextState = state.set('registration', user ? fromJSOrdered(user) : state.get('registration', immutable.Map())); // Set registration flags so the UI can track the status
 
         return nextState.setIn(['registration', 'success'], action.type === REGISTER_USER_SUCCESS).setIn(['registration', 'error'], error || false).setIn(['registration', 'loading'], action.type === REGISTER_USER);
       }
@@ -181,7 +181,7 @@ const COOKIE_VALID_DAYS = 1; // 0 = Session cookie
 // Override the default js-cookie conversion / encoding
 // methods so the written values work with Contensis sites
 
-const _cookie = require$$12__default['default'].withConverter({
+const _cookie = Cookies__default['default'].withConverter({
   read: value => decodeURIComponent(value),
   write: value => encodeURIComponent(value)
 });
@@ -634,7 +634,7 @@ function* logoutUserSaga({
 }
 
 function* refreshSecurityToken() {
-  const clientCredentials = ((yield effects.select(ToJs.selectClientCredentials)) || require$$0.Map()).toJS();
+  const clientCredentials = ((yield effects.select(ToJs.selectClientCredentials)) || immutable.Map()).toJS();
 
   if (Object.keys(clientCredentials).length > 0) {
     const client = getManagementApiClient(clientCredentials);
@@ -662,4 +662,4 @@ exports.initialUserState = initialUserState;
 exports.loginSagas = loginSagas;
 exports.refreshSecurityToken = refreshSecurityToken;
 exports.types = types;
-//# sourceMappingURL=login-93488756.js.map
+//# sourceMappingURL=login-dad1316b.js.map

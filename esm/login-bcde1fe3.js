@@ -5,7 +5,7 @@ import { s as selectUserIsAuthenticated, a as selectUserGroups, m as matchUserGr
 import { Client } from 'contensis-management-api';
 import mapJson from 'jsonpath-mapper';
 import { to } from 'await-to-js';
-import require$$12 from 'js-cookie';
+import Cookies from 'js-cookie';
 
 const fromJSOrdered = js => {
   return typeof js !== 'object' || js === null ? js : Array.isArray(js) ? Seq(js).map(fromJSOrdered).toList() : Seq(js).map(fromJSOrdered).toOrderedMap();
@@ -174,7 +174,7 @@ const COOKIE_VALID_DAYS = 1; // 0 = Session cookie
 // Override the default js-cookie conversion / encoding
 // methods so the written values work with Contensis sites
 
-const _cookie = require$$12.withConverter({
+const _cookie = Cookies.withConverter({
   read: value => decodeURIComponent(value),
   write: value => encodeURIComponent(value)
 });
@@ -643,4 +643,4 @@ function* refreshSecurityToken() {
 }
 
 export { LOGIN_USER as L, REGISTER_USER as R, UserReducer as U, REGISTER_USER_SUCCESS as a, REGISTER_USER_FAILED as b, LOGOUT_USER as c, LoginHelper as d, fromJSOrdered as f, handleRequiresLoginSaga as h, initialUserState as i, loginSagas as l, refreshSecurityToken as r, types as t };
-//# sourceMappingURL=login-d44f8b41.js.map
+//# sourceMappingURL=login-bcde1fe3.js.map

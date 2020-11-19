@@ -3,13 +3,13 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 require('react');
-var require$$4 = require('react-redux');
+var reactRedux = require('react-redux');
 require('immutable');
-var routing = require('./routing-d329fb9f.js');
-var login = require('./login-93488756.js');
+var routing = require('./routing-37e4f287.js');
+var login = require('./login-dad1316b.js');
 require('query-string');
 require('redux-saga/effects');
-var ToJs = require('./ToJs-caf909b4.js');
+var ToJs = require('./ToJs-8f6b21c9.js');
 require('contensis-management-api');
 require('jsonpath-mapper');
 require('await-to-js');
@@ -35,8 +35,8 @@ var actions = /*#__PURE__*/Object.freeze({
 });
 
 const useLogin = () => {
-  const dispatch = require$$4.useDispatch();
-  const select = require$$4.useSelector;
+  const dispatch = reactRedux.useDispatch();
+  const select = reactRedux.useSelector;
   return {
     loginUser: (username, password) => dispatch(loginUser(username, password)),
     logoutUser: redirectPath => dispatch(logoutUser(redirectPath)),
@@ -60,8 +60,8 @@ LoginContainer.propTypes = {};
 var Login_container = ToJs.toJS(LoginContainer);
 
 const useLogin$1 = () => {
-  const dispatch = require$$4.useDispatch();
-  const select = require$$4.useSelector;
+  const dispatch = reactRedux.useDispatch();
+  const select = reactRedux.useSelector;
   return {
     registerUser: (user, mappers) => dispatch(registerUser(user, mappers)),
     error: select(ToJs.selectUserRegistrationError),
@@ -111,7 +111,7 @@ const withLogin = WrappedComponent => {
     loginUser,
     logoutUser
   };
-  const ConnectedComponent = require$$4.connect(mapStateToProps, mapDispatchToProps)(ToJs.toJS(WrappedComponent));
+  const ConnectedComponent = reactRedux.connect(mapStateToProps, mapDispatchToProps)(ToJs.toJS(WrappedComponent));
   ConnectedComponent.displayName = `${getDisplayName(WrappedComponent)}`;
   return ConnectedComponent;
 };
@@ -141,7 +141,7 @@ const withRegistration = WrappedComponent => {
   const mapDispatchToProps = {
     registerUser
   };
-  const ConnectedComponent = require$$4.connect(mapStateToProps, mapDispatchToProps)(ToJs.toJS(WrappedComponent));
+  const ConnectedComponent = reactRedux.connect(mapStateToProps, mapDispatchToProps)(ToJs.toJS(WrappedComponent));
   ConnectedComponent.displayName = `${getDisplayName$1(WrappedComponent)}`;
   return ConnectedComponent;
 };

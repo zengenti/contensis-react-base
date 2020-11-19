@@ -1,21 +1,21 @@
 'use strict';
 
 var React = require('react');
-var require$$0 = require('immutable');
+var immutable = require('immutable');
 var history$1 = require('history');
-var require$$2 = require('contensis-delivery-api');
-var routing = require('./routing-d329fb9f.js');
+var contensisDeliveryApi = require('contensis-delivery-api');
+var routing = require('./routing-37e4f287.js');
 var redux = require('redux');
 var reduxImmutable = require('redux-immutable');
 var thunk = require('redux-thunk');
 var createSagaMiddleware = require('redux-saga');
-var version = require('./version-e15bb6fa.js');
-var login = require('./login-93488756.js');
+var version = require('./version-e5fb1848.js');
+var login = require('./login-dad1316b.js');
 var effects = require('redux-saga/effects');
 var log = require('loglevel');
 var awaitToJs = require('await-to-js');
 require('react-hot-loader');
-var RouteLoader = require('./RouteLoader-db011aee.js');
+var RouteLoader = require('./RouteLoader-e332e4fb.js');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -70,9 +70,9 @@ const pickProject = (hostname, query) => {
   return project === 'unknown' ? p.id : project;
 };
 
-const initialState = require$$0.Map({
+const initialState = immutable.Map({
   root: null,
-  treeDepends: new require$$0.List([]),
+  treeDepends: new immutable.List([]),
   isError: false,
   isReady: false
 });
@@ -80,7 +80,7 @@ var NavigationReducer = ((state = initialState, action) => {
   switch (action.type) {
     case version.SET_NODE_TREE:
       {
-        return state.set('root', require$$0.fromJS(action.nodes)).set('isReady', true);
+        return state.set('root', immutable.fromJS(action.nodes)).set('isReady', true);
       }
 
     case version.GET_NODE_TREE_ERROR:
@@ -93,20 +93,20 @@ var NavigationReducer = ((state = initialState, action) => {
   }
 });
 
-let initialState$1 = require$$0.OrderedMap({
+let initialState$1 = immutable.OrderedMap({
   contentTypeId: null,
   currentPath: '/',
   currentNode: [],
-  currentNodeAncestors: require$$0.List(),
+  currentNodeAncestors: immutable.List(),
   currentProject: 'unknown',
   entryID: null,
   entry: null,
   currentTreeId: null,
-  entryDepends: require$$0.List(),
+  entryDepends: immutable.List(),
   isLoading: false,
   location: null,
-  mappedEntry: require$$0.OrderedMap(),
-  nodeDepends: require$$0.List(),
+  mappedEntry: immutable.OrderedMap(),
+  nodeDepends: immutable.List(),
   notFound: false,
   staticRoute: null
 });
@@ -115,10 +115,10 @@ var RoutingReducer = ((state = initialState$1, action) => {
     case routing.SET_ANCESTORS:
       {
         if (action.ancestors) {
-          return state.set('currentNodeAncestors', require$$0.fromJS(action.ancestors));
+          return state.set('currentNodeAncestors', immutable.fromJS(action.ancestors));
         }
 
-        return state.set('currentNodeAncestors', require$$0.fromJS(action.ancestors));
+        return state.set('currentNodeAncestors', immutable.fromJS(action.ancestors));
       }
 
     case routing.SET_ENTRY:
@@ -133,10 +133,10 @@ var RoutingReducer = ((state = initialState$1, action) => {
         let nextState;
 
         if (!entry) {
-          nextState = state.set('entryID', null).set('entry', null).set('mappedEntry', require$$0.OrderedMap()).set('isLoading', isLoading).set('notFound', notFound);
+          nextState = state.set('entryID', null).set('entry', null).set('mappedEntry', immutable.OrderedMap()).set('isLoading', isLoading).set('notFound', notFound);
         } else {
-          nextState = state.set('entryID', action.id).set('entry', require$$0.fromJS(entry)).set('isLoading', isLoading).set('notFound', notFound);
-          if (mappedEntry && Object.keys(mappedEntry) > 0) nextState = nextState.set('mappedEntry', require$$0.fromJS(mappedEntry)).set('entry', require$$0.fromJS({
+          nextState = state.set('entryID', action.id).set('entry', immutable.fromJS(entry)).set('isLoading', isLoading).set('notFound', notFound);
+          if (mappedEntry && Object.keys(mappedEntry) > 0) nextState = nextState.set('mappedEntry', immutable.fromJS(mappedEntry)).set('entry', immutable.fromJS({
             sys: entry.sys
           }));
         }
@@ -145,7 +145,7 @@ var RoutingReducer = ((state = initialState$1, action) => {
           return nextState.set('nodeDepends', null).set('currentNode', null);
         } else {
           // On Set Node, we reset all dependants.
-          return nextState.set('currentNode', require$$0.fromJS(node)).removeIn(['currentNode', 'entry']); // We have the entry stored elsewhere, so lets not keep it twice.
+          return nextState.set('currentNode', immutable.fromJS(node)).removeIn(['currentNode', 'entry']); // We have the entry stored elsewhere, so lets not keep it twice.
         }
       }
 
@@ -163,13 +163,13 @@ var RoutingReducer = ((state = initialState$1, action) => {
           const entryUri = state.getIn(['entry', 'sys', 'uri']);
 
           if (entryUri != action.path) {
-            return state.set('currentPath', require$$0.fromJS(action.path)).set('location', require$$0.fromJS(action.location)).set('staticRoute', require$$0.fromJS({ ...staticRoute,
+            return state.set('currentPath', immutable.fromJS(action.path)).set('location', immutable.fromJS(action.location)).set('staticRoute', immutable.fromJS({ ...staticRoute,
               route: { ...staticRoute.route,
                 component: null
               }
             })).set('isLoading', typeof window !== 'undefined');
           } else {
-            return state.set('location', require$$0.fromJS(action.location)).set('staticRoute', require$$0.fromJS({ ...staticRoute,
+            return state.set('location', immutable.fromJS(action.location)).set('staticRoute', immutable.fromJS({ ...staticRoute,
               route: { ...staticRoute.route,
                 component: null
               }
@@ -199,8 +199,8 @@ var RoutingReducer = ((state = initialState$1, action) => {
         }
 
         let currentNodeDepends = state.get('nodeDepends');
-        const allNodeDepends = require$$0.Set.union([require$$0.Set(siblingIDs), currentNodeDepends]);
-        return state.set('nodeDepends', allNodeDepends).set('currentNodeSiblings', require$$0.fromJS(action.siblings)).set('currentNodeSiblingsParent', currentNodeSiblingParent);
+        const allNodeDepends = immutable.Set.union([immutable.Set(siblingIDs), currentNodeDepends]);
+        return state.set('nodeDepends', allNodeDepends).set('currentNodeSiblings', immutable.fromJS(action.siblings)).set('currentNodeSiblingsParent', currentNodeSiblingParent);
       }
 
     case routing.SET_SURROGATE_KEYS:
@@ -211,7 +211,7 @@ var RoutingReducer = ((state = initialState$1, action) => {
     case routing.SET_TARGET_PROJECT:
       {
         return state.set('currentProject', action.project).set('currentTreeId', '') //getTreeID(action.project))
-        .set('allowedGroups', require$$0.fromJS(action.allowedGroups));
+        .set('allowedGroups', immutable.fromJS(action.allowedGroups));
       }
 
     default:
@@ -219,7 +219,7 @@ var RoutingReducer = ((state = initialState$1, action) => {
   }
 });
 
-let initialState$2 = require$$0.Map({
+let initialState$2 = immutable.Map({
   commitRef: null,
   buildNo: null,
   contensisVersionStatus: 'published'
@@ -366,20 +366,20 @@ class DeliveryApi {
     };
 
     this.search = (query, linkDepth, project, env) => {
-      const client = require$$2.Client.create(getClientConfig(project));
+      const client = contensisDeliveryApi.Client.create(getClientConfig(project));
       return client.entries.search(query, typeof linkDepth !== 'undefined' ? linkDepth : 1);
     };
 
     this.getClient = (deliveryApiStatus = 'published', project, env) => {
       const baseConfig = getClientConfig(project);
       baseConfig.versionStatus = deliveryApiStatus;
-      return require$$2.Client.create(baseConfig);
+      return contensisDeliveryApi.Client.create(baseConfig);
     };
 
     this.getEntry = (id, linkDepth = 0, deliveryApiStatus = 'published', project, env) => {
       const baseConfig = getClientConfig(project);
       baseConfig.versionStatus = deliveryApiStatus;
-      const client = require$$2.Client.create(baseConfig); // return client.entries.get(id, linkDepth);
+      const client = contensisDeliveryApi.Client.create(baseConfig); // return client.entries.get(id, linkDepth);
 
       return client.entries.get({
         id,
@@ -484,12 +484,12 @@ class CachedSearch {
   }
 
   search(query, linkDepth, project, env) {
-    const client = require$$2.Client.create(getClientConfig(project));
+    const client = contensisDeliveryApi.Client.create(getClientConfig(project));
     return this.request(project + JSON.stringify(query) + linkDepth.toString(), () => client.entries.search(query, linkDepth));
   }
 
   get(id, linkDepth, versionStatus, project, env) {
-    const client = require$$2.Client.create(getClientConfig(project));
+    const client = contensisDeliveryApi.Client.create(getClientConfig(project));
     client.clientConfig.versionStatus = versionStatus;
     return this.request(id, () => client.entries.get({
       id,
@@ -498,37 +498,37 @@ class CachedSearch {
   }
 
   getContentType(id, project, env) {
-    const client = require$$2.Client.create(getClientConfig(project));
+    const client = contensisDeliveryApi.Client.create(getClientConfig(project));
     return this.request(`[CONTENT TYPE] ${id} ${project}`, () => client.contentTypes.get(id));
   }
 
   getTaxonomyNode(key, project, env) {
-    const client = require$$2.Client.create(getClientConfig(project));
+    const client = contensisDeliveryApi.Client.create(getClientConfig(project));
     return this.request(`[TAXONOMY NODE] ${key}`, () => client.taxonomy.resolveChildren(key).then(node => this.extendTaxonomyNode(node)));
   }
 
   getRootNode(options, project, env) {
-    const client = require$$2.Client.create(getClientConfig(project));
+    const client = contensisDeliveryApi.Client.create(getClientConfig(project));
     return this.request(`${project} / ${JSON.stringify(options)}`, () => client.nodes.getRoot(options));
   }
 
   getNode(options, project, env) {
-    const client = require$$2.Client.create(getClientConfig(project));
+    const client = contensisDeliveryApi.Client.create(getClientConfig(project));
     return this.request(`${project} ${options && options.path || options} ${JSON.stringify(options)}`, () => client.nodes.get(options));
   }
 
   getAncestors(options, project, env) {
-    const client = require$$2.Client.create(getClientConfig(project));
+    const client = contensisDeliveryApi.Client.create(getClientConfig(project));
     return this.request(`${project} [A] ${options && options.id || options} ${JSON.stringify(options)}`, () => client.nodes.getAncestors(options));
   }
 
   getChildren(options, project, env) {
-    const client = require$$2.Client.create(getClientConfig(project));
+    const client = contensisDeliveryApi.Client.create(getClientConfig(project));
     return this.request(`${project} [C] ${options && options.id || options} ${JSON.stringify(options)}`, () => client.nodes.getChildren(options));
   }
 
   getSiblings(options, project, env) {
-    const client = require$$2.Client.create(getClientConfig(project));
+    const client = contensisDeliveryApi.Client.create(getClientConfig(project));
     return this.request(`${project} [S] ${options && options.id || options} ${JSON.stringify(options)}`, () => client.nodes.getSiblings(options));
   }
 
@@ -622,17 +622,17 @@ const Fields = {
 
 const fieldExpression = (field, value, operator = 'equalTo', weight = null) => {
   if (!field || !value) return [];
-  if (Array.isArray(value)) return equalToOrIn(field, value, operator);else return !weight ? [require$$2.Op[operator](field, value)] : [require$$2.Op[operator](field, value).weight(weight)];
+  if (Array.isArray(value)) return equalToOrIn(field, value, operator);else return !weight ? [contensisDeliveryApi.Op[operator](field, value)] : [contensisDeliveryApi.Op[operator](field, value).weight(weight)];
 };
 const defaultExpressions = versionStatus => {
-  return [require$$2.Op.equalTo(Fields.sys.versionStatus, versionStatus)];
+  return [contensisDeliveryApi.Op.equalTo(Fields.sys.versionStatus, versionStatus)];
 };
 
-const equalToOrIn = (field, arr, operator = 'equalTo') => arr.length === 0 ? [] : arr.length === 1 ? [require$$2.Op[operator](field, arr[0])] : [require$$2.Op.in(field, ...arr)];
+const equalToOrIn = (field, arr, operator = 'equalTo') => arr.length === 0 ? [] : arr.length === 1 ? [contensisDeliveryApi.Op[operator](field, arr[0])] : [contensisDeliveryApi.Op.in(field, ...arr)];
 
 // eslint-disable-next-line import/named
 const routeEntryByFieldsQuery = (id, fields = [], versionStatus = 'published') => {
-  const query = new require$$2.Query(...[...fieldExpression('sys.id', id), ...defaultExpressions(versionStatus)]);
+  const query = new contensisDeliveryApi.Query(...[...fieldExpression('sys.id', id), ...defaultExpressions(versionStatus)]);
   query.fields = fields;
   return query;
 };
@@ -856,7 +856,7 @@ function* getRouteSaga(action) {
 function* setRouteEntry(entry, node, ancestors, siblings, entryMapper, notFound = false) {
   const id = entry && entry.sys && entry.sys.id || null;
   const currentEntryId = yield effects.select(routing.selectRouteEntryEntryId);
-  const mappedEntry = currentEntryId === id ? (yield effects.select(routing.selectMappedEntry) || require$$0.Map()).toJS() : yield mapRouteEntry(entryMapper, { ...node,
+  const mappedEntry = currentEntryId === id ? (yield effects.select(routing.selectMappedEntry) || immutable.Map()).toJS() : yield mapRouteEntry(entryMapper, { ...node,
     entry,
     ancestors,
     siblings
@@ -996,4 +996,4 @@ exports.deliveryApi = deliveryApi;
 exports.history = history;
 exports.pickProject = pickProject;
 exports.rootSaga = rootSaga;
-//# sourceMappingURL=App-b3e27021.js.map
+//# sourceMappingURL=App-0daaea8e.js.map
