@@ -713,7 +713,7 @@ function* getRouteSaga(action) {
         //   node: routeNode,
         //   isLoading: false,
         // });
-      } else yield effects.call(setRouteEntry, (routeEntry || require$$0.Map()).toJS(), (yield effects.select(routing.selectCurrentNode)), (yield effects.select(routing.selectCurrentAncestors)));
+      } else yield effects.call(setRouteEntry, routeEntry && routeEntry.toJS(), (yield effects.select(routing.selectCurrentNode)), (yield effects.select(routing.selectCurrentAncestors)));
     } else {
       // Handle homepage
       if (isHome) {
@@ -996,4 +996,4 @@ exports.deliveryApi = deliveryApi;
 exports.history = history;
 exports.pickProject = pickProject;
 exports.rootSaga = rootSaga;
-//# sourceMappingURL=App-11ebde16.js.map
+//# sourceMappingURL=App-b3e27021.js.map

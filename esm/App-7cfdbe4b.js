@@ -705,7 +705,7 @@ function* getRouteSaga(action) {
         //   node: routeNode,
         //   isLoading: false,
         // });
-      } else yield call(setRouteEntry, (routeEntry || Map()).toJS(), (yield select(selectCurrentNode)), (yield select(selectCurrentAncestors)));
+      } else yield call(setRouteEntry, routeEntry && routeEntry.toJS(), (yield select(selectCurrentNode)), (yield select(selectCurrentAncestors)));
     } else {
       // Handle homepage
       if (isHome) {
@@ -982,4 +982,4 @@ const AppRoot = props => {
 };
 
 export { AppRoot as A, browserHistory as b, createStore as c, deliveryApi as d, history as h, pickProject as p, rootSaga as r };
-//# sourceMappingURL=App-ab57c31a.js.map
+//# sourceMappingURL=App-7cfdbe4b.js.map
