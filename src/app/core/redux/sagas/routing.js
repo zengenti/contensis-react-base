@@ -124,7 +124,7 @@ function* getRouteSaga(action) {
       } else
         yield call(
           setRouteEntry,
-          (routeEntry || Map()).toJS(),
+          routeEntry && routeEntry.toJS(),
           yield select(selectCurrentNode),
           yield select(selectCurrentAncestors)
         );
