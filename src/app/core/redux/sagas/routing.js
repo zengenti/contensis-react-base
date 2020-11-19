@@ -124,7 +124,7 @@ function* getRouteSaga(action) {
       } else
         yield call(
           setRouteEntry,
-          routeEntry.toJS(),
+          (routeEntry || Map()).toJS(),
           yield select(selectCurrentNode),
           yield select(selectCurrentAncestors)
         );
@@ -314,7 +314,7 @@ function* setRouteEntry(
   entryMapper,
   notFound = false
 ) {
-  const id = (entry && entry.sys.id) || null;
+  const id = (entry && entry.sys && entry.sys.id) || null;
   const currentEntryId = yield select(selectRouteEntryEntryId);
   const mappedEntry =
     currentEntryId === id
