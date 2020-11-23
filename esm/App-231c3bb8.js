@@ -8,7 +8,7 @@ import { combineReducers } from 'redux-immutable';
 import thunk from 'redux-thunk';
 import createSagaMiddleware, { END } from 'redux-saga';
 import { G as GET_NODE_TREE_ERROR, S as SET_NODE_TREE, b as SET_VERSION, c as SET_VERSION_STATUS, d as GET_NODE_TREE, h as hasNavigationTree, e as selectVersionStatus } from './version-9c4c6e0e.js';
-import { U as UserReducer, h as handleRequiresLoginSaga, R as REGISTER_USER, a as REGISTER_USER_SUCCESS, b as REGISTER_USER_FAILED, l as loginSagas } from './login-bcde1fe3.js';
+import { U as UserReducer, h as handleRequiresLoginSaga, R as REGISTER_USER, a as REGISTER_USER_SUCCESS, b as REGISTER_USER_FAILED, l as loginSagas } from './login-59d83e30.js';
 import { takeEvery, select, put, call, all } from 'redux-saga/effects';
 import { info, error } from 'loglevel';
 import { to } from 'await-to-js';
@@ -982,4 +982,4 @@ const AppRoot = props => {
 };
 
 export { AppRoot as A, browserHistory as b, createStore as c, deliveryApi as d, history as h, pickProject as p, rootSaga as r };
-//# sourceMappingURL=App-0a45b10f.js.map
+//# sourceMappingURL=App-231c3bb8.js.map

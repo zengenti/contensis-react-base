@@ -479,22 +479,26 @@ LoginHelper.LOGIN_ROUTE = '/account/login';
 LoginHelper.ACCESS_DENIED_ROUTE = '/account/access-denied';
 
 LoginHelper.GetUserDetails = async client => {
-  let error,
+  let userError,
+      groupsError,
       user = {},
       groupsResult;
-  [error, user] = await to(client.security.users.getCurrent());
+  [userError, user] = await to(client.security.users.getCurrent());
 
   if (user && user.id) {
-    [error, groupsResult] = await to(client.security.users.getUserGroups({
+    [groupsError, groupsResult] = await to(client.security.users.getUserGroups({
       userId: user.id,
       includeInherited: true
     })); // Set groups attribute in user object to be the items
     // array from the getUserGroups result
 
-    if (groupsResult && groupsResult.items) user.groups = groupsResult.items;
+    if (groupsResult && groupsResult.items) user.groups = groupsResult.items; //If groups call fails the log the error but all the user to login still
+    // eslint-disable-next-line no-console
+
+    if (groupsError) console.log(groupsError);
   }
 
-  return [error, user];
+  return [userError, user];
 };
 
 const loginSagas = [takeEvery(LOGIN_USER, loginUserSaga), takeEvery(LOGOUT_USER, logoutUserSaga), takeEvery(VALIDATE_USER, validateUserSaga), takeEvery(SET_AUTHENTICATION_STATE, redirectAfterSuccessfulLoginSaga)];
@@ -643,4 +647,4 @@ function* refreshSecurityToken() {
 }
 
 export { LOGIN_USER as L, REGISTER_USER as R, UserReducer as U, REGISTER_USER_SUCCESS as a, REGISTER_USER_FAILED as b, LOGOUT_USER as c, LoginHelper as d, fromJSOrdered as f, handleRequiresLoginSaga as h, initialUserState as i, loginSagas as l, refreshSecurityToken as r, types as t };
-//# sourceMappingURL=login-bcde1fe3.js.map
+//# sourceMappingURL=login-59d83e30.js.map

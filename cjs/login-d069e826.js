@@ -486,22 +486,26 @@ LoginHelper.LOGIN_ROUTE = '/account/login';
 LoginHelper.ACCESS_DENIED_ROUTE = '/account/access-denied';
 
 LoginHelper.GetUserDetails = async client => {
-  let error,
+  let userError,
+      groupsError,
       user = {},
       groupsResult;
-  [error, user] = await awaitToJs.to(client.security.users.getCurrent());
+  [userError, user] = await awaitToJs.to(client.security.users.getCurrent());
 
   if (user && user.id) {
-    [error, groupsResult] = await awaitToJs.to(client.security.users.getUserGroups({
+    [groupsError, groupsResult] = await awaitToJs.to(client.security.users.getUserGroups({
       userId: user.id,
       includeInherited: true
     })); // Set groups attribute in user object to be the items
     // array from the getUserGroups result
 
-    if (groupsResult && groupsResult.items) user.groups = groupsResult.items;
+    if (groupsResult && groupsResult.items) user.groups = groupsResult.items; //If groups call fails the log the error but all the user to login still
+    // eslint-disable-next-line no-console
+
+    if (groupsError) console.log(groupsError);
   }
 
-  return [error, user];
+  return [userError, user];
 };
 
 const loginSagas = [effects.takeEvery(LOGIN_USER, loginUserSaga), effects.takeEvery(LOGOUT_USER, logoutUserSaga), effects.takeEvery(VALIDATE_USER, validateUserSaga), effects.takeEvery(SET_AUTHENTICATION_STATE, redirectAfterSuccessfulLoginSaga)];
@@ -662,4 +666,4 @@ exports.initialUserState = initialUserState;
 exports.loginSagas = loginSagas;
 exports.refreshSecurityToken = refreshSecurityToken;
 exports.types = types;
-//# sourceMappingURL=login-dad1316b.js.map
+//# sourceMappingURL=login-d069e826.js.map
