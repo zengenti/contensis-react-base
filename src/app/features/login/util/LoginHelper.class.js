@@ -124,13 +124,14 @@ export class LoginHelper {
   }
 
   static GetUserDetails = async client => {
-    let error,
+    let userError,
+      groupsError,
       user = {},
       groupsResult;
 
-    [error, user] = await to(client.security.users.getCurrent());
+    [userError, user] = await to(client.security.users.getCurrent());
     if (user && user.id) {
-      [error, groupsResult] = await to(
+      [groupsError, groupsResult] = await to(
         client.security.users.getUserGroups({
           userId: user.id,
           includeInherited: true,
@@ -139,8 +140,12 @@ export class LoginHelper {
       // Set groups attribute in user object to be the items
       // array from the getUserGroups result
       if (groupsResult && groupsResult.items) user.groups = groupsResult.items;
+
+      //If groups call fails the log the error but all the user to login still
+      // eslint-disable-next-line no-console
+      if (groupsError) console.log(groupsError);
     }
-    return [error, user];
+    return [userError, user];
   };
 
   static LogoutUser(redirectPath) {
