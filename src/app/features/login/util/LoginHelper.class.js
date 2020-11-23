@@ -141,7 +141,7 @@ export class LoginHelper {
       // array from the getUserGroups result
       if (groupsResult && groupsResult.items) user.groups = groupsResult.items;
 
-      //If groups call fails the log the error but all the user to login still
+      //If groups call fails then log the error but allow the user to login still
       // eslint-disable-next-line no-console
       if (groupsError) console.log(groupsError);
     }
