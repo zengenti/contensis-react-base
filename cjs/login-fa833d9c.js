@@ -499,7 +499,7 @@ LoginHelper.GetUserDetails = async client => {
     })); // Set groups attribute in user object to be the items
     // array from the getUserGroups result
 
-    if (groupsResult && groupsResult.items) user.groups = groupsResult.items; //If groups call fails the log the error but all the user to login still
+    if (groupsResult && groupsResult.items) user.groups = groupsResult.items; //If groups call fails then log the error but allow the user to login still
     // eslint-disable-next-line no-console
 
     if (groupsError) console.log(groupsError);
@@ -666,4 +666,4 @@ exports.initialUserState = initialUserState;
 exports.loginSagas = loginSagas;
 exports.refreshSecurityToken = refreshSecurityToken;
 exports.types = types;
-//# sourceMappingURL=login-d069e826.js.map
+//# sourceMappingURL=login-fa833d9c.js.map
