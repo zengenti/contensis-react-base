@@ -1,0 +1,4 @@
+{
+  "main": "../cjs/client.js",
+  "module": "../esm/client.js"
+}

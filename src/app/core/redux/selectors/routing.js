@@ -2,10 +2,13 @@ import { List, Map } from 'immutable';
 import { queryParams } from '~/core/util/navigation';
 
 export const selectRouteEntry = state => {
-  return state.getIn(['routing', 'entry'], Map({}));
+  return state.getIn(['routing', 'entry'], Map());
+};
+export const selectMappedEntry = state => {
+  return state.getIn(['routing', 'mappedEntry'], null);
 };
 export const selectNodeDepends = state => {
-  return state.getIn(['routing', 'nodeDepends'], new List([]));
+  return state.getIn(['routing', 'nodeDepends'], List());
 };
 export const selectCurrentTreeID = state => {
   return state.getIn(['routing', 'currentTreeId']);
@@ -44,13 +47,13 @@ export const selectIsNotFound = state => {
   return state.getIn(['routing', 'notFound']);
 };
 export const selectCurrentAncestors = state => {
-  return state.getIn(['routing', 'currentNodeAncestors'], new List());
+  return state.getIn(['routing', 'currentNodeAncestors'], List());
 };
 export const selectCurrentNode = state => {
   return state.getIn(['routing', 'currentNode']);
 };
 export const selectBreadcrumb = state => {
-  return (selectCurrentAncestors(state) || new List()).push(
+  return (selectCurrentAncestors(state) || List()).push(
     selectCurrentNode(state)
   );
 };

@@ -8,8 +8,9 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ImageminPlugin = require('imagemin-webpack-plugin').default;
 const WebpackModules = require('webpack-modules');
 const WebpackModuleNomodulePlugin = require('webpack-module-nomodule-plugin');
-const Visualizer = require('webpack-visualizer-plugin');
 const webpackNodeExternals = require('webpack-node-externals');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
+  .BundleAnalyzerPlugin;
 
 const BASE_CONFIG = require('./webpack.config.base');
 const { WEBPACK_DEFINE_CONFIG } = require('./bundle-info');
@@ -43,9 +44,6 @@ const CLIENT_MODERN_CONFIG = {
   },
   plugins: [
     new WebpackModules(),
-    new Visualizer({
-      filename: `./modern/client-stats.html`,
-    }),
     new HtmlWebPackPlugin({
       template: path.resolve(__dirname, '../public/index.ejs'),
       filename: path.resolve(__dirname, `../dist/index.html`),
@@ -103,9 +101,6 @@ const CLIENT_LEGACY_CONFIG = {
   },
   plugins: [
     new WebpackModules(),
-    new Visualizer({
-      filename: `./legacy/client-stats.html`,
-    }),
     new HtmlWebPackPlugin({
       template: path.resolve(__dirname, '../public/index.ejs'),
       filename: path.resolve(__dirname, `../dist/index.html`),
@@ -205,14 +200,24 @@ const SERVER_PROD_CONFIG = {
     new webpack.optimize.LimitChunkCountPlugin({
       maxChunks: 1,
     }),
-    new Visualizer({
-      filename: './server/server-stats.html',
-    }),
   ],
 };
 
-module.exports = [
-  merge(BASE_CONFIG, CLIENT_PROD_CONFIG, CLIENT_MODERN_CONFIG),
-  merge(BASE_CONFIG, CLIENT_PROD_CONFIG, CLIENT_LEGACY_CONFIG),
-  merge(BASE_CONFIG, SERVER_PROD_CONFIG),
-];
+const ANALYZE_CONFIG = {
+  plugins: [new BundleAnalyzerPlugin({ analyzerMode: 'static' })],
+};
+
+if (process.env.ANALYZE) {
+  module.exports = merge(
+    BASE_CONFIG,
+    CLIENT_PROD_CONFIG,
+    CLIENT_MODERN_CONFIG,
+    ANALYZE_CONFIG
+  );
+} else {
+  module.exports = [
+    merge(BASE_CONFIG, CLIENT_PROD_CONFIG, CLIENT_MODERN_CONFIG),
+    merge(BASE_CONFIG, CLIENT_PROD_CONFIG, CLIENT_LEGACY_CONFIG),
+    merge(BASE_CONFIG, SERVER_PROD_CONFIG),
+  ];
+}

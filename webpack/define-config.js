@@ -13,7 +13,7 @@ const {
   CONTENSIS_VERSION,
 } = process.env;
 
-const PROJECTS = (env) => [
+const PROJECTS = env => [
   {
     id: env.PROJECT,
     publicUri: env.PUBLIC_URL,
@@ -49,7 +49,9 @@ const SERVERS = {
   internalVip: INTERNAL_VIP,
   cms: url.cms,
   web: url.liveWeb,
+  previewWeb: url.previewWeb,
   iis: url.iisWeb,
+  previewIis: url.iisPreviewWeb,
 };
 
 const DELIVERY_API_CONFIG = {
