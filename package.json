@@ -160,7 +160,6 @@
     "leaflet": "^1.5.1",
     "loglevel": "^1.6.3",
     "minify-css-string": "1.0.0",
-    "module-alias": "^2.2.2",
     "oidc-client": "^1.5.4",
     "patch-package": "^6.2.2",
     "query-string": "^5.1.1",
