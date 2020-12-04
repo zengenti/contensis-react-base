@@ -9,7 +9,7 @@ var reactRouterDom = require('react-router-dom');
 var reactRedux = require('react-redux');
 var immutable = require('immutable');
 require('history');
-var App = require('./App-505bd85d.js');
+var App = require('./App-3ef504be.js');
 require('contensis-delivery-api');
 var routing = require('./routing-37e4f287.js');
 require('redux');

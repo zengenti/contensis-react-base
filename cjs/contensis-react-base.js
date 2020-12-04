@@ -19,7 +19,7 @@ var minifyCssString = require('minify-css-string');
 var immutable = require('immutable');
 var fromEntries = require('fromentries');
 require('history');
-var App = require('./App-505bd85d.js');
+var App = require('./App-3ef504be.js');
 require('contensis-delivery-api');
 var routing = require('./routing-37e4f287.js');
 require('redux');
