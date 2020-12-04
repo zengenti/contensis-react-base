@@ -15,8 +15,8 @@ import minifyCssString from 'minify-css-string';
 import { fromJS } from 'immutable';
 import fromEntries from 'fromentries';
 import 'history';
-import { c as createStore, h as history, d as deliveryApi, p as pickProject, r as rootSaga } from './App-c5d1fddf.js';
-export { A as ReactApp } from './App-c5d1fddf.js';
+import { c as createStore, h as history, d as deliveryApi, p as pickProject, r as rootSaga } from './App-2986c3ce.js';
+export { A as ReactApp } from './App-2986c3ce.js';
 import 'contensis-delivery-api';
 import { s as setCurrentProject, a as selectRouteEntry, b as selectCurrentProject } from './routing-8265aea1.js';
 import 'redux';
@@ -123,18 +123,6 @@ const handleResponse = (request, response, content, send = ResponseMethod.send) 
   // console.log('---', response.statusCode, '---');
   response[send](content);
 };
-
-const path = require('path');
-
-const moduleAlias = require('module-alias'); // The module alias code fixes an issue with server side rendered components
-// from an ecternal library using styled components
-
-
-moduleAlias.addAlias('styled-components', path.join(__dirname, '../../styled-components')); // const moduleBundles = fs.readdirSync('./dist/static/modern/js', 'utf8');
-// const coreModules = moduleBundles.filter(
-//   m =>
-//     m.startsWith('app.') || m.startsWith('vendor.') || m.startsWith('runtime.')
-// );
 
 const addStandardHeaders = (state, response, packagejson, groups) => {
   if (state) {

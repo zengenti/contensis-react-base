@@ -19,7 +19,7 @@ var minifyCssString = require('minify-css-string');
 var immutable = require('immutable');
 var fromEntries = require('fromentries');
 require('history');
-var App = require('./App-505bd85d.js');
+var App = require('./App-3ef504be.js');
 require('contensis-delivery-api');
 var routing = require('./routing-37e4f287.js');
 require('redux');
@@ -138,18 +138,6 @@ const handleResponse = (request, response, content, send = ResponseMethod.send) 
   // console.log('---', response.statusCode, '---');
   response[send](content);
 };
-
-const path = require('path');
-
-const moduleAlias = require('module-alias'); // The module alias code fixes an issue with server side rendered components
-// from an ecternal library using styled components
-
-
-moduleAlias.addAlias('styled-components', path.join(__dirname, '../../styled-components')); // const moduleBundles = fs.readdirSync('./dist/static/modern/js', 'utf8');
-// const coreModules = moduleBundles.filter(
-//   m =>
-//     m.startsWith('app.') || m.startsWith('vendor.') || m.startsWith('runtime.')
-// );
 
 const addStandardHeaders = (state, response, packagejson, groups) => {
   if (state) {
