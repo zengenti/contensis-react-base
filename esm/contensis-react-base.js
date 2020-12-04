@@ -16,8 +16,8 @@ import minifyCssString from 'minify-css-string';
 import { fromJS } from 'immutable';
 import fromEntries from 'fromentries';
 import 'history';
-import { c as createStore, h as history, G as GetDeliveryApiStatusFromHostname, p as pickProject, r as rootSaga } from './App-90e801f1.js';
-export { A as ReactApp } from './App-90e801f1.js';
+import { c as createStore, h as history, G as GetDeliveryApiStatusFromHostname, p as pickProject, r as rootSaga } from './App-21079b7b.js';
+export { A as ReactApp } from './App-21079b7b.js';
 import 'contensis-delivery-api';
 import { s as selectEntryDepends, a as selectNodeDepends, b as selectCurrentTreeID, c as selectRouteEntry, d as selectCurrentProject } from './selectors-99d4c59c.js';
 import { s as setCurrentProject } from './routing-35ccdb5f.js';
@@ -183,13 +183,6 @@ const hashKeys = keys => {
   return returnKeys;
 };
 
-const path = require('path');
-
-const moduleAlias = require('module-alias'); // The module alias code fixes an issue with server side rendered components
-// from an ecternal library using styled components
-
-
-moduleAlias.addAlias('styled-components', path.join(__dirname, '../../styled-components'));
 const moduleBundles = fs.readdirSync('./dist/static/modern/js', 'utf8');
 const coreModules = moduleBundles.filter(m => m.startsWith('app.') || m.startsWith('vendor.') || m.startsWith('runtime.'));
 

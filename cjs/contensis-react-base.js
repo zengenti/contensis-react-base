@@ -20,7 +20,7 @@ var minifyCssString = require('minify-css-string');
 var immutable = require('immutable');
 var fromEntries = require('fromentries');
 require('history');
-var App = require('./App-ff24e796.js');
+var App = require('./App-a0223b82.js');
 require('contensis-delivery-api');
 var selectors = require('./selectors-0fe2c691.js');
 var routing = require('./routing-1f9fac1b.js');
@@ -199,13 +199,6 @@ const hashKeys = keys => {
   return returnKeys;
 };
 
-const path = require('path');
-
-const moduleAlias = require('module-alias'); // The module alias code fixes an issue with server side rendered components
-// from an ecternal library using styled components
-
-
-moduleAlias.addAlias('styled-components', path.join(__dirname, '../../styled-components'));
 const moduleBundles = fs__default['default'].readdirSync('./dist/static/modern/js', 'utf8');
 const coreModules = moduleBundles.filter(m => m.startsWith('app.') || m.startsWith('vendor.') || m.startsWith('runtime.'));
 
