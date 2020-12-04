@@ -152,7 +152,6 @@
     "leaflet": "^1.5.1",
     "loglevel": "^1.6.3",
     "minify-css-string": "1.0.0",
-    "module-alias": "^2.2.2",
     "patch-package": "^6.2.0",
     "query-string": "^5.1.1",
     "react": "16.11.0",
