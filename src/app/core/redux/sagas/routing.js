@@ -8,6 +8,7 @@ import {
   SET_ROUTE,
   CALL_HISTORY_METHOD,
   SET_SIBLINGS,
+  UPDATE_LOADING_STATE,
 } from '~/core/redux/types/routing';
 import { cachedSearch, deliveryApi } from '~/core/util/ContensisDeliveryApi';
 import { selectVersionStatus } from '~/core/redux/selectors/version';
@@ -98,6 +99,10 @@ function* getRouteSaga(action) {
         //   node: routeNode,
         //   isLoading: false,
         // });
+        yield put({
+          type: UPDATE_LOADING_STATE,
+          isLoading: false,
+        });
       } else yield call(setRouteEntry);
     } else {
       let pathNode = null,
