@@ -21,6 +21,7 @@ const SET_NAVIGATION_PATH = `${ROUTING_PREFIX}_SET_NAVIGATION_PATH`;
 const SET_TARGET_PROJECT = `${ROUTING_PREFIX}_SET_TARGET_PROJECT`;
 const SET_ROUTE = `${ROUTING_PREFIX}_SET_ROUTE`;
 const CALL_HISTORY_METHOD = `${ROUTING_PREFIX}_CALL_HISTORY_METHOD`;
+const UPDATE_LOADING_STATE = `${ROUTING_PREFIX}_UPDATE_LOADING_STATE`;
 
 var routing = /*#__PURE__*/Object.freeze({
   __proto__: null,
@@ -35,7 +36,8 @@ var routing = /*#__PURE__*/Object.freeze({
   SET_NAVIGATION_PATH: SET_NAVIGATION_PATH,
   SET_TARGET_PROJECT: SET_TARGET_PROJECT,
   SET_ROUTE: SET_ROUTE,
-  CALL_HISTORY_METHOD: CALL_HISTORY_METHOD
+  CALL_HISTORY_METHOD: CALL_HISTORY_METHOD,
+  UPDATE_LOADING_STATE: UPDATE_LOADING_STATE
 });
 
 function queryParams(search) {
@@ -179,5 +181,5 @@ var user = /*#__PURE__*/Object.freeze({
   selectCaptchaToken: selectCaptchaToken
 });
 
-export { selectPasswordMessage as A, selectChangePasswordMessage as B, CALL_HISTORY_METHOD as C, selectCaptchaSiteKey as D, selectCaptchaResponse as E, selectQueryStringAsObject as F, SET_TARGET_PROJECT as S, selectNodeDepends as a, selectCurrentTreeID as b, selectRouteEntry as c, selectCurrentProject as d, SET_SIBLINGS as e, SET_ROUTE as f, SET_NAVIGATION_PATH as g, SET_ENTRY as h, SET_ANCESTORS as i, selectRouteEntryContentTypeId as j, selectIsNotFound as k, selectUserLoggedIn as l, selectRouteLoading as m, selectMappedEntry as n, selectCurrentPath as o, action as p, SET_NAVIGATION_NOT_FOUND as q, selectUser as r, selectEntryDepends as s, selectCurrentSearch as t, selectUsername as u, routing as v, routing$1 as w, user as x, selectUserMessage as y, selectLoginScreenMode as z };
-//# sourceMappingURL=selectors-99d4c59c.js.map
+export { selectPasswordMessage as A, selectChangePasswordMessage as B, CALL_HISTORY_METHOD as C, selectCaptchaSiteKey as D, selectCaptchaResponse as E, selectQueryStringAsObject as F, SET_TARGET_PROJECT as S, UPDATE_LOADING_STATE as U, selectNodeDepends as a, selectCurrentTreeID as b, selectRouteEntry as c, selectCurrentProject as d, SET_SIBLINGS as e, SET_ROUTE as f, SET_NAVIGATION_PATH as g, SET_ENTRY as h, SET_ANCESTORS as i, selectRouteEntryContentTypeId as j, selectIsNotFound as k, selectUserLoggedIn as l, selectRouteLoading as m, selectMappedEntry as n, selectCurrentPath as o, action as p, SET_NAVIGATION_NOT_FOUND as q, selectUser as r, selectEntryDepends as s, selectCurrentSearch as t, selectUsername as u, routing as v, routing$1 as w, user as x, selectUserMessage as y, selectLoginScreenMode as z };
+//# sourceMappingURL=selectors-19e46385.js.map

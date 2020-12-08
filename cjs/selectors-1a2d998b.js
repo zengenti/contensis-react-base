@@ -27,6 +27,7 @@ const SET_NAVIGATION_PATH = `${ROUTING_PREFIX}_SET_NAVIGATION_PATH`;
 const SET_TARGET_PROJECT = `${ROUTING_PREFIX}_SET_TARGET_PROJECT`;
 const SET_ROUTE = `${ROUTING_PREFIX}_SET_ROUTE`;
 const CALL_HISTORY_METHOD = `${ROUTING_PREFIX}_CALL_HISTORY_METHOD`;
+const UPDATE_LOADING_STATE = `${ROUTING_PREFIX}_UPDATE_LOADING_STATE`;
 
 var routing = /*#__PURE__*/Object.freeze({
   __proto__: null,
@@ -41,7 +42,8 @@ var routing = /*#__PURE__*/Object.freeze({
   SET_NAVIGATION_PATH: SET_NAVIGATION_PATH,
   SET_TARGET_PROJECT: SET_TARGET_PROJECT,
   SET_ROUTE: SET_ROUTE,
-  CALL_HISTORY_METHOD: CALL_HISTORY_METHOD
+  CALL_HISTORY_METHOD: CALL_HISTORY_METHOD,
+  UPDATE_LOADING_STATE: UPDATE_LOADING_STATE
 });
 
 function queryParams(search) {
@@ -193,6 +195,7 @@ exports.SET_NAVIGATION_PATH = SET_NAVIGATION_PATH;
 exports.SET_ROUTE = SET_ROUTE;
 exports.SET_SIBLINGS = SET_SIBLINGS;
 exports.SET_TARGET_PROJECT = SET_TARGET_PROJECT;
+exports.UPDATE_LOADING_STATE = UPDATE_LOADING_STATE;
 exports.action = action;
 exports.routing = routing;
 exports.routing$1 = routing$1;
@@ -218,4 +221,4 @@ exports.selectUserLoggedIn = selectUserLoggedIn;
 exports.selectUserMessage = selectUserMessage;
 exports.selectUsername = selectUsername;
 exports.user = user;
-//# sourceMappingURL=selectors-0fe2c691.js.map
+//# sourceMappingURL=selectors-1a2d998b.js.map
