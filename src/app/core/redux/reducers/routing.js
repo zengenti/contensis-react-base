@@ -93,7 +93,7 @@ export default (state = initialState, action) => {
       }
     }
     case UPDATE_LOADING_STATE: {
-      return state.set('isLoading', fromJS(action.isLoading));
+      return state.set('isLoading', action.isLoading);
     }
     case SET_NAVIGATION_PATH: {
       let staticRoute = false;
