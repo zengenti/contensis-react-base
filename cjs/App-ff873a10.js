@@ -429,7 +429,7 @@ var RoutingReducer = ((state = initialState, action) => {
 
     case selectors.UPDATE_LOADING_STATE:
       {
-        return state.set('isLoading', immutable.fromJS(action.isLoading));
+        return state.set('isLoading', action.isLoading);
       }
 
     case selectors.SET_NAVIGATION_PATH:
@@ -923,4 +923,4 @@ exports.createStore = createStore;
 exports.history = history;
 exports.pickProject = pickProject;
 exports.rootSaga = rootSaga;
-//# sourceMappingURL=App-4da11040.js.map
+//# sourceMappingURL=App-ff873a10.js.map

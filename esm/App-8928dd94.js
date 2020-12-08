@@ -421,7 +421,7 @@ var RoutingReducer = ((state = initialState, action) => {
 
     case UPDATE_LOADING_STATE:
       {
-        return state.set('isLoading', fromJS(action.isLoading));
+        return state.set('isLoading', action.isLoading);
       }
 
     case SET_NAVIGATION_PATH:
@@ -908,4 +908,4 @@ const AppRoot = props => {
 };
 
 export { AppRoot as A, GetDeliveryApiStatusFromHostname as G, GetClientSideDeliveryApiStatus as a, browserHistory as b, createStore as c, history as h, pickProject as p, rootSaga as r };
-//# sourceMappingURL=App-14a98b4f.js.map
+//# sourceMappingURL=App-8928dd94.js.map
