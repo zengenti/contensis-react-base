@@ -5,16 +5,9 @@ Object.defineProperty(exports, '__esModule', { value: true });
 require('react');
 var reactRedux = require('react-redux');
 require('immutable');
-<<<<<<< HEAD
-var routing = require('./routing-37e4f287.js');
-var login = require('./login-fa833d9c.js');
+var routing = require('./routing-82e00e38.js');
+var login = require('./login-cd832c12.js');
 require('query-string');
-=======
-var selectors = require('./selectors-1a2d998b.js');
-require('query-string');
-var sagas = require('./sagas-ac3c2bc5.js');
-var actions = require('./actions-c93154c3.js');
->>>>>>> isomorphic-base
 require('redux-saga/effects');
 var ToJs = require('./ToJs-8f6b21c9.js');
 require('contensis-management-api');

@@ -193,17 +193,8 @@ exports.selectRouteEntry = selectRouteEntry;
 exports.selectRouteEntryContentTypeId = selectRouteEntryContentTypeId;
 exports.selectRouteEntryEntryId = selectRouteEntryEntryId;
 exports.selectRouteLoading = selectRouteLoading;
-<<<<<<< HEAD:cjs/routing-37e4f287.js
 exports.setCurrentProject = setCurrentProject;
 exports.setNavigationPath = setNavigationPath;
 exports.setRoute = setRoute;
 exports.setSurrogateKeys = setSurrogateKeys;
-//# sourceMappingURL=routing-37e4f287.js.map
-=======
-exports.selectUser = selectUser;
-exports.selectUserLoggedIn = selectUserLoggedIn;
-exports.selectUserMessage = selectUserMessage;
-exports.selectUsername = selectUsername;
-exports.user = user;
-//# sourceMappingURL=selectors-1a2d998b.js.map
->>>>>>> isomorphic-base:cjs/selectors-1a2d998b.js
+//# sourceMappingURL=routing-82e00e38.js.map

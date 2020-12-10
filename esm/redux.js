@@ -1,18 +1,7 @@
 import 'immutable';
-<<<<<<< HEAD
-import { y as routing$1, x as action, z as routing$2, A as routing$3 } from './routing-8265aea1.js';
-import { n as navigation$2, v as version$1, d as GET_NODE_TREE, f as version$2, g as navigation$3, i as version$3 } from './version-9c4c6e0e.js';
+import { y as routing$1, x as action, z as routing$2, A as routing$3 } from './routing-920ca0ae.js';
+import { n as navigation$2, v as version$1, d as GET_NODE_TREE, f as version$2, g as navigation$3, i as version$3 } from './version-fea56161.js';
 import 'query-string';
-=======
-import { v as routing$1, p as action, w as routing$3, x as user$3 } from './selectors-19e46385.js';
-import { r as routing$2 } from './routing-8a773443.js';
-import { n as navigation$2, v as version$1, e as GET_NODE_TREE, f as version$2, g as navigation$3, i as version$3 } from './navigation-a6d0c98f.js';
-import 'query-string';
-import { a as user$1 } from './sagas-30af639f.js';
-import { u as user$2 } from './actions-0521cfe0.js';
-import 'redux-saga/effects';
-import 'js-cookie';
->>>>>>> isomorphic-base
 
 var types = {
   navigation: navigation$2,

@@ -15,31 +15,17 @@ import minifyCssString from 'minify-css-string';
 import { fromJS } from 'immutable';
 import fromEntries from 'fromentries';
 import 'history';
-<<<<<<< HEAD
-import { c as createStore, h as history, d as deliveryApi, p as pickProject, r as rootSaga } from './App-5f6ef07c.js';
-export { A as ReactApp } from './App-5f6ef07c.js';
+import { c as createStore, h as history, d as deliveryApi, p as pickProject, r as rootSaga } from './App-f430f598.js';
+export { A as ReactApp } from './App-f430f598.js';
 import 'contensis-delivery-api';
-import { s as setCurrentProject, a as selectRouteEntry, b as selectCurrentProject } from './routing-8265aea1.js';
-=======
-import { c as createStore, h as history, G as GetDeliveryApiStatusFromHostname, p as pickProject, r as rootSaga } from './App-8928dd94.js';
-export { A as ReactApp } from './App-8928dd94.js';
-import 'contensis-delivery-api';
-import { s as selectEntryDepends, a as selectNodeDepends, b as selectCurrentTreeID, c as selectRouteEntry, d as selectCurrentProject } from './selectors-19e46385.js';
-import { s as setCurrentProject } from './routing-8a773443.js';
-import { s as setVersionStatus, a as setVersion } from './navigation-a6d0c98f.js';
-import 'query-string';
->>>>>>> isomorphic-base
+import { s as setCurrentProject, a as selectRouteEntry, b as selectCurrentProject } from './routing-920ca0ae.js';
 import 'redux';
 import 'redux-immutable';
 import 'redux-thunk';
 import 'redux-saga';
-<<<<<<< HEAD
-import { s as setVersionStatus, a as setVersion } from './version-9c4c6e0e.js';
-import './login-a6f157c3.js';
+import { s as setVersionStatus, a as setVersion } from './version-fea56161.js';
+import './login-4c6053f2.js';
 import 'query-string';
-=======
-import './sagas-30af639f.js';
->>>>>>> isomorphic-base
 import 'redux-saga/effects';
 import 'loglevel';
 import './ToJs-1c73b10a.js';
@@ -50,11 +36,7 @@ import 'js-cookie';
 import { matchRoutes } from 'react-router-config';
 import 'react-hot-loader';
 import 'prop-types';
-<<<<<<< HEAD
-import './RouteLoader-b1969ecd.js';
-=======
-import './RouteLoader-888c3c9e.js';
->>>>>>> isomorphic-base
+import './RouteLoader-9bd2cf1a.js';
 
 const servers = SERVERS;
 /* global SERVERS */
@@ -142,26 +124,6 @@ const handleResponse = (request, response, content, send = ResponseMethod.send) 
   response[send](content);
 };
 
-<<<<<<< HEAD
-=======
-const hashKeys = keys => {
-  const XXHash = require('xxhashjs');
-
-  const returnKeys = [];
-  keys.forEach(cacheKey => {
-    const inputBuffer = Buffer.from(cacheKey.toLowerCase(), 'utf-8');
-    const hashed = XXHash.h32(inputBuffer, 0x0).toString(16);
-    const reversedhex = hashed.match(/[a-fA-F0-9]{2}/g).reverse().join('');
-    const outputBuffer = Buffer.from(reversedhex, 'hex');
-    returnKeys.push(outputBuffer.toString('base64').substring(0, 6));
-  });
-  return returnKeys;
-};
-
-const moduleBundles = fs.readdirSync('./dist/static/modern/js', 'utf8');
-const coreModules = moduleBundles.filter(m => m.startsWith('app.') || m.startsWith('vendor.') || m.startsWith('runtime.'));
-
->>>>>>> isomorphic-base
 const addStandardHeaders = (state, response, packagejson, groups) => {
   if (state) {
     /* eslint-disable no-console */

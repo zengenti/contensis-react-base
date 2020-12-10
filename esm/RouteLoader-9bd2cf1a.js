@@ -1,14 +1,8 @@
 import React, { useCallback, useEffect } from 'react';
 import { Route, useLocation, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-<<<<<<< HEAD:esm/RouteLoader-b1969ecd.js
-import { r as selectRouteEntryContentTypeId, a as selectRouteEntry, t as selectIsNotFound, u as selectRouteLoading, n as selectMappedEntry, b as selectCurrentProject, v as selectCurrentPath, w as setNavigationPath } from './routing-8265aea1.js';
+import { r as selectRouteEntryContentTypeId, a as selectRouteEntry, t as selectIsNotFound, u as selectRouteLoading, n as selectMappedEntry, b as selectCurrentProject, v as selectCurrentPath, w as setNavigationPath } from './routing-920ca0ae.js';
 import { t as toJS, s as selectUserIsAuthenticated, a as selectUserGroups, m as matchUserGroup } from './ToJs-1c73b10a.js';
-=======
-import { j as selectRouteEntryContentTypeId, c as selectRouteEntry, k as selectIsNotFound, l as selectUserLoggedIn, m as selectRouteLoading, n as selectMappedEntry, d as selectCurrentProject, o as selectCurrentPath } from './selectors-19e46385.js';
-import { a as setNavigationPath } from './routing-8a773443.js';
-import { t as toJS } from './ToJs-1649f545.js';
->>>>>>> isomorphic-base:esm/RouteLoader-888c3c9e.js
 import { matchRoutes, renderRoutes } from 'react-router-config';
 import { hot } from 'react-hot-loader';
 import PropTypes from 'prop-types';
@@ -173,8 +167,4 @@ const mapDispatchToProps = {
 var RouteLoader$1 = hot(module)(connect(mapStateToProps, mapDispatchToProps)(toJS(RouteLoader)));
 
 export { RouteLoader$1 as R };
-<<<<<<< HEAD:esm/RouteLoader-b1969ecd.js
-//# sourceMappingURL=RouteLoader-b1969ecd.js.map
-=======
-//# sourceMappingURL=RouteLoader-888c3c9e.js.map
->>>>>>> isomorphic-base:esm/RouteLoader-888c3c9e.js
+//# sourceMappingURL=RouteLoader-9bd2cf1a.js.map

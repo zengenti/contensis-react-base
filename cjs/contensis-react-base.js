@@ -19,29 +19,16 @@ var minifyCssString = require('minify-css-string');
 var immutable = require('immutable');
 var fromEntries = require('fromentries');
 require('history');
-<<<<<<< HEAD
-var App = require('./App-9f6b6951.js');
+var App = require('./App-74390288.js');
 require('contensis-delivery-api');
-var routing = require('./routing-37e4f287.js');
-=======
-var App = require('./App-ff873a10.js');
-require('contensis-delivery-api');
-var selectors = require('./selectors-1a2d998b.js');
-var routing = require('./routing-2b3d824a.js');
-var navigation = require('./navigation-37bfd5e7.js');
-require('query-string');
->>>>>>> isomorphic-base
+var routing = require('./routing-82e00e38.js');
 require('redux');
 require('redux-immutable');
 require('redux-thunk');
 require('redux-saga');
-<<<<<<< HEAD
-var version = require('./version-e5fb1848.js');
-require('./login-fa833d9c.js');
+var version = require('./version-ff987c76.js');
+require('./login-cd832c12.js');
 require('query-string');
-=======
-require('./sagas-ac3c2bc5.js');
->>>>>>> isomorphic-base
 require('redux-saga/effects');
 require('loglevel');
 require('./ToJs-8f6b21c9.js');
@@ -52,11 +39,7 @@ require('js-cookie');
 var reactRouterConfig = require('react-router-config');
 require('react-hot-loader');
 require('prop-types');
-<<<<<<< HEAD
-require('./RouteLoader-e332e4fb.js');
-=======
-require('./RouteLoader-21a3f199.js');
->>>>>>> isomorphic-base
+require('./RouteLoader-ffcae515.js');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -156,26 +139,6 @@ const handleResponse = (request, response, content, send = ResponseMethod.send) 
   response[send](content);
 };
 
-<<<<<<< HEAD
-=======
-const hashKeys = keys => {
-  const XXHash = require('xxhashjs');
-
-  const returnKeys = [];
-  keys.forEach(cacheKey => {
-    const inputBuffer = Buffer.from(cacheKey.toLowerCase(), 'utf-8');
-    const hashed = XXHash.h32(inputBuffer, 0x0).toString(16);
-    const reversedhex = hashed.match(/[a-fA-F0-9]{2}/g).reverse().join('');
-    const outputBuffer = Buffer.from(reversedhex, 'hex');
-    returnKeys.push(outputBuffer.toString('base64').substring(0, 6));
-  });
-  return returnKeys;
-};
-
-const moduleBundles = fs__default['default'].readdirSync('./dist/static/modern/js', 'utf8');
-const coreModules = moduleBundles.filter(m => m.startsWith('app.') || m.startsWith('vendor.') || m.startsWith('runtime.'));
-
->>>>>>> isomorphic-base
 const addStandardHeaders = (state, response, packagejson, groups) => {
   if (state) {
     /* eslint-disable no-console */

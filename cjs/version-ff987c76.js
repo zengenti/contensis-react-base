@@ -1,5 +1,6 @@
-<<<<<<< HEAD:esm/version-9c4c6e0e.js
-import { x as action } from './routing-8265aea1.js';
+'use strict';
+
+var routing = require('./routing-82e00e38.js');
 
 const ACTION_PREFIX = '@NAVIGATION/';
 const GET_NODE_TREE = `${ACTION_PREFIX}_GET_NODE_TREE`;
@@ -12,9 +13,6 @@ var navigation = /*#__PURE__*/Object.freeze({
   SET_NODE_TREE: SET_NODE_TREE,
   GET_NODE_TREE_ERROR: GET_NODE_TREE_ERROR
 });
-=======
-import { p as action } from './selectors-19e46385.js';
->>>>>>> isomorphic-base:esm/navigation-a6d0c98f.js
 
 const VERSION_PREFIX = '@VERSION/';
 const SET_VERSION = `${VERSION_PREFIX}SET_VERSION`;
@@ -26,11 +24,11 @@ var version = /*#__PURE__*/Object.freeze({
   SET_VERSION_STATUS: SET_VERSION_STATUS
 });
 
-const setVersion = (commitRef, buildNo) => action(SET_VERSION, {
+const setVersion = (commitRef, buildNo) => routing.action(SET_VERSION, {
   commitRef,
   buildNo
 });
-const setVersionStatus = status => action(SET_VERSION_STATUS, {
+const setVersionStatus = status => routing.action(SET_VERSION_STATUS, {
   status
 });
 
@@ -74,27 +72,18 @@ var version$2 = /*#__PURE__*/Object.freeze({
   selectVersionStatus: selectVersionStatus
 });
 
-<<<<<<< HEAD:esm/version-9c4c6e0e.js
-export { GET_NODE_TREE_ERROR as G, SET_NODE_TREE as S, setVersion as a, SET_VERSION as b, SET_VERSION_STATUS as c, GET_NODE_TREE as d, selectVersionStatus as e, version$1 as f, navigation$1 as g, hasNavigationTree as h, version$2 as i, navigation as n, setVersionStatus as s, version as v };
-//# sourceMappingURL=version-9c4c6e0e.js.map
-=======
-const hasNavigationTree = state => {
-  return state.getIn(['navigation', 'isReady']);
-};
-const selectNavigationRoot = state => {
-  return state.getIn(['navigation', 'root']);
-};
-const selectNavigationDepends = state => {
-  return state.getIn(['navigation', 'treeDepends']);
-};
-
-var navigation$1 = /*#__PURE__*/Object.freeze({
-  __proto__: null,
-  hasNavigationTree: hasNavigationTree,
-  selectNavigationRoot: selectNavigationRoot,
-  selectNavigationDepends: selectNavigationDepends
-});
-
-export { GET_NODE_TREE_ERROR as G, SET_VERSION as S, setVersion as a, SET_VERSION_STATUS as b, SET_NODE_TREE as c, selectVersionStatus as d, GET_NODE_TREE as e, version$1 as f, navigation$1 as g, hasNavigationTree as h, version$2 as i, navigation as n, setVersionStatus as s, version as v };
-//# sourceMappingURL=navigation-a6d0c98f.js.map
->>>>>>> isomorphic-base:esm/navigation-a6d0c98f.js
+exports.GET_NODE_TREE = GET_NODE_TREE;
+exports.GET_NODE_TREE_ERROR = GET_NODE_TREE_ERROR;
+exports.SET_NODE_TREE = SET_NODE_TREE;
+exports.SET_VERSION = SET_VERSION;
+exports.SET_VERSION_STATUS = SET_VERSION_STATUS;
+exports.hasNavigationTree = hasNavigationTree;
+exports.navigation = navigation;
+exports.navigation$1 = navigation$1;
+exports.selectVersionStatus = selectVersionStatus;
+exports.setVersion = setVersion;
+exports.setVersionStatus = setVersionStatus;
+exports.version = version;
+exports.version$1 = version$1;
+exports.version$2 = version$2;
+//# sourceMappingURL=version-ff987c76.js.map

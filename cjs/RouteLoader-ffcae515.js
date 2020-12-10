@@ -3,14 +3,8 @@
 var React = require('react');
 var reactRouterDom = require('react-router-dom');
 var reactRedux = require('react-redux');
-<<<<<<< HEAD:cjs/RouteLoader-e332e4fb.js
-var routing = require('./routing-37e4f287.js');
+var routing = require('./routing-82e00e38.js');
 var ToJs = require('./ToJs-8f6b21c9.js');
-=======
-var selectors = require('./selectors-1a2d998b.js');
-var routing = require('./routing-2b3d824a.js');
-var ToJs = require('./ToJs-d548b71b.js');
->>>>>>> isomorphic-base:cjs/RouteLoader-21a3f199.js
 var reactRouterConfig = require('react-router-config');
 var reactHotLoader = require('react-hot-loader');
 var PropTypes = require('prop-types');
@@ -180,8 +174,4 @@ const mapDispatchToProps = {
 var RouteLoader$1 = reactHotLoader.hot(module)(reactRedux.connect(mapStateToProps, mapDispatchToProps)(ToJs.toJS(RouteLoader)));
 
 exports.RouteLoader = RouteLoader$1;
-<<<<<<< HEAD:cjs/RouteLoader-e332e4fb.js
-//# sourceMappingURL=RouteLoader-e332e4fb.js.map
-=======
-//# sourceMappingURL=RouteLoader-21a3f199.js.map
->>>>>>> isomorphic-base:cjs/RouteLoader-21a3f199.js
+//# sourceMappingURL=RouteLoader-ffcae515.js.map
