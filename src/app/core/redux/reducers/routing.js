@@ -59,7 +59,7 @@ export default (state = initialState, action) => {
           .set('isLoading', isLoading)
           .set('notFound', notFound);
 
-        if (mappedEntry && Object.keys(mappedEntry) > 0)
+        if (mappedEntry && Object.keys(mappedEntry).length > 0)
           nextState = nextState
             .set('mappedEntry', fromJS(mappedEntry))
             .set('entry', fromJS({ sys: entry.sys }));
