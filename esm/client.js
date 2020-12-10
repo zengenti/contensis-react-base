@@ -5,17 +5,31 @@ import { Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { fromJS } from 'immutable';
 import 'history';
+<<<<<<< HEAD
 import { d as deliveryApi, c as createStore, r as rootSaga, p as pickProject, b as browserHistory } from './App-5f6ef07c.js';
 export { A as ReactApp } from './App-5f6ef07c.js';
 import 'contensis-delivery-api';
 import { s as setCurrentProject } from './routing-8265aea1.js';
+=======
+import { a as GetClientSideDeliveryApiStatus, c as createStore, r as rootSaga, p as pickProject, b as browserHistory } from './App-8928dd94.js';
+export { A as ReactApp } from './App-8928dd94.js';
+import 'contensis-delivery-api';
+import './selectors-19e46385.js';
+import { s as setCurrentProject } from './routing-8a773443.js';
+import { s as setVersionStatus } from './navigation-a6d0c98f.js';
+import queryString from 'query-string';
+>>>>>>> isomorphic-base
 import 'redux';
 import 'redux-immutable';
 import 'redux-thunk';
 import 'redux-saga';
+<<<<<<< HEAD
 import { s as setVersionStatus } from './version-9c4c6e0e.js';
 import { f as fromJSOrdered } from './login-a6f157c3.js';
 import queryString from 'query-string';
+=======
+import './sagas-30af639f.js';
+>>>>>>> isomorphic-base
 import 'redux-saga/effects';
 import 'loglevel';
 import './ToJs-1c73b10a.js';
@@ -26,7 +40,11 @@ import 'js-cookie';
 import 'react-router-config';
 import { AppContainer } from 'react-hot-loader';
 import 'prop-types';
+<<<<<<< HEAD
 import './RouteLoader-b1969ecd.js';
+=======
+import './RouteLoader-888c3c9e.js';
+>>>>>>> isomorphic-base
 import { hydrate, render } from 'react-dom';
 
 class ClientApp {

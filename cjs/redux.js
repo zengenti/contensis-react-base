@@ -3,9 +3,20 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 require('immutable');
+<<<<<<< HEAD
 var routing$1 = require('./routing-37e4f287.js');
 var version$1 = require('./version-e5fb1848.js');
 require('query-string');
+=======
+var selectors$1 = require('./selectors-1a2d998b.js');
+var routing$1 = require('./routing-2b3d824a.js');
+var navigation$2 = require('./navigation-37bfd5e7.js');
+require('query-string');
+var sagas = require('./sagas-ac3c2bc5.js');
+var actions$1 = require('./actions-c93154c3.js');
+require('redux-saga/effects');
+require('js-cookie');
+>>>>>>> isomorphic-base
 
 var types = {
   navigation: version$1.navigation,

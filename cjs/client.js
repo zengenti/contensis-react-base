@@ -9,16 +9,29 @@ var reactRouterDom = require('react-router-dom');
 var reactRedux = require('react-redux');
 var immutable = require('immutable');
 require('history');
+<<<<<<< HEAD
 var App = require('./App-9f6b6951.js');
 require('contensis-delivery-api');
 var routing = require('./routing-37e4f287.js');
+=======
+var App = require('./App-ff873a10.js');
+require('contensis-delivery-api');
+require('./selectors-1a2d998b.js');
+var routing = require('./routing-2b3d824a.js');
+var navigation = require('./navigation-37bfd5e7.js');
+var queryString = require('query-string');
+>>>>>>> isomorphic-base
 require('redux');
 require('redux-immutable');
 require('redux-thunk');
 require('redux-saga');
+<<<<<<< HEAD
 var version = require('./version-e5fb1848.js');
 var login = require('./login-fa833d9c.js');
 var queryString = require('query-string');
+=======
+require('./sagas-ac3c2bc5.js');
+>>>>>>> isomorphic-base
 require('redux-saga/effects');
 require('loglevel');
 require('./ToJs-8f6b21c9.js');
@@ -29,7 +42,11 @@ require('js-cookie');
 require('react-router-config');
 var reactHotLoader = require('react-hot-loader');
 require('prop-types');
+<<<<<<< HEAD
 require('./RouteLoader-e332e4fb.js');
+=======
+require('./RouteLoader-21a3f199.js');
+>>>>>>> isomorphic-base
 var reactDom = require('react-dom');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
