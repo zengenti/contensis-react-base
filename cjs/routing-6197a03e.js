@@ -110,6 +110,9 @@ const selectRouteEntryContentTypeId = state => {
   const entry = selectRouteEntry(state);
   return entry && entry.getIn(['sys', 'contentTypeId'], null);
 };
+const selectRouteEntryLanguage = state => {
+  return state.getIn(['routing', 'entry', 'sys', 'language'], null);
+};
 const selectRouteEntrySlug = state => {
   return state.getIn(['routing', 'entry', 'sys', 'slug'], null);
 };
@@ -153,6 +156,7 @@ var routing$2 = /*#__PURE__*/Object.freeze({
   selectCurrentTreeID: selectCurrentTreeID,
   selectRouteEntryEntryId: selectRouteEntryEntryId,
   selectRouteEntryContentTypeId: selectRouteEntryContentTypeId,
+  selectRouteEntryLanguage: selectRouteEntryLanguage,
   selectRouteEntrySlug: selectRouteEntrySlug,
   selectRouteEntryID: selectRouteEntryID,
   selectCurrentPath: selectCurrentPath,
@@ -192,9 +196,10 @@ exports.selectMappedEntry = selectMappedEntry;
 exports.selectRouteEntry = selectRouteEntry;
 exports.selectRouteEntryContentTypeId = selectRouteEntryContentTypeId;
 exports.selectRouteEntryEntryId = selectRouteEntryEntryId;
+exports.selectRouteEntryLanguage = selectRouteEntryLanguage;
 exports.selectRouteLoading = selectRouteLoading;
 exports.setCurrentProject = setCurrentProject;
 exports.setNavigationPath = setNavigationPath;
 exports.setRoute = setRoute;
 exports.setSurrogateKeys = setSurrogateKeys;
-//# sourceMappingURL=routing-82e00e38.js.map
+//# sourceMappingURL=routing-6197a03e.js.map

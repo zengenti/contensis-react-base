@@ -104,6 +104,9 @@ const selectRouteEntryContentTypeId = state => {
   const entry = selectRouteEntry(state);
   return entry && entry.getIn(['sys', 'contentTypeId'], null);
 };
+const selectRouteEntryLanguage = state => {
+  return state.getIn(['routing', 'entry', 'sys', 'language'], null);
+};
 const selectRouteEntrySlug = state => {
   return state.getIn(['routing', 'entry', 'sys', 'slug'], null);
 };
@@ -147,6 +150,7 @@ var routing$2 = /*#__PURE__*/Object.freeze({
   selectCurrentTreeID: selectCurrentTreeID,
   selectRouteEntryEntryId: selectRouteEntryEntryId,
   selectRouteEntryContentTypeId: selectRouteEntryContentTypeId,
+  selectRouteEntryLanguage: selectRouteEntryLanguage,
   selectRouteEntrySlug: selectRouteEntrySlug,
   selectRouteEntryID: selectRouteEntryID,
   selectCurrentPath: selectCurrentPath,
@@ -161,5 +165,5 @@ var routing$2 = /*#__PURE__*/Object.freeze({
   selectRouteLoading: selectRouteLoading
 });
 
-export { routing$2 as A, CALL_HISTORY_METHOD as C, SET_TARGET_PROJECT as S, UPDATE_LOADING_STATE as U, selectRouteEntry as a, selectCurrentProject as b, SET_SURROGATE_KEYS as c, SET_SIBLINGS as d, SET_ROUTE as e, SET_NAVIGATION_PATH as f, SET_ENTRY as g, SET_ANCESTORS as h, setSurrogateKeys as i, selectCurrentNode as j, selectCurrentAncestors as k, findContentTypeMapping as l, selectRouteEntryEntryId as m, selectMappedEntry as n, selectCurrentSearch as o, setRoute as p, queryParams as q, selectRouteEntryContentTypeId as r, setCurrentProject as s, selectIsNotFound as t, selectRouteLoading as u, selectCurrentPath as v, setNavigationPath as w, action as x, routing as y, routing$1 as z };
-//# sourceMappingURL=routing-920ca0ae.js.map
+export { routing$1 as A, routing$2 as B, CALL_HISTORY_METHOD as C, SET_TARGET_PROJECT as S, UPDATE_LOADING_STATE as U, selectRouteEntry as a, selectCurrentProject as b, SET_SURROGATE_KEYS as c, SET_SIBLINGS as d, SET_ROUTE as e, SET_NAVIGATION_PATH as f, SET_ENTRY as g, SET_ANCESTORS as h, setSurrogateKeys as i, selectCurrentNode as j, selectCurrentAncestors as k, findContentTypeMapping as l, selectRouteEntryEntryId as m, selectRouteEntryLanguage as n, selectMappedEntry as o, selectCurrentSearch as p, queryParams as q, setRoute as r, setCurrentProject as s, selectRouteEntryContentTypeId as t, selectIsNotFound as u, selectRouteLoading as v, selectCurrentPath as w, setNavigationPath as x, action as y, routing as z };
+//# sourceMappingURL=routing-64807af8.js.map
