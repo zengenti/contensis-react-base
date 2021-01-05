@@ -20,6 +20,9 @@ export const selectRouteEntryContentTypeId = state => {
   const entry = selectRouteEntry(state);
   return entry && entry.getIn(['sys', 'contentTypeId'], null);
 };
+export const selectRouteEntryLanguage = state => {
+  return state.getIn(['routing', 'entry', 'sys', 'language'], null);
+};
 export const selectRouteEntrySlug = state => {
   return state.getIn(['routing', 'entry', 'sys', 'slug'], null);
 };

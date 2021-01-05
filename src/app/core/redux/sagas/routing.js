@@ -19,6 +19,7 @@ import {
   selectMappedEntry,
   selectRouteEntry,
   selectRouteEntryEntryId,
+  selectRouteEntryLanguage,
 } from '~/core/redux/selectors/routing';
 import { GET_NODE_TREE } from '../types/navigation';
 import { hasNavigationTree } from '../selectors/navigation';
@@ -329,10 +330,12 @@ function* setRouteEntry(
   entryMapper,
   notFound = false
 ) {
-  const id = (entry && entry.sys && entry.sys.id) || null;
+  const entrySys = (entry && entry.sys) || {};
+
   const currentEntryId = yield select(selectRouteEntryEntryId);
+  const currentEntryLang = yield select(selectRouteEntryLanguage);
   const mappedEntry =
-    currentEntryId === id
+    currentEntryId === entrySys.id && currentEntryLang === entrySys.language
       ? (yield select(selectMappedEntry) || Map()).toJS()
       : yield mapRouteEntry(entryMapper, {
           ...node,
@@ -344,7 +347,7 @@ function* setRouteEntry(
   yield all([
     put({
       type: SET_ENTRY,
-      id,
+      id: entrySys.id,
       entry,
       mappedEntry,
       node,
