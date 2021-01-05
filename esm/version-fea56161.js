@@ -1,6 +1,4 @@
-'use strict';
-
-var routing = require('./routing-37e4f287.js');
+import { x as action } from './routing-920ca0ae.js';
 
 const ACTION_PREFIX = '@NAVIGATION/';
 const GET_NODE_TREE = `${ACTION_PREFIX}_GET_NODE_TREE`;
@@ -24,11 +22,11 @@ var version = /*#__PURE__*/Object.freeze({
   SET_VERSION_STATUS: SET_VERSION_STATUS
 });
 
-const setVersion = (commitRef, buildNo) => routing.action(SET_VERSION, {
+const setVersion = (commitRef, buildNo) => action(SET_VERSION, {
   commitRef,
   buildNo
 });
-const setVersionStatus = status => routing.action(SET_VERSION_STATUS, {
+const setVersionStatus = status => action(SET_VERSION_STATUS, {
   status
 });
 
@@ -72,18 +70,5 @@ var version$2 = /*#__PURE__*/Object.freeze({
   selectVersionStatus: selectVersionStatus
 });
 
-exports.GET_NODE_TREE = GET_NODE_TREE;
-exports.GET_NODE_TREE_ERROR = GET_NODE_TREE_ERROR;
-exports.SET_NODE_TREE = SET_NODE_TREE;
-exports.SET_VERSION = SET_VERSION;
-exports.SET_VERSION_STATUS = SET_VERSION_STATUS;
-exports.hasNavigationTree = hasNavigationTree;
-exports.navigation = navigation;
-exports.navigation$1 = navigation$1;
-exports.selectVersionStatus = selectVersionStatus;
-exports.setVersion = setVersion;
-exports.setVersionStatus = setVersionStatus;
-exports.version = version;
-exports.version$1 = version$1;
-exports.version$2 = version$2;
-//# sourceMappingURL=version-e5fb1848.js.map
+export { GET_NODE_TREE_ERROR as G, SET_NODE_TREE as S, setVersion as a, SET_VERSION as b, SET_VERSION_STATUS as c, GET_NODE_TREE as d, selectVersionStatus as e, version$1 as f, navigation$1 as g, hasNavigationTree as h, version$2 as i, navigation as n, setVersionStatus as s, version as v };
+//# sourceMappingURL=version-fea56161.js.map
