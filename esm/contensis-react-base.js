@@ -16,8 +16,8 @@ import minifyCssString from 'minify-css-string';
 import { fromJS } from 'immutable';
 import fromEntries from 'fromentries';
 import 'history';
-import { c as createStore, h as history, G as GetDeliveryApiStatusFromHostname, p as pickProject, r as rootSaga } from './App-8928dd94.js';
-export { A as ReactApp } from './App-8928dd94.js';
+import { c as createStore, h as history, G as GetDeliveryApiStatusFromHostname, p as pickProject, r as rootSaga } from './App-109d323e.js';
+export { A as ReactApp } from './App-109d323e.js';
 import 'contensis-delivery-api';
 import { s as selectEntryDepends, a as selectNodeDepends, b as selectCurrentTreeID, c as selectRouteEntry, d as selectCurrentProject } from './selectors-19e46385.js';
 import { s as setCurrentProject } from './routing-8a773443.js';
@@ -375,6 +375,7 @@ const webApp = (app, ReactApp, config) => {
         const html = renderToString(sheet.collectStyles(jsx));
         const helmet = Helmet.renderStatic();
         Helmet.rewind();
+        const htmlAttributes = helmet.htmlAttributes.toString();
         let title = helmet.title.toString();
         const metadata = helmet.meta.toString();
 
@@ -451,6 +452,11 @@ const webApp = (app, ReactApp, config) => {
         });
 
         try {
+          // If react-helmet htmlAttributes are being used, replace the html tag with those attributes sepcified e.g (lang, dir etc.)
+          if (htmlAttributes) {
+            responseHTML = responseHTML.replace(/<html?.+?>/, `<html ${htmlAttributes}>`);
+          }
+
           response.status(status); //.send(responseHTML);
 
           responseHandler(request, response, responseHTML);
