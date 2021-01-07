@@ -15,8 +15,8 @@ import minifyCssString from 'minify-css-string';
 import { fromJS } from 'immutable';
 import fromEntries from 'fromentries';
 import 'history';
-import { c as createStore, h as history, d as deliveryApi, p as pickProject, r as rootSaga } from './App-3ea62963.js';
-export { A as ReactApp } from './App-3ea62963.js';
+import { c as createStore, h as history, d as deliveryApi, p as pickProject, r as rootSaga } from './App-d58e5714.js';
+export { A as ReactApp } from './App-d58e5714.js';
 import 'contensis-delivery-api';
 import { s as setCurrentProject, a as selectRouteEntry, b as selectCurrentProject } from './routing-64807af8.js';
 import 'redux';
@@ -301,6 +301,7 @@ const webApp = (app, ReactApp, config) => {
         const html = renderToString(sheet.collectStyles(jsx));
         const helmet = Helmet.renderStatic();
         Helmet.rewind();
+        const htmlAttributes = helmet.htmlAttributes.toString();
         let title = helmet.title.toString();
         const metadata = helmet.meta.toString();
 
@@ -367,6 +368,7 @@ const webApp = (app, ReactApp, config) => {
 
 
         if (!accessMethod.FRAGMENT && accessMethod.STATIC) {
+          // Find <html tag, replace with htmlAttributes if they exist.
           responseHTML = templateHTMLStatic.replace('{{TITLE}}', title).replace('{{SEO_CRITICAL_METADATA}}', metadata).replace('{{CRITICAL_CSS}}', minifyCssString(styleTags)).replace('{{APP}}', html).replace('{{LOADABLE_CHUNKS}}', '');
         } // Full HTML page served with client scripts and redux data that hydrate the app client side
 
@@ -381,6 +383,10 @@ const webApp = (app, ReactApp, config) => {
         });
 
         try {
+          if (htmlAttributes) {
+            responseHTML = responseHTML.replace(/<html?.+?>/, `<html ${htmlAttributes}>`);
+          }
+
           response.status(status); //.send(responseHTML);
 
           responseHandler(request, response, responseHTML);

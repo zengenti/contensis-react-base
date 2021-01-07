@@ -19,7 +19,7 @@ var minifyCssString = require('minify-css-string');
 var immutable = require('immutable');
 var fromEntries = require('fromentries');
 require('history');
-var App = require('./App-b35f839f.js');
+var App = require('./App-6ddd48f6.js');
 require('contensis-delivery-api');
 var routing = require('./routing-6197a03e.js');
 require('redux');
@@ -316,6 +316,7 @@ const webApp = (app, ReactApp, config) => {
         const html = server.renderToString(sheet.collectStyles(jsx));
         const helmet = Helmet__default['default'].renderStatic();
         Helmet__default['default'].rewind();
+        const htmlAttributes = helmet.htmlAttributes.toString();
         let title = helmet.title.toString();
         const metadata = helmet.meta.toString();
 
@@ -382,6 +383,7 @@ const webApp = (app, ReactApp, config) => {
 
 
         if (!accessMethod.FRAGMENT && accessMethod.STATIC) {
+          // Find <html tag, replace with htmlAttributes if they exist.
           responseHTML = templateHTMLStatic.replace('{{TITLE}}', title).replace('{{SEO_CRITICAL_METADATA}}', metadata).replace('{{CRITICAL_CSS}}', minifyCssString__default['default'](styleTags)).replace('{{APP}}', html).replace('{{LOADABLE_CHUNKS}}', '');
         } // Full HTML page served with client scripts and redux data that hydrate the app client side
 
@@ -396,6 +398,10 @@ const webApp = (app, ReactApp, config) => {
         });
 
         try {
+          if (htmlAttributes) {
+            responseHTML = responseHTML.replace(/<html?.+?>/, `<html ${htmlAttributes}>`);
+          }
+
           response.status(status); //.send(responseHTML);
 
           responseHandler(request, response, responseHTML);

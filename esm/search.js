@@ -851,9 +851,12 @@ const addHostname = typeof window == 'undefined' || window.location.host == 'loc
 }` : clientHostname();
 
 function fixFreeTextForElastic(s) {
-  let illegalChars = ['>', '<', '=', '|', '!', '{', '}', '[', ']', '^', '~', '*', '?', ':', '\\', '/'];
+  let illegalChars = ['>', '<'];
+  let encodedChars = ['+', '-', '=', '&', '|', '!', '(', ')', '{', '}', '[', ']', '^', '"', '~', '*', '?', ':', '\\', '/'];
   let illegalRegEx = new RegExp(illegalChars.map(c => '\\' + c).join('|'), 'g');
-  s = s.replace(illegalRegEx, ''); // s = s.replace(encodedRegEx, ''); // (m) => '\\\\' + m);
+  let encodedRegEx = new RegExp(encodedChars.map(c => '\\' + c).join('|'), 'g');
+  s = s.replace(illegalRegEx, '');
+  s = s.replace(encodedRegEx, ''); // (m) => '\\\\' + m);
 
   return s;
 }

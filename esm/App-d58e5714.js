@@ -999,4 +999,4 @@ const AppRoot = props => {
 };
 
 export { AppRoot as A, browserHistory as b, createStore as c, deliveryApi as d, history as h, pickProject as p, rootSaga as r };
-//# sourceMappingURL=App-3ea62963.js.map
+//# sourceMappingURL=App-d58e5714.js.map
