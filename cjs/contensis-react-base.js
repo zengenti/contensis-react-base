@@ -20,7 +20,7 @@ var minifyCssString = require('minify-css-string');
 var immutable = require('immutable');
 var fromEntries = require('fromentries');
 require('history');
-var App = require('./App-ff873a10.js');
+var App = require('./App-37829384.js');
 require('contensis-delivery-api');
 var selectors = require('./selectors-1a2d998b.js');
 var routing = require('./routing-2b3d824a.js');
@@ -391,6 +391,7 @@ const webApp = (app, ReactApp, config) => {
         const html = server.renderToString(sheet.collectStyles(jsx));
         const helmet = Helmet__default['default'].renderStatic();
         Helmet__default['default'].rewind();
+        const htmlAttributes = helmet.htmlAttributes.toString();
         let title = helmet.title.toString();
         const metadata = helmet.meta.toString();
 
@@ -467,6 +468,11 @@ const webApp = (app, ReactApp, config) => {
         });
 
         try {
+          // If react-helmet htmlAttributes are being used, replace the html tag with those attributes sepcified e.g (lang, dir etc.)
+          if (htmlAttributes) {
+            responseHTML = responseHTML.replace(/<html?.+?>/, `<html ${htmlAttributes}>`);
+          }
+
           response.status(status); //.send(responseHTML);
 
           responseHandler(request, response, responseHTML);
