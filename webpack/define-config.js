@@ -11,6 +11,7 @@ const {
   ACCESS_TOKEN,
   PROJECT,
   CONTENSIS_VERSION,
+  STATIC_PATH = 'static',
 } = process.env;
 
 const PROJECTS = env => [
@@ -81,6 +82,7 @@ const production = {
   ALLOWED_GROUPS,
   PROXY_DELIVERY_API: false,
   REVERSE_PROXY_PATHS,
+  STATIC_PATH,
   VERSION: packagejson.version,
 };
 

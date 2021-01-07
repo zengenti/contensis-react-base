@@ -9,6 +9,10 @@ import withEvents from '~/core/redux/withEvents';
 
 import ServerFeatures from './features/configure';
 
+// import BundleInfo from '../../webpack/bundle-info';
+
+// const staticFolderPath = `/${BundleInfo.DEFINE_CONFIG.production.STATIC_PATH}`;
+
 ZengentiAppServer.start(
   ZengentiAppServer.ReactApp || App,
   {
@@ -32,8 +36,9 @@ ZengentiAppServer.start(
     disableSsrRedux: DISABLE_SSR_REDUX /* global DISABLE_SSR_REDUX */,
     // Some information about the project and the build to pass to the start config
     packagejson: require('../../package.json'),
+    // staticFolderPath,
     stats: 'dist/target/react-loadable.json',
-    versionData: 'dist/static/version.json',
+    // versionData: 'dist/static-new/version.json',
   },
   // Configure any server-side features such as sitemap or REST api's
   ServerFeatures

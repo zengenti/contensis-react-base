@@ -36,12 +36,6 @@ import createStore from '~/core/redux/store';
 import rootSaga from '~/core/redux/sagas/index.js';
 import { matchRoutes } from 'react-router-config';
 
-const moduleBundles = fs.readdirSync('./dist/static/modern/js', 'utf8');
-const coreModules = moduleBundles.filter(
-  m =>
-    m.startsWith('app.') || m.startsWith('vendor.') || m.startsWith('runtime.')
-);
-
 const addStandardHeaders = (state, response, packagejson, groups) => {
   if (state) {
     /* eslint-disable no-console */
@@ -74,12 +68,6 @@ const addStandardHeaders = (state, response, packagejson, groups) => {
       addVarnishAuthenticationHeaders(state, response, groups);
 
       response.setHeader('Surrogate-Control', 'max-age=3600');
-      response.setHeader(
-        'Link',
-        coreModules
-          .map(m => `</static/modern/js/${m}>;rel="preload";as="script"`)
-          .join(',')
-      );
     } catch (e) {
       console.log('Error Adding headers', e.message);
       // console.log(e);
@@ -149,7 +137,7 @@ const webApp = (app, ReactApp, config) => {
     withSagas,
     withEvents,
     packagejson,
-    versionData,
+    staticFolderPath = 'static',
     differentialBundles,
     dynamicPaths,
     allowedGroups,
@@ -166,13 +154,15 @@ const webApp = (app, ReactApp, config) => {
   if (!bundles.default || bundles.default === {})
     bundles.default = bundles.legacy || bundles.modern;
 
-  const versionInfo = JSON.parse(fs.readFileSync(versionData, 'utf8'));
+  const versionInfo = JSON.parse(
+    fs.readFileSync(`dist/${staticFolderPath}/version.json`, 'utf8')
+  );
 
   const responseHandler =
     typeof handleResponses === 'function' ? handleResponses : handleResponse;
 
   app.get('/*', (request, response, next) => {
-    if (request.originalUrl.startsWith('/static/')) return next();
+    if (request.originalUrl.startsWith(`/${staticFolderPath}/`)) return next();
     const { url } = request;
 
     const matchedStaticRoute = () =>

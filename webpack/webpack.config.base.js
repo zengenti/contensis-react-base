@@ -3,7 +3,8 @@ const webpack = require('webpack');
 
 const ASSET_PATH = '/';
 
-const { WEBPACK_DEFINE_CONFIG } = require('./bundle-info');
+const { WEBPACK_DEFINE_CONFIG, DEFINE_CONFIG } = require('./bundle-info');
+const staticFolderPath = DEFINE_CONFIG.production.STATIC_PATH;
 
 module.exports = {
   output: {
@@ -49,13 +50,13 @@ module.exports = {
       {
         test: /\.(gif|png|jpe?g|svg|ico)$/i,
         use: [
-          'file-loader?name=static/img/[name].[ext]?[hash]',
+          `file-loader?name=${staticFolderPath}/img/[name].[ext]?[hash]`,
           {
             loader: 'image-webpack-loader',
             options: {
               bypassOnDebug: true, // webpack@1.x
               disable: true, // webpack@2.x and newer
-              name: 'static/[hash].[ext]',
+              name: `${staticFolderPath}/[hash].[ext]`,
             },
           },
         ],
