@@ -286,6 +286,8 @@ const webApp = (app, ReactApp, config) => {
 
           const helmet = Helmet.renderStatic();
           Helmet.rewind();
+          const htmlAttributes = helmet.htmlAttributes.toString();
+
           let title = helmet.title.toString();
           const metadata = helmet.meta.toString();
 
@@ -365,6 +367,8 @@ const webApp = (app, ReactApp, config) => {
 
           // Full HTML page served statically
           if (!accessMethod.FRAGMENT && accessMethod.STATIC) {
+            // Find <html tag, replace with htmlAttributes if they exist.
+
             responseHTML = templateHTMLStatic
               .replace('{{TITLE}}', title)
               .replace('{{SEO_CRITICAL_METADATA}}', metadata)
@@ -388,6 +392,13 @@ const webApp = (app, ReactApp, config) => {
             globalGroups,
           });
           try {
+            // If react-helmet htmlAttributes are being used, replace the html tag with those attributes sepcified e.g (lang, dir etc.)
+            if (htmlAttributes) {
+              responseHTML = responseHTML.replace(
+                /<html?.+?>/,
+                `<html ${htmlAttributes}>`
+              );
+            }
             response.status(status); //.send(responseHTML);
             responseHandler(request, response, responseHTML);
           } catch (err) {
