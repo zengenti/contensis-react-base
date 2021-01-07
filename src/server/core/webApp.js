@@ -367,8 +367,6 @@ const webApp = (app, ReactApp, config) => {
 
           // Full HTML page served statically
           if (!accessMethod.FRAGMENT && accessMethod.STATIC) {
-            // Find <html tag, replace with htmlAttributes if they exist.
-
             responseHTML = templateHTMLStatic
               .replace('{{TITLE}}', title)
               .replace('{{SEO_CRITICAL_METADATA}}', metadata)
