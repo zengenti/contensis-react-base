@@ -137,7 +137,7 @@ const webApp = (app, ReactApp, config) => {
     withSagas,
     withEvents,
     packagejson,
-    versionData,
+    staticFolderPath = 'static',
     differentialBundles,
     dynamicPaths,
     allowedGroups,
@@ -154,13 +154,15 @@ const webApp = (app, ReactApp, config) => {
   if (!bundles.default || bundles.default === {})
     bundles.default = bundles.legacy || bundles.modern;
 
-  const versionInfo = JSON.parse(fs.readFileSync(versionData, 'utf8'));
+  const versionInfo = JSON.parse(
+    fs.readFileSync(`dist/${staticFolderPath}/version.json`, 'utf8')
+  );
 
   const responseHandler =
     typeof handleResponses === 'function' ? handleResponses : handleResponse;
 
   app.get('/*', (request, response, next) => {
-    if (request.originalUrl.startsWith('/static/')) return next();
+    if (request.originalUrl.startsWith(`/${staticFolderPath}/`)) return next();
     const { url } = request;
 
     const matchedStaticRoute = () =>

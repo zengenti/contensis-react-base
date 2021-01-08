@@ -11,6 +11,8 @@ import ConfigureWebApp from './core/webApp';
 const app = express();
 
 const start = (ReactApp, config, ServerFeatures) => {
+  const { staticFolderPath = 'static' } = config;
+
   app.disable('x-powered-by');
 
   // Output some information about the used build/startup configuration
@@ -21,7 +23,10 @@ const start = (ReactApp, config, ServerFeatures) => {
   ConfigureReverseProxies(app, config.reverseProxyPaths);
   ConfigureWebApp(app, ReactApp, config);
 
-  app.use('/static', express.static('dist/static', { maxage: '31557600h' }));
+  app.use(
+    `/${staticFolderPath}`,
+    express.static(`dist/${staticFolderPath}`, { maxage: '31557600h' })
+  );
 
   app.on('ready', async () => {
     // Configure DNS to make life easier

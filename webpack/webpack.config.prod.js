@@ -13,7 +13,8 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
   .BundleAnalyzerPlugin;
 
 const BASE_CONFIG = require('./webpack.config.base');
-const { WEBPACK_DEFINE_CONFIG } = require('./bundle-info');
+const { WEBPACK_DEFINE_CONFIG, DEFINE_CONFIG } = require('./bundle-info');
+const staticFolderPath = DEFINE_CONFIG.production.STATIC_PATH;
 
 const minify = {
   removeComments: true,
@@ -39,8 +40,8 @@ const CLIENT_MODERN_CONFIG = {
   },
   output: {
     path: path.resolve(__dirname, `../dist`),
-    filename: `static/modern/js/[name].[chunkhash].mjs`,
-    chunkFilename: `static/modern/js/[name].[chunkhash].mjs`,
+    filename: `${staticFolderPath}/modern/js/[name].[chunkhash].mjs`,
+    chunkFilename: `${staticFolderPath}/modern/js/[name].[chunkhash].mjs`,
   },
   plugins: [
     new WebpackModules(),
@@ -79,8 +80,8 @@ const CLIENT_LEGACY_CONFIG = {
   },
   output: {
     path: path.resolve(__dirname, `../dist`),
-    filename: `static/legacy/js/[name].[chunkhash].js`,
-    chunkFilename: `static/legacy/js/[name].[chunkhash].js`,
+    filename: `${staticFolderPath}/legacy/js/[name].[chunkhash].js`,
+    chunkFilename: `${staticFolderPath}/legacy/js/[name].[chunkhash].js`,
   },
   module: {
     rules: [
@@ -150,7 +151,7 @@ const CLIENT_PROD_CONFIG = {
       {
         ignore: ['index.html', 'index.ejs'],
         from: path.resolve(__dirname, '../public'),
-        to: path.resolve(__dirname, '../dist/static'),
+        to: path.resolve(__dirname, `../dist/${staticFolderPath}`),
       },
     ]),
     new ImageminPlugin({
