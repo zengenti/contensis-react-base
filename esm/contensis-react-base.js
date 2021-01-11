@@ -271,6 +271,7 @@ const webApp = (app, ReactApp, config) => {
     withEvents,
     packagejson,
     staticFolderPath = 'static',
+    startupScriptFilename,
     differentialBundles,
     dynamicPaths,
     allowedGroups,
@@ -278,12 +279,12 @@ const webApp = (app, ReactApp, config) => {
     disableSsrRedux,
     handleResponses
   } = config;
-  const bundles = {
+  const bundleData = {
     default: loadBundleData(config),
     legacy: loadBundleData(config, 'legacy'),
     modern: loadBundleData(config, 'modern')
   };
-  if (!bundles.default || bundles.default === {}) bundles.default = bundles.legacy || bundles.modern;
+  if (!bundleData.default || bundleData.default === {}) bundleData.default = bundleData.legacy || bundleData.modern;
   const versionInfo = JSON.parse(fs.readFileSync(`dist/${staticFolderPath}/version.json`, 'utf8'));
   const responseHandler = typeof handleResponses === 'function' ? handleResponses : handleResponse;
   app.get('/*', (request, response, next) => {
@@ -340,24 +341,27 @@ const webApp = (app, ReactApp, config) => {
     console.log(`Request for ${request.path} hostname: ${request.hostname} versionStatus: ${versionStatusFromHostname}`);
     /* eslint-enable no-console */
 
-    const templates = bundles.default.templates || bundles.legacy.templates;
-    const stats = bundles.modern.stats && bundles.legacy.stats ? fromEntries(Object.entries(bundles.modern.stats).map(([lib, paths]) => [lib, bundles.legacy.stats[lib] ? [...paths, ...bundles.legacy.stats[lib]] : paths])) : bundles.default.stats;
+    const templates = bundleData.default.templates || bundleData.legacy.templates;
+    const stats = bundleData.modern.stats && bundleData.legacy.stats ? fromEntries(Object.entries(bundleData.modern.stats).map(([lib, paths]) => [lib, bundleData.legacy.stats[lib] ? [...paths, ...bundleData.legacy.stats[lib]] : paths])) : bundleData.default.stats;
     const {
       templateHTML,
       templateHTMLFragment,
       templateHTMLStatic
-    } = templates; // Serve a blank HTML page with client scripts to load the app in the browser
+    } = templates;
+    const bundles = getBundles(stats, modules);
+    const bundleTags = bundles.map(bundle => {
+      if (bundle.publicPath.includes('/modern/')) return differentialBundles ? `<script type="module" src="${bundle.publicPath}"></script>` : null;
+      return `<script nomodule src="${bundle.publicPath}"></script>`;
+    }).filter(f => f); // Add the static startup script to the bundleTags
+
+    startupScriptFilename && bundleTags.push(`<script src="/${staticFolderPath}/${startupScriptFilename}"></script>`);
+    const bundleScriptsAsString = bundleTags.join(''); // Serve a blank HTML page with client scripts to load the app in the browser
 
     if (accessMethod.DYNAMIC) {
       // Dynamic doesn't need sagas
       renderToString(jsx);
       const isDynamicHint = `<script>window.isDynamic = true;</script>`;
-      const dynamicBundles = getBundles(stats, modules);
-      const dynamicBundleScripts = dynamicBundles.map(bundle => {
-        if (bundle.publicPath.includes('/modern/')) return differentialBundles ? `<script type="module" src="${bundle.publicPath}"></script>` : null;
-        return `<script nomodule src="${bundle.publicPath}"></script>`;
-      }).filter(f => f).join('');
-      const responseHtmlDynamic = templateHTML.replace('{{TITLE}}', '').replace('{{SEO_CRITICAL_METADATA}}', '').replace('{{CRITICAL_CSS}}', '').replace('{{APP}}', '').replace('{{LOADABLE_CHUNKS}}', dynamicBundleScripts).replace('{{REDUX_DATA}}', isDynamicHint);
+      const responseHtmlDynamic = templateHTML.replace('{{TITLE}}', '').replace('{{SEO_CRITICAL_METADATA}}', '').replace('{{CRITICAL_CSS}}', '').replace('{{APP}}', '').replace('{{LOADABLE_CHUNKS}}', bundleScriptsAsString).replace('{{REDUX_DATA}}', isDynamicHint);
       response.setHeader('Surrogate-Control', 'max-age=3600');
       response.status(status); //.send(responseHtmlDynamic);
 
@@ -386,11 +390,6 @@ const webApp = (app, ReactApp, config) => {
 
         const reduxState = store.getState();
         const styleTags = sheet.getStyleTags();
-        const bundles = getBundles(stats, modules);
-        const bundleScripts = bundles.map(bundle => {
-          if (bundle.publicPath.includes('/modern/')) return differentialBundles ? `<script type="module" src="${bundle.publicPath}"></script>` : null;
-          return `<script nomodule src="${bundle.publicPath}"></script>`;
-        }).filter(f => f).join('');
         let serialisedReduxData = '';
 
         if (context.status !== 404) {
@@ -429,7 +428,7 @@ const webApp = (app, ReactApp, config) => {
 
 
         if (accessMethod.FRAGMENT && !accessMethod.STATIC) {
-          responseHTML = templateHTMLFragment.replace('{{TITLE}}', title).replace('{{SEO_CRITICAL_METADATA}}', metadata).replace('{{CRITICAL_CSS}}', minifyCssString(styleTags)).replace('{{APP}}', html).replace('{{LOADABLE_CHUNKS}}', bundleScripts).replace('{{REDUX_DATA}}', serialisedReduxData);
+          responseHTML = templateHTMLFragment.replace('{{TITLE}}', title).replace('{{SEO_CRITICAL_METADATA}}', metadata).replace('{{CRITICAL_CSS}}', minifyCssString(styleTags)).replace('{{APP}}', html).replace('{{LOADABLE_CHUNKS}}', bundleScriptsAsString).replace('{{REDUX_DATA}}', serialisedReduxData);
         } // Full HTML page served statically
 
 
@@ -439,7 +438,7 @@ const webApp = (app, ReactApp, config) => {
 
 
         if (!accessMethod.FRAGMENT && !accessMethod.STATIC) {
-          responseHTML = templateHTML.replace('{{TITLE}}', title).replace('{{SEO_CRITICAL_METADATA}}', metadata).replace('{{CRITICAL_CSS}}', styleTags).replace('{{APP}}', html).replace('{{LOADABLE_CHUNKS}}', bundleScripts).replace('{{REDUX_DATA}}', serialisedReduxData);
+          responseHTML = templateHTML.replace('{{TITLE}}', title).replace('{{SEO_CRITICAL_METADATA}}', metadata).replace('{{CRITICAL_CSS}}', styleTags).replace('{{APP}}', html).replace('{{LOADABLE_CHUNKS}}', bundleScriptsAsString).replace('{{REDUX_DATA}}', serialisedReduxData);
         }
 
         addStandardHeaders(reduxState, response, packagejson, {
