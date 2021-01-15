@@ -920,6 +920,7 @@ const Fields = {
   locations: 'locations.sys.id',
   modeOfStudy: 'modeOfStudy.sys.id',
   publishedDate: 'publishedDate',
+  searchContent: 'searchContent',
   sys,
   contentTypeId: 'sys.contentTypeId',
   wildcard: '*'
@@ -1094,9 +1095,9 @@ const termExpressions = (searchTerm, weightedSearchFields) => {
       }
     }); // Wrap operators in an Or operator
 
-    return [contensisDeliveryApi.Op.or().addRange(operators)];
+    return [contensisDeliveryApi.Op.freeText(Fields.searchContent, searchTerm), contensisDeliveryApi.Op.or().addRange(operators)];
   } else if (searchTerm) {
-    return [contensisDeliveryApi.Op.contains(Fields.wildcard, searchTerm)];
+    return [contensisDeliveryApi.Op.freeText(Fields.searchContent, searchTerm), contensisDeliveryApi.Op.contains(Fields.wildcard, searchTerm)];
   } else {
     return [];
   }
@@ -2031,10 +2032,14 @@ var reducers = (config => {
             context,
             facet,
             config
-          } = action;
+          } = action; // Changing the config of a single facet or listing
 
-          if (context && facet) {
+          if (context && facet && config) {
             return state.setIn([context, facet], immutable.fromJS(config));
+          } else if (config) {
+            // Changing the entire search config
+            const newState = immutable.fromJS(config);
+            return newState;
           }
 
           return state;
