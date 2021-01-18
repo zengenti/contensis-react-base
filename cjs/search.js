@@ -1403,15 +1403,10 @@ const queryParamsTemplate = {
   excludeIds: ({
     action: {
       excludeIds
-    },
-    context,
-    state
+    }
   }) => {
     // Exclude current route entry id from minilist searches or any supplied ids
-    if (excludeIds) return Array.isArray(excludeIds) ? excludeIds : excludeIds.split(',').map(id => id.trim());else if (context === Context.minilist) {
-      const currentEntryId = selectRouteEntryEntryId(state);
-      return currentEntryId ? [currentEntryId] : null;
-    }
+    if (excludeIds) return Array.isArray(excludeIds) ? excludeIds : excludeIds.split(',').map(id => id.trim());
     return null;
   },
   featuredResults: root => getQueryParameter(root, 'featuredResults', null),
