@@ -71,7 +71,7 @@ export default [
   {
     path: '/zenInfo',
     exact: true,
-    requireLogin: true,
+    requireLogin: false,
     component: Loadable({
       loader: () =>
         import(/* webpackChunkName: "VersionInfo" */ '~/pages/VersionInfo'),

@@ -7,7 +7,13 @@ const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const BASE_CONFIG = require('./webpack.config.base');
-const { DEVSERVER_PROXIES, WEBPACK_DEFINE_CONFIG } = require('./bundle-info');
+const {
+  DEVSERVER_PROXIES,
+  WEBPACK_DEFINE_CONFIG,
+  DEFINE_CONFIG,
+} = require('./bundle-info');
+
+const staticFolderPath = DEFINE_CONFIG.production.STATIC_PATH;
 
 const CLIENT_DEV_CONFIG = {
   name: 'webpack-dev-config',
@@ -53,7 +59,7 @@ const CLIENT_DEV_CONFIG = {
             options: {
               bypassOnDebug: true, // webpack@1.x
               disable: true, // webpack@2.x and newer
-              name: 'static/[hash].[ext]',
+              name: `${staticFolderPath}/[hash].[ext]`,
             },
           },
         ],
@@ -88,7 +94,7 @@ const CLIENT_DEV_CONFIG = {
         {
           globOptions: { ignore: ['index.html', 'index.ejs'] },
           from: path.resolve(__dirname, '../public'),
-          to: path.resolve(__dirname, '../dist/static'),
+          to: path.resolve(__dirname, `../dist/${staticFolderPath}`),
         },
       ],
     }),
