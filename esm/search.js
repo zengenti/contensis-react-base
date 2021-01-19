@@ -891,6 +891,7 @@ const FilterExpressionTypes = {
   field: 'field'
 };
 const sys = {
+  allUris: 'sys.allUris',
   contentTypeId: 'sys.contentTypeId',
   dataFormat: 'sys.dataFormat',
   filename: 'sys.properties.filename',
@@ -900,15 +901,9 @@ const sys = {
   versionStatus: 'sys.versionStatus'
 };
 const Fields = {
-  clusters: 'clusters.sys.id',
-  courseModeDetails: 'courseModeDetails.sys.id',
+  entryDescription: 'entryDescription',
   entryTitle: 'entryTitle',
-  entryYear: 'entryYear.sys.id',
-  entryYears: 'entryYears.sys.id',
   keywords: 'keywords',
-  locations: 'locations.sys.id',
-  modeOfStudy: 'modeOfStudy.sys.id',
-  publishedDate: 'publishedDate',
   searchContent: 'searchContent',
   sys,
   contentTypeId: 'sys.contentTypeId',
@@ -1056,24 +1051,24 @@ const termExpressions = (searchTerm, weightedSearchFields) => {
     const freeTextOp = (f, term) => fieldExpression(f.fieldId, fixFreeTextForElastic(term), 'freeText', f.weight); // For each weighted search field
 
 
-    weightedSearchFields.forEach(f => {
+    weightedSearchFields.forEach(wsf => {
       // Push to field operators
       const fieldOperators = []; // Add operator expressions for modified search term
 
       if (modifiedSearchTerm) {
-        if ([Fields.keywords, Fields.sys.filename, Fields.sys.uri].includes(f.fieldId)) {
-          fieldOperators.push(...containsOp(f, modifiedSearchTerm));
+        if ([Fields.keywords, Fields.sys.filename, Fields.sys.uri].includes(wsf.fieldId)) {
+          fieldOperators.push(...containsOp(wsf, modifiedSearchTerm));
         } else {
-          if ([Fields.entryTitle].includes(f.fieldId)) {
-            fieldOperators.push(Op.or(...containsOp(f, modifiedSearchTerm), ...freeTextOp(f, modifiedSearchTerm)));
+          if ([Fields.entryTitle].includes(wsf.fieldId)) {
+            fieldOperators.push(Op.or(...containsOp(wsf, modifiedSearchTerm), ...freeTextOp(wsf, modifiedSearchTerm)));
           } else {
-            fieldOperators.push(...freeTextOp(f, modifiedSearchTerm));
+            fieldOperators.push(...freeTextOp(wsf, modifiedSearchTerm));
           }
         }
       } // Add operator expressions for any quoted phrases
 
 
-      quotedPhrases.forEach(qp => fieldOperators.push(...containsOp(f, qp))); // If we are using multiple operators for a field we will
+      quotedPhrases.forEach(qp => fieldOperators.push(...containsOp(wsf, qp))); // If we are using multiple operators for a field we will
       // wrap each field inside an And operator so we will match
       // all terms/phrases rather than any terms/phrases
 
@@ -1084,9 +1079,11 @@ const termExpressions = (searchTerm, weightedSearchFields) => {
       }
     }); // Wrap operators in an Or operator
 
-    return [Op.freeText(Fields.searchContent, searchTerm), Op.or().addRange(operators)];
+    return [Op.or().addRange(operators).add(Op.freeText(Fields.searchContent, searchTerm))];
   } else if (searchTerm) {
-    return [Op.freeText(Fields.searchContent, searchTerm), Op.contains(Fields.wildcard, searchTerm)];
+    // Searching without weightedSearchFields defined will fall back
+    // to a default set of search fields with arbritary weights set.
+    return [Op.or(Op.equalTo(Fields.entryTitle, searchTerm).weight(10), Op.freeText(Fields.entryTitle, searchTerm).weight(2), Op.freeText(Fields.entryDescription, searchTerm).weight(2), Op.contains(Fields.keywords, searchTerm).weight(2), Op.contains(Fields.sys.uri, searchTerm).weight(2), Op.contains(Fields.sys.allUris, searchTerm), Op.freeText(Fields.searchContent, searchTerm))];
   } else {
     return [];
   }
