@@ -7,9 +7,9 @@ var reactRedux = require('react-redux');
 require('immutable');
 var selectors = require('./selectors-1a2d998b.js');
 require('query-string');
-var sagas = require('./sagas-ac3c2bc5.js');
-var actions = require('./actions-c93154c3.js');
-require('redux-saga/effects');
+var sagas = require('./sagas-4cb81e32.js');
+var actions = require('./actions-63e1ada7.js');
+require('@redux-saga/core/effects');
 require('js-cookie');
 var ToJs = require('./ToJs-d548b71b.js');
 

@@ -3,9 +3,9 @@ import { connect, useDispatch, useSelector } from 'react-redux';
 import { Map, List, OrderedMap, Iterable, fromJS, Set } from 'immutable';
 import { Query, Op, OrderBy, Client } from 'contensis-delivery-api';
 import queryString from 'query-string';
+import { takeEvery, select, put, call, all } from '@redux-saga/core/effects';
 import { error, warn, info } from 'loglevel';
 import PropTypes from 'prop-types';
-import { takeEvery, select, put, call, all } from '@redux-saga/core/effects';
 import { navigation, routing, version } from '@zengenti/contensis-react-base/redux';
 import mapJson from 'jsonpath-mapper';
 

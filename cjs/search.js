@@ -7,9 +7,9 @@ var reactRedux = require('react-redux');
 var immutable = require('immutable');
 var contensisDeliveryApi = require('contensis-delivery-api');
 var queryString = require('query-string');
+var effects = require('@redux-saga/core/effects');
 var log = require('loglevel');
 var PropTypes = require('prop-types');
-var effects = require('@redux-saga/core/effects');
 var redux = require('@zengenti/contensis-react-base/redux');
 var mapJson = require('jsonpath-mapper');
 

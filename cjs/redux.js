@@ -9,9 +9,9 @@ var selectors$1 = require('./selectors-1a2d998b.js');
 var routing$1 = require('./routing-2b3d824a.js');
 var navigation$2 = require('./navigation-37bfd5e7.js');
 require('query-string');
-var sagas = require('./sagas-ac3c2bc5.js');
-var actions$1 = require('./actions-c93154c3.js');
-require('redux-saga/effects');
+var sagas = require('./sagas-4cb81e32.js');
+var actions$1 = require('./actions-63e1ada7.js');
+require('@redux-saga/core/effects');
 require('js-cookie');
 
 var types = {

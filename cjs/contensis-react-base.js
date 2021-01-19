@@ -18,9 +18,8 @@ var Helmet = require('react-helmet');
 var serialize = require('serialize-javascript');
 var minifyCssString = require('minify-css-string');
 var immutable = require('immutable');
-var fromEntries = require('fromentries');
 require('history');
-var App = require('./App-37829384.js');
+var App = require('./App-20e88039.js');
 require('contensis-delivery-api');
 var selectors = require('./selectors-1a2d998b.js');
 var routing = require('./routing-2b3d824a.js');
@@ -30,8 +29,8 @@ require('redux');
 require('redux-immutable');
 require('redux-thunk');
 require('redux-saga');
-require('./sagas-ac3c2bc5.js');
-require('redux-saga/effects');
+require('./sagas-4cb81e32.js');
+require('@redux-saga/core/effects');
 require('js-cookie');
 require('./ToJs-d548b71b.js');
 require('loglevel');
@@ -51,7 +50,6 @@ var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
 var Helmet__default = /*#__PURE__*/_interopDefaultLegacy(Helmet);
 var serialize__default = /*#__PURE__*/_interopDefaultLegacy(serialize);
 var minifyCssString__default = /*#__PURE__*/_interopDefaultLegacy(minifyCssString);
-var fromEntries__default = /*#__PURE__*/_interopDefaultLegacy(fromEntries);
 
 const servers = SERVERS;
 /* global SERVERS */
@@ -156,6 +154,14 @@ const deliveryApiProxy = (apiProxy, app) => {
       /* eslint-enable no-console */
     });
   });
+};
+
+/*! fromentries. MIT License. Feross Aboukhadijeh <https://feross.org/opensource> */
+var fromentries = function fromEntries (iterable) {
+  return [...iterable].reduce((obj, [key, val]) => {
+    obj[key] = val;
+    return obj
+  }, {})
 };
 
 const AccessMethods = {
@@ -358,7 +364,7 @@ const webApp = (app, ReactApp, config) => {
     /* eslint-enable no-console */
 
     const templates = bundleData.default.templates || bundleData.legacy.templates;
-    const stats = bundleData.modern.stats && bundleData.legacy.stats ? fromEntries__default['default'](Object.entries(bundleData.modern.stats).map(([lib, paths]) => [lib, bundleData.legacy.stats[lib] ? [...paths, ...bundleData.legacy.stats[lib]] : paths])) : bundleData.default.stats;
+    const stats = bundleData.modern.stats && bundleData.legacy.stats ? fromentries(Object.entries(bundleData.modern.stats).map(([lib, paths]) => [lib, bundleData.legacy.stats[lib] ? [...paths, ...bundleData.legacy.stats[lib]] : paths])) : bundleData.default.stats;
     const {
       templateHTML,
       templateHTMLFragment,

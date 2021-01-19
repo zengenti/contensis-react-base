@@ -1,7 +1,7 @@
 import { Map, List, fromJS } from 'immutable';
 import { r as selectUser, t as selectCurrentSearch, f as SET_ROUTE, u as selectUsername } from './selectors-19e46385.js';
 import queryString from 'query-string';
-import { takeEvery, call, fork, select, put } from 'redux-saga/effects';
+import { takeEvery, call, fork, select, put } from '@redux-saga/core/effects';
 import Cookies from 'js-cookie';
 
 const ACTION_PREFIX = '@USER/';
@@ -707,4 +707,4 @@ function* createUserAccountSaga() {
 }
 
 export { CREATE_USER_ACCOUNT as C, FORGOT_USER_PASSWORD as F, LOGIN_USER as L, SET_RECAPTCHA_KEY as S, TOGGLE_LOGIN_MODE as T, UserReducer as U, VALIDATE_USER as V, user as a, LOGOUT_USER as b, CHANGE_USER_PASSWORD as c, SET_RECAPTCHA_RESPONSE as d, LoginHelper as e, userSagas as u, validateUserSaga as v };
-//# sourceMappingURL=sagas-30af639f.js.map
+//# sourceMappingURL=sagas-4f97f9e8.js.map

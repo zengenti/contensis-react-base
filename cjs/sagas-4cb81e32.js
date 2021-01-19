@@ -3,7 +3,7 @@
 var immutable = require('immutable');
 var selectors = require('./selectors-1a2d998b.js');
 var queryString = require('query-string');
-var effects = require('redux-saga/effects');
+var effects = require('@redux-saga/core/effects');
 var Cookies = require('js-cookie');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
@@ -727,4 +727,4 @@ exports.VALIDATE_USER = VALIDATE_USER;
 exports.user = user;
 exports.userSagas = userSagas;
 exports.validateUserSaga = validateUserSaga;
-//# sourceMappingURL=sagas-ac3c2bc5.js.map
+//# sourceMappingURL=sagas-4cb81e32.js.map
