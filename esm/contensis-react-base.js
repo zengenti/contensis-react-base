@@ -291,9 +291,7 @@ const webApp = (app, ReactApp, config) => {
   const versionInfo = JSON.parse(fs.readFileSync(`dist/${staticFolderPath}/version.json`, 'utf8'));
   const responseHandler = typeof handleResponses === 'function' ? handleResponses : handleResponse;
   app.get('/*', (request, response, next) => {
-    if (request.originalUrl.startsWith(`/${staticFolderPath}/`)) return next(); // eslint-disable-next-line no-console
-
-    console.log(`Request for ${request.path} hostname: ${request.hostname} versionStatus: ${versionStatusFromHostname}`);
+    if (request.originalUrl.startsWith(`/${staticFolderPath}/`)) return next();
     const {
       url
     } = request;
@@ -330,7 +328,9 @@ const webApp = (app, ReactApp, config) => {
       initialEntries: [url]
     })); // dispatch any global and non-saga related actions before calling our JSX
 
-    const versionStatusFromHostname = GetDeliveryApiStatusFromHostname(request.hostname);
+    const versionStatusFromHostname = GetDeliveryApiStatusFromHostname(request.hostname); // eslint-disable-next-line no-console
+
+    console.log(`Request for ${request.path} hostname: ${request.hostname} versionStatus: ${versionStatusFromHostname}`);
     store.dispatch(setVersionStatus(request.query.versionStatus || versionStatusFromHostname));
     store.dispatch(setVersion(versionInfo.commitRef, versionInfo.buildNo));
     const project = pickProject(request.hostname, request.query);

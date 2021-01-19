@@ -165,10 +165,6 @@ const webApp = (app, ReactApp, config) => {
   app.get('/*', (request, response, next) => {
     if (request.originalUrl.startsWith(`/${staticFolderPath}/`)) return next();
 
-    // eslint-disable-next-line no-console
-    console.log(
-      `Request for ${request.path} hostname: ${request.hostname} versionStatus: ${versionStatusFromHostname}`
-    );
     const { url } = request;
 
     const matchedStaticRoute = () =>
@@ -204,6 +200,11 @@ const webApp = (app, ReactApp, config) => {
     // dispatch any global and non-saga related actions before calling our JSX
     const versionStatusFromHostname = GetDeliveryApiStatusFromHostname(
       request.hostname
+    );
+
+    // eslint-disable-next-line no-console
+    console.log(
+      `Request for ${request.path} hostname: ${request.hostname} versionStatus: ${versionStatusFromHostname}`
     );
 
     store.dispatch(
