@@ -1,6 +1,6 @@
 import { Seq, Map, List } from 'immutable';
 import { q as queryParams, p as selectCurrentSearch, l as findContentTypeMapping, r as setRoute } from './routing-64807af8.js';
-import { takeEvery, select, call, put } from 'redux-saga/effects';
+import { takeEvery, select, call, put } from '@redux-saga/core/effects';
 import { s as selectUserIsAuthenticated, a as selectUserGroups, m as matchUserGroup, b as selectClientCredentials } from './ToJs-1c73b10a.js';
 import { Client } from 'contensis-management-api';
 import mapJson from 'jsonpath-mapper';
@@ -647,4 +647,4 @@ function* refreshSecurityToken() {
 }
 
 export { LOGIN_USER as L, REGISTER_USER as R, UserReducer as U, REGISTER_USER_SUCCESS as a, REGISTER_USER_FAILED as b, LOGOUT_USER as c, LoginHelper as d, fromJSOrdered as f, handleRequiresLoginSaga as h, initialUserState as i, loginSagas as l, refreshSecurityToken as r, types as t };
-//# sourceMappingURL=login-97b71105.js.map
+//# sourceMappingURL=login-1ac7911c.js.map

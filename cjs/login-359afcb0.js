@@ -2,7 +2,7 @@
 
 var immutable = require('immutable');
 var routing = require('./routing-6197a03e.js');
-var effects = require('redux-saga/effects');
+var effects = require('@redux-saga/core/effects');
 var ToJs = require('./ToJs-8f6b21c9.js');
 var contensisManagementApi = require('contensis-management-api');
 var mapJson = require('jsonpath-mapper');
@@ -666,4 +666,4 @@ exports.initialUserState = initialUserState;
 exports.loginSagas = loginSagas;
 exports.refreshSecurityToken = refreshSecurityToken;
 exports.types = types;
-//# sourceMappingURL=login-8b061a53.js.map
+//# sourceMappingURL=login-359afcb0.js.map
