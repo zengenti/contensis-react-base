@@ -1,6 +1,6 @@
-import { Client } from 'contensis-management-api';
+// import { Client } from 'contensis-management-api';
 
-export const getManagementApiClient = ({
+export const getManagementApiClient = async ({
   bearerToken,
   bearerTokenExpiryDate,
   refreshToken,
@@ -29,6 +29,7 @@ export const getManagementApiClient = ({
       },
     };
   }
+  const { Client } = await import('contensis-management-api');
 
   const client = Client.create({
     ...config,

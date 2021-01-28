@@ -56,7 +56,7 @@ export class LoginHelper {
 
     if (username && password) {
       // Get a management client with username and password
-      transientClient = getManagementApiClient({
+      transientClient = await getManagementApiClient({
         username,
         password,
       });
@@ -98,7 +98,8 @@ export class LoginHelper {
     // or clientCredentials supplied in the options argument we can continue to
     // fetch the user's details
     if (credentials) {
-      const client = transientClient || getManagementApiClient(credentials);
+      const client =
+        transientClient || (await getManagementApiClient(credentials));
       const [error, userDetails] = await LoginHelper.GetUserDetails(client);
 
       if (error) {

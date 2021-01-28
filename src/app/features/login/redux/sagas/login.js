@@ -160,7 +160,7 @@ export function* refreshSecurityToken() {
     (yield select(selectClientCredentials)) || Map()
   ).toJS();
   if (Object.keys(clientCredentials).length > 0) {
-    const client = getManagementApiClient(clientCredentials);
+    const client = yield getManagementApiClient(clientCredentials);
     yield client.authenticate();
 
     const authenticationState = {};
