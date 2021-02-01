@@ -4,14 +4,17 @@ export default produce(
   (draftState, action) => {
     switch (action) {
       case 'GREETING_ACTION': {
-        draftState.mytestProp = `hello ${action.name}`;
+        draftState.myTestProp = `hello ${action.name}`;
         return;
       }
-      case 'GREETING_ACTION': {
-        draftState.mytestProp = `hello ${action.name}`;
+      case 'UPDATE_TEST_OBJ_A': {
+        draftState.myTestObject.a = `the letter ${action.letter}`;
         return;
       }
     }
   },
-  { mytestProp: 'hello', myTestObject: {a: 'the letter a', b: 'the letter b'} }
+  {
+    myTestProp: 'hello',
+    myTestObject: { a: 'the letter a', b: 'the letter b' },
+  }
 );
