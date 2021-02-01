@@ -9,6 +9,6 @@
 // if(myObj.a === 'the letter b') return false;
 export const selectTestFeature = state => state.get('immer_testFeature');
 export const selectGreeting = state =>
-  state.getIn(['immer_testFeature', 'myTestProp']);
+  state.getIn(['immer', 'testFeature', 'myTestProp']);
 export const selectTestObject = state =>
-  state.getIn(['immer_testFeature', 'myTestObject']);
+  state.getIn(['immer', 'testFeature', 'myTestObject']);

@@ -8,7 +8,7 @@ const fromJSLeaveImmer = (js, isOrdered = false) => {
   const convertedObject = isOrdered ? OrderedMap() : Map();
   const keys = Object.keys(js);
   keys.forEach(key => {
-    if (key.startsWith('immer_')) {
+    if (key === 'immer') {
       convertedObject.set(key, js[key]);
       // console.info(`LOOK! - immer untouched bar root key "${key}"`);
     } else {
