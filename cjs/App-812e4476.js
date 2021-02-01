@@ -30,7 +30,7 @@ const fromJSLeaveImmer = (js, isOrdered = false) => {
   const convertedObject = isOrdered ? immutable.OrderedMap() : immutable.Map();
   const keys = Object.keys(js);
   keys.forEach(key => {
-    if (key.startsWith('immer_')) {
+    if (key === 'immer') {
       convertedObject.set(key, js[key]); // console.info(`LOOK! - immer untouched bar root key "${key}"`);
     } else {
       // console.info(`LOOK! - normal immutable feature "${key}"`);
@@ -1047,4 +1047,4 @@ exports.fromJSLeaveImmer = fromJSLeaveImmer;
 exports.history = history;
 exports.pickProject = pickProject;
 exports.rootSaga = rootSaga;
-//# sourceMappingURL=App-1d9e0d4d.js.map
+//# sourceMappingURL=App-812e4476.js.map

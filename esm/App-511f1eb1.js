@@ -22,7 +22,7 @@ const fromJSLeaveImmer = (js, isOrdered = false) => {
   const convertedObject = isOrdered ? OrderedMap() : Map();
   const keys = Object.keys(js);
   keys.forEach(key => {
-    if (key.startsWith('immer_')) {
+    if (key === 'immer') {
       convertedObject.set(key, js[key]); // console.info(`LOOK! - immer untouched bar root key "${key}"`);
     } else {
       // console.info(`LOOK! - normal immutable feature "${key}"`);
@@ -1032,4 +1032,4 @@ const AppRoot = props => {
 };
 
 export { AppRoot as A, browserHistory as b, createStore as c, deliveryApi as d, fromJSLeaveImmer as f, history as h, pickProject as p, rootSaga as r };
-//# sourceMappingURL=App-47feb5d1.js.map
+//# sourceMappingURL=App-511f1eb1.js.map
