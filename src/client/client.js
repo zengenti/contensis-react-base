@@ -6,7 +6,7 @@ import { preloadReady } from 'react-loadable';
 import { AppContainer } from 'react-hot-loader';
 import { Provider as ReduxProvider } from 'react-redux';
 import queryString from 'query-string';
-import { fromJS } from 'immutable';
+// import { fromJS } from 'immutable';
 
 import createStore from '~/core/redux/store';
 import rootSaga from '~/core/redux/sagas/index.js';
@@ -15,7 +15,8 @@ import { setVersionStatus } from '~/core/redux/actions/version';
 import { deliveryApi } from '~/core/util/ContensisDeliveryApi';
 import { setCurrentProject } from '~/core/redux/actions/routing';
 import pickProject from '~/core/util/pickProject';
-import fromJSOrdered from '~/core/util/fromJSOrdered';
+// import fromJSOrdered from '~/core/util/fromJSOrdered';
+import fromJSLeaveImmer from '~/core/util/fromJSLeaveImmer';
 import { browserHistory as history } from '~/core/redux/history';
 
 export { default as ReactApp } from '~/App';
@@ -62,7 +63,7 @@ class ClientApp {
     ) {
       store = createStore(
         withReducers,
-        fromJSOrdered(window.REDUX_DATA),
+        fromJSLeaveImmer(window.REDUX_DATA),
         history
       );
       store.dispatch(
@@ -88,7 +89,7 @@ class ClientApp {
           // console.log(data);
           /* eslint-enable no-console */
           const ssRedux = JSON.parse(data);
-          store = createStore(withReducers, fromJS(ssRedux), history);
+          store = createStore(withReducers, fromJSLeaveImmer(ssRedux), history);
           // store.dispatch(setVersionStatus(versionStatusFromHostname));
 
           store.runSaga(rootSaga(withSagas));
