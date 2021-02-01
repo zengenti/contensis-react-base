@@ -12,10 +12,11 @@ import { ServerStyleSheet } from 'styled-components';
 import Helmet from 'react-helmet';
 import serialize from 'serialize-javascript';
 import minifyCssString from 'minify-css-string';
-import { fromJS } from 'immutable';
+import 'immutable';
+import './login-417f3f96.js';
+import { c as createStore, h as history, f as fromJSLeaveImmer, d as deliveryApi, p as pickProject, r as rootSaga } from './App-47feb5d1.js';
+export { A as ReactApp } from './App-47feb5d1.js';
 import 'history';
-import { c as createStore, h as history, d as deliveryApi, p as pickProject, r as rootSaga } from './App-8d242844.js';
-export { A as ReactApp } from './App-8d242844.js';
 import 'contensis-delivery-api';
 import { s as setCurrentProject, a as selectRouteEntry, b as selectCurrentProject } from './routing-64807af8.js';
 import 'redux';
@@ -23,7 +24,6 @@ import 'redux-immutable';
 import 'redux-thunk';
 import 'redux-saga';
 import { s as setVersionStatus, a as setVersion } from './version-41f7c83e.js';
-import './login-417f3f96.js';
 import 'query-string';
 import '@redux-saga/core/effects';
 import 'loglevel';
@@ -252,7 +252,7 @@ const webApp = (app, ReactApp, config) => {
     const context = {};
     let status = 200; // Create a store (with a memory history) from our current url
 
-    const store = createStore(withReducers, fromJS({}), history({
+    const store = createStore(withReducers, fromJSLeaveImmer({}), history({
       initialEntries: [url]
     })); // dispatch any global and non-saga related actions before calling our JSX
 

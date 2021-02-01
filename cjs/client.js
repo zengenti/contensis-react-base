@@ -7,9 +7,10 @@ var Loadable = require('react-loadable');
 var React = require('react');
 var reactRouterDom = require('react-router-dom');
 var reactRedux = require('react-redux');
-var immutable = require('immutable');
+require('immutable');
+require('./login-0e13e272.js');
+var App = require('./App-1d9e0d4d.js');
 require('history');
-var App = require('./App-d242a747.js');
 require('contensis-delivery-api');
 var routing = require('./routing-6197a03e.js');
 require('redux');
@@ -17,7 +18,6 @@ require('redux-immutable');
 require('redux-thunk');
 require('redux-saga');
 var version = require('./version-7fdcc2c0.js');
-var login = require('./login-0e13e272.js');
 var queryString = require('query-string');
 require('@redux-saga/core/effects');
 require('loglevel');
@@ -74,7 +74,7 @@ class ClientApp {
     const versionStatusFromHostname = App.deliveryApi.getClientSideVersionStatus();
 
     if (window.isDynamic || window.REDUX_DATA || process.env.NODE_ENV !== 'production') {
-      store = App.createStore(withReducers, login.fromJSOrdered(window.REDUX_DATA), App.browserHistory);
+      store = App.createStore(withReducers, App.fromJSLeaveImmer(window.REDUX_DATA, true), App.browserHistory);
       store.dispatch(version.setVersionStatus(qs.versionStatus || versionStatusFromHostname));
       /* eslint-disable no-console */
 
@@ -92,8 +92,9 @@ class ClientApp {
         // console.log(data);
 
         /* eslint-enable no-console */
-        const ssRedux = JSON.parse(data);
-        store = App.createStore(withReducers, immutable.fromJS(ssRedux), App.browserHistory); // store.dispatch(setVersionStatus(versionStatusFromHostname));
+        const ssRedux = JSON.parse(data); // store = createStore(withReducers, fromJSLeaveImmer(ssRedux), history);
+
+        store = App.createStore(withReducers, App.fromJSLeaveImmer(ssRedux), App.browserHistory); // store.dispatch(setVersionStatus(versionStatusFromHostname));
 
         store.runSaga(App.rootSaga(withSagas));
         store.dispatch(routing.setCurrentProject(App.pickProject(window.location.hostname, queryString__default['default'].parse(window.location.search)))); // if (typeof window != 'undefined') {
