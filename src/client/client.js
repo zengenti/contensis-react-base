@@ -63,7 +63,7 @@ class ClientApp {
     ) {
       store = createStore(
         withReducers,
-        fromJSLeaveImmer(window.REDUX_DATA),
+        fromJSLeaveImmer(window.REDUX_DATA, true),
         history
       );
       store.dispatch(
@@ -89,6 +89,7 @@ class ClientApp {
           // console.log(data);
           /* eslint-enable no-console */
           const ssRedux = JSON.parse(data);
+          // store = createStore(withReducers, fromJSLeaveImmer(ssRedux), history);
           store = createStore(withReducers, fromJSLeaveImmer(ssRedux), history);
           // store.dispatch(setVersionStatus(versionStatusFromHostname));
 
