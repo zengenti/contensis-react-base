@@ -9,8 +9,6 @@ import withEvents from '~/core/redux/withEvents';
 
 import ServerFeatures from './features/configure';
 
-import BundleInfo from '../../webpack/bundle-info';
-
 ZengentiAppServer.start(
   ZengentiAppServer.ReactApp || App,
   {
@@ -34,7 +32,9 @@ ZengentiAppServer.start(
     disableSsrRedux: DISABLE_SSR_REDUX /* global DISABLE_SSR_REDUX */,
     // Some information about the project and the build to pass to the start config
     packagejson: require('../../package.json'),
-    staticFolderPath: BundleInfo.DEFINE_CONFIG.production.STATIC_PATH,
+    staticFolderPath: STATIC_PATH /* global STATIC_PATH */,
+    staticRoutePath: STATIC_ROUTE_PATH /* global STATIC_ROUTE_PATH */,
+    staticRoutePaths: [],
     startupScriptFilename: 'startup.js',
     stats: 'dist/target/react-loadable.json',
     // versionData: 'dist/static-new/version.json',
