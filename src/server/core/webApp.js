@@ -35,6 +35,7 @@ import createStore from '~/core/redux/store';
 import rootSaga from '~/core/redux/sagas/index.js';
 import { matchRoutes } from 'react-router-config';
 import mapJson from 'jsonpath-mapper';
+import { replaceStaticPath } from '../util/staticPaths';
 
 const addStandardHeaders = (state, response, packagejson, groups) => {
   if (state) {
@@ -102,7 +103,7 @@ const addVarnishAuthenticationHeaders = (state, response, groups = {}) => {
 
 const readFileSync = path => fs.readFileSync(path, 'utf8');
 
-const loadBundleData = ({ stats, templates }, build) => {
+const loadableBundleData = ({ stats, templates }, staticRoutePath, build) => {
   const bundle = {};
   try {
     bundle.stats = JSON.parse(
@@ -114,14 +115,23 @@ const loadBundleData = ({ stats, templates }, build) => {
   }
   try {
     bundle.templates = {
-      templateHTML: readFileSync(
-        templates.html.replace('/target', build ? `/${build}` : '')
+      templateHTML: replaceStaticPath(
+        readFileSync(
+          templates.html.replace('/target', build ? `/${build}` : '')
+        ),
+        staticRoutePath
       ),
-      templateHTMLStatic: readFileSync(
-        templates.static.replace('/target', build ? `/${build}` : '')
+      templateHTMLStatic: replaceStaticPath(
+        readFileSync(
+          templates.static.replace('/target', build ? `/${build}` : '')
+        ),
+        staticRoutePath
       ),
-      templateHTMLFragment: readFileSync(
-        templates.fragment.replace('/target', build ? `/${build}` : '')
+      templateHTMLFragment: replaceStaticPath(
+        readFileSync(
+          templates.fragment.replace('/target', build ? `/${build}` : '')
+        ),
+        staticRoutePath
       ),
     };
   } catch (ex) {
@@ -146,25 +156,24 @@ const webApp = (app, ReactApp, config) => {
     disableSsrRedux,
     handleResponses,
   } = config;
+  const staticRoutePath = config.staticRoutePath || staticFolderPath;
 
   const bundleData = {
-    default: loadBundleData(config),
-    legacy: loadBundleData(config, 'legacy'),
-    modern: loadBundleData(config, 'modern'),
+    default: loadableBundleData(config, staticRoutePath),
+    legacy: loadableBundleData(config, staticRoutePath, 'legacy'),
+    modern: loadableBundleData(config, staticRoutePath, 'modern'),
   };
   if (!bundleData.default || bundleData.default === {})
     bundleData.default = bundleData.legacy || bundleData.modern;
+
+  const responseHandler =
+    typeof handleResponses === 'function' ? handleResponses : handleResponse;
 
   const versionInfo = JSON.parse(
     fs.readFileSync(`dist/${staticFolderPath}/version.json`, 'utf8')
   );
 
-  const responseHandler =
-    typeof handleResponses === 'function' ? handleResponses : handleResponse;
-
-  app.get('/*', (request, response, next) => {
-    if (request.originalUrl.startsWith(`/${staticFolderPath}/`)) return next();
-
+  app.get('/*', (request, response) => {
     const { url } = request;
 
     const matchedStaticRoute = () =>
@@ -235,16 +244,22 @@ const webApp = (app, ReactApp, config) => {
         .map(bundle => {
           if (bundle.publicPath.includes('/modern/'))
             return differentialBundles
-              ? `<script type="module" src="${bundle.publicPath}"></script>`
+              ? `<script type="module" src="${replaceStaticPath(
+                  bundle.publicPath,
+                  staticRoutePath
+                )}"></script>`
               : null;
-          return `<script nomodule src="${bundle.publicPath}"></script>`;
+          return `<script nomodule src="${replaceStaticPath(
+            bundle.publicPath,
+            staticRoutePath
+          )}"></script>`;
         })
         .filter(f => f);
 
       // Add the static startup script to the bundleTags
       startupScriptFilename &&
         bundleTags.push(
-          `<script src="/${staticFolderPath}/${startupScriptFilename}"></script>`
+          `<script src="/${staticRoutePath}/${startupScriptFilename}"></script>`
         );
 
       return bundleTags;
