@@ -4,6 +4,7 @@ import Loadable from 'react-loadable';
 import evilDns from 'evil-dns';
 import httpProxy from 'http-proxy';
 import fs from 'fs';
+import path from 'path';
 import React from 'react';
 import { StaticRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
@@ -142,6 +143,41 @@ const deliveryApiProxy = (apiProxy, app) => {
   });
 };
 
+const replaceStaticPath = (string, staticFolderPath = 'static') => string.replace(/static\//g, `${staticFolderPath}/`);
+
+const bundleManipulationMiddleware = staticRoutePath => (req, res, next) => {
+  const filename = path.basename(req.path);
+  const modernBundle = filename.endsWith('.mjs');
+  const legacyBundle = filename.endsWith('.js');
+
+  if ((legacyBundle || modernBundle) && filename.startsWith('runtime.')) {
+    const jsRuntimeLocation = path.join(__dirname, '../../../dist/static', modernBundle ? 'modern/js' : 'legacy/js', filename);
+
+    try {
+      const jsRuntimeBundle = fs.readFileSync(jsRuntimeLocation, 'utf8');
+      const modifiedBundle = replaceStaticPath(jsRuntimeBundle, staticRoutePath);
+      res.type('.js').send(modifiedBundle);
+      return;
+    } catch (readError) {
+      // eslint-disable-next-line no-console
+      console.log(`Unable to find js runtime bundle at '${jsRuntimeLocation}'`, readError);
+      next();
+    }
+  } else {
+    next();
+  }
+};
+
+const staticAssets = (app, {
+  staticRoutePath,
+  staticRoutePaths = [],
+  staticFolderPath
+}) => {
+  app.use([`/${staticRoutePath}`, ...staticRoutePaths.map(p => `/${p}`), `/${staticFolderPath}`], bundleManipulationMiddleware(staticRoutePath), express.static(`dist/${staticFolderPath}`, {
+    maxage: '31557600h'
+  }));
+};
+
 /*! fromentries. MIT License. Feross Aboukhadijeh <https://feross.org/opensource> */
 var fromentries = function fromEntries (iterable) {
   return [...iterable].reduce((obj, [key, val]) => {
@@ -240,10 +276,10 @@ const addVarnishAuthenticationHeaders = (state, response, groups = {}) => {
 
 const readFileSync = path => fs.readFileSync(path, 'utf8');
 
-const loadBundleData = ({
+const loadableBundleData = ({
   stats,
   templates
-}, build) => {
+}, staticRoutePath, build) => {
   const bundle = {};
 
   try {
@@ -255,9 +291,9 @@ const loadBundleData = ({
 
   try {
     bundle.templates = {
-      templateHTML: readFileSync(templates.html.replace('/target', build ? `/${build}` : '')),
-      templateHTMLStatic: readFileSync(templates.static.replace('/target', build ? `/${build}` : '')),
-      templateHTMLFragment: readFileSync(templates.fragment.replace('/target', build ? `/${build}` : ''))
+      templateHTML: replaceStaticPath(readFileSync(templates.html.replace('/target', build ? `/${build}` : '')), staticRoutePath),
+      templateHTMLStatic: replaceStaticPath(readFileSync(templates.static.replace('/target', build ? `/${build}` : '')), staticRoutePath),
+      templateHTMLFragment: replaceStaticPath(readFileSync(templates.fragment.replace('/target', build ? `/${build}` : '')), staticRoutePath)
     };
   } catch (ex) {
     //console.log(ex);
@@ -282,16 +318,16 @@ const webApp = (app, ReactApp, config) => {
     disableSsrRedux,
     handleResponses
   } = config;
+  const staticRoutePath = config.staticRoutePath || staticFolderPath;
   const bundleData = {
-    default: loadBundleData(config),
-    legacy: loadBundleData(config, 'legacy'),
-    modern: loadBundleData(config, 'modern')
+    default: loadableBundleData(config, staticRoutePath),
+    legacy: loadableBundleData(config, staticRoutePath, 'legacy'),
+    modern: loadableBundleData(config, staticRoutePath, 'modern')
   };
   if (!bundleData.default || bundleData.default === {}) bundleData.default = bundleData.legacy || bundleData.modern;
-  const versionInfo = JSON.parse(fs.readFileSync(`dist/${staticFolderPath}/version.json`, 'utf8'));
   const responseHandler = typeof handleResponses === 'function' ? handleResponses : handleResponse;
-  app.get('/*', (request, response, next) => {
-    if (request.originalUrl.startsWith(`/${staticFolderPath}/`)) return next();
+  const versionInfo = JSON.parse(fs.readFileSync(`dist/${staticFolderPath}/version.json`, 'utf8'));
+  app.get('/*', (request, response) => {
     const {
       url
     } = request;
@@ -352,11 +388,11 @@ const webApp = (app, ReactApp, config) => {
     const buildBundleTags = bundles => {
       // Take the bundles returned from Loadable.Capture
       const bundleTags = bundles.map(bundle => {
-        if (bundle.publicPath.includes('/modern/')) return differentialBundles ? `<script type="module" src="${bundle.publicPath}"></script>` : null;
-        return `<script nomodule src="${bundle.publicPath}"></script>`;
+        if (bundle.publicPath.includes('/modern/')) return differentialBundles ? `<script type="module" src="${replaceStaticPath(bundle.publicPath, staticRoutePath)}"></script>` : null;
+        return `<script nomodule src="${replaceStaticPath(bundle.publicPath, staticRoutePath)}"></script>`;
       }).filter(f => f); // Add the static startup script to the bundleTags
 
-      startupScriptFilename && bundleTags.push(`<script src="/${staticFolderPath}/${startupScriptFilename}"></script>`);
+      startupScriptFilename && bundleTags.push(`<script src="/${staticRoutePath}/${startupScriptFilename}"></script>`);
       return bundleTags;
     };
 
@@ -498,19 +534,14 @@ const webApp = (app, ReactApp, config) => {
 const app = express();
 
 const start = (ReactApp, config, ServerFeatures) => {
-  const {
-    staticFolderPath = 'static'
-  } = config;
   app.disable('x-powered-by'); // Output some information about the used build/startup configuration
 
   DisplayStartupConfiguration(config); // Set-up local proxy for images from cms, to save doing rewrites and extra code
 
   ServerFeatures(app);
   reverseProxies(app, config.reverseProxyPaths);
+  staticAssets(app, config);
   webApp(app, ReactApp, config);
-  app.use(`/${staticFolderPath}`, express.static(`dist/${staticFolderPath}`, {
-    maxage: '31557600h'
-  }));
   app.on('ready', async () => {
     // Configure DNS to make life easier
     await localDns();
