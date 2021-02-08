@@ -188,7 +188,7 @@ const bundleManipulationMiddleware = staticRoutePath => (req, res, next) => {
 const staticAssets = (app, {
   staticRoutePath,
   staticRoutePaths = [],
-  staticFolderPath
+  staticFolderPath = 'static'
 }) => {
   app.use([`/${staticRoutePath}`, ...staticRoutePaths.map(p => `/${p}`), `/${staticFolderPath}`], bundleManipulationMiddleware(staticRoutePath), express__default['default'].static(`dist/${staticFolderPath}`, {
     maxage: '31557600h'
