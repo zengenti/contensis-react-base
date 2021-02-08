@@ -4,7 +4,7 @@ import { bundleManipulationMiddleware } from '../middleware/bundleManipulation';
 // Serving static assets
 const staticAssets = (
   app,
-  { staticRoutePath, staticRoutePaths = [], staticFolderPath }
+  { staticRoutePath, staticRoutePaths = [], staticFolderPath = 'static' }
 ) => {
   app.use(
     [
