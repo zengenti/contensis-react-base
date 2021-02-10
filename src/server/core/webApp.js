@@ -9,8 +9,8 @@ import { ServerStyleSheet } from 'styled-components';
 import Helmet from 'react-helmet';
 import serialize from 'serialize-javascript';
 import minifyCssString from 'minify-css-string';
-// import { fromJS } from 'immutable';
-import fromJSLeaveImmer from '~/core/util/fromJSLeaveImmer';
+import { fromJS } from 'immutable';
+// import fromJSLeaveImmer from '~/core/util/fromJSLeaveImmer';
 import fromEntries from 'fromentries';
 
 import { history } from '~/core/redux/history';
@@ -182,7 +182,7 @@ const webApp = (app, ReactApp, config) => {
     // Create a store (with a memory history) from our current url
     const store = createStore(
       withReducers,
-      fromJSLeaveImmer({}),
+      fromJS({}),
       history({
         initialEntries: [url],
       })
