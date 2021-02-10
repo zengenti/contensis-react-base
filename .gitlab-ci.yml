@@ -1,4 +1,4 @@
-image: docker:stable
+image: gitlab.zengenti.com:4567/ops/zengenti-dind:latest
 
 stages:
   - storybook-latest-build
@@ -7,12 +7,12 @@ stages:
 
 variables:
   DOCKER_DRIVER: overlay2
-  STORYBOOK: ""
-  APP_BUILDER_IMAGE: "$CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME/app-builder"
-  APP_IMAGE: "$CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME/app"
-  STORYBOOK_BUILDER_IMAGE: "$CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME/storybook-builder"
-  STORYBOOK_IMAGE: "$CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME/storybook"
-  MASTER_APP: "$CI_REGISTRY_IMAGE/master/app"
+  STORYBOOK: ''
+  APP_BUILDER_IMAGE: '$CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME/app-builder'
+  APP_IMAGE: '$CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME/app'
+  STORYBOOK_BUILDER_IMAGE: '$CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME/storybook-builder'
+  STORYBOOK_IMAGE: '$CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME/storybook'
+  MASTER_APP: '$CI_REGISTRY_IMAGE/master/app'
 
 services:
   - docker:dind
