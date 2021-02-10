@@ -2,7 +2,6 @@
 
 var React = require('react');
 var immutable = require('immutable');
-var login = require('./login-0e13e272.js');
 var history$1 = require('history');
 var contensisDeliveryApi = require('contensis-delivery-api');
 var routing = require('./routing-6197a03e.js');
@@ -11,6 +10,7 @@ var reduxImmutable = require('redux-immutable');
 var thunk = require('redux-thunk');
 var createSagaMiddleware = require('redux-saga');
 var version = require('./version-7fdcc2c0.js');
+var login = require('./login-0e13e272.js');
 var effects = require('@redux-saga/core/effects');
 var log = require('loglevel');
 var awaitToJs = require('await-to-js');
@@ -22,22 +22,6 @@ function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'defau
 var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
 var thunk__default = /*#__PURE__*/_interopDefaultLegacy(thunk);
 var createSagaMiddleware__default = /*#__PURE__*/_interopDefaultLegacy(createSagaMiddleware);
-
-const fromJSLeaveImmer = (js, isOrdered = false) => {
-  console.info(js);
-  if (typeof js !== 'object' || js === null) return js; // console.info(`from js - here is js ${JSON.stringify(js)}`);
-
-  const convertedObject = isOrdered ? immutable.OrderedMap() : immutable.Map();
-  const keys = Object.keys(js);
-  keys.forEach(key => {
-    if (key === 'immer') {
-      convertedObject.set(key, js[key]); // console.info(`LOOK! - immer untouched bar root key "${key}"`);
-    } else {
-      // console.info(`LOOK! - normal immutable feature "${key}"`);
-      convertedObject.set(key, isOrdered ? login.fromJSOrdered(js) : immutable.fromJS(js));
-    }
-  });
-};
 
 const selectedHistory = typeof window !== 'undefined' ? history$1.createBrowserHistory : history$1.createMemoryHistory;
 const history = (options = {}) => selectedHistory(options);
@@ -1043,8 +1027,7 @@ exports.AppRoot = AppRoot;
 exports.browserHistory = browserHistory;
 exports.createStore = createStore;
 exports.deliveryApi = deliveryApi;
-exports.fromJSLeaveImmer = fromJSLeaveImmer;
 exports.history = history;
 exports.pickProject = pickProject;
 exports.rootSaga = rootSaga;
-//# sourceMappingURL=App-eb4a124c.js.map
+//# sourceMappingURL=App-14214589.js.map

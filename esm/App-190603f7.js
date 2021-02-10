@@ -1,6 +1,5 @@
 import React from 'react';
-import { OrderedMap, Map, fromJS, List, Set } from 'immutable';
-import { f as fromJSOrdered, U as UserReducer, h as handleRequiresLoginSaga, R as REGISTER_USER, a as REGISTER_USER_SUCCESS, b as REGISTER_USER_FAILED, l as loginSagas } from './login-417f3f96.js';
+import { Map, List, fromJS, OrderedMap, Set } from 'immutable';
 import { createBrowserHistory, createMemoryHistory } from 'history';
 import { Client, Op, Query } from 'contensis-delivery-api';
 import { S as SET_TARGET_PROJECT, c as SET_SURROGATE_KEYS, d as SET_SIBLINGS, e as SET_ROUTE, f as SET_NAVIGATION_PATH, U as UPDATE_LOADING_STATE, g as SET_ENTRY, h as SET_ANCESTORS, C as CALL_HISTORY_METHOD, i as setSurrogateKeys, b as selectCurrentProject, a as selectRouteEntry, j as selectCurrentNode, k as selectCurrentAncestors, l as findContentTypeMapping, m as selectRouteEntryEntryId, n as selectRouteEntryLanguage, o as selectMappedEntry, q as queryParams, p as selectCurrentSearch, r as setRoute } from './routing-64807af8.js';
@@ -9,27 +8,12 @@ import { combineReducers } from 'redux-immutable';
 import thunk from 'redux-thunk';
 import createSagaMiddleware, { END } from 'redux-saga';
 import { G as GET_NODE_TREE_ERROR, S as SET_NODE_TREE, b as SET_VERSION, c as SET_VERSION_STATUS, d as GET_NODE_TREE, h as hasNavigationTree, e as selectVersionStatus } from './version-41f7c83e.js';
+import { U as UserReducer, h as handleRequiresLoginSaga, R as REGISTER_USER, a as REGISTER_USER_SUCCESS, b as REGISTER_USER_FAILED, l as loginSagas } from './login-417f3f96.js';
 import { takeEvery, select, put, call, all } from '@redux-saga/core/effects';
 import { info, error } from 'loglevel';
 import { to } from 'await-to-js';
 import 'react-hot-loader';
 import { R as RouteLoader } from './RouteLoader-fc78472d.js';
-
-const fromJSLeaveImmer = (js, isOrdered = false) => {
-  console.info(js);
-  if (typeof js !== 'object' || js === null) return js; // console.info(`from js - here is js ${JSON.stringify(js)}`);
-
-  const convertedObject = isOrdered ? OrderedMap() : Map();
-  const keys = Object.keys(js);
-  keys.forEach(key => {
-    if (key === 'immer') {
-      convertedObject.set(key, js[key]); // console.info(`LOOK! - immer untouched bar root key "${key}"`);
-    } else {
-      // console.info(`LOOK! - normal immutable feature "${key}"`);
-      convertedObject.set(key, isOrdered ? fromJSOrdered(js) : fromJS(js));
-    }
-  });
-};
 
 const selectedHistory = typeof window !== 'undefined' ? createBrowserHistory : createMemoryHistory;
 const history = (options = {}) => selectedHistory(options);
@@ -1031,5 +1015,5 @@ const AppRoot = props => {
   return React.createElement(RouteLoader, props);
 };
 
-export { AppRoot as A, browserHistory as b, createStore as c, deliveryApi as d, fromJSLeaveImmer as f, history as h, pickProject as p, rootSaga as r };
-//# sourceMappingURL=App-91bf86e0.js.map
+export { AppRoot as A, browserHistory as b, createStore as c, deliveryApi as d, history as h, pickProject as p, rootSaga as r };
+//# sourceMappingURL=App-190603f7.js.map

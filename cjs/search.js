@@ -902,7 +902,6 @@ const FilterExpressionTypes = {
   field: 'field'
 };
 const sys = {
-  allUris: 'sys.allUris',
   contentTypeId: 'sys.contentTypeId',
   dataFormat: 'sys.dataFormat',
   filename: 'sys.properties.filename',
@@ -912,10 +911,15 @@ const sys = {
   versionStatus: 'sys.versionStatus'
 };
 const Fields = {
-  entryDescription: 'entryDescription',
+  clusters: 'clusters.sys.id',
+  courseModeDetails: 'courseModeDetails.sys.id',
   entryTitle: 'entryTitle',
+  entryYear: 'entryYear.sys.id',
+  entryYears: 'entryYears.sys.id',
   keywords: 'keywords',
-  searchContent: 'searchContent',
+  locations: 'locations.sys.id',
+  modeOfStudy: 'modeOfStudy.sys.id',
+  publishedDate: 'publishedDate',
   sys,
   contentTypeId: 'sys.contentTypeId',
   wildcard: '*'
@@ -1062,24 +1066,24 @@ const termExpressions = (searchTerm, weightedSearchFields) => {
     const freeTextOp = (f, term) => fieldExpression(f.fieldId, fixFreeTextForElastic(term), 'freeText', f.weight); // For each weighted search field
 
 
-    weightedSearchFields.forEach(wsf => {
+    weightedSearchFields.forEach(f => {
       // Push to field operators
       const fieldOperators = []; // Add operator expressions for modified search term
 
       if (modifiedSearchTerm) {
-        if ([Fields.keywords, Fields.sys.filename, Fields.sys.uri].includes(wsf.fieldId)) {
-          fieldOperators.push(...containsOp(wsf, modifiedSearchTerm));
+        if ([Fields.keywords, Fields.sys.filename, Fields.sys.uri].includes(f.fieldId)) {
+          fieldOperators.push(...containsOp(f, modifiedSearchTerm));
         } else {
-          if ([Fields.entryTitle].includes(wsf.fieldId)) {
-            fieldOperators.push(contensisDeliveryApi.Op.or(...containsOp(wsf, modifiedSearchTerm), ...freeTextOp(wsf, modifiedSearchTerm)));
+          if ([Fields.entryTitle].includes(f.fieldId)) {
+            fieldOperators.push(contensisDeliveryApi.Op.or(...containsOp(f, modifiedSearchTerm), ...freeTextOp(f, modifiedSearchTerm)));
           } else {
-            fieldOperators.push(...freeTextOp(wsf, modifiedSearchTerm));
+            fieldOperators.push(...freeTextOp(f, modifiedSearchTerm));
           }
         }
       } // Add operator expressions for any quoted phrases
 
 
-      quotedPhrases.forEach(qp => fieldOperators.push(...containsOp(wsf, qp))); // If we are using multiple operators for a field we will
+      quotedPhrases.forEach(qp => fieldOperators.push(...containsOp(f, qp))); // If we are using multiple operators for a field we will
       // wrap each field inside an And operator so we will match
       // all terms/phrases rather than any terms/phrases
 
@@ -1090,11 +1094,9 @@ const termExpressions = (searchTerm, weightedSearchFields) => {
       }
     }); // Wrap operators in an Or operator
 
-    return [contensisDeliveryApi.Op.or().addRange(operators).add(contensisDeliveryApi.Op.freeText(Fields.searchContent, searchTerm))];
+    return [contensisDeliveryApi.Op.or().addRange(operators)];
   } else if (searchTerm) {
-    // Searching without weightedSearchFields defined will fall back
-    // to a default set of search fields with arbritary weights set.
-    return [contensisDeliveryApi.Op.or(contensisDeliveryApi.Op.equalTo(Fields.entryTitle, searchTerm).weight(10), contensisDeliveryApi.Op.freeText(Fields.entryTitle, searchTerm).weight(2), contensisDeliveryApi.Op.freeText(Fields.entryDescription, searchTerm).weight(2), contensisDeliveryApi.Op.contains(Fields.keywords, searchTerm).weight(2), contensisDeliveryApi.Op.contains(Fields.sys.uri, searchTerm).weight(2), contensisDeliveryApi.Op.contains(Fields.sys.allUris, searchTerm), contensisDeliveryApi.Op.freeText(Fields.searchContent, searchTerm))];
+    return [contensisDeliveryApi.Op.contains(Fields.wildcard, searchTerm)];
   } else {
     return [];
   }
@@ -1400,10 +1402,15 @@ const queryParamsTemplate = {
   excludeIds: ({
     action: {
       excludeIds
-    }
+    },
+    context,
+    state
   }) => {
     // Exclude current route entry id from minilist searches or any supplied ids
-    if (excludeIds) return Array.isArray(excludeIds) ? excludeIds : excludeIds.split(',').map(id => id.trim());
+    if (excludeIds) return Array.isArray(excludeIds) ? excludeIds : excludeIds.split(',').map(id => id.trim());else if (context === Context.minilist) {
+      const currentEntryId = selectRouteEntryEntryId(state);
+      return currentEntryId ? [currentEntryId] : null;
+    }
     return null;
   },
   featuredResults: root => getQueryParameter(root, 'featuredResults', null),
@@ -2024,14 +2031,10 @@ var reducers = (config => {
             context,
             facet,
             config
-          } = action; // Changing the config of a single facet or listing
+          } = action;
 
-          if (context && facet && config) {
+          if (context && facet) {
             return state.setIn([context, facet], immutable.fromJS(config));
-          } else if (config) {
-            // Changing the entire search config
-            const newState = immutable.fromJS(config);
-            return newState;
           }
 
           return state;

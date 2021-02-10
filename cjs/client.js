@@ -8,9 +8,8 @@ var React = require('react');
 var reactRouterDom = require('react-router-dom');
 var reactRedux = require('react-redux');
 require('immutable');
-require('./login-0e13e272.js');
-var App = require('./App-eb4a124c.js');
 require('history');
+var App = require('./App-14214589.js');
 require('contensis-delivery-api');
 var routing = require('./routing-6197a03e.js');
 require('redux');
@@ -18,6 +17,7 @@ require('redux-immutable');
 require('redux-thunk');
 require('redux-saga');
 var version = require('./version-7fdcc2c0.js');
+var login = require('./login-0e13e272.js');
 var queryString = require('query-string');
 require('@redux-saga/core/effects');
 require('loglevel');
@@ -35,6 +35,30 @@ function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'defau
 
 var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
 var queryString__default = /*#__PURE__*/_interopDefaultLegacy(queryString);
+
+const fromJSLeaveImmer = js => {
+  // console.info(js);
+  // if (typeof js !== 'object' || js === null) return js;
+  // // console.info(`from js - here is js ${JSON.stringify(js)}`);
+  // const convertedObject = isOrdered ? OrderedMap() : fromJS({});
+  // const keys = Object.keys(js);
+  // keys.forEach(key => {
+  //   if (key === 'immer') {
+  //     convertedObject.set(key, js[key]);
+  //     // console.info(`LOOK! - immer untouched bar root key "${key}"`);
+  //   } else {
+  //     // console.info(`LOOK! - normal immutable feature "${key}"`);
+  //     convertedObject.set(key, isOrdered ? fromJSOrdered(js) : fromJS(js));
+  //   }
+  // });
+  const immutableObj = login.fromJSOrdered(js);
+
+  if (immutableObj && !!immutableObj.get('immer')) {
+    immutableObj.set('immer', immutableObj.get('immer').toJS());
+  }
+
+  return immutableObj;
+};
 
 class ClientApp {
   constructor(ReactApp, config) {
@@ -74,7 +98,7 @@ class ClientApp {
     const versionStatusFromHostname = App.deliveryApi.getClientSideVersionStatus();
 
     if (window.isDynamic || window.REDUX_DATA || process.env.NODE_ENV !== 'production') {
-      store = App.createStore(withReducers, App.fromJSLeaveImmer(window.REDUX_DATA, true), App.browserHistory);
+      store = App.createStore(withReducers, fromJSLeaveImmer(window.REDUX_DATA), App.browserHistory);
       store.dispatch(version.setVersionStatus(qs.versionStatus || versionStatusFromHostname));
       /* eslint-disable no-console */
 
@@ -92,9 +116,8 @@ class ClientApp {
         // console.log(data);
 
         /* eslint-enable no-console */
-        const ssRedux = JSON.parse(data); // store = createStore(withReducers, fromJSLeaveImmer(ssRedux), history);
-
-        store = App.createStore(withReducers, App.fromJSLeaveImmer(ssRedux), App.browserHistory); // store.dispatch(setVersionStatus(versionStatusFromHostname));
+        const ssRedux = JSON.parse(data);
+        store = App.createStore(withReducers, fromJSLeaveImmer(ssRedux), App.browserHistory); // store.dispatch(setVersionStatus(versionStatusFromHostname));
 
         store.runSaga(App.rootSaga(withSagas));
         store.dispatch(routing.setCurrentProject(App.pickProject(window.location.hostname, queryString__default['default'].parse(window.location.search)))); // if (typeof window != 'undefined') {

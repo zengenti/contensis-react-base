@@ -4,10 +4,9 @@ import React from 'react';
 import { Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import 'immutable';
-import './login-417f3f96.js';
-import { d as deliveryApi, c as createStore, f as fromJSLeaveImmer, r as rootSaga, p as pickProject, b as browserHistory } from './App-91bf86e0.js';
-export { A as ReactApp } from './App-91bf86e0.js';
 import 'history';
+import { d as deliveryApi, c as createStore, r as rootSaga, p as pickProject, b as browserHistory } from './App-190603f7.js';
+export { A as ReactApp } from './App-190603f7.js';
 import 'contensis-delivery-api';
 import { s as setCurrentProject } from './routing-64807af8.js';
 import 'redux';
@@ -15,6 +14,7 @@ import 'redux-immutable';
 import 'redux-thunk';
 import 'redux-saga';
 import { s as setVersionStatus } from './version-41f7c83e.js';
+import { f as fromJSOrdered } from './login-417f3f96.js';
 import queryString from 'query-string';
 import '@redux-saga/core/effects';
 import 'loglevel';
@@ -27,6 +27,30 @@ import { AppContainer } from 'react-hot-loader';
 import 'prop-types';
 import './RouteLoader-fc78472d.js';
 import { hydrate, render } from 'react-dom';
+
+const fromJSLeaveImmer = js => {
+  // console.info(js);
+  // if (typeof js !== 'object' || js === null) return js;
+  // // console.info(`from js - here is js ${JSON.stringify(js)}`);
+  // const convertedObject = isOrdered ? OrderedMap() : fromJS({});
+  // const keys = Object.keys(js);
+  // keys.forEach(key => {
+  //   if (key === 'immer') {
+  //     convertedObject.set(key, js[key]);
+  //     // console.info(`LOOK! - immer untouched bar root key "${key}"`);
+  //   } else {
+  //     // console.info(`LOOK! - normal immutable feature "${key}"`);
+  //     convertedObject.set(key, isOrdered ? fromJSOrdered(js) : fromJS(js));
+  //   }
+  // });
+  const immutableObj = fromJSOrdered(js);
+
+  if (immutableObj && !!immutableObj.get('immer')) {
+    immutableObj.set('immer', immutableObj.get('immer').toJS());
+  }
+
+  return immutableObj;
+};
 
 class ClientApp {
   constructor(ReactApp, config) {
@@ -66,7 +90,7 @@ class ClientApp {
     const versionStatusFromHostname = deliveryApi.getClientSideVersionStatus();
 
     if (window.isDynamic || window.REDUX_DATA || process.env.NODE_ENV !== 'production') {
-      store = createStore(withReducers, fromJSLeaveImmer(window.REDUX_DATA, true), browserHistory);
+      store = createStore(withReducers, fromJSLeaveImmer(window.REDUX_DATA), browserHistory);
       store.dispatch(setVersionStatus(qs.versionStatus || versionStatusFromHostname));
       /* eslint-disable no-console */
 
@@ -84,8 +108,7 @@ class ClientApp {
         // console.log(data);
 
         /* eslint-enable no-console */
-        const ssRedux = JSON.parse(data); // store = createStore(withReducers, fromJSLeaveImmer(ssRedux), history);
-
+        const ssRedux = JSON.parse(data);
         store = createStore(withReducers, fromJSLeaveImmer(ssRedux), browserHistory); // store.dispatch(setVersionStatus(versionStatusFromHostname));
 
         store.runSaga(rootSaga(withSagas));
