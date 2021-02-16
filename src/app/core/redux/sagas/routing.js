@@ -205,7 +205,7 @@ function* getRouteSaga(action) {
             const { fields, linkDepth } =
               findContentTypeMapping(
                 ContentTypeMappings,
-                pathNode.entry.sys.id
+                pathNode.entry.sys.contentTypeId
               ) || {};
             const query = routeEntryByFieldsQuery(
               pathNode.entry.sys.id,
