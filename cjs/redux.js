@@ -5,10 +5,15 @@ Object.defineProperty(exports, '__esModule', { value: true });
 require('react');
 require('react-redux');
 require('immutable');
+require('contensis-delivery-api');
+var navigation$2 = require('./navigation-bcb3c6f1.js');
 var selectors$1 = require('./selectors-4e2a4fe0.js');
 var routing$1 = require('./routing-64a1d60d.js');
-var navigation$2 = require('./navigation-6ef6d3a7.js');
 require('query-string');
+require('redux');
+require('redux-immutable');
+require('redux-thunk');
+require('redux-saga');
 var sagas = require('./sagas-6d255dcc.js');
 var actions$1 = require('./actions-7064591c.js');
 require('@redux-saga/core/effects');
@@ -66,6 +71,12 @@ const version = {
   selectors: selectors.version
 };
 
+Object.defineProperty(exports, 'store', {
+  enumerable: true,
+  get: function () {
+    return navigation$2.reduxStore;
+  }
+});
 exports.navigation = navigation$1;
 exports.routing = routing;
 exports.user = user;

@@ -1,4 +1,4 @@
-import { q as action, g as SET_NAVIGATION_PATH, S as SET_TARGET_PROJECT, f as SET_ROUTE, h as SET_ENTRY, r as SET_NAVIGATION_NOT_FOUND } from './selectors-cb8b1351.js';
+import { p as action, S as SET_NAVIGATION_PATH, q as SET_TARGET_PROJECT, e as SET_ROUTE, g as SET_ENTRY, r as SET_NAVIGATION_NOT_FOUND } from './selectors-93653e5b.js';
 
 const setNotFound = notFound => action(SET_NAVIGATION_NOT_FOUND, {
   notFound
@@ -33,4 +33,4 @@ var routing = /*#__PURE__*/Object.freeze({
 });
 
 export { setNavigationPath as a, routing as r, setCurrentProject as s };
-//# sourceMappingURL=routing-685036da.js.map
+//# sourceMappingURL=routing-9ef18a63.js.map

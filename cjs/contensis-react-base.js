@@ -20,11 +20,11 @@ var serialize = require('serialize-javascript');
 var minifyCssString = require('minify-css-string');
 var immutable = require('immutable');
 require('history');
-var App = require('./App-e2a2a8e6.js');
+var App = require('./App-053ed8e2.js');
 require('contensis-delivery-api');
+var navigation = require('./navigation-bcb3c6f1.js');
 var selectors = require('./selectors-4e2a4fe0.js');
 var routing = require('./routing-64a1d60d.js');
-var navigation = require('./navigation-6ef6d3a7.js');
 require('query-string');
 require('redux');
 require('redux-immutable');
@@ -377,11 +377,11 @@ const webApp = (app, ReactApp, config) => {
     const context = {};
     let status = 200; // Create a store (with a memory history) from our current url
 
-    const store = App.createStore(withReducers, immutable.fromJS({}), App.history({
+    const store = navigation.createStore(withReducers, immutable.fromJS({}), App.history({
       initialEntries: [url]
     })); // dispatch any global and non-saga related actions before calling our JSX
 
-    const versionStatusFromHostname = App.GetDeliveryApiStatusFromHostname(request.hostname); // eslint-disable-next-line no-console
+    const versionStatusFromHostname = navigation.GetDeliveryApiStatusFromHostname(request.hostname); // eslint-disable-next-line no-console
 
     console.log(`Request for ${request.path} hostname: ${request.hostname} versionStatus: ${versionStatusFromHostname}`);
     store.dispatch(navigation.setVersionStatus(request.query.versionStatus || versionStatusFromHostname));

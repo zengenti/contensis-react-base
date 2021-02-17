@@ -9,11 +9,11 @@ var reactRouterDom = require('react-router-dom');
 var reactRedux = require('react-redux');
 var immutable = require('immutable');
 require('history');
-var App = require('./App-e2a2a8e6.js');
+var App = require('./App-053ed8e2.js');
 require('contensis-delivery-api');
+var navigation = require('./navigation-bcb3c6f1.js');
 require('./selectors-4e2a4fe0.js');
 var routing = require('./routing-64a1d60d.js');
-var navigation = require('./navigation-6ef6d3a7.js');
 var queryString = require('query-string');
 require('redux');
 require('redux-immutable');
@@ -74,10 +74,10 @@ class ClientApp {
 
     let store = null;
     const qs = queryString__default['default'].parse(window.location.search);
-    const versionStatusFromHostname = App.GetClientSideDeliveryApiStatus();
+    const versionStatusFromHostname = navigation.GetClientSideDeliveryApiStatus();
 
     if (window.isDynamic || window.REDUX_DATA || process.env.NODE_ENV !== 'production') {
-      store = App.createStore(withReducers, fromJSOrdered(window.REDUX_DATA), App.browserHistory);
+      store = navigation.createStore(withReducers, fromJSOrdered(window.REDUX_DATA), App.browserHistory);
       store.dispatch(navigation.setVersionStatus(qs.versionStatus || versionStatusFromHostname));
       /* eslint-disable no-console */
 
@@ -96,7 +96,7 @@ class ClientApp {
 
         /* eslint-enable no-console */
         const ssRedux = JSON.parse(data);
-        store = App.createStore(withReducers, immutable.fromJS(ssRedux), App.browserHistory); // store.dispatch(setVersionStatus(versionStatusFromHostname));
+        store = navigation.createStore(withReducers, immutable.fromJS(ssRedux), App.browserHistory); // store.dispatch(setVersionStatus(versionStatusFromHostname));
 
         store.runSaga(App.rootSaga(withSagas));
         store.dispatch(routing.setCurrentProject(App.pickProject(window.location.hostname, queryString__default['default'].parse(window.location.search)))); // if (typeof window != 'undefined') {
