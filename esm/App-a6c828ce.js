@@ -618,8 +618,8 @@ const defaultExpressions = versionStatus => {
 const equalToOrIn = (field, arr, operator = 'equalTo') => arr.length === 0 ? [] : arr.length === 1 ? [Op[operator](field, arr[0])] : [Op.in(field, ...arr)];
 
 // eslint-disable-next-line import/named
-const routeEntryByFieldsQuery = (id, fields = [], versionStatus = 'published') => {
-  const query = new Query(...[...fieldExpression('sys.id', id), ...defaultExpressions(versionStatus)]);
+const routeEntryByFieldsQuery = (id, language = 'en-GB', fields = [], versionStatus = 'published') => {
+  const query = new Query(...[...fieldExpression('sys.id', id), ...fieldExpression('sys.language', language), ...defaultExpressions(versionStatus)]);
   query.fields = fields;
   return query;
 };
@@ -663,7 +663,7 @@ function* getRouteSaga(action) {
 
     const doNavigation = !appsays || (appsays && appsays.customNavigation === true ? false : appsays && appsays.customNavigation || true);
     const entryLinkDepth = appsays && appsays.entryLinkDepth || 3;
-    const setContentTypeLimits = !!ContentTypeMappings.find(ct => ct.fields || ct.linkDepth);
+    const setContentTypeLimits = !!ContentTypeMappings.find(ct => ct.fields || ct.linkDepth || ct.nodeOptions);
     const state = yield select();
     const routeEntry = selectRouteEntry(state); // const routeNode = selectCurrentNode(state);
 
@@ -755,7 +755,7 @@ function* getRouteSaga(action) {
               linkDepth,
               nodeOptions = {}
             } = findContentTypeMapping(ContentTypeMappings, pathNode.entry.sys.contentTypeId) || {};
-            const query = routeEntryByFieldsQuery(pathNode.entry.sys.id, fields, deliveryApiStatus);
+            const query = routeEntryByFieldsQuery(pathNode.entry.sys.id, pathNode.entry.sys.language, fields, deliveryApiStatus);
             const payload = yield cachedSearch.search(query, linkDepth || entryLinkDepth || 0, project);
 
             if (payload && payload.items && payload.items.length > 0) {
@@ -931,4 +931,4 @@ const AppRoot = props => {
 };
 
 export { AppRoot as A, GetDeliveryApiStatusFromHostname as G, GetClientSideDeliveryApiStatus as a, browserHistory as b, createStore as c, history as h, pickProject as p, rootSaga as r };
-//# sourceMappingURL=App-ecade207.js.map
+//# sourceMappingURL=App-a6c828ce.js.map

@@ -186,6 +186,7 @@ function* getRouteSaga(action) {
               ) || {};
             const query = routeEntryByFieldsQuery(
               pathNode.entry.sys.id,
+              pathNode.entry.sys.language,
               fields,
               deliveryApiStatus
             );

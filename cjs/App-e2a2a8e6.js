@@ -626,8 +626,8 @@ const defaultExpressions = versionStatus => {
 const equalToOrIn = (field, arr, operator = 'equalTo') => arr.length === 0 ? [] : arr.length === 1 ? [contensisDeliveryApi.Op[operator](field, arr[0])] : [contensisDeliveryApi.Op.in(field, ...arr)];
 
 // eslint-disable-next-line import/named
-const routeEntryByFieldsQuery = (id, fields = [], versionStatus = 'published') => {
-  const query = new contensisDeliveryApi.Query(...[...fieldExpression('sys.id', id), ...defaultExpressions(versionStatus)]);
+const routeEntryByFieldsQuery = (id, language = 'en-GB', fields = [], versionStatus = 'published') => {
+  const query = new contensisDeliveryApi.Query(...[...fieldExpression('sys.id', id), ...fieldExpression('sys.language', language), ...defaultExpressions(versionStatus)]);
   query.fields = fields;
   return query;
 };
@@ -671,7 +671,7 @@ function* getRouteSaga(action) {
 
     const doNavigation = !appsays || (appsays && appsays.customNavigation === true ? false : appsays && appsays.customNavigation || true);
     const entryLinkDepth = appsays && appsays.entryLinkDepth || 3;
-    const setContentTypeLimits = !!ContentTypeMappings.find(ct => ct.fields || ct.linkDepth);
+    const setContentTypeLimits = !!ContentTypeMappings.find(ct => ct.fields || ct.linkDepth || ct.nodeOptions);
     const state = yield effects.select();
     const routeEntry = selectors.selectRouteEntry(state); // const routeNode = selectCurrentNode(state);
 
@@ -763,7 +763,7 @@ function* getRouteSaga(action) {
               linkDepth,
               nodeOptions = {}
             } = selectors.findContentTypeMapping(ContentTypeMappings, pathNode.entry.sys.contentTypeId) || {};
-            const query = routeEntryByFieldsQuery(pathNode.entry.sys.id, fields, deliveryApiStatus);
+            const query = routeEntryByFieldsQuery(pathNode.entry.sys.id, pathNode.entry.sys.language, fields, deliveryApiStatus);
             const payload = yield cachedSearch.search(query, linkDepth || entryLinkDepth || 0, project);
 
             if (payload && payload.items && payload.items.length > 0) {
@@ -946,4 +946,4 @@ exports.createStore = createStore;
 exports.history = history;
 exports.pickProject = pickProject;
 exports.rootSaga = rootSaga;
-//# sourceMappingURL=App-7f179395.js.map
+//# sourceMappingURL=App-e2a2a8e6.js.map
