@@ -9,19 +9,20 @@ var reactRouterDom = require('react-router-dom');
 var reactRedux = require('react-redux');
 require('immutable');
 require('history');
-var App = require('./App-209a9a68.js');
+var App = require('./App-dba935e9.js');
 require('contensis-delivery-api');
 var routing = require('./routing-6197a03e.js');
 require('redux');
 require('redux-immutable');
 require('redux-thunk');
 require('redux-saga');
-var version = require('./version-7fdcc2c0.js');
-var login = require('./login-0e13e272.js');
+var version = require('./version-f369bb4b.js');
+var reducers = require('./reducers-a05c32a6.js');
 var queryString = require('query-string');
 require('@redux-saga/core/effects');
 require('loglevel');
 require('./ToJs-8f6b21c9.js');
+require('./login-c68d1635.js');
 require('jsonpath-mapper');
 require('await-to-js');
 require('js-cookie');
@@ -51,7 +52,7 @@ const fromJSLeaveImmer = js => {
   //     convertedObject.set(key, isOrdered ? fromJSOrdered(js) : fromJS(js));
   //   }
   // });
-  const immutableObj = login.fromJSOrdered(js);
+  const immutableObj = reducers.fromJSOrdered(js);
 
   if (immutableObj && !!immutableObj.get('immer')) {
     immutableObj.set('immer', immutableObj.get('immer').toJS());
@@ -98,7 +99,7 @@ class ClientApp {
     const versionStatusFromHostname = App.deliveryApi.getClientSideVersionStatus();
 
     if (window.isDynamic || window.REDUX_DATA || process.env.NODE_ENV !== 'production') {
-      store = App.createStore(withReducers, fromJSLeaveImmer(window.REDUX_DATA), App.browserHistory);
+      store = version.createStore(withReducers, fromJSLeaveImmer(window.REDUX_DATA), App.browserHistory);
       store.dispatch(version.setVersionStatus(qs.versionStatus || versionStatusFromHostname));
       /* eslint-disable no-console */
 
@@ -117,7 +118,7 @@ class ClientApp {
 
         /* eslint-enable no-console */
         const ssRedux = JSON.parse(data);
-        store = App.createStore(withReducers, fromJSLeaveImmer(ssRedux), App.browserHistory); // store.dispatch(setVersionStatus(versionStatusFromHostname));
+        store = version.createStore(withReducers, fromJSLeaveImmer(ssRedux), App.browserHistory); // store.dispatch(setVersionStatus(versionStatusFromHostname));
 
         store.runSaga(App.rootSaga(withSagas));
         store.dispatch(routing.setCurrentProject(App.pickProject(window.location.hostname, queryString__default['default'].parse(window.location.search)))); // if (typeof window != 'undefined') {

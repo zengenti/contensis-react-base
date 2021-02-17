@@ -1,19 +1,20 @@
 import React from 'react';
-import { Map, List, fromJS, OrderedMap, Set } from 'immutable';
+import { Map } from 'immutable';
 import { createBrowserHistory, createMemoryHistory } from 'history';
 import { Client, Op, Query } from 'contensis-delivery-api';
-import { S as SET_TARGET_PROJECT, c as SET_SURROGATE_KEYS, d as SET_SIBLINGS, e as SET_ROUTE, f as SET_NAVIGATION_PATH, U as UPDATE_LOADING_STATE, g as SET_ENTRY, h as SET_ANCESTORS, C as CALL_HISTORY_METHOD, i as setSurrogateKeys, b as selectCurrentProject, a as selectRouteEntry, j as selectCurrentNode, k as selectCurrentAncestors, l as findContentTypeMapping, m as selectRouteEntryEntryId, n as selectRouteEntryLanguage, o as selectMappedEntry, q as queryParams, p as selectCurrentSearch, r as setRoute } from './routing-64807af8.js';
-import { compose, applyMiddleware, createStore as createStore$1 } from 'redux';
-import { combineReducers } from 'redux-immutable';
-import thunk from 'redux-thunk';
-import createSagaMiddleware, { END } from 'redux-saga';
-import { G as GET_NODE_TREE_ERROR, S as SET_NODE_TREE, b as SET_VERSION, c as SET_VERSION_STATUS, d as GET_NODE_TREE, h as hasNavigationTree, e as selectVersionStatus } from './version-41f7c83e.js';
-import { U as UserReducer, h as handleRequiresLoginSaga, R as REGISTER_USER, a as REGISTER_USER_SUCCESS, b as REGISTER_USER_FAILED, l as loginSagas } from './login-417f3f96.js';
+import { c as setSurrogateKeys, b as selectCurrentProject, S as SET_NAVIGATION_PATH, d as SET_ROUTE, C as CALL_HISTORY_METHOD, a as selectRouteEntry, U as UPDATE_LOADING_STATE, e as selectCurrentNode, f as selectCurrentAncestors, g as findContentTypeMapping, h as selectRouteEntryEntryId, i as selectRouteEntryLanguage, j as selectMappedEntry, k as SET_ENTRY, l as SET_ANCESTORS, m as SET_SIBLINGS, q as queryParams, n as selectCurrentSearch, o as setRoute } from './routing-7eff80b5.js';
+import 'redux';
+import 'redux-immutable';
+import 'redux-thunk';
+import 'redux-saga';
+import { r as reduxStore, G as GET_NODE_TREE, h as hasNavigationTree, b as selectVersionStatus, S as SET_NODE_TREE, d as GET_NODE_TREE_ERROR } from './version-66d27412.js';
+import { R as REGISTER_USER, a as REGISTER_USER_SUCCESS, b as REGISTER_USER_FAILED } from './reducers-ed7581c0.js';
 import { takeEvery, select, put, call, all } from '@redux-saga/core/effects';
 import { info, error } from 'loglevel';
+import { h as handleRequiresLoginSaga, l as loginSagas } from './login-81c0b522.js';
 import { to } from 'await-to-js';
 import 'react-hot-loader';
-import { R as RouteLoader } from './RouteLoader-fc78472d.js';
+import { R as RouteLoader } from './RouteLoader-0d9ab8ed.js';
 
 const selectedHistory = typeof window !== 'undefined' ? createBrowserHistory : createMemoryHistory;
 const history = (options = {}) => selectedHistory(options);
@@ -61,238 +62,6 @@ const pickProject = (hostname, query) => {
 
   return project === 'unknown' ? p.id : project;
 };
-
-const initialState = Map({
-  root: null,
-  treeDepends: new List([]),
-  isError: false,
-  isReady: false
-});
-var NavigationReducer = ((state = initialState, action) => {
-  switch (action.type) {
-    case SET_NODE_TREE:
-      {
-        return state.set('root', fromJS(action.nodes)).set('isReady', true);
-      }
-
-    case GET_NODE_TREE_ERROR:
-      {
-        return state.set('isError', true);
-      }
-
-    default:
-      return state;
-  }
-});
-
-let initialState$1 = OrderedMap({
-  contentTypeId: null,
-  currentPath: '/',
-  currentNode: [],
-  currentNodeAncestors: List(),
-  currentProject: 'unknown',
-  entryID: null,
-  entry: null,
-  currentTreeId: null,
-  entryDepends: List(),
-  isLoading: false,
-  location: null,
-  mappedEntry: OrderedMap(),
-  nodeDepends: List(),
-  notFound: false,
-  staticRoute: null
-});
-var RoutingReducer = ((state = initialState$1, action) => {
-  switch (action.type) {
-    case SET_ANCESTORS:
-      {
-        if (action.ancestors) {
-          return state.set('currentNodeAncestors', fromJS(action.ancestors));
-        }
-
-        return state.set('currentNodeAncestors', fromJS(action.ancestors));
-      }
-
-    case SET_ENTRY:
-      {
-        const {
-          entry,
-          mappedEntry,
-          node = {},
-          isLoading = false,
-          notFound = false
-        } = action;
-        let nextState;
-
-        if (!entry) {
-          nextState = state.set('entryID', null).set('entry', null).set('mappedEntry', OrderedMap()).set('isLoading', isLoading).set('notFound', notFound);
-        } else {
-          nextState = state.set('entryID', action.id).set('entry', fromJS(entry)).set('isLoading', isLoading).set('notFound', notFound);
-          if (mappedEntry && Object.keys(mappedEntry).length > 0) nextState = nextState.set('mappedEntry', fromJS(mappedEntry)).set('entry', fromJS({
-            sys: entry.sys
-          }));
-        }
-
-        if (!node) {
-          return nextState.set('nodeDepends', null).set('currentNode', null);
-        } else {
-          // On Set Node, we reset all dependants.
-          return nextState.set('currentNode', fromJS(node)).removeIn(['currentNode', 'entry']); // We have the entry stored elsewhere, so lets not keep it twice.
-        }
-      }
-
-    case UPDATE_LOADING_STATE:
-      {
-        return state.set('isLoading', action.isLoading);
-      }
-
-    case SET_NAVIGATION_PATH:
-      {
-        let staticRoute = false;
-
-        if (action.staticRoute) {
-          staticRoute = { ...action.staticRoute
-          };
-        }
-
-        if (action.path) {
-          // Don't run a path update on initial load as we allready should have it in redux
-          const entryUri = state.getIn(['entry', 'sys', 'uri']);
-
-          if (entryUri != action.path) {
-            return state.set('currentPath', fromJS(action.path)).set('location', fromJS(action.location)).set('staticRoute', fromJS({ ...staticRoute,
-              route: { ...staticRoute.route,
-                component: null
-              }
-            })).set('isLoading', typeof window !== 'undefined');
-          } else {
-            return state.set('location', fromJS(action.location)).set('staticRoute', fromJS({ ...staticRoute,
-              route: { ...staticRoute.route,
-                component: null
-              }
-            }));
-          }
-        }
-
-        return state;
-      }
-
-    case SET_ROUTE:
-      {
-        return state.set('nextPath', action.path);
-      }
-
-    case SET_SIBLINGS:
-      {
-        // Can be null in some cases like the homepage.
-        let currentNodeSiblingParent = null;
-        let siblingIDs = [];
-
-        if (action.siblings && action.siblings.length > 0) {
-          currentNodeSiblingParent = action.siblings[0].parentId;
-          siblingIDs = action.siblings.map(node => {
-            return node.id;
-          });
-        }
-
-        let currentNodeDepends = state.get('nodeDepends');
-        const allNodeDepends = Set.union([Set(siblingIDs), currentNodeDepends]);
-        return state.set('nodeDepends', allNodeDepends).set('currentNodeSiblings', fromJS(action.siblings)).set('currentNodeSiblingsParent', currentNodeSiblingParent);
-      }
-
-    case SET_SURROGATE_KEYS:
-      {
-        return state.set('surrogateKeys', action.keys);
-      }
-
-    case SET_TARGET_PROJECT:
-      {
-        return state.set('currentProject', action.project).set('currentTreeId', '') //getTreeID(action.project))
-        .set('allowedGroups', fromJS(action.allowedGroups));
-      }
-
-    default:
-      return state;
-  }
-});
-
-let initialState$2 = Map({
-  commitRef: null,
-  buildNo: null,
-  contensisVersionStatus: 'published'
-});
-var VersionReducer = ((state = initialState$2, action) => {
-  switch (action.type) {
-    case SET_VERSION_STATUS:
-      {
-        return state.set('contensisVersionStatus', action.status);
-      }
-
-    case SET_VERSION:
-      {
-        return state.set('commitRef', action.commitRef).set('buildNo', action.buildNo);
-      }
-
-    default:
-      return state;
-  }
-});
-
-/**
- * This middleware captures CALL_HISTORY_METHOD actions to redirect to the
- * provided history object. This will prevent these actions from reaching your
- * reducer or any middleware that comes after this one.
- */
-
-/* eslint-disable no-unused-vars */
-
-const routerMiddleware = history => store => next => action => {
-  if (action.type !== CALL_HISTORY_METHOD) {
-    return next(action);
-  }
-
-  const {
-    payload: {
-      method,
-      args
-    }
-  } = action;
-  history[method](...args);
-};
-
-let reduxStore = null;
-var createStore = ((featureReducers, initialState, history) => {
-  const thunkMiddleware = [thunk];
-
-  let reduxDevToolsMiddleware = f => f;
-
-  if (typeof window != 'undefined') {
-    reduxDevToolsMiddleware = window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f;
-  }
-
-  const sagaMiddleware = createSagaMiddleware();
-  const middleware = compose(applyMiddleware(...thunkMiddleware, sagaMiddleware, routerMiddleware(history)), reduxDevToolsMiddleware);
-  let reducers = {
-    navigation: NavigationReducer,
-    routing: RoutingReducer,
-    user: UserReducer,
-    version: VersionReducer,
-    ...featureReducers
-  };
-  const combinedReducers = combineReducers(reducers);
-
-  const store = initialState => {
-    const store = createStore$1(combinedReducers, initialState, middleware);
-    store.runSaga = sagaMiddleware.run;
-
-    store.close = () => store.dispatch(END);
-
-    return store;
-  };
-
-  reduxStore = store(initialState);
-  return reduxStore;
-});
 
 const storeSurrogateKeys = response => {
   const keys = response.headers.get ? response.headers.get('surrogate-key') : response.headers.map['surrogate-key'];
@@ -1035,5 +804,5 @@ const AppRoot = props => {
   return React.createElement(RouteLoader, props);
 };
 
-export { AppRoot as A, browserHistory as b, createStore as c, deliveryApi as d, history as h, pickProject as p, rootSaga as r };
-//# sourceMappingURL=App-1ec7be09.js.map
+export { AppRoot as A, browserHistory as b, deliveryApi as d, history as h, pickProject as p, rootSaga as r };
+//# sourceMappingURL=App-62f58957.js.map

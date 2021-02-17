@@ -4,7 +4,12 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 require('immutable');
 var routing$1 = require('./routing-6197a03e.js');
-var version$1 = require('./version-7fdcc2c0.js');
+require('redux');
+require('redux-immutable');
+require('redux-thunk');
+require('redux-saga');
+var version$1 = require('./version-f369bb4b.js');
+require('./reducers-a05c32a6.js');
 require('query-string');
 
 var types = {
@@ -56,6 +61,12 @@ const version = {
   selectors: selectors.version
 };
 
+Object.defineProperty(exports, 'store', {
+  enumerable: true,
+  get: function () {
+    return version$1.reduxStore;
+  }
+});
 exports.navigation = navigation$1;
 exports.routing = routing;
 exports.user = user;

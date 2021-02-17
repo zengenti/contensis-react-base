@@ -6,22 +6,23 @@ require('react');
 var reactRedux = require('react-redux');
 require('immutable');
 var routing = require('./routing-6197a03e.js');
-var login = require('./login-0e13e272.js');
+var reducers = require('./reducers-a05c32a6.js');
 require('query-string');
 require('@redux-saga/core/effects');
 var ToJs = require('./ToJs-8f6b21c9.js');
+var login = require('./login-c68d1635.js');
 require('jsonpath-mapper');
 require('await-to-js');
 require('js-cookie');
 
-const loginUser = (username, password) => routing.action(login.LOGIN_USER, {
+const loginUser = (username, password) => routing.action(reducers.LOGIN_USER, {
   username,
   password
 });
-const logoutUser = redirectPath => routing.action(login.LOGOUT_USER, {
+const logoutUser = redirectPath => routing.action(reducers.LOGOUT_USER, {
   redirectPath
 });
-const registerUser = (user, mappers) => routing.action(login.REGISTER_USER, {
+const registerUser = (user, mappers) => routing.action(reducers.REGISTER_USER, {
   user,
   mappers
 });
@@ -145,13 +146,13 @@ const withRegistration = WrappedComponent => {
   return ConnectedComponent;
 };
 
+exports.initialUserState = reducers.initialUserState;
+exports.reducer = reducers.UserReducer;
+exports.types = reducers.types;
+exports.selectors = ToJs.selectors;
 exports.LoginHelper = login.LoginHelper;
 exports.handleRequiresLoginSaga = login.handleRequiresLoginSaga;
-exports.initialUserState = login.initialUserState;
-exports.reducer = login.UserReducer;
 exports.refreshSecurityToken = login.refreshSecurityToken;
-exports.types = login.types;
-exports.selectors = ToJs.selectors;
 exports.LoginContainer = Login_container;
 exports.RegistrationContainer = Registration_container;
 exports.actions = actions;

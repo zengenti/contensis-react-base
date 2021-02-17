@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
 import { Route, useLocation, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { t as selectRouteEntryContentTypeId, a as selectRouteEntry, u as selectIsNotFound, v as selectRouteLoading, o as selectMappedEntry, b as selectCurrentProject, w as selectCurrentPath, x as setNavigationPath } from './routing-64807af8.js';
+import { p as selectRouteEntryContentTypeId, a as selectRouteEntry, r as selectIsNotFound, t as selectRouteLoading, j as selectMappedEntry, b as selectCurrentProject, u as selectCurrentPath, v as setNavigationPath } from './routing-7eff80b5.js';
 import { t as toJS, s as selectUserIsAuthenticated, a as selectUserGroups, m as matchUserGroup } from './ToJs-1c73b10a.js';
 import { matchRoutes, renderRoutes } from 'react-router-config';
 import { hot } from 'react-hot-loader';
@@ -167,4 +167,4 @@ const mapDispatchToProps = {
 var RouteLoader$1 = hot(module)(connect(mapStateToProps, mapDispatchToProps)(toJS(RouteLoader)));
 
 export { RouteLoader$1 as R };
-//# sourceMappingURL=RouteLoader-fc78472d.js.map
+//# sourceMappingURL=RouteLoader-0d9ab8ed.js.map

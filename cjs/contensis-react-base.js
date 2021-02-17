@@ -19,19 +19,20 @@ var serialize = require('serialize-javascript');
 var minifyCssString = require('minify-css-string');
 var immutable = require('immutable');
 require('history');
-var App = require('./App-209a9a68.js');
+var App = require('./App-dba935e9.js');
 require('contensis-delivery-api');
 var routing = require('./routing-6197a03e.js');
 require('redux');
 require('redux-immutable');
 require('redux-thunk');
 require('redux-saga');
-var version = require('./version-7fdcc2c0.js');
-require('./login-0e13e272.js');
+var version = require('./version-f369bb4b.js');
+require('./reducers-a05c32a6.js');
 require('query-string');
 require('@redux-saga/core/effects');
 require('loglevel');
 require('./ToJs-8f6b21c9.js');
+require('./login-c68d1635.js');
 var mapJson = require('jsonpath-mapper');
 require('await-to-js');
 require('js-cookie');
@@ -304,7 +305,7 @@ const webApp = (app, ReactApp, config) => {
     const context = {};
     let status = 200; // Create a store (with a memory history) from our current url
 
-    const store = App.createStore(withReducers, immutable.fromJS({}), App.history({
+    const store = version.createStore(withReducers, immutable.fromJS({}), App.history({
       initialEntries: [url]
     })); // dispatch any global and non-saga related actions before calling our JSX
 

@@ -5,14 +5,15 @@ var immutable = require('immutable');
 var history$1 = require('history');
 var contensisDeliveryApi = require('contensis-delivery-api');
 var routing = require('./routing-6197a03e.js');
-var redux = require('redux');
-var reduxImmutable = require('redux-immutable');
-var thunk = require('redux-thunk');
-var createSagaMiddleware = require('redux-saga');
-var version = require('./version-7fdcc2c0.js');
-var login = require('./login-0e13e272.js');
+require('redux');
+require('redux-immutable');
+require('redux-thunk');
+require('redux-saga');
+var version = require('./version-f369bb4b.js');
+var reducers = require('./reducers-a05c32a6.js');
 var effects = require('@redux-saga/core/effects');
 var log = require('loglevel');
+var login = require('./login-c68d1635.js');
 var awaitToJs = require('await-to-js');
 require('react-hot-loader');
 var RouteLoader = require('./RouteLoader-72de4da1.js');
@@ -20,8 +21,6 @@ var RouteLoader = require('./RouteLoader-72de4da1.js');
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
 var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
-var thunk__default = /*#__PURE__*/_interopDefaultLegacy(thunk);
-var createSagaMiddleware__default = /*#__PURE__*/_interopDefaultLegacy(createSagaMiddleware);
 
 const selectedHistory = typeof window !== 'undefined' ? history$1.createBrowserHistory : history$1.createMemoryHistory;
 const history = (options = {}) => selectedHistory(options);
@@ -70,241 +69,9 @@ const pickProject = (hostname, query) => {
   return project === 'unknown' ? p.id : project;
 };
 
-const initialState = immutable.Map({
-  root: null,
-  treeDepends: new immutable.List([]),
-  isError: false,
-  isReady: false
-});
-var NavigationReducer = ((state = initialState, action) => {
-  switch (action.type) {
-    case version.SET_NODE_TREE:
-      {
-        return state.set('root', immutable.fromJS(action.nodes)).set('isReady', true);
-      }
-
-    case version.GET_NODE_TREE_ERROR:
-      {
-        return state.set('isError', true);
-      }
-
-    default:
-      return state;
-  }
-});
-
-let initialState$1 = immutable.OrderedMap({
-  contentTypeId: null,
-  currentPath: '/',
-  currentNode: [],
-  currentNodeAncestors: immutable.List(),
-  currentProject: 'unknown',
-  entryID: null,
-  entry: null,
-  currentTreeId: null,
-  entryDepends: immutable.List(),
-  isLoading: false,
-  location: null,
-  mappedEntry: immutable.OrderedMap(),
-  nodeDepends: immutable.List(),
-  notFound: false,
-  staticRoute: null
-});
-var RoutingReducer = ((state = initialState$1, action) => {
-  switch (action.type) {
-    case routing.SET_ANCESTORS:
-      {
-        if (action.ancestors) {
-          return state.set('currentNodeAncestors', immutable.fromJS(action.ancestors));
-        }
-
-        return state.set('currentNodeAncestors', immutable.fromJS(action.ancestors));
-      }
-
-    case routing.SET_ENTRY:
-      {
-        const {
-          entry,
-          mappedEntry,
-          node = {},
-          isLoading = false,
-          notFound = false
-        } = action;
-        let nextState;
-
-        if (!entry) {
-          nextState = state.set('entryID', null).set('entry', null).set('mappedEntry', immutable.OrderedMap()).set('isLoading', isLoading).set('notFound', notFound);
-        } else {
-          nextState = state.set('entryID', action.id).set('entry', immutable.fromJS(entry)).set('isLoading', isLoading).set('notFound', notFound);
-          if (mappedEntry && Object.keys(mappedEntry).length > 0) nextState = nextState.set('mappedEntry', immutable.fromJS(mappedEntry)).set('entry', immutable.fromJS({
-            sys: entry.sys
-          }));
-        }
-
-        if (!node) {
-          return nextState.set('nodeDepends', null).set('currentNode', null);
-        } else {
-          // On Set Node, we reset all dependants.
-          return nextState.set('currentNode', immutable.fromJS(node)).removeIn(['currentNode', 'entry']); // We have the entry stored elsewhere, so lets not keep it twice.
-        }
-      }
-
-    case routing.UPDATE_LOADING_STATE:
-      {
-        return state.set('isLoading', action.isLoading);
-      }
-
-    case routing.SET_NAVIGATION_PATH:
-      {
-        let staticRoute = false;
-
-        if (action.staticRoute) {
-          staticRoute = { ...action.staticRoute
-          };
-        }
-
-        if (action.path) {
-          // Don't run a path update on initial load as we allready should have it in redux
-          const entryUri = state.getIn(['entry', 'sys', 'uri']);
-
-          if (entryUri != action.path) {
-            return state.set('currentPath', immutable.fromJS(action.path)).set('location', immutable.fromJS(action.location)).set('staticRoute', immutable.fromJS({ ...staticRoute,
-              route: { ...staticRoute.route,
-                component: null
-              }
-            })).set('isLoading', typeof window !== 'undefined');
-          } else {
-            return state.set('location', immutable.fromJS(action.location)).set('staticRoute', immutable.fromJS({ ...staticRoute,
-              route: { ...staticRoute.route,
-                component: null
-              }
-            }));
-          }
-        }
-
-        return state;
-      }
-
-    case routing.SET_ROUTE:
-      {
-        return state.set('nextPath', action.path);
-      }
-
-    case routing.SET_SIBLINGS:
-      {
-        // Can be null in some cases like the homepage.
-        let currentNodeSiblingParent = null;
-        let siblingIDs = [];
-
-        if (action.siblings && action.siblings.length > 0) {
-          currentNodeSiblingParent = action.siblings[0].parentId;
-          siblingIDs = action.siblings.map(node => {
-            return node.id;
-          });
-        }
-
-        let currentNodeDepends = state.get('nodeDepends');
-        const allNodeDepends = immutable.Set.union([immutable.Set(siblingIDs), currentNodeDepends]);
-        return state.set('nodeDepends', allNodeDepends).set('currentNodeSiblings', immutable.fromJS(action.siblings)).set('currentNodeSiblingsParent', currentNodeSiblingParent);
-      }
-
-    case routing.SET_SURROGATE_KEYS:
-      {
-        return state.set('surrogateKeys', action.keys);
-      }
-
-    case routing.SET_TARGET_PROJECT:
-      {
-        return state.set('currentProject', action.project).set('currentTreeId', '') //getTreeID(action.project))
-        .set('allowedGroups', immutable.fromJS(action.allowedGroups));
-      }
-
-    default:
-      return state;
-  }
-});
-
-let initialState$2 = immutable.Map({
-  commitRef: null,
-  buildNo: null,
-  contensisVersionStatus: 'published'
-});
-var VersionReducer = ((state = initialState$2, action) => {
-  switch (action.type) {
-    case version.SET_VERSION_STATUS:
-      {
-        return state.set('contensisVersionStatus', action.status);
-      }
-
-    case version.SET_VERSION:
-      {
-        return state.set('commitRef', action.commitRef).set('buildNo', action.buildNo);
-      }
-
-    default:
-      return state;
-  }
-});
-
-/**
- * This middleware captures CALL_HISTORY_METHOD actions to redirect to the
- * provided history object. This will prevent these actions from reaching your
- * reducer or any middleware that comes after this one.
- */
-
-/* eslint-disable no-unused-vars */
-
-const routerMiddleware = history => store => next => action => {
-  if (action.type !== routing.CALL_HISTORY_METHOD) {
-    return next(action);
-  }
-
-  const {
-    payload: {
-      method,
-      args
-    }
-  } = action;
-  history[method](...args);
-};
-
-let reduxStore = null;
-var createStore = ((featureReducers, initialState, history) => {
-  const thunkMiddleware = [thunk__default['default']];
-
-  let reduxDevToolsMiddleware = f => f;
-
-  if (typeof window != 'undefined') {
-    reduxDevToolsMiddleware = window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f;
-  }
-
-  const sagaMiddleware = createSagaMiddleware__default['default']();
-  const middleware = redux.compose(redux.applyMiddleware(...thunkMiddleware, sagaMiddleware, routerMiddleware(history)), reduxDevToolsMiddleware);
-  let reducers = {
-    navigation: NavigationReducer,
-    routing: RoutingReducer,
-    user: login.UserReducer,
-    version: VersionReducer,
-    ...featureReducers
-  };
-  const combinedReducers = reduxImmutable.combineReducers(reducers);
-
-  const store = initialState => {
-    const store = redux.createStore(combinedReducers, initialState, middleware);
-    store.runSaga = sagaMiddleware.run;
-
-    store.close = () => store.dispatch(createSagaMiddleware.END);
-
-    return store;
-  };
-
-  reduxStore = store(initialState);
-  return reduxStore;
-});
-
 const storeSurrogateKeys = response => {
   const keys = response.headers.get ? response.headers.get('surrogate-key') : response.headers.map['surrogate-key'];
-  if (keys) reduxStore.dispatch(routing.setSurrogateKeys(keys));
+  if (keys) version.reduxStore.dispatch(routing.setSurrogateKeys(keys));
 };
 
 const getClientConfig = project => {
@@ -954,7 +721,7 @@ function* do404() {
 //   }
 // }
 
-const registerSagas = [effects.takeEvery(login.REGISTER_USER, registerSaga), effects.takeEvery(login.REGISTER_USER_SUCCESS, redirectSaga)];
+const registerSagas = [effects.takeEvery(reducers.REGISTER_USER, registerSaga), effects.takeEvery(reducers.REGISTER_USER_SUCCESS, redirectSaga)];
 
 function* registerSaga({
   user,
@@ -990,13 +757,13 @@ function* registerSaga({
 
 
       yield effects.put({
-        type: login.REGISTER_USER_SUCCESS,
+        type: reducers.REGISTER_USER_SUCCESS,
         user: mappedResponse || responseBody
       });
     } else {
       // OK response but unable to parse the response body
       yield effects.put({
-        type: login.REGISTER_USER_FAILED,
+        type: reducers.REGISTER_USER_FAILED,
         error: {
           message: 'Unable to parse the created user from the register service response'
         }
@@ -1015,7 +782,7 @@ function* registerSaga({
     }
 
     yield effects.put({
-      type: login.REGISTER_USER_FAILED,
+      type: reducers.REGISTER_USER_FAILED,
       error
     });
   }
@@ -1045,9 +812,8 @@ const AppRoot = props => {
 
 exports.AppRoot = AppRoot;
 exports.browserHistory = browserHistory;
-exports.createStore = createStore;
 exports.deliveryApi = deliveryApi;
 exports.history = history;
 exports.pickProject = pickProject;
 exports.rootSaga = rootSaga;
-//# sourceMappingURL=App-209a9a68.js.map
+//# sourceMappingURL=App-dba935e9.js.map

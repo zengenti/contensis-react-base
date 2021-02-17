@@ -2,6 +2,8 @@ import types from '~/core/redux/types';
 import actions from '~/core/redux/actions';
 import selectors from '~/core/redux/selectors';
 
+export { reduxStore as store } from '~/core/redux/store';
+
 // Remap the objects so they are presented in "feature" hierarchy
 // e.g. { routing: { types, actions }, navigation: { types, actions } }
 // instead of { types: { routing, navigation }, actions: { routing, navigation } }
