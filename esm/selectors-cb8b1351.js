@@ -7,6 +7,7 @@ function action(type, payload = {}) {
     ...payload
   };
 }
+const findContentTypeMapping = (ContentTypeMappings, contentTypeId) => ContentTypeMappings.find(ct => ct.contentTypeID === contentTypeId);
 
 const ROUTING_PREFIX = '@ROUTING/';
 const GET_ENTRY = `${ROUTING_PREFIX}_GET_ENTRY`;
@@ -181,5 +182,5 @@ var user = /*#__PURE__*/Object.freeze({
   selectCaptchaToken: selectCaptchaToken
 });
 
-export { selectPasswordMessage as A, selectChangePasswordMessage as B, CALL_HISTORY_METHOD as C, selectCaptchaSiteKey as D, selectCaptchaResponse as E, selectQueryStringAsObject as F, SET_TARGET_PROJECT as S, UPDATE_LOADING_STATE as U, selectNodeDepends as a, selectCurrentTreeID as b, selectRouteEntry as c, selectCurrentProject as d, SET_SIBLINGS as e, SET_ROUTE as f, SET_NAVIGATION_PATH as g, SET_ENTRY as h, SET_ANCESTORS as i, selectRouteEntryContentTypeId as j, selectIsNotFound as k, selectUserLoggedIn as l, selectRouteLoading as m, selectMappedEntry as n, selectCurrentPath as o, action as p, SET_NAVIGATION_NOT_FOUND as q, selectUser as r, selectEntryDepends as s, selectCurrentSearch as t, selectUsername as u, routing as v, routing$1 as w, user as x, selectUserMessage as y, selectLoginScreenMode as z };
-//# sourceMappingURL=selectors-19e46385.js.map
+export { selectLoginScreenMode as A, selectPasswordMessage as B, CALL_HISTORY_METHOD as C, selectChangePasswordMessage as D, selectCaptchaSiteKey as E, selectCaptchaResponse as F, selectQueryStringAsObject as G, SET_TARGET_PROJECT as S, UPDATE_LOADING_STATE as U, selectNodeDepends as a, selectCurrentTreeID as b, selectRouteEntry as c, selectCurrentProject as d, SET_SIBLINGS as e, SET_ROUTE as f, SET_NAVIGATION_PATH as g, SET_ENTRY as h, SET_ANCESTORS as i, findContentTypeMapping as j, selectRouteEntryContentTypeId as k, selectIsNotFound as l, selectUserLoggedIn as m, selectRouteLoading as n, selectMappedEntry as o, selectCurrentPath as p, action as q, SET_NAVIGATION_NOT_FOUND as r, selectEntryDepends as s, selectUser as t, selectCurrentSearch as u, selectUsername as v, routing as w, routing$1 as x, user as y, selectUserMessage as z };
+//# sourceMappingURL=selectors-cb8b1351.js.map

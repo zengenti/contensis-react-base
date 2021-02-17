@@ -13,6 +13,7 @@ function action(type, payload = {}) {
     ...payload
   };
 }
+const findContentTypeMapping = (ContentTypeMappings, contentTypeId) => ContentTypeMappings.find(ct => ct.contentTypeID === contentTypeId);
 
 const ROUTING_PREFIX = '@ROUTING/';
 const GET_ENTRY = `${ROUTING_PREFIX}_GET_ENTRY`;
@@ -197,6 +198,7 @@ exports.SET_SIBLINGS = SET_SIBLINGS;
 exports.SET_TARGET_PROJECT = SET_TARGET_PROJECT;
 exports.UPDATE_LOADING_STATE = UPDATE_LOADING_STATE;
 exports.action = action;
+exports.findContentTypeMapping = findContentTypeMapping;
 exports.routing = routing;
 exports.routing$1 = routing$1;
 exports.selectCaptchaResponse = selectCaptchaResponse;
@@ -221,4 +223,4 @@ exports.selectUserLoggedIn = selectUserLoggedIn;
 exports.selectUserMessage = selectUserMessage;
 exports.selectUsername = selectUsername;
 exports.user = user;
-//# sourceMappingURL=selectors-1a2d998b.js.map
+//# sourceMappingURL=selectors-4e2a4fe0.js.map
