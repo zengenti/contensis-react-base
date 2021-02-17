@@ -680,7 +680,7 @@ function* getRouteSaga(action) {
 
     const doNavigation = !appsays || (appsays && appsays.customNavigation === true ? false : appsays && appsays.customNavigation || true);
     const entryLinkDepth = appsays && appsays.entryLinkDepth || 3;
-    const setContentTypeLimits = !!ContentTypeMappings.find(ct => ct.fields || ct.linkDepth);
+    const setContentTypeLimits = !!ContentTypeMappings.find(ct => ct.fields || ct.linkDepth || ct.nodeOptions);
     const state = yield select();
     const routeEntry = selectRouteEntry(state); // const routeNode = selectCurrentNode(state);
 
@@ -762,8 +762,9 @@ function* getRouteSaga(action) {
           }
         } else {
           // Handle all other routes
+          const childrenDepth = doNavigation === true || doNavigation.children === true ? 1 : doNavigation && doNavigation.children || 0;
           pathNode = yield cachedSearch.getNode({
-            depth: doNavigation === true || doNavigation.children === true ? 3 : doNavigation && doNavigation.children || 0,
+            depth: childrenDepth,
             path: currentPath,
             entryFields: setContentTypeLimits ? ['sys.contentTypeId', 'sys.id'] : '*',
             entryLinkDepth: setContentTypeLimits ? 0 : entryLinkDepth,
@@ -774,15 +775,34 @@ function* getRouteSaga(action) {
           } = pathNode || {});
 
           if (setContentTypeLimits && pathNode && pathNode.entry && pathNode.entry.sys && pathNode.entry.sys.id) {
+            // Get fields[] and linkDepth from ContentTypeMapping to get the entry data
+            // at a specified depth with specified fields
             const {
               fields,
-              linkDepth
+              linkDepth,
+              nodeOptions = {}
             } = findContentTypeMapping(ContentTypeMappings, pathNode.entry.sys.contentTypeId) || {};
             const query = routeEntryByFieldsQuery(pathNode.entry.sys.id, fields, deliveryApiStatus);
-            const payload = yield cachedSearch.search(query, typeof linkDepth !== 'undefined' ? linkDepth : 3, project);
+            const payload = yield cachedSearch.search(query, linkDepth || entryLinkDepth || 0, project);
 
             if (payload && payload.items && payload.items.length > 0) {
               pathNode.entry = payload.items[0];
+            }
+
+            if (childrenDepth > 0 || nodeOptions.children) {
+              const childrenOptions = nodeOptions.children || {}; // We need to make a separate call for child nodes if the first node query has been
+              // limited by linkDepth or fields[]
+
+              const childNodes = yield cachedSearch.getChildren({
+                id: pathNode.id,
+                entryFields: childrenOptions.fields || fields || '*',
+                entryLinkDepth: childrenOptions.linkDepth || linkDepth || entryLinkDepth || 0,
+                versionStatus: deliveryApiStatus
+              });
+
+              if (childNodes) {
+                pathNode.children = childNodes;
+              }
             }
           }
         }
@@ -1016,4 +1036,4 @@ const AppRoot = props => {
 };
 
 export { AppRoot as A, browserHistory as b, createStore as c, deliveryApi as d, history as h, pickProject as p, rootSaga as r };
-//# sourceMappingURL=App-171ad0dd.js.map
+//# sourceMappingURL=App-bf22460d.js.map

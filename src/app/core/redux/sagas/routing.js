@@ -81,7 +81,7 @@ function* getRouteSaga(action) {
 
     const entryLinkDepth = (appsays && appsays.entryLinkDepth) || 3;
     const setContentTypeLimits = !!ContentTypeMappings.find(
-      ct => ct.fields || ct.linkDepth
+      ct => ct.fields || ct.linkDepth || ct.nodeOptions
     );
 
     const state = yield select();
@@ -178,12 +178,13 @@ function* getRouteSaga(action) {
           }
         } else {
           // Handle all other routes
+          const childrenDepth =
+            doNavigation === true || doNavigation.children === true
+              ? 1
+              : (doNavigation && doNavigation.children) || 0;
           pathNode = yield cachedSearch.getNode(
             {
-              depth:
-                doNavigation === true || doNavigation.children === true
-                  ? 3
-                  : (doNavigation && doNavigation.children) || 0,
+              depth: childrenDepth,
               path: currentPath,
               entryFields: setContentTypeLimits
                 ? ['sys.contentTypeId', 'sys.id']
@@ -202,7 +203,9 @@ function* getRouteSaga(action) {
             pathNode.entry.sys &&
             pathNode.entry.sys.id
           ) {
-            const { fields, linkDepth } =
+            // Get fields[] and linkDepth from ContentTypeMapping to get the entry data
+            // at a specified depth with specified fields
+            const { fields, linkDepth, nodeOptions = {} } =
               findContentTypeMapping(
                 ContentTypeMappings,
                 pathNode.entry.sys.contentTypeId
@@ -214,11 +217,27 @@ function* getRouteSaga(action) {
             );
             const payload = yield cachedSearch.search(
               query,
-              typeof linkDepth !== 'undefined' ? linkDepth : 3,
+              linkDepth || entryLinkDepth || 0,
               project
             );
             if (payload && payload.items && payload.items.length > 0) {
               pathNode.entry = payload.items[0];
+            }
+
+            if (childrenDepth > 0 || nodeOptions.children) {
+              const childrenOptions = nodeOptions.children || {};
+              // We need to make a separate call for child nodes if the first node query has been
+              // limited by linkDepth or fields[]
+              const childNodes = yield cachedSearch.getChildren({
+                id: pathNode.id,
+                entryFields: childrenOptions.fields || fields || '*',
+                entryLinkDepth:
+                  childrenOptions.linkDepth || linkDepth || entryLinkDepth || 0,
+                versionStatus: deliveryApiStatus,
+              });
+              if (childNodes) {
+                pathNode.children = childNodes;
+              }
             }
           }
         }
