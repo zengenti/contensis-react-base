@@ -2,6 +2,9 @@ export function action(type, payload = {}) {
   return { type, ...payload };
 }
 
+export const findContentTypeMapping = (ContentTypeMappings, contentTypeId) =>
+  ContentTypeMappings.find(ct => ct.contentTypeID === contentTypeId);
+
 export const getWebPImageUri = uri => {
   let formatedUri = uri;
   if (uri.indexOf('.gif') == -1) {

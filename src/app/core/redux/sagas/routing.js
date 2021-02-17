@@ -21,6 +21,7 @@ import {
 import { GET_NODE_TREE } from '../types/navigation';
 import { hasNavigationTree } from '../selectors/navigation';
 import { routeEntryByFieldsQuery } from './queries';
+import { findContentTypeMapping } from '~/core/util/helpers';
 
 export const routingSagas = [
   takeEvery(SET_NAVIGATION_PATH, getRouteSaga),
@@ -64,7 +65,7 @@ function* getRouteSaga(action) {
 
     const entryLinkDepth = (appsays && appsays.entryLinkDepth) || 3;
     const setContentTypeLimits = !!ContentTypeMappings.find(
-      ct => ct.fields || ct.linkDepth
+      ct => ct.fields || ct.linkDepth || ct.nodeOptions
     );
 
     const state = yield select();
@@ -153,12 +154,13 @@ function* getRouteSaga(action) {
           }
         } else {
           // Handle all other routes
+          const childrenDepth =
+            doNavigation === true || doNavigation.children === true
+              ? 1
+              : (doNavigation && doNavigation.children) || 0;
           pathNode = yield cachedSearch.getNode(
             {
-              depth:
-                doNavigation === true || doNavigation.children === true
-                  ? 3
-                  : (doNavigation && doNavigation.children) || 0,
+              depth: childrenDepth,
               path: currentPath,
               entryFields: setContentTypeLimits
                 ? ['sys.contentTypeId', 'sys.id']
@@ -175,23 +177,41 @@ function* getRouteSaga(action) {
             pathNode.entry.sys &&
             pathNode.entry.sys.id
           ) {
-            const contentType = ContentTypeMappings.find(
-              ct => ct.contentTypeID === pathNode.entry.sys.contentTypeId
-            );
+            // Get fields[] and linkDepth from ContentTypeMapping to get the entry data
+            // at a specified depth with specified fields
+            const { fields, linkDepth, nodeOptions = {} } =
+              findContentTypeMapping(
+                ContentTypeMappings,
+                pathNode.entry.sys.contentTypeId
+              ) || {};
             const query = routeEntryByFieldsQuery(
               pathNode.entry.sys.id,
-              contentType && contentType.fields,
+              fields,
               deliveryApiStatus
             );
             const payload = yield cachedSearch.search(
               query,
-              contentType && typeof contentType.linkDepth !== 'undefined'
-                ? contentType.linkDepth
-                : 3,
+              linkDepth || entryLinkDepth || 0,
               project
             );
             if (payload && payload.items && payload.items.length > 0) {
               pathNode.entry = payload.items[0];
+            }
+
+            if (childrenDepth > 0 || nodeOptions.children) {
+              const childrenOptions = nodeOptions.children || {};
+              // We need to make a separate call for child nodes if the first node query has been
+              // limited by linkDepth or fields[]
+              const childNodes = yield cachedSearch.getChildren({
+                id: pathNode.id,
+                entryFields: childrenOptions.fields || fields || '*',
+                entryLinkDepth:
+                  childrenOptions.linkDepth || linkDepth || entryLinkDepth || 0,
+                versionStatus: deliveryApiStatus,
+              });
+              if (childNodes) {
+                pathNode.children = childNodes;
+              }
             }
           }
         }
