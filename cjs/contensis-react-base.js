@@ -9,6 +9,7 @@ var evilDns = require('evil-dns');
 var httpProxy = require('http-proxy');
 var fs = require('fs');
 var path = require('path');
+var appRootPath = require('app-root-path');
 var React = require('react');
 var reactRouterDom = require('react-router-dom');
 var reactRedux = require('react-redux');
@@ -168,7 +169,7 @@ const bundleManipulationMiddleware = staticRoutePath => (req, res, next) => {
   const legacyBundle = filename.endsWith('.js');
 
   if ((legacyBundle || modernBundle) && filename.startsWith('runtime.')) {
-    const jsRuntimeLocation = path__default['default'].join(__dirname, '../../../dist/static', modernBundle ? 'modern/js' : 'legacy/js', filename);
+    const jsRuntimeLocation = appRootPath.resolve(`/dist/static/${modernBundle ? 'modern/js' : 'legacy/js'}/${filename}`);
 
     try {
       const jsRuntimeBundle = fs__default['default'].readFileSync(jsRuntimeLocation, 'utf8');

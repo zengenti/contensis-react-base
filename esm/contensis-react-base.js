@@ -5,6 +5,7 @@ import evilDns from 'evil-dns';
 import httpProxy from 'http-proxy';
 import fs from 'fs';
 import path from 'path';
+import { resolve } from 'app-root-path';
 import React from 'react';
 import { StaticRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
@@ -151,7 +152,7 @@ const bundleManipulationMiddleware = staticRoutePath => (req, res, next) => {
   const legacyBundle = filename.endsWith('.js');
 
   if ((legacyBundle || modernBundle) && filename.startsWith('runtime.')) {
-    const jsRuntimeLocation = path.join(__dirname, '../../../dist/static', modernBundle ? 'modern/js' : 'legacy/js', filename);
+    const jsRuntimeLocation = resolve(`/dist/static/${modernBundle ? 'modern/js' : 'legacy/js'}/${filename}`);
 
     try {
       const jsRuntimeBundle = fs.readFileSync(jsRuntimeLocation, 'utf8');
