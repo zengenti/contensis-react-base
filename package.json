@@ -107,6 +107,7 @@
   },
   "dependencies": {
     "@hot-loader/react-dom": "16.11.0",
+    "app-root-path": "^3.0.0",
     "await-to-js": "^2.1.1",
     "contensis-delivery-api": "^1.1.5-rc.1",
     "contensis-management-api": "^1.0.1",
