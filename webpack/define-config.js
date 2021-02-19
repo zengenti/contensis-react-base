@@ -73,6 +73,8 @@ const development = {
   PUBLIC_URI: PUBLIC_URL,
   REVERSE_PROXY_PATHS,
   SERVERS,
+  STATIC_PATH: 'static',
+  STATIC_ROUTE_PATH: 'static',
   VERSION: packagejson.version,
 };
 

@@ -106,6 +106,7 @@
   },
   "dependencies": {
     "@hot-loader/react-dom": "16.11.0",
+    "app-root-path": "^3.0.0",
     "contensis-delivery-api": "^1.1.0",
     "custom-env": "^1.0.2",
     "dateformat": "^3.0.3",
