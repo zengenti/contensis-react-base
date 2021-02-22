@@ -12,9 +12,11 @@ const staticAssets = (
       ...staticRoutePaths.map(p => `/${p}`),
       `/${staticFolderPath}`,
     ],
-    bundleManipulationMiddleware(staticRoutePath),
+    bundleManipulationMiddleware(staticRoutePath, {
+      maxage: '31557600',
+    }),
     express.static(`dist/${staticFolderPath}`, {
-      maxage: '31557600h',
+      maxage: '31557600',
     })
   );
 };

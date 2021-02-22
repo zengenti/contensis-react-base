@@ -3,11 +3,10 @@ import path from 'path';
 import { replaceStaticPath } from '../util/staticPaths';
 import { resolve } from 'app-root-path';
 
-export const bundleManipulationMiddleware = staticRoutePath => (
-  req,
-  res,
-  next
-) => {
+export const bundleManipulationMiddleware = (
+  staticRoutePath,
+  { maxage } = {}
+) => (req, res, next) => {
   const filename = path.basename(req.path);
   const modernBundle = filename.endsWith('.mjs');
   const legacyBundle = filename.endsWith('.js');
@@ -21,6 +20,7 @@ export const bundleManipulationMiddleware = staticRoutePath => (
         jsRuntimeBundle,
         staticRoutePath
       );
+      if (maxage) res.set('Cache-Control', `public, max-age=${maxage}`);
       res.type('.js').send(modifiedBundle);
       return;
     } catch (readError) {

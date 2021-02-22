@@ -116,7 +116,9 @@ const deliveryApiProxy = (apiProxy, app) => {
 
 const replaceStaticPath = (string, staticFolderPath = 'static') => string.replace(/static\//g, `${staticFolderPath}/`);
 
-const bundleManipulationMiddleware = staticRoutePath => (req, res, next) => {
+const bundleManipulationMiddleware = (staticRoutePath, {
+  maxage
+} = {}) => (req, res, next) => {
   const filename = path__default['default'].basename(req.path);
   const modernBundle = filename.endsWith('.mjs');
   const legacyBundle = filename.endsWith('.js');
@@ -127,6 +129,7 @@ const bundleManipulationMiddleware = staticRoutePath => (req, res, next) => {
     try {
       const jsRuntimeBundle = fs__default['default'].readFileSync(jsRuntimeLocation, 'utf8');
       const modifiedBundle = replaceStaticPath(jsRuntimeBundle, staticRoutePath);
+      if (maxage) res.set('Cache-Control', `public, max-age=${maxage}`);
       res.type('.js').send(modifiedBundle);
       return;
     } catch (readError) {
@@ -144,8 +147,10 @@ const staticAssets = (app, {
   staticRoutePaths = [],
   staticFolderPath = 'static'
 }) => {
-  app.use([`/${staticRoutePath}`, ...staticRoutePaths.map(p => `/${p}`), `/${staticFolderPath}`], bundleManipulationMiddleware(staticRoutePath), express__default['default'].static(`dist/${staticFolderPath}`, {
-    maxage: '31557600h'
+  app.use([`/${staticRoutePath}`, ...staticRoutePaths.map(p => `/${p}`), `/${staticFolderPath}`], bundleManipulationMiddleware(staticRoutePath, {
+    maxage: '31557600'
+  }), express__default['default'].static(`dist/${staticFolderPath}`, {
+    maxage: '31557600'
   }));
 };
 
