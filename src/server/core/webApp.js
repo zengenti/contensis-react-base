@@ -39,12 +39,11 @@ import { replaceStaticPath } from '../util/staticPaths';
 
 const addStandardHeaders = (state, response, packagejson, groups) => {
   if (state) {
-    /* eslint-disable no-console */
     try {
-      console.log('About to add header');
+      console.info('About to add header');
       let entryDepends = selectEntryDepends(state);
       entryDepends = Array.from(entryDepends || {});
-      console.log(`entryDepends count: ${entryDepends.length}`);
+      console.info(`entryDepends count: ${entryDepends.length}`);
 
       let nodeDepends = selectNodeDepends(state).toJS();
       let currentTreeId = selectCurrentTreeID(state);
@@ -63,17 +62,19 @@ const addStandardHeaders = (state, response, packagejson, groups) => {
 
       response.header('surrogate-key', surrogateKeyHeader);
 
-      console.log(`depends hashed: ${allDependsHashed.join(' ')}`);
-      console.log(`depends hashed: ${allDepends.join(' ')}`);
+      console.info(`depends hashed: ${allDependsHashed.join(' ')}`);
+      console.info(`depends hashed: ${allDepends.join(' ')}`);
 
       addVarnishAuthenticationHeaders(state, response, groups);
 
-      response.setHeader('Surrogate-Control', 'max-age=3600');
+      if (response.statusCode === 404) {
+        response.setHeader('Surrogate-Control', 'max-age=300');
+      } else {
+        response.setHeader('Surrogate-Control', 'max-age=3600');
+      }
     } catch (e) {
-      console.log('Error Adding headers', e.message);
-      // console.log(e);
+      console.info('Error Adding headers', e.message);
     }
-    /* eslint-enable no-console */
   }
 };
 
@@ -83,7 +84,7 @@ const addVarnishAuthenticationHeaders = (state, response, groups = {}) => {
       const stateEntry = selectRouteEntry(state);
       const project = selectCurrentProject(state);
       const { globalGroups, allowedGroups } = groups;
-      // console.log(globalGroups, allowedGroups);
+      // console.info(globalGroups, allowedGroups);
       let allGroups = Array.from((globalGroups && globalGroups[project]) || {});
       if (
         stateEntry &&
@@ -95,8 +96,7 @@ const addVarnishAuthenticationHeaders = (state, response, groups = {}) => {
       }
       response.header('x-contensis-viewer-groups', allGroups.join('|'));
     } catch (e) {
-      // eslint-disable-next-line no-console
-      console.log('Error adding authentication header', e);
+      console.info('Error adding authentication header', e);
     }
   }
 };
@@ -110,7 +110,7 @@ const loadableBundleData = ({ stats, templates }, staticRoutePath, build) => {
       readFileSync(stats.replace('/target', build ? `/${build}` : ''))
     );
   } catch (ex) {
-    //console.log(ex);
+    //console.info(ex);
     bundle.stats = null;
   }
   try {
@@ -135,7 +135,7 @@ const loadableBundleData = ({ stats, templates }, staticRoutePath, build) => {
       ),
     };
   } catch (ex) {
-    //console.log(ex);
+    //console.info(ex);
     bundle.templates = null;
   }
   return bundle;
@@ -195,7 +195,8 @@ const webApp = (app, ReactApp, config) => {
     });
 
     const context = {};
-    let status = 200;
+    // Track the current statusCode via the response object
+    response.status(200);
 
     // Create a store (with a memory history) from our current url
     const store = createStore(
@@ -211,8 +212,7 @@ const webApp = (app, ReactApp, config) => {
       request.hostname
     );
 
-    // eslint-disable-next-line no-console
-    console.log(
+    console.info(
       `Request for ${request.path} hostname: ${request.hostname} versionStatus: ${versionStatusFromHostname}`
     );
 
@@ -306,7 +306,10 @@ const webApp = (app, ReactApp, config) => {
         .replace('{{LOADABLE_CHUNKS}}', bundleTags)
         .replace('{{REDUX_DATA}}', isDynamicHint);
       response.setHeader('Surrogate-Control', 'max-age=3600');
-      response.status(status); //.send(responseHtmlDynamic);
+      if (response.statusCode === 404) {
+        response.setHeader('Surrogate-Control', 'max-age=300');
+      }
+      response.status(status);
       responseHandler(request, response, responseHtmlDynamic);
     }
 
@@ -327,7 +330,7 @@ const webApp = (app, ReactApp, config) => {
           const metadata = helmet.meta.toString();
 
           if (context.status === 404) {
-            status = 404;
+            response.status(404);
             title = '<title>404 page not found</title>';
           }
 
@@ -353,7 +356,7 @@ const webApp = (app, ReactApp, config) => {
                 allowedGroups,
                 globalGroups,
               });
-              response.status(status); //.json(serialisedReduxData);
+              // response.status(status);
               responseHandler(request, response, serialisedReduxData, 'json');
               return true;
             }
@@ -371,10 +374,11 @@ const webApp = (app, ReactApp, config) => {
 
           // Static page served as a fragment
           if (accessMethod.FRAGMENT && accessMethod.STATIC) {
-            addStandardHeaders(reduxState, response, packagejson, {
-              allowedGroups,
-              globalGroups,
-            });
+            // Gets called again later....
+            // addStandardHeaders(reduxState, response, packagejson, {
+            //   allowedGroups,
+            //   globalGroups,
+            // });
             responseHTML = minifyCssString(styleTags) + html;
           }
 
@@ -414,34 +418,31 @@ const webApp = (app, ReactApp, config) => {
             globalGroups,
           });
           try {
-            // If react-helmet htmlAttributes are being used, replace the html tag with those attributes sepcified e.g (lang, dir etc.)
+            // If react-helmet htmlAttributes are being used,
+            // replace the html tag with those attributes sepcified
+            // e.g. (lang, dir etc.)
             if (htmlAttributes) {
               responseHTML = responseHTML.replace(
                 /<html?.+?>/,
                 `<html ${htmlAttributes}>`
               );
             }
-            response.status(status); //.send(responseHTML);
+            // response.status(status);
             responseHandler(request, response, responseHTML);
           } catch (err) {
-            // eslint-disable-next-line no-console
-            console.log(err.message);
+            console.info(err.message);
           }
         })
         .catch(err => {
           // Handle any error that occurred in any of the previous
           // promises in the chain.
-          // eslint-disable-next-line no-console
-          console.log(err);
+          console.info(err);
           response.status(500);
           responseHandler(
             request,
             response,
             `Error occurred: <br />${err.stack} <br />${JSON.stringify(err)}`
           );
-          // .send(
-          //   `Error occurred: <br />${err.stack} <br />${JSON.stringify(err)}`
-          // );
         });
       renderToString(jsx);
 
