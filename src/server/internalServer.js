@@ -15,8 +15,9 @@ const start = (ReactApp, config, ServerFeatures) => {
   // Output some information about the used build/startup configuration
   DisplayStartupConfiguration(config);
 
-  // Set-up local proxy for images from cms, to save doing rewrites and extra code
   ServerFeatures(app);
+  // Set-up local proxy for images from cms, and delivery api requests
+  // to save doing rewrites and extra code
   ConfigureReverseProxies(app, config.reverseProxyPaths);
   ServeStaticAssets(app, config);
   ConfigureWebApp(app, ReactApp, config);
