@@ -246,12 +246,11 @@ const hashKeys = keys => {
 
 const addStandardHeaders = (state, response, packagejson, groups) => {
   if (state) {
-    /* eslint-disable no-console */
     try {
-      console.log('About to add header');
+      console.info('About to add header');
       let entryDepends = selectors.selectEntryDepends(state);
       entryDepends = Array.from(entryDepends || {});
-      console.log(`entryDepends count: ${entryDepends.length}`);
+      console.info(`entryDepends count: ${entryDepends.length}`);
       let nodeDepends = selectors.selectNodeDepends(state).toJS();
       let currentTreeId = selectors.selectCurrentTreeID(state);
       let nodeDependsKeys = nodeDepends.map(nodeKey => {
@@ -261,15 +260,18 @@ const addStandardHeaders = (state, response, packagejson, groups) => {
       const allDependsHashed = hashKeys(allDepends);
       const surrogateKeyHeader = packagejson.name == 'os-main' ? ` ${packagejson.name}-app ${allDependsHashed.join(' ')} ${allDepends.join(' ')}` : ` ${packagejson.name}-app ${allDependsHashed.join(' ')}`;
       response.header('surrogate-key', surrogateKeyHeader);
-      console.log(`depends hashed: ${allDependsHashed.join(' ')}`);
-      console.log(`depends hashed: ${allDepends.join(' ')}`);
+      console.info(`depends hashed: ${allDependsHashed.join(' ')}`);
+      console.info(`depends hashed: ${allDepends.join(' ')}`);
       addVarnishAuthenticationHeaders(state, response, groups);
-      response.setHeader('Surrogate-Control', 'max-age=3600');
-    } catch (e) {
-      console.log('Error Adding headers', e.message); // console.log(e);
-    }
-    /* eslint-enable no-console */
 
+      if (response.statusCode === 404) {
+        response.setHeader('Surrogate-Control', 'max-age=300');
+      } else {
+        response.setHeader('Surrogate-Control', 'max-age=3600');
+      }
+    } catch (e) {
+      console.info('Error Adding headers', e.message);
+    }
   }
 };
 
@@ -281,7 +283,7 @@ const addVarnishAuthenticationHeaders = (state, response, groups = {}) => {
       const {
         globalGroups,
         allowedGroups
-      } = groups; // console.log(globalGroups, allowedGroups);
+      } = groups; // console.info(globalGroups, allowedGroups);
 
       let allGroups = Array.from(globalGroups && globalGroups[project] || {});
 
@@ -291,8 +293,7 @@ const addVarnishAuthenticationHeaders = (state, response, groups = {}) => {
 
       response.header('x-contensis-viewer-groups', allGroups.join('|'));
     } catch (e) {
-      // eslint-disable-next-line no-console
-      console.log('Error adding authentication header', e);
+      console.info('Error adding authentication header', e);
     }
   }
 };
@@ -308,7 +309,7 @@ const loadableBundleData = ({
   try {
     bundle.stats = JSON.parse(readFileSync(stats.replace('/target', build ? `/${build}` : '')));
   } catch (ex) {
-    //console.log(ex);
+    //console.info(ex);
     bundle.stats = null;
   }
 
@@ -319,7 +320,7 @@ const loadableBundleData = ({
       templateHTMLFragment: replaceStaticPath(readFileSync(templates.fragment.replace('/target', build ? `/${build}` : '')), staticRoutePath)
     };
   } catch (ex) {
-    //console.log(ex);
+    //console.info(ex);
     bundle.templates = null;
   }
 
@@ -380,16 +381,16 @@ const webApp = (app, ReactApp, config) => {
         static: value
       }) => normaliseQs(value)
     });
-    const context = {};
-    let status = 200; // Create a store (with a memory history) from our current url
+    const context = {}; // Track the current statusCode via the response object
+
+    response.status(200); // Create a store (with a memory history) from our current url
 
     const store = navigation.createStore(withReducers, immutable.fromJS({}), App.history({
       initialEntries: [url]
     })); // dispatch any global and non-saga related actions before calling our JSX
 
-    const versionStatusFromHostname = navigation.GetDeliveryApiStatusFromHostname(request.hostname); // eslint-disable-next-line no-console
-
-    console.log(`Request for ${request.path} hostname: ${request.hostname} versionStatus: ${versionStatusFromHostname}`);
+    const versionStatusFromHostname = navigation.GetDeliveryApiStatusFromHostname(request.hostname);
+    console.info(`Request for ${request.path} hostname: ${request.hostname} versionStatus: ${versionStatusFromHostname}`);
     store.dispatch(navigation.setVersionStatus(request.query.versionStatus || versionStatusFromHostname));
     store.dispatch(navigation.setVersion(versionInfo.commitRef, versionInfo.buildNo));
     const project = App.pickProject(request.hostname, request.query);
@@ -437,8 +438,12 @@ const webApp = (app, ReactApp, config) => {
       const isDynamicHint = `<script>window.isDynamic = true;</script>`;
       const responseHtmlDynamic = templateHTML.replace('{{TITLE}}', '').replace('{{SEO_CRITICAL_METADATA}}', '').replace('{{CRITICAL_CSS}}', '').replace('{{APP}}', '').replace('{{LOADABLE_CHUNKS}}', bundleTags).replace('{{REDUX_DATA}}', isDynamicHint);
       response.setHeader('Surrogate-Control', 'max-age=3600');
-      response.status(status); //.send(responseHtmlDynamic);
 
+      if (response.statusCode === 404) {
+        response.setHeader('Surrogate-Control', 'max-age=300');
+      }
+
+      response.status(status);
       responseHandler(request, response, responseHtmlDynamic);
     } // Render the JSX server side and send response as per access method options
 
@@ -454,7 +459,7 @@ const webApp = (app, ReactApp, config) => {
         const metadata = helmet.meta.toString();
 
         if (context.status === 404) {
-          status = 404;
+          response.status(404);
           title = '<title>404 page not found</title>';
         }
 
@@ -477,8 +482,7 @@ const webApp = (app, ReactApp, config) => {
             addStandardHeaders(reduxState, response, packagejson, {
               allowedGroups,
               globalGroups
-            });
-            response.status(status); //.json(serialisedReduxData);
+            }); // response.status(status);
 
             responseHandler(request, response, serialisedReduxData, 'json');
             return true;
@@ -498,10 +502,11 @@ const webApp = (app, ReactApp, config) => {
         let responseHTML = ''; // Static page served as a fragment
 
         if (accessMethod.FRAGMENT && accessMethod.STATIC) {
-          addStandardHeaders(reduxState, response, packagejson, {
-            allowedGroups,
-            globalGroups
-          });
+          // Gets called again later....
+          // addStandardHeaders(reduxState, response, packagejson, {
+          //   allowedGroups,
+          //   globalGroups,
+          // });
           responseHTML = minifyCssString__default['default'](styleTags) + html;
         } // Page fragment served with client scripts and redux data that hydrate the app client side
 
@@ -526,27 +531,24 @@ const webApp = (app, ReactApp, config) => {
         });
 
         try {
-          // If react-helmet htmlAttributes are being used, replace the html tag with those attributes sepcified e.g (lang, dir etc.)
+          // If react-helmet htmlAttributes are being used,
+          // replace the html tag with those attributes sepcified
+          // e.g. (lang, dir etc.)
           if (htmlAttributes) {
             responseHTML = responseHTML.replace(/<html?.+?>/, `<html ${htmlAttributes}>`);
-          }
+          } // response.status(status);
 
-          response.status(status); //.send(responseHTML);
 
           responseHandler(request, response, responseHTML);
         } catch (err) {
-          // eslint-disable-next-line no-console
-          console.log(err.message);
+          console.info(err.message);
         }
       }).catch(err => {
         // Handle any error that occurred in any of the previous
         // promises in the chain.
-        // eslint-disable-next-line no-console
-        console.log(err);
+        console.info(err);
         response.status(500);
-        responseHandler(request, response, `Error occurred: <br />${err.stack} <br />${JSON.stringify(err)}`); // .send(
-        //   `Error occurred: <br />${err.stack} <br />${JSON.stringify(err)}`
-        // );
+        responseHandler(request, response, `Error occurred: <br />${err.stack} <br />${JSON.stringify(err)}`);
       });
       server.renderToString(jsx);
       store.close();
@@ -559,9 +561,10 @@ const app = express__default['default']();
 const start = (ReactApp, config, ServerFeatures) => {
   app.disable('x-powered-by'); // Output some information about the used build/startup configuration
 
-  DisplayStartupConfiguration(config); // Set-up local proxy for images from cms, to save doing rewrites and extra code
+  DisplayStartupConfiguration(config);
+  ServerFeatures(app); // Set-up local proxy for images from cms, and delivery api requests
+  // to save doing rewrites and extra code
 
-  ServerFeatures(app);
   reverseProxies(app, config.reverseProxyPaths);
   staticAssets(app, config);
   webApp(app, ReactApp, config);
