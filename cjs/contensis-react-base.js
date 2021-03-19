@@ -154,6 +154,7 @@ const staticAssets = (app, {
   }));
 };
 
+/*! fromentries. MIT License. Feross Aboukhadijeh <https://feross.org/opensource> */
 var fromentries = function fromEntries (iterable) {
   return [...iterable].reduce((obj, [key, val]) => {
     obj[key] = val;
