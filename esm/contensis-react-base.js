@@ -16,8 +16,8 @@ import serialize from 'serialize-javascript';
 import minifyCssString from 'minify-css-string';
 import { fromJS } from 'immutable';
 import 'history';
-import { h as history, d as deliveryApi, p as pickProject, r as rootSaga } from './App-62f58957.js';
-export { A as ReactApp } from './App-62f58957.js';
+import { h as history, d as deliveryApi, p as pickProject, r as rootSaga } from './App-31ac766e.js';
+export { A as ReactApp } from './App-31ac766e.js';
 import 'contensis-delivery-api';
 import { s as setCurrentProject, a as selectRouteEntry, b as selectCurrentProject } from './routing-7eff80b5.js';
 import 'redux';
@@ -30,7 +30,7 @@ import 'query-string';
 import '@redux-saga/core/effects';
 import 'loglevel';
 import './ToJs-1c73b10a.js';
-import './login-81c0b522.js';
+import './login-0f8fa65b.js';
 import mapJson from 'jsonpath-mapper';
 import 'await-to-js';
 import 'js-cookie';
@@ -138,7 +138,6 @@ const staticAssets = (app, {
   }));
 };
 
-/*! fromentries. MIT License. Feross Aboukhadijeh <https://feross.org/opensource> */
 var fromentries = function fromEntries (iterable) {
   return [...iterable].reduce((obj, [key, val]) => {
     obj[key] = val;

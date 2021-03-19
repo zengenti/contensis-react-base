@@ -13,7 +13,7 @@ var version = require('./version-f369bb4b.js');
 var reducers = require('./reducers-a05c32a6.js');
 var effects = require('@redux-saga/core/effects');
 var log = require('loglevel');
-var login = require('./login-c68d1635.js');
+var login = require('./login-26261665.js');
 var awaitToJs = require('await-to-js');
 require('react-hot-loader');
 var RouteLoader = require('./RouteLoader-72de4da1.js');
@@ -816,4 +816,4 @@ exports.deliveryApi = deliveryApi;
 exports.history = history;
 exports.pickProject = pickProject;
 exports.rootSaga = rootSaga;
-//# sourceMappingURL=App-dba935e9.js.map
+//# sourceMappingURL=App-74c13bd6.js.map
