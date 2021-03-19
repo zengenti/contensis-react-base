@@ -247,11 +247,20 @@ export class LoginHelper {
           { message: 'Security token is invalid', data: ApplicationData },
         ];
       }
-      if (
-        ApplicationData.length > 1 &&
-        ApplicationData[1].Key === 'ContensisSecurityRefreshToken'
-      ) {
-        const refreshToken = ApplicationData[1].Value;
+      if (ApplicationData.length > 0) {
+        let refreshToken;
+        ApplicationData.forEach(item => {
+          if (item.Key === 'ContensisSecurityRefreshToken')
+            refreshToken = item.Value;
+        });
+        if (!refreshToken) {
+          return [
+            {
+              message:
+                'Fetch credentials: Unable to find ContensisSecurityRefreshToken',
+            },
+          ];
+        }
         return [undefined, refreshToken];
       } else {
         return [
