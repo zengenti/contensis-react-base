@@ -2,8 +2,8 @@ param (
   [string]$target
 )
 
-$target = $target + "\node_modules\zengenti-isomorphic-base"
-#$target = $target + "\node_modules\@zengenti\contensis-react-base"
+# $target = $target + "\node_modules\zengenti-isomorphic-base"
+$target = $target + "\node_modules\@zengenti\contensis-react-base"
 
 # npm run build:lib
 npm run roll:lib
