@@ -48,6 +48,24 @@ export default [
     }),
   },
   {
+    path: '/account/forgotten-password',
+    exact: true,
+    ssr: false,
+    component: Loadable({
+      loader: () => import('~/pages/User/ForgotPasswordPage'),
+      loading: Loading,
+    }),
+  },
+  {
+    path: '/account/forgotten-password/reset-password',
+    exact: true,
+    ssr: false,
+    component: Loadable({
+      loader: () => import('~/pages/User/ResetPasswordPage'),
+      loading: Loading,
+    }),
+  },
+  {
     path: '/help-and-docs/*',
     fetchNode: true,
     exact: false,
