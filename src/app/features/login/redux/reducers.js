@@ -7,6 +7,12 @@ import {
   SET_AUTHENTICATION_STATE,
   LOGIN_USER,
   LOGOUT_USER,
+  SET_REQUEST_USER_PASSWORD_RESET_SENDING,
+  SET_REQUEST_USER_PASSWORD_RESET_SUCCESS,
+  SET_REQUEST_USER_PASSWORD_RESET_ERROR,
+  SET_RESET_USER_PASSWORD_SENDING,
+  SET_RESET_USER_PASSWORD_SUCCESS,
+  SET_RESET_USER_PASSWORD_ERROR,
 } from './types';
 
 const defaultAuthenticationState = Map({
@@ -17,8 +23,22 @@ const defaultAuthenticationState = Map({
   loading: false,
 });
 
+const defaultPasswordResetRequestValues = {
+  isSending: false,
+  sent: false,
+  error: null,
+};
+
+const defaultResetPasswordValues = {
+  isSending: false,
+  sent: false,
+  error: null,
+};
+
 export const initialUserState = Map({
   authenticationState: defaultAuthenticationState,
+  passwordResetRequest: defaultPasswordResetRequestValues,
+  resetPassword: defaultResetPasswordValues,
   groups: new List([]),
 });
 
@@ -90,6 +110,26 @@ export default (state = initialUserState, action) => {
         .setIn(['registration', 'error'], error || false)
         .setIn(['registration', 'loading'], action.type === REGISTER_USER);
     }
+    case SET_REQUEST_USER_PASSWORD_RESET_SENDING:
+      return state.setIn(['passwordResetRequest', 'isSending'], true);
+    case SET_REQUEST_USER_PASSWORD_RESET_SUCCESS:
+      return state
+        .setIn(['passwordResetRequest', 'isSending'], false)
+        .setIn(['passwordResetRequest', 'sent'], true);
+    case SET_REQUEST_USER_PASSWORD_RESET_ERROR:
+      return state
+        .setIn(['passwordResetRequest', 'isSending'], false)
+        .setIn(['passwordResetRequest', 'error'], action.error);
+    case SET_RESET_USER_PASSWORD_SENDING:
+      return state.setIn(['resetPassword', 'isSending'], true);
+    case SET_RESET_USER_PASSWORD_SUCCESS:
+      return state
+        .setIn(['resetPassword', 'isSending'], false)
+        .setIn(['resetPassword', 'sent'], true);
+    case SET_RESET_USER_PASSWORD_ERROR:
+      return state
+        .setIn(['resetPassword', 'isSending'], false)
+        .setIn(['resetPassword', 'error'], action.error);
     default:
       return state;
   }

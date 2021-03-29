@@ -32,13 +32,15 @@ REVERSE_PROXY_PATHS.forEach(path => {
 });
 
 const registrationProxy = {
-  target: 'http://register.contensis.zenhub.contensis.cloud',
+  target: 'http://dev-register.ordnancesurvey-dev.contensis.cloud',
   changeOrigin: true,
 };
 
 const DEVSERVER_PROXIES = {
   ...apiProxies,
   ...reverseProxies,
+  ...{ '/account/reset': registrationProxy },
+  ...{ '/account/reset/password': registrationProxy },
   ...{ '/account/register': registrationProxy },
   ...{ '/account/verify': registrationProxy },
   ...{ '/ping': registrationProxy },
