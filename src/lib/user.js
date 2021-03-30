@@ -2,8 +2,18 @@
 export { LoginHelper } from '~/features/login/util/LoginHelper.class';
 
 // Containers
-export { default as LoginContainer } from '~/features/login/containers/Login.container';
-export { default as RegistrationContainer } from '~/features/login/containers/Registration.container';
+export {
+  default as LoginContainer,
+} from '~/features/login/containers/Login.container';
+export {
+  default as RegistrationContainer,
+} from '~/features/login/containers/Registration.container';
+export {
+  default as ForgotPasswordContainer,
+} from '~/features/login/containers/ForgotPassword.container';
+export {
+  default as ResetPasswordContainer,
+} from '~/features/login/containers/ResetPassword.container';
 
 // HOCs
 export { default as withLogin } from '~/features/login/containers/withLogin';
