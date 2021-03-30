@@ -14,6 +14,9 @@ export {
 export {
   default as ResetPasswordContainer,
 } from '~/features/login/containers/ResetPassword.container';
+export {
+  default as UserContainer,
+} from '~/features/login/containers/User.container';
 
 // HOCs
 export { default as withLogin } from '~/features/login/containers/withLogin';
