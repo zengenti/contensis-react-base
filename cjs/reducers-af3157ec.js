@@ -16,6 +16,14 @@ const LOGOUT_USER = `${ACTION_PREFIX}LOGOUT_USER`;
 const REGISTER_USER = `${ACTION_PREFIX}REGISTER_USER`;
 const REGISTER_USER_SUCCESS = `${ACTION_PREFIX}REGISTER_USER_SUCCESS`;
 const REGISTER_USER_FAILED = `${ACTION_PREFIX}REGISTER_USER_FAILED`;
+const REQUEST_USER_PASSWORD_RESET = `${ACTION_PREFIX}REQUEST_USER_PASSWORD_RESET`;
+const RESET_USER_PASSWORD = `${ACTION_PREFIX}RESET_USER_PASSWORD`;
+const SET_REQUEST_USER_PASSWORD_RESET_SENDING = `${ACTION_PREFIX}SET_REQUEST_USER_PASSWORD_RESET_SENDING`;
+const SET_REQUEST_USER_PASSWORD_RESET_SUCCESS = `${ACTION_PREFIX}SET_REQUEST_USER_PASSWORD_RESET_SUCCESS`;
+const SET_REQUEST_USER_PASSWORD_RESET_ERROR = `${ACTION_PREFIX}SET_REQUEST_USER_PASSWORD_RESET_ERROR`;
+const SET_RESET_USER_PASSWORD_SENDING = `${ACTION_PREFIX}SET_RESET_USER_PASSWORD_SENDING`;
+const SET_RESET_USER_PASSWORD_SUCCESS = `${ACTION_PREFIX}SET_RESET_USER_PASSWORD_SUCCESS`;
+const SET_RESET_USER_PASSWORD_ERROR = `${ACTION_PREFIX}SET_RESET_USER_PASSWORD_ERROR`;
 
 var types = /*#__PURE__*/Object.freeze({
   __proto__: null,
@@ -27,7 +35,15 @@ var types = /*#__PURE__*/Object.freeze({
   LOGOUT_USER: LOGOUT_USER,
   REGISTER_USER: REGISTER_USER,
   REGISTER_USER_SUCCESS: REGISTER_USER_SUCCESS,
-  REGISTER_USER_FAILED: REGISTER_USER_FAILED
+  REGISTER_USER_FAILED: REGISTER_USER_FAILED,
+  REQUEST_USER_PASSWORD_RESET: REQUEST_USER_PASSWORD_RESET,
+  RESET_USER_PASSWORD: RESET_USER_PASSWORD,
+  SET_REQUEST_USER_PASSWORD_RESET_SENDING: SET_REQUEST_USER_PASSWORD_RESET_SENDING,
+  SET_REQUEST_USER_PASSWORD_RESET_SUCCESS: SET_REQUEST_USER_PASSWORD_RESET_SUCCESS,
+  SET_REQUEST_USER_PASSWORD_RESET_ERROR: SET_REQUEST_USER_PASSWORD_RESET_ERROR,
+  SET_RESET_USER_PASSWORD_SENDING: SET_RESET_USER_PASSWORD_SENDING,
+  SET_RESET_USER_PASSWORD_SUCCESS: SET_RESET_USER_PASSWORD_SUCCESS,
+  SET_RESET_USER_PASSWORD_ERROR: SET_RESET_USER_PASSWORD_ERROR
 });
 
 const defaultAuthenticationState = immutable.Map({
@@ -37,8 +53,20 @@ const defaultAuthenticationState = immutable.Map({
   error: false,
   loading: false
 });
+const defaultPasswordResetRequestValues = {
+  isSending: false,
+  sent: false,
+  error: null
+};
+const defaultResetPasswordValues = {
+  isSending: false,
+  sent: false,
+  error: null
+};
 const initialUserState = immutable.Map({
   authenticationState: defaultAuthenticationState,
+  passwordResetRequest: defaultPasswordResetRequestValues,
+  resetPassword: defaultResetPasswordValues,
   groups: new immutable.List([])
 });
 var UserReducer = ((state = initialUserState, action) => {
@@ -101,6 +129,24 @@ var UserReducer = ((state = initialUserState, action) => {
         return nextState.setIn(['registration', 'success'], action.type === REGISTER_USER_SUCCESS).setIn(['registration', 'error'], error || false).setIn(['registration', 'loading'], action.type === REGISTER_USER);
       }
 
+    case SET_REQUEST_USER_PASSWORD_RESET_SENDING:
+      return state.setIn(['passwordResetRequest', 'isSending'], true);
+
+    case SET_REQUEST_USER_PASSWORD_RESET_SUCCESS:
+      return state.setIn(['passwordResetRequest', 'isSending'], false).setIn(['passwordResetRequest', 'sent'], true);
+
+    case SET_REQUEST_USER_PASSWORD_RESET_ERROR:
+      return state.setIn(['passwordResetRequest', 'isSending'], false).setIn(['passwordResetRequest', 'error'], action.error);
+
+    case SET_RESET_USER_PASSWORD_SENDING:
+      return state.setIn(['resetPassword', 'isSending'], true);
+
+    case SET_RESET_USER_PASSWORD_SUCCESS:
+      return state.setIn(['resetPassword', 'isSending'], false).setIn(['resetPassword', 'sent'], true);
+
+    case SET_RESET_USER_PASSWORD_ERROR:
+      return state.setIn(['resetPassword', 'isSending'], false).setIn(['resetPassword', 'error'], action.error);
+
     default:
       return state;
   }
@@ -111,10 +157,18 @@ exports.LOGOUT_USER = LOGOUT_USER;
 exports.REGISTER_USER = REGISTER_USER;
 exports.REGISTER_USER_FAILED = REGISTER_USER_FAILED;
 exports.REGISTER_USER_SUCCESS = REGISTER_USER_SUCCESS;
+exports.REQUEST_USER_PASSWORD_RESET = REQUEST_USER_PASSWORD_RESET;
+exports.RESET_USER_PASSWORD = RESET_USER_PASSWORD;
 exports.SET_AUTHENTICATION_STATE = SET_AUTHENTICATION_STATE;
+exports.SET_REQUEST_USER_PASSWORD_RESET_ERROR = SET_REQUEST_USER_PASSWORD_RESET_ERROR;
+exports.SET_REQUEST_USER_PASSWORD_RESET_SENDING = SET_REQUEST_USER_PASSWORD_RESET_SENDING;
+exports.SET_REQUEST_USER_PASSWORD_RESET_SUCCESS = SET_REQUEST_USER_PASSWORD_RESET_SUCCESS;
+exports.SET_RESET_USER_PASSWORD_ERROR = SET_RESET_USER_PASSWORD_ERROR;
+exports.SET_RESET_USER_PASSWORD_SENDING = SET_RESET_USER_PASSWORD_SENDING;
+exports.SET_RESET_USER_PASSWORD_SUCCESS = SET_RESET_USER_PASSWORD_SUCCESS;
 exports.UserReducer = UserReducer;
 exports.VALIDATE_USER = VALIDATE_USER;
 exports.fromJSOrdered = fromJSOrdered;
 exports.initialUserState = initialUserState;
 exports.types = types;
-//# sourceMappingURL=reducers-a05c32a6.js.map
+//# sourceMappingURL=reducers-af3157ec.js.map

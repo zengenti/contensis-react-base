@@ -47,6 +47,24 @@ const selectUserRegistration = state => state.getIn(['user', 'registration'], im
 const selectUserRegistrationError = state => state.getIn(['user', 'registration', 'error'], false);
 const selectUserRegistrationIsLoading = state => state.getIn(['user', 'registration', 'loading'], false);
 const selectUserRegistrationIsSuccess = state => state.getIn(['user', 'registration', 'success'], false);
+const selectPasswordResetRequestSending = state => {
+  return state.getIn(['user', 'passwordResetRequest', 'isSending']);
+};
+const selectPasswordResetRequestSent = state => {
+  return state.getIn(['user', 'passwordResetRequest', 'sent']);
+};
+const selectPasswordResetRequestError = state => {
+  return state.getIn(['user', 'passwordResetRequest', 'error']);
+};
+const selectResetPasswordSending = state => {
+  return state.getIn(['user', 'resetPassword', 'isSending']);
+};
+const selectResetPasswordSent = state => {
+  return state.getIn(['user', 'resetPassword', 'sent']);
+};
+const selectResetPasswordError = state => {
+  return state.getIn(['user', 'resetPassword', 'error']);
+};
 
 var selectors = /*#__PURE__*/Object.freeze({
   __proto__: null,
@@ -65,7 +83,13 @@ var selectors = /*#__PURE__*/Object.freeze({
   selectUserRegistration: selectUserRegistration,
   selectUserRegistrationError: selectUserRegistrationError,
   selectUserRegistrationIsLoading: selectUserRegistrationIsLoading,
-  selectUserRegistrationIsSuccess: selectUserRegistrationIsSuccess
+  selectUserRegistrationIsSuccess: selectUserRegistrationIsSuccess,
+  selectPasswordResetRequestSending: selectPasswordResetRequestSending,
+  selectPasswordResetRequestSent: selectPasswordResetRequestSent,
+  selectPasswordResetRequestError: selectPasswordResetRequestError,
+  selectResetPasswordSending: selectResetPasswordSending,
+  selectResetPasswordSent: selectResetPasswordSent,
+  selectResetPasswordError: selectResetPasswordError
 });
 
 const matchUserGroup = (userGroups = [], requiredGroups = []) => {
@@ -96,6 +120,12 @@ const toJS = WrappedComponent => wrappedComponentProps => {
 
 exports.matchUserGroup = matchUserGroup;
 exports.selectClientCredentials = selectClientCredentials;
+exports.selectPasswordResetRequestError = selectPasswordResetRequestError;
+exports.selectPasswordResetRequestSending = selectPasswordResetRequestSending;
+exports.selectPasswordResetRequestSent = selectPasswordResetRequestSent;
+exports.selectResetPasswordError = selectResetPasswordError;
+exports.selectResetPasswordSending = selectResetPasswordSending;
+exports.selectResetPasswordSent = selectResetPasswordSent;
 exports.selectUser = selectUser;
 exports.selectUserAuthenticationError = selectUserAuthenticationError;
 exports.selectUserError = selectUserError;
@@ -108,4 +138,4 @@ exports.selectUserRegistrationIsLoading = selectUserRegistrationIsLoading;
 exports.selectUserRegistrationIsSuccess = selectUserRegistrationIsSuccess;
 exports.selectors = selectors;
 exports.toJS = toJS;
-//# sourceMappingURL=ToJs-8f6b21c9.js.map
+//# sourceMappingURL=ToJs-6487bd5c.js.map
