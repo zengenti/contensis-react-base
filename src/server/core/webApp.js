@@ -291,7 +291,6 @@ const webApp = (app, ReactApp, config) => {
       if (response.statusCode === 404) {
         response.setHeader('Surrogate-Control', 'max-age=300');
       }
-      response.status(status);
       responseHandler(request, response, responseHtmlDynamic);
     }
 
@@ -340,7 +339,6 @@ const webApp = (app, ReactApp, config) => {
                 allowedGroups,
                 globalGroups,
               });
-              // response.status(status);
               responseHandler(request, response, serialisedReduxData, 'json');
               return true;
             }
@@ -413,7 +411,6 @@ const webApp = (app, ReactApp, config) => {
                 `<html ${htmlAttributes}>`
               );
             }
-            // response.status(status);
             responseHandler(request, response, responseHTML);
           } catch (err) {
             console.info(err.message);

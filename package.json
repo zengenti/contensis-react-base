@@ -17,7 +17,7 @@
     "dev:server": "cross-env NODE_ENV=test NODE_OPTIONS=--max-http-header-size=80000 babel-node --inspect=9229 src/server/debug.js",
     "debug:server": "nodemon --exec cross-env NODE_ENV=test NODE_OPTIONS=--max-http-header-size=80000 babel-node --inspect=9229 src/server/debug.js",
     "build:server": "npm run build && npm run server",
-    "build:lib": "npm run roll:lib",
+    "build:lib": "npm i zengenti-search-package && npm run roll:lib",
     "roll:lib": "rimraf ./esm && rimraf ./cjs && cross-env NODE_ENV=production rollup -c rollup/rollup.config.lib.js",
     "changelog": "generate-changelog --tag v2.1.0..v2.1.1",
     "postinstall": "patch-package",
@@ -105,7 +105,7 @@
     "webpack-modules": "^1.0.0",
     "webpack-node-externals": "1.7.2",
     "zengenti-buildstartup-package": "0.0.13",
-    "zengenti-search-package": "git+https://gitlab+deploy-token-5:XKRGRE1p2PrFAxnWwLNz@gitlab.zengenti.com/zengenti-packages/search.git#develop"
+    "zengenti-search-package": "git+https://gitlab+deploy-token-5:XKRGRE1p2PrFAxnWwLNz@gitlab.zengenti.com/zengenti-packages/search.git"
   },
   "dependencies": {
     "@hot-loader/react-dom": "16.11.0",

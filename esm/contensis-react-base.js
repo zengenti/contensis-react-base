@@ -355,7 +355,6 @@ const webApp = (app, ReactApp, config) => {
         response.setHeader('Surrogate-Control', 'max-age=300');
       }
 
-      response.status(status);
       responseHandler(request, response, responseHtmlDynamic);
     } // Render the JSX server side and send response as per access method options
 
@@ -396,8 +395,7 @@ const webApp = (app, ReactApp, config) => {
             addStandardHeaders(reduxState, response, packagejson, {
               allowedGroups,
               globalGroups
-            }); // response.status(status);
-
+            });
             responseHandler(request, response, serialisedReduxData, 'json');
             return true;
           }
@@ -452,8 +450,7 @@ const webApp = (app, ReactApp, config) => {
           // e.g. (lang, dir etc.)
           if (htmlAttributes) {
             responseHTML = responseHTML.replace(/<html?.+?>/, `<html ${htmlAttributes}>`);
-          } // response.status(status);
-
+          }
 
           responseHandler(request, response, responseHTML);
         } catch (err) {
