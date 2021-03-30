@@ -8,8 +8,13 @@ require('redux');
 require('redux-immutable');
 require('redux-thunk');
 require('redux-saga');
+<<<<<<< HEAD
 var navigation$2 = require('./navigation-9bc89fbc.js');
 require('./reducers-a05c32a6.js');
+=======
+var version$1 = require('./version-7b8b4afe.js');
+require('./reducers-af3157ec.js');
+>>>>>>> 10419d5... commit bundles
 require('query-string');
 var routing$2 = require('./routing-5db2c867.js');
 var version$1 = require('./version-2f3078fa.js');

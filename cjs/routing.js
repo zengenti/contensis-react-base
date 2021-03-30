@@ -8,12 +8,20 @@ require('react-redux');
 require('immutable');
 var routing = require('./routing-a4d7b382.js');
 require('query-string');
+<<<<<<< HEAD
 var routing$1 = require('./routing-5db2c867.js');
 require('./ToJs-128064bc.js');
 require('react-router-config');
 require('react-hot-loader');
 require('prop-types');
 var RouteLoader = require('./RouteLoader-80d06f1b.js');
+=======
+require('./ToJs-6487bd5c.js');
+require('react-router-config');
+require('react-hot-loader');
+require('prop-types');
+var RouteLoader = require('./RouteLoader-3ba11863.js');
+>>>>>>> 10419d5... commit bundles
 
 
 

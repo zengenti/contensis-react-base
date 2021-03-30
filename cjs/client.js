@@ -9,29 +9,47 @@ var reactRouterDom = require('react-router-dom');
 var reactRedux = require('react-redux');
 require('immutable');
 require('history');
+<<<<<<< HEAD
 var App = require('./App-b27daf19.js');
+=======
+var App = require('./App-0e26d95e.js');
+>>>>>>> 10419d5... commit bundles
 require('contensis-delivery-api');
 var routing = require('./routing-a4d7b382.js');
 require('redux');
 require('redux-immutable');
 require('redux-thunk');
 require('redux-saga');
+<<<<<<< HEAD
 var navigation = require('./navigation-9bc89fbc.js');
 var reducers = require('./reducers-a05c32a6.js');
+=======
+var version = require('./version-7b8b4afe.js');
+var reducers = require('./reducers-af3157ec.js');
+>>>>>>> 10419d5... commit bundles
 var queryString = require('query-string');
 require('./routing-5db2c867.js');
 require('@redux-saga/core/effects');
 require('./version-2f3078fa.js');
 require('loglevel');
+<<<<<<< HEAD
 require('./ToJs-128064bc.js');
 require('./login-0ce07250.js');
+=======
+require('./ToJs-6487bd5c.js');
+require('./login-34553267.js');
+>>>>>>> 10419d5... commit bundles
 require('jsonpath-mapper');
 require('await-to-js');
 require('js-cookie');
 require('react-router-config');
 var reactHotLoader = require('react-hot-loader');
 require('prop-types');
+<<<<<<< HEAD
 require('./RouteLoader-80d06f1b.js');
+=======
+require('./RouteLoader-3ba11863.js');
+>>>>>>> 10419d5... commit bundles
 var reactDom = require('react-dom');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
