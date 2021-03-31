@@ -16,28 +16,28 @@ import serialize from 'serialize-javascript';
 import minifyCssString from 'minify-css-string';
 import { fromJS } from 'immutable';
 import 'history';
-import { h as history, d as deliveryApi, p as pickProject, r as rootSaga } from './App-31ac766e.js';
-export { A as ReactApp } from './App-31ac766e.js';
+import { h as history, d as deliveryApi, p as pickProject, r as rootSaga } from './App-c18312c9.js';
+export { A as ReactApp } from './App-c18312c9.js';
 import 'contensis-delivery-api';
-import { s as setCurrentProject, a as selectRouteEntry, b as selectCurrentProject } from './routing-7eff80b5.js';
+import { s as setCurrentProject, a as selectRouteEntry, b as selectCurrentProject } from './routing-2c78fa4d.js';
 import 'redux';
 import 'redux-immutable';
 import 'redux-thunk';
 import 'redux-saga';
-import { c as createStore, s as setVersionStatus, a as setVersion } from './version-66d27412.js';
+import { c as createStore, s as setVersionStatus, a as setVersion } from './version-d4762a9f.js';
 import './reducers-ed7581c0.js';
 import 'query-string';
 import '@redux-saga/core/effects';
 import 'loglevel';
 import './ToJs-1c73b10a.js';
-import './login-0f8fa65b.js';
+import './login-ef44e6ed.js';
 import mapJson from 'jsonpath-mapper';
 import 'await-to-js';
 import 'js-cookie';
 import { matchRoutes } from 'react-router-config';
 import 'react-hot-loader';
 import 'prop-types';
-import './RouteLoader-0d9ab8ed.js';
+import './RouteLoader-4f6f9b4b.js';
 
 const servers = SERVERS;
 /* global SERVERS */
@@ -98,6 +98,19 @@ const deliveryApiProxy = (apiProxy, app) => {
   });
 };
 
+const CacheDuration = {
+  200: '3600',
+  404: '5',
+  static: '31536000',
+  // Believe it or not these two max ages are the same in runtime
+  expressStatic: '31557600h' // Believe it or not these two max ages are the same in runtime
+
+};
+const getCacheDuration = (status = 200) => {
+  if (status > 400) return CacheDuration[404];
+  return CacheDuration[200];
+};
+
 const replaceStaticPath = (string, staticFolderPath = 'static') => string.replace(/static\//g, `${staticFolderPath}/`);
 
 const bundleManipulationMiddleware = (staticRoutePath, {
@@ -132,9 +145,13 @@ const staticAssets = (app, {
   staticFolderPath = 'static'
 }) => {
   app.use([`/${staticRoutePath}`, ...staticRoutePaths.map(p => `/${p}`), `/${staticFolderPath}`], bundleManipulationMiddleware(staticRoutePath, {
-    maxage: '31557600'
+    // these maxage values are different in config but the same in runtime,
+    // this one is the true value in seconds
+    maxage: CacheDuration.static
   }), express.static(`dist/${staticFolderPath}`, {
-    maxage: '31557600'
+    // these maxage values are different in config but the same in runtime,
+    // this one is somehow converted and should end up being the same as CacheDuration.static
+    maxage: CacheDuration.expressStatic
   }));
 };
 
@@ -175,12 +192,7 @@ const addStandardHeaders = (state, response, packagejson, groups) => {
       const surrogateKeyHeader = ` ${packagejson.name}-app ${routingSurrogateKeys}`;
       response.header('surrogate-key', surrogateKeyHeader);
       addVarnishAuthenticationHeaders(state, response, groups);
-
-      if (response.statusCode === 404) {
-        response.setHeader('Surrogate-Control', 'max-age=300');
-      } else {
-        response.setHeader('Surrogate-Control', 'max-age=3600');
-      }
+      response.setHeader('Surrogate-Control', `max-age=${getCacheDuration(response.statusCode)}`);
     } catch (e) {
       console.info('Error Adding headers', e.message);
     }
@@ -348,13 +360,10 @@ const webApp = (app, ReactApp, config) => {
       const loadableBundles = getBundles(stats, modules);
       const bundleTags = buildBundleTags(loadableBundles).join('');
       const isDynamicHint = `<script>window.isDynamic = true;</script>`;
-      const responseHtmlDynamic = templateHTML.replace('{{TITLE}}', '').replace('{{SEO_CRITICAL_METADATA}}', '').replace('{{CRITICAL_CSS}}', '').replace('{{APP}}', '').replace('{{LOADABLE_CHUNKS}}', bundleTags).replace('{{REDUX_DATA}}', isDynamicHint);
-      response.setHeader('Surrogate-Control', 'max-age=3600');
+      const responseHtmlDynamic = templateHTML.replace('{{TITLE}}', '').replace('{{SEO_CRITICAL_METADATA}}', '').replace('{{CRITICAL_CSS}}', '').replace('{{APP}}', '').replace('{{LOADABLE_CHUNKS}}', bundleTags).replace('{{REDUX_DATA}}', isDynamicHint); // Dynamic pages always return a 200 so we can run
+      // the app and serve up all errors inside the client
 
-      if (response.statusCode === 404) {
-        response.setHeader('Surrogate-Control', 'max-age=300');
-      }
-
+      response.setHeader('Surrogate-Control', `max-age=${getCacheDuration(200)}`);
       responseHandler(request, response, responseHtmlDynamic);
     } // Render the JSX server side and send response as per access method options
 
@@ -368,11 +377,6 @@ const webApp = (app, ReactApp, config) => {
         const htmlAttributes = helmet.htmlAttributes.toString();
         let title = helmet.title.toString();
         const metadata = helmet.meta.toString();
-
-        if (context.status === 404) {
-          response.status(404);
-          title = '<title>404 page not found</title>';
-        }
 
         if (context.url) {
           return response.redirect(302, context.url);
@@ -408,19 +412,15 @@ const webApp = (app, ReactApp, config) => {
           }
         }
 
-        if (context.status === 404) {
+        if (context.status > 400) {
           accessMethod.STATIC = true;
         } // Responses
 
 
-        let responseHTML = ''; // Static page served as a fragment
+        let responseHTML = '';
+        if (context.status === 404) title = '<title>404 page not found</title>'; // Static page served as a fragment
 
         if (accessMethod.FRAGMENT && accessMethod.STATIC) {
-          // Gets called again later....
-          // addStandardHeaders(reduxState, response, packagejson, {
-          //   allowedGroups,
-          //   globalGroups,
-          // });
           responseHTML = minifyCssString(styleTags) + html;
         } // Page fragment served with client scripts and redux data that hydrate the app client side
 
@@ -437,8 +437,10 @@ const webApp = (app, ReactApp, config) => {
 
         if (!accessMethod.FRAGMENT && !accessMethod.STATIC) {
           responseHTML = templateHTML.replace('{{TITLE}}', title).replace('{{SEO_CRITICAL_METADATA}}', metadata).replace('{{CRITICAL_CSS}}', styleTags).replace('{{APP}}', html).replace('{{LOADABLE_CHUNKS}}', bundleTags).replace('{{REDUX_DATA}}', serialisedReduxData);
-        }
+        } // Set response.status from React StaticRouter
 
+
+        if (typeof context.status === 'number') response.status(context.status);
         addStandardHeaders(reduxState, response, packagejson, {
           allowedGroups,
           globalGroups

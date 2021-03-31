@@ -3,7 +3,7 @@
 var React = require('react');
 var reactRouterDom = require('react-router-dom');
 var reactRedux = require('react-redux');
-var routing = require('./routing-6197a03e.js');
+var routing = require('./routing-923fc797.js');
 var ToJs = require('./ToJs-8f6b21c9.js');
 var reactRouterConfig = require('react-router-config');
 var reactHotLoader = require('react-hot-loader');
@@ -14,7 +14,22 @@ function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'defau
 var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
 var PropTypes__default = /*#__PURE__*/_interopDefaultLegacy(PropTypes);
 
-const NotFound = () => React__default['default'].createElement(React__default['default'].Fragment, null, React__default['default'].createElement("header", null, React__default['default'].createElement("h1", null, "404 Page Not Found")));
+const NotFound = ({
+  statusCode,
+  statusText
+}) => React__default['default'].createElement(React__default['default'].Fragment, null, React__default['default'].createElement("header", null, React__default['default'].createElement("h1", null, statusCode || '404', " Page Not Found"), statusText && React__default['default'].createElement("h2", {
+  style: {
+    background: '#eee',
+    color: '#666',
+    fontSize: '100%',
+    padding: '10px'
+  }
+}, statusText)));
+
+NotFound.propTypes = {
+  statusCode: PropTypes__default['default'].number,
+  statusText: PropTypes__default['default'].string
+};
 
 const Status = ({
   code,
@@ -47,18 +62,21 @@ const getTrimmedPath = path => {
 };
 
 const RouteLoader = ({
-  statePath,
-  projectId,
   contentTypeId,
   entry,
+  isError,
   isLoading,
   isLoggedIn,
   isNotFound,
   loadingComponent,
   mappedEntry,
   notFoundComponent,
+  projectId,
   routes,
   setNavigationPath,
+  statePath,
+  statusCode,
+  statusText,
   userGroups,
   withEvents
 }) => {
@@ -128,10 +146,13 @@ const RouteLoader = ({
 
   const NotFoundComponent = notFoundComponent ? notFoundComponent : NotFound;
 
-  if (isNotFound) {
+  if (isNotFound || isError) {
     return React__default['default'].createElement(Status, {
-      code: 404
-    }, React__default['default'].createElement(NotFoundComponent, null));
+      code: statusCode
+    }, React__default['default'].createElement(NotFoundComponent, {
+      statusCode: statusCode,
+      statusText: statusText
+    }));
   }
 
   return null;
@@ -140,6 +161,7 @@ const RouteLoader = ({
 RouteLoader.propTypes = {
   contentTypeId: PropTypes__default['default'].string,
   entry: PropTypes__default['default'].object,
+  isError: PropTypes__default['default'].bool,
   isLoading: PropTypes__default['default'].bool,
   isLoggedIn: PropTypes__default['default'].bool,
   isNotFound: PropTypes__default['default'].bool,
@@ -150,6 +172,8 @@ RouteLoader.propTypes = {
   routes: PropTypes__default['default'].objectOf(PropTypes__default['default'].array, PropTypes__default['default'].array),
   setNavigationPath: PropTypes__default['default'].func,
   statePath: PropTypes__default['default'].string,
+  statusCode: PropTypes__default['default'].number,
+  statusText: PropTypes__default['default'].string,
   userGroups: PropTypes__default['default'].array,
   withEvents: PropTypes__default['default'].object
 };
@@ -158,12 +182,15 @@ const mapStateToProps = state => {
   return {
     contentTypeId: routing.selectRouteEntryContentTypeId(state),
     entry: routing.selectRouteEntry(state),
+    isError: routing.selectRouteIsError(state),
     isNotFound: routing.selectIsNotFound(state),
     isLoading: routing.selectRouteLoading(state),
     isLoggedIn: ToJs.selectUserIsAuthenticated(state),
     mappedEntry: routing.selectMappedEntry(state),
     projectId: routing.selectCurrentProject(state),
     statePath: routing.selectCurrentPath(state),
+    statusCode: routing.selectRouteStatusCode(state),
+    statusText: routing.selectRouteErrorMessage(state),
     userGroups: ToJs.selectUserGroups(state)
   };
 };
@@ -174,4 +201,4 @@ const mapDispatchToProps = {
 var RouteLoader$1 = reactHotLoader.hot(module)(reactRedux.connect(mapStateToProps, mapDispatchToProps)(ToJs.toJS(RouteLoader)));
 
 exports.RouteLoader = RouteLoader$1;
-//# sourceMappingURL=RouteLoader-72de4da1.js.map
+//# sourceMappingURL=RouteLoader-784528d1.js.map

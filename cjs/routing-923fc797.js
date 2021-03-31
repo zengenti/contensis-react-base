@@ -144,8 +144,21 @@ const selectCurrentNode = state => {
 const selectBreadcrumb = state => {
   return (selectCurrentAncestors(state) || immutable.List()).push(selectCurrentNode(state));
 };
+const selectRouteErrorMessage = state => {
+  const error = state.getIn(['routing', 'error']);
+
+  if (error && 'toJS' in error) {
+    return error.getIn(['data', 'message']) || error.get('statusText');
+  }
+};
+const selectRouteIsError = state => {
+  return state.getIn(['routing', 'isError']);
+};
 const selectRouteLoading = state => {
   return state.getIn(['routing', 'isLoading']);
+};
+const selectRouteStatusCode = state => {
+  return state.getIn(['routing', 'statusCode']);
 };
 
 var routing$2 = /*#__PURE__*/Object.freeze({
@@ -168,7 +181,10 @@ var routing$2 = /*#__PURE__*/Object.freeze({
   selectCurrentAncestors: selectCurrentAncestors,
   selectCurrentNode: selectCurrentNode,
   selectBreadcrumb: selectBreadcrumb,
-  selectRouteLoading: selectRouteLoading
+  selectRouteErrorMessage: selectRouteErrorMessage,
+  selectRouteIsError: selectRouteIsError,
+  selectRouteLoading: selectRouteLoading,
+  selectRouteStatusCode: selectRouteStatusCode
 });
 
 exports.CALL_HISTORY_METHOD = CALL_HISTORY_METHOD;
@@ -197,9 +213,12 @@ exports.selectRouteEntry = selectRouteEntry;
 exports.selectRouteEntryContentTypeId = selectRouteEntryContentTypeId;
 exports.selectRouteEntryEntryId = selectRouteEntryEntryId;
 exports.selectRouteEntryLanguage = selectRouteEntryLanguage;
+exports.selectRouteErrorMessage = selectRouteErrorMessage;
+exports.selectRouteIsError = selectRouteIsError;
 exports.selectRouteLoading = selectRouteLoading;
+exports.selectRouteStatusCode = selectRouteStatusCode;
 exports.setCurrentProject = setCurrentProject;
 exports.setNavigationPath = setNavigationPath;
 exports.setRoute = setRoute;
 exports.setSurrogateKeys = setSurrogateKeys;
-//# sourceMappingURL=routing-6197a03e.js.map
+//# sourceMappingURL=routing-923fc797.js.map

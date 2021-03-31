@@ -1,13 +1,28 @@
 import React, { useCallback, useEffect } from 'react';
 import { Route, useLocation, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { p as selectRouteEntryContentTypeId, a as selectRouteEntry, r as selectIsNotFound, t as selectRouteLoading, j as selectMappedEntry, b as selectCurrentProject, u as selectCurrentPath, v as setNavigationPath } from './routing-7eff80b5.js';
+import { p as selectRouteEntryContentTypeId, a as selectRouteEntry, r as selectRouteIsError, t as selectIsNotFound, u as selectRouteLoading, j as selectMappedEntry, b as selectCurrentProject, v as selectCurrentPath, w as selectRouteStatusCode, x as selectRouteErrorMessage, y as setNavigationPath } from './routing-2c78fa4d.js';
 import { t as toJS, s as selectUserIsAuthenticated, a as selectUserGroups, m as matchUserGroup } from './ToJs-1c73b10a.js';
 import { matchRoutes, renderRoutes } from 'react-router-config';
 import { hot } from 'react-hot-loader';
 import PropTypes from 'prop-types';
 
-const NotFound = () => React.createElement(React.Fragment, null, React.createElement("header", null, React.createElement("h1", null, "404 Page Not Found")));
+const NotFound = ({
+  statusCode,
+  statusText
+}) => React.createElement(React.Fragment, null, React.createElement("header", null, React.createElement("h1", null, statusCode || '404', " Page Not Found"), statusText && React.createElement("h2", {
+  style: {
+    background: '#eee',
+    color: '#666',
+    fontSize: '100%',
+    padding: '10px'
+  }
+}, statusText)));
+
+NotFound.propTypes = {
+  statusCode: PropTypes.number,
+  statusText: PropTypes.string
+};
 
 const Status = ({
   code,
@@ -40,18 +55,21 @@ const getTrimmedPath = path => {
 };
 
 const RouteLoader = ({
-  statePath,
-  projectId,
   contentTypeId,
   entry,
+  isError,
   isLoading,
   isLoggedIn,
   isNotFound,
   loadingComponent,
   mappedEntry,
   notFoundComponent,
+  projectId,
   routes,
   setNavigationPath,
+  statePath,
+  statusCode,
+  statusText,
   userGroups,
   withEvents
 }) => {
@@ -121,10 +139,13 @@ const RouteLoader = ({
 
   const NotFoundComponent = notFoundComponent ? notFoundComponent : NotFound;
 
-  if (isNotFound) {
+  if (isNotFound || isError) {
     return React.createElement(Status, {
-      code: 404
-    }, React.createElement(NotFoundComponent, null));
+      code: statusCode
+    }, React.createElement(NotFoundComponent, {
+      statusCode: statusCode,
+      statusText: statusText
+    }));
   }
 
   return null;
@@ -133,6 +154,7 @@ const RouteLoader = ({
 RouteLoader.propTypes = {
   contentTypeId: PropTypes.string,
   entry: PropTypes.object,
+  isError: PropTypes.bool,
   isLoading: PropTypes.bool,
   isLoggedIn: PropTypes.bool,
   isNotFound: PropTypes.bool,
@@ -143,6 +165,8 @@ RouteLoader.propTypes = {
   routes: PropTypes.objectOf(PropTypes.array, PropTypes.array),
   setNavigationPath: PropTypes.func,
   statePath: PropTypes.string,
+  statusCode: PropTypes.number,
+  statusText: PropTypes.string,
   userGroups: PropTypes.array,
   withEvents: PropTypes.object
 };
@@ -151,12 +175,15 @@ const mapStateToProps = state => {
   return {
     contentTypeId: selectRouteEntryContentTypeId(state),
     entry: selectRouteEntry(state),
+    isError: selectRouteIsError(state),
     isNotFound: selectIsNotFound(state),
     isLoading: selectRouteLoading(state),
     isLoggedIn: selectUserIsAuthenticated(state),
     mappedEntry: selectMappedEntry(state),
     projectId: selectCurrentProject(state),
     statePath: selectCurrentPath(state),
+    statusCode: selectRouteStatusCode(state),
+    statusText: selectRouteErrorMessage(state),
     userGroups: selectUserGroups(state)
   };
 };
@@ -167,4 +194,4 @@ const mapDispatchToProps = {
 var RouteLoader$1 = hot(module)(connect(mapStateToProps, mapDispatchToProps)(toJS(RouteLoader)));
 
 export { RouteLoader$1 as R };
-//# sourceMappingURL=RouteLoader-0d9ab8ed.js.map
+//# sourceMappingURL=RouteLoader-4f6f9b4b.js.map

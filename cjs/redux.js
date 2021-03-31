@@ -3,12 +3,12 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 require('immutable');
-var routing$1 = require('./routing-6197a03e.js');
+var routing$1 = require('./routing-923fc797.js');
 require('redux');
 require('redux-immutable');
 require('redux-thunk');
 require('redux-saga');
-var version$1 = require('./version-f369bb4b.js');
+var version$1 = require('./version-ded181d8.js');
 require('./reducers-a05c32a6.js');
 require('query-string');
 

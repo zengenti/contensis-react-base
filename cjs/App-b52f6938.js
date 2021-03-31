@@ -4,19 +4,19 @@ var React = require('react');
 var immutable = require('immutable');
 var history$1 = require('history');
 var contensisDeliveryApi = require('contensis-delivery-api');
-var routing = require('./routing-6197a03e.js');
+var routing = require('./routing-923fc797.js');
 require('redux');
 require('redux-immutable');
 require('redux-thunk');
 require('redux-saga');
-var version = require('./version-f369bb4b.js');
+var version = require('./version-ded181d8.js');
 var reducers = require('./reducers-a05c32a6.js');
 var effects = require('@redux-saga/core/effects');
 var log = require('loglevel');
-var login = require('./login-26261665.js');
+var login = require('./login-fc387ded.js');
 var awaitToJs = require('await-to-js');
 require('react-hot-loader');
-var RouteLoader = require('./RouteLoader-72de4da1.js');
+var RouteLoader = require('./RouteLoader-784528d1.js');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -655,7 +655,7 @@ function* getRouteSaga(action) {
     }
   } catch (e) {
     log.error(...['Error running route saga:', e, e.stack]);
-    yield effects.call(do404);
+    yield effects.call(do500, e);
   }
 }
 
@@ -720,6 +720,19 @@ function* do404() {
 //     window.location.reload();
 //   }
 // }
+
+
+function* do500(error) {
+  yield effects.put({
+    type: routing.SET_ENTRY,
+    id: null,
+    entry: null,
+    notFound: true,
+    isError: true,
+    error,
+    statusCode: error && error.status ? error.status : 500
+  });
+}
 
 const registerSagas = [effects.takeEvery(reducers.REGISTER_USER, registerSaga), effects.takeEvery(reducers.REGISTER_USER_SUCCESS, redirectSaga)];
 
@@ -816,4 +829,4 @@ exports.deliveryApi = deliveryApi;
 exports.history = history;
 exports.pickProject = pickProject;
 exports.rootSaga = rootSaga;
-//# sourceMappingURL=App-74c13bd6.js.map
+//# sourceMappingURL=App-b52f6938.js.map

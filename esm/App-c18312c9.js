@@ -2,19 +2,19 @@ import React from 'react';
 import { Map } from 'immutable';
 import { createBrowserHistory, createMemoryHistory } from 'history';
 import { Client, Op, Query } from 'contensis-delivery-api';
-import { c as setSurrogateKeys, b as selectCurrentProject, S as SET_NAVIGATION_PATH, d as SET_ROUTE, C as CALL_HISTORY_METHOD, a as selectRouteEntry, U as UPDATE_LOADING_STATE, e as selectCurrentNode, f as selectCurrentAncestors, g as findContentTypeMapping, h as selectRouteEntryEntryId, i as selectRouteEntryLanguage, j as selectMappedEntry, k as SET_ENTRY, l as SET_ANCESTORS, m as SET_SIBLINGS, q as queryParams, n as selectCurrentSearch, o as setRoute } from './routing-7eff80b5.js';
+import { c as setSurrogateKeys, b as selectCurrentProject, S as SET_NAVIGATION_PATH, d as SET_ROUTE, C as CALL_HISTORY_METHOD, a as selectRouteEntry, U as UPDATE_LOADING_STATE, e as selectCurrentNode, f as selectCurrentAncestors, g as findContentTypeMapping, h as selectRouteEntryEntryId, i as selectRouteEntryLanguage, j as selectMappedEntry, k as SET_ENTRY, l as SET_ANCESTORS, m as SET_SIBLINGS, q as queryParams, n as selectCurrentSearch, o as setRoute } from './routing-2c78fa4d.js';
 import 'redux';
 import 'redux-immutable';
 import 'redux-thunk';
 import 'redux-saga';
-import { r as reduxStore, G as GET_NODE_TREE, h as hasNavigationTree, b as selectVersionStatus, S as SET_NODE_TREE, d as GET_NODE_TREE_ERROR } from './version-66d27412.js';
+import { r as reduxStore, G as GET_NODE_TREE, h as hasNavigationTree, b as selectVersionStatus, S as SET_NODE_TREE, d as GET_NODE_TREE_ERROR } from './version-d4762a9f.js';
 import { R as REGISTER_USER, a as REGISTER_USER_SUCCESS, b as REGISTER_USER_FAILED } from './reducers-ed7581c0.js';
 import { takeEvery, select, put, call, all } from '@redux-saga/core/effects';
 import { info, error } from 'loglevel';
-import { h as handleRequiresLoginSaga, l as loginSagas } from './login-0f8fa65b.js';
+import { h as handleRequiresLoginSaga, l as loginSagas } from './login-ef44e6ed.js';
 import { to } from 'await-to-js';
 import 'react-hot-loader';
-import { R as RouteLoader } from './RouteLoader-0d9ab8ed.js';
+import { R as RouteLoader } from './RouteLoader-4f6f9b4b.js';
 
 const selectedHistory = typeof window !== 'undefined' ? createBrowserHistory : createMemoryHistory;
 const history = (options = {}) => selectedHistory(options);
@@ -649,7 +649,7 @@ function* getRouteSaga(action) {
     }
   } catch (e) {
     error(...['Error running route saga:', e, e.stack]);
-    yield call(do404);
+    yield call(do500, e);
   }
 }
 
@@ -714,6 +714,19 @@ function* do404() {
 //     window.location.reload();
 //   }
 // }
+
+
+function* do500(error) {
+  yield put({
+    type: SET_ENTRY,
+    id: null,
+    entry: null,
+    notFound: true,
+    isError: true,
+    error,
+    statusCode: error && error.status ? error.status : 500
+  });
+}
 
 const registerSagas = [takeEvery(REGISTER_USER, registerSaga), takeEvery(REGISTER_USER_SUCCESS, redirectSaga)];
 
@@ -805,4 +818,4 @@ const AppRoot = props => {
 };
 
 export { AppRoot as A, browserHistory as b, deliveryApi as d, history as h, pickProject as p, rootSaga as r };
-//# sourceMappingURL=App-31ac766e.js.map
+//# sourceMappingURL=App-c18312c9.js.map

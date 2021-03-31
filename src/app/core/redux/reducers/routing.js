@@ -13,19 +13,22 @@ import {
 let initialState = OrderedMap({
   contentTypeId: null,
   currentPath: '/',
-  currentNode: [],
+  currentNode: OrderedMap(),
   currentNodeAncestors: List(),
   currentProject: 'unknown',
   entryID: null,
   entry: null,
   currentTreeId: null,
   entryDepends: List(),
+  error: undefined,
+  isError: false,
   isLoading: false,
-  location: null,
-  mappedEntry: OrderedMap(),
+  location: OrderedMap(),
+  mappedEntry: null,
   nodeDepends: List(),
   notFound: false,
   staticRoute: null,
+  statusCode: 200,
 });
 
 export default (state = initialState, action) => {
@@ -39,11 +42,19 @@ export default (state = initialState, action) => {
     case SET_ENTRY: {
       const {
         entry,
+        error,
         mappedEntry,
         node = {},
+        isError = false,
         isLoading = false,
         notFound = false,
+        statusCode,
       } = action;
+
+      let defaultStatus = 200;
+      if (notFound === true && isError === false) defaultStatus = 404;
+      else if (isError === true) defaultStatus = statusCode || 500;
+
       let nextState;
 
       if (!entry) {
@@ -51,14 +62,22 @@ export default (state = initialState, action) => {
           .set('entryID', null)
           .set('entry', null)
           .set('mappedEntry', OrderedMap())
+          .set('entry', null)
+          .set('error', fromJS(error))
+          .set('mappedEntry', null)
+          .set('isError', isError)
           .set('isLoading', isLoading)
-          .set('notFound', notFound);
+          .set('notFound', notFound)
+          .set('statusCode', statusCode || defaultStatus);
       } else {
         nextState = state
           .set('entryID', action.id)
           .set('entry', fromJS(entry))
+          .set('error', fromJS(error))
+          .set('isError', isError)
           .set('isLoading', isLoading)
-          .set('notFound', notFound);
+          .set('notFound', notFound)
+          .set('statusCode', statusCode || defaultStatus);
 
         if (mappedEntry && Object.keys(mappedEntry).length > 0)
           nextState = nextState

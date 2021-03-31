@@ -12,7 +12,10 @@ import {
   selectMappedEntry,
   selectRouteEntry,
   selectRouteEntryContentTypeId,
+  selectRouteErrorMessage,
+  selectRouteIsError,
   selectRouteLoading,
+  selectRouteStatusCode,
 } from '~/core/redux/selectors/routing';
 import { setNavigationPath } from '~/core/redux/actions/routing';
 import NotFound from '~/pages/NotFound';
@@ -36,18 +39,21 @@ const getTrimmedPath = path => {
 };
 
 const RouteLoader = ({
-  statePath,
-  projectId,
   contentTypeId,
   entry,
+  isError,
   isLoading,
   isLoggedIn,
   isNotFound,
   loadingComponent,
   mappedEntry,
   notFoundComponent,
+  projectId,
   routes,
   setNavigationPath,
+  statePath,
+  statusCode,
+  statusText,
   userGroups,
   withEvents,
 }) => {
@@ -143,10 +149,10 @@ const RouteLoader = ({
   }
 
   const NotFoundComponent = notFoundComponent ? notFoundComponent : NotFound;
-  if (isNotFound) {
+  if (isNotFound || isError) {
     return (
-      <Status code={404}>
-        <NotFoundComponent />
+      <Status code={statusCode}>
+        <NotFoundComponent statusCode={statusCode} statusText={statusText} />
       </Status>
     );
   }
@@ -157,6 +163,7 @@ const RouteLoader = ({
 RouteLoader.propTypes = {
   contentTypeId: PropTypes.string,
   entry: PropTypes.object,
+  isError: PropTypes.bool,
   isLoading: PropTypes.bool,
   isLoggedIn: PropTypes.bool,
   isNotFound: PropTypes.bool,
@@ -167,6 +174,8 @@ RouteLoader.propTypes = {
   routes: PropTypes.objectOf(PropTypes.array, PropTypes.array),
   setNavigationPath: PropTypes.func,
   statePath: PropTypes.string,
+  statusCode: PropTypes.number,
+  statusText: PropTypes.string,
   userGroups: PropTypes.array,
   withEvents: PropTypes.object,
 };
@@ -175,12 +184,15 @@ const mapStateToProps = state => {
   return {
     contentTypeId: selectRouteEntryContentTypeId(state),
     entry: selectRouteEntry(state),
+    isError: selectRouteIsError(state),
     isNotFound: selectIsNotFound(state),
     isLoading: selectRouteLoading(state),
     isLoggedIn: selectUserIsAuthenticated(state),
     mappedEntry: selectMappedEntry(state),
     projectId: selectCurrentProject(state),
     statePath: selectCurrentPath(state),
+    statusCode: selectRouteStatusCode(state),
+    statusText: selectRouteErrorMessage(state),
     userGroups: selectUserGroups(state),
   };
 };

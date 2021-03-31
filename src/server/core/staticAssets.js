@@ -1,4 +1,5 @@
 import express from 'express';
+import { CacheDuration } from '../cacheDuration.schema';
 import { bundleManipulationMiddleware } from '../middleware/bundleManipulation';
 
 // Serving static assets
@@ -13,10 +14,14 @@ const staticAssets = (
       `/${staticFolderPath}`,
     ],
     bundleManipulationMiddleware(staticRoutePath, {
-      maxage: '31557600',
+      // these maxage values are different in config but the same in runtime,
+      // this one is the true value in seconds
+      maxage: CacheDuration.static,
     }),
     express.static(`dist/${staticFolderPath}`, {
-      maxage: '31557600',
+      // these maxage values are different in config but the same in runtime,
+      // this one is somehow converted and should end up being the same as CacheDuration.static
+      maxage: CacheDuration.expressStatic,
     })
   );
 };

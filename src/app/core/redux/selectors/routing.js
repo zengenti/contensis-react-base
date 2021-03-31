@@ -57,6 +57,18 @@ export const selectBreadcrumb = state => {
     selectCurrentNode(state)
   );
 };
+export const selectRouteErrorMessage = state => {
+  const error = state.getIn(['routing', 'error']);
+  if (error && 'toJS' in error) {
+    return error.getIn(['data', 'message']) || error.get('statusText');
+  }
+};
+export const selectRouteIsError = state => {
+  return state.getIn(['routing', 'isError']);
+};
 export const selectRouteLoading = state => {
   return state.getIn(['routing', 'isLoading']);
+};
+export const selectRouteStatusCode = state => {
+  return state.getIn(['routing', 'statusCode']);
 };

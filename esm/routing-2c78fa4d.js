@@ -138,8 +138,21 @@ const selectCurrentNode = state => {
 const selectBreadcrumb = state => {
   return (selectCurrentAncestors(state) || List()).push(selectCurrentNode(state));
 };
+const selectRouteErrorMessage = state => {
+  const error = state.getIn(['routing', 'error']);
+
+  if (error && 'toJS' in error) {
+    return error.getIn(['data', 'message']) || error.get('statusText');
+  }
+};
+const selectRouteIsError = state => {
+  return state.getIn(['routing', 'isError']);
+};
 const selectRouteLoading = state => {
   return state.getIn(['routing', 'isLoading']);
+};
+const selectRouteStatusCode = state => {
+  return state.getIn(['routing', 'statusCode']);
 };
 
 var routing$2 = /*#__PURE__*/Object.freeze({
@@ -162,8 +175,11 @@ var routing$2 = /*#__PURE__*/Object.freeze({
   selectCurrentAncestors: selectCurrentAncestors,
   selectCurrentNode: selectCurrentNode,
   selectBreadcrumb: selectBreadcrumb,
-  selectRouteLoading: selectRouteLoading
+  selectRouteErrorMessage: selectRouteErrorMessage,
+  selectRouteIsError: selectRouteIsError,
+  selectRouteLoading: selectRouteLoading,
+  selectRouteStatusCode: selectRouteStatusCode
 });
 
-export { routing$1 as A, routing$2 as B, CALL_HISTORY_METHOD as C, SET_NAVIGATION_PATH as S, UPDATE_LOADING_STATE as U, selectRouteEntry as a, selectCurrentProject as b, setSurrogateKeys as c, SET_ROUTE as d, selectCurrentNode as e, selectCurrentAncestors as f, findContentTypeMapping as g, selectRouteEntryEntryId as h, selectRouteEntryLanguage as i, selectMappedEntry as j, SET_ENTRY as k, SET_ANCESTORS as l, SET_SIBLINGS as m, selectCurrentSearch as n, setRoute as o, selectRouteEntryContentTypeId as p, queryParams as q, selectIsNotFound as r, setCurrentProject as s, selectRouteLoading as t, selectCurrentPath as u, setNavigationPath as v, SET_TARGET_PROJECT as w, SET_SURROGATE_KEYS as x, action as y, routing as z };
-//# sourceMappingURL=routing-7eff80b5.js.map
+export { SET_SURROGATE_KEYS as A, action as B, CALL_HISTORY_METHOD as C, routing as D, routing$1 as E, routing$2 as F, SET_NAVIGATION_PATH as S, UPDATE_LOADING_STATE as U, selectRouteEntry as a, selectCurrentProject as b, setSurrogateKeys as c, SET_ROUTE as d, selectCurrentNode as e, selectCurrentAncestors as f, findContentTypeMapping as g, selectRouteEntryEntryId as h, selectRouteEntryLanguage as i, selectMappedEntry as j, SET_ENTRY as k, SET_ANCESTORS as l, SET_SIBLINGS as m, selectCurrentSearch as n, setRoute as o, selectRouteEntryContentTypeId as p, queryParams as q, selectRouteIsError as r, setCurrentProject as s, selectIsNotFound as t, selectRouteLoading as u, selectCurrentPath as v, selectRouteStatusCode as w, selectRouteErrorMessage as x, setNavigationPath as y, SET_TARGET_PROJECT as z };
+//# sourceMappingURL=routing-2c78fa4d.js.map

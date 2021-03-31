@@ -1,5 +1,5 @@
 import { Map, List, fromJS, OrderedMap, Set } from 'immutable';
-import { w as SET_TARGET_PROJECT, x as SET_SURROGATE_KEYS, m as SET_SIBLINGS, d as SET_ROUTE, S as SET_NAVIGATION_PATH, U as UPDATE_LOADING_STATE, k as SET_ENTRY, l as SET_ANCESTORS, C as CALL_HISTORY_METHOD, y as action } from './routing-7eff80b5.js';
+import { z as SET_TARGET_PROJECT, A as SET_SURROGATE_KEYS, m as SET_SIBLINGS, d as SET_ROUTE, S as SET_NAVIGATION_PATH, U as UPDATE_LOADING_STATE, k as SET_ENTRY, l as SET_ANCESTORS, C as CALL_HISTORY_METHOD, B as action } from './routing-2c78fa4d.js';
 import { compose, applyMiddleware, createStore as createStore$1 } from 'redux';
 import { combineReducers } from 'redux-immutable';
 import thunk from 'redux-thunk';
@@ -44,19 +44,22 @@ var NavigationReducer = ((state = initialState, action) => {
 let initialState$1 = OrderedMap({
   contentTypeId: null,
   currentPath: '/',
-  currentNode: [],
+  currentNode: OrderedMap(),
   currentNodeAncestors: List(),
   currentProject: 'unknown',
   entryID: null,
   entry: null,
   currentTreeId: null,
   entryDepends: List(),
+  error: undefined,
+  isError: false,
   isLoading: false,
-  location: null,
-  mappedEntry: OrderedMap(),
+  location: OrderedMap(),
+  mappedEntry: null,
   nodeDepends: List(),
   notFound: false,
-  staticRoute: null
+  staticRoute: null,
+  statusCode: 200
 });
 var RoutingReducer = ((state = initialState$1, action) => {
   switch (action.type) {
@@ -73,17 +76,22 @@ var RoutingReducer = ((state = initialState$1, action) => {
       {
         const {
           entry,
+          error,
           mappedEntry,
           node = {},
+          isError = false,
           isLoading = false,
-          notFound = false
+          notFound = false,
+          statusCode
         } = action;
+        let defaultStatus = 200;
+        if (notFound === true && isError === false) defaultStatus = 404;else if (isError === true) defaultStatus = statusCode || 500;
         let nextState;
 
         if (!entry) {
-          nextState = state.set('entryID', null).set('entry', null).set('mappedEntry', OrderedMap()).set('isLoading', isLoading).set('notFound', notFound);
+          nextState = state.set('entryID', null).set('entry', null).set('mappedEntry', OrderedMap()).set('entry', null).set('error', fromJS(error)).set('mappedEntry', null).set('isError', isError).set('isLoading', isLoading).set('notFound', notFound).set('statusCode', statusCode || defaultStatus);
         } else {
-          nextState = state.set('entryID', action.id).set('entry', fromJS(entry)).set('isLoading', isLoading).set('notFound', notFound);
+          nextState = state.set('entryID', action.id).set('entry', fromJS(entry)).set('error', fromJS(error)).set('isError', isError).set('isLoading', isLoading).set('notFound', notFound).set('statusCode', statusCode || defaultStatus);
           if (mappedEntry && Object.keys(mappedEntry).length > 0) nextState = nextState.set('mappedEntry', fromJS(mappedEntry)).set('entry', fromJS({
             sys: entry.sys
           }));
@@ -309,4 +317,4 @@ var version$2 = /*#__PURE__*/Object.freeze({
 });
 
 export { GET_NODE_TREE as G, SET_NODE_TREE as S, setVersion as a, selectVersionStatus as b, createStore as c, GET_NODE_TREE_ERROR as d, version$1 as e, navigation$1 as f, version$2 as g, hasNavigationTree as h, navigation as n, reduxStore as r, setVersionStatus as s, version as v };
-//# sourceMappingURL=version-66d27412.js.map
+//# sourceMappingURL=version-d4762a9f.js.map

@@ -88,6 +88,7 @@ const production = {
   PROXY_DELIVERY_API: true,
   REVERSE_PROXY_PATHS,
   STATIC_PATH,
+  STATIC_ROUTE_PATH: 'static',
   VERSION: packagejson.version,
 };
 

@@ -1,7 +1,7 @@
 'use strict';
 
 var immutable = require('immutable');
-var routing = require('./routing-6197a03e.js');
+var routing = require('./routing-923fc797.js');
 var redux = require('redux');
 var reduxImmutable = require('redux-immutable');
 var thunk = require('redux-thunk');
@@ -51,19 +51,22 @@ var NavigationReducer = ((state = initialState, action) => {
 let initialState$1 = immutable.OrderedMap({
   contentTypeId: null,
   currentPath: '/',
-  currentNode: [],
+  currentNode: immutable.OrderedMap(),
   currentNodeAncestors: immutable.List(),
   currentProject: 'unknown',
   entryID: null,
   entry: null,
   currentTreeId: null,
   entryDepends: immutable.List(),
+  error: undefined,
+  isError: false,
   isLoading: false,
-  location: null,
-  mappedEntry: immutable.OrderedMap(),
+  location: immutable.OrderedMap(),
+  mappedEntry: null,
   nodeDepends: immutable.List(),
   notFound: false,
-  staticRoute: null
+  staticRoute: null,
+  statusCode: 200
 });
 var RoutingReducer = ((state = initialState$1, action) => {
   switch (action.type) {
@@ -80,17 +83,22 @@ var RoutingReducer = ((state = initialState$1, action) => {
       {
         const {
           entry,
+          error,
           mappedEntry,
           node = {},
+          isError = false,
           isLoading = false,
-          notFound = false
+          notFound = false,
+          statusCode
         } = action;
+        let defaultStatus = 200;
+        if (notFound === true && isError === false) defaultStatus = 404;else if (isError === true) defaultStatus = statusCode || 500;
         let nextState;
 
         if (!entry) {
-          nextState = state.set('entryID', null).set('entry', null).set('mappedEntry', immutable.OrderedMap()).set('isLoading', isLoading).set('notFound', notFound);
+          nextState = state.set('entryID', null).set('entry', null).set('mappedEntry', immutable.OrderedMap()).set('entry', null).set('error', immutable.fromJS(error)).set('mappedEntry', null).set('isError', isError).set('isLoading', isLoading).set('notFound', notFound).set('statusCode', statusCode || defaultStatus);
         } else {
-          nextState = state.set('entryID', action.id).set('entry', immutable.fromJS(entry)).set('isLoading', isLoading).set('notFound', notFound);
+          nextState = state.set('entryID', action.id).set('entry', immutable.fromJS(entry)).set('error', immutable.fromJS(error)).set('isError', isError).set('isLoading', isLoading).set('notFound', notFound).set('statusCode', statusCode || defaultStatus);
           if (mappedEntry && Object.keys(mappedEntry).length > 0) nextState = nextState.set('mappedEntry', immutable.fromJS(mappedEntry)).set('entry', immutable.fromJS({
             sys: entry.sys
           }));
@@ -328,4 +336,4 @@ exports.setVersionStatus = setVersionStatus;
 exports.version = version;
 exports.version$1 = version$1;
 exports.version$2 = version$2;
-//# sourceMappingURL=version-f369bb4b.js.map
+//# sourceMappingURL=version-ded181d8.js.map
