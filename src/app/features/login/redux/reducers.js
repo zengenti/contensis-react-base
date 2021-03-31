@@ -18,8 +18,10 @@ import {
 const defaultAuthenticationState = Map({
   authenticated: false,
   authenticationError: false,
+  authenticationErrorMessage: null,
   clientCredentials: null,
   error: false,
+  errorMessage: null,
   loading: false,
 });
 
@@ -56,8 +58,10 @@ export default (state = initialUserState, action) => {
       const {
         authenticationState: {
           error = false,
+          errorMessage = null,
           authenticated,
           authenticationError = false,
+          authenticationErrorMessage = null,
           clientCredentials = null,
         },
         user,
@@ -76,8 +80,10 @@ export default (state = initialUserState, action) => {
             authenticated ||
             state.getIn(['authenticationState', 'authenticated']),
           authenticationError,
+          authenticationErrorMessage,
           clientCredentials,
           error,
+          errorMessage,
           loading,
         },
       };
