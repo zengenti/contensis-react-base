@@ -6,12 +6,17 @@ import { Provider } from 'react-redux';
 import 'immutable';
 import 'history';
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { d as deliveryApi, r as rootSaga, p as pickProject, b as browserHistory } from './App-fe3cbef7.js';
 export { A as ReactApp } from './App-fe3cbef7.js';
 =======
 import { d as deliveryApi, r as rootSaga, p as pickProject, b as browserHistory } from './App-8fb39c30.js';
 export { A as ReactApp } from './App-8fb39c30.js';
 >>>>>>> 10419d5... commit bundles
+=======
+import { d as deliveryApi, r as rootSaga, p as pickProject, b as browserHistory } from './App-f18514f6.js';
+export { A as ReactApp } from './App-f18514f6.js';
+>>>>>>> bf47c62... chore: Commit bundles
 import 'contensis-delivery-api';
 import { s as setCurrentProject } from './routing-3bbf9dde.js';
 import 'redux';
@@ -19,17 +24,23 @@ import 'redux-immutable';
 import 'redux-thunk';
 import 'redux-saga';
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { c as createStore, s as setVersionStatus } from './navigation-ec4d9a28.js';
 import { f as fromJSOrdered } from './reducers-ed7581c0.js';
 =======
 import { c as createStore, s as setVersionStatus } from './version-c359e3cb.js';
 import { l as fromJSOrdered } from './reducers-29d0efa9.js';
 >>>>>>> 10419d5... commit bundles
+=======
+import { c as createStore, s as setVersionStatus } from './version-c113fd8d.js';
+import { l as fromJSOrdered } from './reducers-6d9b6c51.js';
+>>>>>>> bf47c62... chore: Commit bundles
 import queryString from 'query-string';
 import './routing-786c3bb0.js';
 import '@redux-saga/core/effects';
 import './version-924cf045.js';
 import 'loglevel';
+<<<<<<< HEAD
 <<<<<<< HEAD
 import './ToJs-020d9abb.js';
 import './login-4324e2fc.js';
@@ -37,6 +48,10 @@ import './login-4324e2fc.js';
 import './ToJs-7da4413c.js';
 import './login-96837dda.js';
 >>>>>>> 10419d5... commit bundles
+=======
+import './ToJs-dea75c6f.js';
+import './login-125acea2.js';
+>>>>>>> bf47c62... chore: Commit bundles
 import 'jsonpath-mapper';
 import 'await-to-js';
 import 'js-cookie';
@@ -44,10 +59,14 @@ import 'react-router-config';
 import { AppContainer } from 'react-hot-loader';
 import 'prop-types';
 <<<<<<< HEAD
+<<<<<<< HEAD
 import './RouteLoader-66a2c27f.js';
 =======
 import './RouteLoader-f026dc83.js';
 >>>>>>> 10419d5... commit bundles
+=======
+import './RouteLoader-7a4e8463.js';
+>>>>>>> bf47c62... chore: Commit bundles
 import { hydrate, render } from 'react-dom';
 
 const fromJSLeaveImmer = js => {

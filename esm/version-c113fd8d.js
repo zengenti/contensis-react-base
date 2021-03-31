@@ -4,7 +4,7 @@ import { compose, applyMiddleware, createStore as createStore$1 } from 'redux';
 import { combineReducers } from 'redux-immutable';
 import thunk from 'redux-thunk';
 import createSagaMiddleware, { END } from 'redux-saga';
-import { U as UserReducer } from './reducers-29d0efa9.js';
+import { U as UserReducer } from './reducers-6d9b6c51.js';
 
 const ACTION_PREFIX = '@NAVIGATION/';
 const GET_NODE_TREE = `${ACTION_PREFIX}_GET_NODE_TREE`;
@@ -322,5 +322,9 @@ var version$2 = /*#__PURE__*/Object.freeze({
 });
 
 export { GET_NODE_TREE as G, SET_NODE_TREE as S, setVersion as a, selectVersionStatus as b, createStore as c, GET_NODE_TREE_ERROR as d, version$1 as e, navigation$1 as f, version$2 as g, hasNavigationTree as h, navigation as n, reduxStore as r, setVersionStatus as s, version as v };
+<<<<<<< HEAD:esm/version-c359e3cb.js
 //# sourceMappingURL=version-c359e3cb.js.map
 >>>>>>> 10419d5... commit bundles:esm/version-c359e3cb.js
+=======
+//# sourceMappingURL=version-c113fd8d.js.map
+>>>>>>> bf47c62... chore: Commit bundles:esm/version-c113fd8d.js

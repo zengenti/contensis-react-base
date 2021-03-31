@@ -1,5 +1,11 @@
-import React from 'react';
-import { Map, Iterable } from 'immutable';
+'use strict';
+
+var React = require('react');
+var immutable = require('immutable');
+
+function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+
+var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
 
 const selectUserIsLoading = state => {
   return state.getIn(['user', 'authenticationState', 'loading']);
@@ -10,8 +16,14 @@ const selectUserIsAuthenticated = state => {
 const selectUserAuthenticationError = state => {
   return state.getIn(['user', 'authenticationState', 'authenticationError']);
 };
+const selectUserAuthenticationErrorMessage = state => {
+  return state.getIn(['user', 'authenticationState', 'authenticationErrorMessage']);
+};
 const selectUserError = state => {
   return state.getIn(['user', 'authenticationState', 'error']);
+};
+const selectUserErrorMessage = state => {
+  return state.getIn(['user', 'authenticationState', 'errorMessage']);
 };
 const selectClientCredentials = state => {
   return state.getIn(['user', 'authenticationState', 'clientCredentials']);
@@ -37,7 +49,7 @@ const selectUserGroups = state => {
 const selectUserSecurityToken = state => {
   return state.getIn(['user', 'authenticationState', 'clientCredentials', 'contensisClassicToken']);
 };
-const selectUserRegistration = state => state.getIn(['user', 'registration'], Map());
+const selectUserRegistration = state => state.getIn(['user', 'registration'], immutable.Map());
 const selectUserRegistrationError = state => state.getIn(['user', 'registration', 'error'], false);
 const selectUserRegistrationIsLoading = state => state.getIn(['user', 'registration', 'loading'], false);
 const selectUserRegistrationIsSuccess = state => state.getIn(['user', 'registration', 'success'], false);
@@ -65,7 +77,9 @@ var selectors = /*#__PURE__*/Object.freeze({
   selectUserIsLoading: selectUserIsLoading,
   selectUserIsAuthenticated: selectUserIsAuthenticated,
   selectUserAuthenticationError: selectUserAuthenticationError,
+  selectUserAuthenticationErrorMessage: selectUserAuthenticationErrorMessage,
   selectUserError: selectUserError,
+  selectUserErrorMessage: selectUserErrorMessage,
   selectClientCredentials: selectClientCredentials,
   selectUser: selectUser,
   selectUserIsZengentiStaff: selectUserIsZengentiStaff,
@@ -106,16 +120,40 @@ const toJS = WrappedComponent => wrappedComponentProps => {
   const KEY = 0;
   const VALUE = 1;
   const propsJS = Object.entries(wrappedComponentProps).reduce((newProps, wrappedComponentProp) => {
-    newProps[wrappedComponentProp[KEY]] = Iterable.isIterable(wrappedComponentProp[VALUE]) ? wrappedComponentProp[VALUE].toJS() : wrappedComponentProp[VALUE];
+    newProps[wrappedComponentProp[KEY]] = immutable.Iterable.isIterable(wrappedComponentProp[VALUE]) ? wrappedComponentProp[VALUE].toJS() : wrappedComponentProp[VALUE];
     return newProps;
   }, {});
-  return React.createElement(WrappedComponent, propsJS);
+  return React__default['default'].createElement(WrappedComponent, propsJS);
 };
 
-<<<<<<< HEAD:esm/ToJs-020d9abb.js
-export { selectUserGroups as a, selectClientCredentials as b, selectUserAuthenticationError as c, selectUserError as d, selectUserIsLoading as e, selectUser as f, selectUserRegistrationError as g, selectUserRegistrationIsLoading as h, selectUserRegistrationIsSuccess as i, selectUserRegistration as j, selectors as k, matchUserGroup as m, selectUserIsAuthenticated as s, toJS as t };
-//# sourceMappingURL=ToJs-020d9abb.js.map
+exports.matchUserGroup = matchUserGroup;
+exports.selectClientCredentials = selectClientCredentials;
+exports.selectPasswordResetRequestError = selectPasswordResetRequestError;
+exports.selectPasswordResetRequestSending = selectPasswordResetRequestSending;
+exports.selectPasswordResetRequestSent = selectPasswordResetRequestSent;
+exports.selectResetPasswordError = selectResetPasswordError;
+exports.selectResetPasswordSending = selectResetPasswordSending;
+exports.selectResetPasswordSent = selectResetPasswordSent;
+exports.selectUser = selectUser;
+exports.selectUserAuthenticationError = selectUserAuthenticationError;
+exports.selectUserAuthenticationErrorMessage = selectUserAuthenticationErrorMessage;
+exports.selectUserError = selectUserError;
+exports.selectUserErrorMessage = selectUserErrorMessage;
+exports.selectUserGroups = selectUserGroups;
+exports.selectUserIsAuthenticated = selectUserIsAuthenticated;
+exports.selectUserIsLoading = selectUserIsLoading;
+exports.selectUserRegistration = selectUserRegistration;
+exports.selectUserRegistrationError = selectUserRegistrationError;
+exports.selectUserRegistrationIsLoading = selectUserRegistrationIsLoading;
+exports.selectUserRegistrationIsSuccess = selectUserRegistrationIsSuccess;
+exports.selectors = selectors;
+exports.toJS = toJS;
+<<<<<<< HEAD:cjs/ToJs-6487bd5c.js
+<<<<<<< HEAD:cjs/ToJs-128064bc.js
+//# sourceMappingURL=ToJs-128064bc.js.map
 =======
-export { selectUserGroups as a, selectClientCredentials as b, selectUserAuthenticationError as c, selectUserError as d, selectUserIsLoading as e, selectUser as f, selectUserRegistrationError as g, selectUserRegistrationIsLoading as h, selectUserRegistrationIsSuccess as i, selectUserRegistration as j, selectPasswordResetRequestSending as k, selectPasswordResetRequestSent as l, matchUserGroup as m, selectPasswordResetRequestError as n, selectResetPasswordSending as o, selectResetPasswordSent as p, selectResetPasswordError as q, selectors as r, selectUserIsAuthenticated as s, toJS as t };
-//# sourceMappingURL=ToJs-7da4413c.js.map
->>>>>>> 10419d5... commit bundles:esm/ToJs-7da4413c.js
+//# sourceMappingURL=ToJs-6487bd5c.js.map
+>>>>>>> 10419d5... commit bundles:cjs/ToJs-6487bd5c.js
+=======
+//# sourceMappingURL=ToJs-7dbcf7a7.js.map
+>>>>>>> bf47c62... chore: Commit bundles:cjs/ToJs-7dbcf7a7.js
