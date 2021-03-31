@@ -28,12 +28,14 @@ export default {
       dir: './cjs',
       format: 'cjs',
       sourcemap: true,
+      exports: 'named',
     },
     {
       // file: packageJson.module,
       dir: './esm',
       format: 'esm',
       sourcemap: true,
+      exports: 'named',
     },
   ],
   external: [
