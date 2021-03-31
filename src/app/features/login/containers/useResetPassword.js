@@ -7,7 +7,7 @@ import {
   selectResetPasswordError,
 } from '../redux/selectors';
 
-const useLogin = () => {
+const useResetPassword = () => {
   const dispatch = useDispatch();
   const select = useSelector;
 
@@ -21,4 +21,4 @@ const useLogin = () => {
   };
 };
 
-export default useLogin;
+export default useResetPassword;

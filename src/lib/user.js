@@ -29,6 +29,13 @@ export { default as useLogin } from '~/features/login/containers/useLogin';
 export {
   default as useRegistration,
 } from '~/features/login/containers/useRegistration';
+export {
+  default as useForgotPassword,
+} from '~/features/login/containers/useForgotPassword';
+export {
+  default as useResetPassword,
+} from '~/features/login/containers/useResetPassword';
+export { default as useUser } from '~/features/login/containers/useUser';
 
 // Redux
 export {

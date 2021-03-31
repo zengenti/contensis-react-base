@@ -12,8 +12,18 @@ export const selectUserIsAuthenticated = state => {
 export const selectUserAuthenticationError = state => {
   return state.getIn(['user', 'authenticationState', 'authenticationError']);
 };
+export const selectUserAuthenticationErrorMessage = state => {
+  return state.getIn([
+    'user',
+    'authenticationState',
+    'authenticationErrorMessage',
+  ]);
+};
 export const selectUserError = state => {
   return state.getIn(['user', 'authenticationState', 'error']);
+};
+export const selectUserErrorMessage = state => {
+  return state.getIn(['user', 'authenticationState', 'errorMessage']);
 };
 export const selectClientCredentials = state => {
   return state.getIn(['user', 'authenticationState', 'clientCredentials']);
