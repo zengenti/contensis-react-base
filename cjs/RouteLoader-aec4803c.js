@@ -3,8 +3,8 @@
 var React = require('react');
 var reactRouterDom = require('react-router-dom');
 var reactRedux = require('react-redux');
-var selectors = require('./selectors-4e2a4fe0.js');
-var routing = require('./routing-64a1d60d.js');
+var selectors = require('./selectors-ac6b55d5.js');
+var routing = require('./routing-53ca382e.js');
 var ToJs = require('./ToJs-d548b71b.js');
 var reactRouterConfig = require('react-router-config');
 var reactHotLoader = require('react-hot-loader');
@@ -15,7 +15,22 @@ function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'defau
 var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
 var PropTypes__default = /*#__PURE__*/_interopDefaultLegacy(PropTypes);
 
-const NotFound = () => React__default['default'].createElement(React__default['default'].Fragment, null, React__default['default'].createElement("header", null, React__default['default'].createElement("h1", null, "404 Page Not Found")));
+const NotFound = ({
+  statusCode,
+  statusText
+}) => React__default['default'].createElement(React__default['default'].Fragment, null, React__default['default'].createElement("header", null, React__default['default'].createElement("h1", null, statusCode || '404', " Page Not Found"), statusText && React__default['default'].createElement("h2", {
+  style: {
+    background: '#eee',
+    color: '#666',
+    fontSize: '100%',
+    padding: '10px'
+  }
+}, statusText)));
+
+NotFound.propTypes = {
+  statusCode: PropTypes__default['default'].number,
+  statusText: PropTypes__default['default'].string
+};
 
 const Status = ({
   code,
@@ -48,18 +63,21 @@ const getTrimmedPath = path => {
 };
 
 const RouteLoader = ({
-  statePath,
-  projectId,
   contentTypeId,
   entry,
+  isError,
   isLoading,
   isLoggedIn,
   isNotFound,
   loadingComponent,
   mappedEntry,
   notFoundComponent,
-  setNavigationPath,
+  projectId,
   routes,
+  setNavigationPath,
+  statePath,
+  statusCode,
+  statusText,
   withEvents
 }) => {
   const location = reactRouterDom.useLocation(); // Match any Static Routes a developer has defined
@@ -127,10 +145,13 @@ const RouteLoader = ({
 
   const NotFoundComponent = notFoundComponent ? notFoundComponent : NotFound;
 
-  if (isNotFound) {
+  if (isNotFound || isError) {
     return React__default['default'].createElement(Status, {
-      code: 404
-    }, React__default['default'].createElement(NotFoundComponent, null));
+      code: statusCode
+    }, React__default['default'].createElement(NotFoundComponent, {
+      statusCode: statusCode,
+      statusText: statusText
+    }));
   }
 
   return null;
@@ -139,6 +160,7 @@ const RouteLoader = ({
 RouteLoader.propTypes = {
   contentTypeId: PropTypes__default['default'].string,
   entry: PropTypes__default['default'].object,
+  isError: PropTypes__default['default'].bool,
   isLoading: PropTypes__default['default'].bool,
   isLoggedIn: PropTypes__default['default'].bool,
   isNotFound: PropTypes__default['default'].bool,
@@ -149,6 +171,8 @@ RouteLoader.propTypes = {
   routes: PropTypes__default['default'].objectOf(PropTypes__default['default'].array, PropTypes__default['default'].array),
   setNavigationPath: PropTypes__default['default'].func,
   statePath: PropTypes__default['default'].string,
+  statusCode: PropTypes__default['default'].number,
+  statusText: PropTypes__default['default'].string,
   withEvents: PropTypes__default['default'].object
 };
 
@@ -156,12 +180,15 @@ const mapStateToProps = state => {
   return {
     contentTypeId: selectors.selectRouteEntryContentTypeId(state),
     entry: selectors.selectRouteEntry(state),
+    isError: selectors.selectRouteIsError(state),
     isNotFound: selectors.selectIsNotFound(state),
     isLoggedIn: selectors.selectUserLoggedIn(state),
     isLoading: selectors.selectRouteLoading(state),
     mappedEntry: selectors.selectMappedEntry(state),
     projectId: selectors.selectCurrentProject(state),
-    statePath: selectors.selectCurrentPath(state)
+    statePath: selectors.selectCurrentPath(state),
+    statusCode: selectors.selectRouteStatusCode(state),
+    statusText: selectors.selectRouteErrorMessage(state)
   };
 };
 
@@ -171,4 +198,4 @@ const mapDispatchToProps = {
 var RouteLoader$1 = reactHotLoader.hot(module)(reactRedux.connect(mapStateToProps, mapDispatchToProps)(ToJs.toJS(RouteLoader)));
 
 exports.RouteLoader = RouteLoader$1;
-//# sourceMappingURL=RouteLoader-824c48e4.js.map
+//# sourceMappingURL=RouteLoader-aec4803c.js.map

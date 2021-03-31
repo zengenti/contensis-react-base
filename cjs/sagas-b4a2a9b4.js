@@ -1,8 +1,15 @@
-import { Map, List, fromJS } from 'immutable';
-import { t as selectUser, u as selectCurrentSearch, e as SET_ROUTE, v as selectUsername } from './selectors-93653e5b.js';
-import queryString from 'query-string';
-import { takeEvery, call, fork, select, put } from '@redux-saga/core/effects';
-import Cookies from 'js-cookie';
+'use strict';
+
+var immutable = require('immutable');
+var selectors = require('./selectors-ac6b55d5.js');
+var queryString = require('query-string');
+var effects = require('@redux-saga/core/effects');
+var Cookies = require('js-cookie');
+
+function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+
+var queryString__default = /*#__PURE__*/_interopDefaultLegacy(queryString);
+var Cookies__default = /*#__PURE__*/_interopDefaultLegacy(Cookies);
 
 const ACTION_PREFIX = '@USER/';
 const UPDATE_USER = `${ACTION_PREFIX}UPDATE_USER`;
@@ -44,23 +51,23 @@ var user = /*#__PURE__*/Object.freeze({
   SET_RECAPTCHA_RESPONSE: SET_RECAPTCHA_RESPONSE
 });
 
-const initialUserState = Map({
+const initialUserState = immutable.Map({
   loggedIn: false,
   failedLogin: null,
   username: null,
   id: null,
   securityToken: null,
   logonResult: null,
-  groups: new List([]),
+  groups: new immutable.List([]),
   emailAddress: null,
   fullName: null,
   loginScreenMode: 'login',
   passwordReset: false,
   passwordResetMessage: null,
   changePasswordMessage: null,
-  recaptcha: new Map({
+  recaptcha: new immutable.Map({
     key: null,
-    response: new Map({
+    response: new immutable.Map({
       isHuman: false,
       token: null
     })
@@ -73,7 +80,7 @@ var UserReducer = ((state = initialUserState, action) => {
         const {
           user
         } = action;
-        return state.set('loggedIn', typeof user.loggedIn !== 'undefined' ? user.loggedIn : state.get('loggedIn')).set('failedLogin', typeof user.failedLogin !== 'undefined' ? user.failedLogin : state.get('failedLogin')).set('username', user.username || state.get('username')).set('id', user.id || state.get('id')).set('securityToken', user.securityToken || state.get('securityToken')).set('logonResult', user.logonResult || state.get('logonResult')).set('groups', fromJS(user.groups) || state.get('groups')).set('emailAddress', user.emailAddress || state.get('emailAddress')).set('fullName', user.fullName || state.get('fullName')).set('passwordReset', typeof user.passwordReset !== 'undefined' ? user.passwordReset : state.get('passwordReset')).set('passwordResetMessage', user.passwordResetMessage || state.get('passwordResetMessage')).set('changePasswordMessage', user.changePasswordMessage || state.get('changePasswordMessage'));
+        return state.set('loggedIn', typeof user.loggedIn !== 'undefined' ? user.loggedIn : state.get('loggedIn')).set('failedLogin', typeof user.failedLogin !== 'undefined' ? user.failedLogin : state.get('failedLogin')).set('username', user.username || state.get('username')).set('id', user.id || state.get('id')).set('securityToken', user.securityToken || state.get('securityToken')).set('logonResult', user.logonResult || state.get('logonResult')).set('groups', immutable.fromJS(user.groups) || state.get('groups')).set('emailAddress', user.emailAddress || state.get('emailAddress')).set('fullName', user.fullName || state.get('fullName')).set('passwordReset', typeof user.passwordReset !== 'undefined' ? user.passwordReset : state.get('passwordReset')).set('passwordResetMessage', user.passwordResetMessage || state.get('passwordResetMessage')).set('changePasswordMessage', user.changePasswordMessage || state.get('changePasswordMessage'));
       }
 
     case TOGGLE_LOGIN_MODE:
@@ -101,7 +108,7 @@ const COOKIE_VALID_DAYS = 1; // 0 = Session cookie
 // Override the default js-cookie conversion / encoding
 // methods so the written values work with Contensis sites
 
-const _cookie = Cookies.withConverter({
+const _cookie = Cookies__default['default'].withConverter({
   read: value => decodeURIComponent(value),
   write: value => encodeURIComponent(value)
 });
@@ -542,7 +549,7 @@ class LoginHelper {
 
 }
 
-const userSagas = [takeEvery(LOGIN_USER, loginUserSaga), takeEvery(LOGOUT_USER, logoutUserSaga), takeEvery(VALIDATE_USER, validateUserSaga), takeEvery(CREATE_USER_ACCOUNT, createUserAccountSaga), takeEvery(FORGOT_USER_PASSWORD, forgotPassword), takeEvery(CHANGE_USER_PASSWORD, changePassword)];
+const userSagas = [effects.takeEvery(LOGIN_USER, loginUserSaga), effects.takeEvery(LOGOUT_USER, logoutUserSaga), effects.takeEvery(VALIDATE_USER, validateUserSaga), effects.takeEvery(CREATE_USER_ACCOUNT, createUserAccountSaga), effects.takeEvery(FORGOT_USER_PASSWORD, forgotPassword), effects.takeEvery(CHANGE_USER_PASSWORD, changePassword)];
 
 function* loginUserSaga(action) {
   const getGroups = true;
@@ -553,7 +560,7 @@ function* loginUserSaga(action) {
 
   if (username && password) {
     const user = yield LoginHelper.LoginUser(username, password, getGroups);
-    yield call(updateUserSaga, {
+    yield effects.call(updateUserSaga, {
       type: user.failedLogin ? LOGIN_FAILED : LOGIN_SUCCESSFUL,
       user,
       redirect: !user.failedLogin
@@ -565,17 +572,17 @@ function* loginUserSaga(action) {
 
 function* logoutUserSaga() {
   const user = LoginHelper.LogoutUser();
-  yield fork(updateUserSaga, {
+  yield effects.fork(updateUserSaga, {
     user
   });
-  const state = yield select();
+  const state = yield effects.select();
   yield LoginHelper.ClientRedirectToHome(state.getIn(['router', 'location']));
 }
 
 function* validateUserSaga(action) {
   const getGroups = true;
-  const state = yield select();
-  const currentQs = queryString.parse(state.getIn(['router', 'location', 'search']));
+  const state = yield effects.select();
+  const currentQs = queryString__default['default'].parse(state.getIn(['router', 'location', 'search']));
   const qsToken = currentQs.securityToken || currentQs.securitytoken;
 
   if (qsToken) {
@@ -590,15 +597,15 @@ function* validateUserSaga(action) {
   };
   const user = yield LoginHelper.ValidateUser(getGroups, cookies);
   const type = user && user.loggedIn ? VALIDATE_USER_SUCCESS : VALIDATE_USER_FAILED;
-  yield call(updateUserSaga, {
+  yield effects.call(updateUserSaga, {
     type,
     user: user && !user.loggedIn ? initialUserState : user
   });
 }
 
 function* updateUserSaga(action) {
-  const userState = yield select(selectUser);
-  yield put({
+  const userState = yield effects.select(selectors.selectUser);
+  yield effects.put({
     type: UPDATE_USER,
     from: action.type,
     user: { ...userState.toJS(),
@@ -607,13 +614,13 @@ function* updateUserSaga(action) {
   });
 
   if (action.redirect) {
-    const currentSearch = yield select(selectCurrentSearch);
-    const qs = queryString.parse(currentSearch);
+    const currentSearch = yield effects.select(selectors.selectCurrentSearch);
+    const qs = queryString__default['default'].parse(currentSearch);
     const redirectUri = qs.redirect_uri;
 
     if (redirectUri) {
-      yield put({
-        type: SET_ROUTE,
+      yield effects.put({
+        type: selectors.SET_ROUTE,
         path: redirectUri
       });
     }
@@ -622,7 +629,7 @@ function* updateUserSaga(action) {
 
 function* forgotPassword(action) {
   const message = yield LoginHelper.ForgotPassword(action.username);
-  yield put({
+  yield effects.put({
     type: UPDATE_USER,
     user: {
       passwordReset: true,
@@ -633,8 +640,8 @@ function* forgotPassword(action) {
 }
 
 function* changePassword(action) {
-  const state = yield select();
-  const username = selectUsername(state);
+  const state = yield effects.select();
+  const username = selectors.selectUsername(state);
   let message = '';
 
   if (action.token) {
@@ -643,7 +650,7 @@ function* changePassword(action) {
     message = yield LoginHelper.ChangePassword(username, action.oldPassword, action.newPassword, action.newPasswordConfirm);
   }
 
-  yield put({
+  yield effects.put({
     type: UPDATE_USER,
     user: {
       logonResult: message
@@ -653,7 +660,7 @@ function* changePassword(action) {
 }
 
 function* createUserAccountSaga() {
-  const userState = yield select(selectUser);
+  const userState = yield effects.select(selectors.selectUser);
 
   if (userState.username && userState.password) {
     // Call RegisterUser API
@@ -677,7 +684,7 @@ function* createUserAccountSaga() {
           failedToCreateAccount: false,
           registrationResult
         };
-        yield put({
+        yield effects.put({
           type: UPDATE_USER,
           user
         });
@@ -690,13 +697,13 @@ function* createUserAccountSaga() {
           failedToCreateAccount: true,
           registrationResult
         };
-        yield put({
+        yield effects.put({
           type: UPDATE_USER,
           user
         });
       }
     } else {
-      yield put({
+      yield effects.put({
         type: UPDATE_USER,
         user: { ...userState,
           registrationResult: 'ServiceFault'
@@ -706,5 +713,18 @@ function* createUserAccountSaga() {
   }
 }
 
-export { CREATE_USER_ACCOUNT as C, FORGOT_USER_PASSWORD as F, LOGIN_USER as L, SET_RECAPTCHA_KEY as S, TOGGLE_LOGIN_MODE as T, UserReducer as U, VALIDATE_USER as V, user as a, LOGOUT_USER as b, CHANGE_USER_PASSWORD as c, SET_RECAPTCHA_RESPONSE as d, LoginHelper as e, userSagas as u, validateUserSaga as v };
-//# sourceMappingURL=sagas-54a94258.js.map
+exports.CHANGE_USER_PASSWORD = CHANGE_USER_PASSWORD;
+exports.CREATE_USER_ACCOUNT = CREATE_USER_ACCOUNT;
+exports.FORGOT_USER_PASSWORD = FORGOT_USER_PASSWORD;
+exports.LOGIN_USER = LOGIN_USER;
+exports.LOGOUT_USER = LOGOUT_USER;
+exports.LoginHelper = LoginHelper;
+exports.SET_RECAPTCHA_KEY = SET_RECAPTCHA_KEY;
+exports.SET_RECAPTCHA_RESPONSE = SET_RECAPTCHA_RESPONSE;
+exports.TOGGLE_LOGIN_MODE = TOGGLE_LOGIN_MODE;
+exports.UserReducer = UserReducer;
+exports.VALIDATE_USER = VALIDATE_USER;
+exports.user = user;
+exports.userSagas = userSagas;
+exports.validateUserSaga = validateUserSaga;
+//# sourceMappingURL=sagas-b4a2a9b4.js.map

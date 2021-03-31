@@ -5,13 +5,13 @@ require('react-redux');
 require('immutable');
 var history$1 = require('history');
 var contensisDeliveryApi = require('contensis-delivery-api');
-var navigation = require('./navigation-bcb3c6f1.js');
-var selectors = require('./selectors-4e2a4fe0.js');
-var sagas = require('./sagas-6d255dcc.js');
+var navigation = require('./navigation-6866ec72.js');
+var selectors = require('./selectors-ac6b55d5.js');
+var sagas = require('./sagas-b4a2a9b4.js');
 var effects = require('@redux-saga/core/effects');
 var log = require('loglevel');
 require('react-hot-loader');
-var RouteLoader = require('./RouteLoader-824c48e4.js');
+var RouteLoader = require('./RouteLoader-aec4803c.js');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -314,7 +314,7 @@ function* getRouteSaga(action) {
       });
   } catch (e) {
     log.error(...['Error running route saga:', e, e.stack]);
-    yield effects.call(do404);
+    yield effects.call(do500, e);
   }
 }
 
@@ -360,6 +360,18 @@ function* do404() {
     id: null,
     entry: null,
     notFound: true
+  });
+}
+
+function* do500(error) {
+  yield effects.put({
+    type: selectors.SET_ENTRY,
+    id: null,
+    entry: null,
+    notFound: true,
+    isError: true,
+    error,
+    statusCode: error && error.status ? error.status : 500
   });
 }
 
@@ -411,4 +423,4 @@ exports.browserHistory = browserHistory;
 exports.history = history;
 exports.pickProject = pickProject;
 exports.rootSaga = rootSaga;
-//# sourceMappingURL=App-053ed8e2.js.map
+//# sourceMappingURL=App-92db5a65.js.map

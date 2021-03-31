@@ -3,13 +3,13 @@ import 'react-redux';
 import 'immutable';
 import { createBrowserHistory, createMemoryHistory } from 'history';
 import { Op, Query } from 'contensis-delivery-api';
-import { b as selectVersionStatus, d as cachedSearch, e as deliveryApi, h as hasNavigationTree, f as GET_NODE_TREE, S as SET_NODE_TREE, g as GET_NODE_TREE_ERROR } from './navigation-9935e631.js';
-import { S as SET_NAVIGATION_PATH, e as SET_ROUTE, C as CALL_HISTORY_METHOD, c as selectRouteEntry, d as selectCurrentProject, U as UPDATE_LOADING_STATE, f as findContentTypeMapping, g as SET_ENTRY, h as SET_ANCESTORS, i as SET_SIBLINGS } from './selectors-93653e5b.js';
-import { v as validateUserSaga, u as userSagas } from './sagas-54a94258.js';
+import { b as selectVersionStatus, d as cachedSearch, e as deliveryApi, h as hasNavigationTree, f as GET_NODE_TREE, S as SET_NODE_TREE, g as GET_NODE_TREE_ERROR } from './navigation-55ccfe56.js';
+import { S as SET_NAVIGATION_PATH, e as SET_ROUTE, C as CALL_HISTORY_METHOD, c as selectRouteEntry, d as selectCurrentProject, U as UPDATE_LOADING_STATE, f as findContentTypeMapping, g as SET_ENTRY, h as SET_ANCESTORS, i as SET_SIBLINGS } from './selectors-5b478abf.js';
+import { v as validateUserSaga, u as userSagas } from './sagas-bb225af4.js';
 import { takeEvery, put, select, call, all } from '@redux-saga/core/effects';
 import { info, error } from 'loglevel';
 import 'react-hot-loader';
-import { R as RouteLoader } from './RouteLoader-5312c2c7.js';
+import { R as RouteLoader } from './RouteLoader-02c01331.js';
 
 const selectedHistory = typeof window !== 'undefined' ? createBrowserHistory : createMemoryHistory;
 const history = (options = {}) => selectedHistory(options);
@@ -308,7 +308,7 @@ function* getRouteSaga(action) {
       });
   } catch (e) {
     error(...['Error running route saga:', e, e.stack]);
-    yield call(do404);
+    yield call(do500, e);
   }
 }
 
@@ -357,6 +357,18 @@ function* do404() {
   });
 }
 
+function* do500(error) {
+  yield put({
+    type: SET_ENTRY,
+    id: null,
+    entry: null,
+    notFound: true,
+    isError: true,
+    error,
+    statusCode: error && error.status ? error.status : 500
+  });
+}
+
 const navigationSagas = [takeEvery(GET_NODE_TREE, ensureNodeTreeSaga)];
 function* ensureNodeTreeSaga(action) {
   const state = yield select();
@@ -401,4 +413,4 @@ const AppRoot = props => {
 };
 
 export { AppRoot as A, browserHistory as b, history as h, pickProject as p, rootSaga as r };
-//# sourceMappingURL=App-62f0950c.js.map
+//# sourceMappingURL=App-fe4ec95b.js.map

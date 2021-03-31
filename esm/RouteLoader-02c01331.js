@@ -1,14 +1,29 @@
 import React, { useCallback, useEffect } from 'react';
 import { Route, useLocation, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { j as selectRouteEntryContentTypeId, c as selectRouteEntry, k as selectIsNotFound, l as selectUserLoggedIn, m as selectRouteLoading, n as selectMappedEntry, d as selectCurrentProject, o as selectCurrentPath } from './selectors-93653e5b.js';
-import { a as setNavigationPath } from './routing-9ef18a63.js';
+import { j as selectRouteEntryContentTypeId, c as selectRouteEntry, k as selectRouteIsError, l as selectIsNotFound, m as selectUserLoggedIn, n as selectRouteLoading, o as selectMappedEntry, d as selectCurrentProject, p as selectCurrentPath, q as selectRouteStatusCode, r as selectRouteErrorMessage } from './selectors-5b478abf.js';
+import { a as setNavigationPath } from './routing-3f02e5ea.js';
 import { t as toJS } from './ToJs-1649f545.js';
 import { matchRoutes, renderRoutes } from 'react-router-config';
 import { hot } from 'react-hot-loader';
 import PropTypes from 'prop-types';
 
-const NotFound = () => React.createElement(React.Fragment, null, React.createElement("header", null, React.createElement("h1", null, "404 Page Not Found")));
+const NotFound = ({
+  statusCode,
+  statusText
+}) => React.createElement(React.Fragment, null, React.createElement("header", null, React.createElement("h1", null, statusCode || '404', " Page Not Found"), statusText && React.createElement("h2", {
+  style: {
+    background: '#eee',
+    color: '#666',
+    fontSize: '100%',
+    padding: '10px'
+  }
+}, statusText)));
+
+NotFound.propTypes = {
+  statusCode: PropTypes.number,
+  statusText: PropTypes.string
+};
 
 const Status = ({
   code,
@@ -41,18 +56,21 @@ const getTrimmedPath = path => {
 };
 
 const RouteLoader = ({
-  statePath,
-  projectId,
   contentTypeId,
   entry,
+  isError,
   isLoading,
   isLoggedIn,
   isNotFound,
   loadingComponent,
   mappedEntry,
   notFoundComponent,
-  setNavigationPath,
+  projectId,
   routes,
+  setNavigationPath,
+  statePath,
+  statusCode,
+  statusText,
   withEvents
 }) => {
   const location = useLocation(); // Match any Static Routes a developer has defined
@@ -120,10 +138,13 @@ const RouteLoader = ({
 
   const NotFoundComponent = notFoundComponent ? notFoundComponent : NotFound;
 
-  if (isNotFound) {
+  if (isNotFound || isError) {
     return React.createElement(Status, {
-      code: 404
-    }, React.createElement(NotFoundComponent, null));
+      code: statusCode
+    }, React.createElement(NotFoundComponent, {
+      statusCode: statusCode,
+      statusText: statusText
+    }));
   }
 
   return null;
@@ -132,6 +153,7 @@ const RouteLoader = ({
 RouteLoader.propTypes = {
   contentTypeId: PropTypes.string,
   entry: PropTypes.object,
+  isError: PropTypes.bool,
   isLoading: PropTypes.bool,
   isLoggedIn: PropTypes.bool,
   isNotFound: PropTypes.bool,
@@ -142,6 +164,8 @@ RouteLoader.propTypes = {
   routes: PropTypes.objectOf(PropTypes.array, PropTypes.array),
   setNavigationPath: PropTypes.func,
   statePath: PropTypes.string,
+  statusCode: PropTypes.number,
+  statusText: PropTypes.string,
   withEvents: PropTypes.object
 };
 
@@ -149,12 +173,15 @@ const mapStateToProps = state => {
   return {
     contentTypeId: selectRouteEntryContentTypeId(state),
     entry: selectRouteEntry(state),
+    isError: selectRouteIsError(state),
     isNotFound: selectIsNotFound(state),
     isLoggedIn: selectUserLoggedIn(state),
     isLoading: selectRouteLoading(state),
     mappedEntry: selectMappedEntry(state),
     projectId: selectCurrentProject(state),
-    statePath: selectCurrentPath(state)
+    statePath: selectCurrentPath(state),
+    statusCode: selectRouteStatusCode(state),
+    statusText: selectRouteErrorMessage(state)
   };
 };
 
@@ -164,4 +191,4 @@ const mapDispatchToProps = {
 var RouteLoader$1 = hot(module)(connect(mapStateToProps, mapDispatchToProps)(toJS(RouteLoader)));
 
 export { RouteLoader$1 as R };
-//# sourceMappingURL=RouteLoader-5312c2c7.js.map
+//# sourceMappingURL=RouteLoader-02c01331.js.map

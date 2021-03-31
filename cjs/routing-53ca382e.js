@@ -1,6 +1,6 @@
 'use strict';
 
-var selectors = require('./selectors-4e2a4fe0.js');
+var selectors = require('./selectors-ac6b55d5.js');
 
 const setNotFound = notFound => selectors.action(selectors.SET_NAVIGATION_NOT_FOUND, {
   notFound
@@ -37,4 +37,4 @@ var routing = /*#__PURE__*/Object.freeze({
 exports.routing = routing;
 exports.setCurrentProject = setCurrentProject;
 exports.setNavigationPath = setNavigationPath;
-//# sourceMappingURL=routing-64a1d60d.js.map
+//# sourceMappingURL=routing-53ca382e.js.map

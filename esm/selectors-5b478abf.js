@@ -1,11 +1,5 @@
-'use strict';
-
-var immutable = require('immutable');
-var queryString = require('query-string');
-
-function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
-
-var queryString__default = /*#__PURE__*/_interopDefaultLegacy(queryString);
+import { Map, List } from 'immutable';
+import queryString from 'query-string';
 
 function action(type, payload = {}) {
   return {
@@ -48,7 +42,7 @@ var routing = /*#__PURE__*/Object.freeze({
 });
 
 function queryParams(search) {
-  return queryString__default['default'].parse(typeof window != 'undefined' ? window.location.search : search);
+  return queryString.parse(typeof window != 'undefined' ? window.location.search : search);
 }
 const clientHostname = () => `${window.location.protocol}//${window.location.hostname}:${window.location.port}`;
 const addHostname = typeof window == 'undefined' || window.location.host == 'localhost:3000' ? `https://${PUBLIC_URI
@@ -56,13 +50,13 @@ const addHostname = typeof window == 'undefined' || window.location.host == 'loc
 }` : clientHostname();
 
 const selectRouteEntry = state => {
-  return state.getIn(['routing', 'entry'], immutable.Map());
+  return state.getIn(['routing', 'entry'], Map());
 };
 const selectMappedEntry = state => {
   return state.getIn(['routing', 'mappedEntry'], null);
 };
 const selectNodeDepends = state => {
-  return state.getIn(['routing', 'nodeDepends'], immutable.List());
+  return state.getIn(['routing', 'nodeDepends'], List());
 };
 const selectCurrentTreeID = state => {
   return state.getIn(['routing', 'currentTreeId']);
@@ -100,16 +94,29 @@ const selectIsNotFound = state => {
   return state.getIn(['routing', 'notFound']);
 };
 const selectCurrentAncestors = state => {
-  return state.getIn(['routing', 'currentNodeAncestors'], immutable.List());
+  return state.getIn(['routing', 'currentNodeAncestors'], List());
 };
 const selectCurrentNode = state => {
   return state.getIn(['routing', 'currentNode']);
 };
 const selectBreadcrumb = state => {
-  return (selectCurrentAncestors(state) || immutable.List()).push(selectCurrentNode(state));
+  return (selectCurrentAncestors(state) || List()).push(selectCurrentNode(state));
+};
+const selectRouteErrorMessage = state => {
+  const error = state.getIn(['routing', 'error']);
+
+  if (error && 'toJS' in error) {
+    return error.getIn(['data', 'message']) || error.get('statusText');
+  }
+};
+const selectRouteIsError = state => {
+  return state.getIn(['routing', 'isError']);
 };
 const selectRouteLoading = state => {
   return state.getIn(['routing', 'isLoading']);
+};
+const selectRouteStatusCode = state => {
+  return state.getIn(['routing', 'statusCode']);
 };
 
 var routing$1 = /*#__PURE__*/Object.freeze({
@@ -132,7 +139,10 @@ var routing$1 = /*#__PURE__*/Object.freeze({
   selectCurrentAncestors: selectCurrentAncestors,
   selectCurrentNode: selectCurrentNode,
   selectBreadcrumb: selectBreadcrumb,
-  selectRouteLoading: selectRouteLoading
+  selectRouteErrorMessage: selectRouteErrorMessage,
+  selectRouteIsError: selectRouteIsError,
+  selectRouteLoading: selectRouteLoading,
+  selectRouteStatusCode: selectRouteStatusCode
 });
 
 const selectUser = state => {
@@ -188,39 +198,5 @@ var user = /*#__PURE__*/Object.freeze({
   selectCaptchaToken: selectCaptchaToken
 });
 
-exports.CALL_HISTORY_METHOD = CALL_HISTORY_METHOD;
-exports.SET_ANCESTORS = SET_ANCESTORS;
-exports.SET_ENTRY = SET_ENTRY;
-exports.SET_NAVIGATION_NOT_FOUND = SET_NAVIGATION_NOT_FOUND;
-exports.SET_NAVIGATION_PATH = SET_NAVIGATION_PATH;
-exports.SET_ROUTE = SET_ROUTE;
-exports.SET_SIBLINGS = SET_SIBLINGS;
-exports.SET_TARGET_PROJECT = SET_TARGET_PROJECT;
-exports.UPDATE_LOADING_STATE = UPDATE_LOADING_STATE;
-exports.action = action;
-exports.findContentTypeMapping = findContentTypeMapping;
-exports.routing = routing;
-exports.routing$1 = routing$1;
-exports.selectCaptchaResponse = selectCaptchaResponse;
-exports.selectCaptchaSiteKey = selectCaptchaSiteKey;
-exports.selectChangePasswordMessage = selectChangePasswordMessage;
-exports.selectCurrentPath = selectCurrentPath;
-exports.selectCurrentProject = selectCurrentProject;
-exports.selectCurrentSearch = selectCurrentSearch;
-exports.selectCurrentTreeID = selectCurrentTreeID;
-exports.selectEntryDepends = selectEntryDepends;
-exports.selectIsNotFound = selectIsNotFound;
-exports.selectLoginScreenMode = selectLoginScreenMode;
-exports.selectMappedEntry = selectMappedEntry;
-exports.selectNodeDepends = selectNodeDepends;
-exports.selectPasswordMessage = selectPasswordMessage;
-exports.selectQueryStringAsObject = selectQueryStringAsObject;
-exports.selectRouteEntry = selectRouteEntry;
-exports.selectRouteEntryContentTypeId = selectRouteEntryContentTypeId;
-exports.selectRouteLoading = selectRouteLoading;
-exports.selectUser = selectUser;
-exports.selectUserLoggedIn = selectUserLoggedIn;
-exports.selectUserMessage = selectUserMessage;
-exports.selectUsername = selectUsername;
-exports.user = user;
-//# sourceMappingURL=selectors-4e2a4fe0.js.map
+export { routing$1 as A, user as B, CALL_HISTORY_METHOD as C, selectUserMessage as D, selectLoginScreenMode as E, selectPasswordMessage as F, selectChangePasswordMessage as G, selectCaptchaSiteKey as H, selectCaptchaResponse as I, selectQueryStringAsObject as J, SET_NAVIGATION_PATH as S, UPDATE_LOADING_STATE as U, selectNodeDepends as a, selectCurrentTreeID as b, selectRouteEntry as c, selectCurrentProject as d, SET_ROUTE as e, findContentTypeMapping as f, SET_ENTRY as g, SET_ANCESTORS as h, SET_SIBLINGS as i, selectRouteEntryContentTypeId as j, selectRouteIsError as k, selectIsNotFound as l, selectUserLoggedIn as m, selectRouteLoading as n, selectMappedEntry as o, selectCurrentPath as p, selectRouteStatusCode as q, selectRouteErrorMessage as r, selectEntryDepends as s, action as t, SET_TARGET_PROJECT as u, SET_NAVIGATION_NOT_FOUND as v, selectUser as w, selectCurrentSearch as x, selectUsername as y, routing as z };
+//# sourceMappingURL=selectors-5b478abf.js.map
