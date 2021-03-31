@@ -13,19 +13,22 @@ import { GetAllResponseGuids } from '~/core/util/ContensisDeliveryApi';
 let initialState = OrderedMap({
   contentTypeId: null,
   currentPath: '/',
-  currentNode: [],
+  currentNode: OrderedMap(),
   currentNodeAncestors: List(),
   currentProject: 'unknown',
   currentTreeId: null,
   entry: null,
   entryDepends: List(),
   entryID: null,
+  error: undefined,
+  isError: false,
   isLoading: false,
-  location: null,
+  location: OrderedMap(),
   mappedEntry: null,
   nodeDepends: List(),
   notFound: false,
   staticRoute: null,
+  statusCode: 200,
 });
 
 export default (state = initialState, action) => {
@@ -50,21 +53,32 @@ export default (state = initialState, action) => {
     case SET_ENTRY: {
       const {
         entry,
+        error,
         mappedEntry,
         node = {},
+        isError = false,
         isLoading = false,
         notFound = false,
+        statusCode,
       } = action;
+
+      let defaultStatus = 200;
+      if (notFound === true && isError === false) defaultStatus = 404;
+      else if (isError === true) defaultStatus = statusCode || 500;
+
       let nextState;
 
       if (!entry) {
         nextState = state
           .set('entryID', null)
-          .set('entryDepends', null)
+          .set('entryDepends', List())
           .set('entry', null)
+          .set('error', fromJS(error))
           .set('mappedEntry', null)
+          .set('isError', isError)
           .set('isLoading', isLoading)
-          .set('notFound', notFound);
+          .set('notFound', notFound)
+          .set('statusCode', statusCode || defaultStatus);
       } else {
         const entryDepends = GetAllResponseGuids(entry);
 
@@ -72,8 +86,11 @@ export default (state = initialState, action) => {
           .set('entryID', action.id)
           .set('entryDepends', fromJS(entryDepends))
           .set('entry', fromJS(entry))
+          .set('error', fromJS(error))
+          .set('isError', isError)
           .set('isLoading', isLoading)
-          .set('notFound', notFound);
+          .set('notFound', notFound)
+          .set('statusCode', statusCode || defaultStatus);
 
         if (mappedEntry)
           nextState = nextState

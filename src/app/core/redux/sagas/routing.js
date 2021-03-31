@@ -301,7 +301,7 @@ function* getRouteSaga(action) {
       });
   } catch (e) {
     log.error(...['Error running route saga:', e, e.stack]);
-    yield call(do404);
+    yield call(do500, e);
   }
 }
 
@@ -354,11 +354,24 @@ function* mapRouteEntry(entryMapper, node) {
   }
   return;
 }
+
 function* do404() {
   yield put({
     type: SET_ENTRY,
     id: null,
     entry: null,
     notFound: true,
+  });
+}
+
+function* do500(error) {
+  yield put({
+    type: SET_ENTRY,
+    id: null,
+    entry: null,
+    notFound: true,
+    isError: true,
+    error,
+    statusCode: error && error.status ? error.status : 500,
   });
 }

@@ -68,17 +68,10 @@ const addStandardHeaders = (state, response, packagejson, groups) => {
 
       addVarnishAuthenticationHeaders(state, response, groups);
 
-      if (response.statusCode === 404) {
-        response.setHeader(
-          'Surrogate-Control',
-          `max-age=${getCacheDuration(404)}`
-        );
-      } else {
-        response.setHeader(
-          'Surrogate-Control',
-          `max-age=${getCacheDuration(200)}`
-        );
-      }
+      response.setHeader(
+        'Surrogate-Control',
+        `max-age=${getCacheDuration(response.statusCode)}`
+      );
     } catch (e) {
       console.info('Error Adding headers', e.message);
     }
@@ -312,16 +305,12 @@ const webApp = (app, ReactApp, config) => {
         .replace('{{APP}}', '')
         .replace('{{LOADABLE_CHUNKS}}', bundleTags)
         .replace('{{REDUX_DATA}}', isDynamicHint);
+      // Dynamic pages always return a 200 so we can run
+      // the app and serve up all errors inside the client
       response.setHeader(
         'Surrogate-Control',
         `max-age=${getCacheDuration(200)}`
       );
-      if (response.statusCode === 404) {
-        response.setHeader(
-          'Surrogate-Control',
-          `max-age=${getCacheDuration(404)}`
-        );
-      }
       responseHandler(request, response, responseHtmlDynamic);
     }
 
@@ -340,11 +329,6 @@ const webApp = (app, ReactApp, config) => {
           const htmlAttributes = helmet.htmlAttributes.toString();
           let title = helmet.title.toString();
           const metadata = helmet.meta.toString();
-
-          if (context.status === 404) {
-            response.status(404);
-            title = '<title>404 page not found</title>';
-          }
 
           if (context.url) {
             return response.redirect(302, context.url);
@@ -376,20 +360,18 @@ const webApp = (app, ReactApp, config) => {
               serialisedReduxData = `<script>window.REDUX_DATA = ${serialisedReduxData}</script>`;
             }
           }
-          if (context.status === 404) {
+          if (context.status > 400) {
             accessMethod.STATIC = true;
           }
 
           // Responses
           let responseHTML = '';
 
+          if (context.status === 404)
+            title = '<title>404 page not found</title>';
+
           // Static page served as a fragment
           if (accessMethod.FRAGMENT && accessMethod.STATIC) {
-            // Gets called again later....
-            // addStandardHeaders(reduxState, response, packagejson, {
-            //   allowedGroups,
-            //   globalGroups,
-            // });
             responseHTML = minifyCssString(styleTags) + html;
           }
 
@@ -424,6 +406,11 @@ const webApp = (app, ReactApp, config) => {
               .replace('{{LOADABLE_CHUNKS}}', bundleTags)
               .replace('{{REDUX_DATA}}', serialisedReduxData);
           }
+
+          // Set response.status from React StaticRouter
+          if (typeof context.status === 'number')
+            response.status(context.status);
+
           addStandardHeaders(reduxState, response, packagejson, {
             allowedGroups,
             globalGroups,

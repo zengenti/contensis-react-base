@@ -6,12 +6,6 @@ export const CacheDuration = {
 };
 
 export const getCacheDuration = (status = 200) => {
-  switch (status) {
-    case 200:
-      return CacheDuration[200];
-    case 404:
-      return CacheDuration[404];
-    default:
-      return '5';
-  }
+  if (status > 400) return CacheDuration[404];
+  return CacheDuration[200];
 };
