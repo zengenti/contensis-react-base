@@ -49,8 +49,10 @@ var types = /*#__PURE__*/Object.freeze({
 const defaultAuthenticationState = immutable.Map({
   authenticated: false,
   authenticationError: false,
+  authenticationErrorMessage: null,
   clientCredentials: null,
   error: false,
+  errorMessage: null,
   loading: false
 });
 const defaultPasswordResetRequestValues = {
@@ -83,8 +85,10 @@ var UserReducer = ((state = initialUserState, action) => {
         const {
           authenticationState: {
             error = false,
+            errorMessage = null,
             authenticated,
             authenticationError = false,
+            authenticationErrorMessage = null,
             clientCredentials = null
           },
           user
@@ -100,8 +104,10 @@ var UserReducer = ((state = initialUserState, action) => {
           authenticationState: {
             authenticated: authenticated || state.getIn(['authenticationState', 'authenticated']),
             authenticationError,
+            authenticationErrorMessage,
             clientCredentials,
             error,
+            errorMessage,
             loading
           }
         };
@@ -171,4 +177,4 @@ exports.VALIDATE_USER = VALIDATE_USER;
 exports.fromJSOrdered = fromJSOrdered;
 exports.initialUserState = initialUserState;
 exports.types = types;
-//# sourceMappingURL=reducers-af3157ec.js.map
+//# sourceMappingURL=reducers-7c73e91a.js.map

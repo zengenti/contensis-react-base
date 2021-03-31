@@ -2,13 +2,13 @@ import 'react';
 import { useDispatch, useSelector, connect } from 'react-redux';
 import 'immutable';
 import { y as action, n as selectCurrentSearch } from './routing-7eff80b5.js';
-import { L as LOGIN_USER, j as LOGOUT_USER, R as REGISTER_USER, c as REQUEST_USER_PASSWORD_RESET, d as RESET_USER_PASSWORD } from './reducers-29d0efa9.js';
-export { m as initialUserState, U as reducer, t as types } from './reducers-29d0efa9.js';
+import { L as LOGIN_USER, j as LOGOUT_USER, R as REGISTER_USER, c as REQUEST_USER_PASSWORD_RESET, d as RESET_USER_PASSWORD } from './reducers-6d9b6c51.js';
+export { m as initialUserState, U as reducer, t as types } from './reducers-6d9b6c51.js';
 import 'query-string';
 import '@redux-saga/core/effects';
-import { c as selectUserAuthenticationError, d as selectUserError, s as selectUserIsAuthenticated, e as selectUserIsLoading, f as selectUser, t as toJS, g as selectUserRegistrationError, h as selectUserRegistrationIsLoading, i as selectUserRegistrationIsSuccess, j as selectUserRegistration, k as selectPasswordResetRequestSending, l as selectPasswordResetRequestSent, n as selectPasswordResetRequestError, o as selectResetPasswordSending, p as selectResetPasswordSent, q as selectResetPasswordError } from './ToJs-7da4413c.js';
-export { r as selectors } from './ToJs-7da4413c.js';
-export { L as LoginHelper, h as handleRequiresLoginSaga, r as refreshSecurityToken } from './login-96837dda.js';
+import { c as selectUserAuthenticationError, d as selectUserAuthenticationErrorMessage, e as selectUserError, f as selectUserErrorMessage, s as selectUserIsAuthenticated, g as selectUserIsLoading, h as selectUser, t as toJS, i as selectUserRegistrationError, j as selectUserRegistrationIsLoading, k as selectUserRegistrationIsSuccess, l as selectUserRegistration, n as selectPasswordResetRequestSending, o as selectPasswordResetRequestSent, p as selectPasswordResetRequestError, q as selectResetPasswordSending, r as selectResetPasswordSent, u as selectResetPasswordError } from './ToJs-dea75c6f.js';
+export { v as selectors } from './ToJs-dea75c6f.js';
+export { L as LoginHelper, h as handleRequiresLoginSaga, r as refreshSecurityToken } from './login-125acea2.js';
 import 'jsonpath-mapper';
 import 'await-to-js';
 import 'js-cookie';
@@ -47,7 +47,9 @@ const useLogin = () => {
     loginUser: (username, password) => dispatch(loginUser(username, password)),
     logoutUser: redirectPath => dispatch(logoutUser(redirectPath)),
     authenticationError: select(selectUserAuthenticationError),
+    authenticationErrorMessage: select(selectUserAuthenticationErrorMessage),
     error: select(selectUserError),
+    errorMessage: select(selectUserErrorMessage),
     isAuthenticated: select(selectUserIsAuthenticated),
     isLoading: select(selectUserIsLoading),
     user: select(selectUser).toJS()
@@ -65,7 +67,7 @@ const LoginContainer = ({
 LoginContainer.propTypes = {};
 var Login_container = toJS(LoginContainer);
 
-const useLogin$1 = () => {
+const useRegistration = () => {
   const dispatch = useDispatch();
   const select = useSelector;
   return {
@@ -81,14 +83,14 @@ const RegistrationContainer = ({
   children,
   ...props
 }) => {
-  const userProps = useLogin$1();
+  const userProps = useRegistration();
   return children(userProps);
 };
 
 RegistrationContainer.propTypes = {};
 var Registration_container = toJS(RegistrationContainer);
 
-const useLogin$2 = () => {
+const useForgotPassword = () => {
   const dispatch = useDispatch();
   const select = useSelector;
   return {
@@ -103,14 +105,14 @@ const ForgotPasswordContainer = ({
   children,
   ...props
 }) => {
-  const userProps = useLogin$2();
+  const userProps = useForgotPassword();
   return children(userProps);
 };
 
 ForgotPasswordContainer.propTypes = {};
 var ForgotPassword_container = toJS(ForgotPasswordContainer);
 
-const useLogin$3 = () => {
+const useResetPassword = () => {
   const dispatch = useDispatch();
   const select = useSelector;
   return {
@@ -126,7 +128,7 @@ const ResetPasswordContainer = ({
   children,
   ...props
 }) => {
-  const userProps = useLogin$3();
+  const userProps = useResetPassword();
   return children(userProps);
 };
 
@@ -134,30 +136,10 @@ ResetPasswordContainer.propTypes = {};
 var ResetPassword_container = toJS(ResetPasswordContainer);
 
 const useUser = () => {
-  const dispatch = useDispatch();
-  const select = useSelector;
-  return {
-    loginUser: (username, password) => dispatch(loginUser(username, password)),
-    logoutUser: redirectPath => dispatch(logoutUser(redirectPath)),
-    authenticationError: select(selectUserAuthenticationError),
-    userError: select(selectUserError),
-    isAuthenticated: select(selectUserIsAuthenticated),
-    userIsLoading: select(selectUserIsLoading),
-    user: select(selectUser).toJS(),
-    registerUser: (user, mappers) => dispatch(registerUser(user, mappers)),
-    registrationError: select(selectUserRegistrationError),
-    registrationIsLoading: select(selectUserRegistrationIsLoading),
-    registrationIsSuccess: select(selectUserRegistrationIsSuccess),
-    userRegistration: select(selectUserRegistration).toJS(),
-    passwordResetRequestIsLoading: select(selectPasswordResetRequestSending),
-    passwordResetRequestIsSuccess: select(selectPasswordResetRequestSent),
-    passwordResetRequestError: select(selectPasswordResetRequestError),
-    requestPasswordReset: userEmailObject => dispatch(requestPasswordReset(userEmailObject)),
-    queryString: select(selectCurrentSearch),
-    passwordResetIsLoading: select(selectResetPasswordSending),
-    passwordResetIsSuccess: select(selectResetPasswordSent),
-    passwordResetError: select(selectResetPasswordError),
-    resetPassword: resetPasswordObject => dispatch(resetPassword(resetPasswordObject))
+  return { ...useLogin(),
+    ...useRegistration(),
+    ...useForgotPassword(),
+    ...useResetPassword()
   };
 };
 
@@ -236,5 +218,5 @@ const withRegistration = WrappedComponent => {
   return ConnectedComponent;
 };
 
-export { ForgotPassword_container as ForgotPasswordContainer, Login_container as LoginContainer, Registration_container as RegistrationContainer, ResetPassword_container as ResetPasswordContainer, User_container as UserContainer, actions, useLogin, useLogin$1 as useRegistration, withLogin, withRegistration };
+export { ForgotPassword_container as ForgotPasswordContainer, Login_container as LoginContainer, Registration_container as RegistrationContainer, ResetPassword_container as ResetPasswordContainer, User_container as UserContainer, actions, useForgotPassword, useLogin, useRegistration, useResetPassword, useUser, withLogin, withRegistration };
 //# sourceMappingURL=user.js.map

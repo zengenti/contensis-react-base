@@ -47,8 +47,10 @@ var types = /*#__PURE__*/Object.freeze({
 const defaultAuthenticationState = Map({
   authenticated: false,
   authenticationError: false,
+  authenticationErrorMessage: null,
   clientCredentials: null,
   error: false,
+  errorMessage: null,
   loading: false
 });
 const defaultPasswordResetRequestValues = {
@@ -81,8 +83,10 @@ var UserReducer = ((state = initialUserState, action) => {
         const {
           authenticationState: {
             error = false,
+            errorMessage = null,
             authenticated,
             authenticationError = false,
+            authenticationErrorMessage = null,
             clientCredentials = null
           },
           user
@@ -98,8 +102,10 @@ var UserReducer = ((state = initialUserState, action) => {
           authenticationState: {
             authenticated: authenticated || state.getIn(['authenticationState', 'authenticated']),
             authenticationError,
+            authenticationErrorMessage,
             clientCredentials,
             error,
+            errorMessage,
             loading
           }
         };
@@ -151,4 +157,4 @@ var UserReducer = ((state = initialUserState, action) => {
 });
 
 export { LOGIN_USER as L, REGISTER_USER as R, SET_REQUEST_USER_PASSWORD_RESET_SENDING as S, UserReducer as U, VALIDATE_USER as V, REGISTER_USER_SUCCESS as a, REGISTER_USER_FAILED as b, REQUEST_USER_PASSWORD_RESET as c, RESET_USER_PASSWORD as d, SET_REQUEST_USER_PASSWORD_RESET_SUCCESS as e, SET_REQUEST_USER_PASSWORD_RESET_ERROR as f, SET_RESET_USER_PASSWORD_SENDING as g, SET_RESET_USER_PASSWORD_SUCCESS as h, SET_RESET_USER_PASSWORD_ERROR as i, LOGOUT_USER as j, SET_AUTHENTICATION_STATE as k, fromJSOrdered as l, initialUserState as m, types as t };
-//# sourceMappingURL=reducers-29d0efa9.js.map
+//# sourceMappingURL=reducers-6d9b6c51.js.map

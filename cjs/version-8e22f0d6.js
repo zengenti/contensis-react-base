@@ -6,7 +6,7 @@ var redux = require('redux');
 var reduxImmutable = require('redux-immutable');
 var thunk = require('redux-thunk');
 var createSagaMiddleware = require('redux-saga');
-var reducers = require('./reducers-af3157ec.js');
+var reducers = require('./reducers-7c73e91a.js');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -328,4 +328,4 @@ exports.setVersionStatus = setVersionStatus;
 exports.version = version;
 exports.version$1 = version$1;
 exports.version$2 = version$2;
-//# sourceMappingURL=version-7b8b4afe.js.map
+//# sourceMappingURL=version-8e22f0d6.js.map

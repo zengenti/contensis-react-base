@@ -1,8 +1,8 @@
 import { Map } from 'immutable';
 import { q as queryParams, n as selectCurrentSearch, g as findContentTypeMapping, o as setRoute } from './routing-7eff80b5.js';
-import { L as LOGIN_USER, j as LOGOUT_USER, V as VALIDATE_USER, k as SET_AUTHENTICATION_STATE } from './reducers-29d0efa9.js';
+import { L as LOGIN_USER, j as LOGOUT_USER, V as VALIDATE_USER, k as SET_AUTHENTICATION_STATE } from './reducers-6d9b6c51.js';
 import { takeEvery, select, call, put } from '@redux-saga/core/effects';
-import { s as selectUserIsAuthenticated, a as selectUserGroups, m as matchUserGroup, b as selectClientCredentials } from './ToJs-7da4413c.js';
+import { s as selectUserIsAuthenticated, a as selectUserGroups, m as matchUserGroup, b as selectClientCredentials } from './ToJs-dea75c6f.js';
 import mapJson from 'jsonpath-mapper';
 import { to } from 'await-to-js';
 import Cookies from 'js-cookie';
@@ -189,7 +189,9 @@ class LoginHelper {
         authenticationState = {
           authenticated: false,
           authenticationError: authenticationError,
+          authenticationErrorMessage: authenticationError && loginError.message || null,
           error: !authenticationError,
+          errorMessage: !authenticationError && loginError.message || null,
           clientCredentials: null
         };
         LoginHelper.ClearCachedCredentials();
@@ -557,4 +559,4 @@ function* refreshSecurityToken() {
 }
 
 export { LoginHelper as L, handleRequiresLoginSaga as h, loginSagas as l, refreshSecurityToken as r };
-//# sourceMappingURL=login-96837dda.js.map
+//# sourceMappingURL=login-125acea2.js.map

@@ -2,9 +2,9 @@
 
 var immutable = require('immutable');
 var routing = require('./routing-6197a03e.js');
-var reducers = require('./reducers-af3157ec.js');
+var reducers = require('./reducers-7c73e91a.js');
 var effects = require('@redux-saga/core/effects');
-var ToJs = require('./ToJs-6487bd5c.js');
+var ToJs = require('./ToJs-7dbcf7a7.js');
 var mapJson = require('jsonpath-mapper');
 var awaitToJs = require('await-to-js');
 var Cookies = require('js-cookie');
@@ -217,7 +217,9 @@ class LoginHelper {
         authenticationState = {
           authenticated: false,
           authenticationError: authenticationError,
+          authenticationErrorMessage: authenticationError && loginError.message || null,
           error: !authenticationError,
+          errorMessage: !authenticationError && loginError.message || null,
           clientCredentials: null
         };
         LoginHelper.ClearCachedCredentials();
@@ -588,4 +590,4 @@ exports.LoginHelper = LoginHelper;
 exports.handleRequiresLoginSaga = handleRequiresLoginSaga;
 exports.loginSagas = loginSagas;
 exports.refreshSecurityToken = refreshSecurityToken;
-//# sourceMappingURL=login-34553267.js.map
+//# sourceMappingURL=login-0c0c56cb.js.map
