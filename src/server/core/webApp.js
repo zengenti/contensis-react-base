@@ -36,6 +36,7 @@ import rootSaga from '~/core/redux/sagas/index.js';
 import { matchRoutes } from 'react-router-config';
 import mapJson from 'jsonpath-mapper';
 import { replaceStaticPath } from '../util/staticPaths';
+import { getCacheDuration } from '../cacheDuration.schema';
 
 const addStandardHeaders = (state, response, packagejson, groups) => {
   if (state) {
@@ -68,9 +69,15 @@ const addStandardHeaders = (state, response, packagejson, groups) => {
       addVarnishAuthenticationHeaders(state, response, groups);
 
       if (response.statusCode === 404) {
-        response.setHeader('Surrogate-Control', 'max-age=300');
+        response.setHeader(
+          'Surrogate-Control',
+          `max-age=${getCacheDuration(404)}`
+        );
       } else {
-        response.setHeader('Surrogate-Control', 'max-age=3600');
+        response.setHeader(
+          'Surrogate-Control',
+          `max-age=${getCacheDuration(200)}`
+        );
       }
     } catch (e) {
       console.info('Error Adding headers', e.message);
@@ -305,9 +312,15 @@ const webApp = (app, ReactApp, config) => {
         .replace('{{APP}}', '')
         .replace('{{LOADABLE_CHUNKS}}', bundleTags)
         .replace('{{REDUX_DATA}}', isDynamicHint);
-      response.setHeader('Surrogate-Control', 'max-age=3600');
+      response.setHeader(
+        'Surrogate-Control',
+        `max-age=${getCacheDuration(200)}`
+      );
       if (response.statusCode === 404) {
-        response.setHeader('Surrogate-Control', 'max-age=300');
+        response.setHeader(
+          'Surrogate-Control',
+          `max-age=${getCacheDuration(404)}`
+        );
       }
       responseHandler(request, response, responseHtmlDynamic);
     }
