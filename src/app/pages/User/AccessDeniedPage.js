@@ -54,7 +54,7 @@ const AccessDeniedPage = () => (
       {({ user = {} }) => (
         <DetailsPanel>
           <h1>
-            Logged in as: {user.name} ({user.userName}){' '}
+            Logged in as: {user.name} ({user.username}){' '}
             <IdLabel>[{user.id}]</IdLabel>
           </h1>
           <GroupList>

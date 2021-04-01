@@ -28,7 +28,7 @@ export const selectUserGuid = state => {
   return state.getIn(['user', 'id']);
 };
 export const selectUsername = state => {
-  return state.getIn(['user', 'userName']);
+  return state.getIn(['user', 'username']);
 };
 export const selectUserEmail = state => {
   return state.getIn(['user', 'email']);
