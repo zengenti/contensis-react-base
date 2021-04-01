@@ -1,3 +1,33 @@
+#### 2.2.0 (2021-04-01)
+
+##### Build System / Dependencies
+
+- disable warning (158a635d)
+- add zenhub-dev as default .env (0308f34f)
+- set zengenti-search-package to install from master branch (a90778fd)
+- update contensis dependency packages (8a7e49f0)
+- lib to ensure latest search package is installed (fec721ef)
+
+##### Documentation Changes
+
+- create changelog.md (859c4ae1)
+
+##### New Features
+
+- record and bubble up errors from the routing saga into the redux state, webApp middleware respects the context.status returned from the React StaticRouter and will render all status codes > 400 with the same rules as a plain 404 (b9f1dcc1)
+
+##### Bug Fixes
+
+- change user props userName, firstName, lastName to match new Management API format of all lowercase (8dbe7c3d)
+- alter cache duration for 404 response to 5s down from 500s (f14a60a8)
+- bug introduced with last fix causing dynamic=true to throw a server side error and return an error page (e81470df)
+- Commit updated search bundles (cfa6b0ac)
+- LoginHelper class - Loop through ApplicationData to find refresh token rather than assuming it's always at the same index (ade9ac53)
+
+##### Other Changes
+
+- track the current statusCode by setting it in the response object when it changes instead of primitive var (42dfd243)
+
 #### 2.1.1
 
 ##### Bug Fixes
