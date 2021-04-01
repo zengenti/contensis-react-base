@@ -1,3 +1,29 @@
+#### 1.1.0 (2021-04-01)
+
+##### Build System / Dependencies
+
+- disable warning (158a635d)
+- add zenhub-dev as default .env (0308f34f)
+- set zengenti-search-package to install from master branch (a90778fd)
+
+##### Documentation Changes
+
+- create changelog.md (859c4ae1)
+
+##### New Features
+
+- record and bubble up errors from the routing saga into the redux state, webApp middleware respects the context.status returned from the React StaticRouter and will render all status codes > 400 with the same rules as a plain 404 (b9f1dcc1)
+
+##### Bug Fixes
+
+- alter cache duration for 404 response to 5s down from 500s (f14a60a8)
+- bug introduced with last fix causing dynamic=true to throw a server side error and return an error page (e81470df)
+
+##### Other Changes
+
+- lib to ensure latest search package is installed (fec721ef)
+- track the current statusCode by setting it in the response object when it changes instead of primitive var (42dfd243)
+
 #### 1.0.3
 
 ##### Bug Fixes
