@@ -26,7 +26,7 @@ const selectUserGuid = state => {
   return state.getIn(['user', 'id']);
 };
 const selectUsername = state => {
-  return state.getIn(['user', 'userName']);
+  return state.getIn(['user', 'username']);
 };
 const selectUserEmail = state => {
   return state.getIn(['user', 'email']);
@@ -89,4 +89,4 @@ const toJS = WrappedComponent => wrappedComponentProps => {
 };
 
 export { selectUserGroups as a, selectClientCredentials as b, selectUserAuthenticationError as c, selectUserError as d, selectUserIsLoading as e, selectUser as f, selectUserRegistrationError as g, selectUserRegistrationIsLoading as h, selectUserRegistrationIsSuccess as i, selectUserRegistration as j, selectors as k, matchUserGroup as m, selectUserIsAuthenticated as s, toJS as t };
-//# sourceMappingURL=ToJs-1c73b10a.js.map
+//# sourceMappingURL=ToJs-020d9abb.js.map

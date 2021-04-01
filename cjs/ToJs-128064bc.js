@@ -32,7 +32,7 @@ const selectUserGuid = state => {
   return state.getIn(['user', 'id']);
 };
 const selectUsername = state => {
-  return state.getIn(['user', 'userName']);
+  return state.getIn(['user', 'username']);
 };
 const selectUserEmail = state => {
   return state.getIn(['user', 'email']);
@@ -108,4 +108,4 @@ exports.selectUserRegistrationIsLoading = selectUserRegistrationIsLoading;
 exports.selectUserRegistrationIsSuccess = selectUserRegistrationIsSuccess;
 exports.selectors = selectors;
 exports.toJS = toJS;
-//# sourceMappingURL=ToJs-8f6b21c9.js.map
+//# sourceMappingURL=ToJs-128064bc.js.map
