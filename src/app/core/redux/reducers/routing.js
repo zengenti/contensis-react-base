@@ -61,8 +61,6 @@ export default (state = initialState, action) => {
         nextState = state
           .set('entryID', null)
           .set('entry', null)
-          .set('mappedEntry', OrderedMap())
-          .set('entry', null)
           .set('error', fromJS(error))
           .set('mappedEntry', null)
           .set('isError', isError)

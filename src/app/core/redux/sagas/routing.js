@@ -360,7 +360,7 @@ function* setRouteEntry(
   const currentEntryLang = yield select(selectRouteEntryLanguage);
   const mappedEntry =
     currentEntryId === entrySys.id && currentEntryLang === entrySys.language
-      ? (yield select(selectMappedEntry) || Map()).toJS()
+      ? ((yield select(selectMappedEntry)) || Map()).toJS()
       : yield mapRouteEntry(entryMapper, {
           ...node,
           entry,
