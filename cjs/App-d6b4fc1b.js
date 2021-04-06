@@ -9,7 +9,7 @@ require('redux');
 require('redux-immutable');
 require('redux-thunk');
 require('redux-saga');
-var version = require('./version-313aae00.js');
+var version = require('./version-bda66634.js');
 var reducers = require('./reducers-d4faf74c.js');
 var effects = require('@redux-saga/core/effects');
 var log = require('loglevel');
@@ -663,7 +663,7 @@ function* setRouteEntry(entry, node, ancestors, siblings, entryMapper, notFound 
   const entrySys = entry && entry.sys || {};
   const currentEntryId = yield effects.select(routing.selectRouteEntryEntryId);
   const currentEntryLang = yield effects.select(routing.selectRouteEntryLanguage);
-  const mappedEntry = currentEntryId === entrySys.id && currentEntryLang === entrySys.language ? (yield effects.select(routing.selectMappedEntry) || immutable.Map()).toJS() : yield mapRouteEntry(entryMapper, { ...node,
+  const mappedEntry = currentEntryId === entrySys.id && currentEntryLang === entrySys.language ? ((yield effects.select(routing.selectMappedEntry)) || immutable.Map()).toJS() : yield mapRouteEntry(entryMapper, { ...node,
     entry,
     ancestors,
     siblings
@@ -829,4 +829,4 @@ exports.deliveryApi = deliveryApi;
 exports.history = history;
 exports.pickProject = pickProject;
 exports.rootSaga = rootSaga;
-//# sourceMappingURL=App-99ece803.js.map
+//# sourceMappingURL=App-d6b4fc1b.js.map

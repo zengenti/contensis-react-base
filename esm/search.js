@@ -1746,6 +1746,7 @@ function* executeSearch(action) {
 
     if (customApi && mappers.customApi) {
       const apiParams = mappers.customApi(queryParams);
+      result = {};
       result.payload = yield callCustomApi(customApi, apiParams);
       result.duration = 1;
     } else {

@@ -7,7 +7,7 @@ import 'redux';
 import 'redux-immutable';
 import 'redux-thunk';
 import 'redux-saga';
-import { r as reduxStore, G as GET_NODE_TREE, h as hasNavigationTree, b as selectVersionStatus, S as SET_NODE_TREE, d as GET_NODE_TREE_ERROR } from './version-e32c4e64.js';
+import { r as reduxStore, G as GET_NODE_TREE, h as hasNavigationTree, b as selectVersionStatus, S as SET_NODE_TREE, d as GET_NODE_TREE_ERROR } from './version-5fdabc60.js';
 import { R as REGISTER_USER, a as REGISTER_USER_SUCCESS, b as REGISTER_USER_FAILED } from './reducers-0ef43b76.js';
 import { takeEvery, select, put, call, all } from '@redux-saga/core/effects';
 import { info, error } from 'loglevel';
@@ -657,7 +657,7 @@ function* setRouteEntry(entry, node, ancestors, siblings, entryMapper, notFound 
   const entrySys = entry && entry.sys || {};
   const currentEntryId = yield select(selectRouteEntryEntryId);
   const currentEntryLang = yield select(selectRouteEntryLanguage);
-  const mappedEntry = currentEntryId === entrySys.id && currentEntryLang === entrySys.language ? (yield select(selectMappedEntry) || Map()).toJS() : yield mapRouteEntry(entryMapper, { ...node,
+  const mappedEntry = currentEntryId === entrySys.id && currentEntryLang === entrySys.language ? ((yield select(selectMappedEntry)) || Map()).toJS() : yield mapRouteEntry(entryMapper, { ...node,
     entry,
     ancestors,
     siblings
@@ -818,4 +818,4 @@ const AppRoot = props => {
 };
 
 export { AppRoot as A, browserHistory as b, deliveryApi as d, history as h, pickProject as p, rootSaga as r };
-//# sourceMappingURL=App-465077e5.js.map
+//# sourceMappingURL=App-fdb80e90.js.map

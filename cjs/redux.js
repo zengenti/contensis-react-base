@@ -8,7 +8,7 @@ require('redux');
 require('redux-immutable');
 require('redux-thunk');
 require('redux-saga');
-var version$1 = require('./version-313aae00.js');
+var version$1 = require('./version-bda66634.js');
 require('./reducers-d4faf74c.js');
 require('query-string');
 
