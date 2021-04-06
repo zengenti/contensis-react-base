@@ -1,3 +1,14 @@
+#### 2.2.1 (2021-04-06)
+
+##### Documentation Changes
+
+- update changelog (27eb6c35)
+
+##### Bug Fixes
+
+- issue in search package when using a customApi to retrieve search results (bf1cb0b7)
+- issue with reading mappedEntry from the state not short circuiting to the fallback Immutable.Map() before calling .toJS() on a null value (36b62e55)
+
 #### 2.2.0 (2021-04-01)
 
 ##### Build System / Dependencies
