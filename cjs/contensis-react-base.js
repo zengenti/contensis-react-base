@@ -21,6 +21,7 @@ var immutable = require('immutable');
 require('history');
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 var App = require('./App-b27daf19.js');
 =======
 var App = require('./App-0e26d95e.js');
@@ -28,6 +29,9 @@ var App = require('./App-0e26d95e.js');
 =======
 var App = require('./App-d0b76412.js');
 >>>>>>> bf47c62... chore: Commit bundles
+=======
+var App = require('./App-b72f40e5.js');
+>>>>>>> a743c70... chore: commit bundles
 require('contensis-delivery-api');
 var routing = require('./routing-a4d7b382.js');
 require('redux');

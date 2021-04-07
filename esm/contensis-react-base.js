@@ -17,6 +17,7 @@ import { fromJS } from 'immutable';
 import 'history';
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { h as history, d as deliveryApi, p as pickProject, r as rootSaga } from './App-fe3cbef7.js';
 export { A as ReactApp } from './App-fe3cbef7.js';
 =======
@@ -27,6 +28,10 @@ export { A as ReactApp } from './App-8fb39c30.js';
 import { h as history, d as deliveryApi, p as pickProject, r as rootSaga } from './App-f18514f6.js';
 export { A as ReactApp } from './App-f18514f6.js';
 >>>>>>> bf47c62... chore: Commit bundles
+=======
+import { h as history, d as deliveryApi, p as pickProject, r as rootSaga } from './App-2af0d4ec.js';
+export { A as ReactApp } from './App-2af0d4ec.js';
+>>>>>>> a743c70... chore: commit bundles
 import 'contensis-delivery-api';
 import { s as setCurrentProject } from './routing-3bbf9dde.js';
 import 'redux';
