@@ -843,10 +843,13 @@ class UserHelper {
   static async get(url, options = BASE_OPTIONS) {
     try {
       const responseBody = await api(url, options);
-      if (responseBody) return responseBody;
-      return false;
-    } catch (error) {
-      return false;
+      return responseBody;
+    } catch (err) {
+      return {
+        error: {
+          message: err.message
+        }
+      };
     }
   }
 
@@ -854,15 +857,8 @@ class UserHelper {
 
 async function api(url, options) {
   return fetch(url, options).then(async response => {
-    setTimeout(() => null, 0);
-
-    if (!response.ok) {
-      throw new Error(response.statusText);
-    }
-
     return response.json().then(data => data);
   }).catch(error => {
-    //console.log(error);
     throw error;
   });
 }
@@ -880,13 +876,20 @@ function* requestPasswordResetSaga(action) {
       const passwordResetRequestResponse = yield UserHelper.RequestPasswordReset(userEmailObject);
 
       if (passwordResetRequestResponse) {
-        yield effects.put({
-          type: reducers.SET_REQUEST_USER_PASSWORD_RESET_SUCCESS
-        });
+        if (!passwordResetRequestResponse.error) {
+          yield effects.put({
+            type: reducers.SET_REQUEST_USER_PASSWORD_RESET_SUCCESS
+          });
+        } else {
+          yield effects.put({
+            type: reducers.SET_REQUEST_USER_PASSWORD_RESET_ERROR,
+            error: passwordResetRequestResponse.error.message
+          });
+        }
       } else {
         yield effects.put({
           type: reducers.SET_REQUEST_USER_PASSWORD_RESET_ERROR,
-          error: 'There was an error.'
+          error: 'No response from server'
         });
       }
     } catch (error) {
@@ -914,13 +917,21 @@ function* resetPasswordSaga(action) {
       const resetPasswordResponse = yield UserHelper.ResetPassword(resetPasswordObject);
 
       if (resetPasswordResponse) {
-        yield effects.put({
-          type: reducers.SET_RESET_USER_PASSWORD_SUCCESS
-        });
+        if (!resetPasswordResponse.error) {
+          yield effects.put({
+            type: reducers.SET_RESET_USER_PASSWORD_SUCCESS
+          });
+        } else {
+          const error = resetPasswordResponse.error.data && resetPasswordResponse.error.data.length > 0 && resetPasswordResponse.error.data[0].message || resetPasswordResponse.error.message;
+          yield effects.put({
+            type: reducers.SET_RESET_USER_PASSWORD_ERROR,
+            error
+          });
+        }
       } else {
         yield effects.put({
           type: reducers.SET_RESET_USER_PASSWORD_ERROR,
-          error: 'There was an error.'
+          error: 'No response from server'
         });
       }
     } catch (error) {
@@ -957,4 +968,4 @@ exports.deliveryApi = deliveryApi;
 exports.history = history;
 exports.pickProject = pickProject;
 exports.rootSaga = rootSaga;
-//# sourceMappingURL=App-d0b76412.js.map
+//# sourceMappingURL=App-b72f40e5.js.map

@@ -837,10 +837,13 @@ class UserHelper {
   static async get(url, options = BASE_OPTIONS) {
     try {
       const responseBody = await api(url, options);
-      if (responseBody) return responseBody;
-      return false;
-    } catch (error) {
-      return false;
+      return responseBody;
+    } catch (err) {
+      return {
+        error: {
+          message: err.message
+        }
+      };
     }
   }
 
@@ -848,15 +851,8 @@ class UserHelper {
 
 async function api(url, options) {
   return fetch(url, options).then(async response => {
-    setTimeout(() => null, 0);
-
-    if (!response.ok) {
-      throw new Error(response.statusText);
-    }
-
     return response.json().then(data => data);
   }).catch(error => {
-    //console.log(error);
     throw error;
   });
 }
@@ -874,13 +870,20 @@ function* requestPasswordResetSaga(action) {
       const passwordResetRequestResponse = yield UserHelper.RequestPasswordReset(userEmailObject);
 
       if (passwordResetRequestResponse) {
-        yield put({
-          type: SET_REQUEST_USER_PASSWORD_RESET_SUCCESS
-        });
+        if (!passwordResetRequestResponse.error) {
+          yield put({
+            type: SET_REQUEST_USER_PASSWORD_RESET_SUCCESS
+          });
+        } else {
+          yield put({
+            type: SET_REQUEST_USER_PASSWORD_RESET_ERROR,
+            error: passwordResetRequestResponse.error.message
+          });
+        }
       } else {
         yield put({
           type: SET_REQUEST_USER_PASSWORD_RESET_ERROR,
-          error: 'There was an error.'
+          error: 'No response from server'
         });
       }
     } catch (error) {
@@ -908,13 +911,21 @@ function* resetPasswordSaga(action) {
       const resetPasswordResponse = yield UserHelper.ResetPassword(resetPasswordObject);
 
       if (resetPasswordResponse) {
-        yield put({
-          type: SET_RESET_USER_PASSWORD_SUCCESS
-        });
+        if (!resetPasswordResponse.error) {
+          yield put({
+            type: SET_RESET_USER_PASSWORD_SUCCESS
+          });
+        } else {
+          const error = resetPasswordResponse.error.data && resetPasswordResponse.error.data.length > 0 && resetPasswordResponse.error.data[0].message || resetPasswordResponse.error.message;
+          yield put({
+            type: SET_RESET_USER_PASSWORD_ERROR,
+            error
+          });
+        }
       } else {
         yield put({
           type: SET_RESET_USER_PASSWORD_ERROR,
-          error: 'There was an error.'
+          error: 'No response from server'
         });
       }
     } catch (error) {
@@ -946,4 +957,4 @@ const AppRoot = props => {
 };
 
 export { AppRoot as A, browserHistory as b, deliveryApi as d, history as h, pickProject as p, rootSaga as r };
-//# sourceMappingURL=App-f18514f6.js.map
+//# sourceMappingURL=App-2af0d4ec.js.map
