@@ -53,10 +53,9 @@ export class UserHelper {
   static async get(url, options = BASE_OPTIONS) {
     try {
       const responseBody = await api(url, options);
-      if (responseBody) return responseBody;
-      return false;
-    } catch (error) {
-      return false;
+      return responseBody;
+    } catch (err) {
+      return { error: { message: err.message } };
     }
   }
 }
@@ -64,14 +63,9 @@ export class UserHelper {
 async function api(url, options) {
   return fetch(url, options)
     .then(async response => {
-      setTimeout(() => null, 0);
-      if (!response.ok) {
-        throw new Error(response.statusText);
-      }
       return response.json().then(data => data);
     })
     .catch(error => {
-      //console.log(error);
       throw error;
     });
 }

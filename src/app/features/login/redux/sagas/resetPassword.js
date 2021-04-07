@@ -28,13 +28,20 @@ function* requestPasswordResetSaga(action) {
       );
 
       if (passwordResetRequestResponse) {
-        yield put({
-          type: SET_REQUEST_USER_PASSWORD_RESET_SUCCESS,
-        });
+        if (!passwordResetRequestResponse.error) {
+          yield put({
+            type: SET_REQUEST_USER_PASSWORD_RESET_SUCCESS,
+          });
+        } else {
+          yield put({
+            type: SET_REQUEST_USER_PASSWORD_RESET_ERROR,
+            error: passwordResetRequestResponse.error.message,
+          });
+        }
       } else {
         yield put({
           type: SET_REQUEST_USER_PASSWORD_RESET_ERROR,
-          error: 'There was an error.',
+          error: 'No response from server',
         });
       }
     } catch (error) {
@@ -64,13 +71,25 @@ function* resetPasswordSaga(action) {
       );
 
       if (resetPasswordResponse) {
-        yield put({
-          type: SET_RESET_USER_PASSWORD_SUCCESS,
-        });
+        if (!resetPasswordResponse.error) {
+          yield put({
+            type: SET_RESET_USER_PASSWORD_SUCCESS,
+          });
+        } else {
+          const error =
+            (resetPasswordResponse.error.data &&
+              resetPasswordResponse.error.data.length > 0 &&
+              resetPasswordResponse.error.data[0].message) ||
+            resetPasswordResponse.error.message;
+          yield put({
+            type: SET_RESET_USER_PASSWORD_ERROR,
+            error,
+          });
+        }
       } else {
         yield put({
           type: SET_RESET_USER_PASSWORD_ERROR,
-          error: 'There was an error.',
+          error: 'No response from server',
         });
       }
     } catch (error) {
