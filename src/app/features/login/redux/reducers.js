@@ -44,7 +44,7 @@ export default (state = initialUserState, action) => {
       } = action;
 
       if (user) {
-        user.name = `${user.firstname} ${user.lastname}`;
+        user.name = `${user.firstName} ${user.lastName}`;
         user.isZengentiStaff = user.email.includes('@zengenti.com');
       }
 
