@@ -10,6 +10,7 @@ require('redux-thunk');
 require('redux-saga');
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 var navigation$2 = require('./navigation-9bc89fbc.js');
 require('./reducers-a05c32a6.js');
 =======
@@ -20,6 +21,10 @@ require('./reducers-af3157ec.js');
 var version$1 = require('./version-8e22f0d6.js');
 require('./reducers-7c73e91a.js');
 >>>>>>> bf47c62... chore: Commit bundles
+=======
+var version$1 = require('./version-1138f7f6.js');
+require('./reducers-0b34eca8.js');
+>>>>>>> 8f6a0bd... chore: Commit bundles
 require('query-string');
 var routing$2 = require('./routing-5db2c867.js');
 var version$1 = require('./version-2f3078fa.js');

@@ -7,6 +7,7 @@ import 'redux';
 import 'redux-immutable';
 import 'redux-thunk';
 import 'redux-saga';
+<<<<<<< HEAD:esm/App-2af0d4ec.js
 <<<<<<< HEAD:esm/App-8fb39c30.js
 <<<<<<< HEAD:esm/App-fe3cbef7.js
 import { r as reduxStore, G as GET_NODE_TREE, h as hasNavigationTree, S as SET_NODE_TREE, b as GET_NODE_TREE_ERROR } from './navigation-ec4d9a28.js';
@@ -21,9 +22,14 @@ import { R as REGISTER_USER, a as REGISTER_USER_SUCCESS, b as REGISTER_USER_FAIL
 import { r as reduxStore, G as GET_NODE_TREE, h as hasNavigationTree, b as selectVersionStatus, S as SET_NODE_TREE, d as GET_NODE_TREE_ERROR } from './version-c113fd8d.js';
 import { R as REGISTER_USER, a as REGISTER_USER_SUCCESS, b as REGISTER_USER_FAILED, c as REQUEST_USER_PASSWORD_RESET, d as RESET_USER_PASSWORD, S as SET_REQUEST_USER_PASSWORD_RESET_SENDING, e as SET_REQUEST_USER_PASSWORD_RESET_SUCCESS, f as SET_REQUEST_USER_PASSWORD_RESET_ERROR, g as SET_RESET_USER_PASSWORD_SENDING, h as SET_RESET_USER_PASSWORD_SUCCESS, i as SET_RESET_USER_PASSWORD_ERROR } from './reducers-6d9b6c51.js';
 >>>>>>> bf47c62... chore: Commit bundles:esm/App-f18514f6.js
+=======
+import { r as reduxStore, G as GET_NODE_TREE, h as hasNavigationTree, b as selectVersionStatus, S as SET_NODE_TREE, d as GET_NODE_TREE_ERROR } from './version-048f97a8.js';
+import { R as REGISTER_USER, a as REGISTER_USER_SUCCESS, b as REGISTER_USER_FAILED, c as REQUEST_USER_PASSWORD_RESET, d as RESET_USER_PASSWORD, C as CHANGE_USER_PASSWORD, e as REQUEST_USER_PASSWORD_RESET_SENDING, f as REQUEST_USER_PASSWORD_RESET_SUCCESS, g as REQUEST_USER_PASSWORD_RESET_ERROR, h as RESET_USER_PASSWORD_SENDING, i as RESET_USER_PASSWORD_SUCCESS, j as RESET_USER_PASSWORD_ERROR, k as CHANGE_USER_PASSWORD_ERROR, l as CHANGE_USER_PASSWORD_SENDING, m as CHANGE_USER_PASSWORD_SUCCESS } from './reducers-7c4796b0.js';
+>>>>>>> 8f6a0bd... chore: Commit bundles:esm/App-fc6757df.js
 import { takeEvery, select, put, call, all } from '@redux-saga/core/effects';
 import { s as selectVersionStatus } from './version-924cf045.js';
 import { info, error } from 'loglevel';
+<<<<<<< HEAD:esm/App-2af0d4ec.js
 <<<<<<< HEAD:esm/App-8fb39c30.js
 <<<<<<< HEAD:esm/App-fe3cbef7.js
 import { h as handleRequiresLoginSaga, l as loginSagas } from './login-4324e2fc.js';
@@ -42,6 +48,13 @@ import { to } from 'await-to-js';
 import 'react-hot-loader';
 import { R as RouteLoader } from './RouteLoader-7a4e8463.js';
 >>>>>>> bf47c62... chore: Commit bundles:esm/App-f18514f6.js
+=======
+import { s as selectClientCredentials } from './ToJs-13f1f0b2.js';
+import { h as handleRequiresLoginSaga, g as getManagementApiClient, l as loginSagas } from './login-136056ea.js';
+import { to } from 'await-to-js';
+import 'react-hot-loader';
+import { R as RouteLoader } from './RouteLoader-a5e6fc7b.js';
+>>>>>>> 8f6a0bd... chore: Commit bundles:esm/App-fc6757df.js
 
 const selectedHistory = typeof window !== 'undefined' ? createBrowserHistory : createMemoryHistory;
 const history = (options = {}) => selectedHistory(options);
@@ -897,12 +910,12 @@ async function api(url, options) {
   });
 }
 
-const resetPasswordSagas = [takeEvery(REQUEST_USER_PASSWORD_RESET, requestPasswordResetSaga), takeEvery(RESET_USER_PASSWORD, resetPasswordSaga)];
+const resetPasswordSagas = [takeEvery(REQUEST_USER_PASSWORD_RESET, requestPasswordResetSaga), takeEvery(RESET_USER_PASSWORD, resetPasswordSaga), takeEvery(CHANGE_USER_PASSWORD, changePasswordSaga)];
 
 function* requestPasswordResetSaga(action) {
   const userEmailObject = action.userEmailObject;
   yield put({
-    type: SET_REQUEST_USER_PASSWORD_RESET_SENDING
+    type: REQUEST_USER_PASSWORD_RESET_SENDING
   });
 
   if (userEmailObject && userEmailObject.userEmail) {
@@ -912,29 +925,29 @@ function* requestPasswordResetSaga(action) {
       if (passwordResetRequestResponse) {
         if (!passwordResetRequestResponse.error) {
           yield put({
-            type: SET_REQUEST_USER_PASSWORD_RESET_SUCCESS
+            type: REQUEST_USER_PASSWORD_RESET_SUCCESS
           });
         } else {
           yield put({
-            type: SET_REQUEST_USER_PASSWORD_RESET_ERROR,
+            type: REQUEST_USER_PASSWORD_RESET_ERROR,
             error: passwordResetRequestResponse.error.message
           });
         }
       } else {
         yield put({
-          type: SET_REQUEST_USER_PASSWORD_RESET_ERROR,
+          type: REQUEST_USER_PASSWORD_RESET_ERROR,
           error: 'No response from server'
         });
       }
     } catch (error) {
       yield put({
-        type: SET_REQUEST_USER_PASSWORD_RESET_ERROR,
+        type: REQUEST_USER_PASSWORD_RESET_ERROR,
         error: error && error.toString()
       });
     }
   } else {
     yield put({
-      type: SET_REQUEST_USER_PASSWORD_RESET_ERROR,
+      type: REQUEST_USER_PASSWORD_RESET_ERROR,
       error: 'Invalid object'
     });
   }
@@ -943,7 +956,7 @@ function* requestPasswordResetSaga(action) {
 function* resetPasswordSaga(action) {
   const resetPasswordObject = action.resetPasswordObject;
   yield put({
-    type: SET_RESET_USER_PASSWORD_SENDING
+    type: RESET_USER_PASSWORD_SENDING
   });
 
   if (resetPasswordObject.token && resetPasswordObject.password) {
@@ -953,31 +966,82 @@ function* resetPasswordSaga(action) {
       if (resetPasswordResponse) {
         if (!resetPasswordResponse.error) {
           yield put({
-            type: SET_RESET_USER_PASSWORD_SUCCESS
+            type: RESET_USER_PASSWORD_SUCCESS
           });
         } else {
           const error = resetPasswordResponse.error.data && resetPasswordResponse.error.data.length > 0 && resetPasswordResponse.error.data[0].message || resetPasswordResponse.error.message;
           yield put({
-            type: SET_RESET_USER_PASSWORD_ERROR,
+            type: RESET_USER_PASSWORD_ERROR,
             error
           });
         }
       } else {
         yield put({
-          type: SET_RESET_USER_PASSWORD_ERROR,
+          type: RESET_USER_PASSWORD_ERROR,
           error: 'No response from server'
         });
       }
     } catch (error) {
       yield put({
-        type: SET_RESET_USER_PASSWORD_ERROR,
+        type: RESET_USER_PASSWORD_ERROR,
         error: error && error.toString()
       });
     }
   } else {
     yield put({
-      type: SET_RESET_USER_PASSWORD_ERROR,
+      type: RESET_USER_PASSWORD_ERROR,
       error: 'Invalid object'
+    });
+  }
+} // userId
+// existingPassword
+// newPassword
+
+
+function* changePasswordSaga(action) {
+  if (!action || !action.userId || !action.currentPassword || !action.newPassword) {
+    yield put({
+      type: CHANGE_USER_PASSWORD_ERROR,
+      error: 'Invalid action object sent to changePassword saga'
+    });
+    return;
+  }
+
+  try {
+    const changePasswordObject = {
+      userId: action.userId,
+      existing: action.currentPassword,
+      new: action.newPassword
+    };
+    yield put({
+      type: CHANGE_USER_PASSWORD_SENDING
+    });
+    const clientCredentials = (yield select(selectClientCredentials)).toJS();
+    const client = yield getManagementApiClient({ ...clientCredentials
+    });
+    const [err, res] = yield to(client.security.users.updatePassword(changePasswordObject));
+
+    if (err) {
+      console.log('ERR: ', err);
+      yield put({
+        type: CHANGE_USER_PASSWORD_ERROR,
+        error: err
+      });
+      return;
+    } // // eslint-disable-next-line no-console
+    // console.log(changePasswordObject);
+    // // eslint-disable-next-line no-console
+    // console.log(userCredentialsObject);
+
+
+    yield put({
+      type: CHANGE_USER_PASSWORD_SUCCESS
+    });
+  } catch (error) {
+    console.log('ERROR: ', error);
+    yield put({
+      type: CHANGE_USER_PASSWORD_ERROR,
+      error: error && error.toString()
     });
   }
 }
@@ -997,6 +1061,7 @@ const AppRoot = props => {
 };
 
 export { AppRoot as A, browserHistory as b, deliveryApi as d, history as h, pickProject as p, rootSaga as r };
+<<<<<<< HEAD:esm/App-2af0d4ec.js
 <<<<<<< HEAD:esm/App-f18514f6.js
 <<<<<<< HEAD:esm/App-8fb39c30.js
 <<<<<<< HEAD:esm/App-fe3cbef7.js
@@ -1010,3 +1075,6 @@ export { AppRoot as A, browserHistory as b, deliveryApi as d, history as h, pick
 =======
 //# sourceMappingURL=App-2af0d4ec.js.map
 >>>>>>> a743c70... chore: commit bundles:esm/App-2af0d4ec.js
+=======
+//# sourceMappingURL=App-fc6757df.js.map
+>>>>>>> 8f6a0bd... chore: Commit bundles:esm/App-fc6757df.js

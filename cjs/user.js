@@ -11,14 +11,19 @@ var reducers = require('./reducers-a05c32a6.js');
 =======
 var routing = require('./routing-6197a03e.js');
 <<<<<<< HEAD
+<<<<<<< HEAD
 var reducers = require('./reducers-af3157ec.js');
 >>>>>>> 10419d5... commit bundles
 =======
 var reducers = require('./reducers-7c73e91a.js');
 >>>>>>> bf47c62... chore: Commit bundles
+=======
+var reducers = require('./reducers-0b34eca8.js');
+>>>>>>> 8f6a0bd... chore: Commit bundles
 require('query-string');
 require('./routing-5db2c867.js');
 require('@redux-saga/core/effects');
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 var ToJs = require('./ToJs-128064bc.js');
@@ -31,6 +36,10 @@ var login = require('./login-34553267.js');
 var ToJs = require('./ToJs-7dbcf7a7.js');
 var login = require('./login-0c0c56cb.js');
 >>>>>>> bf47c62... chore: Commit bundles
+=======
+var ToJs = require('./ToJs-805d04f5.js');
+var login = require('./login-fc073211.js');
+>>>>>>> 8f6a0bd... chore: Commit bundles
 require('jsonpath-mapper');
 require('await-to-js');
 require('js-cookie');
@@ -52,6 +61,11 @@ const requestPasswordReset = userEmailObject => routing.action(reducers.REQUEST_
 const resetPassword = resetPasswordObject => routing.action(reducers.RESET_USER_PASSWORD, {
   resetPasswordObject
 });
+const changePassword = (userId, currentPassword, newPassword) => routing.action(reducers.CHANGE_USER_PASSWORD, {
+  userId,
+  currentPassword,
+  newPassword
+});
 
 var actions = /*#__PURE__*/Object.freeze({
   __proto__: null,
@@ -59,7 +73,8 @@ var actions = /*#__PURE__*/Object.freeze({
   logoutUser: logoutUser,
   registerUser: registerUser,
   requestPasswordReset: requestPasswordReset,
-  resetPassword: resetPassword
+  resetPassword: resetPassword,
+  changePassword: changePassword
 });
 
 const useLogin = () => {
@@ -170,6 +185,7 @@ const useUser = () => {
     isAuthenticated: select(ToJs.selectUserIsAuthenticated),
     userIsLoading: select(ToJs.selectUserIsLoading),
     user: select(ToJs.selectUser).toJS(),
+    userId: select(ToJs.selectUserGuid),
     registerUser: (user, mappers) => dispatch(registerUser(user, mappers)),
     registrationError: select(ToJs.selectUserRegistrationError),
     registrationIsLoading: select(ToJs.selectUserRegistrationIsLoading),
@@ -183,7 +199,11 @@ const useUser = () => {
     passwordResetIsLoading: select(ToJs.selectResetPasswordSending),
     passwordResetIsSuccess: select(ToJs.selectResetPasswordSent),
     passwordResetError: select(ToJs.selectResetPasswordError),
-    resetPassword: resetPasswordObject => dispatch(resetPassword(resetPasswordObject))
+    resetPassword: resetPasswordObject => dispatch(resetPassword(resetPasswordObject)),
+    changePasswordIsLoading: select(ToJs.selectChangePasswordSending),
+    changePasswordIsSuccess: select(ToJs.selectChangePasswordSent),
+    changePasswordError: select(ToJs.selectChangePasswordError),
+    changePassword: (userId, currentPassword, newPassword) => dispatch(changePassword(userId, currentPassword, newPassword))
   };
 };
 

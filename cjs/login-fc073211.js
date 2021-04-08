@@ -9,14 +9,18 @@ var effects = require('@redux-saga/core/effects');
 var ToJs = require('./ToJs-128064bc.js');
 =======
 var routing = require('./routing-6197a03e.js');
-var reducers = require('./reducers-7c73e91a.js');
+var reducers = require('./reducers-0b34eca8.js');
 var effects = require('@redux-saga/core/effects');
+<<<<<<< HEAD:cjs/login-0c0c56cb.js
 <<<<<<< HEAD:cjs/login-34553267.js
 var ToJs = require('./ToJs-6487bd5c.js');
 >>>>>>> 10419d5... commit bundles:cjs/login-34553267.js
 =======
 var ToJs = require('./ToJs-7dbcf7a7.js');
 >>>>>>> bf47c62... chore: Commit bundles:cjs/login-0c0c56cb.js
+=======
+var ToJs = require('./ToJs-805d04f5.js');
+>>>>>>> 8f6a0bd... chore: Commit bundles:cjs/login-fc073211.js
 var mapJson = require('jsonpath-mapper');
 var awaitToJs = require('await-to-js');
 var Cookies = require('js-cookie');
@@ -619,9 +623,11 @@ function* refreshSecurityToken() {
 }
 
 exports.LoginHelper = LoginHelper;
+exports.getManagementApiClient = getManagementApiClient;
 exports.handleRequiresLoginSaga = handleRequiresLoginSaga;
 exports.loginSagas = loginSagas;
 exports.refreshSecurityToken = refreshSecurityToken;
+<<<<<<< HEAD:cjs/login-0c0c56cb.js
 <<<<<<< HEAD:cjs/login-34553267.js
 <<<<<<< HEAD:cjs/login-0ce07250.js
 //# sourceMappingURL=login-0ce07250.js.map
@@ -631,3 +637,6 @@ exports.refreshSecurityToken = refreshSecurityToken;
 =======
 //# sourceMappingURL=login-0c0c56cb.js.map
 >>>>>>> bf47c62... chore: Commit bundles:cjs/login-0c0c56cb.js
+=======
+//# sourceMappingURL=login-fc073211.js.map
+>>>>>>> 8f6a0bd... chore: Commit bundles:cjs/login-fc073211.js

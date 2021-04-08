@@ -18,6 +18,7 @@ import 'history';
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { h as history, d as deliveryApi, p as pickProject, r as rootSaga } from './App-fe3cbef7.js';
 export { A as ReactApp } from './App-fe3cbef7.js';
 =======
@@ -32,12 +33,17 @@ export { A as ReactApp } from './App-f18514f6.js';
 import { h as history, d as deliveryApi, p as pickProject, r as rootSaga } from './App-2af0d4ec.js';
 export { A as ReactApp } from './App-2af0d4ec.js';
 >>>>>>> a743c70... chore: commit bundles
+=======
+import { h as history, d as deliveryApi, p as pickProject, r as rootSaga } from './App-fc6757df.js';
+export { A as ReactApp } from './App-fc6757df.js';
+>>>>>>> 8f6a0bd... chore: Commit bundles
 import 'contensis-delivery-api';
 import { s as setCurrentProject } from './routing-3bbf9dde.js';
 import 'redux';
 import 'redux-immutable';
 import 'redux-thunk';
 import 'redux-saga';
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 import { c as createStore, s as setVersionStatus, a as setVersion } from './navigation-ec4d9a28.js';
@@ -50,11 +56,16 @@ import './reducers-29d0efa9.js';
 import { c as createStore, s as setVersionStatus, a as setVersion } from './version-c113fd8d.js';
 import './reducers-6d9b6c51.js';
 >>>>>>> bf47c62... chore: Commit bundles
+=======
+import { c as createStore, s as setVersionStatus, a as setVersion } from './version-048f97a8.js';
+import './reducers-7c4796b0.js';
+>>>>>>> 8f6a0bd... chore: Commit bundles
 import 'query-string';
 import { s as selectRouteEntry, a as selectCurrentProject } from './routing-786c3bb0.js';
 import '@redux-saga/core/effects';
 import './version-924cf045.js';
 import 'loglevel';
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 import './ToJs-020d9abb.js';
@@ -67,12 +78,17 @@ import './login-96837dda.js';
 import './ToJs-dea75c6f.js';
 import './login-125acea2.js';
 >>>>>>> bf47c62... chore: Commit bundles
+=======
+import './ToJs-13f1f0b2.js';
+import './login-136056ea.js';
+>>>>>>> 8f6a0bd... chore: Commit bundles
 import mapJson from 'jsonpath-mapper';
 import 'await-to-js';
 import 'js-cookie';
 import { matchRoutes } from 'react-router-config';
 import 'react-hot-loader';
 import 'prop-types';
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 import './RouteLoader-66a2c27f.js';
@@ -82,6 +98,9 @@ import './RouteLoader-f026dc83.js';
 =======
 import './RouteLoader-7a4e8463.js';
 >>>>>>> bf47c62... chore: Commit bundles
+=======
+import './RouteLoader-a5e6fc7b.js';
+>>>>>>> 8f6a0bd... chore: Commit bundles
 
 const servers = SERVERS;
 /* global SERVERS */

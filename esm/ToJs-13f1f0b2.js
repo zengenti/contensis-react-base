@@ -1,11 +1,5 @@
-'use strict';
-
-var React = require('react');
-var immutable = require('immutable');
-
-function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
-
-var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
+import React from 'react';
+import { Map, Iterable } from 'immutable';
 
 const selectUserIsLoading = state => {
   return state.getIn(['user', 'authenticationState', 'loading']);
@@ -49,7 +43,7 @@ const selectUserGroups = state => {
 const selectUserSecurityToken = state => {
   return state.getIn(['user', 'authenticationState', 'clientCredentials', 'contensisClassicToken']);
 };
-const selectUserRegistration = state => state.getIn(['user', 'registration'], immutable.Map());
+const selectUserRegistration = state => state.getIn(['user', 'registration'], Map());
 const selectUserRegistrationError = state => state.getIn(['user', 'registration', 'error'], false);
 const selectUserRegistrationIsLoading = state => state.getIn(['user', 'registration', 'loading'], false);
 const selectUserRegistrationIsSuccess = state => state.getIn(['user', 'registration', 'success'], false);
@@ -70,6 +64,15 @@ const selectResetPasswordSent = state => {
 };
 const selectResetPasswordError = state => {
   return state.getIn(['user', 'resetPassword', 'error']);
+};
+const selectChangePasswordSending = state => {
+  return state.getIn(['user', 'changePassword', 'isSending']);
+};
+const selectChangePasswordSent = state => {
+  return state.getIn(['user', 'changePassword', 'sent']);
+};
+const selectChangePasswordError = state => {
+  return state.getIn(['user', 'changePassword', 'error']);
 };
 
 var selectors = /*#__PURE__*/Object.freeze({
@@ -97,7 +100,10 @@ var selectors = /*#__PURE__*/Object.freeze({
   selectPasswordResetRequestError: selectPasswordResetRequestError,
   selectResetPasswordSending: selectResetPasswordSending,
   selectResetPasswordSent: selectResetPasswordSent,
-  selectResetPasswordError: selectResetPasswordError
+  selectResetPasswordError: selectResetPasswordError,
+  selectChangePasswordSending: selectChangePasswordSending,
+  selectChangePasswordSent: selectChangePasswordSent,
+  selectChangePasswordError: selectChangePasswordError
 });
 
 const matchUserGroup = (userGroups = [], requiredGroups = []) => {
@@ -120,40 +126,26 @@ const toJS = WrappedComponent => wrappedComponentProps => {
   const KEY = 0;
   const VALUE = 1;
   const propsJS = Object.entries(wrappedComponentProps).reduce((newProps, wrappedComponentProp) => {
-    newProps[wrappedComponentProp[KEY]] = immutable.Iterable.isIterable(wrappedComponentProp[VALUE]) ? wrappedComponentProp[VALUE].toJS() : wrappedComponentProp[VALUE];
+    newProps[wrappedComponentProp[KEY]] = Iterable.isIterable(wrappedComponentProp[VALUE]) ? wrappedComponentProp[VALUE].toJS() : wrappedComponentProp[VALUE];
     return newProps;
   }, {});
-  return React__default['default'].createElement(WrappedComponent, propsJS);
+  return React.createElement(WrappedComponent, propsJS);
 };
 
-exports.matchUserGroup = matchUserGroup;
-exports.selectClientCredentials = selectClientCredentials;
-exports.selectPasswordResetRequestError = selectPasswordResetRequestError;
-exports.selectPasswordResetRequestSending = selectPasswordResetRequestSending;
-exports.selectPasswordResetRequestSent = selectPasswordResetRequestSent;
-exports.selectResetPasswordError = selectResetPasswordError;
-exports.selectResetPasswordSending = selectResetPasswordSending;
-exports.selectResetPasswordSent = selectResetPasswordSent;
-exports.selectUser = selectUser;
-exports.selectUserAuthenticationError = selectUserAuthenticationError;
-exports.selectUserAuthenticationErrorMessage = selectUserAuthenticationErrorMessage;
-exports.selectUserError = selectUserError;
-exports.selectUserErrorMessage = selectUserErrorMessage;
-exports.selectUserGroups = selectUserGroups;
-exports.selectUserIsAuthenticated = selectUserIsAuthenticated;
-exports.selectUserIsLoading = selectUserIsLoading;
-exports.selectUserRegistration = selectUserRegistration;
-exports.selectUserRegistrationError = selectUserRegistrationError;
-exports.selectUserRegistrationIsLoading = selectUserRegistrationIsLoading;
-exports.selectUserRegistrationIsSuccess = selectUserRegistrationIsSuccess;
-exports.selectors = selectors;
-exports.toJS = toJS;
-<<<<<<< HEAD:cjs/ToJs-6487bd5c.js
-<<<<<<< HEAD:cjs/ToJs-128064bc.js
-//# sourceMappingURL=ToJs-128064bc.js.map
+<<<<<<< HEAD:esm/ToJs-dea75c6f.js
+<<<<<<< HEAD:esm/ToJs-7da4413c.js
+<<<<<<< HEAD:esm/ToJs-020d9abb.js
+export { selectUserGroups as a, selectClientCredentials as b, selectUserAuthenticationError as c, selectUserError as d, selectUserIsLoading as e, selectUser as f, selectUserRegistrationError as g, selectUserRegistrationIsLoading as h, selectUserRegistrationIsSuccess as i, selectUserRegistration as j, selectors as k, matchUserGroup as m, selectUserIsAuthenticated as s, toJS as t };
+//# sourceMappingURL=ToJs-020d9abb.js.map
 =======
-//# sourceMappingURL=ToJs-6487bd5c.js.map
->>>>>>> 10419d5... commit bundles:cjs/ToJs-6487bd5c.js
+export { selectUserGroups as a, selectClientCredentials as b, selectUserAuthenticationError as c, selectUserError as d, selectUserIsLoading as e, selectUser as f, selectUserRegistrationError as g, selectUserRegistrationIsLoading as h, selectUserRegistrationIsSuccess as i, selectUserRegistration as j, selectPasswordResetRequestSending as k, selectPasswordResetRequestSent as l, matchUserGroup as m, selectPasswordResetRequestError as n, selectResetPasswordSending as o, selectResetPasswordSent as p, selectResetPasswordError as q, selectors as r, selectUserIsAuthenticated as s, toJS as t };
+//# sourceMappingURL=ToJs-7da4413c.js.map
+>>>>>>> 10419d5... commit bundles:esm/ToJs-7da4413c.js
 =======
-//# sourceMappingURL=ToJs-7dbcf7a7.js.map
->>>>>>> bf47c62... chore: Commit bundles:cjs/ToJs-7dbcf7a7.js
+export { selectUserGroups as a, selectClientCredentials as b, selectUserAuthenticationError as c, selectUserAuthenticationErrorMessage as d, selectUserError as e, selectUserErrorMessage as f, selectUserIsLoading as g, selectUser as h, selectUserRegistrationError as i, selectUserRegistrationIsLoading as j, selectUserRegistrationIsSuccess as k, selectUserRegistration as l, matchUserGroup as m, selectPasswordResetRequestSending as n, selectPasswordResetRequestSent as o, selectPasswordResetRequestError as p, selectResetPasswordSending as q, selectResetPasswordSent as r, selectUserIsAuthenticated as s, toJS as t, selectResetPasswordError as u, selectors as v };
+//# sourceMappingURL=ToJs-dea75c6f.js.map
+>>>>>>> bf47c62... chore: Commit bundles:esm/ToJs-dea75c6f.js
+=======
+export { selectUserIsAuthenticated as a, selectUserGroups as b, selectUserAuthenticationError as c, selectUserAuthenticationErrorMessage as d, selectUserError as e, selectUserErrorMessage as f, selectUserIsLoading as g, selectUser as h, selectUserRegistrationError as i, selectUserRegistrationIsLoading as j, selectUserRegistrationIsSuccess as k, selectUserRegistration as l, matchUserGroup as m, selectPasswordResetRequestSending as n, selectPasswordResetRequestSent as o, selectPasswordResetRequestError as p, selectResetPasswordSending as q, selectResetPasswordSent as r, selectClientCredentials as s, toJS as t, selectResetPasswordError as u, selectUserGuid as v, selectChangePasswordSending as w, selectChangePasswordSent as x, selectChangePasswordError as y, selectors as z };
+//# sourceMappingURL=ToJs-13f1f0b2.js.map
+>>>>>>> 8f6a0bd... chore: Commit bundles:esm/ToJs-13f1f0b2.js
