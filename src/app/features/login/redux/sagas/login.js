@@ -141,8 +141,12 @@ function* redirectAfterSuccessfulLoginSaga() {
   const isLoggedIn = yield select(selectUserIsAuthenticated);
   const redirectPath = queryParams(yield select(selectCurrentSearch))
     .redirect_uri;
+  const assetRedirectPath = queryParams(yield select(selectCurrentSearch))
+    .ReturnURL;
 
-  if (isLoggedIn && redirectPath) {
+  if (isLoggedIn && assetRedirectPath && typeof window != 'undefined') {
+    window.location.href = assetRedirectPath;
+  } else if (isLoggedIn && redirectPath) {
     yield put(setRoute(redirectPath));
   }
 }
