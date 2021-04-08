@@ -524,8 +524,11 @@ function* loginUserSaga(action = {}) {
 function* redirectAfterSuccessfulLoginSaga() {
   const isLoggedIn = yield select(selectUserIsAuthenticated);
   const redirectPath = queryParams((yield select(selectCurrentSearch))).redirect_uri;
+  const assetRedirectPath = queryParams((yield select(selectCurrentSearch))).ReturnURL;
 
-  if (isLoggedIn && redirectPath) {
+  if (isLoggedIn && assetRedirectPath && typeof window != 'undefined') {
+    window.location.href = assetRedirectPath;
+  } else if (isLoggedIn && redirectPath) {
     yield put(setRoute(redirectPath));
   }
 }
@@ -557,4 +560,4 @@ function* refreshSecurityToken() {
 }
 
 export { LoginHelper as L, handleRequiresLoginSaga as h, loginSagas as l, refreshSecurityToken as r };
-//# sourceMappingURL=login-a18a646b.js.map
+//# sourceMappingURL=login-64a29f7b.js.map
