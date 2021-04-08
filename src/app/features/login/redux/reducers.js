@@ -7,12 +7,15 @@ import {
   SET_AUTHENTICATION_STATE,
   LOGIN_USER,
   LOGOUT_USER,
-  SET_REQUEST_USER_PASSWORD_RESET_SENDING,
-  SET_REQUEST_USER_PASSWORD_RESET_SUCCESS,
-  SET_REQUEST_USER_PASSWORD_RESET_ERROR,
-  SET_RESET_USER_PASSWORD_SENDING,
-  SET_RESET_USER_PASSWORD_SUCCESS,
-  SET_RESET_USER_PASSWORD_ERROR,
+  REQUEST_USER_PASSWORD_RESET_SENDING,
+  REQUEST_USER_PASSWORD_RESET_SUCCESS,
+  REQUEST_USER_PASSWORD_RESET_ERROR,
+  RESET_USER_PASSWORD_SENDING,
+  RESET_USER_PASSWORD_SUCCESS,
+  RESET_USER_PASSWORD_ERROR,
+  CHANGE_USER_PASSWORD_SENDING,
+  CHANGE_USER_PASSWORD_SUCCESS,
+  CHANGE_USER_PASSWORD_ERROR,
 } from './types';
 
 const defaultAuthenticationState = Map({
@@ -37,10 +40,17 @@ const defaultResetPasswordValues = {
   error: null,
 };
 
+const defaultChangePasswordValues = {
+  isSending: false,
+  sent: false,
+  error: null,
+};
+
 export const initialUserState = Map({
   authenticationState: defaultAuthenticationState,
   passwordResetRequest: defaultPasswordResetRequestValues,
   resetPassword: defaultResetPasswordValues,
+  changePassword: defaultChangePasswordValues,
   groups: new List([]),
 });
 
@@ -116,26 +126,36 @@ export default (state = initialUserState, action) => {
         .setIn(['registration', 'error'], error || false)
         .setIn(['registration', 'loading'], action.type === REGISTER_USER);
     }
-    case SET_REQUEST_USER_PASSWORD_RESET_SENDING:
+    case REQUEST_USER_PASSWORD_RESET_SENDING:
       return state.setIn(['passwordResetRequest', 'isSending'], true);
-    case SET_REQUEST_USER_PASSWORD_RESET_SUCCESS:
+    case REQUEST_USER_PASSWORD_RESET_SUCCESS:
       return state
         .setIn(['passwordResetRequest', 'isSending'], false)
         .setIn(['passwordResetRequest', 'sent'], true);
-    case SET_REQUEST_USER_PASSWORD_RESET_ERROR:
+    case REQUEST_USER_PASSWORD_RESET_ERROR:
       return state
         .setIn(['passwordResetRequest', 'isSending'], false)
         .setIn(['passwordResetRequest', 'error'], action.error);
-    case SET_RESET_USER_PASSWORD_SENDING:
+    case RESET_USER_PASSWORD_SENDING:
       return state.setIn(['resetPassword', 'isSending'], true);
-    case SET_RESET_USER_PASSWORD_SUCCESS:
+    case RESET_USER_PASSWORD_SUCCESS:
       return state
         .setIn(['resetPassword', 'isSending'], false)
         .setIn(['resetPassword', 'sent'], true);
-    case SET_RESET_USER_PASSWORD_ERROR:
+    case RESET_USER_PASSWORD_ERROR:
       return state
-        .setIn(['resetPassword', 'isSending'], false)
-        .setIn(['resetPassword', 'error'], action.error);
+        .setIn(['changePassword', 'isSending'], false)
+        .setIn(['changePassword', 'error'], action.error);
+    case CHANGE_USER_PASSWORD_SENDING:
+      return state.setIn(['changePassword', 'isSending'], true);
+    case CHANGE_USER_PASSWORD_SUCCESS:
+      return state
+        .setIn(['changePassword', 'isSending'], false)
+        .setIn(['changePassword', 'sent'], true);
+    case CHANGE_USER_PASSWORD_ERROR:
+      return state
+        .setIn(['changePassword', 'isSending'], false)
+        .setIn(['changePassword', 'error'], action.error);
     default:
       return state;
   }

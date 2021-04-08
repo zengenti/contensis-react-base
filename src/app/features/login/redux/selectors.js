@@ -85,3 +85,12 @@ export const selectResetPasswordSent = state => {
 export const selectResetPasswordError = state => {
   return state.getIn(['user', 'resetPassword', 'error']);
 };
+export const selectChangePasswordSending = state => {
+  return state.getIn(['user', 'changePassword', 'isSending']);
+};
+export const selectChangePasswordSent = state => {
+  return state.getIn(['user', 'changePassword', 'sent']);
+};
+export const selectChangePasswordError = state => {
+  return state.getIn(['user', 'changePassword', 'error']);
+};

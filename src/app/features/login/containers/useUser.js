@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { selectCurrentSearch } from '~/core/redux/selectors/routing';
 import {
+  changePassword,
   loginUser,
   logoutUser,
   registerUser,
@@ -25,6 +26,10 @@ import {
   selectResetPasswordError,
   selectUserAuthenticationErrorMessage,
   selectUserErrorMessage,
+  selectChangePasswordSending,
+  selectChangePasswordSent,
+  selectChangePasswordError,
+  selectUserGuid,
 } from '../redux/selectors';
 
 const useUser = () => {
@@ -41,6 +46,7 @@ const useUser = () => {
     isAuthenticated: select(selectUserIsAuthenticated),
     userIsLoading: select(selectUserIsLoading),
     user: select(selectUser).toJS(),
+    userId: select(selectUserGuid),
 
     registerUser: (user, mappers) => dispatch(registerUser(user, mappers)),
     registrationError: select(selectUserRegistrationError),
@@ -60,6 +66,12 @@ const useUser = () => {
     passwordResetError: select(selectResetPasswordError),
     resetPassword: resetPasswordObject =>
       dispatch(resetPassword(resetPasswordObject)),
+
+    changePasswordIsLoading: select(selectChangePasswordSending),
+    changePasswordIsSuccess: select(selectChangePasswordSent),
+    changePasswordError: select(selectChangePasswordError),
+    changePassword: (userId, currentPassword, newPassword) =>
+      dispatch(changePassword(userId, currentPassword, newPassword)),
   };
 };
 
