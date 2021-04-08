@@ -1,3 +1,14 @@
+#### 2.2.2 (2021-04-08)
+
+##### Documentation Changes
+
+- update changelog (724f1727)
+
+##### Bug Fixes
+
+- change user props firstName, lastName to match new Management API format of camelcase (8433553b)
+- Add contensis "ReturnURL" support to login redirects (b5c39814)
+
 #### 2.2.1 (2021-04-06)
 
 ##### Documentation Changes
