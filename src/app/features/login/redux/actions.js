@@ -1,5 +1,6 @@
 import { action } from '~/core/util/helpers';
 import {
+  CHANGE_USER_PASSWORD,
   LOGIN_USER,
   LOGOUT_USER,
   REGISTER_USER,
@@ -23,3 +24,6 @@ export const requestPasswordReset = userEmailObject =>
 
 export const resetPassword = resetPasswordObject =>
   action(RESET_USER_PASSWORD, { resetPasswordObject });
+
+export const changePassword = (userId, currentPassword, newPassword) =>
+  action(CHANGE_USER_PASSWORD, { userId, currentPassword, newPassword });
