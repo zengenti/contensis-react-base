@@ -65,6 +65,15 @@ const selectResetPasswordSent = state => {
 const selectResetPasswordError = state => {
   return state.getIn(['user', 'resetPassword', 'error']);
 };
+const selectChangePasswordSending = state => {
+  return state.getIn(['user', 'changePassword', 'isSending']);
+};
+const selectChangePasswordSent = state => {
+  return state.getIn(['user', 'changePassword', 'sent']);
+};
+const selectChangePasswordError = state => {
+  return state.getIn(['user', 'changePassword', 'error']);
+};
 
 var selectors = /*#__PURE__*/Object.freeze({
   __proto__: null,
@@ -91,7 +100,10 @@ var selectors = /*#__PURE__*/Object.freeze({
   selectPasswordResetRequestError: selectPasswordResetRequestError,
   selectResetPasswordSending: selectResetPasswordSending,
   selectResetPasswordSent: selectResetPasswordSent,
-  selectResetPasswordError: selectResetPasswordError
+  selectResetPasswordError: selectResetPasswordError,
+  selectChangePasswordSending: selectChangePasswordSending,
+  selectChangePasswordSent: selectChangePasswordSent,
+  selectChangePasswordError: selectChangePasswordError
 });
 
 const matchUserGroup = (userGroups = [], requiredGroups = []) => {
@@ -120,5 +132,5 @@ const toJS = WrappedComponent => wrappedComponentProps => {
   return React.createElement(WrappedComponent, propsJS);
 };
 
-export { selectUserGroups as a, selectClientCredentials as b, selectUserAuthenticationError as c, selectUserAuthenticationErrorMessage as d, selectUserError as e, selectUserErrorMessage as f, selectUserIsLoading as g, selectUser as h, selectUserRegistrationError as i, selectUserRegistrationIsLoading as j, selectUserRegistrationIsSuccess as k, selectUserRegistration as l, matchUserGroup as m, selectPasswordResetRequestSending as n, selectPasswordResetRequestSent as o, selectPasswordResetRequestError as p, selectResetPasswordSending as q, selectResetPasswordSent as r, selectUserIsAuthenticated as s, toJS as t, selectResetPasswordError as u, selectors as v };
-//# sourceMappingURL=ToJs-dea75c6f.js.map
+export { selectUserIsAuthenticated as a, selectUserGroups as b, selectUserAuthenticationError as c, selectUserAuthenticationErrorMessage as d, selectUserError as e, selectUserErrorMessage as f, selectUserIsLoading as g, selectUser as h, selectUserRegistrationError as i, selectUserRegistrationIsLoading as j, selectUserRegistrationIsSuccess as k, selectUserRegistration as l, matchUserGroup as m, selectPasswordResetRequestSending as n, selectPasswordResetRequestSent as o, selectPasswordResetRequestError as p, selectResetPasswordSending as q, selectResetPasswordSent as r, selectClientCredentials as s, toJS as t, selectResetPasswordError as u, selectUserGuid as v, selectChangePasswordSending as w, selectChangePasswordSent as x, selectChangePasswordError as y, selectors as z };
+//# sourceMappingURL=ToJs-13f1f0b2.js.map

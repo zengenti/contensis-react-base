@@ -71,6 +71,15 @@ const selectResetPasswordSent = state => {
 const selectResetPasswordError = state => {
   return state.getIn(['user', 'resetPassword', 'error']);
 };
+const selectChangePasswordSending = state => {
+  return state.getIn(['user', 'changePassword', 'isSending']);
+};
+const selectChangePasswordSent = state => {
+  return state.getIn(['user', 'changePassword', 'sent']);
+};
+const selectChangePasswordError = state => {
+  return state.getIn(['user', 'changePassword', 'error']);
+};
 
 var selectors = /*#__PURE__*/Object.freeze({
   __proto__: null,
@@ -97,7 +106,10 @@ var selectors = /*#__PURE__*/Object.freeze({
   selectPasswordResetRequestError: selectPasswordResetRequestError,
   selectResetPasswordSending: selectResetPasswordSending,
   selectResetPasswordSent: selectResetPasswordSent,
-  selectResetPasswordError: selectResetPasswordError
+  selectResetPasswordError: selectResetPasswordError,
+  selectChangePasswordSending: selectChangePasswordSending,
+  selectChangePasswordSent: selectChangePasswordSent,
+  selectChangePasswordError: selectChangePasswordError
 });
 
 const matchUserGroup = (userGroups = [], requiredGroups = []) => {
@@ -127,6 +139,9 @@ const toJS = WrappedComponent => wrappedComponentProps => {
 };
 
 exports.matchUserGroup = matchUserGroup;
+exports.selectChangePasswordError = selectChangePasswordError;
+exports.selectChangePasswordSending = selectChangePasswordSending;
+exports.selectChangePasswordSent = selectChangePasswordSent;
 exports.selectClientCredentials = selectClientCredentials;
 exports.selectPasswordResetRequestError = selectPasswordResetRequestError;
 exports.selectPasswordResetRequestSending = selectPasswordResetRequestSending;
@@ -140,6 +155,7 @@ exports.selectUserAuthenticationErrorMessage = selectUserAuthenticationErrorMess
 exports.selectUserError = selectUserError;
 exports.selectUserErrorMessage = selectUserErrorMessage;
 exports.selectUserGroups = selectUserGroups;
+exports.selectUserGuid = selectUserGuid;
 exports.selectUserIsAuthenticated = selectUserIsAuthenticated;
 exports.selectUserIsLoading = selectUserIsLoading;
 exports.selectUserRegistration = selectUserRegistration;
@@ -148,4 +164,4 @@ exports.selectUserRegistrationIsLoading = selectUserRegistrationIsLoading;
 exports.selectUserRegistrationIsSuccess = selectUserRegistrationIsSuccess;
 exports.selectors = selectors;
 exports.toJS = toJS;
-//# sourceMappingURL=ToJs-7dbcf7a7.js.map
+//# sourceMappingURL=ToJs-805d04f5.js.map

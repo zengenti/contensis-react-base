@@ -8,8 +8,8 @@ require('redux');
 require('redux-immutable');
 require('redux-thunk');
 require('redux-saga');
-var version$1 = require('./version-8e22f0d6.js');
-require('./reducers-7c73e91a.js');
+var version$1 = require('./version-1138f7f6.js');
+require('./reducers-0b34eca8.js');
 require('query-string');
 
 var types = {

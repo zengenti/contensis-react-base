@@ -2,13 +2,13 @@ import 'react';
 import { useDispatch, useSelector, connect } from 'react-redux';
 import 'immutable';
 import { y as action, n as selectCurrentSearch } from './routing-7eff80b5.js';
-import { L as LOGIN_USER, j as LOGOUT_USER, R as REGISTER_USER, c as REQUEST_USER_PASSWORD_RESET, d as RESET_USER_PASSWORD } from './reducers-6d9b6c51.js';
-export { m as initialUserState, U as reducer, t as types } from './reducers-6d9b6c51.js';
+import { L as LOGIN_USER, n as LOGOUT_USER, R as REGISTER_USER, c as REQUEST_USER_PASSWORD_RESET, d as RESET_USER_PASSWORD, C as CHANGE_USER_PASSWORD } from './reducers-7c4796b0.js';
+export { p as initialUserState, U as reducer, t as types } from './reducers-7c4796b0.js';
 import 'query-string';
 import '@redux-saga/core/effects';
-import { c as selectUserAuthenticationError, d as selectUserAuthenticationErrorMessage, e as selectUserError, f as selectUserErrorMessage, s as selectUserIsAuthenticated, g as selectUserIsLoading, h as selectUser, t as toJS, i as selectUserRegistrationError, j as selectUserRegistrationIsLoading, k as selectUserRegistrationIsSuccess, l as selectUserRegistration, n as selectPasswordResetRequestSending, o as selectPasswordResetRequestSent, p as selectPasswordResetRequestError, q as selectResetPasswordSending, r as selectResetPasswordSent, u as selectResetPasswordError } from './ToJs-dea75c6f.js';
-export { v as selectors } from './ToJs-dea75c6f.js';
-export { L as LoginHelper, h as handleRequiresLoginSaga, r as refreshSecurityToken } from './login-125acea2.js';
+import { c as selectUserAuthenticationError, d as selectUserAuthenticationErrorMessage, e as selectUserError, f as selectUserErrorMessage, a as selectUserIsAuthenticated, g as selectUserIsLoading, h as selectUser, t as toJS, i as selectUserRegistrationError, j as selectUserRegistrationIsLoading, k as selectUserRegistrationIsSuccess, l as selectUserRegistration, n as selectPasswordResetRequestSending, o as selectPasswordResetRequestSent, p as selectPasswordResetRequestError, q as selectResetPasswordSending, r as selectResetPasswordSent, u as selectResetPasswordError, v as selectUserGuid, w as selectChangePasswordSending, x as selectChangePasswordSent, y as selectChangePasswordError } from './ToJs-13f1f0b2.js';
+export { z as selectors } from './ToJs-13f1f0b2.js';
+export { L as LoginHelper, h as handleRequiresLoginSaga, r as refreshSecurityToken } from './login-136056ea.js';
 import 'jsonpath-mapper';
 import 'await-to-js';
 import 'js-cookie';
@@ -30,6 +30,11 @@ const requestPasswordReset = userEmailObject => action(REQUEST_USER_PASSWORD_RES
 const resetPassword = resetPasswordObject => action(RESET_USER_PASSWORD, {
   resetPasswordObject
 });
+const changePassword = (userId, currentPassword, newPassword) => action(CHANGE_USER_PASSWORD, {
+  userId,
+  currentPassword,
+  newPassword
+});
 
 var actions = /*#__PURE__*/Object.freeze({
   __proto__: null,
@@ -37,7 +42,8 @@ var actions = /*#__PURE__*/Object.freeze({
   logoutUser: logoutUser,
   registerUser: registerUser,
   requestPasswordReset: requestPasswordReset,
-  resetPassword: resetPassword
+  resetPassword: resetPassword,
+  changePassword: changePassword
 });
 
 const useLogin = () => {
@@ -148,6 +154,7 @@ const useUser = () => {
     isAuthenticated: select(selectUserIsAuthenticated),
     userIsLoading: select(selectUserIsLoading),
     user: select(selectUser).toJS(),
+    userId: select(selectUserGuid),
     registerUser: (user, mappers) => dispatch(registerUser(user, mappers)),
     registrationError: select(selectUserRegistrationError),
     registrationIsLoading: select(selectUserRegistrationIsLoading),
@@ -161,7 +168,11 @@ const useUser = () => {
     passwordResetIsLoading: select(selectResetPasswordSending),
     passwordResetIsSuccess: select(selectResetPasswordSent),
     passwordResetError: select(selectResetPasswordError),
-    resetPassword: resetPasswordObject => dispatch(resetPassword(resetPasswordObject))
+    resetPassword: resetPasswordObject => dispatch(resetPassword(resetPasswordObject)),
+    changePasswordIsLoading: select(selectChangePasswordSending),
+    changePasswordIsSuccess: select(selectChangePasswordSent),
+    changePasswordError: select(selectChangePasswordError),
+    changePassword: (userId, currentPassword, newPassword) => dispatch(changePassword(userId, currentPassword, newPassword))
   };
 };
 

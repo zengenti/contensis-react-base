@@ -9,14 +9,15 @@ require('redux');
 require('redux-immutable');
 require('redux-thunk');
 require('redux-saga');
-var version = require('./version-8e22f0d6.js');
-var reducers = require('./reducers-7c73e91a.js');
+var version = require('./version-1138f7f6.js');
+var reducers = require('./reducers-0b34eca8.js');
 var effects = require('@redux-saga/core/effects');
 var log = require('loglevel');
-var login = require('./login-0c0c56cb.js');
+var ToJs = require('./ToJs-805d04f5.js');
+var login = require('./login-fc073211.js');
 var awaitToJs = require('await-to-js');
 require('react-hot-loader');
-var RouteLoader = require('./RouteLoader-98b6677d.js');
+var RouteLoader = require('./RouteLoader-3066d221.js');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -863,12 +864,12 @@ async function api(url, options) {
   });
 }
 
-const resetPasswordSagas = [effects.takeEvery(reducers.REQUEST_USER_PASSWORD_RESET, requestPasswordResetSaga), effects.takeEvery(reducers.RESET_USER_PASSWORD, resetPasswordSaga)];
+const resetPasswordSagas = [effects.takeEvery(reducers.REQUEST_USER_PASSWORD_RESET, requestPasswordResetSaga), effects.takeEvery(reducers.RESET_USER_PASSWORD, resetPasswordSaga), effects.takeEvery(reducers.CHANGE_USER_PASSWORD, changePasswordSaga)];
 
 function* requestPasswordResetSaga(action) {
   const userEmailObject = action.userEmailObject;
   yield effects.put({
-    type: reducers.SET_REQUEST_USER_PASSWORD_RESET_SENDING
+    type: reducers.REQUEST_USER_PASSWORD_RESET_SENDING
   });
 
   if (userEmailObject && userEmailObject.userEmail) {
@@ -878,29 +879,29 @@ function* requestPasswordResetSaga(action) {
       if (passwordResetRequestResponse) {
         if (!passwordResetRequestResponse.error) {
           yield effects.put({
-            type: reducers.SET_REQUEST_USER_PASSWORD_RESET_SUCCESS
+            type: reducers.REQUEST_USER_PASSWORD_RESET_SUCCESS
           });
         } else {
           yield effects.put({
-            type: reducers.SET_REQUEST_USER_PASSWORD_RESET_ERROR,
+            type: reducers.REQUEST_USER_PASSWORD_RESET_ERROR,
             error: passwordResetRequestResponse.error.message
           });
         }
       } else {
         yield effects.put({
-          type: reducers.SET_REQUEST_USER_PASSWORD_RESET_ERROR,
+          type: reducers.REQUEST_USER_PASSWORD_RESET_ERROR,
           error: 'No response from server'
         });
       }
     } catch (error) {
       yield effects.put({
-        type: reducers.SET_REQUEST_USER_PASSWORD_RESET_ERROR,
+        type: reducers.REQUEST_USER_PASSWORD_RESET_ERROR,
         error: error && error.toString()
       });
     }
   } else {
     yield effects.put({
-      type: reducers.SET_REQUEST_USER_PASSWORD_RESET_ERROR,
+      type: reducers.REQUEST_USER_PASSWORD_RESET_ERROR,
       error: 'Invalid object'
     });
   }
@@ -909,7 +910,7 @@ function* requestPasswordResetSaga(action) {
 function* resetPasswordSaga(action) {
   const resetPasswordObject = action.resetPasswordObject;
   yield effects.put({
-    type: reducers.SET_RESET_USER_PASSWORD_SENDING
+    type: reducers.RESET_USER_PASSWORD_SENDING
   });
 
   if (resetPasswordObject.token && resetPasswordObject.password) {
@@ -919,31 +920,82 @@ function* resetPasswordSaga(action) {
       if (resetPasswordResponse) {
         if (!resetPasswordResponse.error) {
           yield effects.put({
-            type: reducers.SET_RESET_USER_PASSWORD_SUCCESS
+            type: reducers.RESET_USER_PASSWORD_SUCCESS
           });
         } else {
           const error = resetPasswordResponse.error.data && resetPasswordResponse.error.data.length > 0 && resetPasswordResponse.error.data[0].message || resetPasswordResponse.error.message;
           yield effects.put({
-            type: reducers.SET_RESET_USER_PASSWORD_ERROR,
+            type: reducers.RESET_USER_PASSWORD_ERROR,
             error
           });
         }
       } else {
         yield effects.put({
-          type: reducers.SET_RESET_USER_PASSWORD_ERROR,
+          type: reducers.RESET_USER_PASSWORD_ERROR,
           error: 'No response from server'
         });
       }
     } catch (error) {
       yield effects.put({
-        type: reducers.SET_RESET_USER_PASSWORD_ERROR,
+        type: reducers.RESET_USER_PASSWORD_ERROR,
         error: error && error.toString()
       });
     }
   } else {
     yield effects.put({
-      type: reducers.SET_RESET_USER_PASSWORD_ERROR,
+      type: reducers.RESET_USER_PASSWORD_ERROR,
       error: 'Invalid object'
+    });
+  }
+} // userId
+// existingPassword
+// newPassword
+
+
+function* changePasswordSaga(action) {
+  if (!action || !action.userId || !action.currentPassword || !action.newPassword) {
+    yield effects.put({
+      type: reducers.CHANGE_USER_PASSWORD_ERROR,
+      error: 'Invalid action object sent to changePassword saga'
+    });
+    return;
+  }
+
+  try {
+    const changePasswordObject = {
+      userId: action.userId,
+      existing: action.currentPassword,
+      new: action.newPassword
+    };
+    yield effects.put({
+      type: reducers.CHANGE_USER_PASSWORD_SENDING
+    });
+    const clientCredentials = (yield effects.select(ToJs.selectClientCredentials)).toJS();
+    const client = yield login.getManagementApiClient({ ...clientCredentials
+    });
+    const [err, res] = yield awaitToJs.to(client.security.users.updatePassword(changePasswordObject));
+
+    if (err) {
+      console.log('ERR: ', err);
+      yield effects.put({
+        type: reducers.CHANGE_USER_PASSWORD_ERROR,
+        error: err
+      });
+      return;
+    } // // eslint-disable-next-line no-console
+    // console.log(changePasswordObject);
+    // // eslint-disable-next-line no-console
+    // console.log(userCredentialsObject);
+
+
+    yield effects.put({
+      type: reducers.CHANGE_USER_PASSWORD_SUCCESS
+    });
+  } catch (error) {
+    console.log('ERROR: ', error);
+    yield effects.put({
+      type: reducers.CHANGE_USER_PASSWORD_ERROR,
+      error: error && error.toString()
     });
   }
 }
@@ -968,4 +1020,4 @@ exports.deliveryApi = deliveryApi;
 exports.history = history;
 exports.pickProject = pickProject;
 exports.rootSaga = rootSaga;
-//# sourceMappingURL=App-b72f40e5.js.map
+//# sourceMappingURL=App-ef850e0e.js.map
