@@ -7,11 +7,11 @@ import 'redux';
 import 'redux-immutable';
 import 'redux-thunk';
 import 'redux-saga';
-import { r as reduxStore, G as GET_NODE_TREE, h as hasNavigationTree, b as selectVersionStatus, S as SET_NODE_TREE, d as GET_NODE_TREE_ERROR } from './version-5fdabc60.js';
-import { R as REGISTER_USER, a as REGISTER_USER_SUCCESS, b as REGISTER_USER_FAILED } from './reducers-0ef43b76.js';
+import { r as reduxStore, G as GET_NODE_TREE, h as hasNavigationTree, b as selectVersionStatus, S as SET_NODE_TREE, d as GET_NODE_TREE_ERROR } from './version-61e5a6b3.js';
+import { R as REGISTER_USER, a as REGISTER_USER_SUCCESS, b as REGISTER_USER_FAILED } from './reducers-ed7581c0.js';
 import { takeEvery, select, put, call, all } from '@redux-saga/core/effects';
 import { info, error } from 'loglevel';
-import { h as handleRequiresLoginSaga, l as loginSagas } from './login-64a29f7b.js';
+import { h as handleRequiresLoginSaga, l as loginSagas } from './login-987c7c77.js';
 import { to } from 'await-to-js';
 import 'react-hot-loader';
 import { R as RouteLoader } from './RouteLoader-4f25ceef.js';
@@ -818,4 +818,4 @@ const AppRoot = props => {
 };
 
 export { AppRoot as A, browserHistory as b, deliveryApi as d, history as h, pickProject as p, rootSaga as r };
-//# sourceMappingURL=App-df9f549b.js.map
+//# sourceMappingURL=App-00566074.js.map

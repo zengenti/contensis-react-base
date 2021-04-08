@@ -1,7 +1,9 @@
-import { Seq, Map, List } from 'immutable';
+'use strict';
+
+var immutable = require('immutable');
 
 const fromJSOrdered = js => {
-  return typeof js !== 'object' || js === null ? js : Array.isArray(js) ? Seq(js).map(fromJSOrdered).toList() : Seq(js).map(fromJSOrdered).toOrderedMap();
+  return typeof js !== 'object' || js === null ? js : Array.isArray(js) ? immutable.Seq(js).map(fromJSOrdered).toList() : immutable.Seq(js).map(fromJSOrdered).toOrderedMap();
 };
 
 const ACTION_PREFIX = '@USER/';
@@ -28,16 +30,16 @@ var types = /*#__PURE__*/Object.freeze({
   REGISTER_USER_FAILED: REGISTER_USER_FAILED
 });
 
-const defaultAuthenticationState = Map({
+const defaultAuthenticationState = immutable.Map({
   authenticated: false,
   authenticationError: false,
   clientCredentials: null,
   error: false,
   loading: false
 });
-const initialUserState = Map({
+const initialUserState = immutable.Map({
   authenticationState: defaultAuthenticationState,
-  groups: new List([])
+  groups: new immutable.List([])
 });
 var UserReducer = ((state = initialUserState, action) => {
   switch (action.type) {
@@ -61,7 +63,7 @@ var UserReducer = ((state = initialUserState, action) => {
         } = action;
 
         if (user) {
-          user.name = `${user.firstname} ${user.lastname}`;
+          user.name = `${user.firstName} ${user.lastName}`;
           user.isZengentiStaff = user.email.includes('@zengenti.com');
         }
 
@@ -94,7 +96,7 @@ var UserReducer = ((state = initialUserState, action) => {
         } = action; // Set registration object from the supplied action.user
         // so we can call these values back later
 
-        const nextState = state.set('registration', user ? fromJSOrdered(user) : state.get('registration', Map())); // Set registration flags so the UI can track the status
+        const nextState = state.set('registration', user ? fromJSOrdered(user) : state.get('registration', immutable.Map())); // Set registration flags so the UI can track the status
 
         return nextState.setIn(['registration', 'success'], action.type === REGISTER_USER_SUCCESS).setIn(['registration', 'error'], error || false).setIn(['registration', 'loading'], action.type === REGISTER_USER);
       }
@@ -104,5 +106,15 @@ var UserReducer = ((state = initialUserState, action) => {
   }
 });
 
-export { LOGIN_USER as L, REGISTER_USER as R, SET_AUTHENTICATION_STATE as S, UserReducer as U, VALIDATE_USER as V, REGISTER_USER_SUCCESS as a, REGISTER_USER_FAILED as b, LOGOUT_USER as c, fromJSOrdered as f, initialUserState as i, types as t };
-//# sourceMappingURL=reducers-0ef43b76.js.map
+exports.LOGIN_USER = LOGIN_USER;
+exports.LOGOUT_USER = LOGOUT_USER;
+exports.REGISTER_USER = REGISTER_USER;
+exports.REGISTER_USER_FAILED = REGISTER_USER_FAILED;
+exports.REGISTER_USER_SUCCESS = REGISTER_USER_SUCCESS;
+exports.SET_AUTHENTICATION_STATE = SET_AUTHENTICATION_STATE;
+exports.UserReducer = UserReducer;
+exports.VALIDATE_USER = VALIDATE_USER;
+exports.fromJSOrdered = fromJSOrdered;
+exports.initialUserState = initialUserState;
+exports.types = types;
+//# sourceMappingURL=reducers-a05c32a6.js.map
