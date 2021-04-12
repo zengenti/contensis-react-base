@@ -111,12 +111,16 @@ export class LoginHelper {
         };
         LoginHelper.ClearCachedCredentials();
       } else {
+        // Ensure we get latest refreshToken and contensisClassicToken from the latest client
+        const latestCredentials = mapClientCredentials(client);
+        LoginHelper.SetLoginCookies(latestCredentials);
+
         user = userDetails;
         authenticationState = {
           authenticated: true,
           authenticationError: false,
           error: false,
-          clientCredentials: credentials,
+          clientCredentials: latestCredentials,
         };
       }
     }
