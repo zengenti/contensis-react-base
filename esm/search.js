@@ -912,6 +912,7 @@ const Fields = {
 
 const fieldExpression = (field, value, operator = 'equalTo', weight = null) => {
   if (!field || !value) return [];
+  if (operator === 'between') return between(field, value);
   if (Array.isArray(value)) return equalToOrIn(field, value, operator);else return !weight ? [Op[operator](field, value)] : [Op[operator](field, value).weight(weight)];
 };
 const contentTypeIdExpression = (contentTypeIds, webpageTemplates) => {
@@ -984,7 +985,18 @@ const orderByExpression = orderBy => {
   return expression;
 };
 
-const equalToOrIn = (field, arr, operator = 'equalTo') => arr.length === 0 ? [] : arr.length === 1 ? [Op[operator](field, arr[0])] : [Op.in(field, ...arr)];
+const equalToOrIn = (field, value, operator = 'equalTo') => value.length === 0 ? [] : value.length === 1 ? [Op[operator](field, value[0])] : [Op.in(field, ...value)];
+
+const between = (field, value) => {
+  if (value.length === 0) return [];
+  if (Array.isArray(value)) return [Op.or(...value.map(bkey => {
+    const valArr = bkey.split('-');
+    return valArr.length > 1 ? Op.between(field, ...bkey.split('-')) : // eslint-disable-next-line no-console
+    console.log(`[search] You have supplied only one value to a "between" operator which must have two values. Your supplied value "${valArr.length && valArr[0]}" has been discarded.`);
+  }).filter(bc => bc))];
+  const valArr = value.split('-');
+  return valArr.length > 1 ? [Op.between(field, ...value.split('-'))] : [];
+};
 /**
  * Accept HTTP style objects and map them to
  * their equivalent JS client "Op" expressions

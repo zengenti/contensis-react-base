@@ -10,7 +10,7 @@ var reducers = require('./reducers-a05c32a6.js');
 require('query-string');
 require('@redux-saga/core/effects');
 var ToJs = require('./ToJs-128064bc.js');
-var login = require('./login-1eced75a.js');
+var login = require('./login-527fb76f.js');
 require('jsonpath-mapper');
 require('await-to-js');
 require('js-cookie');
