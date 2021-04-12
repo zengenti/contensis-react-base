@@ -136,16 +136,33 @@ function* loginUserSaga(action = {}) {
     user,
   });
 }
+const removeHostnamePart = path => {
+  // eslint-disable-next-line no-console
+  console.log(path);
+  const relativePath =
+    '/' +
+    path
+      .split('/')
+      .splice(3)
+      .join('/');
+  // eslint-disable-next-line no-console
+  console.log(relativePath);
+  return relativePath;
+};
 
 function* redirectAfterSuccessfulLoginSaga() {
   const isLoggedIn = yield select(selectUserIsAuthenticated);
-  const redirectPath = queryParams(yield select(selectCurrentSearch))
-    .redirect_uri;
-  const assetRedirectPath = queryParams(yield select(selectCurrentSearch))
-    .ReturnURL;
+  const {
+    redirect_uri: redirectPath,
+    ReturnURL: assetRedirectPath,
+  } = queryParams(yield select(selectCurrentSearch));
 
   if (isLoggedIn && assetRedirectPath && typeof window != 'undefined') {
-    window.location.href = assetRedirectPath;
+    const path = removeHostnamePart(assetRedirectPath);
+    // This has to be a hard href to get the app to
+    // leave React and hit the server for the IIS hosted assets
+    window.location.href = path;
+    // yield put(setRoute(path)); // does not work in this scenario
   } else if (isLoggedIn && redirectPath) {
     yield put(setRoute(redirectPath));
   }
