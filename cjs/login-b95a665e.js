@@ -552,13 +552,27 @@ function* loginUserSaga(action = {}) {
   });
 }
 
+const removeHostnamePart = path => {
+  // eslint-disable-next-line no-console
+  console.log(path);
+  const relativePath = '/' + path.split('/').splice(3).join('/'); // eslint-disable-next-line no-console
+
+  console.log(relativePath);
+  return relativePath;
+};
+
 function* redirectAfterSuccessfulLoginSaga() {
   const isLoggedIn = yield effects.select(ToJs.selectUserIsAuthenticated);
-  const redirectPath = routing.queryParams((yield effects.select(routing.selectCurrentSearch))).redirect_uri;
-  const assetRedirectPath = routing.queryParams((yield effects.select(routing.selectCurrentSearch))).ReturnURL;
+  const {
+    redirect_uri: redirectPath,
+    ReturnURL: assetRedirectPath
+  } = routing.queryParams((yield effects.select(routing.selectCurrentSearch)));
 
   if (isLoggedIn && assetRedirectPath && typeof window != 'undefined') {
-    window.location.href = assetRedirectPath;
+    const path = removeHostnamePart(assetRedirectPath); // This has to be a hard href to get the app to
+    // leave React and hit the server for the IIS hosted assets
+
+    window.location.href = path; // yield put(setRoute(path)); // does not work in this scenario
   } else if (isLoggedIn && redirectPath) {
     yield effects.put(routing.setRoute(redirectPath));
   }
@@ -594,4 +608,4 @@ exports.LoginHelper = LoginHelper;
 exports.handleRequiresLoginSaga = handleRequiresLoginSaga;
 exports.loginSagas = loginSagas;
 exports.refreshSecurityToken = refreshSecurityToken;
-//# sourceMappingURL=login-527fb76f.js.map
+//# sourceMappingURL=login-b95a665e.js.map
