@@ -457,8 +457,8 @@ function* getRouteSaga(action) {
     const entryLinkDepth = appsays && appsays.entryLinkDepth || 3;
     const setContentTypeLimits = !!ContentTypeMappings.find(ct => ct.fields || ct.linkDepth || ct.nodeOptions);
     const state = yield effects.select();
-    const routeEntry = routing.selectRouteEntry(state); // const routeNode = selectCurrentNode(state);
-
+    const routeEntry = routing.selectRouteEntry(state);
+    const routeNode = routing.selectCurrentNode(state);
     const currentPath = action.path; //selectCurrentPath(state);
 
     const deliveryApiStatus = version.selectVersionStatus(state);
@@ -478,7 +478,7 @@ function* getRouteSaga(action) {
       // - all staticRoutes (where custom 'route.fetchNode' attribute is falsey)
       // - standard Contensis SiteView Routing where we already have that entry in state
       if (routeEntry && (!staticRoute || staticRoute.route && staticRoute.route.fetchNode)) {
-        pathNode = {};
+        pathNode = routeNode.toJS();
         pathNode.entry = entry = routeEntry.toJS(); //Do nothing, the entry is allready the right one.
         // yield put({
         //   type: SET_ENTRY,
@@ -829,4 +829,4 @@ exports.deliveryApi = deliveryApi;
 exports.history = history;
 exports.pickProject = pickProject;
 exports.rootSaga = rootSaga;
-//# sourceMappingURL=App-5337a0a1.js.map
+//# sourceMappingURL=App-e5e74395.js.map

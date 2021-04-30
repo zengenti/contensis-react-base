@@ -20,7 +20,7 @@ var serialize = require('serialize-javascript');
 var minifyCssString = require('minify-css-string');
 var immutable = require('immutable');
 require('history');
-var App = require('./App-5337a0a1.js');
+var App = require('./App-e5e74395.js');
 require('contensis-delivery-api');
 var routing = require('./routing-923fc797.js');
 require('redux');

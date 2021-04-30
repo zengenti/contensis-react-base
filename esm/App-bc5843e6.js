@@ -2,7 +2,7 @@ import React from 'react';
 import { Map } from 'immutable';
 import { createBrowserHistory, createMemoryHistory } from 'history';
 import { Client, Op, Query } from 'contensis-delivery-api';
-import { c as setSurrogateKeys, b as selectCurrentProject, S as SET_NAVIGATION_PATH, d as SET_ROUTE, C as CALL_HISTORY_METHOD, a as selectRouteEntry, U as UPDATE_LOADING_STATE, e as selectCurrentNode, f as selectCurrentAncestors, g as findContentTypeMapping, h as selectRouteEntryEntryId, i as selectRouteEntryLanguage, j as selectMappedEntry, k as SET_ENTRY, l as SET_ANCESTORS, m as SET_SIBLINGS, q as queryParams, n as selectCurrentSearch, o as setRoute } from './routing-2c78fa4d.js';
+import { c as setSurrogateKeys, b as selectCurrentProject, S as SET_NAVIGATION_PATH, d as SET_ROUTE, C as CALL_HISTORY_METHOD, a as selectRouteEntry, e as selectCurrentNode, U as UPDATE_LOADING_STATE, f as selectCurrentAncestors, g as findContentTypeMapping, h as selectRouteEntryEntryId, i as selectRouteEntryLanguage, j as selectMappedEntry, k as SET_ENTRY, l as SET_ANCESTORS, m as SET_SIBLINGS, q as queryParams, n as selectCurrentSearch, o as setRoute } from './routing-2c78fa4d.js';
 import 'redux';
 import 'redux-immutable';
 import 'redux-thunk';
@@ -451,8 +451,8 @@ function* getRouteSaga(action) {
     const entryLinkDepth = appsays && appsays.entryLinkDepth || 3;
     const setContentTypeLimits = !!ContentTypeMappings.find(ct => ct.fields || ct.linkDepth || ct.nodeOptions);
     const state = yield select();
-    const routeEntry = selectRouteEntry(state); // const routeNode = selectCurrentNode(state);
-
+    const routeEntry = selectRouteEntry(state);
+    const routeNode = selectCurrentNode(state);
     const currentPath = action.path; //selectCurrentPath(state);
 
     const deliveryApiStatus = selectVersionStatus(state);
@@ -472,7 +472,7 @@ function* getRouteSaga(action) {
       // - all staticRoutes (where custom 'route.fetchNode' attribute is falsey)
       // - standard Contensis SiteView Routing where we already have that entry in state
       if (routeEntry && (!staticRoute || staticRoute.route && staticRoute.route.fetchNode)) {
-        pathNode = {};
+        pathNode = routeNode.toJS();
         pathNode.entry = entry = routeEntry.toJS(); //Do nothing, the entry is allready the right one.
         // yield put({
         //   type: SET_ENTRY,
@@ -818,4 +818,4 @@ const AppRoot = props => {
 };
 
 export { AppRoot as A, browserHistory as b, deliveryApi as d, history as h, pickProject as p, rootSaga as r };
-//# sourceMappingURL=App-b81c8a2f.js.map
+//# sourceMappingURL=App-bc5843e6.js.map
