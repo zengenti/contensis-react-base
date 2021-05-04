@@ -196,7 +196,7 @@ function* getRouteSaga(action) {
               project
             );
             if (payload && payload.items && payload.items.length > 0) {
-              pathNode.entry = payload.items[0];
+              pathNode.entry = entry = payload.items[0];
             }
 
             if (childrenDepth > 0 || nodeOptions.children) {
