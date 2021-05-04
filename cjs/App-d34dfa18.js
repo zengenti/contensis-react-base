@@ -561,7 +561,7 @@ function* getRouteSaga(action) {
             const payload = yield cachedSearch.search(query, linkDepth || entryLinkDepth || 0, project);
 
             if (payload && payload.items && payload.items.length > 0) {
-              pathNode.entry = payload.items[0];
+              pathNode.entry = entry = payload.items[0];
             }
 
             if (childrenDepth > 0 || nodeOptions.children) {
@@ -829,4 +829,4 @@ exports.deliveryApi = deliveryApi;
 exports.history = history;
 exports.pickProject = pickProject;
 exports.rootSaga = rootSaga;
-//# sourceMappingURL=App-e5e74395.js.map
+//# sourceMappingURL=App-d34dfa18.js.map
