@@ -21,7 +21,7 @@ var serialize = require('serialize-javascript');
 var minifyCssString = require('minify-css-string');
 var immutable = require('immutable');
 require('history');
-var App = require('./App-92db5a65.js');
+var App = require('./App-f55376b4.js');
 require('contensis-delivery-api');
 var navigation = require('./navigation-6866ec72.js');
 var selectors = require('./selectors-ac6b55d5.js');

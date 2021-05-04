@@ -81,6 +81,7 @@ const triggerSearch = ({
   context,
   facet,
   mapper,
+  mappers,
   params,
   excludeIds,
   debug
@@ -90,6 +91,7 @@ const triggerSearch = ({
     context,
     facet,
     mapper,
+    mappers,
     params,
     excludeIds,
     debug
@@ -201,7 +203,7 @@ const searchFacet = OrderedMap({
   featuredResults: List(),
   entries,
   results: List(),
-  queryParams: null,
+  queryParams: Map(),
   filters: Map(),
   queryDuration: 0,
   pagingInfo
@@ -869,7 +871,18 @@ const timedSearch = async (query, linkDepth, projectId, env) => {
     payload
   };
 };
-const getItemsFromResult = result => result && result.payload && Array.isArray(result.payload.items) && result.payload.items || [];
+const getItemsFromResult = result => {
+  const {
+    payload
+  } = result || {};
+
+  if (payload) {
+    if (Array.isArray(payload)) return payload;
+    if (Array.isArray(payload.items)) return payload.items;
+  }
+
+  return [];
+};
 const extractQuotedPhrases = searchTerm => {
   const pattern = new RegExp(/(?=["'])(?:"[^"\\]*(?:\\[\s\S][^"\\]*)*"|'[^'\\]*(?:\\[\s\S][^'\\]*)*')/gm);
   return (searchTerm.match(pattern) || []).map(match => match.replace(/"/g, ''));
@@ -897,6 +910,7 @@ const sys = {
   filename: 'sys.properties.filename',
   id: 'sys.id',
   includeInSearch: 'sys.metadata.includeInSearch',
+  language: 'sys.language',
   uri: 'sys.uri',
   versionStatus: 'sys.versionStatus'
 };
@@ -912,6 +926,10 @@ const Fields = {
 
 const fieldExpression = (field, value, operator = 'equalTo', weight = null) => {
   if (!field || !value) return [];
+  if (Array.isArray(field)) // If an array of fieldIds have been provided, call self for each fieldId
+    // to generate expressions that are combined with an 'or' operator
+    return [Op.or(...field.map(fieldId => fieldExpression(fieldId, value, operator, weight)).flat())];
+  if (operator === 'between') return between(field, value);
   if (Array.isArray(value)) return equalToOrIn(field, value, operator);else return !weight ? [Op[operator](field, value)] : [Op[operator](field, value).weight(weight)];
 };
 const contentTypeIdExpression = (contentTypeIds, webpageTemplates) => {
@@ -963,13 +981,14 @@ const featuredResultsExpression = ({
   fieldValue = true
 } = {}) => {
   if (contentTypeId) {
-    return fieldExpression(Fields.sys.contentTypeId, contentTypeId);
+    return contentTypeIdExpression(Array.isArray(contentTypeId) ? contentTypeId : [contentTypeId]); // return fieldExpression(Fields.sys.contentTypeId, contentTypeId);
   }
 
   if (fieldId) {
     return fieldExpression(fieldId, fieldValue);
   }
 };
+const languagesExpression = languages => fieldExpression(Fields.sys.language, languages);
 const defaultExpressions = versionStatus => {
   return [Op.equalTo(Fields.sys.versionStatus, versionStatus), Op.or(Op.and(Op.exists(Fields.sys.includeInSearch, true), Op.equalTo(Fields.sys.includeInSearch, true)), Op.exists(Fields.sys.includeInSearch, false))];
 };
@@ -984,7 +1003,18 @@ const orderByExpression = orderBy => {
   return expression;
 };
 
-const equalToOrIn = (field, arr, operator = 'equalTo') => arr.length === 0 ? [] : arr.length === 1 ? [Op[operator](field, arr[0])] : [Op.in(field, ...arr)];
+const equalToOrIn = (field, value, operator = 'equalTo') => value.length === 0 ? [] : value.length === 1 ? [Op[operator](field, value[0])] : [Op.in(field, ...value)];
+
+const between = (field, value) => {
+  if (value.length === 0) return [];
+  if (Array.isArray(value)) return [Op.or(...value.map(bkey => {
+    const valArr = bkey.split('-');
+    return valArr.length > 1 ? Op.between(field, ...bkey.split('-')) : // eslint-disable-next-line no-console
+    console.log(`[search] You have supplied only one value to a "between" operator which must have two values. Your supplied value "${valArr.length && valArr[0]}" has been discarded.`);
+  }).filter(bc => bc))];
+  const valArr = value.split('-');
+  return valArr.length > 1 ? [Op.between(field, ...value.split('-'))] : [];
+};
 /**
  * Accept HTTP style objects and map them to
  * their equivalent JS client "Op" expressions
@@ -1103,6 +1133,7 @@ const searchQuery = ({
   featuredResults,
   fields,
   filters,
+  languages,
   pageSize,
   pageIndex,
   orderBy,
@@ -1111,9 +1142,9 @@ const searchQuery = ({
   webpageTemplates,
   weightedSearchFields
 }, isFeatured) => {
-  let expressions = [...termExpressions(searchTerm, weightedSearchFields), ...defaultExpressions(versionStatus), ...customWhereExpressions(customWhere), ...excludeIdsExpression(excludeIds)];
+  let expressions = [...termExpressions(searchTerm, weightedSearchFields), ...defaultExpressions(versionStatus), ...languagesExpression(languages), ...customWhereExpressions(customWhere), ...excludeIdsExpression(excludeIds)];
   if (isFeatured) expressions = [...expressions, ...featuredResultsExpression(featuredResults)];
-  if (!isFeatured || featuredResults && featuredResults.fieldId) expressions = [...expressions, ...filterExpressions(filters), ...contentTypeIdExpression(contentTypeIds, webpageTemplates)];
+  if (!isFeatured || featuredResults && !featuredResults.contentTypeId) expressions = [...expressions, ...filterExpressions(filters), ...contentTypeIdExpression(contentTypeIds, webpageTemplates)];
   const query = new Query(...expressions);
   if (!searchTerm) query.orderBy = orderByExpression(orderBy);
   if (dynamicOrderBy && dynamicOrderBy.length) query.orderBy = orderByExpression(dynamicOrderBy);
@@ -1413,6 +1444,9 @@ const queryParamsTemplate = {
     state
   }) => getPageIndex(state, null, action.context),
   internalPaging: root => getQueryParameter(root, 'internalPaging', false),
+  languages: ({
+    action
+  }) => action.defaultLang ? [action.defaultLang] : [],
   linkDepth: root => getQueryParameter(root, 'linkDepth', 0),
   loadMorePaging: root => getQueryParameter(root, 'loadMorePaging', false),
   orderBy: root => getQueryParameter(root, 'orderBy', new List([])),
@@ -1494,17 +1528,18 @@ const generateQueryParams = (action, state) => {
 const runSearch = (action, state, queryParams) => {
   const {
     context,
+    defaultLang,
     facet,
     ogState = state,
     preload,
     ssr
   } = action;
   let willRun = false;
-  const facetIsLoaded = getIsLoaded(state, context);
+  const facetIsLoaded = defaultLang ? false : getIsLoaded(state, context);
   const stateParams = getQueryParams(ogState, facet, context).toJS();
   stateParams.pageIndex = getPageIndex(ogState, facet, context);
   stateParams.searchTerm = getSearchTerm(ogState);
-  if (context === Context.facets && ssr || context === Context.minilist || preload || !facetIsLoaded || filterParamsChanged(action)) willRun = true;else {
+  if (context === Context.facets && ssr || context === Context.minilist || preload || !facetIsLoaded || filterParamsChanged(action) || defaultLang) willRun = true;else {
     // Don't execute the search if the inbound query params
     // are the same as what we already have in state
     Object.entries(stateParams).forEach(([param, value]) => {
@@ -1589,6 +1624,7 @@ function* setRouteFilters(action) {
     mappers,
     params,
     listingType,
+    defaultLang,
     debug
   } = action;
   const context = listingType ? Context.listings : Context.facets;
@@ -1608,6 +1644,7 @@ function* setRouteFilters(action) {
     facet: currentFacet,
     mappers,
     params,
+    defaultLang,
     ssr,
     debug
   };
@@ -1667,7 +1704,7 @@ function* loadFilter(action) {
     contentTypeId,
     customWhere,
     path
-  } = filter;
+  } = 'toJS' in filter ? filter.toJS() : filter;
   const createStateFrom = {
     type: LOAD_FILTERS_COMPLETE,
     context,
@@ -1734,18 +1771,20 @@ function* ensureSearch(action) {
 
 function* executeSearch(action) {
   const {
+    context,
     facet,
     queryParams,
-    mappers
+    mappers = {}
   } = action;
 
   try {
     const state = yield select();
     let result, featuredResult, featuredQuery;
-    const customApi = getCustomApi(state, facet);
+    const customApi = getCustomApi(state, facet, context);
 
-    if (customApi && mappers.customApi) {
-      const apiParams = mappers.customApi(queryParams);
+    if (customApi) {
+      const apiParams = typeof mappers.customApi === 'function' && mappers.customApi(queryParams) || {};
+      result = {};
       result.payload = yield callCustomApi(customApi, apiParams);
       result.duration = 1;
     } else {
@@ -1910,6 +1949,7 @@ const useMinilist = ({
   id,
   excludeIds,
   mapper,
+  mappers,
   params,
   debug
 } = {}) => {
@@ -1917,11 +1957,12 @@ const useMinilist = ({
   const results = useSelector(state => getResults(state, id, Context.minilist).toJS());
   const isLoading = useSelector(state => getIsLoading(state, Context.minilist, id));
   useEffect(() => {
-    if (id && mapper) {
+    if (id && (mapper || mappers.results)) {
       dispatch(triggerSearch({
         context: Context.minilist,
         facet: id,
         mapper,
+        mappers,
         params,
         excludeIds,
         debug
