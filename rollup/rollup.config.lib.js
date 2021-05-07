@@ -16,6 +16,7 @@ export default {
   input: {
     'contensis-react-base': './src/lib/contensis-react-base.js',
     client: './src/client/client.js',
+    forms: 'zengenti-forms-package',
     redux: './src/lib/redux.js',
     routing: './src/lib/routing.js',
     search: 'zengenti-search-package',
