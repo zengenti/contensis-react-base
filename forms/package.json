@@ -1,0 +1,4 @@
+{
+  "main": "../cjs/forms.js",
+  "module": "../esm/forms.js"
+}
