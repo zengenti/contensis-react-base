@@ -1,3 +1,13 @@
+#### 1.1.1 (2021-05-10)
+
+##### Bug Fixes
+
+- entry object in routing saga not being passed to onRouteLoaded when doing field-limited entry search for a found siteview node (ce5d5df9)
+
+##### Documentation Changes
+
+- update changelog (4658a877)
+
 #### 1.1.0 (2021-04-01)
 
 ##### Build System / Dependencies
