@@ -90,6 +90,7 @@ const withMappers2 = (actionFunc, args, mappers) => {
 };
 const triggerSearch = ({
   context,
+  defaultLang,
   facet,
   mapper,
   mappers,
@@ -100,6 +101,7 @@ const triggerSearch = ({
   return {
     type: DO_SEARCH,
     context,
+    defaultLang,
     facet,
     mapper,
     mappers,
@@ -1962,6 +1964,7 @@ const useMinilist = ({
   mapper,
   mappers,
   params,
+  defaultLang,
   debug
 } = {}) => {
   const dispatch = reactRedux.useDispatch();
@@ -1971,6 +1974,7 @@ const useMinilist = ({
     if (id && (mapper || mappers.results)) {
       dispatch(triggerSearch({
         context: Context.minilist,
+        defaultLang,
         facet: id,
         mapper,
         mappers,
@@ -1979,7 +1983,7 @@ const useMinilist = ({
         debug
       }));
     }
-  }, [dispatch, excludeIds, id, params]);
+  }, [dispatch, excludeIds, id, defaultLang, params]);
   return {
     isLoading,
     results
