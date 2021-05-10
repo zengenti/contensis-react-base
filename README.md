@@ -64,6 +64,19 @@ The package handles things such as:
 
 # Changelog
 
+#### 2.2.3 (2021-05-10)
+
+##### Bug Fixes
+
+- entry object in routing saga not being passed to onRouteLoaded when doing field-limited entry search for a found siteview node (ce5d5df9)
+- Empty currentNode value in routing when doing SSR (3a6cecd2)
+- remove hostname from the ReturnURL querystring provided in the login redirect from classic web servers (e124ef11)
+- issue around expired contensisClassicToken sending app on a redirect loop due to app reading refreshToken as valid but IIS requiring the contensisClassicToken / ContensisCMSUserName cookie which is not valid/not present, always write the latest client credentials to cookie when validating stored credentials (64cb6194)
+
+##### Tests
+
+- add new forms sub package (1393b479)
+
 #### 2.2.2 (2021-04-08)
 
 ##### Documentation Changes
