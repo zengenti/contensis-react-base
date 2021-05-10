@@ -214,6 +214,7 @@ function* getRouteSaga(action) {
             path: currentPath,
             entryFields: setContentTypeLimits ? ['sys.contentTypeId', 'sys.id'] : '*',
             entryLinkDepth: setContentTypeLimits ? 0 : entryLinkDepth,
+            language: defaultLang,
             versionStatus: deliveryApiStatus
           }, project);
 
@@ -240,6 +241,7 @@ function* getRouteSaga(action) {
                 id: pathNode.id,
                 entryFields: childrenOptions.fields || fields || '*',
                 entryLinkDepth: childrenOptions.linkDepth || linkDepth || entryLinkDepth || 0,
+                language: defaultLang,
                 versionStatus: deliveryApiStatus
               });
 
@@ -255,6 +257,7 @@ function* getRouteSaga(action) {
             try {
               ancestors = yield cachedSearch.getAncestors({
                 id: pathNode.id,
+                language: defaultLang,
                 versionStatus: deliveryApiStatus
               }, project);
             } catch (ex) {
@@ -266,6 +269,7 @@ function* getRouteSaga(action) {
             try {
               siblings = yield cachedSearch.getSiblings({
                 id: pathNode.id,
+                language: defaultLang,
                 versionStatus: deliveryApiStatus
               }, project);
             } catch (ex) {
@@ -413,4 +417,4 @@ const AppRoot = props => {
 };
 
 export { AppRoot as A, browserHistory as b, history as h, pickProject as p, rootSaga as r };
-//# sourceMappingURL=App-f55d3f1c.js.map
+//# sourceMappingURL=App-3188d7f3.js.map

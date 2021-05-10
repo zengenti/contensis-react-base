@@ -220,6 +220,7 @@ function* getRouteSaga(action) {
             path: currentPath,
             entryFields: setContentTypeLimits ? ['sys.contentTypeId', 'sys.id'] : '*',
             entryLinkDepth: setContentTypeLimits ? 0 : entryLinkDepth,
+            language: defaultLang,
             versionStatus: deliveryApiStatus
           }, project);
 
@@ -246,6 +247,7 @@ function* getRouteSaga(action) {
                 id: pathNode.id,
                 entryFields: childrenOptions.fields || fields || '*',
                 entryLinkDepth: childrenOptions.linkDepth || linkDepth || entryLinkDepth || 0,
+                language: defaultLang,
                 versionStatus: deliveryApiStatus
               });
 
@@ -261,6 +263,7 @@ function* getRouteSaga(action) {
             try {
               ancestors = yield navigation.cachedSearch.getAncestors({
                 id: pathNode.id,
+                language: defaultLang,
                 versionStatus: deliveryApiStatus
               }, project);
             } catch (ex) {
@@ -272,6 +275,7 @@ function* getRouteSaga(action) {
             try {
               siblings = yield navigation.cachedSearch.getSiblings({
                 id: pathNode.id,
+                language: defaultLang,
                 versionStatus: deliveryApiStatus
               }, project);
             } catch (ex) {
@@ -423,4 +427,4 @@ exports.browserHistory = browserHistory;
 exports.history = history;
 exports.pickProject = pickProject;
 exports.rootSaga = rootSaga;
-//# sourceMappingURL=App-f55376b4.js.map
+//# sourceMappingURL=App-d7f77d06.js.map
