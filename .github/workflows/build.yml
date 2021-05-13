@@ -22,12 +22,12 @@ jobs:
         run: npm ci
       - name: Setup GIT
         run: |
-          git config user.email "my@email.com"
+          git config user.email "github@zengenti.com"
           git config user.name "$GITHUB_ACTOR"
       - name: Build package and publish
         run: |
           npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
-          npm version prerelease --preid=beta
-          npm publish --ignore-scripts
+          npm version prerelease --preid=beta --no-git-tag-version
+          npm publish --tag prerelease --ignore-scripts
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

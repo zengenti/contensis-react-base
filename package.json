@@ -29,7 +29,7 @@
     "test:coverage": "jest --config=./config/jest.config.js --coverage",
     "publish:test": "npm pack && tar -xvzf *.tgz && rm -rf package *.tgz",
     "version": "npm run roll:lib && git add -A",
-    "postversion": "git push && git push --tags"
+    "postversion": "git commit -m \"ci: bumps version [skip ci]\" && git push && git push --tags"
   },
   "keywords": [],
   "author": "http://Zengenti.com",
