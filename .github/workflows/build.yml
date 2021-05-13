@@ -31,6 +31,7 @@ jobs:
           npm version prerelease --preid=beta --no-git-tag-version
       - name: Push version increment to GIT
         run: |
+          git add -A
           git commit -m "ci: bumps version [skip ci]"
           git push
         env:
