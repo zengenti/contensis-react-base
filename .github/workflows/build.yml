@@ -13,11 +13,17 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: '14.x'
-      # The apt-gets prevent cwebp compiling from source each time.
-      - run: sudo apt-get update
-      - run: sudo apt-get install libglu1 libxi6 -y
+      - name: Install apt packages for build
+        # The apt-gets prevent cwebp compiling from source each time.
+        run: |
+          sudo apt-get update
+          sudo apt-get install libglu1 libxi6 -y
       - name: Install project dependencies
         run: npm ci
+      - name: Setup GIT
+        run: |
+          git config user.email "my@email.com"
+          git config user.name "$GITHUB_ACTOR"
       - name: Build package and publish
         run: |
           npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
