@@ -27,7 +27,6 @@ jobs:
       - name: Build package and increment version
         run: |
           npm run roll:lib
-          npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
           npm version prerelease --preid=beta --no-git-tag-version
       - name: Push version increment to GIT
         run: |
@@ -38,6 +37,8 @@ jobs:
           # The secret is passed automatically. Nothing to configure.
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Publish prerelease package
-        run: npm publish --tag prerelease --ignore-scripts
+        run: |
+          npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
+          npm publish --tag prerelease --ignore-scripts
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
