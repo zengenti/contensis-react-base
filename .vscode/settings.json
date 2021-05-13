@@ -41,10 +41,10 @@
   "workbench.editor.highlightModifiedTabs": true,
   "workbench.colorCustomizations": {
     "tab.activeBorderTop": "#e9654c",
-    "activityBar.background": "#1e593f",
-    "activityBar.activeBackground": "#1e593f",
+    "activityBar.background": "#2b2f51",
+    "activityBar.activeBackground": "#77e8c6",
     "activityBar.activeBorder": "#221030",
-    "activityBar.foreground": "#e7e7e7",
+    "activityBar.foreground": "#2b2f51",
     "activityBar.inactiveForeground": "#e7e7e799",
     "activityBarBadge.background": "#221030",
     "activityBarBadge.foreground": "#e7e7e7",
