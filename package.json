@@ -27,9 +27,7 @@
     "test": "jest  -c ./config/jest.config.js --detectOpenHandles --forceExit",
     "test:watch": "jest --config=./config/jest.config.js --watch",
     "test:coverage": "jest --config=./config/jest.config.js --coverage",
-    "publish:test": "npm pack && tar -xvzf *.tgz && rm -rf package *.tgz",
-    "version": "npm run roll:lib && git add -A",
-    "postversion": "git commit -m \"ci: bumps version [skip ci]\" && git push && git push --tags"
+    "publish:test": "npm pack && tar -xvzf *.tgz && rm -rf package *.tgz"
   },
   "keywords": [],
   "author": "http://Zengenti.com",

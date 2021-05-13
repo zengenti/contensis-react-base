@@ -24,10 +24,19 @@ jobs:
         run: |
           git config user.email "github@zengenti.com"
           git config user.name "$GITHUB_ACTOR"
-      - name: Build package and publish
+      - name: Build package and increment version
         run: |
+          npm run roll:lib
           npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
           npm version prerelease --preid=beta --no-git-tag-version
-          npm publish --tag prerelease --ignore-scripts
+      - name: Push version increment to GIT
+        run: |
+          git commit -m "ci: bumps version [skip ci]"
+          git push
+        env:
+          # The secret is passed automatically. Nothing to configure.
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish prerelease package
+        run: npm publish --tag prerelease --ignore-scripts
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
