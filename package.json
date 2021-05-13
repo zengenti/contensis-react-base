@@ -1,6 +1,6 @@
 {
   "name": "@zengenti/contensis-react-base",
-  "version": "2.2.3",
+  "version": "2.2.4",
   "repository": "https://gitlab.zengenti.com/ps-projects/zengenti-base/zen-base/tree/isomorphic-base",
   "license": "None",
   "description": "",
@@ -27,7 +27,10 @@
     "test": "jest  -c ./config/jest.config.js --detectOpenHandles --forceExit",
     "test:watch": "jest --config=./config/jest.config.js --watch",
     "test:coverage": "jest --config=./config/jest.config.js --coverage",
-    "publish:test": "npm pack && tar -xvzf *.tgz && rm -rf package *.tgz"
+    "publish:test": "npm pack && tar -xvzf *.tgz && rm -rf package *.tgz",
+    "preversion": "npm test",
+    "version": "npm run roll:lib && git add -A",
+    "postversion": "git push && git push --tags"
   },
   "keywords": [],
   "author": "http://Zengenti.com",

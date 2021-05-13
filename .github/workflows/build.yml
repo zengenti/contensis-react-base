@@ -17,5 +17,5 @@ jobs:
       - run: sudo apt-get update
       - run: sudo apt-get install libglu1 libxi6 -y
       - run: npm ci
-      - run: npm run roll:lib
-      # - run: npm test
+      - run: npm version prerelease --preid=beta
+      - run: npm publish
