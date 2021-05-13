@@ -14,8 +14,8 @@ jobs:
         with:
           node-version: '14.x'
       # The apt-gets prevent cwebp compiling from source each time.
-      - run: apt-get update
-      - run: apt-get install libglu1 -y
+      - run: sudo apt-get update
+      - run: sudo apt-get install libglu1 -y
       - run: npm ci
       - run: npm run roll:lib
       # - run: npm test
