@@ -43,6 +43,9 @@ const Homepage = ({ entry }) => {
             Terms of use (auth required by content type)
           </Link>
         </li>
+        <li>
+          <Link to="/something">Something to trigger 404</Link>
+        </li>
       </ul>
       {/* <LoginButton text="Sign in here" /> */}
     </>

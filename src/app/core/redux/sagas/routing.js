@@ -408,7 +408,7 @@ function* mapRouteEntry(entryMapper, node) {
 }
 
 function* do404() {
-  //yield call(clientReloadHitServer);
+  yield call(clientReloadHitServer);
   yield put({
     type: SET_ENTRY,
     id: null,
@@ -417,20 +417,21 @@ function* do404() {
   });
 }
 
-// function* clientReloadHitServer() {
-//   const stateEntry = yield select(selectRouteEntry);
-//   // If in client and there is a stateEntry.sys field reload the page,
-//   // on the 2nd load stateEntry.sys should be null at this point,
-//   // we do not wish to reload again and get stuck in an infinite reloading loop
-//   if (
-//     typeof window !== 'undefined' &&
-//     stateEntry &&
-//     stateEntry.get('sys', null)
-//   ) {
-//     // debugger;
-//     window.location.reload();
-//   }
-// }
+function* clientReloadHitServer() {
+  const stateEntry = yield select(selectRouteEntry);
+
+  // If in client and there is a stateEntry.sys field reload the page,
+  // on the 2nd load stateEntry.sys should be null at this point,
+  // we do not wish to reload again and get stuck in an infinite reloading loop
+  if (
+    typeof window !== 'undefined' &&
+    stateEntry &&
+    stateEntry.get('sys', null)
+  ) {
+    window.location.reload();
+  }
+}
+
 function* do500(error) {
   yield put({
     type: SET_ENTRY,
