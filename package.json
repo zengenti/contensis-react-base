@@ -28,7 +28,6 @@
     "test:watch": "jest --config=./config/jest.config.js --watch",
     "test:coverage": "jest --config=./config/jest.config.js --coverage",
     "publish:test": "npm pack && tar -xvzf *.tgz && rm -rf package *.tgz",
-    "preversion": "npm test",
     "version": "npm run roll:lib && git add -A",
     "postversion": "git push && git push --tags"
   },
