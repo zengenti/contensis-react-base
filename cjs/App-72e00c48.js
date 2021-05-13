@@ -9,7 +9,7 @@ require('redux');
 require('redux-immutable');
 require('redux-thunk');
 require('redux-saga');
-var version = require('./version-dd2975c4.js');
+var version = require('./version-388ac6ef.js');
 var reducers = require('./reducers-a05c32a6.js');
 var effects = require('@redux-saga/core/effects');
 var log = require('loglevel');
@@ -829,4 +829,4 @@ exports.deliveryApi = deliveryApi;
 exports.history = history;
 exports.pickProject = pickProject;
 exports.rootSaga = rootSaga;
-//# sourceMappingURL=App-7fb77f9c.js.map
+//# sourceMappingURL=App-72e00c48.js.map

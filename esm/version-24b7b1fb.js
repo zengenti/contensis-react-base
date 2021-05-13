@@ -317,4 +317,4 @@ var version$2 = /*#__PURE__*/Object.freeze({
 });
 
 export { GET_NODE_TREE as G, SET_NODE_TREE as S, setVersion as a, selectVersionStatus as b, createStore as c, GET_NODE_TREE_ERROR as d, version$1 as e, navigation$1 as f, version$2 as g, hasNavigationTree as h, navigation as n, reduxStore as r, setVersionStatus as s, version as v };
-//# sourceMappingURL=version-61e5a6b3.js.map
+//# sourceMappingURL=version-24b7b1fb.js.map
