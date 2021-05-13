@@ -16,6 +16,12 @@ jobs:
       # The apt-gets prevent cwebp compiling from source each time.
       - run: sudo apt-get update
       - run: sudo apt-get install libglu1 libxi6 -y
-      - run: npm ci
-      - run: npm version prerelease --preid=beta
-      - run: npm publish
+      - name: Install project dependencies
+        run: npm ci
+      - name: Build package and publish
+        run: |
+          npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
+          npm version prerelease --preid=beta
+          npm publish --ignore-scripts
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
