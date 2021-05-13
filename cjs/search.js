@@ -89,6 +89,7 @@ const withMappers2 = (actionFunc, args, mappers) => {
   });
 };
 const triggerSearch = ({
+  config,
   context,
   defaultLang,
   facet,
@@ -100,6 +101,7 @@ const triggerSearch = ({
 }) => {
   return {
     type: DO_SEARCH,
+    config,
     context,
     defaultLang,
     facet,
@@ -1960,6 +1962,7 @@ function* buildUri({
 
 const useMinilist = ({
   id,
+  config,
   excludeIds,
   mapper,
   mappers,
@@ -1968,11 +1971,21 @@ const useMinilist = ({
   debug
 } = {}) => {
   const dispatch = reactRedux.useDispatch();
-  const results = reactRedux.useSelector(state => getResults(state, id, Context.minilist).toJS());
-  const isLoading = reactRedux.useSelector(state => getIsLoading(state, Context.minilist, id));
+  const {
+    facet,
+    isLoading,
+    pagingInfo,
+    results
+  } = reactRedux.useSelector(state => ({
+    facet: getFacet(state, id, Context.minilist),
+    isLoading: getIsLoading(state, Context.minilist, id),
+    pagingInfo: getPaging(state, id, Context.minilist).toJS(),
+    results: getResults(state, id, Context.minilist).toJS()
+  }));
   React.useEffect(() => {
-    if (id && (mapper || mappers.results)) {
+    if (id && (mapper || mappers && mappers.results)) {
       dispatch(triggerSearch({
+        config,
         context: Context.minilist,
         defaultLang,
         facet: id,
@@ -1986,11 +1999,31 @@ const useMinilist = ({
   }, [dispatch, excludeIds, id, defaultLang, params]);
   return {
     isLoading,
-    results
+    pagingInfo,
+    results,
+    title: facet.get('title')
   };
 };
 
 /* eslint-disable no-console */
+
+const addConfigToState = (state, action) => {
+  const {
+    context,
+    facet,
+    config
+  } = action; // Adding or changing the config of a single facet, listing or minilist
+
+  if (context && facet && config) {
+    return state.setIn([context, facet], immutable.fromJS(config));
+  } else if (config) {
+    // Changing the entire search config
+    const newState = immutable.fromJS(config);
+    return newState;
+  }
+
+  return state;
+};
 
 const generateSearchFacets = (context, config) => {
   let facets = immutable.OrderedMap({});
@@ -2065,21 +2098,7 @@ var reducers = (config => {
     switch (action.type) {
       case APPLY_CONFIG:
         {
-          const {
-            context,
-            facet,
-            config
-          } = action; // Changing the config of a single facet or listing
-
-          if (context && facet && config) {
-            return state.setIn([context, facet], immutable.fromJS(config));
-          } else if (config) {
-            // Changing the entire search config
-            const newState = immutable.fromJS(config);
-            return newState;
-          }
-
-          return state;
+          return addConfigToState(state, action);
         }
 
       case CLEAR_FILTERS:
@@ -2096,10 +2115,15 @@ var reducers = (config => {
           // DO SEARCH is used when we cannot use SET_ROUTE_FILTERS
           // for example in a minilist scenario where the route filters
           // are used for the primary page / listing navigation
+          // If the action contains a config object, we can add this to the
+          // state at runtime
+          const nextState = addConfigToState(state, action); // Add filter values in params to the matched filters in state
+          // causing unfetched filter items to be generated with isSelected: true
+
           const filters = generateFiltersState({ ...action,
             isCurrentFacet: true
-          }, state);
-          return state.setIn([action.context || Context.minilist, action.facet, 'filters'], filters);
+          }, nextState);
+          return nextState.setIn([action.context || Context.minilist, action.facet, 'filters'], filters);
         }
 
       case EXECUTE_SEARCH:
@@ -2147,7 +2171,10 @@ var reducers = (config => {
             term = '',
             pageIndex,
             orderBy
-          } = params;
+          } = params; // Add filter values in params to the matched filters in state for the current facet
+          // causing unfetched filter items to be generated with isSelected: true
+          // or existing filter items to be tagged with isSelected: true
+
           const nextFacets = state.get(context).map((stateFacet, facetName) => {
             return stateFacet.set('filters', generateFiltersState({
               facet: facetName,
