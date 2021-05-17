@@ -13,7 +13,7 @@ on:
         default: 'latest'
 
 jobs:
-  build:
+  release:
     # runs-on: ubuntu-latest
     runs-on: self-hosted
 
@@ -31,7 +31,7 @@ jobs:
         if: contains(github.events.inputs.version, 'prerelease')
         run: npm version prerelease --preid=beta
       - name: Increment version (if other release)
-        if: contains(github.events.inputs.version, 'prerelease') === 'false'
+        if: contains(github.events.inputs.version, 'prerelease') == false
         run: npm version ${{ github.events.inputs.version }}
       - name: Push version increment to GIT
         run: git push
