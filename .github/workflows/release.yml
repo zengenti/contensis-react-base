@@ -1,0 +1,45 @@
+name: Release version to NPM (manual trigger)
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version (e.g. patch, minor, or a specific version like "v0.0.0-alpha.0")'
+        required: true
+        default: 'patch'
+      tag:
+        description: 'The NPM version tag to use, "latest" will become the default package version, or "prerelease"'
+        required: true
+        default: 'latest'
+
+jobs:
+  build:
+    # runs-on: ubuntu-latest
+    runs-on: self-hosted
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '14.x'
+      - name: Setup GIT
+        run: |
+          git config user.email "github@zengenti.com"
+          git config user.name "$GITHUB_ACTOR"
+      - name: Increment version
+        if: contains(github.events.inputs.version, 'prerelease')
+        run: npm version prerelease --preid=beta
+        if: contains(github.events.inputs.version, 'prerelease') === 'false'
+        run: npm version ${{ github.events.inputs.version }}
+      - name: Push version increment to GIT
+        run: git push
+        env:
+          # The secret is passed automatically. Nothing to configure.
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish release package "${{ github.events.inputs.version }}" with tag "${{ github.events.inputs.tag }}"
+        run: |
+          npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
+          npm publish --tag ${{ github.events.inputs.tag }} --ignore-scripts
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

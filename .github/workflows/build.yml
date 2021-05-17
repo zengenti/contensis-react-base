@@ -1,6 +1,12 @@
 name: Node.js CI
 
-on: [push]
+on:
+  push:
+    branches:
+      - contensis-14
+  pull_request:
+    branches:
+      - contensis-14
 
 jobs:
   build:
