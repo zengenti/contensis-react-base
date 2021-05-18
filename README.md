@@ -6,7 +6,7 @@ Handles web app routing with Contensis Site View and component rendering based o
 
 ## Key scripts :vertical_traffic_light: :page_with_curl:
 
-- `npm install` - install dependencies so we can use the application
+- `npm install` - install dependencies so we can get started
 - `npm start` - start the test web application in development mode
 - `npm run build` - build the test web application into production-ready bundles
 - `npm run server` - start the test web application server same as we would as if it were deployed in production
