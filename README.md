@@ -33,6 +33,14 @@ The package handles things such as:
 - Routing handled automatically via RouteLoader component which will load entries based on a given url
 - Navigation data is automatically retrieved from the Node api to load the Site View into the state
 
+All of the essential 'boilerplate' code to work on React apps with Contensis is contained in a package that can be controlled and maintained in one place. Allowing us to provide a high quality, standardised and consistent experience for all projects.
+
+The package does not handle things like:
+- Building bundles for your project
+- Providing global variables to access
+  - e.g. CMS connection details
+- Continuous integration & deployment
+
 # Changelog
 
 #### 2.2.3 (2021-05-10)
