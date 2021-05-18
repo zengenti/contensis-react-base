@@ -2,7 +2,7 @@
 
 ## Key scripts :vertical_traffic_light: :page_with_curl:
 
-- `npm install` - install dependencies so we can use the application
+- `npm install` - install dependencies so we can get started
 - `npm start` - start the application in development mode
 - `npm run storybook` - start storybook in development mode
 - `npm run build` - build the application into production-ready client and server-side bundles
