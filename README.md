@@ -2,7 +2,7 @@
 
 Everything you need to get started with React and Contensis.
 
-Handles routing with Contensis Site View and component rendering based on a loaded Content Type entry in Contensis, Redux application store creation and all the major application dependencies to get going, with server side rendering and an Express web server.
+Handles web app routing with Contensis Site View and component rendering based on a loaded Content Type entry in Contensis, Redux application store creation and all the major application dependencies to get going, with server side rendering and an Express web server.
 
 ## Key scripts :vertical_traffic_light: :page_with_curl:
 
