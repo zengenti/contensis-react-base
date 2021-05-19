@@ -1,6 +1,6 @@
 {
   "name": "@zengenti/contensis-react-base",
-  "version": "2.2.4-beta.10",
+  "version": "2.2.4-beta.11",
   "repository": "https://github.com/zengenti/contensis-react-base",
   "license": "None",
   "description": "Turbocharge your React web apps with Contensis and Zengenti Cloud. Handling all dependencies for creating full featured web apps in React with Contensis and Site View. Handling all the core dependencies, with in-app routing driven by Site View, Redux global state management, server-side rendering (SSR), and everything needed to implement search features and rendering of Contensis forms in your app.",
