@@ -73,4 +73,7 @@ export default {
     commonjs(),
     postcss(),
   ],
+  watch: {
+    include: 'src/**/*',
+  },
 };
