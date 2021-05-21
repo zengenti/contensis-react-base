@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = {
-  plugins: ['prettier', 'react', 'react-hooks', 'flowtype'],
+  plugins: ['prettier', 'react', 'react-hooks'],
   extends: [
     'eslint:recommended',
     'plugin:react/recommended',
@@ -12,7 +12,6 @@ module.exports = {
     'plugin:prettier/recommended',
     'prettier',
     'prettier/react',
-    'prettier/flowtype',
   ],
   env: {
     browser: true,
@@ -67,12 +66,8 @@ module.exports = {
     ],
   },
   settings: {
-    flowtype: {
-      onlyFilesWithFlowAnnotation: true,
-    },
     react: {
       version: '^16.0.0',
-      flowVersion: '^0.81.0',
     },
     'import/resolver': {
       webpack: {
