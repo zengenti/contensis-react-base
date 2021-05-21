@@ -11,6 +11,7 @@ import {
 } from '~/core/redux/types/routing';
 
 let initialState = OrderedMap({
+  currentHostname: null,
   contentTypeId: null,
   currentPath: '/',
   currentNode: OrderedMap(),
@@ -154,7 +155,8 @@ export default (state = initialState, action) => {
       return state
         .set('currentProject', action.project)
         .set('currentTreeId', '') //getTreeID(action.project))
-        .set('allowedGroups', fromJS(action.allowedGroups));
+        .set('allowedGroups', fromJS(action.allowedGroups))
+        .set('currentHostname', action.hostname);
     }
     default:
       return state;

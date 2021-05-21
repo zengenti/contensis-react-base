@@ -10,6 +10,9 @@ export const selectMappedEntry = state => {
 export const selectNodeDepends = state => {
   return state.getIn(['routing', 'nodeDepends'], List());
 };
+export const selectCurrentHostname = state => {
+  return state.getIn(['routing', 'currentHostname']);
+};
 export const selectCurrentTreeID = state => {
   return state.getIn(['routing', 'currentTreeId']);
 };

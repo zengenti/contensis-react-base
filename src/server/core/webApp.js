@@ -206,7 +206,7 @@ const webApp = (app, ReactApp, config) => {
     const project = pickProject(request.hostname, request.query);
 
     const groups = allowedGroups && allowedGroups[project];
-    store.dispatch(setCurrentProject(project, groups));
+    store.dispatch(setCurrentProject(project, groups, request.hostname));
 
     const modules = [];
 
