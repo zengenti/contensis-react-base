@@ -1,12 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { setRoute } from '~/core/redux/actions/routing';
+import { selectCurrentHostname } from '~/core/redux/selectors/routing';
 // import LoginButton from '~/features/login/components/LoginButton';
 
 const Homepage = ({ entry }) => {
   const dispatch = useDispatch();
+
+  const hostname = useSelector(selectCurrentHostname);
 
   const changeRoute = (path = '/zenInfo') => {
     dispatch(setRoute(path));
@@ -15,6 +18,7 @@ const Homepage = ({ entry }) => {
   return (
     <>
       <h1>Hello world {entry && entry.entryTitle}</h1>
+
       <p>
         <Link to="/zenInfo">ZenInfo</Link>
       </p>
@@ -47,6 +51,7 @@ const Homepage = ({ entry }) => {
           <Link to="/something">Something to trigger 404</Link>
         </li>
       </ul>
+      <p>{hostname}</p>
       {/* <LoginButton text="Sign in here" /> */}
     </>
   );

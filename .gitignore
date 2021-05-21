@@ -13,3 +13,4 @@ __snapshots__
 .out
 storybook-static/
 client-stats.html
+/.idea

@@ -75,7 +75,11 @@ class ClientApp {
       /* eslint-enable no-console */
       store.runSaga(rootSaga(withSagas));
       store.dispatch(
-        setCurrentProject(pickProject(window.location.hostname, qs))
+        setCurrentProject(
+          pickProject(window.location.hostname, qs),
+          [],
+          window.location.hostname
+        )
       );
 
       delete window.REDUX_DATA;
@@ -98,7 +102,9 @@ class ClientApp {
               pickProject(
                 window.location.hostname,
                 queryString.parse(window.location.search)
-              )
+              ),
+              [],
+              window.location.hostname
             )
           );
           // if (typeof window != 'undefined') {

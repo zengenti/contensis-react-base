@@ -26,8 +26,8 @@ export const setNavigationPath = (
     statePath,
     routes,
   });
-export const setCurrentProject = (project, allowedGroups) =>
-  action(SET_TARGET_PROJECT, { project, allowedGroups });
+export const setCurrentProject = (project, allowedGroups, hostname) =>
+  action(SET_TARGET_PROJECT, { project, allowedGroups, hostname });
 export const setRoute = (path, state) => action(SET_ROUTE, { path, state });
 export const setRouteEntry = entry => action(SET_ENTRY, { entry });
 export const setSurrogateKeys = keys => action(SET_SURROGATE_KEYS, { keys });
