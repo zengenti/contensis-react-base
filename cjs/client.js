@@ -9,27 +9,27 @@ var reactRouterDom = require('react-router-dom');
 var reactRedux = require('react-redux');
 require('immutable');
 require('history');
-var App = require('./App-72e00c48.js');
+var App = require('./App-739ffa00.js');
 require('contensis-delivery-api');
-var routing = require('./routing-923fc797.js');
+var routing = require('./routing-ebb05e9a.js');
 require('redux');
 require('redux-immutable');
 require('redux-thunk');
 require('redux-saga');
-var version = require('./version-388ac6ef.js');
+var version = require('./version-01c24585.js');
 var reducers = require('./reducers-a05c32a6.js');
 var queryString = require('query-string');
 require('@redux-saga/core/effects');
 require('loglevel');
 require('./ToJs-128064bc.js');
-require('./login-b95a665e.js');
+require('./login-9a876f8b.js');
 require('jsonpath-mapper');
 require('await-to-js');
 require('js-cookie');
 require('react-router-config');
 var reactHotLoader = require('react-hot-loader');
 require('prop-types');
-require('./RouteLoader-ca0b6243.js');
+require('./RouteLoader-7fe412f0.js');
 var reactDom = require('react-dom');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
@@ -107,7 +107,7 @@ class ClientApp {
       /* eslint-enable no-console */
 
       store.runSaga(App.rootSaga(withSagas));
-      store.dispatch(routing.setCurrentProject(App.pickProject(window.location.hostname, qs)));
+      store.dispatch(routing.setCurrentProject(App.pickProject(window.location.hostname, qs), [], window.location.hostname));
       delete window.REDUX_DATA;
       HMRRenderer(GetClientJSX(store));
     } else {
@@ -121,7 +121,7 @@ class ClientApp {
         store = version.createStore(withReducers, fromJSLeaveImmer(ssRedux), App.browserHistory); // store.dispatch(setVersionStatus(versionStatusFromHostname));
 
         store.runSaga(App.rootSaga(withSagas));
-        store.dispatch(routing.setCurrentProject(App.pickProject(window.location.hostname, queryString__default['default'].parse(window.location.search)))); // if (typeof window != 'undefined') {
+        store.dispatch(routing.setCurrentProject(App.pickProject(window.location.hostname, queryString__default['default'].parse(window.location.search)), [], window.location.hostname)); // if (typeof window != 'undefined') {
         //   store.dispatch(checkUserLoggedIn());
         // }
 

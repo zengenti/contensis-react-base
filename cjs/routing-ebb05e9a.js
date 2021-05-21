@@ -58,9 +58,10 @@ const setNavigationPath = (path, location, staticRoute, withEvents, statePath, r
   statePath,
   routes
 });
-const setCurrentProject = (project, allowedGroups) => action(SET_TARGET_PROJECT, {
+const setCurrentProject = (project, allowedGroups, hostname) => action(SET_TARGET_PROJECT, {
   project,
-  allowedGroups
+  allowedGroups,
+  hostname
 });
 const setRoute = (path, state) => action(SET_ROUTE, {
   path,
@@ -99,6 +100,9 @@ const selectMappedEntry = state => {
 };
 const selectNodeDepends = state => {
   return state.getIn(['routing', 'nodeDepends'], immutable.List());
+};
+const selectCurrentHostname = state => {
+  return state.getIn(['routing', 'currentHostname']);
 };
 const selectCurrentTreeID = state => {
   return state.getIn(['routing', 'currentTreeId']);
@@ -166,6 +170,7 @@ var routing$2 = /*#__PURE__*/Object.freeze({
   selectRouteEntry: selectRouteEntry,
   selectMappedEntry: selectMappedEntry,
   selectNodeDepends: selectNodeDepends,
+  selectCurrentHostname: selectCurrentHostname,
   selectCurrentTreeID: selectCurrentTreeID,
   selectRouteEntryEntryId: selectRouteEntryEntryId,
   selectRouteEntryContentTypeId: selectRouteEntryContentTypeId,
@@ -221,4 +226,4 @@ exports.setCurrentProject = setCurrentProject;
 exports.setNavigationPath = setNavigationPath;
 exports.setRoute = setRoute;
 exports.setSurrogateKeys = setSurrogateKeys;
-//# sourceMappingURL=routing-923fc797.js.map
+//# sourceMappingURL=routing-ebb05e9a.js.map

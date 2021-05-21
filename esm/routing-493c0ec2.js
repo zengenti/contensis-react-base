@@ -52,9 +52,10 @@ const setNavigationPath = (path, location, staticRoute, withEvents, statePath, r
   statePath,
   routes
 });
-const setCurrentProject = (project, allowedGroups) => action(SET_TARGET_PROJECT, {
+const setCurrentProject = (project, allowedGroups, hostname) => action(SET_TARGET_PROJECT, {
   project,
-  allowedGroups
+  allowedGroups,
+  hostname
 });
 const setRoute = (path, state) => action(SET_ROUTE, {
   path,
@@ -93,6 +94,9 @@ const selectMappedEntry = state => {
 };
 const selectNodeDepends = state => {
   return state.getIn(['routing', 'nodeDepends'], List());
+};
+const selectCurrentHostname = state => {
+  return state.getIn(['routing', 'currentHostname']);
 };
 const selectCurrentTreeID = state => {
   return state.getIn(['routing', 'currentTreeId']);
@@ -160,6 +164,7 @@ var routing$2 = /*#__PURE__*/Object.freeze({
   selectRouteEntry: selectRouteEntry,
   selectMappedEntry: selectMappedEntry,
   selectNodeDepends: selectNodeDepends,
+  selectCurrentHostname: selectCurrentHostname,
   selectCurrentTreeID: selectCurrentTreeID,
   selectRouteEntryEntryId: selectRouteEntryEntryId,
   selectRouteEntryContentTypeId: selectRouteEntryContentTypeId,
@@ -182,4 +187,4 @@ var routing$2 = /*#__PURE__*/Object.freeze({
 });
 
 export { SET_SURROGATE_KEYS as A, action as B, CALL_HISTORY_METHOD as C, routing as D, routing$1 as E, routing$2 as F, SET_NAVIGATION_PATH as S, UPDATE_LOADING_STATE as U, selectRouteEntry as a, selectCurrentProject as b, setSurrogateKeys as c, SET_ROUTE as d, selectCurrentNode as e, selectCurrentAncestors as f, findContentTypeMapping as g, selectRouteEntryEntryId as h, selectRouteEntryLanguage as i, selectMappedEntry as j, SET_ENTRY as k, SET_ANCESTORS as l, SET_SIBLINGS as m, selectCurrentSearch as n, setRoute as o, selectRouteEntryContentTypeId as p, queryParams as q, selectRouteIsError as r, setCurrentProject as s, selectIsNotFound as t, selectRouteLoading as u, selectCurrentPath as v, selectRouteStatusCode as w, selectRouteErrorMessage as x, setNavigationPath as y, SET_TARGET_PROJECT as z };
-//# sourceMappingURL=routing-2c78fa4d.js.map
+//# sourceMappingURL=routing-493c0ec2.js.map

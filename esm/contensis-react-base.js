@@ -16,28 +16,28 @@ import serialize from 'serialize-javascript';
 import minifyCssString from 'minify-css-string';
 import { fromJS } from 'immutable';
 import 'history';
-import { h as history, d as deliveryApi, p as pickProject, r as rootSaga } from './App-30105105.js';
-export { A as ReactApp } from './App-30105105.js';
+import { h as history, d as deliveryApi, p as pickProject, r as rootSaga } from './App-545cca2d.js';
+export { A as ReactApp } from './App-545cca2d.js';
 import 'contensis-delivery-api';
-import { s as setCurrentProject, a as selectRouteEntry, b as selectCurrentProject } from './routing-2c78fa4d.js';
+import { s as setCurrentProject, a as selectRouteEntry, b as selectCurrentProject } from './routing-493c0ec2.js';
 import 'redux';
 import 'redux-immutable';
 import 'redux-thunk';
 import 'redux-saga';
-import { c as createStore, s as setVersionStatus, a as setVersion } from './version-24b7b1fb.js';
+import { c as createStore, s as setVersionStatus, a as setVersion } from './version-fc42dac0.js';
 import './reducers-ed7581c0.js';
 import 'query-string';
 import '@redux-saga/core/effects';
 import 'loglevel';
 import './ToJs-020d9abb.js';
-import './login-2f422988.js';
+import './login-9a4f31ab.js';
 import mapJson from 'jsonpath-mapper';
 import 'await-to-js';
 import 'js-cookie';
 import { matchRoutes } from 'react-router-config';
 import 'react-hot-loader';
 import 'prop-types';
-import './RouteLoader-4f25ceef.js';
+import './RouteLoader-adc98cd2.js';
 
 const servers = SERVERS;
 /* global SERVERS */
@@ -319,7 +319,7 @@ const webApp = (app, ReactApp, config) => {
     store.dispatch(setVersion(versionInfo.commitRef, versionInfo.buildNo));
     const project = pickProject(request.hostname, request.query);
     const groups = allowedGroups && allowedGroups[project];
-    store.dispatch(setCurrentProject(project, groups));
+    store.dispatch(setCurrentProject(project, groups, request.hostname));
     const modules = [];
     const jsx = React.createElement(Loadable.Capture, {
       report: moduleName => modules.push(moduleName)

@@ -5,28 +5,28 @@ import { Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import 'immutable';
 import 'history';
-import { d as deliveryApi, r as rootSaga, p as pickProject, b as browserHistory } from './App-30105105.js';
-export { A as ReactApp } from './App-30105105.js';
+import { d as deliveryApi, r as rootSaga, p as pickProject, b as browserHistory } from './App-545cca2d.js';
+export { A as ReactApp } from './App-545cca2d.js';
 import 'contensis-delivery-api';
-import { s as setCurrentProject } from './routing-2c78fa4d.js';
+import { s as setCurrentProject } from './routing-493c0ec2.js';
 import 'redux';
 import 'redux-immutable';
 import 'redux-thunk';
 import 'redux-saga';
-import { c as createStore, s as setVersionStatus } from './version-24b7b1fb.js';
+import { c as createStore, s as setVersionStatus } from './version-fc42dac0.js';
 import { f as fromJSOrdered } from './reducers-ed7581c0.js';
 import queryString from 'query-string';
 import '@redux-saga/core/effects';
 import 'loglevel';
 import './ToJs-020d9abb.js';
-import './login-2f422988.js';
+import './login-9a4f31ab.js';
 import 'jsonpath-mapper';
 import 'await-to-js';
 import 'js-cookie';
 import 'react-router-config';
 import { AppContainer } from 'react-hot-loader';
 import 'prop-types';
-import './RouteLoader-4f25ceef.js';
+import './RouteLoader-adc98cd2.js';
 import { hydrate, render } from 'react-dom';
 
 const fromJSLeaveImmer = js => {
@@ -99,7 +99,7 @@ class ClientApp {
       /* eslint-enable no-console */
 
       store.runSaga(rootSaga(withSagas));
-      store.dispatch(setCurrentProject(pickProject(window.location.hostname, qs)));
+      store.dispatch(setCurrentProject(pickProject(window.location.hostname, qs), [], window.location.hostname));
       delete window.REDUX_DATA;
       HMRRenderer(GetClientJSX(store));
     } else {
@@ -113,7 +113,7 @@ class ClientApp {
         store = createStore(withReducers, fromJSLeaveImmer(ssRedux), browserHistory); // store.dispatch(setVersionStatus(versionStatusFromHostname));
 
         store.runSaga(rootSaga(withSagas));
-        store.dispatch(setCurrentProject(pickProject(window.location.hostname, queryString.parse(window.location.search)))); // if (typeof window != 'undefined') {
+        store.dispatch(setCurrentProject(pickProject(window.location.hostname, queryString.parse(window.location.search)), [], window.location.hostname)); // if (typeof window != 'undefined') {
         //   store.dispatch(checkUserLoggedIn());
         // }
 

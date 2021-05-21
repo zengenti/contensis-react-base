@@ -20,27 +20,27 @@ var serialize = require('serialize-javascript');
 var minifyCssString = require('minify-css-string');
 var immutable = require('immutable');
 require('history');
-var App = require('./App-72e00c48.js');
+var App = require('./App-739ffa00.js');
 require('contensis-delivery-api');
-var routing = require('./routing-923fc797.js');
+var routing = require('./routing-ebb05e9a.js');
 require('redux');
 require('redux-immutable');
 require('redux-thunk');
 require('redux-saga');
-var version = require('./version-388ac6ef.js');
+var version = require('./version-01c24585.js');
 require('./reducers-a05c32a6.js');
 require('query-string');
 require('@redux-saga/core/effects');
 require('loglevel');
 require('./ToJs-128064bc.js');
-require('./login-b95a665e.js');
+require('./login-9a876f8b.js');
 var mapJson = require('jsonpath-mapper');
 require('await-to-js');
 require('js-cookie');
 var reactRouterConfig = require('react-router-config');
 require('react-hot-loader');
 require('prop-types');
-require('./RouteLoader-ca0b6243.js');
+require('./RouteLoader-7fe412f0.js');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -335,7 +335,7 @@ const webApp = (app, ReactApp, config) => {
     store.dispatch(version.setVersion(versionInfo.commitRef, versionInfo.buildNo));
     const project = App.pickProject(request.hostname, request.query);
     const groups = allowedGroups && allowedGroups[project];
-    store.dispatch(routing.setCurrentProject(project, groups));
+    store.dispatch(routing.setCurrentProject(project, groups, request.hostname));
     const modules = [];
     const jsx = React__default['default'].createElement(Loadable__default['default'].Capture, {
       report: moduleName => modules.push(moduleName)
