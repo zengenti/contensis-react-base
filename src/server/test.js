@@ -6,15 +6,15 @@ chai.use(chaiHttp);
 describe('Server Loads', () => {
   require('./server.js');
   const app = require('./server.js').app;
-  before(function() {
+  before(function () {
     return new Promise(resolve => {
-      app.on('app_started', function() {
+      app.on('app_started', function () {
         return resolve();
       });
       //app.emit('ready');
     });
   });
-  after(function() {
+  after(function () {
     return new Promise(resolve => {
       app.emit('stop');
       return resolve();

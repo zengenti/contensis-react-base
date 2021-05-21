@@ -60,15 +60,15 @@ const ButtonStyled = styled.button`
         }
       }
       ${isHollow &&
-        disabled &&
-        css`
-          :disabled,
-          [disabled] {
-            color: #757575;
-            background: transparent;
-            border-color: #757575;
-          }
-        `}
+      disabled &&
+      css`
+        :disabled,
+        [disabled] {
+          color: #757575;
+          background: transparent;
+          border-color: #757575;
+        }
+      `}
     `;
   }}
 `;

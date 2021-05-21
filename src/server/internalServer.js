@@ -29,12 +29,12 @@ const start = (ReactApp, config, ServerFeatures) => {
     Loadable.preloadAll().then(() => {
       var server = app.listen(3001, () => {
         console.info(`HTTP server is listening @ port 3001`);
-        setTimeout(function() {
+        setTimeout(function () {
           app.emit('app_started');
         }, 500);
       });
       app.on('stop', () => {
-        server.close(function() {
+        server.close(function () {
           console.info('GoodBye :(');
         });
       });

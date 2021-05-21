@@ -231,8 +231,5 @@ const mapDispatchToProps = {
 };
 
 export default hot(module)(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(VersionInfo)
+  connect(mapStateToProps, mapDispatchToProps)(VersionInfo)
 );

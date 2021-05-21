@@ -90,7 +90,7 @@ export function dynamicSort(property) {
     sortOrder = -1;
     property = property.substr(1);
   }
-  return function(a, b) {
+  return function (a, b) {
     /* next line works with strings and numbers,
      * and you may want to customize it to your needs
      */

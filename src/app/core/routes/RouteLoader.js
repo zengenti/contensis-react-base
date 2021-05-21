@@ -202,8 +202,5 @@ const mapDispatchToProps = {
 };
 
 export default hot(module)(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(toJS(RouteLoader))
+  connect(mapStateToProps, mapDispatchToProps)(toJS(RouteLoader))
 );

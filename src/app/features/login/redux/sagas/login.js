@@ -139,12 +139,7 @@ function* loginUserSaga(action = {}) {
 const removeHostnamePart = path => {
   // eslint-disable-next-line no-console
   console.log(path);
-  const relativePath =
-    '/' +
-    path
-      .split('/')
-      .splice(3)
-      .join('/');
+  const relativePath = '/' + path.split('/').splice(3).join('/');
   // eslint-disable-next-line no-console
   console.log(relativePath);
   return relativePath;
