@@ -74,6 +74,17 @@ export default {
     postcss(),
   ],
   watch: {
-    include: 'src/**/*',
+    // include: 'src/**/*',
+    exclude: [
+      'cjs/*',
+      'esm/*',
+      'client/*',
+      'forms/*',
+      'redux/*',
+      'routing/*',
+      'search/*',
+      'user/*',
+      'util/*',
+    ],
   },
 };
