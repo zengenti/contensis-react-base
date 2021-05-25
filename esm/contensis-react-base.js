@@ -327,6 +327,7 @@ const webApp = (app, ReactApp, config) => {
     const staticRoute = isStaticRoute() && matchedStaticRoute()[0]; // Allow certain routes to avoid SSR
 
     const onlyDynamic = staticRoute && staticRoute.route.ssr === false;
+    const onlySSR = staticRoute && staticRoute.route.ssrOnly === true;
 
     const normaliseQs = q => q && q.toLowerCase() === 'true' ? true : false; // Determine functional params from QueryString and set access methods
 
@@ -343,7 +344,7 @@ const webApp = (app, ReactApp, config) => {
       }) => normaliseQs(fragment),
       STATIC: ({
         static: value
-      }) => normaliseQs(value)
+      }) => normaliseQs(value) || onlySSR
     });
     const context = {}; // Track the current statusCode via the response object
 
