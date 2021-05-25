@@ -51,10 +51,11 @@ Status.propTypes = {
 
 const getTrimmedPath = path => {
   if (path !== '/') {
-    const lastChar = path[path.length - 1];
+    const nextPath = path.replace(/\/\//, '/');
+    const lastChar = nextPath[nextPath.length - 1];
 
     if (lastChar == '/') {
-      return path.substring(0, path.length - 1);
+      return nextPath.substring(0, nextPath.length - 1);
     }
   }
 
@@ -80,7 +81,8 @@ const RouteLoader = ({
   userGroups,
   withEvents
 }) => {
-  const location = reactRouterDom.useLocation();
+  const location = reactRouterDom.useLocation(); // Always ensure paths are trimmed of trailing slashes so urls are always unique
+
   const trimmedPath = getTrimmedPath(location.pathname); // Match any Static Routes a developer has defined
 
   const matchedStaticRoute = () => reactRouterConfig.matchRoutes(routes.StaticRoutes, location.pathname);
@@ -201,4 +203,4 @@ const mapDispatchToProps = {
 var RouteLoader$1 = reactHotLoader.hot(module)(reactRedux.connect(mapStateToProps, mapDispatchToProps)(ToJs.toJS(RouteLoader)));
 
 exports.RouteLoader = RouteLoader$1;
-//# sourceMappingURL=RouteLoader-7fe412f0.js.map
+//# sourceMappingURL=RouteLoader-6243a2a8.js.map

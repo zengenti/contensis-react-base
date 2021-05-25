@@ -9,7 +9,7 @@ var reactRouterDom = require('react-router-dom');
 var reactRedux = require('react-redux');
 require('immutable');
 require('history');
-var App = require('./App-739ffa00.js');
+var App = require('./App-7f3a3005.js');
 require('contensis-delivery-api');
 var routing = require('./routing-ebb05e9a.js');
 require('redux');
@@ -29,7 +29,7 @@ require('js-cookie');
 require('react-router-config');
 var reactHotLoader = require('react-hot-loader');
 require('prop-types');
-require('./RouteLoader-7fe412f0.js');
+require('./RouteLoader-6243a2a8.js');
 var reactDom = require('react-dom');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }

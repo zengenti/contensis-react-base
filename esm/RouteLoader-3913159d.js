@@ -44,10 +44,11 @@ Status.propTypes = {
 
 const getTrimmedPath = path => {
   if (path !== '/') {
-    const lastChar = path[path.length - 1];
+    const nextPath = path.replace(/\/\//, '/');
+    const lastChar = nextPath[nextPath.length - 1];
 
     if (lastChar == '/') {
-      return path.substring(0, path.length - 1);
+      return nextPath.substring(0, nextPath.length - 1);
     }
   }
 
@@ -73,7 +74,8 @@ const RouteLoader = ({
   userGroups,
   withEvents
 }) => {
-  const location = useLocation();
+  const location = useLocation(); // Always ensure paths are trimmed of trailing slashes so urls are always unique
+
   const trimmedPath = getTrimmedPath(location.pathname); // Match any Static Routes a developer has defined
 
   const matchedStaticRoute = () => matchRoutes(routes.StaticRoutes, location.pathname);
@@ -194,4 +196,4 @@ const mapDispatchToProps = {
 var RouteLoader$1 = hot(module)(connect(mapStateToProps, mapDispatchToProps)(toJS(RouteLoader)));
 
 export { RouteLoader$1 as R };
-//# sourceMappingURL=RouteLoader-adc98cd2.js.map
+//# sourceMappingURL=RouteLoader-3913159d.js.map

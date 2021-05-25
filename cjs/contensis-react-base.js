@@ -8,7 +8,6 @@ var Loadable = require('react-loadable');
 var httpProxy = require('http-proxy');
 var fs = require('fs');
 var path = require('path');
-var appRootPath = require('app-root-path');
 var React = require('react');
 var reactRouterDom = require('react-router-dom');
 var reactRedux = require('react-redux');
@@ -20,7 +19,7 @@ var serialize = require('serialize-javascript');
 var minifyCssString = require('minify-css-string');
 var immutable = require('immutable');
 require('history');
-var App = require('./App-739ffa00.js');
+var App = require('./App-7f3a3005.js');
 require('contensis-delivery-api');
 var routing = require('./routing-ebb05e9a.js');
 require('redux');
@@ -40,7 +39,7 @@ require('js-cookie');
 var reactRouterConfig = require('react-router-config');
 require('react-hot-loader');
 require('prop-types');
-require('./RouteLoader-7fe412f0.js');
+require('./RouteLoader-6243a2a8.js');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -129,15 +128,17 @@ const getCacheDuration = (status = 200) => {
 
 const replaceStaticPath = (string, staticFolderPath = 'static') => string.replace(/static\//g, `${staticFolderPath}/`);
 
-const bundleManipulationMiddleware = (staticRoutePath, {
-  maxage
-} = {}) => (req, res, next) => {
+const bundleManipulationMiddleware = ({
+  appRootPath,
+  maxage,
+  staticRoutePath
+}) => (req, res, next) => {
   const filename = path__default['default'].basename(req.path);
   const modernBundle = filename.endsWith('.mjs');
   const legacyBundle = filename.endsWith('.js');
 
   if ((legacyBundle || modernBundle) && filename.startsWith('runtime.')) {
-    const jsRuntimeLocation = appRootPath.resolve(`/dist/static/${modernBundle ? 'modern/js' : 'legacy/js'}/${filename}`);
+    const jsRuntimeLocation = path__default['default'].resolve(appRootPath, `dist/static/${modernBundle ? 'modern/js' : 'legacy/js'}/${filename}`);
 
     try {
       const jsRuntimeBundle = fs__default['default'].readFileSync(jsRuntimeLocation, 'utf8');
@@ -155,15 +156,54 @@ const bundleManipulationMiddleware = (staticRoutePath, {
   }
 };
 
+/**
+ *
+ * @param { appRootPath: string; maxage: number; staticFolderPath: string, startupScriptFilename: string } args
+ * @returns Response | next()
+ * A middleware function to resolve /dist/static/startup.js under a supplied startupScriptFilename variable
+ */
+
+const resolveStartupMiddleware = ({
+  appRootPath,
+  maxage,
+  staticFolderPath,
+  startupScriptFilename
+}) => (req, res, next) => {
+  if (startupScriptFilename !== 'startup.js' && req.path === `/${startupScriptFilename}`) {
+    const startupFilePath = `dist/${staticFolderPath}/startup.js`;
+    const startupFileLocation = path__default['default'].resolve(appRootPath, startupFilePath);
+    if (maxage) res.set('Cache-Control', `public, max-age=${maxage}`);
+
+    try {
+      res.sendFile(startupFileLocation);
+    } catch (sendFileError) {
+      // eslint-disable-next-line no-console
+      console.log(`Unable to send file startup.js at '${startupFileLocation}'`, sendFileError);
+      next();
+    }
+  } else {
+    next();
+  }
+};
+
 const staticAssets = (app, {
-  staticRoutePath,
-  staticRoutePaths = [],
-  staticFolderPath = 'static'
+  appRootPath = require('app-root-path').path,
+  startupScriptFilename = 'startup.js',
+  staticFolderPath = 'static',
+  staticRoutePath = 'static',
+  staticRoutePaths = []
 }) => {
-  app.use([`/${staticRoutePath}`, ...staticRoutePaths.map(p => `/${p}`), `/${staticFolderPath}`], bundleManipulationMiddleware(staticRoutePath, {
+  app.use([`/${staticRoutePath}`, ...staticRoutePaths.map(p => `/${p}`), `/${staticFolderPath}`], bundleManipulationMiddleware({
+    appRootPath,
     // these maxage values are different in config but the same in runtime,
     // this one is the true value in seconds
-    maxage: CacheDuration.static
+    maxage: CacheDuration.static,
+    staticRoutePath
+  }), resolveStartupMiddleware({
+    appRootPath,
+    maxage: CacheDuration.static,
+    startupScriptFilename,
+    staticFolderPath
   }), express__default['default'].static(`dist/${staticFolderPath}`, {
     // these maxage values are different in config but the same in runtime,
     // this one is somehow converted and should end up being the same as CacheDuration.static
