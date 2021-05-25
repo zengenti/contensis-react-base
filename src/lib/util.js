@@ -1,5 +1,7 @@
 // Global server and build utils
-export { default as setCachingHeaders } from '~/../server/util/setCachingHeaders';
+export {
+  default as setCachingHeaders,
+} from '~/../server/util/setCachingHeaders';
 export { default as stringifyStrings } from '~/core/util/stringifyStrings';
 export { default as urls } from '~/core/util/urls';
 
@@ -18,3 +20,5 @@ export {
   useEntryMapper,
   useComposerMapper,
 } from '~/core/util/json-mapper';
+
+export { default as VersionInfo } from '~/pages/VersionInfo';

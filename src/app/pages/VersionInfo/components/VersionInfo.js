@@ -2,79 +2,34 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { hot } from 'react-hot-loader';
 import { connect } from 'react-redux';
-import styled from 'styled-components';
-import packagejson from '../../../package.json';
-import {
-  selectCommitRef,
-  selectVersionStatus,
-  selectBuildNumber,
-} from '~/core/redux/selectors/version.js';
-import { selectCurrentProject } from '~/core/redux/selectors/routing.js';
-import { setRoute } from '~/core/redux/actions/routing.js';
+import mapStateToVersionInfo from '../transformations/state-to-versioninfoprops.mapper.js';
+import { VersionInfoStyledTable } from './VersionInfo.styled.js';
+import Link from '~/features/link';
 
-const StyledTable = styled.table`
-  font-family: 'Fira Sans', 'Source Sans Pro', Helvetica, Arial, sans-serif;
-  font-size: 1rem;
-  line-height: 1.5rem;
-  border-bottom: 4px solid #8892bf;
-  border-collapse: separate;
-  margin: 0 auto;
-  width: 80%;
-  th {
-    text-align: left;
-    background-color: #c4c9df;
-    border-bottom: #8892bf 2px solid;
-    border-bottom-color: #8892bf;
-    border-top: 20px solid #fff;
-  }
-  td {
-    border-bottom: 1px solid #eee;
-  }
-  td,
-  th {
-    padding: 0.5rem 0.75rem;
-    vertical-align: top;
-  }
-  .left {
-    width: 25%;
-  }
-  tr th {
-    border-right: hidden;
-    border-spacing: 0 15px;
-  }
-  .green {
-    background-color: #9c9;
-    border-bottom: 1px solid #696;
-  }
-  .red {
-    background-color: #c99;
-    border-bottom: 1px solid #966;
-  }
-`;
-
-const VersionInfo = ({ project, version, setRoute }) => {
-  const config = {
-    deliveryApi: DELIVERY_API_CONFIG /* global DELIVERY_API_CONFIG */,
-    disabeSsrRedux: DISABLE_SSR_REDUX /* global DISABLE_SSR_REDUX*/,
-    servers: SERVERS /* global SERVERS */,
-    projects: PROJECTS /* global PROJECTS */,
-    proxyDeliveryApi: PROXY_DELIVERY_API /* global PROXY_DELIVERY_API */,
-    publicUri: PUBLIC_URI /* global PUBLIC_URI */,
-    reverseProxyPaths: REVERSE_PROXY_PATHS /* global REVERSE_PROXY_PATHS */,
-    version: VERSION /* global VERSION */,
-  };
-  const changeRoute = () => {
-    setRoute('/');
-  };
+const VersionInfo = ({
+  contensisPackageVersions,
+  deliveryApi,
+  devEnv,
+  disableSsrRedux,
+  nodeEnv,
+  servers,
+  packagejson,
+  project,
+  projects,
+  proxyDeliveryApi,
+  publicUri,
+  reverseProxyPaths,
+  version,
+}) => {
   return (
     <>
-      <button onClick={e => changeRoute(e)}>Change Route</button>
-
-      <StyledTable>
+      <VersionInfoStyledTable>
         <thead>
           <tr>
             <td colSpan={2}>
-              <h1>Version Information</h1>
+              <h1>
+                <Link path="/">Version Information</Link>
+              </h1>
             </td>
           </tr>
         </thead>
@@ -160,25 +115,37 @@ const VersionInfo = ({ project, version, setRoute }) => {
           </tr>
           <tr>
             <td>Environment</td>
-            <td>{config.servers.alias}</td>
+            <td>{servers.alias}</td>
           </tr>
           <tr>
             <td>Public uri</td>
-            <td>{config.publicUri}</td>
+            <td>{publicUri}</td>
+          </tr>
+          <tr>
+            <td>Contensis package versions</td>
+            <td>
+              {contensisPackageVersions.map(([pkg, ver], idx) => (
+                <div key={idx}>
+                  {pkg}: {ver}
+                </div>
+              ))}
+            </td>
           </tr>
           <tr>
             <td>Servers</td>
-            <td>
-              <div>web: {config.servers.web}</div>
-              <div>cms: {config.servers.cms}</div>
-              <div>iis: {config.servers.iis}</div>
-              <div>internal vip: {config.servers.internalVip}</div>
+            <td className="small">
+              <div>web: {servers.web}</div>
+              <div>preview: {servers.previewWeb}</div>
+              <div>api: {servers.api}</div>
+              <div>cms: {servers.cms}</div>
+              <div>iis: {servers.iis}</div>
+              <div>iis preview: {servers.previewIis}</div>
             </td>
           </tr>
           <tr>
             <td>Reverse proxy paths</td>
             <td>
-              {Object.entries(config.reverseProxyPaths).map(([, path], key) => (
+              {Object.entries(reverseProxyPaths).map(([, path], key) => (
                 <span key={key}>[ {path} ] </span>
               ))}
             </td>
@@ -186,7 +153,7 @@ const VersionInfo = ({ project, version, setRoute }) => {
           <tr>
             <td>Projects</td>
             <td>
-              {Object.entries(config.projects).map(([, project], key) => (
+              {Object.entries(projects).map(([, project], key) => (
                 <div key={key}>
                   [ {project.id}: {project.publicUri} ]
                 </div>
@@ -194,42 +161,68 @@ const VersionInfo = ({ project, version, setRoute }) => {
             </td>
           </tr>
           <tr>
-            <td>Disable SSR inline-redux</td>
-            <td>{config.disabeSsrRedux.toString()}</td>
+            <td>Delivery API</td>
+            <td className="small">
+              <ul style={{ margin: 0, padding: 0 }}>
+                {Object.entries(deliveryApi).map(([key, value], idx) => {
+                  if (typeof value === 'object') return null;
+                  return (
+                    <li key={idx} style={{ listStyleType: 'none' }}>
+                      {key}: <span>{value}</span>
+                    </li>
+                  );
+                })}
+              </ul>
+            </td>
           </tr>
           <tr>
             <td>Proxy Delivery API requests</td>
-            <td className={config.proxyDeliveryApi ? 'green' : 'red'}>
-              {config.proxyDeliveryApi.toString()}
+            <td className={proxyDeliveryApi ? 'green' : 'red'}>
+              {proxyDeliveryApi.toString()}
             </td>
           </tr>
+          <tr>
+            <td>Disable SSR inline-redux</td>
+            <td>{disableSsrRedux.toString()}</td>
+          </tr>
+          <tr>
+            <td>NODE_ENV</td>
+            <td className={nodeEnv === 'production' ? 'green' : 'red'}>
+              {nodeEnv.toString()}
+            </td>
+          </tr>
+          {devEnv && (
+            <tr>
+              <td>process.env</td>
+              <td>
+                {Object.entries(devEnv).map(([k, v], key) => (
+                  <div key={key}>
+                    [ {k}: {v} ]
+                  </div>
+                ))}
+              </td>
+            </tr>
+          )}
         </tbody>
-      </StyledTable>
+      </VersionInfoStyledTable>
     </>
   );
 };
 
 VersionInfo.propTypes = {
+  contensisPackageVersions: PropTypes.array,
+  deliveryApi: PropTypes.object,
+  devEnv: PropTypes.object,
+  disableSsrRedux: PropTypes.bool,
+  nodeEnv: PropTypes.string,
+  packagejson: PropTypes.object,
   project: PropTypes.string,
+  projects: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+  proxyDeliveryApi: PropTypes.bool,
+  publicUri: PropTypes.string,
+  reverseProxyPaths: PropTypes.array,
+  servers: PropTypes.object,
   version: PropTypes.object,
-  setRoute: PropTypes.func,
 };
 
-const mapStateToProps = state => {
-  return {
-    project: selectCurrentProject(state),
-    version: {
-      buildNumber: selectBuildNumber(state),
-      commitRef: selectCommitRef(state),
-      contensisVersionStatus: selectVersionStatus(state),
-    },
-  };
-};
-
-const mapDispatchToProps = {
-  setRoute: (path, state) => setRoute(path, state),
-};
-
-export default hot(module)(
-  connect(mapStateToProps, mapDispatchToProps)(VersionInfo)
-);
+export default hot(module)(connect(mapStateToVersionInfo)(VersionInfo));

@@ -10,6 +10,11 @@ import ConfigureWebApp from './core/webApp';
 const app = express();
 
 const start = (ReactApp, config, ServerFeatures) => {
+  global.PACKAGE_JSON = config.packagejson;
+  global.REVERSE_PROXY_PATHS = Object(config.reverseProxyPaths);
+  global.PROXY_DELIVERY_API = config.proxyDeliveryApi;
+  global.DISABLE_SSR_REDUX = config.disableSsrRedux;
+
   app.disable('x-powered-by');
 
   // Output some information about the used build/startup configuration
@@ -29,12 +34,12 @@ const start = (ReactApp, config, ServerFeatures) => {
     Loadable.preloadAll().then(() => {
       var server = app.listen(3001, () => {
         console.info(`HTTP server is listening @ port 3001`);
-        setTimeout(function () {
+        setTimeout(function() {
           app.emit('app_started');
         }, 500);
       });
       app.on('stop', () => {
-        server.close(function () {
+        server.close(function() {
           console.info('GoodBye :(');
         });
       });
