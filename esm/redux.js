@@ -1,13 +1,15 @@
 import 'immutable';
-import { D as routing$1, B as action, E as routing$2, F as routing$3 } from './routing-493c0ec2.js';
+import { r as routing$1, k as action, l as routing$2 } from './routing-3bbf9dde.js';
 import 'redux';
 import 'redux-immutable';
 import 'redux-thunk';
 import 'redux-saga';
-import { n as navigation$2, v as version$1, G as GET_NODE_TREE, e as version$2, f as navigation$3, g as version$3 } from './version-fc42dac0.js';
-export { r as store } from './version-fc42dac0.js';
+import { n as navigation$2, v as version$1, G as GET_NODE_TREE, d as version$2, e as navigation$3 } from './navigation-ec4d9a28.js';
+export { r as store } from './navigation-ec4d9a28.js';
 import './reducers-ed7581c0.js';
 import 'query-string';
+import { r as routing$3 } from './routing-46d7346d.js';
+import { v as version$3 } from './version-924cf045.js';
 
 var types = {
   navigation: navigation$2,

@@ -1,7 +1,7 @@
 'use strict';
 
 var immutable = require('immutable');
-var routing = require('./routing-ebb05e9a.js');
+var routing = require('./routing-a4d7b382.js');
 var redux = require('redux');
 var reduxImmutable = require('redux-immutable');
 var thunk = require('redux-thunk');
@@ -307,23 +307,6 @@ var navigation$1 = /*#__PURE__*/Object.freeze({
   selectNavigationDepends: selectNavigationDepends
 });
 
-const selectCommitRef = state => {
-  return state.getIn(['version', 'commitRef']);
-};
-const selectBuildNumber = state => {
-  return state.getIn(['version', 'buildNo']);
-};
-const selectVersionStatus = state => {
-  return state.getIn(['version', 'contensisVersionStatus']);
-};
-
-var version$2 = /*#__PURE__*/Object.freeze({
-  __proto__: null,
-  selectCommitRef: selectCommitRef,
-  selectBuildNumber: selectBuildNumber,
-  selectVersionStatus: selectVersionStatus
-});
-
 exports.GET_NODE_TREE = GET_NODE_TREE;
 exports.GET_NODE_TREE_ERROR = GET_NODE_TREE_ERROR;
 exports.SET_NODE_TREE = SET_NODE_TREE;
@@ -331,10 +314,8 @@ exports.createStore = createStore;
 exports.hasNavigationTree = hasNavigationTree;
 exports.navigation = navigation;
 exports.navigation$1 = navigation$1;
-exports.selectVersionStatus = selectVersionStatus;
 exports.setVersion = setVersion;
 exports.setVersionStatus = setVersionStatus;
 exports.version = version;
 exports.version$1 = version$1;
-exports.version$2 = version$2;
-//# sourceMappingURL=version-01c24585.js.map
+//# sourceMappingURL=navigation-9bc89fbc.js.map

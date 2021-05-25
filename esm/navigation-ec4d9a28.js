@@ -1,5 +1,5 @@
 import { Map, List, fromJS, OrderedMap, Set } from 'immutable';
-import { z as SET_TARGET_PROJECT, A as SET_SURROGATE_KEYS, m as SET_SIBLINGS, d as SET_ROUTE, S as SET_NAVIGATION_PATH, U as UPDATE_LOADING_STATE, k as SET_ENTRY, l as SET_ANCESTORS, C as CALL_HISTORY_METHOD, B as action } from './routing-493c0ec2.js';
+import { i as SET_TARGET_PROJECT, j as SET_SURROGATE_KEYS, e as SET_SIBLINGS, b as SET_ROUTE, S as SET_NAVIGATION_PATH, U as UPDATE_LOADING_STATE, c as SET_ENTRY, d as SET_ANCESTORS, C as CALL_HISTORY_METHOD, k as action } from './routing-3bbf9dde.js';
 import { compose, applyMiddleware, createStore as createStore$1 } from 'redux';
 import { combineReducers } from 'redux-immutable';
 import thunk from 'redux-thunk';
@@ -300,22 +300,5 @@ var navigation$1 = /*#__PURE__*/Object.freeze({
   selectNavigationDepends: selectNavigationDepends
 });
 
-const selectCommitRef = state => {
-  return state.getIn(['version', 'commitRef']);
-};
-const selectBuildNumber = state => {
-  return state.getIn(['version', 'buildNo']);
-};
-const selectVersionStatus = state => {
-  return state.getIn(['version', 'contensisVersionStatus']);
-};
-
-var version$2 = /*#__PURE__*/Object.freeze({
-  __proto__: null,
-  selectCommitRef: selectCommitRef,
-  selectBuildNumber: selectBuildNumber,
-  selectVersionStatus: selectVersionStatus
-});
-
-export { GET_NODE_TREE as G, SET_NODE_TREE as S, setVersion as a, selectVersionStatus as b, createStore as c, GET_NODE_TREE_ERROR as d, version$1 as e, navigation$1 as f, version$2 as g, hasNavigationTree as h, navigation as n, reduxStore as r, setVersionStatus as s, version as v };
-//# sourceMappingURL=version-fc42dac0.js.map
+export { GET_NODE_TREE as G, SET_NODE_TREE as S, setVersion as a, GET_NODE_TREE_ERROR as b, createStore as c, version$1 as d, navigation$1 as e, hasNavigationTree as h, navigation as n, reduxStore as r, setVersionStatus as s, version as v };
+//# sourceMappingURL=navigation-ec4d9a28.js.map

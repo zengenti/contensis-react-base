@@ -3,22 +3,24 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 require('immutable');
-var routing$1 = require('./routing-ebb05e9a.js');
+var routing$1 = require('./routing-a4d7b382.js');
 require('redux');
 require('redux-immutable');
 require('redux-thunk');
 require('redux-saga');
-var version$1 = require('./version-01c24585.js');
+var navigation$2 = require('./navigation-9bc89fbc.js');
 require('./reducers-a05c32a6.js');
 require('query-string');
+var routing$2 = require('./routing-2f3a730f.js');
+var version$1 = require('./version-2f3078fa.js');
 
 var types = {
-  navigation: version$1.navigation,
+  navigation: navigation$2.navigation,
   routing: routing$1.routing,
-  version: version$1.version
+  version: navigation$2.version
 };
 
-const loadNavigationTree = () => routing$1.action(version$1.GET_NODE_TREE);
+const loadNavigationTree = () => routing$1.action(navigation$2.GET_NODE_TREE);
 
 var navigation = /*#__PURE__*/Object.freeze({
   __proto__: null,
@@ -28,13 +30,13 @@ var navigation = /*#__PURE__*/Object.freeze({
 var actions = {
   navigation,
   routing: routing$1.routing$1,
-  version: version$1.version$1
+  version: navigation$2.version$1
 };
 
 var selectors = {
-  navigation: version$1.navigation$1,
-  routing: routing$1.routing$2,
-  version: version$1.version$2
+  navigation: navigation$2.navigation$1,
+  routing: routing$2.routing,
+  version: version$1.version
 };
 
 // e.g. { routing: { types, actions }, navigation: { types, actions } }
@@ -64,7 +66,7 @@ const version = {
 Object.defineProperty(exports, 'store', {
   enumerable: true,
   get: function () {
-    return version$1.reduxStore;
+    return navigation$2.reduxStore;
   }
 });
 exports.navigation = navigation$1;

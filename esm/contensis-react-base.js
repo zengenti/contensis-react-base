@@ -15,28 +15,30 @@ import serialize from 'serialize-javascript';
 import minifyCssString from 'minify-css-string';
 import { fromJS } from 'immutable';
 import 'history';
-import { h as history, d as deliveryApi, p as pickProject, r as rootSaga } from './App-c112bb2f.js';
-export { A as ReactApp } from './App-c112bb2f.js';
+import { h as history, d as deliveryApi, p as pickProject, r as rootSaga } from './App-43d962f0.js';
+export { A as ReactApp } from './App-43d962f0.js';
 import 'contensis-delivery-api';
-import { s as setCurrentProject, a as selectRouteEntry, b as selectCurrentProject } from './routing-493c0ec2.js';
+import { s as setCurrentProject } from './routing-3bbf9dde.js';
 import 'redux';
 import 'redux-immutable';
 import 'redux-thunk';
 import 'redux-saga';
-import { c as createStore, s as setVersionStatus, a as setVersion } from './version-fc42dac0.js';
+import { c as createStore, s as setVersionStatus, a as setVersion } from './navigation-ec4d9a28.js';
 import './reducers-ed7581c0.js';
 import 'query-string';
+import { s as selectRouteEntry, a as selectCurrentProject } from './routing-46d7346d.js';
 import '@redux-saga/core/effects';
+import './version-924cf045.js';
 import 'loglevel';
 import './ToJs-020d9abb.js';
-import './login-9a4f31ab.js';
+import './login-a0f725e8.js';
 import mapJson from 'jsonpath-mapper';
 import 'await-to-js';
 import 'js-cookie';
 import { matchRoutes } from 'react-router-config';
 import 'react-hot-loader';
 import 'prop-types';
-import './RouteLoader-3913159d.js';
+import './RouteLoader-d328b94d.js';
 
 const servers = SERVERS;
 /* global SERVERS */
@@ -515,6 +517,10 @@ const webApp = (app, ReactApp, config) => {
 const app = express();
 
 const start = (ReactApp, config, ServerFeatures) => {
+  global.PACKAGE_JSON = config.packagejson;
+  global.REVERSE_PROXY_PATHS = Object(config.reverseProxyPaths);
+  global.PROXY_DELIVERY_API = config.proxyDeliveryApi;
+  global.DISABLE_SSR_REDUX = config.disableSsrRedux;
   app.disable('x-powered-by'); // Output some information about the used build/startup configuration
 
   DisplayStartupConfiguration(config);

@@ -19,27 +19,29 @@ var serialize = require('serialize-javascript');
 var minifyCssString = require('minify-css-string');
 var immutable = require('immutable');
 require('history');
-var App = require('./App-7f3a3005.js');
+var App = require('./App-e791eae6.js');
 require('contensis-delivery-api');
-var routing = require('./routing-ebb05e9a.js');
+var routing = require('./routing-a4d7b382.js');
 require('redux');
 require('redux-immutable');
 require('redux-thunk');
 require('redux-saga');
-var version = require('./version-01c24585.js');
+var navigation = require('./navigation-9bc89fbc.js');
 require('./reducers-a05c32a6.js');
 require('query-string');
+var routing$1 = require('./routing-2f3a730f.js');
 require('@redux-saga/core/effects');
+require('./version-2f3078fa.js');
 require('loglevel');
 require('./ToJs-128064bc.js');
-require('./login-9a876f8b.js');
+require('./login-21e2187d.js');
 var mapJson = require('jsonpath-mapper');
 require('await-to-js');
 require('js-cookie');
 var reactRouterConfig = require('react-router-config');
 require('react-hot-loader');
 require('prop-types');
-require('./RouteLoader-6243a2a8.js');
+require('./RouteLoader-094d8352.js');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -258,8 +260,8 @@ const addStandardHeaders = (state, response, packagejson, groups) => {
 const addVarnishAuthenticationHeaders = (state, response, groups = {}) => {
   if (state) {
     try {
-      const stateEntry = routing.selectRouteEntry(state);
-      const project = routing.selectCurrentProject(state);
+      const stateEntry = routing$1.selectRouteEntry(state);
+      const project = routing$1.selectCurrentProject(state);
       const {
         globalGroups,
         allowedGroups
@@ -366,14 +368,14 @@ const webApp = (app, ReactApp, config) => {
 
     response.status(200); // Create a store (with a memory history) from our current url
 
-    const store = version.createStore(withReducers, immutable.fromJS({}), App.history({
+    const store = navigation.createStore(withReducers, immutable.fromJS({}), App.history({
       initialEntries: [url]
     })); // dispatch any global and non-saga related actions before calling our JSX
 
     const versionStatusFromHostname = App.deliveryApi.getVersionStatusFromHostname(request.hostname);
     console.info(`Request for ${request.path} hostname: ${request.hostname} versionStatus: ${versionStatusFromHostname}`);
-    store.dispatch(version.setVersionStatus(request.query.versionStatus || versionStatusFromHostname));
-    store.dispatch(version.setVersion(versionInfo.commitRef, versionInfo.buildNo));
+    store.dispatch(navigation.setVersionStatus(request.query.versionStatus || versionStatusFromHostname));
+    store.dispatch(navigation.setVersion(versionInfo.commitRef, versionInfo.buildNo));
     const project = App.pickProject(request.hostname, request.query);
     const groups = allowedGroups && allowedGroups[project];
     store.dispatch(routing.setCurrentProject(project, groups, request.hostname));
@@ -531,6 +533,10 @@ const webApp = (app, ReactApp, config) => {
 const app = express__default['default']();
 
 const start = (ReactApp, config, ServerFeatures) => {
+  global.PACKAGE_JSON = config.packagejson;
+  global.REVERSE_PROXY_PATHS = Object(config.reverseProxyPaths);
+  global.PROXY_DELIVERY_API = config.proxyDeliveryApi;
+  global.DISABLE_SSR_REDUX = config.disableSsrRedux;
   app.disable('x-powered-by'); // Output some information about the used build/startup configuration
 
   DisplayStartupConfiguration(config);
