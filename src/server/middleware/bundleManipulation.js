@@ -1,18 +1,19 @@
 import fs from 'fs';
 import path from 'path';
 import { replaceStaticPath } from '../util/staticPaths';
-import { resolve } from 'app-root-path';
 
-export const bundleManipulationMiddleware = (
+export const bundleManipulationMiddleware = ({
+  appRootPath,
+  maxage,
   staticRoutePath,
-  { maxage } = {}
-) => (req, res, next) => {
+}) => (req, res, next) => {
   const filename = path.basename(req.path);
   const modernBundle = filename.endsWith('.mjs');
   const legacyBundle = filename.endsWith('.js');
   if ((legacyBundle || modernBundle) && filename.startsWith('runtime.')) {
-    const jsRuntimeLocation = resolve(
-      `/dist/static/${modernBundle ? 'modern/js' : 'legacy/js'}/${filename}`
+    const jsRuntimeLocation = path.resolve(
+      appRootPath,
+      `dist/static/${modernBundle ? 'modern/js' : 'legacy/js'}/${filename}`
     );
     try {
       const jsRuntimeBundle = fs.readFileSync(jsRuntimeLocation, 'utf8');
