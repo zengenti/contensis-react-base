@@ -11,7 +11,7 @@ require('redux-saga');
 var navigation$2 = require('./navigation-9bc89fbc.js');
 require('./reducers-a05c32a6.js');
 require('query-string');
-var routing$2 = require('./routing-2f3a730f.js');
+var routing$2 = require('./routing-5db2c867.js');
 var version$1 = require('./version-2f3078fa.js');
 
 var types = {

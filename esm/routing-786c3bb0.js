@@ -4,10 +4,6 @@ import queryString from 'query-string';
 function queryParams(search) {
   return queryString.parse(typeof window != 'undefined' ? window.location.search : search);
 }
-const clientHostname = () => `${window.location.protocol}//${window.location.hostname}:${window.location.port}`;
-const addHostname = typeof window == 'undefined' || window.location.host == 'localhost:3000' ? `https://${PUBLIC_URI
-/* global PUBLIC_URI */
-}` : clientHostname();
 
 const selectRouteEntry = state => {
   return state.getIn(['routing', 'entry'], Map());
@@ -110,4 +106,4 @@ var routing = /*#__PURE__*/Object.freeze({
 });
 
 export { selectCurrentProject as a, selectCurrentNode as b, selectCurrentAncestors as c, selectRouteEntryEntryId as d, selectRouteEntryLanguage as e, selectMappedEntry as f, selectCurrentSearch as g, selectRouteEntryContentTypeId as h, selectRouteIsError as i, selectIsNotFound as j, selectRouteLoading as k, selectCurrentPath as l, selectRouteStatusCode as m, selectRouteErrorMessage as n, queryParams as q, routing as r, selectRouteEntry as s };
-//# sourceMappingURL=routing-46d7346d.js.map
+//# sourceMappingURL=routing-786c3bb0.js.map

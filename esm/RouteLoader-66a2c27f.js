@@ -2,7 +2,7 @@ import React, { useCallback, useEffect } from 'react';
 import { Route, useLocation, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { h as setNavigationPath } from './routing-3bbf9dde.js';
-import { h as selectRouteEntryContentTypeId, s as selectRouteEntry, i as selectRouteIsError, j as selectIsNotFound, k as selectRouteLoading, f as selectMappedEntry, a as selectCurrentProject, l as selectCurrentPath, m as selectRouteStatusCode, n as selectRouteErrorMessage } from './routing-46d7346d.js';
+import { h as selectRouteEntryContentTypeId, s as selectRouteEntry, i as selectRouteIsError, j as selectIsNotFound, k as selectRouteLoading, f as selectMappedEntry, a as selectCurrentProject, l as selectCurrentPath, m as selectRouteStatusCode, n as selectRouteErrorMessage } from './routing-786c3bb0.js';
 import { t as toJS, s as selectUserIsAuthenticated, a as selectUserGroups, m as matchUserGroup } from './ToJs-020d9abb.js';
 import { matchRoutes, renderRoutes } from 'react-router-config';
 import { hot } from 'react-hot-loader';
@@ -197,4 +197,4 @@ const mapDispatchToProps = {
 var RouteLoader$1 = hot(module)(connect(mapStateToProps, mapDispatchToProps)(toJS(RouteLoader)));
 
 export { RouteLoader$1 as R };
-//# sourceMappingURL=RouteLoader-d328b94d.js.map
+//# sourceMappingURL=RouteLoader-66a2c27f.js.map

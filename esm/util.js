@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 import 'immutable';
 import 'query-string';
-import { a as selectCurrentProject } from './routing-46d7346d.js';
+import { a as selectCurrentProject } from './routing-786c3bb0.js';
 import { a as selectBuildNumber, b as selectCommitRef, s as selectVersionStatus } from './version-924cf045.js';
 import mapJson, { jpath } from 'jsonpath-mapper';
 export { jpath, default as mapJson } from 'jsonpath-mapper';

@@ -10,10 +10,6 @@ var queryString__default = /*#__PURE__*/_interopDefaultLegacy(queryString);
 function queryParams(search) {
   return queryString__default['default'].parse(typeof window != 'undefined' ? window.location.search : search);
 }
-const clientHostname = () => `${window.location.protocol}//${window.location.hostname}:${window.location.port}`;
-const addHostname = typeof window == 'undefined' || window.location.host == 'localhost:3000' ? `https://${PUBLIC_URI
-/* global PUBLIC_URI */
-}` : clientHostname();
 
 const selectRouteEntry = state => {
   return state.getIn(['routing', 'entry'], immutable.Map());
@@ -132,4 +128,4 @@ exports.selectRouteErrorMessage = selectRouteErrorMessage;
 exports.selectRouteIsError = selectRouteIsError;
 exports.selectRouteLoading = selectRouteLoading;
 exports.selectRouteStatusCode = selectRouteStatusCode;
-//# sourceMappingURL=routing-2f3a730f.js.map
+//# sourceMappingURL=routing-5db2c867.js.map

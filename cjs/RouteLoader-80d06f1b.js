@@ -4,7 +4,7 @@ var React = require('react');
 var reactRouterDom = require('react-router-dom');
 var reactRedux = require('react-redux');
 var routing$1 = require('./routing-a4d7b382.js');
-var routing = require('./routing-2f3a730f.js');
+var routing = require('./routing-5db2c867.js');
 var ToJs = require('./ToJs-128064bc.js');
 var reactRouterConfig = require('react-router-config');
 var reactHotLoader = require('react-hot-loader');
@@ -204,4 +204,4 @@ const mapDispatchToProps = {
 var RouteLoader$1 = reactHotLoader.hot(module)(reactRedux.connect(mapStateToProps, mapDispatchToProps)(ToJs.toJS(RouteLoader)));
 
 exports.RouteLoader = RouteLoader$1;
-//# sourceMappingURL=RouteLoader-094d8352.js.map
+//# sourceMappingURL=RouteLoader-80d06f1b.js.map

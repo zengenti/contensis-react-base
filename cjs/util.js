@@ -8,7 +8,7 @@ var reactRedux = require('react-redux');
 var styled = require('styled-components');
 require('immutable');
 require('query-string');
-var routing = require('./routing-2f3a730f.js');
+var routing = require('./routing-5db2c867.js');
 var version = require('./version-2f3078fa.js');
 var mapJson = require('jsonpath-mapper');
 var reactHotLoader = require('react-hot-loader');
