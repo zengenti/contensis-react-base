@@ -16,8 +16,3 @@ export const buildUrl = (route, params) => {
 
 export const clientHostname = () =>
   `${window.location.protocol}//${window.location.hostname}:${window.location.port}`;
-
-export const addHostname =
-  typeof window == 'undefined' || window.location.host == 'localhost:3000'
-    ? `https://${PUBLIC_URI /* global PUBLIC_URI */}`
-    : clientHostname();
