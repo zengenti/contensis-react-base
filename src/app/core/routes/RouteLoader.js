@@ -30,9 +30,10 @@ import { matchUserGroup } from '~/features/login/util/matchGroups';
 
 const getTrimmedPath = path => {
   if (path !== '/') {
-    const lastChar = path[path.length - 1];
+    const nextPath = path.replace(/\/\//, '/');
+    const lastChar = nextPath[nextPath.length - 1];
     if (lastChar == '/') {
-      return path.substring(0, path.length - 1);
+      return nextPath.substring(0, nextPath.length - 1);
     }
   }
   return path;
@@ -58,6 +59,7 @@ const RouteLoader = ({
   withEvents,
 }) => {
   const location = useLocation();
+  // Always ensure paths are trimmed of trailing slashes so urls are always unique
   const trimmedPath = getTrimmedPath(location.pathname);
 
   // Match any Static Routes a developer has defined
@@ -108,6 +110,7 @@ const RouteLoader = ({
   if (location.pathname.length > trimmedPath.length) {
     return <Redirect to={trimmedPath} />;
   }
+
   // Render any Static Routes a developer has defined
   if (isStaticRoute(trimmedPath) && !(!isLoggedIn && routeRequiresLogin)) {
     if (matchUserGroup(userGroups, routeRequiresLogin))
@@ -202,5 +205,8 @@ const mapDispatchToProps = {
 };
 
 export default hot(module)(
-  connect(mapStateToProps, mapDispatchToProps)(toJS(RouteLoader))
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(toJS(RouteLoader))
 );
