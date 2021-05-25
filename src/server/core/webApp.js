@@ -165,6 +165,7 @@ const webApp = (app, ReactApp, config) => {
 
     // Allow certain routes to avoid SSR
     const onlyDynamic = staticRoute && staticRoute.route.ssr === false;
+    const onlySSR = staticRoute && staticRoute.route.ssrOnly === true;
 
     const normaliseQs = q => (q && q.toLowerCase() === 'true' ? true : false);
 
@@ -173,7 +174,7 @@ const webApp = (app, ReactApp, config) => {
       DYNAMIC: ({ dynamic }) => normaliseQs(dynamic) || onlyDynamic,
       REDUX: ({ redux }) => normaliseQs(redux),
       FRAGMENT: ({ fragment }) => normaliseQs(fragment),
-      STATIC: ({ static: value }) => normaliseQs(value),
+      STATIC: ({ static: value }) => normaliseQs(value) || onlySSR,
     });
 
     const context = {};
