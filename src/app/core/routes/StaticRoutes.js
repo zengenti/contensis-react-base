@@ -11,53 +11,6 @@ export default [
     ssr: true,
     component: Homepage,
   },
-  {
-    path: '/account/login',
-    exact: true,
-    ssr: false,
-    component: Loadable({
-      loader: () => import('~/pages/User/Login'),
-      loading: Loading,
-    }),
-  },
-  {
-    path: '/account/access-denied',
-    exact: true,
-    ssr: false,
-    component: Loadable({
-      loader: () => import('~/pages/User/AccessDeniedPage'),
-      loading: Loading,
-    }),
-  },
-  {
-    path: '/account/registration',
-    exact: true,
-    ssr: false,
-    component: Loadable({
-      loader: () => import('~/pages/User/RegistrationPage'),
-      loading: Loading,
-    }),
-  },
-  {
-    path: '/account/registration/success',
-    exact: true,
-    ssr: false,
-    component: Loadable({
-      loader: () => import('~/pages/User/RegistrationPage'),
-      loading: Loading,
-    }),
-  },
-  {
-    path: '/help-and-docs/*',
-    fetchNode: true,
-    exact: false,
-    ssr: true,
-    requireLogin: true,
-    component: Loadable({
-      loader: () => import('~/pages/Article'),
-      loading: Loading,
-    }),
-  },
   // ********************************
   // ˅˅ Do not delete these routes ˅˅
   {

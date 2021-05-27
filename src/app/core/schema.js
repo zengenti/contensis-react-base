@@ -23,22 +23,7 @@ export const Fields = {
   wildcard: '*',
 };
 
-export const Projects = {
-  website: 'website',
-};
-
 export const VersionStatus = {
   published: 'published',
   latest: 'latest',
-};
-
-export const ContentTypes = {
-  contentPage: 'contentPage',
-};
-
-export const WebpageFormats = {};
-
-export const FilterExpressionTypes = {
-  contentType: 'contentType',
-  field: 'field',
 };
