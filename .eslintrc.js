@@ -5,13 +5,10 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:react/recommended',
-    'plugin:flowtype/recommended',
-    'plugin:import/errors',
-    'plugin:import/warnings',
+    'plugin:import/recommended',
     'plugin:jsx-a11y/recommended',
     'plugin:prettier/recommended',
     'prettier',
-    'prettier/react',
   ],
   env: {
     browser: true,
@@ -70,8 +67,12 @@ module.exports = {
       version: '^16.0.0',
     },
     'import/resolver': {
-      webpack: {
-        config: path.resolve(__dirname, './webpack/webpack.config.base.js'),
+      alias: {
+        map: [
+          ['~/*', './src'],
+          ['-/*', '.'],
+        ],
+        extensions: ['.ts', '.js', '.jsx', '.json'],
       },
     },
   },
