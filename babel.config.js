@@ -34,7 +34,7 @@ const plugins = {
       {
         root: './src',
         alias: {
-          '~': './src/app',
+          '~': './src',
           '-': './',
         },
         cwd: 'packagejson',

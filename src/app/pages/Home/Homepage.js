@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { setRoute } from '~/core/redux/actions/routing';
-import { selectCurrentHostname } from '~/core/redux/selectors/routing';
+import { setRoute } from '~/redux/actions/routing';
+import { selectCurrentHostname } from '~/routing/redux/selectors';
 // import LoginButton from '~/features/login/components/LoginButton';
 
 const Homepage = ({ entry }) => {
