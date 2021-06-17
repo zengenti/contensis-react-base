@@ -34,10 +34,12 @@ require('prop-types');
 require('./RouteLoader-ee532d78.js');
 var reactDom = require('react-dom');
 
-function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+function _interopDefaultLegacy(e) {
+  return e && typeof e === 'object' && 'default' in e ? e : { default: e };
+}
 
-var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
-var queryString__default = /*#__PURE__*/_interopDefaultLegacy(queryString);
+var React__default = /*#__PURE__*/ _interopDefaultLegacy(React);
+var queryString__default = /*#__PURE__*/ _interopDefaultLegacy(queryString);
 
 const fromJSLeaveImmer = js => {
   // console.info(js);
@@ -66,22 +68,29 @@ const fromJSLeaveImmer = js => {
 class ClientApp {
   constructor(ReactApp, config) {
     const documentRoot = document.getElementById('root');
-    const {
-      routes,
-      withReducers,
-      withSagas,
-      withEvents
-    } = config;
+    const { routes, withReducers, withSagas, withEvents } = config;
 
     const GetClientJSX = store => {
-      const ClientJsx = React__default['default'].createElement(reactHotLoader.AppContainer, null, React__default['default'].createElement(reactRedux.Provider, {
-        store: store
-      }, React__default['default'].createElement(reactRouterDom.Router, {
-        history: App.browserHistory
-      }, React__default['default'].createElement(ReactApp, {
-        routes: routes,
-        withEvents: withEvents
-      }))));
+      const ClientJsx = React__default['default'].createElement(
+        reactHotLoader.AppContainer,
+        null,
+        React__default['default'].createElement(
+          reactRedux.Provider,
+          {
+            store: store,
+          },
+          React__default['default'].createElement(
+            reactRouterDom.Router,
+            {
+              history: App.browserHistory,
+            },
+            React__default['default'].createElement(ReactApp, {
+              routes: routes,
+              withEvents: withEvents,
+            })
+          )
+        )
+      );
       return ClientJsx;
     };
 
@@ -92,7 +101,9 @@ class ClientApp {
 
     const HMRRenderer = Component => {
       Loadable.preloadReady().then(() => {
-        isProduction ? reactDom.hydrate(Component, documentRoot) : reactDom.render(Component, documentRoot);
+        isProduction
+          ? reactDom.hydrate(Component, documentRoot)
+          : reactDom.render(Component, documentRoot);
       });
     };
 
@@ -100,37 +111,69 @@ class ClientApp {
     const qs = queryString__default['default'].parse(window.location.search);
     const versionStatusFromHostname = App.deliveryApi.getClientSideVersionStatus();
 
-    if (window.isDynamic || window.REDUX_DATA || process.env.NODE_ENV !== 'production') {
-      store = navigation.createStore(withReducers, fromJSLeaveImmer(window.REDUX_DATA), App.browserHistory);
-      store.dispatch(navigation.setVersionStatus(qs.versionStatus || versionStatusFromHostname));
+    if (
+      window.isDynamic ||
+      window.REDUX_DATA ||
+      process.env.NODE_ENV !== 'production'
+    ) {
+      store = navigation.createStore(
+        withReducers,
+        fromJSLeaveImmer(window.REDUX_DATA),
+        App.browserHistory
+      );
+      store.dispatch(
+        navigation.setVersionStatus(
+          qs.versionStatus || versionStatusFromHostname
+        )
+      );
       /* eslint-disable no-console */
 
       console.log('Hydrating from inline Redux');
       /* eslint-enable no-console */
 
       store.runSaga(App.rootSaga(withSagas));
-      store.dispatch(routing.setCurrentProject(App.pickProject(window.location.hostname, qs), [], window.location.hostname));
+      store.dispatch(
+        routing.setCurrentProject(
+          App.pickProject(window.location.hostname, qs),
+          [],
+          window.location.hostname
+        )
+      );
       delete window.REDUX_DATA;
       HMRRenderer(GetClientJSX(store));
     } else {
-      fetch(`${window.location.pathname}?redux=true`).then(response => response.json()).then(data => {
-        /* eslint-disable no-console */
-        //console.log('Got Data Back');
-        // console.log(data);
+      fetch(`${window.location.pathname}?redux=true`)
+        .then(response => response.json())
+        .then(data => {
+          /* eslint-disable no-console */
+          //console.log('Got Data Back');
+          // console.log(data);
 
-        /* eslint-enable no-console */
-        const ssRedux = JSON.parse(data);
-        store = navigation.createStore(withReducers, fromJSLeaveImmer(ssRedux), App.browserHistory); // store.dispatch(setVersionStatus(versionStatusFromHostname));
+          /* eslint-enable no-console */
+          const ssRedux = JSON.parse(data);
+          store = navigation.createStore(
+            withReducers,
+            fromJSLeaveImmer(ssRedux),
+            App.browserHistory
+          ); // store.dispatch(setVersionStatus(versionStatusFromHostname));
 
-        store.runSaga(App.rootSaga(withSagas));
-        store.dispatch(routing.setCurrentProject(App.pickProject(window.location.hostname, queryString__default['default'].parse(window.location.search)), [], window.location.hostname)); // if (typeof window != 'undefined') {
-        //   store.dispatch(checkUserLoggedIn());
-        // }
+          store.runSaga(App.rootSaga(withSagas));
+          store.dispatch(
+            routing.setCurrentProject(
+              App.pickProject(
+                window.location.hostname,
+                queryString__default['default'].parse(window.location.search)
+              ),
+              [],
+              window.location.hostname
+            )
+          ); // if (typeof window != 'undefined') {
+          //   store.dispatch(checkUserLoggedIn());
+          // }
 
-        HMRRenderer(GetClientJSX(store));
-      });
+          HMRRenderer(GetClientJSX(store));
+        });
     } // webpack Hot Module Replacement API
-
 
     if (module.hot) {
       module.hot.accept(ReactApp, () => {
@@ -139,7 +182,6 @@ class ClientApp {
       });
     }
   }
-
 }
 
 exports.ReactApp = App.AppRoot;

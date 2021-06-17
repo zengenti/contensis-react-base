@@ -15,8 +15,6 @@ require('react-hot-loader');
 require('prop-types');
 var RouteLoader = require('./RouteLoader-ee532d78.js');
 
-
-
 exports.actions = routing.routing$1;
 exports.types = routing.routing;
 exports.selectors = routing$1.routing;

@@ -5,7 +5,12 @@ import { Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import 'immutable';
 import 'history';
-import { d as deliveryApi, r as rootSaga, p as pickProject, b as browserHistory } from './App-22e32eea.js';
+import {
+  d as deliveryApi,
+  r as rootSaga,
+  p as pickProject,
+  b as browserHistory,
+} from './App-22e32eea.js';
 export { A as ReactApp } from './App-22e32eea.js';
 import 'contensis-delivery-api';
 import { s as setCurrentProject } from './routing-3bbf9dde.js';
@@ -13,7 +18,10 @@ import 'redux';
 import 'redux-immutable';
 import 'redux-thunk';
 import 'redux-saga';
-import { c as createStore, s as setVersionStatus } from './navigation-7e82dea2.js';
+import {
+  c as createStore,
+  s as setVersionStatus,
+} from './navigation-7e82dea2.js';
 import { o as fromJSOrdered } from './reducers-7c4796b0.js';
 import queryString from 'query-string';
 import './routing-786c3bb0.js';
@@ -58,22 +66,29 @@ const fromJSLeaveImmer = js => {
 class ClientApp {
   constructor(ReactApp, config) {
     const documentRoot = document.getElementById('root');
-    const {
-      routes,
-      withReducers,
-      withSagas,
-      withEvents
-    } = config;
+    const { routes, withReducers, withSagas, withEvents } = config;
 
     const GetClientJSX = store => {
-      const ClientJsx = React.createElement(AppContainer, null, React.createElement(Provider, {
-        store: store
-      }, React.createElement(Router, {
-        history: browserHistory
-      }, React.createElement(ReactApp, {
-        routes: routes,
-        withEvents: withEvents
-      }))));
+      const ClientJsx = React.createElement(
+        AppContainer,
+        null,
+        React.createElement(
+          Provider,
+          {
+            store: store,
+          },
+          React.createElement(
+            Router,
+            {
+              history: browserHistory,
+            },
+            React.createElement(ReactApp, {
+              routes: routes,
+              withEvents: withEvents,
+            })
+          )
+        )
+      );
       return ClientJsx;
     };
 
@@ -84,7 +99,9 @@ class ClientApp {
 
     const HMRRenderer = Component => {
       preloadReady().then(() => {
-        isProduction ? hydrate(Component, documentRoot) : render(Component, documentRoot);
+        isProduction
+          ? hydrate(Component, documentRoot)
+          : render(Component, documentRoot);
       });
     };
 
@@ -92,37 +109,67 @@ class ClientApp {
     const qs = queryString.parse(window.location.search);
     const versionStatusFromHostname = deliveryApi.getClientSideVersionStatus();
 
-    if (window.isDynamic || window.REDUX_DATA || process.env.NODE_ENV !== 'production') {
-      store = createStore(withReducers, fromJSLeaveImmer(window.REDUX_DATA), browserHistory);
-      store.dispatch(setVersionStatus(qs.versionStatus || versionStatusFromHostname));
+    if (
+      window.isDynamic ||
+      window.REDUX_DATA ||
+      process.env.NODE_ENV !== 'production'
+    ) {
+      store = createStore(
+        withReducers,
+        fromJSLeaveImmer(window.REDUX_DATA),
+        browserHistory
+      );
+      store.dispatch(
+        setVersionStatus(qs.versionStatus || versionStatusFromHostname)
+      );
       /* eslint-disable no-console */
 
       console.log('Hydrating from inline Redux');
       /* eslint-enable no-console */
 
       store.runSaga(rootSaga(withSagas));
-      store.dispatch(setCurrentProject(pickProject(window.location.hostname, qs), [], window.location.hostname));
+      store.dispatch(
+        setCurrentProject(
+          pickProject(window.location.hostname, qs),
+          [],
+          window.location.hostname
+        )
+      );
       delete window.REDUX_DATA;
       HMRRenderer(GetClientJSX(store));
     } else {
-      fetch(`${window.location.pathname}?redux=true`).then(response => response.json()).then(data => {
-        /* eslint-disable no-console */
-        //console.log('Got Data Back');
-        // console.log(data);
+      fetch(`${window.location.pathname}?redux=true`)
+        .then(response => response.json())
+        .then(data => {
+          /* eslint-disable no-console */
+          //console.log('Got Data Back');
+          // console.log(data);
 
-        /* eslint-enable no-console */
-        const ssRedux = JSON.parse(data);
-        store = createStore(withReducers, fromJSLeaveImmer(ssRedux), browserHistory); // store.dispatch(setVersionStatus(versionStatusFromHostname));
+          /* eslint-enable no-console */
+          const ssRedux = JSON.parse(data);
+          store = createStore(
+            withReducers,
+            fromJSLeaveImmer(ssRedux),
+            browserHistory
+          ); // store.dispatch(setVersionStatus(versionStatusFromHostname));
 
-        store.runSaga(rootSaga(withSagas));
-        store.dispatch(setCurrentProject(pickProject(window.location.hostname, queryString.parse(window.location.search)), [], window.location.hostname)); // if (typeof window != 'undefined') {
-        //   store.dispatch(checkUserLoggedIn());
-        // }
+          store.runSaga(rootSaga(withSagas));
+          store.dispatch(
+            setCurrentProject(
+              pickProject(
+                window.location.hostname,
+                queryString.parse(window.location.search)
+              ),
+              [],
+              window.location.hostname
+            )
+          ); // if (typeof window != 'undefined') {
+          //   store.dispatch(checkUserLoggedIn());
+          // }
 
-        HMRRenderer(GetClientJSX(store));
-      });
+          HMRRenderer(GetClientJSX(store));
+        });
     } // webpack Hot Module Replacement API
-
 
     if (module.hot) {
       module.hot.accept(ReactApp, () => {
@@ -131,7 +178,6 @@ class ClientApp {
       });
     }
   }
-
 }
 
 export default ClientApp;

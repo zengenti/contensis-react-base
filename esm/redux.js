@@ -4,8 +4,13 @@ import 'redux';
 import 'redux-immutable';
 import 'redux-thunk';
 import 'redux-saga';
+<<<<<<< HEAD
 import { n as navigation$2, v as version$1, G as GET_NODE_TREE, d as version$2, e as navigation$3 } from './navigation-7e82dea2.js';
 export { r as store } from './navigation-7e82dea2.js';
+=======
+import { n as navigation$2, v as version$1, G as GET_NODE_TREE, e as version$2, f as navigation$3, g as version$3 } from './version-048f97a8.js';
+export { r as store } from './version-048f97a8.js';
+>>>>>>> 8f6a0bd8ed1dfcb4a74b6d35685352d4189a5b5c
 import './reducers-7c4796b0.js';
 import 'query-string';
 import { r as routing$3 } from './routing-786c3bb0.js';
