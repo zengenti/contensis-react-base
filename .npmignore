@@ -4,6 +4,7 @@
 !package.json
 !package-lock.json
 !client/*
+!forms/*
 !redux/*
 !routing/*
 !search/*
