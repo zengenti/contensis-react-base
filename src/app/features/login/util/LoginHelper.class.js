@@ -22,6 +22,13 @@ export class LoginHelper {
   static ACCESS_DENIED_ROUTE = '/account/access-denied';
 
   static SetLoginCookies({ contensisClassicToken, refreshToken }) {
+    console.info(
+      'SetLoginCookies:',
+      LOGIN_COOKIE,
+      contensisClassicToken,
+      REFRESH_TOKEN_COOKIE,
+      refreshToken
+    );
     if (contensisClassicToken)
       CookieHelper.SetCookie(LOGIN_COOKIE, contensisClassicToken);
     if (refreshToken)
