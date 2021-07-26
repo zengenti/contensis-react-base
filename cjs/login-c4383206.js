@@ -151,10 +151,13 @@ const userManagerConfig = typeof window !== 'undefined' ? {
 const createUserManager = config => {
   if (typeof window !== 'undefined' && requireOidc) {
     try {
-      const UserManager = require('oidc-client').UserManager;
+      // Need to import the lib version specifically when using with webpack
+      const UserManager = require('oidc-client/lib/oidc-client').UserManager;
 
       return new UserManager(config);
-    } catch (e) {//
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.log('CreateUserManagerException: ', e);
     }
   } else return {};
 };
@@ -610,4 +613,4 @@ exports.LoginHelper = LoginHelper;
 exports.handleRequiresLoginSaga = handleRequiresLoginSaga;
 exports.loginSagas = loginSagas;
 exports.refreshSecurityToken = refreshSecurityToken;
-//# sourceMappingURL=login-81fe30f7.js.map
+//# sourceMappingURL=login-c4383206.js.map

@@ -16,7 +16,7 @@ var routing$1 = require('./routing-5db2c867.js');
 var effects = require('@redux-saga/core/effects');
 var version = require('./version-2f3078fa.js');
 var log = require('loglevel');
-var login = require('./login-81fe30f7.js');
+var login = require('./login-c4383206.js');
 var awaitToJs = require('await-to-js');
 require('react-hot-loader');
 var RouteLoader = require('./RouteLoader-80d06f1b.js');
@@ -832,4 +832,4 @@ exports.deliveryApi = deliveryApi;
 exports.history = history;
 exports.pickProject = pickProject;
 exports.rootSaga = rootSaga;
-//# sourceMappingURL=App-ef78aaef.js.map
+//# sourceMappingURL=App-9af2b0dc.js.map

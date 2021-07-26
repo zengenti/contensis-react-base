@@ -14,7 +14,7 @@ import { a as selectCurrentProject, s as selectRouteEntry, b as selectCurrentNod
 import { takeEvery, select, put, call, all } from '@redux-saga/core/effects';
 import { s as selectVersionStatus } from './version-924cf045.js';
 import { info, error } from 'loglevel';
-import { h as handleRequiresLoginSaga, l as loginSagas } from './login-9f599fab.js';
+import { h as handleRequiresLoginSaga, l as loginSagas } from './login-45048e14.js';
 import { to } from 'await-to-js';
 import 'react-hot-loader';
 import { R as RouteLoader } from './RouteLoader-66a2c27f.js';
@@ -821,4 +821,4 @@ const AppRoot = props => {
 };
 
 export { AppRoot as A, browserHistory as b, deliveryApi as d, history as h, pickProject as p, rootSaga as r };
-//# sourceMappingURL=App-d6ed8393.js.map
+//# sourceMappingURL=App-801483d2.js.map
