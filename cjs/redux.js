@@ -8,7 +8,7 @@ require('redux');
 require('redux-immutable');
 require('redux-thunk');
 require('redux-saga');
-var navigation$2 = require('./navigation-9bc89fbc.js');
+var navigation$2 = require('./navigation-9f04e67a.js');
 require('./reducers-a05c32a6.js');
 require('query-string');
 var routing$2 = require('./routing-5db2c867.js');
