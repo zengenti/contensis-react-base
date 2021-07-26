@@ -8,6 +8,7 @@ const staticAssets = (
   app,
   {
     appRootPath = require('app-root-path').path,
+    scripts = {},
     startupScriptFilename = 'startup.js',
     staticFolderPath = 'static',
     staticRoutePath = 'static',
@@ -30,7 +31,7 @@ const staticAssets = (
     resolveStartupMiddleware({
       appRootPath,
       maxage: CacheDuration.static,
-      startupScriptFilename,
+      startupScriptFilename: scripts.startup || startupScriptFilename,
       staticFolderPath,
     }),
     express.static(`dist/${staticFolderPath}`, {
