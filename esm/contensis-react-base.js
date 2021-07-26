@@ -174,6 +174,7 @@ const resolveStartupMiddleware = ({
 
 const staticAssets = (app, {
   appRootPath = require('app-root-path').path,
+  scripts = {},
   startupScriptFilename = 'startup.js',
   staticFolderPath = 'static',
   staticRoutePath = 'static',
@@ -188,7 +189,7 @@ const staticAssets = (app, {
   }), resolveStartupMiddleware({
     appRootPath,
     maxage: CacheDuration.static,
-    startupScriptFilename,
+    startupScriptFilename: scripts.startup || startupScriptFilename,
     staticFolderPath
   }), express.static(`dist/${staticFolderPath}`, {
     // these maxage values are different in config but the same in runtime,
