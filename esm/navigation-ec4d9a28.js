@@ -301,4 +301,4 @@ var navigation$1 = /*#__PURE__*/Object.freeze({
 });
 
 export { GET_NODE_TREE as G, SET_NODE_TREE as S, setVersion as a, GET_NODE_TREE_ERROR as b, createStore as c, version$1 as d, navigation$1 as e, hasNavigationTree as h, navigation as n, reduxStore as r, setVersionStatus as s, version as v };
-//# sourceMappingURL=navigation-91d1d2d3.js.map
+//# sourceMappingURL=navigation-ec4d9a28.js.map
