@@ -226,6 +226,8 @@ const handleResponse = (request, response, content, send = ResponseMethod.send) 
   response[send](content);
 };
 
+var stringifyAttributes = ((attributes = {}) => Object.entries(attributes).map(([key, value], idx) => `${idx !== 0 ? ' ' : ''}${key}${value ? `="${value}"` : ''}`).join(' '));
+
 const addStandardHeaders = (state, response, packagejson, groups) => {
   if (state) {
     try {
@@ -300,6 +302,7 @@ const webApp = (app, ReactApp, config) => {
     withSagas,
     withEvents,
     packagejson,
+    scripts = {},
     staticFolderPath = 'static',
     startupScriptFilename,
     differentialBundles,
@@ -315,6 +318,8 @@ const webApp = (app, ReactApp, config) => {
     modern: loadableBundleData(config, staticRoutePath, 'modern')
   };
   if (!bundleData.default || bundleData.default === {}) bundleData.default = bundleData.legacy || bundleData.modern;
+  const attributes = stringifyAttributes(scripts.attributes);
+  scripts.startup = scripts.startup || startupScriptFilename;
   const responseHandler = typeof handleResponses === 'function' ? handleResponses : handleResponse;
   const versionInfo = JSON.parse(fs.readFileSync(`dist/${staticFolderPath}/version.json`, 'utf8'));
   app.get('/*', (request, response) => {
@@ -379,11 +384,11 @@ const webApp = (app, ReactApp, config) => {
     const buildBundleTags = bundles => {
       // Take the bundles returned from Loadable.Capture
       const bundleTags = bundles.map(bundle => {
-        if (bundle.publicPath.includes('/modern/')) return differentialBundles ? `<script type="module" src="${replaceStaticPath(bundle.publicPath, staticRoutePath)}"></script>` : null;
-        return `<script nomodule src="${replaceStaticPath(bundle.publicPath, staticRoutePath)}"></script>`;
+        if (bundle.publicPath.includes('/modern/')) return differentialBundles ? `<script ${attributes} type="module" src="${replaceStaticPath(bundle.publicPath, staticRoutePath)}"></script>` : null;
+        return `<script ${attributes} nomodule src="${replaceStaticPath(bundle.publicPath, staticRoutePath)}"></script>`;
       }).filter(f => f); // Add the static startup script to the bundleTags
 
-      startupScriptFilename && bundleTags.push(`<script src="/${staticRoutePath}/${startupScriptFilename}"></script>`);
+      scripts.startup && bundleTags.push(`<script ${attributes} src="/${staticRoutePath}/${scripts.startup}"></script>`);
       return bundleTags;
     };
 
@@ -402,7 +407,7 @@ const webApp = (app, ReactApp, config) => {
 
       const loadableBundles = getBundles(stats, modules);
       const bundleTags = buildBundleTags(loadableBundles).join('');
-      const isDynamicHint = `<script>window.isDynamic = true;</script>`;
+      const isDynamicHint = `<script ${attributes}>window.isDynamic = true;</script>`;
       const responseHtmlDynamic = templateHTML.replace('{{TITLE}}', '').replace('{{SEO_CRITICAL_METADATA}}', '').replace('{{CRITICAL_CSS}}', '').replace('{{APP}}', '').replace('{{LOADABLE_CHUNKS}}', bundleTags).replace('{{REDUX_DATA}}', isDynamicHint); // Dynamic pages always return a 200 so we can run
       // the app and serve up all errors inside the client
 
@@ -451,7 +456,7 @@ const webApp = (app, ReactApp, config) => {
             serialisedReduxData = serialize(reduxState, {
               ignoreFunction: true
             });
-            serialisedReduxData = `<script>window.REDUX_DATA = ${serialisedReduxData}</script>`;
+            serialisedReduxData = `<script ${attributes}>window.REDUX_DATA = ${serialisedReduxData}</script>`;
           }
         }
 
