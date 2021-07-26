@@ -34,6 +34,7 @@ import { matchRoutes } from 'react-router-config';
 import mapJson from 'jsonpath-mapper';
 import { replaceStaticPath } from '../util/staticPaths';
 import { getCacheDuration } from '../cacheDuration.schema';
+import stringifyAttributes from '../util/stringifyAttributes';
 
 const addStandardHeaders = (state, response, packagejson, groups) => {
   if (state) {
@@ -130,6 +131,7 @@ const webApp = (app, ReactApp, config) => {
     withSagas,
     withEvents,
     packagejson,
+    scripts = {},
     staticFolderPath = 'static',
     startupScriptFilename,
     differentialBundles,
@@ -147,6 +149,9 @@ const webApp = (app, ReactApp, config) => {
   };
   if (!bundleData.default || bundleData.default === {})
     bundleData.default = bundleData.legacy || bundleData.modern;
+
+  const attributes = stringifyAttributes(scripts.attributes);
+  scripts.startup = scripts.startup || startupScriptFilename;
 
   const responseHandler =
     typeof handleResponses === 'function' ? handleResponses : handleResponse;
@@ -227,12 +232,12 @@ const webApp = (app, ReactApp, config) => {
         .map(bundle => {
           if (bundle.publicPath.includes('/modern/'))
             return differentialBundles
-              ? `<script type="module" src="${replaceStaticPath(
+              ? `<script ${attributes} type="module" src="${replaceStaticPath(
                   bundle.publicPath,
                   staticRoutePath
                 )}"></script>`
               : null;
-          return `<script nomodule src="${replaceStaticPath(
+          return `<script ${attributes} nomodule src="${replaceStaticPath(
             bundle.publicPath,
             staticRoutePath
           )}"></script>`;
@@ -240,9 +245,9 @@ const webApp = (app, ReactApp, config) => {
         .filter(f => f);
 
       // Add the static startup script to the bundleTags
-      startupScriptFilename &&
+      scripts.startup &&
         bundleTags.push(
-          `<script src="/${staticRoutePath}/${startupScriptFilename}"></script>`
+          `<script ${attributes} src="/${staticRoutePath}/${scripts.startup}"></script>`
         );
 
       return bundleTags;
@@ -279,7 +284,7 @@ const webApp = (app, ReactApp, config) => {
       const loadableBundles = getBundles(stats, modules);
       const bundleTags = buildBundleTags(loadableBundles).join('');
 
-      const isDynamicHint = `<script>window.isDynamic = true;</script>`;
+      const isDynamicHint = `<script ${attributes}>window.isDynamic = true;</script>`;
 
       const responseHtmlDynamic = templateHTML
         .replace('{{TITLE}}', '')
@@ -344,7 +349,7 @@ const webApp = (app, ReactApp, config) => {
               serialisedReduxData = serialize(reduxState, {
                 ignoreFunction: true,
               });
-              serialisedReduxData = `<script>window.REDUX_DATA = ${serialisedReduxData}</script>`;
+              serialisedReduxData = `<script ${attributes}>window.REDUX_DATA = ${serialisedReduxData}</script>`;
             }
           }
           if (context.status > 400) {
