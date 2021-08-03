@@ -1763,6 +1763,7 @@ tslib_es6.__exportStar(utils, exports);
 });
 
 const DataFormats = {
+  asset: 'asset',
   entry: 'entry',
   webpage: 'webpage'
 };
@@ -1799,9 +1800,9 @@ const fieldExpression = (field, value, operator = 'equalTo', weight) => {
   if (operator === 'between') return between(field, value);
   if (Array.isArray(value)) return equalToOrIn(field, value, operator);else return !weight ? [lib.Op[operator](field, value, undefined, undefined)] : [lib.Op[operator](field, value, undefined, undefined).weight(weight)];
 };
-const contentTypeIdExpression = (contentTypeIds, webpageTemplates) => {
+const contentTypeIdExpression = (contentTypeIds, webpageTemplates, assetTypes) => {
   const expressions = [];
-  if (!contentTypeIds && !webpageTemplates) return expressions;
+  if (!contentTypeIds && !webpageTemplates && !assetTypes) return expressions;
 
   if (contentTypeIds && contentTypeIds.length > 0) {
     expressions.push(...dataFormatExpression(contentTypeIds, DataFormats.entry));
@@ -1809,6 +1810,10 @@ const contentTypeIdExpression = (contentTypeIds, webpageTemplates) => {
 
   if (webpageTemplates && webpageTemplates.length > 0) {
     expressions.push(...dataFormatExpression(webpageTemplates, DataFormats.webpage));
+  }
+
+  if (assetTypes && assetTypes.length > 0) {
+    expressions.push(...dataFormatExpression(assetTypes, DataFormats.asset));
   }
 
   if (expressions.length > 1) return [lib.Op.or(...expressions)];
@@ -1860,8 +1865,17 @@ const featuredResultsExpression = ({
   return expressions;
 };
 const languagesExpression = languages => fieldExpression(Fields.sys.language, languages);
+const includeInSearchExpressions = (webpageTemplates, includeInSearchFields) => {
+  const expressions = []; // Or include this expression if we have explicity specified non-default includeInSearch fields
+
+  if (Array.isArray(includeInSearchFields)) expressions.push(...includeInSearchFields.map(includeInSearchField => lib.Op.or(lib.Op.and(lib.Op.exists(includeInSearchField, true), lib.Op.equalTo(includeInSearchField, true)), lib.Op.exists(includeInSearchField, false)))); // If webpageTemplates have been specified, include this expression
+  // with the default includeInSearch field from classic Contensis.
+
+  if (Array.isArray(webpageTemplates) && webpageTemplates.length > 0) expressions.push(lib.Op.or(lib.Op.and(lib.Op.exists(Fields.sys.includeInSearch, true), lib.Op.equalTo(Fields.sys.includeInSearch, true)), lib.Op.exists(Fields.sys.includeInSearch, false)));
+  return expressions;
+};
 const defaultExpressions = versionStatus => {
-  return [lib.Op.equalTo(Fields.sys.versionStatus, versionStatus), lib.Op.or(lib.Op.and(lib.Op.exists(Fields.sys.includeInSearch, true), lib.Op.equalTo(Fields.sys.includeInSearch, true)), lib.Op.exists(Fields.sys.includeInSearch, false))];
+  return [lib.Op.equalTo(Fields.sys.versionStatus, versionStatus)];
 };
 const excludeIdsExpression = excludeIds => {
   if (Array.isArray(excludeIds) && excludeIds.length > 0) {
@@ -2029,6 +2043,7 @@ const filterQuery = (contentTypeIds, versionStatus, customWhere) => {
   return query;
 };
 const searchQuery = ({
+  assetTypes,
   contentTypeIds,
   customWhere,
   dynamicOrderBy,
@@ -2036,6 +2051,7 @@ const searchQuery = ({
   featuredResults,
   fields,
   filters,
+  includeInSearchFields,
   languages,
   pageSize,
   pageIndex,
@@ -2045,9 +2061,9 @@ const searchQuery = ({
   webpageTemplates,
   weightedSearchFields
 }, isFeatured = false) => {
-  let expressions = [...termExpressions(searchTerm, weightedSearchFields), ...defaultExpressions(versionStatus), ...languagesExpression(languages), ...customWhereExpressions(customWhere), ...excludeIdsExpression(excludeIds)];
+  let expressions = [...termExpressions(searchTerm, weightedSearchFields), ...defaultExpressions(versionStatus), ...includeInSearchExpressions(webpageTemplates, includeInSearchFields), ...languagesExpression(languages), ...customWhereExpressions(customWhere), ...excludeIdsExpression(excludeIds)];
   if (isFeatured) expressions = [...expressions, ...featuredResultsExpression(featuredResults)];
-  if (!isFeatured || featuredResults && !featuredResults.contentTypeId) expressions = [...expressions, ...filterExpressions(filters), ...contentTypeIdExpression(contentTypeIds, webpageTemplates)];
+  if (!isFeatured || featuredResults && !featuredResults.contentTypeId) expressions = [...expressions, ...filterExpressions(filters), ...contentTypeIdExpression(contentTypeIds, webpageTemplates, assetTypes)];
   const query = new lib.Query(...expressions);
   if (!searchTerm) query.orderBy = orderByExpression(orderBy);
   if (dynamicOrderBy && dynamicOrderBy.length) query.orderBy = orderByExpression(dynamicOrderBy);
@@ -2314,6 +2330,7 @@ const mapFiltersToFilterExpression = (filters, selectedFilters) => {
 };
 
 const queryParamsTemplate = {
+  assetTypes: root => getQueryParameter(root, 'assetTypes', immutable.List()),
   contentTypeIds: root => getQueryParameter(root, 'contentTypeIds', immutable.List()),
   customWhere: root => getQueryParameter(root, 'customWhere', immutable.List()),
   dynamicOrderBy: root => getQueryParameter(root, 'dynamicOrderBy', immutable.List()),
@@ -2344,6 +2361,7 @@ const queryParamsTemplate = {
     const filterParams = mapFiltersToFilterExpression(stateFilters, selectedFilters);
     return filterParams;
   },
+  includeInSearchFields: root => getQueryParameter(root, 'includeInSearch', immutable.List()),
   internalPageIndex: ({
     action,
     state
