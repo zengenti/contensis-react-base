@@ -19,7 +19,7 @@ var serialize = require('serialize-javascript');
 var minifyCssString = require('minify-css-string');
 var immutable = require('immutable');
 require('history');
-var App = require('./App-9af2b0dc.js');
+var App = require('./App-70eab41a.js');
 require('contensis-delivery-api');
 var routing = require('./routing-a4d7b382.js');
 require('redux');
@@ -41,7 +41,7 @@ require('js-cookie');
 var reactRouterConfig = require('react-router-config');
 require('react-hot-loader');
 require('prop-types');
-require('./RouteLoader-80d06f1b.js');
+require('./RouteLoader-df21e4a9.js');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 

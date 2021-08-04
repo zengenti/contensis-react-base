@@ -15,8 +15,8 @@ import serialize from 'serialize-javascript';
 import minifyCssString from 'minify-css-string';
 import { fromJS } from 'immutable';
 import 'history';
-import { h as history, d as deliveryApi, p as pickProject, r as rootSaga } from './App-801483d2.js';
-export { A as ReactApp } from './App-801483d2.js';
+import { h as history, d as deliveryApi, p as pickProject, r as rootSaga } from './App-9d6f477c.js';
+export { A as ReactApp } from './App-9d6f477c.js';
 import 'contensis-delivery-api';
 import { s as setCurrentProject } from './routing-3bbf9dde.js';
 import 'redux';
@@ -38,7 +38,7 @@ import 'js-cookie';
 import { matchRoutes } from 'react-router-config';
 import 'react-hot-loader';
 import 'prop-types';
-import './RouteLoader-66a2c27f.js';
+import './RouteLoader-d0db413f.js';
 
 const servers = SERVERS;
 /* global SERVERS */

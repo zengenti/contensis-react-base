@@ -5,8 +5,8 @@ import { Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import 'immutable';
 import 'history';
-import { d as deliveryApi, r as rootSaga, p as pickProject, b as browserHistory } from './App-801483d2.js';
-export { A as ReactApp } from './App-801483d2.js';
+import { d as deliveryApi, r as rootSaga, p as pickProject, b as browserHistory } from './App-9d6f477c.js';
+export { A as ReactApp } from './App-9d6f477c.js';
 import 'contensis-delivery-api';
 import { s as setCurrentProject } from './routing-3bbf9dde.js';
 import 'redux';
@@ -28,7 +28,7 @@ import 'js-cookie';
 import 'react-router-config';
 import { AppContainer } from 'react-hot-loader';
 import 'prop-types';
-import './RouteLoader-66a2c27f.js';
+import './RouteLoader-d0db413f.js';
 import { hydrate, render } from 'react-dom';
 
 const fromJSLeaveImmer = js => {

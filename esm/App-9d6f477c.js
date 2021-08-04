@@ -17,7 +17,7 @@ import { info, error } from 'loglevel';
 import { h as handleRequiresLoginSaga, l as loginSagas } from './login-45048e14.js';
 import { to } from 'await-to-js';
 import 'react-hot-loader';
-import { R as RouteLoader } from './RouteLoader-66a2c27f.js';
+import { R as RouteLoader } from './RouteLoader-d0db413f.js';
 
 const selectedHistory = typeof window !== 'undefined' ? createBrowserHistory : createMemoryHistory;
 const history = (options = {}) => selectedHistory(options);
@@ -821,4 +821,4 @@ const AppRoot = props => {
 };
 
 export { AppRoot as A, browserHistory as b, deliveryApi as d, history as h, pickProject as p, rootSaga as r };
-//# sourceMappingURL=App-801483d2.js.map
+//# sourceMappingURL=App-9d6f477c.js.map

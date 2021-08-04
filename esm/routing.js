@@ -9,5 +9,5 @@ import './ToJs-020d9abb.js';
 import 'react-router-config';
 import 'react-hot-loader';
 import 'prop-types';
-export { R as RouteLoader } from './RouteLoader-66a2c27f.js';
+export { R as RouteLoader } from './RouteLoader-d0db413f.js';
 //# sourceMappingURL=routing.js.map

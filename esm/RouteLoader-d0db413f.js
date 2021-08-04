@@ -86,10 +86,25 @@ const RouteLoader = ({
   const staticRoute = isStaticRoute() && matchedStaticRoute()[0];
   const routeRequiresLogin = staticRoute && staticRoute.route.requireLogin;
   const setPath = useCallback(() => {
+    // Use serverPath to control the path we send to siteview node api to resolve a route
     let serverPath = null;
 
     if (staticRoute && staticRoute.match && staticRoute.match.isExact) {
-      serverPath = staticRoute.route.path.includes('*') ? staticRoute.match.url : staticRoute.route.path.split('/').filter(p => !p.startsWith(':')).join('/');
+      const {
+        match,
+        route
+      } = staticRoute;
+
+      if (route.path.includes('*')) {
+        // Send the whole url to api if we have matched route containing wildcard
+        serverPath = match.url;
+      } else if (typeof route.fetchNodeLevel === 'number') {
+        // Send all url parts to a specified level to api
+        serverPath = match.url.split('/').splice(0, route.fetchNodeLevel + 1).join('/');
+      } else {
+        // Send all non-parameterised url parts to api
+        serverPath = route.path.split('/').filter(p => !p.startsWith(':')).join('/');
+      }
     }
 
     setNavigationPath(serverPath || trimmedPath, location, staticRoute, withEvents, statePath, routes); // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -197,4 +212,4 @@ const mapDispatchToProps = {
 var RouteLoader$1 = hot(module)(connect(mapStateToProps, mapDispatchToProps)(toJS(RouteLoader)));
 
 export { RouteLoader$1 as R };
-//# sourceMappingURL=RouteLoader-66a2c27f.js.map
+//# sourceMappingURL=RouteLoader-d0db413f.js.map
