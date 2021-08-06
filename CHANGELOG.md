@@ -1,3 +1,72 @@
+#### 2.3.0 (2021-08-06)
+
+##### New Features
+
+- add StaticRoute option "fetchNodeLevel" to be used with "fetchNode" to control how many url parts are sent to the siteview node api to resolve a route entry (f9e90ce0)
+- new search package queryParams options "assetTypes" and "includeInSearch" (7cd86adb)
+- scripts server start option. attributes option to add custom attributes to all rendered script tags. startup is now specified under new 'scripts' option (912625a9)
+- add VersionInfo page as a named export of /util sub package, add globals from server startup options, keep this all server-side (9290561c)
+- add new server start option "appRootPath", add support for any "startupScriptFilename" to be provided, added "resolveStartupMiddleware" to resolve requests for this static file to be served up from /dist/static/startup.js [skip ci](12d7f298)
+- hostname in routing redux (17ed17f7)
+
+##### Bug Fixes
+
+- support new scripts.startup server config option (c53b96af)
+- oidc-client import returning "UserMAnager is not a constructor" error when not importing the library version (b18b331f)
+- build error around undefined global var (bdb0fc91)
+- ensure in-app 404s hit the load balancer to allow load balancer take over and do any required rerouting (56dc8f12)
+- add defaultLang to all api calls in routing saga (1fc57ba3)
+
+##### Code Style Changes
+
+- a new lick of paint for vscode (27c9a40d)
+
+##### Tests
+
+- add console.info when writing login cookies (de51a605)
+
+##### Build System / Dependencies
+
+- update search package to typescript branch (249ea515)
+- remove /forms dir from global .npmignore (7bbb85e4)
+- fix ci error due to out of date package-lock.json [skip ci](942b50a2)
+- change release action to use github hosted runner (5a5d95c1)
+- change local dev watch folders [skip ci](11d57430)
+- change local dev watch folders [skip ci](2855d023)
+- start script rollup watch [skip ci](615b4284)
+- changes to scripts to work in monorepo scripts [skip ci](c294c27f)
+- update package.json details (d287b258)
+- remove pr from build ci [skip ci](2c8644d3)
+- fix release script inputs [skip ci](b98804cf)
+- fix syntax in release script [skip ci](42595aee)
+- fix workflow syntax error, add master branch to build (c56c3d41)
+- add new release action to be manually triggered, limit build and publish to branches (5c17ced5)
+- fix issue with npm config (4112915c)
+- fix problem with git actions (1031accd)
+- move git interaction away from npm version scripts and into the action yml (c22665a1)
+- don't tag ci prereleases (a5c55cb0)
+- add git config to ci (871ed3c0)
+- further testing ways of incrementing version and publishing prerelease package with actions (7c7b9f86)
+- remove faulty test stage from preversion (91f3e248)
+- add npm version to ci to increment a prerelease version and publish on each build (182a1a74)
+- try fix cwebp compile from source in build (bfc61f6f)
+- fix broken build with sudo (301f21fb)
+- remove compiling from source error in npm ci (4d0196e1)
+- suppress logging on npm ci build step (bde3cda0)
+- update package name (4c1a43d6)
+- update workflow action to use self-hosted runner (846b65bf)
+- update search package to fix patch error in ci (caebac49)
+- update package to remove missing patch error causing build to fail (0ffec891)
+- add build github workflow action (a36f36a5)
+- fix pull rate limit error (8efdf084)
+- update search package to latest (a6447008)
+
+##### Documentation Changes
+
+- README update (#1) (8db8e8a1)
+- tiny README update (54db40c5)
+- update changelog (129081ca)
+
 #### 2.2.3 (2021-05-10)
 
 ##### Bug Fixes

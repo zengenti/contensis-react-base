@@ -22,7 +22,7 @@
     "build:lib": "npm i zengenti-search-package zengenti-forms-package && npm run roll:lib",
     "roll:lib": "rimraf ./esm && rimraf ./cjs && cross-env NODE_ENV=production rollup -c rollup/rollup.config.lib.js",
     "roll:watch": "cross-env NODE_ENV=production rollup -c rollup/rollup.config.lib.js --watch",
-    "changelog": "generate-changelog --tag v2.1.0..v2.1.1",
+    "changelog": "generate-changelog --tag v2.2.3",
     "lint": "eslint ./src",
     "lint:fix": "eslint --fix ./src",
     "test:generate-output": "jest --json --outputFile=.jest-test-results.json || true",
