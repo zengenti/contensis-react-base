@@ -2,12 +2,12 @@ import React from 'react';
 import { Link as Link$1 } from 'react-router-dom';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
-import 'immutable';
-import 'query-string';
-import { a as selectCurrentProject } from './routing-786c3bb0.js';
-import { a as selectBuildNumber, b as selectCommitRef, s as selectVersionStatus } from './version-924cf045.js';
 import mapJson, { jpath } from 'jsonpath-mapper';
 export { jpath, default as mapJson } from 'jsonpath-mapper';
+import 'immutable';
+import { a as selectBuildNumber, b as selectCommitRef, s as selectVersionStatus } from './version-7eeb026f.js';
+import 'query-string';
+import { a as selectCurrentProject } from './selectors-170581d2.js';
 import { hot } from 'react-hot-loader';
 import PropTypes from 'prop-types';
 import { HashLink } from 'react-router-hash-link';
@@ -210,7 +210,7 @@ const Link = ({
   className += ' Link';
 
   if (!uri) {
-    return React.createElement("span", {
+    return /*#__PURE__*/React.createElement("span", {
       className: className
     }, children);
   }
@@ -220,7 +220,7 @@ const Link = ({
 
   if (newWindow != '_blank' && uri && uri.startsWith('/')) {
     if (uri.indexOf('#') > -1) {
-      return React.createElement(HashLink, {
+      return /*#__PURE__*/React.createElement(HashLink, {
         className: className,
         download: download,
         onClick: onClick,
@@ -229,7 +229,7 @@ const Link = ({
       }, children);
     }
 
-    return React.createElement(Link$1, {
+    return /*#__PURE__*/React.createElement(Link$1, {
       className: className,
       download: download,
       onClick: onClick,
@@ -237,7 +237,7 @@ const Link = ({
       to: uri
     }, children);
   } else {
-    return React.createElement("a", {
+    return /*#__PURE__*/React.createElement("a", {
       className: className,
       download: download,
       href: uri,
@@ -274,64 +274,64 @@ const VersionInfo = ({
   reverseProxyPaths,
   version
 }) => {
-  return React.createElement(React.Fragment, null, React.createElement(VersionInfoStyledTable, null, React.createElement("thead", null, React.createElement("tr", null, React.createElement("td", {
+  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(VersionInfoStyledTable, null, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", {
     colSpan: 2
-  }, React.createElement("h1", null, React.createElement(Link, {
+  }, /*#__PURE__*/React.createElement("h1", null, /*#__PURE__*/React.createElement(Link, {
     path: "/"
-  }, "Version Information"))))), React.createElement("tbody", null, React.createElement("tr", null, React.createElement("th", {
+  }, "Version Information"))))), /*#__PURE__*/React.createElement("tbody", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", {
     colSpan: 2
-  }, "Package detail")), React.createElement("tr", null, React.createElement("td", {
+  }, "Package detail")), /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", {
     className: "left"
-  }, "Name"), React.createElement("td", null, packagejson.name)), React.createElement("tr", null, React.createElement("td", {
+  }, "Name"), /*#__PURE__*/React.createElement("td", null, packagejson.name)), /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", {
     className: "left"
-  }, "Version"), React.createElement("td", null, packagejson.version)), React.createElement("tr", null, React.createElement("th", {
+  }, "Version"), /*#__PURE__*/React.createElement("td", null, packagejson.version)), /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", {
     colSpan: 2
-  }, "Version info (state)")), React.createElement("tr", null, React.createElement("td", null, "Git repo url: "), React.createElement("td", null, React.createElement("a", {
+  }, "Version info (state)")), /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", null, "Git repo url: "), /*#__PURE__*/React.createElement("td", null, /*#__PURE__*/React.createElement("a", {
     href: packagejson.repository,
     target: "_blank",
     rel: "noopener noreferrer"
-  }, packagejson.repository))), React.createElement("tr", null, React.createElement("td", null, "Pipeline: "), React.createElement("td", null, React.createElement("a", {
+  }, packagejson.repository))), /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", null, "Pipeline: "), /*#__PURE__*/React.createElement("td", null, /*#__PURE__*/React.createElement("a", {
     href: `${packagejson.repository}/pipelines/${version.buildNumber ? version.buildNumber : ''}`,
     target: "_blank",
     rel: "noopener noreferrer"
-  }, version.buildNumber))), React.createElement("tr", null, React.createElement("td", null, "Commit: "), React.createElement("td", null, React.createElement("a", {
+  }, version.buildNumber))), /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", null, "Commit: "), /*#__PURE__*/React.createElement("td", null, /*#__PURE__*/React.createElement("a", {
     href: `${packagejson.repository}/commit/${version.commitRef ? version.commitRef : ''}`,
     target: "_blank",
     rel: "noopener noreferrer"
-  }, version.commitRef))), React.createElement("tr", null, React.createElement("td", null, "Project"), React.createElement("td", {
+  }, version.commitRef))), /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", null, "Project"), /*#__PURE__*/React.createElement("td", {
     className: project == 'unknown' ? 'red' : ''
-  }, project)), React.createElement("tr", null, React.createElement("td", null, "Contensis version status: "), React.createElement("td", {
+  }, project)), /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", null, "Contensis version status: "), /*#__PURE__*/React.createElement("td", {
     className: version.contensisVersionStatus == 'published' ? 'green' : 'red'
-  }, version.contensisVersionStatus)), React.createElement("tr", null, React.createElement("th", {
+  }, version.contensisVersionStatus)), /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", {
     colSpan: 2
-  }, "Build configuration")), React.createElement("tr", null, React.createElement("td", null, "Environment"), React.createElement("td", null, servers.alias)), React.createElement("tr", null, React.createElement("td", null, "Public uri"), React.createElement("td", null, publicUri)), React.createElement("tr", null, React.createElement("td", null, "Contensis package versions"), React.createElement("td", null, contensisPackageVersions.map(([pkg, ver], idx) => React.createElement("div", {
+  }, "Build configuration")), /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", null, "Environment"), /*#__PURE__*/React.createElement("td", null, servers.alias)), /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", null, "Public uri"), /*#__PURE__*/React.createElement("td", null, publicUri)), /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", null, "Contensis package versions"), /*#__PURE__*/React.createElement("td", null, contensisPackageVersions.map(([pkg, ver], idx) => /*#__PURE__*/React.createElement("div", {
     key: idx
-  }, pkg, ": ", ver)))), React.createElement("tr", null, React.createElement("td", null, "Servers"), React.createElement("td", {
+  }, pkg, ": ", ver)))), /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", null, "Servers"), /*#__PURE__*/React.createElement("td", {
     className: "small"
-  }, React.createElement("div", null, "web: ", servers.web), React.createElement("div", null, "preview: ", servers.previewWeb), React.createElement("div", null, "api: ", servers.api), React.createElement("div", null, "cms: ", servers.cms), React.createElement("div", null, "iis: ", servers.iis), React.createElement("div", null, "iis preview: ", servers.previewIis))), React.createElement("tr", null, React.createElement("td", null, "Reverse proxy paths"), React.createElement("td", null, Object.entries(reverseProxyPaths).map(([, path], key) => React.createElement("span", {
+  }, /*#__PURE__*/React.createElement("div", null, "web: ", servers.web), /*#__PURE__*/React.createElement("div", null, "preview: ", servers.previewWeb), /*#__PURE__*/React.createElement("div", null, "api: ", servers.api), /*#__PURE__*/React.createElement("div", null, "cms: ", servers.cms), /*#__PURE__*/React.createElement("div", null, "iis: ", servers.iis), /*#__PURE__*/React.createElement("div", null, "iis preview: ", servers.previewIis))), /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", null, "Reverse proxy paths"), /*#__PURE__*/React.createElement("td", null, Object.entries(reverseProxyPaths).map(([, path], key) => /*#__PURE__*/React.createElement("span", {
     key: key
-  }, "[ ", path, " ] ")))), React.createElement("tr", null, React.createElement("td", null, "Projects"), React.createElement("td", null, Object.entries(projects).map(([, project], key) => React.createElement("div", {
+  }, "[ ", path, " ] ")))), /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", null, "Projects"), /*#__PURE__*/React.createElement("td", null, Object.entries(projects).map(([, project], key) => /*#__PURE__*/React.createElement("div", {
     key: key
-  }, "[ ", project.id, ": ", project.publicUri, " ]")))), React.createElement("tr", null, React.createElement("td", null, "Delivery API"), React.createElement("td", {
+  }, "[ ", project.id, ": ", project.publicUri, " ]")))), /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", null, "Delivery API"), /*#__PURE__*/React.createElement("td", {
     className: "small"
-  }, React.createElement("ul", {
+  }, /*#__PURE__*/React.createElement("ul", {
     style: {
       margin: 0,
       padding: 0
     }
   }, Object.entries(deliveryApi).map(([key, value], idx) => {
     if (typeof value === 'object') return null;
-    return React.createElement("li", {
+    return /*#__PURE__*/React.createElement("li", {
       key: idx,
       style: {
         listStyleType: 'none'
       }
-    }, key, ": ", React.createElement("span", null, value));
-  })))), React.createElement("tr", null, React.createElement("td", null, "Proxy Delivery API requests"), React.createElement("td", {
+    }, key, ": ", /*#__PURE__*/React.createElement("span", null, value));
+  })))), /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", null, "Proxy Delivery API requests"), /*#__PURE__*/React.createElement("td", {
     className: proxyDeliveryApi ? 'green' : 'red'
-  }, proxyDeliveryApi.toString())), React.createElement("tr", null, React.createElement("td", null, "Disable SSR inline-redux"), React.createElement("td", null, disableSsrRedux.toString())), React.createElement("tr", null, React.createElement("td", null, "NODE_ENV"), React.createElement("td", {
+  }, proxyDeliveryApi.toString())), /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", null, "Disable SSR inline-redux"), /*#__PURE__*/React.createElement("td", null, disableSsrRedux.toString())), /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", null, "NODE_ENV"), /*#__PURE__*/React.createElement("td", {
     className: nodeEnv === 'production' ? 'green' : 'red'
-  }, nodeEnv.toString())), devEnv && React.createElement("tr", null, React.createElement("td", null, "process.env"), React.createElement("td", null, Object.entries(devEnv).map(([k, v], key) => React.createElement("div", {
+  }, nodeEnv.toString())), devEnv && /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", null, "process.env"), /*#__PURE__*/React.createElement("td", null, Object.entries(devEnv).map(([k, v], key) => /*#__PURE__*/React.createElement("div", {
     key: key
   }, "[ ", k, ": ", v, " ]")))))));
 };

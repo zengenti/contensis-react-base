@@ -12,36 +12,36 @@ var React = require('react');
 var reactRouterDom = require('react-router-dom');
 var reactRedux = require('react-redux');
 var server = require('react-dom/server');
+var reactRouterConfig = require('react-router-config');
 var webpack = require('react-loadable/webpack');
 var styled = require('styled-components');
 var Helmet = require('react-helmet');
 var serialize = require('serialize-javascript');
 var minifyCssString = require('minify-css-string');
+var mapJson = require('jsonpath-mapper');
 var immutable = require('immutable');
-require('history');
-var App = require('./App-b27daf19.js');
-require('contensis-delivery-api');
-var routing = require('./routing-a4d7b382.js');
 require('redux');
 require('redux-immutable');
 require('redux-thunk');
 require('redux-saga');
-var navigation = require('./navigation-9bc89fbc.js');
-require('./reducers-a05c32a6.js');
-require('query-string');
-var routing$1 = require('./routing-5db2c867.js');
+var version = require('./version-7ef3c774.js');
+var actions = require('./actions-e22726ed.js');
+require('./reducers-c42035ab.js');
+require('history');
+var App = require('./App-ff8a8c49.js');
 require('@redux-saga/core/effects');
-require('./version-2f3078fa.js');
+require('contensis-delivery-api');
+require('./version-2193b4a2.js');
+require('query-string');
+var selectors = require('./selectors-69c3d37c.js');
 require('loglevel');
-require('./ToJs-128064bc.js');
-require('./login-0ce07250.js');
-var mapJson = require('jsonpath-mapper');
+require('./ToJs-ca9bea03.js');
+require('./login-1e688342.js');
 require('await-to-js');
 require('js-cookie');
-var reactRouterConfig = require('react-router-config');
 require('react-hot-loader');
 require('prop-types');
-require('./RouteLoader-80d06f1b.js');
+require('./RouteLoader-5c44f039.js');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -190,6 +190,7 @@ const resolveStartupMiddleware = ({
 
 const staticAssets = (app, {
   appRootPath = require('app-root-path').path,
+  scripts = {},
   startupScriptFilename = 'startup.js',
   staticFolderPath = 'static',
   staticRoutePath = 'static',
@@ -204,7 +205,7 @@ const staticAssets = (app, {
   }), resolveStartupMiddleware({
     appRootPath,
     maxage: CacheDuration.static,
-    startupScriptFilename,
+    startupScriptFilename: scripts.startup || startupScriptFilename,
     staticFolderPath
   }), express__default['default'].static(`dist/${staticFolderPath}`, {
     // these maxage values are different in config but the same in runtime,
@@ -242,6 +243,8 @@ const handleResponse = (request, response, content, send = ResponseMethod.send) 
   response[send](content);
 };
 
+var stringifyAttributes = ((attributes = {}) => Object.entries(attributes).map(([key, value], idx) => `${idx !== 0 ? ' ' : ''}${key}${value ? `="${value}"` : ''}`).join(' '));
+
 const addStandardHeaders = (state, response, packagejson, groups) => {
   if (state) {
     try {
@@ -260,8 +263,8 @@ const addStandardHeaders = (state, response, packagejson, groups) => {
 const addVarnishAuthenticationHeaders = (state, response, groups = {}) => {
   if (state) {
     try {
-      const stateEntry = routing$1.selectRouteEntry(state);
-      const project = routing$1.selectCurrentProject(state);
+      const stateEntry = selectors.selectRouteEntry(state);
+      const project = selectors.selectCurrentProject(state);
       const {
         globalGroups,
         allowedGroups
@@ -316,6 +319,7 @@ const webApp = (app, ReactApp, config) => {
     withSagas,
     withEvents,
     packagejson,
+    scripts = {},
     staticFolderPath = 'static',
     startupScriptFilename,
     differentialBundles,
@@ -331,6 +335,8 @@ const webApp = (app, ReactApp, config) => {
     modern: loadableBundleData(config, staticRoutePath, 'modern')
   };
   if (!bundleData.default || bundleData.default === {}) bundleData.default = bundleData.legacy || bundleData.modern;
+  const attributes = stringifyAttributes(scripts.attributes);
+  scripts.startup = scripts.startup || startupScriptFilename;
   const responseHandler = typeof handleResponses === 'function' ? handleResponses : handleResponse;
   const versionInfo = JSON.parse(fs__default['default'].readFileSync(`dist/${staticFolderPath}/version.json`, 'utf8'));
   app.get('/*', (request, response) => {
@@ -368,26 +374,26 @@ const webApp = (app, ReactApp, config) => {
 
     response.status(200); // Create a store (with a memory history) from our current url
 
-    const store = navigation.createStore(withReducers, immutable.fromJS({}), App.history({
+    const store = version.createStore(withReducers, immutable.fromJS({}), App.history({
       initialEntries: [url]
     })); // dispatch any global and non-saga related actions before calling our JSX
 
     const versionStatusFromHostname = App.deliveryApi.getVersionStatusFromHostname(request.hostname);
     console.info(`Request for ${request.path} hostname: ${request.hostname} versionStatus: ${versionStatusFromHostname}`);
-    store.dispatch(navigation.setVersionStatus(request.query.versionStatus || versionStatusFromHostname));
-    store.dispatch(navigation.setVersion(versionInfo.commitRef, versionInfo.buildNo));
+    store.dispatch(version.setVersionStatus(request.query.versionStatus || versionStatusFromHostname));
+    store.dispatch(version.setVersion(versionInfo.commitRef, versionInfo.buildNo));
     const project = App.pickProject(request.hostname, request.query);
     const groups = allowedGroups && allowedGroups[project];
-    store.dispatch(routing.setCurrentProject(project, groups, request.hostname));
+    store.dispatch(actions.setCurrentProject(project, groups, request.hostname));
     const modules = [];
-    const jsx = React__default['default'].createElement(Loadable__default['default'].Capture, {
+    const jsx = /*#__PURE__*/React__default['default'].createElement(Loadable__default['default'].Capture, {
       report: moduleName => modules.push(moduleName)
-    }, React__default['default'].createElement(reactRedux.Provider, {
+    }, /*#__PURE__*/React__default['default'].createElement(reactRedux.Provider, {
       store: store
-    }, React__default['default'].createElement(reactRouterDom.StaticRouter, {
+    }, /*#__PURE__*/React__default['default'].createElement(reactRouterDom.StaticRouter, {
       context: context,
       location: url
-    }, React__default['default'].createElement(ReactApp, {
+    }, /*#__PURE__*/React__default['default'].createElement(ReactApp, {
       routes: routes,
       withEvents: withEvents
     }))));
@@ -395,11 +401,11 @@ const webApp = (app, ReactApp, config) => {
     const buildBundleTags = bundles => {
       // Take the bundles returned from Loadable.Capture
       const bundleTags = bundles.map(bundle => {
-        if (bundle.publicPath.includes('/modern/')) return differentialBundles ? `<script type="module" src="${replaceStaticPath(bundle.publicPath, staticRoutePath)}"></script>` : null;
-        return `<script nomodule src="${replaceStaticPath(bundle.publicPath, staticRoutePath)}"></script>`;
+        if (bundle.publicPath.includes('/modern/')) return differentialBundles ? `<script ${attributes} type="module" src="${replaceStaticPath(bundle.publicPath, staticRoutePath)}"></script>` : null;
+        return `<script ${attributes} nomodule src="${replaceStaticPath(bundle.publicPath, staticRoutePath)}"></script>`;
       }).filter(f => f); // Add the static startup script to the bundleTags
 
-      startupScriptFilename && bundleTags.push(`<script src="/${staticRoutePath}/${startupScriptFilename}"></script>`);
+      scripts.startup && bundleTags.push(`<script ${attributes} src="/${staticRoutePath}/${scripts.startup}"></script>`);
       return bundleTags;
     };
 
@@ -418,7 +424,7 @@ const webApp = (app, ReactApp, config) => {
 
       const loadableBundles = webpack.getBundles(stats, modules);
       const bundleTags = buildBundleTags(loadableBundles).join('');
-      const isDynamicHint = `<script>window.isDynamic = true;</script>`;
+      const isDynamicHint = `<script ${attributes}>window.isDynamic = true;</script>`;
       const responseHtmlDynamic = templateHTML.replace('{{TITLE}}', '').replace('{{SEO_CRITICAL_METADATA}}', '').replace('{{CRITICAL_CSS}}', '').replace('{{APP}}', '').replace('{{LOADABLE_CHUNKS}}', bundleTags).replace('{{REDUX_DATA}}', isDynamicHint); // Dynamic pages always return a 200 so we can run
       // the app and serve up all errors inside the client
 
@@ -467,7 +473,7 @@ const webApp = (app, ReactApp, config) => {
             serialisedReduxData = serialize__default['default'](reduxState, {
               ignoreFunction: true
             });
-            serialisedReduxData = `<script>window.REDUX_DATA = ${serialisedReduxData}</script>`;
+            serialisedReduxData = `<script ${attributes}>window.REDUX_DATA = ${serialisedReduxData}</script>`;
           }
         }
 
