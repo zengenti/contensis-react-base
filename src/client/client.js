@@ -8,18 +8,18 @@ import { Provider as ReduxProvider } from 'react-redux';
 import queryString from 'query-string';
 // import { fromJS } from 'immutable';
 
-import createStore from '~/core/redux/store';
-import rootSaga from '~/core/redux/sagas/index.js';
+import createStore from '~/redux/store/store';
+import { browserHistory as history } from '~/redux/store/history';
+import rootSaga from '~/redux/sagas';
 
-import { setVersionStatus } from '~/core/redux/actions/version';
-import { deliveryApi } from '~/core/util/ContensisDeliveryApi';
-import { setCurrentProject } from '~/core/redux/actions/routing';
-import pickProject from '~/core/util/pickProject';
-// import fromJSOrdered from '~/core/util/fromJSOrdered';
-import fromJSLeaveImmer from '~/core/util/fromJSLeaveImmer';
-import { browserHistory as history } from '~/core/redux/history';
+import { setVersionStatus } from '~/redux/actions/version';
+import { deliveryApi } from '~/util/ContensisDeliveryApi';
+import { setCurrentProject } from '~/routing/redux/actions';
+import pickProject from '~/util/pickProject';
+// import fromJSOrdered from '~/util/fromJSOrdered';
+import fromJSLeaveImmer from '~/util/fromJSLeaveImmer';
 
-export { default as ReactApp } from '~/App';
+export { default as ReactApp } from '~/app/App';
 
 class ClientApp {
   constructor(ReactApp, config) {

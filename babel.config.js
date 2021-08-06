@@ -1,4 +1,4 @@
-const defineConfig = require('./webpack/define-config').build;
+// const defineConfig = require('./webpack/define-config').build;
 
 const presets = {
   base: [],
@@ -34,7 +34,7 @@ const plugins = {
       {
         root: './src',
         alias: {
-          '~': './src/app',
+          '~': './src',
           '-': './',
         },
         cwd: 'packagejson',
@@ -48,8 +48,8 @@ const plugins = {
       },
     ],
     'react-hot-loader/babel',
-    'react-loadable/babel',
     '@babel/plugin-syntax-dynamic-import',
+    '@babel/plugin-proposal-optional-chaining',
     '@babel/plugin-proposal-export-namespace-from',
   ],
   legacy: [
@@ -80,17 +80,17 @@ module.exports = {
       presets: [...presets.base, ...presets.modern],
       plugins: [...plugins.base, ...plugins.modern],
     },
-    test: {
-      presets: [...presets.base, ...presets.legacy],
-      plugins: [
-        ...plugins.base,
-        ['transform-define', defineConfig],
-        'babel-plugin-dynamic-import-node',
-        ...plugins.legacy,
-      ],
-      sourceMaps: 'inline',
-      retainLines: true,
-      sourceType: 'unambiguous',
-    },
+    // test: {
+    //   presets: [...presets.base, ...presets.legacy],
+    //   plugins: [
+    //     ...plugins.base,
+    //     ['transform-define', defineConfig],
+    //     'babel-plugin-dynamic-import-node',
+    //     ...plugins.legacy,
+    //   ],
+    //   sourceMaps: 'inline',
+    //   retainLines: true,
+    //   sourceType: 'unambiguous',
+    // },
   },
 };

@@ -1,10 +1,10 @@
-import { default as mapJson } from '~/core/util/json-mapper';
-import { selectCurrentProject } from '~/core/redux/selectors/routing';
+import { default as mapJson } from '~/util/json-mapper';
+import { selectCurrentProject } from '~/routing/redux/selectors';
 import {
   selectBuildNumber,
   selectCommitRef,
   selectVersionStatus,
-} from '~/core/redux/selectors/version';
+} from '~/redux/selectors/version';
 
 const context = typeof window != 'undefined' ? window : global;
 

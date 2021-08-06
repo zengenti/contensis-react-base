@@ -1,4 +1,9 @@
 {
+  // Always show the ESlint status bar item.
+  "eslint.alwaysShowStatus": false,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true,
   // The number of spaces a tab is equal to. This setting is overridden based on the file contents when `editor.detectIndentation` is on.
   "editor.tabSize": 2,
   "editor.detectIndentation": false,
@@ -20,11 +25,6 @@
   "html.format.enable": true,
   // End with a newline.
   "html.format.endWithNewline": false,
-  // Turns auto fix on save on or off.
-  "eslint.autoFixOnSave": true,
-  // Always show the ESlint status bar item.
-  "eslint.alwaysShowStatus": false,
-  "prettier-eslint.eslintIntegration": true,
   "files.exclude": {
     // exclude .js and .js.map files, when in a TypeScript project
     "**/*.js.map": true,
@@ -35,8 +35,6 @@
       "when": "$(basename).tsx"
     }
   },
-  "editor.formatOnSave": true,
-  "editor.formatOnPaste": true,
   "editor.cursorBlinking": "smooth",
   "workbench.editor.highlightModifiedTabs": true,
   "workbench.colorCustomizations": {
@@ -56,8 +54,6 @@
     "statusBarItem.hoverBackground": "#1e593f",
     "statusBar.foreground": "#e7e7e7"
   },
-  "prettier.printWidth": 80,
-  "peacock.color": "#113324",
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   },

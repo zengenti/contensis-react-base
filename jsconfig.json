@@ -4,16 +4,9 @@
     "module": "commonjs",
     "baseUrl": ".",
     "paths": {
-      "~/*": ["./src/app/*"],
+      "~/*": ["./src/*"],
       "-/*": ["./*"]
     }
   },
-  "exclude": [
-    ".storybook",
-    "config",
-    "public",
-    "webpack",
-    "node_modules",
-    "storybook-static"
-  ]
+  "exclude": ["node_modules"]
 }

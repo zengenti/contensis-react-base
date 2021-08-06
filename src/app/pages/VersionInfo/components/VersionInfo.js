@@ -4,7 +4,7 @@ import { hot } from 'react-hot-loader';
 import { connect } from 'react-redux';
 import mapStateToVersionInfo from '../transformations/state-to-versioninfoprops.mapper.js';
 import { VersionInfoStyledTable } from './VersionInfo.styled.js';
-import Link from '~/features/link';
+import Link from '~/app/features/link';
 
 const VersionInfo = ({
   contensisPackageVersions,

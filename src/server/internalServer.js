@@ -3,9 +3,9 @@ import express from 'express';
 import Loadable from 'react-loadable';
 
 import DisplayStartupConfiguration from './util/displayStartupConfiguration';
-import ConfigureReverseProxies, { apiProxy } from './core/reverseProxies';
-import ServeStaticAssets from './core/staticAssets';
-import ConfigureWebApp from './core/webApp';
+import ConfigureReverseProxies, { apiProxy } from './features/reverse-proxy';
+import ServeStaticAssets from './features/static-assets';
+import ConfigureWebApp from './webApp';
 
 const app = express();
 

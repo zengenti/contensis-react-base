@@ -1,6 +1,6 @@
 import React from 'react';
 import { hot } from 'react-hot-loader';
-import RouteLoader from '~/core/routes/RouteLoader';
+import { RouteLoader } from '../routing';
 
 const AppRoot = props => {
   return <RouteLoader {...props} />;

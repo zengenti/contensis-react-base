@@ -1,6 +1,2 @@
-/dist
 /docs
 /node_modules
-/public/styles
-/lib/*
-/*.js
