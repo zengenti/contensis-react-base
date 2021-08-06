@@ -22,10 +22,12 @@ const userManagerConfig =
 const createUserManager = config => {
   if (typeof window !== 'undefined' && requireOidc) {
     try {
-      const UserManager = require('oidc-client').UserManager;
+      // Need to import the lib version specifically when using with webpack
+      const UserManager = require('oidc-client/lib/oidc-client').UserManager;
       return new UserManager(config);
     } catch (e) {
-      //
+      // eslint-disable-next-line no-console
+      console.log('CreateUserManagerException: ', e);
     }
   } else return {};
 };
