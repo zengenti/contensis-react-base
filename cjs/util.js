@@ -6,11 +6,11 @@ var React = require('react');
 var reactRouterDom = require('react-router-dom');
 var reactRedux = require('react-redux');
 var styled = require('styled-components');
-require('immutable');
-require('query-string');
-var routing = require('./routing-5db2c867.js');
-var version = require('./version-2f3078fa.js');
 var mapJson = require('jsonpath-mapper');
+require('immutable');
+var version = require('./version-2193b4a2.js');
+require('query-string');
+var selectors = require('./selectors-69c3d37c.js');
 var reactHotLoader = require('react-hot-loader');
 var PropTypes = require('prop-types');
 var reactRouterHashLink = require('react-router-hash-link');
@@ -184,7 +184,7 @@ const versionInfoProps = {
   publicUri: () => isDev ? PUBLIC_URI
   /* global PUBLIC_URI */
   : context.PUBLIC_URI || null,
-  project: state => routing.selectCurrentProject(state),
+  project: state => selectors.selectCurrentProject(state),
   reverseProxyPaths: () => isDev ? REVERSE_PROXY_PATHS
   /* global REVERSE_PROXY_PATHS */
   : context.REVERSE_PROXY_PATHS || {},
@@ -220,7 +220,7 @@ const Link = ({
   className += ' Link';
 
   if (!uri) {
-    return React__default['default'].createElement("span", {
+    return /*#__PURE__*/React__default['default'].createElement("span", {
       className: className
     }, children);
   }
@@ -230,7 +230,7 @@ const Link = ({
 
   if (newWindow != '_blank' && uri && uri.startsWith('/')) {
     if (uri.indexOf('#') > -1) {
-      return React__default['default'].createElement(reactRouterHashLink.HashLink, {
+      return /*#__PURE__*/React__default['default'].createElement(reactRouterHashLink.HashLink, {
         className: className,
         download: download,
         onClick: onClick,
@@ -239,7 +239,7 @@ const Link = ({
       }, children);
     }
 
-    return React__default['default'].createElement(reactRouterDom.Link, {
+    return /*#__PURE__*/React__default['default'].createElement(reactRouterDom.Link, {
       className: className,
       download: download,
       onClick: onClick,
@@ -247,7 +247,7 @@ const Link = ({
       to: uri
     }, children);
   } else {
-    return React__default['default'].createElement("a", {
+    return /*#__PURE__*/React__default['default'].createElement("a", {
       className: className,
       download: download,
       href: uri,
@@ -284,64 +284,64 @@ const VersionInfo = ({
   reverseProxyPaths,
   version
 }) => {
-  return React__default['default'].createElement(React__default['default'].Fragment, null, React__default['default'].createElement(VersionInfoStyledTable, null, React__default['default'].createElement("thead", null, React__default['default'].createElement("tr", null, React__default['default'].createElement("td", {
+  return /*#__PURE__*/React__default['default'].createElement(React__default['default'].Fragment, null, /*#__PURE__*/React__default['default'].createElement(VersionInfoStyledTable, null, /*#__PURE__*/React__default['default'].createElement("thead", null, /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", {
     colSpan: 2
-  }, React__default['default'].createElement("h1", null, React__default['default'].createElement(Link, {
+  }, /*#__PURE__*/React__default['default'].createElement("h1", null, /*#__PURE__*/React__default['default'].createElement(Link, {
     path: "/"
-  }, "Version Information"))))), React__default['default'].createElement("tbody", null, React__default['default'].createElement("tr", null, React__default['default'].createElement("th", {
+  }, "Version Information"))))), /*#__PURE__*/React__default['default'].createElement("tbody", null, /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("th", {
     colSpan: 2
-  }, "Package detail")), React__default['default'].createElement("tr", null, React__default['default'].createElement("td", {
+  }, "Package detail")), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", {
     className: "left"
-  }, "Name"), React__default['default'].createElement("td", null, packagejson.name)), React__default['default'].createElement("tr", null, React__default['default'].createElement("td", {
+  }, "Name"), /*#__PURE__*/React__default['default'].createElement("td", null, packagejson.name)), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", {
     className: "left"
-  }, "Version"), React__default['default'].createElement("td", null, packagejson.version)), React__default['default'].createElement("tr", null, React__default['default'].createElement("th", {
+  }, "Version"), /*#__PURE__*/React__default['default'].createElement("td", null, packagejson.version)), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("th", {
     colSpan: 2
-  }, "Version info (state)")), React__default['default'].createElement("tr", null, React__default['default'].createElement("td", null, "Git repo url: "), React__default['default'].createElement("td", null, React__default['default'].createElement("a", {
+  }, "Version info (state)")), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", null, "Git repo url: "), /*#__PURE__*/React__default['default'].createElement("td", null, /*#__PURE__*/React__default['default'].createElement("a", {
     href: packagejson.repository,
     target: "_blank",
     rel: "noopener noreferrer"
-  }, packagejson.repository))), React__default['default'].createElement("tr", null, React__default['default'].createElement("td", null, "Pipeline: "), React__default['default'].createElement("td", null, React__default['default'].createElement("a", {
+  }, packagejson.repository))), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", null, "Pipeline: "), /*#__PURE__*/React__default['default'].createElement("td", null, /*#__PURE__*/React__default['default'].createElement("a", {
     href: `${packagejson.repository}/pipelines/${version.buildNumber ? version.buildNumber : ''}`,
     target: "_blank",
     rel: "noopener noreferrer"
-  }, version.buildNumber))), React__default['default'].createElement("tr", null, React__default['default'].createElement("td", null, "Commit: "), React__default['default'].createElement("td", null, React__default['default'].createElement("a", {
+  }, version.buildNumber))), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", null, "Commit: "), /*#__PURE__*/React__default['default'].createElement("td", null, /*#__PURE__*/React__default['default'].createElement("a", {
     href: `${packagejson.repository}/commit/${version.commitRef ? version.commitRef : ''}`,
     target: "_blank",
     rel: "noopener noreferrer"
-  }, version.commitRef))), React__default['default'].createElement("tr", null, React__default['default'].createElement("td", null, "Project"), React__default['default'].createElement("td", {
+  }, version.commitRef))), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", null, "Project"), /*#__PURE__*/React__default['default'].createElement("td", {
     className: project == 'unknown' ? 'red' : ''
-  }, project)), React__default['default'].createElement("tr", null, React__default['default'].createElement("td", null, "Contensis version status: "), React__default['default'].createElement("td", {
+  }, project)), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", null, "Contensis version status: "), /*#__PURE__*/React__default['default'].createElement("td", {
     className: version.contensisVersionStatus == 'published' ? 'green' : 'red'
-  }, version.contensisVersionStatus)), React__default['default'].createElement("tr", null, React__default['default'].createElement("th", {
+  }, version.contensisVersionStatus)), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("th", {
     colSpan: 2
-  }, "Build configuration")), React__default['default'].createElement("tr", null, React__default['default'].createElement("td", null, "Environment"), React__default['default'].createElement("td", null, servers.alias)), React__default['default'].createElement("tr", null, React__default['default'].createElement("td", null, "Public uri"), React__default['default'].createElement("td", null, publicUri)), React__default['default'].createElement("tr", null, React__default['default'].createElement("td", null, "Contensis package versions"), React__default['default'].createElement("td", null, contensisPackageVersions.map(([pkg, ver], idx) => React__default['default'].createElement("div", {
+  }, "Build configuration")), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", null, "Environment"), /*#__PURE__*/React__default['default'].createElement("td", null, servers.alias)), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", null, "Public uri"), /*#__PURE__*/React__default['default'].createElement("td", null, publicUri)), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", null, "Contensis package versions"), /*#__PURE__*/React__default['default'].createElement("td", null, contensisPackageVersions.map(([pkg, ver], idx) => /*#__PURE__*/React__default['default'].createElement("div", {
     key: idx
-  }, pkg, ": ", ver)))), React__default['default'].createElement("tr", null, React__default['default'].createElement("td", null, "Servers"), React__default['default'].createElement("td", {
+  }, pkg, ": ", ver)))), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", null, "Servers"), /*#__PURE__*/React__default['default'].createElement("td", {
     className: "small"
-  }, React__default['default'].createElement("div", null, "web: ", servers.web), React__default['default'].createElement("div", null, "preview: ", servers.previewWeb), React__default['default'].createElement("div", null, "api: ", servers.api), React__default['default'].createElement("div", null, "cms: ", servers.cms), React__default['default'].createElement("div", null, "iis: ", servers.iis), React__default['default'].createElement("div", null, "iis preview: ", servers.previewIis))), React__default['default'].createElement("tr", null, React__default['default'].createElement("td", null, "Reverse proxy paths"), React__default['default'].createElement("td", null, Object.entries(reverseProxyPaths).map(([, path], key) => React__default['default'].createElement("span", {
+  }, /*#__PURE__*/React__default['default'].createElement("div", null, "web: ", servers.web), /*#__PURE__*/React__default['default'].createElement("div", null, "preview: ", servers.previewWeb), /*#__PURE__*/React__default['default'].createElement("div", null, "api: ", servers.api), /*#__PURE__*/React__default['default'].createElement("div", null, "cms: ", servers.cms), /*#__PURE__*/React__default['default'].createElement("div", null, "iis: ", servers.iis), /*#__PURE__*/React__default['default'].createElement("div", null, "iis preview: ", servers.previewIis))), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", null, "Reverse proxy paths"), /*#__PURE__*/React__default['default'].createElement("td", null, Object.entries(reverseProxyPaths).map(([, path], key) => /*#__PURE__*/React__default['default'].createElement("span", {
     key: key
-  }, "[ ", path, " ] ")))), React__default['default'].createElement("tr", null, React__default['default'].createElement("td", null, "Projects"), React__default['default'].createElement("td", null, Object.entries(projects).map(([, project], key) => React__default['default'].createElement("div", {
+  }, "[ ", path, " ] ")))), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", null, "Projects"), /*#__PURE__*/React__default['default'].createElement("td", null, Object.entries(projects).map(([, project], key) => /*#__PURE__*/React__default['default'].createElement("div", {
     key: key
-  }, "[ ", project.id, ": ", project.publicUri, " ]")))), React__default['default'].createElement("tr", null, React__default['default'].createElement("td", null, "Delivery API"), React__default['default'].createElement("td", {
+  }, "[ ", project.id, ": ", project.publicUri, " ]")))), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", null, "Delivery API"), /*#__PURE__*/React__default['default'].createElement("td", {
     className: "small"
-  }, React__default['default'].createElement("ul", {
+  }, /*#__PURE__*/React__default['default'].createElement("ul", {
     style: {
       margin: 0,
       padding: 0
     }
   }, Object.entries(deliveryApi).map(([key, value], idx) => {
     if (typeof value === 'object') return null;
-    return React__default['default'].createElement("li", {
+    return /*#__PURE__*/React__default['default'].createElement("li", {
       key: idx,
       style: {
         listStyleType: 'none'
       }
-    }, key, ": ", React__default['default'].createElement("span", null, value));
-  })))), React__default['default'].createElement("tr", null, React__default['default'].createElement("td", null, "Proxy Delivery API requests"), React__default['default'].createElement("td", {
+    }, key, ": ", /*#__PURE__*/React__default['default'].createElement("span", null, value));
+  })))), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", null, "Proxy Delivery API requests"), /*#__PURE__*/React__default['default'].createElement("td", {
     className: proxyDeliveryApi ? 'green' : 'red'
-  }, proxyDeliveryApi.toString())), React__default['default'].createElement("tr", null, React__default['default'].createElement("td", null, "Disable SSR inline-redux"), React__default['default'].createElement("td", null, disableSsrRedux.toString())), React__default['default'].createElement("tr", null, React__default['default'].createElement("td", null, "NODE_ENV"), React__default['default'].createElement("td", {
+  }, proxyDeliveryApi.toString())), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", null, "Disable SSR inline-redux"), /*#__PURE__*/React__default['default'].createElement("td", null, disableSsrRedux.toString())), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", null, "NODE_ENV"), /*#__PURE__*/React__default['default'].createElement("td", {
     className: nodeEnv === 'production' ? 'green' : 'red'
-  }, nodeEnv.toString())), devEnv && React__default['default'].createElement("tr", null, React__default['default'].createElement("td", null, "process.env"), React__default['default'].createElement("td", null, Object.entries(devEnv).map(([k, v], key) => React__default['default'].createElement("div", {
+  }, nodeEnv.toString())), devEnv && /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", null, "process.env"), /*#__PURE__*/React__default['default'].createElement("td", null, Object.entries(devEnv).map(([k, v], key) => /*#__PURE__*/React__default['default'].createElement("div", {
     key: key
   }, "[ ", k, ": ", v, " ]")))))));
 };

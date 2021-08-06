@@ -4,20 +4,20 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 var React = require('react');
 var reactRedux = require('react-redux');
+var mapJson = require('jsonpath-mapper');
 var immutable = require('immutable');
+var effects = require('@redux-saga/core/effects');
 var contensisDeliveryApi = require('contensis-delivery-api');
 var queryString = require('query-string');
-var effects = require('@redux-saga/core/effects');
 var log = require('loglevel');
-var mapJson = require('jsonpath-mapper');
 var PropTypes = require('prop-types');
 var redux = require('@zengenti/contensis-react-base/redux');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
 var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
-var queryString__default = /*#__PURE__*/_interopDefaultLegacy(queryString);
 var mapJson__default = /*#__PURE__*/_interopDefaultLegacy(mapJson);
+var queryString__default = /*#__PURE__*/_interopDefaultLegacy(queryString);
 var PropTypes__default = /*#__PURE__*/_interopDefaultLegacy(PropTypes);
 
 const toJS = WrappedComponent => wrappedComponentProps => {

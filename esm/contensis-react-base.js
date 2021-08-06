@@ -8,37 +8,37 @@ import React from 'react';
 import { StaticRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { renderToString } from 'react-dom/server';
+import { matchRoutes } from 'react-router-config';
 import { getBundles } from 'react-loadable/webpack';
 import { ServerStyleSheet } from 'styled-components';
 import Helmet from 'react-helmet';
 import serialize from 'serialize-javascript';
 import minifyCssString from 'minify-css-string';
+import mapJson from 'jsonpath-mapper';
 import { fromJS } from 'immutable';
-import 'history';
-import { h as history, d as deliveryApi, p as pickProject, r as rootSaga } from './App-9d6f477c.js';
-export { A as ReactApp } from './App-9d6f477c.js';
-import 'contensis-delivery-api';
-import { s as setCurrentProject } from './routing-3bbf9dde.js';
 import 'redux';
 import 'redux-immutable';
 import 'redux-thunk';
 import 'redux-saga';
-import { c as createStore, s as setVersionStatus, a as setVersion } from './navigation-ec4d9a28.js';
-import './reducers-ed7581c0.js';
-import 'query-string';
-import { s as selectRouteEntry, a as selectCurrentProject } from './routing-786c3bb0.js';
+import { c as createStore, s as setVersionStatus, a as setVersion } from './version-c7ba4339.js';
+import { s as setCurrentProject } from './actions-fda5e103.js';
+import './reducers-b426d14a.js';
+import 'history';
+import { h as history, d as deliveryApi, p as pickProject, r as rootSaga } from './App-2b7eafd8.js';
+export { A as ReactApp } from './App-2b7eafd8.js';
 import '@redux-saga/core/effects';
-import './version-924cf045.js';
+import 'contensis-delivery-api';
+import './version-7eeb026f.js';
+import 'query-string';
+import { s as selectRouteEntry, a as selectCurrentProject } from './selectors-170581d2.js';
 import 'loglevel';
-import './ToJs-020d9abb.js';
-import './login-45048e14.js';
-import mapJson from 'jsonpath-mapper';
+import './ToJs-19a3244a.js';
+import './login-3ef8f9a5.js';
 import 'await-to-js';
 import 'js-cookie';
-import { matchRoutes } from 'react-router-config';
 import 'react-hot-loader';
 import 'prop-types';
-import './RouteLoader-d0db413f.js';
+import './RouteLoader-2cfdfc5c.js';
 
 const servers = SERVERS;
 /* global SERVERS */
@@ -370,14 +370,14 @@ const webApp = (app, ReactApp, config) => {
     const groups = allowedGroups && allowedGroups[project];
     store.dispatch(setCurrentProject(project, groups, request.hostname));
     const modules = [];
-    const jsx = React.createElement(Loadable.Capture, {
+    const jsx = /*#__PURE__*/React.createElement(Loadable.Capture, {
       report: moduleName => modules.push(moduleName)
-    }, React.createElement(Provider, {
+    }, /*#__PURE__*/React.createElement(Provider, {
       store: store
-    }, React.createElement(StaticRouter, {
+    }, /*#__PURE__*/React.createElement(StaticRouter, {
       context: context,
       location: url
-    }, React.createElement(ReactApp, {
+    }, /*#__PURE__*/React.createElement(ReactApp, {
       routes: routes,
       withEvents: withEvents
     }))));

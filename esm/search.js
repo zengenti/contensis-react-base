@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { connect, useDispatch, useSelector } from 'react-redux';
+import mapJson from 'jsonpath-mapper';
 import { Iterable, OrderedMap, Map, List, fromJS, Set } from 'immutable';
+import { takeEvery, select, put, call, all } from '@redux-saga/core/effects';
 import { Client } from 'contensis-delivery-api';
 import queryString from 'query-string';
-import { takeEvery, select, put, call, all } from '@redux-saga/core/effects';
 import { error } from 'loglevel';
-import mapJson from 'jsonpath-mapper';
 import PropTypes from 'prop-types';
 import { navigation, routing, version } from '@zengenti/contensis-react-base/redux';
 

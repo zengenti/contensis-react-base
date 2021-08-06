@@ -3,32 +3,32 @@ import { preloadReady } from 'react-loadable';
 import React from 'react';
 import { Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
+import 'react-router-config';
+import 'jsonpath-mapper';
 import 'immutable';
-import 'history';
-import { d as deliveryApi, r as rootSaga, p as pickProject, b as browserHistory } from './App-9d6f477c.js';
-export { A as ReactApp } from './App-9d6f477c.js';
-import 'contensis-delivery-api';
-import { s as setCurrentProject } from './routing-3bbf9dde.js';
 import 'redux';
 import 'redux-immutable';
 import 'redux-thunk';
 import 'redux-saga';
-import { c as createStore, s as setVersionStatus } from './navigation-ec4d9a28.js';
-import { f as fromJSOrdered } from './reducers-ed7581c0.js';
-import queryString from 'query-string';
-import './routing-786c3bb0.js';
+import { c as createStore, s as setVersionStatus } from './version-c7ba4339.js';
+import { s as setCurrentProject } from './actions-fda5e103.js';
+import { f as fromJSOrdered } from './reducers-b426d14a.js';
+import 'history';
+import { d as deliveryApi, r as rootSaga, p as pickProject, b as browserHistory } from './App-2b7eafd8.js';
+export { A as ReactApp } from './App-2b7eafd8.js';
 import '@redux-saga/core/effects';
-import './version-924cf045.js';
+import 'contensis-delivery-api';
+import './version-7eeb026f.js';
+import queryString from 'query-string';
+import './selectors-170581d2.js';
 import 'loglevel';
-import './ToJs-020d9abb.js';
-import './login-45048e14.js';
-import 'jsonpath-mapper';
+import './ToJs-19a3244a.js';
+import './login-3ef8f9a5.js';
 import 'await-to-js';
 import 'js-cookie';
-import 'react-router-config';
 import { AppContainer } from 'react-hot-loader';
 import 'prop-types';
-import './RouteLoader-d0db413f.js';
+import './RouteLoader-2cfdfc5c.js';
 import { hydrate, render } from 'react-dom';
 
 const fromJSLeaveImmer = js => {
@@ -66,11 +66,11 @@ class ClientApp {
     } = config;
 
     const GetClientJSX = store => {
-      const ClientJsx = React.createElement(AppContainer, null, React.createElement(Provider, {
+      const ClientJsx = /*#__PURE__*/React.createElement(AppContainer, null, /*#__PURE__*/React.createElement(Provider, {
         store: store
-      }, React.createElement(Router, {
+      }, /*#__PURE__*/React.createElement(Router, {
         history: browserHistory
-      }, React.createElement(ReactApp, {
+      }, /*#__PURE__*/React.createElement(ReactApp, {
         routes: routes,
         withEvents: withEvents
       }))));

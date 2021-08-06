@@ -7,31 +7,31 @@ var Loadable = require('react-loadable');
 var React = require('react');
 var reactRouterDom = require('react-router-dom');
 var reactRedux = require('react-redux');
+require('react-router-config');
+require('jsonpath-mapper');
 require('immutable');
-require('history');
-var App = require('./App-70eab41a.js');
-require('contensis-delivery-api');
-var routing = require('./routing-a4d7b382.js');
 require('redux');
 require('redux-immutable');
 require('redux-thunk');
 require('redux-saga');
-var navigation = require('./navigation-9bc89fbc.js');
-var reducers = require('./reducers-a05c32a6.js');
-var queryString = require('query-string');
-require('./routing-5db2c867.js');
+var version = require('./version-39a19edf.js');
+var actions = require('./actions-e22726ed.js');
+var reducers = require('./reducers-c42035ab.js');
+require('history');
+var App = require('./App-162c7b7b.js');
 require('@redux-saga/core/effects');
-require('./version-2f3078fa.js');
+require('contensis-delivery-api');
+require('./version-2193b4a2.js');
+var queryString = require('query-string');
+require('./selectors-69c3d37c.js');
 require('loglevel');
-require('./ToJs-128064bc.js');
-require('./login-c4383206.js');
-require('jsonpath-mapper');
+require('./ToJs-ca9bea03.js');
+require('./login-1e688342.js');
 require('await-to-js');
 require('js-cookie');
-require('react-router-config');
 var reactHotLoader = require('react-hot-loader');
 require('prop-types');
-require('./RouteLoader-df21e4a9.js');
+require('./RouteLoader-5c44f039.js');
 var reactDom = require('react-dom');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
@@ -74,11 +74,11 @@ class ClientApp {
     } = config;
 
     const GetClientJSX = store => {
-      const ClientJsx = React__default['default'].createElement(reactHotLoader.AppContainer, null, React__default['default'].createElement(reactRedux.Provider, {
+      const ClientJsx = /*#__PURE__*/React__default['default'].createElement(reactHotLoader.AppContainer, null, /*#__PURE__*/React__default['default'].createElement(reactRedux.Provider, {
         store: store
-      }, React__default['default'].createElement(reactRouterDom.Router, {
+      }, /*#__PURE__*/React__default['default'].createElement(reactRouterDom.Router, {
         history: App.browserHistory
-      }, React__default['default'].createElement(ReactApp, {
+      }, /*#__PURE__*/React__default['default'].createElement(ReactApp, {
         routes: routes,
         withEvents: withEvents
       }))));
@@ -101,15 +101,15 @@ class ClientApp {
     const versionStatusFromHostname = App.deliveryApi.getClientSideVersionStatus();
 
     if (window.isDynamic || window.REDUX_DATA || process.env.NODE_ENV !== 'production') {
-      store = navigation.createStore(withReducers, fromJSLeaveImmer(window.REDUX_DATA), App.browserHistory);
-      store.dispatch(navigation.setVersionStatus(qs.versionStatus || versionStatusFromHostname));
+      store = version.createStore(withReducers, fromJSLeaveImmer(window.REDUX_DATA), App.browserHistory);
+      store.dispatch(version.setVersionStatus(qs.versionStatus || versionStatusFromHostname));
       /* eslint-disable no-console */
 
       console.log('Hydrating from inline Redux');
       /* eslint-enable no-console */
 
       store.runSaga(App.rootSaga(withSagas));
-      store.dispatch(routing.setCurrentProject(App.pickProject(window.location.hostname, qs), [], window.location.hostname));
+      store.dispatch(actions.setCurrentProject(App.pickProject(window.location.hostname, qs), [], window.location.hostname));
       delete window.REDUX_DATA;
       HMRRenderer(GetClientJSX(store));
     } else {
@@ -120,10 +120,10 @@ class ClientApp {
 
         /* eslint-enable no-console */
         const ssRedux = JSON.parse(data);
-        store = navigation.createStore(withReducers, fromJSLeaveImmer(ssRedux), App.browserHistory); // store.dispatch(setVersionStatus(versionStatusFromHostname));
+        store = version.createStore(withReducers, fromJSLeaveImmer(ssRedux), App.browserHistory); // store.dispatch(setVersionStatus(versionStatusFromHostname));
 
         store.runSaga(App.rootSaga(withSagas));
-        store.dispatch(routing.setCurrentProject(App.pickProject(window.location.hostname, queryString__default['default'].parse(window.location.search)), [], window.location.hostname)); // if (typeof window != 'undefined') {
+        store.dispatch(actions.setCurrentProject(App.pickProject(window.location.hostname, queryString__default['default'].parse(window.location.search)), [], window.location.hostname)); // if (typeof window != 'undefined') {
         //   store.dispatch(checkUserLoggedIn());
         // }
 

@@ -12,36 +12,36 @@ var React = require('react');
 var reactRouterDom = require('react-router-dom');
 var reactRedux = require('react-redux');
 var server = require('react-dom/server');
+var reactRouterConfig = require('react-router-config');
 var webpack = require('react-loadable/webpack');
 var styled = require('styled-components');
 var Helmet = require('react-helmet');
 var serialize = require('serialize-javascript');
 var minifyCssString = require('minify-css-string');
+var mapJson = require('jsonpath-mapper');
 var immutable = require('immutable');
-require('history');
-var App = require('./App-70eab41a.js');
-require('contensis-delivery-api');
-var routing = require('./routing-a4d7b382.js');
 require('redux');
 require('redux-immutable');
 require('redux-thunk');
 require('redux-saga');
-var navigation = require('./navigation-9bc89fbc.js');
-require('./reducers-a05c32a6.js');
-require('query-string');
-var routing$1 = require('./routing-5db2c867.js');
+var version = require('./version-39a19edf.js');
+var actions = require('./actions-e22726ed.js');
+require('./reducers-c42035ab.js');
+require('history');
+var App = require('./App-162c7b7b.js');
 require('@redux-saga/core/effects');
-require('./version-2f3078fa.js');
+require('contensis-delivery-api');
+require('./version-2193b4a2.js');
+require('query-string');
+var selectors = require('./selectors-69c3d37c.js');
 require('loglevel');
-require('./ToJs-128064bc.js');
-require('./login-c4383206.js');
-var mapJson = require('jsonpath-mapper');
+require('./ToJs-ca9bea03.js');
+require('./login-1e688342.js');
 require('await-to-js');
 require('js-cookie');
-var reactRouterConfig = require('react-router-config');
 require('react-hot-loader');
 require('prop-types');
-require('./RouteLoader-df21e4a9.js');
+require('./RouteLoader-5c44f039.js');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -263,8 +263,8 @@ const addStandardHeaders = (state, response, packagejson, groups) => {
 const addVarnishAuthenticationHeaders = (state, response, groups = {}) => {
   if (state) {
     try {
-      const stateEntry = routing$1.selectRouteEntry(state);
-      const project = routing$1.selectCurrentProject(state);
+      const stateEntry = selectors.selectRouteEntry(state);
+      const project = selectors.selectCurrentProject(state);
       const {
         globalGroups,
         allowedGroups
@@ -374,26 +374,26 @@ const webApp = (app, ReactApp, config) => {
 
     response.status(200); // Create a store (with a memory history) from our current url
 
-    const store = navigation.createStore(withReducers, immutable.fromJS({}), App.history({
+    const store = version.createStore(withReducers, immutable.fromJS({}), App.history({
       initialEntries: [url]
     })); // dispatch any global and non-saga related actions before calling our JSX
 
     const versionStatusFromHostname = App.deliveryApi.getVersionStatusFromHostname(request.hostname);
     console.info(`Request for ${request.path} hostname: ${request.hostname} versionStatus: ${versionStatusFromHostname}`);
-    store.dispatch(navigation.setVersionStatus(request.query.versionStatus || versionStatusFromHostname));
-    store.dispatch(navigation.setVersion(versionInfo.commitRef, versionInfo.buildNo));
+    store.dispatch(version.setVersionStatus(request.query.versionStatus || versionStatusFromHostname));
+    store.dispatch(version.setVersion(versionInfo.commitRef, versionInfo.buildNo));
     const project = App.pickProject(request.hostname, request.query);
     const groups = allowedGroups && allowedGroups[project];
-    store.dispatch(routing.setCurrentProject(project, groups, request.hostname));
+    store.dispatch(actions.setCurrentProject(project, groups, request.hostname));
     const modules = [];
-    const jsx = React__default['default'].createElement(Loadable__default['default'].Capture, {
+    const jsx = /*#__PURE__*/React__default['default'].createElement(Loadable__default['default'].Capture, {
       report: moduleName => modules.push(moduleName)
-    }, React__default['default'].createElement(reactRedux.Provider, {
+    }, /*#__PURE__*/React__default['default'].createElement(reactRedux.Provider, {
       store: store
-    }, React__default['default'].createElement(reactRouterDom.StaticRouter, {
+    }, /*#__PURE__*/React__default['default'].createElement(reactRouterDom.StaticRouter, {
       context: context,
       location: url
-    }, React__default['default'].createElement(ReactApp, {
+    }, /*#__PURE__*/React__default['default'].createElement(ReactApp, {
       routes: routes,
       withEvents: withEvents
     }))));
