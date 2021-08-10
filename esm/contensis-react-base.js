@@ -24,8 +24,8 @@ import { c as createStore, s as setVersionStatus, a as setVersion } from './vers
 import { s as setCurrentProject } from './actions-fda5e103.js';
 import './reducers-b426d14a.js';
 import 'history';
-import { h as history, d as deliveryApi, p as pickProject, r as rootSaga } from './App-2b7eafd8.js';
-export { A as ReactApp } from './App-2b7eafd8.js';
+import { h as history, d as deliveryApi, p as pickProject, r as rootSaga } from './App-f5f79a66.js';
+export { A as ReactApp } from './App-f5f79a66.js';
 import '@redux-saga/core/effects';
 import 'contensis-delivery-api';
 import './version-7eeb026f.js';
