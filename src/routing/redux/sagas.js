@@ -105,7 +105,9 @@ function* getRouteSaga(action) {
       !isPreview &&
       ((appsays && appsays.customRouting) ||
         (staticRoute && !staticRoute.route.fetchNode) ||
-        (routeEntry && action.statePath === action.path))
+        (routeEntry &&
+          action.statePath === action.path &&
+          (appsays && appsays.refetchNode) !== true))
     ) {
       // To prevent erroneous 404s and wasted network calls, this covers
       // - appsays customRouting and does SET_ENTRY etc. via the consuming app
@@ -314,7 +316,9 @@ function* getRouteSaga(action) {
         pathNode,
         ancestors,
         siblings,
-        entryMapper
+        entryMapper,
+        false,
+        appsays && appsays.refetchNode
       );
     } else {
       if (pathNode)
@@ -359,14 +363,17 @@ function* setRouteEntry(
   ancestors,
   siblings,
   entryMapper,
-  notFound = false
+  notFound = false,
+  remapEntry = false
 ) {
   const entrySys = (entry && entry.sys) || {};
 
   const currentEntryId = yield select(selectRouteEntryEntryId);
   const currentEntryLang = yield select(selectRouteEntryLanguage);
   const mappedEntry =
-    currentEntryId === entrySys.id && currentEntryLang === entrySys.language
+    currentEntryId === entrySys.id &&
+    currentEntryLang === entrySys.language &&
+    remapEntry === false
       ? ((yield select(selectMappedEntry)) || Map()).toJS()
       : yield mapRouteEntry(entryMapper, {
           ...node,
