@@ -14,6 +14,7 @@ Copy-Item -Path .\cjs -Filter *.js* -Destination $target -Recurse -Force
 Copy-Item -Path .\esm -Filter *.js* -Destination $target -Recurse -Force
 # Copy-Item -Path .\esm -Filter *.js.map -Destination $target -Recurse
 Copy-Item -Path .\client -Filter *.* -Destination $target -Recurse -Force
+Copy-Item -Path .\forms -Filter *.* -Destination $target -Recurse -Force
 Copy-Item -Path .\redux -Filter *.* -Destination $target -Recurse -Force
 Copy-Item -Path .\routing -Filter *.* -Destination $target -Recurse -Force
 Copy-Item -Path .\search -Filter *.* -Destination $target -Recurse -Force
