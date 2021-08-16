@@ -6,7 +6,7 @@ const requireOidc =
 
 const servers = SERVERS; /* global SERVERS */
 
-const userManagerConfig =
+export const userManagerConfig =
   typeof window !== 'undefined'
     ? {
         authority: `${servers.cms}/authenticate/`,
@@ -19,19 +19,20 @@ const userManagerConfig =
       }
     : {};
 
-const createUserManager = config => {
+export const createUserManager = async config => {
   if (typeof window !== 'undefined' && requireOidc) {
     try {
-      // Need to import the lib version specifically when using with webpack
-      const UserManager = require('oidc-client/lib/oidc-client').UserManager;
+      const { UserManager } = await import(
+        /* webpackChunkName: "oidcclient" */ 'oidc-client'
+      );
       return new UserManager(config);
     } catch (e) {
       // eslint-disable-next-line no-console
-      console.log('CreateUserManagerException: ', e);
+      console.log('Exception in createUserManager: ', e);
     }
   } else return {};
 };
 
-const userManager = createUserManager(userManagerConfig);
+//const userManager = createUserManager(userManagerConfig);
 
-export default userManager;
+// export default userManager;

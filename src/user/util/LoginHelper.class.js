@@ -5,7 +5,7 @@ import { to } from 'await-to-js';
 import { CookieHelper } from './CookieHelper.class';
 
 import mapClientCredentials from '../transformations/mapClientCredentials';
-import userManager from './OidcUserManager';
+import { createUserManager, userManagerConfig } from './OidcUserManager';
 
 export const LOGIN_COOKIE = 'ContensisCMSUserName';
 export const REFRESH_TOKEN_COOKIE = 'RefreshToken';
@@ -185,7 +185,7 @@ export class LoginHelper {
   static async ClientRedirectToSignInPage(redirectPath) {
     if (LoginHelper.WSFED_LOGIN) {
       await LoginHelper.WsFedLogout();
-      LoginHelper.WsFedLogin();
+      await LoginHelper.WsFedLogin();
     } else {
       // Standard Contensis Login
       let url = LoginHelper.LOGIN_ROUTE;
@@ -214,7 +214,8 @@ export class LoginHelper {
     } else LoginHelper.ClientRedirectToHome();
   }
 
-  static WsFedLogin(redirectUri) {
+  static async WsFedLogin(redirectUri) {
+    const userManager = await createUserManager(userManagerConfig);
     userManager.signinRedirect({
       scope: 'openid',
       response_type: 'id_token',
