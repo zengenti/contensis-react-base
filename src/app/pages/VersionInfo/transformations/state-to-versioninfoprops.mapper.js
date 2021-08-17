@@ -13,10 +13,29 @@ const isDev = process.env.NODE_ENV === 'development';
 const packagejson = () =>
   isDev
     ? PACKAGE_JSON /* global PACKAGE_JSON */
-    : context.PACKAGE_JSON || { name: 'packagejson not found' };
+    : context.PACKAGE_JSON || { name: 'packagejson not found', repository: '' };
+
+const repository = packagejson().repository;
 
 const versionInfoProps = {
-  contensisPackageVersions: () => [
+  packageDetail: () => {
+    const pkg = packagejson();
+    return { name: pkg.name, version: pkg.version, repository: pkg.repository };
+  },
+  uris: {
+    gitRepo: () => repository,
+    commit: state => {
+      const commitRef = selectCommitRef(state);
+      return `${repository}/commit/${commitRef ? commitRef : ''}`;
+    },
+    pipeline: state => {
+      const buildNumber = selectBuildNumber(state);
+      return `${repository}/${
+        repository.includes('github.com') ? 'actions/runs' : 'pipelines'
+      }/${buildNumber ? buildNumber : ''}`;
+    },
+  },
+  zenPackageVersions: () => [
     ...(Object.entries(packagejson().devDependencies || {}).filter(
       ([pkg]) => pkg.includes('zengenti') || pkg.includes('contensis')
     ) || []),
