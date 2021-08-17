@@ -10,7 +10,7 @@ import { R as REGISTER_USER, a as REGISTER_USER_SUCCESS, b as REGISTER_USER_FAIL
 import { createBrowserHistory, createMemoryHistory } from 'history';
 import { takeEvery, select, put, call, all } from '@redux-saga/core/effects';
 import { Client, Op, Query } from 'contensis-delivery-api';
-import { s as selectVersionStatus } from './version-7eeb026f.js';
+import { s as selectVersionStatus } from './version-7fdbd2d5.js';
 import 'query-string';
 import { a as selectCurrentProject, s as selectRouteEntry, b as selectCurrentNode, c as selectCurrentAncestors, d as selectRouteEntryEntryId, e as selectRouteEntryLanguage, f as selectMappedEntry, q as queryParams, g as selectCurrentSearch } from './selectors-170581d2.js';
 import { info, error } from 'loglevel';
@@ -819,4 +819,4 @@ const AppRoot = props => {
 };
 
 export { AppRoot as A, browserHistory as b, deliveryApi as d, history as h, pickProject as p, rootSaga as r };
-//# sourceMappingURL=App-86bc05df.js.map
+//# sourceMappingURL=App-f64001ba.js.map

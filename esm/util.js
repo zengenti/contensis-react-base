@@ -5,10 +5,9 @@ import styled from 'styled-components';
 import mapJson, { jpath } from 'jsonpath-mapper';
 export { jpath, default as mapJson } from 'jsonpath-mapper';
 import 'immutable';
-import { a as selectBuildNumber, b as selectCommitRef, s as selectVersionStatus } from './version-7eeb026f.js';
+import { a as selectCommitRef, b as selectBuildNumber, s as selectVersionStatus } from './version-7fdbd2d5.js';
 import 'query-string';
 import { a as selectCurrentProject } from './selectors-170581d2.js';
-import { hot } from 'react-hot-loader';
 import PropTypes from 'prop-types';
 import { HashLink } from 'react-router-hash-link';
 
@@ -149,11 +148,32 @@ const isDev = process.env.NODE_ENV === 'development';
 const packagejson = () => isDev ? PACKAGE_JSON
 /* global PACKAGE_JSON */
 : context.PACKAGE_JSON || {
-  name: 'packagejson not found'
+  name: 'packagejson not found',
+  repository: ''
 };
 
+const repository = packagejson().repository;
 const versionInfoProps = {
-  contensisPackageVersions: () => [...(Object.entries(packagejson().devDependencies || {}).filter(([pkg]) => pkg.includes('zengenti') || pkg.includes('contensis')) || []), ...(Object.entries(packagejson().dependencies || {}).filter(([pkg]) => pkg.includes('zengenti') || pkg.includes('contensis')) || [])],
+  packageDetail: () => {
+    const pkg = packagejson();
+    return {
+      name: pkg.name,
+      version: pkg.version,
+      repository: pkg.repository
+    };
+  },
+  uris: {
+    gitRepo: () => repository,
+    commit: state => {
+      const commitRef = selectCommitRef(state);
+      return `${repository}/commit/${commitRef ? commitRef : ''}`;
+    },
+    pipeline: state => {
+      const buildNumber = selectBuildNumber(state);
+      return `${repository}/${repository.includes('github.com') ? 'actions/runs' : 'pipelines'}/${buildNumber ? buildNumber : ''}`;
+    }
+  },
+  zenPackageVersions: () => [...(Object.entries(packagejson().devDependencies || {}).filter(([pkg]) => pkg.includes('zengenti') || pkg.includes('contensis')) || []), ...(Object.entries(packagejson().dependencies || {}).filter(([pkg]) => pkg.includes('zengenti') || pkg.includes('contensis')) || [])],
   deliveryApi: () => JSON.parse(JSON.stringify(DELIVERY_API_CONFIG
   /* global DELIVERY_API_CONFIG */
   )),
@@ -260,21 +280,22 @@ Link.propTypes = {
 };
 
 const VersionInfo = ({
-  contensisPackageVersions,
   deliveryApi,
   devEnv,
   disableSsrRedux,
   nodeEnv,
-  servers,
-  packagejson,
+  packageDetail,
   project,
   projects,
   proxyDeliveryApi,
   publicUri,
   reverseProxyPaths,
-  version
+  servers,
+  uris,
+  version,
+  zenPackageVersions
 }) => {
-  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(VersionInfoStyledTable, null, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", {
+  return /*#__PURE__*/React.createElement(VersionInfoStyledTable, null, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", {
     colSpan: 2
   }, /*#__PURE__*/React.createElement("h1", null, /*#__PURE__*/React.createElement(Link, {
     path: "/"
@@ -282,20 +303,20 @@ const VersionInfo = ({
     colSpan: 2
   }, "Package detail")), /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", {
     className: "left"
-  }, "Name"), /*#__PURE__*/React.createElement("td", null, packagejson.name)), /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", {
+  }, "Name"), /*#__PURE__*/React.createElement("td", null, packageDetail.name)), /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", {
     className: "left"
-  }, "Version"), /*#__PURE__*/React.createElement("td", null, packagejson.version)), /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", {
+  }, "Version"), /*#__PURE__*/React.createElement("td", null, packageDetail.version)), /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", {
     colSpan: 2
   }, "Version info (state)")), /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", null, "Git repo url: "), /*#__PURE__*/React.createElement("td", null, /*#__PURE__*/React.createElement("a", {
-    href: packagejson.repository,
+    href: packageDetail.repository,
     target: "_blank",
     rel: "noopener noreferrer"
-  }, packagejson.repository))), /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", null, "Pipeline: "), /*#__PURE__*/React.createElement("td", null, /*#__PURE__*/React.createElement("a", {
-    href: `${packagejson.repository}/pipelines/${version.buildNumber ? version.buildNumber : ''}`,
+  }, packageDetail.repository))), /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", null, "Pipeline: "), /*#__PURE__*/React.createElement("td", null, /*#__PURE__*/React.createElement("a", {
+    href: uris.pipeline,
     target: "_blank",
     rel: "noopener noreferrer"
   }, version.buildNumber))), /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", null, "Commit: "), /*#__PURE__*/React.createElement("td", null, /*#__PURE__*/React.createElement("a", {
-    href: `${packagejson.repository}/commit/${version.commitRef ? version.commitRef : ''}`,
+    href: uris.commit,
     target: "_blank",
     rel: "noopener noreferrer"
   }, version.commitRef))), /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", null, "Project"), /*#__PURE__*/React.createElement("td", {
@@ -304,7 +325,7 @@ const VersionInfo = ({
     className: version.contensisVersionStatus == 'published' ? 'green' : 'red'
   }, version.contensisVersionStatus)), /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", {
     colSpan: 2
-  }, "Build configuration")), /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", null, "Environment"), /*#__PURE__*/React.createElement("td", null, servers.alias)), /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", null, "Public uri"), /*#__PURE__*/React.createElement("td", null, publicUri)), /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", null, "Contensis package versions"), /*#__PURE__*/React.createElement("td", null, contensisPackageVersions.map(([pkg, ver], idx) => /*#__PURE__*/React.createElement("div", {
+  }, "Build configuration")), /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", null, "Environment"), /*#__PURE__*/React.createElement("td", null, servers.alias)), /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", null, "Public uri"), /*#__PURE__*/React.createElement("td", null, publicUri)), /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", null, "Zengenti package versions"), /*#__PURE__*/React.createElement("td", null, zenPackageVersions.map(([pkg, ver], idx) => /*#__PURE__*/React.createElement("div", {
     key: idx
   }, pkg, ": ", ver)))), /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", null, "Servers"), /*#__PURE__*/React.createElement("td", {
     className: "small"
@@ -333,25 +354,26 @@ const VersionInfo = ({
     className: nodeEnv === 'production' ? 'green' : 'red'
   }, nodeEnv.toString())), devEnv && /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", null, "process.env"), /*#__PURE__*/React.createElement("td", null, Object.entries(devEnv).map(([k, v], key) => /*#__PURE__*/React.createElement("div", {
     key: key
-  }, "[ ", k, ": ", v, " ]")))))));
+  }, "[ ", k, ": ", v, " ]"))))));
 };
 
 VersionInfo.propTypes = {
-  contensisPackageVersions: PropTypes.array,
   deliveryApi: PropTypes.object,
   devEnv: PropTypes.object,
   disableSsrRedux: PropTypes.bool,
   nodeEnv: PropTypes.string,
-  packagejson: PropTypes.object,
+  packageDetail: PropTypes.object,
   project: PropTypes.string,
   projects: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
   proxyDeliveryApi: PropTypes.bool,
   publicUri: PropTypes.string,
   reverseProxyPaths: PropTypes.array,
   servers: PropTypes.object,
-  version: PropTypes.object
+  uris: PropTypes.object,
+  version: PropTypes.object,
+  zenPackageVersions: PropTypes.array
 };
-var VersionInfo$1 = hot(module)(connect(mapStateToVersionInfo)(VersionInfo));
+var VersionInfo$1 = connect(mapStateToVersionInfo)(VersionInfo);
 
 export { VersionInfo$1 as VersionInfo, mapComposer, mapEntries, setCachingHeaders_1 as setCachingHeaders, stringifyStrings_1 as stringifyStrings, urls, useComposerMapper, useEntriesMapper, useEntryMapper, useMapper };
 //# sourceMappingURL=util.js.map

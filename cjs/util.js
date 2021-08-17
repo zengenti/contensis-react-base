@@ -11,7 +11,6 @@ require('immutable');
 var version = require('./version-2193b4a2.js');
 require('query-string');
 var selectors = require('./selectors-69c3d37c.js');
-var reactHotLoader = require('react-hot-loader');
 var PropTypes = require('prop-types');
 var reactRouterHashLink = require('react-router-hash-link');
 
@@ -159,11 +158,32 @@ const isDev = process.env.NODE_ENV === 'development';
 const packagejson = () => isDev ? PACKAGE_JSON
 /* global PACKAGE_JSON */
 : context.PACKAGE_JSON || {
-  name: 'packagejson not found'
+  name: 'packagejson not found',
+  repository: ''
 };
 
+const repository = packagejson().repository;
 const versionInfoProps = {
-  contensisPackageVersions: () => [...(Object.entries(packagejson().devDependencies || {}).filter(([pkg]) => pkg.includes('zengenti') || pkg.includes('contensis')) || []), ...(Object.entries(packagejson().dependencies || {}).filter(([pkg]) => pkg.includes('zengenti') || pkg.includes('contensis')) || [])],
+  packageDetail: () => {
+    const pkg = packagejson();
+    return {
+      name: pkg.name,
+      version: pkg.version,
+      repository: pkg.repository
+    };
+  },
+  uris: {
+    gitRepo: () => repository,
+    commit: state => {
+      const commitRef = version.selectCommitRef(state);
+      return `${repository}/commit/${commitRef ? commitRef : ''}`;
+    },
+    pipeline: state => {
+      const buildNumber = version.selectBuildNumber(state);
+      return `${repository}/${repository.includes('github.com') ? 'actions/runs' : 'pipelines'}/${buildNumber ? buildNumber : ''}`;
+    }
+  },
+  zenPackageVersions: () => [...(Object.entries(packagejson().devDependencies || {}).filter(([pkg]) => pkg.includes('zengenti') || pkg.includes('contensis')) || []), ...(Object.entries(packagejson().dependencies || {}).filter(([pkg]) => pkg.includes('zengenti') || pkg.includes('contensis')) || [])],
   deliveryApi: () => JSON.parse(JSON.stringify(DELIVERY_API_CONFIG
   /* global DELIVERY_API_CONFIG */
   )),
@@ -270,21 +290,22 @@ Link.propTypes = {
 };
 
 const VersionInfo = ({
-  contensisPackageVersions,
   deliveryApi,
   devEnv,
   disableSsrRedux,
   nodeEnv,
-  servers,
-  packagejson,
+  packageDetail,
   project,
   projects,
   proxyDeliveryApi,
   publicUri,
   reverseProxyPaths,
-  version
+  servers,
+  uris,
+  version,
+  zenPackageVersions
 }) => {
-  return /*#__PURE__*/React__default['default'].createElement(React__default['default'].Fragment, null, /*#__PURE__*/React__default['default'].createElement(VersionInfoStyledTable, null, /*#__PURE__*/React__default['default'].createElement("thead", null, /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", {
+  return /*#__PURE__*/React__default['default'].createElement(VersionInfoStyledTable, null, /*#__PURE__*/React__default['default'].createElement("thead", null, /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", {
     colSpan: 2
   }, /*#__PURE__*/React__default['default'].createElement("h1", null, /*#__PURE__*/React__default['default'].createElement(Link, {
     path: "/"
@@ -292,20 +313,20 @@ const VersionInfo = ({
     colSpan: 2
   }, "Package detail")), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", {
     className: "left"
-  }, "Name"), /*#__PURE__*/React__default['default'].createElement("td", null, packagejson.name)), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", {
+  }, "Name"), /*#__PURE__*/React__default['default'].createElement("td", null, packageDetail.name)), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", {
     className: "left"
-  }, "Version"), /*#__PURE__*/React__default['default'].createElement("td", null, packagejson.version)), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("th", {
+  }, "Version"), /*#__PURE__*/React__default['default'].createElement("td", null, packageDetail.version)), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("th", {
     colSpan: 2
   }, "Version info (state)")), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", null, "Git repo url: "), /*#__PURE__*/React__default['default'].createElement("td", null, /*#__PURE__*/React__default['default'].createElement("a", {
-    href: packagejson.repository,
+    href: packageDetail.repository,
     target: "_blank",
     rel: "noopener noreferrer"
-  }, packagejson.repository))), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", null, "Pipeline: "), /*#__PURE__*/React__default['default'].createElement("td", null, /*#__PURE__*/React__default['default'].createElement("a", {
-    href: `${packagejson.repository}/pipelines/${version.buildNumber ? version.buildNumber : ''}`,
+  }, packageDetail.repository))), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", null, "Pipeline: "), /*#__PURE__*/React__default['default'].createElement("td", null, /*#__PURE__*/React__default['default'].createElement("a", {
+    href: uris.pipeline,
     target: "_blank",
     rel: "noopener noreferrer"
   }, version.buildNumber))), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", null, "Commit: "), /*#__PURE__*/React__default['default'].createElement("td", null, /*#__PURE__*/React__default['default'].createElement("a", {
-    href: `${packagejson.repository}/commit/${version.commitRef ? version.commitRef : ''}`,
+    href: uris.commit,
     target: "_blank",
     rel: "noopener noreferrer"
   }, version.commitRef))), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", null, "Project"), /*#__PURE__*/React__default['default'].createElement("td", {
@@ -314,7 +335,7 @@ const VersionInfo = ({
     className: version.contensisVersionStatus == 'published' ? 'green' : 'red'
   }, version.contensisVersionStatus)), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("th", {
     colSpan: 2
-  }, "Build configuration")), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", null, "Environment"), /*#__PURE__*/React__default['default'].createElement("td", null, servers.alias)), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", null, "Public uri"), /*#__PURE__*/React__default['default'].createElement("td", null, publicUri)), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", null, "Contensis package versions"), /*#__PURE__*/React__default['default'].createElement("td", null, contensisPackageVersions.map(([pkg, ver], idx) => /*#__PURE__*/React__default['default'].createElement("div", {
+  }, "Build configuration")), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", null, "Environment"), /*#__PURE__*/React__default['default'].createElement("td", null, servers.alias)), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", null, "Public uri"), /*#__PURE__*/React__default['default'].createElement("td", null, publicUri)), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", null, "Zengenti package versions"), /*#__PURE__*/React__default['default'].createElement("td", null, zenPackageVersions.map(([pkg, ver], idx) => /*#__PURE__*/React__default['default'].createElement("div", {
     key: idx
   }, pkg, ": ", ver)))), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", null, "Servers"), /*#__PURE__*/React__default['default'].createElement("td", {
     className: "small"
@@ -343,25 +364,26 @@ const VersionInfo = ({
     className: nodeEnv === 'production' ? 'green' : 'red'
   }, nodeEnv.toString())), devEnv && /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", null, "process.env"), /*#__PURE__*/React__default['default'].createElement("td", null, Object.entries(devEnv).map(([k, v], key) => /*#__PURE__*/React__default['default'].createElement("div", {
     key: key
-  }, "[ ", k, ": ", v, " ]")))))));
+  }, "[ ", k, ": ", v, " ]"))))));
 };
 
 VersionInfo.propTypes = {
-  contensisPackageVersions: PropTypes__default['default'].array,
   deliveryApi: PropTypes__default['default'].object,
   devEnv: PropTypes__default['default'].object,
   disableSsrRedux: PropTypes__default['default'].bool,
   nodeEnv: PropTypes__default['default'].string,
-  packagejson: PropTypes__default['default'].object,
+  packageDetail: PropTypes__default['default'].object,
   project: PropTypes__default['default'].string,
   projects: PropTypes__default['default'].oneOfType([PropTypes__default['default'].object, PropTypes__default['default'].array]),
   proxyDeliveryApi: PropTypes__default['default'].bool,
   publicUri: PropTypes__default['default'].string,
   reverseProxyPaths: PropTypes__default['default'].array,
   servers: PropTypes__default['default'].object,
-  version: PropTypes__default['default'].object
+  uris: PropTypes__default['default'].object,
+  version: PropTypes__default['default'].object,
+  zenPackageVersions: PropTypes__default['default'].array
 };
-var VersionInfo$1 = reactHotLoader.hot(module)(reactRedux.connect(mapStateToVersionInfo)(VersionInfo));
+var VersionInfo$1 = reactRedux.connect(mapStateToVersionInfo)(VersionInfo);
 
 Object.defineProperty(exports, 'jpath', {
   enumerable: true,

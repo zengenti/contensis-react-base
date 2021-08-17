@@ -24,11 +24,11 @@ import { c as createStore, s as setVersionStatus, a as setVersion } from './vers
 import { s as setCurrentProject } from './actions-fda5e103.js';
 import './reducers-b426d14a.js';
 import 'history';
-import { h as history, d as deliveryApi, p as pickProject, r as rootSaga } from './App-86bc05df.js';
-export { A as ReactApp } from './App-86bc05df.js';
+import { h as history, d as deliveryApi, p as pickProject, r as rootSaga } from './App-f64001ba.js';
+export { A as ReactApp } from './App-f64001ba.js';
 import '@redux-saga/core/effects';
 import 'contensis-delivery-api';
-import './version-7eeb026f.js';
+import './version-7fdbd2d5.js';
 import 'query-string';
 import { s as selectRouteEntry, a as selectCurrentProject } from './selectors-170581d2.js';
 import 'loglevel';

@@ -7,7 +7,7 @@ import { n as navigation$2, v as version$1, G as GET_NODE_TREE, d as version$2, 
 export { r as store } from './version-c7ba4339.js';
 import { r as routing$1, j as action, k as routing$2 } from './actions-fda5e103.js';
 import './reducers-b426d14a.js';
-import { v as version$3 } from './version-7eeb026f.js';
+import { v as version$3 } from './version-7fdbd2d5.js';
 import 'query-string';
 import { r as routing$3 } from './selectors-170581d2.js';
 
