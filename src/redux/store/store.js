@@ -1,7 +1,8 @@
-import { compose, createStore, applyMiddleware } from 'redux';
+import { applyMiddleware, compose, createStore } from 'redux';
 import { combineReducers } from 'redux-immutable';
-import thunk from 'redux-thunk';
+import thunkMiddleware from 'redux-thunk';
 import createSagaMiddleware, { END } from 'redux-saga';
+import { createInjectorsEnhancer } from 'redux-injectors';
 
 // Core reducers
 import NavigationReducer from '../reducers/navigation';
@@ -13,8 +14,6 @@ import routerMiddleware from './routerMiddleware';
 export let reduxStore = null;
 
 export default (featureReducers, initialState, history) => {
-  const thunkMiddleware = [thunk];
-
   let reduxDevToolsMiddleware = f => f;
 
   if (typeof window != 'undefined') {
@@ -24,16 +23,8 @@ export default (featureReducers, initialState, history) => {
   }
 
   const sagaMiddleware = createSagaMiddleware();
-  const middleware = compose(
-    applyMiddleware(
-      ...thunkMiddleware,
-      sagaMiddleware,
-      routerMiddleware(history)
-    ),
-    reduxDevToolsMiddleware
-  );
 
-  let reducers = {
+  const reducers = {
     navigation: NavigationReducer,
     routing: RoutingReducer,
     user: UserReducer,
@@ -41,12 +32,37 @@ export default (featureReducers, initialState, history) => {
     ...featureReducers,
   };
 
-  const combinedReducers = combineReducers(reducers);
+  const createReducer = (injectedReducers = {}) => {
+    const rootReducer = combineReducers({
+      ...injectedReducers,
+      // other non-injected reducers go here
+      ...reducers,
+    });
+
+    return rootReducer;
+  };
 
   const store = initialState => {
-    const store = createStore(combinedReducers, initialState, middleware);
-    store.runSaga = sagaMiddleware.run;
+    const runSaga = sagaMiddleware.run;
+
+    const middleware = compose(
+      applyMiddleware(
+        thunkMiddleware,
+        sagaMiddleware,
+        routerMiddleware(history)
+      ),
+      createInjectorsEnhancer({
+        createReducer,
+        runSaga,
+      }),
+      reduxDevToolsMiddleware
+    );
+
+    const store = createStore(createReducer(), initialState, middleware);
+
+    store.runSaga = runSaga;
     store.close = () => store.dispatch(END);
+
     return store;
   };
 

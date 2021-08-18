@@ -28,6 +28,7 @@ import { handleRequiresLoginSaga } from '~/user/redux/sagas/login';
 import { findContentTypeMapping } from '../util/find-contenttype-mapping';
 import { routeEntryByFieldsQuery } from '../util/queries';
 import { cachedSearch, deliveryApi } from '~/util/ContensisDeliveryApi';
+import { injectRedux as reduxInjector } from '~/redux/store/injectors';
 
 export const routingSagas = [
   takeEvery(SET_NAVIGATION_PATH, getRouteSaga),
@@ -283,6 +284,18 @@ function* getRouteSaga(action) {
         }
       }
     }
+    const { injectRedux } =
+      findContentTypeMapping(
+        ContentTypeMappings,
+        pathNode?.entry?.sys?.contentTypeId
+      ) ||
+      staticRoute?.route ||
+      {};
+
+    if (typeof injectRedux === 'function') {
+      const { key, reducer, saga } = yield injectRedux();
+      reduxInjector({ key, reducer, saga });
+    }
 
     if (withEvents && withEvents.onRouteLoaded) {
       // Check if the app has provided a requireLogin boolean flag or groups array
@@ -310,6 +323,7 @@ function* getRouteSaga(action) {
       const { entryMapper } =
         findContentTypeMapping(ContentTypeMappings, entry.sys.contentTypeId) ||
         {};
+
       yield call(
         setRouteEntry,
         entry,

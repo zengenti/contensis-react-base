@@ -4,6 +4,14 @@ import selectors from './selectors';
 
 export { reduxStore as store } from './store/store';
 
+export {
+  convertSagaArray,
+  injectRedux,
+  injectReducer,
+  injectSaga,
+  useInjectRedux,
+} from './store/injectors';
+
 // Remap the objects so they are presented in "feature" hierarchy
 // e.g. { routing: { types, actions }, navigation: { types, actions } }
 // instead of { types: { routing, navigation }, actions: { routing, navigation } }
