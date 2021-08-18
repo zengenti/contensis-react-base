@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import mapJson from 'jsonpath-mapper';
-import { Iterable, OrderedMap, Map, List, fromJS, Set } from 'immutable';
+import { Map, List, OrderedMap, Iterable, fromJS, Set } from 'immutable';
 import { takeEvery, select, put, call, all } from '@redux-saga/core/effects';
-import { Client } from 'contensis-delivery-api';
+import { Query, Op, OrderBy, Client } from 'contensis-delivery-api';
 import queryString from 'query-string';
-import { error } from 'loglevel';
+import { error, warn, info } from 'loglevel';
 import PropTypes from 'prop-types';
 import { navigation, routing, version } from '@zengenti/contensis-react-base/redux';
 
@@ -23,7 +23,9 @@ const ACTION_PREFIX = '@SEARCH/';
 const APPLY_CONFIG = `${ACTION_PREFIX}APPLY_CONFIG`;
 const CLEAR_FILTERS = `${ACTION_PREFIX}CLEAR_FILTERS`;
 const DO_SEARCH = `${ACTION_PREFIX}DO_SEARCH`;
+const EXECUTE_FEATURED_SEARCH = `${ACTION_PREFIX}EXECUTE_FEATURED_SEARCH`;
 const EXECUTE_SEARCH = `${ACTION_PREFIX}EXECUTE_SEARCH`;
+const EXECUTE_SEARCH_DENIED = `${ACTION_PREFIX}EXECUTE_SEARCH_DENIED`;
 const EXECUTE_SEARCH_ERROR = `${ACTION_PREFIX}EXECUTE_SEARCH_ERROR`;
 const EXECUTE_SEARCH_PRELOAD = `${ACTION_PREFIX}EXECUTE_SEARCH_PRELOAD`;
 const LOAD_FILTERS = `${ACTION_PREFIX}LOAD_FILTERS`;
@@ -31,7 +33,6 @@ const LOAD_FILTERS_COMPLETE = `${ACTION_PREFIX}LOAD_FILTERS_COMPLETE`;
 const LOAD_FILTERS_ERROR = `${ACTION_PREFIX}LOAD_FILTERS_ERROR`;
 const SET_FEATURED_ENTRIES = `${ACTION_PREFIX}SET_FEATURED_ENTRIES`;
 const SET_ROUTE_FILTERS = `${ACTION_PREFIX}SET_ROUTE_FILTERS`;
-const SET_SEARCH_FILTERS = `${ACTION_PREFIX}SET_SEARCH_FILTERS`;
 const SET_SEARCH_ENTRIES = `${ACTION_PREFIX}SET_SEARCH_ENTRIES`;
 const SET_SELECTED_FILTER = `${ACTION_PREFIX}SET_SELECTED_FILTER`;
 const UPDATE_CURRENT_FACET = `${ACTION_PREFIX}UPDATE_CURRENT_FACET`;
@@ -46,7 +47,9 @@ var types = /*#__PURE__*/Object.freeze({
   APPLY_CONFIG: APPLY_CONFIG,
   CLEAR_FILTERS: CLEAR_FILTERS,
   DO_SEARCH: DO_SEARCH,
+  EXECUTE_FEATURED_SEARCH: EXECUTE_FEATURED_SEARCH,
   EXECUTE_SEARCH: EXECUTE_SEARCH,
+  EXECUTE_SEARCH_DENIED: EXECUTE_SEARCH_DENIED,
   EXECUTE_SEARCH_ERROR: EXECUTE_SEARCH_ERROR,
   EXECUTE_SEARCH_PRELOAD: EXECUTE_SEARCH_PRELOAD,
   LOAD_FILTERS: LOAD_FILTERS,
@@ -54,7 +57,6 @@ var types = /*#__PURE__*/Object.freeze({
   LOAD_FILTERS_ERROR: LOAD_FILTERS_ERROR,
   SET_FEATURED_ENTRIES: SET_FEATURED_ENTRIES,
   SET_ROUTE_FILTERS: SET_ROUTE_FILTERS,
-  SET_SEARCH_FILTERS: SET_SEARCH_FILTERS,
   SET_SEARCH_ENTRIES: SET_SEARCH_ENTRIES,
   SET_SELECTED_FILTER: SET_SELECTED_FILTER,
   UPDATE_CURRENT_FACET: UPDATE_CURRENT_FACET,
@@ -69,30 +71,34 @@ const withMappers = (action, mappers) => {
   return { ...action,
     mappers
   };
-}; // export const withMappers2 = (actionFunc, args, mappers) => {
-//   return () => ({ ...actionFunc(args), mappers });
-// };
-
+};
+const withMappers2 = (actionFunc, args, mappers) => {
+  return () => ({ ...actionFunc(args),
+    mappers
+  });
+};
 const triggerSearch = ({
   config,
   context,
-  debug,
   defaultLang,
-  excludeIds,
   facet,
   mapper,
-  params
+  mappers,
+  params,
+  excludeIds,
+  debug
 }) => {
   return {
     type: DO_SEARCH,
     config,
     context,
-    debug,
     defaultLang,
-    excludeIds,
     facet,
     mapper,
-    params
+    mappers,
+    params,
+    excludeIds,
+    debug
   };
 };
 const initListing = ({
@@ -163,6 +169,7 @@ const updateSortOrder = (orderBy, facet) => {
 var actions = /*#__PURE__*/Object.freeze({
   __proto__: null,
   withMappers: withMappers,
+  withMappers2: withMappers2,
   triggerSearch: triggerSearch,
   initListing: initListing,
   navigate: navigate,
@@ -175,65 +182,126 @@ var actions = /*#__PURE__*/Object.freeze({
   updateSortOrder: updateSortOrder
 });
 
-let Context; // export type Context = 'facets' | 'listings' | 'minilist';
+const Context = {
+  facets: 'facets',
+  listings: 'listings',
+  minilist: 'minilist'
+};
+const entries = Map({
+  isLoading: false,
+  isError: false,
+  items: List()
+});
+const pagingInfo = Map({
+  isLoading: false,
+  pageCount: 0,
+  pageIndex: 0,
+  pageSize: 0,
+  pagesLoaded: List(),
+  prevPageIndex: 0,
+  totalCount: 0
+});
+const searchFacet = OrderedMap({
+  title: null,
+  featuredEntries: entries,
+  featuredResults: List(),
+  entries,
+  results: List(),
+  queryParams: Map(),
+  filters: Map(),
+  queryDuration: 0,
+  pagingInfo
+});
+const filtering = Map({
+  isLoading: false,
+  isError: false,
+  isGrouped: false,
+  title: null,
+  contentTypeId: null,
+  customWhere: List(),
+  fieldId: null,
+  items: List()
+});
+const filterItem = Map({
+  key: null,
+  type: null,
+  title: null,
+  path: null,
+  isSelected: false
+});
+const initialState = OrderedMap({
+  currentFacet: null,
+  term: '',
+  facets: OrderedMap(),
+  tabs: List(),
+  config: Map({
+    isLoaded: false,
+    isError: false
+  })
+});
 
-(function (Context) {
-  Context["facets"] = "facets";
-  Context["listings"] = "listings";
-  Context["minilist"] = "minilist";
-})(Context || (Context = {}));
+var schema = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  Context: Context,
+  entries: entries,
+  pagingInfo: pagingInfo,
+  searchFacet: searchFacet,
+  filtering: filtering,
+  filterItem: filterItem,
+  initialState: initialState
+});
 
 const getSearchContext = state => state.getIn(['search', 'context'], Context.facets);
-const getCurrent = (state, context = Context.facets) => context === Context.facets ? getCurrentFacet(state) : getCurrentListing(state);
+const getCurrent = (state, context = Context.facets) => context == Context.facets ? getCurrentFacet(state) : getCurrentListing(state);
 const getCurrentFacet = state => state.getIn(['search', 'currentFacet']);
 const getCurrentListing = state => state.getIn(['search', 'currentListing']);
 const getCurrentTab = state => state.getIn(['search', Context.facets, getCurrentFacet(state), 'tabId'], 0);
-const getFacets = state => state.getIn(['search', Context.facets], OrderedMap());
+const getFacets = state => state.getIn(['search', Context.facets], Map());
 const getTabFacets = state => getFacets(state).filter((v, key) => getFacets(state).getIn([key, 'tabId'], 0) === getCurrentTab(state));
-const getFacetTitles = state => getFacets(state).map((facet = Map(), key) => ({
+const getFacetTitles = state => getFacets(state).map((facet, key) => ({
   key,
   title: facet.get('title'),
   totalCount: facet.getIn(['pagingInfo', 'totalCount'])
 })).toIndexedSeq().toArray();
-const getFacet = (state, facetName = '', context = Context.facets) => {
+const getFacet = (state, facetName, context = Context.facets) => {
   const currentFacet = facetName || getCurrentFacet(state);
   return state.getIn(['search', context, currentFacet], Map());
 };
-const getListing = (state, listing = '') => {
+const getListing = (state, listing) => {
   const currentListing = listing || getCurrentListing(state);
   return state.getIn(['search', Context.listings, currentListing], Map());
 };
 const getFilters = (state, facet, context = Context.facets) => {
   return state.getIn(['search', context, facet || getCurrent(state, context), 'filters'], Map());
 };
-const getRenderableFilters = (state, facet = '', context = Context.facets) => getFilters(state, facet, context).filter((f = Map()) => f.get('renderable') || true);
+const getRenderableFilters = (state, facet, context = Context.facets) => getFilters(state, facet, context).filter(f => f.get('renderable', true));
 const getFiltersToLoad = (state, facet, context = Context.facets) => {
   const filters = getFilters(state, facet, context);
-  const loadedFilters = filters.map((f = Map()) => (f.get('items') || List()).filter(i => {
-    const title = i === null || i === void 0 ? void 0 : i.get('title');
-    return typeof title !== 'undefined' && !!title;
+  const loadedFilters = filters.map(f => f.get('items', List()).filter(i => {
+    const title = i.get('title');
+    return title !== null && title;
   }).size > 0 && f.get('isError', false) === false);
-  return loadedFilters.map((isLoaded, filterKey) => !isLoaded ? filterKey : null).toList().filter(f => !!f);
+  return loadedFilters.map((isLoaded, filterKey) => !isLoaded ? filterKey : null).toList().filter(f => f);
 }; // We lowercase the filter key unless it's an ISO date string where the T must be uppercase
 
-const getSelectedFilters = (state, facet = '', context = Context.facets) => {
+const getSelectedFilters = (state, facet, context = Context.facets) => {
   const filters = getFilters(state, facet, context);
   const isoDateRegex = RegExp(/\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d/);
-  const selectedFilters = filters.map((filter = Map()) => (filter.get('items') || List()).filter(item => !!(item !== null && item !== void 0 && item.get('isSelected', false))).map(item => {
-    const key = item === null || item === void 0 ? void 0 : item.get('key', '');
+  const selectedFilters = filters.map(value => value.get('items', List()).filter(item => item.get('isSelected', false)).map(item => {
+    const key = item.get('key', '');
     const isIsoDate = isoDateRegex.test(key);
     return isIsoDate ? key : key.toLowerCase();
   }));
   return selectedFilters;
 };
-const getResults = (state, current = '', context = Context.facets) => {
+const getResults = (state, current, context = Context.facets) => {
   return state.getIn(['search', context, current || getCurrent(state, context), 'results'], List());
 };
 const getIsInternalPaging = (state, current, context = Context.facets) => {
   return state.getIn(['search', context, current || getCurrent(state, context), 'queryParams', 'internalPaging'], false);
 };
-const getIsLoaded = (state, context = Context.facets, facet) => {
-  return !!state.getIn(['search', context, facet || getCurrent(state, context), 'queryDuration'], 0);
+const getIsLoaded = (state, context = Context.facets) => {
+  return !!state.getIn(['search', context, getCurrent(state, context), 'queryDuration'], 0);
 };
 const getIsLoading = (state, context = Context.facets, facet) => {
   return state.getIn(['search', context, facet || getCurrent(state, context), 'entries', 'isLoading']);
@@ -241,25 +309,25 @@ const getIsLoading = (state, context = Context.facets, facet) => {
 const getIsSsr = state => {
   return state.getIn(['search', 'config', 'ssr'], false);
 };
-const getFeaturedResults = (state, current = '', context = Context.facets) => {
+const getFeaturedResults = (state, current, context = Context.facets) => {
   return state.getIn(['search', context, current || getCurrent(state, context), 'featuredResults'], List());
 };
-const getPaging = (state, current = '', context = Context.facets) => {
+const getPaging = (state, current, context = Context.facets) => {
   return state.getIn(['search', context, current || getCurrent(state, context), 'pagingInfo'], Map());
 };
-const getPageIndex = (state, current = '', context = Context.facets) => {
+const getPageIndex = (state, current, context = Context.facets) => {
   return state.getIn(['search', context, current || getCurrent(state, context), 'pagingInfo', 'pageIndex']);
 };
-const getPrevPageIndex = (state, current = '', context = Context.facets) => {
+const getPrevPageIndex = (state, current, context = Context.facets) => {
   return state.getIn(['search', context, current || getCurrent(state, context), 'pagingInfo', 'prevPageIndex']);
 };
-const getPageIsLoading = (state, current = '', context = Context.facets) => {
+const getPageIsLoading = (state, current, context = Context.facets) => {
   return state.getIn(['search', context, current || getCurrent(state, context), 'pagingInfo', 'isLoading']);
 };
-const getPagesLoaded = (state, current = '', context = Context.facets) => {
+const getPagesLoaded = (state, current, context = Context.facets) => {
   return state.getIn(['search', context, current || getCurrent(state, context), 'pagingInfo', 'pagesLoaded'], Set());
 };
-const getTotalCount = (state, current = '', context = Context.facets) => {
+const getTotalCount = (state, current, context = Context.facets) => {
   return state.getIn(['search', context, current || getCurrent(state, context), 'pagingInfo', 'totalCount']);
 };
 const getFacetAuthentication = (state, facet) => state.getIn(['search', Context.facets, facet, 'authentication']);
@@ -270,7 +338,7 @@ const getFeaturedEntryIds = state => {
 };
 const getSearchTerm = state => state.getIn(['search', 'term']);
 const getSearchTabs = state => state.getIn(['search', 'tabs']);
-const getQueryParams = (state, current = '', context = Context.facets) => {
+const getQueryParams = (state, current, context = Context.facets) => {
   return state.getIn(['search', context, current || getCurrent(state, context), 'queryParams'], Map());
 };
 const getQueryParameter = ({
@@ -278,7 +346,7 @@ const getQueryParameter = ({
   facet,
   context = Context.facets
 }, key, ifnull = null) => {
-  return getQueryParams(state, facet, context).get(key, ifnull) || ifnull;
+  return getQueryParams(state, facet, context).get(key, ifnull);
 };
 const getCustomApi = (state, current, context = Context.facets) => {
   return state.getIn(['search', context, current || getCurrent(state, context), 'customApi']);
@@ -289,13 +357,12 @@ const getCustomEnv = (state, current, context = Context.facets) => {
 const getTabsAndFacets = state => {
   const tabs = getSearchTabs(state);
   const facets = getFacets(state);
-  return tabs.map((tab = Map()) => {
-    const fieldsToCount = tab.get('totalCount');
-    let countFields;
-    if (typeof fieldsToCount === 'string') countFields = List([List([fieldsToCount])]);
+  return (tabs || List()).map(tab => {
+    let countFields = tab.get('totalCount');
+    if (typeof countFields === 'string') countFields = List([List([countFields])]);
     const thisTabFacets = facets.filter((v, key) => facets.getIn([key, 'tabId'], 0) === tab.get('id'));
-    const thisTabTotal = thisTabFacets.map((facet = Map(), facetName) => {
-      if (!countFields || countFields.find((f = List()) => f.first() === facetName)) return facet.getIn(['pagingInfo', 'totalCount']);
+    const thisTabTotal = thisTabFacets.map((facet, facetName) => {
+      if (!countFields || countFields.find(f => f.first() === facetName)) return facet.getIn(['pagingInfo', 'totalCount']);
       return 0;
     }).reduce((a, b) => a + b, 0);
     return tab.set(Context.facets, thisTabFacets).set('totalCount', thisTabTotal);
@@ -303,18 +370,18 @@ const getTabsAndFacets = state => {
 };
 const getSearchTotalCount = state => {
   const tabsAndFacets = getTabsAndFacets(state);
-  const wholeSearchTotal = tabsAndFacets.map((t = Map()) => t.get('totalCount')).reduce((a, b) => a + b, 0);
+  const wholeSearchTotal = tabsAndFacets.map(t => t.get('totalCount')).reduce((a, b) => a + b, 0);
   return wholeSearchTotal;
 };
 const getFacetsTotalCount = state => {
   const facets = getFacets(state);
-  const wholeSearchTotal = facets.map((t = Map()) => t.getIn(['pagingInfo', 'totalCount'])).reduce((a, b) => a + b, 0);
+  const wholeSearchTotal = facets.map(t => t.getIn(['pagingInfo', 'totalCount'])).reduce((a, b) => a + b, 0);
   return wholeSearchTotal;
 }; // An exported copy of the relevant selectors scoped by default to a facets context
 
 const selectFacets = {
   getCurrent: getCurrentFacet,
-  getCurrentTab,
+  getCurrentTab: getCurrentTab,
   getCustomApi,
   getCustomEnv,
   getFacet,
@@ -352,17 +419,17 @@ const selectFacets = {
 
 const selectListing = {
   getCurrent: getCurrentListing,
-  getFeaturedResults: (state, listing = '') => getFeaturedResults(state, listing, Context.listings),
-  getFilters: (state, listing = '') => getFilters(state, listing, Context.listings),
-  getFiltersToLoad: (state, listing = '') => getFiltersToLoad(state, listing, Context.listings),
+  getFeaturedResults: (state, listing) => getFeaturedResults(state, listing, Context.listings),
+  getFilters: (state, listing) => getFilters(state, listing, Context.listings),
+  getFiltersToLoad: (state, listing) => getFiltersToLoad(state, listing, Context.listings),
   getListing,
   getIsLoaded: state => getIsLoaded(state, Context.listings),
   getIsLoading: state => getIsLoading(state, Context.listings),
-  getPageIndex: (state, listing = '') => getPageIndex(state, listing, Context.listings),
-  getPaging: (state, listing = '') => getPaging(state, listing, Context.listings),
-  getPageIsLoading: (state, listing = '') => getPageIsLoading(state, listing, Context.listings),
-  getPagesLoaded: (state, listing = '') => getPagesLoaded(state, listing, Context.listings),
-  getQueryParams: (state, listing = '') => getQueryParams(state, listing, Context.listings),
+  getPageIndex: (state, listing) => getPageIndex(state, listing, Context.listings),
+  getPaging: (state, listing) => getPaging(state, listing, Context.listings),
+  getPageIsLoading: (state, listing) => getPageIsLoading(state, listing, Context.listings),
+  getPagesLoaded: (state, listing) => getPagesLoaded(state, listing, Context.listings),
+  getQueryParams: (state, listing) => getQueryParams(state, listing, Context.listings),
   getQueryParameter: ({
     state,
     facet
@@ -371,11 +438,11 @@ const selectListing = {
     facet,
     context: Context.listings
   }, key, ifnull),
-  getRenderableFilters: (state, listing = '') => getRenderableFilters(state, listing, Context.listings),
-  getResults: (state, listing = '') => getResults(state, listing, Context.listings),
+  getRenderableFilters: (state, listing) => getRenderableFilters(state, listing, Context.listings),
+  getResults: (state, listing) => getResults(state, listing, Context.listings),
   getSearchTerm,
-  getTotalCount: (state, listing = '') => getTotalCount(state, listing, Context.listings),
-  getSelectedFilters: (state, listing = '') => getSelectedFilters(state, listing, Context.listings)
+  getTotalCount: (state, listing) => getTotalCount(state, listing, Context.listings),
+  getSelectedFilters: (state, listing) => getSelectedFilters(state, listing, Context.listings)
 };
 
 var selectors = /*#__PURE__*/Object.freeze({
@@ -421,36 +488,37 @@ var selectors = /*#__PURE__*/Object.freeze({
   selectListing: selectListing
 });
 
-/* eslint-disable @typescript-eslint/naming-convention */
 const withSearch = mappers => SearchComponent => {
   const Wrapper = props => {
     return /*#__PURE__*/React.createElement(SearchComponent, props);
   };
 
-  Wrapper.displayName = `withSearch(${SearchComponent.displayName || SearchComponent.name})`; // Wrapper.propTypes = {
-  //   className: PropTypes.string,
-  //   clearFilters: PropTypes.func,
-  //   currentFacet: PropTypes.string,
-  //   currentPageIndex: PropTypes.number,
-  //   currentTabIndex: PropTypes.number,
-  //   facet: PropTypes.object,
-  //   facets: PropTypes.object,
-  //   featuredResults: PropTypes.array,
-  //   filters: PropTypes.object,
-  //   isLoading: PropTypes.bool,
-  //   paging: PropTypes.object,
-  //   pageIsLoading: PropTypes.bool,
-  //   results: PropTypes.array,
-  //   resultsInfo: PropTypes.object,
-  //   searchTerm: PropTypes.string,
-  //   sortOrder: PropTypes.array,
-  //   tabsAndFacets: PropTypes.array,
-  //   updateCurrentFacet: PropTypes.func,
-  //   updateCurrentTab: PropTypes.func,
-  //   updateSearchTerm: PropTypes.func,
-  //   updateSelectedFilters: PropTypes.func,
-  //   updateSortOrder: PropTypes.func,
-  // };
+  Wrapper.displayName = `withSearch(${SearchComponent.displayName || SearchComponent.name})`;
+  Wrapper.propTypes = {
+    className: PropTypes.string,
+    clearFilters: PropTypes.func,
+    currentFacet: PropTypes.string,
+    currentPageIndex: PropTypes.number,
+    currentTabIndex: PropTypes.number,
+    entry: PropTypes.object,
+    facet: PropTypes.object,
+    facets: PropTypes.object,
+    featuredResults: PropTypes.array,
+    filters: PropTypes.object,
+    isLoading: PropTypes.bool,
+    results: PropTypes.array,
+    resultsInfo: PropTypes.object,
+    paging: PropTypes.object,
+    pageIsLoading: PropTypes.bool,
+    searchTerm: PropTypes.string,
+    sortOrder: PropTypes.array,
+    tabsAndFacets: PropTypes.array,
+    updateCurrentFacet: PropTypes.func,
+    updateCurrentTab: PropTypes.func,
+    updateSearchTerm: PropTypes.func,
+    updateSelectedFilters: PropTypes.func,
+    updateSortOrder: PropTypes.func
+  };
 
   const mapStateToProps = state => {
     return {
@@ -467,7 +535,7 @@ const withSearch = mappers => SearchComponent => {
       paging: getPaging(state),
       pageIsLoading: getPageIsLoading(state),
       results: getResults(state),
-      resultsInfo: (mappers === null || mappers === void 0 ? void 0 : mappers.resultsInfo) && mappers.resultsInfo(state),
+      resultsInfo: mappers.resultsInfo(state),
       searchTerm: getSearchTerm(state),
       searchTotalCount: getSearchTotalCount(state),
       sortOrder: getQueryParameter({
@@ -489,8 +557,6 @@ const withSearch = mappers => SearchComponent => {
   };
   return connect(mapStateToProps, mapDispatchToProps)(toJS(Wrapper));
 };
-
-/* eslint-disable @typescript-eslint/naming-convention */
 
 const withListing = mappers => ListingComponent => {
   const Wrapper = props => {
@@ -600,12 +666,12 @@ const getClientConfig = (project, env) => {
   if (typeof window != 'undefined' && PROXY_DELIVERY_API
   /* global PROXY_DELIVERY_API */
   ) {
-      // ensure a relative url is used to bypass the need for CORS (separate OPTIONS calls)
-      config.rootUrl = env || '';
-      config.responseHandler = {
-        404: () => null
-      };
-    }
+    // ensure a relative url is used to bypass the need for CORS (separate OPTIONS calls)
+    config.rootUrl = env || '';
+    config.responseHandler = {
+      404: () => null
+    };
+  }
 
   return config;
 };
@@ -780,14 +846,24 @@ const now = () => {
   return window.performance.now();
 };
 
+const buildUrl = (route, params) => {
+  const qs = queryString.stringify(params);
+  const path = qs ? `${route}?${qs}` : route;
+  return path;
+};
+const clientHostname = () => `${window.location.protocol}//${window.location.hostname}:${window.location.port}`;
+const addHostname = typeof window == 'undefined' || window.location.host == 'localhost:3000' ? `https://${PUBLIC_URI
+/* global PUBLIC_URI */
+}` : clientHostname();
+
 function fixFreeTextForElastic(s) {
-  const illegalChars = ['>', '<', '=', '|', '!', '{', '}', '[', ']', '^', '~', '*', '?', ':', '\\', '/'];
-  const illegalRegEx = new RegExp(illegalChars.map(c => '\\' + c).join('|'), 'g');
+  let illegalChars = ['>', '<', '=', '|', '!', '{', '}', '[', ']', '^', '~', '*', '?', ':', '\\', '/'];
+  let illegalRegEx = new RegExp(illegalChars.map(c => '\\' + c).join('|'), 'g');
   s = s.replace(illegalRegEx, ''); // s = s.replace(encodedRegEx, ''); // (m) => '\\\\' + m);
 
   return s;
 }
-const timedSearch = async (query, linkDepth = 0, projectId, env) => {
+const timedSearch = async (query, linkDepth, projectId, env) => {
   if (!query) return null;
   let duration = 0;
   const start = now();
@@ -815,944 +891,15 @@ const extractQuotedPhrases = searchTerm => {
   const pattern = new RegExp(/(?=["'])(?:"[^"\\]*(?:\\[\s\S][^"\\]*)*"|'[^'\\]*(?:\\[\s\S][^'\\]*)*')/gm);
   return (searchTerm.match(pattern) || []).map(match => match.replace(/"/g, ''));
 };
-const buildUrl = (route, params) => {
-  const qs = queryString.stringify(params);
-  const path = qs ? `${route}?${qs}` : route;
-  return path;
-};
 const callCustomApi = async (customApi, filters) => {
-  const apiUri = customApi.get('uri', '');
-  let uri = buildUrl(apiUri, filters);
-  if (!uri) throw new Error('uri is required to use customApi');
+  let uri = buildUrl(customApi.get('uri'), filters);
+  if (!uri) return null;
   if (typeof window == 'undefined' && uri.startsWith('/')) uri = `http://localhost:3001${uri}`;
   const response = await fetch(uri);
   return await response.json();
 };
 
-function createCommonjsModule(fn, basedir, module) {
-	return module = {
-	  path: basedir,
-	  exports: {},
-	  require: function (path, base) {
-      return commonjsRequire(path, (base === undefined || base === null) ? module.path : base);
-    }
-	}, fn(module, module.exports), module.exports;
-}
-
-function commonjsRequire () {
-	throw new Error('Dynamic requires are not currently supported by @rollup/plugin-commonjs');
-}
-
-/*! *****************************************************************************
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the Apache License, Version 2.0 (the "License"); you may not use
-this file except in compliance with the License. You may obtain a copy of the
-License at http://www.apache.org/licenses/LICENSE-2.0
-
-THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
-WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
-MERCHANTABLITY OR NON-INFRINGEMENT.
-
-See the Apache Version 2.0 License for specific language governing permissions
-and limitations under the License.
-***************************************************************************** */
-/* global Reflect, Promise */
-
-var extendStatics = function(d, b) {
-    extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return extendStatics(d, b);
-};
-
-function __extends(d, b) {
-    extendStatics(d, b);
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-}
-
-var __assign = function() {
-    __assign = Object.assign || function __assign(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
-
-function __rest(s, e) {
-    var t = {};
-    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
-        t[p] = s[p];
-    if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
-                t[p[i]] = s[p[i]];
-        }
-    return t;
-}
-
-function __decorate(decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-}
-
-function __param(paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-}
-
-function __metadata(metadataKey, metadataValue) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(metadataKey, metadataValue);
-}
-
-function __awaiter(thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-}
-
-function __generator(thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-}
-
-function __exportStar(m, exports) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
-
-function __values(o) {
-    var m = typeof Symbol === "function" && o[Symbol.iterator], i = 0;
-    if (m) return m.call(o);
-    return {
-        next: function () {
-            if (o && i >= o.length) o = void 0;
-            return { value: o && o[i++], done: !o };
-        }
-    };
-}
-
-function __read(o, n) {
-    var m = typeof Symbol === "function" && o[Symbol.iterator];
-    if (!m) return o;
-    var i = m.call(o), r, ar = [], e;
-    try {
-        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
-    }
-    catch (error) { e = { error: error }; }
-    finally {
-        try {
-            if (r && !r.done && (m = i["return"])) m.call(i);
-        }
-        finally { if (e) throw e.error; }
-    }
-    return ar;
-}
-
-function __spread() {
-    for (var ar = [], i = 0; i < arguments.length; i++)
-        ar = ar.concat(__read(arguments[i]));
-    return ar;
-}
-
-function __spreadArrays() {
-    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
-    for (var r = Array(s), k = 0, i = 0; i < il; i++)
-        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
-            r[k] = a[j];
-    return r;
-}
-function __await(v) {
-    return this instanceof __await ? (this.v = v, this) : new __await(v);
-}
-
-function __asyncGenerator(thisArg, _arguments, generator) {
-    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
-    var g = generator.apply(thisArg, _arguments || []), i, q = [];
-    return i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i;
-    function verb(n) { if (g[n]) i[n] = function (v) { return new Promise(function (a, b) { q.push([n, v, a, b]) > 1 || resume(n, v); }); }; }
-    function resume(n, v) { try { step(g[n](v)); } catch (e) { settle(q[0][3], e); } }
-    function step(r) { r.value instanceof __await ? Promise.resolve(r.value.v).then(fulfill, reject) : settle(q[0][2], r); }
-    function fulfill(value) { resume("next", value); }
-    function reject(value) { resume("throw", value); }
-    function settle(f, v) { if (f(v), q.shift(), q.length) resume(q[0][0], q[0][1]); }
-}
-
-function __asyncDelegator(o) {
-    var i, p;
-    return i = {}, verb("next"), verb("throw", function (e) { throw e; }), verb("return"), i[Symbol.iterator] = function () { return this; }, i;
-    function verb(n, f) { i[n] = o[n] ? function (v) { return (p = !p) ? { value: __await(o[n](v)), done: n === "return" } : f ? f(v) : v; } : f; }
-}
-
-function __asyncValues(o) {
-    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
-    var m = o[Symbol.asyncIterator], i;
-    return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i);
-    function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
-    function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
-}
-
-function __makeTemplateObject(cooked, raw) {
-    if (Object.defineProperty) { Object.defineProperty(cooked, "raw", { value: raw }); } else { cooked.raw = raw; }
-    return cooked;
-}
-function __importStar(mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result.default = mod;
-    return result;
-}
-
-function __importDefault(mod) {
-    return (mod && mod.__esModule) ? mod : { default: mod };
-}
-
-var tslib_es6 = /*#__PURE__*/Object.freeze({
-  __proto__: null,
-  __extends: __extends,
-  get __assign () { return __assign; },
-  __rest: __rest,
-  __decorate: __decorate,
-  __param: __param,
-  __metadata: __metadata,
-  __awaiter: __awaiter,
-  __generator: __generator,
-  __exportStar: __exportStar,
-  __values: __values,
-  __read: __read,
-  __spread: __spread,
-  __spreadArrays: __spreadArrays,
-  __await: __await,
-  __asyncGenerator: __asyncGenerator,
-  __asyncDelegator: __asyncDelegator,
-  __asyncValues: __asyncValues,
-  __makeTemplateObject: __makeTemplateObject,
-  __importStar: __importStar,
-  __importDefault: __importDefault
-});
-
-// Only Node.JS has a process variable that is of [[Class]] process
-var detectNode = Object.prototype.toString.call(typeof process !== 'undefined' ? process : 0) === '[object process]';
-
-var utils = createCommonjsModule(function (module, exports) {
-Object.defineProperty(exports, "__esModule", { value: true });
-
-function hasProp(o, key) {
-    return !!o && typeof o[key] !== 'undefined';
-}
-exports.hasProp = hasProp;
-function toQuery(values) {
-    var keys = Object.keys(values)
-        .filter(function (key) { return key && (values[key] !== null) && (values[key] !== ''); });
-    keys.sort(); // sort keys for easier testing
-    var query = keys
-        .map(function (key) { return encodeURIComponent(key) + '=' + encodeURIComponent(values[key]); });
-    return (query.length > 0)
-        ? '?' + query.join('&')
-        : '';
-}
-exports.toQuery = toQuery;
-function isString(obj) {
-    return typeof obj === 'string' || obj instanceof String;
-}
-exports.isString = isString;
-/** Checks if the runtime context is a browser */
-function isBrowser() {
-    return typeof window !== 'undefined';
-}
-exports.isBrowser = isBrowser;
-/**
- * Checks if the current browser is IE.
- *
- * Support: IE 9-11 only
- * documentMode is an IE-only property
- * http://msdn.microsoft.com/en-us/library/ie/cc196988(v=vs.85).aspx
- */
-function isIE() {
-    var msie; // holds major version number for IE, or NaN if UA is not IE.
-    msie = (window && window.document && window.document.documentMode) ? window.document.documentMode : null;
-    return !!msie && msie <= 11;
-}
-exports.isIE = isIE;
-/** Checks if the runtime context is Node.js */
-function isNodejs() {
-    return detectNode;
-}
-exports.isNodejs = isNodejs;
-exports.defaultMapperForLanguage = function (value, options, params) {
-    return !value && !!params ? params.language : value;
-};
-exports.defaultMapperForPublishedVersionStatus = function (value, options, params) {
-    return (value === 'published') ? null : value;
-};
-exports.defaultMapperForLatestVersionStatus = function (value, options, params) {
-    return (value === 'latest') ? null : value;
-};
-});
-
-var httpClient = createCommonjsModule(function (module, exports) {
-Object.defineProperty(exports, "__esModule", { value: true });
-
-var HttpClient = /** @class */ (function () {
-    function HttpClient(paramsProvider, fetchFn) {
-        this.paramsProvider = paramsProvider;
-        this.fetchFn = fetchFn;
-    }
-    HttpClient.prototype.request = function (url, request) {
-        if (request === void 0) { request = {}; }
-        var params = this.paramsProvider.getParams();
-        var isRelativeRequestUrl = !params.rootUrl || params.rootUrl === '/';
-        if (!utils.isBrowser() && isRelativeRequestUrl) {
-            throw new Error('You cannot specify a relative root url if not in a browser context.');
-        }
-        request.method = request.method || (!!request.body ? 'POST' : 'GET');
-        if (!isRelativeRequestUrl) {
-            request.mode = 'cors';
-        }
-        request.headers = request.headers || {};
-        var headers = request.headers;
-        if (!headers.accessToken && !!params.accessToken) {
-            headers.accessToken = params.accessToken;
-        }
-        if (params.clientType === 'none' && !headers.accessToken) {
-            throw new Error("If the property clientType is set to \"" + params.clientType + "\" then the property accessToken must be provided.");
-        }
-        if (params.clientType === 'client_credentials' && !params.clientDetails) {
-            throw new Error("If the property client type is set to \"" + params.clientType + "\" then the property clientDetails must be set to a ClientCredentialsGrant value.");
-        }
-        if (!!params.defaultHeaders) {
-            var keys = Object.keys(params.defaultHeaders);
-            keys.forEach(function (key) {
-                if (!headers[key] && !!params.defaultHeaders[key]) {
-                    headers[key] = params.defaultHeaders[key];
-                }
-            });
-        }
-        var requestUrl = isRelativeRequestUrl ? "" + url : "" + params.rootUrl + url;
-        return this.fetchFn(requestUrl, request)
-            .then(function (response) {
-            var responseHandlerFunction = null;
-            if (!!params.responseHandler) {
-                if (!!params.responseHandler['*']) {
-                    responseHandlerFunction = params.responseHandler['*'];
-                }
-                if (!!params.responseHandler[response.status]) {
-                    responseHandlerFunction = params.responseHandler[response.status];
-                }
-            }
-            var responseContext = {
-                status: response.status,
-                statusText: response.statusText,
-                url: response.url,
-                data: null
-            };
-            return response
-                .text()
-                .then(function (text) {
-                return !!text && text.length && text.length > 0 ? JSON.parse(text) : {};
-            })
-                .then(function (result) {
-                responseContext.data = result;
-                if (response.ok) {
-                    if (!!responseHandlerFunction) {
-                        responseHandlerFunction(response, responseContext);
-                    }
-                    return result;
-                }
-                return !!responseHandlerFunction ?
-                    responseHandlerFunction(response, responseContext)
-                    : Promise.reject(responseContext);
-            }, function (reason) {
-                responseContext.data = reason;
-                return !!responseHandlerFunction ?
-                    responseHandlerFunction(response, responseContext)
-                    : Promise.reject(responseContext);
-            });
-        })
-            .then(function (result) { return result; });
-    };
-    return HttpClient;
-}());
-exports.HttpClient = HttpClient;
-});
-
-var urlBuilder = createCommonjsModule(function (module, exports) {
-Object.defineProperty(exports, "__esModule", { value: true });
-
-
-var UrlBuilder = /** @class */ (function () {
-    function UrlBuilder(url, query) {
-        this.url = url;
-        this.query = query;
-        this.paramMatcher = /(:\b\D\w*)/g;
-        this.options = {};
-        this.mappers = {};
-    }
-    UrlBuilder.create = function (url, query) {
-        if (query === void 0) { query = null; }
-        return new UrlBuilder(url, query);
-    };
-    UrlBuilder.prototype.addOptions = function (options, defaultParamName) {
-        if (defaultParamName === void 0) { defaultParamName = null; }
-        if (utils.isString(options) && !!defaultParamName) {
-            this.options[defaultParamName] = options;
-        }
-        else {
-            this.options = tslib_es6.__assign({}, this.options, options);
-        }
-        return this;
-    };
-    UrlBuilder.prototype.setParams = function (clientParams) {
-        this.clientParams = clientParams;
-        return this;
-    };
-    UrlBuilder.prototype.addMappers = function (mappers) {
-        var _this = this;
-        if (mappers) {
-            Object.keys(mappers).forEach(function (key) {
-                _this.mappers[key] = mappers[key];
-            });
-        }
-        return this;
-    };
-    UrlBuilder.prototype.toUrl = function () {
-        var _this = this;
-        var namedParams = {};
-        var urlTemplate = typeof this.url === 'function' ? this.url(this.options, this.clientParams) : this.url;
-        var paramNames = urlTemplate.match(this.paramMatcher);
-        if (paramNames) {
-            paramNames.forEach(function (paramName) {
-                var key = paramName.substring(1);
-                var value = null;
-                if (utils.hasProp(_this.options, key)
-                    && _this.options[key] !== null) {
-                    value = _this.options[key];
-                }
-                else if (utils.hasProp(_this.clientParams, key)
-                    && _this.clientParams[key] !== null) {
-                    value = _this.clientParams[key];
-                }
-                var mapperValue = null;
-                if (_this.mappers[paramName]) {
-                    mapperValue = _this.mappers[paramName](value, _this.options, _this.clientParams);
-                }
-                namedParams[paramName] = mapperValue !== null ? mapperValue : value;
-            });
-        }
-        var query = {};
-        if (this.query) {
-            query = tslib_es6.__assign({}, this.query);
-            Object.keys(this.query).forEach(function (paramName) {
-                var value = query[paramName];
-                if (utils.hasProp(_this.options, paramName)
-                    && _this.options[paramName] !== null) {
-                    value = _this.options[paramName];
-                }
-                else if (utils.hasProp(_this.clientParams, paramName)
-                    && _this.clientParams[paramName] !== null) {
-                    value = _this.clientParams[paramName];
-                }
-                query[paramName] = _this.mappers[paramName] ?
-                    _this.mappers[paramName](value, _this.options, _this.clientParams) : value;
-            });
-        }
-        var url = Object.keys(namedParams)
-            .reduce(function (url, key) { return url.replace(key, namedParams[key]); }, urlTemplate);
-        var queryString = utils.toQuery(query);
-        return "" + url + queryString;
-    };
-    return UrlBuilder;
-}());
-exports.UrlBuilder = UrlBuilder;
-});
-
-var http = createCommonjsModule(function (module, exports) {
-Object.defineProperty(exports, "__esModule", { value: true });
-
-tslib_es6.__exportStar(httpClient, exports);
-tslib_es6.__exportStar(urlBuilder, exports);
-});
-
-var errors = createCommonjsModule(function (module, exports) {
-Object.defineProperty(exports, "__esModule", { value: true });
-
-var ContensisApplicationError = /** @class */ (function (_super) {
-    tslib_es6.__extends(ContensisApplicationError, _super);
-    function ContensisApplicationError(message) {
-        var _newTarget = this.constructor;
-        var _this = _super.call(this, message) || this;
-        _this.name = 'ContensisApplicationError';
-        Object.setPrototypeOf(_this, _newTarget.prototype);
-        return _this;
-    }
-    return ContensisApplicationError;
-}(Error));
-exports.ContensisApplicationError = ContensisApplicationError;
-var ContensisAuthenticationError = /** @class */ (function (_super) {
-    tslib_es6.__extends(ContensisAuthenticationError, _super);
-    function ContensisAuthenticationError(message) {
-        var _newTarget = this.constructor;
-        var _this = _super.call(this, message) || this;
-        _this.name = 'ContensisAuthenticationError';
-        Object.setPrototypeOf(_this, _newTarget.prototype);
-        return _this;
-    }
-    return ContensisAuthenticationError;
-}(Error));
-exports.ContensisAuthenticationError = ContensisAuthenticationError;
-});
-
-var query = createCommonjsModule(function (module, exports) {
-Object.defineProperty(exports, "__esModule", { value: true });
-
-var ExpressionValueTypeEnum = {
-    Single: 'single',
-    Array: 'array',
-    Unknown: 'unknown'
-};
-var OperatorTypeEnum = {
-    And: 'and',
-    Between: 'between',
-    Contains: 'contains',
-    EndsWith: 'endsWith',
-    EqualTo: 'equalTo',
-    Exists: 'exists',
-    FreeText: 'freeText',
-    GreaterThan: 'greaterThan',
-    GreaterThanOrEqualTo: 'greaterThanOrEqualTo',
-    In: 'in',
-    LessThan: 'lessThan',
-    LessThanOrEqualTo: 'lessThanOrEqualTo',
-    Not: 'not',
-    Or: 'or',
-    StartsWith: 'startsWith',
-    Where: 'where',
-    DistanceWithin: 'distanceWithin'
-};
-var ExpressionBase = /** @class */ (function () {
-    function ExpressionBase(fieldName, values, operatorName, valueType) {
-        if (values === void 0) { values = []; }
-        this.fieldName = fieldName;
-        this.values = values;
-        this.operatorName = operatorName;
-        this.valueType = valueType;
-        this._weight = 0;
-    }
-    ExpressionBase.prototype.addValue = function (value) {
-        this.values[this.values.length] = value;
-        return this;
-    };
-    ExpressionBase.prototype.weight = function (weight) {
-        this._weight = weight;
-        return this;
-    };
-    ExpressionBase.prototype.toJSON = function () {
-        var result = {};
-        if (this.fieldName) {
-            result.field = this.fieldName;
-        }
-        if (this.valueType === ExpressionValueTypeEnum.Single) {
-            result[this.operatorName] = this.values[0];
-        }
-        else if (this.valueType === ExpressionValueTypeEnum.Array) {
-            result[this.operatorName] = this.values;
-        }
-        else if (this.values && (this.values.length === 1)) {
-            result[this.operatorName] = this.values[0];
-        }
-        else {
-            result[this.operatorName] = this.values;
-        }
-        if (this._weight && (this._weight > 1)) {
-            result.weight = this._weight;
-        }
-        return result;
-    };
-    return ExpressionBase;
-}());
-exports.ExpressionBase = ExpressionBase;
-var LogicalExpression = /** @class */ (function (_super) {
-    tslib_es6.__extends(LogicalExpression, _super);
-    function LogicalExpression(values, operatorName, valueType) {
-        if (values === void 0) { values = []; }
-        return _super.call(this, null, values, operatorName, ExpressionValueTypeEnum.Array) || this;
-    }
-    LogicalExpression.prototype.getItem = function (index) {
-        return this.values[index];
-    };
-    LogicalExpression.prototype.setItem = function (index, item) {
-        this.values[index] = item;
-        return this;
-    };
-    LogicalExpression.prototype.add = function (item) {
-        this.values[this.values.length] = item;
-        return this;
-    };
-    LogicalExpression.prototype.addRange = function (items) {
-        Array.prototype.push.apply(this.values, items);
-        return this;
-    };
-    LogicalExpression.prototype.indexOf = function (item) {
-        return this.values.indexOf(item);
-    };
-    LogicalExpression.prototype.insert = function (index, item) {
-        this.values.splice(index, 0, item);
-        return this;
-    };
-    LogicalExpression.prototype.remove = function (item) {
-        var index = this.indexOf(item);
-        if (index >= 0) {
-            this.removeAt(index);
-            return true;
-        }
-        return false;
-    };
-    LogicalExpression.prototype.removeAt = function (index) {
-        this.values.splice(index, 1);
-        return this;
-    };
-    LogicalExpression.prototype.clear = function () {
-        this.values.length = 0;
-        return this;
-    };
-    LogicalExpression.prototype.contains = function (item) {
-        return (this.indexOf(item) >= 0);
-    };
-    LogicalExpression.prototype.count = function () {
-        return this.values.length;
-    };
-    return LogicalExpression;
-}(ExpressionBase));
-exports.LogicalExpression = LogicalExpression;
-var AndExpression = /** @class */ (function (_super) {
-    tslib_es6.__extends(AndExpression, _super);
-    function AndExpression(values) {
-        return _super.call(this, values, OperatorTypeEnum.And, ExpressionValueTypeEnum.Array) || this;
-    }
-    return AndExpression;
-}(LogicalExpression));
-var BetweenExpression = /** @class */ (function (_super) {
-    tslib_es6.__extends(BetweenExpression, _super);
-    function BetweenExpression(fieldName, minimum, maximum) {
-        return _super.call(this, fieldName, [minimum, maximum], OperatorTypeEnum.Between, ExpressionValueTypeEnum.Array) || this;
-    }
-    return BetweenExpression;
-}(ExpressionBase));
-var NotExpression = /** @class */ (function (_super) {
-    tslib_es6.__extends(NotExpression, _super);
-    function NotExpression(value) {
-        return _super.call(this, [value], OperatorTypeEnum.Not, ExpressionValueTypeEnum.Single) || this;
-    }
-    return NotExpression;
-}(LogicalExpression));
-var OrExpression = /** @class */ (function (_super) {
-    tslib_es6.__extends(OrExpression, _super);
-    function OrExpression(values) {
-        return _super.call(this, values, OperatorTypeEnum.Or, ExpressionValueTypeEnum.Array) || this;
-    }
-    return OrExpression;
-}(LogicalExpression));
-var ContainsExpression = /** @class */ (function (_super) {
-    tslib_es6.__extends(ContainsExpression, _super);
-    function ContainsExpression(fieldName, value) {
-        return _super.call(this, fieldName, [value], OperatorTypeEnum.Contains, ExpressionValueTypeEnum.Single) || this;
-    }
-    return ContainsExpression;
-}(ExpressionBase));
-var EndsWithExpression = /** @class */ (function (_super) {
-    tslib_es6.__extends(EndsWithExpression, _super);
-    function EndsWithExpression(fieldName, value) {
-        return _super.call(this, fieldName, [value], OperatorTypeEnum.EndsWith, ExpressionValueTypeEnum.Single) || this;
-    }
-    return EndsWithExpression;
-}(ExpressionBase));
-var EqualToExpression = /** @class */ (function (_super) {
-    tslib_es6.__extends(EqualToExpression, _super);
-    function EqualToExpression(fieldName, value) {
-        return _super.call(this, fieldName, [value], OperatorTypeEnum.EqualTo, ExpressionValueTypeEnum.Single) || this;
-    }
-    return EqualToExpression;
-}(ExpressionBase));
-var ExistsExpression = /** @class */ (function (_super) {
-    tslib_es6.__extends(ExistsExpression, _super);
-    function ExistsExpression(fieldName, value) {
-        return _super.call(this, fieldName, [value], OperatorTypeEnum.Exists, ExpressionValueTypeEnum.Single) || this;
-    }
-    return ExistsExpression;
-}(ExpressionBase));
-var FreeTextExpression = /** @class */ (function (_super) {
-    tslib_es6.__extends(FreeTextExpression, _super);
-    function FreeTextExpression(fieldName, value) {
-        return _super.call(this, fieldName, [value], OperatorTypeEnum.FreeText, ExpressionValueTypeEnum.Single) || this;
-    }
-    return FreeTextExpression;
-}(ExpressionBase));
-var GreaterThanExpression = /** @class */ (function (_super) {
-    tslib_es6.__extends(GreaterThanExpression, _super);
-    function GreaterThanExpression(fieldName, value) {
-        return _super.call(this, fieldName, [value], OperatorTypeEnum.GreaterThan, ExpressionValueTypeEnum.Single) || this;
-    }
-    return GreaterThanExpression;
-}(ExpressionBase));
-var GreaterThanOrEqualToExpression = /** @class */ (function (_super) {
-    tslib_es6.__extends(GreaterThanOrEqualToExpression, _super);
-    function GreaterThanOrEqualToExpression(fieldName, value) {
-        return _super.call(this, fieldName, [value], OperatorTypeEnum.GreaterThanOrEqualTo, ExpressionValueTypeEnum.Single) || this;
-    }
-    return GreaterThanOrEqualToExpression;
-}(ExpressionBase));
-var LessThanExpression = /** @class */ (function (_super) {
-    tslib_es6.__extends(LessThanExpression, _super);
-    function LessThanExpression(fieldName, value) {
-        return _super.call(this, fieldName, [value], OperatorTypeEnum.LessThan, ExpressionValueTypeEnum.Single) || this;
-    }
-    return LessThanExpression;
-}(ExpressionBase));
-var InExpression = /** @class */ (function (_super) {
-    tslib_es6.__extends(InExpression, _super);
-    function InExpression(fieldName, values) {
-        return _super.call(this, fieldName, values, OperatorTypeEnum.In, ExpressionValueTypeEnum.Array) || this;
-    }
-    return InExpression;
-}(ExpressionBase));
-var LessThanOrEqualToExpression = /** @class */ (function (_super) {
-    tslib_es6.__extends(LessThanOrEqualToExpression, _super);
-    function LessThanOrEqualToExpression(fieldName, value) {
-        return _super.call(this, fieldName, [value], OperatorTypeEnum.LessThanOrEqualTo, ExpressionValueTypeEnum.Single) || this;
-    }
-    return LessThanOrEqualToExpression;
-}(ExpressionBase));
-var StartsWithExpression = /** @class */ (function (_super) {
-    tslib_es6.__extends(StartsWithExpression, _super);
-    function StartsWithExpression(fieldName, value) {
-        return _super.call(this, fieldName, [value], OperatorTypeEnum.StartsWith, ExpressionValueTypeEnum.Single) || this;
-    }
-    return StartsWithExpression;
-}(ExpressionBase));
-var WhereExpression = /** @class */ (function (_super) {
-    tslib_es6.__extends(WhereExpression, _super);
-    function WhereExpression(values) {
-        if (values === void 0) { values = []; }
-        return _super.call(this, values, OperatorTypeEnum.Where, ExpressionValueTypeEnum.Array) || this;
-    }
-    WhereExpression.prototype.toJSON = function () {
-        var result = _super.prototype.toJSON.call(this);
-        return result[OperatorTypeEnum.Where];
-    };
-    return WhereExpression;
-}(LogicalExpression));
-exports.WhereExpression = WhereExpression;
-var DistanceWithinExpression = /** @class */ (function (_super) {
-    tslib_es6.__extends(DistanceWithinExpression, _super);
-    function DistanceWithinExpression(fieldName, value) {
-        return _super.call(this, fieldName, [value], OperatorTypeEnum.DistanceWithin, ExpressionValueTypeEnum.Single) || this;
-    }
-    return DistanceWithinExpression;
-}(ExpressionBase));
-var Operators = /** @class */ (function () {
-    function Operators() {
-    }
-    Operators.prototype.and = function () {
-        var values = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            values[_i] = arguments[_i];
-        }
-        return new AndExpression(values);
-    };
-    Operators.prototype.between = function (name, minimum, maximum) {
-        return new BetweenExpression(name, minimum, maximum);
-    };
-    Operators.prototype.not = function (expression) {
-        return new NotExpression(expression);
-    };
-    Operators.prototype.or = function () {
-        var values = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            values[_i] = arguments[_i];
-        }
-        return new OrExpression(values);
-    };
-    Operators.prototype.contains = function (name, value) {
-        return new ContainsExpression(name, value);
-    };
-    Operators.prototype.endsWith = function (name, value) {
-        return new EndsWithExpression(name, value);
-    };
-    Operators.prototype.equalTo = function (name, value) {
-        return new EqualToExpression(name, value);
-    };
-    Operators.prototype.exists = function (name, value) {
-        return new ExistsExpression(name, value);
-    };
-    Operators.prototype.freeText = function (name, value) {
-        return new FreeTextExpression(name, value);
-    };
-    Operators.prototype.greaterThan = function (name, value) {
-        return new GreaterThanExpression(name, value);
-    };
-    Operators.prototype.greaterThanOrEqualTo = function (name, value) {
-        return new GreaterThanOrEqualToExpression(name, value);
-    };
-    Operators.prototype.lessThan = function (name, value) {
-        return new LessThanExpression(name, value);
-    };
-    Operators.prototype.lessThanOrEqualTo = function (name, value) {
-        return new LessThanOrEqualToExpression(name, value);
-    };
-    Operators.prototype.startsWith = function (name, value) {
-        return new StartsWithExpression(name, value);
-    };
-    Operators.prototype.in = function (name) {
-        var values = [];
-        for (var _i = 1; _i < arguments.length; _i++) {
-            values[_i - 1] = arguments[_i];
-        }
-        return new InExpression(name, values);
-    };
-    Operators.prototype.distanceWithin = function (name, lat, lon, distance) {
-        return new DistanceWithinExpression(name, { lat: lat, lon: lon, distance: distance });
-    };
-    return Operators;
-}());
-exports.Operators = Operators;
-exports.Op = new Operators();
-var Ordering = /** @class */ (function () {
-    function Ordering() {
-        this._items = [];
-    }
-    Ordering.prototype.asc = function (fieldName) {
-        this._items.push({ 'asc': fieldName });
-        return this;
-    };
-    Ordering.prototype.desc = function (fieldName) {
-        this._items.push({ 'desc': fieldName });
-        return this;
-    };
-    Ordering.prototype.toArray = function () {
-        return this._items;
-    };
-    return Ordering;
-}());
-var OrderByFactory = /** @class */ (function () {
-    function OrderByFactory() {
-    }
-    OrderByFactory.prototype.asc = function (fieldName) {
-        return (new Ordering()).asc(fieldName);
-    };
-    OrderByFactory.prototype.desc = function (fieldName) {
-        return (new Ordering()).desc(fieldName);
-    };
-    return OrderByFactory;
-}());
-exports.OrderBy = new OrderByFactory();
-function toOrderBy(value) {
-    var _a;
-    if (!value) {
-        return null;
-    }
-    var firstChar = value.substr(0, 1);
-    if (firstChar === '+' || firstChar === '-') {
-        var direction = (firstChar === '-') ? 'desc' : 'asc';
-        return _a = {}, _a[direction] = value.substring(1), _a;
-    }
-    return { 'asc': value };
-}
-function serializeOrder(orderBy) {
-    if (!orderBy) {
-        return [];
-    }
-    var o;
-    if (typeof orderBy === 'string') {
-        o = toOrderBy(orderBy);
-        return !!o ? [o] : [];
-    }
-    if (Array.isArray(orderBy)) {
-        return orderBy.map(toOrderBy).filter(function (o) { return !!o; });
-    }
-    return (orderBy.toArray) ? orderBy.toArray() : null;
-}
-var Query = /** @class */ (function () {
-    function Query() {
-        var whereExpressions = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            whereExpressions[_i] = arguments[_i];
-        }
-        this.where = new WhereExpression();
-        this.orderBy = [];
-        this.pageIndex = 0;
-        this.pageSize = 20;
-        this.fields = [];
-        if (whereExpressions) {
-            this.where.addRange(whereExpressions);
-        }
-    }
-    Query.prototype.toJSON = function () {
-        var result = {};
-        result.pageIndex = this.pageIndex;
-        result.pageSize = this.pageSize;
-        var orderByDtos = serializeOrder(this.orderBy);
-        if (orderByDtos && orderByDtos.length > 0) {
-            result.orderBy = orderByDtos;
-        }
-        result.where = this.where;
-        if (this.fields && this.fields.length > 0) {
-            result.fields = this.fields;
-        }
-        return result;
-    };
-    return Query;
-}());
-exports.Query = Query;
-});
-
-var models = createCommonjsModule(function (module, exports) {
-Object.defineProperty(exports, "__esModule", { value: true });
-
-tslib_es6.__exportStar(errors, exports);
-tslib_es6.__exportStar(query, exports);
-});
-
-var lib = createCommonjsModule(function (module, exports) {
-Object.defineProperty(exports, "__esModule", { value: true });
-
-tslib_es6.__exportStar(http, exports);
-tslib_es6.__exportStar(models, exports);
-tslib_es6.__exportStar(utils, exports);
-});
-
 const DataFormats = {
-  asset: 'asset',
   entry: 'entry',
   webpage: 'webpage'
 };
@@ -1781,17 +928,17 @@ const Fields = {
   wildcard: '*'
 };
 
-const fieldExpression = (field, value, operator = 'equalTo', weight) => {
+const fieldExpression = (field, value, operator = 'equalTo', weight = null) => {
   if (!field || !value) return [];
   if (Array.isArray(field)) // If an array of fieldIds have been provided, call self for each fieldId
     // to generate expressions that are combined with an 'or' operator
-    return [lib.Op.or(...field.map(fieldId => fieldExpression(fieldId, value, operator, weight)).flat())];
+    return [Op.or(...field.map(fieldId => fieldExpression(fieldId, value, operator, weight)).flat())];
   if (operator === 'between') return between(field, value);
-  if (Array.isArray(value)) return equalToOrIn(field, value, operator);else return !weight ? [lib.Op[operator](field, value, undefined, undefined)] : [lib.Op[operator](field, value, undefined, undefined).weight(weight)];
+  if (Array.isArray(value)) return equalToOrIn(field, value, operator);else return !weight ? [Op[operator](field, value)] : [Op[operator](field, value).weight(weight)];
 };
-const contentTypeIdExpression = (contentTypeIds, webpageTemplates, assetTypes) => {
+const contentTypeIdExpression = (contentTypeIds, webpageTemplates) => {
   const expressions = [];
-  if (!contentTypeIds && !webpageTemplates && !assetTypes) return expressions;
+  if (!contentTypeIds && !webpageTemplates) return expressions;
 
   if (contentTypeIds && contentTypeIds.length > 0) {
     expressions.push(...dataFormatExpression(contentTypeIds, DataFormats.entry));
@@ -1801,11 +948,7 @@ const contentTypeIdExpression = (contentTypeIds, webpageTemplates, assetTypes) =
     expressions.push(...dataFormatExpression(webpageTemplates, DataFormats.webpage));
   }
 
-  if (assetTypes && assetTypes.length > 0) {
-    expressions.push(...dataFormatExpression(assetTypes, DataFormats.asset));
-  }
-
-  if (expressions.length > 1) return [lib.Op.or(...expressions)];
+  if (expressions.length > 1) return [Op.or(...expressions)];
   return expressions;
 };
 const filterExpressions = filters => {
@@ -1824,13 +967,13 @@ const dataFormatExpression = (contentTypeIds, dataFormat = DataFormats.entry) =>
      */
     const withContentTypeIds = contentTypeIds.filter(c => !c.startsWith('!'));
     const notContentTypeIds = contentTypeIds.filter(c => c.startsWith('!')).map(id => id.substring(1));
-    const andExpr = lib.Op.and();
-    const dataFormatExpr = fieldExpression(Fields.sys.dataFormat, dataFormat)[0];
-    const withExpr = fieldExpression(Fields.sys.contentTypeId, withContentTypeIds)[0];
-    const notExpr = lib.Op.not(fieldExpression(Fields.sys.contentTypeId, notContentTypeIds)[0]);
-    andExpr.add(dataFormatExpr);
-    if (withContentTypeIds.length > 0) andExpr.add(withExpr);
-    if (notContentTypeIds.length > 0) andExpr.add(notExpr);
+    const andExpr = Op.and();
+    const dataFormatExpr = fieldExpression(Fields.sys.dataFormat, dataFormat);
+    const withExpr = fieldExpression(Fields.sys.contentTypeId, withContentTypeIds);
+    const notExpr = [Op.not(...fieldExpression(Fields.sys.contentTypeId, notContentTypeIds))];
+    andExpr.add(...dataFormatExpr);
+    if (withContentTypeIds.length > 0) andExpr.add(...withExpr);
+    if (notContentTypeIds.length > 0) andExpr.add(...notExpr);
     return [andExpr];
   }
 
@@ -1841,39 +984,21 @@ const featuredResultsExpression = ({
   fieldId,
   fieldValue = true
 } = {}) => {
-  const expressions = [];
-
   if (contentTypeId) {
-    expressions.push(...contentTypeIdExpression(Array.isArray(contentTypeId) ? contentTypeId : [contentTypeId]));
+    return contentTypeIdExpression(Array.isArray(contentTypeId) ? contentTypeId : [contentTypeId]); // return fieldExpression(Fields.sys.contentTypeId, contentTypeId);
   }
 
-  if (fieldId && fieldValue) {
-    expressions.push(...fieldExpression(fieldId, fieldValue));
+  if (fieldId) {
+    return fieldExpression(fieldId, fieldValue);
   }
-
-  return expressions;
 };
 const languagesExpression = languages => fieldExpression(Fields.sys.language, languages);
-const includeInSearchExpressions = (webpageTemplates, includeInSearchFields) => {
-  const expressions = []; // Or include this expression if we have explicity specified non-default includeInSearch fields
-
-  if (Array.isArray(includeInSearchFields)) expressions.push(...includeInSearchFields.map(includeInSearchField => lib.Op.or(lib.Op.and(lib.Op.exists(includeInSearchField, true), lib.Op.equalTo(includeInSearchField, true)), lib.Op.exists(includeInSearchField, false)))); // If webpageTemplates have been specified, include this expression
-  // with the default includeInSearch field from classic Contensis.
-
-  if (Array.isArray(webpageTemplates) && webpageTemplates.length > 0) expressions.push(lib.Op.or(lib.Op.and(lib.Op.exists(Fields.sys.includeInSearch, true), lib.Op.equalTo(Fields.sys.includeInSearch, true)), lib.Op.exists(Fields.sys.includeInSearch, false)));
-  return expressions;
-};
 const defaultExpressions = versionStatus => {
-  return [lib.Op.equalTo(Fields.sys.versionStatus, versionStatus)];
+  return [Op.equalTo(Fields.sys.versionStatus, versionStatus), Op.or(Op.and(Op.exists(Fields.sys.includeInSearch, true), Op.equalTo(Fields.sys.includeInSearch, true)), Op.exists(Fields.sys.includeInSearch, false))];
 };
-const excludeIdsExpression = excludeIds => {
-  if (Array.isArray(excludeIds) && excludeIds.length > 0) {
-    const [expr] = fieldExpression(Fields.sys.id, excludeIds);
-    return [lib.Op.not(expr)];
-  } else return [];
-};
+const excludeIdsExpression = excludeIds => Array.isArray(excludeIds) && excludeIds.length > 0 ? [Op.not(...fieldExpression(Fields.sys.id, excludeIds))] : [];
 const orderByExpression = orderBy => {
-  let expression = lib.OrderBy;
+  let expression = OrderBy;
 
   if (orderBy && orderBy.length > 0) {
     orderBy.map(ob => expression = ob.startsWith('-') ? expression.desc(ob.substring(1)) : expression.asc(ob));
@@ -1882,36 +1007,17 @@ const orderByExpression = orderBy => {
   return expression;
 };
 
-const equalToOrIn = (field, value, operator = 'equalTo') => {
-  if (value.length === 0) return [];
-
-  if (Array.isArray(value)) {
-    if (value.length === 1) return [lib.Op[operator](field, value[0], undefined, undefined)];
-    return [lib.Op.in(field, ...value)];
-  }
-
-  return [];
-};
+const equalToOrIn = (field, value, operator = 'equalTo') => value.length === 0 ? [] : value.length === 1 ? [Op[operator](field, value[0])] : [Op.in(field, ...value)];
 
 const between = (field, value) => {
-  const handle = betweenValue => {
-    const valArr = betweenValue.split('-');
-
-    if (valArr.length > 1) {
-      const [minimum, maximum = null] = betweenValue.split('-');
-      return lib.Op.between(field, minimum, maximum);
-    } else {
-      // eslint-disable-next-line no-console
-      console.log(`[search] You have supplied only one value to a "between" operator which must have two values. Your supplied value "${valArr.length && valArr[0]}" has been discarded.`);
-      return false;
-    }
-  };
-
   if (value.length === 0) return [];
-  if (Array.isArray(value)) return [lib.Op.or(...value.map(handle).filter(bc => bc !== false))]; // const valArr = value.split('-');
-
-  const op = handle(value);
-  return op ? [op] : []; // valArr.length > 1 ? [Op.between(field, ...value.split('-'))] : [];
+  if (Array.isArray(value)) return [Op.or(...value.map(bkey => {
+    const valArr = bkey.split('-');
+    return valArr.length > 1 ? Op.between(field, ...bkey.split('-')) : // eslint-disable-next-line no-console
+    console.log(`[search] You have supplied only one value to a "between" operator which must have two values. Your supplied value "${valArr.length && valArr[0]}" has been discarded.`);
+  }).filter(bc => bc))];
+  const valArr = value.split('-');
+  return valArr.length > 1 ? [Op.between(field, ...value.split('-'))] : [];
 };
 /**
  * Accept HTTP style objects and map them to
@@ -1929,44 +1035,36 @@ const customWhereExpressions = where => {
     // capture the values required and reconstruct them as
     // a Delivery API expression
 
-    let operator;
     Object.keys(clause).map((key, idx) => {
-      // The clause may contain only one key
-      if (idx === 0) operator = key;
+      const operator = key;
       const field = clause.field;
-      const value = clause[operator]; // const weight: number = (clause as any).weight;
+      const value = clause[key];
+      const weight = clause.weight;
 
-      if (idx === 0) {
-        if (operator === 'and' || operator === 'or') {
-          // These are array expressions so we can call ourself recursively
-          // to map these inner values to expressions
-          const recurseExpr = customWhereExpressions(clause[operator]);
-          expression = lib.Op[operator](...recurseExpr);
-        }
+      if (['and', 'or'].includes(operator)) {
+        // These are array expressions so we can call ourself recursively
+        // to map these inner values to expressions
+        expression = Op[operator](...customWhereExpressions(value));
+      }
 
-        if (['not'].includes(operator)) {
-          // A 'not' expression is an object with only one inner field and inner operator
-          Object.keys(value).map((notKey, notIdx) => {
-            const innerOperator = notKey;
-            const innerValue = value[notKey];
-            const innerField = value.field; // Map the expression when we've looped and scoped to
-            // the second property inside the clause
+      if (['not'].includes(operator)) {
+        // A 'not' expression is an object with only one inner field and inner operator
+        Object.keys(value).map((key, idx) => {
+          const innerOperator = key;
+          const innerValue = value[key];
+          const innerField = value.field; // Map the expression when we've looped and scoped to
+          // the second property inside the clause
 
-            if (notIdx === 1) {
-              expression = lib.Op.not(lib.Op[innerOperator](innerField, innerValue));
-            }
-          });
-        }
+          if (idx === 1) {
+            expression = Op[operator](Op[innerOperator](innerField, innerValue));
+          }
+        });
       } // Map the expression when we've looped and scoped to
       // the second property inside the clause
 
 
-      operator = Object.keys(clause).find(clauseKey => !['field', 'weight'].includes(clauseKey));
-
-      if (idx === 1 && // operator !== 'and' &&
-      // operator !== 'or' &&
-      operator !== 'between' && operator !== 'distanceWithin') {
-        expression = operator === 'freeText' || operator === 'contains' ? lib.Op[operator](field, value) : operator === 'in' ? lib.Op[operator](field, ...value) : lib.Op[operator](field, value);
+      if (idx === 1) {
+        expression = ['freeText', 'contains'].includes(operator) ? Op[operator](field, value, weight) : operator === 'in' ? Op[operator](field, ...value) : Op[operator](field, value);
       }
     });
     return expression;
@@ -1996,7 +1094,7 @@ const termExpressions = (searchTerm, weightedSearchFields) => {
           fieldOperators.push(...containsOp(wsf, modifiedSearchTerm));
         } else {
           if ([Fields.entryTitle].includes(wsf.fieldId)) {
-            fieldOperators.push(lib.Op.or(...containsOp(wsf, modifiedSearchTerm), ...freeTextOp(wsf, modifiedSearchTerm)));
+            fieldOperators.push(Op.or(...containsOp(wsf, modifiedSearchTerm), ...freeTextOp(wsf, modifiedSearchTerm)));
           } else {
             fieldOperators.push(...freeTextOp(wsf, modifiedSearchTerm));
           }
@@ -2009,30 +1107,29 @@ const termExpressions = (searchTerm, weightedSearchFields) => {
       // all terms/phrases rather than any terms/phrases
 
       if (fieldOperators.length > 1) {
-        operators.push(lib.Op.and(...fieldOperators));
+        operators.push(Op.and(...fieldOperators));
       } else {
         operators.push(...fieldOperators);
       }
     }); // Wrap operators in an Or operator
 
-    return [lib.Op.or().addRange(operators).add(lib.Op.freeText(Fields.searchContent, searchTerm))];
+    return [Op.or().addRange(operators).add(Op.freeText(Fields.searchContent, searchTerm))];
   } else if (searchTerm) {
     // Searching without weightedSearchFields defined will fall back
     // to a default set of search fields with arbritary weights set.
-    return [lib.Op.or(lib.Op.equalTo(Fields.entryTitle, searchTerm).weight(10), lib.Op.freeText(Fields.entryTitle, searchTerm).weight(2), lib.Op.freeText(Fields.entryDescription, searchTerm).weight(2), lib.Op.contains(Fields.keywords, searchTerm).weight(2), lib.Op.contains(Fields.sys.uri, searchTerm).weight(2), lib.Op.contains(Fields.sys.allUris, searchTerm), lib.Op.freeText(Fields.searchContent, searchTerm))];
+    return [Op.or(Op.equalTo(Fields.entryTitle, searchTerm).weight(10), Op.freeText(Fields.entryTitle, searchTerm).weight(2), Op.freeText(Fields.entryDescription, searchTerm).weight(2), Op.contains(Fields.keywords, searchTerm).weight(2), Op.contains(Fields.sys.uri, searchTerm).weight(2), Op.contains(Fields.sys.allUris, searchTerm), Op.freeText(Fields.searchContent, searchTerm))];
   } else {
     return [];
   }
 };
 
 const filterQuery = (contentTypeIds, versionStatus, customWhere) => {
-  const query = new lib.Query(...[...contentTypeIdExpression(contentTypeIds), ...defaultExpressions(versionStatus), ...customWhereExpressions(customWhere)]);
-  query.orderBy = lib.OrderBy.asc(Fields.entryTitle);
+  const query = new Query(...[...contentTypeIdExpression(contentTypeIds), ...defaultExpressions(versionStatus), ...customWhereExpressions(customWhere)]);
+  query.orderBy = OrderBy.asc(Fields.entryTitle);
   query.pageSize = 100;
   return query;
 };
 const searchQuery = ({
-  assetTypes,
   contentTypeIds,
   customWhere,
   dynamicOrderBy,
@@ -2040,7 +1137,6 @@ const searchQuery = ({
   featuredResults,
   fields,
   filters,
-  includeInSearchFields,
   languages,
   pageSize,
   pageIndex,
@@ -2049,11 +1145,11 @@ const searchQuery = ({
   versionStatus,
   webpageTemplates,
   weightedSearchFields
-}, isFeatured = false) => {
-  let expressions = [...termExpressions(searchTerm, weightedSearchFields), ...defaultExpressions(versionStatus), ...includeInSearchExpressions(webpageTemplates, includeInSearchFields), ...languagesExpression(languages), ...customWhereExpressions(customWhere), ...excludeIdsExpression(excludeIds)];
+}, isFeatured) => {
+  let expressions = [...termExpressions(searchTerm, weightedSearchFields), ...defaultExpressions(versionStatus), ...languagesExpression(languages), ...customWhereExpressions(customWhere), ...excludeIdsExpression(excludeIds)];
   if (isFeatured) expressions = [...expressions, ...featuredResultsExpression(featuredResults)];
-  if (!isFeatured || featuredResults && !featuredResults.contentTypeId) expressions = [...expressions, ...filterExpressions(filters), ...contentTypeIdExpression(contentTypeIds, webpageTemplates, assetTypes)];
-  const query = new lib.Query(...expressions);
+  if (!isFeatured || featuredResults && !featuredResults.contentTypeId) expressions = [...expressions, ...filterExpressions(filters), ...contentTypeIdExpression(contentTypeIds, webpageTemplates)];
+  const query = new Query(...expressions);
   if (!searchTerm) query.orderBy = orderByExpression(orderBy);
   if (dynamicOrderBy && dynamicOrderBy.length) query.orderBy = orderByExpression(dynamicOrderBy);
 
@@ -2126,7 +1222,7 @@ const searchUriTemplate = {
     const searchContext = getSearchContext(state); // Lose stateFilters and currentSearch if a new
     // term is passed via an argument
 
-    const stateFilters = term ? List() : getSelectedFilters(state, facet, searchContext).map(f => f.join(','));
+    const stateFilters = term ? new List([]) : getSelectedFilters(state, facet, searchContext).map(f => f.join(','));
     const currentSearch = !term && state.getIn(['routing', 'location', 'search']);
     const currentQs = removeEmptyAttributes(queryString.parse(currentSearch));
     if (orderBy) currentQs.orderBy = orderBy;
@@ -2142,7 +1238,7 @@ const searchUriTemplate = {
   }
 };
 
-const mapStateToSearchUri = params => mapJson(params, searchUriTemplate);
+const mapStateToSearchUri = state => mapJson(state, searchUriTemplate);
 
 /* eslint-disable no-console */
 
@@ -2152,7 +1248,7 @@ const mapEntriesToSearchResults = ({
   context,
   facet
 }, items, state) => {
-  const mapperFunc = mapper || mappers && mappers.results;
+  const mapperFunc = mapper || mappers.results;
   return items && typeof mapperFunc === 'function' ? mapperFunc(items, facet, context, state) : [];
 };
 
@@ -2197,8 +1293,8 @@ const facetTemplate = {
           pageIndex,
           pagesLoaded
         }) => {
-          const loaded = List(pagesLoaded || []);
-          const pages = isNaN(loaded.find(l => l === pageIndex)) ? loaded.push(pageIndex) : loaded;
+          const loaded = new List(pagesLoaded || []);
+          const pages = isNaN(loaded.find(l => l == pageIndex)) ? loaded.push(pageIndex) : loaded;
           return pages.toList().sort((a, b) => a - b);
         }
       },
@@ -2228,9 +1324,9 @@ const facetTemplate = {
         _pagePosition: idx,
         ...r
       }));
-      const loadedPages = List(pagesLoaded); // if pageIndex is found in loadedPages, we have already loaded this page
+      const loadedPages = new List(pagesLoaded); // if pageIndex is found in loadedPages, we have already loaded this page
 
-      if (!isNaN(loadedPages.find(l => l === pageIndex))) return prevResults; // Determine where we put the results depending on if we
+      if (!isNaN(loadedPages.find(l => l == pageIndex))) return prevResults; // Determine where we put the results depending on if we
       // are paging forwards, backwards, or doing a new search
 
       const firstResultSet = pageIndex > prevPageIndex ? prevResults || [] : nextResults;
@@ -2262,9 +1358,7 @@ const filterTemplate = {
     }) => {
       if (payload && (payload.items || payload.children)) {
         const items = (payload.items || payload.children).map(item => {
-          var _item$sys;
-
-          item.isSelected = selectedKeys === null || selectedKeys === void 0 ? void 0 : selectedKeys.includes((item === null || item === void 0 ? void 0 : (_item$sys = item.sys) === null || _item$sys === void 0 ? void 0 : _item$sys.id) || item.key);
+          item.isSelected = selectedKeys && selectedKeys.includes(item.sys && item.sys.id || item.key);
           return item;
         });
         return mapper(items);
@@ -2319,10 +1413,9 @@ const mapFiltersToFilterExpression = (filters, selectedFilters) => {
 };
 
 const queryParamsTemplate = {
-  assetTypes: root => getQueryParameter(root, 'assetTypes', List()),
-  contentTypeIds: root => getQueryParameter(root, 'contentTypeIds', List()),
-  customWhere: root => getQueryParameter(root, 'customWhere', List()),
-  dynamicOrderBy: root => getQueryParameter(root, 'dynamicOrderBy', List()),
+  contentTypeIds: root => getQueryParameter(root, 'contentTypeIds', new List([])),
+  customWhere: root => getQueryParameter(root, 'customWhere', new List([])),
+  dynamicOrderBy: root => getQueryParameter(root, 'dynamicOrderBy', new List([])),
   env: ({
     state,
     facet,
@@ -2338,7 +1431,7 @@ const queryParamsTemplate = {
     return null;
   },
   featuredResults: root => getQueryParameter(root, 'featuredResults', null),
-  fields: root => getQueryParameter(root, 'fields', List()),
+  fields: root => getQueryParameter(root, 'fields', new List([])),
   filters: ({
     state,
     facet,
@@ -2350,18 +1443,17 @@ const queryParamsTemplate = {
     const filterParams = mapFiltersToFilterExpression(stateFilters, selectedFilters);
     return filterParams;
   },
-  includeInSearchFields: root => getQueryParameter(root, 'includeInSearch', List()),
   internalPageIndex: ({
     action,
     state
-  }) => getPageIndex(state, '', action.context),
+  }) => getPageIndex(state, null, action.context),
   internalPaging: root => getQueryParameter(root, 'internalPaging', false),
   languages: ({
     action
   }) => action.defaultLang ? [action.defaultLang] : [],
   linkDepth: root => getQueryParameter(root, 'linkDepth', 0),
   loadMorePaging: root => getQueryParameter(root, 'loadMorePaging', false),
-  orderBy: root => getQueryParameter(root, 'orderBy', List()),
+  orderBy: root => getQueryParameter(root, 'orderBy', new List([])),
   pageIndex: root => {
     const {
       action,
@@ -2369,7 +1461,7 @@ const queryParamsTemplate = {
     } = root;
     if (getQueryParameter(root, 'internalPaging', false)) return 0;
     if (action.type === UPDATE_PAGE_INDEX) return action.params.pageIndex;
-    return !action.preload ? getPageIndex(state, '', action.context) : 0;
+    return !action.preload ? getPageIndex(state, null, action.context) : 0;
   },
   pageSize: root => getQueryParameter(root, 'pageSize'),
   pagesLoaded: ({
@@ -2386,7 +1478,10 @@ const queryParamsTemplate = {
     state,
     facet
   }) => getFacet(state, facet).get('projectId'),
-  searchTerm: root => root.context !== Context.minilist || getQueryParameter(root, 'useSearchTerm', false) ? getSearchTerm(root.state) : '',
+  searchTerm: ({
+    state,
+    context
+  }) => context !== Context.minilist ? getSearchTerm(state) : null,
   selectedFilters: ({
     state,
     facet,
@@ -2396,11 +1491,11 @@ const queryParamsTemplate = {
     state
   }) => selectVersionStatus(state),
   weightedSearchFields: root => {
-    const wsf = getQueryParameter(root, 'weightedSearchFields', List());
-    const deduped = wsf.groupBy((v = Map()) => v.get('fieldId')).map((v = Map()) => v.first()).toList();
+    const wsf = getQueryParameter(root, 'weightedSearchFields', new List([]));
+    const deduped = wsf.groupBy(v => v.get('fieldId')).map(v => v.first()).toList();
     return deduped; // return wsf;
   },
-  webpageTemplates: root => getQueryParameter(root, 'webpageTemplates', List())
+  webpageTemplates: root => getQueryParameter(root, 'webpageTemplates', new List([]))
 };
 
 const mapStateToQueryParams = sourceJson => fromJS(mapJson(sourceJson, queryParamsTemplate)).toJS();
@@ -2412,6 +1507,7 @@ const mapStateToQueryParams = sourceJson => fromJS(mapJson(sourceJson, queryPara
  * @param {ImmutableMap} state
  * @returns [queryParams, runSearch]
  */
+
 const generateQueryParams = (action, state) => {
   const {
     context,
@@ -2443,26 +1539,21 @@ const runSearch = (action, state, queryParams) => {
     ssr
   } = action;
   let willRun = false;
-  const facetIsLoaded = defaultLang ? false : getIsLoaded(state, context, facet);
+  const facetIsLoaded = defaultLang ? false : getIsLoaded(state, context);
   const stateParams = getQueryParams(ogState, facet, context).toJS();
   stateParams.pageIndex = getPageIndex(ogState, facet, context);
   stateParams.searchTerm = getSearchTerm(ogState);
-
-  if (context === Context.facets && ssr || // context === Context.minilist ||
-  preload || !facetIsLoaded || filterParamsChanged(action) || defaultLang) {
-    willRun = true;
-  } else {
+  if (context === Context.facets && ssr || context === Context.minilist || preload || !facetIsLoaded || filterParamsChanged(action) || defaultLang) willRun = true;else {
     // Don't execute the search if the inbound query params
     // are the same as what we already have in state
     Object.entries(stateParams).forEach(([param, value]) => {
-      const queryParam = queryParams[param];
-
-      if (JSON.stringify(value) !== JSON.stringify(queryParam)) {
+      // console.log(value, queryParams[param]);
+      if (JSON.stringify(value) != JSON.stringify(queryParams[param])) {
+        //console.log(param, 'setting runSearch to true');
         willRun = true;
       }
     });
   }
-
   const internalPaging = getIsInternalPaging(ogState, facet, context);
 
   if (internalPaging && facetIsLoaded) {
@@ -2496,7 +1587,7 @@ const filterParamsChanged = (action, state) => {
 
 const debugExecuteSearch = (action, state) => {
   const [queryParams, runSearch] = generateQueryParams(action, state);
-  console.log('runSearch', runSearch, 'action', action, 'filterParamsChanged', filterParamsChanged(action, state), 'getIsLoaded(state, context, facet)', getIsLoaded(state, action.context, action.facet));
+  console.log('runSearch', runSearch, 'action', action, 'filterParamsChanged', filterParamsChanged(action, state), 'getIsLoaded(state, context)', getIsLoaded(state, action.context));
   const stateParams = getQueryParams(action.ogState || state, action.facet, action.context).toJS();
   stateParams.pageIndex = getPageIndex(action.ogState || state, action.facet, action.context);
   stateParams.searchTerm = getSearchTerm(action.ogState || state);
@@ -2529,7 +1620,9 @@ const mapEntriesToFilterItems = entries => {
   });
 };
 
-const searchSagas = [takeEvery(CLEAR_FILTERS, clearFilters$1), takeEvery(DO_SEARCH, doSearch), takeEvery(SET_ROUTE_FILTERS, loadFilters), takeEvery(SET_SEARCH_ENTRIES, preloadOtherFacets), takeEvery(UPDATE_CURRENT_FACET, updateCurrentFacet$1), takeEvery(UPDATE_CURRENT_TAB, updateCurrentTab$1), takeEvery(UPDATE_PAGE_INDEX, updatePageIndex$1), takeEvery(UPDATE_SEARCH_TERM, updateSearchTerm$1), takeEvery(UPDATE_SORT_ORDER, updateSortOrder$1), takeEvery(UPDATE_SELECTED_FILTERS, applySearchFilter)];
+const searchSagas = [takeEvery(CLEAR_FILTERS, clearFilters$1), takeEvery(DO_SEARCH, ensureSearch), takeEvery(SET_ROUTE_FILTERS, loadFilters), takeEvery(SET_SEARCH_ENTRIES, preloadOtherFacets), takeEvery(UPDATE_CURRENT_FACET, updateCurrentFacet$1), takeEvery(UPDATE_CURRENT_TAB, updateCurrentTab$1), takeEvery(UPDATE_PAGE_INDEX, updatePageIndex$1), takeEvery(UPDATE_SEARCH_TERM, updateSearchTerm$1), takeEvery(UPDATE_SORT_ORDER, updateSortOrder$1), takeEvery(UPDATE_SELECTED_FILTERS, applySearchFilter)];
+/* eslint-disable no-console */
+
 function* setRouteFilters(action) {
   const {
     mappers,
@@ -2546,7 +1639,7 @@ function* setRouteFilters(action) {
 
   if (!currentFacet) {
     const tabs = getSearchTabs(state);
-    currentFacet = tabs.getIn([0, 'defaultFacet'], '') || getFacets(state).keySeq().first();
+    currentFacet = tabs.getIn([0, 'defaultFacet'], new List()).first() || getFacets(state).keySeq().first();
   }
 
   const nextAction = {
@@ -2562,26 +1655,6 @@ function* setRouteFilters(action) {
   yield put(nextAction); // Using call instead of triggering from the put
   // to allow this exported saga to continue during SSR
 
-  yield call(ensureSearch, { ...nextAction,
-    ogState: state
-  });
-}
-function* doSearch(action) {
-  const state = yield select();
-
-  if (action.config) {
-    // If the action contains a config object, we can add this to the
-    // state at runtime
-    yield put({ ...action,
-      type: APPLY_CONFIG
-    });
-  }
-
-  const nextAction = { ...action,
-    type: SET_SEARCH_FILTERS,
-    ssr: getIsSsr(state)
-  };
-  yield put(nextAction);
   yield call(ensureSearch, { ...nextAction,
     ogState: state
   });
@@ -2604,9 +1677,9 @@ function* loadFilters(action) {
     });
     const selectedKeys = yield select(getSelectedFilters, facetKey, context);
     const facet = yield select(getFacet, facetKey, context);
-    const filters = facet.get('filters', Map());
-    const projectId = facet.get('projectId', '');
-    const filtersToLoadSagas = filters && filtersToLoad.map((filterKey = '') => {
+    const filters = facet.get('filters');
+    const projectId = facet.get('projectId');
+    const filtersToLoadSagas = filters && filtersToLoad.map(filterKey => {
       return call(loadFilter, {
         facetKey,
         filterKey,
@@ -2614,7 +1687,7 @@ function* loadFilters(action) {
         projectId,
         selectedKeys: selectedKeys.get(filterKey),
         context,
-        mapper: 'filterItems' in mappers && mappers.filterItems || mapEntriesToFilterItems
+        mapper: mappers.filterItems || mapEntriesToFilterItems
       });
     }).toJS();
     if (filtersToLoadSagas) yield all(filtersToLoadSagas);
@@ -2639,10 +1712,8 @@ function* loadFilter(action) {
   const createStateFrom = {
     type: LOAD_FILTERS_COMPLETE,
     context,
-    error: undefined,
     facetKey,
     filterKey,
-    payload: {},
     selectedKeys,
     mapper
   };
@@ -2653,14 +1724,14 @@ function* loadFilter(action) {
       const query = filterQuery(Array.isArray(contentTypeId) ? contentTypeId : [contentTypeId], versionStatus, customWhere);
       const payload = yield cachedSearch.search(query, 0, projectId);
       if (!payload) throw new Error('No payload returned by search');
-      if (payload.type === 'error') throw payload;
+      if (payload.type == 'error') throw payload;
       createStateFrom.payload = payload;
     }
 
     if (path) {
       const payload = yield cachedSearch.getTaxonomyNodeByPath(path, projectId);
       if (!payload) throw new Error(`No payload returned for taxonomy path: '${path}'`);
-      if (payload.type === 'error') throw payload;
+      if (payload.type == 'error') throw payload;
       createStateFrom.payload = payload;
     }
   } catch (error) {
@@ -2681,11 +1752,8 @@ function* ensureSearch(action) {
 
   try {
     const state = yield select();
-    const nextAction = { ...action,
-      ogState: action.ogState || state
-    };
-    const [queryParams, runSearch] = generateQueryParams(nextAction, state);
-    if (debug && (debug === true || debug.executeSearch)) debugExecuteSearch(nextAction, state);
+    const [queryParams, runSearch] = generateQueryParams(action, state);
+    debug && (debug === true || debug.executeSearch) && debugExecuteSearch(action, state);
 
     if (runSearch) {
       yield put({
@@ -2693,7 +1761,7 @@ function* ensureSearch(action) {
         facet,
         context
       });
-      yield call(executeSearch, { ...nextAction,
+      yield call(executeSearch, { ...action,
         context,
         facet,
         queryParams,
@@ -2710,18 +1778,17 @@ function* executeSearch(action) {
     context,
     facet,
     queryParams,
-    mappers
+    mappers = {}
   } = action;
 
   try {
     const state = yield select();
-    let result = {};
-    let featuredResult;
-    let featuredQuery;
+    let result, featuredResult, featuredQuery;
     const customApi = getCustomApi(state, facet, context);
 
     if (customApi) {
-      const apiParams = typeof mappers === 'object' && typeof mappers.customApi === 'function' && mappers.customApi(queryParams) || {};
+      const apiParams = typeof mappers.customApi === 'function' && mappers.customApi(queryParams) || {};
+      result = {};
       result.payload = yield callCustomApi(customApi, apiParams);
       result.duration = 1;
     } else {
@@ -2729,11 +1796,7 @@ function* executeSearch(action) {
         featuredQuery = searchQuery(queryParams, true);
         featuredResult = yield timedSearch(featuredQuery, queryParams.linkDepth, queryParams.projectId, queryParams.env); // eslint-disable-next-line require-atomic-updates
 
-        queryParams.excludeIds = getItemsFromResult(featuredResult).map(fi => {
-          var _fi$sys;
-
-          return fi === null || fi === void 0 ? void 0 : (_fi$sys = fi.sys) === null || _fi$sys === void 0 ? void 0 : _fi$sys.id;
-        }).filter(fi => typeof fi === 'string');
+        queryParams.excludeIds = getItemsFromResult(featuredResult).map(fi => fi && fi.sys && fi.sys.id);
       }
 
       const query = searchQuery(queryParams);
@@ -2750,6 +1813,7 @@ function* executeSearch(action) {
     };
     const nextAction = mapJson(createStateFrom, facetTemplate);
     yield put(nextAction);
+    if (!result.payload || result.payload.type == 'error') warn(`Error executing query`);else info(`${EXECUTE_SEARCH} Got Results payload`);
   } catch (error$1) {
     error(...['Error running search saga:', error$1, error$1.stack]);
   }
@@ -2765,16 +1829,15 @@ function* preloadOtherFacets(action) {
   const state = yield select();
   const currentFacet = getCurrentFacet(state);
 
-  if (!preload && facet === currentFacet && context !== Context.listings) {
-    const allFacets = getFacets(state).toJS();
-    const otherFacets = Object.keys(allFacets).filter(f => f !== currentFacet);
-    yield all(otherFacets.map((preloadFacet = '') => {
+  if (!preload && facet == currentFacet && context != Context.listings) {
+    const otherFacets = [...getFacets(state).keys()].filter(f => f != currentFacet);
+    yield all(otherFacets.map(preloadFacet => {
       const preloadAction = { ...action,
         facet: preloadFacet,
         preload: true
       };
       const [queryParams, runSearch] = generateQueryParams(preloadAction, state);
-      if (debug && (debug === true || debug.preloadOtherFacets)) debugExecuteSearch(preloadAction, state);
+      debug && (debug === true || debug.preloadOtherFacets) && debugExecuteSearch(preloadAction, state);
       return runSearch && call(executeSearch, { ...action,
         type: EXECUTE_SEARCH_PRELOAD,
         preload: true,
@@ -2794,16 +1857,12 @@ function* updateCurrentTab$1(action) {
   const facets = getFacets(state);
   const tabs = getSearchTabs(state);
   let nextFacet = tabs.getIn([id, 'currentFacet']);
-
-  if (!nextFacet) {
-    facets.map((facet = Map(), facetName) => {
-      if (facet.get('tabId') === id && tabs.getIn([id, 'defaultFacet']) === facetName) nextFacet = facetName;
-    });
-  } // If the next Tab does not have a defaultFacet,
+  !nextFacet && facets.map((facet, facetName) => {
+    if (facet.get('tabId') === id && tabs.getIn([id, 'defaultFacet']) === facetName) nextFacet = facetName;
+  }); // If the next Tab does not have a defaultFacet,
   // take the first facet for that tab
 
-
-  if (!nextFacet) nextFacet = facets.filter((f = Map()) => f.get('tabId') === id).keySeq().first();
+  if (!nextFacet) nextFacet = facets.filter(f => f.get('tabId') === id).keySeq().first();
   yield put(withMappers(updateCurrentFacet(nextFacet), mappers));
 }
 
@@ -2899,24 +1958,18 @@ const useMinilist = ({
   params,
   defaultLang,
   debug
-} = {
-  id: ''
-}) => {
+} = {}) => {
   const dispatch = useDispatch();
   const {
     facet,
-    filters,
     isLoading,
     pagingInfo,
-    results,
-    searchTerm
+    results
   } = useSelector(state => ({
-    facet: getFacet(state, id, Context.minilist).toJS(),
-    filters: getFilters(state, id, Context.minilist).toJS(),
+    facet: getFacet(state, id, Context.minilist),
     isLoading: getIsLoading(state, Context.minilist, id),
     pagingInfo: getPaging(state, id, Context.minilist).toJS(),
-    results: getResults(state, id, Context.minilist).toJS(),
-    searchTerm: getSearchTerm(state)
+    results: getResults(state, id, Context.minilist).toJS()
   }));
   useEffect(() => {
     if (id && (mapper || mappers && mappers.results)) {
@@ -2934,90 +1987,14 @@ const useMinilist = ({
     }
   }, [dispatch, excludeIds, id, defaultLang, params]);
   return {
-    filters,
     isLoading,
     pagingInfo,
     results,
-    searchTerm,
-    title: facet.title
+    title: facet.get('title')
   };
 };
 
-const entries = Map({
-  isLoading: false,
-  isError: false,
-  items: List()
-});
-const pagingInfo = Map({
-  isLoading: false,
-  pageCount: 0,
-  pageIndex: 0,
-  pageSize: 0,
-  pagesLoaded: List(),
-  prevPageIndex: 0,
-  totalCount: 0
-});
-const searchFacet = OrderedMap({
-  title: null,
-  featuredEntries: entries,
-  featuredResults: List(),
-  entries,
-  results: List(),
-  queryParams: Map(),
-  filters: Map(),
-  queryDuration: 0,
-  pagingInfo,
-  projectId: ''
-});
-const searchTab = Map({
-  currentFacet: undefined,
-  facets: OrderedMap(),
-  id: 0,
-  label: undefined,
-  totalCount: ''
-});
-const filtering = Map({
-  isLoading: false,
-  isError: false,
-  isGrouped: false,
-  title: undefined,
-  contentTypeId: undefined,
-  customWhere: List(),
-  fieldId: undefined,
-  items: List()
-});
-const filterItem = Map({
-  key: '',
-  type: undefined,
-  title: undefined,
-  path: undefined,
-  isSelected: false
-});
-const config = Map({
-  isLoaded: false,
-  isError: false
-});
-const searchState = {
-  currentFacet: '',
-  term: '',
-  facets: OrderedMap(),
-  tabs: List(),
-  config
-};
-const initialState = OrderedMap(searchState);
-
-var schema = /*#__PURE__*/Object.freeze({
-  __proto__: null,
-  entries: entries,
-  pagingInfo: pagingInfo,
-  searchFacet: searchFacet,
-  searchTab: searchTab,
-  filtering: filtering,
-  filterItem: filterItem,
-  initialState: initialState
-});
-
-// eslint-disable no-console
+/* eslint-disable no-console */
 
 const addConfigToState = (state, action) => {
   const {
@@ -3038,15 +2015,13 @@ const addConfigToState = (state, action) => {
 };
 
 const generateSearchFacets = (context, config) => {
-  let facets = OrderedMap();
+  let facets = OrderedMap({});
 
   if (config) {
-    const thisConfig = config[context] || {};
-
-    if (Object.keys(thisConfig).length > 0) {
-      Object.entries(thisConfig).map(([facetName, facet]) => {
+    if (config[context]) {
+      Object.entries(config[context]).map(([facetName, facet]) => {
         const newFacet = searchFacet.merge(fromJS(facet));
-        if (!('isDisabled' in facet) || facet.isDisabled !== true) facets = facets.set(facetName, newFacet);
+        if (!facet.isDisabled) facets = facets.set(facetName, newFacet);
       });
     }
   }
@@ -3069,7 +2044,7 @@ const generateFiltersState = ({
   }); // Get any existing filters and normalise the items[]
   // so we can start off with isSelected is false
 
-  let filters = state.getIn([context, facet, 'filters'], Map({})).map(filter => isCurrentFacet || filter.get('isGrouped') ? filter.set('items', filter.get('items').map(item => item === null || item === void 0 ? void 0 : item.set('isSelected', false))) : filter);
+  let filters = state.getIn([context, facet, 'filters'], Map({})).map(filter => isCurrentFacet || filter.get('isGrouped') ? filter.set('items', filter.get('items').map(item => item.set('isSelected', false))) : filter);
 
   const addFilterItem = (filters, paramKey, paramValue) => // Iterate through all filters within the facet,
   // if the paramKey matches the filter key
@@ -3077,14 +2052,14 @@ const generateFiltersState = ({
   // already exists, if so set isSelected to true,
   // if not create a new filterItem, setting the key only
   // so we can match this key later on when we load the filters
-  filters.map((filter = Map(), key) => {
+  filters.map((filter, key) => {
     if (paramKey !== key || !isCurrentFacet && !filter.get('isGrouped')) {
       return filter;
     } else {
-      const items = filter.get('items') || List();
-      const itemIndex = items.findIndex(item => (item === null || item === void 0 ? void 0 : item.get('key')) === paramValue);
+      const items = filter.get('items', List([]));
+      const itemIndex = items.findIndex(item => item.get('key') === paramValue);
       if (items.size > 0 && itemIndex !== -1) return filter.setIn(['items', itemIndex, 'isSelected'], true);
-      return filter.set('items', (filter.get('items') || List()).push(filterItem.set('key', paramValue).set('isSelected', true)));
+      return filter.set('items', filter.get('items', List([])).push(filterItem.set('key', paramValue).set('isSelected', true)));
     }
   }); // For each value found in filterParams
   // we are looking to split that value into multiple by any comma
@@ -3094,20 +2069,20 @@ const generateFiltersState = ({
   // the search results during SSR without needing to fetch the filters first
 
 
-  filterParams.map((paramValue, paramName = '') => paramValue && paramValue.split(',').map(pVal => filters = addFilterItem(filters, paramName, pVal)));
+  filterParams.map((paramValue, paramName) => paramValue && paramValue.split(',').map(pVal => filters = addFilterItem(filters, paramName, pVal)));
   return filters;
 };
 
-const resetFacets = (state, context) => OrderedMap(state.get(context).map((v = OrderedMap()) => resetFacet(v)));
+const resetFacets = (state, context) => OrderedMap(state.get(context).map(resetFacet));
 
 const resetFacet = facet => facet.setIn(['pagingInfo', 'pagesLoaded'], fromJS([])).setIn(['pagingInfo', 'pageIndex'], 0).setIn(['queryDuration'], 0);
 
 var reducers = (config => {
   // Add facets from SearchConfig to initialState
-  const initState = initialState.set('tabs', fromJS(config.tabs)).set('facets', generateSearchFacets(Context.facets, config)).set('listings', generateSearchFacets(Context.listings, config)).set('minilist', generateSearchFacets(Context.minilist, config));
+  const initState = initialState.set('tabs', fromJS(config.tabs)).set(Context.facets, generateSearchFacets(Context.facets, config)).set(Context.listings, generateSearchFacets(Context.listings, config)).set(Context.minilist, generateSearchFacets(Context.minilist, config));
   return (state = initState, action) => {
     const context = state.get('context');
-    const current = state.get(context !== 'listings' ? 'currentFacet' : 'currentListing');
+    const current = state.get(context !== Context.listings ? 'currentFacet' : 'currentListing');
 
     switch (action.type) {
       case APPLY_CONFIG:
@@ -3120,8 +2095,24 @@ var reducers = (config => {
           const currentFilters = state.getIn([context, current, 'filters']);
           return state.setIn([context, current, 'filters'], currentFilters.map(filter => {
             const filterItems = filter && filter.get('items') || [];
-            return filter === null || filter === void 0 ? void 0 : filter.set('items', filterItems.map(item => item === null || item === void 0 ? void 0 : item.set('isSelected', false)));
+            return filter.set('items', filterItems.map(item => item.set('isSelected', false)));
           })).setIn([context, current, 'queryDuration'], 0).setIn([context, current, 'pagingInfo', 'pagesLoaded'], fromJS([]));
+        }
+
+      case DO_SEARCH:
+        {
+          // DO SEARCH is used when we cannot use SET_ROUTE_FILTERS
+          // for example in a minilist scenario where the route filters
+          // are used for the primary page / listing navigation
+          // If the action contains a config object, we can add this to the
+          // state at runtime
+          const nextState = addConfigToState(state, action); // Add filter values in params to the matched filters in state
+          // causing unfetched filter items to be generated with isSelected: true
+
+          const filters = generateFiltersState({ ...action,
+            isCurrentFacet: true
+          }, nextState);
+          return nextState.setIn([action.context || Context.minilist, action.facet, 'filters'], filters);
         }
 
       case EXECUTE_SEARCH:
@@ -3141,7 +2132,7 @@ var reducers = (config => {
             filtersToLoad
           } = action;
           const filters = state.getIn([action.context, facetKey, 'filters']);
-          return state.setIn([action.context, facetKey, 'filters'], filters.map((filter = Map(), filterKey) => filtersToLoad.find(f => f === filterKey) ? filter.set('isLoading', true) : filter));
+          return state.setIn([action.context, facetKey, 'filters'], filters.map((filter, filterKey) => filtersToLoad.find(f => f === filterKey) ? filter.set('isLoading', true) : filter));
         }
 
       case LOAD_FILTERS_ERROR:
@@ -3169,29 +2160,22 @@ var reducers = (config => {
             term = '',
             pageIndex,
             orderBy
-          } = params;
-          const stateTerm = state.get('term');
-          const tabId = state.getIn([context, facet, 'tabId'], 0); // Reset the facet if the search term has changed, or if the any of
-          // the filters have changed
-
-          const resetAllFacets = stateTerm && term !== stateTerm;
-          let resetCurrentFacet = false; // Add filter values in params to the matched filters in state for the current facet
+          } = params; // Add filter values in params to the matched filters in state for the current facet
           // causing unfetched filter items to be generated with isSelected: true
           // or existing filter items to be tagged with isSelected: true
 
-          const nextFacets = state.get(context).map((stateFacet = Map(), facetName = '') => {
-            const isCurrentFacet = facetName === facet;
-            const nextFilters = generateFiltersState({
+          const nextFacets = state.get(context).map((stateFacet, facetName) => {
+            return stateFacet.set('filters', generateFiltersState({
               facet: facetName,
               params,
               context,
-              isCurrentFacet
-            }, state);
-            resetCurrentFacet = state.getIn(['config', 'isLoaded'], false) === true && !nextFilters.equals(stateFacet.get('filters'));
-            return (resetCurrentFacet ? resetFacet(stateFacet) : stateFacet).set('filters', nextFilters).setIn(['queryParams', 'dynamicOrderBy'], toArray(orderBy));
+              isCurrentFacet: facetName === facet
+            }, state)).setIn(['queryParams', 'dynamicOrderBy'], toArray(orderBy));
           });
+          const tabId = state.getIn([context, facet, 'tabId'], 0);
+          const stateTerm = state.get('term');
           const nextState = state.set('context', context).set(context, nextFacets).set(action.context === Context.facets ? 'currentFacet' : 'currentListing', facet).set('term', term).setIn(['tabs', tabId, 'currentFacet'], facet).setIn([context, facet, 'pagingInfo', 'pageIndex'], Number(pageIndex) - 1 || (state.getIn([context, facet, 'queryParams', 'loadMorePaging']) ? state.getIn([context, facet, 'pagingInfo', 'pageIndex'], 0) : 0)).setIn(['config', 'isLoaded'], true).setIn(['config', 'ssr'], typeof window === 'undefined');
-          return resetAllFacets ? nextState.set(context, resetFacets(nextState, context)) : nextState;
+          return stateTerm && term !== stateTerm ? nextState.set(context, resetFacets(nextState, context)) : nextState;
         }
 
       case SET_SEARCH_ENTRIES:
@@ -3199,23 +2183,6 @@ var reducers = (config => {
           const thisContext = action.context || context;
           const currentFacet = state.getIn([thisContext, action.facet]);
           return state.setIn([thisContext, action.facet], currentFacet.merge(fromJS(action.nextFacet)));
-        }
-
-      case SET_SEARCH_FILTERS:
-        {
-          var _action$params;
-
-          // DO SEARCH then SET_SEARCH_FILTERS is for when we cannot use SET_ROUTE_FILTERS
-          // for example in a minilist scenario where the route filters
-          // are used for the primary page / listing navigation
-          // Add filter values in params to the matched filters in state
-          // causing unfetched filter items to be generated with isSelected: true
-          const filters = generateFiltersState({ ...action,
-            isCurrentFacet: true
-          }, state);
-          const term = action === null || action === void 0 ? void 0 : (_action$params = action.params) === null || _action$params === void 0 ? void 0 : _action$params.term;
-          const useSearchTerm = state.getIn([action.context || Context.minilist, action.facet, 'queryParams', 'useSearchTerm'], false);
-          return state.setIn([action.context || Context.minilist, action.facet, 'filters'], filters).setIn([action.context || Context.minilist, action.facet, 'queryParams', 'excludeIds'], fromJS(action.excludeIds)).set('term', useSearchTerm ? term : state.get('term')).setIn(['config', 'ssr'], typeof window === 'undefined');
         }
 
       case UPDATE_PAGE_INDEX:
@@ -3244,8 +2211,8 @@ var reducers = (config => {
           const isSingleSelect = state.getIn([context, current, 'filters', filter, 'isSingleSelect'], false);
           const isGrouped = state.getIn([context, current, 'filters', filter, 'isGrouped'], false);
           const currentItems = state.getIn([context, current, 'filters', filter, 'items']);
-          return state.set(context, isGrouped ? resetFacets(state, context) : state.get(context)).setIn([context, current], resetFacet(state.getIn([context, current]))).setIn([context, current, 'filters', filter, 'items'], currentItems.map((item = Map()) => {
-            if (item.get('key') === key) {
+          return state.set(context, isGrouped ? resetFacets(state, context) : state.get(context)).setIn([context, current], resetFacet(state.getIn([context, current]))).setIn([context, current, 'filters', filter, 'items'], currentItems.map(item => {
+            if (item.get('key') == key) {
               return item.set('isSelected', !item.get('isSelected'));
             }
 
@@ -3268,12 +2235,5 @@ var reducers = (config => {
   };
 });
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
-const Context$1 = {
-  facets: 'facets',
-  listings: 'listings',
-  minilist: 'minilist'
-};
-
-export { Context$1 as Context, actions, doSearch, queries, reducers as reducer, searchSagas as sagas, schema, selectors, setRouteFilters, types, useMinilist, withListing, withSearch };
+export { actions, queries, reducers as reducer, searchSagas as sagas, schema, selectors, setRouteFilters, types, useMinilist, withListing, withSearch };
 //# sourceMappingURL=search.js.map

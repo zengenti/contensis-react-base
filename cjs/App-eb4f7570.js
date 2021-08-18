@@ -1,31 +1,38 @@
-import React from 'react';
-import { Map } from 'immutable';
-import 'redux';
-import 'redux-immutable';
-import 'redux-thunk';
-import 'redux-saga';
-import { r as reduxStore, G as GET_NODE_TREE, h as hasNavigationTree, S as SET_NODE_TREE, b as GET_NODE_TREE_ERROR } from './version-c7ba4339.js';
-import { a as setSurrogateKeys, S as SET_NAVIGATION_PATH, b as SET_ROUTE, U as UPDATE_LOADING_STATE, c as SET_ENTRY, d as SET_ANCESTORS, e as SET_SIBLINGS, f as setRoute } from './actions-fda5e103.js';
-import { R as REGISTER_USER, a as REGISTER_USER_SUCCESS, b as REGISTER_USER_FAILED } from './reducers-b426d14a.js';
-import { createBrowserHistory, createMemoryHistory } from 'history';
-import { takeEvery, select, put, call, all } from '@redux-saga/core/effects';
-import { Client, Op, Query } from 'contensis-delivery-api';
-import { s as selectVersionStatus } from './version-7fdbd2d5.js';
-import 'query-string';
-import { a as selectCurrentProject, s as selectRouteEntry, b as selectCurrentNode, c as selectCurrentAncestors, d as selectRouteEntryEntryId, e as selectRouteEntryLanguage, f as selectMappedEntry, q as queryParams, g as selectCurrentSearch } from './selectors-170581d2.js';
-import { info, error } from 'loglevel';
-import { f as findContentTypeMapping, h as handleRequiresLoginSaga, l as loginSagas } from './login-e4602150.js';
-import { to } from 'await-to-js';
-import 'react-hot-loader';
-import { R as RouteLoader } from './RouteLoader-2cfdfc5c.js';
+'use strict';
 
-const selectedHistory = typeof window !== 'undefined' ? createBrowserHistory : createMemoryHistory;
+var React = require('react');
+var immutable = require('immutable');
+require('redux');
+require('redux-immutable');
+require('redux-thunk');
+require('redux-saga');
+require('redux-injectors');
+var version = require('./version-d8f5b436.js');
+var actions = require('./actions-e22726ed.js');
+var reducers = require('./reducers-c42035ab.js');
+var history$1 = require('history');
+var effects = require('@redux-saga/core/effects');
+var contensisDeliveryApi = require('contensis-delivery-api');
+var version$1 = require('./version-2193b4a2.js');
+require('query-string');
+var selectors = require('./selectors-69c3d37c.js');
+var log = require('loglevel');
+var login = require('./login-0a30b9ba.js');
+var awaitToJs = require('await-to-js');
+require('react-hot-loader');
+var RouteLoader = require('./RouteLoader-5c44f039.js');
+
+function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+
+var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
+
+const selectedHistory = typeof window !== 'undefined' ? history$1.createBrowserHistory : history$1.createMemoryHistory;
 const history = (options = {}) => selectedHistory(options);
 const browserHistory = selectedHistory();
 
 const storeSurrogateKeys = response => {
   const keys = response.headers.get ? response.headers.get('surrogate-key') : response.headers.map['surrogate-key'];
-  if (keys) reduxStore.dispatch(setSurrogateKeys(keys));
+  if (keys) version.reduxStore.dispatch(actions.setSurrogateKeys(keys));
 };
 
 const getClientConfig = project => {
@@ -92,20 +99,20 @@ class DeliveryApi {
     };
 
     this.search = (query, linkDepth, project, env) => {
-      const client = Client.create(getClientConfig(project));
+      const client = contensisDeliveryApi.Client.create(getClientConfig(project));
       return client.entries.search(query, typeof linkDepth !== 'undefined' ? linkDepth : 1);
     };
 
     this.getClient = (deliveryApiStatus = 'published', project, env) => {
       const baseConfig = getClientConfig(project);
       baseConfig.versionStatus = deliveryApiStatus;
-      return Client.create(baseConfig);
+      return contensisDeliveryApi.Client.create(baseConfig);
     };
 
     this.getEntry = (id, linkDepth = 0, deliveryApiStatus = 'published', project, env) => {
       const baseConfig = getClientConfig(project);
       baseConfig.versionStatus = deliveryApiStatus;
-      const client = Client.create(baseConfig); // return client.entries.get(id, linkDepth);
+      const client = contensisDeliveryApi.Client.create(baseConfig); // return client.entries.get(id, linkDepth);
 
       return client.entries.get({
         id,
@@ -210,12 +217,12 @@ class CachedSearch {
   }
 
   search(query, linkDepth, project, env) {
-    const client = Client.create(getClientConfig(project));
+    const client = contensisDeliveryApi.Client.create(getClientConfig(project));
     return this.request(project + JSON.stringify(query) + linkDepth.toString(), () => client.entries.search(query, linkDepth));
   }
 
   get(id, linkDepth, versionStatus, project, env) {
-    const client = Client.create(getClientConfig(project));
+    const client = contensisDeliveryApi.Client.create(getClientConfig(project));
     client.clientConfig.versionStatus = versionStatus;
     return this.request(id, () => client.entries.get({
       id,
@@ -224,37 +231,37 @@ class CachedSearch {
   }
 
   getContentType(id, project, env) {
-    const client = Client.create(getClientConfig(project));
+    const client = contensisDeliveryApi.Client.create(getClientConfig(project));
     return this.request(`[CONTENT TYPE] ${id} ${project}`, () => client.contentTypes.get(id));
   }
 
   getTaxonomyNode(key, project, env) {
-    const client = Client.create(getClientConfig(project));
+    const client = contensisDeliveryApi.Client.create(getClientConfig(project));
     return this.request(`[TAXONOMY NODE] ${key}`, () => client.taxonomy.resolveChildren(key).then(node => this.extendTaxonomyNode(node)));
   }
 
   getRootNode(options, project, env) {
-    const client = Client.create(getClientConfig(project));
+    const client = contensisDeliveryApi.Client.create(getClientConfig(project));
     return this.request(`${project} / ${JSON.stringify(options)}`, () => client.nodes.getRoot(options));
   }
 
   getNode(options, project, env) {
-    const client = Client.create(getClientConfig(project));
+    const client = contensisDeliveryApi.Client.create(getClientConfig(project));
     return this.request(`${project} ${options && options.path || options} ${JSON.stringify(options)}`, () => client.nodes.get(options));
   }
 
   getAncestors(options, project, env) {
-    const client = Client.create(getClientConfig(project));
+    const client = contensisDeliveryApi.Client.create(getClientConfig(project));
     return this.request(`${project} [A] ${options && options.id || options} ${JSON.stringify(options)}`, () => client.nodes.getAncestors(options));
   }
 
   getChildren(options, project, env) {
-    const client = Client.create(getClientConfig(project));
+    const client = contensisDeliveryApi.Client.create(getClientConfig(project));
     return this.request(`${project} [C] ${options && options.id || options} ${JSON.stringify(options)}`, () => client.nodes.getChildren(options));
   }
 
   getSiblings(options, project, env) {
-    const client = Client.create(getClientConfig(project));
+    const client = contensisDeliveryApi.Client.create(getClientConfig(project));
     return this.request(`${project} [S] ${options && options.id || options} ${JSON.stringify(options)}`, () => client.nodes.getSiblings(options));
   }
 
@@ -296,32 +303,32 @@ class CachedSearch {
 
 const cachedSearch = new CachedSearch();
 
-const navigationSagas = [takeEvery(GET_NODE_TREE, ensureNodeTreeSaga)];
+const navigationSagas = [effects.takeEvery(version.GET_NODE_TREE, ensureNodeTreeSaga)];
 function* ensureNodeTreeSaga(action) {
-  const state = yield select();
+  const state = yield effects.select();
 
   try {
-    if (!hasNavigationTree(state)) {
-      const deliveryApiVersionStatus = yield select(selectVersionStatus);
-      const project = yield select(selectCurrentProject);
+    if (!version.hasNavigationTree(state)) {
+      const deliveryApiVersionStatus = yield effects.select(version$1.selectVersionStatus);
+      const project = yield effects.select(selectors.selectCurrentProject);
       const nodes = yield deliveryApi.getClient(deliveryApiVersionStatus, project).nodes.getRoot({
         depth: action.treeDepth || 0
       });
 
       if (nodes) {
-        yield put({
-          type: SET_NODE_TREE,
+        yield effects.put({
+          type: version.SET_NODE_TREE,
           nodes
         });
       } else {
-        yield put({
-          type: GET_NODE_TREE_ERROR
+        yield effects.put({
+          type: version.GET_NODE_TREE_ERROR
         });
       }
     }
   } catch (ex) {
-    yield put({
-      type: GET_NODE_TREE_ERROR,
+    yield effects.put({
+      type: version.GET_NODE_TREE_ERROR,
       error: ex.toString()
     });
   }
@@ -348,28 +355,28 @@ const Fields = {
 
 const fieldExpression = (field, value, operator = 'equalTo', weight = null) => {
   if (!field || !value) return [];
-  if (Array.isArray(value)) return equalToOrIn(field, value, operator);else return !weight ? [Op[operator](field, value)] : [Op[operator](field, value).weight(weight)];
+  if (Array.isArray(value)) return equalToOrIn(field, value, operator);else return !weight ? [contensisDeliveryApi.Op[operator](field, value)] : [contensisDeliveryApi.Op[operator](field, value).weight(weight)];
 };
 const defaultExpressions = versionStatus => {
-  return [Op.equalTo(Fields.sys.versionStatus, versionStatus)];
+  return [contensisDeliveryApi.Op.equalTo(Fields.sys.versionStatus, versionStatus)];
 };
 
-const equalToOrIn = (field, arr, operator = 'equalTo') => arr.length === 0 ? [] : arr.length === 1 ? [Op[operator](field, arr[0])] : [Op.in(field, ...arr)];
+const equalToOrIn = (field, arr, operator = 'equalTo') => arr.length === 0 ? [] : arr.length === 1 ? [contensisDeliveryApi.Op[operator](field, arr[0])] : [contensisDeliveryApi.Op.in(field, ...arr)];
 
 const routeEntryByFieldsQuery = (id, language = 'en-GB', fields = [], versionStatus = 'published') => {
-  const query = new Query(...[...fieldExpression('sys.id', id), ...fieldExpression('sys.language', language), ...defaultExpressions(versionStatus)]);
+  const query = new contensisDeliveryApi.Query(...[...fieldExpression('sys.id', id), ...fieldExpression('sys.language', language), ...defaultExpressions(versionStatus)]);
   query.fields = fields;
   return query;
 };
 
-const routingSagas = [takeEvery(SET_NAVIGATION_PATH, getRouteSaga), takeEvery(SET_ROUTE, setRouteSaga)];
+const routingSagas = [effects.takeEvery(actions.SET_NAVIGATION_PATH, getRouteSaga), effects.takeEvery(actions.SET_ROUTE, setRouteSaga)];
 /**
  * To navigate / push a specific route via redux middleware
  * @param {path, state} action
  */
 
 function* setRouteSaga(action) {
-  yield put({
+  yield effects.put({
     type: 'CALL_HISTORY_METHOD',
     payload: {
       method: 'push',
@@ -382,13 +389,17 @@ function* getRouteSaga(action) {
   let entry = null;
 
   try {
+    var _pathNode, _pathNode$entry, _pathNode$entry$sys;
+
     const {
       withEvents,
       routes: {
         ContentTypeMappings = {}
       } = {},
       staticRoute
-    } = action; // Variables we will pass to setRouteEntry
+    } = action; // Inject redux { key, reducer, saga } provided by staticRoute
+
+    if (staticRoute && staticRoute.route.injectRedux) yield effects.call(reduxInjectorSaga, staticRoute.route.injectRedux); // Variables we will pass to setRouteEntry
 
     let pathNode = null,
         ancestors = null,
@@ -408,21 +419,16 @@ function* getRouteSaga(action) {
     const doNavigation = !appsays || (appsays && appsays.customNavigation === true ? false : appsays && appsays.customNavigation || true);
     const entryLinkDepth = appsays && appsays.entryLinkDepth || 3;
     const setContentTypeLimits = !!ContentTypeMappings.find(ct => ct.fields || ct.linkDepth || ct.nodeOptions);
-    const state = yield select();
-    const routeEntry = selectRouteEntry(state);
-    const routeNode = selectCurrentNode(state);
+    const state = yield effects.select();
+    const routeEntry = selectors.selectRouteEntry(state);
+    const routeNode = selectors.selectCurrentNode(state);
     const currentPath = action.path; //selectCurrentPath(state);
 
-    const deliveryApiStatus = selectVersionStatus(state);
-    const project = selectCurrentProject(state);
+    const deliveryApiStatus = version$1.selectVersionStatus(state);
+    const project = selectors.selectCurrentProject(state);
     const isHome = currentPath === '/';
     const isPreview = currentPath && currentPath.startsWith('/preview/');
-    const defaultLang = appsays && appsays.defaultLang || 'en-GB'; // debugger;
-    // routeEntry = Map({
-    //   entryTitle: 'fake entry',
-    //   title: 'fakey entry',
-    //   sys: { id: 'abcd', contentTypeId: 'zenbaseHomePage' },
-    // });
+    const defaultLang = appsays && appsays.defaultLang || 'en-GB';
 
     if (!isPreview && (appsays && appsays.customRouting || staticRoute && !staticRoute.route.fetchNode || routeEntry && action.statePath === action.path && (appsays && appsays.refetchNode) !== true)) {
       // To prevent erroneous 404s and wasted network calls, this covers
@@ -439,11 +445,11 @@ function* getRouteSaga(action) {
         //   isLoading: false,
         // });
 
-        yield put({
-          type: UPDATE_LOADING_STATE,
+        yield effects.put({
+          type: actions.UPDATE_LOADING_STATE,
           isLoading: false
         });
-      } else yield call(setRouteEntry, routeEntry && routeEntry.toJS(), yield select(selectCurrentNode), yield select(selectCurrentAncestors));
+      } else yield effects.call(setRouteEntry, routeEntry && routeEntry.toJS(), yield effects.select(selectors.selectCurrentNode), yield effects.select(selectors.selectCurrentAncestors));
     } else {
       // Handle homepage
       if (isHome) {
@@ -509,7 +515,7 @@ function* getRouteSaga(action) {
               fields,
               linkDepth,
               nodeOptions = {}
-            } = findContentTypeMapping(ContentTypeMappings, pathNode.entry.sys.contentTypeId) || {};
+            } = login.findContentTypeMapping(ContentTypeMappings, pathNode.entry.sys.contentTypeId) || {};
             const query = routeEntryByFieldsQuery(pathNode.entry.sys.id, pathNode.entry.sys.language, fields, deliveryApiStatus);
             const payload = yield cachedSearch.search(query, linkDepth || entryLinkDepth || 0, project);
 
@@ -545,7 +551,7 @@ function* getRouteSaga(action) {
                 versionStatus: deliveryApiStatus
               }, project);
             } catch (ex) {
-              info('Problem fetching ancestors', ex);
+              log.info('Problem fetching ancestors', ex);
             }
           }
 
@@ -557,12 +563,16 @@ function* getRouteSaga(action) {
                 versionStatus: deliveryApiStatus
               }, project);
             } catch (ex) {
-              info('Problem fetching siblings', ex);
+              log.info('Problem fetching siblings', ex);
             }
           }
         }
       }
     }
+
+    const contentTypeMapping = login.findContentTypeMapping(ContentTypeMappings, (_pathNode = pathNode) === null || _pathNode === void 0 ? void 0 : (_pathNode$entry = _pathNode.entry) === null || _pathNode$entry === void 0 ? void 0 : (_pathNode$entry$sys = _pathNode$entry.sys) === null || _pathNode$entry$sys === void 0 ? void 0 : _pathNode$entry$sys.contentTypeId) || {}; // Inject redux { key, reducer, saga } provided by ContentTypeMapping
+
+    if (contentTypeMapping.injectRedux) yield effects.call(reduxInjectorSaga, contentTypeMapping.injectRedux);
 
     if (withEvents && withEvents.onRouteLoaded) {
       // Check if the app has provided a requireLogin boolean flag or groups array
@@ -576,7 +586,7 @@ function* getRouteSaga(action) {
 
     if (requireLogin !== false) {
       // Do not call the login feature saga if requireLogin is false
-      yield call(handleRequiresLoginSaga, { ...action,
+      yield effects.call(login.handleRequiresLoginSaga, { ...action,
         entry,
         requireLogin
       });
@@ -586,10 +596,10 @@ function* getRouteSaga(action) {
       entry = pathNode.entry;
       const {
         entryMapper
-      } = findContentTypeMapping(ContentTypeMappings, entry.sys.contentTypeId) || {};
-      yield call(setRouteEntry, entry, pathNode, ancestors, siblings, entryMapper, false, appsays && appsays.refetchNode);
+      } = contentTypeMapping;
+      yield effects.call(setRouteEntry, entry, pathNode, ancestors, siblings, entryMapper, false, appsays && appsays.refetchNode);
     } else {
-      if (pathNode) yield call(setRouteEntry, null, pathNode, ancestors, siblings);else if (!staticRoute) yield call(do404);
+      if (pathNode) yield effects.call(setRouteEntry, null, pathNode, ancestors, siblings);else if (!staticRoute) yield effects.call(do404);
     }
 
     if (!appsays || !appsays.preventScrollTop) {
@@ -601,41 +611,41 @@ function* getRouteSaga(action) {
       }
     }
 
-    if (!hasNavigationTree(state) && (doNavigation === true || doNavigation.tree)) if (typeof window !== 'undefined') {
-      yield put({
-        type: GET_NODE_TREE,
+    if (!version.hasNavigationTree(state) && (doNavigation === true || doNavigation.tree)) if (typeof window !== 'undefined') {
+      yield effects.put({
+        type: version.GET_NODE_TREE,
         treeDepth: doNavigation === true || !doNavigation.tree || doNavigation.tree === true ? 2 : doNavigation.tree
       });
     } else {
-      yield call(ensureNodeTreeSaga);
+      yield effects.call(ensureNodeTreeSaga);
     }
   } catch (e) {
-    error(...['Error running route saga:', e, e.stack]);
-    yield call(do500, e);
+    log.error(...['Error running route saga:', e, e.stack]);
+    yield effects.call(do500, e);
   }
 }
 
 function* setRouteEntry(entry, node, ancestors, siblings, entryMapper, notFound = false, remapEntry = false) {
   const entrySys = entry && entry.sys || {};
-  const currentEntryId = yield select(selectRouteEntryEntryId);
-  const currentEntryLang = yield select(selectRouteEntryLanguage);
-  const mappedEntry = currentEntryId === entrySys.id && currentEntryLang === entrySys.language && remapEntry === false ? ((yield select(selectMappedEntry)) || Map()).toJS() : yield mapRouteEntry(entryMapper, { ...node,
+  const currentEntryId = yield effects.select(selectors.selectRouteEntryEntryId);
+  const currentEntryLang = yield effects.select(selectors.selectRouteEntryLanguage);
+  const mappedEntry = currentEntryId === entrySys.id && currentEntryLang === entrySys.language && remapEntry === false ? ((yield effects.select(selectors.selectMappedEntry)) || immutable.Map()).toJS() : yield mapRouteEntry(entryMapper, { ...node,
     entry,
     ancestors,
     siblings
   });
-  yield all([put({
-    type: SET_ENTRY,
+  yield effects.all([effects.put({
+    type: actions.SET_ENTRY,
     id: entrySys.id,
     entry,
     mappedEntry,
     node,
     notFound
-  }), ancestors && put({
-    type: SET_ANCESTORS,
+  }), ancestors && effects.put({
+    type: actions.SET_ANCESTORS,
     ancestors
-  }), siblings && put({
-    type: SET_SIBLINGS,
+  }), siblings && effects.put({
+    type: actions.SET_SIBLINGS,
     siblings
   })]);
 }
@@ -643,21 +653,21 @@ function* setRouteEntry(entry, node, ancestors, siblings, entryMapper, notFound 
 function* mapRouteEntry(entryMapper, node) {
   try {
     if (typeof entryMapper === 'function') {
-      const state = yield select();
-      const mappedEntry = yield call(entryMapper, node, state);
+      const state = yield effects.select();
+      const mappedEntry = yield effects.call(entryMapper, node, state);
       return mappedEntry;
     }
   } catch (e) {
-    error(...['Error running entryMapper:', e, e.stack]);
+    log.error(...['Error running entryMapper:', e, e.stack]);
   }
 
   return;
 }
 
 function* do404() {
-  yield call(clientReloadHitServer);
-  yield put({
-    type: SET_ENTRY,
+  yield effects.call(clientReloadHitServer);
+  yield effects.put({
+    type: actions.SET_ENTRY,
     id: null,
     entry: null,
     notFound: true
@@ -665,7 +675,7 @@ function* do404() {
 }
 
 function* clientReloadHitServer() {
-  const stateEntry = yield select(selectRouteEntry); // If in client and there is a stateEntry.sys field reload the page,
+  const stateEntry = yield effects.select(selectors.selectRouteEntry); // If in client and there is a stateEntry.sys field reload the page,
   // on the 2nd load stateEntry.sys should be null at this point,
   // we do not wish to reload again and get stuck in an infinite reloading loop
 
@@ -675,8 +685,8 @@ function* clientReloadHitServer() {
 }
 
 function* do500(error) {
-  yield put({
-    type: SET_ENTRY,
+  yield effects.put({
+    type: actions.SET_ENTRY,
     id: null,
     entry: null,
     notFound: true,
@@ -686,7 +696,22 @@ function* do500(error) {
   });
 }
 
-const registerSagas = [takeEvery(REGISTER_USER, registerSaga), takeEvery(REGISTER_USER_SUCCESS, redirectSaga)];
+function* reduxInjectorSaga(injectorFn) {
+  if (typeof injectorFn === 'function') {
+    const {
+      key,
+      reducer,
+      saga
+    } = yield injectorFn();
+    version.injectRedux({
+      key,
+      reducer,
+      saga
+    });
+  }
+}
+
+const registerSagas = [effects.takeEvery(reducers.REGISTER_USER, registerSaga), effects.takeEvery(reducers.REGISTER_USER_SUCCESS, redirectSaga)];
 
 function* registerSaga({
   user,
@@ -711,7 +736,7 @@ function* registerSaga({
 
   if (response.ok) {
     let mappedResponse;
-    const [, responseBody] = yield to(response.json());
+    const [, responseBody] = yield awaitToJs.to(response.json());
 
     if (responseBody) {
       // Allow use of response mapper to convert the successful user object
@@ -721,14 +746,14 @@ function* registerSaga({
       } // Update user object with mappedResponse or responseBody
 
 
-      yield put({
-        type: REGISTER_USER_SUCCESS,
+      yield effects.put({
+        type: reducers.REGISTER_USER_SUCCESS,
         user: mappedResponse || responseBody
       });
     } else {
       // OK response but unable to parse the response body
-      yield put({
-        type: REGISTER_USER_FAILED,
+      yield effects.put({
+        type: reducers.REGISTER_USER_FAILED,
         error: {
           message: 'Unable to parse the created user from the register service response'
         }
@@ -738,7 +763,7 @@ function* registerSaga({
     // Not OK responses, these can be due to service availability
     // or status codes echoed from the responses received from
     // management api when registering the user
-    const [, errorResponse] = yield to(response.json());
+    const [, errorResponse] = yield awaitToJs.to(response.json());
     const error = errorResponse && errorResponse.error || errorResponse || {}; // Get something meaningful from the response if there is no message in the body
 
     if (!error.message) {
@@ -746,8 +771,8 @@ function* registerSaga({
       error.status = response.status;
     }
 
-    yield put({
-      type: REGISTER_USER_FAILED,
+    yield effects.put({
+      type: reducers.REGISTER_USER_FAILED,
       error
     });
   }
@@ -755,19 +780,19 @@ function* registerSaga({
 
 function* redirectSaga() {
   // Check if querystring contains a redirect_uri
-  const currentQs = queryParams(yield select(selectCurrentSearch));
+  const currentQs = selectors.queryParams(yield effects.select(selectors.selectCurrentSearch));
   const redirectUri = currentQs.redirect_uri || currentQs.redirect; // We must use redux based navigation to preserve the registration state
 
-  if (redirectUri) yield put(setRoute(redirectUri));
+  if (redirectUri) yield effects.put(actions.setRoute(redirectUri));
 }
 
-const userSagas = [...loginSagas, ...registerSagas];
+const userSagas = [...login.loginSagas, ...registerSagas];
 
 // index.js
 function rootSaga (featureSagas = []) {
   return function* rootSaga() {
     const subSagas = [...routingSagas, ...navigationSagas, ...userSagas];
-    yield all([...subSagas, ...featureSagas]);
+    yield effects.all([...subSagas, ...featureSagas]);
   };
 }
 
@@ -815,8 +840,13 @@ const pickProject = (hostname, query) => {
 };
 
 const AppRoot = props => {
-  return /*#__PURE__*/React.createElement(RouteLoader, props);
+  return /*#__PURE__*/React__default['default'].createElement(RouteLoader.RouteLoader, props);
 };
 
-export { AppRoot as A, browserHistory as b, deliveryApi as d, history as h, pickProject as p, rootSaga as r };
-//# sourceMappingURL=App-f64001ba.js.map
+exports.AppRoot = AppRoot;
+exports.browserHistory = browserHistory;
+exports.deliveryApi = deliveryApi;
+exports.history = history;
+exports.pickProject = pickProject;
+exports.rootSaga = rootSaga;
+//# sourceMappingURL=App-eb4f7570.js.map

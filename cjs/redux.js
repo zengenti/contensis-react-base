@@ -7,9 +7,11 @@ require('redux');
 require('redux-immutable');
 require('redux-thunk');
 require('redux-saga');
-var version$1 = require('./version-39a19edf.js');
+require('redux-injectors');
+var version$1 = require('./version-d8f5b436.js');
 var actions$1 = require('./actions-e22726ed.js');
 require('./reducers-c42035ab.js');
+require('@redux-saga/core/effects');
 var version$2 = require('./version-2193b4a2.js');
 require('query-string');
 var selectors$1 = require('./selectors-69c3d37c.js');
@@ -63,12 +65,17 @@ const version = {
   selectors: selectors.version
 };
 
+exports.convertSagaArray = version$1.convertSagaArray;
+exports.injectReducer = version$1.injectReducer;
+exports.injectRedux = version$1.injectRedux;
+exports.injectSaga = version$1.injectSaga;
 Object.defineProperty(exports, 'store', {
   enumerable: true,
   get: function () {
     return version$1.reduxStore;
   }
 });
+exports.useInjectRedux = version$1.useInjectRedux;
 exports.navigation = navigation$1;
 exports.routing = routing;
 exports.user = user;
