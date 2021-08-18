@@ -155,17 +155,16 @@ var urls = url;
 const context = typeof window != 'undefined' ? window : global;
 const isDev = process.env.NODE_ENV === 'development';
 
-const packagejson = () => isDev ? PACKAGE_JSON
+const pj = () => isDev ? PACKAGE_JSON
 /* global PACKAGE_JSON */
 : context.PACKAGE_JSON || {
   name: 'packagejson not found',
   repository: ''
 };
 
-const repository = packagejson().repository;
 const versionInfoProps = {
   packageDetail: () => {
-    const pkg = packagejson();
+    const pkg = pj();
     return {
       name: pkg.name,
       version: pkg.version,
@@ -173,17 +172,17 @@ const versionInfoProps = {
     };
   },
   uris: {
-    gitRepo: () => repository,
+    gitRepo: () => pj().repository,
     commit: state => {
       const commitRef = version.selectCommitRef(state);
-      return `${repository}/commit/${commitRef ? commitRef : ''}`;
+      return `${pj().repository}/commit/${commitRef ? commitRef : ''}`;
     },
     pipeline: state => {
       const buildNumber = version.selectBuildNumber(state);
-      return `${repository}/${repository.includes('github.com') ? 'actions/runs' : 'pipelines'}/${buildNumber ? buildNumber : ''}`;
+      return `${pj().repository}/${pj().repository.includes('github.com') ? 'actions/runs' : 'pipelines'}/${buildNumber ? buildNumber : ''}`;
     }
   },
-  zenPackageVersions: () => [...(Object.entries(packagejson().devDependencies || {}).filter(([pkg]) => pkg.includes('zengenti') || pkg.includes('contensis')) || []), ...(Object.entries(packagejson().dependencies || {}).filter(([pkg]) => pkg.includes('zengenti') || pkg.includes('contensis')) || [])],
+  zenPackageVersions: () => [...(Object.entries(pj().devDependencies || {}).filter(([pkg]) => pkg.includes('zengenti') || pkg.includes('contensis')) || []), ...(Object.entries(pj().dependencies || {}).filter(([pkg]) => pkg.includes('zengenti') || pkg.includes('contensis')) || [])],
   deliveryApi: () => JSON.parse(JSON.stringify(DELIVERY_API_CONFIG
   /* global DELIVERY_API_CONFIG */
   )),
@@ -194,7 +193,7 @@ const versionInfoProps = {
   /* global DISABLE_SSR_REDUX*/
   : context.DISABLE_SSR_REDUX || false,
   nodeEnv: () => process.env.NODE_ENV || 'production',
-  packagejson: () => packagejson() || {},
+  packagejson: () => pj() || {},
   projects: () => isDev ? PROJECTS
   /* global PROJECTS */
   : context.PROJECTS,
@@ -335,7 +334,7 @@ const VersionInfo = ({
     className: version.contensisVersionStatus == 'published' ? 'green' : 'red'
   }, version.contensisVersionStatus)), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("th", {
     colSpan: 2
-  }, "Build configuration")), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", null, "Environment"), /*#__PURE__*/React__default['default'].createElement("td", null, servers.alias)), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", null, "Public uri"), /*#__PURE__*/React__default['default'].createElement("td", null, publicUri)), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", null, "Zengenti package versions"), /*#__PURE__*/React__default['default'].createElement("td", null, zenPackageVersions.map(([pkg, ver], idx) => /*#__PURE__*/React__default['default'].createElement("div", {
+  }, "Build configuration")), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", null, "Environment"), /*#__PURE__*/React__default['default'].createElement("td", null, servers.alias)), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", null, "Public uri"), /*#__PURE__*/React__default['default'].createElement("td", null, publicUri)), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", null, "Zengenti packages"), /*#__PURE__*/React__default['default'].createElement("td", null, zenPackageVersions.map(([pkg, ver], idx) => /*#__PURE__*/React__default['default'].createElement("div", {
     key: idx
   }, pkg, ": ", ver)))), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", null, "Servers"), /*#__PURE__*/React__default['default'].createElement("td", {
     className: "small"
