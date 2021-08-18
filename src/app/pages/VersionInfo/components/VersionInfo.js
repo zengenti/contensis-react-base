@@ -111,7 +111,7 @@ const VersionInfo = ({
           <td>{publicUri}</td>
         </tr>
         <tr>
-          <td>Zengenti package versions</td>
+          <td>Zengenti packages</td>
           <td>
             {zenPackageVersions.map(([pkg, ver], idx) => (
               <div key={idx}>

@@ -10,36 +10,34 @@ const context = typeof window != 'undefined' ? window : global;
 
 const isDev = process.env.NODE_ENV === 'development';
 
-const packagejson = () =>
+const pj = () =>
   isDev
     ? PACKAGE_JSON /* global PACKAGE_JSON */
     : context.PACKAGE_JSON || { name: 'packagejson not found', repository: '' };
 
-const repository = packagejson().repository;
-
 const versionInfoProps = {
   packageDetail: () => {
-    const pkg = packagejson();
+    const pkg = pj();
     return { name: pkg.name, version: pkg.version, repository: pkg.repository };
   },
   uris: {
-    gitRepo: () => repository,
+    gitRepo: () => pj().repository,
     commit: state => {
       const commitRef = selectCommitRef(state);
-      return `${repository}/commit/${commitRef ? commitRef : ''}`;
+      return `${pj().repository}/commit/${commitRef ? commitRef : ''}`;
     },
     pipeline: state => {
       const buildNumber = selectBuildNumber(state);
-      return `${repository}/${
-        repository.includes('github.com') ? 'actions/runs' : 'pipelines'
+      return `${pj().repository}/${
+        pj().repository.includes('github.com') ? 'actions/runs' : 'pipelines'
       }/${buildNumber ? buildNumber : ''}`;
     },
   },
   zenPackageVersions: () => [
-    ...(Object.entries(packagejson().devDependencies || {}).filter(
+    ...(Object.entries(pj().devDependencies || {}).filter(
       ([pkg]) => pkg.includes('zengenti') || pkg.includes('contensis')
     ) || []),
-    ...(Object.entries(packagejson().dependencies || {}).filter(
+    ...(Object.entries(pj().dependencies || {}).filter(
       ([pkg]) => pkg.includes('zengenti') || pkg.includes('contensis')
     ) || []),
   ],
@@ -54,7 +52,7 @@ const versionInfoProps = {
       ? DISABLE_SSR_REDUX /* global DISABLE_SSR_REDUX*/
       : context.DISABLE_SSR_REDUX || false,
   nodeEnv: () => process.env.NODE_ENV || 'production',
-  packagejson: () => packagejson() || {},
+  packagejson: () => pj() || {},
   projects: () => (isDev ? PROJECTS /* global PROJECTS */ : context.PROJECTS),
   proxyDeliveryApi: () =>
     isDev
