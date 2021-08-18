@@ -58,6 +58,10 @@ function* getRouteSaga(action) {
       staticRoute,
     } = action;
 
+    // Inject redux { key, reducer, saga } provided by staticRoute
+    if (staticRoute && staticRoute.route.injectRedux)
+      yield call(reduxInjectorSaga, staticRoute.route.injectRedux);
+
     // Variables we will pass to setRouteEntry
     let pathNode = null,
       ancestors = null,
@@ -94,13 +98,6 @@ function* getRouteSaga(action) {
     const isHome = currentPath === '/';
     const isPreview = currentPath && currentPath.startsWith('/preview/');
     const defaultLang = (appsays && appsays.defaultLang) || 'en-GB';
-
-    // debugger;
-    // routeEntry = Map({
-    //   entryTitle: 'fake entry',
-    //   title: 'fakey entry',
-    //   sys: { id: 'abcd', contentTypeId: 'zenbaseHomePage' },
-    // });
 
     if (
       !isPreview &&
@@ -284,18 +281,16 @@ function* getRouteSaga(action) {
         }
       }
     }
-    const { injectRedux } =
+
+    const contentTypeMapping =
       findContentTypeMapping(
         ContentTypeMappings,
         pathNode?.entry?.sys?.contentTypeId
-      ) ||
-      staticRoute?.route ||
-      {};
+      ) || {};
 
-    if (typeof injectRedux === 'function') {
-      const { key, reducer, saga } = yield injectRedux();
-      reduxInjector({ key, reducer, saga });
-    }
+    // Inject redux { key, reducer, saga } provided by ContentTypeMapping
+    if (contentTypeMapping.injectRedux)
+      yield call(reduxInjectorSaga, contentTypeMapping.injectRedux);
 
     if (withEvents && withEvents.onRouteLoaded) {
       // Check if the app has provided a requireLogin boolean flag or groups array
@@ -320,9 +315,7 @@ function* getRouteSaga(action) {
       pathNode.entry.sys.id
     ) {
       entry = pathNode.entry;
-      const { entryMapper } =
-        findContentTypeMapping(ContentTypeMappings, entry.sys.contentTypeId) ||
-        {};
+      const { entryMapper } = contentTypeMapping;
 
       yield call(
         setRouteEntry,
@@ -466,4 +459,11 @@ function* do500(error) {
     error,
     statusCode: error && error.status ? error.status : 500,
   });
+}
+
+function* reduxInjectorSaga(injectorFn) {
+  if (typeof injectorFn === 'function') {
+    const { key, reducer, saga } = yield injectorFn();
+    reduxInjector({ key, reducer, saga });
+  }
 }
