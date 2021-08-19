@@ -1,3 +1,33 @@
+#### 2.4.0 (2021-08-19)
+
+##### Build System / Dependencies
+
+- search package had gone back to old non TS version, now merged into master and back on correct version (5de95dfc)
+
+##### Documentation Changes
+
+- update README with some clarity on the available subpackages and their purpose also key scripts reduced to remove references to an included web app (29f284af)
+
+##### New Features
+
+- support saga and reducer injection, new key in ContentTypeMappings and StaticRoutes injectRedux async function when provided expects a returned object containing { key, reducer, saga } allowing adding dynamic imports into the redux store (d9786fda)
+
+##### Bug Fixes
+
+- global not defined error in dev mode (c650266c)
+- update versionInfo page props to support github repositories (325992a4)
+- entryMapper does not fire if the route path hasn't changed, we sometimes need the route entry remapped based on query params change for example, add return key to "onRouteLoad" event to ask the routing saga to not reuse the entry/mappedEntry from routing state and instead refetch and remap the route node if refetchNode is returned from the calling app as true (90f1fc7e)
+
+##### Performance Improvements
+
+- oidc-client appearing in consumer bundles despite the package being externalized in webpack. change to dynamic import and allow webpack splitChunksPlugin to handle the separation of this element and lazy loading (if it's ever called upon). webpackChunkName does not work at this time although the webpack hint comment has been left in should this work in future (13e3cb94)
+
+##### Refactors
+
+- call reduxInjector for static route separately (b4941837)
+- implement new ./src/{lib} folder structure and remove inappropriate leftover folders (797c8bd1)
+- delete webapp source and dependencies, update babel and eslint dependencies (40c320fb)
+
 #### 2.3.0 (2021-08-06)
 
 ##### New Features

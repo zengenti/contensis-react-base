@@ -12,7 +12,7 @@
     "build:lib": "npm i zengenti-search-package zengenti-forms-package && npm run roll:lib",
     "roll:lib": "rimraf ./esm && rimraf ./cjs && cross-env NODE_ENV=production rollup -c rollup/rollup.config.lib.js",
     "roll:watch": "cross-env NODE_ENV=production rollup -c rollup/rollup.config.lib.js --watch",
-    "changelog": "generate-changelog --tag v2.2.3",
+    "changelog": "generate-changelog --tag v2.2.4-beta.0..v2.4.0",
     "lint": "eslint ./src",
     "lint:fix": "eslint --fix ./src",
     "test": "jest  -c ./config/jest.config.js --detectOpenHandles --forceExit",
