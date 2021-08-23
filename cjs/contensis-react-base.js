@@ -401,7 +401,7 @@ const webApp = (app, ReactApp, config) => {
 
     const buildBundleTags = bundles => {
       // Take the bundles returned from Loadable.Capture
-      const bundleTags = bundles.map(bundle => {
+      const bundleTags = bundles.filter(b => b).map(bundle => {
         if (bundle.publicPath.includes('/modern/')) return differentialBundles ? `<script ${attributes} type="module" src="${replaceStaticPath(bundle.publicPath, staticRoutePath)}"></script>` : null;
         return `<script ${attributes} nomodule src="${replaceStaticPath(bundle.publicPath, staticRoutePath)}"></script>`;
       }).filter(f => f); // Add the static startup script to the bundleTags
