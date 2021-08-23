@@ -4,10 +4,11 @@ import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import postcss from 'rollup-plugin-postcss';
 import submoduleResolvePlugin from './submodule-resolve-plugin';
-import path from 'path';
 
 const babelConfig = require('../babel.config.js');
 const packagejson = require('../package.json');
+const formsPackageJson = require('../node_modules/zengenti-forms-package/package.json');
+const searchPackageJson = require('../node_modules/zengenti-search-package/package.json');
 
 export default {
   input: {
@@ -38,6 +39,8 @@ export default {
   ],
   external: [
     ...Object.keys(packagejson.dependencies),
+    ...Object.keys(formsPackageJson.dependencies),
+    ...Object.keys(searchPackageJson.dependencies),
     /^@babel*/,
     '@babel',
     'history',
@@ -45,6 +48,8 @@ export default {
     'react-dom/server',
     'react-loadable/webpack',
     'prop-types',
+    /^contensis-delivery-api*/,
+    /^contensis-core-api*/,
   ],
   plugins: [
     submoduleResolvePlugin(),
