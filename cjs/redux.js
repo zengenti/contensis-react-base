@@ -8,7 +8,7 @@ require('redux-immutable');
 require('redux-thunk');
 require('redux-saga');
 require('redux-injectors');
-var version$1 = require('./version-d8f5b436.js');
+var version$1 = require('./version-35187ea4.js');
 var actions$1 = require('./actions-e22726ed.js');
 require('./reducers-c42035ab.js');
 require('@redux-saga/core/effects');

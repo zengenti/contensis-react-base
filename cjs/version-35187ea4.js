@@ -390,4 +390,4 @@ exports.setVersionStatus = setVersionStatus;
 exports.useInjectRedux = useInjectRedux;
 exports.version = version;
 exports.version$1 = version$1;
-//# sourceMappingURL=version-d8f5b436.js.map
+//# sourceMappingURL=version-35187ea4.js.map
