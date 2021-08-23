@@ -76,7 +76,7 @@
     "app-root-path": "^3.0.0",
     "await-to-js": "^2.1.1",
     "contensis-delivery-api": "^1.1.7",
-    "contensis-management-api": "^2.0.0-beta.5",
+    "contensis-management-api": "^2.0.1",
     "custom-env": "^2.0.1",
     "dateformat": "^3.0.3",
     "express": "^4.17.1",
