@@ -227,6 +227,7 @@ const webApp = (app, ReactApp, config) => {
     const buildBundleTags = bundles => {
       // Take the bundles returned from Loadable.Capture
       const bundleTags = bundles
+        .filter(b => b)
         .map(bundle => {
           if (bundle.publicPath.includes('/modern/'))
             return differentialBundles
