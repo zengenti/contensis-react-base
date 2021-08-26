@@ -1381,8 +1381,9 @@ const queryParamsTemplate = {
   }) => getPrevPageIndex(state, facet, context),
   projectId: ({
     state,
-    facet
-  }) => getFacet(state, facet).get('projectId'),
+    facet,
+    context
+  }) => getFacet(state, facet, context).get('projectId'),
   searchTerm: root => root.context !== Context.minilist || getQueryParameter(root, 'useSearchTerm', false) ? getSearchTerm(root.state) : '',
   selectedFilters: ({
     state,
