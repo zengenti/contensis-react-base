@@ -486,9 +486,9 @@ function* handleRequiresLoginSaga(action) {
       });
     } // otherwise do a non blocking put to handle validation in the background
     else yield effects.put({
-        type: reducers.VALIDATE_USER,
-        securityToken
-      });
+      type: reducers.VALIDATE_USER,
+      securityToken
+    });
   }
 
   if (routeRequiresLogin) {
@@ -617,4 +617,4 @@ exports.findContentTypeMapping = findContentTypeMapping;
 exports.handleRequiresLoginSaga = handleRequiresLoginSaga;
 exports.loginSagas = loginSagas;
 exports.refreshSecurityToken = refreshSecurityToken;
-//# sourceMappingURL=login-0a30b9ba.js.map
+//# sourceMappingURL=login-6eb5e46d.js.map

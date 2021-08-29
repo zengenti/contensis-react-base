@@ -12,7 +12,7 @@ require('@redux-saga/core/effects');
 require('query-string');
 require('./selectors-69c3d37c.js');
 var ToJs = require('./ToJs-ca9bea03.js');
-var login = require('./login-0a30b9ba.js');
+var login = require('./login-6eb5e46d.js');
 require('await-to-js');
 require('js-cookie');
 

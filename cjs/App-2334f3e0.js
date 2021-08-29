@@ -17,7 +17,7 @@ var version$1 = require('./version-2193b4a2.js');
 require('query-string');
 var selectors = require('./selectors-69c3d37c.js');
 var log = require('loglevel');
-var login = require('./login-0a30b9ba.js');
+var login = require('./login-6eb5e46d.js');
 var awaitToJs = require('await-to-js');
 require('react-hot-loader');
 var RouteLoader = require('./RouteLoader-5c44f039.js');
@@ -56,11 +56,11 @@ const getClientConfig = project => {
   if (typeof window !== 'undefined' && PROXY_DELIVERY_API
   /* global PROXY_DELIVERY_API */
   ) {
-      // ensure a relative url is used to bypass the need for CORS (separate OPTIONS calls)
-      config.rootUrl = '';
+    // ensure a relative url is used to bypass the need for CORS (separate OPTIONS calls)
+    config.rootUrl = '';
 
-      config.responseHandler[404] = () => null;
-    }
+    config.responseHandler[404] = () => null;
+  }
 
   return config;
 };
@@ -849,4 +849,4 @@ exports.deliveryApi = deliveryApi;
 exports.history = history;
 exports.pickProject = pickProject;
 exports.rootSaga = rootSaga;
-//# sourceMappingURL=App-eb4f7570.js.map
+//# sourceMappingURL=App-2334f3e0.js.map

@@ -15,7 +15,7 @@ import { s as selectVersionStatus } from './version-7fdbd2d5.js';
 import 'query-string';
 import { a as selectCurrentProject, s as selectRouteEntry, b as selectCurrentNode, c as selectCurrentAncestors, d as selectRouteEntryEntryId, e as selectRouteEntryLanguage, f as selectMappedEntry, q as queryParams, g as selectCurrentSearch } from './selectors-170581d2.js';
 import { info, error } from 'loglevel';
-import { f as findContentTypeMapping, h as handleRequiresLoginSaga, l as loginSagas } from './login-e4602150.js';
+import { f as findContentTypeMapping, h as handleRequiresLoginSaga, l as loginSagas } from './login-866fe64c.js';
 import { to } from 'await-to-js';
 import 'react-hot-loader';
 import { R as RouteLoader } from './RouteLoader-2cfdfc5c.js';
@@ -50,11 +50,11 @@ const getClientConfig = project => {
   if (typeof window !== 'undefined' && PROXY_DELIVERY_API
   /* global PROXY_DELIVERY_API */
   ) {
-      // ensure a relative url is used to bypass the need for CORS (separate OPTIONS calls)
-      config.rootUrl = '';
+    // ensure a relative url is used to bypass the need for CORS (separate OPTIONS calls)
+    config.rootUrl = '';
 
-      config.responseHandler[404] = () => null;
-    }
+    config.responseHandler[404] = () => null;
+  }
 
   return config;
 };
@@ -838,4 +838,4 @@ const AppRoot = props => {
 };
 
 export { AppRoot as A, browserHistory as b, deliveryApi as d, history as h, pickProject as p, rootSaga as r };
-//# sourceMappingURL=App-1120a55c.js.map
+//# sourceMappingURL=App-b2b80182.js.map
