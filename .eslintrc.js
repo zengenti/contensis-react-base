@@ -34,9 +34,7 @@ module.exports = {
       version: '^16.0.0',
     },
     'import/resolver': {
-      webpack: {
-        config: path.resolve(__dirname, './webpack/webpack.config.base.js'),
-      },
+      typescript: {},
     },
   },
 

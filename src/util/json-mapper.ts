@@ -1,5 +1,9 @@
 import mapJson, { jpath } from 'jsonpath-mapper';
+import MappingTemplate from 'jsonpath-mapper/dist/models/Template';
+
 export { default as mapJson, jpath } from 'jsonpath-mapper';
+
+type Mappers<S> = { [contentTypeId: string]: MappingTemplate<S> };
 
 /**
  *
@@ -7,17 +11,17 @@ export { default as mapJson, jpath } from 'jsonpath-mapper';
  * @param {object} template The mapping template we wish to apply to the source
  * object to generate the intended target object
  */
-export const useMapper = (json, template) => {
-  return template ? mapJson(json || {}, template) : json;
+export const useMapper = <T, S>(json: S, template: MappingTemplate<S>) => {
+  return template ? (mapJson((json || {}) as S, template) as T) : json;
 };
 
-const chooseMapperByFieldValue = (
-  entry,
-  mappers,
+const chooseMapperByFieldValue = <S, T extends Mappers<S>>(
+  entry: S,
+  mappers: T,
   field = 'sys.contentTypeId'
 ) => {
-  const fieldValue = jpath(field, entry || {});
-  return mappers[fieldValue] || mappers['default'] || {};
+  const fieldValue = jpath(field, entry || {}) as string;
+  return (mappers[fieldValue] || mappers.default || {}) as T[keyof T];
 };
 
 /**
@@ -32,13 +36,13 @@ const chooseMapperByFieldValue = (
  * a default mapper template, returns an empty object if no mapper template
  * couild be applied.
  */
-export const useEntriesMapper = (
-  entry,
-  mappers,
+export const useEntriesMapper = <S, T extends Mappers<S>>(
+  entry: S,
+  mappers: T,
   field = 'sys.contentTypeId'
 ) => {
   const mapper = chooseMapperByFieldValue(entry, mappers, field);
-  return useMapper(entry || {}, mapper);
+  return useMapper(entry, mapper);
 };
 
 /**
@@ -58,10 +62,17 @@ export const useEntryMapper = useEntriesMapper;
  * a default mapper template, returns an empty object if no mapper template
  * couild be applied.
  */
-export const mapEntries = (entries, mappers, field = 'sys.contentTypeId') =>
+export const mapEntries = <
+  S,
+  Mappers extends { [contentTypeId: string]: MappingTemplate<S> }
+>(
+  entries: S[],
+  mappers: Mappers,
+  field = 'sys.contentTypeId'
+) =>
   entries.map(entry => {
     const mapper = chooseMapperByFieldValue(entry, mappers, field);
-    return mapper ? mapJson(entry || {}, mapper) : entry;
+    return mapper ? mapJson((entry || {}) as S, mapper) : entry;
   });
 
 /**
@@ -73,16 +84,25 @@ export const mapEntries = (entries, mappers, field = 'sys.contentTypeId') =>
  * or null. Injects a "_type" property into each transformed object in the array to indicate
  * where the mapping originated and for what component the mapped object is representing
  */
-export const mapComposer = (composer, mappers) =>
+export const mapComposer = <
+  S extends { type: string; value: any },
+  T extends Mappers<S>
+>(
+  composer: S[],
+  mappers: T
+) =>
   Array.isArray(composer)
     ? composer.map(composerItem => {
         const fieldValue = composerItem.type;
-        const mapper = mappers[fieldValue] || mappers['default'];
+        const mapper = mappers[fieldValue] || mappers.default;
         return mapper
-          ? { _type: fieldValue, ...mapJson(composerItem.value || {}, mapper) }
+          ? {
+              _type: fieldValue,
+              ...(mapJson(composerItem.value || {}, mapper) as any),
+            }
           : composerItem;
       })
-    : null;
+    : composer || [];
 
 /**
  * useComposerMapper hook to take a composer field from Delivery API along
@@ -93,7 +113,12 @@ export const mapComposer = (composer, mappers) =>
  * or null. Injects a "_type" property into each transformed object in the array to indicate
  * where the mapping originated and for what component the mapped object is representing
  */
-export const useComposerMapper = (composer = [], mappers = {}) =>
-  mapComposer(composer, mappers);
+export const useComposerMapper = <
+  S extends { type: string; value: any },
+  T extends Mappers<S>
+>(
+  composer: S[] = [],
+  mappers: T
+) => mapComposer(composer, mappers);
 
 export default mapJson;

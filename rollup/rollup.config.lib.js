@@ -15,11 +15,11 @@ export default {
     'contensis-react-base': './src/server',
     client: './src/client/client.js',
     forms: 'zengenti-forms-package',
-    redux: './src/redux/exports.js',
+    redux: './src/redux/exports',
     routing: './src/routing',
-    search: 'zengenti-search-package',
+    search: './src/search',
     user: './src/user',
-    util: './src/util/exports.js',
+    util: './src/util/exports',
   },
   output: [
     {
@@ -58,7 +58,7 @@ export default {
       extensions: ['.js', '.jsx', '.ts', '.tsx'],
     }),
     babel({
-      exclude: 'node_modules/**',
+      include: ['src/**', 'node_modules/zengenti-search-package/**'],
       extensions: ['.js', '.jsx', '.ts', '.tsx'],
       presets: babelConfig.env.modern.presets,
       plugins: babelConfig.env.modern.plugins,

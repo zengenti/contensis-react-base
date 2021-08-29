@@ -1,4 +1,4 @@
-const url = (alias, project) => {
+const url = (alias: string, project: string) => {
   const projectAndAlias =
     project && project.toLowerCase() != 'website'
       ? `${project.toLowerCase()}-${alias}`
@@ -13,4 +13,4 @@ const url = (alias, project) => {
   };
 };
 
-module.exports = url;
+export default url;

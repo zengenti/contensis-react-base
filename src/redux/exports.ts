@@ -26,11 +26,6 @@ export const routing = {
   actions: actions.routing,
   selectors: selectors.routing,
 };
-export const user = {
-  types: types.user,
-  actions: actions.user,
-  selectors: selectors.user,
-};
 export const version = {
   types: types.version,
   actions: actions.version,

@@ -13,22 +13,15 @@
     "declaration": true,
     // Ensure that .d.ts files are created by tsc, but not .js files
     "emitDeclarationOnly": true,
-    "noImplicitAny": true, // disallow implicit any type
+    "noImplicitAny": false, // disallow implicit any type
     "moduleResolution": "node",
     "lib": ["esnext", "es2019", "es2017", "es7", "es6", "dom", "dom.iterable"],
     "baseUrl": ".",
     "paths": {
-      "~/*": ["./src/app/*"],
+      "~/*": ["./src/*"],
       "-/*": ["./*"]
     }
   },
-  "include": ["./src/*"],
-  "exclude": [
-    ".storybook",
-    "config",
-    "public",
-    "webpack",
-    "storybook-static",
-    "./node_modules/**/*"
-  ]
+  "include": ["./src/**/*", "./node_modules/zengenti-search-package/src/**/*"],
+  "exclude": ["./node_modules/**/*"]
 }
