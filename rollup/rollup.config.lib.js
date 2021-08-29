@@ -54,12 +54,15 @@ export default {
   plugins: [
     submoduleResolvePlugin(),
     peerDepsExternal(),
+    resolve({
+      extensions: ['.js', '.jsx', '.ts', '.tsx'],
+    }),
     babel({
       exclude: 'node_modules/**',
+      extensions: ['.js', '.jsx', '.ts', '.tsx'],
       presets: babelConfig.env.modern.presets,
       plugins: babelConfig.env.modern.plugins,
     }),
-    resolve(),
     commonjs(),
     postcss(),
   ],

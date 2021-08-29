@@ -1,0 +1,34 @@
+{
+  "compilerOptions": {
+    "skipLibCheck": true,
+    "outDir": "./models/", // path to output directory
+    "sourceMap": true, // allow sourcemap support
+    "strictNullChecks": true, // enable strict null checks as a best practice
+    "module": "ESNext", // specifiy module code generation
+    "jsx": "react", // use typescript to transpile jsx to js
+    "target": "ESNext", // specify ECMAScript target version
+    "strict": true /* Enable all strict type-checking options. */,
+    "allowJs": true, // allow a partial TypeScript and JavaScript codebase
+    "allowSyntheticDefaultImports": true,
+    "declaration": true,
+    // Ensure that .d.ts files are created by tsc, but not .js files
+    "emitDeclarationOnly": true,
+    "noImplicitAny": true, // disallow implicit any type
+    "moduleResolution": "node",
+    "lib": ["esnext", "es2019", "es2017", "es7", "es6", "dom", "dom.iterable"],
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["./src/app/*"],
+      "-/*": ["./*"]
+    }
+  },
+  "include": ["./src/*"],
+  "exclude": [
+    ".storybook",
+    "config",
+    "public",
+    "webpack",
+    "storybook-static",
+    "./node_modules/**/*"
+  ]
+}
