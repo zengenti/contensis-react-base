@@ -1,6 +1,7 @@
 const path = require('path');
 
 module.exports = {
+  root: true,
   parser: 'babel-eslint',
   parserOptions: {
     ecmaVersion: 6,
@@ -33,9 +34,7 @@ module.exports = {
     react: {
       version: '^16.0.0',
     },
-    'import/resolver': {
-      typescript: {},
-    },
+    'import/resolver': 'typescript',
   },
 
   rules: {
@@ -85,9 +84,13 @@ module.exports = {
       //     },
       extends: [
         'eslint:recommended',
+        'plugin:import/typescript',
         'plugin:@typescript-eslint/recommended',
         'prettier',
       ],
+      settings: {
+        'import/resolver': 'typescript',
+      },
       /**
        * Typescript Rules
        * https://github.com/bradzacher/eslint-plugin-typescript

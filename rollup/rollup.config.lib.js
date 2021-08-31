@@ -10,8 +10,8 @@ const path = require('path');
 
 const babelConfig = require('../babel.config.js');
 const packagejson = require('../package.json');
-const formsPackageJson = require('../node_modules/zengenti-forms-package/package.json');
-const searchPackageJson = require('../node_modules/zengenti-search-package/package.json');
+const formsPackageJson = require('zengenti-forms-package/package.json');
+const searchPackageJson = require('zengenti-search-package/package.json');
 
 const projectRootDir = path.resolve(__dirname);
 
@@ -75,7 +75,12 @@ export default {
       extensions: ['.js', '.jsx', '.ts', '.tsx'],
     }),
     babel({
-      include: ['src/**', 'node_modules/zengenti-search-package/**'],
+      include: [
+        'src/**',
+        'node_modules/zengenti-search-package/**',
+        '../../node_modules/zengenti-search-package/**',
+        '../search/**',
+      ],
       extensions: ['.js', '.jsx', '.ts', '.tsx'],
       presets: babelConfig.env.modern.presets,
       plugins: babelConfig.env.modern.plugins,
