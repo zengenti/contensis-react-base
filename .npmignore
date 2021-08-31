@@ -1,7 +1,7 @@
 *
 !cjs/*
 !esm/*
-!models/*
+!models/**/*
 !package.json
 !package-lock.json
 !client/*
