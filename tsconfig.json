@@ -20,7 +20,11 @@
     "paths": {
       "~/*": ["./src/*"],
       "-/*": ["./*"]
-    }
+    },
+    "plugins": [
+      // Transform paths in output .d.ts files (Include this line if you output declarations files)
+      { "transform": "typescript-transform-paths", "afterDeclarations": true }
+    ]
   },
   "include": ["./src/**/*", "./node_modules/zengenti-search-package/src/**/*"],
   "exclude": ["./node_modules/**/*"]

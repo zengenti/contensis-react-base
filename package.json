@@ -8,6 +8,7 @@
   "module": "esm/contensis-react-base.js",
   "types": "models/server",
   "scripts": {
+    "prepare": "ts-patch install -s",
     "start": "npm run roll:watch",
     "build": "npm run clean:lib && tsc && npm run roll:lib",
     "build:lib": "npm i zengenti-search-package zengenti-forms-package && npm run build",
@@ -76,7 +77,9 @@
     "stylelint-config-styled-components": "^0.1.1",
     "stylelint-custom-processor-loader": "0.6.0",
     "stylelint-processor-styled-components": "1.8.0",
+    "ts-patch": "^1.4.4",
     "typescript": "^4.4.2",
+    "typescript-transform-paths": "^3.3.1",
     "zengenti-forms-package": "git+https://gitlab+deploy-token-11:DRbTWzdaRzkjDWc_VixQ@gitlab.zengenti.com/zengenti-packages/forms.git#next",
     "zengenti-search-package": "git+https://gitlab+deploy-token-5:XKRGRE1p2PrFAxnWwLNz@gitlab.zengenti.com/zengenti-packages/search.git"
   },
