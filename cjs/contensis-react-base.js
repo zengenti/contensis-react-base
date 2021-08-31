@@ -25,22 +25,21 @@ require('redux-immutable');
 require('redux-thunk');
 require('redux-saga');
 require('redux-injectors');
-var injectors = require('./injectors-72d5b989.js');
+var version = require('./version-d8f5b436.js');
 var actions = require('./actions-e22726ed.js');
-require('./reducers-91e3e239.js');
+require('./reducers-c42035ab.js');
 require('history');
-var App = require('./App-f3164dab.js');
-var effects = require('@redux-saga/core/effects');
+var App = require('./App-2334f3e0.js');
+require('@redux-saga/core/effects');
 require('contensis-delivery-api');
 require('./version-2193b4a2.js');
 require('query-string');
 var selectors = require('./selectors-69c3d37c.js');
 require('loglevel');
 require('./ToJs-ca9bea03.js');
-var login = require('./login-6c0ef139.js');
+require('./login-6eb5e46d.js');
 require('await-to-js');
 require('js-cookie');
-var version = require('./version-7d8852f6.js');
 require('react-hot-loader');
 require('prop-types');
 require('./RouteLoader-5c44f039.js');
@@ -224,16 +223,6 @@ var fromentries = function fromEntries (iterable) {
   }, {})
 };
 
-const userSagas = [...login.loginSagas, ...App.registerSagas];
-
-// index.js
-function rootSaga (featureSagas = []) {
-  return function* rootSaga() {
-    const subSagas = [...App.routingSagas, ...App.navigationSagas, ...userSagas];
-    yield effects.all([...subSagas, ...featureSagas]);
-  };
-}
-
 const ResponseMethod = {
   send: 'send',
   json: 'json',
@@ -386,7 +375,7 @@ const webApp = (app, ReactApp, config) => {
 
     response.status(200); // Create a store (with a memory history) from our current url
 
-    const store = injectors.createStore(withReducers, immutable.fromJS({}), App.history({
+    const store = version.createStore(withReducers, immutable.fromJS({}), App.history({
       initialEntries: [url]
     })); // dispatch any global and non-saga related actions before calling our JSX
 
@@ -446,7 +435,7 @@ const webApp = (app, ReactApp, config) => {
 
 
     if (!accessMethod.DYNAMIC) {
-      store.runSaga(rootSaga(withSagas)).toPromise().then(() => {
+      store.runSaga(App.rootSaga(withSagas)).toPromise().then(() => {
         const sheet = new styled.ServerStyleSheet();
         const html = server.renderToString(sheet.collectStyles(jsx));
         const helmet = Helmet__default['default'].renderStatic();
