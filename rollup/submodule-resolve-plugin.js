@@ -16,7 +16,7 @@ const submoduleResolvePlugin = () => ({
         const packagejson = `{
   "main": "../cjs/${bundle}.js",
   "module": "../esm/${bundle}.js",
-  "types": "../models/${bundle}"
+  "types": "../models/${bundle}/index.d.ts"
 }`;
 
         fs.mkdirpSync(path.join(__dirname, `../${bundle}/`));
