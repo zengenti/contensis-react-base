@@ -1,18 +1,19 @@
 import React, { useEffect } from 'react';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import mapJson from 'jsonpath-mapper';
-import { Iterable, OrderedMap, Map, List, fromJS, Set } from 'immutable';
+import { OrderedMap, Map, List, Set, fromJS } from 'immutable';
 import { takeEvery, select, put, call, all } from '@redux-saga/core/effects';
 import { Client } from 'contensis-delivery-api';
 import queryString from 'query-string';
 import { error } from 'loglevel';
-import { Query, Op, OrderBy } from 'contensis-core-api';
+import { Op, OrderBy, Query } from 'contensis-core-api';
 
+/* eslint-disable @typescript-eslint/ban-types */
 const toJS = WrappedComponent => wrappedComponentProps => {
   const KEY = 0;
   const VALUE = 1;
   const propsJS = Object.entries(wrappedComponentProps).reduce((newProps, wrappedComponentProp) => {
-    newProps[wrappedComponentProp[KEY]] = Iterable.isIterable(wrappedComponentProp[VALUE]) ? wrappedComponentProp[VALUE].toJS() : wrappedComponentProp[VALUE];
+    newProps[wrappedComponentProp[KEY]] = 'toJS' in wrappedComponentProp[VALUE] ? wrappedComponentProp[VALUE].toJS() : wrappedComponentProp[VALUE];
     return newProps;
   }, {});
   return /*#__PURE__*/React.createElement(WrappedComponent, propsJS);
@@ -376,6 +377,8 @@ const selectListing = {
   getTotalCount: (state, listing = '') => getTotalCount(state, listing, Context.listings),
   getSelectedFilters: (state, listing = '') => getSelectedFilters(state, listing, Context.listings)
 };
+const selectCurrentPath = state => state.getIn(['routing', 'currentPath']);
+const selectVersionStatus = state => state.getIn(['version', 'contensisVersionStatus']);
 
 var selectors = /*#__PURE__*/Object.freeze({
   __proto__: null,
@@ -417,7 +420,9 @@ var selectors = /*#__PURE__*/Object.freeze({
   getSearchTotalCount: getSearchTotalCount,
   getFacetsTotalCount: getFacetsTotalCount,
   selectFacets: selectFacets,
-  selectListing: selectListing
+  selectListing: selectListing,
+  selectCurrentPath: selectCurrentPath,
+  selectVersionStatus: selectVersionStatus
 });
 
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -463,7 +468,8 @@ const withSearch = mappers => SearchComponent => {
     updateSelectedFilters: (filter, key) => withMappers(updateSelectedFilters(filter, key), mappers),
     updateSortOrder: orderBy => withMappers(updateSortOrder(orderBy), mappers)
   };
-  return connect(mapStateToProps, mapDispatchToProps)(toJS(Wrapper));
+  const connector = connect(mapStateToProps, mapDispatchToProps);
+  return connector(toJS(Wrapper));
 };
 
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -516,9 +522,6 @@ const withListing = mappers => ListingComponent => {
   return connect(mapStateToProps, mapDispatchToProps)(toJS(Wrapper));
 };
 
-const selectCurrentPath = state => state.getIn(['routing', 'currentPath']);
-const selectVersionStatus = state => state.getIn(['version', 'contensisVersionStatus']);
-
 const getClientConfig = (project, env) => {
   let config = DELIVERY_API_CONFIG;
   /* global DELIVERY_API_CONFIG */
@@ -530,12 +533,12 @@ const getClientConfig = (project, env) => {
   if (typeof window != 'undefined' && PROXY_DELIVERY_API
   /* global PROXY_DELIVERY_API */
   ) {
-      // ensure a relative url is used to bypass the need for CORS (separate OPTIONS calls)
-      config.rootUrl = env || '';
-      config.responseHandler = {
-        404: () => null
-      };
-    }
+    // ensure a relative url is used to bypass the need for CORS (separate OPTIONS calls)
+    config.rootUrl = env || '';
+    config.responseHandler = {
+      404: () => null
+    };
+  }
 
   return config;
 };
@@ -734,6 +737,38 @@ const callCustomApi = async (customApi, filters) => {
   if (typeof window == 'undefined' && uri.startsWith('/')) uri = `http://localhost:3001${uri}`;
   const response = await fetch(uri);
   return await response.json();
+};
+const removeEmptyAttributes = obj => {
+  Object.entries(obj).forEach(([key, val]) => val && typeof val === 'object' && removeEmptyAttributes(val) || (typeof val === 'undefined' || val === null || val === '') && delete obj[key]);
+  return obj;
+};
+const toArray = (obj, seperator = ',') => typeof obj === 'undefined' || obj === null ? obj : Array.isArray(obj) ? obj : obj.split(seperator); // assumes array elements are primitive types
+
+const areArraysEqualSets = (a1, a2) => {
+  const superSet = {};
+
+  for (const ai of a1) {
+    const e = ai + typeof ai;
+    superSet[e] = 1;
+  }
+
+  for (const ai of a2) {
+    const e = ai + typeof ai;
+
+    if (!superSet[e]) {
+      return false;
+    }
+
+    superSet[e] = 2;
+  }
+
+  for (const e in superSet) {
+    if (superSet[e] === 1) {
+      return false;
+    }
+  }
+
+  return true;
 };
 
 const DataFormats = {
@@ -1059,39 +1094,6 @@ var queries = /*#__PURE__*/Object.freeze({
   searchQuery: searchQuery
 });
 
-const removeEmptyAttributes = obj => {
-  Object.entries(obj).forEach(([key, val]) => val && typeof val === 'object' && removeEmptyAttributes(val) || (typeof val === 'undefined' || val === null || val === '') && delete obj[key]);
-  return obj;
-}; //Returns index position from array with matching property
-const toArray = (obj, seperator = ',') => typeof obj === 'undefined' || obj === null ? obj : Array.isArray(obj) ? obj : obj.split(seperator); // assumes array elements are primitive types
-
-const areArraysEqualSets = (a1, a2) => {
-  let superSet = {};
-
-  for (let i = 0; i < a1.length; i++) {
-    const e = a1[i] + typeof a1[i];
-    superSet[e] = 1;
-  }
-
-  for (let i = 0; i < a2.length; i++) {
-    const e = a2[i] + typeof a2[i];
-
-    if (!superSet[e]) {
-      return false;
-    }
-
-    superSet[e] = 2;
-  }
-
-  for (let e in superSet) {
-    if (superSet[e] === 1) {
-      return false;
-    }
-  }
-
-  return true;
-};
-
 const searchUriTemplate = {
   path: ({
     state,
@@ -1130,8 +1132,6 @@ const searchUriTemplate = {
 };
 
 const mapStateToSearchUri = params => mapJson(params, searchUriTemplate);
-
-/* eslint-disable no-console */
 
 const mapEntriesToSearchResults = ({
   mappers,

@@ -1,4 +1,5 @@
 {
   "main": "../cjs/forms.js",
-  "module": "../esm/forms.js"
+  "module": "../esm/forms.js",
+  "types": "../models/forms/index.d.ts"
 }

@@ -17,14 +17,13 @@ import { HashLink } from 'react-router-hash-link';
  * @param {object} template The mapping template we wish to apply to the source
  * object to generate the intended target object
  */
-
 const useMapper = (json, template) => {
   return template ? mapJson(json || {}, template) : json;
 };
 
 const chooseMapperByFieldValue = (entry, mappers, field = 'sys.contentTypeId') => {
   const fieldValue = jpath(field, entry || {});
-  return mappers[fieldValue] || mappers['default'] || {};
+  return mappers[fieldValue] || mappers.default || {};
 };
 /**
  * useEntriesMapper hook to take a list of entries from Delivery API along
@@ -42,7 +41,7 @@ const chooseMapperByFieldValue = (entry, mappers, field = 'sys.contentTypeId') =
 
 const useEntriesMapper = (entry, mappers, field = 'sys.contentTypeId') => {
   const mapper = chooseMapperByFieldValue(entry, mappers, field);
-  return useMapper(entry || {}, mapper);
+  return useMapper(entry, mapper);
 };
 /**
  * Deprecated: due to misleading name, use the hook useEntriesMapper instead
@@ -78,12 +77,12 @@ const mapEntries = (entries, mappers, field = 'sys.contentTypeId') => entries.ma
 
 const mapComposer = (composer, mappers) => Array.isArray(composer) ? composer.map(composerItem => {
   const fieldValue = composerItem.type;
-  const mapper = mappers[fieldValue] || mappers['default'];
+  const mapper = mappers[fieldValue] || mappers.default;
   return mapper ? {
     _type: fieldValue,
     ...mapJson(composerItem.value || {}, mapper)
   } : composerItem;
-}) : null;
+}) : composer || [];
 /**
  * useComposerMapper hook to take a composer field from Delivery API along
  * with mappers for each Composer Item "type" and return an array of mapped components
@@ -94,7 +93,7 @@ const mapComposer = (composer, mappers) => Array.isArray(composer) ? composer.ma
  * where the mapping originated and for what component the mapped object is representing
  */
 
-const useComposerMapper = (composer = [], mappers = {}) => mapComposer(composer, mappers);
+const useComposerMapper = (composer = [], mappers) => mapComposer(composer, mappers);
 
 const setCachingHeaders = (response, {
   cacheControl = 'private',
@@ -139,8 +138,6 @@ const url = (alias, project) => {
     iisPreviewWeb: `https://iis-preview-${projectAndAlias}.cloud.contensis.com`
   };
 };
-
-var urls = url;
 
 const context = typeof window != 'undefined' ? window : global;
 const isDev = process.env.NODE_ENV === 'development';
@@ -374,5 +371,5 @@ VersionInfo.propTypes = {
 };
 var VersionInfo$1 = connect(mapStateToVersionInfo)(VersionInfo);
 
-export { VersionInfo$1 as VersionInfo, mapComposer, mapEntries, setCachingHeaders_1 as setCachingHeaders, stringifyStrings_1 as stringifyStrings, urls, useComposerMapper, useEntriesMapper, useEntryMapper, useMapper };
+export { VersionInfo$1 as VersionInfo, mapComposer, mapEntries, setCachingHeaders_1 as setCachingHeaders, stringifyStrings_1 as stringifyStrings, url as urls, useComposerMapper, useEntriesMapper, useEntryMapper, useMapper };
 //# sourceMappingURL=util.js.map

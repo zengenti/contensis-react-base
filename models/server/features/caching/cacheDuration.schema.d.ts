@@ -1,0 +1,7 @@
+export const CacheDuration: {
+    200: string;
+    404: string;
+    static: string;
+    expressStatic: string;
+};
+export function getCacheDuration(status?: number): string;

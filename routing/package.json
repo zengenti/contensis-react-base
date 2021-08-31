@@ -1,4 +1,5 @@
 {
   "main": "../cjs/routing.js",
-  "module": "../esm/routing.js"
+  "module": "../esm/routing.js",
+  "types": "../models/routing/index.d.ts"
 }

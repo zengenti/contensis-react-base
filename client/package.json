@@ -1,4 +1,5 @@
 {
   "main": "../cjs/client.js",
-  "module": "../esm/client.js"
+  "module": "../esm/client.js",
+  "types": "../models/client/index.d.ts"
 }

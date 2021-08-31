@@ -1,4 +1,5 @@
 {
   "main": "../cjs/user.js",
-  "module": "../esm/user.js"
+  "module": "../esm/user.js",
+  "types": "../models/user/index.d.ts"
 }

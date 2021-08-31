@@ -54,11 +54,6 @@ const routing = {
   actions: actions.routing,
   selectors: selectors.routing
 };
-const user = {
-  types: types.user,
-  actions: actions.user,
-  selectors: selectors.user
-};
 const version = {
   types: types.version,
   actions: actions.version,
@@ -78,6 +73,5 @@ Object.defineProperty(exports, 'store', {
 exports.useInjectRedux = version$1.useInjectRedux;
 exports.navigation = navigation$1;
 exports.routing = routing;
-exports.user = user;
 exports.version = version;
 //# sourceMappingURL=redux.js.map

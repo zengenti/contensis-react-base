@@ -1,0 +1,16 @@
+export function selectUserIsLoading(state: any): any;
+export function selectUserIsAuthenticated(state: any): any;
+export function selectUserAuthenticationError(state: any): any;
+export function selectUserError(state: any): any;
+export function selectClientCredentials(state: any): any;
+export function selectUser(state: any): any;
+export function selectUserIsZengentiStaff(state: any): any;
+export function selectUserGuid(state: any): any;
+export function selectUsername(state: any): any;
+export function selectUserEmail(state: any): any;
+export function selectUserGroups(state: any): any;
+export function selectUserSecurityToken(state: any): any;
+export function selectUserRegistration(state: any): any;
+export function selectUserRegistrationError(state: any): any;
+export function selectUserRegistrationIsLoading(state: any): any;
+export function selectUserRegistrationIsSuccess(state: any): any;

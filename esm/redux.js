@@ -51,16 +51,11 @@ const routing = {
   actions: actions.routing,
   selectors: selectors.routing
 };
-const user = {
-  types: types.user,
-  actions: actions.user,
-  selectors: selectors.user
-};
 const version = {
   types: types.version,
   actions: actions.version,
   selectors: selectors.version
 };
 
-export { navigation$1 as navigation, routing, user, version };
+export { navigation$1 as navigation, routing, version };
 //# sourceMappingURL=redux.js.map
