@@ -13,7 +13,9 @@ const toJS = WrappedComponent => wrappedComponentProps => {
   const KEY = 0;
   const VALUE = 1;
   const propsJS = Object.entries(wrappedComponentProps).reduce((newProps, wrappedComponentProp) => {
-    newProps[wrappedComponentProp[KEY]] = 'toJS' in wrappedComponentProp[VALUE] ? wrappedComponentProp[VALUE].toJS() : wrappedComponentProp[VALUE];
+    const propKey = wrappedComponentProp[KEY];
+    const propValue = wrappedComponentProp[VALUE];
+    newProps[propKey] = typeof propValue === 'object' && 'toJS' in propValue ? propValue.toJS() : propValue;
     return newProps;
   }, {});
   return /*#__PURE__*/React.createElement(WrappedComponent, propsJS);
