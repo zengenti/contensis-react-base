@@ -17,11 +17,11 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: '14.x'
-      - name: Install apt packages for build
-        # The apt-gets prevent cwebp compiling from source each time.
-        run: |
-          sudo apt-get update
-          sudo apt-get install libglu1 libxi6 -y
+      # - name: Install apt packages for build
+      #   # The apt-gets prevent cwebp compiling from source each time.
+      #   run: |
+      #     sudo apt-get update
+      #     sudo apt-get install libglu1 libxi6 -y
       - name: Install project dependencies
         run: npm ci
       - name: Setup GIT
