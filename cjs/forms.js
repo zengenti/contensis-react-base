@@ -2278,7 +2278,6 @@ const mapDispatchToProps = dispatch => {
 
 var Form = reactRedux.connect(mapStateToProps, mapDispatchToProps)(toJS(FormContainer));
 
-exports.default = Form;
 exports.reducer = reducer;
 exports.sagas = formV2Sagas;
 //# sourceMappingURL=forms.js.map

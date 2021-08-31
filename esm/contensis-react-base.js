@@ -21,22 +21,23 @@ import 'redux-immutable';
 import 'redux-thunk';
 import 'redux-saga';
 import 'redux-injectors';
-import { c as createStore, s as setVersionStatus, a as setVersion } from './version-8d757fb4.js';
+import { c as createStore } from './injectors-3cbe3981.js';
 import { s as setCurrentProject } from './actions-fda5e103.js';
-import './reducers-b426d14a.js';
+import './reducers-f855681f.js';
 import 'history';
-import { h as history, d as deliveryApi, p as pickProject, r as rootSaga } from './App-b2b80182.js';
-export { A as ReactApp } from './App-b2b80182.js';
-import '@redux-saga/core/effects';
+import { r as registerSagas, a as routingSagas, n as navigationSagas, h as history, d as deliveryApi, p as pickProject } from './App-08311b77.js';
+export { A as ReactApp } from './App-08311b77.js';
+import { all } from '@redux-saga/core/effects';
 import 'contensis-delivery-api';
 import './version-7fdbd2d5.js';
 import 'query-string';
 import { s as selectRouteEntry, a as selectCurrentProject } from './selectors-170581d2.js';
 import 'loglevel';
 import './ToJs-19a3244a.js';
-import './login-866fe64c.js';
+import { l as loginSagas } from './login-c05fee0e.js';
 import 'await-to-js';
 import 'js-cookie';
+import { s as setVersionStatus, a as setVersion } from './version-937d57fb.js';
 import 'react-hot-loader';
 import 'prop-types';
 import './RouteLoader-2cfdfc5c.js';
@@ -206,6 +207,16 @@ var fromentries = function fromEntries (iterable) {
     return obj
   }, {})
 };
+
+const userSagas = [...loginSagas, ...registerSagas];
+
+// index.js
+function rootSaga (featureSagas = []) {
+  return function* rootSaga() {
+    const subSagas = [...routingSagas, ...navigationSagas, ...userSagas];
+    yield all([...subSagas, ...featureSagas]);
+  };
+}
 
 const ResponseMethod = {
   send: 'send',

@@ -1,3 +1,3 @@
-import internalServer from '~/server/internalServer';
-export { default as ReactApp } from '~/app/App';
+import internalServer from "./internalServer";
+export { default as ReactApp } from "../app/App";
 export default internalServer;
