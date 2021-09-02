@@ -5,7 +5,7 @@ import { Router } from 'react-router-dom';
 import { preloadReady } from 'react-loadable';
 import { AppContainer } from 'react-hot-loader';
 import { Provider as ReduxProvider } from 'react-redux';
-import queryString from 'query-string';
+import * as queryString from 'query-string';
 // import { fromJS } from 'immutable';
 
 import createStore from '~/redux/store/store';
@@ -19,10 +19,17 @@ import pickProject from '~/util/pickProject';
 // import fromJSOrdered from '~/util/fromJSOrdered';
 import fromJSLeaveImmer from '~/util/fromJSLeaveImmer';
 
-export { default as ReactApp } from '~/app/App';
+import { AppConfig } from '~/config';
+
+declare let window: typeof globalThis & {
+  isDynamic;
+  REDUX_DATA;
+};
+
+type ReactAppProps = { routes: any; withEvents: any };
 
 class ClientApp {
-  constructor(ReactApp, config) {
+  constructor(ReactApp: React.ComponentType<ReactAppProps>, config: AppConfig) {
     const documentRoot = document.getElementById('root');
 
     const { routes, withReducers, withSagas, withEvents } = config;
@@ -40,19 +47,18 @@ class ClientApp {
       return ClientJsx;
     };
 
-    const isProduction = !(process.env.NODE_ENV != 'production');
+    const isProduction = !(process.env.NODE_ENV !== 'production');
 
     /**
      * Webpack HMR Setup.
      */
     const HMRRenderer = Component => {
       preloadReady().then(() => {
-        isProduction
-          ? hydrate(Component, documentRoot)
-          : render(Component, documentRoot);
+        if (isProduction) hydrate(Component, documentRoot);
+        else render(Component, documentRoot);
       });
     };
-    let store = null;
+    let store: any = null;
     const qs = queryString.parse(window.location.search);
 
     const versionStatusFromHostname = deliveryApi.getClientSideVersionStatus();
@@ -89,7 +95,7 @@ class ClientApp {
         .then(response => response.json())
         .then(data => {
           /* eslint-disable no-console */
-          //console.log('Got Data Back');
+          // console.log('Got Data Back');
           // console.log(data);
           /* eslint-enable no-console */
           const ssRedux = JSON.parse(data);
@@ -116,7 +122,7 @@ class ClientApp {
 
     // webpack Hot Module Replacement API
     if (module.hot) {
-      module.hot.accept(ReactApp, () => {
+      module.hot.accept(ReactApp as unknown as string, () => {
         // if you are using harmony modules ({modules:false})
         HMRRenderer(GetClientJSX(store));
       });

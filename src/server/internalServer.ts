@@ -9,7 +9,7 @@ import ServeStaticAssets from './features/static-assets';
 import ConfigureWebApp from './webApp';
 import { ServerConfig } from '~/config';
 
-let global: typeof globalThis & {
+declare let global: typeof globalThis & {
   DISABLE_SSR_REDUX;
   PACKAGE_JSON;
   PROXY_DELIVERY_API;

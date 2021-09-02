@@ -6,7 +6,7 @@
   "description": "Turbocharge your React web apps with Contensis. This package handles all dependencies for creating full featured web apps in React with Contensis and Site View. Routing is driven by Site View, Redux is used for global state management and server-side rendering (SSR) is handled for you. Also taking care of intricate hosting issues such as cache invalidation and supporting authenticated content where required.",
   "main": "cjs/contensis-react-base.js",
   "module": "esm/contensis-react-base.js",
-  "types": "models/server",
+  "types": "models",
   "scripts": {
     "prepare": "ts-patch install -s",
     "start": "npm run roll:watch",
