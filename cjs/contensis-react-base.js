@@ -29,7 +29,7 @@ var version = require('./version-d8f5b436.js');
 var actions = require('./actions-e22726ed.js');
 require('./reducers-c42035ab.js');
 require('history');
-var App = require('./App-2334f3e0.js');
+var App = require('./App-07b8a25d.js');
 require('@redux-saga/core/effects');
 require('contensis-delivery-api');
 require('./version-2193b4a2.js');
@@ -537,13 +537,14 @@ const webApp = (app, ReactApp, config) => {
   });
 };
 
+let global;
 const app = express__default['default']();
 
 const start = (ReactApp, config, ServerFeatures) => {
   global.PACKAGE_JSON = config.packagejson;
-  global.REVERSE_PROXY_PATHS = Object(config.reverseProxyPaths);
-  global.PROXY_DELIVERY_API = config.proxyDeliveryApi;
   global.DISABLE_SSR_REDUX = config.disableSsrRedux;
+  global.PROXY_DELIVERY_API = config.proxyDeliveryApi;
+  global.REVERSE_PROXY_PATHS = Object(config.reverseProxyPaths);
   app.disable('x-powered-by'); // Output some information about the used build/startup configuration
 
   DisplayStartupConfiguration(config);
@@ -555,9 +556,9 @@ const start = (ReactApp, config, ServerFeatures) => {
   webApp(app, ReactApp, config);
   app.on('ready', async () => {
     // Configure DNS to make life easier
-    //await ConfigureLocalDNS();
+    // await ConfigureLocalDNS();
     Loadable__default['default'].preloadAll().then(() => {
-      var server = app.listen(3001, () => {
+      const server = app.listen(3001, () => {
         console.info(`HTTP server is listening @ port 3001`);
         setTimeout(function () {
           app.emit('app_started');

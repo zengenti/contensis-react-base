@@ -1,9 +1,10 @@
-declare namespace _default {
-    export { app };
-    export { apiProxy };
-    export { start };
-}
+import 'isomorphic-fetch';
+import express from 'express';
+import React from 'react';
+import { ServerConfig } from "../config";
+declare const _default: {
+    app: import("express-serve-static-core").Express;
+    apiProxy: any;
+    start: (ReactApp: React.ComponentType<{}>, config: ServerConfig, ServerFeatures: (app: express.Express) => void) => void;
+};
 export default _default;
-declare const app: any;
-import { apiProxy } from "./features/reverse-proxy";
-declare function start(ReactApp: any, config: any, ServerFeatures: any): void;

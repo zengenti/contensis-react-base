@@ -19,7 +19,7 @@ var version = require('./version-d8f5b436.js');
 var actions = require('./actions-e22726ed.js');
 var reducers = require('./reducers-c42035ab.js');
 require('history');
-var App = require('./App-2334f3e0.js');
+var App = require('./App-07b8a25d.js');
 require('@redux-saga/core/effects');
 require('contensis-delivery-api');
 require('./version-2193b4a2.js');

@@ -25,8 +25,8 @@ import { c as createStore, s as setVersionStatus, a as setVersion } from './vers
 import { s as setCurrentProject } from './actions-fda5e103.js';
 import './reducers-b426d14a.js';
 import 'history';
-import { h as history, d as deliveryApi, p as pickProject, r as rootSaga } from './App-b2b80182.js';
-export { A as ReactApp } from './App-b2b80182.js';
+import { h as history, d as deliveryApi, p as pickProject, r as rootSaga } from './App-6df89333.js';
+export { A as ReactApp } from './App-6df89333.js';
 import '@redux-saga/core/effects';
 import 'contensis-delivery-api';
 import './version-7fdbd2d5.js';
@@ -521,13 +521,14 @@ const webApp = (app, ReactApp, config) => {
   });
 };
 
+let global;
 const app = express();
 
 const start = (ReactApp, config, ServerFeatures) => {
   global.PACKAGE_JSON = config.packagejson;
-  global.REVERSE_PROXY_PATHS = Object(config.reverseProxyPaths);
-  global.PROXY_DELIVERY_API = config.proxyDeliveryApi;
   global.DISABLE_SSR_REDUX = config.disableSsrRedux;
+  global.PROXY_DELIVERY_API = config.proxyDeliveryApi;
+  global.REVERSE_PROXY_PATHS = Object(config.reverseProxyPaths);
   app.disable('x-powered-by'); // Output some information about the used build/startup configuration
 
   DisplayStartupConfiguration(config);
@@ -539,9 +540,9 @@ const start = (ReactApp, config, ServerFeatures) => {
   webApp(app, ReactApp, config);
   app.on('ready', async () => {
     // Configure DNS to make life easier
-    //await ConfigureLocalDNS();
+    // await ConfigureLocalDNS();
     Loadable.preloadAll().then(() => {
-      var server = app.listen(3001, () => {
+      const server = app.listen(3001, () => {
         console.info(`HTTP server is listening @ port 3001`);
         setTimeout(function () {
           app.emit('app_started');
