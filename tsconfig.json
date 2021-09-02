@@ -10,6 +10,7 @@
     "strict": true /* Enable all strict type-checking options. */,
     "allowJs": true, // allow a partial TypeScript and JavaScript codebase
     "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
     "declaration": true,
     // Ensure that .d.ts files are created by tsc, but not .js files
     "emitDeclarationOnly": true,
