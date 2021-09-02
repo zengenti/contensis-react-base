@@ -1,10 +1,6 @@
-export const selectCommitRef = state => {
-  return state.getIn(['version', 'commitRef']);
-};
-export const selectBuildNumber = state => {
-  return state.getIn(['version', 'buildNo']);
-};
+export const selectCommitRef = state => state?.version?.commitRef;
 
-export const selectVersionStatus = state => {
-  return state.getIn(['version', 'contensisVersionStatus']);
-};
+export const selectBuildNumber = state => state?.version?.buildNo;
+
+export const selectVersionStatus = state =>
+  state?.version?.contensisVersionStatus;

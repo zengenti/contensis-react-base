@@ -1,5 +1,4 @@
-import { applyMiddleware, compose, createStore } from 'redux';
-import { combineReducers } from 'redux-immutable';
+import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import createSagaMiddleware, { END } from 'redux-saga';
 import { createInjectorsEnhancer } from 'redux-injectors';

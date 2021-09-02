@@ -1,6 +1,5 @@
 import * as log from 'loglevel';
 import { takeEvery, put, select, call, all } from 'redux-saga/effects';
-import { Map } from 'immutable';
 
 import {
   SET_ENTRY,
@@ -115,8 +114,8 @@ function* getRouteSaga(action) {
         routeEntry &&
         (!staticRoute || (staticRoute.route && staticRoute.route.fetchNode))
       ) {
-        pathNode = routeNode.toJS();
-        pathNode.entry = entry = routeEntry.toJS();
+        pathNode = { ...routeNode, entry: null };
+        pathNode.entry = entry = routeEntry;
         //Do nothing, the entry is allready the right one.
         // yield put({
         //   type: SET_ENTRY,
@@ -131,7 +130,7 @@ function* getRouteSaga(action) {
       } else
         yield call(
           setRouteEntry,
-          routeEntry && routeEntry.toJS(),
+          routeEntry,
           yield select(selectCurrentNode),
           yield select(selectCurrentAncestors)
         );
@@ -381,7 +380,7 @@ function* setRouteEntry(
     currentEntryId === entrySys.id &&
     currentEntryLang === entrySys.language &&
     remapEntry === false
-      ? ((yield select(selectMappedEntry)) || Map()).toJS()
+      ? (yield select(selectMappedEntry)) || {}
       : yield mapRouteEntry(entryMapper, {
           ...node,
           entry,

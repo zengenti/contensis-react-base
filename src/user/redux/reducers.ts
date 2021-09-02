@@ -1,5 +1,4 @@
-import { List, Map } from 'immutable';
-import fromJSOrdered from '~/util/fromJSOrdered';
+import { Draft, produce } from 'immer';
 import {
   REGISTER_USER,
   REGISTER_USER_FAILED,
@@ -9,26 +8,26 @@ import {
   LOGOUT_USER,
 } from './types';
 
-const defaultAuthenticationState = Map({
+const defaultAuthenticationState = {
   authenticated: false,
   authenticationError: false,
   clientCredentials: null,
   error: false,
   loading: false,
-});
+};
 
-export const initialUserState = Map({
+export const initialUserState = {
   authenticationState: defaultAuthenticationState,
-  groups: new List([]),
-});
+  groups: [],
+};
 
-export default (state = initialUserState, action) => {
+export default produce((state: Draft<any>, action) => {
   switch (action.type) {
     case LOGIN_USER:
     case LOGOUT_USER:
     case SET_AUTHENTICATION_STATE: {
       if (!action.authenticationState) {
-        action.authenticationState = defaultAuthenticationState.toJS();
+        action.authenticationState = defaultAuthenticationState;
       }
 
       const loading = action.type === LOGIN_USER;
@@ -48,20 +47,19 @@ export default (state = initialUserState, action) => {
         user.isZengentiStaff = user.email.includes('@zengenti.com');
       }
 
-      const nextState = {
-        ...initialUserState.toJS(),
-        ...(user || state.toJS()),
+      state = {
+        ...initialUserState,
+        ...(user || state),
         authenticationState: {
           authenticated:
-            authenticated ||
-            state.getIn(['authenticationState', 'authenticated']),
+            authenticated || state?.authenticationState?.authenticated,
           authenticationError,
           clientCredentials,
           error,
           loading,
         },
       };
-      return fromJSOrdered(nextState);
+      return;
     }
     // REGISTER_USER is the trigger to set the user.registration initial state
     // and will set user.registration.loading to true
@@ -76,21 +74,15 @@ export default (state = initialUserState, action) => {
 
       // Set registration object from the supplied action.user
       // so we can call these values back later
-      const nextState = state.set(
-        'registration',
-        user ? fromJSOrdered(user) : state.get('registration', Map())
-      );
+      state.registration = user || state.registration || {};
 
       // Set registration flags so the UI can track the status
-      return nextState
-        .setIn(
-          ['registration', 'success'],
-          action.type === REGISTER_USER_SUCCESS
-        )
-        .setIn(['registration', 'error'], error || false)
-        .setIn(['registration', 'loading'], action.type === REGISTER_USER);
+      state.registration.success = action.type === REGISTER_USER_SUCCESS;
+      state.registration.error = error || false;
+      state.registration.loading = action.type === REGISTER_USER;
+      return;
     }
     default:
       return state;
   }
-};
+}, initialUserState);

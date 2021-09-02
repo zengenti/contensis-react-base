@@ -47,7 +47,7 @@ export function* handleRequiresLoginSaga(action) {
   const { requireLogin: authRoute } = (staticRoute && staticRoute.route) || {};
   const { requireLogin: authContentType } =
     (entry &&
-      findContentTypeMapping(ContentTypeMappings, entry.sys.contentTypeId)) ||
+      findContentTypeMapping(ContentTypeMappings, entry?.sys?.contentTypeId)) ||
     {};
 
   // If requireLogin, authRoute or authContentType has been specified as an
