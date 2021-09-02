@@ -1,2 +1,2 @@
-export function history(options?: {}): any;
-export const browserHistory: any;
+export function history(options?: {}): import("history").History<unknown> | import("history").MemoryHistory<unknown>;
+export const browserHistory: import("history").History<unknown> | import("history").MemoryHistory<unknown>;

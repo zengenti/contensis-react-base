@@ -1,2 +1,66 @@
-declare var _default: any;
+declare var _default: import("react-redux").ConnectedComponent<{
+    ({ deliveryApi, devEnv, disableSsrRedux, nodeEnv, packageDetail, project, projects, proxyDeliveryApi, publicUri, reverseProxyPaths, servers, uris, version, zenPackageVersions, }: {
+        deliveryApi: any;
+        devEnv: any;
+        disableSsrRedux: any;
+        nodeEnv: any;
+        packageDetail: any;
+        project: any;
+        projects: any;
+        proxyDeliveryApi: any;
+        publicUri: any;
+        reverseProxyPaths: any;
+        servers: any;
+        uris: any;
+        version: any;
+        zenPackageVersions: any;
+    }): JSX.Element;
+    propTypes: {
+        deliveryApi: PropTypes.Requireable<object>;
+        devEnv: PropTypes.Requireable<object>;
+        disableSsrRedux: PropTypes.Requireable<boolean>;
+        nodeEnv: PropTypes.Requireable<string>;
+        packageDetail: PropTypes.Requireable<object>;
+        project: PropTypes.Requireable<string>;
+        projects: PropTypes.Requireable<object>;
+        proxyDeliveryApi: PropTypes.Requireable<boolean>;
+        publicUri: PropTypes.Requireable<string>;
+        reverseProxyPaths: PropTypes.Requireable<any[]>;
+        servers: PropTypes.Requireable<object>;
+        uris: PropTypes.Requireable<object>;
+        version: PropTypes.Requireable<object>;
+        zenPackageVersions: PropTypes.Requireable<any[]>;
+    };
+}, import("react-redux").Omit<Pick<{
+    deliveryApi: any;
+    devEnv: any;
+    disableSsrRedux: any;
+    nodeEnv: any;
+    packageDetail: any;
+    project: any;
+    projects: any;
+    proxyDeliveryApi: any;
+    publicUri: any;
+    reverseProxyPaths: any;
+    servers: any;
+    uris: any;
+    version: any;
+    zenPackageVersions: any;
+}, never> & Pick<PropTypes.InferProps<{
+    deliveryApi: PropTypes.Requireable<object>;
+    devEnv: PropTypes.Requireable<object>;
+    disableSsrRedux: PropTypes.Requireable<boolean>;
+    nodeEnv: PropTypes.Requireable<string>;
+    packageDetail: PropTypes.Requireable<object>;
+    project: PropTypes.Requireable<string>;
+    projects: PropTypes.Requireable<object>;
+    proxyDeliveryApi: PropTypes.Requireable<boolean>;
+    publicUri: PropTypes.Requireable<string>;
+    reverseProxyPaths: PropTypes.Requireable<any[]>;
+    servers: PropTypes.Requireable<object>;
+    uris: PropTypes.Requireable<object>;
+    version: PropTypes.Requireable<object>;
+    zenPackageVersions: PropTypes.Requireable<any[]>;
+}>, "version" | "project" | "packageDetail" | "uris" | "zenPackageVersions" | "deliveryApi" | "devEnv" | "disableSsrRedux" | "nodeEnv" | "projects" | "proxyDeliveryApi" | "publicUri" | "reverseProxyPaths" | "servers">, never>>;
 export default _default;
+import PropTypes from "prop-types";
