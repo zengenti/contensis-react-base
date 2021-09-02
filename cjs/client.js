@@ -38,7 +38,6 @@ var reactDom = require('react-dom');
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
 var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
-var queryString__default = /*#__PURE__*/_interopDefaultLegacy(queryString);
 
 const fromJSLeaveImmer = js => {
   // console.info(js);
@@ -86,19 +85,19 @@ class ClientApp {
       return ClientJsx;
     };
 
-    const isProduction = !(process.env.NODE_ENV != 'production');
+    const isProduction = !(process.env.NODE_ENV !== 'production');
     /**
      * Webpack HMR Setup.
      */
 
     const HMRRenderer = Component => {
       Loadable.preloadReady().then(() => {
-        isProduction ? reactDom.hydrate(Component, documentRoot) : reactDom.render(Component, documentRoot);
+        if (isProduction) reactDom.hydrate(Component, documentRoot);else reactDom.render(Component, documentRoot);
       });
     };
 
     let store = null;
-    const qs = queryString__default['default'].parse(window.location.search);
+    const qs = queryString.parse(window.location.search);
     const versionStatusFromHostname = App.deliveryApi.getClientSideVersionStatus();
 
     if (window.isDynamic || window.REDUX_DATA || process.env.NODE_ENV !== 'production') {
@@ -116,7 +115,7 @@ class ClientApp {
     } else {
       fetch(`${window.location.pathname}?redux=true`).then(response => response.json()).then(data => {
         /* eslint-disable no-console */
-        //console.log('Got Data Back');
+        // console.log('Got Data Back');
         // console.log(data);
 
         /* eslint-enable no-console */
@@ -124,7 +123,7 @@ class ClientApp {
         store = version.createStore(withReducers, fromJSLeaveImmer(ssRedux), App.browserHistory); // store.dispatch(setVersionStatus(versionStatusFromHostname));
 
         store.runSaga(App.rootSaga(withSagas));
-        store.dispatch(actions.setCurrentProject(App.pickProject(window.location.hostname, queryString__default['default'].parse(window.location.search)), [], window.location.hostname)); // if (typeof window != 'undefined') {
+        store.dispatch(actions.setCurrentProject(App.pickProject(window.location.hostname, queryString.parse(window.location.search)), [], window.location.hostname)); // if (typeof window != 'undefined') {
         //   store.dispatch(checkUserLoggedIn());
         // }
 

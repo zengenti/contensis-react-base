@@ -521,7 +521,6 @@ const webApp = (app, ReactApp, config) => {
   });
 };
 
-let global;
 const app = express();
 
 const start = (ReactApp, config, ServerFeatures) => {

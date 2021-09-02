@@ -20,7 +20,7 @@ export { A as ReactApp } from './App-6df89333.js';
 import '@redux-saga/core/effects';
 import 'contensis-delivery-api';
 import './version-7fdbd2d5.js';
-import queryString from 'query-string';
+import { parse } from 'query-string';
 import './selectors-170581d2.js';
 import 'loglevel';
 import './ToJs-19a3244a.js';
@@ -78,19 +78,19 @@ class ClientApp {
       return ClientJsx;
     };
 
-    const isProduction = !(process.env.NODE_ENV != 'production');
+    const isProduction = !(process.env.NODE_ENV !== 'production');
     /**
      * Webpack HMR Setup.
      */
 
     const HMRRenderer = Component => {
       preloadReady().then(() => {
-        isProduction ? hydrate(Component, documentRoot) : render(Component, documentRoot);
+        if (isProduction) hydrate(Component, documentRoot);else render(Component, documentRoot);
       });
     };
 
     let store = null;
-    const qs = queryString.parse(window.location.search);
+    const qs = parse(window.location.search);
     const versionStatusFromHostname = deliveryApi.getClientSideVersionStatus();
 
     if (window.isDynamic || window.REDUX_DATA || process.env.NODE_ENV !== 'production') {
@@ -108,7 +108,7 @@ class ClientApp {
     } else {
       fetch(`${window.location.pathname}?redux=true`).then(response => response.json()).then(data => {
         /* eslint-disable no-console */
-        //console.log('Got Data Back');
+        // console.log('Got Data Back');
         // console.log(data);
 
         /* eslint-enable no-console */
@@ -116,7 +116,7 @@ class ClientApp {
         store = createStore(withReducers, fromJSLeaveImmer(ssRedux), browserHistory); // store.dispatch(setVersionStatus(versionStatusFromHostname));
 
         store.runSaga(rootSaga(withSagas));
-        store.dispatch(setCurrentProject(pickProject(window.location.hostname, queryString.parse(window.location.search)), [], window.location.hostname)); // if (typeof window != 'undefined') {
+        store.dispatch(setCurrentProject(pickProject(window.location.hostname, parse(window.location.search)), [], window.location.hostname)); // if (typeof window != 'undefined') {
         //   store.dispatch(checkUserLoggedIn());
         // }
 

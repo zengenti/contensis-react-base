@@ -61,6 +61,6 @@ declare var _default: import("react-redux").ConnectedComponent<{
     uris: PropTypes.Requireable<object>;
     version: PropTypes.Requireable<object>;
     zenPackageVersions: PropTypes.Requireable<any[]>;
-}>, "version" | "project" | "packageDetail" | "uris" | "zenPackageVersions" | "deliveryApi" | "devEnv" | "disableSsrRedux" | "nodeEnv" | "projects" | "proxyDeliveryApi" | "publicUri" | "reverseProxyPaths" | "servers">, never>>;
+}>, "project" | "version" | "disableSsrRedux" | "packageDetail" | "uris" | "zenPackageVersions" | "deliveryApi" | "devEnv" | "nodeEnv" | "projects" | "proxyDeliveryApi" | "publicUri" | "reverseProxyPaths" | "servers">, never>>;
 export default _default;
 import PropTypes from "prop-types";
