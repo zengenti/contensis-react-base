@@ -16,32 +16,32 @@ import serialize from 'serialize-javascript';
 import minifyCssString from 'minify-css-string';
 import mapJson from 'jsonpath-mapper';
 import { fromJS } from 'immutable';
+import { c as createStore, s as setVersionStatus, a as setVersion } from './version-c0e104cb.js';
+import { h as history, d as deliveryApi, p as pickProject, r as rootSaga } from './App-f3008edc.js';
+export { A as ReactApp } from './App-f3008edc.js';
+import { s as setCurrentProject } from './actions-5b76419a.js';
+import { s as selectRouteEntry, a as selectCurrentProject } from './selectors-acde3a83.js';
+import '@redux-saga/core/effects';
 import 'redux';
-import 'redux-immutable';
 import 'redux-thunk';
 import 'redux-saga';
 import 'redux-injectors';
-import { c as createStore, s as setVersionStatus, a as setVersion } from './version-8d757fb4.js';
-import { s as setCurrentProject } from './actions-fda5e103.js';
-import './reducers-b426d14a.js';
+import 'immer';
+import './reducers-42abcaf3.js';
 import 'history';
-import { h as history, d as deliveryApi, p as pickProject, r as rootSaga } from './App-b2b80182.js';
-export { A as ReactApp } from './App-b2b80182.js';
-import '@redux-saga/core/effects';
 import 'contensis-delivery-api';
-import './version-7fdbd2d5.js';
-import 'query-string';
-import { s as selectRouteEntry, a as selectCurrentProject } from './selectors-170581d2.js';
+import './version-3671a3e0.js';
 import 'loglevel';
-import './ToJs-19a3244a.js';
-import './login-866fe64c.js';
+import './login-952dac2a.js';
+import './ToJs-8f5b58d7.js';
 import 'await-to-js';
 import 'js-cookie';
+import 'query-string';
 import 'react-hot-loader';
+import './RouteLoader-0e7ca21d.js';
 import 'prop-types';
-import './RouteLoader-2cfdfc5c.js';
 
-const servers = SERVERS;
+const servers$1 = SERVERS;
 /* global SERVERS */
 
 const projects = PROJECTS;
@@ -51,7 +51,7 @@ const DisplayStartupConfiguration = config => {
   /* eslint-disable no-console */
   console.log();
   console.log(`Configured servers:
-`, JSON.stringify(servers, null, 2));
+`, JSON.stringify(servers$1, null, 2));
   console.log();
   console.log(`Configured projects:
 `, JSON.stringify(projects, null, 2));
@@ -61,7 +61,7 @@ const DisplayStartupConfiguration = config => {
   /* eslint-enable no-console */
 };
 
-const servers$1 = SERVERS;
+const servers = SERVERS;
 /* global SERVERS */
 
 const apiProxy = httpProxy.createProxyServer();
@@ -69,7 +69,7 @@ const apiProxy = httpProxy.createProxyServer();
 const reverseProxies = (app, reverseProxyPaths) => {
   deliveryApiProxy(apiProxy, app);
   app.all(reverseProxyPaths, (req, res) => {
-    const target = req.hostname.indexOf('preview-') || req.hostname.indexOf('preview.') || req.hostname === 'localhost' ? servers$1.previewIis || servers$1.iis : servers$1.iis;
+    const target = req.hostname.indexOf('preview-') || req.hostname.indexOf('preview.') || req.hostname === 'localhost' ? servers.previewIis || servers.iis : servers.iis;
     apiProxy.web(req, res, {
       target,
       changeOrigin: true
@@ -86,8 +86,8 @@ const deliveryApiProxy = (apiProxy, app) => {
   // This is just here to stop cors requests on localhost. In Production this is mapped using varnish.
   app.all(['/api/delivery/*', '/api/image/*'], (req, res) => {
     /* eslint-disable no-console */
-    const target = servers$1.cms;
-    console.log(`Proxying api request to ${servers$1.alias}`);
+    const target = servers.cms;
+    console.log(`Proxying api request to ${servers.alias}`);
     apiProxy.web(req, res, {
       target,
       changeOrigin: true
@@ -521,13 +521,14 @@ const webApp = (app, ReactApp, config) => {
   });
 };
 
+let global;
 const app = express();
 
 const start = (ReactApp, config, ServerFeatures) => {
   global.PACKAGE_JSON = config.packagejson;
-  global.REVERSE_PROXY_PATHS = Object(config.reverseProxyPaths);
-  global.PROXY_DELIVERY_API = config.proxyDeliveryApi;
   global.DISABLE_SSR_REDUX = config.disableSsrRedux;
+  global.PROXY_DELIVERY_API = config.proxyDeliveryApi;
+  global.REVERSE_PROXY_PATHS = Object(config.reverseProxyPaths);
   app.disable('x-powered-by'); // Output some information about the used build/startup configuration
 
   DisplayStartupConfiguration(config);
@@ -539,9 +540,9 @@ const start = (ReactApp, config, ServerFeatures) => {
   webApp(app, ReactApp, config);
   app.on('ready', async () => {
     // Configure DNS to make life easier
-    //await ConfigureLocalDNS();
+    // await ConfigureLocalDNS();
     Loadable.preloadAll().then(() => {
-      var server = app.listen(3001, () => {
+      const server = app.listen(3001, () => {
         console.info(`HTTP server is listening @ port 3001`);
         setTimeout(function () {
           app.emit('app_started');
@@ -562,5 +563,5 @@ var internalServer = {
   start
 };
 
-export default internalServer;
+export { internalServer as default };
 //# sourceMappingURL=contensis-react-base.js.map

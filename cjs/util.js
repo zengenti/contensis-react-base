@@ -2,24 +2,23 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var React = require('react');
-var reactRouterDom = require('react-router-dom');
-var reactRedux = require('react-redux');
-var styled = require('styled-components');
 var mapJson = require('jsonpath-mapper');
-require('immutable');
-var version = require('./version-2193b4a2.js');
-require('query-string');
-var selectors = require('./selectors-69c3d37c.js');
+var React = require('react');
 var PropTypes = require('prop-types');
+var reactRedux = require('react-redux');
+var selectors = require('./selectors-5085f27f.js');
+var version = require('./version-89d6400c.js');
+var styled = require('styled-components');
+var reactRouterDom = require('react-router-dom');
 var reactRouterHashLink = require('react-router-hash-link');
+require('query-string');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
-var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
-var styled__default = /*#__PURE__*/_interopDefaultLegacy(styled);
 var mapJson__default = /*#__PURE__*/_interopDefaultLegacy(mapJson);
+var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
 var PropTypes__default = /*#__PURE__*/_interopDefaultLegacy(PropTypes);
+var styled__default = /*#__PURE__*/_interopDefaultLegacy(styled);
 
 /**
  *

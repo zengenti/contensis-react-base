@@ -1,1 +1,1 @@
-export const VersionInfoStyledTable: any;
+export const VersionInfoStyledTable: import("styled-components").StyledComponent<"table", any, {}, never>;

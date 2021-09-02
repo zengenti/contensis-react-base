@@ -1,7 +1,7 @@
 export const LOGIN_COOKIE: "ContensisCMSUserName";
 export const REFRESH_TOKEN_COOKIE: "RefreshToken";
 export class LoginHelper {
-    static CMS_URL: any;
+    static CMS_URL: string;
     static WSFED_LOGIN: boolean;
     static LOGIN_ROUTE: string;
     static ACCESS_DENIED_ROUTE: string;

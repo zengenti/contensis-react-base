@@ -2,19 +2,18 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-require('immutable');
+var version$1 = require('./version-3ca577be.js');
+var actions$1 = require('./actions-0e6615b5.js');
+var selectors$1 = require('./selectors-5085f27f.js');
+var version$2 = require('./version-89d6400c.js');
+require('@redux-saga/core/effects');
 require('redux');
-require('redux-immutable');
 require('redux-thunk');
 require('redux-saga');
 require('redux-injectors');
-var version$1 = require('./version-d8f5b436.js');
-var actions$1 = require('./actions-e22726ed.js');
-require('./reducers-c42035ab.js');
-require('@redux-saga/core/effects');
-var version$2 = require('./version-2193b4a2.js');
+require('immer');
+require('./reducers-3f2c29e6.js');
 require('query-string');
-var selectors$1 = require('./selectors-69c3d37c.js');
 
 var types = {
   navigation: version$1.navigation,
@@ -24,13 +23,13 @@ var types = {
 
 const loadNavigationTree = () => actions$1.action(version$1.GET_NODE_TREE);
 
-var navigation = /*#__PURE__*/Object.freeze({
+var navigation$1 = /*#__PURE__*/Object.freeze({
   __proto__: null,
   loadNavigationTree: loadNavigationTree
 });
 
 var actions = {
-  navigation,
+  navigation: navigation$1,
   routing: actions$1.routing$1,
   version: version$1.version$1
 };
@@ -44,7 +43,7 @@ var selectors = {
 // e.g. { routing: { types, actions }, navigation: { types, actions } }
 // instead of { types: { routing, navigation }, actions: { routing, navigation } }
 
-const navigation$1 = {
+const navigation = {
   types: types.navigation,
   actions: actions.navigation,
   selectors: selectors.navigation
@@ -71,7 +70,7 @@ Object.defineProperty(exports, 'store', {
   }
 });
 exports.useInjectRedux = version$1.useInjectRedux;
-exports.navigation = navigation$1;
+exports.navigation = navigation;
 exports.routing = routing;
 exports.version = version;
 //# sourceMappingURL=redux.js.map

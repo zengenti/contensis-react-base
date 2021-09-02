@@ -1,36 +1,40 @@
 import 'isomorphic-fetch';
-import { preloadReady } from 'react-loadable';
 import React from 'react';
+import { hydrate, render } from 'react-dom';
 import { Router } from 'react-router-dom';
+import { preloadReady } from 'react-loadable';
+import { AppContainer } from 'react-hot-loader';
 import { Provider } from 'react-redux';
-import 'react-router-config';
-import 'jsonpath-mapper';
-import 'immutable';
+import queryString from 'query-string';
+import { c as createStore, s as setVersionStatus } from './version-c0e104cb.js';
+import { d as deliveryApi, r as rootSaga, p as pickProject, b as browserHistory } from './App-f3008edc.js';
+export { A as ReactApp } from './App-f3008edc.js';
+import { s as setCurrentProject } from './actions-5b76419a.js';
+import { Seq } from 'immutable';
+import './RouteLoader-0e7ca21d.js';
+import '@redux-saga/core/effects';
 import 'redux';
-import 'redux-immutable';
 import 'redux-thunk';
 import 'redux-saga';
 import 'redux-injectors';
-import { c as createStore, s as setVersionStatus } from './version-8d757fb4.js';
-import { s as setCurrentProject } from './actions-fda5e103.js';
-import { f as fromJSOrdered } from './reducers-b426d14a.js';
+import 'immer';
+import './reducers-42abcaf3.js';
 import 'history';
-import { d as deliveryApi, r as rootSaga, p as pickProject, b as browserHistory } from './App-b2b80182.js';
-export { A as ReactApp } from './App-b2b80182.js';
-import '@redux-saga/core/effects';
 import 'contensis-delivery-api';
-import './version-7fdbd2d5.js';
-import queryString from 'query-string';
-import './selectors-170581d2.js';
+import './version-3671a3e0.js';
+import './selectors-acde3a83.js';
 import 'loglevel';
-import './ToJs-19a3244a.js';
-import './login-866fe64c.js';
+import './login-952dac2a.js';
+import './ToJs-8f5b58d7.js';
+import 'jsonpath-mapper';
 import 'await-to-js';
 import 'js-cookie';
-import { AppContainer } from 'react-hot-loader';
 import 'prop-types';
-import './RouteLoader-2cfdfc5c.js';
-import { hydrate, render } from 'react-dom';
+import 'react-router-config';
+
+const fromJSOrdered = js => {
+  return typeof js !== 'object' || js === null ? js : Array.isArray(js) ? Seq(js).map(fromJSOrdered).toList() : Seq(js).map(fromJSOrdered).toOrderedMap();
+};
 
 const fromJSLeaveImmer = js => {
   // console.info(js);
@@ -135,5 +139,5 @@ class ClientApp {
 
 }
 
-export default ClientApp;
+export { ClientApp as default };
 //# sourceMappingURL=client.js.map

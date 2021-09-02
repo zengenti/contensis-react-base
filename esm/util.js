@@ -1,15 +1,14 @@
-import React from 'react';
-import { Link as Link$1 } from 'react-router-dom';
-import { connect } from 'react-redux';
-import styled from 'styled-components';
 import mapJson, { jpath } from 'jsonpath-mapper';
 export { jpath, default as mapJson } from 'jsonpath-mapper';
-import 'immutable';
-import { a as selectCommitRef, b as selectBuildNumber, s as selectVersionStatus } from './version-7fdbd2d5.js';
-import 'query-string';
-import { a as selectCurrentProject } from './selectors-170581d2.js';
+import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { a as selectCurrentProject } from './selectors-acde3a83.js';
+import { a as selectCommitRef, b as selectBuildNumber, s as selectVersionStatus } from './version-3671a3e0.js';
+import styled from 'styled-components';
+import { Link as Link$1 } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
+import 'query-string';
 
 /**
  *

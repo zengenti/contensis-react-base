@@ -2,19 +2,20 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-require('react');
+var login = require('./login-f4ec010d.js');
 var reactRedux = require('react-redux');
-require('jsonpath-mapper');
+var actions$1 = require('./actions-0e6615b5.js');
+var reducers = require('./reducers-3f2c29e6.js');
+var ToJs = require('./ToJs-f968ac6c.js');
 require('immutable');
-var actions$1 = require('./actions-e22726ed.js');
-var reducers = require('./reducers-c42035ab.js');
 require('@redux-saga/core/effects');
+require('./selectors-5085f27f.js');
 require('query-string');
-require('./selectors-69c3d37c.js');
-var ToJs = require('./ToJs-ca9bea03.js');
-var login = require('./login-6eb5e46d.js');
+require('jsonpath-mapper');
 require('await-to-js');
 require('js-cookie');
+require('immer');
+require('react');
 
 const loginUser = (username, password) => actions$1.action(reducers.LOGIN_USER, {
   username,
@@ -35,7 +36,7 @@ var actions = /*#__PURE__*/Object.freeze({
   registerUser: registerUser
 });
 
-const useLogin = () => {
+const useLogin$1 = () => {
   const dispatch = reactRedux.useDispatch();
   const select = reactRedux.useSelector;
   return {
@@ -53,14 +54,14 @@ const LoginContainer = ({
   children,
   ...props
 }) => {
-  const userProps = useLogin();
+  const userProps = useLogin$1();
   return children(userProps);
 };
 
 LoginContainer.propTypes = {};
 var Login_container = ToJs.toJS(LoginContainer);
 
-const useLogin$1 = () => {
+const useLogin = () => {
   const dispatch = reactRedux.useDispatch();
   const select = reactRedux.useSelector;
   return {
@@ -76,14 +77,14 @@ const RegistrationContainer = ({
   children,
   ...props
 }) => {
-  const userProps = useLogin$1();
+  const userProps = useLogin();
   return children(userProps);
 };
 
 RegistrationContainer.propTypes = {};
 var Registration_container = ToJs.toJS(RegistrationContainer);
 
-const getDisplayName = WrappedComponent => {
+const getDisplayName$1 = WrappedComponent => {
   return WrappedComponent.displayName || WrappedComponent.name || 'Component';
 };
 
@@ -113,11 +114,11 @@ const withLogin = WrappedComponent => {
     logoutUser
   };
   const ConnectedComponent = reactRedux.connect(mapStateToProps, mapDispatchToProps)(ToJs.toJS(WrappedComponent));
-  ConnectedComponent.displayName = `${getDisplayName(WrappedComponent)}`;
+  ConnectedComponent.displayName = `${getDisplayName$1(WrappedComponent)}`;
   return ConnectedComponent;
 };
 
-const getDisplayName$1 = WrappedComponent => {
+const getDisplayName = WrappedComponent => {
   return WrappedComponent.displayName || WrappedComponent.name || 'Component';
 };
 
@@ -143,22 +144,22 @@ const withRegistration = WrappedComponent => {
     registerUser
   };
   const ConnectedComponent = reactRedux.connect(mapStateToProps, mapDispatchToProps)(ToJs.toJS(WrappedComponent));
-  ConnectedComponent.displayName = `${getDisplayName$1(WrappedComponent)}`;
+  ConnectedComponent.displayName = `${getDisplayName(WrappedComponent)}`;
   return ConnectedComponent;
 };
 
+exports.LoginHelper = login.LoginHelper;
+exports.handleRequiresLoginSaga = login.handleRequiresLoginSaga;
+exports.refreshSecurityToken = login.refreshSecurityToken;
 exports.initialUserState = reducers.initialUserState;
 exports.reducer = reducers.UserReducer;
 exports.types = reducers.types;
 exports.selectors = ToJs.selectors;
-exports.LoginHelper = login.LoginHelper;
-exports.handleRequiresLoginSaga = login.handleRequiresLoginSaga;
-exports.refreshSecurityToken = login.refreshSecurityToken;
 exports.LoginContainer = Login_container;
 exports.RegistrationContainer = Registration_container;
 exports.actions = actions;
-exports.useLogin = useLogin;
-exports.useRegistration = useLogin$1;
+exports.useLogin = useLogin$1;
+exports.useRegistration = useLogin;
 exports.withLogin = withLogin;
 exports.withRegistration = withRegistration;
 //# sourceMappingURL=user.js.map

@@ -1,18 +1,19 @@
-import 'react';
+export { L as LoginHelper, h as handleRequiresLoginSaga, r as refreshSecurityToken } from './login-952dac2a.js';
 import { useDispatch, useSelector, connect } from 'react-redux';
-import 'jsonpath-mapper';
+import { j as action } from './actions-5b76419a.js';
+import { L as LOGIN_USER, c as LOGOUT_USER, R as REGISTER_USER } from './reducers-42abcaf3.js';
+export { i as initialUserState, U as reducer, t as types } from './reducers-42abcaf3.js';
+import { c as selectUserAuthenticationError, d as selectUserError, s as selectUserIsAuthenticated, e as selectUserIsLoading, f as selectUser, t as toJS, g as selectUserRegistrationError, h as selectUserRegistrationIsLoading, i as selectUserRegistrationIsSuccess, j as selectUserRegistration } from './ToJs-8f5b58d7.js';
+export { k as selectors } from './ToJs-8f5b58d7.js';
 import 'immutable';
-import { j as action } from './actions-fda5e103.js';
-import { L as LOGIN_USER, c as LOGOUT_USER, R as REGISTER_USER } from './reducers-b426d14a.js';
-export { i as initialUserState, U as reducer, t as types } from './reducers-b426d14a.js';
 import '@redux-saga/core/effects';
+import './selectors-acde3a83.js';
 import 'query-string';
-import './selectors-170581d2.js';
-import { c as selectUserAuthenticationError, d as selectUserError, s as selectUserIsAuthenticated, e as selectUserIsLoading, f as selectUser, t as toJS, g as selectUserRegistrationError, h as selectUserRegistrationIsLoading, i as selectUserRegistrationIsSuccess, j as selectUserRegistration } from './ToJs-19a3244a.js';
-export { k as selectors } from './ToJs-19a3244a.js';
-export { L as LoginHelper, h as handleRequiresLoginSaga, r as refreshSecurityToken } from './login-866fe64c.js';
+import 'jsonpath-mapper';
 import 'await-to-js';
 import 'js-cookie';
+import 'immer';
+import 'react';
 
 const loginUser = (username, password) => action(LOGIN_USER, {
   username,
@@ -33,7 +34,7 @@ var actions = /*#__PURE__*/Object.freeze({
   registerUser: registerUser
 });
 
-const useLogin = () => {
+const useLogin$1 = () => {
   const dispatch = useDispatch();
   const select = useSelector;
   return {
@@ -51,14 +52,14 @@ const LoginContainer = ({
   children,
   ...props
 }) => {
-  const userProps = useLogin();
+  const userProps = useLogin$1();
   return children(userProps);
 };
 
 LoginContainer.propTypes = {};
 var Login_container = toJS(LoginContainer);
 
-const useLogin$1 = () => {
+const useLogin = () => {
   const dispatch = useDispatch();
   const select = useSelector;
   return {
@@ -74,14 +75,14 @@ const RegistrationContainer = ({
   children,
   ...props
 }) => {
-  const userProps = useLogin$1();
+  const userProps = useLogin();
   return children(userProps);
 };
 
 RegistrationContainer.propTypes = {};
 var Registration_container = toJS(RegistrationContainer);
 
-const getDisplayName = WrappedComponent => {
+const getDisplayName$1 = WrappedComponent => {
   return WrappedComponent.displayName || WrappedComponent.name || 'Component';
 };
 
@@ -111,11 +112,11 @@ const withLogin = WrappedComponent => {
     logoutUser
   };
   const ConnectedComponent = connect(mapStateToProps, mapDispatchToProps)(toJS(WrappedComponent));
-  ConnectedComponent.displayName = `${getDisplayName(WrappedComponent)}`;
+  ConnectedComponent.displayName = `${getDisplayName$1(WrappedComponent)}`;
   return ConnectedComponent;
 };
 
-const getDisplayName$1 = WrappedComponent => {
+const getDisplayName = WrappedComponent => {
   return WrappedComponent.displayName || WrappedComponent.name || 'Component';
 };
 
@@ -141,9 +142,9 @@ const withRegistration = WrappedComponent => {
     registerUser
   };
   const ConnectedComponent = connect(mapStateToProps, mapDispatchToProps)(toJS(WrappedComponent));
-  ConnectedComponent.displayName = `${getDisplayName$1(WrappedComponent)}`;
+  ConnectedComponent.displayName = `${getDisplayName(WrappedComponent)}`;
   return ConnectedComponent;
 };
 
-export { Login_container as LoginContainer, Registration_container as RegistrationContainer, actions, useLogin, useLogin$1 as useRegistration, withLogin, withRegistration };
+export { Login_container as LoginContainer, Registration_container as RegistrationContainer, actions, useLogin$1 as useLogin, useLogin as useRegistration, withLogin, withRegistration };
 //# sourceMappingURL=user.js.map

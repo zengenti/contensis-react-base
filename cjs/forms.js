@@ -2,19 +2,19 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var React = require('react');
-var reactRedux = require('react-redux');
-var styled = require('styled-components');
 var immutable = require('immutable');
 var effects = require('@redux-saga/core/effects');
-var PropTypes = require('prop-types');
 var reselect = require('reselect');
+var React = require('react');
+var PropTypes = require('prop-types');
+var reactRedux = require('react-redux');
+var styled = require('styled-components');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
 var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
-var styled__default = /*#__PURE__*/_interopDefaultLegacy(styled);
 var PropTypes__default = /*#__PURE__*/_interopDefaultLegacy(PropTypes);
+var styled__default = /*#__PURE__*/_interopDefaultLegacy(styled);
 
 const ACTION_PREFIX = '@FORM2/';
 const SET_FORM_DATA = `${ACTION_PREFIX}SET_FORM_DATA`;
@@ -2276,7 +2276,7 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-var Form = reactRedux.connect(mapStateToProps, mapDispatchToProps)(toJS(FormContainer));
+reactRedux.connect(mapStateToProps, mapDispatchToProps)(toJS(FormContainer));
 
 exports.reducer = reducer;
 exports.sagas = formV2Sagas;

@@ -3,42 +3,46 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 require('isomorphic-fetch');
-var Loadable = require('react-loadable');
 var React = require('react');
+var reactDom = require('react-dom');
 var reactRouterDom = require('react-router-dom');
+var Loadable = require('react-loadable');
+var reactHotLoader = require('react-hot-loader');
 var reactRedux = require('react-redux');
-require('react-router-config');
-require('jsonpath-mapper');
-require('immutable');
+var queryString = require('query-string');
+var version = require('./version-3ca577be.js');
+var App = require('./App-af2f2f50.js');
+var actions = require('./actions-0e6615b5.js');
+var immutable = require('immutable');
+require('./RouteLoader-827f4468.js');
+require('@redux-saga/core/effects');
 require('redux');
-require('redux-immutable');
 require('redux-thunk');
 require('redux-saga');
 require('redux-injectors');
-var version = require('./version-d8f5b436.js');
-var actions = require('./actions-e22726ed.js');
-var reducers = require('./reducers-c42035ab.js');
+require('immer');
+require('./reducers-3f2c29e6.js');
 require('history');
-var App = require('./App-2334f3e0.js');
-require('@redux-saga/core/effects');
 require('contensis-delivery-api');
-require('./version-2193b4a2.js');
-var queryString = require('query-string');
-require('./selectors-69c3d37c.js');
+require('./version-89d6400c.js');
+require('./selectors-5085f27f.js');
 require('loglevel');
-require('./ToJs-ca9bea03.js');
-require('./login-6eb5e46d.js');
+require('./login-f4ec010d.js');
+require('./ToJs-f968ac6c.js');
+require('jsonpath-mapper');
 require('await-to-js');
 require('js-cookie');
-var reactHotLoader = require('react-hot-loader');
 require('prop-types');
-require('./RouteLoader-5c44f039.js');
-var reactDom = require('react-dom');
+require('react-router-config');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
 var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
 var queryString__default = /*#__PURE__*/_interopDefaultLegacy(queryString);
+
+const fromJSOrdered = js => {
+  return typeof js !== 'object' || js === null ? js : Array.isArray(js) ? immutable.Seq(js).map(fromJSOrdered).toList() : immutable.Seq(js).map(fromJSOrdered).toOrderedMap();
+};
 
 const fromJSLeaveImmer = js => {
   // console.info(js);
@@ -55,7 +59,7 @@ const fromJSLeaveImmer = js => {
   //     convertedObject.set(key, isOrdered ? fromJSOrdered(js) : fromJS(js));
   //   }
   // });
-  const immutableObj = reducers.fromJSOrdered(js);
+  const immutableObj = fromJSOrdered(js);
 
   if (immutableObj && !!immutableObj.get('immer')) {
     immutableObj.set('immer', immutableObj.get('immer').toJS());
@@ -144,5 +148,5 @@ class ClientApp {
 }
 
 exports.ReactApp = App.AppRoot;
-exports.default = ClientApp;
+exports['default'] = ClientApp;
 //# sourceMappingURL=client.js.map

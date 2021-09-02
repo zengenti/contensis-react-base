@@ -1,3 +1,7 @@
-declare function _default(state: Map<string, any> | undefined, action: any): Map<string, any>;
+declare const _default: <Base extends {
+    readonly root: null;
+    readonly treeDepends: readonly never[];
+    readonly isError: boolean;
+    readonly isReady: boolean;
+}>(base?: Base | undefined, action: any) => Base;
 export default _default;
-import { Map } from "immutable";

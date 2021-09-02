@@ -8,7 +8,7 @@ declare var _default: ({
 } | {
     path: string;
     exact: boolean;
-    component: any;
+    component: import("react").ComponentType<any> & Loadable.LoadableComponent;
     fetchNode?: undefined;
     ssr?: undefined;
     requireLogin?: undefined;
@@ -16,8 +16,9 @@ declare var _default: ({
     path: string;
     exact: boolean;
     requireLogin: boolean;
-    component: any;
+    component: import("react").ComponentType<any> & Loadable.LoadableComponent;
     fetchNode?: undefined;
     ssr?: undefined;
 })[];
 export default _default;
+import Loadable from "react-loadable";
