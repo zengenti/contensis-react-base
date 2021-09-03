@@ -20,28 +20,49 @@ var serialize = require('serialize-javascript');
 var minifyCssString = require('minify-css-string');
 var mapJson = require('jsonpath-mapper');
 var immutable = require('immutable');
+<<<<<<< HEAD
+=======
+require('history');
+var App = require('./App-a3a3c76c.js');
+require('contensis-delivery-api');
+var routing = require('./routing-a4d7b382.js');
+>>>>>>> contensis-14-forgot-change-password
 require('redux');
 require('redux-immutable');
 require('redux-thunk');
 require('redux-saga');
+<<<<<<< HEAD
 require('redux-injectors');
 var version = require('./version-d8f5b436.js');
 var actions = require('./actions-e22726ed.js');
 require('./reducers-c42035ab.js');
 require('history');
 var App = require('./App-07b8a25d.js');
+=======
+var navigation = require('./navigation-8c90cb78.js');
+require('./reducers-0b34eca8.js');
+require('query-string');
+var routing$1 = require('./routing-5db2c867.js');
+>>>>>>> contensis-14-forgot-change-password
 require('@redux-saga/core/effects');
 require('contensis-delivery-api');
 require('./version-2193b4a2.js');
 require('query-string');
 var selectors = require('./selectors-69c3d37c.js');
 require('loglevel');
+<<<<<<< HEAD
 require('./ToJs-ca9bea03.js');
 require('./login-6eb5e46d.js');
+=======
+require('./ToJs-5091048a.js');
+require('./login-93c36858.js');
+var mapJson = require('jsonpath-mapper');
+>>>>>>> contensis-14-forgot-change-password
 require('await-to-js');
 require('js-cookie');
 require('react-hot-loader');
 require('prop-types');
+<<<<<<< HEAD
 require('./RouteLoader-5c44f039.js');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
@@ -56,6 +77,26 @@ var Helmet__default = /*#__PURE__*/_interopDefaultLegacy(Helmet);
 var serialize__default = /*#__PURE__*/_interopDefaultLegacy(serialize);
 var minifyCssString__default = /*#__PURE__*/_interopDefaultLegacy(minifyCssString);
 var mapJson__default = /*#__PURE__*/_interopDefaultLegacy(mapJson);
+=======
+require('./RouteLoader-ee532d78.js');
+
+function _interopDefaultLegacy(e) {
+  return e && typeof e === 'object' && 'default' in e ? e : { default: e };
+}
+
+var express__default = /*#__PURE__*/ _interopDefaultLegacy(express);
+var Loadable__default = /*#__PURE__*/ _interopDefaultLegacy(Loadable);
+var httpProxy__default = /*#__PURE__*/ _interopDefaultLegacy(httpProxy);
+var fs__default = /*#__PURE__*/ _interopDefaultLegacy(fs);
+var path__default = /*#__PURE__*/ _interopDefaultLegacy(path);
+var React__default = /*#__PURE__*/ _interopDefaultLegacy(React);
+var Helmet__default = /*#__PURE__*/ _interopDefaultLegacy(Helmet);
+var serialize__default = /*#__PURE__*/ _interopDefaultLegacy(serialize);
+var minifyCssString__default = /*#__PURE__*/ _interopDefaultLegacy(
+  minifyCssString
+);
+var mapJson__default = /*#__PURE__*/ _interopDefaultLegacy(mapJson);
+>>>>>>> contensis-14-forgot-change-password
 
 const servers = SERVERS;
 /* global SERVERS */
@@ -66,13 +107,22 @@ const projects = PROJECTS;
 const DisplayStartupConfiguration = config => {
   /* eslint-disable no-console */
   console.log();
-  console.log(`Configured servers:
-`, JSON.stringify(servers, null, 2));
+  console.log(
+    `Configured servers:
+`,
+    JSON.stringify(servers, null, 2)
+  );
   console.log();
-  console.log(`Configured projects:
-`, JSON.stringify(projects, null, 2));
+  console.log(
+    `Configured projects:
+`,
+    JSON.stringify(projects, null, 2)
+  );
   console.log();
-  console.log('Reverse proxy paths: ', JSON.stringify(config.reverseProxyPaths, null, 2));
+  console.log(
+    'Reverse proxy paths: ',
+    JSON.stringify(config.reverseProxyPaths, null, 2)
+  );
   console.log();
   /* eslint-enable no-console */
 };
@@ -85,14 +135,21 @@ const apiProxy = httpProxy__default['default'].createProxyServer();
 const reverseProxies = (app, reverseProxyPaths) => {
   deliveryApiProxy(apiProxy, app);
   app.all(reverseProxyPaths, (req, res) => {
-    const target = req.hostname.indexOf('preview-') || req.hostname.indexOf('preview.') || req.hostname === 'localhost' ? servers$1.previewIis || servers$1.iis : servers$1.iis;
+    const target =
+      req.hostname.indexOf('preview-') ||
+      req.hostname.indexOf('preview.') ||
+      req.hostname === 'localhost'
+        ? servers$1.previewIis || servers$1.iis
+        : servers$1.iis;
     apiProxy.web(req, res, {
       target,
-      changeOrigin: true
+      changeOrigin: true,
     });
     apiProxy.on('error', e => {
       /* eslint-disable no-console */
-      console.log(`Proxy Request for ${req.path} HostName:${req.hostname} failed with ${e}`);
+      console.log(
+        `Proxy Request for ${req.path} HostName:${req.hostname} failed with ${e}`
+      );
       /* eslint-enable no-console */
     });
   });
@@ -106,11 +163,13 @@ const deliveryApiProxy = (apiProxy, app) => {
     console.log(`Proxying api request to ${servers$1.alias}`);
     apiProxy.web(req, res, {
       target,
-      changeOrigin: true
+      changeOrigin: true,
     });
     apiProxy.on('error', e => {
       /* eslint-disable no-console */
-      console.log(`Proxy request for ${req.path} HostName:${req.hostname} failed with ${e}`);
+      console.log(
+        `Proxy request for ${req.path} HostName:${req.hostname} failed with ${e}`
+      );
       /* eslint-enable no-console */
     });
   });
@@ -121,37 +180,49 @@ const CacheDuration = {
   404: '5',
   static: '31536000',
   // Believe it or not these two max ages are the same in runtime
-  expressStatic: '31557600h' // Believe it or not these two max ages are the same in runtime
-
+  expressStatic: '31557600h', // Believe it or not these two max ages are the same in runtime
 };
 const getCacheDuration = (status = 200) => {
   if (status > 400) return CacheDuration[404];
   return CacheDuration[200];
 };
 
-const replaceStaticPath = (string, staticFolderPath = 'static') => string.replace(/static\//g, `${staticFolderPath}/`);
+const replaceStaticPath = (string, staticFolderPath = 'static') =>
+  string.replace(/static\//g, `${staticFolderPath}/`);
 
 const bundleManipulationMiddleware = ({
   appRootPath,
   maxage,
-  staticRoutePath
+  staticRoutePath,
 }) => (req, res, next) => {
   const filename = path__default['default'].basename(req.path);
   const modernBundle = filename.endsWith('.mjs');
   const legacyBundle = filename.endsWith('.js');
 
   if ((legacyBundle || modernBundle) && filename.startsWith('runtime.')) {
-    const jsRuntimeLocation = path__default['default'].resolve(appRootPath, `dist/static/${modernBundle ? 'modern/js' : 'legacy/js'}/${filename}`);
+    const jsRuntimeLocation = path__default['default'].resolve(
+      appRootPath,
+      `dist/static/${modernBundle ? 'modern/js' : 'legacy/js'}/${filename}`
+    );
 
     try {
-      const jsRuntimeBundle = fs__default['default'].readFileSync(jsRuntimeLocation, 'utf8');
-      const modifiedBundle = replaceStaticPath(jsRuntimeBundle, staticRoutePath);
+      const jsRuntimeBundle = fs__default['default'].readFileSync(
+        jsRuntimeLocation,
+        'utf8'
+      );
+      const modifiedBundle = replaceStaticPath(
+        jsRuntimeBundle,
+        staticRoutePath
+      );
       if (maxage) res.set('Cache-Control', `public, max-age=${maxage}`);
       res.type('.js').send(modifiedBundle);
       return;
     } catch (readError) {
       // eslint-disable-next-line no-console
-      console.log(`Unable to find js runtime bundle at '${jsRuntimeLocation}'`, readError);
+      console.log(
+        `Unable to find js runtime bundle at '${jsRuntimeLocation}'`,
+        readError
+      );
       next();
     }
   } else {
@@ -170,18 +241,27 @@ const resolveStartupMiddleware = ({
   appRootPath,
   maxage,
   staticFolderPath,
-  startupScriptFilename
+  startupScriptFilename,
 }) => (req, res, next) => {
-  if (startupScriptFilename !== 'startup.js' && req.path === `/${startupScriptFilename}`) {
+  if (
+    startupScriptFilename !== 'startup.js' &&
+    req.path === `/${startupScriptFilename}`
+  ) {
     const startupFilePath = `dist/${staticFolderPath}/startup.js`;
-    const startupFileLocation = path__default['default'].resolve(appRootPath, startupFilePath);
+    const startupFileLocation = path__default['default'].resolve(
+      appRootPath,
+      startupFilePath
+    );
     if (maxage) res.set('Cache-Control', `public, max-age=${maxage}`);
 
     try {
       res.sendFile(startupFileLocation);
     } catch (sendFileError) {
       // eslint-disable-next-line no-console
-      console.log(`Unable to send file startup.js at '${startupFileLocation}'`, sendFileError);
+      console.log(
+        `Unable to send file startup.js at '${startupFileLocation}'`,
+        sendFileError
+      );
       next();
     }
   } else {
@@ -189,6 +269,7 @@ const resolveStartupMiddleware = ({
   }
 };
 
+<<<<<<< HEAD
 const staticAssets = (app, {
   appRootPath = require('app-root-path').path,
   scripts = {},
@@ -213,20 +294,57 @@ const staticAssets = (app, {
     // this one is somehow converted and should end up being the same as CacheDuration.static
     maxage: CacheDuration.expressStatic
   }));
+=======
+const staticAssets = (
+  app,
+  {
+    appRootPath = require('app-root-path').path,
+    startupScriptFilename = 'startup.js',
+    staticFolderPath = 'static',
+    staticRoutePath = 'static',
+    staticRoutePaths = [],
+  }
+) => {
+  app.use(
+    [
+      `/${staticRoutePath}`,
+      ...staticRoutePaths.map(p => `/${p}`),
+      `/${staticFolderPath}`,
+    ],
+    bundleManipulationMiddleware({
+      appRootPath,
+      // these maxage values are different in config but the same in runtime,
+      // this one is the true value in seconds
+      maxage: CacheDuration.static,
+      staticRoutePath,
+    }),
+    resolveStartupMiddleware({
+      appRootPath,
+      maxage: CacheDuration.static,
+      startupScriptFilename,
+      staticFolderPath,
+    }),
+    express__default['default'].static(`dist/${staticFolderPath}`, {
+      // these maxage values are different in config but the same in runtime,
+      // this one is somehow converted and should end up being the same as CacheDuration.static
+      maxage: CacheDuration.expressStatic,
+    })
+  );
+>>>>>>> contensis-14-forgot-change-password
 };
 
 /*! fromentries. MIT License. Feross Aboukhadijeh <https://feross.org/opensource> */
-var fromentries = function fromEntries (iterable) {
+var fromentries = function fromEntries(iterable) {
   return [...iterable].reduce((obj, [key, val]) => {
     obj[key] = val;
-    return obj
-  }, {})
+    return obj;
+  }, {});
 };
 
 const ResponseMethod = {
   send: 'send',
   json: 'json',
-  end: 'end'
+  end: 'end',
 };
 
 /* eslint-disable no-console */
@@ -239,7 +357,12 @@ const ResponseMethod = {
  * @param {function} send the response function to call e.g res.send() res.json() res.end()
  */
 
-const handleResponse = (request, response, content, send = ResponseMethod.send) => {
+const handleResponse = (
+  request,
+  response,
+  content,
+  send = ResponseMethod.send
+) => {
   // console.log('---', response.statusCode, '---');
   response[send](content);
 };
@@ -250,11 +373,17 @@ const addStandardHeaders = (state, response, packagejson, groups) => {
   if (state) {
     try {
       console.info('About to add headers');
-      const routingSurrogateKeys = state.getIn(['routing', 'surrogateKeys'], '');
+      const routingSurrogateKeys = state.getIn(
+        ['routing', 'surrogateKeys'],
+        ''
+      );
       const surrogateKeyHeader = ` ${packagejson.name}-app ${routingSurrogateKeys}`;
       response.header('surrogate-key', surrogateKeyHeader);
       addVarnishAuthenticationHeaders(state, response, groups);
-      response.setHeader('Surrogate-Control', `max-age=${getCacheDuration(response.statusCode)}`);
+      response.setHeader(
+        'Surrogate-Control',
+        `max-age=${getCacheDuration(response.statusCode)}`
+      );
     } catch (e) {
       console.info('Error Adding headers', e.message);
     }
@@ -264,16 +393,27 @@ const addStandardHeaders = (state, response, packagejson, groups) => {
 const addVarnishAuthenticationHeaders = (state, response, groups = {}) => {
   if (state) {
     try {
+<<<<<<< HEAD
       const stateEntry = selectors.selectRouteEntry(state);
       const project = selectors.selectCurrentProject(state);
       const {
         globalGroups,
         allowedGroups
       } = groups; // console.info(globalGroups, allowedGroups);
+=======
+      const stateEntry = routing$1.selectRouteEntry(state);
+      const project = routing$1.selectCurrentProject(state);
+      const { globalGroups, allowedGroups } = groups; // console.info(globalGroups, allowedGroups);
+>>>>>>> contensis-14-forgot-change-password
 
-      let allGroups = Array.from(globalGroups && globalGroups[project] || {});
+      let allGroups = Array.from((globalGroups && globalGroups[project]) || {});
 
-      if (stateEntry && stateEntry.getIn(['authentication', 'isLoginRequired']) && allowedGroups && allowedGroups[project]) {
+      if (
+        stateEntry &&
+        stateEntry.getIn(['authentication', 'isLoginRequired']) &&
+        allowedGroups &&
+        allowedGroups[project]
+      ) {
         allGroups = [...allGroups, ...allowedGroups[project]];
       }
 
@@ -286,14 +426,13 @@ const addVarnishAuthenticationHeaders = (state, response, groups = {}) => {
 
 const readFileSync = path => fs__default['default'].readFileSync(path, 'utf8');
 
-const loadableBundleData = ({
-  stats,
-  templates
-}, staticRoutePath, build) => {
+const loadableBundleData = ({ stats, templates }, staticRoutePath, build) => {
   const bundle = {};
 
   try {
-    bundle.stats = JSON.parse(readFileSync(stats.replace('/target', build ? `/${build}` : '')));
+    bundle.stats = JSON.parse(
+      readFileSync(stats.replace('/target', build ? `/${build}` : ''))
+    );
   } catch (ex) {
     //console.info(ex);
     bundle.stats = null;
@@ -301,9 +440,24 @@ const loadableBundleData = ({
 
   try {
     bundle.templates = {
-      templateHTML: replaceStaticPath(readFileSync(templates.html.replace('/target', build ? `/${build}` : '')), staticRoutePath),
-      templateHTMLStatic: replaceStaticPath(readFileSync(templates.static.replace('/target', build ? `/${build}` : '')), staticRoutePath),
-      templateHTMLFragment: replaceStaticPath(readFileSync(templates.fragment.replace('/target', build ? `/${build}` : '')), staticRoutePath)
+      templateHTML: replaceStaticPath(
+        readFileSync(
+          templates.html.replace('/target', build ? `/${build}` : '')
+        ),
+        staticRoutePath
+      ),
+      templateHTMLStatic: replaceStaticPath(
+        readFileSync(
+          templates.static.replace('/target', build ? `/${build}` : '')
+        ),
+        staticRoutePath
+      ),
+      templateHTMLFragment: replaceStaticPath(
+        readFileSync(
+          templates.fragment.replace('/target', build ? `/${build}` : '')
+        ),
+        staticRoutePath
+      ),
     };
   } catch (ex) {
     //console.info(ex);
@@ -327,25 +481,37 @@ const webApp = (app, ReactApp, config) => {
     allowedGroups,
     globalGroups,
     disableSsrRedux,
-    handleResponses
+    handleResponses,
   } = config;
   const staticRoutePath = config.staticRoutePath || staticFolderPath;
   const bundleData = {
     default: loadableBundleData(config, staticRoutePath),
     legacy: loadableBundleData(config, staticRoutePath, 'legacy'),
-    modern: loadableBundleData(config, staticRoutePath, 'modern')
+    modern: loadableBundleData(config, staticRoutePath, 'modern'),
   };
+<<<<<<< HEAD
   if (!bundleData.default || bundleData.default === {}) bundleData.default = bundleData.legacy || bundleData.modern;
   const attributes = stringifyAttributes(scripts.attributes);
   scripts.startup = scripts.startup || startupScriptFilename;
   const responseHandler = typeof handleResponses === 'function' ? handleResponses : handleResponse;
   const versionInfo = JSON.parse(fs__default['default'].readFileSync(`dist/${staticFolderPath}/version.json`, 'utf8'));
+=======
+  if (!bundleData.default || bundleData.default === {})
+    bundleData.default = bundleData.legacy || bundleData.modern;
+  const responseHandler =
+    typeof handleResponses === 'function' ? handleResponses : handleResponse;
+  const versionInfo = JSON.parse(
+    fs__default['default'].readFileSync(
+      `dist/${staticFolderPath}/version.json`,
+      'utf8'
+    )
+  );
+>>>>>>> contensis-14-forgot-change-password
   app.get('/*', (request, response) => {
-    const {
-      url
-    } = request;
+    const { url } = request;
 
-    const matchedStaticRoute = () => reactRouterConfig.matchRoutes(routes.StaticRoutes, request.path);
+    const matchedStaticRoute = () =>
+      reactRouterConfig.matchRoutes(routes.StaticRoutes, request.path);
 
     const isStaticRoute = () => matchedStaticRoute().length > 0;
 
@@ -354,27 +520,19 @@ const webApp = (app, ReactApp, config) => {
     const onlyDynamic = staticRoute && staticRoute.route.ssr === false;
     const onlySSR = staticRoute && staticRoute.route.ssrOnly === true;
 
-    const normaliseQs = q => q && q.toLowerCase() === 'true' ? true : false; // Determine functional params from QueryString and set access methods
-
+    const normaliseQs = q => (q && q.toLowerCase() === 'true' ? true : false); // Determine functional params from QueryString and set access methods
 
     const accessMethod = mapJson__default['default'](request.query, {
-      DYNAMIC: ({
-        dynamic
-      }) => normaliseQs(dynamic) || onlyDynamic,
-      REDUX: ({
-        redux
-      }) => normaliseQs(redux),
-      FRAGMENT: ({
-        fragment
-      }) => normaliseQs(fragment),
-      STATIC: ({
-        static: value
-      }) => normaliseQs(value) || onlySSR
+      DYNAMIC: ({ dynamic }) => normaliseQs(dynamic) || onlyDynamic,
+      REDUX: ({ redux }) => normaliseQs(redux),
+      FRAGMENT: ({ fragment }) => normaliseQs(fragment),
+      STATIC: ({ static: value }) => normaliseQs(value) || onlySSR,
     });
     const context = {}; // Track the current statusCode via the response object
 
     response.status(200); // Create a store (with a memory history) from our current url
 
+<<<<<<< HEAD
     const store = version.createStore(withReducers, immutable.fromJS({}), App.history({
       initialEntries: [url]
     })); // dispatch any global and non-saga related actions before calling our JSX
@@ -407,15 +565,102 @@ const webApp = (app, ReactApp, config) => {
       }).filter(f => f); // Add the static startup script to the bundleTags
 
       scripts.startup && bundleTags.push(`<script ${attributes} src="/${staticRoutePath}/${scripts.startup}"></script>`);
+=======
+    const store = navigation.createStore(
+      withReducers,
+      immutable.fromJS({}),
+      App.history({
+        initialEntries: [url],
+      })
+    ); // dispatch any global and non-saga related actions before calling our JSX
+
+    const versionStatusFromHostname = App.deliveryApi.getVersionStatusFromHostname(
+      request.hostname
+    );
+    console.info(
+      `Request for ${request.path} hostname: ${request.hostname} versionStatus: ${versionStatusFromHostname}`
+    );
+    store.dispatch(
+      navigation.setVersionStatus(
+        request.query.versionStatus || versionStatusFromHostname
+      )
+    );
+    store.dispatch(
+      navigation.setVersion(versionInfo.commitRef, versionInfo.buildNo)
+    );
+    const project = App.pickProject(request.hostname, request.query);
+    const groups = allowedGroups && allowedGroups[project];
+    store.dispatch(
+      routing.setCurrentProject(project, groups, request.hostname)
+    );
+    const modules = [];
+    const jsx = React__default['default'].createElement(
+      Loadable__default['default'].Capture,
+      {
+        report: moduleName => modules.push(moduleName),
+      },
+      React__default['default'].createElement(
+        reactRedux.Provider,
+        {
+          store: store,
+        },
+        React__default['default'].createElement(
+          reactRouterDom.StaticRouter,
+          {
+            context: context,
+            location: url,
+          },
+          React__default['default'].createElement(ReactApp, {
+            routes: routes,
+            withEvents: withEvents,
+          })
+        )
+      )
+    );
+
+    const buildBundleTags = bundles => {
+      // Take the bundles returned from Loadable.Capture
+      const bundleTags = bundles
+        .map(bundle => {
+          if (bundle.publicPath.includes('/modern/'))
+            return differentialBundles
+              ? `<script type="module" src="${replaceStaticPath(
+                  bundle.publicPath,
+                  staticRoutePath
+                )}"></script>`
+              : null;
+          return `<script nomodule src="${replaceStaticPath(
+            bundle.publicPath,
+            staticRoutePath
+          )}"></script>`;
+        })
+        .filter(f => f); // Add the static startup script to the bundleTags
+
+      startupScriptFilename &&
+        bundleTags.push(
+          `<script src="/${staticRoutePath}/${startupScriptFilename}"></script>`
+        );
+>>>>>>> contensis-14-forgot-change-password
       return bundleTags;
     };
 
-    const templates = bundleData.default.templates || bundleData.legacy.templates;
-    const stats = bundleData.modern.stats && bundleData.legacy.stats ? fromentries(Object.entries(bundleData.modern.stats).map(([lib, paths]) => [lib, bundleData.legacy.stats[lib] ? [...paths, ...bundleData.legacy.stats[lib]] : paths])) : bundleData.default.stats;
+    const templates =
+      bundleData.default.templates || bundleData.legacy.templates;
+    const stats =
+      bundleData.modern.stats && bundleData.legacy.stats
+        ? fromentries(
+            Object.entries(bundleData.modern.stats).map(([lib, paths]) => [
+              lib,
+              bundleData.legacy.stats[lib]
+                ? [...paths, ...bundleData.legacy.stats[lib]]
+                : paths,
+            ])
+          )
+        : bundleData.default.stats;
     const {
       templateHTML,
       templateHTMLFragment,
-      templateHTMLStatic
+      templateHTMLStatic,
     } = templates; // Serve a blank HTML page with client scripts to load the app in the browser
 
     if (accessMethod.DYNAMIC) {
@@ -425,112 +670,165 @@ const webApp = (app, ReactApp, config) => {
 
       const loadableBundles = webpack.getBundles(stats, modules);
       const bundleTags = buildBundleTags(loadableBundles).join('');
+<<<<<<< HEAD
       const isDynamicHint = `<script ${attributes}>window.isDynamic = true;</script>`;
       const responseHtmlDynamic = templateHTML.replace('{{TITLE}}', '').replace('{{SEO_CRITICAL_METADATA}}', '').replace('{{CRITICAL_CSS}}', '').replace('{{APP}}', '').replace('{{LOADABLE_CHUNKS}}', bundleTags).replace('{{REDUX_DATA}}', isDynamicHint); // Dynamic pages always return a 200 so we can run
+=======
+      const isDynamicHint = `<script>window.isDynamic = true;</script>`;
+      const responseHtmlDynamic = templateHTML
+        .replace('{{TITLE}}', '')
+        .replace('{{SEO_CRITICAL_METADATA}}', '')
+        .replace('{{CRITICAL_CSS}}', '')
+        .replace('{{APP}}', '')
+        .replace('{{LOADABLE_CHUNKS}}', bundleTags)
+        .replace('{{REDUX_DATA}}', isDynamicHint); // Dynamic pages always return a 200 so we can run
+>>>>>>> contensis-14-forgot-change-password
       // the app and serve up all errors inside the client
 
-      response.setHeader('Surrogate-Control', `max-age=${getCacheDuration(200)}`);
+      response.setHeader(
+        'Surrogate-Control',
+        `max-age=${getCacheDuration(200)}`
+      );
       responseHandler(request, response, responseHtmlDynamic);
     } // Render the JSX server side and send response as per access method options
 
-
     if (!accessMethod.DYNAMIC) {
-      store.runSaga(App.rootSaga(withSagas)).toPromise().then(() => {
-        const sheet = new styled.ServerStyleSheet();
-        const html = server.renderToString(sheet.collectStyles(jsx));
-        const helmet = Helmet__default['default'].renderStatic();
-        Helmet__default['default'].rewind();
-        const htmlAttributes = helmet.htmlAttributes.toString();
-        let title = helmet.title.toString();
-        const metadata = helmet.meta.toString();
+      store
+        .runSaga(App.rootSaga(withSagas))
+        .toPromise()
+        .then(() => {
+          const sheet = new styled.ServerStyleSheet();
+          const html = server.renderToString(sheet.collectStyles(jsx));
+          const helmet = Helmet__default['default'].renderStatic();
+          Helmet__default['default'].rewind();
+          const htmlAttributes = helmet.htmlAttributes.toString();
+          let title = helmet.title.toString();
+          const metadata = helmet.meta.toString();
 
-        if (context.url) {
-          return response.redirect(302, context.url);
-        }
-
-        const reduxState = store.getState();
-        const styleTags = sheet.getStyleTags(); // After running rootSaga there should be an additional react-loadable
-        // code-split bundle for a page component as well as core app bundles
-
-        const loadableBundles = webpack.getBundles(stats, modules);
-        const bundleTags = buildBundleTags(loadableBundles).join('');
-        let serialisedReduxData = '';
-
-        if (context.status !== 404) {
-          // For a request that returns a redux state object as a response
-          if (accessMethod.REDUX) {
-            serialisedReduxData = serialize__default['default'](reduxState, {
-              ignoreFunction: true
-            });
-            addStandardHeaders(reduxState, response, packagejson, {
-              allowedGroups,
-              globalGroups
-            });
-            responseHandler(request, response, serialisedReduxData, 'json');
-            return true;
+          if (context.url) {
+            return response.redirect(302, context.url);
           }
 
+<<<<<<< HEAD
           if (!disableSsrRedux) {
             serialisedReduxData = serialize__default['default'](reduxState, {
               ignoreFunction: true
             });
             serialisedReduxData = `<script ${attributes}>window.REDUX_DATA = ${serialisedReduxData}</script>`;
+=======
+          const reduxState = store.getState();
+          const styleTags = sheet.getStyleTags(); // After running rootSaga there should be an additional react-loadable
+          // code-split bundle for a page component as well as core app bundles
+
+          const loadableBundles = webpack.getBundles(stats, modules);
+          const bundleTags = buildBundleTags(loadableBundles).join('');
+          let serialisedReduxData = '';
+
+          if (context.status !== 404) {
+            // For a request that returns a redux state object as a response
+            if (accessMethod.REDUX) {
+              serialisedReduxData = serialize__default['default'](reduxState, {
+                ignoreFunction: true,
+              });
+              addStandardHeaders(reduxState, response, packagejson, {
+                allowedGroups,
+                globalGroups,
+              });
+              responseHandler(request, response, serialisedReduxData, 'json');
+              return true;
+            }
+
+            if (!disableSsrRedux) {
+              serialisedReduxData = serialize__default['default'](reduxState, {
+                ignoreFunction: true,
+              });
+              serialisedReduxData = `<script>window.REDUX_DATA = ${serialisedReduxData}</script>`;
+            }
+>>>>>>> contensis-14-forgot-change-password
           }
-        }
 
-        if (context.status > 400) {
-          accessMethod.STATIC = true;
-        } // Responses
+          if (context.status > 400) {
+            accessMethod.STATIC = true;
+          } // Responses
 
+          let responseHTML = '';
+          if (context.status === 404)
+            title = '<title>404 page not found</title>'; // Static page served as a fragment
 
-        let responseHTML = '';
-        if (context.status === 404) title = '<title>404 page not found</title>'; // Static page served as a fragment
+          if (accessMethod.FRAGMENT && accessMethod.STATIC) {
+            responseHTML =
+              minifyCssString__default['default'](styleTags) + html;
+          } // Page fragment served with client scripts and redux data that hydrate the app client side
 
-        if (accessMethod.FRAGMENT && accessMethod.STATIC) {
-          responseHTML = minifyCssString__default['default'](styleTags) + html;
-        } // Page fragment served with client scripts and redux data that hydrate the app client side
+          if (accessMethod.FRAGMENT && !accessMethod.STATIC) {
+            responseHTML = templateHTMLFragment
+              .replace('{{TITLE}}', title)
+              .replace('{{SEO_CRITICAL_METADATA}}', metadata)
+              .replace(
+                '{{CRITICAL_CSS}}',
+                minifyCssString__default['default'](styleTags)
+              )
+              .replace('{{APP}}', html)
+              .replace('{{LOADABLE_CHUNKS}}', bundleTags)
+              .replace('{{REDUX_DATA}}', serialisedReduxData);
+          } // Full HTML page served statically
 
+          if (!accessMethod.FRAGMENT && accessMethod.STATIC) {
+            responseHTML = templateHTMLStatic
+              .replace('{{TITLE}}', title)
+              .replace('{{SEO_CRITICAL_METADATA}}', metadata)
+              .replace(
+                '{{CRITICAL_CSS}}',
+                minifyCssString__default['default'](styleTags)
+              )
+              .replace('{{APP}}', html)
+              .replace('{{LOADABLE_CHUNKS}}', '');
+          } // Full HTML page served with client scripts and redux data that hydrate the app client side
 
-        if (accessMethod.FRAGMENT && !accessMethod.STATIC) {
-          responseHTML = templateHTMLFragment.replace('{{TITLE}}', title).replace('{{SEO_CRITICAL_METADATA}}', metadata).replace('{{CRITICAL_CSS}}', minifyCssString__default['default'](styleTags)).replace('{{APP}}', html).replace('{{LOADABLE_CHUNKS}}', bundleTags).replace('{{REDUX_DATA}}', serialisedReduxData);
-        } // Full HTML page served statically
+          if (!accessMethod.FRAGMENT && !accessMethod.STATIC) {
+            responseHTML = templateHTML
+              .replace('{{TITLE}}', title)
+              .replace('{{SEO_CRITICAL_METADATA}}', metadata)
+              .replace('{{CRITICAL_CSS}}', styleTags)
+              .replace('{{APP}}', html)
+              .replace('{{LOADABLE_CHUNKS}}', bundleTags)
+              .replace('{{REDUX_DATA}}', serialisedReduxData);
+          } // Set response.status from React StaticRouter
 
+          if (typeof context.status === 'number')
+            response.status(context.status);
+          addStandardHeaders(reduxState, response, packagejson, {
+            allowedGroups,
+            globalGroups,
+          });
 
-        if (!accessMethod.FRAGMENT && accessMethod.STATIC) {
-          responseHTML = templateHTMLStatic.replace('{{TITLE}}', title).replace('{{SEO_CRITICAL_METADATA}}', metadata).replace('{{CRITICAL_CSS}}', minifyCssString__default['default'](styleTags)).replace('{{APP}}', html).replace('{{LOADABLE_CHUNKS}}', '');
-        } // Full HTML page served with client scripts and redux data that hydrate the app client side
+          try {
+            // If react-helmet htmlAttributes are being used,
+            // replace the html tag with those attributes sepcified
+            // e.g. (lang, dir etc.)
+            if (htmlAttributes) {
+              responseHTML = responseHTML.replace(
+                /<html?.+?>/,
+                `<html ${htmlAttributes}>`
+              );
+            }
 
-
-        if (!accessMethod.FRAGMENT && !accessMethod.STATIC) {
-          responseHTML = templateHTML.replace('{{TITLE}}', title).replace('{{SEO_CRITICAL_METADATA}}', metadata).replace('{{CRITICAL_CSS}}', styleTags).replace('{{APP}}', html).replace('{{LOADABLE_CHUNKS}}', bundleTags).replace('{{REDUX_DATA}}', serialisedReduxData);
-        } // Set response.status from React StaticRouter
-
-
-        if (typeof context.status === 'number') response.status(context.status);
-        addStandardHeaders(reduxState, response, packagejson, {
-          allowedGroups,
-          globalGroups
+            responseHandler(request, response, responseHTML);
+          } catch (err) {
+            console.info(err.message);
+          }
+        })
+        .catch(err => {
+          // Handle any error that occurred in any of the previous
+          // promises in the chain.
+          console.info(err);
+          response.status(500);
+          responseHandler(
+            request,
+            response,
+            `Error occurred: <br />${err.stack} <br />${JSON.stringify(err)}`
+          );
         });
-
-        try {
-          // If react-helmet htmlAttributes are being used,
-          // replace the html tag with those attributes sepcified
-          // e.g. (lang, dir etc.)
-          if (htmlAttributes) {
-            responseHTML = responseHTML.replace(/<html?.+?>/, `<html ${htmlAttributes}>`);
-          }
-
-          responseHandler(request, response, responseHTML);
-        } catch (err) {
-          console.info(err.message);
-        }
-      }).catch(err => {
-        // Handle any error that occurred in any of the previous
-        // promises in the chain.
-        console.info(err);
-        response.status(500);
-        responseHandler(request, response, `Error occurred: <br />${err.stack} <br />${JSON.stringify(err)}`);
-      });
       server.renderToString(jsx);
       store.close();
     }
@@ -559,12 +857,12 @@ const start = (ReactApp, config, ServerFeatures) => {
     Loadable__default['default'].preloadAll().then(() => {
       const server = app.listen(3001, () => {
         console.info(`HTTP server is listening @ port 3001`);
-        setTimeout(function () {
+        setTimeout(function() {
           app.emit('app_started');
         }, 500);
       });
       app.on('stop', () => {
-        server.close(function () {
+        server.close(function() {
           console.info('GoodBye :(');
         });
       });
@@ -575,7 +873,7 @@ const start = (ReactApp, config, ServerFeatures) => {
 var internalServer = {
   app,
   apiProxy,
-  start
+  start,
 };
 
 exports.ReactApp = App.AppRoot;

@@ -7,7 +7,7 @@ import {
   selectUserRegistrationIsSuccess,
 } from '../redux/selectors';
 
-const useLogin = () => {
+const useRegistration = () => {
   const dispatch = useDispatch();
   const select = useSelector;
 
@@ -20,4 +20,4 @@ const useLogin = () => {
   };
 };
 
-export default useLogin;
+export default useRegistration;

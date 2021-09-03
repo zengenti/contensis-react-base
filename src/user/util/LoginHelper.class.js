@@ -81,7 +81,10 @@ export class LoginHelper {
         authenticationState = {
           authenticated: false,
           authenticationError: authenticationError,
+          authenticationErrorMessage:
+            (authenticationError && loginError.message) || null,
           error: !authenticationError,
+          errorMessage: (!authenticationError && loginError.message) || null,
           clientCredentials: null,
         };
         LoginHelper.ClearCachedCredentials();

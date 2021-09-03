@@ -12,8 +12,18 @@ export const selectUserIsAuthenticated = state => {
 export const selectUserAuthenticationError = state => {
   return state.getIn(['user', 'authenticationState', 'authenticationError']);
 };
+export const selectUserAuthenticationErrorMessage = state => {
+  return state.getIn([
+    'user',
+    'authenticationState',
+    'authenticationErrorMessage',
+  ]);
+};
 export const selectUserError = state => {
   return state.getIn(['user', 'authenticationState', 'error']);
+};
+export const selectUserErrorMessage = state => {
+  return state.getIn(['user', 'authenticationState', 'errorMessage']);
 };
 export const selectClientCredentials = state => {
   return state.getIn(['user', 'authenticationState', 'clientCredentials']);
@@ -56,3 +66,31 @@ export const selectUserRegistrationIsLoading = state =>
 
 export const selectUserRegistrationIsSuccess = state =>
   state.getIn(['user', 'registration', 'success'], false);
+
+export const selectPasswordResetRequestSending = state => {
+  return state.getIn(['user', 'passwordResetRequest', 'isSending']);
+};
+export const selectPasswordResetRequestSent = state => {
+  return state.getIn(['user', 'passwordResetRequest', 'sent']);
+};
+export const selectPasswordResetRequestError = state => {
+  return state.getIn(['user', 'passwordResetRequest', 'error']);
+};
+export const selectResetPasswordSending = state => {
+  return state.getIn(['user', 'resetPassword', 'isSending']);
+};
+export const selectResetPasswordSent = state => {
+  return state.getIn(['user', 'resetPassword', 'sent']);
+};
+export const selectResetPasswordError = state => {
+  return state.getIn(['user', 'resetPassword', 'error']);
+};
+export const selectChangePasswordSending = state => {
+  return state.getIn(['user', 'changePassword', 'isSending']);
+};
+export const selectChangePasswordSent = state => {
+  return state.getIn(['user', 'changePassword', 'sent']);
+};
+export const selectChangePasswordError = state => {
+  return state.getIn(['user', 'changePassword', 'error']);
+};
