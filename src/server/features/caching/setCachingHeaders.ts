@@ -1,5 +1,7 @@
+import { Response } from 'express';
+
 const setCachingHeaders = (
-  response,
+  response: Response,
   { cacheControl = 'private', surrogateControl = '3600' },
   method = 'header'
 ) => {
@@ -11,4 +13,4 @@ const setCachingHeaders = (
     );
 };
 
-module.exports = setCachingHeaders;
+export default setCachingHeaders;

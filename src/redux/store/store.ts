@@ -1,4 +1,12 @@
-import { applyMiddleware, compose, createStore } from 'redux';
+/* eslint-disable no-underscore-dangle */
+import {
+  Action,
+  applyMiddleware,
+  compose,
+  createStore,
+  Store,
+  StoreEnhancer,
+} from 'redux';
 import { combineReducers } from 'redux-immutable';
 import thunkMiddleware from 'redux-thunk';
 import createSagaMiddleware, { END } from 'redux-saga';
@@ -11,7 +19,12 @@ import UserReducer from '~/user/redux/reducers';
 import VersionReducer from '../reducers/version';
 import routerMiddleware from './routerMiddleware';
 
-export let reduxStore = null;
+export let reduxStore;
+
+declare let window: Window &
+  typeof globalThis & {
+    __REDUX_DEVTOOLS_EXTENSION__: any;
+  };
 
 export default (featureReducers, initialState, history) => {
   let reduxDevToolsMiddleware = f => f;
@@ -45,7 +58,12 @@ export default (featureReducers, initialState, history) => {
   const store = initialState => {
     const runSaga = sagaMiddleware.run;
 
-    const middleware = compose(
+    const middleware: StoreEnhancer<
+      {
+        dispatch: unknown;
+      },
+      unknown
+    > = compose(
       applyMiddleware(
         thunkMiddleware,
         sagaMiddleware,
@@ -58,7 +76,10 @@ export default (featureReducers, initialState, history) => {
       reduxDevToolsMiddleware
     );
 
-    const store = createStore(createReducer(), initialState, middleware);
+    const store: Store<any, Action<any>> & {
+      runSaga?: typeof runSaga;
+      close?: () => void;
+    } = createStore(createReducer(), initialState, middleware);
 
     store.runSaga = runSaga;
     store.close = () => store.dispatch(END);

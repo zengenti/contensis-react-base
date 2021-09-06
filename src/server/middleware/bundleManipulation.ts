@@ -1,9 +1,18 @@
+import { RequestHandler } from 'express';
 import fs from 'fs';
 import path from 'path';
 import { replaceStaticPath } from '../util/staticPaths';
 
 export const bundleManipulationMiddleware =
-  ({ appRootPath, maxage, staticRoutePath }) =>
+  ({
+    appRootPath,
+    maxage,
+    staticRoutePath,
+  }: {
+    appRootPath: string;
+    maxage: string;
+    staticRoutePath: string;
+  }): RequestHandler =>
   (req, res, next) => {
     const filename = path.basename(req.path);
     const modernBundle = filename.endsWith('.mjs');

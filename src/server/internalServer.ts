@@ -16,10 +16,10 @@ declare let global: typeof globalThis & {
   REVERSE_PROXY_PATHS: string[];
 };
 
-const app = express();
+const app: Express = express();
 
 const start = (
-  ReactApp: React.ComponentType,
+  ReactApp: React.ComponentType<any>,
   config: ServerConfig,
   ServerFeatures: (app: Express) => void
 ) => {

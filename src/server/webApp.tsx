@@ -33,8 +33,16 @@ import { replaceStaticPath } from './util/staticPaths';
 import pickProject from '~/util/pickProject';
 import { deliveryApi } from '~/util/ContensisDeliveryApi';
 import stringifyAttributes from './util/stringifyAttributes';
+import { Express, Response } from 'express';
+import { StaticRouterContext } from 'react-router';
+import { ServerConfig } from '~/config';
 
-const addStandardHeaders = (state, response, packagejson, groups) => {
+const addStandardHeaders = (
+  state: any,
+  response: Response,
+  packagejson: any,
+  groups: { globalGroups?: any[]; allowedGroups?: any[] }
+) => {
   if (state) {
     try {
       console.info('About to add headers');
@@ -53,13 +61,17 @@ const addStandardHeaders = (state, response, packagejson, groups) => {
         'Surrogate-Control',
         `max-age=${getCacheDuration(response.statusCode)}`
       );
-    } catch (e) {
+    } catch (e: any) {
       console.info('Error Adding headers', e.message);
     }
   }
 };
 
-const addVarnishAuthenticationHeaders = (state, response, groups = {}) => {
+const addVarnishAuthenticationHeaders = (
+  state: any,
+  response: Response,
+  groups: { globalGroups?: any[]; allowedGroups?: any[] } = {}
+) => {
   if (state) {
     try {
       const stateEntry = selectRouteEntry(state);
@@ -84,14 +96,25 @@ const addVarnishAuthenticationHeaders = (state, response, groups = {}) => {
 
 const readFileSync = path => fs.readFileSync(path, 'utf8');
 
-const loadableBundleData = ({ stats, templates }, staticRoutePath, build) => {
-  const bundle = {};
+const loadableBundleData = (
+  { stats, templates },
+  staticRoutePath: string,
+  build?: string
+) => {
+  const bundle: {
+    stats?: string | null;
+    templates?: {
+      templateHTML;
+      templateHTMLStatic;
+      templateHTMLFragment;
+    } | null;
+  } = {};
   try {
     bundle.stats = JSON.parse(
       readFileSync(stats.replace('/target', build ? `/${build}` : ''))
     );
   } catch (ex) {
-    //console.info(ex);
+    // console.info(ex);
     bundle.stats = null;
   }
   try {
@@ -116,13 +139,21 @@ const loadableBundleData = ({ stats, templates }, staticRoutePath, build) => {
       ),
     };
   } catch (ex) {
-    //console.info(ex);
+    // console.info(ex);
     bundle.templates = null;
   }
   return bundle;
 };
 
-const webApp = (app, ReactApp, config) => {
+const webApp = (
+  app: Express,
+  ReactApp: React.ComponentType<any>,
+  config: ServerConfig & {
+    allowedGroups?: string[];
+    globalGroups?: string[];
+    startupScriptFilename?: string;
+  }
+) => {
   const {
     routes,
     withReducers,
@@ -173,14 +204,17 @@ const webApp = (app, ReactApp, config) => {
     const normaliseQs = q => (q && q.toLowerCase() === 'true' ? true : false);
 
     // Determine functional params from QueryString and set access methods
-    const accessMethod = mapJson(request.query, {
+    const accessMethod = mapJson<
+      any,
+      { DYNAMIC: boolean; REDUX: boolean; FRAGMENT: boolean; STATIC: boolean }
+    >(request.query, {
       DYNAMIC: ({ dynamic }) => normaliseQs(dynamic) || onlyDynamic,
       REDUX: ({ redux }) => normaliseQs(redux),
       FRAGMENT: ({ fragment }) => normaliseQs(fragment),
       STATIC: ({ static: value }) => normaliseQs(value) || onlySSR,
     });
 
-    const context = {};
+    const context: StaticRouterContext = {};
     // Track the current statusCode via the response object
     response.status(200);
 
@@ -212,7 +246,7 @@ const webApp = (app, ReactApp, config) => {
     const groups = allowedGroups && allowedGroups[project];
     store.dispatch(setCurrentProject(project, groups, request.hostname));
 
-    const modules = [];
+    const modules: string[] = [];
 
     const jsx = (
       <Loadable.Capture report={moduleName => modules.push(moduleName)}>
@@ -244,7 +278,7 @@ const webApp = (app, ReactApp, config) => {
         .filter(f => f);
 
       // Add the static startup script to the bundleTags
-      scripts.startup &&
+      if (scripts.startup)
         bundleTags.push(
           `<script ${attributes} src="/${staticRoutePath}/${scripts.startup}"></script>`
         );
@@ -260,7 +294,7 @@ const webApp = (app, ReactApp, config) => {
         ? fromEntries(
             Object.entries(bundleData.modern.stats).map(([lib, paths]) => [
               lib,
-              bundleData.legacy.stats[lib]
+              bundleData?.legacy?.stats?.[lib]
                 ? [...paths, ...bundleData.legacy.stats[lib]]
                 : paths,
             ])
@@ -268,7 +302,7 @@ const webApp = (app, ReactApp, config) => {
         : bundleData.default.stats;
 
     const { templateHTML, templateHTMLFragment, templateHTMLStatic } =
-      templates;
+      templates || {};
 
     // Serve a blank HTML page with client scripts to load the app in the browser
     if (accessMethod.DYNAMIC) {
@@ -328,7 +362,7 @@ const webApp = (app, ReactApp, config) => {
           const bundleTags = buildBundleTags(loadableBundles).join('');
 
           let serialisedReduxData = '';
-          if (context.status !== 404) {
+          if (context.statusCode !== 404) {
             // For a request that returns a redux state object as a response
             if (accessMethod.REDUX) {
               serialisedReduxData = serialize(reduxState, {
@@ -348,14 +382,14 @@ const webApp = (app, ReactApp, config) => {
               serialisedReduxData = `<script ${attributes}>window.REDUX_DATA = ${serialisedReduxData}</script>`;
             }
           }
-          if (context.status > 400) {
+          if ((context.statusCode || 500) > 400) {
             accessMethod.STATIC = true;
           }
 
           // Responses
           let responseHTML = '';
 
-          if (context.status === 404)
+          if (context.statusCode === 404)
             title = '<title>404 page not found</title>';
 
           // Static page served as a fragment
@@ -396,8 +430,8 @@ const webApp = (app, ReactApp, config) => {
           }
 
           // Set response.status from React StaticRouter
-          if (typeof context.status === 'number')
-            response.status(context.status);
+          if (typeof context.statusCode === 'number')
+            response.status(context.statusCode);
 
           addStandardHeaders(reduxState, response, packagejson, {
             allowedGroups,
@@ -414,7 +448,7 @@ const webApp = (app, ReactApp, config) => {
               );
             }
             responseHandler(request, response, responseHTML);
-          } catch (err) {
+          } catch (err: any) {
             console.info(err.message);
           }
         })

@@ -20,7 +20,8 @@
     "baseUrl": ".",
     "paths": {
       "~/*": ["./src/*"],
-      "-/*": ["./*"]
+      "-/*": ["./*"],
+      "redux": ["node_modules/redux"]
     },
     "plugins": [
       // Transform paths in output .d.ts files (Include this line if you output declarations files)

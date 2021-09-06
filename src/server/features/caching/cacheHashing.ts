@@ -1,6 +1,6 @@
+import XXHash from 'xxhashjs';
 export const hashKeys = keys => {
-  const XXHash = require('xxhashjs');
-  const returnKeys = [];
+  const returnKeys: string[] = [];
   keys.forEach(cacheKey => {
     const inputBuffer = Buffer.from(cacheKey.toLowerCase(), 'utf-8');
 
