@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import styled, { css, ThemeProvider as ThemeProvider$1 } from 'styled-components';
 import { Map, fromJS, Iterable } from 'immutable';
 import { takeEvery, takeLatest, put, call, select, all } from '@redux-saga/core/effects';
-import PropTypes from 'prop-types';
 import { createSelector } from 'reselect';
+import PropTypes from 'prop-types';
 
 const ACTION_PREFIX = '@FORM2/';
 const SET_FORM_DATA = `${ACTION_PREFIX}SET_FORM_DATA`;

@@ -7,8 +7,8 @@ var reactRedux = require('react-redux');
 var styled = require('styled-components');
 var immutable = require('immutable');
 var effects = require('@redux-saga/core/effects');
-var PropTypes = require('prop-types');
 var reselect = require('reselect');
+var PropTypes = require('prop-types');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 

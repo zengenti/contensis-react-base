@@ -1,3 +1,1 @@
-export function action(type: any, payload?: {}): {
-    type: any;
-};
+export declare const action: (type: string, payload?: any) => any;

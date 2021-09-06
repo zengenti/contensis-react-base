@@ -1,3 +1,1 @@
-export function loadNavigationTree(): {
-    type: any;
-};
+export function loadNavigationTree(): any;

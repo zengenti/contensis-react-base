@@ -71,4 +71,4 @@ var routing$1 = /*#__PURE__*/Object.freeze({
 });
 
 export { SET_NAVIGATION_PATH as S, UPDATE_LOADING_STATE as U, setSurrogateKeys as a, SET_ROUTE as b, SET_ENTRY as c, SET_ANCESTORS as d, SET_SIBLINGS as e, setRoute as f, setNavigationPath as g, SET_TARGET_PROJECT as h, SET_SURROGATE_KEYS as i, action as j, routing$1 as k, routing as r, setCurrentProject as s };
-//# sourceMappingURL=actions-fda5e103.js.map
+//# sourceMappingURL=actions-ddd9c623.js.map

@@ -4,16 +4,14 @@ var React = require('react');
 var reactRouterDom = require('react-router-dom');
 var reactRedux = require('react-redux');
 var reactRouterConfig = require('react-router-config');
-var actions = require('./actions-e22726ed.js');
+var actions = require('./actions-e9f69947.js');
 var selectors = require('./selectors-1295124a.js');
-var ToJs = require('./ToJs-ca9bea03.js');
+var ToJs = require('./ToJs-6d15462b.js');
 var reactHotLoader = require('react-hot-loader');
-var PropTypes = require('prop-types');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
 var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
-var PropTypes__default = /*#__PURE__*/_interopDefaultLegacy(PropTypes);
 
 const NotFound = ({
   statusCode,
@@ -27,11 +25,6 @@ const NotFound = ({
   }
 }, statusText)));
 
-NotFound.propTypes = {
-  statusCode: PropTypes__default['default'].number,
-  statusText: PropTypes__default['default'].string
-};
-
 const Status = ({
   code,
   children
@@ -40,14 +33,10 @@ const Status = ({
     render: ({
       staticContext
     }) => {
-      if (staticContext) staticContext.status = code;
+      if (staticContext) staticContext.statusCode = code;
       return children;
     }
   });
-};
-Status.propTypes = {
-  code: PropTypes__default['default'].number.isRequired,
-  children: PropTypes__default['default'].element
 };
 
 const getTrimmedPath = path => {
@@ -55,7 +44,7 @@ const getTrimmedPath = path => {
     const nextPath = path.replace(/\/\//, '/');
     const lastChar = nextPath[nextPath.length - 1];
 
-    if (lastChar == '/') {
+    if (lastChar === '/') {
       return nextPath.substring(0, nextPath.length - 1);
     }
   }
@@ -94,7 +83,7 @@ const RouteLoader = ({
   const routeRequiresLogin = staticRoute && staticRoute.route.requireLogin;
   const setPath = React.useCallback(() => {
     // Use serverPath to control the path we send to siteview node api to resolve a route
-    let serverPath = null;
+    let serverPath = '';
 
     if (staticRoute && staticRoute.match && staticRoute.match.isExact) {
       const {
@@ -149,7 +138,7 @@ const RouteLoader = ({
 
 
   if (contentTypeId && !(!isLoggedIn && routeRequiresLogin)) {
-    const MatchedComponent = routes.ContentTypeMappings.find(item => item.contentTypeID == contentTypeId); // debugger;
+    const MatchedComponent = routes.ContentTypeMappings.find(item => item.contentTypeID === contentTypeId); // debugger;
 
     if (MatchedComponent && !(MatchedComponent.requireLogin && !isLoggedIn)) {
       if (ToJs.matchUserGroup(userGroups, MatchedComponent.requireLogin)) return /*#__PURE__*/React__default['default'].createElement(MatchedComponent.component, {
@@ -176,26 +165,6 @@ const RouteLoader = ({
   return null;
 };
 
-RouteLoader.propTypes = {
-  contentTypeId: PropTypes__default['default'].string,
-  entry: PropTypes__default['default'].object,
-  isError: PropTypes__default['default'].bool,
-  isLoading: PropTypes__default['default'].bool,
-  isLoggedIn: PropTypes__default['default'].bool,
-  isNotFound: PropTypes__default['default'].bool,
-  loadingComponent: PropTypes__default['default'].func,
-  mappedEntry: PropTypes__default['default'].object,
-  notFoundComponent: PropTypes__default['default'].func,
-  projectId: PropTypes__default['default'].string,
-  routes: PropTypes__default['default'].objectOf(PropTypes__default['default'].array, PropTypes__default['default'].array),
-  setNavigationPath: PropTypes__default['default'].func,
-  statePath: PropTypes__default['default'].string,
-  statusCode: PropTypes__default['default'].number,
-  statusText: PropTypes__default['default'].string,
-  userGroups: PropTypes__default['default'].array,
-  withEvents: PropTypes__default['default'].object
-};
-
 const mapStateToProps = state => {
   return {
     contentTypeId: selectors.selectRouteEntryContentTypeId(state),
@@ -219,4 +188,4 @@ const mapDispatchToProps = {
 var RouteLoader$1 = reactHotLoader.hot(module)(reactRedux.connect(mapStateToProps, mapDispatchToProps)(ToJs.toJS(RouteLoader)));
 
 exports.RouteLoader = RouteLoader$1;
-//# sourceMappingURL=RouteLoader-e3fee60e.js.map
+//# sourceMappingURL=RouteLoader-5333564d.js.map

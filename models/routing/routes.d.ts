@@ -25,6 +25,11 @@ export declare type ReduxInjector = () => Promise<{
     reducer: any;
     saga: any;
 }>;
+declare type UserGroupRequisite = {
+    id?: string;
+    name?: string;
+};
+export declare type RequireLogin = boolean | UserGroupRequisite[];
 export declare type ContentTypeMapping = {
     contentTypeID: string;
     component: RouteComponent<any>;
@@ -38,13 +43,14 @@ export declare type ContentTypeMapping = {
             linkDepth?: number;
         };
     };
-    requireLogin?: boolean;
+    requireLogin?: RequireLogin;
 };
 export declare type StaticRoute = Omit<RouteConfig, 'component'> & {
     component: RouteComponent<any>;
     fetchNode?: boolean;
     fetchNodeLevel?: number;
     injectRedux?: ReduxInjector;
+    requireLogin?: RequireLogin;
     ssr?: boolean;
     ssrOnly?: boolean;
 };
@@ -84,7 +90,7 @@ export declare type RouteLoadOptions = {
     refetchNode?: true;
 };
 export declare type RouteLoadedOptions = {
-    requireLogin?: boolean;
+    requireLogin?: RequireLogin;
 };
 export declare type WithEvents = {
     onRouteLoad: (args: OnRouteLoadArgs) => Generator<void | RouteLoadOptions>;

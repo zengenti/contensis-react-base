@@ -2,11 +2,10 @@ import React, { useCallback, useEffect } from 'react';
 import { Route, useLocation, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { matchRoutes, renderRoutes } from 'react-router-config';
-import { g as setNavigationPath } from './actions-fda5e103.js';
+import { g as setNavigationPath } from './actions-ddd9c623.js';
 import { h as selectRouteEntryContentTypeId, s as selectRouteEntry, i as selectRouteIsError, j as selectIsNotFound, k as selectRouteLoading, f as selectMappedEntry, a as selectCurrentProject, l as selectCurrentPath, m as selectRouteStatusCode, n as selectRouteErrorMessage } from './selectors-68799788.js';
-import { t as toJS, s as selectUserIsAuthenticated, a as selectUserGroups, m as matchUserGroup } from './ToJs-19a3244a.js';
+import { t as toJS, s as selectUserIsAuthenticated, a as selectUserGroups, m as matchUserGroup } from './ToJs-7f78f52c.js';
 import { hot } from 'react-hot-loader';
-import PropTypes from 'prop-types';
 
 const NotFound = ({
   statusCode,
@@ -20,11 +19,6 @@ const NotFound = ({
   }
 }, statusText)));
 
-NotFound.propTypes = {
-  statusCode: PropTypes.number,
-  statusText: PropTypes.string
-};
-
 const Status = ({
   code,
   children
@@ -33,14 +27,10 @@ const Status = ({
     render: ({
       staticContext
     }) => {
-      if (staticContext) staticContext.status = code;
+      if (staticContext) staticContext.statusCode = code;
       return children;
     }
   });
-};
-Status.propTypes = {
-  code: PropTypes.number.isRequired,
-  children: PropTypes.element
 };
 
 const getTrimmedPath = path => {
@@ -48,7 +38,7 @@ const getTrimmedPath = path => {
     const nextPath = path.replace(/\/\//, '/');
     const lastChar = nextPath[nextPath.length - 1];
 
-    if (lastChar == '/') {
+    if (lastChar === '/') {
       return nextPath.substring(0, nextPath.length - 1);
     }
   }
@@ -87,7 +77,7 @@ const RouteLoader = ({
   const routeRequiresLogin = staticRoute && staticRoute.route.requireLogin;
   const setPath = useCallback(() => {
     // Use serverPath to control the path we send to siteview node api to resolve a route
-    let serverPath = null;
+    let serverPath = '';
 
     if (staticRoute && staticRoute.match && staticRoute.match.isExact) {
       const {
@@ -142,7 +132,7 @@ const RouteLoader = ({
 
 
   if (contentTypeId && !(!isLoggedIn && routeRequiresLogin)) {
-    const MatchedComponent = routes.ContentTypeMappings.find(item => item.contentTypeID == contentTypeId); // debugger;
+    const MatchedComponent = routes.ContentTypeMappings.find(item => item.contentTypeID === contentTypeId); // debugger;
 
     if (MatchedComponent && !(MatchedComponent.requireLogin && !isLoggedIn)) {
       if (matchUserGroup(userGroups, MatchedComponent.requireLogin)) return /*#__PURE__*/React.createElement(MatchedComponent.component, {
@@ -169,26 +159,6 @@ const RouteLoader = ({
   return null;
 };
 
-RouteLoader.propTypes = {
-  contentTypeId: PropTypes.string,
-  entry: PropTypes.object,
-  isError: PropTypes.bool,
-  isLoading: PropTypes.bool,
-  isLoggedIn: PropTypes.bool,
-  isNotFound: PropTypes.bool,
-  loadingComponent: PropTypes.func,
-  mappedEntry: PropTypes.object,
-  notFoundComponent: PropTypes.func,
-  projectId: PropTypes.string,
-  routes: PropTypes.objectOf(PropTypes.array, PropTypes.array),
-  setNavigationPath: PropTypes.func,
-  statePath: PropTypes.string,
-  statusCode: PropTypes.number,
-  statusText: PropTypes.string,
-  userGroups: PropTypes.array,
-  withEvents: PropTypes.object
-};
-
 const mapStateToProps = state => {
   return {
     contentTypeId: selectRouteEntryContentTypeId(state),
@@ -212,4 +182,4 @@ const mapDispatchToProps = {
 var RouteLoader$1 = hot(module)(connect(mapStateToProps, mapDispatchToProps)(toJS(RouteLoader)));
 
 export { RouteLoader$1 as R };
-//# sourceMappingURL=RouteLoader-30d5aa8e.js.map
+//# sourceMappingURL=RouteLoader-b86bf6ce.js.map
