@@ -5,7 +5,7 @@ import 'redux-immutable';
 import 'redux-thunk';
 import 'redux-saga';
 import 'redux-injectors';
-import { r as reduxStore, G as GET_NODE_TREE, h as hasNavigationTree, S as SET_NODE_TREE, b as GET_NODE_TREE_ERROR, i as injectRedux } from './version-1292d8e8.js';
+import { r as reduxStore, G as GET_NODE_TREE, h as hasNavigationTree, S as SET_NODE_TREE, b as GET_NODE_TREE_ERROR, i as injectRedux } from './version-5a2a6578.js';
 import { a as setSurrogateKeys, S as SET_NAVIGATION_PATH, b as SET_ROUTE, U as UPDATE_LOADING_STATE, c as SET_ENTRY, d as SET_ANCESTORS, e as SET_SIBLINGS, f as setRoute } from './actions-ddd9c623.js';
 import { R as REGISTER_USER, a as REGISTER_USER_SUCCESS, b as REGISTER_USER_FAILED } from './reducers-b426d14a.js';
 import { createBrowserHistory, createMemoryHistory } from 'history';
@@ -838,4 +838,4 @@ const AppRoot = props => {
 };
 
 export { AppRoot as A, browserHistory as b, deliveryApi as d, history as h, pickProject as p, rootSaga as r };
-//# sourceMappingURL=App-e820a099.js.map
+//# sourceMappingURL=App-07cbb94b.js.map

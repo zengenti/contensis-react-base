@@ -1,1 +1,1 @@
-export function hashKeys(keys: any): any[];
+export declare const hashKeys: (keys: any) => string[];

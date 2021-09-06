@@ -36,5 +36,5 @@ export interface IVersionInfoProps {
     };
     zenPackageVersions: string[];
 }
-declare const _default: import("react-redux").ConnectedComponent<({ deliveryApi, devEnv, disableSsrRedux, nodeEnv, packageDetail, project, projects, proxyDeliveryApi, publicUri, reverseProxyPaths, servers, uris, version, zenPackageVersions, }: IVersionInfoProps) => JSX.Element, import("react-redux").Omit<IVersionInfoProps, "version" | "packageDetail" | "uris" | "zenPackageVersions" | "deliveryApi" | "devEnv" | "disableSsrRedux" | "nodeEnv" | "projects" | "proxyDeliveryApi" | "publicUri" | "project" | "reverseProxyPaths" | "servers">>;
+declare const _default: import("react-redux").ConnectedComponent<({ deliveryApi, devEnv, disableSsrRedux, nodeEnv, packageDetail, project, projects, proxyDeliveryApi, publicUri, reverseProxyPaths, servers, uris, version, zenPackageVersions, }: IVersionInfoProps) => JSX.Element, import("react-redux").Omit<IVersionInfoProps, "disableSsrRedux" | "reverseProxyPaths" | "proxyDeliveryApi" | "version" | "packageDetail" | "uris" | "zenPackageVersions" | "deliveryApi" | "devEnv" | "nodeEnv" | "projects" | "publicUri" | "project" | "servers">>;
 export default _default;

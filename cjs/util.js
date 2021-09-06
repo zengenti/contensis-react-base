@@ -121,8 +121,6 @@ const setCachingHeaders = (response, {
   if (surrogateControl) response[method]('Surrogate-Control', `max-age=${surrogateControl.toString()}`);
 };
 
-var setCachingHeaders_1 = setCachingHeaders;
-
 const stringifyStrings = obj => {
   const returnObj = Array.isArray(obj) ? [] : {};
   Object.entries(obj).forEach(([key, value]) => {
@@ -328,7 +326,7 @@ exports.VersionInfo = VersionInfo$1;
 exports.entryMapper = entryMapper;
 exports.mapComposer = mapComposer;
 exports.mapEntries = mapEntries;
-exports.setCachingHeaders = setCachingHeaders_1;
+exports.setCachingHeaders = setCachingHeaders;
 exports.stringifyStrings = stringifyStrings_1;
 exports.urls = url;
 exports.useComposerMapper = useComposerMapper;

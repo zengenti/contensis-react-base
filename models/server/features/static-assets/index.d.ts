@@ -1,9 +1,14 @@
-export default staticAssets;
-declare function staticAssets(app: any, { appRootPath, scripts, startupScriptFilename, staticFolderPath, staticRoutePath, staticRoutePaths, }: {
+declare const staticAssets: (app: any, { appRootPath, scripts, startupScriptFilename, staticFolderPath, staticRoutePath, staticRoutePaths, }: {
     appRootPath?: any;
-    scripts?: {} | undefined;
+    scripts?: {
+        attributes?: {
+            [key: string]: string;
+        } | undefined;
+        startup?: string | undefined;
+    } | undefined;
     startupScriptFilename?: string | undefined;
     staticFolderPath?: string | undefined;
     staticRoutePath?: string | undefined;
-    staticRoutePaths?: any[] | undefined;
-}): void;
+    staticRoutePaths?: string[] | undefined;
+}) => void;
+export default staticAssets;
