@@ -10,7 +10,7 @@ var mapJson = require('jsonpath-mapper');
 require('immutable');
 var version = require('./version-2193b4a2.js');
 require('query-string');
-var selectors = require('./selectors-69c3d37c.js');
+var selectors = require('./selectors-1295124a.js');
 var PropTypes = require('prop-types');
 var reactRouterHashLink = require('react-router-hash-link');
 

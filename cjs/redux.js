@@ -14,7 +14,7 @@ require('./reducers-c42035ab.js');
 require('@redux-saga/core/effects');
 var version$2 = require('./version-2193b4a2.js');
 require('query-string');
-var selectors$1 = require('./selectors-69c3d37c.js');
+var selectors$1 = require('./selectors-1295124a.js');
 
 var types = {
   navigation: version$1.navigation,

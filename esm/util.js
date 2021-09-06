@@ -7,7 +7,7 @@ export { jpath, default as mapJson } from 'jsonpath-mapper';
 import 'immutable';
 import { a as selectCommitRef, b as selectBuildNumber, s as selectVersionStatus } from './version-7fdbd2d5.js';
 import 'query-string';
-import { a as selectCurrentProject } from './selectors-170581d2.js';
+import { a as selectCurrentProject } from './selectors-68799788.js';
 import PropTypes from 'prop-types';
 import { HashLink } from 'react-router-hash-link';
 

@@ -25,21 +25,21 @@ import { c as createStore, s as setVersionStatus, a as setVersion } from './vers
 import { s as setCurrentProject } from './actions-fda5e103.js';
 import './reducers-b426d14a.js';
 import 'history';
-import { h as history, d as deliveryApi, p as pickProject, r as rootSaga } from './App-6df89333.js';
-export { A as ReactApp } from './App-6df89333.js';
+import { h as history, d as deliveryApi, p as pickProject, r as rootSaga } from './App-d0ed8aba.js';
+export { A as ReactApp } from './App-d0ed8aba.js';
 import '@redux-saga/core/effects';
 import 'contensis-delivery-api';
 import './version-7fdbd2d5.js';
 import 'query-string';
-import { s as selectRouteEntry, a as selectCurrentProject } from './selectors-170581d2.js';
+import { s as selectRouteEntry, a as selectCurrentProject } from './selectors-68799788.js';
 import 'loglevel';
 import './ToJs-19a3244a.js';
-import './login-866fe64c.js';
+import './login-d205cbf6.js';
 import 'await-to-js';
 import 'js-cookie';
 import 'react-hot-loader';
 import 'prop-types';
-import './RouteLoader-2cfdfc5c.js';
+import './RouteLoader-30d5aa8e.js';
 
 const servers = SERVERS;
 /* global SERVERS */

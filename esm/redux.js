@@ -11,7 +11,7 @@ import './reducers-b426d14a.js';
 import '@redux-saga/core/effects';
 import { v as version$3 } from './version-7fdbd2d5.js';
 import 'query-string';
-import { r as routing$3 } from './selectors-170581d2.js';
+import { r as routing$3 } from './selectors-68799788.js';
 
 var types = {
   navigation: navigation$2,

@@ -2,10 +2,22 @@ import { Loadable } from 'react-loadable';
 import { RouteConfig } from 'react-router-config';
 import { Entry, Node } from 'contensis-delivery-api/lib/models';
 import React from 'react';
-declare type RouteComponent = Loadable | React.ComponentType;
+declare type RouteComponent<Props> = Loadable | React.ComponentType<Props>;
 declare type RouteNode = Node & {
     ancestors: Node[];
     children: Node[];
+};
+export declare type AppRoutes = {
+    ContentTypeMappings: ContentTypeMapping[];
+    StaticRoutes: StaticRoute[];
+};
+export declare type AppRootProps = {
+    routes: AppRoutes;
+    withEvents: WithEvents;
+};
+export declare type RouteLoaderProps = {
+    loadingComponent?: React.ComponentType;
+    notFoundComponent?: React.ComponentType;
 };
 export declare type EntryMapper = (<MappedProps>(node: RouteNode, state?: any) => MappedProps | unknown) | (<MappedProps>(node: RouteNode, state?: any) => Promise<MappedProps | unknown>);
 export declare type ReduxInjector = () => Promise<{
@@ -15,7 +27,7 @@ export declare type ReduxInjector = () => Promise<{
 }>;
 export declare type ContentTypeMapping = {
     contentTypeID: string;
-    component: RouteComponent;
+    component: RouteComponent<any>;
     entryMapper?: EntryMapper;
     fields?: string[];
     injectRedux?: ReduxInjector;
@@ -28,8 +40,8 @@ export declare type ContentTypeMapping = {
     };
     requireLogin?: boolean;
 };
-export declare type StaticRoute = RouteConfig & {
-    component: RouteComponent;
+export declare type StaticRoute = Omit<RouteConfig, 'component'> & {
+    component: RouteComponent<any>;
     fetchNode?: boolean;
     fetchNodeLevel?: number;
     injectRedux?: ReduxInjector;
