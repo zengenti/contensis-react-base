@@ -1,11 +1,8 @@
-import { ContentTypeMapping, StaticRoute, WithEvents } from './routing/routes';
+import { AppRoutes, WithEvents } from './routing/routes';
 import handleResponse from './server/features/response-handler';
 
 export type AppConfig = {
-  routes: {
-    ContentTypeMappings: ContentTypeMapping[];
-    StaticRoutes: StaticRoute[];
-  };
+  routes: AppRoutes;
   withReducers: { [key: string]: any };
   withSagas: any[];
   withEvents: WithEvents;
