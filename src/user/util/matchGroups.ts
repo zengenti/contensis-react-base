@@ -1,4 +1,10 @@
-export const matchUserGroup = (userGroups = [], requiredGroups = []) => {
+import { Group } from 'contensis-management-api/lib/models';
+import { RequireLogin } from '~/routing/routes';
+
+export const matchUserGroup = (
+  userGroups: Group[] = [],
+  requiredGroups: RequireLogin = []
+) => {
   if (
     !Array.isArray(requiredGroups) ||
     (Array.isArray(requiredGroups) && requiredGroups.length === 0)

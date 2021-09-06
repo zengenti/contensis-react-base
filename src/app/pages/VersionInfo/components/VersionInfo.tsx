@@ -1,11 +1,47 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import mapStateToVersionInfo from '../transformations/state-to-versioninfoprops.mapper.js';
+import mapStateToVersionInfo from '../transformations/state-to-versioninfoprops.mapper';
 
-import { VersionInfoStyledTable } from './VersionInfo.styled.js';
-import Link from '~/app/features/link';
+import { VersionInfoStyledTable } from './VersionInfo.styled';
+
+export interface IVersionInfoProps {
+  deliveryApi: {
+    rootUrl: string;
+    accessToken: string;
+    projectId: string;
+    livePublishingRootUrl: string;
+  };
+  devEnv: any;
+  disableSsrRedux: boolean;
+  nodeEnv: string;
+  packageDetail: any;
+  project: string;
+  projects;
+  proxyDeliveryApi;
+  publicUri: string;
+  reverseProxyPaths: string[];
+  servers: {
+    alias: string;
+    api: string;
+    cms: string;
+    web: string;
+    iis: string;
+    previewIis: string;
+    previewWeb: string;
+  };
+  uris: {
+    gitRepo: string;
+    commit: string;
+    pipeline: string;
+  };
+  version: {
+    buildNumber: string;
+    commitRef: string;
+    contensisVersionStatus: string;
+  };
+  zenPackageVersions: string[];
+}
 
 const VersionInfo = ({
   deliveryApi,
@@ -22,14 +58,14 @@ const VersionInfo = ({
   uris,
   version,
   zenPackageVersions,
-}) => {
+}: IVersionInfoProps) => {
   return (
     <VersionInfoStyledTable>
       <thead>
         <tr>
           <td colSpan={2}>
             <h1>
-              <Link path="/">Version Information</Link>
+              <a href="/">Version Information</a>
             </h1>
           </td>
         </tr>
@@ -87,13 +123,13 @@ const VersionInfo = ({
           </tr> */}
         <tr>
           <td>Project</td>
-          <td className={project == 'unknown' ? 'red' : ''}>{project}</td>
+          <td className={project === 'unknown' ? 'red' : ''}>{project}</td>
         </tr>
         <tr>
           <td>Contensis version status: </td>
           <td
             className={
-              version.contensisVersionStatus == 'published' ? 'green' : 'red'
+              version.contensisVersionStatus === 'published' ? 'green' : 'red'
             }
           >
             {version.contensisVersionStatus}
@@ -142,7 +178,12 @@ const VersionInfo = ({
         <tr>
           <td>Projects</td>
           <td>
-            {Object.entries(projects).map(([, project], key) => (
+            {Object.entries(
+              projects as {
+                id: string;
+                publicUri: string;
+              }[]
+            ).map(([, project], key) => (
               <div key={key}>
                 [ {project.id}: {project.publicUri} ]
               </div>
@@ -153,14 +194,16 @@ const VersionInfo = ({
           <td>Delivery API</td>
           <td className="small">
             <ul style={{ margin: 0, padding: 0 }}>
-              {Object.entries(deliveryApi).map(([key, value], idx) => {
-                if (typeof value === 'object') return null;
-                return (
-                  <li key={idx} style={{ listStyleType: 'none' }}>
-                    {key}: <span>{value}</span>
-                  </li>
-                );
-              })}
+              {Object.entries(deliveryApi).map(
+                ([key, value]: [string, any], idx) => {
+                  if (typeof value === 'object') return null;
+                  return (
+                    <li key={idx} style={{ listStyleType: 'none' }}>
+                      {key}: <span>{value}</span>
+                    </li>
+                  );
+                }
+              )}
             </ul>
           </td>
         </tr>
@@ -195,23 +238,6 @@ const VersionInfo = ({
       </tbody>
     </VersionInfoStyledTable>
   );
-};
-
-VersionInfo.propTypes = {
-  deliveryApi: PropTypes.object,
-  devEnv: PropTypes.object,
-  disableSsrRedux: PropTypes.bool,
-  nodeEnv: PropTypes.string,
-  packageDetail: PropTypes.object,
-  project: PropTypes.string,
-  projects: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
-  proxyDeliveryApi: PropTypes.bool,
-  publicUri: PropTypes.string,
-  reverseProxyPaths: PropTypes.array,
-  servers: PropTypes.object,
-  uris: PropTypes.object,
-  version: PropTypes.object,
-  zenPackageVersions: PropTypes.array,
 };
 
 export default connect(mapStateToVersionInfo)(VersionInfo);

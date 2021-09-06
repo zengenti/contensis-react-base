@@ -5,8 +5,19 @@ import {
   selectCommitRef,
   selectVersionStatus,
 } from '~/redux/selectors/version';
+import { IVersionInfoProps } from '../components/VersionInfo';
 
-const context = typeof window != 'undefined' ? window : global;
+const context = (
+  typeof window != 'undefined' ? window : global
+) as typeof globalThis & {
+  DISABLE_SSR_REDUX: any;
+  PACKAGE_JSON: any;
+  PROJECTS: any;
+  PROXY_DELIVERY_API: any;
+  PUBLIC_URI: any;
+  REVERSE_PROXY_PATHS: string[];
+  SERVERS: any;
+};
 
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -75,7 +86,7 @@ const versionInfoProps = {
 
 const mapStateToVersionInfo = state => {
   const mappedProps = mapJson(state, versionInfoProps);
-  return mappedProps;
+  return mappedProps as IVersionInfoProps;
 };
 
 export default mapStateToVersionInfo;

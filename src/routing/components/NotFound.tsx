@@ -1,7 +1,12 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
-const NotFound = ({ statusCode, statusText }) => (
+const NotFound = ({
+  statusCode,
+  statusText,
+}: {
+  statusCode: number;
+  statusText: string;
+}) => (
   <>
     <header>
       <h1>{statusCode || '404'} Page Not Found</h1>
@@ -20,10 +25,5 @@ const NotFound = ({ statusCode, statusText }) => (
     </header>
   </>
 );
-
-NotFound.propTypes = {
-  statusCode: PropTypes.number,
-  statusText: PropTypes.string,
-};
 
 export default NotFound;

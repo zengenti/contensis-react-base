@@ -2,9 +2,9 @@ import { Query } from '~/util/ContensisDeliveryApi';
 import { fieldExpression, defaultExpressions } from './expressions';
 
 export const routeEntryByFieldsQuery = (
-  id,
+  id: string,
   language = 'en-GB',
-  fields = [],
+  fields: string[] = [],
   versionStatus = 'published'
 ) => {
   const query = new Query(

@@ -10,10 +10,10 @@ import ConfigureWebApp from './webApp';
 import { ServerConfig } from '~/config';
 
 declare let global: typeof globalThis & {
-  DISABLE_SSR_REDUX;
-  PACKAGE_JSON;
-  PROXY_DELIVERY_API;
-  REVERSE_PROXY_PATHS;
+  DISABLE_SSR_REDUX: boolean | undefined;
+  PACKAGE_JSON: any;
+  PROXY_DELIVERY_API: boolean | undefined;
+  REVERSE_PROXY_PATHS: string[];
 };
 
 const app = express();

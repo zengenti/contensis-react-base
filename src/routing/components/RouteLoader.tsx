@@ -1,5 +1,4 @@
 import React, { useEffect, useCallback } from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { hot } from 'react-hot-loader';
 import { Redirect, useLocation } from 'react-router-dom';
@@ -29,17 +28,35 @@ import {
 import { matchUserGroup } from '~/user/util/matchGroups';
 
 import { toJS } from '~/util/ToJs';
+import { Entry } from 'contensis-delivery-api/lib/models';
+import { AppRootProps, RouteLoaderProps } from '../routes';
 
 const getTrimmedPath = path => {
   if (path !== '/') {
     const nextPath = path.replace(/\/\//, '/');
     const lastChar = nextPath[nextPath.length - 1];
-    if (lastChar == '/') {
+    if (lastChar === '/') {
       return nextPath.substring(0, nextPath.length - 1);
     }
   }
   return path;
 };
+
+interface IReduxProps {
+  contentTypeId: string;
+  entry: Entry;
+  isError: boolean;
+  isNotFound: boolean;
+  isLoading: boolean;
+  isLoggedIn: boolean;
+  mappedEntry: any;
+  projectId: string;
+  setNavigationPath: typeof setNavigationPath;
+  statePath: string;
+  statusCode: any;
+  statusText: string;
+  userGroups: any;
+}
 
 const RouteLoader = ({
   contentTypeId,
@@ -59,7 +76,7 @@ const RouteLoader = ({
   statusText,
   userGroups,
   withEvents,
-}) => {
+}: AppRootProps & RouteLoaderProps & IReduxProps) => {
   const location = useLocation();
   // Always ensure paths are trimmed of trailing slashes so urls are always unique
   const trimmedPath = getTrimmedPath(location.pathname);
@@ -74,7 +91,7 @@ const RouteLoader = ({
 
   const setPath = useCallback(() => {
     // Use serverPath to control the path we send to siteview node api to resolve a route
-    let serverPath = null;
+    let serverPath = '';
     if (staticRoute && staticRoute.match && staticRoute.match.isExact) {
       const { match, route } = staticRoute;
 
@@ -127,7 +144,7 @@ const RouteLoader = ({
   }
 
   // Render any Static Routes a developer has defined
-  if (isStaticRoute(trimmedPath) && !(!isLoggedIn && routeRequiresLogin)) {
+  if (isStaticRoute() && !(!isLoggedIn && routeRequiresLogin)) {
     if (matchUserGroup(userGroups, routeRequiresLogin))
       return renderRoutes(routes.StaticRoutes, {
         projectId,
@@ -148,7 +165,7 @@ const RouteLoader = ({
   // Match any defined Content Type Mappings
   if (contentTypeId && !(!isLoggedIn && routeRequiresLogin)) {
     const MatchedComponent = routes.ContentTypeMappings.find(
-      item => item.contentTypeID == contentTypeId
+      item => item.contentTypeID === contentTypeId
     );
 
     // debugger;
@@ -176,26 +193,6 @@ const RouteLoader = ({
   }
 
   return null;
-};
-
-RouteLoader.propTypes = {
-  contentTypeId: PropTypes.string,
-  entry: PropTypes.object,
-  isError: PropTypes.bool,
-  isLoading: PropTypes.bool,
-  isLoggedIn: PropTypes.bool,
-  isNotFound: PropTypes.bool,
-  loadingComponent: PropTypes.func,
-  mappedEntry: PropTypes.object,
-  notFoundComponent: PropTypes.func,
-  projectId: PropTypes.string,
-  routes: PropTypes.objectOf(PropTypes.array, PropTypes.array),
-  setNavigationPath: PropTypes.func,
-  statePath: PropTypes.string,
-  statusCode: PropTypes.number,
-  statusText: PropTypes.string,
-  userGroups: PropTypes.array,
-  withEvents: PropTypes.object,
 };
 
 const mapStateToProps = state => {

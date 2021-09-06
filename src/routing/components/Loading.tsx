@@ -1,12 +1,13 @@
 import React from 'react';
 
-const divStyles = {
+const divStyles: React.CSSProperties = {
   display: 'flex',
   height: '100vh',
   alignItems: 'center',
   justifyContent: 'center',
-  flexDirection: 'Column',
+  flexDirection: 'column',
 };
+
 const svgStyles = {
   width: '80px',
   height: '80px',
