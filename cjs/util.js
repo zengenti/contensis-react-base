@@ -104,6 +104,18 @@ const mapComposer = (composer, mappers) => Array.isArray(composer) ? composer.ma
  */
 
 const useComposerMapper = (composer = [], mappers) => mapComposer(composer, mappers);
+/**
+ * entryMapper will return a function to satisfy an entryMapper when defining app route
+ * this is essentially a shorthand function to prevent boilerplate repetition inside your routes file
+ * you do not need to use this function should you wish to map your entry via raw JS functions
+ * @param mapping the jsonpath-mapper mapping template to apply when the route is resolved
+ * @returns {mappedEntry}
+ */
+
+const entryMapper = mapping => (node, state) => mapJson__default['default']({ ...node,
+  ...node.entry,
+  state
+}, mapping);
 
 const setCachingHeaders = (response, {
   cacheControl = 'private',
@@ -394,6 +406,7 @@ Object.defineProperty(exports, 'mapJson', {
   }
 });
 exports.VersionInfo = VersionInfo$1;
+exports.entryMapper = entryMapper;
 exports.mapComposer = mapComposer;
 exports.mapEntries = mapEntries;
 exports.setCachingHeaders = setCachingHeaders_1;
