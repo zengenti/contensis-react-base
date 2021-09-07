@@ -6,7 +6,7 @@ import 'immutable';
 export { k as actions, r as types } from './actions-ddd9c623.js';
 import 'query-string';
 export { r as selectors } from './selectors-68799788.js';
-import './ToJs-f913cf93.js';
+import './ToJs-498344a0.js';
 import 'react-hot-loader';
-export { R as RouteLoader } from './RouteLoader-79206197.js';
+export { R as RouteLoader } from './RouteLoader-4e9dc4a3.js';
 //# sourceMappingURL=routing.js.map
