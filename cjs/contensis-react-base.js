@@ -478,7 +478,7 @@ const webApp = (app, ReactApp, config) => {
           }
         }
 
-        if ((context.statusCode || 500) > 400) {
+        if ((context.statusCode || 200) > 400) {
           accessMethod.STATIC = true;
         } // Responses
 
