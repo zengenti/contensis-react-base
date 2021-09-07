@@ -8,13 +8,13 @@ require('redux-immutable');
 require('redux-thunk');
 require('redux-saga');
 require('redux-injectors');
-var version$1 = require('./version-10f13b12.js');
-var actions$1 = require('./actions-e22726ed.js');
+var version$1 = require('./version-355b3b3b.js');
+var actions$1 = require('./actions-e9f69947.js');
 require('./reducers-0ea95da5.js');
 require('@redux-saga/core/effects');
 var version$2 = require('./version-2193b4a2.js');
 require('query-string');
-var selectors$1 = require('./selectors-69c3d37c.js');
+var selectors$1 = require('./selectors-1295124a.js');
 
 var types = {
   navigation: version$1.navigation,

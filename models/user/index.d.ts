@@ -1,6 +1,6 @@
 export { LoginHelper } from './util/LoginHelper.class';
 export { default as LoginContainer } from './containers/Login.container';
-export { default as RegistrationContainer } from './containers/Registration.container';
+export { default as RegistrationContainer, } from './containers/Registration.container';
 export { default as ForgotPasswordContainer } from './containers/ForgotPassword.container';
 export { default as ResetPasswordContainer } from './containers/ResetPassword.container';
 export { default as UserContainer } from './containers/User.container';

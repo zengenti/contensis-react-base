@@ -1,10 +1,2 @@
-export function fieldExpression(field: any, value: any, operator?: string, weight?: null): any[];
-export function contentTypeIdExpression(contentTypeIds: any, webpageTemplates: any): any[];
-export function filterExpressions(filters: any): any[];
-export function dataFormatExpression(contentTypeIds: any, dataFormat?: string): import("contensis-core-api").ILogicalExpression[];
-export function defaultExpressions(versionStatus: any): import("contensis-core-api").IExpression[];
-export function defaultSearchExpressions(versionStatus: any): import("contensis-core-api").IExpression[];
-export function includeInSearchExpressions(): import("contensis-core-api").ILogicalExpression[];
-export function orderByExpression(orderBy: any): import("contensis-core-api").ContensisQueryOrderBy;
-export function customWhereExpressions(where: any): undefined[];
-export function termExpressions(searchTerm: any, weightedSearchFields: any): any[];
+export declare const fieldExpression: (field: any, value: any, operator?: string, weight?: null) => any[];
+export declare const defaultExpressions: (versionStatus: any) => import("contensis-core-api").IExpression[];

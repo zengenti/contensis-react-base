@@ -46,6 +46,8 @@ Default export `ZengentiAppServer` which has a `.start()` function attached for 
 
 Named export `{ ReactApp }` provides a ready-made instance of a root `<App>` component to provide as the first argument to `ZengentiAppServer.start()`
 
+All TypeScript models are exported from here and should be imported in your app from the default package `@zengenti/contensis-react-base`
+
 ### /client
 
 Default export `ClientApp` which is a class when instantiated with `new ClientApp` accepts two constructor arguments similar to `ZengentiAppServer.start()` except for use when loading the application via the client-side entrypoint
@@ -78,6 +80,20 @@ Some simple utility functions to save repetion of common functions in our app co
 - working out Contensis uris to standard uri patterns
 - mapping functions when working with certain Contensis api results or data types
 - a copy of `ZenInfo` page to show certain build and expose configuration parameters. Something we usually include with every deployed site and served at `/zenInfo` route.
+
+### Using imports in your app
+
+You should not import files from any other place than the packages / subpackages mentioned in this README. e.g. using imports like `@zengenti/contensis-react-base/cjs/client` or `@zengenti/contensis-react-base/models/*` is not recommended as it will not provide you with the best build output and they could change in future and would not be reflected in the semantic versioning having the potential to cause problems in future.
+
+Sometimes VSCode may import the reference automatically from an unsupported place. You should check when committing your code that all imports are referenced correctly.
+
+## TypeScript support
+
+As of v2.5.0 TypeScript declarations are available to use, and will also benefit applications written in JavaScript
+
+All models are exported with the default package `@zengenti/contensis-react-base`
+
+When importing Types to use in your own TypeScript project, try to always use the root import path e.g. `import { ModelName } from '@zengenti/contensis-react-base';`
 
 ## Key scripts to build from source 🚦 📃
 

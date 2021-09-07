@@ -1,1 +1,1 @@
-export const VersionInfoStyledTable: any;
+export declare const VersionInfoStyledTable: any;

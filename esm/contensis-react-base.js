@@ -4,6 +4,7 @@ import Loadable from 'react-loadable';
 import httpProxy from 'http-proxy';
 import fs from 'fs';
 import path from 'path';
+import { path as path$1 } from 'app-root-path';
 import React from 'react';
 import { StaticRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
@@ -21,25 +22,24 @@ import 'redux-immutable';
 import 'redux-thunk';
 import 'redux-saga';
 import 'redux-injectors';
-import { c as createStore, s as setVersionStatus, a as setVersion } from './version-92742661.js';
-import { s as setCurrentProject } from './actions-fda5e103.js';
+import { c as createStore, s as setVersionStatus, a as setVersion } from './version-cc4fe786.js';
+import { s as setCurrentProject } from './actions-ddd9c623.js';
 import './reducers-a2b095a1.js';
 import 'history';
-import { h as history, d as deliveryApi, p as pickProject, r as rootSaga } from './App-d2aef398.js';
-export { A as ReactApp } from './App-d2aef398.js';
+import { h as history, d as deliveryApi, p as pickProject, r as rootSaga } from './App-e2add0b8.js';
+export { A as ReactApp } from './App-e2add0b8.js';
 import '@redux-saga/core/effects';
 import 'contensis-delivery-api';
 import './version-7fdbd2d5.js';
 import 'query-string';
-import { s as selectRouteEntry, a as selectCurrentProject } from './selectors-170581d2.js';
+import { s as selectRouteEntry, a as selectCurrentProject } from './selectors-68799788.js';
 import 'loglevel';
-import './ToJs-c591fb58.js';
-import './login-0c86eaf6.js';
+import './ToJs-f913cf93.js';
+import './login-f06adfcc.js';
 import 'await-to-js';
 import 'js-cookie';
 import 'react-hot-loader';
-import 'prop-types';
-import './RouteLoader-b90e9c20.js';
+import './RouteLoader-79206197.js';
 
 const servers = SERVERS;
 /* global SERVERS */
@@ -66,7 +66,7 @@ const servers$1 = SERVERS;
 
 const apiProxy = httpProxy.createProxyServer();
 
-const reverseProxies = (app, reverseProxyPaths) => {
+const reverseProxies = (app, reverseProxyPaths = []) => {
   deliveryApiProxy(apiProxy, app);
   app.all(reverseProxyPaths, (req, res) => {
     const target = req.hostname.indexOf('preview-') || req.hostname.indexOf('preview.') || req.hostname === 'localhost' ? servers$1.previewIis || servers$1.iis : servers$1.iis;
@@ -113,7 +113,7 @@ const getCacheDuration = (status = 200) => {
   return CacheDuration[200];
 };
 
-const replaceStaticPath = (string, staticFolderPath = 'static') => string.replace(/static\//g, `${staticFolderPath}/`);
+const replaceStaticPath = (str, staticFolderPath = 'static') => str.replace(/static\//g, `${staticFolderPath}/`);
 
 const bundleManipulationMiddleware = ({
   appRootPath,
@@ -173,8 +173,9 @@ const resolveStartupMiddleware = ({
   }
 };
 
+// Serving static assets
 const staticAssets = (app, {
-  appRootPath = require('app-root-path').path,
+  appRootPath = path$1,
   scripts = {},
   startupScriptFilename = 'startup.js',
   staticFolderPath = 'static',
@@ -192,10 +193,11 @@ const staticAssets = (app, {
     maxage: CacheDuration.static,
     startupScriptFilename: scripts.startup || startupScriptFilename,
     staticFolderPath
-  }), express.static(`dist/${staticFolderPath}`, {
+  }), // eslint-disable-next-line import/no-named-as-default-member
+  express.static(`dist/${staticFolderPath}`, {
     // these maxage values are different in config but the same in runtime,
     // this one is somehow converted and should end up being the same as CacheDuration.static
-    maxage: CacheDuration.expressStatic
+    maxAge: CacheDuration.expressStatic
   }));
 };
 
@@ -207,23 +209,17 @@ var fromentries = function fromEntries (iterable) {
   }, {})
 };
 
-const ResponseMethod = {
-  send: 'send',
-  json: 'json',
-  end: 'end'
-};
-
 /* eslint-disable no-console */
+
 /**
  * Web Application Response handler, sends a prepared express js response
  * with the supplied content sending in the specified manner
  * @param {response} request express js request object
  * @param {response} response express js response object
  * @param {string | object} content the content to send in the response body
- * @param {function} send the response function to call e.g res.send() res.json() res.end()
+ * @param {"send" | "json" | "end"} send the response function to call e.g res.send() res.json() res.end()
  */
-
-const handleResponse = (request, response, content, send = ResponseMethod.send) => {
+const handleResponse = (request, response, content, send = 'send') => {
   // console.log('---', response.statusCode, '---');
   response[send](content);
 };
@@ -279,7 +275,7 @@ const loadableBundleData = ({
   try {
     bundle.stats = JSON.parse(readFileSync(stats.replace('/target', build ? `/${build}` : '')));
   } catch (ex) {
-    //console.info(ex);
+    // console.info(ex);
     bundle.stats = null;
   }
 
@@ -290,7 +286,7 @@ const loadableBundleData = ({
       templateHTMLFragment: replaceStaticPath(readFileSync(templates.fragment.replace('/target', build ? `/${build}` : '')), staticRoutePath)
     };
   } catch (ex) {
-    //console.info(ex);
+    // console.info(ex);
     bundle.templates = null;
   }
 
@@ -390,17 +386,21 @@ const webApp = (app, ReactApp, config) => {
         return `<script ${attributes} nomodule src="${replaceStaticPath(bundle.publicPath, staticRoutePath)}"></script>`;
       }).filter(f => f); // Add the static startup script to the bundleTags
 
-      scripts.startup && bundleTags.push(`<script ${attributes} src="/${staticRoutePath}/${scripts.startup}"></script>`);
+      if (scripts.startup) bundleTags.push(`<script ${attributes} src="/${staticRoutePath}/${scripts.startup}"></script>`);
       return bundleTags;
     };
 
     const templates = bundleData.default.templates || bundleData.legacy.templates;
-    const stats = bundleData.modern.stats && bundleData.legacy.stats ? fromentries(Object.entries(bundleData.modern.stats).map(([lib, paths]) => [lib, bundleData.legacy.stats[lib] ? [...paths, ...bundleData.legacy.stats[lib]] : paths])) : bundleData.default.stats;
+    const stats = bundleData.modern.stats && bundleData.legacy.stats ? fromentries(Object.entries(bundleData.modern.stats).map(([lib, paths]) => {
+      var _bundleData$legacy, _bundleData$legacy$st;
+
+      return [lib, bundleData !== null && bundleData !== void 0 && (_bundleData$legacy = bundleData.legacy) !== null && _bundleData$legacy !== void 0 && (_bundleData$legacy$st = _bundleData$legacy.stats) !== null && _bundleData$legacy$st !== void 0 && _bundleData$legacy$st[lib] ? [...paths, ...bundleData.legacy.stats[lib]] : paths];
+    })) : bundleData.default.stats;
     const {
       templateHTML,
       templateHTMLFragment,
       templateHTMLStatic
-    } = templates; // Serve a blank HTML page with client scripts to load the app in the browser
+    } = templates || {}; // Serve a blank HTML page with client scripts to load the app in the browser
 
     if (accessMethod.DYNAMIC) {
       // Dynamic doesn't need sagas
@@ -440,7 +440,7 @@ const webApp = (app, ReactApp, config) => {
         const bundleTags = buildBundleTags(loadableBundles).join('');
         let serialisedReduxData = '';
 
-        if (context.status !== 404) {
+        if (context.statusCode !== 404) {
           // For a request that returns a redux state object as a response
           if (accessMethod.REDUX) {
             serialisedReduxData = serialize(reduxState, {
@@ -462,13 +462,13 @@ const webApp = (app, ReactApp, config) => {
           }
         }
 
-        if (context.status > 400) {
+        if ((context.statusCode || 200) > 400) {
           accessMethod.STATIC = true;
         } // Responses
 
 
         let responseHTML = '';
-        if (context.status === 404) title = '<title>404 page not found</title>'; // Static page served as a fragment
+        if (context.statusCode === 404) title = '<title>404 page not found</title>'; // Static page served as a fragment
 
         if (accessMethod.FRAGMENT && accessMethod.STATIC) {
           responseHTML = minifyCssString(styleTags) + html;
@@ -490,7 +490,7 @@ const webApp = (app, ReactApp, config) => {
         } // Set response.status from React StaticRouter
 
 
-        if (typeof context.status === 'number') response.status(context.status);
+        if (typeof context.statusCode === 'number') response.status(context.statusCode);
         addStandardHeaders(reduxState, response, packagejson, {
           allowedGroups,
           globalGroups

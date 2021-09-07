@@ -1,12 +1,8 @@
 export default useResetPassword;
 declare function useResetPassword(): {
-  resetPassword: (
-    resetPasswordObject: any
-  ) => {
-    type: any;
-  };
-  queryString: any;
-  error: any;
-  isLoading: any;
-  isSuccess: any;
+    queryString: any;
+    isLoading: any;
+    isSuccess: any;
+    error: any;
+    resetPassword: (resetPasswordObject: any) => any;
 };

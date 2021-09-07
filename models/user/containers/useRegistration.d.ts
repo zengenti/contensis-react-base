@@ -1,8 +1,6 @@
-export default useLogin;
-declare function useLogin(): {
-    registerUser: (user: any, mappers: any) => {
-        type: any;
-    };
+export default useRegistration;
+declare function useRegistration(): {
+    registerUser: (user: any, mappers: any) => any;
     error: any;
     isLoading: any;
     isSuccess: any;

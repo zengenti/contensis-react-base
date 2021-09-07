@@ -1,6 +1,6 @@
 const url = (alias: string, project: string) => {
   const projectAndAlias =
-    project && project.toLowerCase() != 'website'
+    project && project.toLowerCase() !== 'website'
       ? `${project.toLowerCase()}-${alias}`
       : alias;
   return {

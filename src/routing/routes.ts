@@ -3,8 +3,23 @@ import { RouteConfig } from 'react-router-config';
 import { Entry, Node } from 'contensis-delivery-api/lib/models';
 import React from 'react';
 
-type RouteComponent = Loadable | React.ComponentType;
+type RouteComponent<Props> = Loadable | React.ComponentType<Props>;
 type RouteNode = Node & { ancestors: Node[]; children: Node[] };
+
+export type AppRoutes = {
+  ContentTypeMappings: ContentTypeMapping[];
+  StaticRoutes: StaticRoute[];
+};
+
+export type AppRootProps = {
+  routes: AppRoutes;
+  withEvents: WithEvents;
+};
+
+export type RouteLoaderProps = {
+  loadingComponent?: React.ComponentType;
+  notFoundComponent?: React.ComponentType;
+};
 
 export type EntryMapper =
   | (<MappedProps>(node: RouteNode, state?: any) => MappedProps | unknown)
@@ -19,9 +34,13 @@ export type ReduxInjector = () => Promise<{
   saga: any;
 }>;
 
+type UserGroupRequisite = { id?: string; name?: string };
+
+export type RequireLogin = boolean | UserGroupRequisite[];
+
 export type ContentTypeMapping = {
   contentTypeID: string;
-  component: RouteComponent;
+  component: RouteComponent<any>;
   entryMapper?: EntryMapper;
   fields?: string[];
   injectRedux?: ReduxInjector;
@@ -32,14 +51,15 @@ export type ContentTypeMapping = {
       linkDepth?: number;
     };
   };
-  requireLogin?: boolean;
+  requireLogin?: RequireLogin;
 };
 
-export type StaticRoute = RouteConfig & {
-  component: RouteComponent;
+export type StaticRoute = Omit<RouteConfig, 'component'> & {
+  component: RouteComponent<any>;
   fetchNode?: boolean;
   fetchNodeLevel?: number;
   injectRedux?: ReduxInjector;
+  requireLogin?: RequireLogin;
   ssr?: boolean;
   ssrOnly?: boolean;
 };
@@ -74,7 +94,7 @@ export type RouteLoadOptions = {
   refetchNode?: true;
 };
 
-export type RouteLoadedOptions = { requireLogin?: boolean };
+export type RouteLoadedOptions = { requireLogin?: RequireLogin };
 
 export type WithEvents = {
   onRouteLoad: (args: OnRouteLoadArgs) => Generator<void | RouteLoadOptions>;

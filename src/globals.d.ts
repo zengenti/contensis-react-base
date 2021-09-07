@@ -6,7 +6,9 @@ declare const DELIVERY_API_CONFIG: {
   projectId: string;
   livePublishingRootUrl: string;
 };
+declare const DEV_ENV: any;
 declare const DISABLE_SSR_REDUX: boolean;
+declare const PACKAGE_JSON: any;
 declare const PROJECTS: {
   id: string;
   publicUri: string;

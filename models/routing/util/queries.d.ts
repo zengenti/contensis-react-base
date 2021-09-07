@@ -1,2 +1,2 @@
-export function routeEntryByFieldsQuery(id: any, language?: string, fields?: any[], versionStatus?: string): Query;
-import { Query } from "contensis-delivery-api";
+import { Query } from "../../util/ContensisDeliveryApi";
+export declare const routeEntryByFieldsQuery: (id: string, language?: string, fields?: string[], versionStatus?: string) => Query;

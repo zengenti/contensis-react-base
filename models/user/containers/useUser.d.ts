@@ -1,41 +1,31 @@
 export default useUser;
 declare function useUser(): {
-  loginUser: (
-    username: any,
-    password: any
-  ) => {
-    type: any;
-  };
-  logoutUser: (
-    redirectPath: any
-  ) => {
-    type: any;
-  };
-  registerUser: (
-    user: any,
-    mappers: any
-  ) => {
-    type: any;
-  };
-  requestPasswordReset: (
-    userEmailObject: any
-  ) => {
-    type: any;
-  };
-  resetPassword: (
-    resetPasswordObject: any
-  ) => {
-    type: any;
-  };
-  changePassword: (
-    userId: any,
-    currentPassword: any,
-    newPassword: any
-  ) => {
-    type: any;
-  };
-
-  error: any;
-  isLoading: any;
-  isSuccess: any;
+    loginUser: (username: any, password: any) => any;
+    logoutUser: (redirectPath: any) => any;
+    authenticationError: any;
+    authenticationErrorMessage: any;
+    userError: any;
+    userErrorMessage: any;
+    isAuthenticated: any;
+    userIsLoading: any;
+    user: any;
+    userId: any;
+    registerUser: (user: any, mappers: any) => any;
+    registrationError: any;
+    registrationIsLoading: any;
+    registrationIsSuccess: any;
+    userRegistration: any;
+    passwordResetRequestIsLoading: any;
+    passwordResetRequestIsSuccess: any;
+    passwordResetRequestError: any;
+    requestPasswordReset: (userEmailObject: any) => any;
+    queryString: any;
+    passwordResetIsLoading: any;
+    passwordResetIsSuccess: any;
+    passwordResetError: any;
+    resetPassword: (resetPasswordObject: any) => any;
+    changePasswordIsLoading: any;
+    changePasswordIsSuccess: any;
+    changePasswordError: any;
+    changePassword: (userId: any, currentPassword: any, newPassword: any) => any;
 };

@@ -52,8 +52,14 @@ export const selectIsNotFound = state => {
 export const selectCurrentAncestors = state => {
   return state.getIn(['routing', 'currentNodeAncestors'], List());
 };
+export const selectCurrentSiblings = state => {
+  return state.getIn(['routing', 'currentNodeSiblings'], List());
+};
 export const selectCurrentNode = state => {
   return state.getIn(['routing', 'currentNode']);
+};
+export const selectCurrentChildren = state => {
+  return state.getIn(['routing', 'currentNode', 'children'], List());
 };
 export const selectBreadcrumb = state => {
   return (selectCurrentAncestors(state) || List()).push(

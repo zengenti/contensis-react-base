@@ -1,9 +1,12 @@
+import { AppRoutes, WithEvents } from './routing/routes';
 import handleResponse from './server/features/response-handler';
 export declare type AppConfig = {
-    routes: any;
-    withReducers: any;
-    withSagas: any;
-    withEvents: any;
+    routes: AppRoutes;
+    withReducers: {
+        [key: string]: any;
+    };
+    withSagas: any[];
+    withEvents: WithEvents;
 };
 export declare type ServerConfig = AppConfig & {
     appRootPath?: string;
