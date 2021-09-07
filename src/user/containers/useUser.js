@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { selectCurrentSearch } from '~/core/redux/selectors/routing';
+import { selectCurrentSearch } from '~/routing/redux/selectors';
 import {
   changePassword,
   loginUser,

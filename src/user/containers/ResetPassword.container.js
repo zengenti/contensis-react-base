@@ -1,5 +1,5 @@
 import useResetPassword from './useResetPassword';
-import { toJS } from '~/core/util/ToJs';
+import { toJS } from '~/util/ToJs';
 
 const ResetPasswordContainer = ({ children, ...props }) => {
   const userProps = useResetPassword(props);

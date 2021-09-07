@@ -1,4 +1,4 @@
-import { toJS } from '~/core/util/ToJs';
+import { toJS } from '~/util/ToJs';
 import useUser from './useUser';
 
 const UserContainer = ({ children, ...props }) => {

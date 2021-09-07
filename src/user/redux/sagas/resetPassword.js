@@ -1,7 +1,7 @@
 import { put, takeEvery, select } from 'redux-saga/effects';
 import { to } from 'await-to-js';
-import { getManagementApiClient } from '~/core/util/ContensisManagementApi';
-import { UserHelper } from '~/core/util/userHelper';
+import { getManagementApiClient } from '~/user/util/ContensisManagementApi';
+import { UserHelper } from '~/user/util/userHelper';
 import { selectClientCredentials } from '../selectors';
 import {
   REQUEST_USER_PASSWORD_RESET,

@@ -1,4 +1,4 @@
-import { action } from '~/core/util/helpers';
+import { action } from '~/redux/util';
 import {
   CHANGE_USER_PASSWORD,
   LOGIN_USER,

@@ -2,38 +2,15 @@ import 'react';
 import { useDispatch, useSelector, connect } from 'react-redux';
 import 'jsonpath-mapper';
 import 'immutable';
-<<<<<<< HEAD
 import { j as action } from './actions-fda5e103.js';
-import { L as LOGIN_USER, c as LOGOUT_USER, R as REGISTER_USER } from './reducers-b426d14a.js';
-export { i as initialUserState, U as reducer, t as types } from './reducers-b426d14a.js';
+import { L as LOGIN_USER, n as LOGOUT_USER, R as REGISTER_USER, c as REQUEST_USER_PASSWORD_RESET, d as RESET_USER_PASSWORD, C as CHANGE_USER_PASSWORD } from './reducers-a2b095a1.js';
+export { p as initialUserState, U as reducer, t as types } from './reducers-a2b095a1.js';
 import '@redux-saga/core/effects';
 import 'query-string';
-import './selectors-170581d2.js';
-import { c as selectUserAuthenticationError, d as selectUserError, s as selectUserIsAuthenticated, e as selectUserIsLoading, f as selectUser, t as toJS, g as selectUserRegistrationError, h as selectUserRegistrationIsLoading, i as selectUserRegistrationIsSuccess, j as selectUserRegistration } from './ToJs-19a3244a.js';
-export { k as selectors } from './ToJs-19a3244a.js';
-export { L as LoginHelper, h as handleRequiresLoginSaga, r as refreshSecurityToken } from './login-866fe64c.js';
-=======
-<<<<<<< HEAD
-import { k as action } from './routing-3bbf9dde.js';
-=======
-import { y as action, n as selectCurrentSearch } from './routing-7eff80b5.js';
->>>>>>> 8f6a0bd8ed1dfcb4a74b6d35685352d4189a5b5c
-import { L as LOGIN_USER, n as LOGOUT_USER, R as REGISTER_USER, c as REQUEST_USER_PASSWORD_RESET, d as RESET_USER_PASSWORD, C as CHANGE_USER_PASSWORD } from './reducers-7c4796b0.js';
-export { p as initialUserState, U as reducer, t as types } from './reducers-7c4796b0.js';
-import 'query-string';
-import { g as selectCurrentSearch } from './routing-786c3bb0.js';
-import '@redux-saga/core/effects';
-<<<<<<< HEAD
-import { c as selectUserAuthenticationError, d as selectUserAuthenticationErrorMessage, e as selectUserError, f as selectUserErrorMessage, a as selectUserIsAuthenticated, g as selectUserIsLoading, h as selectUser, t as toJS, i as selectUserRegistrationError, j as selectUserRegistrationIsLoading, k as selectUserRegistrationIsSuccess, l as selectUserRegistration, n as selectPasswordResetRequestSending, o as selectPasswordResetRequestSent, p as selectPasswordResetRequestError, q as selectResetPasswordSending, r as selectResetPasswordSent, u as selectResetPasswordError, v as selectUserGuid, w as selectChangePasswordSending, x as selectChangePasswordSent, y as selectChangePasswordError } from './ToJs-bf49708e.js';
-export { z as selectors } from './ToJs-bf49708e.js';
-export { L as LoginHelper, h as handleRequiresLoginSaga, r as refreshSecurityToken } from './login-2701d3cb.js';
-=======
-import { c as selectUserAuthenticationError, d as selectUserAuthenticationErrorMessage, e as selectUserError, f as selectUserErrorMessage, a as selectUserIsAuthenticated, g as selectUserIsLoading, h as selectUser, t as toJS, i as selectUserRegistrationError, j as selectUserRegistrationIsLoading, k as selectUserRegistrationIsSuccess, l as selectUserRegistration, n as selectPasswordResetRequestSending, o as selectPasswordResetRequestSent, p as selectPasswordResetRequestError, q as selectResetPasswordSending, r as selectResetPasswordSent, u as selectResetPasswordError, v as selectUserGuid, w as selectChangePasswordSending, x as selectChangePasswordSent, y as selectChangePasswordError } from './ToJs-13f1f0b2.js';
-export { z as selectors } from './ToJs-13f1f0b2.js';
-export { L as LoginHelper, h as handleRequiresLoginSaga, r as refreshSecurityToken } from './login-136056ea.js';
->>>>>>> 8f6a0bd8ed1dfcb4a74b6d35685352d4189a5b5c
-import 'jsonpath-mapper';
->>>>>>> contensis-14-forgot-change-password
+import { g as selectCurrentSearch } from './selectors-170581d2.js';
+import { c as selectUserAuthenticationError, d as selectUserAuthenticationErrorMessage, e as selectUserError, f as selectUserErrorMessage, a as selectUserIsAuthenticated, g as selectUserIsLoading, h as selectUser, t as toJS, i as selectUserRegistrationError, j as selectUserRegistrationIsLoading, k as selectUserRegistrationIsSuccess, l as selectUserRegistration, n as selectPasswordResetRequestSending, o as selectPasswordResetRequestSent, p as selectPasswordResetRequestError, q as selectResetPasswordSending, r as selectResetPasswordSent, u as selectResetPasswordError, v as selectUserGuid, w as selectChangePasswordSending, x as selectChangePasswordSent, y as selectChangePasswordError } from './ToJs-c591fb58.js';
+export { z as selectors } from './ToJs-c591fb58.js';
+export { L as LoginHelper, h as handleRequiresLoginSaga, r as refreshSecurityToken } from './login-0c86eaf6.js';
 import 'await-to-js';
 import 'js-cookie';
 
