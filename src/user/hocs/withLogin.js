@@ -14,17 +14,6 @@ const getDisplayName = WrappedComponent => {
 };
 
 const withLogin = WrappedComponent => {
-  // Returns a redux-connected component with the following props:
-  // this.propTypes = {
-  //   loading: PropTypes.bool,
-  //   authenticated: PropTypes.bool,
-  //   authenticationError: PropTypes.bool,
-  //   error: PropTypes.bool,
-  //   user: PropTypes.object,
-  //   logoutUser: PropTypes.func,
-  //   isHeaderLogin: PropTypes.bool,
-  // };
-
   const mapStateToProps = state => {
     return {
       authenticationError: selectUserAuthenticationError(state),

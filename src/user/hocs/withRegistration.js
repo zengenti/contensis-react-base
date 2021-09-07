@@ -13,15 +13,6 @@ const getDisplayName = WrappedComponent => {
 };
 
 const withRegistration = WrappedComponent => {
-  // Returns a redux-connected component with the following props:
-  // this.propTypes = {
-  //   registerUser: PropTypes.func,
-  //   isLoading: PropTypes.bool,
-  //   isSuccess: PropTypes.bool,
-  //   error: PropTypes.bool | PropTypes.object,
-  //   user: PropTypes.object,
-  // };
-
   const mapStateToProps = state => {
     return {
       error: selectUserRegistrationError(state),

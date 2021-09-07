@@ -1,4 +1,4 @@
-import useForgotPassword from './useForgotPassword';
+import useForgotPassword from '../hooks/useForgotPassword';
 import { toJS } from '~/util/ToJs';
 
 const ForgotPasswordContainer = ({ children, ...props }) => {
