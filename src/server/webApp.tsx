@@ -382,7 +382,7 @@ const webApp = (
               serialisedReduxData = `<script ${attributes}>window.REDUX_DATA = ${serialisedReduxData}</script>`;
             }
           }
-          if ((context.statusCode || 500) > 400) {
+          if ((context.statusCode || 200) > 400) {
             accessMethod.STATIC = true;
           }
 

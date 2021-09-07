@@ -46,6 +46,7 @@
     "@rollup/plugin-node-resolve": "^9.0.0",
     "@types/babel__core": "^7.1.15",
     "@types/babel__template": "^7.4.1",
+    "@types/events": "^3.0.0",
     "@types/express": "^4.17.13",
     "@types/node": "^16.7.10",
     "@types/query-string": "^5.1.0",
