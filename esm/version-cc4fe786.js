@@ -1,19 +1,12 @@
-'use strict';
-
-var immutable = require('immutable');
-var redux = require('redux');
-var reduxImmutable = require('redux-immutable');
-var thunkMiddleware = require('redux-thunk');
-var createSagaMiddleware = require('redux-saga');
-var reduxInjectors = require('redux-injectors');
-var actions = require('./actions-e9f69947.js');
-var reducers = require('./reducers-0ea95da5.js');
-var effects = require('@redux-saga/core/effects');
-
-function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
-
-var thunkMiddleware__default = /*#__PURE__*/_interopDefaultLegacy(thunkMiddleware);
-var createSagaMiddleware__default = /*#__PURE__*/_interopDefaultLegacy(createSagaMiddleware);
+import { Map, List, fromJS, OrderedMap, Set } from 'immutable';
+import { compose, applyMiddleware, createStore as createStore$1 } from 'redux';
+import { combineReducers } from 'redux-immutable';
+import thunkMiddleware from 'redux-thunk';
+import createSagaMiddleware, { END } from 'redux-saga';
+import { createInjectorsEnhancer } from 'redux-injectors';
+import { h as SET_TARGET_PROJECT, i as SET_SURROGATE_KEYS, e as SET_SIBLINGS, b as SET_ROUTE, S as SET_NAVIGATION_PATH, U as UPDATE_LOADING_STATE, c as SET_ENTRY, d as SET_ANCESTORS, j as action } from './actions-ddd9c623.js';
+import { U as UserReducer } from './reducers-a2b095a1.js';
+import { all } from '@redux-saga/core/effects';
 
 const ACTION_PREFIX = '@NAVIGATION/';
 const GET_NODE_TREE = `${ACTION_PREFIX}_GET_NODE_TREE`;
@@ -27,9 +20,9 @@ var navigation = /*#__PURE__*/Object.freeze({
   GET_NODE_TREE_ERROR: GET_NODE_TREE_ERROR
 });
 
-const initialState = immutable.Map({
+const initialState = Map({
   root: null,
-  treeDepends: new immutable.List([]),
+  treeDepends: new List([]),
   isError: false,
   isReady: false
 });
@@ -37,7 +30,7 @@ var NavigationReducer = ((state = initialState, action) => {
   switch (action.type) {
     case SET_NODE_TREE:
       {
-        return state.set('root', immutable.fromJS(action.nodes)).set('isReady', true);
+        return state.set('root', fromJS(action.nodes)).set('isReady', true);
       }
 
     case GET_NODE_TREE_ERROR:
@@ -50,39 +43,39 @@ var NavigationReducer = ((state = initialState, action) => {
   }
 });
 
-let initialState$1 = immutable.OrderedMap({
+let initialState$1 = OrderedMap({
   currentHostname: null,
   contentTypeId: null,
   currentPath: '/',
-  currentNode: immutable.OrderedMap(),
-  currentNodeAncestors: immutable.List(),
+  currentNode: OrderedMap(),
+  currentNodeAncestors: List(),
   currentProject: 'unknown',
   entryID: null,
   entry: null,
   currentTreeId: null,
-  entryDepends: immutable.List(),
+  entryDepends: List(),
   error: undefined,
   isError: false,
   isLoading: false,
-  location: immutable.OrderedMap(),
+  location: OrderedMap(),
   mappedEntry: null,
-  nodeDepends: immutable.List(),
+  nodeDepends: List(),
   notFound: false,
   staticRoute: null,
   statusCode: 200
 });
 var RoutingReducer = ((state = initialState$1, action) => {
   switch (action.type) {
-    case actions.SET_ANCESTORS:
+    case SET_ANCESTORS:
       {
         if (action.ancestors) {
-          return state.set('currentNodeAncestors', immutable.fromJS(action.ancestors));
+          return state.set('currentNodeAncestors', fromJS(action.ancestors));
         }
 
-        return state.set('currentNodeAncestors', immutable.fromJS(action.ancestors));
+        return state.set('currentNodeAncestors', fromJS(action.ancestors));
       }
 
-    case actions.SET_ENTRY:
+    case SET_ENTRY:
       {
         const {
           entry,
@@ -99,10 +92,10 @@ var RoutingReducer = ((state = initialState$1, action) => {
         let nextState;
 
         if (!entry) {
-          nextState = state.set('entryID', null).set('entry', null).set('error', immutable.fromJS(error)).set('mappedEntry', null).set('isError', isError).set('isLoading', isLoading).set('notFound', notFound).set('statusCode', statusCode || defaultStatus);
+          nextState = state.set('entryID', null).set('entry', null).set('error', fromJS(error)).set('mappedEntry', null).set('isError', isError).set('isLoading', isLoading).set('notFound', notFound).set('statusCode', statusCode || defaultStatus);
         } else {
-          nextState = state.set('entryID', action.id).set('entry', immutable.fromJS(entry)).set('error', immutable.fromJS(error)).set('isError', isError).set('isLoading', isLoading).set('notFound', notFound).set('statusCode', statusCode || defaultStatus);
-          if (mappedEntry && Object.keys(mappedEntry).length > 0) nextState = nextState.set('mappedEntry', immutable.fromJS(mappedEntry)).set('entry', immutable.fromJS({
+          nextState = state.set('entryID', action.id).set('entry', fromJS(entry)).set('error', fromJS(error)).set('isError', isError).set('isLoading', isLoading).set('notFound', notFound).set('statusCode', statusCode || defaultStatus);
+          if (mappedEntry && Object.keys(mappedEntry).length > 0) nextState = nextState.set('mappedEntry', fromJS(mappedEntry)).set('entry', fromJS({
             sys: entry.sys
           }));
         }
@@ -111,16 +104,16 @@ var RoutingReducer = ((state = initialState$1, action) => {
           return nextState.set('nodeDepends', null).set('currentNode', null);
         } else {
           // On Set Node, we reset all dependants.
-          return nextState.set('currentNode', immutable.fromJS(node)).removeIn(['currentNode', 'entry']); // We have the entry stored elsewhere, so lets not keep it twice.
+          return nextState.set('currentNode', fromJS(node)).removeIn(['currentNode', 'entry']); // We have the entry stored elsewhere, so lets not keep it twice.
         }
       }
 
-    case actions.UPDATE_LOADING_STATE:
+    case UPDATE_LOADING_STATE:
       {
         return state.set('isLoading', action.isLoading);
       }
 
-    case actions.SET_NAVIGATION_PATH:
+    case SET_NAVIGATION_PATH:
       {
         let staticRoute = false;
 
@@ -134,13 +127,13 @@ var RoutingReducer = ((state = initialState$1, action) => {
           const entryUri = state.getIn(['entry', 'sys', 'uri']);
 
           if (entryUri != action.path) {
-            return state.set('currentPath', immutable.fromJS(action.path)).set('location', immutable.fromJS(action.location)).set('staticRoute', immutable.fromJS({ ...staticRoute,
+            return state.set('currentPath', fromJS(action.path)).set('location', fromJS(action.location)).set('staticRoute', fromJS({ ...staticRoute,
               route: { ...staticRoute.route,
                 component: null
               }
             })).set('isLoading', typeof window !== 'undefined');
           } else {
-            return state.set('location', immutable.fromJS(action.location)).set('staticRoute', immutable.fromJS({ ...staticRoute,
+            return state.set('location', fromJS(action.location)).set('staticRoute', fromJS({ ...staticRoute,
               route: { ...staticRoute.route,
                 component: null
               }
@@ -151,12 +144,12 @@ var RoutingReducer = ((state = initialState$1, action) => {
         return state;
       }
 
-    case actions.SET_ROUTE:
+    case SET_ROUTE:
       {
         return state.set('nextPath', action.path);
       }
 
-    case actions.SET_SIBLINGS:
+    case SET_SIBLINGS:
       {
         // Can be null in some cases like the homepage.
         let currentNodeSiblingParent = null;
@@ -170,19 +163,19 @@ var RoutingReducer = ((state = initialState$1, action) => {
         }
 
         let currentNodeDepends = state.get('nodeDepends');
-        const allNodeDepends = immutable.Set.union([immutable.Set(siblingIDs), currentNodeDepends]);
-        return state.set('nodeDepends', allNodeDepends).set('currentNodeSiblings', immutable.fromJS(action.siblings)).set('currentNodeSiblingsParent', currentNodeSiblingParent);
+        const allNodeDepends = Set.union([Set(siblingIDs), currentNodeDepends]);
+        return state.set('nodeDepends', allNodeDepends).set('currentNodeSiblings', fromJS(action.siblings)).set('currentNodeSiblingsParent', currentNodeSiblingParent);
       }
 
-    case actions.SET_SURROGATE_KEYS:
+    case SET_SURROGATE_KEYS:
       {
         return state.set('surrogateKeys', action.keys);
       }
 
-    case actions.SET_TARGET_PROJECT:
+    case SET_TARGET_PROJECT:
       {
         return state.set('currentProject', action.project).set('currentTreeId', '') //getTreeID(action.project))
-        .set('allowedGroups', immutable.fromJS(action.allowedGroups)).set('currentHostname', action.hostname);
+        .set('allowedGroups', fromJS(action.allowedGroups)).set('currentHostname', action.hostname);
       }
 
     default:
@@ -200,7 +193,7 @@ var version = /*#__PURE__*/Object.freeze({
   SET_VERSION_STATUS: SET_VERSION_STATUS
 });
 
-let initialState$2 = immutable.Map({
+let initialState$2 = Map({
   commitRef: null,
   buildNo: null,
   contensisVersionStatus: 'published'
@@ -244,6 +237,7 @@ const routerMiddleware = history => store => next => action => {
 };
 
 /* eslint-disable no-underscore-dangle */
+let reduxStore;
 var createStore = ((featureReducers, initialState, history) => {
   let reduxDevToolsMiddleware = f => f;
 
@@ -251,39 +245,39 @@ var createStore = ((featureReducers, initialState, history) => {
     reduxDevToolsMiddleware = window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f;
   }
 
-  const sagaMiddleware = createSagaMiddleware__default['default']();
-  const reducers$1 = {
+  const sagaMiddleware = createSagaMiddleware();
+  const reducers = {
     navigation: NavigationReducer,
     routing: RoutingReducer,
-    user: reducers.UserReducer,
+    user: UserReducer,
     version: VersionReducer,
     ...featureReducers
   };
 
   const createReducer = (injectedReducers = {}) => {
-    const rootReducer = reduxImmutable.combineReducers({ ...injectedReducers,
+    const rootReducer = combineReducers({ ...injectedReducers,
       // other non-injected reducers go here
-      ...reducers$1
+      ...reducers
     });
     return rootReducer;
   };
 
   const store = initialState => {
     const runSaga = sagaMiddleware.run;
-    const middleware = redux.compose(redux.applyMiddleware(thunkMiddleware__default['default'], sagaMiddleware, routerMiddleware(history)), reduxInjectors.createInjectorsEnhancer({
+    const middleware = compose(applyMiddleware(thunkMiddleware, sagaMiddleware, routerMiddleware(history)), createInjectorsEnhancer({
       createReducer,
       runSaga
     }), reduxDevToolsMiddleware);
-    const store = redux.createStore(createReducer(), initialState, middleware);
+    const store = createStore$1(createReducer(), initialState, middleware);
     store.runSaga = runSaga;
 
-    store.close = () => store.dispatch(createSagaMiddleware.END);
+    store.close = () => store.dispatch(END);
 
     return store;
   };
 
-  exports.reduxStore = store(initialState);
-  return exports.reduxStore;
+  reduxStore = store(initialState);
+  return reduxStore;
 });
 
 const hasNavigationTree = state => {
@@ -305,14 +299,14 @@ var navigation$1 = /*#__PURE__*/Object.freeze({
 
 const convertSagaArray = sagas => {
   if (Array.isArray(sagas)) return function* rootSaga() {
-    yield effects.all(sagas);
+    yield all(sagas);
   };
   return sagas;
 };
 const injectReducer = ({
   key,
   reducer
-}, store = exports.reduxStore) => {
+}, store = reduxStore) => {
   if (Reflect.has(store.injectedReducers, key) && store.injectedReducers[key] === reducer) return;
   store.injectedReducers[key] = reducer;
   store.replaceReducer(store.createReducer(store.injectedReducers));
@@ -320,7 +314,7 @@ const injectReducer = ({
 const injectSaga = ({
   key,
   saga
-}, store = exports.reduxStore) => {
+}, store = reduxStore) => {
   const rootSaga = convertSagaArray(saga);
   let hasSaga = Reflect.has(store.injectedSagas, key);
 
@@ -347,7 +341,7 @@ const injectRedux = ({
   key,
   reducer,
   saga
-}, store = exports.reduxStore) => {
+}, store = reduxStore) => {
   console.info('injectRedux, key: ', key);
   if (reducer) injectReducer({
     key,
@@ -360,11 +354,11 @@ const injectRedux = ({
 };
 const useInjectRedux = injectRedux;
 
-const setVersion = (commitRef, buildNo) => actions.action(SET_VERSION, {
+const setVersion = (commitRef, buildNo) => action(SET_VERSION, {
   commitRef,
   buildNo
 });
-const setVersionStatus = status => actions.action(SET_VERSION_STATUS, {
+const setVersionStatus = status => action(SET_VERSION_STATUS, {
   status
 });
 
@@ -374,20 +368,5 @@ var version$1 = /*#__PURE__*/Object.freeze({
   setVersionStatus: setVersionStatus
 });
 
-exports.GET_NODE_TREE = GET_NODE_TREE;
-exports.GET_NODE_TREE_ERROR = GET_NODE_TREE_ERROR;
-exports.SET_NODE_TREE = SET_NODE_TREE;
-exports.convertSagaArray = convertSagaArray;
-exports.createStore = createStore;
-exports.hasNavigationTree = hasNavigationTree;
-exports.injectReducer = injectReducer;
-exports.injectRedux = injectRedux;
-exports.injectSaga = injectSaga;
-exports.navigation = navigation;
-exports.navigation$1 = navigation$1;
-exports.setVersion = setVersion;
-exports.setVersionStatus = setVersionStatus;
-exports.useInjectRedux = useInjectRedux;
-exports.version = version;
-exports.version$1 = version$1;
-//# sourceMappingURL=version-6ca75758.js.map
+export { GET_NODE_TREE as G, SET_NODE_TREE as S, setVersion as a, GET_NODE_TREE_ERROR as b, createStore as c, version$1 as d, navigation$1 as e, convertSagaArray as f, injectReducer as g, hasNavigationTree as h, injectRedux as i, injectSaga as j, navigation as n, reduxStore as r, setVersionStatus as s, useInjectRedux as u, version as v };
+//# sourceMappingURL=version-cc4fe786.js.map
