@@ -5,7 +5,7 @@ import {
   selectChangePasswordSent,
   selectChangePasswordError,
   selectUserIsAuthenticated,
-  selectUserAuthenticationErrorMessage,
+  selectUserGuid,
 } from '../redux/selectors';
 
 const useChangePassword = () => {
@@ -15,9 +15,9 @@ const useChangePassword = () => {
   return {
     isLoading: select(selectChangePasswordSending),
     isSuccess: select(selectChangePasswordSent),
+    userId: select(selectUserGuid),
     isLoggedIn: select(selectUserIsAuthenticated),
     error: select(selectChangePasswordError),
-    authenticationErrorMessage: select(selectUserAuthenticationErrorMessage),
     changePassword: (userId, currentPassword, newPassword) =>
       dispatch(changePassword(userId, currentPassword, newPassword)),
   };

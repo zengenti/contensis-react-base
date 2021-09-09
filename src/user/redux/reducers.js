@@ -144,8 +144,8 @@ export default (state = initialUserState, action) => {
         .setIn(['resetPassword', 'sent'], true);
     case RESET_USER_PASSWORD_ERROR:
       return state
-        .setIn(['changePassword', 'isSending'], false)
-        .setIn(['changePassword', 'error'], action.error);
+        .setIn(['resetPassword', 'isSending'], false)
+        .setIn(['resetPassword', 'error'], action.error);
     case CHANGE_USER_PASSWORD_SENDING:
       return state.setIn(['changePassword', 'isSending'], true);
     case CHANGE_USER_PASSWORD_SUCCESS:
