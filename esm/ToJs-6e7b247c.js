@@ -1,11 +1,5 @@
-'use strict';
-
-var React = require('react');
-var immutable = require('immutable');
-
-function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
-
-var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
+import React from 'react';
+import { Map, Iterable } from 'immutable';
 
 const selectUserIsLoading = state => {
   return state.getIn(['user', 'authenticationState', 'loading']);
@@ -49,7 +43,7 @@ const selectUserGroups = state => {
 const selectUserSecurityToken = state => {
   return state.getIn(['user', 'authenticationState', 'clientCredentials', 'contensisClassicToken']);
 };
-const selectUserRegistration = state => state.getIn(['user', 'registration'], immutable.Map());
+const selectUserRegistration = state => state.getIn(['user', 'registration'], Map());
 const selectUserRegistrationError = state => state.getIn(['user', 'registration', 'error'], false);
 const selectUserRegistrationIsLoading = state => state.getIn(['user', 'registration', 'loading'], false);
 const selectUserRegistrationIsSuccess = state => state.getIn(['user', 'registration', 'success'], false);
@@ -132,35 +126,11 @@ const toJS = WrappedComponent => wrappedComponentProps => {
   const KEY = 0;
   const VALUE = 1;
   const propsJS = Object.entries(wrappedComponentProps).reduce((newProps, wrappedComponentProp) => {
-    newProps[wrappedComponentProp[KEY]] = immutable.Iterable.isIterable(wrappedComponentProp[VALUE]) ? wrappedComponentProp[VALUE].toJS() : wrappedComponentProp[VALUE];
+    newProps[wrappedComponentProp[KEY]] = Iterable.isIterable(wrappedComponentProp[VALUE]) ? wrappedComponentProp[VALUE].toJS() : wrappedComponentProp[VALUE];
     return newProps;
   }, {});
-  return /*#__PURE__*/React__default['default'].createElement(WrappedComponent, propsJS);
+  return /*#__PURE__*/React.createElement(WrappedComponent, propsJS);
 };
 
-exports.matchUserGroup = matchUserGroup;
-exports.selectChangePasswordError = selectChangePasswordError;
-exports.selectChangePasswordSending = selectChangePasswordSending;
-exports.selectChangePasswordSent = selectChangePasswordSent;
-exports.selectClientCredentials = selectClientCredentials;
-exports.selectPasswordResetRequestError = selectPasswordResetRequestError;
-exports.selectPasswordResetRequestSending = selectPasswordResetRequestSending;
-exports.selectPasswordResetRequestSent = selectPasswordResetRequestSent;
-exports.selectResetPasswordError = selectResetPasswordError;
-exports.selectResetPasswordSending = selectResetPasswordSending;
-exports.selectResetPasswordSent = selectResetPasswordSent;
-exports.selectUser = selectUser;
-exports.selectUserAuthenticationError = selectUserAuthenticationError;
-exports.selectUserAuthenticationErrorMessage = selectUserAuthenticationErrorMessage;
-exports.selectUserError = selectUserError;
-exports.selectUserErrorMessage = selectUserErrorMessage;
-exports.selectUserGroups = selectUserGroups;
-exports.selectUserIsAuthenticated = selectUserIsAuthenticated;
-exports.selectUserIsLoading = selectUserIsLoading;
-exports.selectUserRegistration = selectUserRegistration;
-exports.selectUserRegistrationError = selectUserRegistrationError;
-exports.selectUserRegistrationIsLoading = selectUserRegistrationIsLoading;
-exports.selectUserRegistrationIsSuccess = selectUserRegistrationIsSuccess;
-exports.selectors = selectors;
-exports.toJS = toJS;
-//# sourceMappingURL=ToJs-79922828.js.map
+export { selectUserIsAuthenticated as a, selectUserGroups as b, selectUserAuthenticationError as c, selectUserAuthenticationErrorMessage as d, selectUserError as e, selectUserErrorMessage as f, selectUserIsLoading as g, selectUser as h, selectUserRegistrationError as i, selectUserRegistrationIsLoading as j, selectUserRegistrationIsSuccess as k, selectUserRegistration as l, matchUserGroup as m, selectPasswordResetRequestSending as n, selectPasswordResetRequestSent as o, selectPasswordResetRequestError as p, selectResetPasswordSending as q, selectResetPasswordSent as r, selectClientCredentials as s, toJS as t, selectResetPasswordError as u, selectChangePasswordSending as v, selectChangePasswordSent as w, selectUserGuid as x, selectChangePasswordError as y, selectors as z };
+//# sourceMappingURL=ToJs-6e7b247c.js.map

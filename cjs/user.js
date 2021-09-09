@@ -7,12 +7,12 @@ var reactRedux = require('react-redux');
 require('jsonpath-mapper');
 require('immutable');
 var actions$1 = require('./actions-e9f69947.js');
-var reducers = require('./reducers-0ea95da5.js');
+var reducers = require('./reducers-cb531715.js');
 require('@redux-saga/core/effects');
 require('query-string');
 var selectors = require('./selectors-1295124a.js');
-var ToJs = require('./ToJs-79922828.js');
-var login = require('./login-11635675.js');
+var ToJs = require('./ToJs-d72e5b10.js');
+var login = require('./login-4f274c6a.js');
 require('await-to-js');
 require('js-cookie');
 
@@ -134,9 +134,9 @@ const useChangePassword = () => {
   return {
     isLoading: select(ToJs.selectChangePasswordSending),
     isSuccess: select(ToJs.selectChangePasswordSent),
+    userId: select(ToJs.selectUserGuid),
     isLoggedIn: select(ToJs.selectUserIsAuthenticated),
     error: select(ToJs.selectChangePasswordError),
-    authenticationErrorMessage: select(ToJs.selectUserAuthenticationErrorMessage),
     changePassword: (userId, currentPassword, newPassword) => dispatch(changePassword(userId, currentPassword, newPassword))
   };
 };

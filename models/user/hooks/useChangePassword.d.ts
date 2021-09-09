@@ -5,6 +5,5 @@ declare function useChangePassword(): {
     userId: any;
     isLoggedIn: any;
     error: any;
-    authenticationErrorMessage: any;
     changePassword: (userId: any, currentPassword: any, newPassword: any) => any;
 };

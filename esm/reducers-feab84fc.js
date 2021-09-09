@@ -1,9 +1,7 @@
-'use strict';
-
-var immutable = require('immutable');
+import { Seq, Map, List } from 'immutable';
 
 const fromJSOrdered = js => {
-  return typeof js !== 'object' || js === null ? js : Array.isArray(js) ? immutable.Seq(js).map(fromJSOrdered).toList() : immutable.Seq(js).map(fromJSOrdered).toOrderedMap();
+  return typeof js !== 'object' || js === null ? js : Array.isArray(js) ? Seq(js).map(fromJSOrdered).toList() : Seq(js).map(fromJSOrdered).toOrderedMap();
 };
 
 const ACTION_PREFIX = '@USER/';
@@ -54,7 +52,7 @@ var types = /*#__PURE__*/Object.freeze({
   CHANGE_USER_PASSWORD_ERROR: CHANGE_USER_PASSWORD_ERROR
 });
 
-const defaultAuthenticationState = immutable.Map({
+const defaultAuthenticationState = Map({
   authenticated: false,
   authenticationError: false,
   authenticationErrorMessage: null,
@@ -78,12 +76,12 @@ const defaultChangePasswordValues = {
   sent: false,
   error: null
 };
-const initialUserState = immutable.Map({
+const initialUserState = Map({
   authenticationState: defaultAuthenticationState,
   passwordResetRequest: defaultPasswordResetRequestValues,
   resetPassword: defaultResetPasswordValues,
   changePassword: defaultChangePasswordValues,
-  groups: new immutable.List([])
+  groups: new List([])
 });
 var UserReducer = ((state = initialUserState, action) => {
   switch (action.type) {
@@ -144,7 +142,7 @@ var UserReducer = ((state = initialUserState, action) => {
         } = action; // Set registration object from the supplied action.user
         // so we can call these values back later
 
-        const nextState = state.set('registration', user ? fromJSOrdered(user) : state.get('registration', immutable.Map())); // Set registration flags so the UI can track the status
+        const nextState = state.set('registration', user ? fromJSOrdered(user) : state.get('registration', Map())); // Set registration flags so the UI can track the status
 
         return nextState.setIn(['registration', 'success'], action.type === REGISTER_USER_SUCCESS).setIn(['registration', 'error'], error || false).setIn(['registration', 'loading'], action.type === REGISTER_USER);
       }
@@ -165,7 +163,7 @@ var UserReducer = ((state = initialUserState, action) => {
       return state.setIn(['resetPassword', 'isSending'], false).setIn(['resetPassword', 'sent'], true);
 
     case RESET_USER_PASSWORD_ERROR:
-      return state.setIn(['changePassword', 'isSending'], false).setIn(['changePassword', 'error'], action.error);
+      return state.setIn(['resetPassword', 'isSending'], false).setIn(['resetPassword', 'error'], action.error);
 
     case CHANGE_USER_PASSWORD_SENDING:
       return state.setIn(['changePassword', 'isSending'], true);
@@ -181,27 +179,5 @@ var UserReducer = ((state = initialUserState, action) => {
   }
 });
 
-exports.CHANGE_USER_PASSWORD = CHANGE_USER_PASSWORD;
-exports.CHANGE_USER_PASSWORD_ERROR = CHANGE_USER_PASSWORD_ERROR;
-exports.CHANGE_USER_PASSWORD_SENDING = CHANGE_USER_PASSWORD_SENDING;
-exports.CHANGE_USER_PASSWORD_SUCCESS = CHANGE_USER_PASSWORD_SUCCESS;
-exports.LOGIN_USER = LOGIN_USER;
-exports.LOGOUT_USER = LOGOUT_USER;
-exports.REGISTER_USER = REGISTER_USER;
-exports.REGISTER_USER_FAILED = REGISTER_USER_FAILED;
-exports.REGISTER_USER_SUCCESS = REGISTER_USER_SUCCESS;
-exports.REQUEST_USER_PASSWORD_RESET = REQUEST_USER_PASSWORD_RESET;
-exports.REQUEST_USER_PASSWORD_RESET_ERROR = REQUEST_USER_PASSWORD_RESET_ERROR;
-exports.REQUEST_USER_PASSWORD_RESET_SENDING = REQUEST_USER_PASSWORD_RESET_SENDING;
-exports.REQUEST_USER_PASSWORD_RESET_SUCCESS = REQUEST_USER_PASSWORD_RESET_SUCCESS;
-exports.RESET_USER_PASSWORD = RESET_USER_PASSWORD;
-exports.RESET_USER_PASSWORD_ERROR = RESET_USER_PASSWORD_ERROR;
-exports.RESET_USER_PASSWORD_SENDING = RESET_USER_PASSWORD_SENDING;
-exports.RESET_USER_PASSWORD_SUCCESS = RESET_USER_PASSWORD_SUCCESS;
-exports.SET_AUTHENTICATION_STATE = SET_AUTHENTICATION_STATE;
-exports.UserReducer = UserReducer;
-exports.VALIDATE_USER = VALIDATE_USER;
-exports.fromJSOrdered = fromJSOrdered;
-exports.initialUserState = initialUserState;
-exports.types = types;
-//# sourceMappingURL=reducers-0ea95da5.js.map
+export { CHANGE_USER_PASSWORD as C, LOGIN_USER as L, REGISTER_USER as R, SET_AUTHENTICATION_STATE as S, UserReducer as U, VALIDATE_USER as V, REGISTER_USER_SUCCESS as a, REGISTER_USER_FAILED as b, REQUEST_USER_PASSWORD_RESET as c, RESET_USER_PASSWORD as d, REQUEST_USER_PASSWORD_RESET_SENDING as e, REQUEST_USER_PASSWORD_RESET_SUCCESS as f, REQUEST_USER_PASSWORD_RESET_ERROR as g, RESET_USER_PASSWORD_SENDING as h, RESET_USER_PASSWORD_SUCCESS as i, RESET_USER_PASSWORD_ERROR as j, CHANGE_USER_PASSWORD_ERROR as k, CHANGE_USER_PASSWORD_SENDING as l, CHANGE_USER_PASSWORD_SUCCESS as m, LOGOUT_USER as n, fromJSOrdered as o, initialUserState as p, types as t };
+//# sourceMappingURL=reducers-feab84fc.js.map
