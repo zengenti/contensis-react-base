@@ -92,7 +92,7 @@
     "zengenti-search-package": "git+https://gitlab+deploy-token-5:XKRGRE1p2PrFAxnWwLNz@gitlab.zengenti.com/zengenti-packages/search.git"
   },
   "dependencies": {
-    "@hot-loader/react-dom": "^16.11.0 || ^17.0.1",
+    "@hot-loader/react-dom": "^17.0.1",
     "app-root-path": "^3.0.0",
     "await-to-js": "^2.1.1",
     "contensis-delivery-api": "^1.1.7",
@@ -111,8 +111,8 @@
     "oidc-client": "^1.5.4",
     "patch-package": "^6.2.2",
     "query-string": "^5.1.1",
-    "react": "^16.11.0 || ^17.0.2",
-    "react-dom": "^16.11.0 || ^17.0.2",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
     "react-helmet": "5.2.1",
     "react-hot-loader": "^4.11.0",
     "react-loadable": "^5.5.0",
