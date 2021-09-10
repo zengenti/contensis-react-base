@@ -1,5 +1,4 @@
 import useForgotPassword from '../hooks/useForgotPassword';
-import { toJS } from '~/util/ToJs';
 
 const ForgotPasswordContainer = ({ children, ...props }) => {
   const userProps = useForgotPassword(props);
@@ -8,4 +7,4 @@ const ForgotPasswordContainer = ({ children, ...props }) => {
 
 ForgotPasswordContainer.propTypes = {};
 
-export default toJS(ForgotPasswordContainer);
+export default ForgotPasswordContainer;

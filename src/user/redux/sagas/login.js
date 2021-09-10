@@ -1,4 +1,3 @@
-import { Map } from 'immutable';
 import { takeEvery, select, put, call } from 'redux-saga/effects';
 import {
   SET_AUTHENTICATION_STATE,
@@ -76,7 +75,7 @@ export function* handleRequiresLoginSaga(action) {
     if (!userLoggedIn && !securityToken) {
       LoginHelper.ClientRedirectToSignInPage(action.location.pathname);
     } else if (routeRequiresGroups.length > 0) {
-      const userGroups = (yield select(selectUserGroups)).toJS();
+      const userGroups = yield select(selectUserGroups);
       const groupMatch = matchUserGroup(userGroups, routeRequiresGroups);
 
       if (!groupMatch)
@@ -170,9 +169,7 @@ function* logoutUserSaga({ redirectPath }) {
 }
 
 export function* refreshSecurityToken() {
-  const clientCredentials = (
-    (yield select(selectClientCredentials)) || Map()
-  ).toJS();
+  const clientCredentials = yield select(selectClientCredentials);
   if (Object.keys(clientCredentials).length > 0) {
     const client = yield getManagementApiClient(clientCredentials);
     yield client.authenticate();

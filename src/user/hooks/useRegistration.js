@@ -16,7 +16,7 @@ const useRegistration = () => {
     error: select(selectUserRegistrationError),
     isLoading: select(selectUserRegistrationIsLoading),
     isSuccess: select(selectUserRegistrationIsSuccess),
-    user: select(selectUserRegistration).toJS(),
+    user: select(selectUserRegistration),
   };
 };
 

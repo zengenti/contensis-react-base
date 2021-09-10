@@ -23,7 +23,7 @@ const useLogin = () => {
     errorMessage: select(selectUserErrorMessage),
     isAuthenticated: select(selectUserIsAuthenticated),
     isLoading: select(selectUserIsLoading),
-    user: select(selectUser).toJS(),
+    user: select(selectUser),
   };
 };
 

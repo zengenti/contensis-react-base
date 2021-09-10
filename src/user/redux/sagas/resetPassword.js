@@ -31,9 +31,8 @@ function* requestPasswordResetSaga(action) {
   });
   if (userEmailObject && userEmailObject.userEmail) {
     try {
-      const passwordResetRequestResponse = yield UserHelper.RequestPasswordReset(
-        userEmailObject
-      );
+      const passwordResetRequestResponse =
+        yield UserHelper.RequestPasswordReset(userEmailObject);
 
       if (passwordResetRequestResponse) {
         if (!passwordResetRequestResponse.error) {
@@ -141,7 +140,7 @@ function* changePasswordSaga(action) {
     yield put({
       type: CHANGE_USER_PASSWORD_SENDING,
     });
-    const clientCredentials = (yield select(selectClientCredentials)).toJS();
+    const clientCredentials = yield select(selectClientCredentials);
     const client = yield getManagementApiClient({ ...clientCredentials });
 
     const [err, res] = yield to(

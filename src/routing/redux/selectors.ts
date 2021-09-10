@@ -1,66 +1,75 @@
+import { Entry } from 'contensis-delivery-api/lib/models';
+import { AppState } from '~/redux/appstate';
+import { getJS } from '~/redux/util';
 import { queryParams } from '~/util/navigation';
 
-export const selectRouteEntry = (state: any) =>
-  state?.routing?.entry === null ? null : state?.routing?.entry || {};
+const select = (state: AppState) => getJS(state, 'routing');
 
-export const selectMappedEntry = (state: any) =>
-  state?.routing?.mappedEntry || null;
+export const selectRouteEntry = (state: AppState) =>
+  select(state)?.entry === null ? null : select(state)?.entry || ({} as Entry);
 
-export const selectNodeDepends = (state: any) =>
-  state?.routing?.nodeDepends || [];
+export const selectMappedEntry = (state: AppState) =>
+  select(state)?.mappedEntry || null;
 
-export const selectCurrentHostname = (state: any) =>
-  state?.routing?.currentHostname;
+export const selectNodeDepends = (state: AppState) =>
+  select(state)?.nodeDepends || [];
 
-export const selectCurrentTreeID = (state: any) =>
-  state?.routing?.currentHostname;
+export const selectCurrentHostname = (state: AppState) =>
+  select(state)?.currentHostname;
 
-export const selectRouteEntryEntryId = (state: any) =>
-  state?.routing?.entry?.sys?.id || null;
+export const selectCurrentTreeID = (state: AppState) =>
+  select(state)?.currentHostname;
 
-export const selectRouteEntryContentTypeId = (state: any) => {
+export const selectRouteEntryEntryId = (state: AppState) =>
+  select(state)?.entry?.sys?.id || null;
+
+export const selectRouteEntryContentTypeId = (state: AppState) => {
   const entry = selectRouteEntry(state);
   return entry?.sys?.contentTypeId || null;
 };
 
-export const selectRouteEntryLanguage = (state: any) => {
+export const selectRouteEntryLanguage = (state: AppState) => {
   const entry = selectRouteEntry(state);
   return entry?.sys?.language || null;
 };
 
-export const selectRouteEntrySlug = (state: any) => {
+export const selectRouteEntrySlug = (state: AppState) => {
   const entry = selectRouteEntry(state);
   return entry?.sys?.slug || null;
 };
 
-export const selectRouteEntryID = (state: any) => state?.routing?.entryID;
+export const selectRouteEntryID = (state: AppState) => select(state)?.entryID;
 
-export const selectCurrentPath = (state: any) => state?.routing?.currentPath;
-export const selectCurrentSearch = (state: any) =>
-  state?.routing?.location?.search;
-export const selectCurrentHash = (state: any) => state?.routing?.location?.hash;
-export const selectQueryStringAsObject = (state: any) =>
+export const selectCurrentPath = (state: AppState) =>
+  select(state)?.currentPath;
+export const selectCurrentSearch = (state: AppState) =>
+  select(state)?.location?.search;
+export const selectCurrentHash = (state: AppState) =>
+  select(state)?.location?.hash;
+export const selectQueryStringAsObject = (state: AppState) =>
   queryParams(selectCurrentSearch(state));
-export const selectCurrentProject = (state: any) =>
-  state?.routing?.currentProject;
-export const selectIsNotFound = (state: any) => state?.routing?.notFound;
-export const selectCurrentAncestors = (state: any) =>
-  state?.routing?.currentNodeAncestors || [];
-export const selectCurrentSiblings = (state: any) =>
-  state?.routing?.currentNodeSiblings || [];
-export const selectCurrentNode = (state: any) => state?.routing?.currentNode;
+export const selectCurrentProject = (state: AppState) =>
+  select(state)?.currentProject;
+export const selectIsNotFound = (state: AppState) => select(state)?.notFound;
+export const selectCurrentAncestors = (state: AppState) =>
+  select(state)?.currentNodeAncestors || [];
+export const selectCurrentSiblings = (state: AppState) =>
+  select(state)?.currentNodeSiblings || [];
+export const selectCurrentNode = (state: AppState) =>
+  select(state)?.currentNode;
 export const selectCurrentChildren = state =>
-  state?.routing?.currentNode?.children || [];
+  select(state)?.currentNode?.children || [];
 
-export const selectBreadcrumb = (state: any) => {
+export const selectBreadcrumb = (state: AppState) => {
   return selectCurrentAncestors(state).push(selectCurrentNode(state));
 };
-export const selectRouteErrorMessage = (state: any) => {
-  const error = state?.routing?.error;
+export const selectRouteErrorMessage = (state: AppState) => {
+  const error = select(state)?.error;
   if (error && 'data' in error) {
     return error?.data?.message || error?.statusText;
   }
 };
-export const selectRouteIsError = (state: any) => state?.routing?.isError;
-export const selectRouteLoading = (state: any) => state?.routing?.isLoading;
-export const selectRouteStatusCode = (state: any) => state?.routing?.statusCode;
+export const selectRouteIsError = (state: AppState) => select(state)?.isError;
+export const selectRouteLoading = (state: AppState) => select(state)?.isLoading;
+export const selectRouteStatusCode = (state: AppState) =>
+  select(state)?.statusCode;

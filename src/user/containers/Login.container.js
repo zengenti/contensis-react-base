@@ -1,5 +1,4 @@
 import useLogin from '../hooks/useLogin';
-import { toJS } from '~/util/ToJs';
 
 const LoginContainer = ({ children, ...props }) => {
   const userProps = useLogin(props);
@@ -8,4 +7,4 @@ const LoginContainer = ({ children, ...props }) => {
 
 LoginContainer.propTypes = {};
 
-export default toJS(LoginContainer);
+export default LoginContainer;

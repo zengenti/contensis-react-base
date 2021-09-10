@@ -27,7 +27,6 @@ import {
 } from '~/user/redux/selectors';
 import { matchUserGroup } from '~/user/util/matchGroups';
 
-import { toJS } from '~/util/ToJs';
 import { Entry } from 'contensis-delivery-api/lib/models';
 import { AppRootProps, RouteLoaderProps } from '../routes';
 
@@ -43,8 +42,8 @@ const getTrimmedPath = path => {
 };
 
 interface IReduxProps {
-  contentTypeId: string;
-  entry: Entry;
+  contentTypeId: string | null;
+  entry: Entry | null;
   isError: boolean;
   isNotFound: boolean;
   isLoading: boolean;
@@ -121,7 +120,6 @@ const RouteLoader = ({
       statePath,
       routes
     );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     setNavigationPath,
     // staticRoute,
@@ -217,5 +215,5 @@ const mapDispatchToProps = {
 };
 
 export default hot(module)(
-  connect(mapStateToProps, mapDispatchToProps)(toJS(RouteLoader))
+  connect(mapStateToProps, mapDispatchToProps)(RouteLoader)
 );

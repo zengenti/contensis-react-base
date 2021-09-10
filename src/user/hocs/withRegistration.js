@@ -6,7 +6,6 @@ import {
   selectUserRegistrationIsLoading,
   selectUserRegistrationIsSuccess,
 } from '../redux/selectors';
-import { toJS } from '~/util/ToJs';
 
 const getDisplayName = WrappedComponent => {
   return WrappedComponent.displayName || WrappedComponent.name || 'Component';
@@ -29,7 +28,7 @@ const withRegistration = WrappedComponent => {
   const ConnectedComponent = connect(
     mapStateToProps,
     mapDispatchToProps
-  )(toJS(WrappedComponent));
+  )(WrappedComponent);
 
   ConnectedComponent.displayName = `${getDisplayName(WrappedComponent)}`;
 

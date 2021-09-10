@@ -1,4 +1,5 @@
 import { Draft, produce } from 'immer';
+import { AppState } from '~/redux/appstate';
 import {
   REGISTER_USER,
   REGISTER_USER_FAILED,
@@ -45,6 +46,12 @@ const defaultChangePasswordValues = {
   error: null,
 };
 
+const defaultRegistrationValues = {
+  loading: false,
+  success: false,
+  error: null,
+};
+
 export const initialUserState = {
   authenticationState: defaultAuthenticationState,
   passwordResetRequest: defaultPasswordResetRequestValues,
@@ -53,7 +60,7 @@ export const initialUserState = {
   groups: [],
 };
 
-export default produce((state: Draft<any>, action) => {
+export default produce((state: Draft<AppState['user']>, action) => {
   switch (action.type) {
     case LOGIN_USER:
     case LOGOUT_USER:
@@ -110,7 +117,9 @@ export default produce((state: Draft<any>, action) => {
 
       // Set registration object from the supplied action.user
       // so we can call these values back later
-      state.registration = user || state.registration || {};
+      state.registration = (user ||
+        state.registration ||
+        defaultRegistrationValues) as typeof defaultRegistrationValues;
 
       // Set registration flags so the UI can track the status
       state.registration.success = action.type === REGISTER_USER_SUCCESS;
@@ -119,36 +128,56 @@ export default produce((state: Draft<any>, action) => {
       return;
     }
     case REQUEST_USER_PASSWORD_RESET_SENDING:
-      return state.setIn(['passwordResetRequest', 'isSending'], true);
+      state.passwordResetRequest = defaultPasswordResetRequestValues;
+      state.passwordResetRequest.isSending = true;
+      return;
     case REQUEST_USER_PASSWORD_RESET_SUCCESS:
-      return state
-        .setIn(['passwordResetRequest', 'isSending'], false)
-        .setIn(['passwordResetRequest', 'sent'], true);
+      if (state.passwordResetRequest) {
+        state.passwordResetRequest.isSending = false;
+        state.passwordResetRequest.sent = true;
+      }
+      return;
     case REQUEST_USER_PASSWORD_RESET_ERROR:
-      return state
-        .setIn(['passwordResetRequest', 'isSending'], false)
-        .setIn(['passwordResetRequest', 'error'], action.error);
+      if (state.passwordResetRequest) {
+        state.passwordResetRequest.isSending = false;
+        state.passwordResetRequest.error = action.error;
+      }
+      return;
     case RESET_USER_PASSWORD_SENDING:
-      return state.setIn(['resetPassword', 'isSending'], true);
+      if (state.resetPassword) {
+        state.resetPassword.isSending = true;
+      }
+      return;
     case RESET_USER_PASSWORD_SUCCESS:
-      return state
-        .setIn(['resetPassword', 'isSending'], false)
-        .setIn(['resetPassword', 'sent'], true);
+      if (state.resetPassword) {
+        state.resetPassword.isSending = false;
+        state.resetPassword.sent = true;
+      }
+      return;
     case RESET_USER_PASSWORD_ERROR:
-      return state
-        .setIn(['changePassword', 'isSending'], false)
-        .setIn(['changePassword', 'error'], action.error);
+      if (state.resetPassword) {
+        state.resetPassword.isSending = false;
+        state.resetPassword.error = action.error;
+      }
+      return;
     case CHANGE_USER_PASSWORD_SENDING:
-      return state.setIn(['changePassword', 'isSending'], true);
+      if (state.changePassword) {
+        state.changePassword.isSending = true;
+      }
+      return;
     case CHANGE_USER_PASSWORD_SUCCESS:
-      return state
-        .setIn(['changePassword', 'isSending'], false)
-        .setIn(['changePassword', 'sent'], true);
+      if (state.changePassword) {
+        state.changePassword.isSending = false;
+        state.changePassword.sent = true;
+      }
+      return;
     case CHANGE_USER_PASSWORD_ERROR:
-      return state
-        .setIn(['changePassword', 'isSending'], false)
-        .setIn(['changePassword', 'error'], action.error);
+      if (state.changePassword) {
+        state.changePassword.isSending = false;
+        state.changePassword.error = action.error;
+      }
+      return;
     default:
-      return state;
+      return;
   }
 }, initialUserState);

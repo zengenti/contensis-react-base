@@ -1,5 +1,9 @@
-export const hasNavigationTree = state => state?.navigation?.isReady;
+import { getJS } from '../util';
 
-export const selectNavigationRoot = state => state?.navigation?.root;
+const select = state => getJS(state, 'navigation');
 
-export const selectNavigationDepends = state => state?.navigation?.treeDepends;
+export const hasNavigationTree = state => select(state)?.isReady;
+
+export const selectNavigationRoot = state => select(state)?.root;
+
+export const selectNavigationDepends = state => select(state)?.treeDepends;

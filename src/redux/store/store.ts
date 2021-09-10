@@ -17,6 +17,9 @@ import RoutingReducer from '~/routing/redux/reducers';
 import UserReducer from '~/user/redux/reducers';
 import VersionReducer from '../reducers/version';
 import routerMiddleware from './routerMiddleware';
+import { AppState } from '../appstate';
+import { History, MemoryHistory } from 'history';
+import { StateType } from '~/config';
 
 export let reduxStore;
 
@@ -26,7 +29,12 @@ declare let window: Window &
     __REDUX_DEVTOOLS_EXTENSION__: any;
   };
 
-export default (featureReducers, initialState, history) => {
+export default async (
+  featureReducers: any,
+  initialState: AppState,
+  history: History | MemoryHistory,
+  stateType: StateType
+) => {
   let reduxDevToolsMiddleware = f => f;
 
   if (typeof window != 'undefined') {
@@ -45,8 +53,23 @@ export default (featureReducers, initialState, history) => {
     ...featureReducers,
   };
 
+  // Reassign the combiner and fromJS functions when
+  // stateType is 'immutable' with dynamic imports
+  let combiner = combineReducers;
+  let fromJS: any = (obj: any) => obj;
+
+  if (stateType === 'immutable') {
+    fromJS = await import(
+      /* webpackChunkName: "from-js" */ '~/util/fromJSLeaveImmer'
+    );
+
+    combiner = (
+      await import(/* webpackChunkName: "redux-immutable" */ 'redux-immutable')
+    ).combineReducers;
+  }
+
   const createReducer = (injectedReducers = {}) => {
-    const rootReducer = combineReducers({
+    const rootReducer = combiner<AppState>({
       ...injectedReducers,
       // other non-injected reducers go here
       ...reducers,
@@ -55,7 +78,7 @@ export default (featureReducers, initialState, history) => {
     return rootReducer;
   };
 
-  const store = initialState => {
+  const store = (initialState: AppState) => {
     const runSaga = sagaMiddleware.run;
 
     const middleware: StoreEnhancer<
@@ -76,10 +99,14 @@ export default (featureReducers, initialState, history) => {
       reduxDevToolsMiddleware
     );
 
-    const store: Store<any, Action<any>> & {
+    const store: Store<AppState, Action<any>> & {
       runSaga?: typeof runSaga;
       close?: () => void;
-    } = createStore(createReducer(), initialState, middleware);
+    } = createStore<AppState, Action<any>, unknown, unknown>(
+      createReducer(),
+      initialState,
+      middleware
+    );
 
     store.runSaga = runSaga;
     store.close = () => store.dispatch(END);
@@ -87,6 +114,6 @@ export default (featureReducers, initialState, history) => {
     return store;
   };
 
-  reduxStore = store(initialState);
+  reduxStore = store(fromJS(initialState));
   return reduxStore;
 };

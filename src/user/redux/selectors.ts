@@ -1,42 +1,74 @@
-export const selectUserIsLoading = (state: any) =>
-  state?.user?.authenticationState?.loading;
+import { AppState } from '~/redux/appstate';
+import { getJS } from '~/redux/util';
 
-export const selectUserIsAuthenticated = (state: any) =>
-  state?.user?.authenticationState?.authenticated;
+const select = (state: AppState) => getJS(state, 'user');
 
-export const selectUserAuthenticationError = (state: any) =>
-  state?.user?.authenticationState?.authenticationError;
+export const selectUserIsLoading = (state: AppState) =>
+  select(state)?.authenticationState?.loading;
 
-export const selectUserError = (state: any) =>
-  state?.user?.authenticationState?.error;
+export const selectUserIsAuthenticated = (state: AppState) =>
+  select(state)?.authenticationState?.authenticated;
 
-export const selectClientCredentials = (state: any) =>
-  state?.user?.authenticationState?.clientCredentials;
+export const selectUserAuthenticationError = (state: AppState) =>
+  select(state)?.authenticationState?.authenticationError;
 
-export const selectUser = (state: any) => state?.user;
+export const selectUserError = (state: AppState) =>
+  select(state)?.authenticationState?.error;
 
-export const selectUserIsZengentiStaff = (state: any) =>
-  state?.user?.isZengentiStaff;
+export const selectClientCredentials = (state: AppState) =>
+  select(state)?.authenticationState?.clientCredentials;
 
-export const selectUserGuid = (state: any) => state?.user?.id;
+export const selectUser = (state: AppState) => state?.user;
 
-export const selectUsername = (state: any) => state?.user?.username;
+export const selectUserIsZengentiStaff = (state: AppState) =>
+  select(state)?.isZengentiStaff;
 
-export const selectUserEmail = (state: any) => state?.user?.email;
+export const selectUserGuid = (state: AppState) => select(state)?.id;
 
-export const selectUserGroups = (state: any) => state?.user?.groups;
+export const selectUsername = (state: AppState) => select(state)?.username;
 
-export const selectUserSecurityToken = (state: any) =>
-  state?.user?.authenticationState?.clientCredentials?.contensisClassicToken;
+export const selectUserEmail = (state: AppState) => select(state)?.email;
 
-export const selectUserRegistration = (state: any) =>
-  state?.user?.registration || {};
+export const selectUserGroups = (state: AppState) => select(state)?.groups;
 
-export const selectUserRegistrationError = (state: any) =>
-  state?.user?.registration?.error || false;
+export const selectUserSecurityToken = (state: AppState) =>
+  select(state)?.authenticationState?.clientCredentials?.contensisClassicToken;
 
-export const selectUserRegistrationIsLoading = (state: any) =>
-  state?.user?.registration?.loading || false;
+export const selectUserRegistration = (state: AppState) =>
+  select(state)?.registration || {};
 
-export const selectUserRegistrationIsSuccess = (state: any) =>
-  state?.user?.registration?.success || false;
+export const selectUserRegistrationError = (state: AppState) =>
+  select(state)?.registration?.error || false;
+
+export const selectUserRegistrationIsLoading = (state: AppState) =>
+  select(state)?.registration?.loading || false;
+
+export const selectUserRegistrationIsSuccess = (state: AppState) =>
+  select(state)?.registration?.success || false;
+
+export const selectPasswordResetRequestSending = (state: AppState) =>
+  select(state)?.passwordResetRequest?.isSending;
+
+export const selectPasswordResetRequestSent = (state: AppState) =>
+  select(state)?.passwordResetRequest?.sent;
+
+export const selectPasswordResetRequestError = (state: AppState) =>
+  select(state)?.passwordResetRequest?.error;
+
+export const selectResetPasswordSending = (state: AppState) =>
+  select(state)?.resetPassword?.isSending;
+
+export const selectResetPasswordSent = (state: AppState) =>
+  select(state)?.resetPassword?.sent;
+
+export const selectResetPasswordError = (state: AppState) =>
+  select(state)?.resetPassword?.error;
+
+export const selectChangePasswordSending = (state: AppState) =>
+  select(state)?.changePassword?.isSending;
+
+export const selectChangePasswordSent = (state: AppState) =>
+  select(state)?.changePassword?.sent;
+
+export const selectChangePasswordError = (state: AppState) =>
+  select(state)?.changePassword?.error;

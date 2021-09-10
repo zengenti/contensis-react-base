@@ -177,7 +177,7 @@ export class LoginHelper {
     if (typeof window != 'undefined') {
       let url = '/';
       if (location) {
-        const { search, hash } = location.toJS();
+        const { search, hash } = location;
         url = search ? `${url}${search}` : url;
         url = hash ? `${url}${hash}` : url;
       }

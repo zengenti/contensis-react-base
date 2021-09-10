@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import LoginStyled from '../components.styled/Login.styled';
 import LoginForm from './LoginForm';
 import LogoutForm from './LogoutForm';
-import { toJS } from '~/util/ToJs';
 
 const Login = ({
   error,
@@ -49,4 +48,4 @@ Login.propTypes = {
   updateUserLoginState: PropTypes.func,
 };
 
-export default toJS(Login);
+export default Login;

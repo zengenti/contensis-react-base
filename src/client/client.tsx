@@ -16,8 +16,6 @@ import { setVersionStatus } from '~/redux/actions/version';
 import { deliveryApi } from '~/util/ContensisDeliveryApi';
 import { setCurrentProject } from '~/routing/redux/actions';
 import pickProject from '~/util/pickProject';
-// import fromJSOrdered from '~/util/fromJSOrdered';
-import fromJSLeaveImmer from '~/util/fromJSLeaveImmer';
 
 import { AppConfig } from '~/config';
 
@@ -32,7 +30,13 @@ class ClientApp {
   constructor(ReactApp: React.ComponentType<ReactAppProps>, config: AppConfig) {
     const documentRoot = document.getElementById('root');
 
-    const { routes, withReducers, withSagas, withEvents } = config;
+    const {
+      stateType = 'immutable',
+      routes,
+      withReducers,
+      withSagas,
+      withEvents,
+    } = config;
 
     const GetClientJSX = store => {
       const ClientJsx = (
@@ -58,38 +62,49 @@ class ClientApp {
         else render(Component, documentRoot);
       });
     };
-    let store: any = null;
-    const qs = queryString.parse(window.location.search);
 
+    const hmr = store => {
+      // webpack Hot Module Replacement API
+      if (module.hot) {
+        module.hot.accept(ReactApp as unknown as string, () => {
+          // if you are using harmony modules ({modules:false})
+          HMRRenderer(GetClientJSX(store));
+        });
+      }
+    };
+
+    const qs = queryString.parse(window.location.search);
     const versionStatusFromHostname = deliveryApi.getClientSideVersionStatus();
+
     if (
       window.isDynamic ||
       window.REDUX_DATA ||
       process.env.NODE_ENV !== 'production'
     ) {
-      store = createStore(
-        withReducers,
-        fromJSLeaveImmer(window.REDUX_DATA),
-        history
-      );
-      store.dispatch(
-        setVersionStatus(qs.versionStatus || versionStatusFromHostname)
-      );
+      createStore(withReducers, window.REDUX_DATA, history, stateType).then(
+        store => {
+          store.dispatch(
+            setVersionStatus(qs.versionStatus || versionStatusFromHostname)
+          );
 
-      /* eslint-disable no-console */
-      console.log('Hydrating from inline Redux');
-      /* eslint-enable no-console */
-      store.runSaga(rootSaga(withSagas));
-      store.dispatch(
-        setCurrentProject(
-          pickProject(window.location.hostname, qs),
-          [],
-          window.location.hostname
-        )
-      );
+          /* eslint-disable no-console */
+          console.log('Hydrating from inline Redux');
+          /* eslint-enable no-console */
+          store.runSaga(rootSaga(withSagas));
+          store.dispatch(
+            setCurrentProject(
+              pickProject(window.location.hostname, qs),
+              [],
+              window.location.hostname
+            )
+          );
 
-      delete window.REDUX_DATA;
-      HMRRenderer(GetClientJSX(store));
+          delete window.REDUX_DATA;
+          HMRRenderer(GetClientJSX(store));
+
+          hmr(store);
+        }
+      );
     } else {
       fetch(`${window.location.pathname}?redux=true`)
         .then(response => response.json())
@@ -99,33 +114,28 @@ class ClientApp {
           // console.log(data);
           /* eslint-enable no-console */
           const ssRedux = JSON.parse(data);
-          store = createStore(withReducers, fromJSLeaveImmer(ssRedux), history);
-          // store.dispatch(setVersionStatus(versionStatusFromHostname));
+          createStore(withReducers, ssRedux, history, stateType).then(store => {
+            // store.dispatch(setVersionStatus(versionStatusFromHostname));
 
-          store.runSaga(rootSaga(withSagas));
-          store.dispatch(
-            setCurrentProject(
-              pickProject(
-                window.location.hostname,
-                queryString.parse(window.location.search)
-              ),
-              [],
-              window.location.hostname
-            )
-          );
-          // if (typeof window != 'undefined') {
-          //   store.dispatch(checkUserLoggedIn());
-          // }
-          HMRRenderer(GetClientJSX(store));
+            store.runSaga(rootSaga(withSagas));
+            store.dispatch(
+              setCurrentProject(
+                pickProject(
+                  window.location.hostname,
+                  queryString.parse(window.location.search)
+                ),
+                [],
+                window.location.hostname
+              )
+            );
+            // if (typeof window != 'undefined') {
+            //   store.dispatch(checkUserLoggedIn());
+            // }
+            HMRRenderer(GetClientJSX(store));
+
+            hmr(store);
+          });
         });
-    }
-
-    // webpack Hot Module Replacement API
-    if (module.hot) {
-      module.hot.accept(ReactApp as unknown as string, () => {
-        // if you are using harmony modules ({modules:false})
-        HMRRenderer(GetClientJSX(store));
-      });
     }
   }
 }

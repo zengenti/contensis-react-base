@@ -11,8 +11,6 @@ import Helmet from 'react-helmet';
 import serialize from 'serialize-javascript';
 import minifyCssString from 'minify-css-string';
 import mapJson from 'jsonpath-mapper';
-import { fromJS } from 'immutable';
-// import fromJSLeaveImmer from '~/util/fromJSLeaveImmer';
 import fromEntries from 'fromentries';
 
 import createStore from '~/redux/store/store';
@@ -36,6 +34,7 @@ import stringifyAttributes from './util/stringifyAttributes';
 import { Express, Response } from 'express';
 import { StaticRouterContext } from 'react-router';
 import { ServerConfig } from '~/config';
+import { AppState } from '~/redux/appstate';
 
 const addStandardHeaders = (
   state: any,
@@ -155,6 +154,7 @@ const webApp = (
   }
 ) => {
   const {
+    stateType = 'immutable',
     routes,
     withReducers,
     withSagas,
@@ -189,7 +189,7 @@ const webApp = (
     fs.readFileSync(`dist/${staticFolderPath}/version.json`, 'utf8')
   );
 
-  app.get('/*', (request, response) => {
+  app.get('/*', async (request, response) => {
     const { url } = request;
 
     const matchedStaticRoute = () =>
@@ -219,12 +219,13 @@ const webApp = (
     response.status(200);
 
     // Create a store (with a memory history) from our current url
-    const store = createStore(
+    const store = await createStore(
       withReducers,
-      fromJS({}),
+      {} as AppState,
       history({
         initialEntries: [url],
-      })
+      }),
+      stateType
     );
 
     // dispatch any global and non-saga related actions before calling our JSX
