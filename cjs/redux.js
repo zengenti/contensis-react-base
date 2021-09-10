@@ -7,7 +7,7 @@ require('redux-thunk');
 require('redux-saga');
 require('redux-injectors');
 require('immer');
-var version$1 = require('./version-01903e3e.js');
+var version$1 = require('./version-f33e3a0d.js');
 var actions$1 = require('./actions-f42b09db.js');
 require('./reducers-fde41d6b.js');
 require('@redux-saga/core/effects');

@@ -59,9 +59,9 @@ export default async (
   let fromJS: any = (obj: any) => obj;
 
   if (stateType === 'immutable') {
-    fromJS = await import(
-      /* webpackChunkName: "from-js" */ '~/util/fromJSLeaveImmer'
-    );
+    fromJS = (
+      await import(/* webpackChunkName: "from-js" */ '~/util/fromJSLeaveImmer')
+    ).default;
 
     combiner = (
       await import(/* webpackChunkName: "redux-immutable" */ 'redux-immutable')
