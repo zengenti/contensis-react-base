@@ -1,14 +1,14 @@
 export default useForgotPassword;
 declare function useForgotPassword(): {
-    isLoading: unknown;
-    isSuccess: unknown;
-    error: unknown;
+    isLoading: boolean | undefined;
+    isSuccess: boolean | undefined;
+    error: Error | null | undefined;
     requestPasswordReset: (userEmailObject: any) => any;
     setNewPassword: {
-        queryString: any;
-        isLoading: unknown;
-        isSuccess: unknown;
-        error: unknown;
+        queryString: string;
+        isLoading: boolean | undefined;
+        isSuccess: boolean | undefined;
+        error: Error | null | undefined;
         submit: (resetPasswordObject: any) => any;
     };
 };

@@ -2,39 +2,38 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-require('react');
 var reactRedux = require('react-redux');
 require('jsonpath-mapper');
-require('immutable');
 require('immer');
-var actions$1 = require('./actions-e9f69947.js');
-var reducers = require('./reducers-ec0c8c3a.js');
+require('./actions-f42b09db.js');
+var reducers = require('./reducers-fde41d6b.js');
 require('@redux-saga/core/effects');
+var selectors = require('./selectors-3ea43584.js');
+require('immutable');
 require('query-string');
-var selectors = require('./selectors-1295124a.js');
-var ToJs = require('./ToJs-79922828.js');
-var login = require('./login-2df2ce8f.js');
+var matchGroups = require('./matchGroups-1f9f8470.js');
+var login = require('./login-09abe561.js');
 require('await-to-js');
 require('js-cookie');
 
-const loginUser = (username, password) => actions$1.action(reducers.LOGIN_USER, {
+const loginUser = (username, password) => selectors.action(reducers.LOGIN_USER, {
   username,
   password
 });
-const logoutUser = redirectPath => actions$1.action(reducers.LOGOUT_USER, {
+const logoutUser = redirectPath => selectors.action(reducers.LOGOUT_USER, {
   redirectPath
 });
-const registerUser = (user, mappers) => actions$1.action(reducers.REGISTER_USER, {
+const registerUser = (user, mappers) => selectors.action(reducers.REGISTER_USER, {
   user,
   mappers
 });
-const requestPasswordReset = userEmailObject => actions$1.action(reducers.REQUEST_USER_PASSWORD_RESET, {
+const requestPasswordReset = userEmailObject => selectors.action(reducers.REQUEST_USER_PASSWORD_RESET, {
   userEmailObject
 });
-const resetPassword = resetPasswordObject => actions$1.action(reducers.RESET_USER_PASSWORD, {
+const resetPassword = resetPasswordObject => selectors.action(reducers.RESET_USER_PASSWORD, {
   resetPasswordObject
 });
-const changePassword = (userId, currentPassword, newPassword) => actions$1.action(reducers.CHANGE_USER_PASSWORD, {
+const changePassword = (userId, currentPassword, newPassword) => selectors.action(reducers.CHANGE_USER_PASSWORD, {
   userId,
   currentPassword,
   newPassword
@@ -56,13 +55,13 @@ const useLogin = () => {
   return {
     loginUser: (username, password) => dispatch(loginUser(username, password)),
     logoutUser: redirectPath => dispatch(logoutUser(redirectPath)),
-    authenticationError: select(ToJs.selectUserAuthenticationError),
-    authenticationErrorMessage: select(ToJs.selectUserAuthenticationErrorMessage),
-    error: select(ToJs.selectUserError),
-    errorMessage: select(ToJs.selectUserErrorMessage),
-    isAuthenticated: select(ToJs.selectUserIsAuthenticated),
-    isLoading: select(ToJs.selectUserIsLoading),
-    user: select(ToJs.selectUser).toJS()
+    authenticationError: select(matchGroups.selectUserAuthenticationError),
+    authenticationErrorMessage: select(matchGroups.selectUserAuthenticationErrorMessage),
+    error: select(matchGroups.selectUserError),
+    errorMessage: select(matchGroups.selectUserErrorMessage),
+    isAuthenticated: select(matchGroups.selectUserIsAuthenticated),
+    isLoading: select(matchGroups.selectUserIsLoading),
+    user: select(matchGroups.selectUser)
   };
 };
 
@@ -75,17 +74,16 @@ const LoginContainer = ({
 };
 
 LoginContainer.propTypes = {};
-var Login_container = ToJs.toJS(LoginContainer);
 
 const useRegistration = () => {
   const dispatch = reactRedux.useDispatch();
   const select = reactRedux.useSelector;
   return {
     registerUser: (user, mappers) => dispatch(registerUser(user, mappers)),
-    error: select(ToJs.selectUserRegistrationError),
-    isLoading: select(ToJs.selectUserRegistrationIsLoading),
-    isSuccess: select(ToJs.selectUserRegistrationIsSuccess),
-    user: select(ToJs.selectUserRegistration).toJS()
+    error: select(matchGroups.selectUserRegistrationError),
+    isLoading: select(matchGroups.selectUserRegistrationIsLoading),
+    isSuccess: select(matchGroups.selectUserRegistrationIsSuccess),
+    user: select(matchGroups.selectUserRegistration)
   };
 };
 
@@ -98,21 +96,20 @@ const RegistrationContainer = ({
 };
 
 RegistrationContainer.propTypes = {};
-var Registration_container = ToJs.toJS(RegistrationContainer);
 
 const useForgotPassword = () => {
   const dispatch = reactRedux.useDispatch();
   const select = reactRedux.useSelector;
   return {
-    isLoading: select(ToJs.selectPasswordResetRequestSending),
-    isSuccess: select(ToJs.selectPasswordResetRequestSent),
-    error: select(ToJs.selectPasswordResetRequestError),
+    isLoading: select(matchGroups.selectPasswordResetRequestSending),
+    isSuccess: select(matchGroups.selectPasswordResetRequestSent),
+    error: select(matchGroups.selectPasswordResetRequestError),
     requestPasswordReset: userEmailObject => dispatch(requestPasswordReset(userEmailObject)),
     setNewPassword: {
       queryString: select(selectors.selectCurrentSearch),
-      isLoading: select(ToJs.selectResetPasswordSending),
-      isSuccess: select(ToJs.selectResetPasswordSent),
-      error: select(ToJs.selectResetPasswordError),
+      isLoading: select(matchGroups.selectResetPasswordSending),
+      isSuccess: select(matchGroups.selectResetPasswordSent),
+      error: select(matchGroups.selectResetPasswordError),
       submit: resetPasswordObject => dispatch(resetPassword(resetPasswordObject))
     }
   };
@@ -127,17 +124,16 @@ const ForgotPasswordContainer = ({
 };
 
 ForgotPasswordContainer.propTypes = {};
-var ForgotPassword_container = ToJs.toJS(ForgotPasswordContainer);
 
 const useChangePassword = () => {
   const dispatch = reactRedux.useDispatch();
   const select = reactRedux.useSelector;
   return {
-    isLoading: select(ToJs.selectChangePasswordSending),
-    isSuccess: select(ToJs.selectChangePasswordSent),
-    isLoggedIn: select(ToJs.selectUserIsAuthenticated),
-    error: select(ToJs.selectChangePasswordError),
-    authenticationErrorMessage: select(ToJs.selectUserAuthenticationErrorMessage),
+    isLoading: select(matchGroups.selectChangePasswordSending),
+    isSuccess: select(matchGroups.selectChangePasswordSent),
+    isLoggedIn: select(matchGroups.selectUserIsAuthenticated),
+    error: select(matchGroups.selectChangePasswordError),
+    authenticationErrorMessage: select(matchGroups.selectUserAuthenticationErrorMessage),
     changePassword: (userId, currentPassword, newPassword) => dispatch(changePassword(userId, currentPassword, newPassword))
   };
 };
@@ -151,7 +147,6 @@ const ChangePasswordContainer = ({
 };
 
 ChangePasswordContainer.propTypes = {};
-var ChangePassword_container = ToJs.toJS(ChangePasswordContainer);
 
 const getDisplayName = WrappedComponent => {
   return WrappedComponent.displayName || WrappedComponent.name || 'Component';
@@ -160,11 +155,11 @@ const getDisplayName = WrappedComponent => {
 const withLogin = WrappedComponent => {
   const mapStateToProps = state => {
     return {
-      authenticationError: ToJs.selectUserAuthenticationError(state),
-      error: ToJs.selectUserError(state),
-      isAuthenticated: ToJs.selectUserIsAuthenticated(state),
-      isLoading: ToJs.selectUserIsLoading(state),
-      user: ToJs.selectUser(state)
+      authenticationError: matchGroups.selectUserAuthenticationError(state),
+      error: matchGroups.selectUserError(state),
+      isAuthenticated: matchGroups.selectUserIsAuthenticated(state),
+      isLoading: matchGroups.selectUserIsLoading(state),
+      user: matchGroups.selectUser(state)
     };
   };
 
@@ -172,7 +167,7 @@ const withLogin = WrappedComponent => {
     loginUser,
     logoutUser
   };
-  const ConnectedComponent = reactRedux.connect(mapStateToProps, mapDispatchToProps)(ToJs.toJS(WrappedComponent));
+  const ConnectedComponent = reactRedux.connect(mapStateToProps, mapDispatchToProps)(WrappedComponent);
   ConnectedComponent.displayName = `${getDisplayName(WrappedComponent)}`;
   return ConnectedComponent;
 };
@@ -184,17 +179,17 @@ const getDisplayName$1 = WrappedComponent => {
 const withRegistration = WrappedComponent => {
   const mapStateToProps = state => {
     return {
-      error: ToJs.selectUserRegistrationError(state),
-      isLoading: ToJs.selectUserRegistrationIsLoading(state),
-      isSuccess: ToJs.selectUserRegistrationIsSuccess(state),
-      user: ToJs.selectUserRegistration(state)
+      error: matchGroups.selectUserRegistrationError(state),
+      isLoading: matchGroups.selectUserRegistrationIsLoading(state),
+      isSuccess: matchGroups.selectUserRegistrationIsSuccess(state),
+      user: matchGroups.selectUserRegistration(state)
     };
   };
 
   const mapDispatchToProps = {
     registerUser
   };
-  const ConnectedComponent = reactRedux.connect(mapStateToProps, mapDispatchToProps)(ToJs.toJS(WrappedComponent));
+  const ConnectedComponent = reactRedux.connect(mapStateToProps, mapDispatchToProps)(WrappedComponent);
   ConnectedComponent.displayName = `${getDisplayName$1(WrappedComponent)}`;
   return ConnectedComponent;
 };
@@ -202,14 +197,14 @@ const withRegistration = WrappedComponent => {
 exports.initialUserState = reducers.initialUserState;
 exports.reducer = reducers.UserReducer;
 exports.types = reducers.types;
-exports.selectors = ToJs.selectors;
+exports.selectors = matchGroups.selectors;
 exports.LoginHelper = login.LoginHelper;
 exports.handleRequiresLoginSaga = login.handleRequiresLoginSaga;
 exports.refreshSecurityToken = login.refreshSecurityToken;
-exports.ChangePassword = ChangePassword_container;
-exports.ForgotPasswordContainer = ForgotPassword_container;
-exports.LoginContainer = Login_container;
-exports.RegistrationContainer = Registration_container;
+exports.ChangePassword = ChangePasswordContainer;
+exports.ForgotPasswordContainer = ForgotPasswordContainer;
+exports.LoginContainer = LoginContainer;
+exports.RegistrationContainer = RegistrationContainer;
 exports.actions = actions;
 exports.useChangePassword = useChangePassword;
 exports.useForgotPassword = useForgotPassword;

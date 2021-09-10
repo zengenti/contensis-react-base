@@ -1,8 +1,8 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import styled, { css, ThemeProvider as ThemeProvider$1 } from 'styled-components';
-import { Map, fromJS, Iterable } from 'immutable';
 import { takeEvery, takeLatest, put, call, select, all } from '@redux-saga/core/effects';
+import { Map, fromJS, Iterable } from 'immutable';
 import { createSelector } from 'reselect';
 import PropTypes from 'prop-types';
 

@@ -1,17 +1,17 @@
-import 'immutable';
 import 'redux';
 import 'redux-thunk';
 import 'redux-saga';
 import 'redux-injectors';
 import 'immer';
-import { n as navigation$2, v as version$1, G as GET_NODE_TREE, d as version$2, e as navigation$3 } from './version-8aedc370.js';
-export { f as convertSagaArray, g as injectReducer, i as injectRedux, j as injectSaga, r as store, u as useInjectRedux } from './version-8aedc370.js';
-import { r as routing$1, j as action, k as routing$2 } from './actions-ddd9c623.js';
-import './reducers-6ba16045.js';
+import { n as navigation$2, v as version$1, G as GET_NODE_TREE, d as version$2, e as navigation$3 } from './version-774c05e0.js';
+export { f as convertSagaArray, g as injectReducer, i as injectRedux, j as injectSaga, r as store, u as useInjectRedux } from './version-774c05e0.js';
+import { r as routing$1, j as routing$2 } from './actions-689cc028.js';
+import './reducers-d6c0edb1.js';
 import '@redux-saga/core/effects';
-import { v as version$3 } from './version-3671a3e0.js';
+import { p as action, r as routing$3 } from './selectors-e4667f02.js';
+import { v as version$3 } from './version-afc7eb41.js';
+import 'immutable';
 import 'query-string';
-import { r as routing$3 } from './selectors-68799788.js';
 
 var types = {
   navigation: navigation$2,

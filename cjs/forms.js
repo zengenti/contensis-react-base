@@ -5,8 +5,8 @@ Object.defineProperty(exports, '__esModule', { value: true });
 var React = require('react');
 var reactRedux = require('react-redux');
 var styled = require('styled-components');
-var immutable = require('immutable');
 var effects = require('@redux-saga/core/effects');
+var immutable = require('immutable');
 var reselect = require('reselect');
 var PropTypes = require('prop-types');
 

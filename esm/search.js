@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import mapJson from 'jsonpath-mapper';
-import { OrderedMap, Map, List, Set, fromJS } from 'immutable';
 import { takeEvery, select, put, call, all } from '@redux-saga/core/effects';
 import { Client } from 'contensis-delivery-api';
+import { OrderedMap, Map, List, Set, fromJS } from 'immutable';
 import queryString from 'query-string';
 import { error } from 'loglevel';
 import { Op, OrderBy, Query } from 'contensis-core-api';

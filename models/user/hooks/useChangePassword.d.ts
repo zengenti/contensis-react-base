@@ -1,9 +1,9 @@
 export default useChangePassword;
 declare function useChangePassword(): {
-    isLoading: unknown;
-    isSuccess: unknown;
-    isLoggedIn: any;
-    error: unknown;
+    isLoading: boolean | undefined;
+    isSuccess: boolean | undefined;
+    isLoggedIn: boolean;
+    error: Error | null | undefined;
     authenticationErrorMessage: unknown;
     changePassword: (userId: any, currentPassword: any, newPassword: any) => any;
 };

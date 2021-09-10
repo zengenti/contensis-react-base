@@ -2,19 +2,19 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-require('immutable');
 require('redux');
 require('redux-thunk');
 require('redux-saga');
 require('redux-injectors');
 require('immer');
-var version$1 = require('./version-72900480.js');
-var actions$1 = require('./actions-e9f69947.js');
-require('./reducers-ec0c8c3a.js');
+var version$1 = require('./version-01903e3e.js');
+var actions$1 = require('./actions-f42b09db.js');
+require('./reducers-fde41d6b.js');
 require('@redux-saga/core/effects');
-var version$2 = require('./version-89d6400c.js');
+var selectors$1 = require('./selectors-3ea43584.js');
+var version$2 = require('./version-63682006.js');
+require('immutable');
 require('query-string');
-var selectors$1 = require('./selectors-1295124a.js');
 
 var types = {
   navigation: version$1.navigation,
@@ -22,7 +22,7 @@ var types = {
   version: version$1.version
 };
 
-const loadNavigationTree = () => actions$1.action(version$1.GET_NODE_TREE);
+const loadNavigationTree = () => selectors$1.action(version$1.GET_NODE_TREE);
 
 var navigation = /*#__PURE__*/Object.freeze({
   __proto__: null,

@@ -16,30 +16,30 @@ import Helmet from 'react-helmet';
 import serialize from 'serialize-javascript';
 import minifyCssString from 'minify-css-string';
 import mapJson from 'jsonpath-mapper';
-import { fromJS } from 'immutable';
 import 'redux';
 import 'redux-thunk';
 import 'redux-saga';
 import 'redux-injectors';
 import 'immer';
-import { c as createStore, s as setVersionStatus, a as setVersion } from './version-8aedc370.js';
-import { s as setCurrentProject } from './actions-ddd9c623.js';
-import './reducers-6ba16045.js';
+import { c as createStore, s as setVersionStatus, a as setVersion } from './version-774c05e0.js';
+import { s as setCurrentProject } from './actions-689cc028.js';
+import './reducers-d6c0edb1.js';
 import 'history';
-import { h as history, d as deliveryApi, p as pickProject, r as rootSaga } from './App-96bb3e3f.js';
-export { A as ReactApp } from './App-96bb3e3f.js';
+import { h as history, d as deliveryApi, p as pickProject, r as rootSaga } from './App-d5aa1f4d.js';
+export { A as ReactApp } from './App-d5aa1f4d.js';
 import '@redux-saga/core/effects';
 import 'contensis-delivery-api';
-import './version-3671a3e0.js';
+import { s as selectRouteEntry, a as selectCurrentProject } from './selectors-e4667f02.js';
+import './version-afc7eb41.js';
+import 'immutable';
 import 'query-string';
-import { s as selectRouteEntry, a as selectCurrentProject } from './selectors-68799788.js';
 import 'loglevel';
-import './ToJs-498344a0.js';
-import './login-577d7b76.js';
+import './matchGroups-766fe06c.js';
+import './login-0be3fe6d.js';
 import 'await-to-js';
 import 'js-cookie';
 import 'react-hot-loader';
-import './RouteLoader-4e9dc4a3.js';
+import './RouteLoader-0ca4fa99.js';
 
 const servers = SERVERS;
 /* global SERVERS */
@@ -295,6 +295,7 @@ const loadableBundleData = ({
 
 const webApp = (app, ReactApp, config) => {
   const {
+    stateType = 'immutable',
     routes,
     withReducers,
     withSagas,
@@ -320,7 +321,7 @@ const webApp = (app, ReactApp, config) => {
   scripts.startup = scripts.startup || startupScriptFilename;
   const responseHandler = typeof handleResponses === 'function' ? handleResponses : handleResponse;
   const versionInfo = JSON.parse(fs.readFileSync(`dist/${staticFolderPath}/version.json`, 'utf8'));
-  app.get('/*', (request, response) => {
+  app.get('/*', async (request, response) => {
     const {
       url
     } = request;
@@ -355,9 +356,9 @@ const webApp = (app, ReactApp, config) => {
 
     response.status(200); // Create a store (with a memory history) from our current url
 
-    const store = createStore(withReducers, fromJS({}), history({
+    const store = await createStore(withReducers, {}, history({
       initialEntries: [url]
-    })); // dispatch any global and non-saga related actions before calling our JSX
+    }), stateType); // dispatch any global and non-saga related actions before calling our JSX
 
     const versionStatusFromHostname = deliveryApi.getVersionStatusFromHostname(request.hostname);
     console.info(`Request for ${request.path} hostname: ${request.hostname} versionStatus: ${versionStatusFromHostname}`);

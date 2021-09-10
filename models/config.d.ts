@@ -1,6 +1,8 @@
 import { AppRoutes, WithEvents } from './routing/routes';
 import handleResponse from './server/features/response-handler';
+export declare type StateType = 'immutable' | 'immer';
 export declare type AppConfig = {
+    stateType?: StateType;
     routes: AppRoutes;
     withReducers: {
         [key: string]: any;

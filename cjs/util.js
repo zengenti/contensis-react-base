@@ -6,10 +6,10 @@ var React = require('react');
 var reactRedux = require('react-redux');
 var styled = require('styled-components');
 var mapJson = require('jsonpath-mapper');
+var selectors = require('./selectors-3ea43584.js');
+var version = require('./version-63682006.js');
 require('immutable');
-var version = require('./version-89d6400c.js');
 require('query-string');
-var selectors = require('./selectors-1295124a.js');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 

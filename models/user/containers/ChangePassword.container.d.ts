@@ -1,2 +1,8 @@
-declare var _default: (wrappedComponentProps: any) => JSX.Element;
-export default _default;
+export default ChangePasswordContainer;
+declare function ChangePasswordContainer({ children, ...props }: {
+    [x: string]: any;
+    children: any;
+}): any;
+declare namespace ChangePasswordContainer {
+    const propTypes: {};
+}

@@ -20,29 +20,29 @@ var Helmet = require('react-helmet');
 var serialize = require('serialize-javascript');
 var minifyCssString = require('minify-css-string');
 var mapJson = require('jsonpath-mapper');
-var immutable = require('immutable');
 require('redux');
 require('redux-thunk');
 require('redux-saga');
 require('redux-injectors');
 require('immer');
-var version = require('./version-72900480.js');
-var actions = require('./actions-e9f69947.js');
-require('./reducers-ec0c8c3a.js');
+var version = require('./version-01903e3e.js');
+var actions = require('./actions-f42b09db.js');
+require('./reducers-fde41d6b.js');
 require('history');
-var App = require('./App-89c31b76.js');
+var App = require('./App-c45dde42.js');
 require('@redux-saga/core/effects');
 require('contensis-delivery-api');
-require('./version-89d6400c.js');
+var selectors = require('./selectors-3ea43584.js');
+require('./version-63682006.js');
+require('immutable');
 require('query-string');
-var selectors = require('./selectors-1295124a.js');
 require('loglevel');
-require('./ToJs-79922828.js');
-require('./login-2df2ce8f.js');
+require('./matchGroups-1f9f8470.js');
+require('./login-09abe561.js');
 require('await-to-js');
 require('js-cookie');
 require('react-hot-loader');
-require('./RouteLoader-31fa5b1d.js');
+require('./RouteLoader-cc70b799.js');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -311,6 +311,7 @@ const loadableBundleData = ({
 
 const webApp = (app, ReactApp, config) => {
   const {
+    stateType = 'immutable',
     routes,
     withReducers,
     withSagas,
@@ -336,7 +337,7 @@ const webApp = (app, ReactApp, config) => {
   scripts.startup = scripts.startup || startupScriptFilename;
   const responseHandler = typeof handleResponses === 'function' ? handleResponses : handleResponse;
   const versionInfo = JSON.parse(fs__default['default'].readFileSync(`dist/${staticFolderPath}/version.json`, 'utf8'));
-  app.get('/*', (request, response) => {
+  app.get('/*', async (request, response) => {
     const {
       url
     } = request;
@@ -371,9 +372,9 @@ const webApp = (app, ReactApp, config) => {
 
     response.status(200); // Create a store (with a memory history) from our current url
 
-    const store = version.createStore(withReducers, immutable.fromJS({}), App.history({
+    const store = await version.createStore(withReducers, {}, App.history({
       initialEntries: [url]
-    })); // dispatch any global and non-saga related actions before calling our JSX
+    }), stateType); // dispatch any global and non-saga related actions before calling our JSX
 
     const versionStatusFromHostname = App.deliveryApi.getVersionStatusFromHostname(request.hostname);
     console.info(`Request for ${request.path} hostname: ${request.hostname} versionStatus: ${versionStatusFromHostname}`);

@@ -51,5 +51,5 @@ declare const _default: <Base extends {
         readonly error: null;
     };
     readonly groups: readonly never[];
-}>(base?: Base | undefined, action: any) => any;
+}>(base?: Base | undefined, action: any) => Base;
 export default _default;
