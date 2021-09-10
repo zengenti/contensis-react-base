@@ -25,24 +25,23 @@ require('redux-thunk');
 require('redux-saga');
 require('redux-injectors');
 require('immer');
-var version = require('./version-f33e3a0d.js');
-var actions = require('./actions-f42b09db.js');
+var version = require('./version-bcb568a3.js');
+var actions = require('./actions-661a0e96.js');
 require('./reducers-fde41d6b.js');
 require('history');
-var App = require('./App-9bfe5dd5.js');
+var App = require('./App-18d09c46.js');
 require('@redux-saga/core/effects');
 require('contensis-delivery-api');
-var selectors = require('./selectors-3ea43584.js');
-require('./version-63682006.js');
-require('immutable');
+var selectors = require('./selectors-1db80394.js');
+require('./version-8d4e5740.js');
 require('query-string');
 require('loglevel');
-require('./matchGroups-1f9f8470.js');
-require('./login-09abe561.js');
+require('./matchGroups-7315f0a3.js');
+require('./login-8d349faf.js');
 require('await-to-js');
 require('js-cookie');
 require('react-hot-loader');
-require('./RouteLoader-cc70b799.js');
+require('./RouteLoader-b90cd529.js');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -245,8 +244,10 @@ var stringifyAttributes = ((attributes = {}) => Object.entries(attributes).map((
 const addStandardHeaders = (state, response, packagejson, groups) => {
   if (state) {
     try {
+      var _state$routing;
+
       console.info('About to add headers');
-      const routingSurrogateKeys = state.getIn(['routing', 'surrogateKeys'], '');
+      const routingSurrogateKeys = (state === null || state === void 0 ? void 0 : (_state$routing = state.routing) === null || _state$routing === void 0 ? void 0 : _state$routing.surrogateKeys) || '';
       const surrogateKeyHeader = ` ${packagejson.name}-app ${routingSurrogateKeys}`;
       response.header('surrogate-key', surrogateKeyHeader);
       addVarnishAuthenticationHeaders(state, response, groups);
@@ -260,6 +261,8 @@ const addStandardHeaders = (state, response, packagejson, groups) => {
 const addVarnishAuthenticationHeaders = (state, response, groups = {}) => {
   if (state) {
     try {
+      var _stateEntry$authentic;
+
       const stateEntry = selectors.selectRouteEntry(state);
       const project = selectors.selectCurrentProject(state);
       const {
@@ -269,7 +272,7 @@ const addVarnishAuthenticationHeaders = (state, response, groups = {}) => {
 
       let allGroups = Array.from(globalGroups && globalGroups[project] || {});
 
-      if (stateEntry && stateEntry.getIn(['authentication', 'isLoginRequired']) && allowedGroups && allowedGroups[project]) {
+      if (stateEntry !== null && stateEntry !== void 0 && (_stateEntry$authentic = stateEntry.authentication) !== null && _stateEntry$authentic !== void 0 && _stateEntry$authentic.isLoginRequired && allowedGroups !== null && allowedGroups !== void 0 && allowedGroups[project]) {
         allGroups = [...allGroups, ...allowedGroups[project]];
       }
 

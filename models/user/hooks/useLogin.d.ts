@@ -3,9 +3,9 @@ declare function useLogin(): {
     loginUser: (username: any, password: any) => any;
     logoutUser: (redirectPath: any) => any;
     authenticationError: boolean;
-    authenticationErrorMessage: unknown;
+    authenticationErrorMessage: string | null;
     error: boolean;
-    errorMessage: unknown;
+    errorMessage: string | null;
     isAuthenticated: boolean;
     isLoading: boolean;
     user: {

@@ -7,13 +7,12 @@ require('redux-thunk');
 require('redux-saga');
 require('redux-injectors');
 require('immer');
-var version$1 = require('./version-f33e3a0d.js');
-var actions$1 = require('./actions-f42b09db.js');
+var version$1 = require('./version-bcb568a3.js');
+var actions$1 = require('./actions-661a0e96.js');
 require('./reducers-fde41d6b.js');
 require('@redux-saga/core/effects');
-var selectors$1 = require('./selectors-3ea43584.js');
-var version$2 = require('./version-63682006.js');
-require('immutable');
+var selectors$1 = require('./selectors-1db80394.js');
+var version$2 = require('./version-8d4e5740.js');
 require('query-string');
 
 var types = {

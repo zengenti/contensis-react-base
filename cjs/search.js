@@ -7,9 +7,9 @@ var reactRedux = require('react-redux');
 var mapJson = require('jsonpath-mapper');
 var effects = require('@redux-saga/core/effects');
 var contensisDeliveryApi = require('contensis-delivery-api');
-var immutable = require('immutable');
 var queryString = require('query-string');
 var log = require('loglevel');
+var immutable = require('immutable');
 var contensisCoreApi = require('contensis-core-api');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }

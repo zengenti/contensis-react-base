@@ -439,11 +439,7 @@ function* clientReloadHitServer() {
   // If in client and there is a stateEntry.sys field reload the page,
   // on the 2nd load stateEntry.sys should be null at this point,
   // we do not wish to reload again and get stuck in an infinite reloading loop
-  if (
-    typeof window !== 'undefined' &&
-    stateEntry &&
-    stateEntry.get('sys', null)
-  ) {
+  if (typeof window !== 'undefined' && (stateEntry?.sys || null)) {
     window.location.reload();
   }
 }

@@ -45,10 +45,7 @@ const addStandardHeaders = (
   if (state) {
     try {
       console.info('About to add headers');
-      const routingSurrogateKeys = state.getIn(
-        ['routing', 'surrogateKeys'],
-        ''
-      );
+      const routingSurrogateKeys = state?.routing?.surrogateKeys || '';
 
       const surrogateKeyHeader = ` ${packagejson.name}-app ${routingSurrogateKeys}`;
 
@@ -79,10 +76,8 @@ const addVarnishAuthenticationHeaders = (
       // console.info(globalGroups, allowedGroups);
       let allGroups = Array.from((globalGroups && globalGroups[project]) || {});
       if (
-        stateEntry &&
-        stateEntry.getIn(['authentication', 'isLoginRequired']) &&
-        allowedGroups &&
-        allowedGroups[project]
+        stateEntry?.authentication?.isLoginRequired &&
+        allowedGroups?.[project]
       ) {
         allGroups = [...allGroups, ...allowedGroups[project]];
       }

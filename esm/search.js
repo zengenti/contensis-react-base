@@ -3,9 +3,9 @@ import { connect, useDispatch, useSelector } from 'react-redux';
 import mapJson from 'jsonpath-mapper';
 import { takeEvery, select, put, call, all } from '@redux-saga/core/effects';
 import { Client } from 'contensis-delivery-api';
-import { OrderedMap, Map, List, Set, fromJS } from 'immutable';
 import queryString from 'query-string';
 import { error } from 'loglevel';
+import { OrderedMap, Map, List, Set, fromJS } from 'immutable';
 import { Op, OrderBy, Query } from 'contensis-core-api';
 
 /* eslint-disable @typescript-eslint/ban-types */

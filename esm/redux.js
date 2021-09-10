@@ -3,14 +3,13 @@ import 'redux-thunk';
 import 'redux-saga';
 import 'redux-injectors';
 import 'immer';
-import { n as navigation$2, v as version$1, G as GET_NODE_TREE, d as version$2, e as navigation$3 } from './version-6c194dc3.js';
-export { f as convertSagaArray, g as injectReducer, i as injectRedux, j as injectSaga, r as store, u as useInjectRedux } from './version-6c194dc3.js';
-import { r as routing$1, j as routing$2 } from './actions-689cc028.js';
+import { n as navigation$2, v as version$1, G as GET_NODE_TREE, d as version$2, e as navigation$3 } from './version-8323789d.js';
+export { f as convertSagaArray, g as injectReducer, i as injectRedux, j as injectSaga, r as store, u as useInjectRedux } from './version-8323789d.js';
+import { r as routing$1, j as routing$2 } from './actions-e4912016.js';
 import './reducers-d6c0edb1.js';
 import '@redux-saga/core/effects';
-import { p as action, r as routing$3 } from './selectors-e4667f02.js';
-import { v as version$3 } from './version-afc7eb41.js';
-import 'immutable';
+import { p as action, r as routing$3 } from './selectors-c33466a6.js';
+import { v as version$3 } from './version-99f34130.js';
 import 'query-string';
 
 var types = {

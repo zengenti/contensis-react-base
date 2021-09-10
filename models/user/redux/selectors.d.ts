@@ -2,7 +2,9 @@ import { AppState } from "../../redux/appstate";
 export declare const selectUserIsLoading: (state: AppState) => boolean;
 export declare const selectUserIsAuthenticated: (state: AppState) => boolean;
 export declare const selectUserAuthenticationError: (state: AppState) => boolean;
+export declare const selectUserAuthenticationErrorMessage: (state: AppState) => string | null;
 export declare const selectUserError: (state: AppState) => boolean;
+export declare const selectUserErrorMessage: (state: AppState) => string | null;
 export declare const selectClientCredentials: (state: AppState) => {
     bearerToken: string;
     bearerTokenExpiryDate: Date;

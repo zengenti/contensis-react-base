@@ -12,8 +12,14 @@ export const selectUserIsAuthenticated = (state: AppState) =>
 export const selectUserAuthenticationError = (state: AppState) =>
   select(state)?.authenticationState?.authenticationError;
 
+export const selectUserAuthenticationErrorMessage = (state: AppState) =>
+  select(state)?.authenticationState?.authenticationErrorMessage;
+
 export const selectUserError = (state: AppState) =>
   select(state)?.authenticationState?.error;
+
+export const selectUserErrorMessage = (state: AppState) =>
+  select(state)?.authenticationState?.errorMessage;
 
 export const selectClientCredentials = (state: AppState) =>
   select(state)?.authenticationState?.clientCredentials;

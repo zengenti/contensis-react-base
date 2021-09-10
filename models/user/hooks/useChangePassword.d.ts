@@ -4,6 +4,6 @@ declare function useChangePassword(): {
     isSuccess: boolean | undefined;
     isLoggedIn: boolean;
     error: Error | null | undefined;
-    authenticationErrorMessage: unknown;
+    authenticationErrorMessage: string | null;
     changePassword: (userId: any, currentPassword: any, newPassword: any) => any;
 };

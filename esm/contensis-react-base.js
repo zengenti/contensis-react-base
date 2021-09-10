@@ -21,25 +21,24 @@ import 'redux-thunk';
 import 'redux-saga';
 import 'redux-injectors';
 import 'immer';
-import { c as createStore, s as setVersionStatus, a as setVersion } from './version-6c194dc3.js';
-import { s as setCurrentProject } from './actions-689cc028.js';
+import { c as createStore, s as setVersionStatus, a as setVersion } from './version-8323789d.js';
+import { s as setCurrentProject } from './actions-e4912016.js';
 import './reducers-d6c0edb1.js';
 import 'history';
-import { h as history, d as deliveryApi, p as pickProject, r as rootSaga } from './App-c600a6b2.js';
-export { A as ReactApp } from './App-c600a6b2.js';
+import { h as history, d as deliveryApi, p as pickProject, r as rootSaga } from './App-2632a781.js';
+export { A as ReactApp } from './App-2632a781.js';
 import '@redux-saga/core/effects';
 import 'contensis-delivery-api';
-import { s as selectRouteEntry, a as selectCurrentProject } from './selectors-e4667f02.js';
-import './version-afc7eb41.js';
-import 'immutable';
+import { s as selectRouteEntry, a as selectCurrentProject } from './selectors-c33466a6.js';
+import './version-99f34130.js';
 import 'query-string';
 import 'loglevel';
-import './matchGroups-766fe06c.js';
-import './login-0be3fe6d.js';
+import './matchGroups-2baa685f.js';
+import './login-064149bc.js';
 import 'await-to-js';
 import 'js-cookie';
 import 'react-hot-loader';
-import './RouteLoader-0ca4fa99.js';
+import './RouteLoader-551a58ca.js';
 
 const servers = SERVERS;
 /* global SERVERS */
@@ -229,8 +228,10 @@ var stringifyAttributes = ((attributes = {}) => Object.entries(attributes).map((
 const addStandardHeaders = (state, response, packagejson, groups) => {
   if (state) {
     try {
+      var _state$routing;
+
       console.info('About to add headers');
-      const routingSurrogateKeys = state.getIn(['routing', 'surrogateKeys'], '');
+      const routingSurrogateKeys = (state === null || state === void 0 ? void 0 : (_state$routing = state.routing) === null || _state$routing === void 0 ? void 0 : _state$routing.surrogateKeys) || '';
       const surrogateKeyHeader = ` ${packagejson.name}-app ${routingSurrogateKeys}`;
       response.header('surrogate-key', surrogateKeyHeader);
       addVarnishAuthenticationHeaders(state, response, groups);
@@ -244,6 +245,8 @@ const addStandardHeaders = (state, response, packagejson, groups) => {
 const addVarnishAuthenticationHeaders = (state, response, groups = {}) => {
   if (state) {
     try {
+      var _stateEntry$authentic;
+
       const stateEntry = selectRouteEntry(state);
       const project = selectCurrentProject(state);
       const {
@@ -253,7 +256,7 @@ const addVarnishAuthenticationHeaders = (state, response, groups = {}) => {
 
       let allGroups = Array.from(globalGroups && globalGroups[project] || {});
 
-      if (stateEntry && stateEntry.getIn(['authentication', 'isLoginRequired']) && allowedGroups && allowedGroups[project]) {
+      if (stateEntry !== null && stateEntry !== void 0 && (_stateEntry$authentic = stateEntry.authentication) !== null && _stateEntry$authentic !== void 0 && _stateEntry$authentic.isLoginRequired && allowedGroups !== null && allowedGroups !== void 0 && allowedGroups[project]) {
         allGroups = [...allGroups, ...allowedGroups[project]];
       }
 
