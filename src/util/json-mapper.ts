@@ -1,5 +1,6 @@
 import mapJson, { jpath } from 'jsonpath-mapper';
 import MappingTemplate from 'jsonpath-mapper/dist/models/Template';
+import { EntryMapper } from '~/routing/routes';
 
 export { default as mapJson, jpath } from 'jsonpath-mapper';
 
@@ -120,5 +121,17 @@ export const useComposerMapper = <
   composer: S[] = [],
   mappers: T
 ) => mapComposer(composer, mappers);
+
+/**
+ * entryMapper will return a function to satisfy an entryMapper when defining app route
+ * this is essentially a shorthand function to prevent boilerplate repetition inside your routes file
+ * you do not need to use this function should you wish to map your entry via raw JS functions
+ * @param mapping the jsonpath-mapper mapping template to apply when the route is resolved
+ * @returns {mappedEntry}
+ */
+export const entryMapper =
+  (mapping: any): EntryMapper =>
+  (node, state) =>
+    mapJson({ ...node, ...node.entry, state }, mapping);
 
 export default mapJson;

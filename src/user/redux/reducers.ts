@@ -6,18 +6,50 @@ import {
   SET_AUTHENTICATION_STATE,
   LOGIN_USER,
   LOGOUT_USER,
+  REQUEST_USER_PASSWORD_RESET_SENDING,
+  REQUEST_USER_PASSWORD_RESET_SUCCESS,
+  REQUEST_USER_PASSWORD_RESET_ERROR,
+  RESET_USER_PASSWORD_SENDING,
+  RESET_USER_PASSWORD_SUCCESS,
+  RESET_USER_PASSWORD_ERROR,
+  CHANGE_USER_PASSWORD_SENDING,
+  CHANGE_USER_PASSWORD_SUCCESS,
+  CHANGE_USER_PASSWORD_ERROR,
 } from './types';
 
 const defaultAuthenticationState = {
   authenticated: false,
   authenticationError: false,
+  authenticationErrorMessage: null,
   clientCredentials: null,
   error: false,
+  errorMessage: null,
   loading: false,
+};
+
+const defaultPasswordResetRequestValues = {
+  isSending: false,
+  sent: false,
+  error: null,
+};
+
+const defaultResetPasswordValues = {
+  isSending: false,
+  sent: false,
+  error: null,
+};
+
+const defaultChangePasswordValues = {
+  isSending: false,
+  sent: false,
+  error: null,
 };
 
 export const initialUserState = {
   authenticationState: defaultAuthenticationState,
+  passwordResetRequest: defaultPasswordResetRequestValues,
+  resetPassword: defaultResetPasswordValues,
+  changePassword: defaultChangePasswordValues,
   groups: [],
 };
 
@@ -35,8 +67,10 @@ export default produce((state: Draft<any>, action) => {
       const {
         authenticationState: {
           error = false,
+          errorMessage = null,
           authenticated,
           authenticationError = false,
+          authenticationErrorMessage = null,
           clientCredentials = null,
         },
         user,
@@ -54,8 +88,10 @@ export default produce((state: Draft<any>, action) => {
           authenticated:
             authenticated || state?.authenticationState?.authenticated,
           authenticationError,
+          authenticationErrorMessage,
           clientCredentials,
           error,
+          errorMessage,
           loading,
         },
       };
@@ -82,6 +118,36 @@ export default produce((state: Draft<any>, action) => {
       state.registration.loading = action.type === REGISTER_USER;
       return;
     }
+    case REQUEST_USER_PASSWORD_RESET_SENDING:
+      return state.setIn(['passwordResetRequest', 'isSending'], true);
+    case REQUEST_USER_PASSWORD_RESET_SUCCESS:
+      return state
+        .setIn(['passwordResetRequest', 'isSending'], false)
+        .setIn(['passwordResetRequest', 'sent'], true);
+    case REQUEST_USER_PASSWORD_RESET_ERROR:
+      return state
+        .setIn(['passwordResetRequest', 'isSending'], false)
+        .setIn(['passwordResetRequest', 'error'], action.error);
+    case RESET_USER_PASSWORD_SENDING:
+      return state.setIn(['resetPassword', 'isSending'], true);
+    case RESET_USER_PASSWORD_SUCCESS:
+      return state
+        .setIn(['resetPassword', 'isSending'], false)
+        .setIn(['resetPassword', 'sent'], true);
+    case RESET_USER_PASSWORD_ERROR:
+      return state
+        .setIn(['changePassword', 'isSending'], false)
+        .setIn(['changePassword', 'error'], action.error);
+    case CHANGE_USER_PASSWORD_SENDING:
+      return state.setIn(['changePassword', 'isSending'], true);
+    case CHANGE_USER_PASSWORD_SUCCESS:
+      return state
+        .setIn(['changePassword', 'isSending'], false)
+        .setIn(['changePassword', 'sent'], true);
+    case CHANGE_USER_PASSWORD_ERROR:
+      return state
+        .setIn(['changePassword', 'isSending'], false)
+        .setIn(['changePassword', 'error'], action.error);
     default:
       return state;
   }

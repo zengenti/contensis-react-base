@@ -1,4 +1,4 @@
-import useRegistration from './useRegistration';
+import useRegistration from '../hooks/useRegistration';
 import { toJS } from '~/util/ToJs';
 
 const RegistrationContainer = ({ children, ...props }) => {

@@ -9,17 +9,17 @@ import ServeStaticAssets from './features/static-assets';
 import ConfigureWebApp from './webApp';
 import { ServerConfig } from '~/config';
 
-let global: typeof globalThis & {
-  DISABLE_SSR_REDUX;
-  PACKAGE_JSON;
-  PROXY_DELIVERY_API;
-  REVERSE_PROXY_PATHS;
+declare let global: typeof globalThis & {
+  DISABLE_SSR_REDUX: boolean | undefined;
+  PACKAGE_JSON: any;
+  PROXY_DELIVERY_API: boolean | undefined;
+  REVERSE_PROXY_PATHS: string[];
 };
 
-const app = express();
+const app: Express = express();
 
 const start = (
-  ReactApp: React.ComponentType,
+  ReactApp: React.ComponentType<any>,
   config: ServerConfig,
   ServerFeatures: (app: Express) => void
 ) => {

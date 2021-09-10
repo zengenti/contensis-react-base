@@ -8,6 +8,7 @@ var Loadable = require('react-loadable');
 var httpProxy = require('http-proxy');
 var fs = require('fs');
 var path = require('path');
+var appRootPath = require('app-root-path');
 var React = require('react');
 var reactRouterDom = require('react-router-dom');
 var reactRedux = require('react-redux');
@@ -20,29 +21,28 @@ var serialize = require('serialize-javascript');
 var minifyCssString = require('minify-css-string');
 var mapJson = require('jsonpath-mapper');
 var immutable = require('immutable');
-var version = require('./version-3ca577be.js');
-var App = require('./App-af2f2f50.js');
-var actions = require('./actions-0e6615b5.js');
-var selectors = require('./selectors-5085f27f.js');
-require('@redux-saga/core/effects');
 require('redux');
 require('redux-thunk');
 require('redux-saga');
 require('redux-injectors');
 require('immer');
-require('./reducers-3f2c29e6.js');
+var version = require('./version-72900480.js');
+var actions = require('./actions-e9f69947.js');
+require('./reducers-ec0c8c3a.js');
 require('history');
+var App = require('./App-89c31b76.js');
+require('@redux-saga/core/effects');
 require('contensis-delivery-api');
 require('./version-89d6400c.js');
+require('query-string');
+var selectors = require('./selectors-1295124a.js');
 require('loglevel');
-require('./login-f4ec010d.js');
-require('./ToJs-f968ac6c.js');
+require('./ToJs-79922828.js');
+require('./login-2df2ce8f.js');
 require('await-to-js');
 require('js-cookie');
-require('query-string');
 require('react-hot-loader');
-require('./RouteLoader-827f4468.js');
-require('prop-types');
+require('./RouteLoader-31fa5b1d.js');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -57,7 +57,7 @@ var serialize__default = /*#__PURE__*/_interopDefaultLegacy(serialize);
 var minifyCssString__default = /*#__PURE__*/_interopDefaultLegacy(minifyCssString);
 var mapJson__default = /*#__PURE__*/_interopDefaultLegacy(mapJson);
 
-const servers$1 = SERVERS;
+const servers = SERVERS;
 /* global SERVERS */
 
 const projects = PROJECTS;
@@ -67,7 +67,7 @@ const DisplayStartupConfiguration = config => {
   /* eslint-disable no-console */
   console.log();
   console.log(`Configured servers:
-`, JSON.stringify(servers$1, null, 2));
+`, JSON.stringify(servers, null, 2));
   console.log();
   console.log(`Configured projects:
 `, JSON.stringify(projects, null, 2));
@@ -77,15 +77,15 @@ const DisplayStartupConfiguration = config => {
   /* eslint-enable no-console */
 };
 
-const servers = SERVERS;
+const servers$1 = SERVERS;
 /* global SERVERS */
 
 const apiProxy = httpProxy__default['default'].createProxyServer();
 
-const reverseProxies = (app, reverseProxyPaths) => {
+const reverseProxies = (app, reverseProxyPaths = []) => {
   deliveryApiProxy(apiProxy, app);
   app.all(reverseProxyPaths, (req, res) => {
-    const target = req.hostname.indexOf('preview-') || req.hostname.indexOf('preview.') || req.hostname === 'localhost' ? servers.previewIis || servers.iis : servers.iis;
+    const target = req.hostname.indexOf('preview-') || req.hostname.indexOf('preview.') || req.hostname === 'localhost' ? servers$1.previewIis || servers$1.iis : servers$1.iis;
     apiProxy.web(req, res, {
       target,
       changeOrigin: true
@@ -102,8 +102,8 @@ const deliveryApiProxy = (apiProxy, app) => {
   // This is just here to stop cors requests on localhost. In Production this is mapped using varnish.
   app.all(['/api/delivery/*', '/api/image/*'], (req, res) => {
     /* eslint-disable no-console */
-    const target = servers.cms;
-    console.log(`Proxying api request to ${servers.alias}`);
+    const target = servers$1.cms;
+    console.log(`Proxying api request to ${servers$1.alias}`);
     apiProxy.web(req, res, {
       target,
       changeOrigin: true
@@ -129,7 +129,7 @@ const getCacheDuration = (status = 200) => {
   return CacheDuration[200];
 };
 
-const replaceStaticPath = (string, staticFolderPath = 'static') => string.replace(/static\//g, `${staticFolderPath}/`);
+const replaceStaticPath = (str, staticFolderPath = 'static') => str.replace(/static\//g, `${staticFolderPath}/`);
 
 const bundleManipulationMiddleware = ({
   appRootPath,
@@ -189,8 +189,9 @@ const resolveStartupMiddleware = ({
   }
 };
 
+// Serving static assets
 const staticAssets = (app, {
-  appRootPath = require('app-root-path').path,
+  appRootPath: appRootPath$1 = appRootPath.path,
   scripts = {},
   startupScriptFilename = 'startup.js',
   staticFolderPath = 'static',
@@ -198,20 +199,21 @@ const staticAssets = (app, {
   staticRoutePaths = []
 }) => {
   app.use([`/${staticRoutePath}`, ...staticRoutePaths.map(p => `/${p}`), `/${staticFolderPath}`], bundleManipulationMiddleware({
-    appRootPath,
+    appRootPath: appRootPath$1,
     // these maxage values are different in config but the same in runtime,
     // this one is the true value in seconds
     maxage: CacheDuration.static,
     staticRoutePath
   }), resolveStartupMiddleware({
-    appRootPath,
+    appRootPath: appRootPath$1,
     maxage: CacheDuration.static,
     startupScriptFilename: scripts.startup || startupScriptFilename,
     staticFolderPath
-  }), express__default['default'].static(`dist/${staticFolderPath}`, {
+  }), // eslint-disable-next-line import/no-named-as-default-member
+  express__default['default'].static(`dist/${staticFolderPath}`, {
     // these maxage values are different in config but the same in runtime,
     // this one is somehow converted and should end up being the same as CacheDuration.static
-    maxage: CacheDuration.expressStatic
+    maxAge: CacheDuration.expressStatic
   }));
 };
 
@@ -223,23 +225,17 @@ var fromentries = function fromEntries (iterable) {
   }, {})
 };
 
-const ResponseMethod = {
-  send: 'send',
-  json: 'json',
-  end: 'end'
-};
-
 /* eslint-disable no-console */
+
 /**
  * Web Application Response handler, sends a prepared express js response
  * with the supplied content sending in the specified manner
  * @param {response} request express js request object
  * @param {response} response express js response object
  * @param {string | object} content the content to send in the response body
- * @param {function} send the response function to call e.g res.send() res.json() res.end()
+ * @param {"send" | "json" | "end"} send the response function to call e.g res.send() res.json() res.end()
  */
-
-const handleResponse = (request, response, content, send = ResponseMethod.send) => {
+const handleResponse = (request, response, content, send = 'send') => {
   // console.log('---', response.statusCode, '---');
   response[send](content);
 };
@@ -295,7 +291,7 @@ const loadableBundleData = ({
   try {
     bundle.stats = JSON.parse(readFileSync(stats.replace('/target', build ? `/${build}` : '')));
   } catch (ex) {
-    //console.info(ex);
+    // console.info(ex);
     bundle.stats = null;
   }
 
@@ -306,7 +302,7 @@ const loadableBundleData = ({
       templateHTMLFragment: replaceStaticPath(readFileSync(templates.fragment.replace('/target', build ? `/${build}` : '')), staticRoutePath)
     };
   } catch (ex) {
-    //console.info(ex);
+    // console.info(ex);
     bundle.templates = null;
   }
 
@@ -406,17 +402,21 @@ const webApp = (app, ReactApp, config) => {
         return `<script ${attributes} nomodule src="${replaceStaticPath(bundle.publicPath, staticRoutePath)}"></script>`;
       }).filter(f => f); // Add the static startup script to the bundleTags
 
-      scripts.startup && bundleTags.push(`<script ${attributes} src="/${staticRoutePath}/${scripts.startup}"></script>`);
+      if (scripts.startup) bundleTags.push(`<script ${attributes} src="/${staticRoutePath}/${scripts.startup}"></script>`);
       return bundleTags;
     };
 
     const templates = bundleData.default.templates || bundleData.legacy.templates;
-    const stats = bundleData.modern.stats && bundleData.legacy.stats ? fromentries(Object.entries(bundleData.modern.stats).map(([lib, paths]) => [lib, bundleData.legacy.stats[lib] ? [...paths, ...bundleData.legacy.stats[lib]] : paths])) : bundleData.default.stats;
+    const stats = bundleData.modern.stats && bundleData.legacy.stats ? fromentries(Object.entries(bundleData.modern.stats).map(([lib, paths]) => {
+      var _bundleData$legacy, _bundleData$legacy$st;
+
+      return [lib, bundleData !== null && bundleData !== void 0 && (_bundleData$legacy = bundleData.legacy) !== null && _bundleData$legacy !== void 0 && (_bundleData$legacy$st = _bundleData$legacy.stats) !== null && _bundleData$legacy$st !== void 0 && _bundleData$legacy$st[lib] ? [...paths, ...bundleData.legacy.stats[lib]] : paths];
+    })) : bundleData.default.stats;
     const {
       templateHTML,
       templateHTMLFragment,
       templateHTMLStatic
-    } = templates; // Serve a blank HTML page with client scripts to load the app in the browser
+    } = templates || {}; // Serve a blank HTML page with client scripts to load the app in the browser
 
     if (accessMethod.DYNAMIC) {
       // Dynamic doesn't need sagas
@@ -456,7 +456,7 @@ const webApp = (app, ReactApp, config) => {
         const bundleTags = buildBundleTags(loadableBundles).join('');
         let serialisedReduxData = '';
 
-        if (context.status !== 404) {
+        if (context.statusCode !== 404) {
           // For a request that returns a redux state object as a response
           if (accessMethod.REDUX) {
             serialisedReduxData = serialize__default['default'](reduxState, {
@@ -478,13 +478,13 @@ const webApp = (app, ReactApp, config) => {
           }
         }
 
-        if (context.status > 400) {
+        if ((context.statusCode || 200) > 400) {
           accessMethod.STATIC = true;
         } // Responses
 
 
         let responseHTML = '';
-        if (context.status === 404) title = '<title>404 page not found</title>'; // Static page served as a fragment
+        if (context.statusCode === 404) title = '<title>404 page not found</title>'; // Static page served as a fragment
 
         if (accessMethod.FRAGMENT && accessMethod.STATIC) {
           responseHTML = minifyCssString__default['default'](styleTags) + html;
@@ -506,7 +506,7 @@ const webApp = (app, ReactApp, config) => {
         } // Set response.status from React StaticRouter
 
 
-        if (typeof context.status === 'number') response.status(context.status);
+        if (typeof context.statusCode === 'number') response.status(context.statusCode);
         addStandardHeaders(reduxState, response, packagejson, {
           allowedGroups,
           globalGroups
@@ -537,7 +537,6 @@ const webApp = (app, ReactApp, config) => {
   });
 };
 
-let global;
 const app = express__default['default']();
 
 const start = (ReactApp, config, ServerFeatures) => {
@@ -580,5 +579,5 @@ var internalServer = {
 };
 
 exports.ReactApp = App.AppRoot;
-exports['default'] = internalServer;
+exports.default = internalServer;
 //# sourceMappingURL=contensis-react-base.js.map

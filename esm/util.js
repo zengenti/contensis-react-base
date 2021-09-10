@@ -1,14 +1,12 @@
+import React from 'react';
+import { connect } from 'react-redux';
+import styled from 'styled-components';
 import mapJson, { jpath } from 'jsonpath-mapper';
 export { jpath, default as mapJson } from 'jsonpath-mapper';
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { a as selectCurrentProject } from './selectors-acde3a83.js';
+import 'immutable';
 import { a as selectCommitRef, b as selectBuildNumber, s as selectVersionStatus } from './version-3671a3e0.js';
-import styled from 'styled-components';
-import { Link as Link$1 } from 'react-router-dom';
-import { HashLink } from 'react-router-hash-link';
 import 'query-string';
+import { a as selectCurrentProject } from './selectors-68799788.js';
 
 /**
  *
@@ -93,6 +91,18 @@ const mapComposer = (composer, mappers) => Array.isArray(composer) ? composer.ma
  */
 
 const useComposerMapper = (composer = [], mappers) => mapComposer(composer, mappers);
+/**
+ * entryMapper will return a function to satisfy an entryMapper when defining app route
+ * this is essentially a shorthand function to prevent boilerplate repetition inside your routes file
+ * you do not need to use this function should you wish to map your entry via raw JS functions
+ * @param mapping the jsonpath-mapper mapping template to apply when the route is resolved
+ * @returns {mappedEntry}
+ */
+
+const entryMapper = mapping => (node, state) => mapJson({ ...node,
+  ...node.entry,
+  state
+}, mapping);
 
 const setCachingHeaders = (response, {
   cacheControl = 'private',
@@ -101,8 +111,6 @@ const setCachingHeaders = (response, {
   if (cacheControl) response[method]('Cache-Control', cacheControl);
   if (surrogateControl) response[method]('Surrogate-Control', `max-age=${surrogateControl.toString()}`);
 };
-
-var setCachingHeaders_1 = setCachingHeaders;
 
 const stringifyStrings = obj => {
   const returnObj = Array.isArray(obj) ? [] : {};
@@ -127,7 +135,7 @@ const stringifyStrings = obj => {
 var stringifyStrings_1 = stringifyStrings;
 
 const url = (alias, project) => {
-  const projectAndAlias = project && project.toLowerCase() != 'website' ? `${project.toLowerCase()}-${alias}` : alias;
+  const projectAndAlias = project && project.toLowerCase() !== 'website' ? `${project.toLowerCase()}-${alias}` : alias;
   return {
     api: `https://api-${alias}.cloud.contensis.com`,
     cms: `https://cms-${alias}.cloud.contensis.com`,
@@ -210,69 +218,8 @@ const mapStateToVersionInfo = state => {
 
 const VersionInfoStyledTable = styled.table.withConfig({
   displayName: "VersionInfostyled__VersionInfoStyledTable",
-  componentId: "ocu0a9-0"
+  componentId: "ogujr7-0"
 })(["font-family:'Source Sans Pro',Helvetica,Arial,sans-serif;font-size:1.6rem;line-height:1.5rem;border-bottom:4px solid #8892bf;border-collapse:separate;margin:0 auto;width:80%;th{text-align:left;background-color:#c4c9df;border-bottom:#8892bf 2px solid;border-bottom-color:#8892bf;border-top:20px solid #fff;}td{border-bottom:1px solid #eee;}td,th{padding:0.5rem 0.75rem;vertical-align:top;}.left{width:25%;}tr th{border-right:hidden;border-spacing:0 15px;}.green{background-color:#9c9;border-bottom:1px solid #696;}.red{background-color:#c99;border-bottom:1px solid #966;}.small{font-size:100%;line-height:2.4rem;}"]);
-
-const Link = ({
-  className = '',
-  children,
-  download,
-  onClick,
-  openInNewWindow,
-  title,
-  uri
-}) => {
-  className += ' Link';
-
-  if (!uri) {
-    return /*#__PURE__*/React.createElement("span", {
-      className: className
-    }, children);
-  }
-
-  let newWindow = openInNewWindow ? '_blank' : '_self';
-  uri = encodeURI(uri);
-
-  if (newWindow != '_blank' && uri && uri.startsWith('/')) {
-    if (uri.indexOf('#') > -1) {
-      return /*#__PURE__*/React.createElement(HashLink, {
-        className: className,
-        download: download,
-        onClick: onClick,
-        title: title,
-        to: uri
-      }, children);
-    }
-
-    return /*#__PURE__*/React.createElement(Link$1, {
-      className: className,
-      download: download,
-      onClick: onClick,
-      title: title,
-      to: uri
-    }, children);
-  } else {
-    return /*#__PURE__*/React.createElement("a", {
-      className: className,
-      download: download,
-      href: uri,
-      onClick: onClick,
-      target: newWindow,
-      title: title,
-      rel: "noopener noreferrer"
-    }, children);
-  }
-};
-
-Link.propTypes = {
-  className: PropTypes.string,
-  children: PropTypes.oneOfType([PropTypes.element, PropTypes.node]),
-  download: PropTypes.string,
-  onClick: PropTypes.func,
-  openInNewWindow: PropTypes.bool,
-  title: PropTypes.string,
-  uri: PropTypes.string
-};
 
 const VersionInfo = ({
   deliveryApi,
@@ -292,8 +239,8 @@ const VersionInfo = ({
 }) => {
   return /*#__PURE__*/React.createElement(VersionInfoStyledTable, null, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", {
     colSpan: 2
-  }, /*#__PURE__*/React.createElement("h1", null, /*#__PURE__*/React.createElement(Link, {
-    path: "/"
+  }, /*#__PURE__*/React.createElement("h1", null, /*#__PURE__*/React.createElement("a", {
+    href: "/"
   }, "Version Information"))))), /*#__PURE__*/React.createElement("tbody", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", {
     colSpan: 2
   }, "Package detail")), /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", {
@@ -315,9 +262,9 @@ const VersionInfo = ({
     target: "_blank",
     rel: "noopener noreferrer"
   }, version.commitRef))), /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", null, "Project"), /*#__PURE__*/React.createElement("td", {
-    className: project == 'unknown' ? 'red' : ''
+    className: project === 'unknown' ? 'red' : ''
   }, project)), /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", null, "Contensis version status: "), /*#__PURE__*/React.createElement("td", {
-    className: version.contensisVersionStatus == 'published' ? 'green' : 'red'
+    className: version.contensisVersionStatus === 'published' ? 'green' : 'red'
   }, version.contensisVersionStatus)), /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", {
     colSpan: 2
   }, "Build configuration")), /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", null, "Environment"), /*#__PURE__*/React.createElement("td", null, servers.alias)), /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", null, "Public uri"), /*#__PURE__*/React.createElement("td", null, publicUri)), /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", null, "Zengenti packages"), /*#__PURE__*/React.createElement("td", null, zenPackageVersions.map(([pkg, ver], idx) => /*#__PURE__*/React.createElement("div", {
@@ -352,23 +299,7 @@ const VersionInfo = ({
   }, "[ ", k, ": ", v, " ]"))))));
 };
 
-VersionInfo.propTypes = {
-  deliveryApi: PropTypes.object,
-  devEnv: PropTypes.object,
-  disableSsrRedux: PropTypes.bool,
-  nodeEnv: PropTypes.string,
-  packageDetail: PropTypes.object,
-  project: PropTypes.string,
-  projects: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
-  proxyDeliveryApi: PropTypes.bool,
-  publicUri: PropTypes.string,
-  reverseProxyPaths: PropTypes.array,
-  servers: PropTypes.object,
-  uris: PropTypes.object,
-  version: PropTypes.object,
-  zenPackageVersions: PropTypes.array
-};
 var VersionInfo$1 = connect(mapStateToVersionInfo)(VersionInfo);
 
-export { VersionInfo$1 as VersionInfo, mapComposer, mapEntries, setCachingHeaders_1 as setCachingHeaders, stringifyStrings_1 as stringifyStrings, url as urls, useComposerMapper, useEntriesMapper, useEntryMapper, useMapper };
+export { VersionInfo$1 as VersionInfo, entryMapper, mapComposer, mapEntries, setCachingHeaders, stringifyStrings_1 as stringifyStrings, url as urls, useComposerMapper, useEntriesMapper, useEntryMapper, useMapper };
 //# sourceMappingURL=util.js.map

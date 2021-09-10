@@ -1,66 +1,40 @@
-declare var _default: import("react-redux").ConnectedComponent<{
-    ({ deliveryApi, devEnv, disableSsrRedux, nodeEnv, packageDetail, project, projects, proxyDeliveryApi, publicUri, reverseProxyPaths, servers, uris, version, zenPackageVersions, }: {
-        deliveryApi: any;
-        devEnv: any;
-        disableSsrRedux: any;
-        nodeEnv: any;
-        packageDetail: any;
-        project: any;
-        projects: any;
-        proxyDeliveryApi: any;
-        publicUri: any;
-        reverseProxyPaths: any;
-        servers: any;
-        uris: any;
-        version: any;
-        zenPackageVersions: any;
-    }): JSX.Element;
-    propTypes: {
-        deliveryApi: PropTypes.Requireable<object>;
-        devEnv: PropTypes.Requireable<object>;
-        disableSsrRedux: PropTypes.Requireable<boolean>;
-        nodeEnv: PropTypes.Requireable<string>;
-        packageDetail: PropTypes.Requireable<object>;
-        project: PropTypes.Requireable<string>;
-        projects: PropTypes.Requireable<object>;
-        proxyDeliveryApi: PropTypes.Requireable<boolean>;
-        publicUri: PropTypes.Requireable<string>;
-        reverseProxyPaths: PropTypes.Requireable<any[]>;
-        servers: PropTypes.Requireable<object>;
-        uris: PropTypes.Requireable<object>;
-        version: PropTypes.Requireable<object>;
-        zenPackageVersions: PropTypes.Requireable<any[]>;
+/// <reference types="react" />
+export interface IVersionInfoProps {
+    deliveryApi: {
+        rootUrl: string;
+        accessToken: string;
+        projectId: string;
+        livePublishingRootUrl: string;
     };
-}, import("react-redux").Omit<Pick<{
-    deliveryApi: any;
     devEnv: any;
-    disableSsrRedux: any;
-    nodeEnv: any;
+    disableSsrRedux: boolean;
+    nodeEnv: string;
     packageDetail: any;
-    project: any;
+    project: string;
     projects: any;
     proxyDeliveryApi: any;
-    publicUri: any;
-    reverseProxyPaths: any;
-    servers: any;
-    uris: any;
-    version: any;
-    zenPackageVersions: any;
-}, never> & Pick<PropTypes.InferProps<{
-    deliveryApi: PropTypes.Requireable<object>;
-    devEnv: PropTypes.Requireable<object>;
-    disableSsrRedux: PropTypes.Requireable<boolean>;
-    nodeEnv: PropTypes.Requireable<string>;
-    packageDetail: PropTypes.Requireable<object>;
-    project: PropTypes.Requireable<string>;
-    projects: PropTypes.Requireable<object>;
-    proxyDeliveryApi: PropTypes.Requireable<boolean>;
-    publicUri: PropTypes.Requireable<string>;
-    reverseProxyPaths: PropTypes.Requireable<any[]>;
-    servers: PropTypes.Requireable<object>;
-    uris: PropTypes.Requireable<object>;
-    version: PropTypes.Requireable<object>;
-    zenPackageVersions: PropTypes.Requireable<any[]>;
-}>, "version" | "project" | "packageDetail" | "uris" | "zenPackageVersions" | "deliveryApi" | "devEnv" | "disableSsrRedux" | "nodeEnv" | "projects" | "proxyDeliveryApi" | "publicUri" | "reverseProxyPaths" | "servers">, never>>;
+    publicUri: string;
+    reverseProxyPaths: string[];
+    servers: {
+        alias: string;
+        api: string;
+        cms: string;
+        web: string;
+        iis: string;
+        previewIis: string;
+        previewWeb: string;
+    };
+    uris: {
+        gitRepo: string;
+        commit: string;
+        pipeline: string;
+    };
+    version: {
+        buildNumber: string;
+        commitRef: string;
+        contensisVersionStatus: string;
+    };
+    zenPackageVersions: string[];
+}
+declare const _default: import("react-redux").ConnectedComponent<({ deliveryApi, devEnv, disableSsrRedux, nodeEnv, packageDetail, project, projects, proxyDeliveryApi, publicUri, reverseProxyPaths, servers, uris, version, zenPackageVersions, }: IVersionInfoProps) => JSX.Element, import("react-redux").Omit<IVersionInfoProps, "disableSsrRedux" | "reverseProxyPaths" | "proxyDeliveryApi" | "packageDetail" | "uris" | "zenPackageVersions" | "deliveryApi" | "devEnv" | "nodeEnv" | "projects" | "publicUri" | "project" | "servers" | "version">>;
 export default _default;
-import PropTypes from "prop-types";

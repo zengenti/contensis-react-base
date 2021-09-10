@@ -1,5 +1,5 @@
-export namespace ResponseMethod {
-    const send: string;
-    const json: string;
-    const end: string;
-}
+export declare const ResponseMethod: {
+    send: string;
+    json: string;
+    end: string;
+};

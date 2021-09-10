@@ -3,17 +3,19 @@ export { LoginHelper } from './util/LoginHelper.class';
 
 // Containers
 export { default as LoginContainer } from './containers/Login.container';
-export {
-  default as RegistrationContainer,
-} from './containers/Registration.container';
+export { default as RegistrationContainer } from './containers/Registration.container';
+export { default as ForgotPasswordContainer } from './containers/ForgotPassword.container';
+export { default as ChangePassword } from './containers/ChangePassword.container';
 
 // HOCs
-export { default as withLogin } from './containers/withLogin';
-export { default as withRegistration } from './containers/withRegistration';
+export { default as withLogin } from './hocs/withLogin';
+export { default as withRegistration } from './hocs/withRegistration';
 
 // Hooks
-export { default as useLogin } from './containers/useLogin';
-export { default as useRegistration } from './containers/useRegistration';
+export { default as useLogin } from './hooks/useLogin';
+export { default as useRegistration } from './hooks/useRegistration';
+export { default as useForgotPassword } from './hooks/useForgotPassword';
+export { default as useChangePassword } from './hooks/useChangePassword';
 
 // Redux
 export {

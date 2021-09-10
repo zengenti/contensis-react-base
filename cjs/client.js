@@ -3,42 +3,40 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 require('isomorphic-fetch');
-var React = require('react');
-var reactDom = require('react-dom');
-var reactRouterDom = require('react-router-dom');
 var Loadable = require('react-loadable');
-var reactHotLoader = require('react-hot-loader');
+var React = require('react');
+var reactRouterDom = require('react-router-dom');
 var reactRedux = require('react-redux');
-var queryString = require('query-string');
-var version = require('./version-3ca577be.js');
-var App = require('./App-af2f2f50.js');
-var actions = require('./actions-0e6615b5.js');
+require('react-router-config');
+require('jsonpath-mapper');
 var immutable = require('immutable');
-require('./RouteLoader-827f4468.js');
-require('@redux-saga/core/effects');
 require('redux');
 require('redux-thunk');
 require('redux-saga');
 require('redux-injectors');
 require('immer');
-require('./reducers-3f2c29e6.js');
+var version = require('./version-72900480.js');
+var actions = require('./actions-e9f69947.js');
+require('./reducers-ec0c8c3a.js');
 require('history');
+var App = require('./App-89c31b76.js');
+require('@redux-saga/core/effects');
 require('contensis-delivery-api');
 require('./version-89d6400c.js');
-require('./selectors-5085f27f.js');
+var queryString = require('query-string');
+require('./selectors-1295124a.js');
 require('loglevel');
-require('./login-f4ec010d.js');
-require('./ToJs-f968ac6c.js');
-require('jsonpath-mapper');
+require('./ToJs-79922828.js');
+require('./login-2df2ce8f.js');
 require('await-to-js');
 require('js-cookie');
-require('prop-types');
-require('react-router-config');
+var reactHotLoader = require('react-hot-loader');
+require('./RouteLoader-31fa5b1d.js');
+var reactDom = require('react-dom');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
 var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
-var queryString__default = /*#__PURE__*/_interopDefaultLegacy(queryString);
 
 const fromJSOrdered = js => {
   return typeof js !== 'object' || js === null ? js : Array.isArray(js) ? immutable.Seq(js).map(fromJSOrdered).toList() : immutable.Seq(js).map(fromJSOrdered).toOrderedMap();
@@ -90,19 +88,19 @@ class ClientApp {
       return ClientJsx;
     };
 
-    const isProduction = !(process.env.NODE_ENV != 'production');
+    const isProduction = !(process.env.NODE_ENV !== 'production');
     /**
      * Webpack HMR Setup.
      */
 
     const HMRRenderer = Component => {
       Loadable.preloadReady().then(() => {
-        isProduction ? reactDom.hydrate(Component, documentRoot) : reactDom.render(Component, documentRoot);
+        if (isProduction) reactDom.hydrate(Component, documentRoot);else reactDom.render(Component, documentRoot);
       });
     };
 
     let store = null;
-    const qs = queryString__default['default'].parse(window.location.search);
+    const qs = queryString.parse(window.location.search);
     const versionStatusFromHostname = App.deliveryApi.getClientSideVersionStatus();
 
     if (window.isDynamic || window.REDUX_DATA || process.env.NODE_ENV !== 'production') {
@@ -120,7 +118,7 @@ class ClientApp {
     } else {
       fetch(`${window.location.pathname}?redux=true`).then(response => response.json()).then(data => {
         /* eslint-disable no-console */
-        //console.log('Got Data Back');
+        // console.log('Got Data Back');
         // console.log(data);
 
         /* eslint-enable no-console */
@@ -128,7 +126,7 @@ class ClientApp {
         store = version.createStore(withReducers, fromJSLeaveImmer(ssRedux), App.browserHistory); // store.dispatch(setVersionStatus(versionStatusFromHostname));
 
         store.runSaga(App.rootSaga(withSagas));
-        store.dispatch(actions.setCurrentProject(App.pickProject(window.location.hostname, queryString__default['default'].parse(window.location.search)), [], window.location.hostname)); // if (typeof window != 'undefined') {
+        store.dispatch(actions.setCurrentProject(App.pickProject(window.location.hostname, queryString.parse(window.location.search)), [], window.location.hostname)); // if (typeof window != 'undefined') {
         //   store.dispatch(checkUserLoggedIn());
         // }
 
@@ -148,5 +146,5 @@ class ClientApp {
 }
 
 exports.ReactApp = App.AppRoot;
-exports['default'] = ClientApp;
+exports.default = ClientApp;
 //# sourceMappingURL=client.js.map

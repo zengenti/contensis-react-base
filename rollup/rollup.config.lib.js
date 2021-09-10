@@ -17,7 +17,7 @@ const projectRootDir = path.resolve(__dirname);
 
 export default {
   input: {
-    'contensis-react-base': './src/server',
+    'contensis-react-base': './src',
     client: './src/client',
     forms: './src/forms',
     redux: './src/redux',

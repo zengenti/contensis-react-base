@@ -34,7 +34,7 @@ jobs:
         if: contains(github.event.inputs.version, 'prerelease') == false
         run: npm version ${{ github.event.inputs.version }}
       - name: Push version increment to GIT
-        run: git push
+        run: git push --follow-tags
         env:
           # The secret is passed automatically. Nothing to configure.
           github-token: ${{ secrets.GITHUB_TOKEN }}

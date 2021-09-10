@@ -1,36 +1,35 @@
 import 'isomorphic-fetch';
-import React from 'react';
-import { hydrate, render } from 'react-dom';
-import { Router } from 'react-router-dom';
 import { preloadReady } from 'react-loadable';
-import { AppContainer } from 'react-hot-loader';
+import React from 'react';
+import { Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import queryString from 'query-string';
-import { c as createStore, s as setVersionStatus } from './version-c0e104cb.js';
-import { d as deliveryApi, r as rootSaga, p as pickProject, b as browserHistory } from './App-f3008edc.js';
-export { A as ReactApp } from './App-f3008edc.js';
-import { s as setCurrentProject } from './actions-5b76419a.js';
+import 'react-router-config';
+import 'jsonpath-mapper';
 import { Seq } from 'immutable';
-import './RouteLoader-0e7ca21d.js';
-import '@redux-saga/core/effects';
 import 'redux';
 import 'redux-thunk';
 import 'redux-saga';
 import 'redux-injectors';
 import 'immer';
-import './reducers-42abcaf3.js';
+import { c as createStore, s as setVersionStatus } from './version-8aedc370.js';
+import { s as setCurrentProject } from './actions-ddd9c623.js';
+import './reducers-6ba16045.js';
 import 'history';
+import { d as deliveryApi, r as rootSaga, p as pickProject, b as browserHistory } from './App-96bb3e3f.js';
+export { A as ReactApp } from './App-96bb3e3f.js';
+import '@redux-saga/core/effects';
 import 'contensis-delivery-api';
 import './version-3671a3e0.js';
-import './selectors-acde3a83.js';
+import { parse } from 'query-string';
+import './selectors-68799788.js';
 import 'loglevel';
-import './login-952dac2a.js';
-import './ToJs-8f5b58d7.js';
-import 'jsonpath-mapper';
+import './ToJs-498344a0.js';
+import './login-577d7b76.js';
 import 'await-to-js';
 import 'js-cookie';
-import 'prop-types';
-import 'react-router-config';
+import { AppContainer } from 'react-hot-loader';
+import './RouteLoader-4e9dc4a3.js';
+import { hydrate, render } from 'react-dom';
 
 const fromJSOrdered = js => {
   return typeof js !== 'object' || js === null ? js : Array.isArray(js) ? Seq(js).map(fromJSOrdered).toList() : Seq(js).map(fromJSOrdered).toOrderedMap();
@@ -82,19 +81,19 @@ class ClientApp {
       return ClientJsx;
     };
 
-    const isProduction = !(process.env.NODE_ENV != 'production');
+    const isProduction = !(process.env.NODE_ENV !== 'production');
     /**
      * Webpack HMR Setup.
      */
 
     const HMRRenderer = Component => {
       preloadReady().then(() => {
-        isProduction ? hydrate(Component, documentRoot) : render(Component, documentRoot);
+        if (isProduction) hydrate(Component, documentRoot);else render(Component, documentRoot);
       });
     };
 
     let store = null;
-    const qs = queryString.parse(window.location.search);
+    const qs = parse(window.location.search);
     const versionStatusFromHostname = deliveryApi.getClientSideVersionStatus();
 
     if (window.isDynamic || window.REDUX_DATA || process.env.NODE_ENV !== 'production') {
@@ -112,7 +111,7 @@ class ClientApp {
     } else {
       fetch(`${window.location.pathname}?redux=true`).then(response => response.json()).then(data => {
         /* eslint-disable no-console */
-        //console.log('Got Data Back');
+        // console.log('Got Data Back');
         // console.log(data);
 
         /* eslint-enable no-console */
@@ -120,7 +119,7 @@ class ClientApp {
         store = createStore(withReducers, fromJSLeaveImmer(ssRedux), browserHistory); // store.dispatch(setVersionStatus(versionStatusFromHostname));
 
         store.runSaga(rootSaga(withSagas));
-        store.dispatch(setCurrentProject(pickProject(window.location.hostname, queryString.parse(window.location.search)), [], window.location.hostname)); // if (typeof window != 'undefined') {
+        store.dispatch(setCurrentProject(pickProject(window.location.hostname, parse(window.location.search)), [], window.location.hostname)); // if (typeof window != 'undefined') {
         //   store.dispatch(checkUserLoggedIn());
         // }
 
@@ -139,5 +138,5 @@ class ClientApp {
 
 }
 
-export { ClientApp as default };
+export default ClientApp;
 //# sourceMappingURL=client.js.map

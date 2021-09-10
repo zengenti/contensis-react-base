@@ -1,19 +1,19 @@
-export { L as LoginHelper, h as handleRequiresLoginSaga, r as refreshSecurityToken } from './login-952dac2a.js';
+import 'react';
 import { useDispatch, useSelector, connect } from 'react-redux';
-import { j as action } from './actions-5b76419a.js';
-import { L as LOGIN_USER, c as LOGOUT_USER, R as REGISTER_USER } from './reducers-42abcaf3.js';
-export { i as initialUserState, U as reducer, t as types } from './reducers-42abcaf3.js';
-import { c as selectUserAuthenticationError, d as selectUserError, s as selectUserIsAuthenticated, e as selectUserIsLoading, f as selectUser, t as toJS, g as selectUserRegistrationError, h as selectUserRegistrationIsLoading, i as selectUserRegistrationIsSuccess, j as selectUserRegistration } from './ToJs-8f5b58d7.js';
-export { k as selectors } from './ToJs-8f5b58d7.js';
-import 'immutable';
-import '@redux-saga/core/effects';
-import './selectors-acde3a83.js';
-import 'query-string';
 import 'jsonpath-mapper';
+import 'immutable';
+import 'immer';
+import { j as action } from './actions-ddd9c623.js';
+import { L as LOGIN_USER, n as LOGOUT_USER, R as REGISTER_USER, c as REQUEST_USER_PASSWORD_RESET, d as RESET_USER_PASSWORD, C as CHANGE_USER_PASSWORD } from './reducers-6ba16045.js';
+export { o as initialUserState, U as reducer, t as types } from './reducers-6ba16045.js';
+import '@redux-saga/core/effects';
+import 'query-string';
+import { g as selectCurrentSearch } from './selectors-68799788.js';
+import { c as selectUserAuthenticationError, d as selectUserAuthenticationErrorMessage, e as selectUserError, f as selectUserErrorMessage, a as selectUserIsAuthenticated, g as selectUserIsLoading, h as selectUser, t as toJS, i as selectUserRegistrationError, j as selectUserRegistrationIsLoading, k as selectUserRegistrationIsSuccess, l as selectUserRegistration, n as selectPasswordResetRequestSending, o as selectPasswordResetRequestSent, p as selectPasswordResetRequestError, q as selectResetPasswordSending, r as selectResetPasswordSent, u as selectResetPasswordError, v as selectChangePasswordSending, w as selectChangePasswordSent, x as selectChangePasswordError } from './ToJs-498344a0.js';
+export { y as selectors } from './ToJs-498344a0.js';
+export { L as LoginHelper, h as handleRequiresLoginSaga, r as refreshSecurityToken } from './login-577d7b76.js';
 import 'await-to-js';
 import 'js-cookie';
-import 'immer';
-import 'react';
 
 const loginUser = (username, password) => action(LOGIN_USER, {
   username,
@@ -26,22 +26,38 @@ const registerUser = (user, mappers) => action(REGISTER_USER, {
   user,
   mappers
 });
+const requestPasswordReset = userEmailObject => action(REQUEST_USER_PASSWORD_RESET, {
+  userEmailObject
+});
+const resetPassword = resetPasswordObject => action(RESET_USER_PASSWORD, {
+  resetPasswordObject
+});
+const changePassword = (userId, currentPassword, newPassword) => action(CHANGE_USER_PASSWORD, {
+  userId,
+  currentPassword,
+  newPassword
+});
 
 var actions = /*#__PURE__*/Object.freeze({
   __proto__: null,
   loginUser: loginUser,
   logoutUser: logoutUser,
-  registerUser: registerUser
+  registerUser: registerUser,
+  requestPasswordReset: requestPasswordReset,
+  resetPassword: resetPassword,
+  changePassword: changePassword
 });
 
-const useLogin$1 = () => {
+const useLogin = () => {
   const dispatch = useDispatch();
   const select = useSelector;
   return {
     loginUser: (username, password) => dispatch(loginUser(username, password)),
     logoutUser: redirectPath => dispatch(logoutUser(redirectPath)),
     authenticationError: select(selectUserAuthenticationError),
+    authenticationErrorMessage: select(selectUserAuthenticationErrorMessage),
     error: select(selectUserError),
+    errorMessage: select(selectUserErrorMessage),
     isAuthenticated: select(selectUserIsAuthenticated),
     isLoading: select(selectUserIsLoading),
     user: select(selectUser).toJS()
@@ -52,14 +68,14 @@ const LoginContainer = ({
   children,
   ...props
 }) => {
-  const userProps = useLogin$1();
+  const userProps = useLogin();
   return children(userProps);
 };
 
 LoginContainer.propTypes = {};
 var Login_container = toJS(LoginContainer);
 
-const useLogin = () => {
+const useRegistration = () => {
   const dispatch = useDispatch();
   const select = useSelector;
   return {
@@ -75,28 +91,71 @@ const RegistrationContainer = ({
   children,
   ...props
 }) => {
-  const userProps = useLogin();
+  const userProps = useRegistration();
   return children(userProps);
 };
 
 RegistrationContainer.propTypes = {};
 var Registration_container = toJS(RegistrationContainer);
 
-const getDisplayName$1 = WrappedComponent => {
+const useForgotPassword = () => {
+  const dispatch = useDispatch();
+  const select = useSelector;
+  return {
+    isLoading: select(selectPasswordResetRequestSending),
+    isSuccess: select(selectPasswordResetRequestSent),
+    error: select(selectPasswordResetRequestError),
+    requestPasswordReset: userEmailObject => dispatch(requestPasswordReset(userEmailObject)),
+    setNewPassword: {
+      queryString: select(selectCurrentSearch),
+      isLoading: select(selectResetPasswordSending),
+      isSuccess: select(selectResetPasswordSent),
+      error: select(selectResetPasswordError),
+      submit: resetPasswordObject => dispatch(resetPassword(resetPasswordObject))
+    }
+  };
+};
+
+const ForgotPasswordContainer = ({
+  children,
+  ...props
+}) => {
+  const userProps = useForgotPassword();
+  return children(userProps);
+};
+
+ForgotPasswordContainer.propTypes = {};
+var ForgotPassword_container = toJS(ForgotPasswordContainer);
+
+const useChangePassword = () => {
+  const dispatch = useDispatch();
+  const select = useSelector;
+  return {
+    isLoading: select(selectChangePasswordSending),
+    isSuccess: select(selectChangePasswordSent),
+    isLoggedIn: select(selectUserIsAuthenticated),
+    error: select(selectChangePasswordError),
+    authenticationErrorMessage: select(selectUserAuthenticationErrorMessage),
+    changePassword: (userId, currentPassword, newPassword) => dispatch(changePassword(userId, currentPassword, newPassword))
+  };
+};
+
+const ChangePasswordContainer = ({
+  children,
+  ...props
+}) => {
+  const userProps = useChangePassword();
+  return children(userProps);
+};
+
+ChangePasswordContainer.propTypes = {};
+var ChangePassword_container = toJS(ChangePasswordContainer);
+
+const getDisplayName = WrappedComponent => {
   return WrappedComponent.displayName || WrappedComponent.name || 'Component';
 };
 
 const withLogin = WrappedComponent => {
-  // Returns a redux-connected component with the following props:
-  // this.propTypes = {
-  //   loading: PropTypes.bool,
-  //   authenticated: PropTypes.bool,
-  //   authenticationError: PropTypes.bool,
-  //   error: PropTypes.bool,
-  //   user: PropTypes.object,
-  //   logoutUser: PropTypes.func,
-  //   isHeaderLogin: PropTypes.bool,
-  // };
   const mapStateToProps = state => {
     return {
       authenticationError: selectUserAuthenticationError(state),
@@ -112,23 +171,15 @@ const withLogin = WrappedComponent => {
     logoutUser
   };
   const ConnectedComponent = connect(mapStateToProps, mapDispatchToProps)(toJS(WrappedComponent));
-  ConnectedComponent.displayName = `${getDisplayName$1(WrappedComponent)}`;
+  ConnectedComponent.displayName = `${getDisplayName(WrappedComponent)}`;
   return ConnectedComponent;
 };
 
-const getDisplayName = WrappedComponent => {
+const getDisplayName$1 = WrappedComponent => {
   return WrappedComponent.displayName || WrappedComponent.name || 'Component';
 };
 
 const withRegistration = WrappedComponent => {
-  // Returns a redux-connected component with the following props:
-  // this.propTypes = {
-  //   registerUser: PropTypes.func,
-  //   isLoading: PropTypes.bool,
-  //   isSuccess: PropTypes.bool,
-  //   error: PropTypes.bool | PropTypes.object,
-  //   user: PropTypes.object,
-  // };
   const mapStateToProps = state => {
     return {
       error: selectUserRegistrationError(state),
@@ -142,9 +193,9 @@ const withRegistration = WrappedComponent => {
     registerUser
   };
   const ConnectedComponent = connect(mapStateToProps, mapDispatchToProps)(toJS(WrappedComponent));
-  ConnectedComponent.displayName = `${getDisplayName(WrappedComponent)}`;
+  ConnectedComponent.displayName = `${getDisplayName$1(WrappedComponent)}`;
   return ConnectedComponent;
 };
 
-export { Login_container as LoginContainer, Registration_container as RegistrationContainer, actions, useLogin$1 as useLogin, useLogin as useRegistration, withLogin, withRegistration };
+export { ChangePassword_container as ChangePassword, ForgotPassword_container as ForgotPasswordContainer, Login_container as LoginContainer, Registration_container as RegistrationContainer, actions, useChangePassword, useForgotPassword, useLogin, useRegistration, withLogin, withRegistration };
 //# sourceMappingURL=user.js.map

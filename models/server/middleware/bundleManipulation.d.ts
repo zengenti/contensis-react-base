@@ -1,5 +1,6 @@
-export function bundleManipulationMiddleware({ appRootPath, maxage, staticRoutePath }: {
-    appRootPath: any;
-    maxage: any;
-    staticRoutePath: any;
-}): (req: any, res: any, next: any) => void;
+import { RequestHandler } from 'express';
+export declare const bundleManipulationMiddleware: ({ appRootPath, maxage, staticRoutePath, }: {
+    appRootPath: string;
+    maxage: string;
+    staticRoutePath: string;
+}) => RequestHandler;

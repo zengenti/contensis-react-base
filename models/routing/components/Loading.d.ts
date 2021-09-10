@@ -1,4 +1,5 @@
-export function Loading(): JSX.Element;
-export namespace Loading {
-    const propTypes: {};
-}
+/// <reference types="react" />
+export declare const Loading: {
+    (): JSX.Element;
+    propTypes: {};
+};

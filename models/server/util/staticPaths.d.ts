@@ -1,1 +1,1 @@
-export function replaceStaticPath(string: any, staticFolderPath?: string): any;
+export declare const replaceStaticPath: (str: string, staticFolderPath?: string) => string;

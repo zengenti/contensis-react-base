@@ -2,20 +2,20 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var login = require('./login-f4ec010d.js');
+require('react');
 var reactRedux = require('react-redux');
-var actions$1 = require('./actions-0e6615b5.js');
-var reducers = require('./reducers-3f2c29e6.js');
-var ToJs = require('./ToJs-f968ac6c.js');
-require('immutable');
-require('@redux-saga/core/effects');
-require('./selectors-5085f27f.js');
-require('query-string');
 require('jsonpath-mapper');
+require('immutable');
+require('immer');
+var actions$1 = require('./actions-e9f69947.js');
+var reducers = require('./reducers-ec0c8c3a.js');
+require('@redux-saga/core/effects');
+require('query-string');
+var selectors = require('./selectors-1295124a.js');
+var ToJs = require('./ToJs-79922828.js');
+var login = require('./login-2df2ce8f.js');
 require('await-to-js');
 require('js-cookie');
-require('immer');
-require('react');
 
 const loginUser = (username, password) => actions$1.action(reducers.LOGIN_USER, {
   username,
@@ -28,22 +28,38 @@ const registerUser = (user, mappers) => actions$1.action(reducers.REGISTER_USER,
   user,
   mappers
 });
+const requestPasswordReset = userEmailObject => actions$1.action(reducers.REQUEST_USER_PASSWORD_RESET, {
+  userEmailObject
+});
+const resetPassword = resetPasswordObject => actions$1.action(reducers.RESET_USER_PASSWORD, {
+  resetPasswordObject
+});
+const changePassword = (userId, currentPassword, newPassword) => actions$1.action(reducers.CHANGE_USER_PASSWORD, {
+  userId,
+  currentPassword,
+  newPassword
+});
 
 var actions = /*#__PURE__*/Object.freeze({
   __proto__: null,
   loginUser: loginUser,
   logoutUser: logoutUser,
-  registerUser: registerUser
+  registerUser: registerUser,
+  requestPasswordReset: requestPasswordReset,
+  resetPassword: resetPassword,
+  changePassword: changePassword
 });
 
-const useLogin$1 = () => {
+const useLogin = () => {
   const dispatch = reactRedux.useDispatch();
   const select = reactRedux.useSelector;
   return {
     loginUser: (username, password) => dispatch(loginUser(username, password)),
     logoutUser: redirectPath => dispatch(logoutUser(redirectPath)),
     authenticationError: select(ToJs.selectUserAuthenticationError),
+    authenticationErrorMessage: select(ToJs.selectUserAuthenticationErrorMessage),
     error: select(ToJs.selectUserError),
+    errorMessage: select(ToJs.selectUserErrorMessage),
     isAuthenticated: select(ToJs.selectUserIsAuthenticated),
     isLoading: select(ToJs.selectUserIsLoading),
     user: select(ToJs.selectUser).toJS()
@@ -54,14 +70,14 @@ const LoginContainer = ({
   children,
   ...props
 }) => {
-  const userProps = useLogin$1();
+  const userProps = useLogin();
   return children(userProps);
 };
 
 LoginContainer.propTypes = {};
 var Login_container = ToJs.toJS(LoginContainer);
 
-const useLogin = () => {
+const useRegistration = () => {
   const dispatch = reactRedux.useDispatch();
   const select = reactRedux.useSelector;
   return {
@@ -77,28 +93,71 @@ const RegistrationContainer = ({
   children,
   ...props
 }) => {
-  const userProps = useLogin();
+  const userProps = useRegistration();
   return children(userProps);
 };
 
 RegistrationContainer.propTypes = {};
 var Registration_container = ToJs.toJS(RegistrationContainer);
 
-const getDisplayName$1 = WrappedComponent => {
+const useForgotPassword = () => {
+  const dispatch = reactRedux.useDispatch();
+  const select = reactRedux.useSelector;
+  return {
+    isLoading: select(ToJs.selectPasswordResetRequestSending),
+    isSuccess: select(ToJs.selectPasswordResetRequestSent),
+    error: select(ToJs.selectPasswordResetRequestError),
+    requestPasswordReset: userEmailObject => dispatch(requestPasswordReset(userEmailObject)),
+    setNewPassword: {
+      queryString: select(selectors.selectCurrentSearch),
+      isLoading: select(ToJs.selectResetPasswordSending),
+      isSuccess: select(ToJs.selectResetPasswordSent),
+      error: select(ToJs.selectResetPasswordError),
+      submit: resetPasswordObject => dispatch(resetPassword(resetPasswordObject))
+    }
+  };
+};
+
+const ForgotPasswordContainer = ({
+  children,
+  ...props
+}) => {
+  const userProps = useForgotPassword();
+  return children(userProps);
+};
+
+ForgotPasswordContainer.propTypes = {};
+var ForgotPassword_container = ToJs.toJS(ForgotPasswordContainer);
+
+const useChangePassword = () => {
+  const dispatch = reactRedux.useDispatch();
+  const select = reactRedux.useSelector;
+  return {
+    isLoading: select(ToJs.selectChangePasswordSending),
+    isSuccess: select(ToJs.selectChangePasswordSent),
+    isLoggedIn: select(ToJs.selectUserIsAuthenticated),
+    error: select(ToJs.selectChangePasswordError),
+    authenticationErrorMessage: select(ToJs.selectUserAuthenticationErrorMessage),
+    changePassword: (userId, currentPassword, newPassword) => dispatch(changePassword(userId, currentPassword, newPassword))
+  };
+};
+
+const ChangePasswordContainer = ({
+  children,
+  ...props
+}) => {
+  const userProps = useChangePassword();
+  return children(userProps);
+};
+
+ChangePasswordContainer.propTypes = {};
+var ChangePassword_container = ToJs.toJS(ChangePasswordContainer);
+
+const getDisplayName = WrappedComponent => {
   return WrappedComponent.displayName || WrappedComponent.name || 'Component';
 };
 
 const withLogin = WrappedComponent => {
-  // Returns a redux-connected component with the following props:
-  // this.propTypes = {
-  //   loading: PropTypes.bool,
-  //   authenticated: PropTypes.bool,
-  //   authenticationError: PropTypes.bool,
-  //   error: PropTypes.bool,
-  //   user: PropTypes.object,
-  //   logoutUser: PropTypes.func,
-  //   isHeaderLogin: PropTypes.bool,
-  // };
   const mapStateToProps = state => {
     return {
       authenticationError: ToJs.selectUserAuthenticationError(state),
@@ -114,23 +173,15 @@ const withLogin = WrappedComponent => {
     logoutUser
   };
   const ConnectedComponent = reactRedux.connect(mapStateToProps, mapDispatchToProps)(ToJs.toJS(WrappedComponent));
-  ConnectedComponent.displayName = `${getDisplayName$1(WrappedComponent)}`;
+  ConnectedComponent.displayName = `${getDisplayName(WrappedComponent)}`;
   return ConnectedComponent;
 };
 
-const getDisplayName = WrappedComponent => {
+const getDisplayName$1 = WrappedComponent => {
   return WrappedComponent.displayName || WrappedComponent.name || 'Component';
 };
 
 const withRegistration = WrappedComponent => {
-  // Returns a redux-connected component with the following props:
-  // this.propTypes = {
-  //   registerUser: PropTypes.func,
-  //   isLoading: PropTypes.bool,
-  //   isSuccess: PropTypes.bool,
-  //   error: PropTypes.bool | PropTypes.object,
-  //   user: PropTypes.object,
-  // };
   const mapStateToProps = state => {
     return {
       error: ToJs.selectUserRegistrationError(state),
@@ -144,22 +195,26 @@ const withRegistration = WrappedComponent => {
     registerUser
   };
   const ConnectedComponent = reactRedux.connect(mapStateToProps, mapDispatchToProps)(ToJs.toJS(WrappedComponent));
-  ConnectedComponent.displayName = `${getDisplayName(WrappedComponent)}`;
+  ConnectedComponent.displayName = `${getDisplayName$1(WrappedComponent)}`;
   return ConnectedComponent;
 };
 
-exports.LoginHelper = login.LoginHelper;
-exports.handleRequiresLoginSaga = login.handleRequiresLoginSaga;
-exports.refreshSecurityToken = login.refreshSecurityToken;
 exports.initialUserState = reducers.initialUserState;
 exports.reducer = reducers.UserReducer;
 exports.types = reducers.types;
 exports.selectors = ToJs.selectors;
+exports.LoginHelper = login.LoginHelper;
+exports.handleRequiresLoginSaga = login.handleRequiresLoginSaga;
+exports.refreshSecurityToken = login.refreshSecurityToken;
+exports.ChangePassword = ChangePassword_container;
+exports.ForgotPasswordContainer = ForgotPassword_container;
 exports.LoginContainer = Login_container;
 exports.RegistrationContainer = Registration_container;
 exports.actions = actions;
-exports.useLogin = useLogin$1;
-exports.useRegistration = useLogin;
+exports.useChangePassword = useChangePassword;
+exports.useForgotPassword = useForgotPassword;
+exports.useLogin = useLogin;
+exports.useRegistration = useRegistration;
 exports.withLogin = withLogin;
 exports.withRegistration = withRegistration;
 //# sourceMappingURL=user.js.map
