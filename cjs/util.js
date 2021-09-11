@@ -80,13 +80,28 @@ const mapEntries = (entries, mappers, field = 'sys.contentTypeId') => entries.ma
  * where the mapping originated and for what component the mapped object is representing
  */
 
-const mapComposer = (composer, mappers) => Array.isArray(composer) ? composer.map(composerItem => {
-  const fieldValue = composerItem.type;
-  const mapper = mappers[fieldValue] || mappers.default;
-  return mapper ? {
-    _type: fieldValue,
-    ...mapJson__default['default'](composerItem.value || {}, mapper)
-  } : composerItem;
+const mapComposer = (composer, mappers) => Array.isArray(composer) ? composer.map((composerItem, index) => {
+  const itemValue = composerItem.value;
+  const mapper = mappers[composerItem.type] || mappers.default;
+
+  if (mapper) {
+    // Add some fields into the composer item mapper and return object
+    const addedFields = {
+      _type: composerItem.type,
+      _index: index
+    }; // Add fields and $root item into the composer item source object
+    // for use inside each item mapping
+
+    const sourceObject = itemValue && typeof itemValue === 'object' ? { ...itemValue,
+      ...addedFields,
+      $root: composer
+    } : itemValue || {};
+    const mappedFields = mapJson__default['default'](sourceObject, mapper); // Add the extra fields in with the return object
+
+    return mappedFields && typeof mappedFields === 'object' ? { ...mappedFields,
+      ...addedFields
+    } : mappedFields;
+  } else return;
 }) : composer || [];
 /**
  * useComposerMapper hook to take a composer field from Delivery API along
