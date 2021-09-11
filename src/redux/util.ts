@@ -29,6 +29,7 @@ export const getImmutableOrJS = <
   fallbackValue?: any
 ) => {
   if (
+    state &&
     'get' in state &&
     typeof state.get === 'function' &&
     'getIn' in state &&
@@ -40,12 +41,14 @@ export const getImmutableOrJS = <
     return state.get(stateKey, fallbackValue) as S[T | any];
   }
 
-  if (Array.isArray(stateKey)) {
-    const result = jpath(stateKey.join['.'], state);
+  if (Array.isArray(stateKey) && state && typeof state === 'object') {
+    const result = jpath(stateKey.join('.'), state);
     if (typeof result === 'undefined') return fallbackValue;
     return result;
   }
-  const result = state[stateKey as string];
+
+  const result =
+    state && typeof state === 'object' ? state[stateKey as string] : undefined;
   if (typeof result === 'undefined') return fallbackValue;
   return result;
 };
