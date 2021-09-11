@@ -5,7 +5,7 @@ import 'react-router-config';
 export { j as actions, r as types } from './actions-e4912016.js';
 export { r as selectors } from './selectors-c33466a6.js';
 import 'query-string';
-import './matchGroups-2baa685f.js';
+import './ToJs-3a60aebd.js';
 import 'react-hot-loader';
-export { R as RouteLoader } from './RouteLoader-551a58ca.js';
+export { R as RouteLoader } from './RouteLoader-bbb86988.js';
 //# sourceMappingURL=routing.js.map

@@ -1,8 +1,5 @@
-export default LoginContainer;
-declare function LoginContainer({ children, ...props }: {
+declare var _default: import("react").ComponentType<{
     [x: string]: any;
     children: any;
-}): any;
-declare namespace LoginContainer {
-    const propTypes: {};
-}
+}>;
+export default _default;

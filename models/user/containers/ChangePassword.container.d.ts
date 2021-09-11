@@ -1,8 +1,5 @@
-export default ChangePasswordContainer;
-declare function ChangePasswordContainer({ children, ...props }: {
+declare var _default: import("react").ComponentType<{
     [x: string]: any;
     children: any;
-}): any;
-declare namespace ChangePasswordContainer {
-    const propTypes: {};
-}
+}>;
+export default _default;

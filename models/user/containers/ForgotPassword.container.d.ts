@@ -1,8 +1,5 @@
-export default ForgotPasswordContainer;
-declare function ForgotPasswordContainer({ children, ...props }: {
+declare var _default: import("react").ComponentType<{
     [x: string]: any;
     children: any;
-}): any;
-declare namespace ForgotPasswordContainer {
-    const propTypes: {};
-}
+}>;
+export default _default;

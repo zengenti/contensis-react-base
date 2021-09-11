@@ -1,6 +1,13 @@
-import { o as getJS } from './selectors-c33466a6.js';
+'use strict';
 
-const select = state => getJS(state, 'user');
+var React = require('react');
+var selectors$1 = require('./selectors-1db80394.js');
+
+function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+
+var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
+
+const select = state => selectors$1.getJS(state, 'user');
 
 const selectUserIsLoading = state => {
   var _select, _select$authenticatio;
@@ -181,5 +188,42 @@ const matchUserGroup = (userGroups = [], requiredGroups = []) => {
   return groupMatch;
 };
 
-export { selectUserIsAuthenticated as a, selectUserGroups as b, selectUserAuthenticationError as c, selectUserAuthenticationErrorMessage as d, selectUserError as e, selectUserErrorMessage as f, selectUserIsLoading as g, selectUser as h, selectUserRegistrationError as i, selectUserRegistrationIsLoading as j, selectUserRegistrationIsSuccess as k, selectUserRegistration as l, matchUserGroup as m, selectPasswordResetRequestSending as n, selectPasswordResetRequestSent as o, selectPasswordResetRequestError as p, selectResetPasswordSending as q, selectResetPasswordSent as r, selectClientCredentials as s, selectResetPasswordError as t, selectChangePasswordSending as u, selectChangePasswordSent as v, selectChangePasswordError as w, selectors as x };
-//# sourceMappingURL=matchGroups-2baa685f.js.map
+/* eslint-disable react/display-name */
+const toJS = WrappedComponent => wrappedComponentProps => {
+  const KEY = 0;
+  const VALUE = 1;
+  const propsJS = Object.entries(wrappedComponentProps).reduce((newProps, wrappedComponentProp) => {
+    const propKey = wrappedComponentProp[KEY];
+    const propValue = wrappedComponentProp[VALUE];
+    newProps[propKey] = typeof propValue === 'object' && 'toJS' in propValue ? propValue.toJS() : propValue;
+    return newProps;
+  }, {});
+  return /*#__PURE__*/React__default['default'].createElement(WrappedComponent, propsJS);
+};
+
+exports.matchUserGroup = matchUserGroup;
+exports.selectChangePasswordError = selectChangePasswordError;
+exports.selectChangePasswordSending = selectChangePasswordSending;
+exports.selectChangePasswordSent = selectChangePasswordSent;
+exports.selectClientCredentials = selectClientCredentials;
+exports.selectPasswordResetRequestError = selectPasswordResetRequestError;
+exports.selectPasswordResetRequestSending = selectPasswordResetRequestSending;
+exports.selectPasswordResetRequestSent = selectPasswordResetRequestSent;
+exports.selectResetPasswordError = selectResetPasswordError;
+exports.selectResetPasswordSending = selectResetPasswordSending;
+exports.selectResetPasswordSent = selectResetPasswordSent;
+exports.selectUser = selectUser;
+exports.selectUserAuthenticationError = selectUserAuthenticationError;
+exports.selectUserAuthenticationErrorMessage = selectUserAuthenticationErrorMessage;
+exports.selectUserError = selectUserError;
+exports.selectUserErrorMessage = selectUserErrorMessage;
+exports.selectUserGroups = selectUserGroups;
+exports.selectUserIsAuthenticated = selectUserIsAuthenticated;
+exports.selectUserIsLoading = selectUserIsLoading;
+exports.selectUserRegistration = selectUserRegistration;
+exports.selectUserRegistrationError = selectUserRegistrationError;
+exports.selectUserRegistrationIsLoading = selectUserRegistrationIsLoading;
+exports.selectUserRegistrationIsSuccess = selectUserRegistrationIsSuccess;
+exports.selectors = selectors;
+exports.toJS = toJS;
+//# sourceMappingURL=ToJs-1b716fc1.js.map

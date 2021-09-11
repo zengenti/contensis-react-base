@@ -1,22 +1,16 @@
-'use strict';
-
-var React = require('react');
-var reactRouterDom = require('react-router-dom');
-var reactRedux = require('react-redux');
-var reactRouterConfig = require('react-router-config');
-var actions = require('./actions-661a0e96.js');
-var selectors = require('./selectors-1db80394.js');
-var matchGroups = require('./matchGroups-7315f0a3.js');
-var reactHotLoader = require('react-hot-loader');
-
-function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
-
-var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
+import React, { useCallback, useEffect } from 'react';
+import { Route, useLocation, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { matchRoutes, renderRoutes } from 'react-router-config';
+import { g as setNavigationPath } from './actions-e4912016.js';
+import { h as selectRouteEntryContentTypeId, s as selectRouteEntry, i as selectRouteIsError, j as selectIsNotFound, k as selectRouteLoading, f as selectMappedEntry, a as selectCurrentProject, l as selectCurrentPath, m as selectRouteStatusCode, n as selectRouteErrorMessage } from './selectors-c33466a6.js';
+import { t as toJS, a as selectUserIsAuthenticated, b as selectUserGroups, m as matchUserGroup } from './ToJs-3a60aebd.js';
+import { hot } from 'react-hot-loader';
 
 const NotFound = ({
   statusCode,
   statusText
-}) => /*#__PURE__*/React__default['default'].createElement(React__default['default'].Fragment, null, /*#__PURE__*/React__default['default'].createElement("header", null, /*#__PURE__*/React__default['default'].createElement("h1", null, statusCode || '404', " Page Not Found"), statusText && /*#__PURE__*/React__default['default'].createElement("h2", {
+}) => /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("header", null, /*#__PURE__*/React.createElement("h1", null, statusCode || '404', " Page Not Found"), statusText && /*#__PURE__*/React.createElement("h2", {
   style: {
     background: '#eee',
     color: '#666',
@@ -29,7 +23,7 @@ const Status = ({
   code,
   children
 }) => {
-  return /*#__PURE__*/React__default['default'].createElement(reactRouterDom.Route, {
+  return /*#__PURE__*/React.createElement(Route, {
     render: ({
       staticContext
     }) => {
@@ -71,17 +65,17 @@ const RouteLoader = ({
   userGroups,
   withEvents
 }) => {
-  const location = reactRouterDom.useLocation(); // Always ensure paths are trimmed of trailing slashes so urls are always unique
+  const location = useLocation(); // Always ensure paths are trimmed of trailing slashes so urls are always unique
 
   const trimmedPath = getTrimmedPath(location.pathname); // Match any Static Routes a developer has defined
 
-  const matchedStaticRoute = () => reactRouterConfig.matchRoutes(routes.StaticRoutes, location.pathname);
+  const matchedStaticRoute = () => matchRoutes(routes.StaticRoutes, location.pathname);
 
   const isStaticRoute = () => matchedStaticRoute().length > 0;
 
   const staticRoute = isStaticRoute() && matchedStaticRoute()[0];
   const routeRequiresLogin = staticRoute && staticRoute.route.requireLogin;
-  const setPath = React.useCallback(() => {
+  const setPath = useCallback(() => {
     // Use serverPath to control the path we send to siteview node api to resolve a route
     let serverPath = '';
 
@@ -103,24 +97,24 @@ const RouteLoader = ({
       }
     }
 
-    setNavigationPath(serverPath || trimmedPath, location, staticRoute, withEvents, statePath, routes);
+    setNavigationPath(serverPath || trimmedPath, location, staticRoute, withEvents, statePath, routes); // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setNavigationPath, // staticRoute,
   withEvents, location, routes, // statePath,
   trimmedPath]);
   if (typeof window == 'undefined') setPath();
-  React.useEffect(() => {
+  useEffect(() => {
     setPath();
   }, [location, setPath]); // Need to redirect when url endswith a /
 
   if (location.pathname.length > trimmedPath.length) {
-    return /*#__PURE__*/React__default['default'].createElement(reactRouterDom.Redirect, {
+    return /*#__PURE__*/React.createElement(Redirect, {
       to: trimmedPath
     });
   } // Render any Static Routes a developer has defined
 
 
   if (isStaticRoute() && !(!isLoggedIn && routeRequiresLogin)) {
-    if (matchGroups.matchUserGroup(userGroups, routeRequiresLogin)) return reactRouterConfig.renderRoutes(routes.StaticRoutes, {
+    if (matchUserGroup(userGroups, routeRequiresLogin)) return renderRoutes(routes.StaticRoutes, {
       projectId,
       contentTypeId,
       entry,
@@ -133,7 +127,7 @@ const RouteLoader = ({
 
   if (isLoading && !isNotFound && loadingComponent) {
     const LoadingComponent = loadingComponent;
-    return /*#__PURE__*/React__default['default'].createElement(LoadingComponent, null);
+    return /*#__PURE__*/React.createElement(LoadingComponent, null);
   } // Match any defined Content Type Mappings
 
 
@@ -141,7 +135,7 @@ const RouteLoader = ({
     const MatchedComponent = routes.ContentTypeMappings.find(item => item.contentTypeID === contentTypeId); // debugger;
 
     if (MatchedComponent && !(MatchedComponent.requireLogin && !isLoggedIn)) {
-      if (matchGroups.matchUserGroup(userGroups, MatchedComponent.requireLogin)) return /*#__PURE__*/React__default['default'].createElement(MatchedComponent.component, {
+      if (matchUserGroup(userGroups, MatchedComponent.requireLogin)) return /*#__PURE__*/React.createElement(MatchedComponent.component, {
         projectId: projectId,
         contentTypeId: contentTypeId,
         entry: entry,
@@ -154,9 +148,9 @@ const RouteLoader = ({
   const NotFoundComponent = notFoundComponent ? notFoundComponent : NotFound;
 
   if (isNotFound || isError) {
-    return /*#__PURE__*/React__default['default'].createElement(Status, {
+    return /*#__PURE__*/React.createElement(Status, {
       code: statusCode
-    }, /*#__PURE__*/React__default['default'].createElement(NotFoundComponent, {
+    }, /*#__PURE__*/React.createElement(NotFoundComponent, {
       statusCode: statusCode,
       statusText: statusText
     }));
@@ -167,25 +161,25 @@ const RouteLoader = ({
 
 const mapStateToProps = state => {
   return {
-    contentTypeId: selectors.selectRouteEntryContentTypeId(state),
-    entry: selectors.selectRouteEntry(state),
-    isError: selectors.selectRouteIsError(state),
-    isNotFound: selectors.selectIsNotFound(state),
-    isLoading: selectors.selectRouteLoading(state),
-    isLoggedIn: matchGroups.selectUserIsAuthenticated(state),
-    mappedEntry: selectors.selectMappedEntry(state),
-    projectId: selectors.selectCurrentProject(state),
-    statePath: selectors.selectCurrentPath(state),
-    statusCode: selectors.selectRouteStatusCode(state),
-    statusText: selectors.selectRouteErrorMessage(state),
-    userGroups: matchGroups.selectUserGroups(state)
+    contentTypeId: selectRouteEntryContentTypeId(state),
+    entry: selectRouteEntry(state),
+    isError: selectRouteIsError(state),
+    isNotFound: selectIsNotFound(state),
+    isLoading: selectRouteLoading(state),
+    isLoggedIn: selectUserIsAuthenticated(state),
+    mappedEntry: selectMappedEntry(state),
+    projectId: selectCurrentProject(state),
+    statePath: selectCurrentPath(state),
+    statusCode: selectRouteStatusCode(state),
+    statusText: selectRouteErrorMessage(state),
+    userGroups: selectUserGroups(state)
   };
 };
 
 const mapDispatchToProps = {
-  setNavigationPath: actions.setNavigationPath
+  setNavigationPath
 };
-var RouteLoader$1 = reactHotLoader.hot(module)(reactRedux.connect(mapStateToProps, mapDispatchToProps)(RouteLoader));
+var RouteLoader$1 = hot(module)(connect(mapStateToProps, mapDispatchToProps)(toJS(RouteLoader)));
 
-exports.RouteLoader = RouteLoader$1;
-//# sourceMappingURL=RouteLoader-b90cd529.js.map
+export { RouteLoader$1 as R };
+//# sourceMappingURL=RouteLoader-bbb86988.js.map

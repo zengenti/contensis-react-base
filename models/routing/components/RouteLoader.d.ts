@@ -1,4 +1,4 @@
-/// <reference types="react" />
+import React from 'react';
 import { setNavigationPath } from '../redux/actions';
 import { Entry } from 'contensis-delivery-api/lib/models';
 import { AppRootProps, RouteLoaderProps } from '../routes';
@@ -17,5 +17,5 @@ interface IReduxProps {
     statusText: string;
     userGroups: any;
 }
-declare const _default: import("react-redux").ConnectedComponent<({ contentTypeId, entry, isError, isLoading, isLoggedIn, isNotFound, loadingComponent, mappedEntry, notFoundComponent, projectId, routes, setNavigationPath, statePath, statusCode, statusText, userGroups, withEvents, }: AppRootProps & RouteLoaderProps & IReduxProps) => JSX.Element | null, import("react-redux").Omit<AppRootProps & RouteLoaderProps & IReduxProps, "isError" | "contentTypeId" | "entry" | "isLoading" | "mappedEntry" | "statusCode" | "projectId" | "statusText" | "isLoggedIn" | "isNotFound" | "setNavigationPath" | "statePath" | "userGroups">>;
+declare const _default: import("react-redux").ConnectedComponent<React.ComponentType<AppRootProps & RouteLoaderProps & IReduxProps>, import("react-redux").Omit<AppRootProps & RouteLoaderProps & IReduxProps, "isError" | "contentTypeId" | "entry" | "isLoading" | "mappedEntry" | "statusCode" | "projectId" | "statusText" | "isLoggedIn" | "isNotFound" | "setNavigationPath" | "statePath" | "userGroups"> | import("react-redux").Omit<React.ClassAttributes<React.Component<AppRootProps & RouteLoaderProps & IReduxProps, any, any>> & AppRootProps & RouteLoaderProps & IReduxProps, "isError" | "contentTypeId" | "entry" | "isLoading" | "mappedEntry" | "statusCode" | "projectId" | "statusText" | "isLoggedIn" | "isNotFound" | "setNavigationPath" | "statePath" | "userGroups">>;
 export default _default;

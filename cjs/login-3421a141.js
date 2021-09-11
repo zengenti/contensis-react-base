@@ -5,7 +5,7 @@ var actions = require('./actions-661a0e96.js');
 var reducers = require('./reducers-fde41d6b.js');
 var effects = require('@redux-saga/core/effects');
 var selectors = require('./selectors-1db80394.js');
-var matchGroups = require('./matchGroups-7315f0a3.js');
+var ToJs = require('./ToJs-1b716fc1.js');
 var awaitToJs = require('await-to-js');
 var Cookies = require('js-cookie');
 
@@ -463,7 +463,7 @@ function* handleRequiresLoginSaga(action) {
     },
     staticRoute
   } = action;
-  let userLoggedIn = yield effects.select(matchGroups.selectUserIsAuthenticated); // Check for a securityToken in querystring
+  let userLoggedIn = yield effects.select(ToJs.selectUserIsAuthenticated); // Check for a securityToken in querystring
 
   const currentQs = selectors.queryParams(yield effects.select(selectors.selectCurrentSearch));
   const securityToken = currentQs.securityToken || currentQs.securitytoken; // Check if any of the defined routes have "requireLogin" attribute
@@ -500,8 +500,8 @@ function* handleRequiresLoginSaga(action) {
     if (!userLoggedIn && !securityToken) {
       LoginHelper.ClientRedirectToSignInPage(action.location.pathname);
     } else if (routeRequiresGroups.length > 0) {
-      const userGroups = yield effects.select(matchGroups.selectUserGroups);
-      const groupMatch = matchGroups.matchUserGroup(userGroups, routeRequiresGroups);
+      const userGroups = yield effects.select(ToJs.selectUserGroups);
+      const groupMatch = ToJs.matchUserGroup(userGroups, routeRequiresGroups);
       if (!groupMatch) LoginHelper.ClientRedirectToAccessDeniedPage(action.location.pathname);
     }
   }
@@ -536,7 +536,7 @@ function* validateUserSaga({
     clientCredentials
   }); // Tell any callers have we successfully logged in?
 
-  return yield effects.select(matchGroups.selectUserIsAuthenticated);
+  return yield effects.select(ToJs.selectUserIsAuthenticated);
 }
 
 function* loginUserSaga(action = {}) {
@@ -573,7 +573,7 @@ const removeHostnamePart = path => {
 };
 
 function* redirectAfterSuccessfulLoginSaga() {
-  const isLoggedIn = yield effects.select(matchGroups.selectUserIsAuthenticated);
+  const isLoggedIn = yield effects.select(ToJs.selectUserIsAuthenticated);
   const {
     redirect_uri: redirectPath,
     ReturnURL: assetRedirectPath
@@ -600,7 +600,7 @@ function* logoutUserSaga({
 }
 
 function* refreshSecurityToken() {
-  const clientCredentials = yield effects.select(matchGroups.selectClientCredentials);
+  const clientCredentials = yield effects.select(ToJs.selectClientCredentials);
 
   if (Object.keys(clientCredentials).length > 0) {
     const client = yield getManagementApiClient(clientCredentials);
@@ -621,4 +621,4 @@ exports.getManagementApiClient = getManagementApiClient;
 exports.handleRequiresLoginSaga = handleRequiresLoginSaga;
 exports.loginSagas = loginSagas;
 exports.refreshSecurityToken = refreshSecurityToken;
-//# sourceMappingURL=login-8d349faf.js.map
+//# sourceMappingURL=login-3421a141.js.map
