@@ -43,8 +43,8 @@ const getTrimmedPath = path => {
 };
 
 interface IReduxProps {
-  contentTypeId: string;
-  entry: Entry;
+  contentTypeId: string | null;
+  entry: Entry | null;
   isError: boolean;
   isNotFound: boolean;
   isLoading: boolean;
