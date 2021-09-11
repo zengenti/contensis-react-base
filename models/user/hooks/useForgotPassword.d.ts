@@ -5,7 +5,7 @@ declare function useForgotPassword(): {
     error: Error | null | undefined;
     requestPasswordReset: (userEmailObject: any) => any;
     setNewPassword: {
-        queryString: string;
+        queryString: any;
         isLoading: boolean | undefined;
         isSuccess: boolean | undefined;
         error: Error | null | undefined;
