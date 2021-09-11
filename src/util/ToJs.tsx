@@ -15,7 +15,7 @@ export const toJS =
         const propKey = wrappedComponentProp[KEY];
         const propValue = wrappedComponentProp[VALUE];
         newProps[propKey] =
-          typeof propValue === 'object' && 'toJS' in propValue
+          propValue && typeof propValue === 'object' && 'toJS' in propValue
             ? propValue.toJS()
             : propValue;
         return newProps as Props;
