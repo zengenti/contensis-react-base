@@ -1,4 +1,5 @@
 import useChangePassword from '../hooks/useChangePassword';
+import { toJS } from '~/util/ToJs';
 
 const ChangePasswordContainer = ({ children, ...props }) => {
   const userProps = useChangePassword(props);
@@ -7,4 +8,4 @@ const ChangePasswordContainer = ({ children, ...props }) => {
 
 ChangePasswordContainer.propTypes = {};
 
-export default ChangePasswordContainer;
+export default toJS(ChangePasswordContainer);
