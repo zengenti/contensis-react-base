@@ -8,14 +8,14 @@ import { error } from 'loglevel';
 import { OrderedMap, Map, List, Set, fromJS } from 'immutable';
 import { Op, OrderBy, Query } from 'contensis-core-api';
 
-/* eslint-disable @typescript-eslint/ban-types */
+/* eslint-disable react/display-name */
 const toJS = WrappedComponent => wrappedComponentProps => {
   const KEY = 0;
   const VALUE = 1;
   const propsJS = Object.entries(wrappedComponentProps).reduce((newProps, wrappedComponentProp) => {
     const propKey = wrappedComponentProp[KEY];
     const propValue = wrappedComponentProp[VALUE];
-    newProps[propKey] = typeof propValue === 'object' && 'toJS' in propValue ? propValue.toJS() : propValue;
+    newProps[propKey] = propValue && typeof propValue === 'object' && 'toJS' in propValue ? propValue.toJS() : propValue;
     return newProps;
   }, {});
   return /*#__PURE__*/React.createElement(WrappedComponent, propsJS);
