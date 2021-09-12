@@ -57,8 +57,13 @@ export default async (
   // stateType is 'immutable' with dynamic imports
   let combiner = combineReducers;
   let fromJS: any = (obj: any) => obj;
+  globalThis.STATE_TYPE = stateType;
 
   if (stateType === 'immutable') {
+    globalThis.immutable = await import(
+      /* webpackChunkName: "immutable" */ 'immutable'
+    );
+
     fromJS = (
       await import(/* webpackChunkName: "from-js" */ '~/util/fromJSLeaveImmer')
     ).default;
