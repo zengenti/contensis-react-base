@@ -89,8 +89,8 @@ function* getRouteSaga(action) {
     );
 
     const state = yield select();
-    const routeEntry = selectRouteEntry(state);
-    const routeNode = selectCurrentNode(state);
+    const routeEntry = selectRouteEntry(state, 'js');
+    const routeNode = selectCurrentNode(state, 'js');
     const currentPath = action.path; //selectCurrentPath(state);
     const deliveryApiStatus = selectVersionStatus(state);
     const project = selectCurrentProject(state);
@@ -380,7 +380,7 @@ function* setRouteEntry(
     currentEntryId === entrySys.id &&
     currentEntryLang === entrySys.language &&
     remapEntry === false
-      ? (yield select(selectMappedEntry)) || {}
+      ? (yield select(selectMappedEntry, 'js')) || {}
       : yield mapRouteEntry(entryMapper, {
           ...node,
           entry,

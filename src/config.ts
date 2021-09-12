@@ -1,7 +1,7 @@
 import { AppRoutes, WithEvents } from './routing/routes';
 import handleResponse from './server/features/response-handler';
 
-export type StateType = 'immutable' | 'immer';
+export type StateType = 'immutable' | 'js';
 
 export type AppConfig = {
   stateType?: StateType;
