@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 import mapJson, { jpath } from 'jsonpath-mapper';
 export { jpath, default as mapJson } from 'jsonpath-mapper';
-import { a as selectCurrentProject } from './selectors-17761a9a.js';
-import { a as selectCommitRef, b as selectBuildNumber, s as selectVersionStatus } from './version-7a3fa38a.js';
+import { a as selectCurrentProject } from './selectors-002092f0.js';
+import { a as selectCommitRef, b as selectBuildNumber, s as selectVersionStatus } from './version-64676ef7.js';
 import 'query-string';
 
 /**
