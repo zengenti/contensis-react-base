@@ -71,6 +71,9 @@ Object.defineProperty(exports, 'store', {
   }
 });
 exports.useInjectRedux = version$1.useInjectRedux;
+exports.action = selectors$1.action;
+exports.getIn = selectors$1.getImmutableOrJS;
+exports.getJS = selectors$1.getJS;
 exports.navigation = navigation$1;
 exports.routing = routing;
 exports.version = version;

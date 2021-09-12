@@ -2,6 +2,8 @@ import types from './types';
 import actions from './actions';
 import selectors from './selectors';
 
+export { action, getJS, getImmutableOrJS as getIn } from './util';
+
 export { reduxStore as store } from './store/store';
 
 export {

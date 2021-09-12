@@ -1,3 +1,4 @@
+export { action, getJS, getImmutableOrJS as getIn } from './util';
 export { reduxStore as store } from './store/store';
 export { convertSagaArray, injectRedux, injectReducer, injectSaga, useInjectRedux, } from './store/injectors';
 export declare const navigation: {
