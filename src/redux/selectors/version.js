@@ -1,10 +1,8 @@
-import { getJS } from '../util';
+import { getImmutableOrJS as getIn } from '~/redux/util';
 
-const select = state => getJS(state, 'version');
+export const selectCommitRef = state => getIn(state, ['routing', 'commitRef']);
 
-export const selectCommitRef = state => select(state)?.commitRef;
-
-export const selectBuildNumber = state => select(state)?.buildNo;
+export const selectBuildNumber = state => getIn(state, ['routing', 'buildNo']);
 
 export const selectVersionStatus = state =>
-  select(state)?.contensisVersionStatus;
+  getIn(state, ['routing', 'contensisVersionStatus']);

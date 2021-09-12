@@ -1,9 +1,10 @@
-import { getJS } from '../util';
+import { getImmutableOrJS as getIn } from '~/redux/util';
 
-const select = state => getJS(state, 'navigation');
+export const hasNavigationTree = state =>
+  getIn(state, ['navigation', 'isReady']);
 
-export const hasNavigationTree = state => select(state)?.isReady;
+export const selectNavigationRoot = state =>
+  getIn(state, ['navigation', 'root']);
 
-export const selectNavigationRoot = state => select(state)?.root;
-
-export const selectNavigationDepends = state => select(state)?.treeDepends;
+export const selectNavigationDepends = state =>
+  getIn(state, ['navigation', 'treeDepends']);
