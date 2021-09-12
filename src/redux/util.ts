@@ -32,7 +32,9 @@ export const getImmutableOrJS = <
   // Find a fromJS function from global that is dynamically loaded in createStore
   // or replace with a stub function for non-immutable gets
   const fromJS =
-    returnType === 'immutable' ? globalThis.immutable?.fromJSOrdered : v => v;
+    returnType === 'immutable'
+      ? globalThis.immutable?.fromJSOrdered || globalThis.immutable?.fromJS
+      : v => v;
 
   if (
     state &&
@@ -43,7 +45,8 @@ export const getImmutableOrJS = <
     'toJS' in state &&
     typeof state.toJS === 'function'
   ) {
-    if (Array.isArray(stateKey)) return state.getIn(stateKey, fallbackValue);
+    if (Array.isArray(stateKey))
+      return fromJS(state.getIn(stateKey, fallbackValue));
     return fromJS(state.get(stateKey, fallbackValue)) as S[T | any];
   }
 
