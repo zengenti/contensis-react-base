@@ -1,6 +1,7 @@
+import { StateType } from "../../config";
 import { AppState } from "../../redux/appstate";
-export declare const selectRouteEntry: (state: AppState) => any;
-export declare const selectMappedEntry: (state: AppState) => any;
+export declare const selectRouteEntry: (state: AppState, returnType?: StateType | undefined) => any;
+export declare const selectMappedEntry: (state: AppState, returnType?: StateType | undefined) => any;
 export declare const selectNodeDepends: (state: AppState) => any;
 export declare const selectCurrentHostname: (state: AppState) => any;
 export declare const selectCurrentTreeID: (state: AppState) => any;
@@ -17,7 +18,7 @@ export declare const selectCurrentProject: (state: AppState) => any;
 export declare const selectIsNotFound: (state: AppState) => any;
 export declare const selectCurrentAncestors: (state: AppState) => any;
 export declare const selectCurrentSiblings: (state: AppState) => any;
-export declare const selectCurrentNode: (state: AppState) => any;
+export declare const selectCurrentNode: (state: AppState, returnType?: StateType | undefined) => any;
 export declare const selectCurrentChildren: (state: any) => any;
 export declare const selectBreadcrumb: (state: AppState) => any;
 export declare const selectRouteErrorMessage: (state: AppState) => any;

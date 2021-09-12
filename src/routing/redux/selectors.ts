@@ -1,13 +1,14 @@
 import { Entry } from 'contensis-delivery-api/lib/models';
+import { StateType } from '~/config';
 import { AppState } from '~/redux/appstate';
 import { getImmutableOrJS as getIn } from '~/redux/util';
 import { queryParams } from '~/util/navigation';
 
-export const selectRouteEntry = (state: AppState) =>
-  getIn(state, ['routing', 'entry'], {} as Entry);
+export const selectRouteEntry = (state: AppState, returnType?: StateType) =>
+  getIn(state, ['routing', 'entry'], {} as Entry, returnType);
 
-export const selectMappedEntry = (state: AppState) =>
-  getIn(state, ['routing', 'mappedEntry'], null);
+export const selectMappedEntry = (state: AppState, returnType?: StateType) =>
+  getIn(state, ['routing', 'mappedEntry'], null, returnType);
 
 export const selectNodeDepends = (state: AppState) =>
   getIn(state, ['routing', 'nodeDepends'], []);
@@ -55,8 +56,8 @@ export const selectCurrentAncestors = (state: AppState) =>
   getIn(state, ['routing', 'currentNodeAncestors'], []);
 export const selectCurrentSiblings = (state: AppState) =>
   getIn(state, ['routing', 'currentNodeSiblings'], []);
-export const selectCurrentNode = (state: AppState) =>
-  getIn(state, ['routing', 'currentNode']);
+export const selectCurrentNode = (state: AppState, returnType?: StateType) =>
+  getIn(state, ['routing', 'currentNode'], null, returnType);
 export const selectCurrentChildren = state =>
   getIn(state, ['routing', 'currentNode', 'children'], []);
 
