@@ -18,14 +18,14 @@ var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
 var mapJson__default = /*#__PURE__*/_interopDefaultLegacy(mapJson);
 var queryString__default = /*#__PURE__*/_interopDefaultLegacy(queryString);
 
-/* eslint-disable @typescript-eslint/ban-types */
+/* eslint-disable react/display-name */
 const toJS = WrappedComponent => wrappedComponentProps => {
   const KEY = 0;
   const VALUE = 1;
   const propsJS = Object.entries(wrappedComponentProps).reduce((newProps, wrappedComponentProp) => {
     const propKey = wrappedComponentProp[KEY];
     const propValue = wrappedComponentProp[VALUE];
-    newProps[propKey] = typeof propValue === 'object' && 'toJS' in propValue ? propValue.toJS() : propValue;
+    newProps[propKey] = propValue && typeof propValue === 'object' && 'toJS' in propValue ? propValue.toJS() : propValue;
     return newProps;
   }, {});
   return /*#__PURE__*/React__default['default'].createElement(WrappedComponent, propsJS);
@@ -1127,7 +1127,7 @@ const searchUriTemplate = {
     const searchContext = getSearchContext(state); // Lose stateFilters and currentSearch if a new
     // term is passed via an argument
 
-    const stateFilters = term ? immutable.List() : getSelectedFilters(state, facet, searchContext).map(f => f.join(','));
+    const stateFilters = term ? immutable.List() : getSelectedFilters(state, facet, searchContext).map(f => f === null || f === void 0 ? void 0 : f.join(','));
     const currentSearch = !term && state.getIn(['routing', 'location', 'search']);
     const currentQs = removeEmptyAttributes(queryString__default['default'].parse(currentSearch));
     if (orderBy) currentQs.orderBy = orderBy;
@@ -1391,7 +1391,7 @@ const queryParamsTemplate = {
     state,
     facet,
     context
-  }) => getSelectedFilters(state, facet, context).map(f => f.join(',')),
+  }) => getSelectedFilters(state, facet, context).map(f => f === null || f === void 0 ? void 0 : f.join(',')),
   versionStatus: ({
     state
   }) => selectVersionStatus(state),
