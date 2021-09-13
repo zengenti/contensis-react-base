@@ -20,7 +20,7 @@ module.exports = {
     'plugin:prettier/recommended',
     'prettier',
   ],
-  plugins: ['prettier', 'react'],
+  plugins: ['prettier', 'react', 'react-hooks'],
   env: {
     browser: true,
     node: true,
@@ -65,6 +65,8 @@ module.exports = {
         endOfLine: 'auto',
       },
     ],
+    'react-hooks/rules-of-hooks': 'error',
+    'react-hooks/exhaustive-deps': 'warn',
   },
 
   overrides: [
