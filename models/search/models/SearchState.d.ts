@@ -1,13 +1,16 @@
-import { List, Map, OrderedMap } from 'immutable';
-import { initialState, searchFacet } from '../redux/schema';
+import { Context } from './Enums';
 import { CustomWhereClause } from './Search';
-export declare type AppState = Map<'search', typeof initialState>;
+export declare type AppState = Record<'search', SearchState>;
 export declare type SearchState = {
+    context: keyof typeof Context;
     currentFacet: string;
+    currentListing: string;
     term: string;
-    facets: OrderedMap<string, OrderedMap<string, typeof searchFacet>>;
-    tabs: List<Tab>;
-    config: Map<string, boolean>;
+    facets: Facets;
+    listings: Facets;
+    minilist: Facets;
+    tabs: Tab[];
+    config: Record<string, boolean>;
 };
 export declare type Facets = {
     [key: string]: Facet;
@@ -16,10 +19,12 @@ export declare type Facet = {
     entries: {
         isLoading: boolean;
         isError: boolean;
+        error?: any;
     };
     featuredEntries: {
         isLoading: boolean;
         isError: boolean;
+        error?: any;
     };
     featuredResults: any[];
     filters: Filters;
@@ -28,13 +33,20 @@ export declare type Facet = {
         pageCount: number;
         pageSize: number;
         pageIndex: number;
+        pagesLoaded: number[];
+        prevPageIndex: number;
         totalCount: number;
     };
     preloaded: boolean;
+    projectId: string;
     queryDuration: number;
     queryParams: {
         contentTypeIds: string[];
         dynamicOrderBy: string[];
+        excludeIds: string[];
+        internalPaging: boolean;
+        loadMorePaging: boolean;
+        useSearchTerm: boolean;
     };
     results: any[];
     tabId: number;
@@ -53,6 +65,7 @@ export declare type Filter = {
     isError: boolean;
     items?: FilterItem[];
     path?: string;
+    renderable?: boolean;
     title?: string;
 };
 export declare type FilterItem = {
@@ -74,10 +87,13 @@ export declare type Paging = {
 };
 export declare type Tab = {
     currentFacet: string;
-    facets: {
-        [key: string]: Facet;
-    };
+    defaultFacet: string;
     id: number;
     label: string;
     totalCount: number;
+};
+export declare type TabAndFacets = Tab & {
+    facets: {
+        [key: string]: Facet;
+    };
 };

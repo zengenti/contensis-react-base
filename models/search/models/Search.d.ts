@@ -50,10 +50,14 @@ export declare type SearchFilter = {
     fieldOperator?: string;
     /** The taxonomy path we will dynamically load into state under the items[] */
     path?: string;
-    /**  */
+    /** Setting to true will sync selected filters under matching filter keys in other facets */
+    isGrouped?: boolean;
+    /** Setting to true will ensure only one value can be selected at a time for this filter */
     isSingleSelect?: boolean;
     /** Supply an empty array or a hardcoded list of FilterItem depending on the type of filter we require */
     items: FilterItem[];
+    /** Set to false to not include this filter in filters prop */
+    renderable?: boolean;
     /** The title to render next to the filter */
     title: string;
 };

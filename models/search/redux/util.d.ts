@@ -5,7 +5,7 @@ import { EnsureSearchAction, SetSearchEntriesAction } from '../models/SearchActi
  * 1, Generates all the parameters required to run the search query.
  * 2, Tells us if we should run the search.
  * @param {object} action
- * @param {ImmutableMap} state
+ * @param {AppState} state
  * @returns [queryParams, runSearch]
  */
 export declare const generateQueryParams: (action: EnsureSearchAction | SetSearchEntriesAction, state: AppState) => [SearchQueryOptions, boolean];

@@ -1,9 +1,57 @@
-import { List, Map, OrderedMap } from 'immutable';
 import { CustomWhereClause } from '../models/Search';
-export declare const entries: Map<string, boolean | List<any>>;
-export declare const pagingInfo: Map<string, number | boolean | List<any>>;
-export declare const searchFacet: OrderedMap<string, string | number | List<any> | Map<string, boolean | List<any>> | Map<string, number | boolean | List<any>> | Map<unknown, unknown> | null>;
-export declare const searchTab: Map<string, string | number | OrderedMap<unknown, unknown> | undefined>;
-export declare const filtering: Map<string, string | boolean | List<CustomWhereClause> | List<Map<string, string | boolean>>>;
-export declare const filterItem: Map<string, string | boolean>;
-export declare const initialState: OrderedMap<string, string | Map<string, boolean> | OrderedMap<string, OrderedMap<string, OrderedMap<string, string | number | List<any> | Map<string, boolean | List<any>> | Map<string, number | boolean | List<any>> | Map<unknown, unknown> | null>>> | List<import("../models/SearchState").Tab>>;
+import { Filter, FilterItem, SearchState } from '../models/SearchState';
+export declare const entries: {
+    isLoading: boolean;
+    isError: boolean;
+    items: never[];
+};
+export declare const pagingInfo: {
+    isLoading: boolean;
+    pageCount: number;
+    pageIndex: number;
+    pageSize: number;
+    pagesLoaded: never[];
+    prevPageIndex: number;
+    totalCount: number;
+};
+export declare const searchFacet: {
+    title: null;
+    featuredEntries: {
+        isLoading: boolean;
+        isError: boolean;
+        items: never[];
+    };
+    featuredResults: never[];
+    entries: {
+        isLoading: boolean;
+        isError: boolean;
+        items: never[];
+    };
+    results: never[];
+    queryParams: {};
+    filters: {};
+    queryDuration: number;
+    pagingInfo: {
+        isLoading: boolean;
+        pageCount: number;
+        pageIndex: number;
+        pageSize: number;
+        pagesLoaded: never[];
+        prevPageIndex: number;
+        totalCount: number;
+    };
+    projectId: string;
+};
+export declare const searchTab: {
+    currentFacet: undefined;
+    facets: {};
+    id: number;
+    label: undefined;
+    totalCount: string;
+};
+export declare const filtering: Omit<Filter, "customWhere" | "items"> & {
+    customWhere?: CustomWhereClause[] | undefined;
+    items?: FilterItem[] | undefined;
+};
+export declare const filterItem: FilterItem;
+export declare const initialState: SearchState;

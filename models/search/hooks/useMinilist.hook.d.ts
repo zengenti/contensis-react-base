@@ -13,11 +13,11 @@ declare type UseMiniListProps = {
     };
 };
 declare const useMinilist: ({ id, config, excludeIds, mapper, mappers, params, defaultLang, debug, }?: UseMiniListProps) => {
-    filters: Object;
-    isLoading: any;
-    pagingInfo: any;
+    filters: import("../models/SearchState").Filters;
+    isLoading: boolean;
+    pagingInfo: import("../models/SearchState").Paging;
     results: any[];
-    searchTerm: any;
-    title: any;
+    searchTerm: string;
+    title: string;
 };
 export default useMinilist;

@@ -1,4 +1,3 @@
-import { List } from 'immutable';
 import { PagedList } from 'contensis-core-api';
 import { Entry, TaxonomyNode } from 'contensis-delivery-api/lib/models';
 import { Context } from '../models/Enums';
@@ -53,7 +52,7 @@ export declare type LoadFiltersSearchResults = Action & {
     facetKey: string;
     filterKey: string;
     payload: TaxonomyNode | PagedList<Entry>;
-    selectedKeys: List<string>;
+    selectedKeys: string[];
     context: Context;
     mapper: Mappers['filterItems'];
 };
@@ -61,7 +60,7 @@ export declare type SearchResults = {
     action: ExecuteSearchAction;
     featuredResult?: TimedSearchResponse;
     pageIndex: number;
-    prevResults: List<any>;
+    prevResults: any[];
     result: TimedSearchResponse;
     state: AppState;
 };
@@ -70,7 +69,7 @@ export declare type LoadFiltersCompleteAction = Action & {
     facetKey: string;
     filterKey: string;
     payload: TaxonomyNode | PagedList<Entry>;
-    selectedKeys: List<string>;
+    selectedKeys: string[];
     context: Context;
     mapper: Mappers['filterItems'];
 };

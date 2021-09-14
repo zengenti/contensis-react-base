@@ -1,4 +1,3 @@
-import { Map } from 'immutable';
 import { Entry } from 'contensis-delivery-api/lib/models';
 import { PagedList, Query } from 'contensis-core-api';
 import { CustomApi } from '../models/Search';
@@ -13,9 +12,9 @@ export declare const extractQuotedPhrases: (searchTerm: string) => string[];
 export declare const buildUrl: (route: string, params: {
     [key: string]: string;
 }) => string;
-export declare const callCustomApi: <T>(customApi: Map<string, CustomApi[keyof CustomApi]>, filters: {
+export declare const callCustomApi: <T>(customApi: CustomApi, filters: {
     [key: string]: string;
 }) => Promise<T>;
 export declare const removeEmptyAttributes: (obj: any) => any;
-export declare const toArray: (obj: string, seperator?: string) => string[] | (string & any[]);
+export declare const toArray: (obj: string | null, seperator?: string) => string[] | null;
 export declare const areArraysEqualSets: (a1: any[], a2: any[]) => boolean;
