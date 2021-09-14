@@ -31,7 +31,7 @@ export declare const getIsLoaded: (state: AppState, context?: Context, facet?: s
 export declare const getIsLoading: (state: AppState, context?: Context, facet?: string | undefined) => boolean;
 export declare const getIsSsr: (state: AppState) => boolean;
 export declare const getFeaturedResults: (state: AppState, current?: string, context?: Context) => any[];
-export declare const getPaging: (state: AppState, current?: string, context?: Context) => Paging;
+export declare const getPaging: (state: AppState, current?: string, context?: Context, returnType?: StateType | undefined) => Paging;
 export declare const getPageIndex: (state: AppState, current?: string, context?: Context) => number;
 export declare const getPrevPageIndex: (state: AppState, current?: string, context?: Context) => number;
 export declare const getPageIsLoading: (state: AppState, current?: string, context?: Context) => boolean;
@@ -71,7 +71,7 @@ export declare const selectFacets: {
     getPageIndex: (state: AppState, current?: string, context?: Context) => number;
     getPageIsLoading: (state: AppState, current?: string, context?: Context) => boolean;
     getPagesLoaded: (state: AppState, current?: string, context?: Context) => number[];
-    getPaging: (state: AppState, current?: string, context?: Context) => Paging;
+    getPaging: (state: AppState, current?: string, context?: Context, returnType?: StateType | undefined) => Paging;
     getQueryParams: (state: AppState, facet: string) => Record<string, any>;
     getQueryParameter: ({ state, facet }: {
         state: AppState;

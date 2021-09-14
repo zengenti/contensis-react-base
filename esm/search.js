@@ -281,8 +281,8 @@ const getIsSsr = state => getImmutableOrJS(state, ['search', 'config', 'ssr'], f
 const getFeaturedResults = (state, current = '', context = Context.facets) => {
   return getImmutableOrJS(state, ['search', context, current || getCurrent(state, context), 'featuredResults'], []);
 };
-const getPaging = (state, current = '', context = Context.facets) => {
-  return getImmutableOrJS(state, ['search', context, current || getCurrent(state, context), 'pagingInfo'], {});
+const getPaging = (state, current = '', context = Context.facets, returnType) => {
+  return getImmutableOrJS(state, ['search', context, current || getCurrent(state, context), 'pagingInfo'], {}, returnType);
 };
 const getPageIndex = (state, current = '', context = Context.facets) => {
   return getImmutableOrJS(state, ['search', context, current || getCurrent(state, context), 'pagingInfo', 'pageIndex']);
@@ -758,6 +758,7 @@ const getItemsFromResult = result => {
   if (payload) {
     if (Array.isArray(payload)) return payload;
     if (Array.isArray(payload.items)) return payload.items;
+    return payload;
   }
 
   return [];
@@ -1935,11 +1936,11 @@ function* buildUri({
 }
 
 const makeSelectMinilistProps = () => createSelector(state => state, (_, id) => id, (state, id) => ({
-  facet: getFacet(state, id, Context.minilist),
-  filters: getFilters(state, id, Context.minilist),
+  facet: getFacet(state, id, Context.minilist, 'js'),
+  filters: getFilters(state, id, Context.minilist, 'js'),
   isLoading: getIsLoading(state, Context.minilist, id),
-  pagingInfo: getPaging(state, id, Context.minilist),
-  results: getResults(state, id, Context.minilist),
+  pagingInfo: getPaging(state, id, Context.minilist, 'js'),
+  results: getResults(state, id, Context.minilist, 'js'),
   searchTerm: getSearchTerm(state)
 }));
 
@@ -2084,7 +2085,9 @@ const addConfigToState = (state, action) => {
   } = action; // Adding or changing the config of a single facet, listing or minilist
 
   if (context && facet && config) {
-    state[context][facet] = config;
+    state[context][facet] = { ...searchFacet,
+      ...config
+    };
   } else if (config) {
     // Changing the entire search config
     state = config;
@@ -2125,7 +2128,7 @@ const generateFiltersState = ({
   }; // Get any existing filters and normalise the items[]
   // so we can start off with isSelected is false
 
-  let filters = Object.entries(state[context][facet].filters).map(([key, filter]) => {
+  let filters = Object.entries(state[context][facet].filters || []).map(([key, filter]) => {
     if (isCurrentFacet || filter.isGrouped) {
       var _filter$items;
 

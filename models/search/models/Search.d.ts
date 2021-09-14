@@ -29,13 +29,18 @@ export declare type Listing = {
     title: string;
 };
 export declare type Facet = {
+    /** Display title */
+    title: string;
+    /** Experimental: use a custom API to retrieve search results */
+    customApi?: CustomApi;
+} | ({
     /** The first facet to be shown if no facet is supplied via a route parameter [default false] */
     isDefault?: boolean;
     /** Set to true to temporarily disable the facet [default false] */
     isDisabled?: boolean;
     /** The id of the tab the facet applies to. Use 0 for default or the id assigned to the tab */
     tabId?: number;
-} & Listing;
+} & Listing);
 export declare type SearchFilters = {
     [key: string]: SearchFilter;
 };
