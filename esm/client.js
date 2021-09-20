@@ -1,35 +1,35 @@
 import 'isomorphic-fetch';
-import { preloadReady } from 'react-loadable';
 import React from 'react';
+import { hydrate, render } from 'react-dom';
 import { Router } from 'react-router-dom';
+import { preloadReady } from 'react-loadable';
+import { AppContainer } from 'react-hot-loader';
 import { Provider } from 'react-redux';
-import 'react-router-config';
-import 'jsonpath-mapper';
-import 'immutable';
+import * as queryString from 'query-string';
+import { c as createStore, s as setVersionStatus } from './version-06472931.js';
+import { d as deliveryApi, r as rootSaga, p as pickProject, b as browserHistory } from './App-7d16f94c.js';
+export { A as ReactApp } from './App-7d16f94c.js';
+import { s as setCurrentProject } from './actions-12324830.js';
+import { o as fromJSOrdered } from './reducers-a2b095a1.js';
+import '@redux-saga/core/effects';
 import 'redux';
 import 'redux-immutable';
 import 'redux-thunk';
 import 'redux-saga';
 import 'redux-injectors';
-import { c as createStore, s as setVersionStatus } from './version-cc4fe786.js';
-import { s as setCurrentProject } from './actions-ddd9c623.js';
-import { o as fromJSOrdered } from './reducers-a2b095a1.js';
+import 'immutable';
 import 'history';
-import { d as deliveryApi, r as rootSaga, p as pickProject, b as browserHistory } from './App-c47a0dee.js';
-export { A as ReactApp } from './App-c47a0dee.js';
-import '@redux-saga/core/effects';
 import 'contensis-delivery-api';
 import './version-7fdbd2d5.js';
-import { parse } from 'query-string';
-import './selectors-68799788.js';
+import './selectors-ec8355ae.js';
 import 'loglevel';
-import './ToJs-498344a0.js';
-import './login-524e10df.js';
+import './login-5f693ea6.js';
+import './ToJs-5769f9bd.js';
+import 'jsonpath-mapper';
 import 'await-to-js';
 import 'js-cookie';
-import { AppContainer } from 'react-hot-loader';
-import './RouteLoader-4e9dc4a3.js';
-import { hydrate, render } from 'react-dom';
+import './RouteLoader-7b7fe712.js';
+import 'react-router-config';
 
 const fromJSLeaveImmer = js => {
   // console.info(js);
@@ -89,7 +89,7 @@ class ClientApp {
     };
 
     let store = null;
-    const qs = parse(window.location.search);
+    const qs = queryString.parse(window.location.search);
     const versionStatusFromHostname = deliveryApi.getClientSideVersionStatus();
 
     if (window.isDynamic || window.REDUX_DATA || process.env.NODE_ENV !== 'production') {
@@ -115,7 +115,7 @@ class ClientApp {
         store = createStore(withReducers, fromJSLeaveImmer(ssRedux), browserHistory); // store.dispatch(setVersionStatus(versionStatusFromHostname));
 
         store.runSaga(rootSaga(withSagas));
-        store.dispatch(setCurrentProject(pickProject(window.location.hostname, parse(window.location.search)), [], window.location.hostname)); // if (typeof window != 'undefined') {
+        store.dispatch(setCurrentProject(pickProject(window.location.hostname, queryString.parse(window.location.search)), [], window.location.hostname)); // if (typeof window != 'undefined') {
         //   store.dispatch(checkUserLoggedIn());
         // }
 
@@ -134,5 +134,5 @@ class ClientApp {
 
 }
 
-export default ClientApp;
+export { ClientApp as default };
 //# sourceMappingURL=client.js.map

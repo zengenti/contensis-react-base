@@ -1,2 +1,2 @@
 export default LoginFormStyled;
-declare const LoginFormStyled: any;
+declare const LoginFormStyled: import("styled-components").StyledComponent<"div", any, {}, never>;

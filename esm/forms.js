@@ -1,10 +1,10 @@
-import React, { createContext, useState, useEffect } from 'react';
-import { connect } from 'react-redux';
-import styled, { css, ThemeProvider as ThemeProvider$1 } from 'styled-components';
 import { Map, fromJS, Iterable } from 'immutable';
 import { takeEvery, takeLatest, put, call, select, all } from '@redux-saga/core/effects';
 import { createSelector } from 'reselect';
+import React, { createContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import styled, { css, ThemeProvider as ThemeProvider$1 } from 'styled-components';
 
 const ACTION_PREFIX = '@FORM2/';
 const SET_FORM_DATA = `${ACTION_PREFIX}SET_FORM_DATA`;
@@ -2266,7 +2266,7 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-var Form = connect(mapStateToProps, mapDispatchToProps)(toJS(FormContainer));
+connect(mapStateToProps, mapDispatchToProps)(toJS(FormContainer));
 
 export { reducer, formV2Sagas as sagas };
 //# sourceMappingURL=forms.js.map
