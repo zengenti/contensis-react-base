@@ -1,9 +1,9 @@
-import { Loadable } from 'react-loadable';
 import { MatchedRoute, RouteConfig } from 'react-router-config';
 import { Entry, Node } from 'contensis-delivery-api/lib/models';
 import React from 'react';
 
-type RouteComponent<Props> = Loadable | React.ComponentType<Props>;
+type RouteComponent<Props> = React.ComponentType<Props>;
+
 type RouteNode = Node & { ancestors: Node[]; children: Node[] };
 
 export type AppRoutes = {

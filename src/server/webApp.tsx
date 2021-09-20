@@ -1,19 +1,24 @@
 import fs from 'fs';
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
+import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
 import { Provider as ReduxProvider } from 'react-redux';
-import Loadable from 'react-loadable';
-import { renderToString } from 'react-dom/server';
 import { matchRoutes } from 'react-router-config';
-import { getBundles } from 'react-loadable/webpack';
-import { ServerStyleSheet } from 'styled-components';
 import Helmet from 'react-helmet';
+import { ServerStyleSheet } from 'styled-components';
 import serialize from 'serialize-javascript';
 import minifyCssString from 'minify-css-string';
 import mapJson from 'jsonpath-mapper';
+import { Express } from 'express';
+import { StaticRouterContext } from 'react-router';
+
+import Loadable from 'react-loadable';
+// import { getBundles } from 'react-loadable/webpack';
+import { getBundles } from 'react-loadable-ssr-addon';
+import { ChunkExtractorManager } from '@loadable/server';
+
 import { fromJS } from 'immutable';
 // import fromJSLeaveImmer from '~/util/fromJSLeaveImmer';
-import fromEntries from 'fromentries';
 
 import createStore from '~/redux/store/store';
 import { history } from '~/redux/store/history';
@@ -21,129 +26,21 @@ import rootSaga from '~/redux/sagas/index.js';
 
 import { setVersion, setVersionStatus } from '../redux/actions/version';
 import { setCurrentProject } from '../routing/redux/actions';
-import {
-  selectCurrentProject,
-  selectRouteEntry,
-} from '../routing/redux/selectors';
 
 import { getCacheDuration } from './features/caching/cacheDuration.schema';
 import handleResponse from './features/response-handler';
 
-import { replaceStaticPath } from './util/staticPaths';
 import pickProject from '~/util/pickProject';
 import { deliveryApi } from '~/util/ContensisDeliveryApi';
 import stringifyAttributes from './util/stringifyAttributes';
-import { Express, Response } from 'express';
-import { StaticRouterContext } from 'react-router';
 import { ServerConfig } from '~/config';
-
-const addStandardHeaders = (
-  state: any,
-  response: Response,
-  packagejson: any,
-  groups: { globalGroups?: any[]; allowedGroups?: any[] }
-) => {
-  if (state) {
-    try {
-      console.info('About to add headers');
-      const routingSurrogateKeys = state.getIn(
-        ['routing', 'surrogateKeys'],
-        ''
-      );
-
-      const surrogateKeyHeader = ` ${packagejson.name}-app ${routingSurrogateKeys}`;
-
-      response.header('surrogate-key', surrogateKeyHeader);
-
-      addVarnishAuthenticationHeaders(state, response, groups);
-
-      response.setHeader(
-        'Surrogate-Control',
-        `max-age=${getCacheDuration(response.statusCode)}`
-      );
-    } catch (e: any) {
-      console.info('Error Adding headers', e.message);
-    }
-  }
-};
-
-const addVarnishAuthenticationHeaders = (
-  state: any,
-  response: Response,
-  groups: { globalGroups?: any[]; allowedGroups?: any[] } = {}
-) => {
-  if (state) {
-    try {
-      const stateEntry = selectRouteEntry(state);
-      const project = selectCurrentProject(state);
-      const { globalGroups, allowedGroups } = groups;
-      // console.info(globalGroups, allowedGroups);
-      let allGroups = Array.from((globalGroups && globalGroups[project]) || {});
-      if (
-        stateEntry &&
-        stateEntry.getIn(['authentication', 'isLoginRequired']) &&
-        allowedGroups &&
-        allowedGroups[project]
-      ) {
-        allGroups = [...allGroups, ...allowedGroups[project]];
-      }
-      response.header('x-contensis-viewer-groups', allGroups.join('|'));
-    } catch (e) {
-      console.info('Error adding authentication header', e);
-    }
-  }
-};
-
-const readFileSync = path => fs.readFileSync(path, 'utf8');
-
-const loadableBundleData = (
-  { stats, templates },
-  staticRoutePath: string,
-  build?: string
-) => {
-  const bundle: {
-    stats?: string | null;
-    templates?: {
-      templateHTML;
-      templateHTMLStatic;
-      templateHTMLFragment;
-    } | null;
-  } = {};
-  try {
-    bundle.stats = JSON.parse(
-      readFileSync(stats.replace('/target', build ? `/${build}` : ''))
-    );
-  } catch (ex) {
-    // console.info(ex);
-    bundle.stats = null;
-  }
-  try {
-    bundle.templates = {
-      templateHTML: replaceStaticPath(
-        readFileSync(
-          templates.html.replace('/target', build ? `/${build}` : '')
-        ),
-        staticRoutePath
-      ),
-      templateHTMLStatic: replaceStaticPath(
-        readFileSync(
-          templates.static.replace('/target', build ? `/${build}` : '')
-        ),
-        staticRoutePath
-      ),
-      templateHTMLFragment: replaceStaticPath(
-        readFileSync(
-          templates.fragment.replace('/target', build ? `/${build}` : '')
-        ),
-        staticRoutePath
-      ),
-    };
-  } catch (ex) {
-    // console.info(ex);
-    bundle.templates = null;
-  }
-  return bundle;
-};
+import {
+  buildBundleTags,
+  getBundleData,
+  getBundleTags,
+  loadableChunkExtractors,
+} from './util/bundles';
+import { addStandardHeaders } from './util/headers';
 
 const webApp = (
   app: Express,
@@ -171,13 +68,7 @@ const webApp = (
   } = config;
   const staticRoutePath = config.staticRoutePath || staticFolderPath;
 
-  const bundleData = {
-    default: loadableBundleData(config, staticRoutePath),
-    legacy: loadableBundleData(config, staticRoutePath, 'legacy'),
-    modern: loadableBundleData(config, staticRoutePath, 'modern'),
-  };
-  if (!bundleData.default || bundleData.default === {})
-    bundleData.default = bundleData.legacy || bundleData.modern;
+  const bundleData = getBundleData(config, staticRoutePath);
 
   const attributes = stringifyAttributes(scripts.attributes);
   scripts.startup = scripts.startup || startupScriptFilename;
@@ -246,60 +137,22 @@ const webApp = (
     const groups = allowedGroups && allowedGroups[project];
     store.dispatch(setCurrentProject(project, groups, request.hostname));
 
-    const modules: string[] = [];
+    const loadableExtractor = loadableChunkExtractors();
 
     const jsx = (
-      <Loadable.Capture report={moduleName => modules.push(moduleName)}>
+      <ChunkExtractorManager
+        extractor={loadableExtractor?.commonLoadableExtractor}
+      >
         <ReduxProvider store={store}>
           <StaticRouter context={context} location={url}>
             <ReactApp routes={routes} withEvents={withEvents} />
           </StaticRouter>
         </ReduxProvider>
-      </Loadable.Capture>
+      </ChunkExtractorManager>
     );
-
-    const buildBundleTags = bundles => {
-      // Take the bundles returned from Loadable.Capture
-      const bundleTags = bundles
-        .filter(b => b)
-        .map(bundle => {
-          if (bundle.publicPath.includes('/modern/'))
-            return differentialBundles
-              ? `<script ${attributes} type="module" src="${replaceStaticPath(
-                  bundle.publicPath,
-                  staticRoutePath
-                )}"></script>`
-              : null;
-          return `<script ${attributes} nomodule src="${replaceStaticPath(
-            bundle.publicPath,
-            staticRoutePath
-          )}"></script>`;
-        })
-        .filter(f => f);
-
-      // Add the static startup script to the bundleTags
-      if (scripts.startup)
-        bundleTags.push(
-          `<script ${attributes} src="/${staticRoutePath}/${scripts.startup}"></script>`
-        );
-
-      return bundleTags;
-    };
 
     const templates =
       bundleData.default.templates || bundleData.legacy.templates;
-
-    const stats =
-      bundleData.modern.stats && bundleData.legacy.stats
-        ? fromEntries(
-            Object.entries(bundleData.modern.stats).map(([lib, paths]) => [
-              lib,
-              bundleData?.legacy?.stats?.[lib]
-                ? [...paths, ...bundleData.legacy.stats[lib]]
-                : paths,
-            ])
-          )
-        : bundleData.default.stats;
 
     const { templateHTML, templateHTMLFragment, templateHTMLStatic } =
       templates || {};
@@ -311,8 +164,12 @@ const webApp = (
 
       // Dynamic page render has only the necessary bundles to start up the app
       // and does not include any react-loadable code-split bundles
-      const loadableBundles = getBundles(stats, modules);
-      const bundleTags = buildBundleTags(loadableBundles).join('');
+      let bundleTags = '';
+      // Add the static startup script to the bundleTags
+      if (scripts.startup)
+        bundleTags = `<script ${attributes} src="/${staticRoutePath}/${scripts.startup}"></script>`;
+
+      bundleTags += getBundleTags(loadableExtractor);
 
       const isDynamicHint = `<script ${attributes}>window.isDynamic = true;</script>`;
 
@@ -358,8 +215,13 @@ const webApp = (
 
           // After running rootSaga there should be an additional react-loadable
           // code-split bundle for a page component as well as core app bundles
-          const loadableBundles = getBundles(stats, modules);
-          const bundleTags = buildBundleTags(loadableBundles).join('');
+
+          let bundleTags = '';
+          // Add the static startup script to the bundleTags
+          if (scripts.startup)
+            bundleTags = `<script ${attributes} src="/${staticRoutePath}/${scripts.startup}"></script>`;
+
+          bundleTags += getBundleTags(loadableExtractor);
 
           let serialisedReduxData = '';
           if (context.statusCode !== 404) {

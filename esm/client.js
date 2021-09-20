@@ -11,12 +11,12 @@ import 'redux-immutable';
 import 'redux-thunk';
 import 'redux-saga';
 import 'redux-injectors';
-import { c as createStore, s as setVersionStatus } from './version-64906b26.js';
+import { c as createStore, s as setVersionStatus } from './version-93ecf542.js';
 import { s as setCurrentProject } from './actions-ddd9c623.js';
 import { o as fromJSOrdered } from './reducers-feab84fc.js';
 import 'history';
-import { d as deliveryApi, r as rootSaga, p as pickProject, b as browserHistory } from './App-452c2ab3.js';
-export { A as ReactApp } from './App-452c2ab3.js';
+import { d as deliveryApi, r as rootSaga, p as pickProject, b as browserHistory } from './App-f3e98db5.js';
+export { A as ReactApp } from './App-f3e98db5.js';
 import '@redux-saga/core/effects';
 import 'contensis-delivery-api';
 import './version-7fdbd2d5.js';
@@ -28,7 +28,7 @@ import './login-1f9ad133.js';
 import 'await-to-js';
 import 'js-cookie';
 import { AppContainer } from 'react-hot-loader';
-import './RouteLoader-dedcc835.js';
+import './RouteLoader-281d47e1.js';
 import { hydrate, render } from 'react-dom';
 
 const fromJSLeaveImmer = js => {

@@ -4,6 +4,18 @@ Everything you need to get started with React and Contensis.
 
 Handles web app routing with Contensis Site View and component rendering based on a loaded Content Type entry in Contensis, Redux application store creation and all the major application dependencies to get going, with server side rendering and an Express web server.
 
+## v2.6 Installation Notes
+
+This version introduces React v17. React is very sensitive to having multiple versions installed at the same time.
+
+Many projects upgrading to v2.6 of `contensis-react-base` are likely to be using an older version of Storybook which when installed along with React 17 results in multiple versions of React being installed and resulting in the app not rendering giving a react console error.
+
+You will need to upgrade your version of Storybook to be >= 6.1 which has support for React 17. [Further reading](https://storybook.js.org/blog/storybook-6-1/)
+
+TLDR: Storybook have provided a simple way to upgrade. Run `npx sb upgrade` when upgrading to v2.6 of `contensis-react-base`. You should also ensure you are running the latest version of webpack or webpack@4 to prevent futher errors when loading Storybook.
+
+If you are still getting react errors after this, check your project for other dependencies to remove/update that rely on older versions of react
+
 # What's goin' on under the hood? 🔧
 
 The core of your Contensis React application is in package `@zengenti/contensis-react-base` this must be installed as a 'production' dependency, i.e. lives in the `dependencies` section of your `package.json`
