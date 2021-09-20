@@ -1,12 +1,12 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import styled from 'styled-components';
 import mapJson, { jpath } from 'jsonpath-mapper';
 export { jpath, default as mapJson } from 'jsonpath-mapper';
-import 'immutable';
+import React from 'react';
+import { connect } from 'react-redux';
+import { a as selectCurrentProject } from './selectors-ec8355ae.js';
 import { a as selectCommitRef, b as selectBuildNumber, s as selectVersionStatus } from './version-7fdbd2d5.js';
+import styled from 'styled-components';
+import 'immutable';
 import 'query-string';
-import { a as selectCurrentProject } from './selectors-68799788.js';
 
 /**
  *

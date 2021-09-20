@@ -2,20 +2,20 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
+var mapJson = require('jsonpath-mapper');
 var React = require('react');
 var reactRedux = require('react-redux');
-var styled = require('styled-components');
-var mapJson = require('jsonpath-mapper');
-require('immutable');
-var version = require('./version-2193b4a2.js');
-require('query-string');
 var selectors = require('./selectors-1295124a.js');
+var version = require('./version-2193b4a2.js');
+var styled = require('styled-components');
+require('immutable');
+require('query-string');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
+var mapJson__default = /*#__PURE__*/_interopDefaultLegacy(mapJson);
 var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
 var styled__default = /*#__PURE__*/_interopDefaultLegacy(styled);
-var mapJson__default = /*#__PURE__*/_interopDefaultLegacy(mapJson);
 
 /**
  *

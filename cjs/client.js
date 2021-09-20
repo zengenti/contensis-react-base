@@ -3,40 +3,61 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 require('isomorphic-fetch');
-var Loadable = require('react-loadable');
 var React = require('react');
+var reactDom = require('react-dom');
 var reactRouterDom = require('react-router-dom');
+var Loadable = require('react-loadable');
+var reactHotLoader = require('react-hot-loader');
 var reactRedux = require('react-redux');
-require('react-router-config');
-require('jsonpath-mapper');
-require('immutable');
+var queryString = require('query-string');
+var version = require('./version-10dcc7ba.js');
+var App = require('./App-3e6d10af.js');
+var actions = require('./actions-c701de06.js');
+var reducers = require('./reducers-0ea95da5.js');
+require('@redux-saga/core/effects');
 require('redux');
 require('redux-immutable');
 require('redux-thunk');
 require('redux-saga');
 require('redux-injectors');
-var version = require('./version-355b3b3b.js');
-var actions = require('./actions-e9f69947.js');
-var reducers = require('./reducers-0ea95da5.js');
+require('immutable');
 require('history');
-var App = require('./App-b6384360.js');
-require('@redux-saga/core/effects');
 require('contensis-delivery-api');
 require('./version-2193b4a2.js');
-var queryString = require('query-string');
 require('./selectors-1295124a.js');
 require('loglevel');
-require('./ToJs-79922828.js');
-require('./login-11635675.js');
+require('./login-b46b6903.js');
+require('./ToJs-22e646c5.js');
+require('jsonpath-mapper');
 require('await-to-js');
 require('js-cookie');
-var reactHotLoader = require('react-hot-loader');
-require('./RouteLoader-31fa5b1d.js');
-var reactDom = require('react-dom');
+require('./RouteLoader-6356c667.js');
+require('react-router-config');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
+function _interopNamespace(e) {
+  if (e && e.__esModule) return e;
+  var n = Object.create(null);
+  if (e) {
+    Object.keys(e).forEach(function (k) {
+      if (k !== 'default') {
+        var d = Object.getOwnPropertyDescriptor(e, k);
+        Object.defineProperty(n, k, d.get ? d : {
+          enumerable: true,
+          get: function () {
+            return e[k];
+          }
+        });
+      }
+    });
+  }
+  n['default'] = e;
+  return Object.freeze(n);
+}
+
 var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
+var queryString__namespace = /*#__PURE__*/_interopNamespace(queryString);
 
 const fromJSLeaveImmer = js => {
   // console.info(js);
@@ -96,7 +117,7 @@ class ClientApp {
     };
 
     let store = null;
-    const qs = queryString.parse(window.location.search);
+    const qs = queryString__namespace.parse(window.location.search);
     const versionStatusFromHostname = App.deliveryApi.getClientSideVersionStatus();
 
     if (window.isDynamic || window.REDUX_DATA || process.env.NODE_ENV !== 'production') {
@@ -122,7 +143,7 @@ class ClientApp {
         store = version.createStore(withReducers, fromJSLeaveImmer(ssRedux), App.browserHistory); // store.dispatch(setVersionStatus(versionStatusFromHostname));
 
         store.runSaga(App.rootSaga(withSagas));
-        store.dispatch(actions.setCurrentProject(App.pickProject(window.location.hostname, queryString.parse(window.location.search)), [], window.location.hostname)); // if (typeof window != 'undefined') {
+        store.dispatch(actions.setCurrentProject(App.pickProject(window.location.hostname, queryString__namespace.parse(window.location.search)), [], window.location.hostname)); // if (typeof window != 'undefined') {
         //   store.dispatch(checkUserLoggedIn());
         // }
 
@@ -142,5 +163,5 @@ class ClientApp {
 }
 
 exports.ReactApp = App.AppRoot;
-exports.default = ClientApp;
+exports['default'] = ClientApp;
 //# sourceMappingURL=client.js.map
