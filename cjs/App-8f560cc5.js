@@ -7,7 +7,7 @@ require('redux-immutable');
 require('redux-thunk');
 require('redux-saga');
 require('redux-injectors');
-var version = require('./version-90496549.js');
+var version = require('./version-3a808c12.js');
 var actions = require('./actions-e9f69947.js');
 var reducers = require('./reducers-cb531715.js');
 var history$1 = require('history');
@@ -1054,4 +1054,4 @@ exports.deliveryApi = deliveryApi;
 exports.history = history;
 exports.pickProject = pickProject;
 exports.rootSaga = rootSaga;
-//# sourceMappingURL=App-7c0c4e03.js.map
+//# sourceMappingURL=App-8f560cc5.js.map
