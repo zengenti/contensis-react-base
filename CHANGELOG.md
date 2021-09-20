@@ -1,3 +1,64 @@
+#### 2.5.0 (2021-09-20)
+
+##### New Features
+
+- Removed useUser hook and created hooks for change password, forgot password (c65d6dd7)
+- add entryMapper to /util utility function to clean up code when mapping route entries with jsonpath-mapper style templates and default arguments (3b6132d9)
+
+##### Bug Fixes
+
+- Error messages not displaying on the various password forms when operations fail (341bc827)
+- issue with a default value set in typescript refactor (822da5c9)
+- added two missing routing selectors (2ddc26e6)
+- server side debugging requires an old version of babel-plugin to define the set globals in the app (09566a99)
+- changes in latest immutable js typings break existing selectors by changing their return value from any to unknown, update search package to fix bug with ToJS component. Use typescript eslint import resolver (9da62533)
+- update search package to set projectId in listings (098ea40f)
+- small issue with SSR and dynamic bundles need to filter out some undefined array items from the loadable modules (c9fa233f)
+
+##### Build System / Dependencies
+
+- install latest search package and uninstall unused packages (81f1c1eb)
+- update search package to add missing types, add rules-of-hooks back to eslintrc, correct staticRoute type in OnRouteLoadArgs (c7d1a9ce)
+- add follow-tags to git push in release script so we caputure the tag created by npm version command (7030a4fd)
+- adding further types to app config (d5da430c)
+- add types to AppConfig keys (2c0d3447)
+- search index.d.ts is not being copied in CI (0f6b7137)
+- copy typescript models for search package as existing d.ts files are ignored by tsc (5f1ce21f)
+- add missing @types packages (0f54a201)
+- update search package to fix build (5223e118)
+- update package-lock to fix build (a2f40c58)
+- fix no default export in /client (9e10dc24)
+- most models not published to npm (1b2eea17)
+- try remove now redundant build stage (87d68755)
+- handle all exports via index file, use ts-patch to be able to use tsconfig plugins to transform alias paths in d.ts files to usable paths for consumers (7fd52af6)
+- update packages (dcc3cbd4)
+- change npm script in CI to clean assets and build models with tsc (32c61de8)
+- further TypeScript work (e91452d8)
+- TypeScript with rollup and babel initial commit (2c737ed9)##### Other Changes
+
+##### Performance Improvements
+
+- remove excess code from bundles (03773ece)
+- update zengenti packages (f654d22a)
+
+##### Refactors
+
+- further typescript conversions (9c88cd52)
+- further typescript conversions (d7010813)
+- typescript conversion progress, all models exported through default package, convert client entrypoint and types for routes and routing events (2a15b4c6)
+- typescript conversion progress, types added for globals and server start config (12e17c53)
+
+##### Documentation Changes
+
+- add TypeScript notes to README (0a8bcabd)
+- tweak package description text (4f713d5a)
+- update CHANGELOG (b8b1b488)
+
+#### Other changes
+
+- zengenti/contensis-react-base into dom-auth-changes-merge (7d6e7ed9)
+- //github.com/zengenti/contensis-react-base into contensis-14-forgot-change-password (c6775cf1)
+
 #### 2.4.0 (2021-08-19)
 
 ##### Build System / Dependencies
