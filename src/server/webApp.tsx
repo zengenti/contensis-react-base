@@ -137,66 +137,22 @@ const webApp = (
     const groups = allowedGroups && allowedGroups[project];
     store.dispatch(setCurrentProject(project, groups, request.hostname));
 
-    // react-loadable ssr implementation
-    const modules = new Set();
-    // const modules: string[] = [];
-
     const loadableExtractor = loadableChunkExtractors();
 
-    const LoadableWrapper = ({
-      children,
-      extractor,
-      modules,
-    }: PropsWithChildren<any>) => {
-      if (extractor)
-        return (
-          <ChunkExtractorManager extractor={extractor}>
-            {children}
-          </ChunkExtractorManager>
-        );
-      else
-        return (
-          <Loadable.Capture
-            report={moduleName => {
-              debugger;
-              modules.push(moduleName);
-            }}
-          >
-            {children}
-          </Loadable.Capture>
-        );
-    };
-
     const jsx = (
-      // <LoadableWrapper extractor={loadableExtractor} modules={modules}>
       <ChunkExtractorManager
         extractor={loadableExtractor?.commonLoadableExtractor}
       >
-        {/* <Loadable.Capture report={moduleName => modules.add(moduleName)}> */}
         <ReduxProvider store={store}>
           <StaticRouter context={context} location={url}>
             <ReactApp routes={routes} withEvents={withEvents} />
           </StaticRouter>
         </ReduxProvider>
-        {/* </Loadable.Capture> */}
       </ChunkExtractorManager>
-      // </LoadableWrapper>
     );
 
     const templates =
       bundleData.default.templates || bundleData.legacy.templates;
-
-    // const stats =
-    //   bundleData.modern.stats && bundleData.legacy.stats
-    //     ? fromEntries(
-    //         Object.entries(bundleData.modern.stats).map(([lib, paths]) => [
-    //           lib,
-    //           bundleData?.legacy?.stats?.[lib]
-    //             ? [...paths, ...bundleData.legacy.stats[lib]]
-    //             : paths,
-    //         ])
-    //       )
-    //     : bundleData.default.stats;
 
     const { templateHTML, templateHTMLFragment, templateHTMLStatic } =
       templates || {};
@@ -208,23 +164,12 @@ const webApp = (
 
       // Dynamic page render has only the necessary bundles to start up the app
       // and does not include any react-loadable code-split bundles
-      const loadableBundles = getBundles(bundleData.modern.stats as any, [
-        ...((bundleData.modern.stats as any)?.entrypoints || []),
-        ...Array.from(modules),
-      ]);
       let bundleTags = '';
       // Add the static startup script to the bundleTags
       if (scripts.startup)
         bundleTags = `<script ${attributes} src="/${staticRoutePath}/${scripts.startup}"></script>`;
 
-      bundleTags +=
-        getBundleTags(loadableExtractor) ||
-        buildBundleTags(
-          loadableBundles.js || [],
-          differentialBundles,
-          staticRoutePath,
-          attributes
-        ).join('');
+      bundleTags += getBundleTags(loadableExtractor);
 
       const isDynamicHint = `<script ${attributes}>window.isDynamic = true;</script>`;
 
@@ -270,23 +215,13 @@ const webApp = (
 
           // After running rootSaga there should be an additional react-loadable
           // code-split bundle for a page component as well as core app bundles
-          const loadableBundles = getBundles(bundleData.modern.stats as any, [
-            ...((bundleData.modern.stats as any)?.entrypoints || []),
-            ...Array.from(modules),
-          ]);
+
           let bundleTags = '';
           // Add the static startup script to the bundleTags
           if (scripts.startup)
             bundleTags = `<script ${attributes} src="/${staticRoutePath}/${scripts.startup}"></script>`;
 
-          bundleTags +=
-            getBundleTags(loadableExtractor) ||
-            buildBundleTags(
-              loadableBundles.js || [],
-              differentialBundles,
-              staticRoutePath,
-              attributes
-            ).join('');
+          bundleTags += getBundleTags(loadableExtractor);
 
           let serialisedReduxData = '';
           if (context.statusCode !== 404) {
