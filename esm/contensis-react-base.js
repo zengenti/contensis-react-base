@@ -291,8 +291,10 @@ const getBundleTags = loadableExtractor => {
     const modernScriptTags = loadableExtractor === null || loadableExtractor === void 0 ? void 0 : loadableExtractor.modern.getScriptTags({
       type: 'module'
     });
-    return legacyScriptTags + modernScriptTags;
+    return `${legacyScriptTags || ''}${modernScriptTags || ''}`;
   }
+
+  return '';
 };
 
 const addStandardHeaders = (state, response, packagejson, groups) => {

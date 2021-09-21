@@ -43,4 +43,4 @@ export declare const getBundleData: (config: any, staticRoutePath: any) => {
     };
 };
 export declare const buildBundleTags: (bundles: any, differentialBundles?: boolean, staticRoutePath?: string, attributes?: string) => any;
-export declare const getBundleTags: (loadableExtractor: any) => any;
+export declare const getBundleTags: (loadableExtractor: any) => string;
