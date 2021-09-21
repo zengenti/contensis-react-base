@@ -3,6 +3,8 @@ import {
   selectCurrentProject,
   selectRouteEntry,
 } from '~/routing/redux/selectors';
+import { getImmutableOrJS as getIn } from '~/redux/util';
+
 import { getCacheDuration } from '../features/caching/cacheDuration.schema';
 
 export const addStandardHeaders = (
@@ -14,7 +16,8 @@ export const addStandardHeaders = (
   if (state) {
     try {
       console.info('About to add headers');
-      const routingSurrogateKeys = state.getIn(
+      const routingSurrogateKeys = getIn(
+        state,
         ['routing', 'surrogateKeys'],
         ''
       );
@@ -49,7 +52,7 @@ export const addVarnishAuthenticationHeaders = (
       let allGroups = Array.from((globalGroups && globalGroups[project]) || {});
       if (
         stateEntry &&
-        stateEntry.getIn(['authentication', 'isLoginRequired']) &&
+        getIn(stateEntry, ['authentication', 'isLoginRequired']) &&
         allowedGroups &&
         allowedGroups[project]
       ) {
