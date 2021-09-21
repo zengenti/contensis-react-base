@@ -2,6 +2,8 @@ import fs from 'fs';
 import path from 'path';
 import { ChunkExtractor } from '@loadable/server';
 import { replaceStaticPath } from './staticPaths';
+import { ServerConfig } from '~/config';
+import stringifyAttributes from './stringifyAttributes';
 
 const readFileSync = path => fs.readFileSync(path, 'utf8');
 
@@ -54,6 +56,14 @@ export const loadableBundleData = (
   return bundle;
 };
 
+type LoadableChunkExtractors =
+  | {
+      legacy: ChunkExtractor;
+      modern: ChunkExtractor;
+      commonLoadableExtractor: ChunkExtractor;
+    }
+  | undefined;
+
 export const loadableChunkExtractors = () => {
   try {
     const modern = new ChunkExtractor({
@@ -66,7 +76,7 @@ export const loadableChunkExtractors = () => {
       namespace: 'legacy',
       statsFile: path.resolve('dist/legacy/loadable-stats.json'),
     });
-    const commonLoadableExtractor = {
+    const commonLoadableExtractor: ChunkExtractor = {
       addChunk(chunk) {
         modern.addChunk(chunk);
         if (typeof legacy.stats.assetsByChunkName[chunk] !== 'undefined')
@@ -74,7 +84,11 @@ export const loadableChunkExtractors = () => {
       },
     };
 
-    return { commonLoadableExtractor, modern, legacy };
+    return {
+      commonLoadableExtractor,
+      modern,
+      legacy,
+    } as LoadableChunkExtractors;
   } catch (e) {
     console.info('@loadable/server ChunkExtractor not available');
   }
@@ -120,7 +134,19 @@ export const buildBundleTags = (
   return bundleTags;
 };
 
-export const getBundleTags = loadableExtractor => {
+export const getBundleTags = (
+  loadableExtractor: LoadableChunkExtractors,
+  scripts: ServerConfig['scripts'],
+  staticRoutePath = 'static'
+) => {
+  let startupTag = '';
+  // Add the static startup script to the bundleTags
+  if (scripts?.startup)
+    startupTag = `<script ${stringifyAttributes(
+      scripts.attributes
+    )} src="/${staticRoutePath}/${scripts.startup}"></script>`;
+
+  // Get the script tags from their respective extractor instances
   if (loadableExtractor) {
     const legacyScriptTags = loadableExtractor?.legacy.getScriptTags({
       noModule: true,
@@ -128,7 +154,7 @@ export const getBundleTags = loadableExtractor => {
     const modernScriptTags = loadableExtractor?.modern.getScriptTags({
       type: 'module',
     });
-    return `${legacyScriptTags || ''}${modernScriptTags || ''}`;
+    return `${startupTag}${legacyScriptTags || ''}${modernScriptTags || ''}`;
   }
-  return '';
+  return startupTag;
 };
