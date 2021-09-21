@@ -128,6 +128,7 @@ export const getBundleTags = loadableExtractor => {
     const modernScriptTags = loadableExtractor?.modern.getScriptTags({
       type: 'module',
     });
-    return legacyScriptTags + modernScriptTags;
+    return `${legacyScriptTags || ''}${modernScriptTags || ''}`;
   }
+  return '';
 };
