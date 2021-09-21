@@ -1,5 +1,5 @@
 import fs from 'fs';
-import React, { PropsWithChildren } from 'react';
+import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
 import { Provider as ReduxProvider } from 'react-redux';
@@ -11,36 +11,30 @@ import minifyCssString from 'minify-css-string';
 import mapJson from 'jsonpath-mapper';
 import { Express } from 'express';
 import { StaticRouterContext } from 'react-router';
-
-import Loadable from 'react-loadable';
-// import { getBundles } from 'react-loadable/webpack';
-import { getBundles } from 'react-loadable-ssr-addon';
 import { ChunkExtractorManager } from '@loadable/server';
-
-import { fromJS } from 'immutable';
-// import fromJSLeaveImmer from '~/util/fromJSLeaveImmer';
 
 import createStore from '~/redux/store/store';
 import { history } from '~/redux/store/history';
-import rootSaga from '~/redux/sagas/index.js';
+import rootSaga from '~/redux/sagas';
 
-import { setVersion, setVersionStatus } from '../redux/actions/version';
-import { setCurrentProject } from '../routing/redux/actions';
+import { setVersion, setVersionStatus } from '~/redux/actions/version';
+import { setCurrentProject } from '~/routing/redux/actions';
+
+import { deliveryApi } from '~/util/ContensisDeliveryApi';
+import pickProject from '~/util/pickProject';
+import stringifyAttributes from './util/stringifyAttributes';
 
 import { getCacheDuration } from './features/caching/cacheDuration.schema';
 import handleResponse from './features/response-handler';
 
-import pickProject from '~/util/pickProject';
-import { deliveryApi } from '~/util/ContensisDeliveryApi';
-import stringifyAttributes from './util/stringifyAttributes';
-import { ServerConfig } from '~/config';
 import {
-  buildBundleTags,
   getBundleData,
   getBundleTags,
   loadableChunkExtractors,
 } from './util/bundles';
 import { addStandardHeaders } from './util/headers';
+
+import { ServerConfig } from '~/config';
 import { AppState } from '~/redux/appstate';
 
 const webApp = (
@@ -62,7 +56,6 @@ const webApp = (
     scripts = {},
     staticFolderPath = 'static',
     startupScriptFilename,
-    differentialBundles,
     allowedGroups,
     globalGroups,
     disableSsrRedux,
@@ -154,11 +147,8 @@ const webApp = (
       </ChunkExtractorManager>
     );
 
-    const templates =
-      bundleData.default.templates || bundleData.legacy.templates;
-
     const { templateHTML, templateHTMLFragment, templateHTMLStatic } =
-      templates || {};
+      bundleData.default.templates || bundleData.legacy.templates || {};
 
     // Serve a blank HTML page with client scripts to load the app in the browser
     if (accessMethod.DYNAMIC) {
@@ -167,12 +157,7 @@ const webApp = (
 
       // Dynamic page render has only the necessary bundles to start up the app
       // and does not include any react-loadable code-split bundles
-      let bundleTags = '';
-      // Add the static startup script to the bundleTags
-      if (scripts.startup)
-        bundleTags = `<script ${attributes} src="/${staticRoutePath}/${scripts.startup}"></script>`;
-
-      bundleTags += getBundleTags(loadableExtractor);
+      const bundleTags = getBundleTags(loadableExtractor, scripts);
 
       const isDynamicHint = `<script ${attributes}>window.isDynamic = true;</script>`;
 
@@ -217,14 +202,8 @@ const webApp = (
           const styleTags = sheet.getStyleTags();
 
           // After running rootSaga there should be an additional react-loadable
-          // code-split bundle for a page component as well as core app bundles
-
-          let bundleTags = '';
-          // Add the static startup script to the bundleTags
-          if (scripts.startup)
-            bundleTags = `<script ${attributes} src="/${staticRoutePath}/${scripts.startup}"></script>`;
-
-          bundleTags += getBundleTags(loadableExtractor);
+          // code-split bundles for any page components as well as core app bundles
+          const bundleTags = getBundleTags(loadableExtractor, scripts);
 
           let serialisedReduxData = '';
           if (context.statusCode !== 404) {

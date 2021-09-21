@@ -12,7 +12,6 @@ export declare type AppConfig = {
 };
 export declare type ServerConfig = AppConfig & {
     appRootPath?: string;
-    differentialBundles?: boolean;
     disableSsrRedux?: boolean;
     handleResponses?: typeof handleResponse;
     reverseProxyPaths?: string[];
@@ -26,7 +25,7 @@ export declare type ServerConfig = AppConfig & {
     };
     staticFolderPath?: string;
     staticRoutePath?: string;
-    stats: string;
+    stats?: string;
     templates: {
         html: string;
         static: string;
