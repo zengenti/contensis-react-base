@@ -217,6 +217,8 @@ const staticAssets = (app, {
   }));
 };
 
+var stringifyAttributes = ((attributes = {}) => Object.entries(attributes).map(([key, value], idx) => `${idx !== 0 ? ' ' : ''}${key}${value ? `="${value}"` : ''}`).join(' '));
+
 /* eslint-disable no-console */
 
 /**
@@ -232,7 +234,42 @@ const handleResponse = (request, response, content, send = 'send') => {
   response[send](content);
 };
 
-var stringifyAttributes = ((attributes = {}) => Object.entries(attributes).map(([key, value], idx) => `${idx !== 0 ? ' ' : ''}${key}${value ? `="${value}"` : ''}`).join(' '));
+const addStandardHeaders = (state, response, packagejson, groups) => {
+  if (state) {
+    try {
+      console.info('About to add headers');
+      const routingSurrogateKeys = state.getIn(['routing', 'surrogateKeys'], '');
+      const surrogateKeyHeader = ` ${packagejson.name}-app ${routingSurrogateKeys}`;
+      response.header('surrogate-key', surrogateKeyHeader);
+      addVarnishAuthenticationHeaders(state, response, groups);
+      response.setHeader('Surrogate-Control', `max-age=${getCacheDuration(response.statusCode)}`);
+    } catch (e) {
+      console.info('Error Adding headers', e.message);
+    }
+  }
+};
+const addVarnishAuthenticationHeaders = (state, response, groups = {}) => {
+  if (state) {
+    try {
+      const stateEntry = selectors.selectRouteEntry(state);
+      const project = selectors.selectCurrentProject(state);
+      const {
+        globalGroups,
+        allowedGroups
+      } = groups; // console.info(globalGroups, allowedGroups);
+
+      let allGroups = Array.from(globalGroups && globalGroups[project] || {});
+
+      if (stateEntry && stateEntry.getIn(['authentication', 'isLoginRequired']) && allowedGroups && allowedGroups[project]) {
+        allGroups = [...allGroups, ...allowedGroups[project]];
+      }
+
+      response.header('x-contensis-viewer-groups', allGroups.join('|'));
+    } catch (e) {
+      console.info('Error adding authentication header', e);
+    }
+  }
+};
 
 const readFileSync = path => fs__default['default'].readFileSync(path, 'utf8');
 
@@ -299,7 +336,11 @@ const getBundleData = (config, staticRoutePath) => {
   if (!bundleData.default || bundleData.default === {}) bundleData.default = bundleData.legacy || bundleData.modern;
   return bundleData;
 };
-const getBundleTags = loadableExtractor => {
+const getBundleTags = (loadableExtractor, scripts, staticRoutePath = 'static') => {
+  let startupTag = ''; // Add the static startup script to the bundleTags
+
+  if (scripts !== null && scripts !== void 0 && scripts.startup) startupTag = `<script ${stringifyAttributes(scripts.attributes)} src="/${staticRoutePath}/${scripts.startup}"></script>`; // Get the script tags from their respective extractor instances
+
   if (loadableExtractor) {
     const legacyScriptTags = loadableExtractor === null || loadableExtractor === void 0 ? void 0 : loadableExtractor.legacy.getScriptTags({
       noModule: true
@@ -307,47 +348,10 @@ const getBundleTags = loadableExtractor => {
     const modernScriptTags = loadableExtractor === null || loadableExtractor === void 0 ? void 0 : loadableExtractor.modern.getScriptTags({
       type: 'module'
     });
-    return `${legacyScriptTags || ''}${modernScriptTags || ''}`;
+    return `${startupTag}${legacyScriptTags || ''}${modernScriptTags || ''}`;
   }
 
-  return '';
-};
-
-const addStandardHeaders = (state, response, packagejson, groups) => {
-  if (state) {
-    try {
-      console.info('About to add headers');
-      const routingSurrogateKeys = state.getIn(['routing', 'surrogateKeys'], '');
-      const surrogateKeyHeader = ` ${packagejson.name}-app ${routingSurrogateKeys}`;
-      response.header('surrogate-key', surrogateKeyHeader);
-      addVarnishAuthenticationHeaders(state, response, groups);
-      response.setHeader('Surrogate-Control', `max-age=${getCacheDuration(response.statusCode)}`);
-    } catch (e) {
-      console.info('Error Adding headers', e.message);
-    }
-  }
-};
-const addVarnishAuthenticationHeaders = (state, response, groups = {}) => {
-  if (state) {
-    try {
-      const stateEntry = selectors.selectRouteEntry(state);
-      const project = selectors.selectCurrentProject(state);
-      const {
-        globalGroups,
-        allowedGroups
-      } = groups; // console.info(globalGroups, allowedGroups);
-
-      let allGroups = Array.from(globalGroups && globalGroups[project] || {});
-
-      if (stateEntry && stateEntry.getIn(['authentication', 'isLoginRequired']) && allowedGroups && allowedGroups[project]) {
-        allGroups = [...allGroups, ...allowedGroups[project]];
-      }
-
-      response.header('x-contensis-viewer-groups', allGroups.join('|'));
-    } catch (e) {
-      console.info('Error adding authentication header', e);
-    }
-  }
+  return startupTag;
 };
 
 const webApp = (app, ReactApp, config) => {
@@ -360,7 +364,6 @@ const webApp = (app, ReactApp, config) => {
     scripts = {},
     staticFolderPath = 'static',
     startupScriptFilename,
-    differentialBundles,
     allowedGroups,
     globalGroups,
     disableSsrRedux,
@@ -430,22 +433,18 @@ const webApp = (app, ReactApp, config) => {
       routes: routes,
       withEvents: withEvents
     }))));
-    const templates = bundleData.default.templates || bundleData.legacy.templates;
     const {
       templateHTML,
       templateHTMLFragment,
       templateHTMLStatic
-    } = templates || {}; // Serve a blank HTML page with client scripts to load the app in the browser
+    } = bundleData.default.templates || bundleData.legacy.templates || {}; // Serve a blank HTML page with client scripts to load the app in the browser
 
     if (accessMethod.DYNAMIC) {
       // Dynamic doesn't need sagas
       server$1.renderToString(jsx); // Dynamic page render has only the necessary bundles to start up the app
       // and does not include any react-loadable code-split bundles
 
-      let bundleTags = ''; // Add the static startup script to the bundleTags
-
-      if (scripts.startup) bundleTags = `<script ${attributes} src="/${staticRoutePath}/${scripts.startup}"></script>`;
-      bundleTags += getBundleTags(loadableExtractor);
+      const bundleTags = getBundleTags(loadableExtractor, scripts);
       const isDynamicHint = `<script ${attributes}>window.isDynamic = true;</script>`;
       const responseHtmlDynamic = templateHTML.replace('{{TITLE}}', '').replace('{{SEO_CRITICAL_METADATA}}', '').replace('{{CRITICAL_CSS}}', '').replace('{{APP}}', '').replace('{{LOADABLE_CHUNKS}}', bundleTags).replace('{{REDUX_DATA}}', isDynamicHint); // Dynamic pages always return a 200 so we can run
       // the app and serve up all errors inside the client
@@ -471,12 +470,9 @@ const webApp = (app, ReactApp, config) => {
 
         const reduxState = store.getState();
         const styleTags = sheet.getStyleTags(); // After running rootSaga there should be an additional react-loadable
-        // code-split bundle for a page component as well as core app bundles
+        // code-split bundles for any page components as well as core app bundles
 
-        let bundleTags = ''; // Add the static startup script to the bundleTags
-
-        if (scripts.startup) bundleTags = `<script ${attributes} src="/${staticRoutePath}/${scripts.startup}"></script>`;
-        bundleTags += getBundleTags(loadableExtractor);
+        const bundleTags = getBundleTags(loadableExtractor, scripts);
         let serialisedReduxData = '';
 
         if (context.statusCode !== 404) {

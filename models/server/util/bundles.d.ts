@@ -1,3 +1,5 @@
+import { ChunkExtractor } from '@loadable/server';
+import { ServerConfig } from "../../config";
 export declare const loadableBundleData: ({ stats, templates }: {
     stats: any;
     templates: any;
@@ -9,13 +11,12 @@ export declare const loadableBundleData: ({ stats, templates }: {
         templateHTMLFragment: any;
     } | null | undefined;
 };
-export declare const loadableChunkExtractors: () => {
-    commonLoadableExtractor: {
-        addChunk(chunk: any): void;
-    };
-    modern: any;
-    legacy: any;
+declare type LoadableChunkExtractors = {
+    legacy: ChunkExtractor;
+    modern: ChunkExtractor;
+    commonLoadableExtractor: ChunkExtractor;
 } | undefined;
+export declare const loadableChunkExtractors: () => LoadableChunkExtractors;
 export declare const getBundleData: (config: any, staticRoutePath: any) => {
     default: {
         stats?: string | null | undefined;
@@ -43,4 +44,5 @@ export declare const getBundleData: (config: any, staticRoutePath: any) => {
     };
 };
 export declare const buildBundleTags: (bundles: any, differentialBundles?: boolean, staticRoutePath?: string, attributes?: string) => any;
-export declare const getBundleTags: (loadableExtractor: any) => string;
+export declare const getBundleTags: (loadableExtractor: LoadableChunkExtractors, scripts: ServerConfig['scripts'], staticRoutePath?: string) => string;
+export {};
