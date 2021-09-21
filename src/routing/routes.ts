@@ -1,9 +1,9 @@
-import { Loadable } from 'react-loadable';
-import { RouteConfig } from 'react-router-config';
+import { MatchedRoute, RouteConfig } from 'react-router-config';
 import { Entry, Node } from 'contensis-delivery-api/lib/models';
 import React from 'react';
 
-type RouteComponent<Props> = Loadable | React.ComponentType<Props>;
+type RouteComponent<Props> = React.ComponentType<Props>;
+
 type RouteNode = Node & { ancestors: Node[]; children: Node[] };
 
 export type AppRoutes = {
@@ -67,7 +67,7 @@ export type StaticRoute = Omit<RouteConfig, 'component'> & {
 export type OnRouteLoadArgs = {
   location: { pathname: string; search: string; hash: string; key?: string };
   path: string;
-  staticRoute: StaticRoute;
+  staticRoute: MatchedRoute<any, StaticRoute>;
   statePath: string;
 };
 
@@ -75,7 +75,7 @@ export type OnRouteLoadedArgs = {
   entry: Entry | any;
   location: { pathname: string; search: string; hash: string; key?: string };
   path: string;
-  staticRoute: StaticRoute;
+  staticRoute: MatchedRoute<any, StaticRoute>;
 };
 
 export type RouteLoadOptions = {

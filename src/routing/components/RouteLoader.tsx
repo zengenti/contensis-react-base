@@ -2,7 +2,7 @@ import React, { useEffect, useCallback } from 'react';
 import { connect } from 'react-redux';
 import { hot } from 'react-hot-loader';
 import { Redirect, useLocation } from 'react-router-dom';
-import { renderRoutes, matchRoutes } from 'react-router-config';
+import { renderRoutes, matchRoutes, RouteConfig } from 'react-router-config';
 
 import NotFound from './NotFound';
 import { Status } from './Status';
@@ -83,7 +83,7 @@ const RouteLoader = ({
 
   // Match any Static Routes a developer has defined
   const matchedStaticRoute = () =>
-    matchRoutes(routes.StaticRoutes, location.pathname);
+    matchRoutes(routes.StaticRoutes as RouteConfig[], location.pathname);
   const isStaticRoute = () => matchedStaticRoute().length > 0;
 
   const staticRoute = isStaticRoute() && matchedStaticRoute()[0];
@@ -95,7 +95,7 @@ const RouteLoader = ({
     if (staticRoute && staticRoute.match && staticRoute.match.isExact) {
       const { match, route } = staticRoute;
 
-      if (route.path.includes('*')) {
+      if (route.path?.includes('*')) {
         // Send the whole url to api if we have matched route containing wildcard
         serverPath = match.url;
       } else if (typeof route.fetchNodeLevel === 'number') {
@@ -106,8 +106,8 @@ const RouteLoader = ({
           .join('/');
       } else {
         // Send all non-parameterised url parts to api
-        serverPath = route.path
-          .split('/')
+        serverPath = (route.path as string)
+          ?.split('/')
           .filter(p => !p.startsWith(':'))
           .join('/');
       }
@@ -146,7 +146,7 @@ const RouteLoader = ({
   // Render any Static Routes a developer has defined
   if (isStaticRoute() && !(!isLoggedIn && routeRequiresLogin)) {
     if (matchUserGroup(userGroups, routeRequiresLogin))
-      return renderRoutes(routes.StaticRoutes, {
+      return renderRoutes(routes.StaticRoutes as RouteConfig[], {
         projectId,
         contentTypeId,
         entry,

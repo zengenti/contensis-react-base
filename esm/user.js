@@ -1,18 +1,18 @@
-import 'react';
+export { L as LoginHelper, h as handleRequiresLoginSaga, r as refreshSecurityToken } from './login-47ff2514.js';
 import { useDispatch, useSelector, connect } from 'react-redux';
-import 'jsonpath-mapper';
-import 'immer';
-import './actions-ecbd2cba.js';
+import { p as action, g as selectCurrentSearch } from './selectors-abce4210.js';
 import { L as LOGIN_USER, n as LOGOUT_USER, R as REGISTER_USER, c as REQUEST_USER_PASSWORD_RESET, d as RESET_USER_PASSWORD, C as CHANGE_USER_PASSWORD } from './reducers-d6c0edb1.js';
 export { o as initialUserState, U as reducer, t as types } from './reducers-d6c0edb1.js';
+import { c as selectUserAuthenticationError, d as selectUserAuthenticationErrorMessage, e as selectUserError, f as selectUserErrorMessage, a as selectUserIsAuthenticated, g as selectUserIsLoading, h as selectUser, t as toJS, i as selectUserRegistrationError, j as selectUserRegistrationIsLoading, k as selectUserRegistrationIsSuccess, l as selectUserRegistration, n as selectPasswordResetRequestSending, o as selectPasswordResetRequestSent, p as selectPasswordResetRequestError, q as selectResetPasswordSending, r as selectResetPasswordSent, u as selectResetPasswordError, v as selectChangePasswordSending, w as selectChangePasswordSent, x as selectUserGuid, y as selectChangePasswordError } from './ToJs-12c86ae1.js';
+export { z as selectors } from './ToJs-12c86ae1.js';
 import '@redux-saga/core/effects';
-import { p as action, g as selectCurrentSearch } from './selectors-65c6026e.js';
-import 'query-string';
-import { c as selectUserAuthenticationError, d as selectUserAuthenticationErrorMessage, e as selectUserError, f as selectUserErrorMessage, a as selectUserIsAuthenticated, g as selectUserIsLoading, h as selectUser, t as toJS, i as selectUserRegistrationError, j as selectUserRegistrationIsLoading, k as selectUserRegistrationIsSuccess, l as selectUserRegistration, n as selectPasswordResetRequestSending, o as selectPasswordResetRequestSent, p as selectPasswordResetRequestError, q as selectResetPasswordSending, r as selectResetPasswordSent, u as selectResetPasswordError, v as selectChangePasswordSending, w as selectChangePasswordSent, x as selectChangePasswordError } from './ToJs-d558fbc4.js';
-export { y as selectors } from './ToJs-d558fbc4.js';
-export { L as LoginHelper, h as handleRequiresLoginSaga, r as refreshSecurityToken } from './login-c070eb03.js';
+import './actions-ac1fee4d.js';
+import 'jsonpath-mapper';
 import 'await-to-js';
 import 'js-cookie';
+import 'query-string';
+import 'immer';
+import 'react';
 
 const loginUser = (username, password) => action(LOGIN_USER, {
   username,
@@ -132,9 +132,9 @@ const useChangePassword = () => {
   return {
     isLoading: select(selectChangePasswordSending),
     isSuccess: select(selectChangePasswordSent),
+    userId: select(selectUserGuid),
     isLoggedIn: select(selectUserIsAuthenticated),
     error: select(selectChangePasswordError),
-    authenticationErrorMessage: select(selectUserAuthenticationErrorMessage),
     changePassword: (userId, currentPassword, newPassword) => dispatch(changePassword(userId, currentPassword, newPassword))
   };
 };
@@ -150,7 +150,7 @@ const ChangePasswordContainer = ({
 ChangePasswordContainer.propTypes = {};
 var ChangePassword_container = toJS(ChangePasswordContainer);
 
-const getDisplayName = WrappedComponent => {
+const getDisplayName$1 = WrappedComponent => {
   return WrappedComponent.displayName || WrappedComponent.name || 'Component';
 };
 
@@ -170,11 +170,11 @@ const withLogin = WrappedComponent => {
     logoutUser
   };
   const ConnectedComponent = connect(mapStateToProps, mapDispatchToProps)(toJS(WrappedComponent));
-  ConnectedComponent.displayName = `${getDisplayName(WrappedComponent)}`;
+  ConnectedComponent.displayName = `${getDisplayName$1(WrappedComponent)}`;
   return ConnectedComponent;
 };
 
-const getDisplayName$1 = WrappedComponent => {
+const getDisplayName = WrappedComponent => {
   return WrappedComponent.displayName || WrappedComponent.name || 'Component';
 };
 
@@ -192,7 +192,7 @@ const withRegistration = WrappedComponent => {
     registerUser
   };
   const ConnectedComponent = connect(mapStateToProps, mapDispatchToProps)(toJS(WrappedComponent));
-  ConnectedComponent.displayName = `${getDisplayName$1(WrappedComponent)}`;
+  ConnectedComponent.displayName = `${getDisplayName(WrappedComponent)}`;
   return ConnectedComponent;
 };
 

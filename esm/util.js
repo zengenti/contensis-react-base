@@ -1,10 +1,10 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import styled from 'styled-components';
 import mapJson, { jpath } from 'jsonpath-mapper';
 export { jpath, default as mapJson } from 'jsonpath-mapper';
-import { a as selectCurrentProject } from './selectors-65c6026e.js';
-import { a as selectCommitRef, b as selectBuildNumber, s as selectVersionStatus } from './version-c35979ba.js';
+import React from 'react';
+import { connect } from 'react-redux';
+import { a as selectCurrentProject } from './selectors-abce4210.js';
+import { a as selectCommitRef, b as selectBuildNumber, s as selectVersionStatus } from './version-2c200b04.js';
+import styled from 'styled-components';
 import 'query-string';
 
 /**

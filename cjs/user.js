@@ -2,19 +2,19 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-require('react');
+var login = require('./login-97f437ee.js');
 var reactRedux = require('react-redux');
-require('jsonpath-mapper');
-require('immer');
-require('./actions-24b4aaea.js');
-var reducers = require('./reducers-fde41d6b.js');
-require('@redux-saga/core/effects');
 var selectors = require('./selectors-d96c128c.js');
-require('query-string');
-var ToJs = require('./ToJs-7aaee88a.js');
-var login = require('./login-9e78c35e.js');
+var reducers = require('./reducers-fde41d6b.js');
+var ToJs = require('./ToJs-443e6975.js');
+require('@redux-saga/core/effects');
+require('./actions-4998a95b.js');
+require('jsonpath-mapper');
 require('await-to-js');
 require('js-cookie');
+require('query-string');
+require('immer');
+require('react');
 
 const loginUser = (username, password) => selectors.action(reducers.LOGIN_USER, {
   username,
@@ -134,9 +134,9 @@ const useChangePassword = () => {
   return {
     isLoading: select(ToJs.selectChangePasswordSending),
     isSuccess: select(ToJs.selectChangePasswordSent),
+    userId: select(ToJs.selectUserGuid),
     isLoggedIn: select(ToJs.selectUserIsAuthenticated),
     error: select(ToJs.selectChangePasswordError),
-    authenticationErrorMessage: select(ToJs.selectUserAuthenticationErrorMessage),
     changePassword: (userId, currentPassword, newPassword) => dispatch(changePassword(userId, currentPassword, newPassword))
   };
 };
@@ -152,7 +152,7 @@ const ChangePasswordContainer = ({
 ChangePasswordContainer.propTypes = {};
 var ChangePassword_container = ToJs.toJS(ChangePasswordContainer);
 
-const getDisplayName = WrappedComponent => {
+const getDisplayName$1 = WrappedComponent => {
   return WrappedComponent.displayName || WrappedComponent.name || 'Component';
 };
 
@@ -172,11 +172,11 @@ const withLogin = WrappedComponent => {
     logoutUser
   };
   const ConnectedComponent = reactRedux.connect(mapStateToProps, mapDispatchToProps)(ToJs.toJS(WrappedComponent));
-  ConnectedComponent.displayName = `${getDisplayName(WrappedComponent)}`;
+  ConnectedComponent.displayName = `${getDisplayName$1(WrappedComponent)}`;
   return ConnectedComponent;
 };
 
-const getDisplayName$1 = WrappedComponent => {
+const getDisplayName = WrappedComponent => {
   return WrappedComponent.displayName || WrappedComponent.name || 'Component';
 };
 
@@ -194,17 +194,17 @@ const withRegistration = WrappedComponent => {
     registerUser
   };
   const ConnectedComponent = reactRedux.connect(mapStateToProps, mapDispatchToProps)(ToJs.toJS(WrappedComponent));
-  ConnectedComponent.displayName = `${getDisplayName$1(WrappedComponent)}`;
+  ConnectedComponent.displayName = `${getDisplayName(WrappedComponent)}`;
   return ConnectedComponent;
 };
 
+exports.LoginHelper = login.LoginHelper;
+exports.handleRequiresLoginSaga = login.handleRequiresLoginSaga;
+exports.refreshSecurityToken = login.refreshSecurityToken;
 exports.initialUserState = reducers.initialUserState;
 exports.reducer = reducers.UserReducer;
 exports.types = reducers.types;
 exports.selectors = ToJs.selectors;
-exports.LoginHelper = login.LoginHelper;
-exports.handleRequiresLoginSaga = login.handleRequiresLoginSaga;
-exports.refreshSecurityToken = login.refreshSecurityToken;
 exports.ChangePassword = ChangePassword_container;
 exports.ForgotPasswordContainer = ForgotPassword_container;
 exports.LoginContainer = Login_container;

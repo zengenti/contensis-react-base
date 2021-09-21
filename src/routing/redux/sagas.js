@@ -327,9 +327,9 @@ function* getRouteSaga(action) {
         appsays && appsays.refetchNode
       );
     } else {
-      if (pathNode)
+      if (staticRoute)
         yield call(setRouteEntry, null, pathNode, ancestors, siblings);
-      else if (!staticRoute) yield call(do404);
+      else yield call(do404);
     }
     if (!appsays || !appsays.preventScrollTop) {
       // Scroll into View

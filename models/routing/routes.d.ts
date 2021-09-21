@@ -1,8 +1,7 @@
-import { Loadable } from 'react-loadable';
-import { RouteConfig } from 'react-router-config';
+import { MatchedRoute, RouteConfig } from 'react-router-config';
 import { Entry, Node } from 'contensis-delivery-api/lib/models';
 import React from 'react';
-declare type RouteComponent<Props> = Loadable | React.ComponentType<Props>;
+declare type RouteComponent<Props> = React.ComponentType<Props>;
 declare type RouteNode = Node & {
     ancestors: Node[];
     children: Node[];
@@ -62,7 +61,7 @@ export declare type OnRouteLoadArgs = {
         key?: string;
     };
     path: string;
-    staticRoute: StaticRoute;
+    staticRoute: MatchedRoute<any, StaticRoute>;
     statePath: string;
 };
 export declare type OnRouteLoadedArgs = {
@@ -74,7 +73,7 @@ export declare type OnRouteLoadedArgs = {
         key?: string;
     };
     path: string;
-    staticRoute: StaticRoute;
+    staticRoute: MatchedRoute<any, StaticRoute>;
 };
 export declare type RouteLoadOptions = {
     customNavigation?: boolean | {

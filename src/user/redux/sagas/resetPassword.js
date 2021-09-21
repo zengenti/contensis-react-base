@@ -148,10 +148,12 @@ function* changePasswordSaga(action) {
     );
 
     if (err) {
-      console.log('ERR: ', err);
+      const error =
+        (err?.data?.data?.length > 0 && err.data.data[0].message) ||
+        err?.data?.message;
       yield put({
         type: CHANGE_USER_PASSWORD_ERROR,
-        error: err,
+        error,
       });
       return;
     }
@@ -164,7 +166,6 @@ function* changePasswordSaga(action) {
       type: CHANGE_USER_PASSWORD_SUCCESS,
     });
   } catch (error) {
-    console.log('ERROR: ', error);
     yield put({
       type: CHANGE_USER_PASSWORD_ERROR,
       error: error && error.toString(),
