@@ -1,11 +1,11 @@
-import { o as getImmutableOrJS, p as action } from './selectors-abce4210.js';
+import { g as getImmutableOrJS, p as action } from './selectors-5c48e0ad.js';
 import { all } from '@redux-saga/core/effects';
 import { compose, applyMiddleware, createStore as createStore$1, combineReducers } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import createSagaMiddleware, { END } from 'redux-saga';
 import { createInjectorsEnhancer } from 'redux-injectors';
 import { produce } from 'immer';
-import { h as SET_TARGET_PROJECT, i as SET_SURROGATE_KEYS, e as SET_SIBLINGS, b as SET_ROUTE, S as SET_NAVIGATION_PATH, U as UPDATE_LOADING_STATE, c as SET_ENTRY, d as SET_ANCESTORS } from './actions-ac1fee4d.js';
+import { h as SET_TARGET_PROJECT, i as SET_SURROGATE_KEYS, e as SET_SIBLINGS, b as SET_ROUTE, S as SET_NAVIGATION_PATH, U as UPDATE_LOADING_STATE, c as SET_ENTRY, d as SET_ANCESTORS } from './actions-707da32f.js';
 import { U as UserReducer } from './reducers-d6c0edb1.js';
 
 const ACTION_PREFIX = '@NAVIGATION/';
@@ -305,7 +305,7 @@ var createStore = (async (featureReducers, initialState, history, stateType) => 
     'immutable');
     fromJS = (await import(
     /* webpackChunkName: "from-js" */
-    './fromJSLeaveImmer-a9255c06.js')).default;
+    './fromJSLeaveImmer-392af4e3.js')).default;
     combiner = (await import(
     /* webpackChunkName: "redux-immutable" */
     'redux-immutable')).combineReducers;
@@ -420,4 +420,4 @@ var version = /*#__PURE__*/Object.freeze({
 });
 
 export { GET_NODE_TREE as G, SET_NODE_TREE as S, setVersion as a, GET_NODE_TREE_ERROR as b, createStore as c, version as d, navigation as e, convertSagaArray as f, injectReducer as g, hasNavigationTree as h, injectRedux as i, injectSaga as j, navigation$1 as n, reduxStore as r, setVersionStatus as s, useInjectRedux as u, version$1 as v };
-//# sourceMappingURL=version-58e6c1fd.js.map
+//# sourceMappingURL=version-da42ce21.js.map

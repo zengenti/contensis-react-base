@@ -16,11 +16,11 @@ import serialize from 'serialize-javascript';
 import minifyCssString from 'minify-css-string';
 import mapJson from 'jsonpath-mapper';
 import { ChunkExtractor, ChunkExtractorManager } from '@loadable/server';
-import { c as createStore, s as setVersionStatus, a as setVersion } from './version-58e6c1fd.js';
-import { h as history, d as deliveryApi, p as pickProject, r as rootSaga } from './App-c746e4d4.js';
-export { A as ReactApp } from './App-c746e4d4.js';
-import { s as setCurrentProject } from './actions-ac1fee4d.js';
-import { s as selectRouteEntry, a as selectCurrentProject } from './selectors-abce4210.js';
+import { c as createStore, s as setVersionStatus, a as setVersion } from './version-da42ce21.js';
+import { h as history, d as deliveryApi, p as pickProject, r as rootSaga } from './App-bec45d28.js';
+export { A as ReactApp } from './App-bec45d28.js';
+import { s as setCurrentProject } from './actions-707da32f.js';
+import { g as getImmutableOrJS, s as selectRouteEntry, a as selectCurrentProject } from './selectors-5c48e0ad.js';
 import '@redux-saga/core/effects';
 import 'redux';
 import 'redux-thunk';
@@ -30,15 +30,15 @@ import 'immer';
 import './reducers-d6c0edb1.js';
 import 'history';
 import 'contensis-delivery-api';
-import './version-2c200b04.js';
+import './version-a6414f82.js';
 import 'loglevel';
-import './login-47ff2514.js';
-import './ToJs-12c86ae1.js';
+import './login-3d38636b.js';
+import './ToJs-a5d030c7.js';
 import 'await-to-js';
 import 'js-cookie';
 import 'react-hot-loader';
 import 'query-string';
-import './RouteLoader-27baee75.js';
+import './RouteLoader-d61a54dd.js';
 
 const servers$1 = SERVERS;
 /* global SERVERS */
@@ -217,43 +217,6 @@ const handleResponse = (request, response, content, send = 'send') => {
   response[send](content);
 };
 
-const addStandardHeaders = (state, response, packagejson, groups) => {
-  if (state) {
-    try {
-      console.info('About to add headers');
-      const routingSurrogateKeys = state.getIn(['routing', 'surrogateKeys'], '');
-      const surrogateKeyHeader = ` ${packagejson.name}-app ${routingSurrogateKeys}`;
-      response.header('surrogate-key', surrogateKeyHeader);
-      addVarnishAuthenticationHeaders(state, response, groups);
-      response.setHeader('Surrogate-Control', `max-age=${getCacheDuration(response.statusCode)}`);
-    } catch (e) {
-      console.info('Error Adding headers', e.message);
-    }
-  }
-};
-const addVarnishAuthenticationHeaders = (state, response, groups = {}) => {
-  if (state) {
-    try {
-      const stateEntry = selectRouteEntry(state);
-      const project = selectCurrentProject(state);
-      const {
-        globalGroups,
-        allowedGroups
-      } = groups; // console.info(globalGroups, allowedGroups);
-
-      let allGroups = Array.from(globalGroups && globalGroups[project] || {});
-
-      if (stateEntry && stateEntry.getIn(['authentication', 'isLoginRequired']) && allowedGroups && allowedGroups[project]) {
-        allGroups = [...allGroups, ...allowedGroups[project]];
-      }
-
-      response.header('x-contensis-viewer-groups', allGroups.join('|'));
-    } catch (e) {
-      console.info('Error adding authentication header', e);
-    }
-  }
-};
-
 const readFileSync = path => fs.readFileSync(path, 'utf8');
 
 const loadableBundleData = ({
@@ -335,6 +298,43 @@ const getBundleTags = (loadableExtractor, scripts, staticRoutePath = 'static') =
   }
 
   return startupTag;
+};
+
+const addStandardHeaders = (state, response, packagejson, groups) => {
+  if (state) {
+    try {
+      console.info('About to add headers');
+      const routingSurrogateKeys = getImmutableOrJS(state, ['routing', 'surrogateKeys'], '');
+      const surrogateKeyHeader = ` ${packagejson.name}-app ${routingSurrogateKeys}`;
+      response.header('surrogate-key', surrogateKeyHeader);
+      addVarnishAuthenticationHeaders(state, response, groups);
+      response.setHeader('Surrogate-Control', `max-age=${getCacheDuration(response.statusCode)}`);
+    } catch (e) {
+      console.info('Error Adding headers', e.message);
+    }
+  }
+};
+const addVarnishAuthenticationHeaders = (state, response, groups = {}) => {
+  if (state) {
+    try {
+      const stateEntry = selectRouteEntry(state);
+      const project = selectCurrentProject(state);
+      const {
+        globalGroups,
+        allowedGroups
+      } = groups; // console.info(globalGroups, allowedGroups);
+
+      let allGroups = Array.from(globalGroups && globalGroups[project] || {});
+
+      if (stateEntry && getImmutableOrJS(stateEntry, ['authentication', 'isLoginRequired']) && allowedGroups && allowedGroups[project]) {
+        allGroups = [...allGroups, ...allowedGroups[project]];
+      }
+
+      response.header('x-contensis-viewer-groups', allGroups.join('|'));
+    } catch (e) {
+      console.info('Error adding authentication header', e);
+    }
+  }
 };
 
 const webApp = (app, ReactApp, config) => {

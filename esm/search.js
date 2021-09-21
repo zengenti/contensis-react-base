@@ -1,15 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useMemo, useEffect } from 'react';
 import { connect, useDispatch, useSelector } from 'react-redux';
-import { List, OrderedMap, Map, Set, fromJS } from 'immutable';
+import mapJson, { jpath } from 'jsonpath-mapper';
 import * as log from 'loglevel';
 import { takeEvery, select, put, call, all } from '@redux-saga/core/effects';
 import { Client } from 'contensis-delivery-api';
 import queryString__default from 'query-string';
 import { Op, OrderBy, Query } from 'contensis-core-api';
-import mapJson from 'jsonpath-mapper';
+import merge from 'deepmerge';
+import { createSelector } from 'reselect';
+import { produce } from 'immer';
+import equals from 'deep-equal';
 
-/* eslint-disable react/display-name */
-const toJS = WrappedComponent => wrappedComponentProps => {
+/* eslint-disable import/default */
+const toJS$1 = WrappedComponent => wrappedComponentProps => {
   const KEY = 0;
   const VALUE = 1;
   const propsJS = Object.entries(wrappedComponentProps).reduce((newProps, wrappedComponentProp) => {
@@ -185,132 +188,167 @@ let Context$1; // export type Context = 'facets' | 'listings' | 'minilist';
   Context["minilist"] = "minilist";
 })(Context$1 || (Context$1 = {}));
 
-const getSearchContext = state => state.getIn(['search', 'context'], Context$1.facets);
+// or replace with a stub function for non-immutable gets
+
+const makeFromJS = (returnType = globalThis.STATE_TYPE || 'immutable') => {
+  var _immutable, _immutable2;
+
+  return returnType === 'immutable' ? ((_immutable = globalThis.immutable) === null || _immutable === void 0 ? void 0 : _immutable.fromJSOrdered) || ((_immutable2 = globalThis.immutable) === null || _immutable2 === void 0 ? void 0 : _immutable2.fromJS) || (v => v) : v => v;
+};
+
+const getImmutableOrJS = (state, stateKey, fallbackValue, returnType = globalThis.STATE_TYPE || 'immutable') => {
+  // Find a fromJS function from global that is dynamically loaded in createStore
+  // or replace with a stub function for non-immutable gets
+  const fromJS = makeFromJS(returnType);
+
+  if (state && 'get' in state && typeof state.get === 'function' && 'getIn' in state && typeof state.getIn === 'function' && 'toJS' in state && typeof state.toJS === 'function') {
+    if (Array.isArray(stateKey)) return fromJS(state.getIn(stateKey, fallbackValue));
+    return fromJS(state.get(stateKey, fallbackValue));
+  }
+
+  if (Array.isArray(stateKey) && state && typeof state === 'object') {
+    const result = jpath(stateKey.join('.'), state);
+    if (typeof result === 'undefined') return fallbackValue;
+    return result;
+  }
+
+  const result = state && typeof state === 'object' ? state[stateKey] : undefined;
+  if (typeof result === 'undefined') return fallbackValue;
+  return result;
+};
+
+const getSearchContext = state => getImmutableOrJS(state, ['search', 'context'], Context$1.facets);
 const getCurrent = (state, context = Context$1.facets) => context === Context$1.facets ? getCurrentFacet(state) : getCurrentListing(state);
-const getCurrentFacet = state => state.getIn(['search', 'currentFacet']);
-const getCurrentListing = state => state.getIn(['search', 'currentListing']);
-const getCurrentTab = state => state.getIn(['search', Context$1.facets, getCurrentFacet(state), 'tabId'], 0);
-const getFacets = state => state.getIn(['search', Context$1.facets], OrderedMap());
-const getTabFacets = state => getFacets(state).filter((v, key) => getFacets(state).getIn([key, 'tabId'], 0) === getCurrentTab(state));
-const getFacetTitles = state => getFacets(state).map((facet = Map(), key) => ({
-  key,
-  title: facet.get('title'),
-  totalCount: facet.getIn(['pagingInfo', 'totalCount'])
-})).toIndexedSeq().toArray();
-const getFacet = (state, facetName = '', context = Context$1.facets) => {
+const getCurrentFacet = state => getImmutableOrJS(state, ['search', 'currentFacet']);
+const getCurrentListing = state => getImmutableOrJS(state, ['search', 'currentListing']);
+const getCurrentTab = state => getImmutableOrJS(state, ['search', Context$1.facets, getCurrentFacet(state), 'tabId'], 0);
+const getFacets = (state, returnType) => getImmutableOrJS(state, ['search', Context$1.facets], {}, returnType);
+const getTabFacets = state => Object.fromEntries(Object.entries(getFacets(state)).filter(([key]) => getImmutableOrJS(getFacets(state), [key, 'tabId'], 0) === getCurrentTab(state)));
+const getFacetTitles = state => Object.entries(getFacets(state)).map(([key, facet = {}]) => {
+  var _facet$pagingInfo;
+
+  return {
+    key,
+    title: facet.title,
+    totalCount: (_facet$pagingInfo = facet.pagingInfo) === null || _facet$pagingInfo === void 0 ? void 0 : _facet$pagingInfo.totalCount
+  };
+});
+const getFacet = (state, facetName = '', context = Context$1.facets, returnType) => {
   const currentFacet = facetName || getCurrentFacet(state);
-  return state.getIn(['search', context, currentFacet], Map());
+  return getImmutableOrJS(state, ['search', context, currentFacet], {}, returnType);
 };
 const getListing = (state, listing = '') => {
   const currentListing = listing || getCurrentListing(state);
-  return state.getIn(['search', Context$1.listings, currentListing], Map());
+  return getImmutableOrJS(state, ['search', Context$1.listings, currentListing], {});
 };
-const getFilters = (state, facet, context = Context$1.facets) => {
-  return state.getIn(['search', context, facet || getCurrent(state, context), 'filters'], Map());
+const getFilters = (state, facet, context = Context$1.facets, returnType) => {
+  return getImmutableOrJS(state, ['search', context, facet || getCurrent(state, context), 'filters'], {}, returnType);
 };
-const getRenderableFilters = (state, facet = '', context = Context$1.facets) => getFilters(state, facet, context).filter((f = Map()) => f.get('renderable', true));
-const getFiltersToLoad = (state, facet, context = Context$1.facets) => {
-  const filters = getFilters(state, facet, context);
-  const loadedFilters = filters.map((f = Map()) => (f.get('items') || List()).filter(i => {
-    const title = i === null || i === void 0 ? void 0 : i.get('title');
+const getRenderableFilters = (state, facet = '', context = Context$1.facets) => Object.fromEntries(Object.entries(getFilters(state, facet, context)).filter(([, f = {}]) => typeof f.renderable !== 'boolean' ? true : f.renderable));
+const getFiltersToLoad = (state, facet, context = Context$1.facets, returnType) => {
+  const filters = getFilters(state, facet, context, returnType);
+  const loadedFilters = Object.entries(filters).map(([key, f = {}]) => [key, (f.items || []).filter(i => {
+    const title = i === null || i === void 0 ? void 0 : i.title;
     return typeof title !== 'undefined' && !!title;
-  }).size > 0 && f.get('isError', false) === false);
-  return loadedFilters.map((isLoaded, filterKey) => !isLoaded ? filterKey : null).toList().filter(f => !!f);
+  }).length > 0 && (f.isError || false) === false]);
+  return loadedFilters.map(([filterKey, isLoaded]) => !isLoaded ? filterKey : null).filter(f => !!f);
 }; // We lowercase the filter key unless it's an ISO date string where the T must be uppercase
 
-const getSelectedFilters = (state, facet = '', context = Context$1.facets) => {
-  const filters = getFilters(state, facet, context);
+const getSelectedFilters = (state, facet = '', context = Context$1.facets, returnType) => {
+  const filters = getFilters(state, facet, context, returnType);
   const isoDateRegex = RegExp(/\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d/);
-  const selectedFilters = filters.map((filter = Map()) => (filter.get('items') || List()).filter(item => !!(item !== null && item !== void 0 && item.get('isSelected', false))).map(item => {
-    const key = item === null || item === void 0 ? void 0 : item.get('key', '');
+  const selectedFilters = Object.fromEntries(Object.entries(filters).map(([key, filter = {}]) => [key, (filter.items || []).filter(item => !!(item.isSelected || false)).map(item => {
+    const key = (item === null || item === void 0 ? void 0 : item.key) || '';
     const isIsoDate = isoDateRegex.test(key);
     return isIsoDate ? key : key.toLowerCase();
-  }));
-  return selectedFilters;
+  })]));
+  const fromJS = makeFromJS(returnType);
+  return fromJS(selectedFilters);
 };
-const getResults = (state, current = '', context = Context$1.facets) => {
-  return state.getIn(['search', context, current || getCurrent(state, context), 'results'], List());
+const getResults = (state, current = '', context = Context$1.facets, returnType) => {
+  return getImmutableOrJS(state, ['search', context, current || getCurrent(state, context), 'results'], [], returnType);
 };
 const getIsInternalPaging = (state, current, context = Context$1.facets) => {
-  return state.getIn(['search', context, current || getCurrent(state, context), 'queryParams', 'internalPaging'], false);
+  return getImmutableOrJS(state, ['search', context, current || getCurrent(state, context), 'queryParams', 'internalPaging'], false);
 };
 const getIsLoaded = (state, context = Context$1.facets, facet) => {
-  return !!state.getIn(['search', context, facet || getCurrent(state, context), 'queryDuration'], 0);
+  return !!getImmutableOrJS(state, ['search', context, facet || getCurrent(state, context), 'queryDuration'], 0);
 };
 const getIsLoading = (state, context = Context$1.facets, facet) => {
-  return state.getIn(['search', context, facet || getCurrent(state, context), 'entries', 'isLoading']);
+  return getImmutableOrJS(state, ['search', context, facet || getCurrent(state, context), 'entries', 'isLoading']);
 };
-const getIsSsr = state => {
-  return state.getIn(['search', 'config', 'ssr'], false);
-};
+const getIsSsr = state => getImmutableOrJS(state, ['search', 'config', 'ssr'], false);
 const getFeaturedResults = (state, current = '', context = Context$1.facets) => {
-  return state.getIn(['search', context, current || getCurrent(state, context), 'featuredResults'], List());
+  return getImmutableOrJS(state, ['search', context, current || getCurrent(state, context), 'featuredResults'], []);
 };
-const getPaging = (state, current = '', context = Context$1.facets) => {
-  return state.getIn(['search', context, current || getCurrent(state, context), 'pagingInfo'], Map());
+const getPaging = (state, current = '', context = Context$1.facets, returnType) => {
+  return getImmutableOrJS(state, ['search', context, current || getCurrent(state, context), 'pagingInfo'], {}, returnType);
 };
 const getPageIndex = (state, current = '', context = Context$1.facets) => {
-  return state.getIn(['search', context, current || getCurrent(state, context), 'pagingInfo', 'pageIndex']);
+  return getImmutableOrJS(state, ['search', context, current || getCurrent(state, context), 'pagingInfo', 'pageIndex']);
 };
 const getPrevPageIndex = (state, current = '', context = Context$1.facets) => {
-  return state.getIn(['search', context, current || getCurrent(state, context), 'pagingInfo', 'prevPageIndex']);
+  return getImmutableOrJS(state, ['search', context, current || getCurrent(state, context), 'pagingInfo', 'prevPageIndex']);
 };
 const getPageIsLoading = (state, current = '', context = Context$1.facets) => {
-  return state.getIn(['search', context, current || getCurrent(state, context), 'pagingInfo', 'isLoading']);
+  return getImmutableOrJS(state, ['search', context, current || getCurrent(state, context), 'pagingInfo', 'isLoading']);
 };
 const getPagesLoaded = (state, current = '', context = Context$1.facets) => {
-  return state.getIn(['search', context, current || getCurrent(state, context), 'pagingInfo', 'pagesLoaded'], Set());
+  return getImmutableOrJS(state, ['search', context, current || getCurrent(state, context), 'pagingInfo', 'pagesLoaded'], []);
 };
 const getTotalCount = (state, current = '', context = Context$1.facets) => {
-  return state.getIn(['search', context, current || getCurrent(state, context), 'pagingInfo', 'totalCount']);
+  return getImmutableOrJS(state, ['search', context, current || getCurrent(state, context), 'pagingInfo', 'totalCount']);
 };
-const getFacetAuthentication = (state, facet) => state.getIn(['search', Context$1.facets, facet, 'authentication']);
-const getFeaturedEntryIds = state => {
-  const currentFacet = getCurrentFacet(state);
-  const entryIds = state.getIn(['search', Context$1.facets, currentFacet, 'featuredEntries', 'items']).map(entry => entry.getIn(['sys', 'id']));
-  return entryIds;
-};
-const getSearchTerm = state => state.getIn(['search', 'term']);
-const getSearchTabs = state => state.getIn(['search', 'tabs']);
+const getSearchTerm = state => getImmutableOrJS(state, ['search', 'term']);
+const getSearchTabs = (state, returnType) => getImmutableOrJS(state, ['search', 'tabs'], [], returnType);
 const getQueryParams = (state, current = '', context = Context$1.facets) => {
-  return state.getIn(['search', context, current || getCurrent(state, context), 'queryParams'], Map());
+  return getImmutableOrJS(state, ['search', context, current || getCurrent(state, context), 'queryParams'], {}, 'js');
 };
 const getQueryParameter = ({
   state,
   facet,
   context = Context$1.facets
 }, key, ifnull = null) => {
-  return getQueryParams(state, facet, context).get(key, ifnull) || ifnull;
+  return getImmutableOrJS(getQueryParams(state, facet, context), key, ifnull, 'js');
 };
-const getCustomApi = (state, current, context = Context$1.facets) => {
-  return state.getIn(['search', context, current || getCurrent(state, context), 'customApi']);
+const getCustomApi = (state, current, context = Context$1.facets, returnType) => {
+  return getImmutableOrJS(state, ['search', context, current || getCurrent(state, context), 'customApi'], null, returnType);
 };
 const getCustomEnv = (state, current, context = Context$1.facets) => {
-  return state.getIn(['search', context, current || getCurrent(state, context), 'env']);
+  return getImmutableOrJS(state, ['search', context, current || getCurrent(state, context), 'env']);
 };
-const getTabsAndFacets = state => {
-  const tabs = getSearchTabs(state);
-  const facets = getFacets(state);
-  return (tabs || List()).map((tab = Map()) => {
-    const fieldsToCount = tab.get('totalCount');
+const getTabsAndFacets = (state, returnType) => {
+  const tabs = getSearchTabs(state, 'js');
+  const facets = getFacets(state, 'js');
+  const tabsAndFacets = (tabs || []).map((tab = {}) => {
+    const fieldsToCount = tab.totalCount;
     let countFields;
-    if (typeof fieldsToCount === 'string') countFields = List([List([fieldsToCount])]);
-    const thisTabFacets = facets.filter((v, key) => facets.getIn([key, 'tabId'], 0) === tab.get('id'));
-    const thisTabTotal = thisTabFacets.map((facet = Map(), facetName) => {
-      if (!countFields || countFields.find((f = List()) => f.first() === facetName)) return facet.getIn(['pagingInfo', 'totalCount']);
+    if (typeof fieldsToCount === 'string') countFields = [[fieldsToCount]];
+    const thisTabFacets = Object.entries(facets).filter(([key]) => getImmutableOrJS(facets, [key, 'tabId'], 0) === tab.id);
+    const thisTabTotal = thisTabFacets.map(([facetName, facet = {}]) => {
+      if (!countFields || countFields.find((f = []) => (f === null || f === void 0 ? void 0 : f[0]) === facetName)) return getImmutableOrJS(facet, ['pagingInfo', 'totalCount']);
       return 0;
     }).reduce((a, b) => a + b, 0);
-    return tab.set(Context$1.facets, thisTabFacets).set('totalCount', thisTabTotal);
+    return { ...tab,
+      [Context$1.facets]: Object.fromEntries(thisTabFacets),
+      totalCount: thisTabTotal
+    };
   });
+  const fromJS = makeFromJS(returnType);
+  return fromJS(tabsAndFacets);
 };
 const getSearchTotalCount = state => {
   const tabsAndFacets = getTabsAndFacets(state);
-  const wholeSearchTotal = tabsAndFacets.map((t = Map()) => t.get('totalCount')).reduce((a, b) => a + b, 0);
+  const wholeSearchTotal = tabsAndFacets.map((t = {}) => t.totalCount).reduce((a, b) => a + b, 0);
   return wholeSearchTotal;
 };
 const getFacetsTotalCount = state => {
   const facets = getFacets(state);
-  const wholeSearchTotal = facets.map((t = Map()) => t.getIn(['pagingInfo', 'totalCount'])).reduce((a, b) => a + b, 0);
+  const wholeSearchTotal = Object.entries(facets).map(([, t = {}]) => {
+    var _t$pagingInfo;
+
+    return ((_t$pagingInfo = t.pagingInfo) === null || _t$pagingInfo === void 0 ? void 0 : _t$pagingInfo.totalCount) || 0;
+  }).reduce((a, b) => a + b, 0);
   return wholeSearchTotal;
 }; // An exported copy of the relevant selectors scoped by default to a facets context
 
@@ -379,8 +417,8 @@ const selectListing = {
   getTotalCount: (state, listing = '') => getTotalCount(state, listing, Context$1.listings),
   getSelectedFilters: (state, listing = '') => getSelectedFilters(state, listing, Context$1.listings)
 };
-const selectCurrentPath = state => state.getIn(['routing', 'currentPath']);
-const selectVersionStatus = state => state.getIn(['version', 'contensisVersionStatus']);
+const selectCurrentPath = state => getImmutableOrJS(state, ['routing', 'currentPath']);
+const selectVersionStatus = state => getImmutableOrJS(state, ['version', 'contensisVersionStatus']);
 
 var selectors = /*#__PURE__*/Object.freeze({
   __proto__: null,
@@ -410,8 +448,6 @@ var selectors = /*#__PURE__*/Object.freeze({
   getPageIsLoading: getPageIsLoading,
   getPagesLoaded: getPagesLoaded,
   getTotalCount: getTotalCount,
-  getFacetAuthentication: getFacetAuthentication,
-  getFeaturedEntryIds: getFeaturedEntryIds,
   getSearchTerm: getSearchTerm,
   getSearchTabs: getSearchTabs,
   getQueryParams: getQueryParams,
@@ -426,6 +462,8 @@ var selectors = /*#__PURE__*/Object.freeze({
   selectCurrentPath: selectCurrentPath,
   selectVersionStatus: selectVersionStatus
 });
+
+// eslint-disable-next-line import/default
 
 /* eslint-disable @typescript-eslint/naming-convention */
 const withSearch = mappers => SearchComponent => {
@@ -471,7 +509,7 @@ const withSearch = mappers => SearchComponent => {
     updateSortOrder: orderBy => withMappers(updateSortOrder$1(orderBy), mappers)
   };
   const connector = connect(mapStateToProps, mapDispatchToProps);
-  return connector(toJS(Wrapper));
+  return connector(toJS$1(Wrapper));
 };
 
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -521,7 +559,7 @@ const withListing = mappers => ListingComponent => {
     updateSelectedFilters: (filter, key) => withMappers(updateSelectedFilters(filter, key), mappers),
     updateSortOrder: orderBy => withMappers(updateSortOrder$1(orderBy), mappers)
   };
-  return connect(mapStateToProps, mapDispatchToProps)(toJS(Wrapper));
+  return connect(mapStateToProps, mapDispatchToProps)(toJS$1(Wrapper));
 };
 
 const getClientConfig = (project, env) => {
@@ -692,6 +730,7 @@ const now = () => {
   return window.performance.now();
 };
 
+// eslint-disable-next-line import/default
 function fixFreeTextForElastic(s) {
   const illegalChars = ['>', '<', '=', '|', '!', '{', '}', '[', ']', '^', '~', '*', '?', ':', '\\', '/'];
   const illegalRegEx = new RegExp(illegalChars.map(c => '\\' + c).join('|'), 'g');
@@ -719,6 +758,7 @@ const getItemsFromResult = result => {
   if (payload) {
     if (Array.isArray(payload)) return payload;
     if (Array.isArray(payload.items)) return payload.items;
+    return payload;
   }
 
   return [];
@@ -733,7 +773,7 @@ const buildUrl = (route, params) => {
   return path;
 };
 const callCustomApi = async (customApi, filters) => {
-  const apiUri = customApi.get('uri', '');
+  const apiUri = customApi.uri || '';
   let uri = buildUrl(apiUri, filters);
   if (!uri) throw new Error('uri is required to use customApi');
   if (typeof window == 'undefined' && uri.startsWith('/')) uri = `http://localhost:3001${uri}`;
@@ -1117,19 +1157,21 @@ const searchUriTemplate = {
     const searchContext = getSearchContext(state); // Lose stateFilters and currentSearch if a new
     // term is passed via an argument
 
-    const stateFilters = term ? List() : getSelectedFilters(state, facet, searchContext).map(f => f === null || f === void 0 ? void 0 : f.join(','));
-    const currentSearch = !term && state.getIn(['routing', 'location', 'search']);
+    const stateFilters = term ? {} : Object.fromEntries(Object.entries(getSelectedFilters(state, facet, searchContext, 'js')).map(([key, f]) => [key, f === null || f === void 0 ? void 0 : f.join(',')]));
+    const currentSearch = !term && getImmutableOrJS(state, ['routing', 'location', 'search']);
     const currentQs = removeEmptyAttributes(queryString__default.parse(currentSearch));
     if (orderBy) currentQs.orderBy = orderBy;
     const searchTerm = getSearchTerm(state); // Use Immutable's merge to merge the stateFilters with any current Qs
     // to build the new Qs.
 
-    const mergedSearch = removeEmptyAttributes(fromJS(currentQs).merge(stateFilters).set('term', searchTerm).toJS());
+    const mergedSearch = removeEmptyAttributes({ ...merge(currentQs, stateFilters),
+      term: searchTerm
+    });
     return queryString__default.stringify(mergedSearch);
   },
   hash: {
     $path: 'state',
-    $formatting: state => state.getIn(['routing', 'location', 'hash'], '').replace('#', '')
+    $formatting: state => getImmutableOrJS(state, ['routing', 'location', 'hash'], '').replace('#', '')
   }
 };
 
@@ -1186,9 +1228,13 @@ const facetTemplate = {
           pageIndex,
           pagesLoaded
         }) => {
-          const loaded = List(pagesLoaded || []);
-          const pages = isNaN(loaded.find(l => l === pageIndex)) ? loaded.push(pageIndex) : loaded;
-          return pages.toList().sort((a, b) => a - b);
+          const loaded = [...(pagesLoaded || [])];
+
+          if (isNaN(loaded.find(l => l === pageIndex))) {
+            loaded.push(pageIndex);
+          }
+
+          return loaded.sort((a, b) => a - b);
         }
       },
       prevPageIndex: 'action.queryParams.prevPageIndex'
@@ -1217,14 +1263,14 @@ const facetTemplate = {
         _pagePosition: idx,
         ...r
       }));
-      const loadedPages = List(pagesLoaded); // if pageIndex is found in loadedPages, we have already loaded this page
+      const loadedPages = pagesLoaded || []; // if pageIndex is found in loadedPages, we have already loaded this page
 
       if (!isNaN(loadedPages.find(l => l === pageIndex))) return prevResults; // Determine where we put the results depending on if we
       // are paging forwards, backwards, or doing a new search
 
       const firstResultSet = pageIndex > prevPageIndex ? prevResults || [] : nextResults;
       const secondResultSet = pageIndex > prevPageIndex ? nextResults : prevResults || [];
-      const onlyResultSet = loadedPages.size === 0 ? nextResults : false;
+      const onlyResultSet = loadedPages.length === 0 ? nextResults : false;
       return onlyResultSet || [...firstResultSet, ...secondResultSet];
     }
   },
@@ -1308,10 +1354,10 @@ const mapFiltersToFilterExpression = (filters, selectedFilters) => {
 };
 
 const queryParamsTemplate = {
-  assetTypes: root => getQueryParameter(root, 'assetTypes', List()),
-  contentTypeIds: root => getQueryParameter(root, 'contentTypeIds', List()),
-  customWhere: root => getQueryParameter(root, 'customWhere', List()),
-  dynamicOrderBy: root => getQueryParameter(root, 'dynamicOrderBy', List()),
+  assetTypes: root => getQueryParameter(root, 'assetTypes', []),
+  contentTypeIds: root => getQueryParameter(root, 'contentTypeIds', []),
+  customWhere: root => getQueryParameter(root, 'customWhere', []),
+  dynamicOrderBy: root => getQueryParameter(root, 'dynamicOrderBy', []),
   env: ({
     state,
     facet,
@@ -1327,19 +1373,19 @@ const queryParamsTemplate = {
     return null;
   },
   featuredResults: root => getQueryParameter(root, 'featuredResults', null),
-  fields: root => getQueryParameter(root, 'fields', List()),
+  fields: root => getQueryParameter(root, 'fields', []),
   filters: ({
     state,
     facet,
     context
   }) => {
-    const stateFilters = getFilters(state, facet, context).toJS();
-    const selectedFilters = getSelectedFilters(state, facet, context).toJS(); // Use another mapping function to map the filter parameters for the query
+    const stateFilters = getFilters(state, facet, context, 'js');
+    const selectedFilters = getSelectedFilters(state, facet, context, 'js'); // Use another mapping function to map the filter parameters for the query
 
     const filterParams = mapFiltersToFilterExpression(stateFilters, selectedFilters);
     return filterParams;
   },
-  includeInSearchFields: root => getQueryParameter(root, 'includeInSearch', List()),
+  includeInSearchFields: root => getQueryParameter(root, 'includeInSearch', []),
   internalPageIndex: ({
     action,
     state
@@ -1350,7 +1396,7 @@ const queryParamsTemplate = {
   }) => action.defaultLang ? [action.defaultLang] : [],
   linkDepth: root => getQueryParameter(root, 'linkDepth', 0),
   loadMorePaging: root => getQueryParameter(root, 'loadMorePaging', false),
-  orderBy: root => getQueryParameter(root, 'orderBy', List()),
+  orderBy: root => getQueryParameter(root, 'orderBy', []),
   pageIndex: root => {
     const {
       action,
@@ -1375,31 +1421,35 @@ const queryParamsTemplate = {
     state,
     facet,
     context
-  }) => getFacet(state, facet, context).get('projectId'),
+  }) => {
+    var _getFacet;
+
+    return (_getFacet = getFacet(state, facet, context)) === null || _getFacet === void 0 ? void 0 : _getFacet.projectId;
+  },
   searchTerm: root => root.context !== Context$1.minilist || getQueryParameter(root, 'useSearchTerm', false) ? getSearchTerm(root.state) : '',
   selectedFilters: ({
     state,
     facet,
     context
-  }) => getSelectedFilters(state, facet, context).map(f => f === null || f === void 0 ? void 0 : f.join(',')),
+  }) => Object.fromEntries(Object.entries(getSelectedFilters(state, facet, context, 'js')).map(([key, f]) => [key, f === null || f === void 0 ? void 0 : f.join(',')])),
   versionStatus: ({
     state
   }) => selectVersionStatus(state),
   weightedSearchFields: root => {
-    const wsf = getQueryParameter(root, 'weightedSearchFields', List());
-    const deduped = wsf.groupBy((v = Map()) => v.get('fieldId')).map((v = Map()) => v.first()).toList();
+    const wsf = getQueryParameter(root, 'weightedSearchFields', []);
+    const deduped = wsf.filter((v, i, a) => a.findIndex(t => t.fieldId === v.fieldId) === i);
     return deduped; // return wsf;
   },
-  webpageTemplates: root => getQueryParameter(root, 'webpageTemplates', List())
+  webpageTemplates: root => getQueryParameter(root, 'webpageTemplates', [])
 };
 
-const mapStateToQueryParams = sourceJson => fromJS(mapJson(sourceJson, queryParamsTemplate)).toJS();
+const mapStateToQueryParams = sourceJson => mapJson(sourceJson, queryParamsTemplate);
 
 /**
  * 1, Generates all the parameters required to run the search query.
  * 2, Tells us if we should run the search.
  * @param {object} action
- * @param {ImmutableMap} state
+ * @param {AppState} state
  * @returns [queryParams, runSearch]
  */
 const generateQueryParams = (action, state) => {
@@ -1434,7 +1484,8 @@ const runSearch = (action, state, queryParams) => {
   } = action;
   let willRun = false;
   const facetIsLoaded = defaultLang ? false : getIsLoaded(state, context, facet);
-  const stateParams = getQueryParams(ogState, facet, context).toJS();
+  const stateParams = { ...getQueryParams(ogState, facet, context)
+  };
   stateParams.pageIndex = getPageIndex(ogState, facet, context);
   stateParams.searchTerm = getSearchTerm(ogState);
 
@@ -1475,7 +1526,7 @@ const filterParamsChanged = (action, state) => {
     params,
     ogState = state
   } = action;
-  const selectedFilters = getSelectedFilters(ogState, facet, context).toJS();
+  const selectedFilters = getSelectedFilters(ogState, facet, context);
   const paramsChanged = Object.entries(selectedFilters).map(([filterKey, selectedValues]) => {
     const inboundValues = params && params[filterKey] && params[filterKey].split(',') || [];
     if (!areArraysEqualSets(selectedValues, inboundValues)) return true;
@@ -1487,11 +1538,11 @@ const filterParamsChanged = (action, state) => {
 const debugExecuteSearch = (action, state) => {
   const [queryParams, runSearch] = generateQueryParams(action, state);
   console.log('runSearch', runSearch, 'action', action, 'filterParamsChanged', filterParamsChanged(action, state), 'getIsLoaded(state, context, facet)', getIsLoaded(state, action.context, action.facet));
-  const stateParams = getQueryParams(action.ogState || state, action.facet, action.context).toJS();
+  const stateParams = getQueryParams(action.ogState || state, action.facet, action.context);
   stateParams.pageIndex = getPageIndex(action.ogState || state, action.facet, action.context);
   stateParams.searchTerm = getSearchTerm(action.ogState || state);
   console.log(stateParams, queryParams);
-  console.log('getSelectedFilters', getSelectedFilters(action.ogState || state, action.facet, action.context).toJS(), 'params', action.params);
+  console.log('getSelectedFilters', getSelectedFilters(action.ogState || state, action.facet, action.context), 'params', action.params);
 };
 
 // Base mapping, fields that are the same across all mappings
@@ -1520,6 +1571,9 @@ const mapEntriesToFilterItems = entries => {
 };
 
 const searchSagas = [takeEvery(CLEAR_FILTERS, clearFilters), takeEvery(DO_SEARCH, doSearch), takeEvery(SET_ROUTE_FILTERS, loadFilters), takeEvery(SET_SEARCH_ENTRIES, preloadOtherFacets), takeEvery(UPDATE_CURRENT_FACET, updateCurrentFacet), takeEvery(UPDATE_CURRENT_TAB, updateCurrentTab), takeEvery(UPDATE_PAGE_INDEX, updatePageIndex), takeEvery(UPDATE_SEARCH_TERM, updateSearchTerm), takeEvery(UPDATE_SORT_ORDER, updateSortOrder), takeEvery(UPDATE_SELECTED_FILTERS, applySearchFilter)];
+
+const toJS = obj => obj && 'toJS' in obj && typeof obj.toJS === 'function' ? obj.toJS() : obj;
+
 function* setRouteFilters(action) {
   const {
     mappers,
@@ -1529,14 +1583,16 @@ function* setRouteFilters(action) {
     debug
   } = action;
   const context = listingType ? Context$1.listings : Context$1.facets;
-  const state = yield select();
+  const state = toJS(yield select());
   const ssr = getIsSsr(state); // Get current facet from params or state
 
   let currentFacet = params && params.facet || listingType; // Pick the default facet from initialState
 
   if (!currentFacet) {
-    const tabs = getSearchTabs(state);
-    currentFacet = tabs.getIn([0, 'defaultFacet'], '') || getFacets(state).keySeq().first();
+    var _Object$keys;
+
+    const tabs = getSearchTabs(state, 'js');
+    currentFacet = (tabs === null || tabs === void 0 ? void 0 : tabs[0].defaultFacet) || ((_Object$keys = Object.keys(getFacets(state, 'js'))) === null || _Object$keys === void 0 ? void 0 : _Object$keys[0]) || '';
   }
 
   const nextAction = {
@@ -1557,7 +1613,7 @@ function* setRouteFilters(action) {
   });
 }
 function* doSearch(action) {
-  const state = yield select();
+  const state = toJS(yield select());
 
   if (action.config) {
     // If the action contains a config object, we can add this to the
@@ -1583,30 +1639,30 @@ function* loadFilters(action) {
     context,
     mappers = {}
   } = action;
-  const filtersToLoad = yield select(getFiltersToLoad, facetKey, context);
+  const filtersToLoad = yield select(getFiltersToLoad, facetKey, context, 'js');
 
-  if (filtersToLoad.size > 0) {
+  if (filtersToLoad.length > 0) {
     yield put({
       type: LOAD_FILTERS,
       filtersToLoad,
       facetKey,
       context
     });
-    const selectedKeys = yield select(getSelectedFilters, facetKey, context);
-    const facet = yield select(getFacet, facetKey, context);
-    const filters = facet.get('filters', Map());
-    const projectId = facet.get('projectId', '');
+    const selectedKeys = yield select(getSelectedFilters, facetKey, context, 'js');
+    const facet = yield select(getFacet, facetKey, context, 'js');
+    const filters = facet.filters || {};
+    const projectId = facet.projectId;
     const filtersToLoadSagas = filters && filtersToLoad.map((filterKey = '') => {
       return call(loadFilter, {
         facetKey,
         filterKey,
-        filter: filters.get(filterKey),
+        filter: filters[filterKey],
         projectId,
-        selectedKeys: selectedKeys.get(filterKey),
+        selectedKeys: selectedKeys[filterKey],
         context,
         mapper: 'filterItems' in mappers && mappers.filterItems || mapEntriesToFilterItems
       });
-    }).toJS();
+    });
     if (filtersToLoadSagas) yield all(filtersToLoadSagas);
   }
 }
@@ -1625,7 +1681,7 @@ function* loadFilter(action) {
     contentTypeId,
     customWhere,
     path
-  } = 'toJS' in filter ? filter.toJS() : filter;
+  } = filter;
   const createStateFrom = {
     type: LOAD_FILTERS_COMPLETE,
     context,
@@ -1691,6 +1747,7 @@ function* ensureSearch(action) {
       });
     }
   } catch (error) {
+    // eslint-disable-next-line import/namespace
     log.error(...['Error running search saga:', error, error.stack]);
   }
 }
@@ -1708,7 +1765,7 @@ function* executeSearch(action) {
     let result = {};
     let featuredResult;
     let featuredQuery;
-    const customApi = getCustomApi(state, facet, context);
+    const customApi = getCustomApi(state, facet, context, 'js');
 
     if (customApi) {
       const apiParams = typeof mappers === 'object' && typeof mappers.customApi === 'function' && mappers.customApi(queryParams) || {};
@@ -1734,13 +1791,14 @@ function* executeSearch(action) {
       action,
       featuredResult,
       pageIndex: queryParams.internalPaging && queryParams.internalPageIndex || queryParams.pageIndex,
-      prevResults: getResults(state, facet, action.context),
+      prevResults: getResults(state, facet, action.context, 'js'),
       result,
       state
     };
     const nextAction = mapJson(createStateFrom, facetTemplate);
     yield put(nextAction);
   } catch (error) {
+    // eslint-disable-next-line import/namespace
     log.error(...['Error running search saga:', error, error.stack]);
   }
 }
@@ -1756,7 +1814,7 @@ function* preloadOtherFacets(action) {
   const currentFacet = getCurrentFacet(state);
 
   if (!preload && facet === currentFacet && context !== Context$1.listings) {
-    const allFacets = getFacets(state).toJS();
+    const allFacets = getFacets(state, 'js');
     const otherFacets = Object.keys(allFacets).filter(f => f !== currentFacet);
     yield all(otherFacets.map((preloadFacet = '') => {
       const preloadAction = { ...action,
@@ -1781,19 +1839,19 @@ function* updateCurrentTab(action) {
     mappers
   } = action;
   const state = yield select();
-  const facets = getFacets(state);
-  const tabs = getSearchTabs(state);
-  let nextFacet = tabs.getIn([id, 'currentFacet']);
+  const facets = getFacets(state, 'js');
+  const tabs = getSearchTabs(state, 'js');
+  let nextFacet = tabs === null || tabs === void 0 ? void 0 : tabs[id].currentFacet;
 
   if (!nextFacet) {
-    facets.map((facet = Map(), facetName) => {
-      if (facet.get('tabId') === id && tabs.getIn([id, 'defaultFacet']) === facetName) nextFacet = facetName;
+    Object.entries(facets).map(([facetName, facet]) => {
+      if (facet.tabId === id && (tabs === null || tabs === void 0 ? void 0 : tabs[id].defaultFacet) === facetName) nextFacet = facetName;
     });
   } // If the next Tab does not have a defaultFacet,
   // take the first facet for that tab
 
 
-  if (!nextFacet) nextFacet = facets.filter((f = Map()) => f.get('tabId') === id).keySeq().first();
+  if (!nextFacet) nextFacet = Object.entries(facets).filter(([, f]) => f.tabId === id)[0][0];
   yield put(withMappers(updateCurrentFacet$1(nextFacet), mappers));
 }
 
@@ -1880,6 +1938,15 @@ function* buildUri({
   return `${uri.path}${uri.search && `?${uri.search}` || ''}${uri.hash && `#${uri.hash}` || ''}`;
 }
 
+const makeSelectMinilistProps = () => createSelector(state => state, (_, id) => id, (state, id) => ({
+  facet: getFacet(state, id, Context$1.minilist, 'js'),
+  filters: getFilters(state, id, Context$1.minilist, 'js'),
+  isLoading: getIsLoading(state, Context$1.minilist, id),
+  pagingInfo: getPaging(state, id, Context$1.minilist, 'js'),
+  results: getResults(state, id, Context$1.minilist, 'js'),
+  searchTerm: getSearchTerm(state)
+}));
+
 const useMinilist = ({
   id,
   config,
@@ -1893,6 +1960,7 @@ const useMinilist = ({
   id: ''
 }) => {
   const dispatch = useDispatch();
+  const selectMinilistProps = useMemo(makeSelectMinilistProps, [id]);
   const {
     facet,
     filters,
@@ -1900,14 +1968,15 @@ const useMinilist = ({
     pagingInfo,
     results,
     searchTerm
-  } = useSelector(state => ({
-    facet: getFacet(state, id, Context$1.minilist).toJS(),
-    filters: getFilters(state, id, Context$1.minilist).toJS(),
-    isLoading: getIsLoading(state, Context$1.minilist, id),
-    pagingInfo: getPaging(state, id, Context$1.minilist).toJS(),
-    results: getResults(state, id, Context$1.minilist).toJS(),
-    searchTerm: getSearchTerm(state)
-  }));
+  } = useSelector(state => selectMinilistProps(state, id)); // useSelector((state: AppState) => ({
+  //   facet: getFacet(state, id, Context.minilist).toJS(),
+  //   filters: getFilters(state, id, Context.minilist).toJS(),
+  //   isLoading: getIsLoading(state, Context.minilist, id),
+  //   pagingInfo: getPaging(state, id, Context.minilist).toJS(),
+  //   results: getResults(state, id, Context.minilist).toJS(),
+  //   searchTerm: getSearchTerm(state),
+  // }));
+
   useEffect(() => {
     if (id && (mapper || mappers && mappers.results)) {
       dispatch(triggerSearch({
@@ -1933,68 +2002,72 @@ const useMinilist = ({
   };
 };
 
-const entries = Map({
+const entries = {
   isLoading: false,
   isError: false,
-  items: List()
-});
-const pagingInfo = Map({
+  items: []
+};
+const pagingInfo = {
   isLoading: false,
   pageCount: 0,
   pageIndex: 0,
   pageSize: 0,
-  pagesLoaded: List(),
+  pagesLoaded: [],
   prevPageIndex: 0,
   totalCount: 0
-});
-const searchFacet = OrderedMap({
+};
+const searchFacet = {
   title: null,
   featuredEntries: entries,
-  featuredResults: List(),
+  featuredResults: [],
   entries,
-  results: List(),
-  queryParams: Map(),
-  filters: Map(),
+  results: [],
+  queryParams: {},
+  filters: {},
   queryDuration: 0,
   pagingInfo,
   projectId: ''
-});
-const searchTab = Map({
+};
+const searchTab = {
   currentFacet: undefined,
-  facets: OrderedMap(),
+  facets: {},
   id: 0,
   label: undefined,
   totalCount: ''
-});
-const filtering = Map({
+};
+const filtering = {
   isLoading: false,
   isError: false,
   isGrouped: false,
   title: undefined,
   contentTypeId: undefined,
-  customWhere: List(),
+  customWhere: [],
   fieldId: undefined,
-  items: List()
-});
-const filterItem = Map({
+  items: []
+};
+const filterItem = {
   key: '',
   type: undefined,
   title: undefined,
   path: undefined,
   isSelected: false
-});
-const config = Map({
+};
+const config = {
   isLoaded: false,
   isError: false
-});
+};
 const searchState = {
+  context: 'facets',
   currentFacet: '',
+  currentListing: '',
+  facets: {},
+  listings: {},
+  minilist: {},
   term: '',
-  facets: OrderedMap(),
-  tabs: List(),
+  tabs: [],
   config
 };
-const initialState = OrderedMap(searchState);
+const initialState = searchState;
 
 var schema = /*#__PURE__*/Object.freeze({
   __proto__: null,
@@ -2007,8 +2080,6 @@ var schema = /*#__PURE__*/Object.freeze({
   initialState: initialState
 });
 
-// eslint-disable no-console
-
 const addConfigToState = (state, action) => {
   const {
     context,
@@ -2017,26 +2088,27 @@ const addConfigToState = (state, action) => {
   } = action; // Adding or changing the config of a single facet, listing or minilist
 
   if (context && facet && config) {
-    return state.setIn([context, facet], fromJS(config));
+    state[context][facet] = { ...searchFacet,
+      ...config
+    };
   } else if (config) {
     // Changing the entire search config
-    const newState = fromJS(config);
-    return newState;
+    state = config;
   }
 
   return state;
 };
 
 const generateSearchFacets = (context, config) => {
-  let facets = OrderedMap();
+  const facets = {};
 
   if (config) {
     const thisConfig = config[context] || {};
 
     if (Object.keys(thisConfig).length > 0) {
       Object.entries(thisConfig).map(([facetName, facet]) => {
-        const newFacet = searchFacet.merge(fromJS(facet));
-        if (!('isDisabled' in facet) || facet.isDisabled !== true) facets = facets.set(facetName, newFacet);
+        const newFacet = merge(searchFacet, facet);
+        if (!('isDisabled' in facet) || facet.isDisabled !== true) facets[facetName] = newFacet;
       });
     }
   }
@@ -2051,15 +2123,27 @@ const generateFiltersState = ({
   isCurrentFacet
 }, state) => {
   // Remove filters we know about from params
-  const filterParams = fromJS({ ...params,
+  const filterParams = { ...params,
     facet: undefined,
     orderBy: undefined,
     pageIndex: undefined,
     term: undefined
-  }); // Get any existing filters and normalise the items[]
+  }; // Get any existing filters and normalise the items[]
   // so we can start off with isSelected is false
 
-  let filters = state.getIn([context, facet, 'filters'], Map({})).map(filter => isCurrentFacet || filter.get('isGrouped') ? filter.set('items', filter.get('items').map(item => item === null || item === void 0 ? void 0 : item.set('isSelected', false))) : filter);
+  let filters = Object.entries(state[context][facet].filters || []).map(([key, filter]) => {
+    if (isCurrentFacet || filter.isGrouped) {
+      var _filter$items;
+
+      return [key, { ...filter,
+        items: (_filter$items = filter.items) === null || _filter$items === void 0 ? void 0 : _filter$items.map(item => ({ ...item,
+          isSelected: false
+        }))
+      }];
+    }
+
+    return [key, filter];
+  });
 
   const addFilterItem = (filters, paramKey, paramValue) => // Iterate through all filters within the facet,
   // if the paramKey matches the filter key
@@ -2067,14 +2151,25 @@ const generateFiltersState = ({
   // already exists, if so set isSelected to true,
   // if not create a new filterItem, setting the key only
   // so we can match this key later on when we load the filters
-  filters.map((filter = Map(), key) => {
-    if (paramKey !== key || !isCurrentFacet && !filter.get('isGrouped')) {
-      return filter;
+  filters.map(([key, filter]) => {
+    if (paramKey !== key || !isCurrentFacet && !filter.isGrouped) {
+      return [key, filter];
     } else {
-      const items = filter.get('items') || List();
-      const itemIndex = items.findIndex(item => (item === null || item === void 0 ? void 0 : item.get('key')) === paramValue);
-      if (items.size > 0 && itemIndex !== -1) return filter.setIn(['items', itemIndex, 'isSelected'], true);
-      return filter.set('items', (filter.get('items') || List()).push(filterItem.set('key', paramValue).set('isSelected', true)));
+      const items = filter.items || [];
+      const itemIndex = items.findIndex(item => (item === null || item === void 0 ? void 0 : item.key) === paramValue);
+
+      if (items.length > 0 && itemIndex !== -1) {
+        items[itemIndex].isSelected = true;
+      } else {
+        items.push({ ...filterItem,
+          key: paramValue,
+          isSelected: true
+        });
+      }
+
+      return [key, { ...filter,
+        items
+      }];
     }
   }); // For each value found in filterParams
   // we are looking to split that value into multiple by any comma
@@ -2084,44 +2179,66 @@ const generateFiltersState = ({
   // the search results during SSR without needing to fetch the filters first
 
 
-  filterParams.map((paramValue, paramName = '') => paramValue && paramValue.split(',').map(pVal => filters = addFilterItem(filters, paramName, pVal)));
-  return filters;
+  Object.entries(filterParams).map(([paramName = '', paramValue]) => typeof paramValue === 'string' && paramValue.split(',').map(pVal => filters = addFilterItem(filters, paramName, pVal)));
+  return Object.fromEntries(filters);
 };
 
-const resetFacets = (state, context) => OrderedMap(state.get(context).map((v = OrderedMap()) => resetFacet(v)));
+const resetFacets = (state, context) => Object.fromEntries(Object.entries(state[context]).map(([k, v]) => [k, resetFacet(v)]));
 
-const resetFacet = facet => facet.setIn(['pagingInfo', 'pagesLoaded'], fromJS([])).setIn(['pagingInfo', 'pageIndex'], 0).setIn(['queryDuration'], 0);
+const resetFacet = facet => {
+  facet.pagingInfo.pagesLoaded = [];
+  facet.pagingInfo.pageIndex = 0;
+  facet.queryDuration = 0;
+  return facet;
+};
 
 var reducers = (config => {
   // Add facets from SearchConfig to initialState
-  const initState = initialState.set('tabs', fromJS(config.tabs)).set('facets', generateSearchFacets(Context$1.facets, config)).set('listings', generateSearchFacets(Context$1.listings, config)).set('minilist', generateSearchFacets(Context$1.minilist, config));
-  return (state = initState, action) => {
-    const context = state.get('context');
-    const current = state.get(context !== 'listings' ? 'currentFacet' : 'currentListing');
+  const initState = { ...initialState,
+    tabs: config.tabs,
+    facets: generateSearchFacets(Context$1.facets, config),
+    listings: generateSearchFacets(Context$1.listings, config),
+    minilist: generateSearchFacets(Context$1.minilist, config)
+  };
+  return produce((state = initState, action) => {
+    const context = state.context;
+    const current = context !== 'listings' ? state.currentFacet : state.currentListing;
 
     switch (action.type) {
       case APPLY_CONFIG:
         {
-          return addConfigToState(state, action);
+          state = addConfigToState(state, action);
+          return;
         }
 
       case CLEAR_FILTERS:
         {
-          const currentFilters = state.getIn([context, current, 'filters']);
-          return state.setIn([context, current, 'filters'], currentFilters.map(filter => {
-            const filterItems = filter && filter.get('items') || [];
-            return filter === null || filter === void 0 ? void 0 : filter.set('items', filterItems.map(item => item === null || item === void 0 ? void 0 : item.set('isSelected', false)));
-          })).setIn([context, current, 'queryDuration'], 0).setIn([context, current, 'pagingInfo', 'pagesLoaded'], fromJS([]));
+          const currentFilters = state[context][current].filters;
+          state[context][current].filters = Object.fromEntries(Object.entries(currentFilters).map(([key, filter]) => {
+            const filterItems = filter.items || [];
+            filter.items = filterItems.map(item => ({ ...item,
+              isSelected: false
+            }));
+            return [key, filter];
+          }));
+          state[context][current].queryDuration = 0;
+          state[context][current].pagingInfo.pagesLoaded = [];
+          return;
         }
 
       case EXECUTE_SEARCH:
         {
-          return state.setIn([action.context, action.facet, 'entries', 'isLoading'], true);
+          state[action.context][action.facet].entries.isLoading = true;
+          return;
         }
 
       case EXECUTE_SEARCH_ERROR:
         {
-          return state.setIn([action.context, action.facet, 'entries'], entries.set('isError', true).set('error', fromJS(action.error)));
+          state[action.context][action.facet].entries = { ...entries,
+            isError: true,
+            error: action.error
+          };
+          return;
         }
 
       case LOAD_FILTERS:
@@ -2130,8 +2247,20 @@ var reducers = (config => {
             facetKey,
             filtersToLoad
           } = action;
-          const filters = state.getIn([action.context, facetKey, 'filters']);
-          return state.setIn([action.context, facetKey, 'filters'], filters.map((filter = Map(), filterKey) => filtersToLoad.find(f => f === filterKey) ? filter.set('isLoading', true) : filter));
+          const filters = state[action.context][facetKey].filters;
+          Object.entries(filters).map(([filterKey, filter]) => {
+            if (filtersToLoad.find(f => f === filterKey)) return { ...filter,
+              isLoading: true
+            };
+            return filter;
+          });
+          state[action.context][facetKey].filters = Object.fromEntries(Object.entries(filters).map(([filterKey, filter]) => {
+            if (filtersToLoad.find(f => f === filterKey)) return [filterKey, { ...filter,
+              isLoading: true
+            }];
+            return [filterKey, filter];
+          }));
+          return;
         }
 
       case LOAD_FILTERS_ERROR:
@@ -2142,10 +2271,21 @@ var reducers = (config => {
             filterKey,
             nextFilter
           } = action;
-          const filter = state.getIn([action.context, facetKey, 'filters', filterKey]);
-          if (!(nextFilter.items && nextFilter.items.length > 0) && filter.get('items').size >= nextFilter.items.length) // Preserve items already in state
-            return state.setIn([action.context, facetKey, 'filters', filterKey], filter.set('isLoading', false).set('isError', nextFilter.isError));
-          return state.setIn([action.context, facetKey, 'filters', filterKey], filter.merge(fromJS(nextFilter)));
+          const filter = state[action.context][facetKey].filters[filterKey];
+
+          if (!(nextFilter.items && nextFilter.items.length > 0) && (filter.items || []).length >= nextFilter.items.length) {
+            // Preserve items already in state
+            state[action.context][facetKey].filters[filterKey] = { ...filter,
+              isLoading: false,
+              isError: nextFilter.isError
+            };
+            return;
+          }
+
+          state[action.context][facetKey].filters[filterKey] = merge(filter, nextFilter, {
+            arrayMerge: (source, inbound) => inbound
+          });
+          return;
         }
 
       case SET_ROUTE_FILTERS:
@@ -2160,8 +2300,8 @@ var reducers = (config => {
             pageIndex,
             orderBy
           } = params;
-          const stateTerm = state.get('term');
-          const tabId = state.getIn([context, facet, 'tabId'], 0); // Reset the facet if the search term has changed, or if the any of
+          const stateTerm = state.term;
+          const tabId = state[context][facet].tabId || 0; // Reset the facet if the search term has changed, or if the any of
           // the filters have changed
 
           const resetAllFacets = stateTerm && term !== stateTerm;
@@ -2169,7 +2309,7 @@ var reducers = (config => {
           // causing unfetched filter items to be generated with isSelected: true
           // or existing filter items to be tagged with isSelected: true
 
-          const nextFacets = state.get(context).map((stateFacet = Map(), facetName = '') => {
+          const nextFacets = Object.fromEntries(Object.entries(state[context]).map(([facetName = '', stateFacet]) => {
             const isCurrentFacet = facetName === facet;
             const nextFilters = generateFiltersState({
               facet: facetName,
@@ -2177,18 +2317,32 @@ var reducers = (config => {
               context,
               isCurrentFacet
             }, state);
-            resetCurrentFacet = state.getIn(['config', 'isLoaded'], false) === true && !nextFilters.equals(stateFacet.get('filters'));
-            return (resetCurrentFacet ? resetFacet(stateFacet) : stateFacet).set('filters', nextFilters).setIn(['queryParams', 'dynamicOrderBy'], toArray(orderBy));
-          });
-          const nextState = state.set('context', context).set(context, nextFacets).set(action.context === Context$1.facets ? 'currentFacet' : 'currentListing', facet).set('term', term).setIn(['tabs', tabId, 'currentFacet'], facet).setIn([context, facet, 'pagingInfo', 'pageIndex'], Number(pageIndex) - 1 || (state.getIn([context, facet, 'queryParams', 'loadMorePaging']) ? state.getIn([context, facet, 'pagingInfo', 'pageIndex'], 0) : 0)).setIn(['config', 'isLoaded'], true).setIn(['config', 'ssr'], typeof window === 'undefined');
-          return resetAllFacets ? nextState.set(context, resetFacets(nextState, context)) : nextState;
+            resetCurrentFacet = state.config.isLoaded === true && !equals(nextFilters, stateFacet.filters);
+            stateFacet = resetCurrentFacet ? resetFacet(stateFacet) : stateFacet;
+            stateFacet.filters = nextFilters;
+            stateFacet.queryParams.dynamicOrderBy = toArray(orderBy) || [];
+            return [facetName, stateFacet];
+          }));
+          state.context = context;
+          state[context] = nextFacets;
+          state[action.context === Context$1.facets ? 'currentFacet' : 'currentListing'] = facet;
+          state.term = term;
+          state.tabs[tabId].currentFacet = facet;
+          state[context][facet].pagingInfo.pageIndex = Number(pageIndex) - 1 || (state[context][facet].queryParams.loadMorePaging ? state[context][facet].pagingInfo.pageIndex || 0 : 0);
+          state.config.isLoaded = true;
+          state.config.ssr = typeof window === 'undefined';
+          if (resetAllFacets) state[context] = resetFacets(state, context);
+          return;
         }
 
       case SET_SEARCH_ENTRIES:
         {
           const thisContext = action.context || context;
-          const currentFacet = state.getIn([thisContext, action.facet]);
-          return state.setIn([thisContext, action.facet], currentFacet.merge(fromJS(action.nextFacet)));
+          const currentFacet = state[thisContext][action.facet];
+          state[thisContext][action.facet] = merge(currentFacet, action.nextFacet, {
+            arrayMerge: (source, inbound) => inbound
+          });
+          return;
         }
 
       case SET_SEARCH_FILTERS:
@@ -2204,8 +2358,12 @@ var reducers = (config => {
             isCurrentFacet: true
           }, state);
           const term = action === null || action === void 0 ? void 0 : (_action$params = action.params) === null || _action$params === void 0 ? void 0 : _action$params.term;
-          const useSearchTerm = state.getIn([action.context || Context$1.minilist, action.facet, 'queryParams', 'useSearchTerm'], false);
-          return state.setIn([action.context || Context$1.minilist, action.facet, 'filters'], filters).setIn([action.context || Context$1.minilist, action.facet, 'queryParams', 'excludeIds'], fromJS(action.excludeIds)).set('term', useSearchTerm ? term : state.get('term')).setIn(['config', 'ssr'], typeof window === 'undefined');
+          const useSearchTerm = state[action.context || Context$1.minilist][action.facet].queryParams.useSearchTerm || false;
+          state[action.context || Context$1.minilist][action.facet].filters = filters;
+          state[action.context || Context$1.minilist][action.facet].queryParams.excludeIds = action.excludeIds;
+          state.term = useSearchTerm ? term : state.term;
+          state.config.ssr = typeof window === 'undefined';
+          return;
         }
 
       case UPDATE_PAGE_INDEX:
@@ -2213,16 +2371,21 @@ var reducers = (config => {
           const {
             pageIndex
           } = action;
-          const internalPaging = state.getIn([context, current, 'queryParams', 'internalPaging'], false);
-          const currentPageIndex = state.getIn([context, current, 'pagingInfo', 'pageIndex'], 0);
-          const nextState = state.setIn([context, current, 'pagingInfo', 'pageIndex'], Number(pageIndex) || 0).setIn([context, current, 'pagingInfo', 'prevPageIndex'], currentPageIndex).setIn([context, current, 'pagingInfo', 'isLoading'], true);
-          if (internalPaging) return nextState;
-          return nextState.setIn([context, current, 'queryDuration'], 0);
+          const internalPaging = state[context][current].queryParams.internalPaging || false;
+          const currentPageIndex = state[context][current].pagingInfo.pageIndex || 0;
+          state[context][current].pagingInfo.pageIndex = Number(pageIndex) || 0;
+          state[context][current].pagingInfo.prevPageIndex = currentPageIndex;
+          state[context][current].pagingInfo.isLoading = true;
+          if (internalPaging) return;
+          state[context][current].queryDuration = 0;
+          return;
         }
 
       case UPDATE_SEARCH_TERM:
         {
-          return state.set('term', action.term).set(context, resetFacets(state, context));
+          state.term = action.term;
+          state[context] = resetFacets(state, context);
+          return;
         }
 
       case UPDATE_SELECTED_FILTERS:
@@ -2231,16 +2394,24 @@ var reducers = (config => {
             filter,
             key
           } = action;
-          const isSingleSelect = state.getIn([context, current, 'filters', filter, 'isSingleSelect'], false);
-          const isGrouped = state.getIn([context, current, 'filters', filter, 'isGrouped'], false);
-          const currentItems = state.getIn([context, current, 'filters', filter, 'items']);
-          return state.set(context, isGrouped ? resetFacets(state, context) : state.get(context)).setIn([context, current], resetFacet(state.getIn([context, current]))).setIn([context, current, 'filters', filter, 'items'], currentItems.map((item = Map()) => {
-            if (item.get('key') === key) {
-              return item.set('isSelected', !item.get('isSelected'));
+          const isSingleSelect = state[context][current].filters[filter].isSingleSelect || false;
+          const isGrouped = state[context][current].filters[filter].isGrouped || false;
+          const currentItems = state[context][current].filters[filter].items;
+          if (isGrouped) state[context] = resetFacets(state, context);
+          state[context][current] = resetFacet(state[context][current]);
+          state[context][current].filters[filter].items = currentItems === null || currentItems === void 0 ? void 0 : currentItems.map(item => {
+            if (item.key === key) {
+              return { ...item,
+                isSelected: !item.isSelected
+              };
             }
 
-            return isSingleSelect ? item.set('isSelected', false) : item;
-          }));
+            if (isSingleSelect) return { ...item,
+              isSelected: false
+            };
+            return item;
+          });
+          return;
         }
 
       case UPDATE_SORT_ORDER:
@@ -2249,13 +2420,16 @@ var reducers = (config => {
             orderBy,
             facet
           } = action;
-          return state.set(context, resetFacets(state, context)).setIn([context, facet || current, 'queryParams', 'dynamicOrderBy'], orderBy ? fromJS(toArray(orderBy)) : '');
+          state[context] = resetFacets(state, context);
+          const currentFacet = facet || current;
+          state[context][currentFacet].queryParams.dynamicOrderBy = orderBy ? toArray(orderBy) || [] : [];
+          return;
         }
 
       default:
-        return state;
+        return;
     }
-  };
+  }, initState);
 });
 
 // eslint-disable-next-line @typescript-eslint/naming-convention

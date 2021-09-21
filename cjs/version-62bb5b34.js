@@ -332,7 +332,7 @@ var createStore = (async (featureReducers, initialState, history, stateType) => 
     'immutable')); });
     fromJS = (await Promise.resolve().then(function () { return require(
     /* webpackChunkName: "from-js" */
-    './fromJSLeaveImmer-5c7e0767.js'); })).default;
+    './fromJSLeaveImmer-c00d597f.js'); })).default;
     combiner = (await Promise.resolve().then(function () { return /*#__PURE__*/_interopNamespace(require(
     /* webpackChunkName: "redux-immutable" */
     'redux-immutable')); })).combineReducers;
@@ -462,4 +462,4 @@ exports.setVersionStatus = setVersionStatus;
 exports.useInjectRedux = useInjectRedux;
 exports.version = version$1;
 exports.version$1 = version;
-//# sourceMappingURL=version-8ecb948d.js.map
+//# sourceMappingURL=version-62bb5b34.js.map

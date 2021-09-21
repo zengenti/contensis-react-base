@@ -1,9 +1,7 @@
-'use strict';
-
-var immutable = require('immutable');
+import { Seq } from 'immutable';
 
 const fromJSOrdered = js => {
-  return typeof js !== 'object' || js === null ? js : Array.isArray(js) ? immutable.Seq(js).map(fromJSOrdered).toList() : immutable.Seq(js).map(fromJSOrdered).toOrderedMap();
+  return typeof js !== 'object' || js === null ? js : Array.isArray(js) ? Seq(js).map(fromJSOrdered).toList() : Seq(js).map(fromJSOrdered).toOrderedMap();
 };
 
 var fromJSOrdered$1 = fromJSOrdered;
@@ -25,12 +23,18 @@ const fromJSLeaveImmer = js => {
   // });
   const immutableObj = fromJSOrdered$1(js);
 
-  if (immutableObj && !!immutableObj.get('immer')) {
-    immutableObj.set('immer', immutableObj.get('immer').toJS());
+  if (immutableObj && 'set' in immutableObj && typeof immutableObj.set === 'function') {
+    // convert the immer parts of the state back
+    // to plain JS while retuning an immutable state object
+    let immutableState = immutableObj;
+    ['immer', 'navigation', 'routing', 'search', 'user', 'version'].map(key => {
+      if (js[key] && immutableObj.get(key)) immutableState = immutableState.set(key, js[key]);
+    });
+    return immutableState;
   }
 
   return immutableObj;
 };
 
-exports['default'] = fromJSLeaveImmer;
-//# sourceMappingURL=fromJSLeaveImmer-5c7e0767.js.map
+export { fromJSLeaveImmer as default };
+//# sourceMappingURL=fromJSLeaveImmer-392af4e3.js.map
