@@ -4,7 +4,9 @@ Everything you need to get started with React and Contensis.
 
 Handles web app routing with Contensis Site View and component rendering based on a loaded Content Type entry in Contensis, Redux application store creation and all the major application dependencies to get going, with server side rendering and an Express web server.
 
-## v2.6 Installation Notes
+## Upgrade notes (older projects)
+
+### React 17 (v2.6+)
 
 This version introduces React v17. React is very sensitive to having multiple versions installed at the same time.
 
@@ -99,13 +101,17 @@ You should not import files from any other place than the packages / subpackages
 
 Sometimes VSCode may import the reference automatically from an unsupported place. You should check when committing your code that all imports are referenced correctly.
 
-## TypeScript support
+## TypeScript support (v2.5+)
 
 As of v2.5.0 TypeScript declarations are available to use, and will also benefit applications written in JavaScript
 
 All models are exported with the default package `@zengenti/contensis-react-base`
 
 When importing Types to use in your own TypeScript project, try to always use the root import path e.g. `import { ModelName } from '@zengenti/contensis-react-base';`
+
+## Loadable components (v2.6+)
+
+We have switched to using `@loadable/components` for our code splitting and to get the best experience, so should you. You will need to swap out the existing `react-loadable` Babel and Webpack plugins and then convert your existing `react-loadable` code to use their `@loadable/components` syntax. [Read more here](https://loadable-components.com/docs/component-splitting/)
 
 ## Key scripts to build from source 🚦 📃
 
