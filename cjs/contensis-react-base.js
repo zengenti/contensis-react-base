@@ -30,7 +30,7 @@ var version = require('./version-3a808c12.js');
 var actions = require('./actions-e9f69947.js');
 require('./reducers-cb531715.js');
 require('history');
-var App = require('./App-8f560cc5.js');
+var App = require('./App-fbd91490.js');
 require('@redux-saga/core/effects');
 require('contensis-delivery-api');
 require('./version-2193b4a2.js');

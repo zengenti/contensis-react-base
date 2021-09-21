@@ -600,7 +600,7 @@ function* getRouteSaga(action) {
       } = contentTypeMapping;
       yield effects.call(setRouteEntry, entry, pathNode, ancestors, siblings, entryMapper, false, appsays && appsays.refetchNode);
     } else {
-      if (pathNode) yield effects.call(setRouteEntry, null, pathNode, ancestors, siblings);else if (!staticRoute) yield effects.call(do404);
+      if (staticRoute) yield effects.call(setRouteEntry, null, pathNode, ancestors, siblings);else yield effects.call(do404);
     }
 
     if (!appsays || !appsays.preventScrollTop) {
@@ -1054,4 +1054,4 @@ exports.deliveryApi = deliveryApi;
 exports.history = history;
 exports.pickProject = pickProject;
 exports.rootSaga = rootSaga;
-//# sourceMappingURL=App-8f560cc5.js.map
+//# sourceMappingURL=App-fbd91490.js.map

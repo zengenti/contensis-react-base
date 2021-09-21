@@ -594,7 +594,7 @@ function* getRouteSaga(action) {
       } = contentTypeMapping;
       yield call(setRouteEntry, entry, pathNode, ancestors, siblings, entryMapper, false, appsays && appsays.refetchNode);
     } else {
-      if (pathNode) yield call(setRouteEntry, null, pathNode, ancestors, siblings);else if (!staticRoute) yield call(do404);
+      if (staticRoute) yield call(setRouteEntry, null, pathNode, ancestors, siblings);else yield call(do404);
     }
 
     if (!appsays || !appsays.preventScrollTop) {
@@ -1043,4 +1043,4 @@ const AppRoot = props => {
 };
 
 export { AppRoot as A, browserHistory as b, deliveryApi as d, history as h, pickProject as p, rootSaga as r };
-//# sourceMappingURL=App-d468b2a6.js.map
+//# sourceMappingURL=App-fbef99b3.js.map
