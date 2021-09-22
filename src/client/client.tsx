@@ -2,7 +2,7 @@ import 'isomorphic-fetch';
 import React from 'react';
 import { render, hydrate } from 'react-dom';
 import { Router } from 'react-router-dom';
-import { preloadReady } from 'react-loadable';
+import { loadableReady } from '@loadable/component';
 import { AppContainer } from 'react-hot-loader';
 import { Provider as ReduxProvider } from 'react-redux';
 import * as queryString from 'query-string';
@@ -53,7 +53,7 @@ class ClientApp {
      * Webpack HMR Setup.
      */
     const HMRRenderer = Component => {
-      preloadReady().then(() => {
+      loadableReady(() => {
         if (isProduction) hydrate(Component, documentRoot);
         else render(Component, documentRoot);
       });

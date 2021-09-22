@@ -1,6 +1,5 @@
 import 'isomorphic-fetch';
 import express, { Express } from 'express';
-import Loadable from 'react-loadable';
 import React from 'react';
 
 import DisplayStartupConfiguration from './util/displayStartupConfiguration';
@@ -44,17 +43,15 @@ const start = (
     // Configure DNS to make life easier
     // await ConfigureLocalDNS();
 
-    Loadable.preloadAll().then(() => {
-      const server = app.listen(3001, () => {
-        console.info(`HTTP server is listening @ port 3001`);
-        setTimeout(function () {
-          app.emit('app_started');
-        }, 500);
-      });
-      app.on('stop', () => {
-        server.close(function () {
-          console.info('GoodBye :(');
-        });
+    const server = app.listen(3001, () => {
+      console.info(`HTTP server is listening @ port 3001`);
+      setTimeout(function () {
+        app.emit('app_started');
+      }, 500);
+    });
+    app.on('stop', () => {
+      server.close(function () {
+        console.info('GoodBye :(');
       });
     });
   });
