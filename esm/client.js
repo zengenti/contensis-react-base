@@ -1,5 +1,4 @@
 import 'isomorphic-fetch';
-import { preloadReady } from 'react-loadable';
 import React from 'react';
 import { Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
@@ -30,6 +29,7 @@ import 'js-cookie';
 import { AppContainer } from 'react-hot-loader';
 import './RouteLoader-281d47e1.js';
 import { hydrate, render } from 'react-dom';
+import { loadableReady } from '@loadable/component';
 
 const fromJSLeaveImmer = js => {
   // console.info(js);
@@ -83,7 +83,7 @@ class ClientApp {
      */
 
     const HMRRenderer = Component => {
-      preloadReady().then(() => {
+      loadableReady(() => {
         if (isProduction) hydrate(Component, documentRoot);else render(Component, documentRoot);
       });
     };

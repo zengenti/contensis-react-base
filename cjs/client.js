@@ -3,7 +3,6 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 require('isomorphic-fetch');
-var Loadable = require('react-loadable');
 var React = require('react');
 var reactRouterDom = require('react-router-dom');
 var reactRedux = require('react-redux');
@@ -33,6 +32,7 @@ require('js-cookie');
 var reactHotLoader = require('react-hot-loader');
 require('./RouteLoader-f99cd734.js');
 var reactDom = require('react-dom');
+var component = require('@loadable/component');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -90,7 +90,7 @@ class ClientApp {
      */
 
     const HMRRenderer = Component => {
-      Loadable.preloadReady().then(() => {
+      component.loadableReady(() => {
         if (isProduction) reactDom.hydrate(Component, documentRoot);else reactDom.render(Component, documentRoot);
       });
     };
