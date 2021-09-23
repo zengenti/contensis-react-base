@@ -168,7 +168,6 @@ const RouteLoader = ({
       item => item.contentTypeID === contentTypeId
     );
 
-    // debugger;
     if (MatchedComponent && !(MatchedComponent.requireLogin && !isLoggedIn)) {
       if (matchUserGroup(userGroups, MatchedComponent.requireLogin))
         return (

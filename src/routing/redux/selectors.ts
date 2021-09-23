@@ -42,6 +42,8 @@ export const selectRouteEntryID = (state: AppState) =>
 
 export const selectCurrentPath = (state: AppState) =>
   getIn(state, ['routing', 'currentPath']);
+export const selectCurrentLocation = (state: AppState) =>
+  getIn(state, ['routing', 'location']);
 export const selectCurrentSearch = (state: AppState) =>
   getIn(state, ['routing', 'location', 'search']);
 export const selectCurrentHash = (state: AppState) =>
@@ -74,3 +76,5 @@ export const selectRouteLoading = (state: AppState) =>
   getIn(state, ['routing', 'isLoading']);
 export const selectRouteStatusCode = (state: AppState) =>
   getIn(state, ['routing', 'statusCode']);
+export const selectStaticRoute = (state: AppState) =>
+  getIn(state, ['routing', 'staticRoute']);
