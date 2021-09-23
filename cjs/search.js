@@ -235,8 +235,8 @@ const getCurrentFacet = state => getImmutableOrJS(state, ['search', 'currentFace
 const getCurrentListing = state => getImmutableOrJS(state, ['search', 'currentListing']);
 const getCurrentTab = state => getImmutableOrJS(state, ['search', Context.facets, getCurrentFacet(state), 'tabId'], 0);
 const getFacets = (state, returnType) => getImmutableOrJS(state, ['search', Context.facets], {}, returnType);
-const getTabFacets = state => Object.fromEntries(Object.entries(getFacets(state)).filter(([key]) => getImmutableOrJS(getFacets(state), [key, 'tabId'], 0) === getCurrentTab(state)));
-const getFacetTitles = state => Object.entries(getFacets(state)).map(([key, facet = {}]) => {
+const getTabFacets = state => Object.fromEntries(Object.entries(getFacets(state, 'js')).filter(([key]) => getImmutableOrJS(getFacets(state), [key, 'tabId'], 0) === getCurrentTab(state)));
+const getFacetTitles = state => Object.entries(getFacets(state, 'js')).map(([key, facet = {}]) => {
   var _facet$pagingInfo;
 
   return {
@@ -256,7 +256,7 @@ const getListing = (state, listing = '') => {
 const getFilters = (state, facet, context = Context.facets, returnType) => {
   return getImmutableOrJS(state, ['search', context, facet || getCurrent(state, context), 'filters'], {}, returnType);
 };
-const getRenderableFilters = (state, facet = '', context = Context.facets) => Object.fromEntries(Object.entries(getFilters(state, facet, context)).filter(([, f = {}]) => typeof f.renderable !== 'boolean' ? true : f.renderable));
+const getRenderableFilters = (state, facet = '', context = Context.facets) => Object.fromEntries(Object.entries(getFilters(state, facet, context, 'js')).filter(([, f = {}]) => typeof f.renderable !== 'boolean' ? true : f.renderable));
 const getFiltersToLoad = (state, facet, context = Context.facets, returnType) => {
   const filters = getFilters(state, facet, context, returnType);
   const loadedFilters = Object.entries(filters).map(([key, f = {}]) => [key, (f.items || []).filter(i => {
@@ -267,7 +267,7 @@ const getFiltersToLoad = (state, facet, context = Context.facets, returnType) =>
 }; // We lowercase the filter key unless it's an ISO date string where the T must be uppercase
 
 const getSelectedFilters = (state, facet = '', context = Context.facets, returnType) => {
-  const filters = getFilters(state, facet, context, returnType);
+  const filters = getFilters(state, facet, context, 'js');
   const isoDateRegex = RegExp(/\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d/);
   const selectedFilters = Object.fromEntries(Object.entries(filters).map(([key, filter = {}]) => [key, (filter.items || []).filter(item => !!(item.isSelected || false)).map(item => {
     const key = (item === null || item === void 0 ? void 0 : item.key) || '';
@@ -306,7 +306,7 @@ const getPageIsLoading = (state, current = '', context = Context.facets) => {
   return getImmutableOrJS(state, ['search', context, current || getCurrent(state, context), 'pagingInfo', 'isLoading']);
 };
 const getPagesLoaded = (state, current = '', context = Context.facets) => {
-  return getImmutableOrJS(state, ['search', context, current || getCurrent(state, context), 'pagingInfo', 'pagesLoaded'], []);
+  return getImmutableOrJS(state, ['search', context, current || getCurrent(state, context), 'pagingInfo', 'pagesLoaded'], [], 'js');
 };
 const getTotalCount = (state, current = '', context = Context.facets) => {
   return getImmutableOrJS(state, ['search', context, current || getCurrent(state, context), 'pagingInfo', 'totalCount']);
@@ -350,7 +350,7 @@ const getTabsAndFacets = (state, returnType) => {
   return fromJS(tabsAndFacets);
 };
 const getSearchTotalCount = state => {
-  const tabsAndFacets = getTabsAndFacets(state);
+  const tabsAndFacets = getTabsAndFacets(state, 'js');
   const wholeSearchTotal = tabsAndFacets.map((t = {}) => t.totalCount).reduce((a, b) => a + b, 0);
   return wholeSearchTotal;
 };
