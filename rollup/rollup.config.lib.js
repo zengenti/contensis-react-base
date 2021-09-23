@@ -3,7 +3,7 @@ import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import alias from '@rollup/plugin-alias';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
-import postcss from 'rollup-plugin-postcss';
+// import postcss from 'rollup-plugin-postcss';
 import submoduleResolvePlugin from './submodule-resolve-plugin';
 
 const path = require('path');
@@ -86,7 +86,7 @@ export default {
       plugins: babelConfig.env.modern.plugins,
     }),
     commonjs(),
-    postcss(),
+    // postcss(),
   ],
   watch: {
     // include: 'src/**/*',
