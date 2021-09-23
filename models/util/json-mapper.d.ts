@@ -1,6 +1,6 @@
 import mapJson from 'jsonpath-mapper';
 import MappingTemplate from 'jsonpath-mapper/dist/models/Template';
-import { EntryMapper } from '~/routing/routes';
+import { EntryMapper } from "../routing/routes";
 export { default as mapJson, jpath } from 'jsonpath-mapper';
 declare type Mappers<S> = {
     [contentTypeId: string]: MappingTemplate<S>;

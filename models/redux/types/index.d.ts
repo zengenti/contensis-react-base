@@ -5,5 +5,5 @@ declare namespace _default {
 }
 export default _default;
 import * as navigation from "./navigation";
-import * as routing from "~/routing/redux/types";
+import * as routing from "../../routing/redux/types";
 import * as version from "./version";

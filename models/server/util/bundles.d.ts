@@ -1,5 +1,5 @@
 import { ChunkExtractor } from '@loadable/server';
-import { ServerConfig } from '~/config';
+import { ServerConfig } from "../../config";
 export declare const loadableBundleData: ({ stats, templates }: {
     stats: any;
     templates: any;

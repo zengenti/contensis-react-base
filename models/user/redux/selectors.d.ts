@@ -1,4 +1,4 @@
-import { AppState } from '~/redux/appstate';
+import { AppState } from "../../redux/appstate";
 export declare const selectUserIsLoading: (state: AppState) => boolean;
 export declare const selectUserIsAuthenticated: (state: AppState) => boolean;
 export declare const selectUserAuthenticationError: (state: AppState) => boolean;
