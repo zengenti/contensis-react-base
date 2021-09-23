@@ -32,8 +32,14 @@ require('await-to-js');
 require('js-cookie');
 require('./RouteLoader-a612167b.js');
 require('react-router-config');
+var reactHotLoader = require('react-hot-loader');
+require('./RouteLoader-f99cd734.js');
+var reactDom = require('react-dom');
+var component = require('@loadable/component');
 
-function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+function _interopDefaultLegacy(e) {
+  return e && typeof e === 'object' && 'default' in e ? e : { default: e };
+}
 
 function _interopNamespace(e) {
   if (e && e.__esModule) return e;
@@ -42,12 +48,18 @@ function _interopNamespace(e) {
     Object.keys(e).forEach(function (k) {
       if (k !== 'default') {
         var d = Object.getOwnPropertyDescriptor(e, k);
-        Object.defineProperty(n, k, d.get ? d : {
-          enumerable: true,
-          get: function () {
-            return e[k];
-          }
-        });
+        Object.defineProperty(
+          n,
+          k,
+          d.get
+            ? d
+            : {
+                enumerable: true,
+                get: function () {
+                  return e[k];
+                },
+              }
+        );
       }
     });
   }
@@ -55,8 +67,8 @@ function _interopNamespace(e) {
   return Object.freeze(n);
 }
 
-var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
-var queryString__namespace = /*#__PURE__*/_interopNamespace(queryString);
+var React__default = /*#__PURE__*/ _interopDefaultLegacy(React);
+var queryString__namespace = /*#__PURE__*/ _interopNamespace(queryString);
 
 class ClientApp {
   constructor(ReactApp, config) {
@@ -66,18 +78,30 @@ class ClientApp {
       routes,
       withReducers,
       withSagas,
-      withEvents
+      withEvents,
     } = config;
 
     const GetClientJSX = store => {
-      const ClientJsx = /*#__PURE__*/React__default['default'].createElement(reactHotLoader.AppContainer, null, /*#__PURE__*/React__default['default'].createElement(reactRedux.Provider, {
-        store: store
-      }, /*#__PURE__*/React__default['default'].createElement(reactRouterDom.Router, {
-        history: App.browserHistory
-      }, /*#__PURE__*/React__default['default'].createElement(ReactApp, {
-        routes: routes,
-        withEvents: withEvents
-      }))));
+      const ClientJsx = /*#__PURE__*/ React__default['default'].createElement(
+        reactHotLoader.AppContainer,
+        null,
+        /*#__PURE__*/ React__default['default'].createElement(
+          reactRedux.Provider,
+          {
+            store: store,
+          },
+          /*#__PURE__*/ React__default['default'].createElement(
+            reactRouterDom.Router,
+            {
+              history: App.browserHistory,
+            },
+            /*#__PURE__*/ React__default['default'].createElement(ReactApp, {
+              routes: routes,
+              withEvents: withEvents,
+            })
+          )
+        )
+      );
       return ClientJsx;
     };
 
@@ -87,9 +111,16 @@ class ClientApp {
      */
 
     const HMRRenderer = Component => {
-      Loadable.preloadReady().then(() => {
-        if (isProduction) reactDom.hydrate(Component, documentRoot);else reactDom.render(Component, documentRoot);
-      });
+      if (isProduction)
+        component.loadableReady(
+          () => {
+            reactDom.hydrate(Component, documentRoot);
+          },
+          {
+            namespace: 'modern',
+          }
+        );
+      else reactDom.render(Component, documentRoot);
     };
 
     const hmr = store => {
@@ -103,44 +134,78 @@ class ClientApp {
     };
 
     const qs = queryString__namespace.parse(window.location.search);
-    const versionStatusFromHostname = App.deliveryApi.getClientSideVersionStatus();
+    const versionStatusFromHostname =
+      App.deliveryApi.getClientSideVersionStatus();
 
-    if (window.isDynamic || window.REDUX_DATA || process.env.NODE_ENV !== 'production') {
-      version.createStore(withReducers, window.REDUX_DATA, App.browserHistory, stateType).then(store => {
-        store.dispatch(version.setVersionStatus(qs.versionStatus || versionStatusFromHostname));
-        /* eslint-disable no-console */
+    if (
+      window.isDynamic ||
+      window.REDUX_DATA ||
+      process.env.NODE_ENV !== 'production'
+    ) {
+      version
+        .createStore(
+          withReducers,
+          window.REDUX_DATA,
+          App.browserHistory,
+          stateType
+        )
+        .then(store => {
+          store.dispatch(
+            version.setVersionStatus(
+              qs.versionStatus || versionStatusFromHostname
+            )
+          );
+          /* eslint-disable no-console */
 
-        console.log('Hydrating from inline Redux');
-        /* eslint-enable no-console */
+          console.log('Hydrating from inline Redux');
+          /* eslint-enable no-console */
 
-        store.runSaga(App.rootSaga(withSagas));
-        store.dispatch(actions.setCurrentProject(App.pickProject(window.location.hostname, qs), [], window.location.hostname));
-        delete window.REDUX_DATA;
-        HMRRenderer(GetClientJSX(store));
-        hmr(store);
-      });
-    } else {
-      fetch(`${window.location.pathname}?redux=true`).then(response => response.json()).then(data => {
-        /* eslint-disable no-console */
-        // console.log('Got Data Back');
-        // console.log(data);
-
-        /* eslint-enable no-console */
-        const ssRedux = JSON.parse(data);
-        version.createStore(withReducers, ssRedux, App.browserHistory, stateType).then(store => {
-          // store.dispatch(setVersionStatus(versionStatusFromHostname));
           store.runSaga(App.rootSaga(withSagas));
-          store.dispatch(actions.setCurrentProject(App.pickProject(window.location.hostname, queryString__namespace.parse(window.location.search)), [], window.location.hostname)); // if (typeof window != 'undefined') {
-          //   store.dispatch(checkUserLoggedIn());
-          // }
-
+          store.dispatch(
+            actions.setCurrentProject(
+              App.pickProject(window.location.hostname, qs),
+              [],
+              window.location.hostname
+            )
+          );
+          delete window.REDUX_DATA;
           HMRRenderer(GetClientJSX(store));
           hmr(store);
         });
-      });
+    } else {
+      fetch(`${window.location.pathname}?redux=true`)
+        .then(response => response.json())
+        .then(data => {
+          /* eslint-disable no-console */
+          // console.log('Got Data Back');
+          // console.log(data);
+
+          /* eslint-enable no-console */
+          const ssRedux = JSON.parse(data);
+          version
+            .createStore(withReducers, ssRedux, App.browserHistory, stateType)
+            .then(store => {
+              // store.dispatch(setVersionStatus(versionStatusFromHostname));
+              store.runSaga(App.rootSaga(withSagas));
+              store.dispatch(
+                actions.setCurrentProject(
+                  App.pickProject(
+                    window.location.hostname,
+                    queryString__namespace.parse(window.location.search)
+                  ),
+                  [],
+                  window.location.hostname
+                )
+              ); // if (typeof window != 'undefined') {
+              //   store.dispatch(checkUserLoggedIn());
+              // }
+
+              HMRRenderer(GetClientJSX(store));
+              hmr(store);
+            });
+        });
     }
   }
-
 }
 
 exports.ReactApp = App.AppRoot;

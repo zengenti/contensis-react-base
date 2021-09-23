@@ -1,6 +1,6 @@
 {
   "name": "@zengenti/contensis-react-base",
-  "version": "2.5.1-beta.3",
+  "version": "3.0.0-beta.1",
   "repository": "https://github.com/zengenti/contensis-react-base",
   "license": "None",
   "description": "Turbocharge your React web apps with Contensis. This package handles all dependencies for creating full featured web apps in React with Contensis and Site View. Routing is driven by Site View, Redux is used for global state management and server-side rendering (SSR) is handled for you. Also taking care of intricate hosting issues such as cache invalidation and supporting authenticated content where required.",
@@ -116,8 +116,6 @@
     "react-dom": "^17.0.2",
     "react-helmet": "5.2.1",
     "react-hot-loader": "^4.11.0",
-    "react-loadable": "^5.5.0",
-    "react-loadable-ssr-addon": "^1.0.1",
     "react-redux": "7.1.0",
     "react-router-config": "^5.1.1",
     "react-router-dom": "^5.1.1",

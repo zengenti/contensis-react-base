@@ -7,7 +7,12 @@ import { AppContainer } from 'react-hot-loader';
 import { Provider } from 'react-redux';
 import * as queryString from 'query-string';
 import { c as createStore, s as setVersionStatus } from './version-da42ce21.js';
-import { d as deliveryApi, b as browserHistory, r as rootSaga, p as pickProject } from './App-bec45d28.js';
+import {
+  d as deliveryApi,
+  b as browserHistory,
+  r as rootSaga,
+  p as pickProject,
+} from './App-bec45d28.js';
 export { A as ReactApp } from './App-bec45d28.js';
 import { s as setCurrentProject } from './actions-707da32f.js';
 import './selectors-5c48e0ad.js';
@@ -38,18 +43,30 @@ class ClientApp {
       routes,
       withReducers,
       withSagas,
-      withEvents
+      withEvents,
     } = config;
 
     const GetClientJSX = store => {
-      const ClientJsx = /*#__PURE__*/React.createElement(AppContainer, null, /*#__PURE__*/React.createElement(Provider, {
-        store: store
-      }, /*#__PURE__*/React.createElement(Router, {
-        history: browserHistory
-      }, /*#__PURE__*/React.createElement(ReactApp, {
-        routes: routes,
-        withEvents: withEvents
-      }))));
+      const ClientJsx = /*#__PURE__*/ React.createElement(
+        AppContainer,
+        null,
+        /*#__PURE__*/ React.createElement(
+          Provider,
+          {
+            store: store,
+          },
+          /*#__PURE__*/ React.createElement(
+            Router,
+            {
+              history: browserHistory,
+            },
+            /*#__PURE__*/ React.createElement(ReactApp, {
+              routes: routes,
+              withEvents: withEvents,
+            })
+          )
+        )
+      );
       return ClientJsx;
     };
 
@@ -59,9 +76,16 @@ class ClientApp {
      */
 
     const HMRRenderer = Component => {
-      preloadReady().then(() => {
-        if (isProduction) hydrate(Component, documentRoot);else render(Component, documentRoot);
-      });
+      if (isProduction)
+        loadableReady(
+          () => {
+            hydrate(Component, documentRoot);
+          },
+          {
+            namespace: 'modern',
+          }
+        );
+      else render(Component, documentRoot);
     };
 
     const hmr = store => {
@@ -77,42 +101,71 @@ class ClientApp {
     const qs = queryString.parse(window.location.search);
     const versionStatusFromHostname = deliveryApi.getClientSideVersionStatus();
 
-    if (window.isDynamic || window.REDUX_DATA || process.env.NODE_ENV !== 'production') {
-      createStore(withReducers, window.REDUX_DATA, browserHistory, stateType).then(store => {
-        store.dispatch(setVersionStatus(qs.versionStatus || versionStatusFromHostname));
+    if (
+      window.isDynamic ||
+      window.REDUX_DATA ||
+      process.env.NODE_ENV !== 'production'
+    ) {
+      createStore(
+        withReducers,
+        window.REDUX_DATA,
+        browserHistory,
+        stateType
+      ).then(store => {
+        store.dispatch(
+          setVersionStatus(qs.versionStatus || versionStatusFromHostname)
+        );
         /* eslint-disable no-console */
 
         console.log('Hydrating from inline Redux');
         /* eslint-enable no-console */
 
         store.runSaga(rootSaga(withSagas));
-        store.dispatch(setCurrentProject(pickProject(window.location.hostname, qs), [], window.location.hostname));
+        store.dispatch(
+          setCurrentProject(
+            pickProject(window.location.hostname, qs),
+            [],
+            window.location.hostname
+          )
+        );
         delete window.REDUX_DATA;
         HMRRenderer(GetClientJSX(store));
         hmr(store);
       });
     } else {
-      fetch(`${window.location.pathname}?redux=true`).then(response => response.json()).then(data => {
-        /* eslint-disable no-console */
-        // console.log('Got Data Back');
-        // console.log(data);
+      fetch(`${window.location.pathname}?redux=true`)
+        .then(response => response.json())
+        .then(data => {
+          /* eslint-disable no-console */
+          // console.log('Got Data Back');
+          // console.log(data);
 
-        /* eslint-enable no-console */
-        const ssRedux = JSON.parse(data);
-        createStore(withReducers, ssRedux, browserHistory, stateType).then(store => {
-          // store.dispatch(setVersionStatus(versionStatusFromHostname));
-          store.runSaga(rootSaga(withSagas));
-          store.dispatch(setCurrentProject(pickProject(window.location.hostname, queryString.parse(window.location.search)), [], window.location.hostname)); // if (typeof window != 'undefined') {
-          //   store.dispatch(checkUserLoggedIn());
-          // }
+          /* eslint-enable no-console */
+          const ssRedux = JSON.parse(data);
+          createStore(withReducers, ssRedux, browserHistory, stateType).then(
+            store => {
+              // store.dispatch(setVersionStatus(versionStatusFromHostname));
+              store.runSaga(rootSaga(withSagas));
+              store.dispatch(
+                setCurrentProject(
+                  pickProject(
+                    window.location.hostname,
+                    queryString.parse(window.location.search)
+                  ),
+                  [],
+                  window.location.hostname
+                )
+              ); // if (typeof window != 'undefined') {
+              //   store.dispatch(checkUserLoggedIn());
+              // }
 
-          HMRRenderer(GetClientJSX(store));
-          hmr(store);
+              HMRRenderer(GetClientJSX(store));
+              hmr(store);
+            }
+          );
         });
-      });
     }
   }
-
 }
 
 export { ClientApp as default };

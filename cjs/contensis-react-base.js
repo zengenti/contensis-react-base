@@ -4,7 +4,6 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 require('isomorphic-fetch');
 var express = require('express');
-var Loadable = require('react-loadable');
 var httpProxy = require('http-proxy');
 var fs = require('fs');
 var path = require('path');
@@ -46,7 +45,6 @@ require('./RouteLoader-a612167b.js');
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
 var express__default = /*#__PURE__*/_interopDefaultLegacy(express);
-var Loadable__default = /*#__PURE__*/_interopDefaultLegacy(Loadable);
 var httpProxy__default = /*#__PURE__*/_interopDefaultLegacy(httpProxy);
 var fs__default = /*#__PURE__*/_interopDefaultLegacy(fs);
 var path__default = /*#__PURE__*/_interopDefaultLegacy(path);
@@ -575,17 +573,15 @@ const start = (ReactApp, config, ServerFeatures) => {
   app.on('ready', async () => {
     // Configure DNS to make life easier
     // await ConfigureLocalDNS();
-    Loadable__default['default'].preloadAll().then(() => {
-      const server = app.listen(3001, () => {
-        console.info(`HTTP server is listening @ port 3001`);
-        setTimeout(function () {
-          app.emit('app_started');
-        }, 500);
-      });
-      app.on('stop', () => {
-        server.close(function () {
-          console.info('GoodBye :(');
-        });
+    const server = app.listen(3001, () => {
+      console.info(`HTTP server is listening @ port 3001`);
+      setTimeout(function () {
+        app.emit('app_started');
+      }, 500);
+    });
+    app.on('stop', () => {
+      server.close(function () {
+        console.info('GoodBye :(');
       });
     });
   });

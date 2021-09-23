@@ -1,20 +1,20 @@
 import 'isomorphic-fetch';
 import React from 'react';
 import { render, hydrate } from 'react-dom';
-import { Router } from 'react-router-dom';
-import { preloadReady } from 'react-loadable';
 import { AppContainer } from 'react-hot-loader';
 import { Provider as ReduxProvider } from 'react-redux';
+import { Router } from 'react-router-dom';
+import { loadableReady } from '@loadable/component';
 import * as queryString from 'query-string';
-// import { fromJS } from 'immutable';
-
-import createStore from '~/redux/store/store';
-import { browserHistory as history } from '~/redux/store/history';
-import rootSaga from '~/redux/sagas';
 
 import { setVersionStatus } from '~/redux/actions/version';
-import { deliveryApi } from '~/util/ContensisDeliveryApi';
+import rootSaga from '~/redux/sagas';
+import { browserHistory as history } from '~/redux/store/history';
+import createStore from '~/redux/store/store';
+
 import { setCurrentProject } from '~/routing/redux/actions';
+
+import { deliveryApi } from '~/util/ContensisDeliveryApi';
 import pickProject from '~/util/pickProject';
 
 import { AppConfig } from '~/config';
@@ -57,10 +57,14 @@ class ClientApp {
      * Webpack HMR Setup.
      */
     const HMRRenderer = Component => {
-      preloadReady().then(() => {
-        if (isProduction) hydrate(Component, documentRoot);
-        else render(Component, documentRoot);
-      });
+      if (isProduction)
+        loadableReady(
+          () => {
+            hydrate(Component, documentRoot);
+          },
+          { namespace: 'modern' }
+        );
+      else render(Component, documentRoot);
     };
 
     const hmr = store => {
