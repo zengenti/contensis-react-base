@@ -4,7 +4,7 @@ import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
 import { Provider as ReduxProvider } from 'react-redux';
 import { matchRoutes } from 'react-router-config';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet';
 import { ServerStyleSheet } from 'styled-components';
 import serialize from 'serialize-javascript';
 import minifyCssString from 'minify-css-string';
