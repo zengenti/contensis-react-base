@@ -1538,7 +1538,7 @@ const filterParamsChanged = (action, state) => {
     params,
     ogState = state
   } = action;
-  const selectedFilters = getSelectedFilters(ogState, facet, context);
+  const selectedFilters = getSelectedFilters(ogState, facet, context, 'js');
   const paramsChanged = Object.entries(selectedFilters).map(([filterKey, selectedValues]) => {
     const inboundValues = params && params[filterKey] && params[filterKey].split(',') || [];
     if (!areArraysEqualSets(selectedValues, inboundValues)) return true;
@@ -1554,7 +1554,7 @@ const debugExecuteSearch = (action, state) => {
   stateParams.pageIndex = getPageIndex(action.ogState || state, action.facet, action.context);
   stateParams.searchTerm = getSearchTerm(action.ogState || state);
   console.log(stateParams, queryParams);
-  console.log('getSelectedFilters', getSelectedFilters(action.ogState || state, action.facet, action.context), 'params', action.params);
+  console.log('getSelectedFilters', getSelectedFilters(action.ogState || state, action.facet, action.context, 'js'), 'params', action.params);
 };
 
 // Base mapping, fields that are the same across all mappings

@@ -1,18 +1,5 @@
-import { Facet, Mappers } from '../models/Search';
-import { DebugFlags } from '../models/SearchActions';
-declare type UseMiniListProps = {
-    id: string;
-    config?: Facet;
-    debug?: DebugFlags;
-    defaultLang?: string;
-    excludeIds?: string[];
-    mapper?: Mappers['results'];
-    mappers?: Mappers;
-    params?: {
-        [key: string]: string;
-    };
-};
-declare const useMinilist: ({ id, config, excludeIds, mapper, mappers, params, defaultLang, debug, }?: UseMiniListProps) => {
+import { UseMinilistProps } from '../models/SearchProps';
+declare const useMinilist: ({ id, config, excludeIds, mapper, mappers, params, defaultLang, debug, }?: UseMinilistProps) => {
     filters: import("../models/SearchState").Filters;
     isLoading: boolean;
     pagingInfo: import("../models/SearchState").Paging;

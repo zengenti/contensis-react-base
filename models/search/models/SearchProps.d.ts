@@ -1,5 +1,7 @@
 import { clearFilters, updateCurrentFacet, updateCurrentTab, updatePageIndex, updateSearchTerm, updateSelectedFilters, updateSortOrder } from '../redux/actions';
-import { Facet, Facets, Filters, Paging } from '../models/SearchState';
+import { Facet, Mappers } from '../models/Search';
+import { DebugFlags } from '../models/SearchActions';
+import { Facet as StateFacet, Facets, Filters, Paging } from '../models/SearchState';
 export interface ListingProps<SearchResults = any> {
     clearFilters: typeof clearFilters;
     currentListing: string;
@@ -24,7 +26,7 @@ export interface SearchProps<SearchResults = any> {
     currentFacet: string;
     currentPageIndex: number;
     currentTabIndex: number;
-    facet: Facet;
+    facet: StateFacet;
     facets: Facets;
     featuredResults: SearchResults[];
     filters: Filters;
@@ -42,4 +44,16 @@ export interface SearchProps<SearchResults = any> {
     updateSearchTerm: typeof updateSearchTerm;
     updateSelectedFilters: typeof updateSelectedFilters;
     updateSortOrder: typeof updateSortOrder;
+}
+export interface UseMinilistProps {
+    id: string;
+    config?: Facet;
+    debug?: DebugFlags;
+    defaultLang?: string;
+    excludeIds?: string[];
+    mapper?: Mappers['results'];
+    mappers?: Mappers;
+    params?: {
+        [key: string]: string;
+    };
 }
