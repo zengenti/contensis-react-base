@@ -16,6 +16,15 @@ export type AppRootProps = {
   withEvents: WithEvents;
 };
 
+export type RouteComponentProps<P = any> = {
+  [key: string]: any;
+  projectId?: string;
+  contentTypeId?: string;
+  entry?: Entry | null;
+  mappedEntry?: P;
+  isLoggedIn?: boolean;
+};
+
 export type RouteLoaderProps = {
   loadingComponent?: React.ComponentType;
   notFoundComponent?: React.ComponentType;
@@ -40,7 +49,7 @@ export type RequireLogin = boolean | UserGroupRequisite[];
 
 export type ContentTypeMapping = {
   contentTypeID: string;
-  component: RouteComponent<any>;
+  component: RouteComponent<RouteComponentProps>;
   entryMapper?: EntryMapper;
   fields?: string[];
   injectRedux?: ReduxInjector;
@@ -55,7 +64,7 @@ export type ContentTypeMapping = {
 };
 
 export type StaticRoute = Omit<RouteConfig, 'component'> & {
-  component: RouteComponent<any>;
+  component: RouteComponent<RouteComponentProps>;
   fetchNode?: boolean;
   fetchNodeLevel?: number;
   injectRedux?: ReduxInjector;

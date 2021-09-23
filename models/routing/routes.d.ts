@@ -14,6 +14,14 @@ export declare type AppRootProps = {
     routes: AppRoutes;
     withEvents: WithEvents;
 };
+export declare type RouteComponentProps<P = any> = {
+    [key: string]: any;
+    projectId?: string;
+    contentTypeId?: string;
+    entry?: Entry | null;
+    mappedEntry?: P;
+    isLoggedIn?: boolean;
+};
 export declare type RouteLoaderProps = {
     loadingComponent?: React.ComponentType;
     notFoundComponent?: React.ComponentType;
@@ -31,7 +39,7 @@ declare type UserGroupRequisite = {
 export declare type RequireLogin = boolean | UserGroupRequisite[];
 export declare type ContentTypeMapping = {
     contentTypeID: string;
-    component: RouteComponent<any>;
+    component: RouteComponent<RouteComponentProps>;
     entryMapper?: EntryMapper;
     fields?: string[];
     injectRedux?: ReduxInjector;
@@ -45,7 +53,7 @@ export declare type ContentTypeMapping = {
     requireLogin?: RequireLogin;
 };
 export declare type StaticRoute = Omit<RouteConfig, 'component'> & {
-    component: RouteComponent<any>;
+    component: RouteComponent<RouteComponentProps>;
     fetchNode?: boolean;
     fetchNodeLevel?: number;
     injectRedux?: ReduxInjector;

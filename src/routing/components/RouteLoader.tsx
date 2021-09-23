@@ -29,7 +29,7 @@ import { matchUserGroup } from '~/user/util/matchGroups';
 
 import { toJS } from '~/util/ToJs';
 import { Entry } from 'contensis-delivery-api/lib/models';
-import { AppRootProps, RouteLoaderProps } from '../routes';
+import { AppRootProps, RouteComponentProps, RouteLoaderProps } from '../routes';
 
 const getTrimmedPath = path => {
   if (path !== '/') {
@@ -146,13 +146,16 @@ const RouteLoader = ({
   // Render any Static Routes a developer has defined
   if (isStaticRoute() && !(!isLoggedIn && routeRequiresLogin)) {
     if (matchUserGroup(userGroups, routeRequiresLogin))
-      return renderRoutes(routes.StaticRoutes as RouteConfig[], {
-        projectId,
-        contentTypeId,
-        entry,
-        mappedEntry,
-        isLoggedIn,
-      });
+      return renderRoutes(
+        routes.StaticRoutes as RouteConfig[],
+        {
+          projectId,
+          contentTypeId,
+          entry,
+          mappedEntry,
+          isLoggedIn,
+        } as RouteComponentProps
+      );
   }
 
   // Render a supplied Loading component if the route
