@@ -426,4 +426,4 @@ var version$1 = /*#__PURE__*/Object.freeze({
 });
 
 export { GET_NODE_TREE as G, SET_NODE_TREE as S, setVersion as a, GET_NODE_TREE_ERROR as b, createStore as c, version$1 as d, navigation$1 as e, convertSagaArray as f, injectReducer as g, hasNavigationTree as h, injectRedux as i, injectSaga as j, navigation as n, reduxStore as r, setVersionStatus as s, useInjectRedux as u, version as v };
-//# sourceMappingURL=version-cb9cd09d.js.map
+//# sourceMappingURL=version-f8aa9702.js.map
