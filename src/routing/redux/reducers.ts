@@ -85,7 +85,9 @@ export default produce((state: Draft<any>, action) => {
       } else {
         // On Set Node, we reset all dependants.
         state.currentNode = node;
-        delete state.currentNode.entry; // We have the entry stored elsewhere, so lets not keep it twice.
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { entry, ...nodeWithoutEntry } = node; // We have the entry stored elsewhere, so lets not keep it twice.
+        state.currentNode = nodeWithoutEntry;
       }
       return;
     }
