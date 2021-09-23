@@ -19,28 +19,28 @@ var serialize = require('serialize-javascript');
 var minifyCssString = require('minify-css-string');
 var mapJson = require('jsonpath-mapper');
 var server = require('@loadable/server');
-var version = require('./version-62bb5b34.js');
-var App = require('./App-627ca81c.js');
-var actions = require('./actions-4998a95b.js');
-var selectors = require('./selectors-d96c128c.js');
-require('@redux-saga/core/effects');
 require('redux');
 require('redux-thunk');
 require('redux-saga');
 require('redux-injectors');
 require('immer');
+var version = require('./version-55c68082.js');
+var actions = require('./actions-24b4aaea.js');
 require('./reducers-fde41d6b.js');
 require('history');
+var App = require('./App-90233b4b.js');
+require('@redux-saga/core/effects');
 require('contensis-delivery-api');
+var selectors = require('./selectors-d96c128c.js');
 require('./version-5178583d.js');
+require('query-string');
 require('loglevel');
-require('./login-97f437ee.js');
-require('./ToJs-443e6975.js');
+require('./ToJs-dbff3441.js');
+require('./login-f7af7ea4.js');
 require('await-to-js');
 require('js-cookie');
 require('react-hot-loader');
-require('query-string');
-require('./RouteLoader-a612167b.js');
+require('./RouteLoader-e3048af0.js');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -54,7 +54,7 @@ var serialize__default = /*#__PURE__*/_interopDefaultLegacy(serialize);
 var minifyCssString__default = /*#__PURE__*/_interopDefaultLegacy(minifyCssString);
 var mapJson__default = /*#__PURE__*/_interopDefaultLegacy(mapJson);
 
-const servers$1 = SERVERS;
+const servers = SERVERS;
 /* global SERVERS */
 
 const projects = PROJECTS;
@@ -64,7 +64,7 @@ const DisplayStartupConfiguration = config => {
   /* eslint-disable no-console */
   console.log();
   console.log(`Configured servers:
-`, JSON.stringify(servers$1, null, 2));
+`, JSON.stringify(servers, null, 2));
   console.log();
   console.log(`Configured projects:
 `, JSON.stringify(projects, null, 2));
@@ -74,7 +74,7 @@ const DisplayStartupConfiguration = config => {
   /* eslint-enable no-console */
 };
 
-const servers = SERVERS;
+const servers$1 = SERVERS;
 /* global SERVERS */
 
 const apiProxy = httpProxy__default['default'].createProxyServer();
@@ -82,7 +82,7 @@ const apiProxy = httpProxy__default['default'].createProxyServer();
 const reverseProxies = (app, reverseProxyPaths = []) => {
   deliveryApiProxy(apiProxy, app);
   app.all(reverseProxyPaths, (req, res) => {
-    const target = req.hostname.indexOf('preview-') || req.hostname.indexOf('preview.') || req.hostname === 'localhost' ? servers.previewIis || servers.iis : servers.iis;
+    const target = req.hostname.indexOf('preview-') || req.hostname.indexOf('preview.') || req.hostname === 'localhost' ? servers$1.previewIis || servers$1.iis : servers$1.iis;
     apiProxy.web(req, res, {
       target,
       changeOrigin: true
@@ -99,8 +99,8 @@ const deliveryApiProxy = (apiProxy, app) => {
   // This is just here to stop cors requests on localhost. In Production this is mapped using varnish.
   app.all(['/api/delivery/*', '/api/image/*'], (req, res) => {
     /* eslint-disable no-console */
-    const target = servers.cms;
-    console.log(`Proxying api request to ${servers.alias}`);
+    const target = servers$1.cms;
+    console.log(`Proxying api request to ${servers$1.alias}`);
     apiProxy.web(req, res, {
       target,
       changeOrigin: true
@@ -594,5 +594,5 @@ var internalServer = {
 };
 
 exports.ReactApp = App.AppRoot;
-exports['default'] = internalServer;
+exports.default = internalServer;
 //# sourceMappingURL=contensis-react-base.js.map
