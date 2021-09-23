@@ -74,6 +74,16 @@ const plugins = {
 };
 
 module.exports = {
+  env: {
+    legacy: {
+      presets: [...presets.base, ...presets.legacy],
+      plugins: [...plugins.base, ...plugins.legacy],
+    },
+    modern: {
+      presets: [...presets.base, ...presets.modern],
+      plugins: [...plugins.base, ...plugins.modern],
+    },
+  },
   presets: [...presets.base, ...presets.modern],
   plugins: [...plugins.base, ...plugins.modern],
 };
