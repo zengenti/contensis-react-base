@@ -2,7 +2,7 @@ const path = require('path');
 
 module.exports = {
   root: true,
-  parser: 'babel-eslint',
+  parser: '@babel/eslint-parser',
   parserOptions: {
     ecmaVersion: 6,
     sourceType: 'module',
@@ -32,7 +32,7 @@ module.exports = {
   // Will look for webpack.config.js to resolve path
   settings: {
     react: {
-      version: '^16.0.0',
+      version: '^17.0.0',
     },
     'import/resolver': 'typescript',
   },
