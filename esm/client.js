@@ -83,9 +83,11 @@ class ClientApp {
      */
 
     const HMRRenderer = Component => {
-      loadableReady(() => {
-        if (isProduction) hydrate(Component, documentRoot);else render(Component, documentRoot);
-      });
+      if (isProduction) loadableReady(() => {
+        hydrate(Component, documentRoot);
+      }, {
+        namespace: 'modern'
+      });else render(Component, documentRoot);
     };
 
     let store = null;

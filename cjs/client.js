@@ -90,9 +90,11 @@ class ClientApp {
      */
 
     const HMRRenderer = Component => {
-      component.loadableReady(() => {
-        if (isProduction) reactDom.hydrate(Component, documentRoot);else reactDom.render(Component, documentRoot);
-      });
+      if (isProduction) component.loadableReady(() => {
+        reactDom.hydrate(Component, documentRoot);
+      }, {
+        namespace: 'modern'
+      });else reactDom.render(Component, documentRoot);
     };
 
     let store = null;
