@@ -1,12 +1,40 @@
-import { combineReducers, compose, applyMiddleware, createStore as createStore$1 } from 'redux';
-import thunkMiddleware from 'redux-thunk';
-import createSagaMiddleware, { END } from 'redux-saga';
-import { createInjectorsEnhancer } from 'redux-injectors';
-import { produce } from 'immer';
-import { h as SET_TARGET_PROJECT, i as SET_SURROGATE_KEYS, e as SET_SIBLINGS, b as SET_ROUTE, S as SET_NAVIGATION_PATH, U as UPDATE_LOADING_STATE, c as SET_ENTRY, d as SET_ANCESTORS } from './actions-eb013a50.js';
-import { U as UserReducer } from './reducers-d6c0edb1.js';
-import { all } from '@redux-saga/core/effects';
-import { g as getImmutableOrJS, p as action } from './selectors-60ba96ae.js';
+'use strict';
+
+var redux = require('redux');
+var thunkMiddleware = require('redux-thunk');
+var createSagaMiddleware = require('redux-saga');
+var reduxInjectors = require('redux-injectors');
+var immer = require('immer');
+var actions = require('./actions-24b4aaea.js');
+var reducers = require('./reducers-fde41d6b.js');
+var effects = require('@redux-saga/core/effects');
+var selectors = require('./selectors-d96c128c.js');
+
+function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+
+function _interopNamespace(e) {
+  if (e && e.__esModule) { return e; } else {
+    var n = Object.create(null);
+    if (e) {
+      Object.keys(e).forEach(function (k) {
+        if (k !== 'default') {
+          var d = Object.getOwnPropertyDescriptor(e, k);
+          Object.defineProperty(n, k, d.get ? d : {
+            enumerable: true,
+            get: function () {
+              return e[k];
+            }
+          });
+        }
+      });
+    }
+    n['default'] = e;
+    return Object.freeze(n);
+  }
+}
+
+var thunkMiddleware__default = /*#__PURE__*/_interopDefaultLegacy(thunkMiddleware);
+var createSagaMiddleware__default = /*#__PURE__*/_interopDefaultLegacy(createSagaMiddleware);
 
 const ACTION_PREFIX = '@NAVIGATION/';
 const GET_NODE_TREE = `${ACTION_PREFIX}_GET_NODE_TREE`;
@@ -26,7 +54,7 @@ const initialState = {
   isError: false,
   isReady: false
 };
-var NavigationReducer = produce((state, action) => {
+var NavigationReducer = immer.produce((state, action) => {
   switch (action.type) {
     case SET_NODE_TREE:
       {
@@ -67,15 +95,15 @@ const initialState$1 = {
   staticRoute: null,
   statusCode: 200
 };
-var RoutingReducer = produce((state, action) => {
+var RoutingReducer = immer.produce((state, action) => {
   switch (action.type) {
-    case SET_ANCESTORS:
+    case actions.SET_ANCESTORS:
       {
         state.currentNodeAncestors = action.ancestors;
         return;
       }
 
-    case SET_ENTRY:
+    case actions.SET_ENTRY:
       {
         const {
           entry,
@@ -121,20 +149,26 @@ var RoutingReducer = produce((state, action) => {
           state.currentNode = null;
         } else {
           // On Set Node, we reset all dependants.
-          state.currentNode = node;
-          delete state.currentNode.entry; // We have the entry stored elsewhere, so lets not keep it twice.
+          state.currentNode = node; // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
+          const {
+            entry,
+            ...nodeWithoutEntry
+          } = node; // We have the entry stored elsewhere, so lets not keep it twice.
+
+          state.currentNode = nodeWithoutEntry;
         }
 
         return;
       }
 
-    case UPDATE_LOADING_STATE:
+    case actions.UPDATE_LOADING_STATE:
       {
         state.isLoading = action.isLoading;
         return;
       }
 
-    case SET_NAVIGATION_PATH:
+    case actions.SET_NAVIGATION_PATH:
       {
         let staticRoute = {};
 
@@ -171,13 +205,13 @@ var RoutingReducer = produce((state, action) => {
         return;
       }
 
-    case SET_ROUTE:
+    case actions.SET_ROUTE:
       {
         state.nextPath = action.path;
         return;
       }
 
-    case SET_SIBLINGS:
+    case actions.SET_SIBLINGS:
       {
         // Can be null in some cases like the homepage.
         let currentNodeSiblingParent = null;
@@ -196,13 +230,13 @@ var RoutingReducer = produce((state, action) => {
         return;
       }
 
-    case SET_SURROGATE_KEYS:
+    case actions.SET_SURROGATE_KEYS:
       {
         state.surrogateKeys = action.keys;
         return;
       }
 
-    case SET_TARGET_PROJECT:
+    case actions.SET_TARGET_PROJECT:
       {
         state.currentProject = action.project;
         state.currentTreeId = ''; // getTreeID(action.project))
@@ -232,7 +266,7 @@ const initialState$2 = {
   buildNo: null,
   contensisVersionStatus: 'published'
 };
-var VersionReducer = produce((state, action) => {
+var VersionReducer = immer.produce((state, action) => {
   switch (action.type) {
     case SET_VERSION_STATUS:
       {
@@ -273,7 +307,6 @@ const routerMiddleware = history => store => next => action => {
   history[method](...args);
 };
 
-let reduxStore;
 /* eslint-disable no-underscore-dangle */
 
 var createStore = (async (featureReducers, initialState, history, stateType) => {
@@ -283,63 +316,63 @@ var createStore = (async (featureReducers, initialState, history, stateType) => 
     reduxDevToolsMiddleware = window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f;
   }
 
-  const sagaMiddleware = createSagaMiddleware();
-  const reducers = {
+  const sagaMiddleware = createSagaMiddleware__default['default']();
+  const reducers$1 = {
     navigation: NavigationReducer,
     routing: RoutingReducer,
-    user: UserReducer,
+    user: reducers.UserReducer,
     version: VersionReducer,
     ...featureReducers
   }; // Reassign the combiner and fromJS functions when
   // stateType is 'immutable' with dynamic imports
 
-  let combiner = combineReducers;
+  let combiner = redux.combineReducers;
 
   let fromJS = obj => obj;
 
   globalThis.STATE_TYPE = stateType;
 
   if (stateType === 'immutable') {
-    globalThis.immutable = await import(
+    globalThis.immutable = await Promise.resolve().then(function () { return /*#__PURE__*/_interopNamespace(require(
     /* webpackChunkName: "immutable" */
-    'immutable');
-    fromJS = (await import(
+    'immutable')); });
+    fromJS = (await Promise.resolve().then(function () { return require(
     /* webpackChunkName: "from-js" */
-    './fromJSLeaveImmer-e44d1a91.js')).default;
-    combiner = (await import(
+    './fromJSLeaveImmer-9b550c8e.js'); })).default;
+    combiner = (await Promise.resolve().then(function () { return /*#__PURE__*/_interopNamespace(require(
     /* webpackChunkName: "redux-immutable" */
-    'redux-immutable')).combineReducers;
+    'redux-immutable')); })).combineReducers;
   }
 
   const createReducer = (injectedReducers = {}) => {
     const rootReducer = combiner({ ...injectedReducers,
       // other non-injected reducers go here
-      ...reducers
+      ...reducers$1
     });
     return rootReducer;
   };
 
   const store = initialState => {
     const runSaga = sagaMiddleware.run;
-    const middleware = compose(applyMiddleware(thunkMiddleware, sagaMiddleware, routerMiddleware(history)), createInjectorsEnhancer({
+    const middleware = redux.compose(redux.applyMiddleware(thunkMiddleware__default['default'], sagaMiddleware, routerMiddleware(history)), reduxInjectors.createInjectorsEnhancer({
       createReducer,
       runSaga
     }), reduxDevToolsMiddleware);
-    const store = createStore$1(createReducer(), initialState, middleware);
+    const store = redux.createStore(createReducer(), initialState, middleware);
     store.runSaga = runSaga;
 
-    store.close = () => store.dispatch(END);
+    store.close = () => store.dispatch(createSagaMiddleware.END);
 
     return store;
   };
 
-  reduxStore = store(fromJS(initialState));
-  return reduxStore;
+  exports.reduxStore = store(fromJS(initialState));
+  return exports.reduxStore;
 });
 
-const hasNavigationTree = state => getImmutableOrJS(state, ['navigation', 'isReady']);
-const selectNavigationRoot = state => getImmutableOrJS(state, ['navigation', 'root']);
-const selectNavigationDepends = state => getImmutableOrJS(state, ['navigation', 'treeDepends']);
+const hasNavigationTree = state => selectors.getImmutableOrJS(state, ['navigation', 'isReady']);
+const selectNavigationRoot = state => selectors.getImmutableOrJS(state, ['navigation', 'root']);
+const selectNavigationDepends = state => selectors.getImmutableOrJS(state, ['navigation', 'treeDepends']);
 
 var navigation$1 = /*#__PURE__*/Object.freeze({
   __proto__: null,
@@ -350,14 +383,14 @@ var navigation$1 = /*#__PURE__*/Object.freeze({
 
 const convertSagaArray = sagas => {
   if (Array.isArray(sagas)) return function* rootSaga() {
-    yield all(sagas);
+    yield effects.all(sagas);
   };
   return sagas;
 };
 const injectReducer = ({
   key,
   reducer
-}, store = reduxStore) => {
+}, store = exports.reduxStore) => {
   if (Reflect.has(store.injectedReducers, key) && store.injectedReducers[key] === reducer) return;
   store.injectedReducers[key] = reducer;
   store.replaceReducer(store.createReducer(store.injectedReducers));
@@ -365,7 +398,7 @@ const injectReducer = ({
 const injectSaga = ({
   key,
   saga
-}, store = reduxStore) => {
+}, store = exports.reduxStore) => {
   const rootSaga = convertSagaArray(saga);
   let hasSaga = Reflect.has(store.injectedSagas, key);
 
@@ -392,7 +425,7 @@ const injectRedux = ({
   key,
   reducer,
   saga
-}, store = reduxStore) => {
+}, store = exports.reduxStore) => {
   console.info('injectRedux, key: ', key);
   if (reducer) injectReducer({
     key,
@@ -405,11 +438,11 @@ const injectRedux = ({
 };
 const useInjectRedux = injectRedux;
 
-const setVersion = (commitRef, buildNo) => action(SET_VERSION, {
+const setVersion = (commitRef, buildNo) => selectors.action(SET_VERSION, {
   commitRef,
   buildNo
 });
-const setVersionStatus = status => action(SET_VERSION_STATUS, {
+const setVersionStatus = status => selectors.action(SET_VERSION_STATUS, {
   status
 });
 
@@ -419,5 +452,20 @@ var version$1 = /*#__PURE__*/Object.freeze({
   setVersionStatus: setVersionStatus
 });
 
-export { GET_NODE_TREE as G, SET_NODE_TREE as S, setVersion as a, GET_NODE_TREE_ERROR as b, createStore as c, version$1 as d, navigation$1 as e, convertSagaArray as f, injectReducer as g, hasNavigationTree as h, injectRedux as i, injectSaga as j, navigation as n, reduxStore as r, setVersionStatus as s, useInjectRedux as u, version as v };
-//# sourceMappingURL=version-ece5de32.js.map
+exports.GET_NODE_TREE = GET_NODE_TREE;
+exports.GET_NODE_TREE_ERROR = GET_NODE_TREE_ERROR;
+exports.SET_NODE_TREE = SET_NODE_TREE;
+exports.convertSagaArray = convertSagaArray;
+exports.createStore = createStore;
+exports.hasNavigationTree = hasNavigationTree;
+exports.injectReducer = injectReducer;
+exports.injectRedux = injectRedux;
+exports.injectSaga = injectSaga;
+exports.navigation = navigation;
+exports.navigation$1 = navigation$1;
+exports.setVersion = setVersion;
+exports.setVersionStatus = setVersionStatus;
+exports.useInjectRedux = useInjectRedux;
+exports.version = version;
+exports.version$1 = version$1;
+//# sourceMappingURL=version-5a6bcfe6.js.map
