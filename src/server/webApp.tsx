@@ -205,13 +205,10 @@ const webApp = (
           // code-split bundles for any page components as well as core app bundles
           const bundleTags = getBundleTags(loadableExtractor, scripts);
 
-          let serialisedReduxData = '';
+          let serialisedReduxData = serialize(reduxState);
           if (context.statusCode !== 404) {
             // For a request that returns a redux state object as a response
             if (accessMethod.REDUX) {
-              serialisedReduxData = serialize(reduxState, {
-                ignoreFunction: true,
-              });
               addStandardHeaders(reduxState, response, packagejson, {
                 allowedGroups,
                 globalGroups,
@@ -220,9 +217,6 @@ const webApp = (
               return true;
             }
             if (!disableSsrRedux) {
-              serialisedReduxData = serialize(reduxState, {
-                ignoreFunction: true,
-              });
               serialisedReduxData = `<script ${attributes}>window.REDUX_DATA = ${serialisedReduxData}</script>`;
             }
           }
