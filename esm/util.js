@@ -1,10 +1,10 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import styled from 'styled-components';
 import mapJson, { jpath } from 'jsonpath-mapper';
 export { jpath, default as mapJson } from 'jsonpath-mapper';
-import { a as selectCurrentProject } from './selectors-82e71d8e.js';
-import { a as selectCommitRef, b as selectBuildNumber, s as selectVersionStatus } from './version-59c8f9be.js';
+import React from 'react';
+import { connect } from 'react-redux';
+import { a as selectCurrentProject } from './selectors-b98d5c76.js';
+import { a as selectCommitRef, b as selectBuildNumber, s as selectVersionStatus } from './version-3833e8b5.js';
+import styled from 'styled-components';
 import 'query-string';
 
 /**
@@ -232,7 +232,7 @@ const mapStateToVersionInfo = state => {
 
 const VersionInfoStyledTable = styled.table.withConfig({
   displayName: "VersionInfostyled__VersionInfoStyledTable",
-  componentId: "ogujr7-0"
+  componentId: "sc-ogujr7-0"
 })(["font-family:'Source Sans Pro',Helvetica,Arial,sans-serif;font-size:1.6rem;line-height:1.5rem;border-bottom:4px solid #8892bf;border-collapse:separate;margin:0 auto;width:80%;th{text-align:left;background-color:#c4c9df;border-bottom:#8892bf 2px solid;border-bottom-color:#8892bf;border-top:20px solid #fff;}td{border-bottom:1px solid #eee;}td,th{padding:0.5rem 0.75rem;vertical-align:top;}.left{width:25%;}tr th{border-right:hidden;border-spacing:0 15px;}.green{background-color:#9c9;border-bottom:1px solid #696;}.red{background-color:#c99;border-bottom:1px solid #966;}.small{font-size:100%;line-height:2.4rem;}"]);
 
 const VersionInfo = ({

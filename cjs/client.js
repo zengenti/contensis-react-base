@@ -4,38 +4,57 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 require('isomorphic-fetch');
 var React = require('react');
-var reactRouterDom = require('react-router-dom');
+var reactDom = require('react-dom');
+var reactHotLoader = require('react-hot-loader');
 var reactRedux = require('react-redux');
-require('react-router-config');
+var reactRouterDom = require('react-router-dom');
+var component = require('@loadable/component');
+var queryString = require('query-string');
+var version = require('./version-4f0f5fa6.js');
+var App = require('./App-3324f784.js');
+var actions = require('./actions-a24bf46e.js');
+require('./selectors-0ec95076.js');
 require('jsonpath-mapper');
+require('@redux-saga/core/effects');
 require('redux');
 require('redux-thunk');
 require('redux-saga');
 require('redux-injectors');
 require('immer');
-var version = require('./version-f061e409.js');
-var actions = require('./actions-12871aca.js');
 require('./reducers-fde41d6b.js');
 require('history');
-var App = require('./App-581b6653.js');
-require('@redux-saga/core/effects');
 require('contensis-delivery-api');
-require('./selectors-ed26ed97.js');
-require('./version-0c190929.js');
-var queryString = require('query-string');
+require('./version-085d203d.js');
 require('loglevel');
-require('./ToJs-87edc45d.js');
-require('./login-81d7f9ef.js');
+require('./login-c810cc4c.js');
+require('./ToJs-a38fa20e.js');
 require('await-to-js');
 require('js-cookie');
-var reactHotLoader = require('react-hot-loader');
-require('./RouteLoader-282c03ab.js');
-var reactDom = require('react-dom');
-var component = require('@loadable/component');
+require('./RouteLoader-c7957b14.js');
+require('react-router-config');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
+function _interopNamespace(e) {
+  if (e && e.__esModule) return e;
+  var n = Object.create(null);
+  if (e) {
+    Object.keys(e).forEach(function (k) {
+      if (k !== 'default') {
+        var d = Object.getOwnPropertyDescriptor(e, k);
+        Object.defineProperty(n, k, d.get ? d : {
+          enumerable: true,
+          get: function () { return e[k]; }
+        });
+      }
+    });
+  }
+  n["default"] = e;
+  return Object.freeze(n);
+}
+
 var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
+var queryString__namespace = /*#__PURE__*/_interopNamespace(queryString);
 
 class ClientApp {
   constructor(ReactApp, config) {
@@ -49,11 +68,11 @@ class ClientApp {
     } = config;
 
     const GetClientJSX = store => {
-      const ClientJsx = /*#__PURE__*/React__default['default'].createElement(reactHotLoader.AppContainer, null, /*#__PURE__*/React__default['default'].createElement(reactRedux.Provider, {
+      const ClientJsx = /*#__PURE__*/React__default["default"].createElement(reactHotLoader.AppContainer, null, /*#__PURE__*/React__default["default"].createElement(reactRedux.Provider, {
         store: store
-      }, /*#__PURE__*/React__default['default'].createElement(reactRouterDom.Router, {
+      }, /*#__PURE__*/React__default["default"].createElement(reactRouterDom.Router, {
         history: App.browserHistory
-      }, /*#__PURE__*/React__default['default'].createElement(ReactApp, {
+      }, /*#__PURE__*/React__default["default"].createElement(ReactApp, {
         routes: routes,
         withEvents: withEvents
       }))));
@@ -83,7 +102,7 @@ class ClientApp {
       }
     };
 
-    const qs = queryString.parse(window.location.search);
+    const qs = queryString__namespace.parse(window.location.search);
     const versionStatusFromHostname = App.deliveryApi.getClientSideVersionStatus();
 
     if (window.isDynamic || window.REDUX_DATA || process.env.NODE_ENV !== 'production') {
@@ -111,7 +130,7 @@ class ClientApp {
         version.createStore(withReducers, ssRedux, App.browserHistory, stateType).then(store => {
           // store.dispatch(setVersionStatus(versionStatusFromHostname));
           store.runSaga(App.rootSaga(withSagas));
-          store.dispatch(actions.setCurrentProject(App.pickProject(window.location.hostname, queryString.parse(window.location.search)), [], window.location.hostname)); // if (typeof window != 'undefined') {
+          store.dispatch(actions.setCurrentProject(App.pickProject(window.location.hostname, queryString__namespace.parse(window.location.search)), [], window.location.hostname)); // if (typeof window != 'undefined') {
           //   store.dispatch(checkUserLoggedIn());
           // }
 
@@ -125,5 +144,5 @@ class ClientApp {
 }
 
 exports.ReactApp = App.AppRoot;
-exports.default = ClientApp;
+exports["default"] = ClientApp;
 //# sourceMappingURL=client.js.map

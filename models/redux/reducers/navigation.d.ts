@@ -1,7 +1,2 @@
-declare const _default: <Base extends {
-    readonly root: null;
-    readonly treeDepends: readonly never[];
-    readonly isError: boolean;
-    readonly isReady: boolean;
-}>(base?: Base | undefined, action: any) => Base;
+declare const _default: (state?: any, action: any) => any;
 export default _default;

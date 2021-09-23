@@ -2,19 +2,19 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
+var immutable = require('immutable');
+var effects = require('@redux-saga/core/effects');
+var reselect = require('reselect');
 var React = require('react');
+var PropTypes = require('prop-types');
 var reactRedux = require('react-redux');
 var styled = require('styled-components');
-var effects = require('@redux-saga/core/effects');
-var immutable = require('immutable');
-var reselect = require('reselect');
-var PropTypes = require('prop-types');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
 var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
-var styled__default = /*#__PURE__*/_interopDefaultLegacy(styled);
 var PropTypes__default = /*#__PURE__*/_interopDefaultLegacy(PropTypes);
+var styled__default = /*#__PURE__*/_interopDefaultLegacy(styled);
 
 const ACTION_PREFIX = '@FORM2/';
 const SET_FORM_DATA = `${ACTION_PREFIX}SET_FORM_DATA`;
@@ -582,7 +582,7 @@ const toJS = WrappedComponent => wrappedComponentProps => {
     newProps[wrappedComponentProp[KEY]] = immutable.Iterable.isIterable(wrappedComponentProp[VALUE]) ? wrappedComponentProp[VALUE].toJS() : wrappedComponentProp[VALUE];
     return newProps;
   }, {});
-  return /*#__PURE__*/React__default['default'].createElement(WrappedComponent, propsJS);
+  return /*#__PURE__*/React__default["default"].createElement(WrappedComponent, propsJS);
 };
 
 //Brand
@@ -614,7 +614,7 @@ const colors = {
   }
 };
 
-const FormStyled = styled__default['default'].form.withConfig({
+const FormStyled = styled__default["default"].form.withConfig({
   displayName: "Formstyled__FormStyled",
   componentId: "sc-1jn1lk9-0"
 })(["", ";"], ({
@@ -630,22 +630,22 @@ const Label = ({
   isRequired,
   isHidden
 }) => {
-  return /*#__PURE__*/React__default['default'].createElement("label", {
+  return /*#__PURE__*/React__default["default"].createElement("label", {
     className: `${className} ${isHidden ? 'visuallyHidden' : ''}`,
     htmlFor: id
-  }, label, isRequired && /*#__PURE__*/React__default['default'].createElement("span", {
+  }, label, isRequired && /*#__PURE__*/React__default["default"].createElement("span", {
     className: "isRequired"
-  }, "*"), isRequired && /*#__PURE__*/React__default['default'].createElement("span", {
+  }, "*"), isRequired && /*#__PURE__*/React__default["default"].createElement("span", {
     className: "visuallyHidden"
   }, " (required)"));
 };
 
 Label.propTypes = {
-  className: PropTypes__default['default'].string,
-  label: PropTypes__default['default'].string,
-  id: PropTypes__default['default'].string,
-  isRequired: PropTypes__default['default'].bool,
-  isHidden: PropTypes__default['default'].bool
+  className: PropTypes__default["default"].string,
+  label: PropTypes__default["default"].string,
+  id: PropTypes__default["default"].string,
+  isRequired: PropTypes__default["default"].bool,
+  isHidden: PropTypes__default["default"].bool
 };
 
 const CreateMessage = (type, minLength, maxLength, currentLength, defaultLanguage) => {
@@ -706,7 +706,7 @@ const CreateMessage = (type, minLength, maxLength, currentLength, defaultLanguag
   }
 };
 
-const CharacterLimitStyled = styled__default['default'].div.withConfig({
+const CharacterLimitStyled = styled__default["default"].div.withConfig({
   displayName: "CharacterLimit__CharacterLimitStyled",
   componentId: "sc-16zngav-0"
 })(["", ";"], ({
@@ -735,21 +735,21 @@ const CharacterLimit = ({
   const hasInBetween = minLength && maxLength;
   const type = hasMinLength ? 'min' : hasMaxLength ? 'max' : hasInBetween ? 'between' : null;
   if (!type) return null;
-  return /*#__PURE__*/React__default['default'].createElement(CharacterLimitStyled, {
+  return /*#__PURE__*/React__default["default"].createElement(CharacterLimitStyled, {
     className: className,
     useDefaultTheme: useDefaultTheme
   }, CreateMessage(type, minLength, maxLength, currentLength, defaultLanguage));
 };
 
 CharacterLimit.propTypes = {
-  validations: PropTypes__default['default'].object,
-  value: PropTypes__default['default'].oneOfType([PropTypes__default['default'].string, PropTypes__default['default'].object]),
-  className: PropTypes__default['default'].string,
-  defaultLanguage: PropTypes__default['default'].string,
-  useDefaultTheme: PropTypes__default['default'].bool
+  validations: PropTypes__default["default"].object,
+  value: PropTypes__default["default"].oneOfType([PropTypes__default["default"].string, PropTypes__default["default"].object]),
+  className: PropTypes__default["default"].string,
+  defaultLanguage: PropTypes__default["default"].string,
+  useDefaultTheme: PropTypes__default["default"].bool
 };
 
-const ErrorMessageStyled = styled__default['default'].div.withConfig({
+const ErrorMessageStyled = styled__default["default"].div.withConfig({
   displayName: "ErrorMessage__ErrorMessageStyled",
   componentId: "sc-1vewdiu-0"
 })(["", ";"], ({
@@ -764,19 +764,19 @@ const ErrorMessage = ({
   message,
   useDefaultTheme
 }) => {
-  return /*#__PURE__*/React__default['default'].createElement(ErrorMessageStyled, {
+  return /*#__PURE__*/React__default["default"].createElement(ErrorMessageStyled, {
     className: className,
     useDefaultTheme: useDefaultTheme
   }, message);
 };
 
 ErrorMessage.propTypes = {
-  className: PropTypes__default['default'].string,
-  message: PropTypes__default['default'].string.isRequired,
-  useDefaultTheme: PropTypes__default['default'].bool
+  className: PropTypes__default["default"].string,
+  message: PropTypes__default["default"].string.isRequired,
+  useDefaultTheme: PropTypes__default["default"].bool
 };
 
-const TextfieldStyled = styled__default['default'].div.withConfig({
+const TextfieldStyled = styled__default["default"].div.withConfig({
   displayName: "Textfield__TextfieldStyled",
   componentId: "sc-1a1c03n-0"
 })(["", ";"], ({
@@ -819,20 +819,20 @@ const Textfield = ({
     setShowCharLimit(true);
   };
 
-  return /*#__PURE__*/React__default['default'].createElement(TextfieldStyled, {
+  return /*#__PURE__*/React__default["default"].createElement(TextfieldStyled, {
     className: "textfield-container",
     isHidden: isHidden
-  }, /*#__PURE__*/React__default['default'].createElement(Label, {
+  }, /*#__PURE__*/React__default["default"].createElement(Label, {
     id: id,
     label: label,
     isRequired: isRequired,
     className: "label-textfield"
-  }), showCharLimit && /*#__PURE__*/React__default['default'].createElement(CharacterLimit, {
+  }), showCharLimit && /*#__PURE__*/React__default["default"].createElement(CharacterLimit, {
     value: defaultValue,
     validations: validations,
     defaultLanguage: defaultLanguage,
     useDefaultTheme: useDefaultTheme
-  }), /*#__PURE__*/React__default['default'].createElement("input", {
+  }), /*#__PURE__*/React__default["default"].createElement("input", {
     className: `${className ? className : ''} input-textfield`,
     type: type,
     defaultValue: defaultValueText,
@@ -842,27 +842,27 @@ const Textfield = ({
     onChange: e => _handleChange(formId, id, e.target.value),
     onBlur: e => _handleBlur(formId, id, e.target.value),
     onFocus: () => _handleFocus()
-  }), errors && errors.length > 0 && errors.some(x => x.fieldId == id) && /*#__PURE__*/React__default['default'].createElement(ErrorMessage, {
+  }), errors && errors.length > 0 && errors.some(x => x.fieldId == id) && /*#__PURE__*/React__default["default"].createElement(ErrorMessage, {
     message: errors.find(x => x.fieldId == id).message,
     useDefaultTheme: useDefaultTheme
   }));
 };
 
 Textfield.propTypes = {
-  className: PropTypes__default['default'].string,
-  formId: PropTypes__default['default'].string,
-  id: PropTypes__default['default'].string,
-  label: PropTypes__default['default'].string,
-  type: PropTypes__default['default'].string,
-  setValue: PropTypes__default['default'].func,
-  validateField: PropTypes__default['default'].func,
-  validations: PropTypes__default['default'].object,
-  defaultValue: PropTypes__default['default'].oneOfType([PropTypes__default['default'].string, PropTypes__default['default'].object]),
-  defaultLanguage: PropTypes__default['default'].string,
-  placeholder: PropTypes__default['default'].object,
-  isHidden: PropTypes__default['default'].bool,
-  errors: PropTypes__default['default'].array,
-  useDefaultTheme: PropTypes__default['default'].bool
+  className: PropTypes__default["default"].string,
+  formId: PropTypes__default["default"].string,
+  id: PropTypes__default["default"].string,
+  label: PropTypes__default["default"].string,
+  type: PropTypes__default["default"].string,
+  setValue: PropTypes__default["default"].func,
+  validateField: PropTypes__default["default"].func,
+  validations: PropTypes__default["default"].object,
+  defaultValue: PropTypes__default["default"].oneOfType([PropTypes__default["default"].string, PropTypes__default["default"].object]),
+  defaultLanguage: PropTypes__default["default"].string,
+  placeholder: PropTypes__default["default"].object,
+  isHidden: PropTypes__default["default"].bool,
+  errors: PropTypes__default["default"].array,
+  useDefaultTheme: PropTypes__default["default"].bool
 };
 
 const Textarea = ({
@@ -898,19 +898,19 @@ const Textarea = ({
     setShowCharLimit(true);
   };
 
-  return /*#__PURE__*/React__default['default'].createElement("div", {
+  return /*#__PURE__*/React__default["default"].createElement("div", {
     className: "textarea-container"
-  }, /*#__PURE__*/React__default['default'].createElement(Label, {
+  }, /*#__PURE__*/React__default["default"].createElement(Label, {
     id: id,
     label: label,
     isRequired: isRequired,
     className: "label-textarea"
-  }), showCharLimit && /*#__PURE__*/React__default['default'].createElement(CharacterLimit, {
+  }), showCharLimit && /*#__PURE__*/React__default["default"].createElement(CharacterLimit, {
     value: defaultValue,
     validations: validations,
     defaultLanguage: defaultLanguage,
     useDefaultTheme: useDefaultTheme
-  }), /*#__PURE__*/React__default['default'].createElement("textarea", {
+  }), /*#__PURE__*/React__default["default"].createElement("textarea", {
     className: `${className ? className : ''} input-textarea`,
     type: type,
     id: id,
@@ -919,26 +919,26 @@ const Textarea = ({
     onChange: e => _handleChange(formId, id, e.target.value),
     onBlur: e => _handleBlur(formId, id, e.target.value),
     onFocus: () => _handleFocus()
-  }), errors && errors.length > 0 && errors.some(x => x.fieldId == id) && /*#__PURE__*/React__default['default'].createElement(ErrorMessage, {
+  }), errors && errors.length > 0 && errors.some(x => x.fieldId == id) && /*#__PURE__*/React__default["default"].createElement(ErrorMessage, {
     message: errors.find(x => x.fieldId == id).message,
     useDefaultTheme: useDefaultTheme
   }));
 };
 
 Textarea.propTypes = {
-  className: PropTypes__default['default'].string,
-  formId: PropTypes__default['default'].string,
-  id: PropTypes__default['default'].string,
-  label: PropTypes__default['default'].string,
-  type: PropTypes__default['default'].string,
-  setValue: PropTypes__default['default'].func,
-  validations: PropTypes__default['default'].object,
-  defaultValue: PropTypes__default['default'].object,
-  defaultLanguage: PropTypes__default['default'].string,
-  placeholder: PropTypes__default['default'].object,
-  validateField: PropTypes__default['default'].func,
-  useDefaultTheme: PropTypes__default['default'].bool,
-  errors: PropTypes__default['default'].array
+  className: PropTypes__default["default"].string,
+  formId: PropTypes__default["default"].string,
+  id: PropTypes__default["default"].string,
+  label: PropTypes__default["default"].string,
+  type: PropTypes__default["default"].string,
+  setValue: PropTypes__default["default"].func,
+  validations: PropTypes__default["default"].object,
+  defaultValue: PropTypes__default["default"].object,
+  defaultLanguage: PropTypes__default["default"].string,
+  placeholder: PropTypes__default["default"].object,
+  validateField: PropTypes__default["default"].func,
+  useDefaultTheme: PropTypes__default["default"].bool,
+  errors: PropTypes__default["default"].array
 };
 
 const HiddenField = ({
@@ -950,7 +950,7 @@ const HiddenField = ({
   defaultLanguage,
   placeholder
 }) => {
-  return /*#__PURE__*/React__default['default'].createElement(Textfield, {
+  return /*#__PURE__*/React__default["default"].createElement(Textfield, {
     type: type,
     label: label,
     id: id,
@@ -963,13 +963,13 @@ const HiddenField = ({
 };
 
 HiddenField.propTypes = {
-  className: PropTypes__default['default'].string,
-  id: PropTypes__default['default'].string,
-  label: PropTypes__default['default'].string,
-  type: PropTypes__default['default'].string,
-  defaultValue: PropTypes__default['default'].object,
-  defaultLanguage: PropTypes__default['default'].string,
-  placeholder: PropTypes__default['default'].object
+  className: PropTypes__default["default"].string,
+  id: PropTypes__default["default"].string,
+  label: PropTypes__default["default"].string,
+  type: PropTypes__default["default"].string,
+  defaultValue: PropTypes__default["default"].object,
+  defaultLanguage: PropTypes__default["default"].string,
+  placeholder: PropTypes__default["default"].object
 };
 
 const Dropdown = ({
@@ -991,21 +991,21 @@ const Dropdown = ({
   };
 
   if (!ddValues || ddValues.length < 1) return null;
-  return /*#__PURE__*/React__default['default'].createElement("div", {
+  return /*#__PURE__*/React__default["default"].createElement("div", {
     className: "dropdown-container"
-  }, /*#__PURE__*/React__default['default'].createElement(Label, {
+  }, /*#__PURE__*/React__default["default"].createElement(Label, {
     id: id,
     label: label,
     isRequired: isRequired,
     className: "label-dropdown"
-  }), /*#__PURE__*/React__default['default'].createElement("select", {
+  }), /*#__PURE__*/React__default["default"].createElement("select", {
     name: id,
     id: id,
     className: `${className ? className : ''} select-dropdown`,
     defaultValue: defaultValue,
     onBlur: e => _handleChange(formId, id, e.target.value)
   }, ddValues.map((val, idx) => {
-    return /*#__PURE__*/React__default['default'].createElement("option", {
+    return /*#__PURE__*/React__default["default"].createElement("option", {
       key: `${val[defaultLanguage]}-${idx}`,
       value: val[defaultLanguage],
       className: "option-dropdown"
@@ -1014,17 +1014,17 @@ const Dropdown = ({
 };
 
 Dropdown.propTypes = {
-  className: PropTypes__default['default'].string,
-  formId: PropTypes__default['default'].string,
-  setValue: PropTypes__default['default'].func,
-  id: PropTypes__default['default'].string,
-  validations: PropTypes__default['default'].object,
-  defaultValue: PropTypes__default['default'].string,
-  label: PropTypes__default['default'].string,
-  defaultLanguage: PropTypes__default['default'].string
+  className: PropTypes__default["default"].string,
+  formId: PropTypes__default["default"].string,
+  setValue: PropTypes__default["default"].func,
+  id: PropTypes__default["default"].string,
+  validations: PropTypes__default["default"].object,
+  defaultValue: PropTypes__default["default"].string,
+  label: PropTypes__default["default"].string,
+  defaultLanguage: PropTypes__default["default"].string
 };
 
-const CheckboxStyled = styled__default['default'].div.withConfig({
+const CheckboxStyled = styled__default["default"].div.withConfig({
   displayName: "Checkbox__CheckboxStyled",
   componentId: "s8ewuf-0"
 })(["", ";"], ({
@@ -1062,26 +1062,26 @@ const Checkbox = ({
         };
 
         if (!cbValues || cbValues.length < 1) return null;
-        return /*#__PURE__*/React__default['default'].createElement(CheckboxStyled, {
+        return /*#__PURE__*/React__default["default"].createElement(CheckboxStyled, {
           className: `checkbox-container`,
           useDefaultTheme: useDefaultTheme
-        }, /*#__PURE__*/React__default['default'].createElement(Label, {
+        }, /*#__PURE__*/React__default["default"].createElement(Label, {
           id: id,
           label: label,
           isRequired: isRequired,
           className: "label-checkbox-container"
         }), cbValues.map((val, idx) => {
-          return /*#__PURE__*/React__default['default'].createElement("span", {
+          return /*#__PURE__*/React__default["default"].createElement("span", {
             key: idx,
             className: "checkbox-wrapper"
-          }, /*#__PURE__*/React__default['default'].createElement("input", {
+          }, /*#__PURE__*/React__default["default"].createElement("input", {
             type: "checkbox",
             id: `checkbox-${idx}`,
             name: `checkbox-${idx}`,
             value: val[defaultLanguage],
             className: `${className ? className : ''} input-checkbox`,
             onChange: e => _handleChange(e.target.value, e.target.checked)
-          }), /*#__PURE__*/React__default['default'].createElement(Label, {
+          }), /*#__PURE__*/React__default["default"].createElement(Label, {
             id: `checkbox-${idx}`,
             label: val[defaultLanguage],
             className: "label-checkbox"
@@ -1096,12 +1096,12 @@ const Checkbox = ({
           setCheckboxValue(formId, id, isChecked);
         };
 
-        return /*#__PURE__*/React__default['default'].createElement(CheckboxStyled, {
+        return /*#__PURE__*/React__default["default"].createElement(CheckboxStyled, {
           className: `checkbox-container`,
           useDefaultTheme: useDefaultTheme
-        }, /*#__PURE__*/React__default['default'].createElement("span", {
+        }, /*#__PURE__*/React__default["default"].createElement("span", {
           className: "checkbox-wrapper"
-        }, /*#__PURE__*/React__default['default'].createElement("input", {
+        }, /*#__PURE__*/React__default["default"].createElement("input", {
           type: "checkbox",
           id: id,
           name: `checkbox-${id}`,
@@ -1109,7 +1109,7 @@ const Checkbox = ({
           checked: isChecked,
           className: `${className ? className : ''} input-checkbox`,
           onChange: e => _handleChange(e.target.checked)
-        }), /*#__PURE__*/React__default['default'].createElement(Label, {
+        }), /*#__PURE__*/React__default["default"].createElement(Label, {
           id: id,
           label: label,
           className: "label-checkbox"
@@ -1119,19 +1119,19 @@ const Checkbox = ({
 };
 
 Checkbox.propTypes = {
-  className: PropTypes__default['default'].string,
-  formId: PropTypes__default['default'].string,
-  id: PropTypes__default['default'].string,
-  type: PropTypes__default['default'].string,
-  label: PropTypes__default['default'].string,
-  setCheckboxValue: PropTypes__default['default'].func,
-  validations: PropTypes__default['default'].object,
-  defaultLanguage: PropTypes__default['default'].string,
-  name: PropTypes__default['default'].object,
-  default: PropTypes__default['default'].object
+  className: PropTypes__default["default"].string,
+  formId: PropTypes__default["default"].string,
+  id: PropTypes__default["default"].string,
+  type: PropTypes__default["default"].string,
+  label: PropTypes__default["default"].string,
+  setCheckboxValue: PropTypes__default["default"].func,
+  validations: PropTypes__default["default"].object,
+  defaultLanguage: PropTypes__default["default"].string,
+  name: PropTypes__default["default"].object,
+  default: PropTypes__default["default"].object
 };
 
-const RadioButtonStyled = styled__default['default'].div.withConfig({
+const RadioButtonStyled = styled__default["default"].div.withConfig({
   displayName: "RadioButton__RadioButtonStyled",
   componentId: "sc-7y8c21-0"
 })(["", ";"], ({
@@ -1160,26 +1160,26 @@ const RadioButton = ({
   };
 
   if (!cbValues || cbValues.length < 1) return null;
-  return /*#__PURE__*/React__default['default'].createElement(RadioButtonStyled, {
+  return /*#__PURE__*/React__default["default"].createElement(RadioButtonStyled, {
     className: "radio-container",
     useDefaultTheme: useDefaultTheme
-  }, /*#__PURE__*/React__default['default'].createElement(Label, {
+  }, /*#__PURE__*/React__default["default"].createElement(Label, {
     id: id,
     label: label,
     isRequired: isRequired,
     className: "label-radio-container"
   }), cbValues.map((val, idx) => {
-    return /*#__PURE__*/React__default['default'].createElement("span", {
+    return /*#__PURE__*/React__default["default"].createElement("span", {
       key: idx,
       className: "radio-wrapper"
-    }, /*#__PURE__*/React__default['default'].createElement("input", {
+    }, /*#__PURE__*/React__default["default"].createElement("input", {
       type: type,
       id: val[defaultLanguage],
       name: id,
       value: val[defaultLanguage],
       className: `${className ? className : ''} input-radio`,
       onChange: e => _handleChange(formId, id, e.target.value)
-    }), /*#__PURE__*/React__default['default'].createElement(Label, {
+    }), /*#__PURE__*/React__default["default"].createElement(Label, {
       id: val[defaultLanguage],
       label: val[defaultLanguage],
       className: "label-radio"
@@ -1188,15 +1188,15 @@ const RadioButton = ({
 };
 
 RadioButton.propTypes = {
-  className: PropTypes__default['default'].string,
-  formId: PropTypes__default['default'].string,
-  setValue: PropTypes__default['default'].func,
-  id: PropTypes__default['default'].string,
-  type: PropTypes__default['default'].string,
-  label: PropTypes__default['default'].string,
-  validations: PropTypes__default['default'].object,
-  defaultLanguage: PropTypes__default['default'].string,
-  useDefaultTheme: PropTypes__default['default'].bool
+  className: PropTypes__default["default"].string,
+  formId: PropTypes__default["default"].string,
+  setValue: PropTypes__default["default"].func,
+  id: PropTypes__default["default"].string,
+  type: PropTypes__default["default"].string,
+  label: PropTypes__default["default"].string,
+  validations: PropTypes__default["default"].object,
+  defaultLanguage: PropTypes__default["default"].string,
+  useDefaultTheme: PropTypes__default["default"].bool
 };
 
 //example date string: 2019-01-02T13:05:00 (expects ISO 8601 Datetime format yyyy-mm-ddThh:mm:ss [this is the format returned from Contensis delivery api])
@@ -1276,14 +1276,14 @@ const SingleDate = ({
     setValue(formId, id, isoDate);
   };
 
-  return /*#__PURE__*/React__default['default'].createElement("div", {
+  return /*#__PURE__*/React__default["default"].createElement("div", {
     className: "date-container"
-  }, /*#__PURE__*/React__default['default'].createElement(Label, {
+  }, /*#__PURE__*/React__default["default"].createElement(Label, {
     id: id,
     label: label,
     isRequired: isRequired,
     className: "label-date"
-  }), /*#__PURE__*/React__default['default'].createElement("input", {
+  }), /*#__PURE__*/React__default["default"].createElement("input", {
     type: type,
     id: id,
     name: id,
@@ -1294,16 +1294,16 @@ const SingleDate = ({
 };
 
 SingleDate.propTypes = {
-  className: PropTypes__default['default'].string,
-  formId: PropTypes__default['default'].string,
-  setValue: PropTypes__default['default'].func,
-  type: PropTypes__default['default'].string,
-  id: PropTypes__default['default'].string,
-  label: PropTypes__default['default'].string,
-  validations: PropTypes__default['default'].object
+  className: PropTypes__default["default"].string,
+  formId: PropTypes__default["default"].string,
+  setValue: PropTypes__default["default"].func,
+  type: PropTypes__default["default"].string,
+  id: PropTypes__default["default"].string,
+  label: PropTypes__default["default"].string,
+  validations: PropTypes__default["default"].object
 };
 
-const DateRangeStyled = styled__default['default'].div.withConfig({
+const DateRangeStyled = styled__default["default"].div.withConfig({
   displayName: "DateRange__DateRangeStyled",
   componentId: "hnzg32-0"
 })(["", ";"], ({
@@ -1359,33 +1359,33 @@ const DateRange = ({
     }
   };
 
-  return /*#__PURE__*/React__default['default'].createElement(DateRangeStyled, {
+  return /*#__PURE__*/React__default["default"].createElement(DateRangeStyled, {
     className: `daterange-container`,
     useDefaultTheme: useDefaultTheme
-  }, /*#__PURE__*/React__default['default'].createElement(Label, {
+  }, /*#__PURE__*/React__default["default"].createElement(Label, {
     id: id,
     label: label,
     isRequired: isRequired
-  }), /*#__PURE__*/React__default['default'].createElement("div", {
+  }), /*#__PURE__*/React__default["default"].createElement("div", {
     className: "daterange-wrapper"
-  }, /*#__PURE__*/React__default['default'].createElement(Label, {
+  }, /*#__PURE__*/React__default["default"].createElement(Label, {
     id: "date-from",
     label: "Date from",
     isHidden: true,
     className: "label-daterange"
-  }), /*#__PURE__*/React__default['default'].createElement("input", {
+  }), /*#__PURE__*/React__default["default"].createElement("input", {
     type: "date",
     id: "date-from",
     name: id,
     max: onlyPassedDates && !toDate ? formatDate(todaysDate, 'yyyy-MM-dd') : onlyPassedDates && toDate ? formatDate(toDate, 'yyyy-MM-dd') : toDate ? formatDate(toDate, 'yyyy-MM-dd') : '',
     className: `${className ? className : ''} input-daterange`,
     onChange: e => _handleDateChange('from', formId, id, e.target.value)
-  }), /*#__PURE__*/React__default['default'].createElement(Label, {
+  }), /*#__PURE__*/React__default["default"].createElement(Label, {
     id: "date-to",
     label: "Date to",
     isHidden: true,
     className: "label-daterange"
-  }), /*#__PURE__*/React__default['default'].createElement("input", {
+  }), /*#__PURE__*/React__default["default"].createElement("input", {
     type: "date",
     id: "date-to",
     name: id,
@@ -1397,17 +1397,17 @@ const DateRange = ({
 };
 
 DateRange.propTypes = {
-  className: PropTypes__default['default'].string,
-  formId: PropTypes__default['default'].string,
-  setDateRangeValues: PropTypes__default['default'].func,
-  type: PropTypes__default['default'].string,
-  id: PropTypes__default['default'].string,
-  label: PropTypes__default['default'].string,
-  validations: PropTypes__default['default'].object,
-  useDefaultTheme: PropTypes__default['default'].bool
+  className: PropTypes__default["default"].string,
+  formId: PropTypes__default["default"].string,
+  setDateRangeValues: PropTypes__default["default"].func,
+  type: PropTypes__default["default"].string,
+  id: PropTypes__default["default"].string,
+  label: PropTypes__default["default"].string,
+  validations: PropTypes__default["default"].object,
+  useDefaultTheme: PropTypes__default["default"].bool
 };
 
-const EntryPickerStyled = styled__default['default'].div.withConfig({
+const EntryPickerStyled = styled__default["default"].div.withConfig({
   displayName: "EntryPicker__EntryPickerStyled",
   componentId: "svnu18-0"
 })(["", ";"], ({
@@ -1445,26 +1445,26 @@ const EntryPicker = ({
     }
   };
 
-  return /*#__PURE__*/React__default['default'].createElement(EntryPickerStyled, {
+  return /*#__PURE__*/React__default["default"].createElement(EntryPickerStyled, {
     className: `${type}-container`,
     useDefaultTheme: useDefaultTheme
-  }, /*#__PURE__*/React__default['default'].createElement(Label, {
+  }, /*#__PURE__*/React__default["default"].createElement(Label, {
     id: id,
     label: label,
     isRequired: isRequired,
     className: `label-${type}-container`
   }), results.map((res, idx) => {
-    return /*#__PURE__*/React__default['default'].createElement("span", {
+    return /*#__PURE__*/React__default["default"].createElement("span", {
       key: idx,
       className: `${type}-wrapper`
-    }, /*#__PURE__*/React__default['default'].createElement("input", {
+    }, /*#__PURE__*/React__default["default"].createElement("input", {
       type: type,
       id: res.entryTitle,
       value: res.entryTitle,
       name: id,
       className: `${className ? className : ''} input-${type}`,
       onChange: e => _handleChange(formId, id, e.target.value, e.target.checked)
-    }), /*#__PURE__*/React__default['default'].createElement(Label, {
+    }), /*#__PURE__*/React__default["default"].createElement(Label, {
       id: res.entryTitle,
       label: res.entryTitle,
       className: `label-${type}`
@@ -1473,15 +1473,15 @@ const EntryPicker = ({
 };
 
 EntryPicker.propTypes = {
-  className: PropTypes__default['default'].string,
-  results: PropTypes__default['default'].array,
-  id: PropTypes__default['default'].string,
-  label: PropTypes__default['default'].string,
-  validations: PropTypes__default['default'].object,
-  type: PropTypes__default['default'].string,
-  useDefaultTheme: PropTypes__default['default'].bool,
-  setValue: PropTypes__default['default'].func,
-  formId: PropTypes__default['default'].string
+  className: PropTypes__default["default"].string,
+  results: PropTypes__default["default"].array,
+  id: PropTypes__default["default"].string,
+  label: PropTypes__default["default"].string,
+  validations: PropTypes__default["default"].object,
+  type: PropTypes__default["default"].string,
+  useDefaultTheme: PropTypes__default["default"].bool,
+  setValue: PropTypes__default["default"].func,
+  formId: PropTypes__default["default"].string
 };
 
 const FormComposer = ({
@@ -1506,7 +1506,7 @@ const FormComposer = ({
       case 'number':
       case 'textfield':
         {
-          return /*#__PURE__*/React__default['default'].createElement(Textfield, {
+          return /*#__PURE__*/React__default["default"].createElement(Textfield, {
             key: `${field.id}-${idx}`,
             type: field.type,
             id: field.id,
@@ -1525,7 +1525,7 @@ const FormComposer = ({
 
       case 'textarea':
         {
-          return /*#__PURE__*/React__default['default'].createElement(Textarea, {
+          return /*#__PURE__*/React__default["default"].createElement(Textarea, {
             key: `${field.id}-${idx}`,
             type: field.type,
             id: field.id,
@@ -1544,7 +1544,7 @@ const FormComposer = ({
 
       case 'dropdown':
         {
-          return /*#__PURE__*/React__default['default'].createElement(Dropdown, {
+          return /*#__PURE__*/React__default["default"].createElement(Dropdown, {
             key: `${field.id}-${idx}`,
             id: field.id,
             label: field.name && field.name[defaultLanguage],
@@ -1559,7 +1559,7 @@ const FormComposer = ({
 
       case 'checkbox':
         {
-          return /*#__PURE__*/React__default['default'].createElement(Checkbox, {
+          return /*#__PURE__*/React__default["default"].createElement(Checkbox, {
             key: `${field.id}-${idx}`,
             id: field.id,
             name: field.name,
@@ -1577,7 +1577,7 @@ const FormComposer = ({
 
       case 'radio':
         {
-          return /*#__PURE__*/React__default['default'].createElement(RadioButton, {
+          return /*#__PURE__*/React__default["default"].createElement(RadioButton, {
             key: `${field.id}-${idx}`,
             id: field.id,
             type: field.type,
@@ -1594,7 +1594,7 @@ const FormComposer = ({
         {
           const type = field.dataType === 'objectArray' ? 'checkbox' : 'radio';
           const results = entries && entries[field.id] && entries[field.id].items;
-          return /*#__PURE__*/React__default['default'].createElement(EntryPicker, {
+          return /*#__PURE__*/React__default["default"].createElement(EntryPicker, {
             key: `${field.id}-${idx}`,
             type: type,
             results: results,
@@ -1609,7 +1609,7 @@ const FormComposer = ({
 
       case 'date':
         {
-          return /*#__PURE__*/React__default['default'].createElement(SingleDate, {
+          return /*#__PURE__*/React__default["default"].createElement(SingleDate, {
             key: `${field.id}-${idx}`,
             type: field.type,
             id: field.id,
@@ -1623,7 +1623,7 @@ const FormComposer = ({
 
       case 'dateRange':
         {
-          return /*#__PURE__*/React__default['default'].createElement(DateRange, {
+          return /*#__PURE__*/React__default["default"].createElement(DateRange, {
             key: `${field.id}-${idx}`,
             id: field.id,
             label: field.name && field.name[defaultLanguage],
@@ -1636,7 +1636,7 @@ const FormComposer = ({
 
       case 'hidden':
         {
-          return /*#__PURE__*/React__default['default'].createElement(HiddenField, {
+          return /*#__PURE__*/React__default["default"].createElement(HiddenField, {
             key: `${field.id}-${idx}`,
             type: field.type,
             id: field.id,
@@ -1651,20 +1651,20 @@ const FormComposer = ({
 };
 
 FormComposer.propTypes = {
-  fields: PropTypes__default['default'].oneOfType([PropTypes__default['default'].array, PropTypes__default['default'].object]),
-  formData: PropTypes__default['default'].object,
-  entries: PropTypes__default['default'].oneOfType([PropTypes__default['default'].array, PropTypes__default['default'].object]),
-  formId: PropTypes__default['default'].string,
-  setValue: PropTypes__default['default'].func,
-  validateField: PropTypes__default['default'].func,
-  setDateRangeValues: PropTypes__default['default'].func,
-  defaultLanguage: PropTypes__default['default'].string,
-  errors: PropTypes__default['default'].array,
-  useDefaultTheme: PropTypes__default['default'].bool,
-  setCheckboxValue: PropTypes__default['default'].func
+  fields: PropTypes__default["default"].oneOfType([PropTypes__default["default"].array, PropTypes__default["default"].object]),
+  formData: PropTypes__default["default"].object,
+  entries: PropTypes__default["default"].oneOfType([PropTypes__default["default"].array, PropTypes__default["default"].object]),
+  formId: PropTypes__default["default"].string,
+  setValue: PropTypes__default["default"].func,
+  validateField: PropTypes__default["default"].func,
+  setDateRangeValues: PropTypes__default["default"].func,
+  defaultLanguage: PropTypes__default["default"].string,
+  errors: PropTypes__default["default"].array,
+  useDefaultTheme: PropTypes__default["default"].bool,
+  setCheckboxValue: PropTypes__default["default"].func
 };
 
-const ButtonStyled = styled__default['default'].button.withConfig({
+const ButtonStyled = styled__default["default"].button.withConfig({
   displayName: "Button__ButtonStyled",
   componentId: "hr2oup-0"
 })(["", ";"], ({
@@ -1681,7 +1681,7 @@ const Button = ({
   action,
   useDefaultTheme
 }) => {
-  return /*#__PURE__*/React__default['default'].createElement(ButtonStyled, {
+  return /*#__PURE__*/React__default["default"].createElement(ButtonStyled, {
     className: `${className ? className : ''} btnSubmit`,
     type: type,
     onClick: () => action(),
@@ -1689,11 +1689,11 @@ const Button = ({
   }, text);
 };
 Button.propTypes = {
-  className: PropTypes__default['default'].string,
-  type: PropTypes__default['default'].string,
-  text: PropTypes__default['default'].string,
-  action: PropTypes__default['default'].func,
-  useDefaultTheme: PropTypes__default['default'].bool
+  className: PropTypes__default["default"].string,
+  type: PropTypes__default["default"].string,
+  text: PropTypes__default["default"].string,
+  action: PropTypes__default["default"].func,
+  useDefaultTheme: PropTypes__default["default"].bool
 };
 
 const ThemeContext = React.createContext();
@@ -1702,14 +1702,14 @@ const ThemeProvider = ({
   children,
   theme
 }) => {
-  return /*#__PURE__*/React__default['default'].createElement(ThemeContext.Provider, null, /*#__PURE__*/React__default['default'].createElement(styled.ThemeProvider, {
+  return /*#__PURE__*/React__default["default"].createElement(ThemeContext.Provider, null, /*#__PURE__*/React__default["default"].createElement(styled.ThemeProvider, {
     theme: theme
   }, children));
 };
 
 ThemeProvider.propTypes = {
-  children: PropTypes__default['default'].oneOfType([PropTypes__default['default'].arrayOf(PropTypes__default['default'].node), PropTypes__default['default'].node]),
-  theme: PropTypes__default['default'].object
+  children: PropTypes__default["default"].oneOfType([PropTypes__default["default"].arrayOf(PropTypes__default["default"].node), PropTypes__default["default"].node]),
+  theme: PropTypes__default["default"].object
 };
 
 const mediaQueriesNoUnit = {
@@ -1801,17 +1801,17 @@ const headingStyles = {
   fontSize: '16px'
 };
 const Loading = () => {
-  return /*#__PURE__*/React__default['default'].createElement("div", {
+  return /*#__PURE__*/React__default["default"].createElement("div", {
     style: divStyles
-  }, /*#__PURE__*/React__default['default'].createElement("h3", {
+  }, /*#__PURE__*/React__default["default"].createElement("h3", {
     style: headingStyles
-  }, "Loading..."), /*#__PURE__*/React__default['default'].createElement("svg", {
+  }, "Loading..."), /*#__PURE__*/React__default["default"].createElement("svg", {
     xmlns: "http://www.w3.org/2000/svg",
     className: "lds-spinner",
     preserveAspectRatio: "xMidYMid",
     viewBox: "0 0 100 100",
     style: svgStyles
-  }, /*#__PURE__*/React__default['default'].createElement("rect", {
+  }, /*#__PURE__*/React__default["default"].createElement("rect", {
     width: "6",
     height: "12",
     x: "47",
@@ -1819,14 +1819,14 @@ const Loading = () => {
     fill: "#DE1C8F",
     rx: "9",
     ry: "5"
-  }, /*#__PURE__*/React__default['default'].createElement("animate", {
+  }, /*#__PURE__*/React__default["default"].createElement("animate", {
     attributeName: "opacity",
     begin: "-0.9166666666666666s",
     dur: "1s",
     keyTimes: "0;1",
     repeatCount: "indefinite",
     values: "1;0"
-  })), /*#__PURE__*/React__default['default'].createElement("rect", {
+  })), /*#__PURE__*/React__default["default"].createElement("rect", {
     width: "6",
     height: "12",
     x: "47",
@@ -1835,14 +1835,14 @@ const Loading = () => {
     rx: "9",
     ry: "5",
     transform: "rotate(30 50 50)"
-  }, /*#__PURE__*/React__default['default'].createElement("animate", {
+  }, /*#__PURE__*/React__default["default"].createElement("animate", {
     attributeName: "opacity",
     begin: "-0.8333333333333334s",
     dur: "1s",
     keyTimes: "0;1",
     repeatCount: "indefinite",
     values: "1;0"
-  })), /*#__PURE__*/React__default['default'].createElement("rect", {
+  })), /*#__PURE__*/React__default["default"].createElement("rect", {
     width: "6",
     height: "12",
     x: "47",
@@ -1851,14 +1851,14 @@ const Loading = () => {
     rx: "9",
     ry: "5",
     transform: "rotate(60 50 50)"
-  }, /*#__PURE__*/React__default['default'].createElement("animate", {
+  }, /*#__PURE__*/React__default["default"].createElement("animate", {
     attributeName: "opacity",
     begin: "-0.75s",
     dur: "1s",
     keyTimes: "0;1",
     repeatCount: "indefinite",
     values: "1;0"
-  })), /*#__PURE__*/React__default['default'].createElement("rect", {
+  })), /*#__PURE__*/React__default["default"].createElement("rect", {
     width: "6",
     height: "12",
     x: "47",
@@ -1867,14 +1867,14 @@ const Loading = () => {
     rx: "9",
     ry: "5",
     transform: "rotate(90 50 50)"
-  }, /*#__PURE__*/React__default['default'].createElement("animate", {
+  }, /*#__PURE__*/React__default["default"].createElement("animate", {
     attributeName: "opacity",
     begin: "-0.6666666666666666s",
     dur: "1s",
     keyTimes: "0;1",
     repeatCount: "indefinite",
     values: "1;0"
-  })), /*#__PURE__*/React__default['default'].createElement("rect", {
+  })), /*#__PURE__*/React__default["default"].createElement("rect", {
     width: "6",
     height: "12",
     x: "47",
@@ -1883,14 +1883,14 @@ const Loading = () => {
     rx: "9",
     ry: "5",
     transform: "rotate(120 50 50)"
-  }, /*#__PURE__*/React__default['default'].createElement("animate", {
+  }, /*#__PURE__*/React__default["default"].createElement("animate", {
     attributeName: "opacity",
     begin: "-0.5833333333333334s",
     dur: "1s",
     keyTimes: "0;1",
     repeatCount: "indefinite",
     values: "1;0"
-  })), /*#__PURE__*/React__default['default'].createElement("rect", {
+  })), /*#__PURE__*/React__default["default"].createElement("rect", {
     width: "6",
     height: "12",
     x: "47",
@@ -1899,14 +1899,14 @@ const Loading = () => {
     rx: "9",
     ry: "5",
     transform: "rotate(150 50 50)"
-  }, /*#__PURE__*/React__default['default'].createElement("animate", {
+  }, /*#__PURE__*/React__default["default"].createElement("animate", {
     attributeName: "opacity",
     begin: "-0.5s",
     dur: "1s",
     keyTimes: "0;1",
     repeatCount: "indefinite",
     values: "1;0"
-  })), /*#__PURE__*/React__default['default'].createElement("rect", {
+  })), /*#__PURE__*/React__default["default"].createElement("rect", {
     width: "6",
     height: "12",
     x: "47",
@@ -1915,14 +1915,14 @@ const Loading = () => {
     rx: "9",
     ry: "5",
     transform: "rotate(180 50 50)"
-  }, /*#__PURE__*/React__default['default'].createElement("animate", {
+  }, /*#__PURE__*/React__default["default"].createElement("animate", {
     attributeName: "opacity",
     begin: "-0.4166666666666667s",
     dur: "1s",
     keyTimes: "0;1",
     repeatCount: "indefinite",
     values: "1;0"
-  })), /*#__PURE__*/React__default['default'].createElement("rect", {
+  })), /*#__PURE__*/React__default["default"].createElement("rect", {
     width: "6",
     height: "12",
     x: "47",
@@ -1931,14 +1931,14 @@ const Loading = () => {
     rx: "9",
     ry: "5",
     transform: "rotate(210 50 50)"
-  }, /*#__PURE__*/React__default['default'].createElement("animate", {
+  }, /*#__PURE__*/React__default["default"].createElement("animate", {
     attributeName: "opacity",
     begin: "-0.3333333333333333s",
     dur: "1s",
     keyTimes: "0;1",
     repeatCount: "indefinite",
     values: "1;0"
-  })), /*#__PURE__*/React__default['default'].createElement("rect", {
+  })), /*#__PURE__*/React__default["default"].createElement("rect", {
     width: "6",
     height: "12",
     x: "47",
@@ -1947,14 +1947,14 @@ const Loading = () => {
     rx: "9",
     ry: "5",
     transform: "rotate(240 50 50)"
-  }, /*#__PURE__*/React__default['default'].createElement("animate", {
+  }, /*#__PURE__*/React__default["default"].createElement("animate", {
     attributeName: "opacity",
     begin: "-0.25s",
     dur: "1s",
     keyTimes: "0;1",
     repeatCount: "indefinite",
     values: "1;0"
-  })), /*#__PURE__*/React__default['default'].createElement("rect", {
+  })), /*#__PURE__*/React__default["default"].createElement("rect", {
     width: "6",
     height: "12",
     x: "47",
@@ -1963,14 +1963,14 @@ const Loading = () => {
     rx: "9",
     ry: "5",
     transform: "rotate(270 50 50)"
-  }, /*#__PURE__*/React__default['default'].createElement("animate", {
+  }, /*#__PURE__*/React__default["default"].createElement("animate", {
     attributeName: "opacity",
     begin: "-0.16666666666666666s",
     dur: "1s",
     keyTimes: "0;1",
     repeatCount: "indefinite",
     values: "1;0"
-  })), /*#__PURE__*/React__default['default'].createElement("rect", {
+  })), /*#__PURE__*/React__default["default"].createElement("rect", {
     width: "6",
     height: "12",
     x: "47",
@@ -1979,14 +1979,14 @@ const Loading = () => {
     rx: "9",
     ry: "5",
     transform: "rotate(300 50 50)"
-  }, /*#__PURE__*/React__default['default'].createElement("animate", {
+  }, /*#__PURE__*/React__default["default"].createElement("animate", {
     attributeName: "opacity",
     begin: "-0.08333333333333333s",
     dur: "1s",
     keyTimes: "0;1",
     repeatCount: "indefinite",
     values: "1;0"
-  })), /*#__PURE__*/React__default['default'].createElement("rect", {
+  })), /*#__PURE__*/React__default["default"].createElement("rect", {
     width: "6",
     height: "12",
     x: "47",
@@ -1995,7 +1995,7 @@ const Loading = () => {
     rx: "9",
     ry: "5",
     transform: "rotate(330 50 50)"
-  }, /*#__PURE__*/React__default['default'].createElement("animate", {
+  }, /*#__PURE__*/React__default["default"].createElement("animate", {
     attributeName: "opacity",
     begin: "0s",
     dur: "1s",
@@ -2036,18 +2036,18 @@ const Form$1 = ({
 
   if (pagingInfo && pagingInfo.pageCount > 1) {
     const isLastPage = pagingInfo.pageCount == pagingInfo.pageIndex + 1;
-    formRender = /*#__PURE__*/React__default['default'].createElement(FormStyled, {
+    formRender = /*#__PURE__*/React__default["default"].createElement(FormStyled, {
       className: className,
       id: formId,
       useDefaultTheme: useDefaultTheme
-    }, status && status.isLoading || status && status.isSubmitting && /*#__PURE__*/React__default['default'].createElement(Loading, {
+    }, status && status.isLoading || status && status.isSubmitting && /*#__PURE__*/React__default["default"].createElement(Loading, {
       className: "loading"
-    }), !status || status && !status.isLoading && !status.isSubmitting && !status.hasSuccess && /*#__PURE__*/React__default['default'].createElement(React__default['default'].Fragment, null, pagingInfo.pageIndex > 0 && /*#__PURE__*/React__default['default'].createElement(Button, {
+    }), !status || status && !status.isLoading && !status.isSubmitting && !status.hasSuccess && /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, pagingInfo.pageIndex > 0 && /*#__PURE__*/React__default["default"].createElement(Button, {
       type: "button",
       text: "Go Back",
       action: () => togglePageBack(formId, pagingInfo.pageIndex - 1),
       useDefaultTheme: useDefaultTheme
-    }), /*#__PURE__*/React__default['default'].createElement(FormComposer, {
+    }), /*#__PURE__*/React__default["default"].createElement(FormComposer, {
       fields: fields,
       formData: formData,
       formId: formId,
@@ -2060,12 +2060,12 @@ const Form$1 = ({
       entries: entries,
       setDateRangeValues: setDateRangeValues,
       setCheckboxValue: setCheckboxValue
-    }), !isLastPage && /*#__PURE__*/React__default['default'].createElement(Button, {
+    }), !isLastPage && /*#__PURE__*/React__default["default"].createElement(Button, {
       type: "button",
       text: "Next",
       action: () => togglePageForward(formId, pagingInfo.pageIndex + 1),
       useDefaultTheme: useDefaultTheme
-    }), isLastPage && /*#__PURE__*/React__default['default'].createElement(Button, {
+    }), isLastPage && /*#__PURE__*/React__default["default"].createElement(Button, {
       text: "Submit",
       type: "button",
       action: () => {
@@ -2073,17 +2073,17 @@ const Form$1 = ({
         customSubmit();
       },
       useDefaultTheme: useDefaultTheme
-    })), status && status.hasSuccess && status.successMessage && /*#__PURE__*/React__default['default'].createElement("p", {
+    })), status && status.hasSuccess && status.successMessage && /*#__PURE__*/React__default["default"].createElement("p", {
       className: "success-message"
     }, status.successMessage));
   } else {
-    formRender = /*#__PURE__*/React__default['default'].createElement(FormStyled, {
+    formRender = /*#__PURE__*/React__default["default"].createElement(FormStyled, {
       className: className,
       id: formId,
       useDefaultTheme: useDefaultTheme
-    }, status && status.isLoading || status && status.isSubmitting && /*#__PURE__*/React__default['default'].createElement(Loading, {
+    }, status && status.isLoading || status && status.isSubmitting && /*#__PURE__*/React__default["default"].createElement(Loading, {
       className: "loading"
-    }), !status || status && !status.isLoading && !status.isSubmitting && !status.hasSuccess && /*#__PURE__*/React__default['default'].createElement(React__default['default'].Fragment, null, /*#__PURE__*/React__default['default'].createElement(FormComposer, {
+    }), !status || status && !status.isLoading && !status.isSubmitting && !status.hasSuccess && /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, /*#__PURE__*/React__default["default"].createElement(FormComposer, {
       fields: fields,
       formId: formId,
       setValue: setValue,
@@ -2094,7 +2094,7 @@ const Form$1 = ({
       useDefaultTheme: useDefaultTheme,
       entries: entries,
       setCheckboxValue: setCheckboxValue
-    }), /*#__PURE__*/React__default['default'].createElement(Button, {
+    }), /*#__PURE__*/React__default["default"].createElement(Button, {
       text: "Submit",
       type: "button",
       action: () => {
@@ -2102,36 +2102,36 @@ const Form$1 = ({
         customSubmit();
       },
       useDefaultTheme: useDefaultTheme
-    })), status && status.hasSuccess && status.successMessage && /*#__PURE__*/React__default['default'].createElement("p", {
+    })), status && status.hasSuccess && status.successMessage && /*#__PURE__*/React__default["default"].createElement("p", {
       className: "success-message"
     }, status.successMessage));
   }
 
-  return /*#__PURE__*/React__default['default'].createElement(ThemeProvider, {
+  return /*#__PURE__*/React__default["default"].createElement(ThemeProvider, {
     theme: defaultTheme
   }, formRender);
 };
 
 Form$1.propTypes = {
-  className: PropTypes__default['default'].string,
-  formId: PropTypes__default['default'].string,
-  fields: PropTypes__default['default'].oneOfType([PropTypes__default['default'].array, PropTypes__default['default'].object]),
-  formData: PropTypes__default['default'].object,
-  entries: PropTypes__default['default'].oneOfType([PropTypes__default['default'].array, PropTypes__default['default'].object]),
-  useDefaultTheme: PropTypes__default['default'].bool,
-  setFormId: PropTypes__default['default'].func,
-  setValue: PropTypes__default['default'].func,
-  setDateRangeValues: PropTypes__default['default'].func,
-  validateField: PropTypes__default['default'].func,
-  defaultLanguage: PropTypes__default['default'].string,
-  errors: PropTypes__default['default'].array,
-  pagingInfo: PropTypes__default['default'].object,
-  togglePageForward: PropTypes__default['default'].func,
-  togglePageBack: PropTypes__default['default'].func,
-  submitForm: PropTypes__default['default'].func,
-  customSubmit: PropTypes__default['default'].func,
-  status: PropTypes__default['default'].object,
-  setCheckboxValue: PropTypes__default['default'].func
+  className: PropTypes__default["default"].string,
+  formId: PropTypes__default["default"].string,
+  fields: PropTypes__default["default"].oneOfType([PropTypes__default["default"].array, PropTypes__default["default"].object]),
+  formData: PropTypes__default["default"].object,
+  entries: PropTypes__default["default"].oneOfType([PropTypes__default["default"].array, PropTypes__default["default"].object]),
+  useDefaultTheme: PropTypes__default["default"].bool,
+  setFormId: PropTypes__default["default"].func,
+  setValue: PropTypes__default["default"].func,
+  setDateRangeValues: PropTypes__default["default"].func,
+  validateField: PropTypes__default["default"].func,
+  defaultLanguage: PropTypes__default["default"].string,
+  errors: PropTypes__default["default"].array,
+  pagingInfo: PropTypes__default["default"].object,
+  togglePageForward: PropTypes__default["default"].func,
+  togglePageBack: PropTypes__default["default"].func,
+  submitForm: PropTypes__default["default"].func,
+  customSubmit: PropTypes__default["default"].func,
+  status: PropTypes__default["default"].object,
+  setCheckboxValue: PropTypes__default["default"].func
 };
 
 function action(type, payload = {}) {
@@ -2199,7 +2199,7 @@ const FormContainer = ({
   setCheckboxValue,
   customSubmit
 }) => {
-  return /*#__PURE__*/React__default['default'].createElement(Form$1, {
+  return /*#__PURE__*/React__default["default"].createElement(Form$1, {
     className: className,
     formId: formId,
     fields: fields,
@@ -2223,25 +2223,25 @@ const FormContainer = ({
 };
 
 FormContainer.propTypes = {
-  className: PropTypes__default['default'].string,
-  formId: PropTypes__default['default'].string,
-  fields: PropTypes__default['default'].oneOfType([PropTypes__default['default'].array, PropTypes__default['default'].object]),
-  formData: PropTypes__default['default'].object,
-  entries: PropTypes__default['default'].oneOfType([PropTypes__default['default'].array, PropTypes__default['default'].object]),
-  setFormId: PropTypes__default['default'].func,
-  setDateRangeValues: PropTypes__default['default'].func,
-  setValue: PropTypes__default['default'].func,
-  useDefaultTheme: PropTypes__default['default'].bool,
-  validateField: PropTypes__default['default'].func,
-  defaultLanguage: PropTypes__default['default'].string,
-  errors: PropTypes__default['default'].array,
-  pagingInfo: PropTypes__default['default'].object,
-  togglePageForward: PropTypes__default['default'].func,
-  togglePageBack: PropTypes__default['default'].func,
-  submitForm: PropTypes__default['default'].func,
-  status: PropTypes__default['default'].object,
-  setCheckboxValue: PropTypes__default['default'].func,
-  customSubmit: PropTypes__default['default'].func
+  className: PropTypes__default["default"].string,
+  formId: PropTypes__default["default"].string,
+  fields: PropTypes__default["default"].oneOfType([PropTypes__default["default"].array, PropTypes__default["default"].object]),
+  formData: PropTypes__default["default"].object,
+  entries: PropTypes__default["default"].oneOfType([PropTypes__default["default"].array, PropTypes__default["default"].object]),
+  setFormId: PropTypes__default["default"].func,
+  setDateRangeValues: PropTypes__default["default"].func,
+  setValue: PropTypes__default["default"].func,
+  useDefaultTheme: PropTypes__default["default"].bool,
+  validateField: PropTypes__default["default"].func,
+  defaultLanguage: PropTypes__default["default"].string,
+  errors: PropTypes__default["default"].array,
+  pagingInfo: PropTypes__default["default"].object,
+  togglePageForward: PropTypes__default["default"].func,
+  togglePageBack: PropTypes__default["default"].func,
+  submitForm: PropTypes__default["default"].func,
+  status: PropTypes__default["default"].object,
+  setCheckboxValue: PropTypes__default["default"].func,
+  customSubmit: PropTypes__default["default"].func
 };
 
 const mapStateToProps = (state, props) => {
@@ -2276,7 +2276,7 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-var Form = reactRedux.connect(mapStateToProps, mapDispatchToProps)(toJS(FormContainer));
+reactRedux.connect(mapStateToProps, mapDispatchToProps)(toJS(FormContainer));
 
 exports.reducer = reducer;
 exports.sagas = formV2Sagas;

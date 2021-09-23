@@ -19,28 +19,28 @@ var serialize = require('serialize-javascript');
 var minifyCssString = require('minify-css-string');
 var mapJson = require('jsonpath-mapper');
 var server = require('@loadable/server');
+var version = require('./version-4f0f5fa6.js');
+var App = require('./App-3324f784.js');
+var actions = require('./actions-a24bf46e.js');
+var selectors = require('./selectors-0ec95076.js');
+require('@redux-saga/core/effects');
 require('redux');
 require('redux-thunk');
 require('redux-saga');
 require('redux-injectors');
 require('immer');
-var version = require('./version-f061e409.js');
-var actions = require('./actions-12871aca.js');
 require('./reducers-fde41d6b.js');
 require('history');
-var App = require('./App-581b6653.js');
-require('@redux-saga/core/effects');
 require('contensis-delivery-api');
-var selectors = require('./selectors-ed26ed97.js');
-require('./version-0c190929.js');
-require('query-string');
+require('./version-085d203d.js');
 require('loglevel');
-require('./ToJs-87edc45d.js');
-require('./login-81d7f9ef.js');
+require('./login-c810cc4c.js');
+require('./ToJs-a38fa20e.js');
 require('await-to-js');
 require('js-cookie');
 require('react-hot-loader');
-require('./RouteLoader-282c03ab.js');
+require('query-string');
+require('./RouteLoader-c7957b14.js');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -53,7 +53,7 @@ var serialize__default = /*#__PURE__*/_interopDefaultLegacy(serialize);
 var minifyCssString__default = /*#__PURE__*/_interopDefaultLegacy(minifyCssString);
 var mapJson__default = /*#__PURE__*/_interopDefaultLegacy(mapJson);
 
-const servers = SERVERS;
+const servers$1 = SERVERS;
 /* global SERVERS */
 
 const projects = PROJECTS;
@@ -63,7 +63,7 @@ const DisplayStartupConfiguration = config => {
   /* eslint-disable no-console */
   console.log();
   console.log(`Configured servers:
-`, JSON.stringify(servers, null, 2));
+`, JSON.stringify(servers$1, null, 2));
   console.log();
   console.log(`Configured projects:
 `, JSON.stringify(projects, null, 2));
@@ -73,15 +73,15 @@ const DisplayStartupConfiguration = config => {
   /* eslint-enable no-console */
 };
 
-const servers$1 = SERVERS;
+const servers = SERVERS;
 /* global SERVERS */
 
-const apiProxy = httpProxy__default['default'].createProxyServer();
+const apiProxy = httpProxy__default["default"].createProxyServer();
 
 const reverseProxies = (app, reverseProxyPaths = []) => {
   deliveryApiProxy(apiProxy, app);
   app.all(reverseProxyPaths, (req, res) => {
-    const target = req.hostname.indexOf('preview-') || req.hostname.indexOf('preview.') || req.hostname === 'localhost' ? servers$1.previewIis || servers$1.iis : servers$1.iis;
+    const target = req.hostname.indexOf('preview-') || req.hostname.indexOf('preview.') || req.hostname === 'localhost' ? servers.previewIis || servers.iis : servers.iis;
     apiProxy.web(req, res, {
       target,
       changeOrigin: true
@@ -98,8 +98,8 @@ const deliveryApiProxy = (apiProxy, app) => {
   // This is just here to stop cors requests on localhost. In Production this is mapped using varnish.
   app.all(['/api/delivery/*', '/api/image/*'], (req, res) => {
     /* eslint-disable no-console */
-    const target = servers$1.cms;
-    console.log(`Proxying api request to ${servers$1.alias}`);
+    const target = servers.cms;
+    console.log(`Proxying api request to ${servers.alias}`);
     apiProxy.web(req, res, {
       target,
       changeOrigin: true
@@ -132,15 +132,15 @@ const bundleManipulationMiddleware = ({
   maxage,
   staticRoutePath
 }) => (req, res, next) => {
-  const filename = path__default['default'].basename(req.path);
+  const filename = path__default["default"].basename(req.path);
   const modernBundle = filename.endsWith('.mjs');
   const legacyBundle = filename.endsWith('.js');
 
   if ((legacyBundle || modernBundle) && filename.startsWith('runtime.')) {
-    const jsRuntimeLocation = path__default['default'].resolve(appRootPath, `dist/static/${modernBundle ? 'modern/js' : 'legacy/js'}/${filename}`);
+    const jsRuntimeLocation = path__default["default"].resolve(appRootPath, `dist/static/${modernBundle ? 'modern/js' : 'legacy/js'}/${filename}`);
 
     try {
-      const jsRuntimeBundle = fs__default['default'].readFileSync(jsRuntimeLocation, 'utf8');
+      const jsRuntimeBundle = fs__default["default"].readFileSync(jsRuntimeLocation, 'utf8');
       const modifiedBundle = replaceStaticPath(jsRuntimeBundle, staticRoutePath);
       if (maxage) res.set('Cache-Control', `public, max-age=${maxage}`);
       res.type('.js').send(modifiedBundle);
@@ -170,7 +170,7 @@ const resolveStartupMiddleware = ({
 }) => (req, res, next) => {
   if (startupScriptFilename !== 'startup.js' && req.path === `/${startupScriptFilename}`) {
     const startupFilePath = `dist/${staticFolderPath}/startup.js`;
-    const startupFileLocation = path__default['default'].resolve(appRootPath, startupFilePath);
+    const startupFileLocation = path__default["default"].resolve(appRootPath, startupFilePath);
     if (maxage) res.set('Cache-Control', `public, max-age=${maxage}`);
 
     try {
@@ -206,7 +206,7 @@ const staticAssets = (app, {
     startupScriptFilename: scripts.startup || startupScriptFilename,
     staticFolderPath
   }), // eslint-disable-next-line import/no-named-as-default-member
-  express__default['default'].static(`dist/${staticFolderPath}`, {
+  express__default["default"].static(`dist/${staticFolderPath}`, {
     // these maxage values are different in config but the same in runtime,
     // this one is somehow converted and should end up being the same as CacheDuration.static
     maxAge: CacheDuration.expressStatic
@@ -230,7 +230,7 @@ const handleResponse = (request, response, content, send = 'send') => {
   response[send](content);
 };
 
-const readFileSync = path => fs__default['default'].readFileSync(path, 'utf8');
+const readFileSync = path => fs__default["default"].readFileSync(path, 'utf8');
 
 const loadableBundleData = ({
   stats,
@@ -263,12 +263,12 @@ const loadableChunkExtractors = () => {
     const modern = new server.ChunkExtractor({
       entrypoints: ['app'],
       namespace: 'modern',
-      statsFile: path__default['default'].resolve('dist/modern/loadable-stats.json')
+      statsFile: path__default["default"].resolve('dist/modern/loadable-stats.json')
     });
     const legacy = new server.ChunkExtractor({
       entrypoints: ['app'],
       namespace: 'legacy',
-      statsFile: path__default['default'].resolve('dist/legacy/loadable-stats.json')
+      statsFile: path__default["default"].resolve('dist/legacy/loadable-stats.json')
     });
     const commonLoadableExtractor = {
       addChunk(chunk) {
@@ -371,7 +371,7 @@ const webApp = (app, ReactApp, config) => {
   const attributes = stringifyAttributes(scripts.attributes);
   scripts.startup = scripts.startup || startupScriptFilename;
   const responseHandler = typeof handleResponses === 'function' ? handleResponses : handleResponse;
-  const versionInfo = JSON.parse(fs__default['default'].readFileSync(`dist/${staticFolderPath}/version.json`, 'utf8'));
+  const versionInfo = JSON.parse(fs__default["default"].readFileSync(`dist/${staticFolderPath}/version.json`, 'utf8'));
   app.get('/*', async (request, response) => {
     const {
       url
@@ -389,7 +389,7 @@ const webApp = (app, ReactApp, config) => {
     const normaliseQs = q => q && q.toLowerCase() === 'true' ? true : false; // Determine functional params from QueryString and set access methods
 
 
-    const accessMethod = mapJson__default['default'](request.query, {
+    const accessMethod = mapJson__default["default"](request.query, {
       DYNAMIC: ({
         dynamic
       }) => normaliseQs(dynamic) || onlyDynamic,
@@ -419,14 +419,14 @@ const webApp = (app, ReactApp, config) => {
     const groups = allowedGroups && allowedGroups[project];
     store.dispatch(actions.setCurrentProject(project, groups, request.hostname));
     const loadableExtractor = loadableChunkExtractors();
-    const jsx = /*#__PURE__*/React__default['default'].createElement(server.ChunkExtractorManager, {
+    const jsx = /*#__PURE__*/React__default["default"].createElement(server.ChunkExtractorManager, {
       extractor: loadableExtractor === null || loadableExtractor === void 0 ? void 0 : loadableExtractor.commonLoadableExtractor
-    }, /*#__PURE__*/React__default['default'].createElement(reactRedux.Provider, {
+    }, /*#__PURE__*/React__default["default"].createElement(reactRedux.Provider, {
       store: store
-    }, /*#__PURE__*/React__default['default'].createElement(reactRouterDom.StaticRouter, {
+    }, /*#__PURE__*/React__default["default"].createElement(reactRouterDom.StaticRouter, {
       context: context,
       location: url
-    }, /*#__PURE__*/React__default['default'].createElement(ReactApp, {
+    }, /*#__PURE__*/React__default["default"].createElement(ReactApp, {
       routes: routes,
       withEvents: withEvents
     }))));
@@ -475,7 +475,7 @@ const webApp = (app, ReactApp, config) => {
         if (context.statusCode !== 404) {
           // For a request that returns a redux state object as a response
           if (accessMethod.REDUX) {
-            serialisedReduxData = serialize__default['default'](reduxState, {
+            serialisedReduxData = serialize__default["default"](reduxState, {
               ignoreFunction: true
             });
             addStandardHeaders(reduxState, response, packagejson, {
@@ -487,7 +487,7 @@ const webApp = (app, ReactApp, config) => {
           }
 
           if (!disableSsrRedux) {
-            serialisedReduxData = serialize__default['default'](reduxState, {
+            serialisedReduxData = serialize__default["default"](reduxState, {
               ignoreFunction: true
             });
             serialisedReduxData = `<script ${attributes}>window.REDUX_DATA = ${serialisedReduxData}</script>`;
@@ -503,17 +503,17 @@ const webApp = (app, ReactApp, config) => {
         if (context.statusCode === 404) title = '<title>404 page not found</title>'; // Static page served as a fragment
 
         if (accessMethod.FRAGMENT && accessMethod.STATIC) {
-          responseHTML = minifyCssString__default['default'](styleTags) + html;
+          responseHTML = minifyCssString__default["default"](styleTags) + html;
         } // Page fragment served with client scripts and redux data that hydrate the app client side
 
 
         if (accessMethod.FRAGMENT && !accessMethod.STATIC) {
-          responseHTML = templateHTMLFragment.replace('{{TITLE}}', title).replace('{{SEO_CRITICAL_METADATA}}', metadata).replace('{{CRITICAL_CSS}}', minifyCssString__default['default'](styleTags)).replace('{{APP}}', html).replace('{{LOADABLE_CHUNKS}}', bundleTags).replace('{{REDUX_DATA}}', serialisedReduxData);
+          responseHTML = templateHTMLFragment.replace('{{TITLE}}', title).replace('{{SEO_CRITICAL_METADATA}}', metadata).replace('{{CRITICAL_CSS}}', minifyCssString__default["default"](styleTags)).replace('{{APP}}', html).replace('{{LOADABLE_CHUNKS}}', bundleTags).replace('{{REDUX_DATA}}', serialisedReduxData);
         } // Full HTML page served statically
 
 
         if (!accessMethod.FRAGMENT && accessMethod.STATIC) {
-          responseHTML = templateHTMLStatic.replace('{{TITLE}}', title).replace('{{SEO_CRITICAL_METADATA}}', metadata).replace('{{CRITICAL_CSS}}', minifyCssString__default['default'](styleTags)).replace('{{APP}}', html).replace('{{LOADABLE_CHUNKS}}', '');
+          responseHTML = templateHTMLStatic.replace('{{TITLE}}', title).replace('{{SEO_CRITICAL_METADATA}}', metadata).replace('{{CRITICAL_CSS}}', minifyCssString__default["default"](styleTags)).replace('{{APP}}', html).replace('{{LOADABLE_CHUNKS}}', '');
         } // Full HTML page served with client scripts and redux data that hydrate the app client side
 
 
@@ -553,7 +553,7 @@ const webApp = (app, ReactApp, config) => {
   });
 };
 
-const app = express__default['default']();
+const app = express__default["default"]();
 
 const start = (ReactApp, config, ServerFeatures) => {
   global.PACKAGE_JSON = config.packagejson;
@@ -593,5 +593,5 @@ var internalServer = {
 };
 
 exports.ReactApp = App.AppRoot;
-exports.default = internalServer;
+exports["default"] = internalServer;
 //# sourceMappingURL=contensis-react-base.js.map

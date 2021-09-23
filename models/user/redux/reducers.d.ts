@@ -25,31 +25,5 @@ export declare const initialUserState: {
     };
     groups: never[];
 };
-declare const _default: <Base extends {
-    readonly authenticationState: {
-        readonly authenticated: boolean;
-        readonly authenticationError: boolean;
-        readonly authenticationErrorMessage: null;
-        readonly clientCredentials: null;
-        readonly error: boolean;
-        readonly errorMessage: null;
-        readonly loading: boolean;
-    };
-    readonly passwordResetRequest: {
-        readonly isSending: boolean;
-        readonly sent: boolean;
-        readonly error: null;
-    };
-    readonly resetPassword: {
-        readonly isSending: boolean;
-        readonly sent: boolean;
-        readonly error: null;
-    };
-    readonly changePassword: {
-        readonly isSending: boolean;
-        readonly sent: boolean;
-        readonly error: null;
-    };
-    readonly groups: readonly never[];
-}>(base?: Base | undefined, action: any) => Base;
+declare const _default: never;
 export default _default;

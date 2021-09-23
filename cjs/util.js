@@ -2,19 +2,19 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
+var mapJson = require('jsonpath-mapper');
 var React = require('react');
 var reactRedux = require('react-redux');
+var selectors = require('./selectors-0ec95076.js');
+var version = require('./version-085d203d.js');
 var styled = require('styled-components');
-var mapJson = require('jsonpath-mapper');
-var selectors = require('./selectors-ed26ed97.js');
-var version = require('./version-0c190929.js');
 require('query-string');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
+var mapJson__default = /*#__PURE__*/_interopDefaultLegacy(mapJson);
 var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
 var styled__default = /*#__PURE__*/_interopDefaultLegacy(styled);
-var mapJson__default = /*#__PURE__*/_interopDefaultLegacy(mapJson);
 
 /**
  *
@@ -23,7 +23,7 @@ var mapJson__default = /*#__PURE__*/_interopDefaultLegacy(mapJson);
  * object to generate the intended target object
  */
 const useMapper = (json, template) => {
-  return template ? mapJson__default['default'](json || {}, template) : json;
+  return template ? mapJson__default["default"](json || {}, template) : json;
 };
 
 const chooseMapperByFieldValue = (entry, mappers, field = 'sys.contentTypeId') => {
@@ -68,7 +68,7 @@ const useEntryMapper = useEntriesMapper;
 
 const mapEntries = (entries, mappers, field = 'sys.contentTypeId') => entries.map(entry => {
   const mapper = chooseMapperByFieldValue(entry, mappers, field);
-  return mapper ? mapJson__default['default'](entry || {}, mapper) : entry;
+  return mapper ? mapJson__default["default"](entry || {}, mapper) : entry;
 });
 /**
  * mapComposer mapping function to take a composer field from Delivery API along
@@ -96,7 +96,7 @@ const mapComposer = (composer, mappers) => Array.isArray(composer) ? composer.ma
       ...addedFields,
       $root: composer
     } : itemValue || {};
-    const mappedFields = mapJson__default['default'](sourceObject, mapper); // Add the extra fields in with the return object
+    const mappedFields = mapJson__default["default"](sourceObject, mapper); // Add the extra fields in with the return object
 
     return mappedFields && typeof mappedFields === 'object' ? { ...mappedFields,
       ...addedFields
@@ -122,7 +122,7 @@ const useComposerMapper = (composer = [], mappers) => mapComposer(composer, mapp
  * @returns {mappedEntry}
  */
 
-const entryMapper = mapping => (node, state) => mapJson__default['default']({ ...node,
+const entryMapper = mapping => (node, state) => mapJson__default["default"]({ ...node,
   ...node.entry,
   state
 }, mapping);
@@ -235,13 +235,13 @@ const versionInfoProps = {
 };
 
 const mapStateToVersionInfo = state => {
-  const mappedProps = mapJson__default['default'](state, versionInfoProps);
+  const mappedProps = mapJson__default["default"](state, versionInfoProps);
   return mappedProps;
 };
 
-const VersionInfoStyledTable = styled__default['default'].table.withConfig({
+const VersionInfoStyledTable = styled__default["default"].table.withConfig({
   displayName: "VersionInfostyled__VersionInfoStyledTable",
-  componentId: "ogujr7-0"
+  componentId: "sc-ogujr7-0"
 })(["font-family:'Source Sans Pro',Helvetica,Arial,sans-serif;font-size:1.6rem;line-height:1.5rem;border-bottom:4px solid #8892bf;border-collapse:separate;margin:0 auto;width:80%;th{text-align:left;background-color:#c4c9df;border-bottom:#8892bf 2px solid;border-bottom-color:#8892bf;border-top:20px solid #fff;}td{border-bottom:1px solid #eee;}td,th{padding:0.5rem 0.75rem;vertical-align:top;}.left{width:25%;}tr th{border-right:hidden;border-spacing:0 15px;}.green{background-color:#9c9;border-bottom:1px solid #696;}.red{background-color:#c99;border-bottom:1px solid #966;}.small{font-size:100%;line-height:2.4rem;}"]);
 
 const VersionInfo = ({
@@ -260,64 +260,64 @@ const VersionInfo = ({
   version,
   zenPackageVersions
 }) => {
-  return /*#__PURE__*/React__default['default'].createElement(VersionInfoStyledTable, null, /*#__PURE__*/React__default['default'].createElement("thead", null, /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", {
+  return /*#__PURE__*/React__default["default"].createElement(VersionInfoStyledTable, null, /*#__PURE__*/React__default["default"].createElement("thead", null, /*#__PURE__*/React__default["default"].createElement("tr", null, /*#__PURE__*/React__default["default"].createElement("td", {
     colSpan: 2
-  }, /*#__PURE__*/React__default['default'].createElement("h1", null, /*#__PURE__*/React__default['default'].createElement("a", {
+  }, /*#__PURE__*/React__default["default"].createElement("h1", null, /*#__PURE__*/React__default["default"].createElement("a", {
     href: "/"
-  }, "Version Information"))))), /*#__PURE__*/React__default['default'].createElement("tbody", null, /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("th", {
+  }, "Version Information"))))), /*#__PURE__*/React__default["default"].createElement("tbody", null, /*#__PURE__*/React__default["default"].createElement("tr", null, /*#__PURE__*/React__default["default"].createElement("th", {
     colSpan: 2
-  }, "Package detail")), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", {
+  }, "Package detail")), /*#__PURE__*/React__default["default"].createElement("tr", null, /*#__PURE__*/React__default["default"].createElement("td", {
     className: "left"
-  }, "Name"), /*#__PURE__*/React__default['default'].createElement("td", null, packageDetail.name)), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", {
+  }, "Name"), /*#__PURE__*/React__default["default"].createElement("td", null, packageDetail.name)), /*#__PURE__*/React__default["default"].createElement("tr", null, /*#__PURE__*/React__default["default"].createElement("td", {
     className: "left"
-  }, "Version"), /*#__PURE__*/React__default['default'].createElement("td", null, packageDetail.version)), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("th", {
+  }, "Version"), /*#__PURE__*/React__default["default"].createElement("td", null, packageDetail.version)), /*#__PURE__*/React__default["default"].createElement("tr", null, /*#__PURE__*/React__default["default"].createElement("th", {
     colSpan: 2
-  }, "Version info (state)")), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", null, "Git repo url: "), /*#__PURE__*/React__default['default'].createElement("td", null, /*#__PURE__*/React__default['default'].createElement("a", {
+  }, "Version info (state)")), /*#__PURE__*/React__default["default"].createElement("tr", null, /*#__PURE__*/React__default["default"].createElement("td", null, "Git repo url: "), /*#__PURE__*/React__default["default"].createElement("td", null, /*#__PURE__*/React__default["default"].createElement("a", {
     href: packageDetail.repository,
     target: "_blank",
     rel: "noopener noreferrer"
-  }, packageDetail.repository))), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", null, "Pipeline: "), /*#__PURE__*/React__default['default'].createElement("td", null, /*#__PURE__*/React__default['default'].createElement("a", {
+  }, packageDetail.repository))), /*#__PURE__*/React__default["default"].createElement("tr", null, /*#__PURE__*/React__default["default"].createElement("td", null, "Pipeline: "), /*#__PURE__*/React__default["default"].createElement("td", null, /*#__PURE__*/React__default["default"].createElement("a", {
     href: uris.pipeline,
     target: "_blank",
     rel: "noopener noreferrer"
-  }, version.buildNumber))), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", null, "Commit: "), /*#__PURE__*/React__default['default'].createElement("td", null, /*#__PURE__*/React__default['default'].createElement("a", {
+  }, version.buildNumber))), /*#__PURE__*/React__default["default"].createElement("tr", null, /*#__PURE__*/React__default["default"].createElement("td", null, "Commit: "), /*#__PURE__*/React__default["default"].createElement("td", null, /*#__PURE__*/React__default["default"].createElement("a", {
     href: uris.commit,
     target: "_blank",
     rel: "noopener noreferrer"
-  }, version.commitRef))), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", null, "Project"), /*#__PURE__*/React__default['default'].createElement("td", {
+  }, version.commitRef))), /*#__PURE__*/React__default["default"].createElement("tr", null, /*#__PURE__*/React__default["default"].createElement("td", null, "Project"), /*#__PURE__*/React__default["default"].createElement("td", {
     className: project === 'unknown' ? 'red' : ''
-  }, project)), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", null, "Contensis version status: "), /*#__PURE__*/React__default['default'].createElement("td", {
+  }, project)), /*#__PURE__*/React__default["default"].createElement("tr", null, /*#__PURE__*/React__default["default"].createElement("td", null, "Contensis version status: "), /*#__PURE__*/React__default["default"].createElement("td", {
     className: version.contensisVersionStatus === 'published' ? 'green' : 'red'
-  }, version.contensisVersionStatus)), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("th", {
+  }, version.contensisVersionStatus)), /*#__PURE__*/React__default["default"].createElement("tr", null, /*#__PURE__*/React__default["default"].createElement("th", {
     colSpan: 2
-  }, "Build configuration")), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", null, "Environment"), /*#__PURE__*/React__default['default'].createElement("td", null, servers.alias)), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", null, "Public uri"), /*#__PURE__*/React__default['default'].createElement("td", null, publicUri)), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", null, "Zengenti packages"), /*#__PURE__*/React__default['default'].createElement("td", null, zenPackageVersions.map(([pkg, ver], idx) => /*#__PURE__*/React__default['default'].createElement("div", {
+  }, "Build configuration")), /*#__PURE__*/React__default["default"].createElement("tr", null, /*#__PURE__*/React__default["default"].createElement("td", null, "Environment"), /*#__PURE__*/React__default["default"].createElement("td", null, servers.alias)), /*#__PURE__*/React__default["default"].createElement("tr", null, /*#__PURE__*/React__default["default"].createElement("td", null, "Public uri"), /*#__PURE__*/React__default["default"].createElement("td", null, publicUri)), /*#__PURE__*/React__default["default"].createElement("tr", null, /*#__PURE__*/React__default["default"].createElement("td", null, "Zengenti packages"), /*#__PURE__*/React__default["default"].createElement("td", null, zenPackageVersions.map(([pkg, ver], idx) => /*#__PURE__*/React__default["default"].createElement("div", {
     key: idx
-  }, pkg, ": ", ver)))), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", null, "Servers"), /*#__PURE__*/React__default['default'].createElement("td", {
+  }, pkg, ": ", ver)))), /*#__PURE__*/React__default["default"].createElement("tr", null, /*#__PURE__*/React__default["default"].createElement("td", null, "Servers"), /*#__PURE__*/React__default["default"].createElement("td", {
     className: "small"
-  }, /*#__PURE__*/React__default['default'].createElement("div", null, "web: ", servers.web), /*#__PURE__*/React__default['default'].createElement("div", null, "preview: ", servers.previewWeb), /*#__PURE__*/React__default['default'].createElement("div", null, "api: ", servers.api), /*#__PURE__*/React__default['default'].createElement("div", null, "cms: ", servers.cms), /*#__PURE__*/React__default['default'].createElement("div", null, "iis: ", servers.iis), /*#__PURE__*/React__default['default'].createElement("div", null, "iis preview: ", servers.previewIis))), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", null, "Reverse proxy paths"), /*#__PURE__*/React__default['default'].createElement("td", null, Object.entries(reverseProxyPaths).map(([, path], key) => /*#__PURE__*/React__default['default'].createElement("span", {
+  }, /*#__PURE__*/React__default["default"].createElement("div", null, "web: ", servers.web), /*#__PURE__*/React__default["default"].createElement("div", null, "preview: ", servers.previewWeb), /*#__PURE__*/React__default["default"].createElement("div", null, "api: ", servers.api), /*#__PURE__*/React__default["default"].createElement("div", null, "cms: ", servers.cms), /*#__PURE__*/React__default["default"].createElement("div", null, "iis: ", servers.iis), /*#__PURE__*/React__default["default"].createElement("div", null, "iis preview: ", servers.previewIis))), /*#__PURE__*/React__default["default"].createElement("tr", null, /*#__PURE__*/React__default["default"].createElement("td", null, "Reverse proxy paths"), /*#__PURE__*/React__default["default"].createElement("td", null, Object.entries(reverseProxyPaths).map(([, path], key) => /*#__PURE__*/React__default["default"].createElement("span", {
     key: key
-  }, "[ ", path, " ] ")))), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", null, "Projects"), /*#__PURE__*/React__default['default'].createElement("td", null, Object.entries(projects).map(([, project], key) => /*#__PURE__*/React__default['default'].createElement("div", {
+  }, "[ ", path, " ] ")))), /*#__PURE__*/React__default["default"].createElement("tr", null, /*#__PURE__*/React__default["default"].createElement("td", null, "Projects"), /*#__PURE__*/React__default["default"].createElement("td", null, Object.entries(projects).map(([, project], key) => /*#__PURE__*/React__default["default"].createElement("div", {
     key: key
-  }, "[ ", project.id, ": ", project.publicUri, " ]")))), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", null, "Delivery API"), /*#__PURE__*/React__default['default'].createElement("td", {
+  }, "[ ", project.id, ": ", project.publicUri, " ]")))), /*#__PURE__*/React__default["default"].createElement("tr", null, /*#__PURE__*/React__default["default"].createElement("td", null, "Delivery API"), /*#__PURE__*/React__default["default"].createElement("td", {
     className: "small"
-  }, /*#__PURE__*/React__default['default'].createElement("ul", {
+  }, /*#__PURE__*/React__default["default"].createElement("ul", {
     style: {
       margin: 0,
       padding: 0
     }
   }, Object.entries(deliveryApi).map(([key, value], idx) => {
     if (typeof value === 'object') return null;
-    return /*#__PURE__*/React__default['default'].createElement("li", {
+    return /*#__PURE__*/React__default["default"].createElement("li", {
       key: idx,
       style: {
         listStyleType: 'none'
       }
-    }, key, ": ", /*#__PURE__*/React__default['default'].createElement("span", null, value));
-  })))), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", null, "Proxy Delivery API requests"), /*#__PURE__*/React__default['default'].createElement("td", {
+    }, key, ": ", /*#__PURE__*/React__default["default"].createElement("span", null, value));
+  })))), /*#__PURE__*/React__default["default"].createElement("tr", null, /*#__PURE__*/React__default["default"].createElement("td", null, "Proxy Delivery API requests"), /*#__PURE__*/React__default["default"].createElement("td", {
     className: proxyDeliveryApi ? 'green' : 'red'
-  }, proxyDeliveryApi.toString())), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", null, "Disable SSR inline-redux"), /*#__PURE__*/React__default['default'].createElement("td", null, disableSsrRedux.toString())), /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", null, "NODE_ENV"), /*#__PURE__*/React__default['default'].createElement("td", {
+  }, proxyDeliveryApi.toString())), /*#__PURE__*/React__default["default"].createElement("tr", null, /*#__PURE__*/React__default["default"].createElement("td", null, "Disable SSR inline-redux"), /*#__PURE__*/React__default["default"].createElement("td", null, disableSsrRedux.toString())), /*#__PURE__*/React__default["default"].createElement("tr", null, /*#__PURE__*/React__default["default"].createElement("td", null, "NODE_ENV"), /*#__PURE__*/React__default["default"].createElement("td", {
     className: nodeEnv === 'production' ? 'green' : 'red'
-  }, nodeEnv.toString())), devEnv && /*#__PURE__*/React__default['default'].createElement("tr", null, /*#__PURE__*/React__default['default'].createElement("td", null, "process.env"), /*#__PURE__*/React__default['default'].createElement("td", null, Object.entries(devEnv).map(([k, v], key) => /*#__PURE__*/React__default['default'].createElement("div", {
+  }, nodeEnv.toString())), devEnv && /*#__PURE__*/React__default["default"].createElement("tr", null, /*#__PURE__*/React__default["default"].createElement("td", null, "process.env"), /*#__PURE__*/React__default["default"].createElement("td", null, Object.entries(devEnv).map(([k, v], key) => /*#__PURE__*/React__default["default"].createElement("div", {
     key: key
   }, "[ ", k, ": ", v, " ]"))))));
 };
@@ -326,15 +326,11 @@ var VersionInfo$1 = reactRedux.connect(mapStateToVersionInfo)(VersionInfo);
 
 Object.defineProperty(exports, 'jpath', {
   enumerable: true,
-  get: function () {
-    return mapJson.jpath;
-  }
+  get: function () { return mapJson.jpath; }
 });
 Object.defineProperty(exports, 'mapJson', {
   enumerable: true,
-  get: function () {
-    return mapJson__default['default'];
-  }
+  get: function () { return mapJson__default["default"]; }
 });
 exports.VersionInfo = VersionInfo$1;
 exports.entryMapper = entryMapper;

@@ -2,18 +2,18 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-require('jsonpath-mapper');
+var version$1 = require('./version-4f0f5fa6.js');
+var actions$1 = require('./actions-a24bf46e.js');
+var selectors$1 = require('./selectors-0ec95076.js');
+var version$2 = require('./version-085d203d.js');
+require('@redux-saga/core/effects');
 require('redux');
 require('redux-thunk');
 require('redux-saga');
 require('redux-injectors');
 require('immer');
-var version$1 = require('./version-f061e409.js');
-var actions$1 = require('./actions-12871aca.js');
 require('./reducers-fde41d6b.js');
-require('@redux-saga/core/effects');
-var selectors$1 = require('./selectors-ed26ed97.js');
-var version$2 = require('./version-0c190929.js');
+require('jsonpath-mapper');
 require('query-string');
 
 var types = {
@@ -24,13 +24,13 @@ var types = {
 
 const loadNavigationTree = () => selectors$1.action(version$1.GET_NODE_TREE);
 
-var navigation = /*#__PURE__*/Object.freeze({
+var navigation$1 = /*#__PURE__*/Object.freeze({
   __proto__: null,
   loadNavigationTree: loadNavigationTree
 });
 
 var actions = {
-  navigation,
+  navigation: navigation$1,
   routing: actions$1.routing$1,
   version: version$1.version$1
 };
@@ -44,7 +44,7 @@ var selectors = {
 // e.g. { routing: { types, actions }, navigation: { types, actions } }
 // instead of { types: { routing, navigation }, actions: { routing, navigation } }
 
-const navigation$1 = {
+const navigation = {
   types: types.navigation,
   actions: actions.navigation,
   selectors: selectors.navigation
@@ -66,15 +66,13 @@ exports.injectRedux = version$1.injectRedux;
 exports.injectSaga = version$1.injectSaga;
 Object.defineProperty(exports, 'store', {
   enumerable: true,
-  get: function () {
-    return version$1.reduxStore;
-  }
+  get: function () { return version$1.reduxStore; }
 });
 exports.useInjectRedux = version$1.useInjectRedux;
 exports.action = selectors$1.action;
 exports.getIn = selectors$1.getImmutableOrJS;
 exports.getJS = selectors$1.getJS;
-exports.navigation = navigation$1;
+exports.navigation = navigation;
 exports.routing = routing;
 exports.version = version;
 //# sourceMappingURL=redux.js.map
