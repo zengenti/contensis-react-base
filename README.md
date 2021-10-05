@@ -6,11 +6,11 @@ Handles web app routing with Contensis Site View and component rendering based o
 
 ## Upgrade notes (older projects)
 
-### React 17 (v2.6+)
+### React 17 (v3.0+)
 
 This version introduces React v17. React is very sensitive to having multiple versions installed at the same time.
 
-Many projects upgrading to v2.6 of `contensis-react-base` are likely to be using an older version of Storybook which when installed along with React 17 results in multiple versions of React being installed and resulting in the app not rendering giving a react console error.
+Many projects upgrading to v3.0 of `contensis-react-base` are likely to be using an older version of Storybook which when installed along with React 17 results in multiple versions of React being installed and resulting in the app not rendering giving a react console error.
 
 You will need to upgrade your version of Storybook to be >= 6.1 which has support for React 17. [Further reading](https://storybook.js.org/blog/storybook-6-1/)
 
@@ -109,7 +109,7 @@ All models are exported with the default package `@zengenti/contensis-react-base
 
 When importing Types to use in your own TypeScript project, try to always use the root import path e.g. `import { ModelName } from '@zengenti/contensis-react-base';`
 
-## Loadable components (v2.6+)
+## Loadable components (v3.0+)
 
 We have switched to using `@loadable/components` for our code splitting and to get the best experience, so should you. You will need to swap out the existing `react-loadable` Babel and Webpack plugins and then convert your existing `react-loadable` code to use their `@loadable/components` syntax. [Read more here](https://loadable-components.com/docs/component-splitting/)
 
