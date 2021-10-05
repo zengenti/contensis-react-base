@@ -2,7 +2,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var version$1 = require('./version-4f0f5fa6.js');
+var version$1 = require('./version-bf00e6d7.js');
 var actions$1 = require('./actions-a24bf46e.js');
 var selectors$1 = require('./selectors-0ec95076.js');
 var version$2 = require('./version-be0c7b7a.js');

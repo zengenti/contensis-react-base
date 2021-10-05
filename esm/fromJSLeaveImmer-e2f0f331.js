@@ -7,27 +7,13 @@ const fromJSOrdered = js => {
 var fromJSOrdered$1 = fromJSOrdered;
 
 const fromJSLeaveImmer = js => {
-  // console.info(js);
-  // if (typeof js !== 'object' || js === null) return js;
-  // // console.info(`from js - here is js ${JSON.stringify(js)}`);
-  // const convertedObject = isOrdered ? OrderedMap() : fromJS({});
-  // const keys = Object.keys(js);
-  // keys.forEach(key => {
-  //   if (key === 'immer') {
-  //     convertedObject.set(key, js[key]);
-  //     // console.info(`LOOK! - immer untouched bar root key "${key}"`);
-  //   } else {
-  //     // console.info(`LOOK! - normal immutable feature "${key}"`);
-  //     convertedObject.set(key, isOrdered ? fromJSOrdered(js) : fromJS(js));
-  //   }
-  // });
   const immutableObj = fromJSOrdered$1(js);
 
   if (immutableObj && 'set' in immutableObj && typeof immutableObj.set === 'function') {
     // convert the immer parts of the state back
     // to plain JS while retuning an immutable state object
     let immutableState = immutableObj;
-    ['immer', 'navigation', 'routing', 'search', 'user', 'version'].map(key => {
+    ['immer', 'form', 'navigation', 'routing', 'search', 'user', 'version'].map(key => {
       if (js[key] && immutableObj.get(key)) immutableState = immutableState.set(key, js[key]);
     });
     return immutableState;
@@ -37,4 +23,4 @@ const fromJSLeaveImmer = js => {
 };
 
 export { fromJSLeaveImmer as default };
-//# sourceMappingURL=fromJSLeaveImmer-392af4e3.js.map
+//# sourceMappingURL=fromJSLeaveImmer-e2f0f331.js.map
