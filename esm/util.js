@@ -2,8 +2,8 @@ import mapJson, { jpath } from 'jsonpath-mapper';
 export { jpath, default as mapJson } from 'jsonpath-mapper';
 import React from 'react';
 import { connect } from 'react-redux';
-import { a as selectCurrentProject } from './selectors-b98d5c76.js';
-import { a as selectCommitRef, b as selectBuildNumber, s as selectVersionStatus } from './version-3833e8b5.js';
+import { a as selectCurrentProject } from './selectors-8fca7fb2.js';
+import { a as selectCommitRef, b as selectBuildNumber, s as selectVersionStatus } from './version-ad2ec52c.js';
 import styled from 'styled-components';
 import 'query-string';
 

@@ -1,8 +1,8 @@
 export default useRegistration;
 declare function useRegistration(): {
     registerUser: (user: any, mappers: any) => any;
-    error: boolean | Error;
-    isLoading: boolean;
-    isSuccess: boolean;
-    user: {};
+    error: any;
+    isLoading: any;
+    isSuccess: any;
+    user: any;
 };

@@ -6,7 +6,7 @@ var mapJson = require('jsonpath-mapper');
 var React = require('react');
 var reactRedux = require('react-redux');
 var selectors = require('./selectors-0ec95076.js');
-var version = require('./version-085d203d.js');
+var version = require('./version-be0c7b7a.js');
 var styled = require('styled-components');
 require('query-string');
 
