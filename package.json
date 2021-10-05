@@ -98,6 +98,8 @@
     "contensis-delivery-api": "^1.1.7",
     "contensis-management-api": "^2.0.2",
     "custom-env": "^2.0.1",
+    "deep-equal": "^2.0.5",
+    "deepmerge": "^4.2.2",
     "express": "^4.17.1",
     "http-proxy": "^1.18.1",
     "immer": "^9.0.6",
