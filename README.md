@@ -14,7 +14,7 @@ Many projects upgrading to v3.0 of `contensis-react-base` are likely to be using
 
 You will need to upgrade your version of Storybook to be >= 6.1 which has support for React 17. [Further reading](https://storybook.js.org/blog/storybook-6-1/)
 
-TLDR: Storybook have provided a simple way to upgrade. Run `npx sb upgrade` when upgrading to v2.6 of `contensis-react-base`. You should also ensure you are running the latest version of webpack or webpack@4 to prevent futher errors when loading Storybook.
+TLDR: Storybook have provided a simple way to upgrade. Run `npx sb upgrade` when upgrading to v3.0 of `contensis-react-base`. You should also ensure you are running the latest version of webpack or webpack@4 to prevent futher errors when loading Storybook.
 
 If you are still getting react errors after this, check your project for other dependencies to remove/update that rely on older versions of react
 
