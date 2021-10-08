@@ -16,8 +16,8 @@ import minifyCssString from 'minify-css-string';
 import mapJson from 'jsonpath-mapper';
 import { ChunkExtractor, ChunkExtractorManager } from '@loadable/server';
 import { c as createStore, s as setVersionStatus, a as setVersion } from './version-3b4fe08d.js';
-import { h as history, d as deliveryApi, p as pickProject, r as rootSaga } from './App-4224ba21.js';
-export { A as ReactApp } from './App-4224ba21.js';
+import { h as history, d as deliveryApi, p as pickProject, r as rootSaga } from './App-1f9f906a.js';
+export { A as ReactApp } from './App-1f9f906a.js';
 import { s as setCurrentProject } from './actions-b949ef5c.js';
 import { g as getImmutableOrJS, s as selectRouteEntry, a as selectCurrentProject } from './selectors-8fca7fb2.js';
 import '@redux-saga/core/effects';
@@ -37,7 +37,8 @@ import 'await-to-js';
 import 'js-cookie';
 import 'react-hot-loader';
 import 'query-string';
-import './RouteLoader-027215f2.js';
+import './RouteLoader-18a27c93.js';
+import 'reselect';
 
 const servers$1 = SERVERS;
 /* global SERVERS */

@@ -11,7 +11,7 @@ var reactRouterDom = require('react-router-dom');
 var component = require('@loadable/component');
 var queryString = require('query-string');
 var version = require('./version-bf00e6d7.js');
-var App = require('./App-5d20127f.js');
+var App = require('./App-3f390daa.js');
 var actions = require('./actions-a24bf46e.js');
 require('./selectors-0ec95076.js');
 require('jsonpath-mapper');
@@ -30,8 +30,9 @@ require('./login-bc55ee33.js');
 require('./ToJs-697ace9f.js');
 require('await-to-js');
 require('js-cookie');
-require('./RouteLoader-df3de0cb.js');
+require('./RouteLoader-0f632921.js');
 require('react-router-config');
+require('reselect');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 

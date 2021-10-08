@@ -20,7 +20,7 @@ var minifyCssString = require('minify-css-string');
 var mapJson = require('jsonpath-mapper');
 var server = require('@loadable/server');
 var version = require('./version-bf00e6d7.js');
-var App = require('./App-5d20127f.js');
+var App = require('./App-3f390daa.js');
 var actions = require('./actions-a24bf46e.js');
 var selectors = require('./selectors-0ec95076.js');
 require('@redux-saga/core/effects');
@@ -40,7 +40,8 @@ require('await-to-js');
 require('js-cookie');
 require('react-hot-loader');
 require('query-string');
-require('./RouteLoader-df3de0cb.js');
+require('./RouteLoader-0f632921.js');
+require('reselect');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 

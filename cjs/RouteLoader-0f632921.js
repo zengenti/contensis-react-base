@@ -5,6 +5,7 @@ var reactRedux = require('react-redux');
 var reactHotLoader = require('react-hot-loader');
 var reactRouterDom = require('react-router-dom');
 var reactRouterConfig = require('react-router-config');
+var reselect = require('reselect');
 var selectors = require('./selectors-0ec95076.js');
 var actions = require('./actions-a24bf46e.js');
 var ToJs = require('./ToJs-697ace9f.js');
@@ -169,27 +170,40 @@ const RouteLoader = ({
   return null;
 };
 
-const mapStateToProps = state => {
-  return {
-    contentTypeId: selectors.selectRouteEntryContentTypeId(state),
-    entry: selectors.selectRouteEntry(state),
-    isError: selectors.selectRouteIsError(state),
-    isNotFound: selectors.selectIsNotFound(state),
-    isLoading: selectors.selectRouteLoading(state),
-    isLoggedIn: ToJs.selectUserIsAuthenticated(state),
-    mappedEntry: selectors.selectMappedEntry(state),
-    projectId: selectors.selectCurrentProject(state),
-    statePath: selectors.selectCurrentPath(state),
-    statusCode: selectors.selectRouteStatusCode(state),
-    statusText: selectors.selectRouteErrorMessage(state),
-    userGroups: ToJs.selectUserGroups(state)
-  };
-};
+const mapStateToPropsMemoized = reselect.createSelector(selectors.selectRouteEntryContentTypeId, selectors.selectRouteEntry, selectors.selectRouteIsError, selectors.selectIsNotFound, selectors.selectRouteLoading, ToJs.selectUserIsAuthenticated, selectors.selectMappedEntry, selectors.selectCurrentProject, selectors.selectCurrentPath, selectors.selectRouteStatusCode, selectors.selectRouteErrorMessage, ToJs.selectUserGroups, (contentTypeId, entry, isError, isNotFound, isLoading, isLoggedIn, mappedEntry, projectId, statePath, statusCode, statusText, userGroups) => ({
+  contentTypeId,
+  entry,
+  isError,
+  isNotFound,
+  isLoading,
+  isLoggedIn,
+  mappedEntry,
+  projectId,
+  statePath,
+  statusCode,
+  statusText,
+  userGroups
+})); // const mapStateToProps = state => {
+//   return {
+//     contentTypeId: selectRouteEntryContentTypeId(state),
+//     entry: selectRouteEntry(state),
+//     isError: selectRouteIsError(state),
+//     isNotFound: selectIsNotFound(state),
+//     isLoading: selectRouteLoading(state),
+//     isLoggedIn: selectUserIsAuthenticated(state),
+//     mappedEntry: selectMappedEntry(state),
+//     projectId: selectCurrentProject(state),
+//     statePath: selectCurrentPath(state),
+//     statusCode: selectRouteStatusCode(state),
+//     statusText: selectRouteErrorMessage(state),
+//     userGroups: selectUserGroups(state),
+//   };
+// };
 
 const mapDispatchToProps = {
   setNavigationPath: actions.setNavigationPath
 };
-var RouteLoader$1 = reactHotLoader.hot(module)(reactRedux.connect(mapStateToProps, mapDispatchToProps)(ToJs.toJS(RouteLoader)));
+var RouteLoader$1 = reactHotLoader.hot(module)(reactRedux.connect(mapStateToPropsMemoized, mapDispatchToProps)(ToJs.toJS(RouteLoader)));
 
 exports.RouteLoader = RouteLoader$1;
-//# sourceMappingURL=RouteLoader-df3de0cb.js.map
+//# sourceMappingURL=RouteLoader-0f632921.js.map

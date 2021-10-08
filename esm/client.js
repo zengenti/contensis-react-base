@@ -7,8 +7,8 @@ import { Router } from 'react-router-dom';
 import { loadableReady } from '@loadable/component';
 import * as queryString from 'query-string';
 import { c as createStore, s as setVersionStatus } from './version-3b4fe08d.js';
-import { d as deliveryApi, b as browserHistory, r as rootSaga, p as pickProject } from './App-4224ba21.js';
-export { A as ReactApp } from './App-4224ba21.js';
+import { d as deliveryApi, b as browserHistory, r as rootSaga, p as pickProject } from './App-1f9f906a.js';
+export { A as ReactApp } from './App-1f9f906a.js';
 import { s as setCurrentProject } from './actions-b949ef5c.js';
 import './selectors-8fca7fb2.js';
 import 'jsonpath-mapper';
@@ -27,8 +27,9 @@ import './login-6eab4c94.js';
 import './ToJs-46761960.js';
 import 'await-to-js';
 import 'js-cookie';
-import './RouteLoader-027215f2.js';
+import './RouteLoader-18a27c93.js';
 import 'react-router-config';
+import 'reselect';
 
 class ClientApp {
   constructor(ReactApp, config) {
