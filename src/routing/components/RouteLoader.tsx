@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { hot } from 'react-hot-loader';
 import { Redirect, useLocation } from 'react-router-dom';
 import { renderRoutes, matchRoutes, RouteConfig } from 'react-router-config';
+import { createSelector } from 'reselect';
 
 import NotFound from './NotFound';
 import { Status } from './Status';
@@ -196,28 +197,69 @@ const RouteLoader = ({
 
   return null;
 };
+const mapStateToPropsMemoized = createSelector(
+  selectRouteEntryContentTypeId,
+  selectRouteEntry,
+  selectRouteIsError,
+  selectIsNotFound,
+  selectRouteLoading,
+  selectUserIsAuthenticated,
+  selectMappedEntry,
+  selectCurrentProject,
+  selectCurrentPath,
+  selectRouteStatusCode,
+  selectRouteErrorMessage,
+  selectUserGroups,
+  (
+    contentTypeId,
+    entry,
+    isError,
+    isNotFound,
+    isLoading,
+    isLoggedIn,
+    mappedEntry,
+    projectId,
+    statePath,
+    statusCode,
+    statusText,
+    userGroups
+  ) => ({
+    contentTypeId,
+    entry,
+    isError,
+    isNotFound,
+    isLoading,
+    isLoggedIn,
+    mappedEntry,
+    projectId,
+    statePath,
+    statusCode,
+    statusText,
+    userGroups,
+  })
+);
 
-const mapStateToProps = state => {
-  return {
-    contentTypeId: selectRouteEntryContentTypeId(state),
-    entry: selectRouteEntry(state),
-    isError: selectRouteIsError(state),
-    isNotFound: selectIsNotFound(state),
-    isLoading: selectRouteLoading(state),
-    isLoggedIn: selectUserIsAuthenticated(state),
-    mappedEntry: selectMappedEntry(state),
-    projectId: selectCurrentProject(state),
-    statePath: selectCurrentPath(state),
-    statusCode: selectRouteStatusCode(state),
-    statusText: selectRouteErrorMessage(state),
-    userGroups: selectUserGroups(state),
-  };
-};
+// const mapStateToProps = state => {
+//   return {
+//     contentTypeId: selectRouteEntryContentTypeId(state),
+//     entry: selectRouteEntry(state),
+//     isError: selectRouteIsError(state),
+//     isNotFound: selectIsNotFound(state),
+//     isLoading: selectRouteLoading(state),
+//     isLoggedIn: selectUserIsAuthenticated(state),
+//     mappedEntry: selectMappedEntry(state),
+//     projectId: selectCurrentProject(state),
+//     statePath: selectCurrentPath(state),
+//     statusCode: selectRouteStatusCode(state),
+//     statusText: selectRouteErrorMessage(state),
+//     userGroups: selectUserGroups(state),
+//   };
+// };
 
 const mapDispatchToProps = {
   setNavigationPath,
 };
 
 export default hot(module)(
-  connect(mapStateToProps, mapDispatchToProps)(toJS(RouteLoader))
+  connect(mapStateToPropsMemoized, mapDispatchToProps)(toJS(RouteLoader))
 );
