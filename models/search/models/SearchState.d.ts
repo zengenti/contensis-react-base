@@ -76,6 +76,9 @@ export declare type FilterItem = {
     path?: string;
     isSelected: boolean;
 };
+export declare type SelectedFilters = {
+    [k: string]: string[];
+};
 export declare type Paging = {
     isLoading: boolean;
     pageCount: number;

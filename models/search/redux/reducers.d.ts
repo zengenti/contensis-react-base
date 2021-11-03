@@ -1,348 +1,260 @@
 import { SearchConfig } from '../models/Search';
 import { Context } from '../models/Enums';
-import { FilterItem } from '../models/SearchState';
-declare const _default: (config: SearchConfig) => (base: {
-    context: "facets" | "listings" | "minilist";
-    currentFacet: string;
-    currentListing: string;
-    term: string;
-    facets: {
-        [x: string]: {
-            entries: {
-                isLoading: boolean;
-                isError: boolean;
-                error?: any;
+declare const _default: (config: SearchConfig) => <Base extends {
+    readonly context: "facets" | "listings" | "minilist";
+    readonly currentFacet: string;
+    readonly currentListing: string;
+    readonly term: string;
+    readonly facets: {
+        readonly [x: string]: {
+            readonly entries: {
+                readonly isLoading: boolean;
+                readonly isError: boolean;
+                readonly error?: any;
             };
-            featuredEntries: {
-                isLoading: boolean;
-                isError: boolean;
-                error?: any;
+            readonly featuredEntries: {
+                readonly isLoading: boolean;
+                readonly isError: boolean;
+                readonly error?: any;
             };
-            featuredResults: import("immer").DraftArray<any[]>;
-            filters: {
-                [x: string]: {
-                    contentTypeId?: string | undefined;
-                    customWhere?: import("immer").DraftArray<import("../models/Search").CustomWhereClause> | undefined;
-                    fieldId?: string | undefined;
-                    isGrouped?: boolean | undefined;
-                    isSingleSelect?: boolean | undefined;
-                    isLoading: boolean;
-                    isError: boolean;
-                    items?: import("immer").DraftArray<FilterItem[]> | undefined;
-                    path?: string | undefined;
-                    renderable?: boolean | undefined;
-                    title?: string | undefined;
+            readonly featuredResults: readonly any[];
+            readonly filters: {
+                readonly [x: string]: {
+                    readonly contentTypeId?: string | undefined;
+                    readonly customWhere?: readonly ({
+                        readonly [x: string]: any;
+                        readonly field: string;
+                    } | {
+                        readonly not: {
+                            readonly [x: string]: any;
+                            readonly field: string;
+                        };
+                    } | {
+                        readonly and: readonly {
+                            readonly [x: string]: any;
+                            readonly field: string;
+                        }[];
+                    } | {
+                        readonly or: readonly {
+                            readonly [x: string]: any;
+                            readonly field: string;
+                        }[];
+                    })[] | undefined;
+                    readonly fieldId?: string | undefined;
+                    readonly isGrouped?: boolean | undefined;
+                    readonly isSingleSelect?: boolean | undefined;
+                    readonly isLoading: boolean;
+                    readonly isError: boolean;
+                    readonly items?: readonly {
+                        readonly contentTypeId?: string | undefined;
+                        readonly title?: string | undefined;
+                        readonly type?: string | undefined;
+                        readonly key: string;
+                        readonly path?: string | undefined;
+                        readonly isSelected: boolean;
+                    }[] | undefined;
+                    readonly path?: string | undefined;
+                    readonly renderable?: boolean | undefined;
+                    readonly title?: string | undefined;
                 };
             };
-            pagingInfo: {
-                isLoading: boolean;
-                pageCount: number;
-                pageSize: number;
-                pageIndex: number;
-                pagesLoaded: import("immer").DraftArray<number[]>;
-                prevPageIndex: number;
-                totalCount: number;
+            readonly pagingInfo: {
+                readonly isLoading: boolean;
+                readonly pageCount: number;
+                readonly pageSize: number;
+                readonly pageIndex: number;
+                readonly pagesLoaded: readonly number[];
+                readonly prevPageIndex: number;
+                readonly totalCount: number;
             };
-            preloaded: boolean;
-            projectId: string;
-            queryDuration: number;
-            queryParams: {
-                contentTypeIds: import("immer").DraftArray<string[]>;
-                dynamicOrderBy: import("immer").DraftArray<string[]>;
-                excludeIds: import("immer").DraftArray<string[]>;
-                internalPaging: boolean;
-                loadMorePaging: boolean;
-                useSearchTerm: boolean;
+            readonly preloaded: boolean;
+            readonly projectId: string;
+            readonly queryDuration: number;
+            readonly queryParams: {
+                readonly contentTypeIds: readonly string[];
+                readonly dynamicOrderBy: readonly string[];
+                readonly excludeIds: readonly string[];
+                readonly internalPaging: boolean;
+                readonly loadMorePaging: boolean;
+                readonly useSearchTerm: boolean;
             };
-            results: import("immer").DraftArray<any[]>;
-            tabId: number;
-            title: string;
+            readonly results: readonly any[];
+            readonly tabId: number;
+            readonly title: string;
         };
     };
-    listings: {
-        [x: string]: {
-            entries: {
-                isLoading: boolean;
-                isError: boolean;
-                error?: any;
+    readonly listings: {
+        readonly [x: string]: {
+            readonly entries: {
+                readonly isLoading: boolean;
+                readonly isError: boolean;
+                readonly error?: any;
             };
-            featuredEntries: {
-                isLoading: boolean;
-                isError: boolean;
-                error?: any;
+            readonly featuredEntries: {
+                readonly isLoading: boolean;
+                readonly isError: boolean;
+                readonly error?: any;
             };
-            featuredResults: import("immer").DraftArray<any[]>;
-            filters: {
-                [x: string]: {
-                    contentTypeId?: string | undefined;
-                    customWhere?: import("immer").DraftArray<import("../models/Search").CustomWhereClause> | undefined;
-                    fieldId?: string | undefined;
-                    isGrouped?: boolean | undefined;
-                    isSingleSelect?: boolean | undefined;
-                    isLoading: boolean;
-                    isError: boolean;
-                    items?: import("immer").DraftArray<FilterItem[]> | undefined;
-                    path?: string | undefined;
-                    renderable?: boolean | undefined;
-                    title?: string | undefined;
+            readonly featuredResults: readonly any[];
+            readonly filters: {
+                readonly [x: string]: {
+                    readonly contentTypeId?: string | undefined;
+                    readonly customWhere?: readonly ({
+                        readonly [x: string]: any;
+                        readonly field: string;
+                    } | {
+                        readonly not: {
+                            readonly [x: string]: any;
+                            readonly field: string;
+                        };
+                    } | {
+                        readonly and: readonly {
+                            readonly [x: string]: any;
+                            readonly field: string;
+                        }[];
+                    } | {
+                        readonly or: readonly {
+                            readonly [x: string]: any;
+                            readonly field: string;
+                        }[];
+                    })[] | undefined;
+                    readonly fieldId?: string | undefined;
+                    readonly isGrouped?: boolean | undefined;
+                    readonly isSingleSelect?: boolean | undefined;
+                    readonly isLoading: boolean;
+                    readonly isError: boolean;
+                    readonly items?: readonly {
+                        readonly contentTypeId?: string | undefined;
+                        readonly title?: string | undefined;
+                        readonly type?: string | undefined;
+                        readonly key: string;
+                        readonly path?: string | undefined;
+                        readonly isSelected: boolean;
+                    }[] | undefined;
+                    readonly path?: string | undefined;
+                    readonly renderable?: boolean | undefined;
+                    readonly title?: string | undefined;
                 };
             };
-            pagingInfo: {
-                isLoading: boolean;
-                pageCount: number;
-                pageSize: number;
-                pageIndex: number;
-                pagesLoaded: import("immer").DraftArray<number[]>;
-                prevPageIndex: number;
-                totalCount: number;
+            readonly pagingInfo: {
+                readonly isLoading: boolean;
+                readonly pageCount: number;
+                readonly pageSize: number;
+                readonly pageIndex: number;
+                readonly pagesLoaded: readonly number[];
+                readonly prevPageIndex: number;
+                readonly totalCount: number;
             };
-            preloaded: boolean;
-            projectId: string;
-            queryDuration: number;
-            queryParams: {
-                contentTypeIds: import("immer").DraftArray<string[]>;
-                dynamicOrderBy: import("immer").DraftArray<string[]>;
-                excludeIds: import("immer").DraftArray<string[]>;
-                internalPaging: boolean;
-                loadMorePaging: boolean;
-                useSearchTerm: boolean;
+            readonly preloaded: boolean;
+            readonly projectId: string;
+            readonly queryDuration: number;
+            readonly queryParams: {
+                readonly contentTypeIds: readonly string[];
+                readonly dynamicOrderBy: readonly string[];
+                readonly excludeIds: readonly string[];
+                readonly internalPaging: boolean;
+                readonly loadMorePaging: boolean;
+                readonly useSearchTerm: boolean;
             };
-            results: import("immer").DraftArray<any[]>;
-            tabId: number;
-            title: string;
+            readonly results: readonly any[];
+            readonly tabId: number;
+            readonly title: string;
         };
     };
-    minilist: {
-        [x: string]: {
-            entries: {
-                isLoading: boolean;
-                isError: boolean;
-                error?: any;
+    readonly minilist: {
+        readonly [x: string]: {
+            readonly entries: {
+                readonly isLoading: boolean;
+                readonly isError: boolean;
+                readonly error?: any;
             };
-            featuredEntries: {
-                isLoading: boolean;
-                isError: boolean;
-                error?: any;
+            readonly featuredEntries: {
+                readonly isLoading: boolean;
+                readonly isError: boolean;
+                readonly error?: any;
             };
-            featuredResults: import("immer").DraftArray<any[]>;
-            filters: {
-                [x: string]: {
-                    contentTypeId?: string | undefined;
-                    customWhere?: import("immer").DraftArray<import("../models/Search").CustomWhereClause> | undefined;
-                    fieldId?: string | undefined;
-                    isGrouped?: boolean | undefined;
-                    isSingleSelect?: boolean | undefined;
-                    isLoading: boolean;
-                    isError: boolean;
-                    items?: import("immer").DraftArray<FilterItem[]> | undefined;
-                    path?: string | undefined;
-                    renderable?: boolean | undefined;
-                    title?: string | undefined;
+            readonly featuredResults: readonly any[];
+            readonly filters: {
+                readonly [x: string]: {
+                    readonly contentTypeId?: string | undefined;
+                    readonly customWhere?: readonly ({
+                        readonly [x: string]: any;
+                        readonly field: string;
+                    } | {
+                        readonly not: {
+                            readonly [x: string]: any;
+                            readonly field: string;
+                        };
+                    } | {
+                        readonly and: readonly {
+                            readonly [x: string]: any;
+                            readonly field: string;
+                        }[];
+                    } | {
+                        readonly or: readonly {
+                            readonly [x: string]: any;
+                            readonly field: string;
+                        }[];
+                    })[] | undefined;
+                    readonly fieldId?: string | undefined;
+                    readonly isGrouped?: boolean | undefined;
+                    readonly isSingleSelect?: boolean | undefined;
+                    readonly isLoading: boolean;
+                    readonly isError: boolean;
+                    readonly items?: readonly {
+                        readonly contentTypeId?: string | undefined;
+                        readonly title?: string | undefined;
+                        readonly type?: string | undefined;
+                        readonly key: string;
+                        readonly path?: string | undefined;
+                        readonly isSelected: boolean;
+                    }[] | undefined;
+                    readonly path?: string | undefined;
+                    readonly renderable?: boolean | undefined;
+                    readonly title?: string | undefined;
                 };
             };
-            pagingInfo: {
-                isLoading: boolean;
-                pageCount: number;
-                pageSize: number;
-                pageIndex: number;
-                pagesLoaded: import("immer").DraftArray<number[]>;
-                prevPageIndex: number;
-                totalCount: number;
+            readonly pagingInfo: {
+                readonly isLoading: boolean;
+                readonly pageCount: number;
+                readonly pageSize: number;
+                readonly pageIndex: number;
+                readonly pagesLoaded: readonly number[];
+                readonly prevPageIndex: number;
+                readonly totalCount: number;
             };
-            preloaded: boolean;
-            projectId: string;
-            queryDuration: number;
-            queryParams: {
-                contentTypeIds: import("immer").DraftArray<string[]>;
-                dynamicOrderBy: import("immer").DraftArray<string[]>;
-                excludeIds: import("immer").DraftArray<string[]>;
-                internalPaging: boolean;
-                loadMorePaging: boolean;
-                useSearchTerm: boolean;
+            readonly preloaded: boolean;
+            readonly projectId: string;
+            readonly queryDuration: number;
+            readonly queryParams: {
+                readonly contentTypeIds: readonly string[];
+                readonly dynamicOrderBy: readonly string[];
+                readonly excludeIds: readonly string[];
+                readonly internalPaging: boolean;
+                readonly loadMorePaging: boolean;
+                readonly useSearchTerm: boolean;
             };
-            results: import("immer").DraftArray<any[]>;
-            tabId: number;
-            title: string;
+            readonly results: readonly any[];
+            readonly tabId: number;
+            readonly title: string;
         };
     };
-    tabs: import("immer").DraftArray<import("../models/SearchState").Tab[]>;
-    config: {
-        [x: string]: boolean;
+    readonly tabs: readonly {
+        readonly currentFacet: string;
+        readonly defaultFacet: string;
+        readonly id: number;
+        readonly label: string;
+        readonly totalCount: number;
+    }[];
+    readonly config: {
+        readonly [x: string]: boolean;
     };
-} | undefined, action: {
+}>(base?: Base | undefined, action: {
     [key: string]: any;
     context: keyof typeof Context;
     facet: string;
     params: {
         [key: string]: string;
     };
-}) => {
-    context: "facets" | "listings" | "minilist";
-    currentFacet: string;
-    currentListing: string;
-    term: string;
-    facets: {
-        [x: string]: {
-            entries: {
-                isLoading: boolean;
-                isError: boolean;
-                error?: any;
-            };
-            featuredEntries: {
-                isLoading: boolean;
-                isError: boolean;
-                error?: any;
-            };
-            featuredResults: import("immer").DraftArray<any[]>;
-            filters: {
-                [x: string]: {
-                    contentTypeId?: string | undefined;
-                    customWhere?: import("immer").DraftArray<import("../models/Search").CustomWhereClause> | undefined;
-                    fieldId?: string | undefined;
-                    isGrouped?: boolean | undefined;
-                    isSingleSelect?: boolean | undefined;
-                    isLoading: boolean;
-                    isError: boolean;
-                    items?: import("immer").DraftArray<FilterItem[]> | undefined;
-                    path?: string | undefined;
-                    renderable?: boolean | undefined;
-                    title?: string | undefined;
-                };
-            };
-            pagingInfo: {
-                isLoading: boolean;
-                pageCount: number;
-                pageSize: number;
-                pageIndex: number;
-                pagesLoaded: import("immer").DraftArray<number[]>;
-                prevPageIndex: number;
-                totalCount: number;
-            };
-            preloaded: boolean;
-            projectId: string;
-            queryDuration: number;
-            queryParams: {
-                contentTypeIds: import("immer").DraftArray<string[]>;
-                dynamicOrderBy: import("immer").DraftArray<string[]>;
-                excludeIds: import("immer").DraftArray<string[]>;
-                internalPaging: boolean;
-                loadMorePaging: boolean;
-                useSearchTerm: boolean;
-            };
-            results: import("immer").DraftArray<any[]>;
-            tabId: number;
-            title: string;
-        };
-    };
-    listings: {
-        [x: string]: {
-            entries: {
-                isLoading: boolean;
-                isError: boolean;
-                error?: any;
-            };
-            featuredEntries: {
-                isLoading: boolean;
-                isError: boolean;
-                error?: any;
-            };
-            featuredResults: import("immer").DraftArray<any[]>;
-            filters: {
-                [x: string]: {
-                    contentTypeId?: string | undefined;
-                    customWhere?: import("immer").DraftArray<import("../models/Search").CustomWhereClause> | undefined;
-                    fieldId?: string | undefined;
-                    isGrouped?: boolean | undefined;
-                    isSingleSelect?: boolean | undefined;
-                    isLoading: boolean;
-                    isError: boolean;
-                    items?: import("immer").DraftArray<FilterItem[]> | undefined;
-                    path?: string | undefined;
-                    renderable?: boolean | undefined;
-                    title?: string | undefined;
-                };
-            };
-            pagingInfo: {
-                isLoading: boolean;
-                pageCount: number;
-                pageSize: number;
-                pageIndex: number;
-                pagesLoaded: import("immer").DraftArray<number[]>;
-                prevPageIndex: number;
-                totalCount: number;
-            };
-            preloaded: boolean;
-            projectId: string;
-            queryDuration: number;
-            queryParams: {
-                contentTypeIds: import("immer").DraftArray<string[]>;
-                dynamicOrderBy: import("immer").DraftArray<string[]>;
-                excludeIds: import("immer").DraftArray<string[]>;
-                internalPaging: boolean;
-                loadMorePaging: boolean;
-                useSearchTerm: boolean;
-            };
-            results: import("immer").DraftArray<any[]>;
-            tabId: number;
-            title: string;
-        };
-    };
-    minilist: {
-        [x: string]: {
-            entries: {
-                isLoading: boolean;
-                isError: boolean;
-                error?: any;
-            };
-            featuredEntries: {
-                isLoading: boolean;
-                isError: boolean;
-                error?: any;
-            };
-            featuredResults: import("immer").DraftArray<any[]>;
-            filters: {
-                [x: string]: {
-                    contentTypeId?: string | undefined;
-                    customWhere?: import("immer").DraftArray<import("../models/Search").CustomWhereClause> | undefined;
-                    fieldId?: string | undefined;
-                    isGrouped?: boolean | undefined;
-                    isSingleSelect?: boolean | undefined;
-                    isLoading: boolean;
-                    isError: boolean;
-                    items?: import("immer").DraftArray<FilterItem[]> | undefined;
-                    path?: string | undefined;
-                    renderable?: boolean | undefined;
-                    title?: string | undefined;
-                };
-            };
-            pagingInfo: {
-                isLoading: boolean;
-                pageCount: number;
-                pageSize: number;
-                pageIndex: number;
-                pagesLoaded: import("immer").DraftArray<number[]>;
-                prevPageIndex: number;
-                totalCount: number;
-            };
-            preloaded: boolean;
-            projectId: string;
-            queryDuration: number;
-            queryParams: {
-                contentTypeIds: import("immer").DraftArray<string[]>;
-                dynamicOrderBy: import("immer").DraftArray<string[]>;
-                excludeIds: import("immer").DraftArray<string[]>;
-                internalPaging: boolean;
-                loadMorePaging: boolean;
-                useSearchTerm: boolean;
-            };
-            results: import("immer").DraftArray<any[]>;
-            tabId: number;
-            title: string;
-        };
-    };
-    tabs: import("immer").DraftArray<import("../models/SearchState").Tab[]>;
-    config: {
-        [x: string]: boolean;
-    };
-} | undefined;
+}) => Base;
 export default _default;

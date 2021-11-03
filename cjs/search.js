@@ -38,7 +38,6 @@ function _interopNamespace(e) {
 var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
 var mapJson__default = /*#__PURE__*/_interopDefaultLegacy(mapJson);
 var log__namespace = /*#__PURE__*/_interopNamespace(log);
-var queryString__default = /*#__PURE__*/_interopDefaultLegacy(queryString);
 var merge__default = /*#__PURE__*/_interopDefaultLegacy(merge);
 var equals__default = /*#__PURE__*/_interopDefaultLegacy(equals);
 
@@ -799,7 +798,7 @@ const extractQuotedPhrases = searchTerm => {
   return (searchTerm.match(pattern) || []).map(match => match.replace(/"/g, ''));
 };
 const buildUrl = (route, params) => {
-  const qs = queryString__default["default"].stringify(params);
+  const qs = queryString.stringify(params);
   const path = qs ? `${route}?${qs}` : route;
   return path;
 };
@@ -904,8 +903,17 @@ const contentTypeIdExpression = (contentTypeIds, webpageTemplates, assetTypes) =
 const filterExpressions = filters => {
   if (!filters) return [];
   const expressions = [];
-  filters.map(param => {
-    expressions.push(...fieldExpression(param.key, param.value, param.operator || 'in'));
+  filters.map(selectedFilter => {
+    if (selectedFilter.logicOperator === 'and') // using 'and' logic operator we loop through each filter
+      // and loop through all values to add an expression for each filter value
+      selectedFilter.values.forEach(value => expressions.push(...fieldExpression(selectedFilter.key, value, selectedFilter.fieldOperator || 'equalTo')));else if (selectedFilter.logicOperator === 'not') {
+      const fieldExpressions = fieldExpression(selectedFilter.key, selectedFilter.values, selectedFilter.fieldOperator || 'in');
+      fieldExpressions.forEach(expr => {
+        expressions.push(contensisCoreApi.Op.not(expr));
+      });
+    } // using 'or' logic operator we loop over each filter
+    // and simply add the array of values to an expression with an 'in' operator
+    else expressions.push(...fieldExpression(selectedFilter.key, selectedFilter.values, selectedFilter.fieldOperator || 'in'));
   });
   return expressions;
 };
@@ -1190,7 +1198,7 @@ const searchUriTemplate = {
 
     const stateFilters = term ? {} : Object.fromEntries(Object.entries(getSelectedFilters(state, facet, searchContext, 'js')).map(([key, f]) => [key, f === null || f === void 0 ? void 0 : f.join(',')]));
     const currentSearch = !term && getImmutableOrJS(state, ['routing', 'location', 'search']);
-    const currentQs = removeEmptyAttributes(queryString__default["default"].parse(currentSearch));
+    const currentQs = removeEmptyAttributes(queryString.parse(currentSearch));
     if (orderBy) currentQs.orderBy = orderBy;
     const searchTerm = getSearchTerm(state); // Use Immutable's merge to merge the stateFilters with any current Qs
     // to build the new Qs.
@@ -1198,7 +1206,7 @@ const searchUriTemplate = {
     const mergedSearch = removeEmptyAttributes({ ...merge__default["default"](currentQs, stateFilters),
       term: searchTerm
     });
-    return queryString__default["default"].stringify(mergedSearch);
+    return queryString.stringify(mergedSearch);
   },
   hash: {
     $path: 'state',
@@ -1348,14 +1356,15 @@ const filterTemplate = {
 const filterExpressionMapper = {
   // Expression type: so we can identify how to build the query
   expressionType: ({
-    filter
-  }) => filter.contentTypeId ? FilterExpressionTypes.contentType : FilterExpressionTypes.field,
+    contentTypeId
+  }) => contentTypeId ? FilterExpressionTypes.contentType : FilterExpressionTypes.field,
   // Key: so we can target the query to a specific field
-  key: 'filter.fieldId',
+  key: 'fieldId',
   // Value: so we can filter a specific field by an array of values
   // e.g. taxonomy key or contentTypeId array
-  value: 'selectedValue',
-  operator: 'filter.fieldOperator'
+  values: 'selectedValues',
+  operator: 'fieldOperator',
+  logicOperator: 'logicOperator'
 };
 
 const mapFilterToFilterExpression = filter => mapJson__default["default"](filter, filterExpressionMapper);
@@ -1365,18 +1374,15 @@ const mapFiltersToFilterExpression = (filters, selectedFilters) => {
   const filterExpressions = []; // Iterate through the keys in selectedFilters and locate
   // the items that are selected and queryable
 
-  Object.entries(selectedFilters).map(([fkey, selectedValue]) => {
+  Object.entries(selectedFilters).map(([fkey, selectedValues]) => {
     const filter = filters[fkey];
 
-    if (selectedValue && filter) {
-      const selectedItems = filter.items && filter.items.filter(itm => itm.isSelected) || []; // Where we have a value for a selectedFilter
+    if (selectedValues && filter) {
+      // Where we have a value for a selectedFilter
       // and a filter is found for the current key
       // map the filter to a filterExpression object
-
-      const expr = mapFilterToFilterExpression({
-        filter,
-        selectedItems,
-        selectedValue
+      const expr = mapFilterToFilterExpression({ ...filter,
+        selectedValues
       });
       filterExpressions.push(expr);
     }

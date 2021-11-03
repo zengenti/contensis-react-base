@@ -1,4 +1,5 @@
 import { Context } from './Enums';
+import { FieldOperators, LogicOperators } from './Queries';
 import { AppState } from './SearchState';
 export declare type Tab = {
     /** The facet to render as default */
@@ -15,8 +16,11 @@ export declare type CustomApi = {
     uri: string;
 };
 export declare type Listing = {
+    /** Display title */
+    title?: string;
     /** Experimental: use a custom API to retrieve search results */
     customApi?: CustomApi;
+} | {
     /** Experimental: override the rootUrl of the Delivery API client  */
     env?: string;
     /** An object with a key for each filter that is required in this facet */
@@ -26,21 +30,16 @@ export declare type Listing = {
     /** Query params object to drive the search for this facet */
     queryParams: QueryParams;
     /** Display title */
-    title: string;
+    title?: string;
 };
 export declare type Facet = {
-    /** Display title */
-    title: string;
-    /** Experimental: use a custom API to retrieve search results */
-    customApi?: CustomApi;
-} | ({
     /** The first facet to be shown if no facet is supplied via a route parameter [default false] */
     isDefault?: boolean;
     /** Set to true to temporarily disable the facet [default false] */
     isDisabled?: boolean;
     /** The id of the tab the facet applies to. Use 0 for default or the id assigned to the tab */
     tabId?: number;
-} & Listing);
+} & Listing;
 export declare type SearchFilters = {
     [key: string]: SearchFilter;
 };
@@ -52,7 +51,9 @@ export declare type SearchFilter = {
     /** The content type field we will apply the filter key to, to filter the list of returned results. */
     fieldId: string | string[];
     /** The Delivery API search operator we will use to filter the list of returned results. */
-    fieldOperator?: string;
+    fieldOperator?: FieldOperators;
+    /** The Delivery API locgical operator we will use to filter the list of returned results when multiple filter items are selected. */
+    logicOperator?: LogicOperators;
     /** The taxonomy path we will dynamically load into state under the items[] */
     path?: string;
     /** Setting to true will sync selected filters under matching filter keys in other facets */

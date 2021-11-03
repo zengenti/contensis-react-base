@@ -1,7 +1,7 @@
 import { Context } from '../models/Enums';
 import { QueryParams as QueryParams2 } from '../models/Queries';
 import { CustomApi, QueryParams } from '../models/Search';
-import { AppState, Facet, Facets, Filters, Paging, Tab } from '../models/SearchState';
+import { AppState, Facet, Facets, Filters, Paging, SelectedFilters, Tab } from '../models/SearchState';
 declare type StateType = 'immutable' | 'js';
 export declare const getSearchContext: (state: AppState) => Context;
 export declare const getCurrent: (state: AppState, context?: Context) => string;
@@ -22,9 +22,7 @@ export declare const getListing: (state: AppState, listing?: string) => Facet;
 export declare const getFilters: (state: AppState, facet: string, context?: Context, returnType?: StateType | undefined) => Filters;
 export declare const getRenderableFilters: (state: AppState, facet?: string, context?: Context) => Filters;
 export declare const getFiltersToLoad: (state: AppState, facet: string, context?: Context, returnType?: StateType | undefined) => string[];
-export declare const getSelectedFilters: (state: AppState, facet?: string, context?: Context, returnType?: StateType | undefined) => {
-    [k: string]: string[];
-};
+export declare const getSelectedFilters: (state: AppState, facet?: string, context?: Context, returnType?: StateType | undefined) => SelectedFilters;
 export declare const getResults: (state: AppState, current?: string, context?: Context, returnType?: StateType | undefined) => any[];
 export declare const getIsInternalPaging: (state: AppState, current: string, context?: Context) => boolean;
 export declare const getIsLoaded: (state: AppState, context?: Context, facet?: string | undefined) => boolean;
@@ -87,9 +85,7 @@ export declare const selectFacets: {
     getSearchTabs: (state: AppState, returnType?: StateType | undefined) => Tab[];
     getSearchTerm: (state: AppState) => string;
     getSearchTotalCount: (state: AppState) => any;
-    getSelectedFilters: (state: AppState, facet?: string, context?: Context, returnType?: StateType | undefined) => {
-        [k: string]: string[];
-    };
+    getSelectedFilters: (state: AppState, facet?: string, context?: Context, returnType?: StateType | undefined) => SelectedFilters;
 };
 export declare const selectListing: {
     getCurrent: (state: AppState) => string;
@@ -112,9 +108,7 @@ export declare const selectListing: {
     getResults: (state: AppState, listing?: string) => any[];
     getSearchTerm: (state: AppState) => string;
     getTotalCount: (state: AppState, listing?: string) => number;
-    getSelectedFilters: (state: AppState, listing?: string) => {
-        [k: string]: string[];
-    };
+    getSelectedFilters: (state: AppState, listing?: string) => SelectedFilters;
 };
 export declare const selectCurrentPath: (state: AppState) => any;
 export declare const selectVersionStatus: (state: AppState) => any;

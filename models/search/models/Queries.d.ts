@@ -3,6 +3,13 @@ import { VersionStatus } from 'contensis-core-api/lib/models';
 import { Operators } from 'contensis-delivery-api/lib/entries/query';
 import { CustomWhereClause, FeaturedResults, WeightedSearchField } from './Search';
 export declare type FieldOperators = Exclude<keyof Operators, 'and' | 'or' | 'not'>;
+export declare type LogicOperators = 'and' | 'or' | 'not';
+export declare type FilterExpression = {
+    key: string;
+    values: string[];
+    fieldOperator: FieldOperators;
+    logicOperator: LogicOperators;
+};
 export declare type SearchQueryOptions = {
     assetTypes: string[];
     contentTypeIds: string[];
@@ -11,11 +18,7 @@ export declare type SearchQueryOptions = {
     excludeIds: string[];
     featuredResults: FeaturedResults;
     fields: string[];
-    filters: {
-        key: string;
-        value: string;
-        operator: FieldOperators;
-    }[];
+    filters: FilterExpression[];
     includeInSearchFields: string[];
     languages: string[];
     pageSize: number;
