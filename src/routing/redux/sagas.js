@@ -232,16 +232,24 @@ function* getRouteSaga(action) {
               const childrenOptions = nodeOptions.children || {};
               // We need to make a separate call for child nodes if the first node query has been
               // limited by linkDepth or fields[]
-              const childNodes = yield cachedSearch.getChildren({
-                id: pathNode.id,
+              const nodeWithChildren = yield cachedSearch.getNode({
+                depth:
+                  childrenOptions.depth !== undefined
+                    ? childrenOptions.depth
+                    : childrenDepth,
+                path: currentPath,
                 entryFields: childrenOptions.fields || fields || '*',
                 entryLinkDepth:
-                  childrenOptions.linkDepth || linkDepth || entryLinkDepth || 0,
+                  childrenOptions.linkDepth !== undefined
+                    ? childrenOptions.linkDepth
+                    : linkDepth !== undefined
+                    ? linkDepth
+                    : entryLinkDepth,
                 language: defaultLang,
                 versionStatus: deliveryApiStatus,
               });
-              if (childNodes) {
-                pathNode.children = childNodes;
+              if (nodeWithChildren && nodeWithChildren.children) {
+                pathNode.children = nodeWithChildren.children;
               }
             }
           }
