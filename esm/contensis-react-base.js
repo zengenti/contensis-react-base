@@ -446,7 +446,7 @@ const webApp = (app, ReactApp, config) => {
         Helmet.rewind();
         const htmlAttributes = helmet.htmlAttributes.toString();
         let title = helmet.title.toString();
-        const metadata = helmet.meta.toString();
+        const metadata = helmet.meta.toString().concat(helmet.link.toString());
 
         if (context.url) {
           return response.redirect(302, context.url);
