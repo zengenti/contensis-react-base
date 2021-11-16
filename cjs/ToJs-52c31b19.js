@@ -7,33 +7,33 @@ function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'defau
 
 var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
 
-const selectUserIsLoading = state => selectors$1.getImmutableOrJS(state, ['authenticationState', 'loading']);
-const selectUserIsAuthenticated = state => selectors$1.getImmutableOrJS(state, ['authenticationState', 'authenticated']);
-const selectUserAuthenticationError = state => selectors$1.getImmutableOrJS(state, ['authenticationState', 'authenticationError']);
-const selectUserAuthenticationErrorMessage = state => selectors$1.getImmutableOrJS(state, ['authenticationState', 'authenticationErrorMessage']);
-const selectUserError = state => selectors$1.getImmutableOrJS(state, ['authenticationState', 'error']);
-const selectUserErrorMessage = state => selectors$1.getImmutableOrJS(state, ['authenticationState', 'errorMessage']);
-const selectClientCredentials = state => selectors$1.getImmutableOrJS(state, ['authenticationState', 'clientCredentials']);
+const selectUserIsLoading = state => selectors$1.getImmutableOrJS(state, ['user', 'authenticationState', 'loading']);
+const selectUserIsAuthenticated = state => selectors$1.getImmutableOrJS(state, ['user', 'authenticationState', 'authenticated']);
+const selectUserAuthenticationError = state => selectors$1.getImmutableOrJS(state, ['user', 'authenticationState', 'authenticationError']);
+const selectUserAuthenticationErrorMessage = state => selectors$1.getImmutableOrJS(state, ['user', 'authenticationState', 'authenticationErrorMessage']);
+const selectUserError = state => selectors$1.getImmutableOrJS(state, ['user', 'authenticationState', 'error']);
+const selectUserErrorMessage = state => selectors$1.getImmutableOrJS(state, ['user', 'authenticationState', 'errorMessage']);
+const selectClientCredentials = state => selectors$1.getImmutableOrJS(state, ['user', 'authenticationState', 'clientCredentials']);
 const selectUser = state => selectors$1.getImmutableOrJS(state, 'user');
-const selectUserIsZengentiStaff = state => selectors$1.getImmutableOrJS(state, ['isZengentiStaff']);
-const selectUserGuid = state => selectors$1.getImmutableOrJS(state, ['id']);
-const selectUsername = state => selectors$1.getImmutableOrJS(state, ['username']);
-const selectUserEmail = state => selectors$1.getImmutableOrJS(state, ['email']);
-const selectUserGroups = state => selectors$1.getImmutableOrJS(state, ['groups']);
-const selectUserSecurityToken = state => selectors$1.getImmutableOrJS(state, ['authenticationState', 'clientCredentials', 'contensisClassicToken']);
-const selectUserRegistration = state => selectors$1.getImmutableOrJS(state, ['registration'], {});
-const selectUserRegistrationError = state => selectors$1.getImmutableOrJS(state, ['registration', 'error'], false);
-const selectUserRegistrationIsLoading = state => selectors$1.getImmutableOrJS(state, ['registration', 'loading'], false);
-const selectUserRegistrationIsSuccess = state => selectors$1.getImmutableOrJS(state, ['registration', 'success'], false);
-const selectPasswordResetRequestSending = state => selectors$1.getImmutableOrJS(state, ['passwordResetRequest', 'isSending']);
-const selectPasswordResetRequestSent = state => selectors$1.getImmutableOrJS(state, ['passwordResetRequest', 'sent']);
-const selectPasswordResetRequestError = state => selectors$1.getImmutableOrJS(state, ['passwordResetRequest', 'error']);
-const selectResetPasswordSending = state => selectors$1.getImmutableOrJS(state, ['resetPassword', 'isSending']);
-const selectResetPasswordSent = state => selectors$1.getImmutableOrJS(state, ['resetPassword', 'sent']);
-const selectResetPasswordError = state => selectors$1.getImmutableOrJS(state, ['resetPassword', 'error']);
-const selectChangePasswordSending = state => selectors$1.getImmutableOrJS(state, ['changePassword', 'isSending']);
-const selectChangePasswordSent = state => selectors$1.getImmutableOrJS(state, ['changePassword', 'sent']);
-const selectChangePasswordError = state => selectors$1.getImmutableOrJS(state, ['changePassword', 'error']);
+const selectUserIsZengentiStaff = state => selectors$1.getImmutableOrJS(state, ['user', 'isZengentiStaff']);
+const selectUserGuid = state => selectors$1.getImmutableOrJS(state, ['user', 'id']);
+const selectUsername = state => selectors$1.getImmutableOrJS(state, ['user', 'username']);
+const selectUserEmail = state => selectors$1.getImmutableOrJS(state, ['user', 'email']);
+const selectUserGroups = state => selectors$1.getImmutableOrJS(state, ['user', 'groups']);
+const selectUserSecurityToken = state => selectors$1.getImmutableOrJS(state, ['user', 'authenticationState', 'clientCredentials', 'contensisClassicToken']);
+const selectUserRegistration = state => selectors$1.getImmutableOrJS(state, ['user', 'registration'], {});
+const selectUserRegistrationError = state => selectors$1.getImmutableOrJS(state, ['user', 'registration', 'error'], false);
+const selectUserRegistrationIsLoading = state => selectors$1.getImmutableOrJS(state, ['user', 'registration', 'loading'], false);
+const selectUserRegistrationIsSuccess = state => selectors$1.getImmutableOrJS(state, ['user', 'registration', 'success'], false);
+const selectPasswordResetRequestSending = state => selectors$1.getImmutableOrJS(state, ['user', 'passwordResetRequest', 'isSending']);
+const selectPasswordResetRequestSent = state => selectors$1.getImmutableOrJS(state, ['user', 'passwordResetRequest', 'sent']);
+const selectPasswordResetRequestError = state => selectors$1.getImmutableOrJS(state, ['user', 'passwordResetRequest', 'error']);
+const selectResetPasswordSending = state => selectors$1.getImmutableOrJS(state, ['user', 'resetPassword', 'isSending']);
+const selectResetPasswordSent = state => selectors$1.getImmutableOrJS(state, ['user', 'resetPassword', 'sent']);
+const selectResetPasswordError = state => selectors$1.getImmutableOrJS(state, ['user', 'resetPassword', 'error']);
+const selectChangePasswordSending = state => selectors$1.getImmutableOrJS(state, ['user', 'changePassword', 'isSending']);
+const selectChangePasswordSent = state => selectors$1.getImmutableOrJS(state, ['user', 'changePassword', 'sent']);
+const selectChangePasswordError = state => selectors$1.getImmutableOrJS(state, ['user', 'changePassword', 'error']);
 
 var selectors = /*#__PURE__*/Object.freeze({
   __proto__: null,
@@ -121,4 +121,4 @@ exports.selectUserRegistrationIsLoading = selectUserRegistrationIsLoading;
 exports.selectUserRegistrationIsSuccess = selectUserRegistrationIsSuccess;
 exports.selectors = selectors;
 exports.toJS = toJS;
-//# sourceMappingURL=ToJs-697ace9f.js.map
+//# sourceMappingURL=ToJs-52c31b19.js.map

@@ -8,7 +8,7 @@ var createSagaMiddleware = require('redux-saga');
 var reduxInjectors = require('redux-injectors');
 var immer = require('immer');
 var actions = require('./actions-a24bf46e.js');
-var reducers = require('./reducers-fde41d6b.js');
+var reducers = require('./reducers-60dafd94.js');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -466,4 +466,4 @@ exports.setVersionStatus = setVersionStatus;
 exports.useInjectRedux = useInjectRedux;
 exports.version = version$1;
 exports.version$1 = version;
-//# sourceMappingURL=version-bf00e6d7.js.map
+//# sourceMappingURL=version-12e166d2.js.map

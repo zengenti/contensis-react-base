@@ -128,7 +128,7 @@ var UserReducer = immer.produce((state, action) => {
             loading
           }
         };
-        return;
+        return state;
       }
     // REGISTER_USER is the trigger to set the user.registration initial state
     // and will set user.registration.loading to true
@@ -249,4 +249,4 @@ exports.UserReducer = UserReducer;
 exports.VALIDATE_USER = VALIDATE_USER;
 exports.initialUserState = initialUserState;
 exports.types = types;
-//# sourceMappingURL=reducers-fde41d6b.js.map
+//# sourceMappingURL=reducers-60dafd94.js.map
