@@ -13,15 +13,15 @@ const selectUserAuthenticationError = state => selectors$1.getImmutableOrJS(stat
 const selectUserAuthenticationErrorMessage = state => selectors$1.getImmutableOrJS(state, ['user', 'authenticationState', 'authenticationErrorMessage']);
 const selectUserError = state => selectors$1.getImmutableOrJS(state, ['user', 'authenticationState', 'error']);
 const selectUserErrorMessage = state => selectors$1.getImmutableOrJS(state, ['user', 'authenticationState', 'errorMessage']);
-const selectClientCredentials = state => selectors$1.getImmutableOrJS(state, ['user', 'authenticationState', 'clientCredentials']);
-const selectUser = state => selectors$1.getImmutableOrJS(state, 'user');
+const selectClientCredentials = (state, returnType) => selectors$1.getImmutableOrJS(state, ['user', 'authenticationState', 'clientCredentials'], {}, returnType);
+const selectUser = (state, returnType) => selectors$1.getImmutableOrJS(state, 'user', {}, returnType);
 const selectUserIsZengentiStaff = state => selectors$1.getImmutableOrJS(state, ['user', 'isZengentiStaff']);
 const selectUserGuid = state => selectors$1.getImmutableOrJS(state, ['user', 'id']);
 const selectUsername = state => selectors$1.getImmutableOrJS(state, ['user', 'username']);
 const selectUserEmail = state => selectors$1.getImmutableOrJS(state, ['user', 'email']);
-const selectUserGroups = state => selectors$1.getImmutableOrJS(state, ['user', 'groups']);
+const selectUserGroups = (state, returnType) => selectors$1.getImmutableOrJS(state, ['user', 'groups'], [], returnType);
 const selectUserSecurityToken = state => selectors$1.getImmutableOrJS(state, ['user', 'authenticationState', 'clientCredentials', 'contensisClassicToken']);
-const selectUserRegistration = state => selectors$1.getImmutableOrJS(state, ['user', 'registration'], {});
+const selectUserRegistration = (state, returnType) => selectors$1.getImmutableOrJS(state, ['user', 'registration'], {}, returnType);
 const selectUserRegistrationError = state => selectors$1.getImmutableOrJS(state, ['user', 'registration', 'error'], false);
 const selectUserRegistrationIsLoading = state => selectors$1.getImmutableOrJS(state, ['user', 'registration', 'loading'], false);
 const selectUserRegistrationIsSuccess = state => selectors$1.getImmutableOrJS(state, ['user', 'registration', 'success'], false);
@@ -121,4 +121,4 @@ exports.selectUserRegistrationIsLoading = selectUserRegistrationIsLoading;
 exports.selectUserRegistrationIsSuccess = selectUserRegistrationIsSuccess;
 exports.selectors = selectors;
 exports.toJS = toJS;
-//# sourceMappingURL=ToJs-52c31b19.js.map
+//# sourceMappingURL=ToJs-6fdfaed6.js.map

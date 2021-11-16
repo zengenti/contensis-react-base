@@ -20,7 +20,7 @@ var minifyCssString = require('minify-css-string');
 var mapJson = require('jsonpath-mapper');
 var server = require('@loadable/server');
 var version = require('./version-12e166d2.js');
-var App = require('./App-46ac2129.js');
+var App = require('./App-9792d455.js');
 var actions = require('./actions-a24bf46e.js');
 var selectors = require('./selectors-0ec95076.js');
 require('@redux-saga/core/effects');
@@ -34,13 +34,13 @@ require('history');
 require('contensis-delivery-api');
 require('./version-be0c7b7a.js');
 require('loglevel');
-require('./login-899c5a07.js');
-require('./ToJs-52c31b19.js');
+require('./login-c9f4fcfa.js');
+require('./ToJs-6fdfaed6.js');
 require('await-to-js');
 require('js-cookie');
 require('react-hot-loader');
 require('query-string');
-require('./RouteLoader-5edfed0a.js');
+require('./RouteLoader-2d908c75.js');
 require('reselect');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }

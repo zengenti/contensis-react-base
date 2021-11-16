@@ -7,15 +7,15 @@ const selectUserAuthenticationError = state => getImmutableOrJS(state, ['user', 
 const selectUserAuthenticationErrorMessage = state => getImmutableOrJS(state, ['user', 'authenticationState', 'authenticationErrorMessage']);
 const selectUserError = state => getImmutableOrJS(state, ['user', 'authenticationState', 'error']);
 const selectUserErrorMessage = state => getImmutableOrJS(state, ['user', 'authenticationState', 'errorMessage']);
-const selectClientCredentials = state => getImmutableOrJS(state, ['user', 'authenticationState', 'clientCredentials']);
-const selectUser = state => getImmutableOrJS(state, 'user');
+const selectClientCredentials = (state, returnType) => getImmutableOrJS(state, ['user', 'authenticationState', 'clientCredentials'], {}, returnType);
+const selectUser = (state, returnType) => getImmutableOrJS(state, 'user', {}, returnType);
 const selectUserIsZengentiStaff = state => getImmutableOrJS(state, ['user', 'isZengentiStaff']);
 const selectUserGuid = state => getImmutableOrJS(state, ['user', 'id']);
 const selectUsername = state => getImmutableOrJS(state, ['user', 'username']);
 const selectUserEmail = state => getImmutableOrJS(state, ['user', 'email']);
-const selectUserGroups = state => getImmutableOrJS(state, ['user', 'groups']);
+const selectUserGroups = (state, returnType) => getImmutableOrJS(state, ['user', 'groups'], [], returnType);
 const selectUserSecurityToken = state => getImmutableOrJS(state, ['user', 'authenticationState', 'clientCredentials', 'contensisClassicToken']);
-const selectUserRegistration = state => getImmutableOrJS(state, ['user', 'registration'], {});
+const selectUserRegistration = (state, returnType) => getImmutableOrJS(state, ['user', 'registration'], {}, returnType);
 const selectUserRegistrationError = state => getImmutableOrJS(state, ['user', 'registration', 'error'], false);
 const selectUserRegistrationIsLoading = state => getImmutableOrJS(state, ['user', 'registration', 'loading'], false);
 const selectUserRegistrationIsSuccess = state => getImmutableOrJS(state, ['user', 'registration', 'success'], false);
@@ -90,4 +90,4 @@ const toJS = WrappedComponent => wrappedComponentProps => {
 };
 
 export { selectUserIsAuthenticated as a, selectUserGroups as b, selectUserAuthenticationError as c, selectUserAuthenticationErrorMessage as d, selectUserError as e, selectUserErrorMessage as f, selectUserIsLoading as g, selectUser as h, selectUserRegistrationError as i, selectUserRegistrationIsLoading as j, selectUserRegistrationIsSuccess as k, selectUserRegistration as l, matchUserGroup as m, selectPasswordResetRequestSending as n, selectPasswordResetRequestSent as o, selectPasswordResetRequestError as p, selectResetPasswordSending as q, selectResetPasswordSent as r, selectClientCredentials as s, toJS as t, selectResetPasswordError as u, selectChangePasswordSending as v, selectChangePasswordSent as w, selectUserGuid as x, selectChangePasswordError as y, selectors as z };
-//# sourceMappingURL=ToJs-b2cb5be8.js.map
+//# sourceMappingURL=ToJs-d32b27da.js.map
