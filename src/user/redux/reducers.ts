@@ -102,7 +102,7 @@ export default produce((state: Draft<AppState['user']>, action) => {
           loading,
         },
       };
-      return;
+      return state;
     }
     // REGISTER_USER is the trigger to set the user.registration initial state
     // and will set user.registration.loading to true
