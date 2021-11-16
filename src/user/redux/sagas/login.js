@@ -75,7 +75,7 @@ export function* handleRequiresLoginSaga(action) {
     if (!userLoggedIn && !securityToken) {
       LoginHelper.ClientRedirectToSignInPage(action.location.pathname);
     } else if (routeRequiresGroups.length > 0) {
-      const userGroups = yield select(selectUserGroups);
+      const userGroups = yield select(selectUserGroups, 'js');
       const groupMatch = matchUserGroup(userGroups, routeRequiresGroups);
 
       if (!groupMatch)
@@ -169,7 +169,7 @@ function* logoutUserSaga({ redirectPath }) {
 }
 
 export function* refreshSecurityToken() {
-  const clientCredentials = yield select(selectClientCredentials);
+  const clientCredentials = yield select(selectClientCredentials, 'js');
   if (Object.keys(clientCredentials).length > 0) {
     const client = yield getManagementApiClient(clientCredentials);
     yield client.authenticate();

@@ -140,7 +140,7 @@ function* changePasswordSaga(action) {
     yield put({
       type: CHANGE_USER_PASSWORD_SENDING,
     });
-    const clientCredentials = yield select(selectClientCredentials);
+    const clientCredentials = yield select(selectClientCredentials, 'js');
     const client = yield getManagementApiClient({ ...clientCredentials });
 
     const [err, res] = yield to(

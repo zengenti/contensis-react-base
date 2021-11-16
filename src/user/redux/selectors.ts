@@ -1,3 +1,4 @@
+import { StateType } from '~/config';
 import { AppState } from '~/redux/appstate';
 import { getImmutableOrJS as getIn } from '~/redux/util';
 
@@ -19,10 +20,19 @@ export const selectUserError = (state: AppState) =>
 export const selectUserErrorMessage = (state: AppState) =>
   getIn(state, ['user', 'authenticationState', 'errorMessage']);
 
-export const selectClientCredentials = (state: AppState) =>
-  getIn(state, ['user', 'authenticationState', 'clientCredentials']);
+export const selectClientCredentials = (
+  state: AppState,
+  returnType?: StateType
+) =>
+  getIn(
+    state,
+    ['user', 'authenticationState', 'clientCredentials'],
+    {},
+    returnType
+  );
 
-export const selectUser = (state: AppState) => getIn(state, 'user');
+export const selectUser = (state: AppState, returnType?: StateType) =>
+  getIn(state, 'user', {}, returnType);
 
 export const selectUserIsZengentiStaff = (state: AppState) =>
   getIn(state, ['user', 'isZengentiStaff']);
@@ -35,8 +45,8 @@ export const selectUsername = (state: AppState) =>
 export const selectUserEmail = (state: AppState) =>
   getIn(state, ['user', 'email']);
 
-export const selectUserGroups = (state: AppState) =>
-  getIn(state, ['user', 'groups']);
+export const selectUserGroups = (state: AppState, returnType?: StateType) =>
+  getIn(state, ['user', 'groups'], [], returnType);
 
 export const selectUserSecurityToken = (state: AppState) =>
   getIn(state, [
@@ -46,8 +56,10 @@ export const selectUserSecurityToken = (state: AppState) =>
     'contensisClassicToken',
   ]);
 
-export const selectUserRegistration = (state: AppState) =>
-  getIn(state, ['user', 'registration'], {});
+export const selectUserRegistration = (
+  state: AppState,
+  returnType?: StateType
+) => getIn(state, ['user', 'registration'], {}, returnType);
 
 export const selectUserRegistrationError = (state: AppState) =>
   getIn(state, ['user', 'registration', 'error'], false);
