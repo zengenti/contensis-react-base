@@ -930,8 +930,8 @@ const dataFormatExpression = (contentTypeIds, dataFormat = DataFormats.entry) =>
     const withExpr = fieldExpression(Fields.sys.contentTypeId, withContentTypeIds)[0];
     const notExpr = contensisCoreApi.Op.not(fieldExpression(Fields.sys.contentTypeId, notContentTypeIds)[0]);
     andExpr.add(dataFormatExpr);
-    if (withContentTypeIds.length > 0) andExpr.add(withExpr);
-    if (notContentTypeIds.length > 0) andExpr.add(notExpr);
+    if (withContentTypeIds.length > 0 && withExpr) andExpr.add(withExpr);
+    if (notContentTypeIds.length > 0 && notExpr) andExpr.add(notExpr);
     return [andExpr];
   }
 
@@ -987,8 +987,8 @@ const equalToOrIn = (field, value, operator = 'equalTo') => {
   if (value.length === 0) return [];
 
   if (Array.isArray(value)) {
-    if (value.length === 1) return [contensisCoreApi.Op[operator](field, value[0], undefined, undefined)];
-    return [contensisCoreApi.Op.in(field, ...value)];
+    if (operator === 'equalTo') return [contensisCoreApi.Op.in(field, ...value)];
+    return [contensisCoreApi.Op.or(...value.map(innerValue => contensisCoreApi.Op[operator](field, innerValue, undefined, undefined)))];
   }
 
   return [];
@@ -1068,7 +1068,7 @@ const customWhereExpressions = where => {
       if (idx === 1 && // operator !== 'and' &&
       // operator !== 'or' &&
       operator !== 'between' && operator !== 'distanceWithin') {
-        expression = operator === 'freeText' || operator === 'contains' ? contensisCoreApi.Op[operator](field, value) : operator === 'in' ? contensisCoreApi.Op[operator](field, ...value) : contensisCoreApi.Op[operator](field, value);
+        expression = operator === 'freeText' || operator === 'contains' ? contensisCoreApi.Op[operator](field, value) : operator === 'in' ? contensisCoreApi.Op[operator](field, ...value) : operator === 'exists' ? contensisCoreApi.Op[operator](field, value) : contensisCoreApi.Op[operator](field, value);
         if (typeof weight === 'number') expression = expression.weight(weight);
       }
     });
@@ -1363,7 +1363,7 @@ const filterExpressionMapper = {
   // Value: so we can filter a specific field by an array of values
   // e.g. taxonomy key or contentTypeId array
   values: 'selectedValues',
-  operator: 'fieldOperator',
+  fieldOperator: 'fieldOperator',
   logicOperator: 'logicOperator'
 };
 
