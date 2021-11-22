@@ -102,7 +102,7 @@
     "deepmerge": "^4.2.2",
     "express": "^4.17.1",
     "http-proxy": "^1.18.1",
-    "immer": "^9.0.6",
+    "immer": ">8.0.0",
     "immutable": "4.0.0-rc.12",
     "isomorphic-fetch": "^3.0.0",
     "js-cookie": "^3.0.1",
@@ -130,10 +130,5 @@
     "serialize-javascript": "^6.0.0",
     "styled-components": "^5.3.1",
     "xxhashjs": "^0.2.2"
-  },
-  "peerDependencies": {
-    "immer": "^8.0.0 || ^9.0.0",
-    "react": "^16.0.0 || ^17.0.0",
-    "react-dom": "^16.0.0 || ^17.0.0"
   }
 }
