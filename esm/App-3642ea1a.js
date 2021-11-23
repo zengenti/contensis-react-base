@@ -2,7 +2,7 @@ import { createBrowserHistory, createMemoryHistory } from 'history';
 import { takeEvery, select, put, call, all } from '@redux-saga/core/effects';
 import { Client, Op, Query } from 'contensis-delivery-api';
 import { a as setSurrogateKeys, S as SET_NAVIGATION_PATH, b as SET_ROUTE, U as UPDATE_LOADING_STATE, c as SET_ENTRY, d as SET_ANCESTORS, e as SET_SIBLINGS, f as setRoute } from './actions-1e19267f.js';
-import { r as reduxStore, G as GET_NODE_TREE, h as hasNavigationTree, S as SET_NODE_TREE, b as GET_NODE_TREE_ERROR, i as injectRedux } from './version-80327c41.js';
+import { r as reduxStore, G as GET_NODE_TREE, h as hasNavigationTree, S as SET_NODE_TREE, b as GET_NODE_TREE_ERROR, i as injectRedux } from './version-eca1e4ca.js';
 import { s as selectVersionStatus } from './version-696796d7.js';
 import { b as selectCurrentProject, a as selectRouteEntry, c as selectCurrentNode, d as selectCurrentAncestors, e as selectRouteEntryEntryId, f as selectRouteEntryLanguage, h as selectMappedEntry, q as queryParams, i as selectCurrentSearch } from './selectors-65f0f31c.js';
 import * as log from 'loglevel';
@@ -1041,4 +1041,4 @@ const AppRoot = props => {
 };
 
 export { AppRoot as A, browserHistory as b, deliveryApi as d, history as h, pickProject as p, rootSaga as r };
-//# sourceMappingURL=App-e2c33c6e.js.map
+//# sourceMappingURL=App-3642ea1a.js.map

@@ -212,7 +212,7 @@ var RoutingReducer = produce((state, action) => {
 
     case SET_SURROGATE_KEYS:
       {
-        state.surrogateKeys = merge(state.surrogateKeys, (action.keys || []).split(' '), {
+        state.surrogateKeys = merge(state.surrogateKeys, (action.keys || '').split(' '), {
           arrayMerge: combineMerge
         });
         return;
@@ -436,4 +436,4 @@ var version = /*#__PURE__*/Object.freeze({
 });
 
 export { GET_NODE_TREE as G, SET_NODE_TREE as S, setVersion as a, GET_NODE_TREE_ERROR as b, createStore as c, version as d, navigation as e, convertSagaArray as f, injectReducer as g, hasNavigationTree as h, injectRedux as i, injectSaga as j, navigation$1 as n, reduxStore as r, setVersionStatus as s, useInjectRedux as u, version$1 as v };
-//# sourceMappingURL=version-80327c41.js.map
+//# sourceMappingURL=version-eca1e4ca.js.map

@@ -238,7 +238,7 @@ var RoutingReducer = immer.produce((state, action) => {
 
     case actions.SET_SURROGATE_KEYS:
       {
-        state.surrogateKeys = merge__default["default"](state.surrogateKeys, (action.keys || []).split(' '), {
+        state.surrogateKeys = merge__default["default"](state.surrogateKeys, (action.keys || '').split(' '), {
           arrayMerge: combineMerge
         });
         return;
@@ -477,4 +477,4 @@ exports.setVersionStatus = setVersionStatus;
 exports.useInjectRedux = useInjectRedux;
 exports.version = version$1;
 exports.version$1 = version;
-//# sourceMappingURL=version-b113eee5.js.map
+//# sourceMappingURL=version-6f8f4530.js.map
