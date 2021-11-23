@@ -6,7 +6,7 @@ const storeSurrogateKeys = response => {
   const keys = response.headers.get
     ? response.headers.get('surrogate-key')
     : response.headers.map['surrogate-key'];
-  if (keys) reduxStore.dispatch(setSurrogateKeys(keys));
+  if (keys) reduxStore.dispatch(setSurrogateKeys(keys, response.url));
 };
 
 const getClientConfig = project => {
@@ -17,7 +17,7 @@ const getClientConfig = project => {
     config.projectId = project;
   }
 
-  // // we only want the surrogate key header in a server context
+  // we only want the surrogate key header in a server context
   if (typeof window === 'undefined') {
     config.defaultHeaders = {
       'x-require-surrogate-key': true,
