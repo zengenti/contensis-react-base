@@ -6,5 +6,7 @@ export const hasNavigationTree = state =>
 export const selectNavigationRoot = state =>
   getIn(state, ['navigation', 'root']);
 
-export const selectNavigationDepends = state =>
-  getIn(state, ['navigation', 'treeDepends']);
+export const selectNavigationChildren = state =>
+  getIn(state, ['navigation', 'root', 'children']);
+
+export const selectNavigationDepends = () => [];

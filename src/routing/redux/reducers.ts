@@ -15,15 +15,12 @@ import { combineMerge } from '~/util/merge';
 
 const initialState = {
   currentHostname: null,
-  contentTypeId: null,
   currentPath: '/',
   currentNode: {},
   currentNodeAncestors: [],
   currentProject: 'unknown',
   entryID: null,
   entry: null,
-  currentTreeId: null,
-  entryDepends: [],
   error: undefined,
   isError: false,
   isLoading: false,
@@ -138,6 +135,7 @@ export default produce((state: Draft<any>, action) => {
       return;
     }
     case SET_SURROGATE_KEYS: {
+      console.info(`SET_SURROGATE_KEYS: '${action.url}' keys: ${action.keys}`);
       state.surrogateKeys = merge(
         state.surrogateKeys,
         (action.keys || '').split(' '),
@@ -147,7 +145,6 @@ export default produce((state: Draft<any>, action) => {
     }
     case SET_TARGET_PROJECT: {
       state.currentProject = action.project;
-      state.currentTreeId = ''; // getTreeID(action.project))
       state.allowedGroups = action.allowedGroups;
       state.currentHostname = action.hostname;
       return;

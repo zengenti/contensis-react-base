@@ -7,13 +7,11 @@ import { StaticRoute } from '~/routing/routes';
 export type AppState = {
   navigation: {
     root: Node | null;
-    treeDepends: string[];
     isError: boolean;
     isReady: boolean;
   };
   routing: {
     currentHostname: null;
-    contentTypeId: null;
     currentPath: string;
     currentNode: Node & { children: Node[] };
     currentNodeAncestors: Node[];
@@ -21,7 +19,6 @@ export type AppState = {
     currentProject: string;
     entryID: string | null;
     entry: Entry | null;
-    entryDepends: string[];
     error?: Error | any;
     isError: boolean;
     isLoading: boolean;
