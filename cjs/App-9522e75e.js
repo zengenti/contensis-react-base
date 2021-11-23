@@ -3,12 +3,12 @@
 var history$1 = require('history');
 var effects = require('@redux-saga/core/effects');
 var contensisDeliveryApi = require('contensis-delivery-api');
-var actions = require('./actions-43f4daa4.js');
-var version = require('./version-6f8f4530.js');
+var actions = require('./actions-6b9ef168.js');
+var version = require('./version-270b678d.js');
 var version$1 = require('./version-dcfdafd9.js');
 var selectors = require('./selectors-2c1b1183.js');
 var log = require('loglevel');
-var login = require('./login-5e3972d3.js');
+var login = require('./login-2346691a.js');
 var awaitToJs = require('await-to-js');
 var reducers = require('./reducers-60dafd94.js');
 var ToJs = require('./ToJs-5da8a85e.js');
@@ -16,7 +16,7 @@ var React = require('react');
 require('react-hot-loader');
 require('jsonpath-mapper');
 require('query-string');
-var RouteLoader = require('./RouteLoader-fb056e9e.js');
+var RouteLoader = require('./RouteLoader-0f7fb3d8.js');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -47,7 +47,7 @@ const browserHistory = selectedHistory();
 
 const storeSurrogateKeys = response => {
   const keys = response.headers.get ? response.headers.get('surrogate-key') : response.headers.map['surrogate-key'];
-  if (keys) version.reduxStore.dispatch(actions.setSurrogateKeys(keys));
+  if (keys) version.reduxStore.dispatch(actions.setSurrogateKeys(keys, response.url));
 };
 
 const getClientConfig = project => {
@@ -58,7 +58,7 @@ const getClientConfig = project => {
 
   if (project) {
     config.projectId = project;
-  } // // we only want the surrogate key header in a server context
+  } // we only want the surrogate key header in a server context
 
 
   if (typeof window === 'undefined') {
@@ -1071,4 +1071,4 @@ exports.deliveryApi = deliveryApi;
 exports.history = history;
 exports.pickProject = pickProject;
 exports.rootSaga = rootSaga;
-//# sourceMappingURL=App-7ecf6d63.js.map
+//# sourceMappingURL=App-9522e75e.js.map

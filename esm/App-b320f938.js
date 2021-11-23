@@ -1,12 +1,12 @@
 import { createBrowserHistory, createMemoryHistory } from 'history';
 import { takeEvery, select, put, call, all } from '@redux-saga/core/effects';
 import { Client, Op, Query } from 'contensis-delivery-api';
-import { a as setSurrogateKeys, S as SET_NAVIGATION_PATH, b as SET_ROUTE, U as UPDATE_LOADING_STATE, c as SET_ENTRY, d as SET_ANCESTORS, e as SET_SIBLINGS, f as setRoute } from './actions-1e19267f.js';
-import { r as reduxStore, G as GET_NODE_TREE, h as hasNavigationTree, S as SET_NODE_TREE, b as GET_NODE_TREE_ERROR, i as injectRedux } from './version-eca1e4ca.js';
+import { a as setSurrogateKeys, S as SET_NAVIGATION_PATH, b as SET_ROUTE, U as UPDATE_LOADING_STATE, c as SET_ENTRY, d as SET_ANCESTORS, e as SET_SIBLINGS, f as setRoute } from './actions-5437f43d.js';
+import { r as reduxStore, G as GET_NODE_TREE, h as hasNavigationTree, S as SET_NODE_TREE, b as GET_NODE_TREE_ERROR, i as injectRedux } from './version-be00bbb4.js';
 import { s as selectVersionStatus } from './version-696796d7.js';
 import { b as selectCurrentProject, a as selectRouteEntry, c as selectCurrentNode, d as selectCurrentAncestors, e as selectRouteEntryEntryId, f as selectRouteEntryLanguage, h as selectMappedEntry, q as queryParams, i as selectCurrentSearch } from './selectors-65f0f31c.js';
 import * as log from 'loglevel';
-import { f as findContentTypeMapping, h as handleRequiresLoginSaga, g as getManagementApiClient, l as loginSagas } from './login-1b08ac1a.js';
+import { f as findContentTypeMapping, h as handleRequiresLoginSaga, g as getManagementApiClient, l as loginSagas } from './login-af3b93c4.js';
 import { to } from 'await-to-js';
 import { R as REGISTER_USER, a as REGISTER_USER_SUCCESS, b as REGISTER_USER_FAILED, c as REQUEST_USER_PASSWORD_RESET, d as RESET_USER_PASSWORD, C as CHANGE_USER_PASSWORD, e as REQUEST_USER_PASSWORD_RESET_SENDING, f as REQUEST_USER_PASSWORD_RESET_SUCCESS, g as REQUEST_USER_PASSWORD_RESET_ERROR, h as RESET_USER_PASSWORD_SENDING, i as RESET_USER_PASSWORD_SUCCESS, j as RESET_USER_PASSWORD_ERROR, k as CHANGE_USER_PASSWORD_ERROR, l as CHANGE_USER_PASSWORD_SENDING, m as CHANGE_USER_PASSWORD_SUCCESS } from './reducers-6f6801ed.js';
 import { s as selectClientCredentials } from './ToJs-1f2e6395.js';
@@ -14,7 +14,7 @@ import React from 'react';
 import 'react-hot-loader';
 import 'jsonpath-mapper';
 import 'query-string';
-import { R as RouteLoader } from './RouteLoader-c8565e6e.js';
+import { R as RouteLoader } from './RouteLoader-31425b61.js';
 
 const selectedHistory = typeof window !== 'undefined' ? createBrowserHistory : createMemoryHistory;
 const history = (options = {}) => selectedHistory(options);
@@ -22,7 +22,7 @@ const browserHistory = selectedHistory();
 
 const storeSurrogateKeys = response => {
   const keys = response.headers.get ? response.headers.get('surrogate-key') : response.headers.map['surrogate-key'];
-  if (keys) reduxStore.dispatch(setSurrogateKeys(keys));
+  if (keys) reduxStore.dispatch(setSurrogateKeys(keys, response.url));
 };
 
 const getClientConfig = project => {
@@ -33,7 +33,7 @@ const getClientConfig = project => {
 
   if (project) {
     config.projectId = project;
-  } // // we only want the surrogate key header in a server context
+  } // we only want the surrogate key header in a server context
 
 
   if (typeof window === 'undefined') {
@@ -1041,4 +1041,4 @@ const AppRoot = props => {
 };
 
 export { AppRoot as A, browserHistory as b, deliveryApi as d, history as h, pickProject as p, rootSaga as r };
-//# sourceMappingURL=App-3642ea1a.js.map
+//# sourceMappingURL=App-b320f938.js.map

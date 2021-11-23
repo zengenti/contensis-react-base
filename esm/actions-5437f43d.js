@@ -53,8 +53,9 @@ const setRoute = (path, state) => action(SET_ROUTE, {
 const setRouteEntry = entry => action(SET_ENTRY, {
   entry
 });
-const setSurrogateKeys = keys => action(SET_SURROGATE_KEYS, {
-  keys
+const setSurrogateKeys = (keys, url) => action(SET_SURROGATE_KEYS, {
+  keys,
+  url
 });
 
 var routing = /*#__PURE__*/Object.freeze({
@@ -68,4 +69,4 @@ var routing = /*#__PURE__*/Object.freeze({
 });
 
 export { SET_NAVIGATION_PATH as S, UPDATE_LOADING_STATE as U, setSurrogateKeys as a, SET_ROUTE as b, SET_ENTRY as c, SET_ANCESTORS as d, SET_SIBLINGS as e, setRoute as f, setNavigationPath as g, SET_TARGET_PROJECT as h, SET_SURROGATE_KEYS as i, routing as j, routing$1 as r, setCurrentProject as s };
-//# sourceMappingURL=actions-1e19267f.js.map
+//# sourceMappingURL=actions-5437f43d.js.map

@@ -55,8 +55,9 @@ const setRoute = (path, state) => selectors.action(SET_ROUTE, {
 const setRouteEntry = entry => selectors.action(SET_ENTRY, {
   entry
 });
-const setSurrogateKeys = keys => selectors.action(SET_SURROGATE_KEYS, {
-  keys
+const setSurrogateKeys = (keys, url) => selectors.action(SET_SURROGATE_KEYS, {
+  keys,
+  url
 });
 
 var routing = /*#__PURE__*/Object.freeze({
@@ -83,4 +84,4 @@ exports.setCurrentProject = setCurrentProject;
 exports.setNavigationPath = setNavigationPath;
 exports.setRoute = setRoute;
 exports.setSurrogateKeys = setSurrogateKeys;
-//# sourceMappingURL=actions-43f4daa4.js.map
+//# sourceMappingURL=actions-6b9ef168.js.map
