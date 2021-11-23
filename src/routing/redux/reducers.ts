@@ -140,7 +140,7 @@ export default produce((state: Draft<any>, action) => {
     case SET_SURROGATE_KEYS: {
       state.surrogateKeys = merge(
         state.surrogateKeys,
-        (action.keys || []).split(' '),
+        (action.keys || '').split(' '),
         { arrayMerge: combineMerge }
       );
       return;
