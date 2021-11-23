@@ -1,4 +1,5 @@
 import { Draft, produce } from 'immer';
+import merge from 'deepmerge';
 
 import {
   SET_ENTRY,
@@ -10,6 +11,7 @@ import {
   SET_SURROGATE_KEYS,
   UPDATE_LOADING_STATE,
 } from './types';
+import { combineMerge } from '~/util/merge';
 
 const initialState = {
   currentHostname: null,
@@ -27,7 +29,6 @@ const initialState = {
   isLoading: false,
   location: {},
   mappedEntry: null,
-  nodeDepends: [],
   notFound: false,
   staticRoute: null,
   statusCode: 200,
@@ -80,7 +81,6 @@ export default produce((state: Draft<any>, action) => {
       }
 
       if (!node) {
-        state.nodeDepends = null;
         state.currentNode = null;
       } else {
         // On Set Node, we reset all dependants.
@@ -129,22 +129,20 @@ export default produce((state: Draft<any>, action) => {
     case SET_SIBLINGS: {
       // Can be null in some cases like the homepage.
       let currentNodeSiblingParent = null;
-      let siblingIDs = [];
       if (action.siblings && action.siblings.length > 0) {
         currentNodeSiblingParent = action.siblings[0].parentId;
-        siblingIDs = action.siblings.map(node => node.id);
       }
-      const currentNodeDepends = state.nodeDepends;
-      const allNodeDepends = [
-        ...new Set([...new Set(siblingIDs), currentNodeDepends]),
-      ];
-      state.nodeDepends = allNodeDepends;
+
       state.currentNodeSiblings = action.siblings;
       state.currentNodeSiblingsParent = currentNodeSiblingParent;
       return;
     }
     case SET_SURROGATE_KEYS: {
-      state.surrogateKeys = action.keys;
+      state.surrogateKeys = merge(
+        state.surrogateKeys,
+        (action.keys || []).split(' '),
+        { arrayMerge: combineMerge }
+      );
       return;
     }
     case SET_TARGET_PROJECT: {

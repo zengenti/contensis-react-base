@@ -10,9 +10,10 @@ export const selectRouteEntry = (state: AppState, returnType?: StateType) =>
 export const selectMappedEntry = (state: AppState, returnType?: StateType) =>
   getIn(state, ['routing', 'mappedEntry'], null, returnType);
 
-export const selectNodeDepends = (state: AppState) =>
-  getIn(state, ['routing', 'nodeDepends'], []);
-
+export const selectSurrogateKeys = (state: AppState) => {
+  const keys = getIn(state, ['routing', 'surrogateKeys'], [], 'js');
+  return keys.join(' ');
+};
 export const selectCurrentHostname = (state: AppState) =>
   getIn(state, ['routing', 'currentHostname']);
 

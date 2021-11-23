@@ -2,6 +2,7 @@ import { Response } from 'express';
 import {
   selectCurrentProject,
   selectRouteEntry,
+  selectSurrogateKeys,
 } from '~/routing/redux/selectors';
 import { getImmutableOrJS as getIn } from '~/redux/util';
 
@@ -16,11 +17,7 @@ export const addStandardHeaders = (
   if (state) {
     try {
       console.info('About to add headers');
-      const routingSurrogateKeys = getIn(
-        state,
-        ['routing', 'surrogateKeys'],
-        ''
-      );
+      const routingSurrogateKeys = selectSurrogateKeys(state);
 
       const surrogateKeyHeader = ` ${packagejson.name}-app ${routingSurrogateKeys}`;
 
