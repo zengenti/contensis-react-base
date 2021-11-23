@@ -5,8 +5,8 @@ Object.defineProperty(exports, '__esModule', { value: true });
 var mapJson = require('jsonpath-mapper');
 var React = require('react');
 var reactRedux = require('react-redux');
-var selectors = require('./selectors-0ec95076.js');
-var version = require('./version-be0c7b7a.js');
+var selectors = require('./selectors-2c1b1183.js');
+var version = require('./version-dcfdafd9.js');
 var styled = require('styled-components');
 require('query-string');
 

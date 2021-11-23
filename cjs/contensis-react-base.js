@@ -19,28 +19,29 @@ var serialize = require('serialize-javascript');
 var minifyCssString = require('minify-css-string');
 var mapJson = require('jsonpath-mapper');
 var server = require('@loadable/server');
-var version = require('./version-12e166d2.js');
-var App = require('./App-9792d455.js');
-var actions = require('./actions-a24bf46e.js');
-var selectors = require('./selectors-0ec95076.js');
+var version = require('./version-b113eee5.js');
+var App = require('./App-897b1b3a.js');
+var actions = require('./actions-43f4daa4.js');
+var selectors = require('./selectors-2c1b1183.js');
 require('@redux-saga/core/effects');
 require('redux');
 require('redux-thunk');
 require('redux-saga');
 require('redux-injectors');
 require('immer');
+require('deepmerge');
 require('./reducers-60dafd94.js');
 require('history');
 require('contensis-delivery-api');
-require('./version-be0c7b7a.js');
+require('./version-dcfdafd9.js');
 require('loglevel');
-require('./login-c9f4fcfa.js');
-require('./ToJs-6fdfaed6.js');
+require('./login-5e3972d3.js');
+require('./ToJs-5da8a85e.js');
 require('await-to-js');
 require('js-cookie');
 require('react-hot-loader');
 require('query-string');
-require('./RouteLoader-2d908c75.js');
+require('./RouteLoader-fb056e9e.js');
 require('reselect');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
@@ -318,7 +319,7 @@ const addStandardHeaders = (state, response, packagejson, groups) => {
   if (state) {
     try {
       console.info('About to add headers');
-      const routingSurrogateKeys = selectors.getImmutableOrJS(state, ['routing', 'surrogateKeys'], '');
+      const routingSurrogateKeys = selectors.selectSurrogateKeys(state);
       const surrogateKeyHeader = ` ${packagejson.name}-app ${routingSurrogateKeys}`;
       response.header('surrogate-key', surrogateKeyHeader);
       addVarnishAuthenticationHeaders(state, response, groups);

@@ -33,7 +33,6 @@ export declare type AppState = {
             key?: string;
         };
         mappedEntry: Record<string, any> | null;
-        nodeDepends: string[];
         notFound: boolean;
         staticRoute: MatchedRoute<Record<string, any>, StaticRoute>;
         statusCode: number;

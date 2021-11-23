@@ -15,29 +15,30 @@ import serialize from 'serialize-javascript';
 import minifyCssString from 'minify-css-string';
 import mapJson from 'jsonpath-mapper';
 import { ChunkExtractor, ChunkExtractorManager } from '@loadable/server';
-import { c as createStore, s as setVersionStatus, a as setVersion } from './version-751f11f5.js';
-import { h as history, d as deliveryApi, p as pickProject, r as rootSaga } from './App-90fd8f7e.js';
-export { A as ReactApp } from './App-90fd8f7e.js';
-import { s as setCurrentProject } from './actions-b949ef5c.js';
-import { g as getImmutableOrJS, s as selectRouteEntry, a as selectCurrentProject } from './selectors-8fca7fb2.js';
+import { c as createStore, s as setVersionStatus, a as setVersion } from './version-80327c41.js';
+import { h as history, d as deliveryApi, p as pickProject, r as rootSaga } from './App-e2c33c6e.js';
+export { A as ReactApp } from './App-e2c33c6e.js';
+import { s as setCurrentProject } from './actions-1e19267f.js';
+import { s as selectSurrogateKeys, a as selectRouteEntry, b as selectCurrentProject, g as getImmutableOrJS } from './selectors-65f0f31c.js';
 import '@redux-saga/core/effects';
 import 'redux';
 import 'redux-thunk';
 import 'redux-saga';
 import 'redux-injectors';
 import 'immer';
+import 'deepmerge';
 import './reducers-6f6801ed.js';
 import 'history';
 import 'contensis-delivery-api';
-import './version-ad2ec52c.js';
+import './version-696796d7.js';
 import 'loglevel';
-import './login-b2e7fa24.js';
-import './ToJs-d32b27da.js';
+import './login-1b08ac1a.js';
+import './ToJs-1f2e6395.js';
 import 'await-to-js';
 import 'js-cookie';
 import 'react-hot-loader';
 import 'query-string';
-import './RouteLoader-40ab136e.js';
+import './RouteLoader-c8565e6e.js';
 import 'reselect';
 
 const servers$1 = SERVERS;
@@ -304,7 +305,7 @@ const addStandardHeaders = (state, response, packagejson, groups) => {
   if (state) {
     try {
       console.info('About to add headers');
-      const routingSurrogateKeys = getImmutableOrJS(state, ['routing', 'surrogateKeys'], '');
+      const routingSurrogateKeys = selectSurrogateKeys(state);
       const surrogateKeyHeader = ` ${packagejson.name}-app ${routingSurrogateKeys}`;
       response.header('surrogate-key', surrogateKeyHeader);
       addVarnishAuthenticationHeaders(state, response, groups);

@@ -2,16 +2,17 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var version$1 = require('./version-12e166d2.js');
-var actions$1 = require('./actions-a24bf46e.js');
-var selectors$1 = require('./selectors-0ec95076.js');
-var version$2 = require('./version-be0c7b7a.js');
+var version$1 = require('./version-b113eee5.js');
+var actions$1 = require('./actions-43f4daa4.js');
+var selectors$1 = require('./selectors-2c1b1183.js');
+var version$2 = require('./version-dcfdafd9.js');
 require('@redux-saga/core/effects');
 require('redux');
 require('redux-thunk');
 require('redux-saga');
 require('redux-injectors');
 require('immer');
+require('deepmerge');
 require('./reducers-60dafd94.js');
 require('jsonpath-mapper');
 require('query-string');
