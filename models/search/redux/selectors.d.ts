@@ -111,5 +111,6 @@ export declare const selectListing: {
     getSelectedFilters: (state: AppState, listing?: string) => SelectedFilters;
 };
 export declare const selectCurrentPath: (state: AppState) => any;
+export declare const selectCurrentProject: (state: AppState) => any;
 export declare const selectVersionStatus: (state: AppState) => any;
 export {};

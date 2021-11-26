@@ -418,6 +418,7 @@ const selectListing = {
   getSelectedFilters: (state, listing = '') => getSelectedFilters(state, listing, Context$1.listings)
 };
 const selectCurrentPath = state => getImmutableOrJS(state, ['routing', 'currentPath']);
+const selectCurrentProject = state => getImmutableOrJS(state, ['routing', 'currentProject']);
 const selectVersionStatus = state => getImmutableOrJS(state, ['version', 'contensisVersionStatus']);
 
 var selectors = /*#__PURE__*/Object.freeze({
@@ -460,6 +461,7 @@ var selectors = /*#__PURE__*/Object.freeze({
   selectFacets: selectFacets,
   selectListing: selectListing,
   selectCurrentPath: selectCurrentPath,
+  selectCurrentProject: selectCurrentProject,
   selectVersionStatus: selectVersionStatus
 });
 
@@ -1431,7 +1433,7 @@ const queryParamsTemplate = {
   }) => {
     var _getFacet;
 
-    return (_getFacet = getFacet(state, facet, context)) === null || _getFacet === void 0 ? void 0 : _getFacet.projectId;
+    return ((_getFacet = getFacet(state, facet, context)) === null || _getFacet === void 0 ? void 0 : _getFacet.projectId) || selectCurrentProject(state);
   },
   searchTerm: root => root.context !== Context$1.minilist || getQueryParameter(root, 'useSearchTerm', false) ? getSearchTerm(root.state) : '',
   selectedFilters: ({
@@ -1545,9 +1547,10 @@ const filterParamsChanged = (action, state) => {
 const debugExecuteSearch = (action, state) => {
   const [queryParams, runSearch] = generateQueryParams(action, state);
   console.log('runSearch', runSearch, 'action', action, 'filterParamsChanged', filterParamsChanged(action, state), 'getIsLoaded(state, context, facet)', getIsLoaded(state, action.context, action.facet));
-  const stateParams = getQueryParams(action.ogState || state, action.facet, action.context);
-  stateParams.pageIndex = getPageIndex(action.ogState || state, action.facet, action.context);
-  stateParams.searchTerm = getSearchTerm(action.ogState || state);
+  const stateParams = { ...getQueryParams(action.ogState || state, action.facet, action.context),
+    pageIndex: getPageIndex(action.ogState || state, action.facet, action.context),
+    searchTerm: getSearchTerm(action.ogState || state)
+  };
   console.log(stateParams, queryParams);
   console.log('getSelectedFilters', getSelectedFilters(action.ogState || state, action.facet, action.context, 'js'), 'params', action.params);
 };

@@ -46,6 +46,7 @@ declare type InitListingParams = {
 export declare type InitListingAction = Action & InitListingParams & {
     ssr?: boolean;
 };
+export declare type SetRouteFiltersOptions = Partial<InitListingAction>;
 export declare type InitListingActionCreator = (p: InitListingParams) => InitListingAction;
 export declare type LoadFiltersSearchResults = Action & {
     error: any;
