@@ -41,6 +41,7 @@ export class LoginHelper {
     static ClientRedirectToAccessDeniedPage(originalPath: any): void;
     static ClientRedirectToPath(redirectPath: any): void;
     static WsFedLogin(redirectUri: any): Promise<void>;
+    static RemoveSecurityTokenQuery(): void;
     static WsFedLogout(redirectPath: any): Promise<void>;
     static GetCredentialsForSecurityToken(securityToken: any): Promise<undefined[] | Error[] | {
         message: string;

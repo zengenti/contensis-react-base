@@ -88,8 +88,12 @@ const initialUserState = {
 };
 var UserReducer = immer.produce((state, action) => {
   switch (action.type) {
-    case LOGIN_USER:
     case LOGOUT_USER:
+      {
+        return initialUserState;
+      }
+
+    case LOGIN_USER:
     case SET_AUTHENTICATION_STATE:
       {
         var _state, _state$authentication;
@@ -98,7 +102,6 @@ var UserReducer = immer.produce((state, action) => {
           action.authenticationState = defaultAuthenticationState;
         }
 
-        const loading = action.type === LOGIN_USER;
         const {
           authenticationState: {
             error = false,
@@ -106,7 +109,8 @@ var UserReducer = immer.produce((state, action) => {
             authenticated,
             authenticationError = false,
             authenticationErrorMessage = null,
-            clientCredentials = null
+            clientCredentials = null,
+            loading = action.type === LOGIN_USER
           },
           user
         } = action;
@@ -249,4 +253,4 @@ exports.UserReducer = UserReducer;
 exports.VALIDATE_USER = VALIDATE_USER;
 exports.initialUserState = initialUserState;
 exports.types = types;
-//# sourceMappingURL=reducers-60dafd94.js.map
+//# sourceMappingURL=reducers-d6ffba6d.js.map

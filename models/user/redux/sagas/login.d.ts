@@ -6,10 +6,7 @@ export function handleRequiresLoginSaga(action: any): Generator<import("redux-sa
 }[]> | import("redux-saga/effects").PutEffect<{
     type: string;
     authenticationState: {
-        error: {
-            message: any;
-            stack: any;
-        };
+        loading: boolean;
     };
 }> | import("redux-saga/effects").CallEffect<Generator<Promise<{
     authenticationState: {
@@ -28,7 +25,15 @@ export function handleRequiresLoginSaga(action: any): Generator<import("redux-sa
 }>, void, {
     authenticationState: any;
     user: any;
-}>>, any, [any, any]>> | import("redux-saga/effects").PutEffect<{
+}>> | import("redux-saga/effects").PutEffect<{
+    type: string;
+    authenticationState: {
+        error: {
+            message: any;
+            stack: any;
+        };
+    };
+}>, any, [any, any]>> | import("redux-saga/effects").PutEffect<{
     type: string;
     securityToken: any;
 }>, void, any>;

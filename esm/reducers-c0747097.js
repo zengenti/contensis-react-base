@@ -86,8 +86,12 @@ const initialUserState = {
 };
 var UserReducer = produce((state, action) => {
   switch (action.type) {
-    case LOGIN_USER:
     case LOGOUT_USER:
+      {
+        return initialUserState;
+      }
+
+    case LOGIN_USER:
     case SET_AUTHENTICATION_STATE:
       {
         var _state, _state$authentication;
@@ -96,7 +100,6 @@ var UserReducer = produce((state, action) => {
           action.authenticationState = defaultAuthenticationState;
         }
 
-        const loading = action.type === LOGIN_USER;
         const {
           authenticationState: {
             error = false,
@@ -104,7 +107,8 @@ var UserReducer = produce((state, action) => {
             authenticated,
             authenticationError = false,
             authenticationErrorMessage = null,
-            clientCredentials = null
+            clientCredentials = null,
+            loading = action.type === LOGIN_USER
           },
           user
         } = action;
@@ -226,4 +230,4 @@ var UserReducer = produce((state, action) => {
 }, initialUserState);
 
 export { CHANGE_USER_PASSWORD as C, LOGIN_USER as L, REGISTER_USER as R, SET_AUTHENTICATION_STATE as S, UserReducer as U, VALIDATE_USER as V, REGISTER_USER_SUCCESS as a, REGISTER_USER_FAILED as b, REQUEST_USER_PASSWORD_RESET as c, RESET_USER_PASSWORD as d, REQUEST_USER_PASSWORD_RESET_SENDING as e, REQUEST_USER_PASSWORD_RESET_SUCCESS as f, REQUEST_USER_PASSWORD_RESET_ERROR as g, RESET_USER_PASSWORD_SENDING as h, RESET_USER_PASSWORD_SUCCESS as i, RESET_USER_PASSWORD_ERROR as j, CHANGE_USER_PASSWORD_ERROR as k, CHANGE_USER_PASSWORD_SENDING as l, CHANGE_USER_PASSWORD_SUCCESS as m, LOGOUT_USER as n, initialUserState as o, types as t };
-//# sourceMappingURL=reducers-6f6801ed.js.map
+//# sourceMappingURL=reducers-c0747097.js.map

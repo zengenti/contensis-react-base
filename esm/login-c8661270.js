@@ -1,5 +1,5 @@
 import { takeEvery, put, call, select } from '@redux-saga/core/effects';
-import { L as LOGIN_USER, n as LOGOUT_USER, V as VALIDATE_USER, S as SET_AUTHENTICATION_STATE } from './reducers-6f6801ed.js';
+import { L as LOGIN_USER, n as LOGOUT_USER, V as VALIDATE_USER, S as SET_AUTHENTICATION_STATE } from './reducers-c0747097.js';
 import { a as selectUserIsAuthenticated, b as selectUserGroups, m as matchUserGroup, s as selectClientCredentials } from './ToJs-1f2e6395.js';
 import { f as setRoute } from './actions-5437f43d.js';
 import { q as queryParams, i as selectCurrentSearch } from './selectors-65f0f31c.js';
@@ -164,6 +164,21 @@ class LoginHelper {
   static ClearCachedCredentials() {
     CookieHelper.DeleteCookie(LOGIN_COOKIE);
     CookieHelper.DeleteCookie(REFRESH_TOKEN_COOKIE);
+
+    if (LoginHelper.WSFED_LOGIN && typeof window !== 'undefined') {
+      // remove any oidc keys left over in localStorage
+      const {
+        localStorage
+      } = window;
+      const keys = [];
+
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (typeof key === 'string' && key.startsWith('oidc.')) keys.push(localStorage.key(i));
+      }
+
+      keys.forEach(key => localStorage.removeItem(key));
+    }
   }
 
   static async LoginUser({
@@ -316,6 +331,16 @@ class LoginHelper {
     });
   }
 
+  static RemoveSecurityTokenQuery() {
+    const params = new URLSearchParams(window.location.search);
+
+    if (params.has('securitytoken') || params.has('securityToken')) {
+      params.delete('securitytoken');
+      params.delete('securityToken');
+      window.location = `${window.location.pathname}${params.toString() ? `?${params}` : ''}`;
+    }
+  }
+
   static async WsFedLogout(redirectPath) {
     await fetch(`${LoginHelper.CMS_URL}/authenticate/logout?jsonResponseRequired=true`, {
       credentials: 'include'
@@ -323,6 +348,10 @@ class LoginHelper {
 
     if (redirectPath) {
       window.location = redirectPath;
+    } else {
+      // Explicitly check and remove any stale
+      // security token that may be in the query string
+      LoginHelper.RemoveSecurityTokenQuery();
     }
   }
 
@@ -482,15 +511,36 @@ function* handleRequiresLoginSaga(action) {
 function* validateUserSaga({
   securityToken
 }) {
-  if (securityToken) {
-    // If we have just a security token we will call a CMS endpoint
+  // Check for refreshToken in cookies
+  let clientCredentials = LoginHelper.GetCachedCredentials();
+
+  if (securityToken || clientCredentials.refreshToken) {
+    // We only attempt to validate the user if one of the stored
+    // tokens are found, in this case we set loading state manually
+    // so we don't need to set and unset loading if there are no stored
+    yield put({
+      type: SET_AUTHENTICATION_STATE,
+      authenticationState: {
+        loading: true
+      }
+    }); // If we have just a security token we will call a CMS endpoint
     // and provide us with a RefreshToken cookie we can use during login
+
     const [error, refreshToken] = yield LoginHelper.GetCredentialsForSecurityToken(securityToken);
-    if (refreshToken) LoginHelper.SetLoginCookies({
-      contensisClassicToken: securityToken,
-      refreshToken
-    });
-    if (error) yield put({
+
+    if (refreshToken) {
+      // Set cookies and reload values
+      LoginHelper.SetLoginCookies({
+        contensisClassicToken: securityToken,
+        refreshToken
+      });
+      clientCredentials = LoginHelper.GetCachedCredentials();
+    } // Log the user in if a refreshToken is found
+
+
+    if (clientCredentials.refreshToken) yield call(loginUserSaga, {
+      clientCredentials
+    });else if (error) yield put({
       type: SET_AUTHENTICATION_STATE,
       authenticationState: {
         error: {
@@ -499,14 +549,8 @@ function* validateUserSaga({
         }
       }
     });
-  } // Check for refreshToken in cookies
+  } // Tell any callers have we successfully logged in?
 
-
-  const clientCredentials = LoginHelper.GetCachedCredentials(); // Log the user in if a refreshToken is found
-
-  if (clientCredentials.refreshToken) yield call(loginUserSaga, {
-    clientCredentials
-  }); // Tell any callers have we successfully logged in?
 
   return yield select(selectUserIsAuthenticated);
 }
@@ -588,4 +632,4 @@ function* refreshSecurityToken() {
 }
 
 export { LoginHelper as L, findContentTypeMapping as f, getManagementApiClient as g, handleRequiresLoginSaga as h, loginSagas as l, refreshSecurityToken as r };
-//# sourceMappingURL=login-af3b93c4.js.map
+//# sourceMappingURL=login-c8661270.js.map

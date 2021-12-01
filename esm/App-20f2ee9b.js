@@ -2,13 +2,13 @@ import { createBrowserHistory, createMemoryHistory } from 'history';
 import { takeEvery, select, put, call, all } from '@redux-saga/core/effects';
 import { Client, Op, Query } from 'contensis-delivery-api';
 import { a as setSurrogateKeys, S as SET_NAVIGATION_PATH, b as SET_ROUTE, U as UPDATE_LOADING_STATE, c as SET_ENTRY, d as SET_ANCESTORS, e as SET_SIBLINGS, f as setRoute } from './actions-5437f43d.js';
-import { r as reduxStore, G as GET_NODE_TREE, h as hasNavigationTree, S as SET_NODE_TREE, b as GET_NODE_TREE_ERROR, i as injectRedux } from './version-be00bbb4.js';
+import { r as reduxStore, G as GET_NODE_TREE, h as hasNavigationTree, S as SET_NODE_TREE, b as GET_NODE_TREE_ERROR, i as injectRedux } from './version-59e6b711.js';
 import { s as selectVersionStatus } from './version-696796d7.js';
 import { b as selectCurrentProject, a as selectRouteEntry, c as selectCurrentNode, d as selectCurrentAncestors, e as selectRouteEntryEntryId, f as selectRouteEntryLanguage, h as selectMappedEntry, q as queryParams, i as selectCurrentSearch } from './selectors-65f0f31c.js';
 import * as log from 'loglevel';
-import { f as findContentTypeMapping, h as handleRequiresLoginSaga, g as getManagementApiClient, l as loginSagas } from './login-af3b93c4.js';
+import { f as findContentTypeMapping, h as handleRequiresLoginSaga, g as getManagementApiClient, l as loginSagas } from './login-c8661270.js';
 import { to } from 'await-to-js';
-import { R as REGISTER_USER, a as REGISTER_USER_SUCCESS, b as REGISTER_USER_FAILED, c as REQUEST_USER_PASSWORD_RESET, d as RESET_USER_PASSWORD, C as CHANGE_USER_PASSWORD, e as REQUEST_USER_PASSWORD_RESET_SENDING, f as REQUEST_USER_PASSWORD_RESET_SUCCESS, g as REQUEST_USER_PASSWORD_RESET_ERROR, h as RESET_USER_PASSWORD_SENDING, i as RESET_USER_PASSWORD_SUCCESS, j as RESET_USER_PASSWORD_ERROR, k as CHANGE_USER_PASSWORD_ERROR, l as CHANGE_USER_PASSWORD_SENDING, m as CHANGE_USER_PASSWORD_SUCCESS } from './reducers-6f6801ed.js';
+import { R as REGISTER_USER, a as REGISTER_USER_SUCCESS, b as REGISTER_USER_FAILED, c as REQUEST_USER_PASSWORD_RESET, d as RESET_USER_PASSWORD, C as CHANGE_USER_PASSWORD, e as REQUEST_USER_PASSWORD_RESET_SENDING, f as REQUEST_USER_PASSWORD_RESET_SUCCESS, g as REQUEST_USER_PASSWORD_RESET_ERROR, h as RESET_USER_PASSWORD_SENDING, i as RESET_USER_PASSWORD_SUCCESS, j as RESET_USER_PASSWORD_ERROR, k as CHANGE_USER_PASSWORD_ERROR, l as CHANGE_USER_PASSWORD_SENDING, m as CHANGE_USER_PASSWORD_SUCCESS } from './reducers-c0747097.js';
 import { s as selectClientCredentials } from './ToJs-1f2e6395.js';
 import React from 'react';
 import 'react-hot-loader';
@@ -1041,4 +1041,4 @@ const AppRoot = props => {
 };
 
 export { AppRoot as A, browserHistory as b, deliveryApi as d, history as h, pickProject as p, rootSaga as r };
-//# sourceMappingURL=App-b320f938.js.map
+//# sourceMappingURL=App-20f2ee9b.js.map
