@@ -62,14 +62,14 @@ export const initialUserState = {
 
 export default produce((state: Draft<AppState['user']>, action) => {
   switch (action.type) {
+    case LOGOUT_USER: {
+      return initialUserState;
+    }
     case LOGIN_USER:
-    case LOGOUT_USER:
     case SET_AUTHENTICATION_STATE: {
       if (!action.authenticationState) {
         action.authenticationState = defaultAuthenticationState;
       }
-
-      const loading = action.type === LOGIN_USER;
 
       const {
         authenticationState: {
@@ -79,6 +79,7 @@ export default produce((state: Draft<AppState['user']>, action) => {
           authenticationError = false,
           authenticationErrorMessage = null,
           clientCredentials = null,
+          loading = action.type === LOGIN_USER,
         },
         user,
       } = action;

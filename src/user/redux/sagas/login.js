@@ -85,17 +85,36 @@ export function* handleRequiresLoginSaga(action) {
 }
 
 function* validateUserSaga({ securityToken }) {
-  if (securityToken) {
+  // Check for refreshToken in cookies
+  let clientCredentials = LoginHelper.GetCachedCredentials();
+
+  if (securityToken || clientCredentials.refreshToken) {
+    // We only attempt to validate the user if one of the stored
+    // tokens are found, in this case we set loading state manually
+    // so we don't need to set and unset loading if there are no stored
+    yield put({
+      type: SET_AUTHENTICATION_STATE,
+      authenticationState: {
+        loading: true,
+      },
+    });
     // If we have just a security token we will call a CMS endpoint
     // and provide us with a RefreshToken cookie we can use during login
     const [error, refreshToken] =
       yield LoginHelper.GetCredentialsForSecurityToken(securityToken);
-    if (refreshToken)
+    if (refreshToken) {
+      // Set cookies and reload values
       LoginHelper.SetLoginCookies({
         contensisClassicToken: securityToken,
         refreshToken,
       });
-    if (error)
+      clientCredentials = LoginHelper.GetCachedCredentials();
+    }
+
+    // Log the user in if a refreshToken is found
+    if (clientCredentials.refreshToken)
+      yield call(loginUserSaga, { clientCredentials });
+    else if (error)
       yield put({
         type: SET_AUTHENTICATION_STATE,
         authenticationState: {
@@ -103,13 +122,6 @@ function* validateUserSaga({ securityToken }) {
         },
       });
   }
-
-  // Check for refreshToken in cookies
-  const clientCredentials = LoginHelper.GetCachedCredentials();
-
-  // Log the user in if a refreshToken is found
-  if (clientCredentials.refreshToken)
-    yield call(loginUserSaga, { clientCredentials });
 
   // Tell any callers have we successfully logged in?
   return yield select(selectUserIsAuthenticated);

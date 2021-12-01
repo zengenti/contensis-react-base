@@ -48,6 +48,18 @@ export class LoginHelper {
   static ClearCachedCredentials() {
     CookieHelper.DeleteCookie(LOGIN_COOKIE);
     CookieHelper.DeleteCookie(REFRESH_TOKEN_COOKIE);
+
+    if (LoginHelper.WSFED_LOGIN && typeof window !== 'undefined') {
+      // remove any oidc keys left over in localStorage
+      const { localStorage } = window;
+      const keys = [];
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (typeof key === 'string' && key.startsWith('oidc.'))
+          keys.push(localStorage.key(i));
+      }
+      keys.forEach(key => localStorage.removeItem(key));
+    }
   }
 
   static async LoginUser({ username, password, clientCredentials }) {
@@ -226,6 +238,17 @@ export class LoginHelper {
     });
   }
 
+  static RemoveSecurityTokenQuery() {
+    const params = new URLSearchParams(window.location.search);
+    if (params.has('securitytoken') || params.has('securityToken')) {
+      params.delete('securitytoken');
+      params.delete('securityToken');
+      window.location = `${window.location.pathname}${
+        params.toString() ? `?${params}` : ''
+      }`;
+    }
+  }
+
   static async WsFedLogout(redirectPath) {
     await fetch(
       `${LoginHelper.CMS_URL}/authenticate/logout?jsonResponseRequired=true`,
@@ -235,6 +258,10 @@ export class LoginHelper {
     );
     if (redirectPath) {
       window.location = redirectPath;
+    } else {
+      // Explicitly check and remove any stale
+      // security token that may be in the query string
+      LoginHelper.RemoveSecurityTokenQuery();
     }
   }
 
