@@ -65,10 +65,10 @@ export class LoginHelper {
   static async LoginUser({ username, password, clientCredentials }) {
     let credentials = clientCredentials;
     let authenticationState = {
-      authenticated: false,
-      authenticationError: false,
-      error: false,
       clientCredentials: null,
+      isAuthenticated: false,
+      isAuthenticationError: false,
+      isError: false,
     };
     let transientClient;
     let user;
@@ -88,13 +88,13 @@ export class LoginHelper {
       // Problem getting token with username and password
       if (loginError) {
         authenticationState = {
-          authenticated: false,
-          authenticationError: loginError.name.includes(
+          clientCredentials: null,
+          errorMessage: loginError.message || null,
+          isAuthenticated: false,
+          isAuthenticationError: loginError.name.includes(
             'ContensisAuthenticationError'
           ),
-          error: true,
-          errorMessage: loginError.message || null,
-          clientCredentials: null,
+          isError: true,
         };
         LoginHelper.ClearCachedCredentials();
       }
@@ -105,10 +105,10 @@ export class LoginHelper {
         credentials = mapClientCredentials(transientClient);
         LoginHelper.SetLoginCookies(credentials);
         authenticationState = {
-          authenticated: true,
-          authenticationError: false,
-          error: false,
           clientCredentials: credentials,
+          isAuthenticated: true,
+          isAuthenticationError: false,
+          isError: false,
         };
       }
     }
@@ -123,10 +123,11 @@ export class LoginHelper {
 
       if (error) {
         authenticationState = {
-          authenticated: false,
-          authenticationError: false,
-          error: { message: error.message, stack: error.stack },
           clientCredentials: null,
+          errorMessage: error.message,
+          isAuthenticated: false,
+          isAuthenticationError: false,
+          isError: true,
         };
         LoginHelper.ClearCachedCredentials();
       } else {
@@ -136,10 +137,10 @@ export class LoginHelper {
 
         user = userDetails;
         authenticationState = {
-          authenticated: true,
-          authenticationError: false,
-          error: false,
           clientCredentials: latestCredentials,
+          isAuthenticated: true,
+          isAuthenticationError: false,
+          isError: false,
         };
       }
     }

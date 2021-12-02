@@ -3,13 +3,16 @@ import { AppState } from '~/redux/appstate';
 import { getImmutableOrJS as getIn } from '~/redux/util';
 
 export const selectUserIsLoading = (state: AppState) =>
-  getIn(state, ['user', 'authenticationState', 'loading']);
+  getIn(state, ['user', 'authenticationState', 'isLoading']);
 
 export const selectUserIsAuthenticated = (state: AppState) =>
-  getIn(state, ['user', 'authenticationState', 'authenticated']);
+  getIn(state, ['user', 'authenticationState', 'isAuthenticated']);
 
-export const selectUserAuthenticationError = (state: AppState) =>
-  getIn(state, ['user', 'authenticationState', 'authenticationError']);
+export const selectUserIsAuthenticationError = (state: AppState) =>
+  getIn(state, ['user', 'authenticationState', 'isAuthenticationError']);
+
+export const selectUserIsError = (state: AppState) =>
+  getIn(state, ['user', 'authenticationState', 'isError']);
 
 /**
  * DEPRECATED 12/2021 - use selectUserErrorMessage instead
@@ -18,9 +21,6 @@ export const selectUserAuthenticationError = (state: AppState) =>
  */
 export const selectUserAuthenticationErrorMessage = (state: AppState) =>
   getIn(state, ['user', 'authenticationState', 'errorMessage']);
-
-export const selectUserError = (state: AppState) =>
-  getIn(state, ['user', 'authenticationState', 'error']);
 
 export const selectUserErrorMessage = (state: AppState) =>
   getIn(state, ['user', 'authenticationState', 'errorMessage']);
@@ -70,7 +70,7 @@ export const selectUserRegistrationError = (state: AppState) =>
   getIn(state, ['user', 'registration', 'error'], false);
 
 export const selectUserRegistrationIsLoading = (state: AppState) =>
-  getIn(state, ['user', 'registration', 'loading'], false);
+  getIn(state, ['user', 'registration', 'isLoading'], false);
 
 export const selectUserRegistrationIsSuccess = (state: AppState) =>
   getIn(state, ['user', 'registration', 'success'], false);

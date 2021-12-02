@@ -5,12 +5,7 @@ import TextInput from '~/features/input/components/TextInput';
 import Link from '~/features/link';
 import Button from '~/features/input/components/Button';
 import useKeyPress from '~/util/useKeyPress';
-const LoginForm = ({
-  loginException,
-  authenticationError,
-  loading,
-  loginUser,
-}) => {
+const LoginForm = ({ authenticationError, loading, loginUser }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   let enterPressed = useKeyPress('Enter');
@@ -53,12 +48,7 @@ const LoginForm = ({
             </Link>
           </p>
         </div> */}
-        {authenticationError && (
-          <p className="lfFail">Incorrect username or password.</p>
-        )}
-        {loginException && (
-          <p className="lfFail">An unexpected error has occurred.</p>
-        )}
+        {authenticationError && <p className="lfFail">{authenticationError}</p>}
         <Button
           className="lfSubmit"
           action={handleLogin}

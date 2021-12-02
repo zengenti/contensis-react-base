@@ -95,7 +95,7 @@ function* validateUserSaga({ securityToken }) {
     yield put({
       type: SET_AUTHENTICATION_STATE,
       authenticationState: {
-        loading: true,
+        isLoading: true,
       },
     });
     // If we have just a security token we will call a CMS endpoint
@@ -118,7 +118,7 @@ function* validateUserSaga({ securityToken }) {
       yield put({
         type: SET_AUTHENTICATION_STATE,
         authenticationState: {
-          error: true,
+          isError: true,
           errorMessage:
             error?.message ||
             (error && 'toString' in error && error.toString()),
@@ -189,15 +189,11 @@ export function* refreshSecurityToken() {
     const client = yield getManagementApiClient(clientCredentials);
     yield client.authenticate();
 
-    const authenticationState = {};
-
-    const newClientCredentials = mapClientCredentials(client);
-
-    authenticationState.clientCredentials = newClientCredentials;
-
     yield put({
       type: SET_AUTHENTICATION_STATE,
-      authenticationState,
+      authenticationState: {
+        clientCredentials: mapClientCredentials(client),
+      },
     });
   }
 }

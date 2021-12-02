@@ -30,8 +30,6 @@ export type AppState = {
   };
   user: {
     authenticationState: {
-      authenticated: boolean;
-      authenticationError: boolean;
       clientCredentials: {
         bearerToken: string;
         bearerTokenExpiryDate: Date;
@@ -39,15 +37,17 @@ export type AppState = {
         refreshTokenExpiryDate: Date;
         contensisClassicToken: string;
       } | null;
-      error: boolean;
       errorMessage: string | null;
-      loading: boolean;
+      isAuthenticated: boolean;
+      isAuthenticationError: boolean;
+      isError: boolean;
+      isLoading: boolean;
     };
     groups: Group[];
     isZengentiStaff?: boolean;
     registration?: {
       error: Error | null;
-      loading: boolean;
+      isLoading: boolean;
       success: boolean;
     };
     passwordResetRequest?: {

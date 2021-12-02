@@ -2,8 +2,8 @@ import { connect } from 'react-redux';
 import { loginUser, logoutUser } from '../redux/actions';
 import {
   selectUser,
-  selectUserAuthenticationError,
-  selectUserError,
+  selectUserIsAuthenticationError,
+  selectUserIsError,
   selectUserIsAuthenticated,
   selectUserIsLoading,
 } from '../redux/selectors';
@@ -16,11 +16,15 @@ const getDisplayName = WrappedComponent => {
 const withLogin = WrappedComponent => {
   const mapStateToProps = state => {
     return {
-      authenticationError: selectUserAuthenticationError(state),
-      error: selectUserError(state),
       isAuthenticated: selectUserIsAuthenticated(state),
+      isAuthenticationError: selectUserIsAuthenticationError(state),
+      isError: selectUserIsError(state),
       isLoading: selectUserIsLoading(state),
       user: selectUser(state),
+      // DEPRECATED: authenticationError is deprecated use isAuthenticationError instead
+      authenticationError: selectUserIsAuthenticationError(state),
+      // DEPRECATED: error is deprecated use isError instead
+      error: selectUserIsError(state),
     };
   };
 

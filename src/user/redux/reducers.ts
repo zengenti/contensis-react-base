@@ -19,12 +19,12 @@ import {
 } from './types';
 
 const defaultAuthenticationState = {
-  authenticated: false,
-  authenticationError: false,
   clientCredentials: null,
-  error: false,
   errorMessage: null,
-  loading: false,
+  isAuthenticated: false,
+  isAuthenticationError: false,
+  isError: false,
+  isLoading: false,
 };
 
 const defaultPasswordResetRequestValues = {
@@ -46,7 +46,7 @@ const defaultChangePasswordValues = {
 };
 
 const defaultRegistrationValues = {
-  loading: false,
+  isLoading: false,
   success: false,
   error: null,
 };
@@ -72,18 +72,20 @@ export default produce((state: Draft<AppState['user']>, action) => {
 
       const {
         authenticationState: {
-          error = false,
-          errorMessage = null,
-          authenticated,
-          authenticationError = false,
           clientCredentials = null,
-          loading = action.type === LOGIN_USER,
+          errorMessage = null,
+          isAuthenticated,
+          isAuthenticationError = false,
+          isError = false,
+          isLoading = action.type === LOGIN_USER,
         },
         user,
       } = action;
 
       if (user) {
-        user.name = `${user.firstName} ${user.lastName}`;
+        user.name =
+          `${user.firstName}${user.lastName ? ` ${user.lastName}` : ''}` ||
+          null;
         user.isZengentiStaff = user.email.includes('@zengenti.com');
       }
 
@@ -91,22 +93,22 @@ export default produce((state: Draft<AppState['user']>, action) => {
         ...initialUserState,
         ...(user || state),
         authenticationState: {
-          authenticated:
-            authenticated || state?.authenticationState?.authenticated,
-          authenticationError,
           clientCredentials,
-          error,
           errorMessage,
-          loading,
+          isAuthenticated:
+            isAuthenticated || state?.authenticationState?.isAuthenticated,
+          isAuthenticationError,
+          isError,
+          isLoading,
         },
       };
       return state;
     }
     // REGISTER_USER is the trigger to set the user.registration initial state
-    // and will set user.registration.loading to true
-    // REGISTER_USER_FAILED will unset user.registration.loading and will set
+    // and will set user.registration.isLoading to true
+    // REGISTER_USER_FAILED will unset user.registration.isLoading and will set
     // the value in user.registration.error
-    // REGISTER_USER_SUCCESS will unset user.registration.loading and will
+    // REGISTER_USER_SUCCESS will unset user.registration.isLoading and will
     // set user.registration to the created user from the api response
     case REGISTER_USER:
     case REGISTER_USER_FAILED:
@@ -122,7 +124,7 @@ export default produce((state: Draft<AppState['user']>, action) => {
       // Set registration flags so the UI can track the status
       state.registration.success = action.type === REGISTER_USER_SUCCESS;
       state.registration.error = error || false;
-      state.registration.loading = action.type === REGISTER_USER;
+      state.registration.isLoading = action.type === REGISTER_USER;
       return;
     }
     case REQUEST_USER_PASSWORD_RESET_SENDING:

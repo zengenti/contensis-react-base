@@ -2,8 +2,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loginUser, logoutUser } from '../redux/actions';
 import {
   selectUser,
-  selectUserAuthenticationError,
-  selectUserError,
+  selectUserIsAuthenticationError,
+  selectUserIsError,
   selectUserErrorMessage,
   selectUserIsAuthenticated,
   selectUserIsLoading,
@@ -16,14 +16,18 @@ const useLogin = () => {
   return {
     loginUser: (username, password) => dispatch(loginUser(username, password)),
     logoutUser: redirectPath => dispatch(logoutUser(redirectPath)),
-    authenticationError: select(selectUserAuthenticationError),
-    // DEPRECATED: authenticationErrorMessage is deprecated use errorMessage instead
-    authenticationErrorMessage: select(selectUserErrorMessage),
-    error: select(selectUserError),
     errorMessage: select(selectUserErrorMessage),
     isAuthenticated: select(selectUserIsAuthenticated),
+    isAuthenticationError: select(selectUserIsAuthenticationError),
+    isError: select(selectUserIsError),
     isLoading: select(selectUserIsLoading),
     user: select(selectUser),
+    // DEPRECATED: authenticationError is deprecated use isAuthenticationError instead
+    authenticationError: select(selectUserIsAuthenticationError),
+    // DEPRECATED: authenticationErrorMessage is deprecated use errorMessage instead
+    authenticationErrorMessage: select(selectUserErrorMessage),
+    // DEPRECATED: error is deprecated use isError instead
+    error: select(selectUserIsError),
   };
 };
 

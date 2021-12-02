@@ -6,8 +6,7 @@ import LogoutForm from './LogoutForm';
 import { toJS } from '~/util/ToJs';
 
 const Login = ({
-  error,
-  authenticationError,
+  errorMessage,
   isAuthenticated,
   isLoading,
   user,
@@ -22,8 +21,7 @@ const Login = ({
             <h1 className="lTitle">Log in to Contensis help desk</h1>
             <LoginForm
               isLoading={isLoading}
-              authenticationError={authenticationError}
-              loginException={error}
+              authenticationError={errorMessage}
               loginUser={loginUser}
             />
           </>
@@ -43,10 +41,8 @@ Login.propTypes = {
   logoutUser: PropTypes.func,
   isLoading: PropTypes.bool,
   isAuthenticated: PropTypes.bool,
-  authenticationError: PropTypes.string,
-  error: PropTypes.string,
+  errorMessage: PropTypes.string,
   user: PropTypes.object,
-  updateUserLoginState: PropTypes.func,
 };
 
 export default toJS(Login);
