@@ -9,7 +9,7 @@ var reduxInjectors = require('redux-injectors');
 var immer = require('immer');
 var merge = require('deepmerge');
 var actions = require('./actions-6b9ef168.js');
-var reducers = require('./reducers-d6ffba6d.js');
+var reducers = require('./reducers-c23f195f.js');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -474,4 +474,4 @@ exports.setVersionStatus = setVersionStatus;
 exports.useInjectRedux = useInjectRedux;
 exports.version = version$1;
 exports.version$1 = version;
-//# sourceMappingURL=version-fd70dc68.js.map
+//# sourceMappingURL=version-7102d8ee.js.map

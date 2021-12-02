@@ -2,7 +2,6 @@ export declare const initialUserState: {
     authenticationState: {
         authenticated: boolean;
         authenticationError: boolean;
-        authenticationErrorMessage: null;
         clientCredentials: null;
         error: boolean;
         errorMessage: null;

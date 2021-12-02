@@ -28,10 +28,8 @@ export function handleRequiresLoginSaga(action: any): Generator<import("redux-sa
 }>> | import("redux-saga/effects").PutEffect<{
     type: string;
     authenticationState: {
-        error: {
-            message: any;
-            stack: any;
-        };
+        error: boolean;
+        errorMessage: any;
     };
 }>, any, [any, any]>> | import("redux-saga/effects").PutEffect<{
     type: string;

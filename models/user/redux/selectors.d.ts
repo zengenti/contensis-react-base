@@ -3,6 +3,11 @@ import { AppState } from "../../redux/appstate";
 export declare const selectUserIsLoading: (state: AppState) => any;
 export declare const selectUserIsAuthenticated: (state: AppState) => any;
 export declare const selectUserAuthenticationError: (state: AppState) => any;
+/**
+ * DEPRECATED 12/2021 - use selectUserErrorMessage instead
+ * @param state AppState
+ * @returns string
+ */
 export declare const selectUserAuthenticationErrorMessage: (state: AppState) => any;
 export declare const selectUserError: (state: AppState) => any;
 export declare const selectUserErrorMessage: (state: AppState) => any;

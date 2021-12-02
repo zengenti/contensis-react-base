@@ -10,7 +10,13 @@ var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
 const selectUserIsLoading = state => selectors$1.getImmutableOrJS(state, ['user', 'authenticationState', 'loading']);
 const selectUserIsAuthenticated = state => selectors$1.getImmutableOrJS(state, ['user', 'authenticationState', 'authenticated']);
 const selectUserAuthenticationError = state => selectors$1.getImmutableOrJS(state, ['user', 'authenticationState', 'authenticationError']);
-const selectUserAuthenticationErrorMessage = state => selectors$1.getImmutableOrJS(state, ['user', 'authenticationState', 'authenticationErrorMessage']);
+/**
+ * DEPRECATED 12/2021 - use selectUserErrorMessage instead
+ * @param state AppState
+ * @returns string
+ */
+
+const selectUserAuthenticationErrorMessage = state => selectors$1.getImmutableOrJS(state, ['user', 'authenticationState', 'errorMessage']);
 const selectUserError = state => selectors$1.getImmutableOrJS(state, ['user', 'authenticationState', 'error']);
 const selectUserErrorMessage = state => selectors$1.getImmutableOrJS(state, ['user', 'authenticationState', 'errorMessage']);
 const selectClientCredentials = (state, returnType) => selectors$1.getImmutableOrJS(state, ['user', 'authenticationState', 'clientCredentials'], {}, returnType);
@@ -108,7 +114,6 @@ exports.selectResetPasswordSending = selectResetPasswordSending;
 exports.selectResetPasswordSent = selectResetPasswordSent;
 exports.selectUser = selectUser;
 exports.selectUserAuthenticationError = selectUserAuthenticationError;
-exports.selectUserAuthenticationErrorMessage = selectUserAuthenticationErrorMessage;
 exports.selectUserError = selectUserError;
 exports.selectUserErrorMessage = selectUserErrorMessage;
 exports.selectUserGroups = selectUserGroups;
@@ -121,4 +126,4 @@ exports.selectUserRegistrationIsLoading = selectUserRegistrationIsLoading;
 exports.selectUserRegistrationIsSuccess = selectUserRegistrationIsSuccess;
 exports.selectors = selectors;
 exports.toJS = toJS;
-//# sourceMappingURL=ToJs-5da8a85e.js.map
+//# sourceMappingURL=ToJs-8a68c21e.js.map

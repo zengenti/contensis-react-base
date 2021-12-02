@@ -1,6 +1,4 @@
-'use strict';
-
-var immer = require('immer');
+import { produce } from 'immer';
 
 const ACTION_PREFIX = '@USER/';
 const VALIDATE_USER = `${ACTION_PREFIX}VALIDATE_USER`;
@@ -53,7 +51,6 @@ var types = /*#__PURE__*/Object.freeze({
 const defaultAuthenticationState = {
   authenticated: false,
   authenticationError: false,
-  authenticationErrorMessage: null,
   clientCredentials: null,
   error: false,
   errorMessage: null,
@@ -86,7 +83,7 @@ const initialUserState = {
   changePassword: defaultChangePasswordValues,
   groups: []
 };
-var UserReducer = immer.produce((state, action) => {
+var UserReducer = produce((state, action) => {
   switch (action.type) {
     case LOGOUT_USER:
       {
@@ -108,7 +105,6 @@ var UserReducer = immer.produce((state, action) => {
             errorMessage = null,
             authenticated,
             authenticationError = false,
-            authenticationErrorMessage = null,
             clientCredentials = null,
             loading = action.type === LOGIN_USER
           },
@@ -125,7 +121,6 @@ var UserReducer = immer.produce((state, action) => {
           authenticationState: {
             authenticated: authenticated || ((_state = state) === null || _state === void 0 ? void 0 : (_state$authentication = _state.authenticationState) === null || _state$authentication === void 0 ? void 0 : _state$authentication.authenticated),
             authenticationError,
-            authenticationErrorMessage,
             clientCredentials,
             error,
             errorMessage,
@@ -231,26 +226,5 @@ var UserReducer = immer.produce((state, action) => {
   }
 }, initialUserState);
 
-exports.CHANGE_USER_PASSWORD = CHANGE_USER_PASSWORD;
-exports.CHANGE_USER_PASSWORD_ERROR = CHANGE_USER_PASSWORD_ERROR;
-exports.CHANGE_USER_PASSWORD_SENDING = CHANGE_USER_PASSWORD_SENDING;
-exports.CHANGE_USER_PASSWORD_SUCCESS = CHANGE_USER_PASSWORD_SUCCESS;
-exports.LOGIN_USER = LOGIN_USER;
-exports.LOGOUT_USER = LOGOUT_USER;
-exports.REGISTER_USER = REGISTER_USER;
-exports.REGISTER_USER_FAILED = REGISTER_USER_FAILED;
-exports.REGISTER_USER_SUCCESS = REGISTER_USER_SUCCESS;
-exports.REQUEST_USER_PASSWORD_RESET = REQUEST_USER_PASSWORD_RESET;
-exports.REQUEST_USER_PASSWORD_RESET_ERROR = REQUEST_USER_PASSWORD_RESET_ERROR;
-exports.REQUEST_USER_PASSWORD_RESET_SENDING = REQUEST_USER_PASSWORD_RESET_SENDING;
-exports.REQUEST_USER_PASSWORD_RESET_SUCCESS = REQUEST_USER_PASSWORD_RESET_SUCCESS;
-exports.RESET_USER_PASSWORD = RESET_USER_PASSWORD;
-exports.RESET_USER_PASSWORD_ERROR = RESET_USER_PASSWORD_ERROR;
-exports.RESET_USER_PASSWORD_SENDING = RESET_USER_PASSWORD_SENDING;
-exports.RESET_USER_PASSWORD_SUCCESS = RESET_USER_PASSWORD_SUCCESS;
-exports.SET_AUTHENTICATION_STATE = SET_AUTHENTICATION_STATE;
-exports.UserReducer = UserReducer;
-exports.VALIDATE_USER = VALIDATE_USER;
-exports.initialUserState = initialUserState;
-exports.types = types;
-//# sourceMappingURL=reducers-d6ffba6d.js.map
+export { CHANGE_USER_PASSWORD as C, LOGIN_USER as L, REGISTER_USER as R, SET_AUTHENTICATION_STATE as S, UserReducer as U, VALIDATE_USER as V, REGISTER_USER_SUCCESS as a, REGISTER_USER_FAILED as b, REQUEST_USER_PASSWORD_RESET as c, RESET_USER_PASSWORD as d, REQUEST_USER_PASSWORD_RESET_SENDING as e, REQUEST_USER_PASSWORD_RESET_SUCCESS as f, REQUEST_USER_PASSWORD_RESET_ERROR as g, RESET_USER_PASSWORD_SENDING as h, RESET_USER_PASSWORD_SUCCESS as i, RESET_USER_PASSWORD_ERROR as j, CHANGE_USER_PASSWORD_ERROR as k, CHANGE_USER_PASSWORD_SENDING as l, CHANGE_USER_PASSWORD_SUCCESS as m, LOGOUT_USER as n, initialUserState as o, types as t };
+//# sourceMappingURL=reducers-78488b03.js.map

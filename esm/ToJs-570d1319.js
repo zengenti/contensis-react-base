@@ -4,7 +4,13 @@ import React from 'react';
 const selectUserIsLoading = state => getImmutableOrJS(state, ['user', 'authenticationState', 'loading']);
 const selectUserIsAuthenticated = state => getImmutableOrJS(state, ['user', 'authenticationState', 'authenticated']);
 const selectUserAuthenticationError = state => getImmutableOrJS(state, ['user', 'authenticationState', 'authenticationError']);
-const selectUserAuthenticationErrorMessage = state => getImmutableOrJS(state, ['user', 'authenticationState', 'authenticationErrorMessage']);
+/**
+ * DEPRECATED 12/2021 - use selectUserErrorMessage instead
+ * @param state AppState
+ * @returns string
+ */
+
+const selectUserAuthenticationErrorMessage = state => getImmutableOrJS(state, ['user', 'authenticationState', 'errorMessage']);
 const selectUserError = state => getImmutableOrJS(state, ['user', 'authenticationState', 'error']);
 const selectUserErrorMessage = state => getImmutableOrJS(state, ['user', 'authenticationState', 'errorMessage']);
 const selectClientCredentials = (state, returnType) => getImmutableOrJS(state, ['user', 'authenticationState', 'clientCredentials'], {}, returnType);
@@ -89,5 +95,5 @@ const toJS = WrappedComponent => wrappedComponentProps => {
   return /*#__PURE__*/React.createElement(WrappedComponent, propsJS);
 };
 
-export { selectUserIsAuthenticated as a, selectUserGroups as b, selectUserAuthenticationError as c, selectUserAuthenticationErrorMessage as d, selectUserError as e, selectUserErrorMessage as f, selectUserIsLoading as g, selectUser as h, selectUserRegistrationError as i, selectUserRegistrationIsLoading as j, selectUserRegistrationIsSuccess as k, selectUserRegistration as l, matchUserGroup as m, selectPasswordResetRequestSending as n, selectPasswordResetRequestSent as o, selectPasswordResetRequestError as p, selectResetPasswordSending as q, selectResetPasswordSent as r, selectClientCredentials as s, toJS as t, selectResetPasswordError as u, selectChangePasswordSending as v, selectChangePasswordSent as w, selectUserGuid as x, selectChangePasswordError as y, selectors as z };
-//# sourceMappingURL=ToJs-1f2e6395.js.map
+export { selectUserIsAuthenticated as a, selectUserGroups as b, selectUserAuthenticationError as c, selectUserErrorMessage as d, selectUserError as e, selectUserIsLoading as f, selectUser as g, selectUserRegistrationError as h, selectUserRegistrationIsLoading as i, selectUserRegistrationIsSuccess as j, selectUserRegistration as k, selectPasswordResetRequestSending as l, matchUserGroup as m, selectPasswordResetRequestSent as n, selectPasswordResetRequestError as o, selectResetPasswordSending as p, selectResetPasswordSent as q, selectResetPasswordError as r, selectClientCredentials as s, toJS as t, selectChangePasswordSending as u, selectChangePasswordSent as v, selectUserGuid as w, selectChangePasswordError as x, selectors as y };
+//# sourceMappingURL=ToJs-570d1319.js.map

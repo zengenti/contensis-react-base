@@ -38,7 +38,6 @@ export declare type AppState = {
         authenticationState: {
             authenticated: boolean;
             authenticationError: boolean;
-            authenticationErrorMessage: string | null;
             clientCredentials: {
                 bearerToken: string;
                 bearerTokenExpiryDate: Date;
