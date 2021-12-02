@@ -11,8 +11,13 @@ export const selectUserIsAuthenticated = (state: AppState) =>
 export const selectUserAuthenticationError = (state: AppState) =>
   getIn(state, ['user', 'authenticationState', 'authenticationError']);
 
+/**
+ * DEPRECATED 12/2021 - use selectUserErrorMessage instead
+ * @param state AppState
+ * @returns string
+ */
 export const selectUserAuthenticationErrorMessage = (state: AppState) =>
-  getIn(state, ['user', 'authenticationState', 'authenticationErrorMessage']);
+  getIn(state, ['user', 'authenticationState', 'errorMessage']);
 
 export const selectUserError = (state: AppState) =>
   getIn(state, ['user', 'authenticationState', 'error']);

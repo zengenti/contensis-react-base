@@ -3,7 +3,6 @@ import { loginUser, logoutUser } from '../redux/actions';
 import {
   selectUser,
   selectUserAuthenticationError,
-  selectUserAuthenticationErrorMessage,
   selectUserError,
   selectUserErrorMessage,
   selectUserIsAuthenticated,
@@ -18,7 +17,8 @@ const useLogin = () => {
     loginUser: (username, password) => dispatch(loginUser(username, password)),
     logoutUser: redirectPath => dispatch(logoutUser(redirectPath)),
     authenticationError: select(selectUserAuthenticationError),
-    authenticationErrorMessage: select(selectUserAuthenticationErrorMessage),
+    // DEPRECATED: authenticationErrorMessage is deprecated use errorMessage instead
+    authenticationErrorMessage: select(selectUserErrorMessage),
     error: select(selectUserError),
     errorMessage: select(selectUserErrorMessage),
     isAuthenticated: select(selectUserIsAuthenticated),

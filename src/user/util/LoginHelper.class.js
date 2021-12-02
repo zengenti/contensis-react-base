@@ -87,16 +87,13 @@ export class LoginHelper {
 
       // Problem getting token with username and password
       if (loginError) {
-        const authenticationError = loginError.name.includes(
-          'ContensisAuthenticationError'
-        );
         authenticationState = {
           authenticated: false,
-          authenticationError: authenticationError,
-          authenticationErrorMessage:
-            (authenticationError && loginError.message) || null,
-          error: !authenticationError,
-          errorMessage: (!authenticationError && loginError.message) || null,
+          authenticationError: loginError.name.includes(
+            'ContensisAuthenticationError'
+          ),
+          error: true,
+          errorMessage: loginError.message || null,
           clientCredentials: null,
         };
         LoginHelper.ClearCachedCredentials();

@@ -21,7 +21,6 @@ import {
 const defaultAuthenticationState = {
   authenticated: false,
   authenticationError: false,
-  authenticationErrorMessage: null,
   clientCredentials: null,
   error: false,
   errorMessage: null,
@@ -77,7 +76,6 @@ export default produce((state: Draft<AppState['user']>, action) => {
           errorMessage = null,
           authenticated,
           authenticationError = false,
-          authenticationErrorMessage = null,
           clientCredentials = null,
           loading = action.type === LOGIN_USER,
         },
@@ -96,7 +94,6 @@ export default produce((state: Draft<AppState['user']>, action) => {
           authenticated:
             authenticated || state?.authenticationState?.authenticated,
           authenticationError,
-          authenticationErrorMessage,
           clientCredentials,
           error,
           errorMessage,

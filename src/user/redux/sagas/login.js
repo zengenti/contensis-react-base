@@ -118,7 +118,10 @@ function* validateUserSaga({ securityToken }) {
       yield put({
         type: SET_AUTHENTICATION_STATE,
         authenticationState: {
-          error: { message: error.message, stack: error.stack },
+          error: true,
+          errorMessage:
+            error?.message ||
+            (error && 'toString' in error && error.toString()),
         },
       });
   }
