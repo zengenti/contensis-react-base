@@ -1,11 +1,11 @@
 export declare const initialUserState: {
     authenticationState: {
-        authenticated: boolean;
-        authenticationError: boolean;
         clientCredentials: null;
-        error: boolean;
         errorMessage: null;
-        loading: boolean;
+        isAuthenticated: boolean;
+        isAuthenticationError: boolean;
+        isError: boolean;
+        isLoading: boolean;
     };
     passwordResetRequest: {
         isSending: boolean;

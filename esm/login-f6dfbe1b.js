@@ -1,6 +1,6 @@
 import { takeEvery, put, call, select } from '@redux-saga/core/effects';
-import { L as LOGIN_USER, n as LOGOUT_USER, V as VALIDATE_USER, S as SET_AUTHENTICATION_STATE } from './reducers-78488b03.js';
-import { a as selectUserIsAuthenticated, b as selectUserGroups, m as matchUserGroup, s as selectClientCredentials } from './ToJs-570d1319.js';
+import { L as LOGIN_USER, n as LOGOUT_USER, V as VALIDATE_USER, S as SET_AUTHENTICATION_STATE } from './reducers-8e5d6232.js';
+import { a as selectUserIsAuthenticated, b as selectUserGroups, m as matchUserGroup, s as selectClientCredentials } from './ToJs-2627ce21.js';
 import { f as setRoute } from './actions-5437f43d.js';
 import { q as queryParams, i as selectCurrentSearch } from './selectors-65f0f31c.js';
 import mapJson from 'jsonpath-mapper';
@@ -188,10 +188,10 @@ class LoginHelper {
   }) {
     let credentials = clientCredentials;
     let authenticationState = {
-      authenticated: false,
-      authenticationError: false,
-      error: false,
-      clientCredentials: null
+      clientCredentials: null,
+      isAuthenticated: false,
+      isAuthenticationError: false,
+      isError: false
     };
     let transientClient;
     let user;
@@ -207,11 +207,11 @@ class LoginHelper {
 
       if (loginError) {
         authenticationState = {
-          authenticated: false,
-          authenticationError: loginError.name.includes('ContensisAuthenticationError'),
-          error: true,
+          clientCredentials: null,
           errorMessage: loginError.message || null,
-          clientCredentials: null
+          isAuthenticated: false,
+          isAuthenticationError: loginError.name.includes('ContensisAuthenticationError'),
+          isError: true
         };
         LoginHelper.ClearCachedCredentials();
       } // Got a token using username and password
@@ -222,10 +222,10 @@ class LoginHelper {
         credentials = mapClientCredentials(transientClient);
         LoginHelper.SetLoginCookies(credentials);
         authenticationState = {
-          authenticated: true,
-          authenticationError: false,
-          error: false,
-          clientCredentials: credentials
+          clientCredentials: credentials,
+          isAuthenticated: true,
+          isAuthenticationError: false,
+          isError: false
         };
       }
     } // If we have credentials supplied by a successful username and password login
@@ -239,13 +239,11 @@ class LoginHelper {
 
       if (error) {
         authenticationState = {
-          authenticated: false,
-          authenticationError: false,
-          error: {
-            message: error.message,
-            stack: error.stack
-          },
-          clientCredentials: null
+          clientCredentials: null,
+          errorMessage: error.message,
+          isAuthenticated: false,
+          isAuthenticationError: false,
+          isError: true
         };
         LoginHelper.ClearCachedCredentials();
       } else {
@@ -254,10 +252,10 @@ class LoginHelper {
         LoginHelper.SetLoginCookies(latestCredentials);
         user = userDetails;
         authenticationState = {
-          authenticated: true,
-          authenticationError: false,
-          error: false,
-          clientCredentials: latestCredentials
+          clientCredentials: latestCredentials,
+          isAuthenticated: true,
+          isAuthenticationError: false,
+          isError: false
         };
       }
     }
@@ -519,7 +517,7 @@ function* validateUserSaga({
     yield put({
       type: SET_AUTHENTICATION_STATE,
       authenticationState: {
-        loading: true
+        isLoading: true
       }
     }); // If we have just a security token we will call a CMS endpoint
     // and provide us with a RefreshToken cookie we can use during login
@@ -541,7 +539,7 @@ function* validateUserSaga({
     });else if (error) yield put({
       type: SET_AUTHENTICATION_STATE,
       authenticationState: {
-        error: true,
+        isError: true,
         errorMessage: (error === null || error === void 0 ? void 0 : error.message) || error && 'toString' in error && error.toString()
       }
     });
@@ -617,15 +615,14 @@ function* refreshSecurityToken() {
   if (Object.keys(clientCredentials).length > 0) {
     const client = yield getManagementApiClient(clientCredentials);
     yield client.authenticate();
-    const authenticationState = {};
-    const newClientCredentials = mapClientCredentials(client);
-    authenticationState.clientCredentials = newClientCredentials;
     yield put({
       type: SET_AUTHENTICATION_STATE,
-      authenticationState
+      authenticationState: {
+        clientCredentials: mapClientCredentials(client)
+      }
     });
   }
 }
 
 export { LoginHelper as L, findContentTypeMapping as f, getManagementApiClient as g, handleRequiresLoginSaga as h, loginSagas as l, refreshSecurityToken as r };
-//# sourceMappingURL=login-d5d4fc3b.js.map
+//# sourceMappingURL=login-f6dfbe1b.js.map

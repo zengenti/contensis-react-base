@@ -23,10 +23,10 @@ export class LoginHelper {
         clientCredentials: any;
     }): Promise<{
         authenticationState: {
-            authenticated: boolean;
-            authenticationError: boolean;
-            error: boolean;
             clientCredentials: null;
+            isAuthenticated: boolean;
+            isAuthenticationError: boolean;
+            isError: boolean;
         };
         user: Error | {
             groups: any;

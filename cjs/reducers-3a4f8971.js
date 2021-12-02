@@ -51,12 +51,12 @@ var types = /*#__PURE__*/Object.freeze({
 });
 
 const defaultAuthenticationState = {
-  authenticated: false,
-  authenticationError: false,
   clientCredentials: null,
-  error: false,
   errorMessage: null,
-  loading: false
+  isAuthenticated: false,
+  isAuthenticationError: false,
+  isError: false,
+  isLoading: false
 };
 const defaultPasswordResetRequestValues = {
   isSending: false,
@@ -74,7 +74,7 @@ const defaultChangePasswordValues = {
   error: null
 };
 const defaultRegistrationValues = {
-  loading: false,
+  isLoading: false,
   success: false,
   error: null
 };
@@ -103,39 +103,39 @@ var UserReducer = immer.produce((state, action) => {
 
         const {
           authenticationState: {
-            error = false,
-            errorMessage = null,
-            authenticated,
-            authenticationError = false,
             clientCredentials = null,
-            loading = action.type === LOGIN_USER
+            errorMessage = null,
+            isAuthenticated,
+            isAuthenticationError = false,
+            isError = false,
+            isLoading = action.type === LOGIN_USER
           },
           user
         } = action;
 
         if (user) {
-          user.name = `${user.firstName} ${user.lastName}`;
+          user.name = `${user.firstName}${user.lastName ? ` ${user.lastName}` : ''}` || null;
           user.isZengentiStaff = user.email.includes('@zengenti.com');
         }
 
         state = { ...initialUserState,
           ...(user || state),
           authenticationState: {
-            authenticated: authenticated || ((_state = state) === null || _state === void 0 ? void 0 : (_state$authentication = _state.authenticationState) === null || _state$authentication === void 0 ? void 0 : _state$authentication.authenticated),
-            authenticationError,
             clientCredentials,
-            error,
             errorMessage,
-            loading
+            isAuthenticated: isAuthenticated || ((_state = state) === null || _state === void 0 ? void 0 : (_state$authentication = _state.authenticationState) === null || _state$authentication === void 0 ? void 0 : _state$authentication.isAuthenticated),
+            isAuthenticationError,
+            isError,
+            isLoading
           }
         };
         return state;
       }
     // REGISTER_USER is the trigger to set the user.registration initial state
-    // and will set user.registration.loading to true
-    // REGISTER_USER_FAILED will unset user.registration.loading and will set
+    // and will set user.registration.isLoading to true
+    // REGISTER_USER_FAILED will unset user.registration.isLoading and will set
     // the value in user.registration.error
-    // REGISTER_USER_SUCCESS will unset user.registration.loading and will
+    // REGISTER_USER_SUCCESS will unset user.registration.isLoading and will
     // set user.registration to the created user from the api response
 
     case REGISTER_USER:
@@ -152,7 +152,7 @@ var UserReducer = immer.produce((state, action) => {
 
         state.registration.success = action.type === REGISTER_USER_SUCCESS;
         state.registration.error = error || false;
-        state.registration.loading = action.type === REGISTER_USER;
+        state.registration.isLoading = action.type === REGISTER_USER;
         return;
       }
 
@@ -250,4 +250,4 @@ exports.UserReducer = UserReducer;
 exports.VALIDATE_USER = VALIDATE_USER;
 exports.initialUserState = initialUserState;
 exports.types = types;
-//# sourceMappingURL=reducers-c23f195f.js.map
+//# sourceMappingURL=reducers-3a4f8971.js.map

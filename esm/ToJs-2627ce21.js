@@ -1,9 +1,10 @@
 import { g as getImmutableOrJS } from './selectors-65f0f31c.js';
 import React from 'react';
 
-const selectUserIsLoading = state => getImmutableOrJS(state, ['user', 'authenticationState', 'loading']);
-const selectUserIsAuthenticated = state => getImmutableOrJS(state, ['user', 'authenticationState', 'authenticated']);
-const selectUserAuthenticationError = state => getImmutableOrJS(state, ['user', 'authenticationState', 'authenticationError']);
+const selectUserIsLoading = state => getImmutableOrJS(state, ['user', 'authenticationState', 'isLoading']);
+const selectUserIsAuthenticated = state => getImmutableOrJS(state, ['user', 'authenticationState', 'isAuthenticated']);
+const selectUserIsAuthenticationError = state => getImmutableOrJS(state, ['user', 'authenticationState', 'isAuthenticationError']);
+const selectUserIsError = state => getImmutableOrJS(state, ['user', 'authenticationState', 'isError']);
 /**
  * DEPRECATED 12/2021 - use selectUserErrorMessage instead
  * @param state AppState
@@ -11,7 +12,6 @@ const selectUserAuthenticationError = state => getImmutableOrJS(state, ['user', 
  */
 
 const selectUserAuthenticationErrorMessage = state => getImmutableOrJS(state, ['user', 'authenticationState', 'errorMessage']);
-const selectUserError = state => getImmutableOrJS(state, ['user', 'authenticationState', 'error']);
 const selectUserErrorMessage = state => getImmutableOrJS(state, ['user', 'authenticationState', 'errorMessage']);
 const selectClientCredentials = (state, returnType) => getImmutableOrJS(state, ['user', 'authenticationState', 'clientCredentials'], {}, returnType);
 const selectUser = (state, returnType) => getImmutableOrJS(state, 'user', {}, returnType);
@@ -23,7 +23,7 @@ const selectUserGroups = (state, returnType) => getImmutableOrJS(state, ['user',
 const selectUserSecurityToken = state => getImmutableOrJS(state, ['user', 'authenticationState', 'clientCredentials', 'contensisClassicToken']);
 const selectUserRegistration = (state, returnType) => getImmutableOrJS(state, ['user', 'registration'], {}, returnType);
 const selectUserRegistrationError = state => getImmutableOrJS(state, ['user', 'registration', 'error'], false);
-const selectUserRegistrationIsLoading = state => getImmutableOrJS(state, ['user', 'registration', 'loading'], false);
+const selectUserRegistrationIsLoading = state => getImmutableOrJS(state, ['user', 'registration', 'isLoading'], false);
 const selectUserRegistrationIsSuccess = state => getImmutableOrJS(state, ['user', 'registration', 'success'], false);
 const selectPasswordResetRequestSending = state => getImmutableOrJS(state, ['user', 'passwordResetRequest', 'isSending']);
 const selectPasswordResetRequestSent = state => getImmutableOrJS(state, ['user', 'passwordResetRequest', 'sent']);
@@ -39,9 +39,9 @@ var selectors = /*#__PURE__*/Object.freeze({
   __proto__: null,
   selectUserIsLoading: selectUserIsLoading,
   selectUserIsAuthenticated: selectUserIsAuthenticated,
-  selectUserAuthenticationError: selectUserAuthenticationError,
+  selectUserIsAuthenticationError: selectUserIsAuthenticationError,
+  selectUserIsError: selectUserIsError,
   selectUserAuthenticationErrorMessage: selectUserAuthenticationErrorMessage,
-  selectUserError: selectUserError,
   selectUserErrorMessage: selectUserErrorMessage,
   selectClientCredentials: selectClientCredentials,
   selectUser: selectUser,
@@ -95,5 +95,5 @@ const toJS = WrappedComponent => wrappedComponentProps => {
   return /*#__PURE__*/React.createElement(WrappedComponent, propsJS);
 };
 
-export { selectUserIsAuthenticated as a, selectUserGroups as b, selectUserAuthenticationError as c, selectUserErrorMessage as d, selectUserError as e, selectUserIsLoading as f, selectUser as g, selectUserRegistrationError as h, selectUserRegistrationIsLoading as i, selectUserRegistrationIsSuccess as j, selectUserRegistration as k, selectPasswordResetRequestSending as l, matchUserGroup as m, selectPasswordResetRequestSent as n, selectPasswordResetRequestError as o, selectResetPasswordSending as p, selectResetPasswordSent as q, selectResetPasswordError as r, selectClientCredentials as s, toJS as t, selectChangePasswordSending as u, selectChangePasswordSent as v, selectUserGuid as w, selectChangePasswordError as x, selectors as y };
-//# sourceMappingURL=ToJs-570d1319.js.map
+export { selectUserIsAuthenticated as a, selectUserGroups as b, selectUserErrorMessage as c, selectUserIsAuthenticationError as d, selectUserIsError as e, selectUserIsLoading as f, selectUser as g, selectUserRegistrationError as h, selectUserRegistrationIsLoading as i, selectUserRegistrationIsSuccess as j, selectUserRegistration as k, selectPasswordResetRequestSending as l, matchUserGroup as m, selectPasswordResetRequestSent as n, selectPasswordResetRequestError as o, selectResetPasswordSending as p, selectResetPasswordSent as q, selectResetPasswordError as r, selectClientCredentials as s, toJS as t, selectChangePasswordSending as u, selectChangePasswordSent as v, selectUserGuid as w, selectChangePasswordError as x, selectors as y };
+//# sourceMappingURL=ToJs-2627ce21.js.map

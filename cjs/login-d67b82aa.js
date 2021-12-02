@@ -1,8 +1,8 @@
 'use strict';
 
 var effects = require('@redux-saga/core/effects');
-var reducers = require('./reducers-c23f195f.js');
-var ToJs = require('./ToJs-8a68c21e.js');
+var reducers = require('./reducers-3a4f8971.js');
+var ToJs = require('./ToJs-09204afd.js');
 var actions = require('./actions-6b9ef168.js');
 var selectors = require('./selectors-2c1b1183.js');
 var mapJson = require('jsonpath-mapper');
@@ -213,10 +213,10 @@ class LoginHelper {
   }) {
     let credentials = clientCredentials;
     let authenticationState = {
-      authenticated: false,
-      authenticationError: false,
-      error: false,
-      clientCredentials: null
+      clientCredentials: null,
+      isAuthenticated: false,
+      isAuthenticationError: false,
+      isError: false
     };
     let transientClient;
     let user;
@@ -232,11 +232,11 @@ class LoginHelper {
 
       if (loginError) {
         authenticationState = {
-          authenticated: false,
-          authenticationError: loginError.name.includes('ContensisAuthenticationError'),
-          error: true,
+          clientCredentials: null,
           errorMessage: loginError.message || null,
-          clientCredentials: null
+          isAuthenticated: false,
+          isAuthenticationError: loginError.name.includes('ContensisAuthenticationError'),
+          isError: true
         };
         LoginHelper.ClearCachedCredentials();
       } // Got a token using username and password
@@ -247,10 +247,10 @@ class LoginHelper {
         credentials = mapClientCredentials(transientClient);
         LoginHelper.SetLoginCookies(credentials);
         authenticationState = {
-          authenticated: true,
-          authenticationError: false,
-          error: false,
-          clientCredentials: credentials
+          clientCredentials: credentials,
+          isAuthenticated: true,
+          isAuthenticationError: false,
+          isError: false
         };
       }
     } // If we have credentials supplied by a successful username and password login
@@ -264,13 +264,11 @@ class LoginHelper {
 
       if (error) {
         authenticationState = {
-          authenticated: false,
-          authenticationError: false,
-          error: {
-            message: error.message,
-            stack: error.stack
-          },
-          clientCredentials: null
+          clientCredentials: null,
+          errorMessage: error.message,
+          isAuthenticated: false,
+          isAuthenticationError: false,
+          isError: true
         };
         LoginHelper.ClearCachedCredentials();
       } else {
@@ -279,10 +277,10 @@ class LoginHelper {
         LoginHelper.SetLoginCookies(latestCredentials);
         user = userDetails;
         authenticationState = {
-          authenticated: true,
-          authenticationError: false,
-          error: false,
-          clientCredentials: latestCredentials
+          clientCredentials: latestCredentials,
+          isAuthenticated: true,
+          isAuthenticationError: false,
+          isError: false
         };
       }
     }
@@ -544,7 +542,7 @@ function* validateUserSaga({
     yield effects.put({
       type: reducers.SET_AUTHENTICATION_STATE,
       authenticationState: {
-        loading: true
+        isLoading: true
       }
     }); // If we have just a security token we will call a CMS endpoint
     // and provide us with a RefreshToken cookie we can use during login
@@ -566,7 +564,7 @@ function* validateUserSaga({
     });else if (error) yield effects.put({
       type: reducers.SET_AUTHENTICATION_STATE,
       authenticationState: {
-        error: true,
+        isError: true,
         errorMessage: (error === null || error === void 0 ? void 0 : error.message) || error && 'toString' in error && error.toString()
       }
     });
@@ -642,12 +640,11 @@ function* refreshSecurityToken() {
   if (Object.keys(clientCredentials).length > 0) {
     const client = yield getManagementApiClient(clientCredentials);
     yield client.authenticate();
-    const authenticationState = {};
-    const newClientCredentials = mapClientCredentials(client);
-    authenticationState.clientCredentials = newClientCredentials;
     yield effects.put({
       type: reducers.SET_AUTHENTICATION_STATE,
-      authenticationState
+      authenticationState: {
+        clientCredentials: mapClientCredentials(client)
+      }
     });
   }
 }
@@ -658,4 +655,4 @@ exports.getManagementApiClient = getManagementApiClient;
 exports.handleRequiresLoginSaga = handleRequiresLoginSaga;
 exports.loginSagas = loginSagas;
 exports.refreshSecurityToken = refreshSecurityToken;
-//# sourceMappingURL=login-f01e825b.js.map
+//# sourceMappingURL=login-d67b82aa.js.map

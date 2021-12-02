@@ -1,10 +1,10 @@
-export { L as LoginHelper, h as handleRequiresLoginSaga, r as refreshSecurityToken } from './login-d5d4fc3b.js';
+export { L as LoginHelper, h as handleRequiresLoginSaga, r as refreshSecurityToken } from './login-f6dfbe1b.js';
 import { useDispatch, useSelector, connect } from 'react-redux';
 import { r as action, i as selectCurrentSearch } from './selectors-65f0f31c.js';
-import { L as LOGIN_USER, n as LOGOUT_USER, R as REGISTER_USER, c as REQUEST_USER_PASSWORD_RESET, d as RESET_USER_PASSWORD, C as CHANGE_USER_PASSWORD } from './reducers-78488b03.js';
-export { o as initialUserState, U as reducer, t as types } from './reducers-78488b03.js';
-import { c as selectUserAuthenticationError, d as selectUserErrorMessage, e as selectUserError, a as selectUserIsAuthenticated, f as selectUserIsLoading, g as selectUser, t as toJS, h as selectUserRegistrationError, i as selectUserRegistrationIsLoading, j as selectUserRegistrationIsSuccess, k as selectUserRegistration, l as selectPasswordResetRequestSending, n as selectPasswordResetRequestSent, o as selectPasswordResetRequestError, p as selectResetPasswordSending, q as selectResetPasswordSent, r as selectResetPasswordError, u as selectChangePasswordSending, v as selectChangePasswordSent, w as selectUserGuid, x as selectChangePasswordError } from './ToJs-570d1319.js';
-export { y as selectors } from './ToJs-570d1319.js';
+import { L as LOGIN_USER, n as LOGOUT_USER, R as REGISTER_USER, c as REQUEST_USER_PASSWORD_RESET, d as RESET_USER_PASSWORD, C as CHANGE_USER_PASSWORD } from './reducers-8e5d6232.js';
+export { o as initialUserState, U as reducer, t as types } from './reducers-8e5d6232.js';
+import { c as selectUserErrorMessage, a as selectUserIsAuthenticated, d as selectUserIsAuthenticationError, e as selectUserIsError, f as selectUserIsLoading, g as selectUser, t as toJS, h as selectUserRegistrationError, i as selectUserRegistrationIsLoading, j as selectUserRegistrationIsSuccess, k as selectUserRegistration, l as selectPasswordResetRequestSending, n as selectPasswordResetRequestSent, o as selectPasswordResetRequestError, p as selectResetPasswordSending, q as selectResetPasswordSent, r as selectResetPasswordError, u as selectChangePasswordSending, v as selectChangePasswordSent, w as selectUserGuid, x as selectChangePasswordError } from './ToJs-2627ce21.js';
+export { y as selectors } from './ToJs-2627ce21.js';
 import '@redux-saga/core/effects';
 import './actions-5437f43d.js';
 import 'jsonpath-mapper';
@@ -53,14 +53,18 @@ const useLogin = () => {
   return {
     loginUser: (username, password) => dispatch(loginUser(username, password)),
     logoutUser: redirectPath => dispatch(logoutUser(redirectPath)),
-    authenticationError: select(selectUserAuthenticationError),
-    // DEPRECATED: authenticationErrorMessage is deprecated use errorMessage instead
-    authenticationErrorMessage: select(selectUserErrorMessage),
-    error: select(selectUserError),
     errorMessage: select(selectUserErrorMessage),
     isAuthenticated: select(selectUserIsAuthenticated),
+    isAuthenticationError: select(selectUserIsAuthenticationError),
+    isError: select(selectUserIsError),
     isLoading: select(selectUserIsLoading),
-    user: select(selectUser)
+    user: select(selectUser),
+    // DEPRECATED: authenticationError is deprecated use isAuthenticationError instead
+    authenticationError: select(selectUserIsAuthenticationError),
+    // DEPRECATED: authenticationErrorMessage is deprecated use errorMessage instead
+    authenticationErrorMessage: select(selectUserErrorMessage),
+    // DEPRECATED: error is deprecated use isError instead
+    error: select(selectUserIsError)
   };
 };
 
@@ -158,11 +162,15 @@ const getDisplayName$1 = WrappedComponent => {
 const withLogin = WrappedComponent => {
   const mapStateToProps = state => {
     return {
-      authenticationError: selectUserAuthenticationError(state),
-      error: selectUserError(state),
       isAuthenticated: selectUserIsAuthenticated(state),
+      isAuthenticationError: selectUserIsAuthenticationError(state),
+      isError: selectUserIsError(state),
       isLoading: selectUserIsLoading(state),
-      user: selectUser(state)
+      user: selectUser(state),
+      // DEPRECATED: authenticationError is deprecated use isAuthenticationError instead
+      authenticationError: selectUserIsAuthenticationError(state),
+      // DEPRECATED: error is deprecated use isError instead
+      error: selectUserIsError(state)
     };
   };
 

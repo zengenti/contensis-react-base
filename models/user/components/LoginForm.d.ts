@@ -1,6 +1,5 @@
 export default LoginForm;
-declare function LoginForm({ loginException, authenticationError, loading, loginUser, }: {
-    loginException: any;
+declare function LoginForm({ authenticationError, loading, loginUser }: {
     authenticationError: any;
     loading: any;
     loginUser: any;

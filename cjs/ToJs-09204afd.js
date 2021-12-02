@@ -7,9 +7,10 @@ function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'defau
 
 var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
 
-const selectUserIsLoading = state => selectors$1.getImmutableOrJS(state, ['user', 'authenticationState', 'loading']);
-const selectUserIsAuthenticated = state => selectors$1.getImmutableOrJS(state, ['user', 'authenticationState', 'authenticated']);
-const selectUserAuthenticationError = state => selectors$1.getImmutableOrJS(state, ['user', 'authenticationState', 'authenticationError']);
+const selectUserIsLoading = state => selectors$1.getImmutableOrJS(state, ['user', 'authenticationState', 'isLoading']);
+const selectUserIsAuthenticated = state => selectors$1.getImmutableOrJS(state, ['user', 'authenticationState', 'isAuthenticated']);
+const selectUserIsAuthenticationError = state => selectors$1.getImmutableOrJS(state, ['user', 'authenticationState', 'isAuthenticationError']);
+const selectUserIsError = state => selectors$1.getImmutableOrJS(state, ['user', 'authenticationState', 'isError']);
 /**
  * DEPRECATED 12/2021 - use selectUserErrorMessage instead
  * @param state AppState
@@ -17,7 +18,6 @@ const selectUserAuthenticationError = state => selectors$1.getImmutableOrJS(stat
  */
 
 const selectUserAuthenticationErrorMessage = state => selectors$1.getImmutableOrJS(state, ['user', 'authenticationState', 'errorMessage']);
-const selectUserError = state => selectors$1.getImmutableOrJS(state, ['user', 'authenticationState', 'error']);
 const selectUserErrorMessage = state => selectors$1.getImmutableOrJS(state, ['user', 'authenticationState', 'errorMessage']);
 const selectClientCredentials = (state, returnType) => selectors$1.getImmutableOrJS(state, ['user', 'authenticationState', 'clientCredentials'], {}, returnType);
 const selectUser = (state, returnType) => selectors$1.getImmutableOrJS(state, 'user', {}, returnType);
@@ -29,7 +29,7 @@ const selectUserGroups = (state, returnType) => selectors$1.getImmutableOrJS(sta
 const selectUserSecurityToken = state => selectors$1.getImmutableOrJS(state, ['user', 'authenticationState', 'clientCredentials', 'contensisClassicToken']);
 const selectUserRegistration = (state, returnType) => selectors$1.getImmutableOrJS(state, ['user', 'registration'], {}, returnType);
 const selectUserRegistrationError = state => selectors$1.getImmutableOrJS(state, ['user', 'registration', 'error'], false);
-const selectUserRegistrationIsLoading = state => selectors$1.getImmutableOrJS(state, ['user', 'registration', 'loading'], false);
+const selectUserRegistrationIsLoading = state => selectors$1.getImmutableOrJS(state, ['user', 'registration', 'isLoading'], false);
 const selectUserRegistrationIsSuccess = state => selectors$1.getImmutableOrJS(state, ['user', 'registration', 'success'], false);
 const selectPasswordResetRequestSending = state => selectors$1.getImmutableOrJS(state, ['user', 'passwordResetRequest', 'isSending']);
 const selectPasswordResetRequestSent = state => selectors$1.getImmutableOrJS(state, ['user', 'passwordResetRequest', 'sent']);
@@ -45,9 +45,9 @@ var selectors = /*#__PURE__*/Object.freeze({
   __proto__: null,
   selectUserIsLoading: selectUserIsLoading,
   selectUserIsAuthenticated: selectUserIsAuthenticated,
-  selectUserAuthenticationError: selectUserAuthenticationError,
+  selectUserIsAuthenticationError: selectUserIsAuthenticationError,
+  selectUserIsError: selectUserIsError,
   selectUserAuthenticationErrorMessage: selectUserAuthenticationErrorMessage,
-  selectUserError: selectUserError,
   selectUserErrorMessage: selectUserErrorMessage,
   selectClientCredentials: selectClientCredentials,
   selectUser: selectUser,
@@ -113,12 +113,12 @@ exports.selectResetPasswordError = selectResetPasswordError;
 exports.selectResetPasswordSending = selectResetPasswordSending;
 exports.selectResetPasswordSent = selectResetPasswordSent;
 exports.selectUser = selectUser;
-exports.selectUserAuthenticationError = selectUserAuthenticationError;
-exports.selectUserError = selectUserError;
 exports.selectUserErrorMessage = selectUserErrorMessage;
 exports.selectUserGroups = selectUserGroups;
 exports.selectUserGuid = selectUserGuid;
 exports.selectUserIsAuthenticated = selectUserIsAuthenticated;
+exports.selectUserIsAuthenticationError = selectUserIsAuthenticationError;
+exports.selectUserIsError = selectUserIsError;
 exports.selectUserIsLoading = selectUserIsLoading;
 exports.selectUserRegistration = selectUserRegistration;
 exports.selectUserRegistrationError = selectUserRegistrationError;
@@ -126,4 +126,4 @@ exports.selectUserRegistrationIsLoading = selectUserRegistrationIsLoading;
 exports.selectUserRegistrationIsSuccess = selectUserRegistrationIsSuccess;
 exports.selectors = selectors;
 exports.toJS = toJS;
-//# sourceMappingURL=ToJs-8a68c21e.js.map
+//# sourceMappingURL=ToJs-09204afd.js.map

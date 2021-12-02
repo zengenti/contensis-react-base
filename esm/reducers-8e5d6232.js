@@ -49,12 +49,12 @@ var types = /*#__PURE__*/Object.freeze({
 });
 
 const defaultAuthenticationState = {
-  authenticated: false,
-  authenticationError: false,
   clientCredentials: null,
-  error: false,
   errorMessage: null,
-  loading: false
+  isAuthenticated: false,
+  isAuthenticationError: false,
+  isError: false,
+  isLoading: false
 };
 const defaultPasswordResetRequestValues = {
   isSending: false,
@@ -72,7 +72,7 @@ const defaultChangePasswordValues = {
   error: null
 };
 const defaultRegistrationValues = {
-  loading: false,
+  isLoading: false,
   success: false,
   error: null
 };
@@ -101,39 +101,39 @@ var UserReducer = produce((state, action) => {
 
         const {
           authenticationState: {
-            error = false,
-            errorMessage = null,
-            authenticated,
-            authenticationError = false,
             clientCredentials = null,
-            loading = action.type === LOGIN_USER
+            errorMessage = null,
+            isAuthenticated,
+            isAuthenticationError = false,
+            isError = false,
+            isLoading = action.type === LOGIN_USER
           },
           user
         } = action;
 
         if (user) {
-          user.name = `${user.firstName} ${user.lastName}`;
+          user.name = `${user.firstName}${user.lastName ? ` ${user.lastName}` : ''}` || null;
           user.isZengentiStaff = user.email.includes('@zengenti.com');
         }
 
         state = { ...initialUserState,
           ...(user || state),
           authenticationState: {
-            authenticated: authenticated || ((_state = state) === null || _state === void 0 ? void 0 : (_state$authentication = _state.authenticationState) === null || _state$authentication === void 0 ? void 0 : _state$authentication.authenticated),
-            authenticationError,
             clientCredentials,
-            error,
             errorMessage,
-            loading
+            isAuthenticated: isAuthenticated || ((_state = state) === null || _state === void 0 ? void 0 : (_state$authentication = _state.authenticationState) === null || _state$authentication === void 0 ? void 0 : _state$authentication.isAuthenticated),
+            isAuthenticationError,
+            isError,
+            isLoading
           }
         };
         return state;
       }
     // REGISTER_USER is the trigger to set the user.registration initial state
-    // and will set user.registration.loading to true
-    // REGISTER_USER_FAILED will unset user.registration.loading and will set
+    // and will set user.registration.isLoading to true
+    // REGISTER_USER_FAILED will unset user.registration.isLoading and will set
     // the value in user.registration.error
-    // REGISTER_USER_SUCCESS will unset user.registration.loading and will
+    // REGISTER_USER_SUCCESS will unset user.registration.isLoading and will
     // set user.registration to the created user from the api response
 
     case REGISTER_USER:
@@ -150,7 +150,7 @@ var UserReducer = produce((state, action) => {
 
         state.registration.success = action.type === REGISTER_USER_SUCCESS;
         state.registration.error = error || false;
-        state.registration.loading = action.type === REGISTER_USER;
+        state.registration.isLoading = action.type === REGISTER_USER;
         return;
       }
 
@@ -227,4 +227,4 @@ var UserReducer = produce((state, action) => {
 }, initialUserState);
 
 export { CHANGE_USER_PASSWORD as C, LOGIN_USER as L, REGISTER_USER as R, SET_AUTHENTICATION_STATE as S, UserReducer as U, VALIDATE_USER as V, REGISTER_USER_SUCCESS as a, REGISTER_USER_FAILED as b, REQUEST_USER_PASSWORD_RESET as c, RESET_USER_PASSWORD as d, REQUEST_USER_PASSWORD_RESET_SENDING as e, REQUEST_USER_PASSWORD_RESET_SUCCESS as f, REQUEST_USER_PASSWORD_RESET_ERROR as g, RESET_USER_PASSWORD_SENDING as h, RESET_USER_PASSWORD_SUCCESS as i, RESET_USER_PASSWORD_ERROR as j, CHANGE_USER_PASSWORD_ERROR as k, CHANGE_USER_PASSWORD_SENDING as l, CHANGE_USER_PASSWORD_SUCCESS as m, LOGOUT_USER as n, initialUserState as o, types as t };
-//# sourceMappingURL=reducers-78488b03.js.map
+//# sourceMappingURL=reducers-8e5d6232.js.map

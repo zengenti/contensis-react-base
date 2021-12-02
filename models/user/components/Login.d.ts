@@ -1,6 +1,5 @@
 declare var _default: React.ComponentType<{
-    error: any;
-    authenticationError: any;
+    errorMessage: any;
     isAuthenticated: any;
     isLoading: any;
     user: any;

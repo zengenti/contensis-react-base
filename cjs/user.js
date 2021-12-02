@@ -2,11 +2,11 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var login = require('./login-f01e825b.js');
+var login = require('./login-d67b82aa.js');
 var reactRedux = require('react-redux');
 var selectors = require('./selectors-2c1b1183.js');
-var reducers = require('./reducers-c23f195f.js');
-var ToJs = require('./ToJs-8a68c21e.js');
+var reducers = require('./reducers-3a4f8971.js');
+var ToJs = require('./ToJs-09204afd.js');
 require('@redux-saga/core/effects');
 require('./actions-6b9ef168.js');
 require('jsonpath-mapper');
@@ -55,14 +55,18 @@ const useLogin = () => {
   return {
     loginUser: (username, password) => dispatch(loginUser(username, password)),
     logoutUser: redirectPath => dispatch(logoutUser(redirectPath)),
-    authenticationError: select(ToJs.selectUserAuthenticationError),
-    // DEPRECATED: authenticationErrorMessage is deprecated use errorMessage instead
-    authenticationErrorMessage: select(ToJs.selectUserErrorMessage),
-    error: select(ToJs.selectUserError),
     errorMessage: select(ToJs.selectUserErrorMessage),
     isAuthenticated: select(ToJs.selectUserIsAuthenticated),
+    isAuthenticationError: select(ToJs.selectUserIsAuthenticationError),
+    isError: select(ToJs.selectUserIsError),
     isLoading: select(ToJs.selectUserIsLoading),
-    user: select(ToJs.selectUser)
+    user: select(ToJs.selectUser),
+    // DEPRECATED: authenticationError is deprecated use isAuthenticationError instead
+    authenticationError: select(ToJs.selectUserIsAuthenticationError),
+    // DEPRECATED: authenticationErrorMessage is deprecated use errorMessage instead
+    authenticationErrorMessage: select(ToJs.selectUserErrorMessage),
+    // DEPRECATED: error is deprecated use isError instead
+    error: select(ToJs.selectUserIsError)
   };
 };
 
@@ -160,11 +164,15 @@ const getDisplayName$1 = WrappedComponent => {
 const withLogin = WrappedComponent => {
   const mapStateToProps = state => {
     return {
-      authenticationError: ToJs.selectUserAuthenticationError(state),
-      error: ToJs.selectUserError(state),
       isAuthenticated: ToJs.selectUserIsAuthenticated(state),
+      isAuthenticationError: ToJs.selectUserIsAuthenticationError(state),
+      isError: ToJs.selectUserIsError(state),
       isLoading: ToJs.selectUserIsLoading(state),
-      user: ToJs.selectUser(state)
+      user: ToJs.selectUser(state),
+      // DEPRECATED: authenticationError is deprecated use isAuthenticationError instead
+      authenticationError: ToJs.selectUserIsAuthenticationError(state),
+      // DEPRECATED: error is deprecated use isError instead
+      error: ToJs.selectUserIsError(state)
     };
   };
 

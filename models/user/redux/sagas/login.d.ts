@@ -6,14 +6,14 @@ export function handleRequiresLoginSaga(action: any): Generator<import("redux-sa
 }[]> | import("redux-saga/effects").PutEffect<{
     type: string;
     authenticationState: {
-        loading: boolean;
+        isLoading: boolean;
     };
 }> | import("redux-saga/effects").CallEffect<Generator<Promise<{
     authenticationState: {
-        authenticated: boolean;
-        authenticationError: boolean;
-        error: boolean;
         clientCredentials: null;
+        isAuthenticated: boolean;
+        isAuthenticationError: boolean;
+        isError: boolean;
     };
     user: Error | {
         groups: any;
@@ -28,7 +28,7 @@ export function handleRequiresLoginSaga(action: any): Generator<import("redux-sa
 }>> | import("redux-saga/effects").PutEffect<{
     type: string;
     authenticationState: {
-        error: boolean;
+        isError: boolean;
         errorMessage: any;
     };
 }>, any, [any, any]>> | import("redux-saga/effects").PutEffect<{
