@@ -28,6 +28,7 @@ export type RouteComponentProps<P = any> = {
 export type RouteLoaderProps = {
   loadingComponent?: React.ComponentType;
   notFoundComponent?: React.ComponentType;
+  reactRouterContext?: React.ContextType<any>;
 };
 
 export type EntryMapper =
@@ -64,7 +65,7 @@ export type ContentTypeMapping = {
 };
 
 export type StaticRoute = Omit<RouteConfig, 'component'> & {
-  component: RouteComponent<RouteComponentProps>;
+  component?: RouteComponent<RouteComponentProps>;
   fetchNode?: boolean;
   fetchNodeLevel?: number;
   injectRedux?: ReduxInjector;

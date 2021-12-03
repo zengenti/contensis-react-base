@@ -1,8 +1,15 @@
 import React, { useEffect, useCallback } from 'react';
 import { connect } from 'react-redux';
 import { hot } from 'react-hot-loader';
-import { Redirect, useLocation } from 'react-router-dom';
-import { renderRoutes, matchRoutes, RouteConfig } from 'react-router-config';
+import { Navigate, useLocation } from 'react-router-dom';
+import {
+  matchRoutes,
+  useRoutes,
+  RouteObject,
+  useInRouterContext,
+} from 'react-router';
+// import { renderRoutes, matchRoutes, RouteConfig } from 'react-router-config';
+
 import { createSelector } from 'reselect';
 
 import NotFound from './NotFound';
@@ -30,7 +37,7 @@ import { matchUserGroup } from '~/user/util/matchGroups';
 
 import { toJS } from '~/util/ToJs';
 import { Entry } from 'contensis-delivery-api/lib/models';
-import { AppRootProps, RouteComponentProps, RouteLoaderProps } from '../routes';
+import { AppRootProps, RouteLoaderProps } from '../routes';
 
 const getTrimmedPath = path => {
   if (path !== '/') {
@@ -82,13 +89,35 @@ const RouteLoader = ({
   // Always ensure paths are trimmed of trailing slashes so urls are always unique
   const trimmedPath = getTrimmedPath(location.pathname);
 
+  routes.StaticRoutes = routes.StaticRoutes.map(x => {
+    if (x.component) {
+      x.element = (
+        <x.component
+          projectId={projectId}
+          contentTypeId={contentTypeId ? contentTypeId : undefined}
+          entry={entry}
+          mappedEntry={mappedEntry}
+          isLoggedIn={isLoggedIn}
+        />
+      );
+      delete x.component;
+    }
+    return x;
+  });
+
   // Match any Static Routes a developer has defined
   const matchedStaticRoute = () =>
-    matchRoutes(routes.StaticRoutes as RouteConfig[], location.pathname);
-  const isStaticRoute = () => matchedStaticRoute().length > 0;
+    matchRoutes(routes.StaticRoutes as RouteObject[], location.pathname);
+  const isStaticRoute = () =>
+    matchedStaticRoute && matchedStaticRoute.length > 0;
 
-  const staticRoute = isStaticRoute() && matchedStaticRoute()[0];
+  const inRouterContext = useInRouterContext();
+  console.info('In Router Context', inRouterContext);
+
+  const staticRoute = isStaticRoute() && matchedStaticRoute[0];
   const routeRequiresLogin = staticRoute && staticRoute.route.requireLogin;
+
+  const staticRouteElement = useRoutes(routes.StaticRoutes as RouteObject[]);
 
   const setPath = useCallback(() => {
     // Use serverPath to control the path we send to siteview node api to resolve a route
@@ -141,22 +170,14 @@ const RouteLoader = ({
 
   // Need to redirect when url endswith a /
   if (location.pathname.length > trimmedPath.length) {
-    return <Redirect to={trimmedPath} />;
+    // Todo: Also handle the redirect serverside
+    return <Navigate to={trimmedPath} />;
   }
 
   // Render any Static Routes a developer has defined
   if (isStaticRoute() && !(!isLoggedIn && routeRequiresLogin)) {
     if (matchUserGroup(userGroups, routeRequiresLogin))
-      return renderRoutes(
-        routes.StaticRoutes as RouteConfig[],
-        {
-          projectId,
-          contentTypeId,
-          entry,
-          mappedEntry,
-          isLoggedIn,
-        } as RouteComponentProps
-      );
+      return staticRouteElement;
   }
 
   // Render a supplied Loading component if the route
@@ -261,5 +282,7 @@ const mapDispatchToProps = {
 };
 
 export default hot(module)(
-  connect(mapStateToPropsMemoized, mapDispatchToProps)(toJS(RouteLoader))
-);
+  connect(mapStateToPropsMemoized, mapDispatchToProps, null, { pure: false })(
+    toJS(RouteLoader)
+  )
+) as any;

@@ -3,7 +3,7 @@ import React from 'react';
 import { render, hydrate } from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 import { Provider as ReduxProvider } from 'react-redux';
-import { Router } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import { loadableReady } from '@loadable/component';
 import * as queryString from 'query-string';
 
@@ -42,9 +42,9 @@ class ClientApp {
       const ClientJsx = (
         <AppContainer>
           <ReduxProvider store={store}>
-            <Router history={history}>
+            <BrowserRouter>
               <ReactApp routes={routes} withEvents={withEvents} />
-            </Router>
+            </BrowserRouter>
           </ReduxProvider>
         </AppContainer>
       );

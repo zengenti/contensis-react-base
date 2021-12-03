@@ -1,16 +1,16 @@
 import fs from 'fs';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
-import { StaticRouter } from 'react-router-dom';
+import { StaticRouter } from 'react-router-dom/server';
 import { Provider as ReduxProvider } from 'react-redux';
-import { matchRoutes } from 'react-router-config';
+import { matchRoutes, RouteObject } from 'react-router';
 import { Helmet } from 'react-helmet';
 import { ServerStyleSheet } from 'styled-components';
 import serialize from 'serialize-javascript';
 import minifyCssString from 'minify-css-string';
 import mapJson from 'jsonpath-mapper';
 import { Express } from 'express';
-import { StaticRouterContext } from 'react-router';
+
 import { ChunkExtractorManager } from '@loadable/server';
 
 import createStore from '~/redux/store/store';
@@ -79,9 +79,10 @@ const webApp = (
     const { url } = request;
 
     const matchedStaticRoute = () =>
-      matchRoutes(routes.StaticRoutes, request.path);
-    const isStaticRoute = () => matchedStaticRoute().length > 0;
-    const staticRoute = isStaticRoute() && matchedStaticRoute()[0];
+      matchRoutes(routes.StaticRoutes as RouteObject[], request.path);
+    const isStaticRoute = () =>
+      matchedStaticRoute && matchedStaticRoute.length > 0;
+    const staticRoute = isStaticRoute() && matchedStaticRoute[0];
 
     // Allow certain routes to avoid SSR
     const onlyDynamic = staticRoute && staticRoute.route.ssr === false;
@@ -100,7 +101,9 @@ const webApp = (
       STATIC: ({ static: value }) => normaliseQs(value) || onlySSR,
     });
 
-    const context: StaticRouterContext = {};
+    const context: any = {
+      location: '',
+    };
     // Track the current statusCode via the response object
     response.status(200);
 
@@ -135,12 +138,13 @@ const webApp = (
 
     const loadableExtractor = loadableChunkExtractors();
 
+    // Todo: Provide a custom context for the static router to support old redirects.
     const jsx = (
       <ChunkExtractorManager
         extractor={loadableExtractor?.commonLoadableExtractor}
       >
         <ReduxProvider store={store}>
-          <StaticRouter context={context} location={url}>
+          <StaticRouter location={url}>
             <ReactApp routes={routes} withEvents={withEvents} />
           </StaticRouter>
         </ReduxProvider>

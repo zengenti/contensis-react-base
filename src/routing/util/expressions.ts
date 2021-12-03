@@ -15,7 +15,9 @@ export const fieldExpression = (
       : [Op[operator](field, value).weight(weight)];
 };
 
-export const defaultExpressions = versionStatus => {
+export const defaultExpressions: (
+  versionStatus: string
+) => any[] = versionStatus => {
   return [Op.equalTo(Fields.sys.versionStatus, versionStatus)];
 };
 
