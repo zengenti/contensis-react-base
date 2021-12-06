@@ -37,7 +37,7 @@ import { matchUserGroup } from '~/user/util/matchGroups';
 
 import { toJS } from '~/util/ToJs';
 import { Entry } from 'contensis-delivery-api/lib/models';
-import { AppRootProps, RouteLoaderProps } from '../routes';
+import { AppRootProps, RouteLoaderProps, StaticRoute } from '../routes';
 
 const getTrimmedPath = path => {
   if (path !== '/') {
@@ -89,10 +89,11 @@ const RouteLoader = ({
   // Always ensure paths are trimmed of trailing slashes so urls are always unique
   const trimmedPath = getTrimmedPath(location.pathname);
 
-  routes.StaticRoutes = routes.StaticRoutes.map(x => {
-    if (x.component) {
-      x.element = (
-        <x.component
+  const staticRoutes = routes.StaticRoutes.map(x => {
+    const route = { ...x };
+    if (route.component) {
+      route.element = (
+        <route.component
           projectId={projectId}
           contentTypeId={contentTypeId ? contentTypeId : undefined}
           entry={entry}
@@ -100,21 +101,25 @@ const RouteLoader = ({
           isLoggedIn={isLoggedIn}
         />
       );
-      delete x.component;
+      delete route.component;
     }
-    return x;
+    return route;
   });
 
   // Match any Static Routes a developer has defined
-  const matchedStaticRoute = () =>
-    matchRoutes(routes.StaticRoutes as RouteObject[], location.pathname);
-  const isStaticRoute = () =>
-    matchedStaticRoute && matchedStaticRoute.length > 0;
+  const matchedStaticRoute = matchRoutes(
+    staticRoutes as RouteObject[],
+    location.pathname
+  );
+  const isStaticRoute = matchedStaticRoute && matchedStaticRoute.length > 0;
 
-  const staticRoute = isStaticRoute() && matchedStaticRoute[0];
+  const staticRoute: StaticRoute | null = isStaticRoute
+    ? matchedStaticRoute[0]
+    : null;
+
   const routeRequiresLogin = staticRoute && staticRoute.route.requireLogin;
 
-  const staticRouteElement = useRoutes(routes.StaticRoutes as RouteObject[]);
+  const staticRouteElement = useRoutes(staticRoutes as RouteObject[]);
 
   const setPath = useCallback(() => {
     // Use serverPath to control the path we send to siteview node api to resolve a route
@@ -172,7 +177,7 @@ const RouteLoader = ({
   }
 
   // Render any Static Routes a developer has defined
-  if (isStaticRoute() && !(!isLoggedIn && routeRequiresLogin)) {
+  if (isStaticRoute && !(!isLoggedIn && routeRequiresLogin)) {
     if (matchUserGroup(userGroups, routeRequiresLogin))
       return staticRouteElement;
   }
