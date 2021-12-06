@@ -1,13 +1,13 @@
 import React, { useEffect, useCallback } from 'react';
 import { connect } from 'react-redux';
 import { hot } from 'react-hot-loader';
-import { Navigate, useLocation } from 'react-router-dom';
 import {
+  Navigate,
+  useLocation,
   matchRoutes,
-  useRoutes,
   RouteObject,
-  useInRouterContext,
-} from 'react-router';
+  useRoutes,
+} from 'react-router-dom';
 // import { renderRoutes, matchRoutes, RouteConfig } from 'react-router-config';
 
 import { createSelector } from 'reselect';
@@ -110,9 +110,6 @@ const RouteLoader = ({
     matchRoutes(routes.StaticRoutes as RouteObject[], location.pathname);
   const isStaticRoute = () =>
     matchedStaticRoute && matchedStaticRoute.length > 0;
-
-  const inRouterContext = useInRouterContext();
-  console.info('In Router Context', inRouterContext);
 
   const staticRoute = isStaticRoute() && matchedStaticRoute[0];
   const routeRequiresLogin = staticRoute && staticRoute.route.requireLogin;
