@@ -83,8 +83,11 @@ const mapComposer = (composer, mappers) => Array.isArray(composer) ? composer.ma
     }; // Add fields and $root item into the composer item source object
     // for use inside each item mapping
 
-    const sourceObject = itemValue && typeof itemValue === 'object' ? { ...itemValue,
-      ...addedFields,
+    const sourceObject = itemValue && Array.isArray(itemValue) ? itemValue.map(iv => typeof iv === 'object' ? { ...addedFields,
+      ...iv,
+      $root: composer
+    } : iv) : typeof itemValue === 'object' ? { ...addedFields,
+      ...itemValue,
       $root: composer
     } : itemValue || {};
     const mappedFields = mapJson(sourceObject, mapper); // Add the extra fields in with the return object
@@ -114,7 +117,7 @@ const useComposerMapper = (composer = [], mappers) => mapComposer(composer, mapp
  */
 
 const entryMapper = mapping => (node, state) => mapJson({ ...node,
-  ...node.entry,
+  ...(node.entry || {}),
   state
 }, mapping);
 
