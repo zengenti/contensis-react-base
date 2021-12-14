@@ -1,10 +1,11 @@
 import { MatchedRoute, RouteConfig } from 'react-router-config';
 import { Entry, Node } from 'contensis-delivery-api/lib/models';
 import React from 'react';
+import { AppState } from '~/redux/appstate';
 
 type RouteComponent<Props> = React.ComponentType<Props>;
 
-type RouteNode = Node & { ancestors: Node[]; children: Node[] };
+export type RouteNode = Node & { ancestors: Node[]; children: Node[] };
 
 export type AppRoutes = {
   ContentTypeMappings: ContentTypeMapping[];
@@ -31,10 +32,10 @@ export type RouteLoaderProps = {
 };
 
 export type EntryMapper =
-  | (<MappedProps>(node: RouteNode, state?: any) => MappedProps | unknown)
+  | (<MappedProps>(node: RouteNode, state?: AppState) => MappedProps | unknown)
   | (<MappedProps>(
       node: RouteNode,
-      state?: any
+      state?: AppState
     ) => Promise<MappedProps | unknown>);
 
 export type ReduxInjector = () => Promise<{
