@@ -108,11 +108,16 @@ export const mapComposer = <
           };
 
           // Add fields and $root item into the composer item source object
-          // for use inside each item mapping
+          // for use inside each item mapping, for arrays we inject the added fields
+          // into the first array item. This is useful if we require any of
+          // composerItem.type, composerItem index/position and composer $root
+          // in scope to influence any composer item's mapping logic
           const sourceObject =
             itemValue && Array.isArray(itemValue)
-              ? itemValue.map(iv =>
-                  typeof iv === 'object'
+              ? itemValue.map((iv, idx) =>
+                  idx !== 0
+                    ? iv
+                    : typeof iv === 'object'
                     ? { ...addedFields, ...iv, $root: composer }
                     : iv
                 )
@@ -120,6 +125,7 @@ export const mapComposer = <
               ? { ...addedFields, ...itemValue, $root: composer }
               : itemValue || {};
 
+          // Apply the composer item mapping
           const mappedFields = mapJson(sourceObject, mapper) as any;
 
           // Add the extra fields in with the return object
