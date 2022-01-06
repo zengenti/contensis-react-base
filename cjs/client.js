@@ -11,7 +11,7 @@ var reactRouterDom = require('react-router-dom');
 var component = require('@loadable/component');
 var queryString = require('query-string');
 var version = require('./version-7c4ce67e.js');
-var App = require('./App-ce39a877.js');
+var App = require('./App-b681e8eb.js');
 var actions = require('./actions-6b9ef168.js');
 require('./selectors-2c1b1183.js');
 require('jsonpath-mapper');

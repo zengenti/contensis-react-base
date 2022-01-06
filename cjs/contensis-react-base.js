@@ -20,7 +20,7 @@ var minifyCssString = require('minify-css-string');
 var mapJson = require('jsonpath-mapper');
 var server = require('@loadable/server');
 var version = require('./version-7c4ce67e.js');
-var App = require('./App-ce39a877.js');
+var App = require('./App-b681e8eb.js');
 var actions = require('./actions-6b9ef168.js');
 var selectors = require('./selectors-2c1b1183.js');
 require('@redux-saga/core/effects');
