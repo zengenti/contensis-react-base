@@ -83,7 +83,10 @@ function* getRouteSaga(action) {
         ? false
         : (appsays && appsays.customNavigation) || true);
 
-    const entryLinkDepth = (appsays && appsays.entryLinkDepth) || 3;
+    const entryLinkDepth =
+      appsays && appsays.entryLinkDepth !== undefined
+        ? appsays.entryLinkDepth
+        : 3;
     const setContentTypeLimits = !!ContentTypeMappings.find(
       ct => ct.fields || ct.linkDepth || ct.nodeOptions
     );
@@ -94,7 +97,7 @@ function* getRouteSaga(action) {
     const currentPath = action.path; //selectCurrentPath(state);
     const deliveryApiStatus = selectVersionStatus(state);
     const project = selectCurrentProject(state);
-    const isHome = currentPath === '/';
+    // const isHome = currentPath === '/';
     const isPreview = currentPath && currentPath.startsWith('/preview/');
     const defaultLang = (appsays && appsays.defaultLang) || 'en-GB';
 
@@ -135,155 +138,154 @@ function* getRouteSaga(action) {
           yield select(selectCurrentAncestors)
         );
     } else {
-      // Handle homepage
-      if (isHome) {
-        pathNode = yield cachedSearch.getRootNode(
+      // // Handle homepage
+      // if (isHome) {
+      //   pathNode = yield cachedSearch.getRootNode(
+      //     {
+      //       depth: childrenDepth,
+      //       entryFields: '*',
+      //       entryLinkDepth,
+      //       language: defaultLang,
+      //       versionStatus: deliveryApiStatus,
+      //     },
+      //     project
+      //   );
+      //   ({ entry } = pathNode || {});
+      // Handle preview routes
+      if (isPreview) {
+        let splitPath = currentPath.split('/');
+        let entryGuid = splitPath[2];
+        let language = defaultLang;
+        if (splitPath.length >= 3) {
+          //set lang key if available in the path, else use default lang
+          //assumes preview url on content type is: http://preview.ALIAS.contensis.cloud/preview/{GUID}/{LANG}
+          if (splitPath.length == 4) language = splitPath[3];
+          // According to product dev we cannot use Node API
+          // for previewing entries as it gives a response of []
+          // -- apparently it is not correct to request latest content
+          // with Node API
+
+          let previewEntry = yield deliveryApi
+            .getClient(deliveryApiStatus, project)
+            .entries.get({
+              id: entryGuid,
+              language,
+              linkDepth: entryLinkDepth,
+            });
+          if (previewEntry) {
+            pathNode = { entry: previewEntry };
+            ({ entry } = pathNode || {});
+          }
+        }
+      } else {
+        // Handle all other routes
+        const childrenDepth =
+          doNavigation === true || doNavigation.children === true
+            ? 1
+            : (doNavigation && doNavigation.children) || 0;
+
+        pathNode = yield cachedSearch.getNode(
           {
-            depth: 0,
-            entryFields: '*',
-            entryLinkDepth,
+            depth: childrenDepth,
+            path: currentPath,
+            entryFields: setContentTypeLimits
+              ? ['sys.contentTypeId', 'sys.id']
+              : '*',
+            entryLinkDepth: setContentTypeLimits ? 0 : entryLinkDepth,
             language: defaultLang,
             versionStatus: deliveryApiStatus,
           },
           project
         );
         ({ entry } = pathNode || {});
-      } else {
-        // Handle preview routes
-        if (isPreview) {
-          let splitPath = currentPath.split('/');
-          let entryGuid = splitPath[2];
-          let language = defaultLang;
-          if (splitPath.length >= 3) {
-            //set lang key if available in the path, else use default lang
-            //assumes preview url on content type is: http://preview.ALIAS.contensis.cloud/preview/{GUID}/{LANG}
-            if (splitPath.length == 4) language = splitPath[3];
-            // According to product dev we cannot use Node API
-            // for previewing entries as it gives a response of []
-            // -- apparently it is not correct to request latest content
-            // with Node API
 
-            let previewEntry = yield deliveryApi
-              .getClient(deliveryApiStatus, project)
-              .entries.get({
-                id: entryGuid,
-                language,
-                linkDepth: entryLinkDepth,
-              });
-            if (previewEntry) {
-              pathNode = { entry: previewEntry };
-              ({ entry } = pathNode || {});
-            }
-          }
-        } else {
-          // Handle all other routes
-          const childrenDepth =
-            doNavigation === true || doNavigation.children === true
-              ? 1
-              : (doNavigation && doNavigation.children) || 0;
-          pathNode = yield cachedSearch.getNode(
-            {
-              depth: childrenDepth,
-              path: currentPath,
-              entryFields: setContentTypeLimits
-                ? ['sys.contentTypeId', 'sys.id']
-                : '*',
-              entryLinkDepth: setContentTypeLimits ? 0 : entryLinkDepth,
-              language: defaultLang,
-              versionStatus: deliveryApiStatus,
-            },
+        if (
+          setContentTypeLimits &&
+          pathNode &&
+          pathNode.entry &&
+          pathNode.entry.sys &&
+          pathNode.entry.sys.id
+        ) {
+          // Get fields[] and linkDepth from ContentTypeMapping to get the entry data
+          // at a specified depth with specified fields
+          const {
+            fields,
+            linkDepth,
+            nodeOptions = {},
+          } = findContentTypeMapping(
+            ContentTypeMappings,
+            pathNode.entry.sys.contentTypeId
+          ) || {};
+          const query = routeEntryByFieldsQuery(
+            pathNode.entry.sys.id,
+            pathNode.entry.sys.language,
+            fields,
+            deliveryApiStatus
+          );
+          const payload = yield cachedSearch.search(
+            query,
+            linkDepth || entryLinkDepth || 0,
             project
           );
-          ({ entry } = pathNode || {});
+          if (payload && payload.items && payload.items.length > 0) {
+            pathNode.entry = entry = payload.items[0];
+          }
 
-          if (
-            setContentTypeLimits &&
-            pathNode &&
-            pathNode.entry &&
-            pathNode.entry.sys &&
-            pathNode.entry.sys.id
-          ) {
-            // Get fields[] and linkDepth from ContentTypeMapping to get the entry data
-            // at a specified depth with specified fields
-            const {
-              fields,
-              linkDepth,
-              nodeOptions = {},
-            } = findContentTypeMapping(
-              ContentTypeMappings,
-              pathNode.entry.sys.contentTypeId
-            ) || {};
-            const query = routeEntryByFieldsQuery(
-              pathNode.entry.sys.id,
-              pathNode.entry.sys.language,
-              fields,
-              deliveryApiStatus
-            );
-            const payload = yield cachedSearch.search(
-              query,
-              linkDepth || entryLinkDepth || 0,
-              project
-            );
-            if (payload && payload.items && payload.items.length > 0) {
-              pathNode.entry = entry = payload.items[0];
-            }
-
-            if (childrenDepth > 0 || nodeOptions.children) {
-              const childrenOptions = nodeOptions.children || {};
-              // We need to make a separate call for child nodes if the first node query has been
-              // limited by linkDepth or fields[]
-              const nodeWithChildren = yield cachedSearch.getNode({
-                depth:
-                  childrenOptions.depth !== undefined
-                    ? childrenOptions.depth
-                    : childrenDepth,
-                path: currentPath,
-                entryFields: childrenOptions.fields || fields || '*',
-                entryLinkDepth:
-                  childrenOptions.linkDepth !== undefined
-                    ? childrenOptions.linkDepth
-                    : linkDepth !== undefined
-                    ? linkDepth
-                    : entryLinkDepth,
-                language: defaultLang,
-                versionStatus: deliveryApiStatus,
-              });
-              if (nodeWithChildren && nodeWithChildren.children) {
-                pathNode.children = nodeWithChildren.children;
-              }
+          if (childrenDepth > 0 || nodeOptions.children) {
+            const childrenOptions = nodeOptions.children || {};
+            // We need to make a separate call for child nodes if the first node query has been
+            // limited by linkDepth or fields[]
+            const nodeWithChildren = yield cachedSearch.getNode({
+              depth:
+                childrenOptions.depth !== undefined
+                  ? childrenOptions.depth
+                  : childrenDepth,
+              path: currentPath,
+              entryFields: childrenOptions.fields || fields || '*',
+              entryLinkDepth:
+                childrenOptions.linkDepth !== undefined
+                  ? childrenOptions.linkDepth
+                  : linkDepth !== undefined
+                  ? linkDepth
+                  : entryLinkDepth,
+              language: defaultLang,
+              versionStatus: deliveryApiStatus,
+            });
+            if (nodeWithChildren && nodeWithChildren.children) {
+              pathNode.children = nodeWithChildren.children;
             }
           }
         }
+      }
 
-        if (pathNode && pathNode.id) {
-          if (doNavigation === true || doNavigation.ancestors) {
-            try {
-              ancestors = yield cachedSearch.getAncestors(
-                {
-                  id: pathNode.id,
-                  language: defaultLang,
-                  versionStatus: deliveryApiStatus,
-                },
-                project
-              );
-            } catch (ex) {
-              log.info('Problem fetching ancestors', ex);
-            }
+      if (pathNode && pathNode.id) {
+        if (doNavigation === true || doNavigation.ancestors) {
+          try {
+            ancestors = yield cachedSearch.getAncestors(
+              {
+                id: pathNode.id,
+                language: defaultLang,
+                versionStatus: deliveryApiStatus,
+              },
+              project
+            );
+          } catch (ex) {
+            log.info('Problem fetching ancestors', ex);
           }
+        }
 
-          if (doNavigation === true || doNavigation.siblings) {
-            try {
-              siblings = yield cachedSearch.getSiblings(
-                {
-                  id: pathNode.id,
-                  language: defaultLang,
-                  versionStatus: deliveryApiStatus,
-                },
-                project
-              );
-            } catch (ex) {
-              log.info('Problem fetching siblings', ex);
-            }
+        if (doNavigation === true || doNavigation.siblings) {
+          try {
+            siblings = yield cachedSearch.getSiblings(
+              {
+                id: pathNode.id,
+                language: defaultLang,
+                versionStatus: deliveryApiStatus,
+              },
+              project
+            );
+          } catch (ex) {
+            log.info('Problem fetching siblings', ex);
           }
         }
       }
