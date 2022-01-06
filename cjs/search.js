@@ -180,11 +180,12 @@ const updateSearchTerm$1 = term => {
     term
   };
 };
-const updateSelectedFilters = (filter, key) => {
+const updateSelectedFilters = (filter, key, isUnknownItem = false) => {
   return {
     type: UPDATE_SELECTED_FILTERS,
     filter,
-    key
+    key,
+    isUnknownItem
   };
 };
 const updateSortOrder$1 = (orderBy, facet) => {
@@ -537,7 +538,7 @@ const withSearch = mappers => SearchComponent => {
     updateCurrentTab: id => withMappers(updateCurrentTab$1(id), mappers),
     updatePageIndex: pageIndex => withMappers(updatePageIndex$1(pageIndex), mappers),
     updateSearchTerm: term => withMappers(updateSearchTerm$1(term), mappers),
-    updateSelectedFilters: (filter, key) => withMappers(updateSelectedFilters(filter, key), mappers),
+    updateSelectedFilters: (filter, key, isUnknownItem = false) => withMappers(updateSelectedFilters(filter, key, isUnknownItem), mappers),
     updateSortOrder: orderBy => withMappers(updateSortOrder$1(orderBy), mappers)
   };
   const connector = reactRedux.connect(mapStateToProps, mapDispatchToProps);
@@ -588,7 +589,7 @@ const withListing = mappers => ListingComponent => {
     updateCurrentFacet: facet => withMappers(updateCurrentFacet$1(facet), mappers),
     updatePageIndex: pageIndex => withMappers(updatePageIndex$1(pageIndex), mappers),
     updateSearchTerm: term => withMappers(updateSearchTerm$1(term), mappers),
-    updateSelectedFilters: (filter, key) => withMappers(updateSelectedFilters(filter, key), mappers),
+    updateSelectedFilters: (filter, key, isUnknownItem = false) => withMappers(updateSelectedFilters(filter, key, isUnknownItem), mappers),
     updateSortOrder: orderBy => withMappers(updateSortOrder$1(orderBy), mappers)
   };
   return reactRedux.connect(mapStateToProps, mapDispatchToProps)(toJS$1(Wrapper));
@@ -990,7 +991,21 @@ const equalToOrIn = (field, value, operator = 'equalTo') => {
 
   if (Array.isArray(value)) {
     if (operator === 'equalTo') return [contensisCoreApi.Op.in(field, ...value)];
-    return [contensisCoreApi.Op.or(...value.map(innerValue => contensisCoreApi.Op[operator](field, innerValue, undefined, undefined)))];
+    return [contensisCoreApi.Op.or(...value.map(innerValue => {
+      switch (operator) {
+        case 'between':
+        case 'distanceWithin':
+          // Not implemented
+          return contensisCoreApi.Op.equalTo(field, innerValue);
+
+        case 'freeText':
+          // TODO: Potentially needs further implementation of new options
+          return contensisCoreApi.Op[operator](field, innerValue, false, undefined);
+
+        default:
+          return contensisCoreApi.Op[operator](field, innerValue);
+      }
+    }))];
   }
 
   return [];
@@ -1001,7 +1016,7 @@ const between = (field, value) => {
     const valArr = betweenValue.split('-');
 
     if (valArr.length > 1) {
-      const [minimum, maximum = null] = betweenValue.split('-');
+      const [minimum, maximum] = betweenValue.split('-');
       return contensisCoreApi.Op.between(field, minimum, maximum);
     } else {
       // eslint-disable-next-line no-console
@@ -1011,10 +1026,9 @@ const between = (field, value) => {
   };
 
   if (value.length === 0) return [];
-  if (Array.isArray(value)) return [contensisCoreApi.Op.or(...value.map(handle).filter(bc => bc !== false))]; // const valArr = value.split('-');
-
+  if (Array.isArray(value)) return [contensisCoreApi.Op.or(...value.map(handle).filter(bc => bc !== false))];
   const op = handle(value);
-  return op ? [op] : []; // valArr.length > 1 ? [Op.between(field, ...value.split('-'))] : [];
+  return op ? [op] : [];
 };
 /**
  * Accept HTTP style objects and map them to
@@ -1057,7 +1071,7 @@ const customWhereExpressions = where => {
             // the second property inside the clause
 
             if (notIdx === 1) {
-              expression = contensisCoreApi.Op.not(contensisCoreApi.Op[innerOperator](innerField, innerValue));
+              expression = innerOperator === 'between' ? contensisCoreApi.Op.not(contensisCoreApi.Op[innerOperator](innerField, innerValue[0], innerValue[1])) : contensisCoreApi.Op.not(contensisCoreApi.Op[innerOperator](innerField, innerValue));
             }
           });
         }
@@ -1069,8 +1083,9 @@ const customWhereExpressions = where => {
 
       if (idx === 1 && // operator !== 'and' &&
       // operator !== 'or' &&
-      operator !== 'between' && operator !== 'distanceWithin') {
-        expression = operator === 'freeText' || operator === 'contains' ? contensisCoreApi.Op[operator](field, value) : operator === 'in' ? contensisCoreApi.Op[operator](field, ...value) : operator === 'exists' ? contensisCoreApi.Op[operator](field, value) : contensisCoreApi.Op[operator](field, value);
+      // operator !== 'between' &&
+      operator !== 'distanceWithin') {
+        expression = operator === 'freeText' || operator === 'contains' ? contensisCoreApi.Op[operator](field, value) : operator === 'in' ? contensisCoreApi.Op[operator](field, ...value) : operator === 'exists' ? contensisCoreApi.Op[operator](field, value) : operator === 'between' ? contensisCoreApi.Op[operator](field, value[0], value[1]) : contensisCoreApi.Op[operator](field, value);
         if (typeof weight === 'number') expression = expression.weight(weight);
       }
     });
@@ -2432,13 +2447,22 @@ var reducers = (config => {
         {
           const {
             filter,
-            key
+            key,
+            isUnknownItem
           } = action;
           const isSingleSelect = state[context][current].filters[filter].isSingleSelect || false;
           const isGrouped = state[context][current].filters[filter].isGrouped || false;
           const currentItems = state[context][current].filters[filter].items;
           if (isGrouped) state[context] = resetFacets(state, context);
           state[context][current] = resetFacet(state[context][current]);
+
+          if (isUnknownItem && (currentItems === null || currentItems === void 0 ? void 0 : currentItems.findIndex(item => (item === null || item === void 0 ? void 0 : item.key) === key)) === -1) {
+            currentItems === null || currentItems === void 0 ? void 0 : currentItems.push({
+              key,
+              isSelected: false
+            });
+          }
+
           state[context][current].filters[filter].items = currentItems === null || currentItems === void 0 ? void 0 : currentItems.map(item => {
             if (item.key === key) {
               return { ...item,

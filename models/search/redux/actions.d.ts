@@ -27,10 +27,11 @@ export declare const updateSearchTerm: (term: string) => {
     type: string;
     term: string;
 };
-export declare const updateSelectedFilters: (filter: string, key: string) => {
+export declare const updateSelectedFilters: (filter: string, key: string, isUnknownItem?: boolean) => {
     type: string;
     filter: string;
     key: string;
+    isUnknownItem: boolean;
 };
 export declare const updateSortOrder: (orderBy: string, facet?: string | undefined) => {
     type: string;
