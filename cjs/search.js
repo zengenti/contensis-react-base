@@ -1028,7 +1028,7 @@ const between = (field, value) => {
     const valArr = betweenValue.split('--');
 
     if (valArr.length > 1) {
-      const [minimum, maximum] = betweenValue.split('-');
+      const [minimum, maximum] = valArr;
       return contensisCoreApi.Op.between(field, minimum, maximum);
     } else {
       // eslint-disable-next-line no-console
