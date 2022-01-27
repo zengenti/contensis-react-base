@@ -882,7 +882,7 @@ const fieldExpression = (field, value, operator = 'equalTo', weight) => {
     // to generate expressions that are combined with an 'or' operator
     return [contensisCoreApi.Op.or(...field.map(fieldId => fieldExpression(fieldId, value, operator, weight)).flat())];
   if (operator === 'between') return between(field, value);
-  if (Array.isArray(value)) return equalToOrIn(field, value, operator);else return !weight ? [contensisCoreApi.Op[operator](field, value, undefined, undefined)] : [contensisCoreApi.Op[operator](field, value, undefined, undefined).weight(weight)];
+  if (Array.isArray(value)) return equalToOrIn(field, value, operator);else return !weight ? equalToOrIn(field, value, operator) : [equalToOrIn(field, value, operator)[0].weight(weight)];
 };
 const contentTypeIdExpression = (contentTypeIds, webpageTemplates, assetTypes) => {
   const expressions = [];
@@ -1008,7 +1008,19 @@ const equalToOrIn = (field, value, operator = 'equalTo') => {
     }))];
   }
 
-  return [];
+  switch (operator) {
+    case 'between':
+    case 'distanceWithin':
+      // Not implemented
+      return [contensisCoreApi.Op.equalTo(field, value)];
+
+    case 'freeText':
+      // TODO: Potentially needs further implementation of new options
+      return [contensisCoreApi.Op[operator](field, value, false, undefined)];
+
+    default:
+      return [contensisCoreApi.Op[operator](field, value)];
+  }
 };
 
 const between = (field, value) => {
