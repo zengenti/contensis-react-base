@@ -1025,7 +1025,7 @@ const equalToOrIn = (field, value, operator = 'equalTo') => {
 
 const between = (field, value) => {
   const handle = betweenValue => {
-    const valArr = betweenValue.split('-');
+    const valArr = betweenValue.split('--');
 
     if (valArr.length > 1) {
       const [minimum, maximum] = betweenValue.split('-');
