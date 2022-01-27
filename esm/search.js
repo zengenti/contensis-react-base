@@ -2245,7 +2245,7 @@ var reducers = (config => {
       case APPLY_CONFIG:
         {
           state = addConfigToState(state, action);
-          return;
+          return state;
         }
 
       case CLEAR_FILTERS:
