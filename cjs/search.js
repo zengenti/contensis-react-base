@@ -1229,18 +1229,14 @@ const searchUriTemplate = {
     const currentSearch = !term && getImmutableOrJS(state, ['routing', 'location', 'search']);
     const currentQs = removeEmptyAttributes(queryString.parse(currentSearch));
     if (orderBy) currentQs.orderBy = orderBy;
-    const searchTerm = getSearchTerm(state); // Use Immutable's merge to merge the stateFilters with any current Qs
-    // to build the new Qs.
+    const searchTerm = getSearchTerm(state); // Merge the stateFilters with any current qs to build the new qs
 
     const mergedSearch = removeEmptyAttributes({ ...merge__default["default"](currentQs, stateFilters),
       term: searchTerm
     });
     return queryString.stringify(mergedSearch);
   },
-  hash: {
-    $path: 'state',
-    $formatting: state => getImmutableOrJS(state, ['routing', 'location', 'hash'], '').replace('#', '')
-  }
+  hash: state => getImmutableOrJS(state, ['routing', 'location', 'hash'], '').replace('#', '')
 };
 
 const mapStateToSearchUri = params => mapJson__default["default"](params, searchUriTemplate);
