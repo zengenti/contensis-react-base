@@ -135,7 +135,7 @@ export default produce((state: Draft<any>, action) => {
       return;
     }
     case SET_SURROGATE_KEYS: {
-      console.info(`SET_SURROGATE_KEYS: '${action.url}' keys: ${action.keys}`);
+      // console.info(`SET_SURROGATE_KEYS: '${action.url}' keys: ${action.keys}`);
       state.surrogateKeys = merge(
         state.surrogateKeys,
         (action.keys || '').split(' '),
