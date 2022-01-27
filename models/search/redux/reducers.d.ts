@@ -1,5 +1,6 @@
 import { SearchConfig } from '../models/Search';
 import { Context } from '../models/Enums';
+import { SearchState } from '../models/SearchState';
 declare const _default: (config: SearchConfig) => <Base extends {
     readonly context: "facets" | "listings" | "minilist";
     readonly currentFacet: string;
@@ -256,5 +257,5 @@ declare const _default: (config: SearchConfig) => <Base extends {
     params: {
         [key: string]: string;
     };
-}) => Base;
+}) => import("immer/dist/internal").WritableDraft<SearchState> | Base;
 export default _default;
