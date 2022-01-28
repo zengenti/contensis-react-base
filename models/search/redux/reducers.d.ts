@@ -41,6 +41,7 @@ declare const _default: (config: SearchConfig) => <Base extends {
                             readonly field: string;
                         }[];
                     })[] | undefined;
+                    readonly defaultValue?: string | undefined;
                     readonly fieldId?: string | undefined;
                     readonly isGrouped?: boolean | undefined;
                     readonly isSingleSelect?: boolean | undefined;
@@ -119,6 +120,7 @@ declare const _default: (config: SearchConfig) => <Base extends {
                             readonly field: string;
                         }[];
                     })[] | undefined;
+                    readonly defaultValue?: string | undefined;
                     readonly fieldId?: string | undefined;
                     readonly isGrouped?: boolean | undefined;
                     readonly isSingleSelect?: boolean | undefined;
@@ -197,6 +199,7 @@ declare const _default: (config: SearchConfig) => <Base extends {
                             readonly field: string;
                         }[];
                     })[] | undefined;
+                    readonly defaultValue?: string | undefined;
                     readonly fieldId?: string | undefined;
                     readonly isGrouped?: boolean | undefined;
                     readonly isSingleSelect?: boolean | undefined;

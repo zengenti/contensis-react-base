@@ -50,6 +50,8 @@ export declare type SearchFilter = {
     contentTypeId?: string | string[];
     /** An array of CustomWhereClause to include in the search query when dynamically loading entries via the contentTypeId key */
     customWhere?: CustomWhereClause;
+    /** Use this to set a specific value to render for the initial / unselected option in this filter */
+    defaultValue?: string;
     /** The content type field we will apply the filter key to, to filter the list of returned results. */
     fieldId: string | string[];
     /** The Delivery API search operator we will use to filter the list of returned results. */
