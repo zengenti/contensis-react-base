@@ -291,7 +291,7 @@ const getSelectedFilters = (state, facet = '', context = Context$1.facets, retur
   const selectedFilters = Object.fromEntries(Object.entries(filters).map(([key, filter = {}]) => [key, (filter.items || []).filter(item => !!(item.isSelected || false)).map(item => {
     const key = (item === null || item === void 0 ? void 0 : item.key) || '';
     const isIsoDate = isoDateRegex.test(key);
-    return isIsoDate ? key : key.toLowerCase();
+    return isIsoDate ? key : typeof key.toLowerCase !== 'undefined' ? key.toLowerCase() : key;
   })]));
   const fromJS = makeFromJS(returnType);
   return fromJS(selectedFilters);
@@ -2242,7 +2242,10 @@ const generateFiltersState = ({
   // the search results during SSR without needing to fetch the filters first
 
 
-  Object.entries(filterParams).map(([paramName = '', paramValue]) => typeof paramValue === 'string' && paramValue.split(',').map(pVal => filters = addFilterItem(filters, paramName, pVal)));
+  Object.entries(filterParams).map(([paramName = '', paramValue]) => {
+    if (typeof paramValue === 'string') return paramValue.split(',').map(pVal => filters = addFilterItem(filters, paramName, pVal));
+    if (typeof paramValue === 'boolean') filters = addFilterItem(filters, paramName, paramValue);
+  });
   return Object.fromEntries(filters);
 };
 
