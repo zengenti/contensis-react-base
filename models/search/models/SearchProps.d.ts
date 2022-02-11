@@ -2,6 +2,19 @@ import { clearFilters, updateCurrentFacet, updateCurrentTab, updatePageIndex, up
 import { SearchFacet, Mappers } from '../models/Search';
 import { DebugFlags } from '../models/SearchActions';
 import { Facet as StateFacet, Facets, Filters, Paging } from '../models/SearchState';
+export interface MinilistProps<SearchResults = any> {
+    filters: Filters;
+    isLoading: boolean;
+    paging: Paging;
+    results: SearchResults[];
+    resultsInfo: any;
+    searchTerm: string;
+    sortOrder: string[];
+    title: string;
+    updatePageIndex: typeof updatePageIndex;
+    updateSelectedFilters: typeof updateSelectedFilters;
+    updateSortOrder: typeof updateSortOrder;
+}
 export interface ListingProps<SearchResults = any> {
     clearFilters: typeof clearFilters;
     currentListing: string;
@@ -15,6 +28,7 @@ export interface ListingProps<SearchResults = any> {
     resultsInfo: any;
     searchTerm: string;
     sortOrder: string[];
+    title: string;
     updateCurrentFacet: typeof updateCurrentFacet;
     updatePageIndex: typeof updatePageIndex;
     updateSearchTerm: typeof updateSearchTerm;
@@ -44,6 +58,15 @@ export interface SearchProps<SearchResults = any> {
     updateSearchTerm: typeof updateSearchTerm;
     updateSelectedFilters: typeof updateSelectedFilters;
     updateSortOrder: typeof updateSortOrder;
+}
+export interface UseListingProps {
+    id: string;
+    debug?: DebugFlags;
+    defaultLang?: string;
+    mappers?: Mappers;
+    params?: {
+        [key: string]: string;
+    };
 }
 export interface UseMinilistProps {
     id: string;

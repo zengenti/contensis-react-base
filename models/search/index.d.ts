@@ -7,6 +7,7 @@ export * from './models';
 export { default as withSearch } from './containers/withSearch';
 export { default as withListing } from './containers/withListing';
 export { doSearch, setRouteFilters, searchSagas as sagas } from './redux/sagas';
+export { default as useListing } from './hooks/useListing.hook';
 export { default as useMinilist } from './hooks/useMinilist.hook';
 export * as actions from './redux/actions';
 export * as queries from './redux/queries';

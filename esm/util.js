@@ -99,7 +99,7 @@ const mapComposer = (composer, mappers) => Array.isArray(composer) ? composer.ma
     return mappedFields && typeof mappedFields === 'object' ? { ...mappedFields,
       ...addedFields
     } : mappedFields;
-  } else return;
+  } else return {};
 }) : composer || [];
 /**
  * useComposerMapper hook to take a composer field from Delivery API along
