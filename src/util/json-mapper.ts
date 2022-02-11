@@ -132,7 +132,7 @@ export const mapComposer = <
           return mappedFields && typeof mappedFields === 'object'
             ? { ...mappedFields, ...addedFields }
             : mappedFields;
-        } else return;
+        } else return {};
       })
     : composer || [];
 
