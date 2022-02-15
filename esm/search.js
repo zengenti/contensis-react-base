@@ -1666,14 +1666,17 @@ function* doSearch(action) {
     ssr: getIsSsr(state),
     facet: action.facet || ((_action$params = action.params) === null || _action$params === void 0 ? void 0 : _action$params.facet)
   };
-  yield put(nextAction); // keep track of this state ref for comparing changes to params later
 
-  const ogState = {
-    search: state.search
-  };
-  yield call(ensureSearch, { ...nextAction,
-    ogState
-  });
+  if (nextAction.facet) {
+    yield put(nextAction); // keep track of this state ref for comparing changes to params later
+
+    const ogState = {
+      search: state.search
+    };
+    yield call(ensureSearch, { ...nextAction,
+      ogState
+    });
+  }
 }
 
 function* loadFilters(action) {
