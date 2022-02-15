@@ -1435,7 +1435,7 @@ const queryParamsTemplate = {
     } = root;
     if (getQueryParameter$1(root, 'internalPaging', false)) return 0;
     if (action.type === UPDATE_PAGE_INDEX) return action.params.pageIndex;
-    return !action.preload ? getPageIndex$1(state, '', action.context) : 0;
+    return !action.preload ? getPageIndex$1(state, action.facet, action.context) : 0;
   },
   pageSize: root => getQueryParameter$1(root, 'pageSize'),
   pagesLoaded: ({
