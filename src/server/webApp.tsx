@@ -157,7 +157,11 @@ const webApp = (
 
       // Dynamic page render has only the necessary bundles to start up the app
       // and does not include any react-loadable code-split bundles
-      const bundleTags = getBundleTags(loadableExtractor, scripts);
+      const bundleTags = getBundleTags(
+        loadableExtractor,
+        scripts,
+        staticRoutePath
+      );
 
       const isDynamicHint = `<script ${attributes}>window.isDynamic = true;</script>`;
 
@@ -205,7 +209,11 @@ const webApp = (
 
           // After running rootSaga there should be an additional react-loadable
           // code-split bundles for any page components as well as core app bundles
-          const bundleTags = getBundleTags(loadableExtractor, scripts);
+          const bundleTags = getBundleTags(
+            loadableExtractor,
+            scripts,
+            staticRoutePath
+          );
 
           let serialisedReduxData = serialize(reduxState);
           if (context.statusCode !== 404) {
