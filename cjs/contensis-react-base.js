@@ -309,7 +309,8 @@ const getBundleTags = (loadableExtractor, scripts, staticRoutePath = 'static') =
     const modernScriptTags = loadableExtractor === null || loadableExtractor === void 0 ? void 0 : loadableExtractor.modern.getScriptTags({
       type: 'module'
     });
-    return `${startupTag}${legacyScriptTags || ''}${modernScriptTags || ''}`;
+    const scriptTags = `${startupTag}${legacyScriptTags || ''}${modernScriptTags || ''}`.replace(/"\/static\//g, `"/${staticRoutePath}/`);
+    return scriptTags;
   }
 
   return startupTag;
@@ -443,7 +444,7 @@ const webApp = (app, ReactApp, config) => {
       server$1.renderToString(jsx); // Dynamic page render has only the necessary bundles to start up the app
       // and does not include any react-loadable code-split bundles
 
-      const bundleTags = getBundleTags(loadableExtractor, scripts);
+      const bundleTags = getBundleTags(loadableExtractor, scripts, staticRoutePath);
       const isDynamicHint = `<script ${attributes}>window.isDynamic = true;</script>`;
       const responseHtmlDynamic = templateHTML.replace('{{TITLE}}', '').replace('{{SEO_CRITICAL_METADATA}}', '').replace('{{CRITICAL_CSS}}', '').replace('{{APP}}', '').replace('{{LOADABLE_CHUNKS}}', bundleTags).replace('{{REDUX_DATA}}', isDynamicHint); // Dynamic pages always return a 200 so we can run
       // the app and serve up all errors inside the client
@@ -471,7 +472,7 @@ const webApp = (app, ReactApp, config) => {
         const styleTags = sheet.getStyleTags(); // After running rootSaga there should be an additional react-loadable
         // code-split bundles for any page components as well as core app bundles
 
-        const bundleTags = getBundleTags(loadableExtractor, scripts);
+        const bundleTags = getBundleTags(loadableExtractor, scripts, staticRoutePath);
         let serialisedReduxData = serialize__default["default"](reduxState);
 
         if (context.statusCode !== 404) {
