@@ -1667,7 +1667,7 @@ function* doSearch(action) {
     facet: action.facet || ((_action$params = action.params) === null || _action$params === void 0 ? void 0 : _action$params.facet)
   };
 
-  if (nextAction.facet && Object.keys(getFacet(state, nextAction.facet, action.context, 'js')).length > 0) {
+  if (nextAction.facet && (action.config || Object.keys(getFacet(state, nextAction.facet, action.context, 'js')).length > 0)) {
     yield put(nextAction); // keep track of this state ref for comparing changes to params later
 
     const ogState = {
