@@ -72,6 +72,7 @@ const DisplayStartupConfiguration = config => {
   console.log();
   console.log('Reverse proxy paths: ', JSON.stringify(config.reverseProxyPaths, null, 2));
   console.log();
+  if (config.staticFolderPath) console.log(`Serving static assets from: "/dist/${config.staticFolderPath}/"`);
   /* eslint-enable no-console */
 };
 
@@ -132,6 +133,7 @@ const replaceStaticPath = (str, staticFolderPath = 'static') => str.replace(/sta
 const bundleManipulationMiddleware = ({
   appRootPath,
   maxage,
+  staticFolderPath,
   staticRoutePath
 }) => (req, res, next) => {
   const filename = path__default["default"].basename(req.path);
@@ -139,7 +141,7 @@ const bundleManipulationMiddleware = ({
   const legacyBundle = filename.endsWith('.js');
 
   if ((legacyBundle || modernBundle) && filename.startsWith('runtime.')) {
-    const jsRuntimeLocation = path__default["default"].resolve(appRootPath, `dist/static/${modernBundle ? 'modern/js' : 'legacy/js'}/${filename}`);
+    const jsRuntimeLocation = path__default["default"].resolve(appRootPath, `dist/${staticFolderPath}/${modernBundle ? 'modern/js' : 'legacy/js'}/${filename}`);
 
     try {
       const jsRuntimeBundle = fs__default["default"].readFileSync(jsRuntimeLocation, 'utf8');
@@ -169,13 +171,22 @@ const resolveStartupMiddleware = ({
   maxage,
   staticFolderPath,
   startupScriptFilename
-}) => (req, res, next) => {
+}) => async (req, res, next) => {
   if (startupScriptFilename !== 'startup.js' && req.path === `/${startupScriptFilename}`) {
-    const startupFilePath = `dist/${staticFolderPath}/startup.js`;
-    const startupFileLocation = path__default["default"].resolve(appRootPath, startupFilePath);
-    if (maxage) res.set('Cache-Control', `public, max-age=${maxage}`);
+    let startupFileLocation = '';
 
     try {
+      const startupFilePaths = [`dist/static/startup.js`, `dist/${staticFolderPath}/startup.js`];
+      let startupFilePath = '';
+      startupFilePaths.forEach(async testPath => {
+        try {
+          fs__default["default"].accessSync(testPath);
+          startupFilePath = testPath;
+        } catch (ex) {// Do nothing
+        }
+      });
+      startupFileLocation = path__default["default"].resolve(appRootPath, startupFilePath);
+      if (maxage) res.set('Cache-Control', `public, max-age=${maxage}`);
       res.sendFile(startupFileLocation);
     } catch (sendFileError) {
       // eslint-disable-next-line no-console
@@ -201,6 +212,7 @@ const staticAssets = (app, {
     // these maxage values are different in config but the same in runtime,
     // this one is the true value in seconds
     maxage: CacheDuration.static,
+    staticFolderPath,
     staticRoutePath
   }), resolveStartupMiddleware({
     appRootPath: appRootPath$1,
