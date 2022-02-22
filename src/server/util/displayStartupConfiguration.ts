@@ -21,7 +21,10 @@ const DisplayStartupConfiguration = config => {
     JSON.stringify(config.reverseProxyPaths, null, 2)
   );
   console.log();
-
+  if (config.staticFolderPath)
+    console.log(
+      `Serving static assets from: "/dist/${config.staticFolderPath}/"`
+    );
   /* eslint-enable no-console */
 };
 

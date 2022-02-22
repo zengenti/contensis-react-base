@@ -1,4 +1,5 @@
 import { RequestHandler } from 'express';
+import fs from 'fs';
 import path from 'path';
 
 /**
@@ -19,17 +20,30 @@ export const resolveStartupMiddleware =
     staticFolderPath: string;
     startupScriptFilename: string;
   }): RequestHandler =>
-  (req, res, next) => {
+  async (req, res, next) => {
     if (
       startupScriptFilename !== 'startup.js' &&
       req.path === `/${startupScriptFilename}`
     ) {
-      const startupFilePath = `dist/${staticFolderPath}/startup.js`;
-      const startupFileLocation = path.resolve(appRootPath, startupFilePath);
-
-      if (maxage) res.set('Cache-Control', `public, max-age=${maxage}`);
-
+      let startupFileLocation = '';
       try {
+        const startupFilePaths = [
+          `dist/static/startup.js`,
+          `dist/${staticFolderPath}/startup.js`,
+        ];
+        let startupFilePath = '';
+        startupFilePaths.forEach(async testPath => {
+          try {
+            fs.accessSync(testPath);
+            startupFilePath = testPath;
+          } catch (ex) {
+            // Do nothing
+          }
+        });
+        startupFileLocation = path.resolve(appRootPath, startupFilePath);
+
+        if (maxage) res.set('Cache-Control', `public, max-age=${maxage}`);
+
         res.sendFile(startupFileLocation);
       } catch (sendFileError) {
         // eslint-disable-next-line no-console
