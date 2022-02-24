@@ -11,7 +11,7 @@ var reactRouterDom = require('react-router-dom');
 var component = require('@loadable/component');
 var queryString = require('query-string');
 var version = require('./version-951bc80c.js');
-var App = require('./App-2ff001f6.js');
+var App = require('./App-b90bcac9.js');
 var actions = require('./actions-6b9ef168.js');
 require('./selectors-2c1b1183.js');
 require('jsonpath-mapper');
@@ -31,7 +31,7 @@ require('./login-d67b82aa.js');
 require('./ToJs-09204afd.js');
 require('await-to-js');
 require('js-cookie');
-require('./RouteLoader-2ed14766.js');
+require('./RouteLoader-53b04ee1.js');
 require('react-router-config');
 require('reselect');
 

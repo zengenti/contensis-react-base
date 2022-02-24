@@ -40,9 +40,19 @@ const Status = ({
   });
 };
 
+const replaceDoubleSlashRecursive = path => {
+  const nextPath = path.replace(/\/\//, '/');
+
+  if (nextPath.match(/\/\//)) {
+    replaceDoubleSlashRecursive(nextPath);
+  }
+
+  return nextPath;
+};
+
 const getTrimmedPath = path => {
   if (path !== '/') {
-    const nextPath = path.replace(/\/\//, '/');
+    const nextPath = replaceDoubleSlashRecursive(path);
     const lastChar = nextPath[nextPath.length - 1];
 
     if (lastChar === '/') {
@@ -206,4 +216,4 @@ const mapDispatchToProps = {
 var RouteLoader$1 = reactHotLoader.hot(module)(reactRedux.connect(mapStateToPropsMemoized, mapDispatchToProps)(ToJs.toJS(RouteLoader)));
 
 exports.RouteLoader = RouteLoader$1;
-//# sourceMappingURL=RouteLoader-2ed14766.js.map
+//# sourceMappingURL=RouteLoader-53b04ee1.js.map

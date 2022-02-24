@@ -34,9 +34,19 @@ const Status = ({
   });
 };
 
+const replaceDoubleSlashRecursive = path => {
+  const nextPath = path.replace(/\/\//, '/');
+
+  if (nextPath.match(/\/\//)) {
+    replaceDoubleSlashRecursive(nextPath);
+  }
+
+  return nextPath;
+};
+
 const getTrimmedPath = path => {
   if (path !== '/') {
-    const nextPath = path.replace(/\/\//, '/');
+    const nextPath = replaceDoubleSlashRecursive(path);
     const lastChar = nextPath[nextPath.length - 1];
 
     if (lastChar === '/') {
@@ -200,4 +210,4 @@ const mapDispatchToProps = {
 var RouteLoader$1 = hot(module)(connect(mapStateToPropsMemoized, mapDispatchToProps)(toJS(RouteLoader)));
 
 export { RouteLoader$1 as R };
-//# sourceMappingURL=RouteLoader-d4b4d320.js.map
+//# sourceMappingURL=RouteLoader-ab729275.js.map

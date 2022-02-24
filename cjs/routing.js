@@ -4,7 +4,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 var actions = require('./actions-6b9ef168.js');
 var selectors = require('./selectors-2c1b1183.js');
-var RouteLoader = require('./RouteLoader-2ed14766.js');
+var RouteLoader = require('./RouteLoader-53b04ee1.js');
 require('jsonpath-mapper');
 require('query-string');
 require('react');
