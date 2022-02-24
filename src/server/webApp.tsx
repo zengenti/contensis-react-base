@@ -12,7 +12,9 @@ import mapJson from 'jsonpath-mapper';
 import { Express } from 'express';
 import { StaticRouterContext } from 'react-router';
 import { ChunkExtractorManager } from '@loadable/server';
+import { identity, noop } from 'lodash';
 import cloneDeep from 'lodash/cloneDeep';
+import { buildCleaner } from 'lodash-clean';
 
 import createStore from '~/redux/store/store';
 import { history } from '~/redux/store/history';
@@ -37,7 +39,6 @@ import { addStandardHeaders } from './util/headers';
 
 import { ServerConfig } from '~/config';
 import { AppState } from '~/redux/appstate';
-import deepCleaner from 'deep-cleaner';
 
 const webApp = (
   app: Express,
@@ -218,7 +219,16 @@ const webApp = (
           );
 
           let serialisedReduxData = serialize(
-            deepCleaner(cloneDeep(reduxState))
+            buildCleaner({
+              isArray: identity,
+              isBoolean: identity,
+              isDate: identity,
+              isFunction: noop,
+              isNull: identity,
+              isPlainObject: identity,
+              isString: identity,
+              isUndefined: noop,
+            })(cloneDeep(reduxState))
           );
           if (context.statusCode !== 404) {
             // For a request that returns a redux state object as a response
