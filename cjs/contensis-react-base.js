@@ -22,7 +22,7 @@ var server = require('@loadable/server');
 var lodash = require('lodash');
 var lodashClean = require('lodash-clean');
 var version = require('./version-951bc80c.js');
-var App = require('./App-b90bcac9.js');
+var App = require('./App-478e0b4c.js');
 var actions = require('./actions-6b9ef168.js');
 var selectors = require('./selectors-2c1b1183.js');
 require('@redux-saga/core/effects');
@@ -43,7 +43,7 @@ require('await-to-js');
 require('js-cookie');
 require('react-hot-loader');
 require('query-string');
-require('./RouteLoader-53b04ee1.js');
+require('./RouteLoader-8df335cf.js');
 require('reselect');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }

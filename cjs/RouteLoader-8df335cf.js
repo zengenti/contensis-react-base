@@ -44,7 +44,7 @@ const replaceDoubleSlashRecursive = path => {
   const nextPath = path.replace(/\/\//, '/');
 
   if (nextPath.match(/\/\//)) {
-    replaceDoubleSlashRecursive(nextPath);
+    return replaceDoubleSlashRecursive(nextPath);
   }
 
   return nextPath;
@@ -216,4 +216,4 @@ const mapDispatchToProps = {
 var RouteLoader$1 = reactHotLoader.hot(module)(reactRedux.connect(mapStateToPropsMemoized, mapDispatchToProps)(ToJs.toJS(RouteLoader)));
 
 exports.RouteLoader = RouteLoader$1;
-//# sourceMappingURL=RouteLoader-53b04ee1.js.map
+//# sourceMappingURL=RouteLoader-8df335cf.js.map
