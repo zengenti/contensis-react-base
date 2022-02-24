@@ -32,9 +32,19 @@ import { toJS } from '~/util/ToJs';
 import { Entry } from 'contensis-delivery-api/lib/models';
 import { AppRootProps, RouteComponentProps, RouteLoaderProps } from '../routes';
 
+const replaceDoubleSlashRecursive = (path: string) => {
+  const nextPath = path.replace(/\/\//, '/');
+
+  if (nextPath.match(/\/\//)) {
+    replaceDoubleSlashRecursive(nextPath);
+  }
+
+  return nextPath;
+};
+
 const getTrimmedPath = path => {
   if (path !== '/') {
-    const nextPath = path.replace(/\/\//, '/');
+    const nextPath = replaceDoubleSlashRecursive(path);
     const lastChar = nextPath[nextPath.length - 1];
     if (lastChar === '/') {
       return nextPath.substring(0, nextPath.length - 1);
