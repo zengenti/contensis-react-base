@@ -36,7 +36,7 @@ const replaceDoubleSlashRecursive = (path: string) => {
   const nextPath = path.replace(/\/\//, '/');
 
   if (nextPath.match(/\/\//)) {
-    replaceDoubleSlashRecursive(nextPath);
+    return replaceDoubleSlashRecursive(nextPath);
   }
 
   return nextPath;
