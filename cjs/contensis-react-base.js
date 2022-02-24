@@ -19,11 +19,12 @@ var serialize = require('serialize-javascript');
 var minifyCssString = require('minify-css-string');
 var mapJson = require('jsonpath-mapper');
 var server = require('@loadable/server');
+var lodash = require('lodash');
+var lodashClean = require('lodash-clean');
 var version = require('./version-951bc80c.js');
 var App = require('./App-b90bcac9.js');
 var actions = require('./actions-6b9ef168.js');
 var selectors = require('./selectors-2c1b1183.js');
-var deepCleaner = require('deep-cleaner');
 require('@redux-saga/core/effects');
 require('redux');
 require('redux-thunk');
@@ -55,7 +56,6 @@ var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
 var serialize__default = /*#__PURE__*/_interopDefaultLegacy(serialize);
 var minifyCssString__default = /*#__PURE__*/_interopDefaultLegacy(minifyCssString);
 var mapJson__default = /*#__PURE__*/_interopDefaultLegacy(mapJson);
-var deepCleaner__default = /*#__PURE__*/_interopDefaultLegacy(deepCleaner);
 
 const servers$1 = SERVERS;
 /* global SERVERS */
@@ -3271,7 +3271,16 @@ const webApp = (app, ReactApp, config) => {
         // code-split bundles for any page components as well as core app bundles
 
         const bundleTags = getBundleTags(loadableExtractor, scripts, staticRoutePath);
-        let serialisedReduxData = serialize__default["default"](deepCleaner__default["default"](cloneDeep_1(reduxState)));
+        let serialisedReduxData = serialize__default["default"](lodashClean.buildCleaner({
+          isArray: lodash.identity,
+          isBoolean: lodash.identity,
+          isDate: lodash.identity,
+          isFunction: lodash.noop,
+          isNull: lodash.identity,
+          isPlainObject: lodash.identity,
+          isString: lodash.identity,
+          isUndefined: lodash.noop
+        })(cloneDeep_1(reduxState)));
 
         if (context.statusCode !== 404) {
           // For a request that returns a redux state object as a response

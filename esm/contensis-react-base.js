@@ -15,12 +15,13 @@ import serialize from 'serialize-javascript';
 import minifyCssString from 'minify-css-string';
 import mapJson from 'jsonpath-mapper';
 import { ChunkExtractor, ChunkExtractorManager } from '@loadable/server';
+import { identity, noop } from 'lodash';
+import { buildCleaner } from 'lodash-clean';
 import { c as createStore, s as setVersionStatus, a as setVersion } from './version-b2ca1dab.js';
 import { h as history, d as deliveryApi, p as pickProject, r as rootSaga } from './App-13385879.js';
 export { A as ReactApp } from './App-13385879.js';
 import { s as setCurrentProject } from './actions-5437f43d.js';
 import { s as selectSurrogateKeys, a as selectRouteEntry, b as selectCurrentProject, g as getImmutableOrJS } from './selectors-65f0f31c.js';
-import deepCleaner from 'deep-cleaner';
 import '@redux-saga/core/effects';
 import 'redux';
 import 'redux-thunk';
@@ -3256,7 +3257,16 @@ const webApp = (app, ReactApp, config) => {
         // code-split bundles for any page components as well as core app bundles
 
         const bundleTags = getBundleTags(loadableExtractor, scripts, staticRoutePath);
-        let serialisedReduxData = serialize(deepCleaner(cloneDeep_1(reduxState)));
+        let serialisedReduxData = serialize(buildCleaner({
+          isArray: identity,
+          isBoolean: identity,
+          isDate: identity,
+          isFunction: noop,
+          isNull: identity,
+          isPlainObject: identity,
+          isString: identity,
+          isUndefined: noop
+        })(cloneDeep_1(reduxState)));
 
         if (context.statusCode !== 404) {
           // For a request that returns a redux state object as a response
