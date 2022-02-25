@@ -28,7 +28,7 @@ export declare const getIsInternalPaging: (state: AppState, current: string, con
 export declare const getIsLoaded: (state: AppState, context?: Context, facet?: string | undefined) => boolean;
 export declare const getIsLoading: (state: AppState, context?: Context, facet?: string | undefined) => boolean;
 export declare const getIsSsr: (state: AppState) => boolean;
-export declare const getFeaturedResults: (state: AppState, current?: string, context?: Context) => any[];
+export declare const getFeaturedResults: (state: AppState, current?: string, context?: Context, returnType?: StateType | undefined) => any[];
 export declare const getPaging: (state: AppState, current?: string, context?: Context, returnType?: StateType | undefined) => Paging;
 export declare const getPageIndex: (state: AppState, current?: string, context?: Context) => number;
 export declare const getPrevPageIndex: (state: AppState, current?: string, context?: Context) => number;
@@ -61,7 +61,7 @@ export declare const selectFacets: {
     }[];
     getFacets: (state: AppState, returnType?: StateType | undefined) => Facets;
     getFacetsTotalCount: (state: AppState) => number;
-    getFeaturedResults: (state: AppState, current?: string, context?: Context) => any[];
+    getFeaturedResults: (state: AppState, current?: string, context?: Context, returnType?: StateType | undefined) => any[];
     getFilters: (state: AppState, facet: string, context?: Context, returnType?: StateType | undefined) => Filters;
     getFiltersToLoad: (state: AppState, facet: string, context?: Context, returnType?: StateType | undefined) => string[];
     getIsLoaded: (state: AppState, context?: Context, facet?: string | undefined) => boolean;
