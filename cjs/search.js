@@ -523,6 +523,7 @@ const withSearch = mappers => SearchComponent => {
       resultsInfo: (mappers === null || mappers === void 0 ? void 0 : mappers.resultsInfo) && mappers.resultsInfo(state),
       searchTerm: getSearchTerm$1(state),
       searchTotalCount: getSearchTotalCount(state),
+      selectedFilters: getSelectedFilters(state),
       sortOrder: getQueryParameter$1({
         state
       }, 'dynamicOrderBy', []),
@@ -577,6 +578,7 @@ const withListing = mappers => ListingComponent => {
       results: getResults(state),
       resultsInfo: mappers && typeof mappers.resultsInfo === 'function' && mappers.resultsInfo(state),
       searchTerm: getSearchTerm(state),
+      selectedFilters: getSelectedFilters(state),
       sortOrder: getQueryParameter({
         state
       }, 'dynamicOrderBy', [])
@@ -989,13 +991,16 @@ const equalToOrIn = (field, value, operator = 'equalTo') => {
   if (value.length === 0) return [];
 
   if (Array.isArray(value)) {
-    if (operator === 'equalTo') return [contensisCoreApi.Op.in(field, ...value)];
+    if (operator === 'equalTo' || operator === 'in') return [contensisCoreApi.Op.in(field, ...value)];
     return [contensisCoreApi.Op.or(...value.map(innerValue => {
       switch (operator) {
         case 'between':
         case 'distanceWithin':
           // Not implemented
           return contensisCoreApi.Op.equalTo(field, innerValue);
+
+        case 'exists':
+          return contensisCoreApi.Op.exists(field, innerValue);
 
         case 'freeText':
           // TODO: Potentially needs further implementation of new options

@@ -1,7 +1,7 @@
 import { clearFilters, updateCurrentFacet, updateCurrentTab, updatePageIndex, updateSearchTerm, updateSelectedFilters, updateSortOrder } from '../redux/actions';
 import { SearchFacet, Mappers } from '../models/Search';
 import { DebugFlags } from '../models/SearchActions';
-import { Facet as StateFacet, Facets, Filters, Paging } from '../models/SearchState';
+import { Facet as StateFacet, Facets, Filters, Paging, SelectedFilters } from '../models/SearchState';
 export interface MinilistProps<SearchResults = any> {
     filters: Filters;
     isLoading: boolean;
@@ -22,11 +22,13 @@ export interface ListingProps<SearchResults = any> {
     featured: SearchResults[];
     filters: Filters;
     isLoading: boolean;
-    paging: Paging;
+    listing: StateFacet;
     pageIsLoading: boolean;
+    paging: Paging;
     results: SearchResults[];
     resultsInfo: any;
     searchTerm: string;
+    selectedFilters: SelectedFilters;
     sortOrder: string[];
     title: string;
     updateCurrentFacet: typeof updateCurrentFacet;
@@ -50,6 +52,7 @@ export interface SearchProps<SearchResults = any> {
     results: SearchResults[];
     resultsInfo: any;
     searchTerm: string;
+    selectedFilters: SelectedFilters;
     sortOrder: string[];
     tabsAndFacets: any;
     updateCurrentFacet: typeof updateCurrentFacet;
@@ -60,13 +63,14 @@ export interface SearchProps<SearchResults = any> {
     updateSortOrder: typeof updateSortOrder;
 }
 export interface UseListingProps {
-    id: string;
     debug?: DebugFlags;
     defaultLang?: string;
     mappers?: Mappers;
     params?: {
         [key: string]: string;
     };
+    /** Reserved for future use */
+    id?: string;
 }
 export interface UseMinilistProps {
     id: string;
