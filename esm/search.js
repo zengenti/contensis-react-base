@@ -848,7 +848,7 @@ const Fields = {
 };
 
 const fieldExpression = (field, value, operator = 'equalTo', weight) => {
-  if (!field || !value) return [];
+  if (!field || !value || Array.isArray(value) && value.length === 0) return [];
   if (Array.isArray(field)) // If an array of fieldIds have been provided, call self for each fieldId
     // to generate expressions that are combined with an 'or' operator
     return [Op.or(...field.map(fieldId => fieldExpression(fieldId, value, operator, weight)).flat())];
