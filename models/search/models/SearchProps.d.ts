@@ -44,7 +44,12 @@ export interface SearchProps<SearchResults = any> {
     currentTabIndex: number;
     facet: StateFacet;
     facets: Facets;
-    featuredResults: SearchResults[];
+    facetTitles: {
+        key: string;
+        title: string;
+        totalCount: number;
+    }[];
+    featured: SearchResults[];
     filters: Filters;
     isLoading: boolean;
     paging: Paging;
@@ -62,15 +67,25 @@ export interface SearchProps<SearchResults = any> {
     updateSelectedFilters: typeof updateSelectedFilters;
     updateSortOrder: typeof updateSortOrder;
 }
+export interface UseFacetsProps {
+    debug?: DebugFlags;
+    defaultLang?: string;
+    mappers?: Mappers;
+    /** Reserved for future use */
+    id?: string;
+    params?: {
+        [key: string]: string;
+    };
+}
 export interface UseListingProps {
     debug?: DebugFlags;
     defaultLang?: string;
     mappers?: Mappers;
+    /** Reserved for future use */
+    id?: string;
     params?: {
         [key: string]: string;
     };
-    /** Reserved for future use */
-    id?: string;
 }
 export interface UseMinilistProps {
     id: string;

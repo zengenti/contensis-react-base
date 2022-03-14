@@ -249,13 +249,13 @@ const getImmutableOrJS = (state, stateKey, fallbackValue, returnType = globalThi
 };
 
 const getSearchContext = state => getImmutableOrJS(state, ['search', 'context'], Context$1.facets);
-const getCurrent$1 = (state, context = Context$1.facets) => context === Context$1.facets ? getCurrentFacet(state) : getCurrentListing(state);
+const getCurrent$2 = (state, context = Context$1.facets) => context === Context$1.facets ? getCurrentFacet(state) : getCurrentListing(state);
 const getCurrentFacet = state => getImmutableOrJS(state, ['search', 'currentFacet']);
 const getCurrentListing = state => getImmutableOrJS(state, ['search', 'currentListing']);
-const getCurrentTab = state => getImmutableOrJS(state, ['search', Context$1.facets, getCurrentFacet(state), 'tabId'], 0);
+const getCurrentTab$1 = state => getImmutableOrJS(state, ['search', Context$1.facets, getCurrentFacet(state), 'tabId'], 0);
 const getFacets = (state, returnType) => getImmutableOrJS(state, ['search', Context$1.facets], {}, returnType);
-const getTabFacets = state => Object.fromEntries(Object.entries(getFacets(state, 'js')).filter(([key]) => getImmutableOrJS(getFacets(state), [key, 'tabId'], 0) === getCurrentTab(state)));
-const getFacetTitles = state => Object.entries(getFacets(state, 'js')).map(([key, facet = {}]) => {
+const getTabFacets$1 = state => Object.fromEntries(Object.entries(getFacets(state, 'js')).filter(([key]) => getImmutableOrJS(getFacets(state), [key, 'tabId'], 0) === getCurrentTab$1(state)));
+const getFacetTitles$1 = state => Object.entries(getFacets(state, 'js')).map(([key, facet = {}]) => {
   var _facet$pagingInfo;
 
   return {
@@ -264,7 +264,7 @@ const getFacetTitles = state => Object.entries(getFacets(state, 'js')).map(([key
     totalCount: (_facet$pagingInfo = facet.pagingInfo) === null || _facet$pagingInfo === void 0 ? void 0 : _facet$pagingInfo.totalCount
   };
 });
-const getFacet = (state, facetName = '', context = Context$1.facets, returnType) => {
+const getFacet$1 = (state, facetName = '', context = Context$1.facets, returnType) => {
   const currentFacet = facetName || getCurrentFacet(state);
   return getImmutableOrJS(state, ['search', context, currentFacet], {}, returnType);
 };
@@ -273,9 +273,9 @@ const getListing$1 = (state, listing = '') => {
   return getImmutableOrJS(state, ['search', Context$1.listings, currentListing], {});
 };
 const getFilters = (state, facet, context = Context$1.facets, returnType) => {
-  return getImmutableOrJS(state, ['search', context, facet || getCurrent$1(state, context), 'filters'], {}, returnType);
+  return getImmutableOrJS(state, ['search', context, facet || getCurrent$2(state, context), 'filters'], {}, returnType);
 };
-const getRenderableFilters$1 = (state, facet = '', context = Context$1.facets) => Object.fromEntries(Object.entries(getFilters(state, facet, context, 'js')).filter(([, f = {}]) => typeof f.renderable !== 'boolean' ? true : f.renderable));
+const getRenderableFilters$2 = (state, facet = '', context = Context$1.facets) => Object.fromEntries(Object.entries(getFilters(state, facet, context, 'js')).filter(([, f = {}]) => typeof f.renderable !== 'boolean' ? true : f.renderable));
 const getFiltersToLoad = (state, facet, context = Context$1.facets, returnType) => {
   const filters = getFilters(state, facet, context, returnType);
   const loadedFilters = Object.entries(filters).map(([key, f = {}]) => [key, (f.items || []).filter(i => {
@@ -297,45 +297,45 @@ const getSelectedFilters = (state, facet = '', context = Context$1.facets, retur
   return fromJS(selectedFilters);
 };
 const getResults = (state, current = '', context = Context$1.facets, returnType) => {
-  return getImmutableOrJS(state, ['search', context, current || getCurrent$1(state, context), 'results'], [], returnType);
+  return getImmutableOrJS(state, ['search', context, current || getCurrent$2(state, context), 'results'], [], returnType);
 };
 const getIsInternalPaging = (state, current, context = Context$1.facets) => {
-  return getImmutableOrJS(state, ['search', context, current || getCurrent$1(state, context), 'queryParams', 'internalPaging'], false);
+  return getImmutableOrJS(state, ['search', context, current || getCurrent$2(state, context), 'queryParams', 'internalPaging'], false);
 };
 const getIsLoaded = (state, context = Context$1.facets, facet) => {
-  return !!getImmutableOrJS(state, ['search', context, facet || getCurrent$1(state, context), 'queryDuration'], 0);
+  return !!getImmutableOrJS(state, ['search', context, facet || getCurrent$2(state, context), 'queryDuration'], 0);
 };
-const getIsLoading$1 = (state, context = Context$1.facets, facet) => {
-  return getImmutableOrJS(state, ['search', context, facet || getCurrent$1(state, context), 'entries', 'isLoading']);
+const getIsLoading$2 = (state, context = Context$1.facets, facet) => {
+  return getImmutableOrJS(state, ['search', context, facet || getCurrent$2(state, context), 'entries', 'isLoading']);
 };
 const getIsSsr = state => getImmutableOrJS(state, ['search', 'config', 'ssr'], false);
-const getFeaturedResults$1 = (state, current = '', context = Context$1.facets, returnType) => {
-  return getImmutableOrJS(state, ['search', context, current || getCurrent$1(state, context), 'featuredResults'], [], returnType);
+const getFeaturedResults$2 = (state, current = '', context = Context$1.facets, returnType) => {
+  return getImmutableOrJS(state, ['search', context, current || getCurrent$2(state, context), 'featuredResults'], [], returnType);
 };
 const getPaging = (state, current = '', context = Context$1.facets, returnType) => {
-  return getImmutableOrJS(state, ['search', context, current || getCurrent$1(state, context), 'pagingInfo'], {}, returnType);
+  return getImmutableOrJS(state, ['search', context, current || getCurrent$2(state, context), 'pagingInfo'], {}, returnType);
 };
-const getPageIndex$1 = (state, current = '', context = Context$1.facets) => {
-  return getImmutableOrJS(state, ['search', context, current || getCurrent$1(state, context), 'pagingInfo', 'pageIndex']);
+const getPageIndex$2 = (state, current = '', context = Context$1.facets) => {
+  return getImmutableOrJS(state, ['search', context, current || getCurrent$2(state, context), 'pagingInfo', 'pageIndex']);
 };
 const getPrevPageIndex = (state, current = '', context = Context$1.facets) => {
-  return getImmutableOrJS(state, ['search', context, current || getCurrent$1(state, context), 'pagingInfo', 'prevPageIndex']);
+  return getImmutableOrJS(state, ['search', context, current || getCurrent$2(state, context), 'pagingInfo', 'prevPageIndex']);
 };
-const getPageIsLoading$1 = (state, current = '', context = Context$1.facets) => {
-  return getImmutableOrJS(state, ['search', context, current || getCurrent$1(state, context), 'pagingInfo', 'isLoading']);
+const getPageIsLoading$2 = (state, current = '', context = Context$1.facets) => {
+  return getImmutableOrJS(state, ['search', context, current || getCurrent$2(state, context), 'pagingInfo', 'isLoading']);
 };
 const getPagesLoaded = (state, current = '', context = Context$1.facets) => {
-  return getImmutableOrJS(state, ['search', context, current || getCurrent$1(state, context), 'pagingInfo', 'pagesLoaded'], [], 'js');
+  return getImmutableOrJS(state, ['search', context, current || getCurrent$2(state, context), 'pagingInfo', 'pagesLoaded'], [], 'js');
 };
-const getTotalCount = (state, current = '', context = Context$1.facets) => {
-  return getImmutableOrJS(state, ['search', context, current || getCurrent$1(state, context), 'pagingInfo', 'totalCount']);
+const getTotalCount$1 = (state, current = '', context = Context$1.facets) => {
+  return getImmutableOrJS(state, ['search', context, current || getCurrent$2(state, context), 'pagingInfo', 'totalCount']);
 };
-const getSearchTerm$1 = state => getImmutableOrJS(state, ['search', 'term']);
+const getSearchTerm$2 = state => getImmutableOrJS(state, ['search', 'term']);
 const getSearchTabs = (state, returnType) => getImmutableOrJS(state, ['search', 'tabs'], [], returnType);
 const getQueryParams = (state, current = '', context = Context$1.facets) => {
-  return getImmutableOrJS(state, ['search', context, current || getCurrent$1(state, context), 'queryParams'], {}, 'js');
+  return getImmutableOrJS(state, ['search', context, current || getCurrent$2(state, context), 'queryParams'], {}, 'js');
 };
-const getQueryParameter$1 = ({
+const getQueryParameter$2 = ({
   state,
   facet,
   context = Context$1.facets
@@ -343,12 +343,12 @@ const getQueryParameter$1 = ({
   return getImmutableOrJS(getQueryParams(state, facet, context), key, ifnull, 'js');
 };
 const getCustomApi = (state, current, context = Context$1.facets, returnType) => {
-  return getImmutableOrJS(state, ['search', context, current || getCurrent$1(state, context), 'customApi'], null, returnType);
+  return getImmutableOrJS(state, ['search', context, current || getCurrent$2(state, context), 'customApi'], null, returnType);
 };
 const getCustomEnv = (state, current, context = Context$1.facets) => {
-  return getImmutableOrJS(state, ['search', context, current || getCurrent$1(state, context), 'env']);
+  return getImmutableOrJS(state, ['search', context, current || getCurrent$2(state, context), 'env']);
 };
-const getTabsAndFacets = (state, returnType) => {
+const getTabsAndFacets$1 = (state, returnType) => {
   const tabs = getSearchTabs(state, 'js');
   const facets = getFacets(state, 'js');
   const tabsAndFacets = (tabs || []).map((tab = {}) => {
@@ -368,12 +368,12 @@ const getTabsAndFacets = (state, returnType) => {
   const fromJS = makeFromJS(returnType);
   return fromJS(tabsAndFacets);
 };
-const getSearchTotalCount = state => {
-  const tabsAndFacets = getTabsAndFacets(state, 'js');
+const getSearchTotalCount$1 = state => {
+  const tabsAndFacets = getTabsAndFacets$1(state, 'js');
   const wholeSearchTotal = tabsAndFacets.map((t = {}) => t.totalCount).reduce((a, b) => a + b, 0);
   return wholeSearchTotal;
 };
-const getFacetsTotalCount = state => {
+const getFacetsTotalCount$1 = state => {
   const facets = getFacets(state);
   const wholeSearchTotal = Object.entries(facets).map(([, t = {}]) => {
     var _t$pagingInfo;
@@ -385,67 +385,67 @@ const getFacetsTotalCount = state => {
 
 const selectFacets = {
   getCurrent: getCurrentFacet,
-  getCurrentTab,
+  getCurrentTab: getCurrentTab$1,
   getCustomApi,
   getCustomEnv,
-  getFacet,
-  getFacetTitles,
+  getFacet: getFacet$1,
+  getFacetTitles: getFacetTitles$1,
   getFacets,
-  getFacetsTotalCount,
-  getFeaturedResults: getFeaturedResults$1,
+  getFacetsTotalCount: getFacetsTotalCount$1,
+  getFeaturedResults: getFeaturedResults$2,
   getFilters,
   getFiltersToLoad,
   getIsLoaded,
-  getIsLoading: getIsLoading$1,
-  getPageIndex: getPageIndex$1,
-  getPageIsLoading: getPageIsLoading$1,
+  getIsLoading: getIsLoading$2,
+  getPageIndex: getPageIndex$2,
+  getPageIsLoading: getPageIsLoading$2,
   getPagesLoaded,
   getPaging,
   getQueryParams: (state, facet) => getQueryParams(state, facet, Context$1.facets),
   getQueryParameter: ({
     state,
     facet
-  }, key, ifnull) => getQueryParameter$1({
+  }, key, ifnull) => getQueryParameter$2({
     state,
     facet,
     context: Context$1.facets
   }, key, ifnull),
-  getRenderableFilters: getRenderableFilters$1,
+  getRenderableFilters: getRenderableFilters$2,
   getResults,
-  getTabFacets,
-  getTabsAndFacets,
-  getTotalCount,
+  getTabFacets: getTabFacets$1,
+  getTabsAndFacets: getTabsAndFacets$1,
+  getTotalCount: getTotalCount$1,
   getSearchTabs,
-  getSearchTerm: getSearchTerm$1,
-  getSearchTotalCount,
+  getSearchTerm: getSearchTerm$2,
+  getSearchTotalCount: getSearchTotalCount$1,
   getSelectedFilters
 }; // An exported copy of the relevant selectors pre-scoped to a listing context
 
 const selectListing = {
   getCurrent: getCurrentListing,
-  getFeaturedResults: (state, listing = '') => getFeaturedResults$1(state, listing, Context$1.listings, 'js'),
+  getFeaturedResults: (state, listing = '') => getFeaturedResults$2(state, listing, Context$1.listings, 'js'),
   getFilters: (state, listing = '') => getFilters(state, listing, Context$1.listings, 'js'),
   getFiltersToLoad: (state, listing = '') => getFiltersToLoad(state, listing, Context$1.listings),
   getListing: getListing$1,
   getIsLoaded: state => getIsLoaded(state, Context$1.listings),
-  getIsLoading: state => getIsLoading$1(state, Context$1.listings),
-  getPageIndex: (state, listing = '') => getPageIndex$1(state, listing, Context$1.listings),
+  getIsLoading: state => getIsLoading$2(state, Context$1.listings),
+  getPageIndex: (state, listing = '') => getPageIndex$2(state, listing, Context$1.listings),
   getPaging: (state, listing = '') => getPaging(state, listing, Context$1.listings, 'js'),
-  getPageIsLoading: (state, listing = '') => getPageIsLoading$1(state, listing, Context$1.listings),
+  getPageIsLoading: (state, listing = '') => getPageIsLoading$2(state, listing, Context$1.listings),
   getPagesLoaded: (state, listing = '') => getPagesLoaded(state, listing, Context$1.listings),
   getQueryParams: (state, listing = '') => getQueryParams(state, listing, Context$1.listings),
   getQueryParameter: ({
     state,
     facet
-  }, key, ifnull) => getQueryParameter$1({
+  }, key, ifnull) => getQueryParameter$2({
     state,
     facet,
     context: Context$1.listings
   }, key, ifnull),
-  getRenderableFilters: (state, listing = '') => getRenderableFilters$1(state, listing, Context$1.listings),
+  getRenderableFilters: (state, listing = '') => getRenderableFilters$2(state, listing, Context$1.listings),
   getResults: (state, listing = '') => getResults(state, listing, Context$1.listings, 'js'),
-  getSearchTerm: getSearchTerm$1,
-  getTotalCount: (state, listing = '') => getTotalCount(state, listing, Context$1.listings),
+  getSearchTerm: getSearchTerm$2,
+  getTotalCount: (state, listing = '') => getTotalCount$1(state, listing, Context$1.listings),
   getSelectedFilters: (state, listing = '') => getSelectedFilters(state, listing, Context$1.listings, 'js')
 };
 const selectCurrentPath = state => getImmutableOrJS(state, ['routing', 'currentPath']);
@@ -455,40 +455,40 @@ const selectVersionStatus = state => getImmutableOrJS(state, ['version', 'conten
 var selectors = /*#__PURE__*/Object.freeze({
   __proto__: null,
   getSearchContext: getSearchContext,
-  getCurrent: getCurrent$1,
+  getCurrent: getCurrent$2,
   getCurrentFacet: getCurrentFacet,
   getCurrentListing: getCurrentListing,
-  getCurrentTab: getCurrentTab,
+  getCurrentTab: getCurrentTab$1,
   getFacets: getFacets,
-  getTabFacets: getTabFacets,
-  getFacetTitles: getFacetTitles,
-  getFacet: getFacet,
+  getTabFacets: getTabFacets$1,
+  getFacetTitles: getFacetTitles$1,
+  getFacet: getFacet$1,
   getListing: getListing$1,
   getFilters: getFilters,
-  getRenderableFilters: getRenderableFilters$1,
+  getRenderableFilters: getRenderableFilters$2,
   getFiltersToLoad: getFiltersToLoad,
   getSelectedFilters: getSelectedFilters,
   getResults: getResults,
   getIsInternalPaging: getIsInternalPaging,
   getIsLoaded: getIsLoaded,
-  getIsLoading: getIsLoading$1,
+  getIsLoading: getIsLoading$2,
   getIsSsr: getIsSsr,
-  getFeaturedResults: getFeaturedResults$1,
+  getFeaturedResults: getFeaturedResults$2,
   getPaging: getPaging,
-  getPageIndex: getPageIndex$1,
+  getPageIndex: getPageIndex$2,
   getPrevPageIndex: getPrevPageIndex,
-  getPageIsLoading: getPageIsLoading$1,
+  getPageIsLoading: getPageIsLoading$2,
   getPagesLoaded: getPagesLoaded,
-  getTotalCount: getTotalCount,
-  getSearchTerm: getSearchTerm$1,
+  getTotalCount: getTotalCount$1,
+  getSearchTerm: getSearchTerm$2,
   getSearchTabs: getSearchTabs,
   getQueryParams: getQueryParams,
-  getQueryParameter: getQueryParameter$1,
+  getQueryParameter: getQueryParameter$2,
   getCustomApi: getCustomApi,
   getCustomEnv: getCustomEnv,
-  getTabsAndFacets: getTabsAndFacets,
-  getSearchTotalCount: getSearchTotalCount,
-  getFacetsTotalCount: getFacetsTotalCount,
+  getTabsAndFacets: getTabsAndFacets$1,
+  getSearchTotalCount: getSearchTotalCount$1,
+  getFacetsTotalCount: getFacetsTotalCount$1,
   selectFacets: selectFacets,
   selectListing: selectListing,
   selectCurrentPath: selectCurrentPath,
@@ -508,27 +508,27 @@ const withSearch = mappers => SearchComponent => {
   const mapStateToProps = state => {
     return {
       currentFacet: getCurrentFacet(state),
-      currentPageIndex: getPageIndex$1(state),
-      currentTabIndex: getCurrentTab(state),
-      facet: getFacet(state),
-      facets: getTabFacets(state),
-      facetsTotalCount: getFacetsTotalCount(state),
-      facetTitles: getFacetTitles(state),
-      featuredResults: getFeaturedResults$1(state),
-      filters: getRenderableFilters$1(state),
-      isLoading: getIsLoading$1(state),
+      currentPageIndex: getPageIndex$2(state),
+      currentTabIndex: getCurrentTab$1(state),
+      facet: getFacet$1(state),
+      facets: getTabFacets$1(state),
+      facetsTotalCount: getFacetsTotalCount$1(state),
+      facetTitles: getFacetTitles$1(state),
+      featuredResults: getFeaturedResults$2(state),
+      filters: getRenderableFilters$2(state),
+      isLoading: getIsLoading$2(state),
       paging: getPaging(state),
-      pageIsLoading: getPageIsLoading$1(state),
+      pageIsLoading: getPageIsLoading$2(state),
       results: getResults(state),
       resultsInfo: (mappers === null || mappers === void 0 ? void 0 : mappers.resultsInfo) && mappers.resultsInfo(state),
-      searchTerm: getSearchTerm$1(state),
-      searchTotalCount: getSearchTotalCount(state),
+      searchTerm: getSearchTerm$2(state),
+      searchTotalCount: getSearchTotalCount$1(state),
       selectedFilters: getSelectedFilters(state),
-      sortOrder: getQueryParameter$1({
+      sortOrder: getQueryParameter$2({
         state
       }, 'dynamicOrderBy', []),
-      tabsAndFacets: getTabsAndFacets(state),
-      totalCount: getTotalCount(state)
+      tabsAndFacets: getTabsAndFacets$1(state),
+      totalCount: getTotalCount$1(state)
     };
   };
 
@@ -1233,7 +1233,7 @@ const searchUriTemplate = {
     const currentSearch = !term && getImmutableOrJS(state, ['routing', 'location', 'search']);
     const currentQs = removeEmptyAttributes(queryString.parse(currentSearch));
     if (orderBy) currentQs.orderBy = orderBy;
-    const searchTerm = getSearchTerm$1(state); // Merge the stateFilters with any current qs to build the new qs
+    const searchTerm = getSearchTerm$2(state); // Merge the stateFilters with any current qs to build the new qs
 
     const mergedSearch = removeEmptyAttributes({ ...merge__default["default"](currentQs, stateFilters),
       term: searchTerm
@@ -1420,10 +1420,10 @@ const mapFiltersToFilterExpression = (filters, selectedFilters) => {
 };
 
 const queryParamsTemplate = {
-  assetTypes: root => getQueryParameter$1(root, 'assetTypes', []),
-  contentTypeIds: root => getQueryParameter$1(root, 'contentTypeIds', []),
-  customWhere: root => getQueryParameter$1(root, 'customWhere', []),
-  dynamicOrderBy: root => getQueryParameter$1(root, 'dynamicOrderBy', []),
+  assetTypes: root => getQueryParameter$2(root, 'assetTypes', []),
+  contentTypeIds: root => getQueryParameter$2(root, 'contentTypeIds', []),
+  customWhere: root => getQueryParameter$2(root, 'customWhere', []),
+  dynamicOrderBy: root => getQueryParameter$2(root, 'dynamicOrderBy', []),
   env: ({
     state,
     facet,
@@ -1438,8 +1438,8 @@ const queryParamsTemplate = {
     if (excludeIds) return Array.isArray(excludeIds) ? excludeIds : excludeIds.split(',').map(id => id.trim());
     return null;
   },
-  featuredResults: root => getQueryParameter$1(root, 'featuredResults', null),
-  fields: root => getQueryParameter$1(root, 'fields', []),
+  featuredResults: root => getQueryParameter$2(root, 'featuredResults', null),
+  fields: root => getQueryParameter$2(root, 'fields', []),
   filters: ({
     state,
     facet,
@@ -1451,28 +1451,28 @@ const queryParamsTemplate = {
     const filterParams = mapFiltersToFilterExpression(stateFilters, selectedFilters);
     return filterParams;
   },
-  includeInSearchFields: root => getQueryParameter$1(root, 'includeInSearch', []),
+  includeInSearchFields: root => getQueryParameter$2(root, 'includeInSearch', []),
   internalPageIndex: ({
     action,
     state
-  }) => getPageIndex$1(state, '', action.context),
-  internalPaging: root => getQueryParameter$1(root, 'internalPaging', false),
+  }) => getPageIndex$2(state, '', action.context),
+  internalPaging: root => getQueryParameter$2(root, 'internalPaging', false),
   languages: ({
     action
   }) => action.defaultLang ? [action.defaultLang] : [],
-  linkDepth: root => getQueryParameter$1(root, 'linkDepth', 0),
-  loadMorePaging: root => getQueryParameter$1(root, 'loadMorePaging', false),
-  orderBy: root => getQueryParameter$1(root, 'orderBy', []),
+  linkDepth: root => getQueryParameter$2(root, 'linkDepth', 0),
+  loadMorePaging: root => getQueryParameter$2(root, 'loadMorePaging', false),
+  orderBy: root => getQueryParameter$2(root, 'orderBy', []),
   pageIndex: root => {
     const {
       action,
       state
     } = root;
-    if (getQueryParameter$1(root, 'internalPaging', false)) return 0;
+    if (getQueryParameter$2(root, 'internalPaging', false)) return 0;
     if (action.type === UPDATE_PAGE_INDEX) return action.params.pageIndex;
-    return !action.preload ? getPageIndex$1(state, action.facet, action.context) : 0;
+    return !action.preload ? getPageIndex$2(state, action.facet, action.context) : 0;
   },
-  pageSize: root => getQueryParameter$1(root, 'pageSize'),
+  pageSize: root => getQueryParameter$2(root, 'pageSize'),
   pagesLoaded: ({
     state,
     facet,
@@ -1490,9 +1490,9 @@ const queryParamsTemplate = {
   }) => {
     var _getFacet;
 
-    return ((_getFacet = getFacet(state, facet, context)) === null || _getFacet === void 0 ? void 0 : _getFacet.projectId) || selectCurrentProject(state);
+    return ((_getFacet = getFacet$1(state, facet, context)) === null || _getFacet === void 0 ? void 0 : _getFacet.projectId) || selectCurrentProject(state);
   },
-  searchTerm: root => root.context !== Context$1.minilist || getQueryParameter$1(root, 'useSearchTerm', false) ? getSearchTerm$1(root.state) : '',
+  searchTerm: root => root.context !== Context$1.minilist || getQueryParameter$2(root, 'useSearchTerm', false) ? getSearchTerm$2(root.state) : '',
   selectedFilters: ({
     state,
     facet,
@@ -1502,11 +1502,11 @@ const queryParamsTemplate = {
     state
   }) => selectVersionStatus(state),
   weightedSearchFields: root => {
-    const wsf = getQueryParameter$1(root, 'weightedSearchFields', []);
+    const wsf = getQueryParameter$2(root, 'weightedSearchFields', []);
     const deduped = wsf.filter((v, i, a) => a.findIndex(t => t.fieldId === v.fieldId) === i);
     return deduped; // return wsf;
   },
-  webpageTemplates: root => getQueryParameter$1(root, 'webpageTemplates', [])
+  webpageTemplates: root => getQueryParameter$2(root, 'webpageTemplates', [])
 };
 
 const mapStateToQueryParams = sourceJson => mapJson__default["default"](sourceJson, queryParamsTemplate);
@@ -1552,8 +1552,8 @@ const runSearch = (action, state, queryParams) => {
   const facetIsLoaded = defaultLang ? false : getIsLoaded(state, context, facet);
   const stateParams = { ...getQueryParams(ogState, facet, context)
   };
-  stateParams.pageIndex = getPageIndex$1(ogState, facet, context);
-  stateParams.searchTerm = getSearchTerm$1(ogState);
+  stateParams.pageIndex = getPageIndex$2(ogState, facet, context);
+  stateParams.searchTerm = getSearchTerm$2(ogState);
 
   if (context === Context$1.facets && ssr || // context === Context.minilist ||
   preload || !facetIsLoaded || filterParamsChanged(action) || defaultLang) {
@@ -1605,8 +1605,8 @@ const debugExecuteSearch = (action, state) => {
   const [queryParams, runSearch] = generateQueryParams(action, state);
   console.log('runSearch', runSearch, 'action', action, 'filterParamsChanged', filterParamsChanged(action, state), 'getIsLoaded(state, context, facet)', getIsLoaded(state, action.context, action.facet));
   const stateParams = { ...getQueryParams(action.ogState || state, action.facet, action.context),
-    pageIndex: getPageIndex$1(action.ogState || state, action.facet, action.context),
-    searchTerm: getSearchTerm$1(action.ogState || state)
+    pageIndex: getPageIndex$2(action.ogState || state, action.facet, action.context),
+    searchTerm: getSearchTerm$2(action.ogState || state)
   };
   console.log(stateParams, queryParams);
   console.log('getSelectedFilters', getSelectedFilters(action.ogState || state, action.facet, action.context, 'js'), 'params', action.params);
@@ -1702,7 +1702,7 @@ function* doSearch(action) {
     facet: action.facet || ((_action$params = action.params) === null || _action$params === void 0 ? void 0 : _action$params.facet)
   };
 
-  if (nextAction.facet && (action.config || Object.keys(getFacet(state, nextAction.facet, action.context, 'js')).length > 0)) {
+  if (nextAction.facet && (action.config || Object.keys(getFacet$1(state, nextAction.facet, action.context, 'js')).length > 0)) {
     yield effects.put(nextAction); // keep track of this state ref for comparing changes to params later
 
     const ogState = {
@@ -1730,7 +1730,7 @@ function* loadFilters(action) {
       context
     });
     const selectedKeys = yield effects.select(getSelectedFilters, facetKey, context, 'js');
-    const facet = yield effects.select(getFacet, facetKey, context, 'js');
+    const facet = yield effects.select(getFacet$1, facetKey, context, 'js');
     const filters = facet.filters || {};
     const projectId = facet.projectId;
     const filtersToLoadSagas = filters && filtersToLoad.map((filterKey = '') => {
@@ -1951,7 +1951,7 @@ function* updateCurrentFacet(action) {
     facet,
     mappers
   } = action;
-  const pageIndex = yield effects.select(getPageIndex$1, facet);
+  const pageIndex = yield effects.select(getPageIndex$2, facet);
   const uri = yield buildUri({
     facet,
     pageIndex
@@ -2024,6 +2024,114 @@ function* buildUri({
 var defaultMappers = {
   results: entries => entries,
   navigate: mapStateToSearchUri
+};
+
+const {
+  getCurrent: getCurrent$1,
+  getCurrentTab,
+  getFacet,
+  getFacetsTotalCount,
+  getFacetTitles,
+  getFeaturedResults: getFeaturedResults$1,
+  getIsLoading: getIsLoading$1,
+  getPageIndex: getPageIndex$1,
+  getPageIsLoading: getPageIsLoading$1,
+  getQueryParameter: getQueryParameter$1,
+  getRenderableFilters: getRenderableFilters$1,
+  getSearchTerm: getSearchTerm$1,
+  getSearchTotalCount,
+  getTabFacets,
+  getTabsAndFacets,
+  getTotalCount
+} = selectFacets;
+
+const makeSelectFacetsProps = () => reselect.createSelector(state => state, (_, mappers) => mappers, (state, mappers) => ({
+  currentFacet: getCurrent$1(state),
+  currentPageIndex: getPageIndex$1(state),
+  currentTabIndex: getCurrentTab(state),
+  facet: getFacet(state),
+  facets: getTabFacets(state),
+  facetsTotalCount: getFacetsTotalCount(state),
+  facetTitles: getFacetTitles(state),
+  featured: getFeaturedResults$1(state),
+  filters: getRenderableFilters$1(state),
+  isLoading: getIsLoading$1(state),
+  pageIsLoading: getPageIsLoading$1(state),
+  paging: getPaging(state, '', Context$1.facets, 'js'),
+  results: getResults(state, '', Context$1.facets, 'js'),
+  resultsInfo: mappers && typeof mappers.resultsInfo === 'function' && mappers.resultsInfo(state),
+  searchTerm: getSearchTerm$1(state),
+  searchTotalCount: getSearchTotalCount(state),
+  selectedFilters: getSelectedFilters(state, '', Context$1.facets, 'js'),
+  sortOrder: getQueryParameter$1({
+    state
+  }, 'dynamicOrderBy', []),
+  tabsAndFacets: getTabsAndFacets(state),
+  totalCount: getTotalCount(state)
+}));
+
+const useFacets = ({
+  mappers
+} = {
+  id: ''
+}) => {
+  const dispatch = reactRedux.useDispatch();
+  const m = mappers || defaultMappers;
+  const selectListingProps = React.useMemo(makeSelectFacetsProps, [m]);
+  const dispatchProps = {
+    clearFilters: () => dispatch(withMappers(clearFilters$1(), m)),
+    updateCurrentFacet: facet => dispatch(withMappers(updateCurrentFacet$1(facet), m)),
+    updateCurrentTab: id => withMappers(updateCurrentTab$1(id), m),
+    updatePageIndex: pageIndex => dispatch(withMappers(updatePageIndex$1(pageIndex), m)),
+    updateSearchTerm: term => dispatch(withMappers(updateSearchTerm$1(term), m)),
+    updateSelectedFilters: (filter, key, isUnknownItem = false) => dispatch(withMappers(updateSelectedFilters(filter, key, isUnknownItem), m)),
+    updateSortOrder: orderBy => dispatch(withMappers(updateSortOrder$1(orderBy), m))
+  };
+  const {
+    currentFacet,
+    currentPageIndex,
+    currentTabIndex,
+    facet,
+    facets,
+    facetsTotalCount,
+    facetTitles,
+    featured,
+    filters,
+    isLoading,
+    paging,
+    pageIsLoading,
+    results,
+    resultsInfo,
+    searchTerm,
+    searchTotalCount,
+    selectedFilters,
+    sortOrder,
+    tabsAndFacets,
+    totalCount
+  } = reactRedux.useSelector(state => selectListingProps(state, m));
+  return {
+    currentFacet,
+    currentPageIndex,
+    currentTabIndex,
+    facet,
+    facets,
+    facetsTotalCount,
+    facetTitles,
+    featured,
+    filters,
+    isLoading,
+    paging,
+    pageIsLoading,
+    results,
+    resultsInfo,
+    searchTerm,
+    searchTotalCount,
+    selectedFilters,
+    sortOrder,
+    tabsAndFacets,
+    totalCount,
+    ...dispatchProps
+  };
 };
 
 const {
@@ -2107,12 +2215,12 @@ const useListing = ({
 };
 
 const makeSelectMinilistProps = () => reselect.createSelector(state => state, (_, id) => id, (state, id) => ({
-  facet: getFacet(state, id, Context$1.minilist, 'js'),
+  facet: getFacet$1(state, id, Context$1.minilist, 'js'),
   filters: getFilters(state, id, Context$1.minilist, 'js'),
-  isLoading: getIsLoading$1(state, Context$1.minilist, id),
+  isLoading: getIsLoading$2(state, Context$1.minilist, id),
   pagingInfo: getPaging(state, id, Context$1.minilist, 'js'),
   results: getResults(state, id, Context$1.minilist, 'js'),
-  searchTerm: getSearchTerm$1(state)
+  searchTerm: getSearchTerm$2(state)
 }));
 
 const useMinilist = ({
@@ -2628,6 +2736,7 @@ exports.schema = schema;
 exports.selectors = selectors;
 exports.setRouteFilters = setRouteFilters;
 exports.types = types;
+exports.useFacets = useFacets;
 exports.useListing = useListing;
 exports.useMinilist = useMinilist;
 exports.withListing = withListing;
