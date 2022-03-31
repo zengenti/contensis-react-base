@@ -2266,7 +2266,7 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-connect(mapStateToProps, mapDispatchToProps)(toJS(FormContainer));
+var Form = connect(mapStateToProps, mapDispatchToProps)(toJS(FormContainer));
 
-export { reducer, formV2Sagas as sagas };
+export { Form as default, reducer, formV2Sagas as sagas };
 //# sourceMappingURL=forms.js.map
