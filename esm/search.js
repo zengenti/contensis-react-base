@@ -229,6 +229,7 @@ const getFacetTitles$1 = state => Object.entries(getFacets(state, 'js')).map(([k
   var _facet$pagingInfo;
 
   return {
+    isSelected: getCurrentFacet(state) === key,
     key,
     title: facet.title,
     totalCount: (_facet$pagingInfo = facet.pagingInfo) === null || _facet$pagingInfo === void 0 ? void 0 : _facet$pagingInfo.totalCount
@@ -962,12 +963,15 @@ const equalToOrIn = (field, value, operator = 'equalTo') => {
 
   if (Array.isArray(value)) {
     if (operator === 'equalTo' || operator === 'in') return [Op.in(field, ...value)];
-    return [Op.or(...value.map(innerValue => {
+    const expressions = value.map(innerValue => {
+      var _between, _distanceWithin;
+
       switch (operator) {
         case 'between':
+          return (_between = between(field, innerValue)) === null || _between === void 0 ? void 0 : _between[0];
+
         case 'distanceWithin':
-          // Not implemented
-          return Op.equalTo(field, innerValue);
+          return (_distanceWithin = distanceWithin(field, innerValue)) === null || _distanceWithin === void 0 ? void 0 : _distanceWithin[0];
 
         case 'exists':
           return Op.exists(field, innerValue);
@@ -979,18 +983,20 @@ const equalToOrIn = (field, value, operator = 'equalTo') => {
         default:
           return Op[operator](field, innerValue);
       }
-    }))];
+    });
+    return (expressions === null || expressions === void 0 ? void 0 : expressions.length) > 1 ? [Op.or(...expressions)] : expressions || [];
   }
 
   switch (operator) {
     case 'between':
+      return between(field, value);
+
     case 'distanceWithin':
-      // Not implemented
-      return [Op.equalTo(field, value)];
+      return distanceWithin(field, value);
 
     case 'freeText':
       // TODO: Potentially needs further implementation of new options
-      return [Op[operator](field, value, false, undefined)];
+      return [Op.freeText(field, value, false, undefined)];
 
     default:
       return [Op[operator](field, value)];
@@ -1007,6 +1013,26 @@ const between = (field, value) => {
     } else {
       // eslint-disable-next-line no-console
       console.log(`[search] You have supplied only one value to a "between" operator which must have two values. Your supplied value "${valArr.length && valArr[0]}" has been discarded.`);
+      return false;
+    }
+  };
+
+  if (value.length === 0) return [];
+  if (Array.isArray(value)) return [Op.or(...value.map(handle).filter(bc => bc !== false))];
+  const op = handle(value);
+  return op ? [op] : [];
+};
+
+const distanceWithin = (field, value) => {
+  const handle = distanceValue => {
+    const valArr = distanceValue.split(' ');
+
+    if (valArr.length > 1) {
+      const [lat, lon] = valArr;
+      return Op.distanceWithin(field, Number(lat), Number(lon), (valArr === null || valArr === void 0 ? void 0 : valArr[2]) || '10mi');
+    } else {
+      // eslint-disable-next-line no-console
+      console.log(`[search] You have supplied only one value to a "distanceWithin" operator which must be made up of "lat,lon,distance". Your supplied value "${valArr.length && valArr[0]}" has been discarded.`);
       return false;
     }
   };
@@ -1056,9 +1082,7 @@ const customWhereExpressions = where => {
             const innerField = value.field; // Map the expression when we've looped and scoped to
             // the second property inside the clause
 
-            if (notIdx === 1) {
-              expression = innerOperator === 'between' ? Op.not(Op[innerOperator](innerField, innerValue[0], innerValue[1])) : Op.not(Op[innerOperator](innerField, innerValue));
-            }
+            if (notIdx === 1) expression = Op.not(makeJsExpression(innerOperator, innerField, innerValue));
           });
         }
       } // Map the expression when we've looped and scoped to
@@ -1067,17 +1091,17 @@ const customWhereExpressions = where => {
 
       operator = Object.keys(clause).find(clauseKey => !['field', 'weight'].includes(clauseKey));
 
-      if (idx === 1 && // operator !== 'and' &&
-      // operator !== 'or' &&
-      // operator !== 'between' &&
-      operator !== 'distanceWithin') {
-        expression = operator === 'freeText' || operator === 'contains' ? Op[operator](field, value) : operator === 'in' ? Op[operator](field, ...value) : operator === 'exists' ? Op[operator](field, value) : operator === 'between' ? Op[operator](field, value[0], value[1]) : Op[operator](field, value);
+      if (idx === 1) {
+        expression = makeJsExpression(operator, field, value);
         if (typeof weight === 'number') expression = expression.weight(weight);
       }
     });
     return expression;
   });
 };
+
+const makeJsExpression = (operator, field, value) => operator === 'freeText' || operator === 'contains' ? Op[operator](field, value) : operator === 'in' ? Op[operator](field, ...value) : operator === 'exists' ? Op[operator](field, value) : operator === 'between' ? Op[operator](field, value[0], value[1]) : operator === 'distanceWithin' ? Op[operator](field, value === null || value === void 0 ? void 0 : value.lat, value === null || value === void 0 ? void 0 : value.lon, value === null || value === void 0 ? void 0 : value.distance) : Op[operator](field, value);
+
 const termExpressions = (searchTerm, weightedSearchFields) => {
   if (searchTerm && weightedSearchFields && weightedSearchFields.length > 0) {
     // Extract any phrases in quotes to array
@@ -2020,9 +2044,9 @@ const makeSelectFacetsProps = () => createSelector(state => state, (_, mappers) 
   currentPageIndex: getPageIndex$1(state),
   currentTabIndex: getCurrentTab(state),
   facet: getFacet(state),
+  facetTitles: getFacetTitles(state),
   facets: getTabFacets(state),
   facetsTotalCount: getFacetsTotalCount(state),
-  facetTitles: getFacetTitles(state),
   featured: getFeaturedResults$1(state),
   filters: getRenderableFilters$1(state),
   isLoading: getIsLoading$1(state),
