@@ -13,6 +13,7 @@ export declare const getTabFacets: (state: AppState) => {
     [k: string]: Facet;
 };
 export declare const getFacetTitles: (state: AppState) => {
+    isSelected: boolean;
     key: string;
     title: string | undefined;
     totalCount: number;
@@ -46,7 +47,7 @@ export declare const getQueryParameter: <K extends keyof QueryParams, K2 extends
 export declare const getCustomApi: (state: AppState, current: string, context?: Context, returnType?: StateType | undefined) => CustomApi;
 export declare const getCustomEnv: (state: AppState, current: string, context?: Context) => any;
 export declare const getTabsAndFacets: (state: AppState, returnType?: StateType | undefined) => any;
-export declare const getSearchTotalCount: (state: AppState) => any;
+export declare const getSearchTotalCount: (state: AppState) => number;
 export declare const getFacetsTotalCount: (state: AppState) => number;
 export declare const selectFacets: {
     getCurrent: (state: AppState) => string;
@@ -55,6 +56,7 @@ export declare const selectFacets: {
     getCustomEnv: (state: AppState, current: string, context?: Context) => any;
     getFacet: (state: AppState, facetName?: string, context?: Context, returnType?: StateType | undefined) => Facet;
     getFacetTitles: (state: AppState) => {
+        isSelected: boolean;
         key: string;
         title: string | undefined;
         totalCount: number;
@@ -84,7 +86,7 @@ export declare const selectFacets: {
     getTotalCount: (state: AppState, current?: string, context?: Context) => number;
     getSearchTabs: (state: AppState, returnType?: StateType | undefined) => Tab[];
     getSearchTerm: (state: AppState) => string;
-    getSearchTotalCount: (state: AppState) => any;
+    getSearchTotalCount: (state: AppState) => number;
     getSelectedFilters: (state: AppState, facet?: string, context?: Context, returnType?: StateType | undefined) => SelectedFilters;
 };
 export declare const selectListing: {

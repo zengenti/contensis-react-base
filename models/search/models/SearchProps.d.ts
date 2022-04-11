@@ -1,7 +1,7 @@
 import { clearFilters, updateCurrentFacet, updateCurrentTab, updatePageIndex, updateSearchTerm, updateSelectedFilters, updateSortOrder } from '../redux/actions';
 import { SearchFacet, Mappers } from '../models/Search';
 import { DebugFlags } from '../models/SearchActions';
-import { Facet as StateFacet, Facets, Filters, Paging, SelectedFilters } from '../models/SearchState';
+import { Facet as StateFacet, Facets, Filters, Paging, SelectedFilters, TabAndFacets } from '../models/SearchState';
 export interface MinilistProps<SearchResults = any> {
     filters: Filters;
     isLoading: boolean;
@@ -43,23 +43,26 @@ export interface SearchProps<SearchResults = any> {
     currentPageIndex: number;
     currentTabIndex: number;
     facet: StateFacet;
-    facets: Facets;
     facetTitles: {
+        isSelected: boolean;
         key: string;
         title: string;
         totalCount: number;
     }[];
+    facets: Facets;
     featured: SearchResults[];
     filters: Filters;
     isLoading: boolean;
-    paging: Paging;
     pageIsLoading: boolean;
+    paging: Paging;
     results: SearchResults[];
     resultsInfo: any;
     searchTerm: string;
+    searchTotalCount: number;
     selectedFilters: SelectedFilters;
     sortOrder: string[];
-    tabsAndFacets: any;
+    tabsAndFacets: TabAndFacets;
+    totalCount: number;
     updateCurrentFacet: typeof updateCurrentFacet;
     updateCurrentTab: typeof updateCurrentTab;
     updatePageIndex: typeof updatePageIndex;
