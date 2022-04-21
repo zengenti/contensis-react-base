@@ -193,27 +193,11 @@ const mapStateToPropsMemoized = reselect.createSelector(selectors.selectRouteEnt
   statusCode,
   statusText,
   userGroups
-})); // const mapStateToProps = state => {
-//   return {
-//     contentTypeId: selectRouteEntryContentTypeId(state),
-//     entry: selectRouteEntry(state),
-//     isError: selectRouteIsError(state),
-//     isNotFound: selectIsNotFound(state),
-//     isLoading: selectRouteLoading(state),
-//     isLoggedIn: selectUserIsAuthenticated(state),
-//     mappedEntry: selectMappedEntry(state),
-//     projectId: selectCurrentProject(state),
-//     statePath: selectCurrentPath(state),
-//     statusCode: selectRouteStatusCode(state),
-//     statusText: selectRouteErrorMessage(state),
-//     userGroups: selectUserGroups(state),
-//   };
-// };
-
+}));
 const mapDispatchToProps = {
   setNavigationPath: actions.setNavigationPath
 };
 var RouteLoader$1 = reactHotLoader.hot(module)(reactRedux.connect(mapStateToPropsMemoized, mapDispatchToProps)(ToJs.toJS(RouteLoader)));
 
 exports.RouteLoader = RouteLoader$1;
-//# sourceMappingURL=RouteLoader-8df335cf.js.map
+//# sourceMappingURL=RouteLoader-ece762dc.js.map

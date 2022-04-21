@@ -187,27 +187,11 @@ const mapStateToPropsMemoized = createSelector(selectRouteEntryContentTypeId, se
   statusCode,
   statusText,
   userGroups
-})); // const mapStateToProps = state => {
-//   return {
-//     contentTypeId: selectRouteEntryContentTypeId(state),
-//     entry: selectRouteEntry(state),
-//     isError: selectRouteIsError(state),
-//     isNotFound: selectIsNotFound(state),
-//     isLoading: selectRouteLoading(state),
-//     isLoggedIn: selectUserIsAuthenticated(state),
-//     mappedEntry: selectMappedEntry(state),
-//     projectId: selectCurrentProject(state),
-//     statePath: selectCurrentPath(state),
-//     statusCode: selectRouteStatusCode(state),
-//     statusText: selectRouteErrorMessage(state),
-//     userGroups: selectUserGroups(state),
-//   };
-// };
-
+}));
 const mapDispatchToProps = {
   setNavigationPath
 };
 var RouteLoader$1 = hot(module)(connect(mapStateToPropsMemoized, mapDispatchToProps)(toJS(RouteLoader)));
 
 export { RouteLoader$1 as R };
-//# sourceMappingURL=RouteLoader-93c0d740.js.map
+//# sourceMappingURL=RouteLoader-7749ad3f.js.map
