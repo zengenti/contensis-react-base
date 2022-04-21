@@ -249,27 +249,10 @@ const mapStateToPropsMemoized = createSelector(
   })
 );
 
-// const mapStateToProps = state => {
-//   return {
-//     contentTypeId: selectRouteEntryContentTypeId(state),
-//     entry: selectRouteEntry(state),
-//     isError: selectRouteIsError(state),
-//     isNotFound: selectIsNotFound(state),
-//     isLoading: selectRouteLoading(state),
-//     isLoggedIn: selectUserIsAuthenticated(state),
-//     mappedEntry: selectMappedEntry(state),
-//     projectId: selectCurrentProject(state),
-//     statePath: selectCurrentPath(state),
-//     statusCode: selectRouteStatusCode(state),
-//     statusText: selectRouteErrorMessage(state),
-//     userGroups: selectUserGroups(state),
-//   };
-// };
-
 const mapDispatchToProps = {
   setNavigationPath,
 };
 
 export default hot(module)(
   connect(mapStateToPropsMemoized, mapDispatchToProps)(toJS(RouteLoader))
-);
+) as unknown as (props: AppRootProps & RouteLoaderProps) => JSX.Element;
