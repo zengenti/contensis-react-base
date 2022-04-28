@@ -15,6 +15,8 @@ import { ChunkExtractorManager } from '@loadable/server';
 import { identity, noop } from 'lodash';
 import cloneDeep from 'lodash/cloneDeep';
 import { buildCleaner } from 'lodash-clean';
+import { CookiesProvider } from 'react-cookie';
+import Cookies from 'universal-cookie';
 
 import createStore from '~/redux/store/store';
 import { history } from '~/redux/store/history';
@@ -80,6 +82,7 @@ const webApp = (
 
   app.get('/*', async (request, response) => {
     const { url } = request;
+    const cookies = new Cookies(request.headers.cookie);
 
     const matchedStaticRoute = () =>
       matchRoutes(routes.StaticRoutes, request.path);
@@ -142,11 +145,13 @@ const webApp = (
       <ChunkExtractorManager
         extractor={loadableExtractor?.commonLoadableExtractor}
       >
-        <ReduxProvider store={store}>
-          <StaticRouter context={context} location={url}>
-            <ReactApp routes={routes} withEvents={withEvents} />
-          </StaticRouter>
-        </ReduxProvider>
+        <CookiesProvider cookies={cookies}>
+          <ReduxProvider store={store}>
+            <StaticRouter context={context} location={url}>
+              <ReactApp routes={routes} withEvents={withEvents} />
+            </StaticRouter>
+          </ReduxProvider>
+        </CookiesProvider>
       </ChunkExtractorManager>
     );
 
