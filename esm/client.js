@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import { Router } from 'react-router-dom';
 import { loadableReady } from '@loadable/component';
 import * as queryString from 'query-string';
+import { CookiesProvider } from 'react-cookie';
 import { c as createStore, s as setVersionStatus } from './version-1d46bde8.js';
 import { d as deliveryApi, b as browserHistory, r as rootSaga, p as pickProject } from './App-509c41f4.js';
 export { A as ReactApp } from './App-509c41f4.js';
@@ -44,14 +45,14 @@ class ClientApp {
     } = config;
 
     const GetClientJSX = store => {
-      const ClientJsx = /*#__PURE__*/React.createElement(AppContainer, null, /*#__PURE__*/React.createElement(Provider, {
+      const ClientJsx = /*#__PURE__*/React.createElement(AppContainer, null, /*#__PURE__*/React.createElement(CookiesProvider, null, /*#__PURE__*/React.createElement(Provider, {
         store: store
       }, /*#__PURE__*/React.createElement(Router, {
         history: browserHistory
       }, /*#__PURE__*/React.createElement(ReactApp, {
         routes: routes,
         withEvents: withEvents
-      }))));
+      })))));
       return ClientJsx;
     };
 
@@ -97,19 +98,11 @@ class ClientApp {
       });
     } else {
       fetch(`${window.location.pathname}?redux=true`).then(response => response.json()).then(data => {
-        /* eslint-disable no-console */
-        // console.log('Got Data Back');
-        // console.log(data);
-
-        /* eslint-enable no-console */
         const ssRedux = JSON.parse(data);
         createStore(withReducers, ssRedux, browserHistory, stateType).then(store => {
-          // store.dispatch(setVersionStatus(versionStatusFromHostname));
+          store.dispatch(setVersionStatus(qs.versionStatus || versionStatusFromHostname));
           store.runSaga(rootSaga(withSagas));
-          store.dispatch(setCurrentProject(pickProject(window.location.hostname, queryString.parse(window.location.search)), [], window.location.hostname)); // if (typeof window != 'undefined') {
-          //   store.dispatch(checkUserLoggedIn());
-          // }
-
+          store.dispatch(setCurrentProject(pickProject(window.location.hostname, queryString.parse(window.location.search)), [], window.location.hostname));
           HMRRenderer(GetClientJSX(store));
           hmr(store);
         });
