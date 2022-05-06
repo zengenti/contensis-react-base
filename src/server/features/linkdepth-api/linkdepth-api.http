@@ -1,0 +1,7 @@
+@host=http://localhost:3001
+###
+GET /events-api?studentTag=700a2849-a147-5447-830b-2b4449a5c939&selectedDate=2022-05-05T00:00:00--2022-05-05T23:59:59
+GET /events-api?studentTag=700a2849-a147-5447-830b-2b4449a5c939&futureEventDates=2022-05-05T00:00:00
+GET /events-api?futureEventDates=2022-05-05T00:00:00
+GET /events-api?studentTag=700a2849-a147-5447-830b-2b4449a5c939
+GET /events-api?

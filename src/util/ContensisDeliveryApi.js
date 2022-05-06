@@ -6,7 +6,7 @@ const storeSurrogateKeys = response => {
   const keys = response.headers.get
     ? response.headers.get('surrogate-key')
     : response.headers.map['surrogate-key'];
-  if (keys) reduxStore.dispatch(setSurrogateKeys(keys, response.url));
+  if (keys) reduxStore?.dispatch(setSurrogateKeys(keys, response.url));
 };
 
 const getClientConfig = project => {
@@ -182,6 +182,14 @@ class CachedSearch {
     );
   }
 
+  searchUsingPost(query, linkDepth = 0, project = '', env) {
+    const client = Client.create(getClientConfig(project, env));
+    return this.request(
+      project + JSON.stringify(query) + linkDepth.toString(),
+      () => client.entries.searchUsingPost(query, linkDepth)
+    );
+  }
+
   get(id, linkDepth, versionStatus, project, env) {
     const client = Client.create(getClientConfig(project, env));
     client.clientConfig.versionStatus = versionStatus;
@@ -260,30 +268,6 @@ class CachedSearch {
       });
     }
     return this.cache.get(key);
-  }
-
-  extendTaxonomyNode(node) {
-    let id = this.getTaxonomyId(node);
-    this.taxonomyLookup[id] = node.key;
-    return {
-      ...node,
-      id,
-      children: node.children
-        ? node.children.map(n => this.extendTaxonomyNode(n))
-        : null,
-    };
-  }
-
-  getTaxonomyId(node) {
-    if (node.key) {
-      let parts = node.key.split('/');
-      return parts[parts.length - 1];
-    }
-    return '';
-  }
-
-  getTaxonomyKey(id) {
-    return this.taxonomyLookup[id];
   }
 }
 
