@@ -2,61 +2,469 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
+var contensisCoreApi = require('contensis-core-api');
+var React = require('react');
+var reactRedux = require('react-redux');
+var sagas = require('./sagas-8cf21563.js');
+var mapJson = require('jsonpath-mapper');
+require('reselect');
+require('deepmerge');
+require('query-string');
+require('immer');
+require('deep-equal');
+var VersionInfo = require('./VersionInfo-df35c917.js');
+var App = require('./App-36c7bf3a.js');
 require('isomorphic-fetch');
 var express = require('express');
 var httpProxy = require('http-proxy');
 var fs = require('fs');
 var path = require('path');
 var appRootPath = require('app-root-path');
-var React = require('react');
 var server$1 = require('react-dom/server');
 var reactRouterDom = require('react-router-dom');
-var reactRedux = require('react-redux');
 var reactRouterConfig = require('react-router-config');
 var reactHelmet = require('react-helmet');
 var styled = require('styled-components');
 var serialize$1 = require('serialize-javascript');
 var minifyCssString = require('minify-css-string');
-var mapJson = require('jsonpath-mapper');
 var server = require('@loadable/server');
 var lodash = require('lodash');
 var lodashClean = require('lodash-clean');
 var reactCookie = require('react-cookie');
 var version = require('./version-ca4173a8.js');
-var App = require('./App-7c7f3ed6.js');
 var actions = require('./actions-6b9ef168.js');
 var selectors = require('./selectors-2c1b1183.js');
+require('loglevel');
 require('@redux-saga/core/effects');
-require('redux');
-require('redux-thunk');
-require('redux-saga');
-require('redux-injectors');
-require('immer');
-require('deepmerge');
-require('./reducers-3a4f8971.js');
-require('history');
 require('contensis-delivery-api');
 require('./version-dcfdafd9.js');
-require('loglevel');
+require('history');
 require('./login-d67b82aa.js');
+require('./reducers-3a4f8971.js');
 require('./ToJs-09204afd.js');
 require('await-to-js');
 require('js-cookie');
 require('react-hot-loader');
-require('query-string');
 require('./RouteLoader-ece762dc.js');
-require('reselect');
+require('redux');
+require('redux-thunk');
+require('redux-saga');
+require('redux-injectors');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
+var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
+var mapJson__default = /*#__PURE__*/_interopDefaultLegacy(mapJson);
 var express__default = /*#__PURE__*/_interopDefaultLegacy(express);
 var httpProxy__default = /*#__PURE__*/_interopDefaultLegacy(httpProxy);
 var fs__default = /*#__PURE__*/_interopDefaultLegacy(fs);
 var path__default = /*#__PURE__*/_interopDefaultLegacy(path);
-var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
 var serialize__default = /*#__PURE__*/_interopDefaultLegacy(serialize$1);
 var minifyCssString__default = /*#__PURE__*/_interopDefaultLegacy(minifyCssString);
-var mapJson__default = /*#__PURE__*/_interopDefaultLegacy(mapJson);
+
+var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
+
+/**
+ * Make a LinkDepth api at the uri specified in middlewareConfig.
+ * The api supports a GET request and specified filters are supplied as query-string parameters.
+ * The response should be a normal Delivery API response.
+ * @param app Express app instance
+ * @param middlewareConfig Middleware configuration that represents the content types we want to search within, any filters that are required and any linkFields we wish to search within to derive a set of search results from the entries that contain the linkFields. Each key inside of linkFields represents another "linkDepth" of entries and we can specify all the same contentTypeId, filters, and linkFields of their own. There is no currently no limit on how deep these linkFields can go
+ * @returns Returns nothing if uri, contentTypeId or linkFields is not set in middlewareConfig
+ */
+const makeLinkDepthApi = (app, middlewareConfig) => {
+  const {
+    uri,
+    contentTypeId,
+    linkFields
+  } = middlewareConfig;
+  if (!contentTypeId || !linkFields || !uri) return;
+  app.get(uri, makeLinkDepthMiddleware(middlewareConfig));
+};
+/** Create a content type hierarchy from supplied config and produces
+ * a RequestHandler function to serve our Express middleware */
+
+
+const makeLinkDepthMiddleware = ({
+  contentTypeId,
+  filters,
+  sharedFilters,
+  linkFields
+}) => {
+  try {
+    // Recursive function to flatten and index a provided nested config
+    const returnFieldIdKeys = (obj, level = 1) => {
+      var _Object$entries$map;
+
+      if (!obj) return {};
+      const mappedConfig = Object.entries(obj).map(([k, v]) => ({
+        contentTypeIds: Array.isArray(v.contentTypeId) ? v.contentTypeId : [v.contentTypeId || k],
+        fieldId: k,
+        filters: v.filters,
+        sharedFilters: v.sharedFilters
+      }));
+      const inner = (_Object$entries$map = Object.entries(obj).map(([k, v]) => returnFieldIdKeys(v.linkFields, level + 1))) === null || _Object$entries$map === void 0 ? void 0 : _Object$entries$map[0];
+      return {
+        [level]: mappedConfig,
+        ...inner
+      };
+    };
+
+    const others = returnFieldIdKeys(linkFields); // Level 0 is read from the top-level of config
+
+    const contentTypeHierarchy = {
+      0: [{
+        contentTypeIds: Array.isArray(contentTypeId) ? contentTypeId : [contentTypeId],
+        filters,
+        sharedFilters
+      }],
+      ...others
+    }; // The runtime express request handler
+
+    const linkDepthMiddleware = async (req, res) => {
+      try {
+        // Short cache duration copied from canterbury project
+        VersionInfo.setCachingHeaders(res, {
+          cacheControl: 'private',
+          surrogateControl: '10'
+        }); // Run our queries and provide a final result
+        // our params are sourced from the query-string
+
+        const result = await searchEventsTopDown(contentTypeHierarchy, req.query); // const result = await searchLinkDepthEntries(
+        //   contentTypeHierarchy,
+        //   req.query
+        // );
+
+        res.json(result);
+      } catch (error) {
+        // This is a runtime error encountered when processing a given request
+        console.error(error);
+        res.statusCode = 500;
+        res.json(error);
+      }
+    };
+
+    return linkDepthMiddleware;
+  } catch (error) {
+    // This will be an error building the middleware
+    // we can only serve what the error was as the request handler instead
+    console.error(error);
+
+    const errorMiddleware = async (req, res) => {
+      res.statusCode = 500;
+      res.json(JSON.stringify(error));
+    };
+
+    return errorMiddleware;
+  }
+};
+
+const getVarsFromConfig = (config, params) => {
+  // Build variables from query config to use in our Delivery API Query
+  const contentTypeIds = config.map(c => c.contentTypeIds).flat(); // Filters are the filters we are looking to include with the Query at this level
+
+  let filters = {}; // Shared filters are filters that share the same querystring key and are valid in multiple levels
+
+  let sharedFilters = {};
+  config.forEach(c => {
+    filters = { ...filters,
+      ...c.filters
+    };
+    sharedFilters = { ...sharedFilters,
+      ...c.sharedFilters
+    };
+  }); // FieldIds are the field name(s) in the parent/current entry that the
+  // entries are linked to, used to surface the next level based on id
+  // retrieved at the previous level
+
+  const fieldIds = config.map(c => c.fieldId).flat();
+  const queryFilters = makeFilterExpressions(filters, params);
+  const sharedQueryFilters = makeFilterExpressions(sharedFilters, params);
+  return {
+    contentTypeIds,
+    fieldIds,
+    filters,
+    queryFilters,
+    sharedFilters,
+    sharedQueryFilters
+  };
+};
+
+const makeDerivedIdsFilterExpression = (level, resultsAtLevel, ownIds = false, useFieldIds = false) => {
+  const previouslyDerivedIdsFilter = [];
+  const [prevFieldId, entries] = resultsAtLevel[level];
+  const prevKey = prevFieldId;
+  const prevResultIds = Util.GetIds(entries, useFieldIds ? prevFieldId : undefined);
+  if (prevKey && (prevResultIds === null || prevResultIds === void 0 ? void 0 : prevResultIds.length) > 0) previouslyDerivedIdsFilter.push({
+    key: ownIds ? 'sys.id' : `${prevFieldId}.sys.id`,
+    values: prevResultIds,
+    fieldOperator: 'in'
+  });else previouslyDerivedIdsFilter.push({
+    key: 'dud',
+    values: ['1'],
+    fieldOperator: 'in'
+  });
+  return previouslyDerivedIdsFilter;
+};
+
+const searchEventsTopDown = async (contentTypeHierarchy, params) => {
+  // Determine linkDepth for the final query by how many levels are in
+  // the contentTypeHierarchy object
+  const linkDepth = Object.keys(contentTypeHierarchy).length - 1 || 0; // Pre-size our results array to the size of our hierarchy
+
+  const resultsAtLevel = Object.values(contentTypeHierarchy).map((v, i, a) => {
+    const fieldId = i === 0 ? a[i + 1][0] : v[0];
+    return [fieldId.fieldId, []];
+  }); // [fieldId, results][]
+
+  for (const [level, levelConfig] of Object.entries(contentTypeHierarchy)) {
+    // LinkDepth level / current index
+    const currentLevel = Number(level); // Build variables from query config to use in our Delivery API Query
+
+    const {
+      contentTypeIds,
+      fieldIds,
+      queryFilters,
+      sharedQueryFilters
+    } = getVarsFromConfig(levelConfig, params); // We won't have fetched any derived results to
+    // include as a field filter with the very first query
+
+    let previouslyDerivedIdsFilter = [];
+
+    if (currentLevel !== 0) {
+      previouslyDerivedIdsFilter = makeDerivedIdsFilterExpression(currentLevel - 1, resultsAtLevel, true, true);
+    }
+
+    const query = searchQuery({
+      contentTypeIds,
+      filters: queryFilters,
+      idFilters: previouslyDerivedIdsFilter,
+      sharedFilters: sharedQueryFilters,
+      versionStatus: params.versionStatus || 'published'
+    }); // These are all sub-queries, we only want ids returned in these to include
+    // them to filter by in our next level(s) queries, along with any other filters
+    // configured and found at this level
+
+    query.fields = currentLevel === 0 ? [] : ['sys.id']; // Scalability limitation for today
+
+    query.pageSize = 2000;
+    const levelQueryResult = await App.cachedSearch.searchUsingPost(query, 0);
+    resultsAtLevel[currentLevel][1] = Util.GetItems(levelQueryResult);
+  } // Build and run our final query containing all results
+
+
+  const {
+    contentTypeIds,
+    queryFilters,
+    sharedQueryFilters
+  } = getVarsFromConfig(Object.values(contentTypeHierarchy)[0], params);
+  const previouslyDerivedIdsFilter = makeDerivedIdsFilterExpression(1, resultsAtLevel);
+  const query = finalQuery({
+    contentTypeIds,
+    filters: queryFilters,
+    idFilters: previouslyDerivedIdsFilter,
+    sharedFilters: sharedQueryFilters,
+    versionStatus: params.versionStatus || 'published'
+  }, Object.entries(contentTypeHierarchy).filter(([k]) => k !== '0').map(([level, levelConfig]) => {
+    // LinkDepth level / current index
+    const currentLevel = Number(level); // Build variables from query config to use in our Delivery API Query
+
+    const {
+      contentTypeIds,
+      queryFilters,
+      sharedQueryFilters
+    } = getVarsFromConfig(levelConfig, params);
+    const previousIdsFilter = makeDerivedIdsFilterExpression(currentLevel, resultsAtLevel, true);
+    return {
+      contentTypeIds,
+      filters: queryFilters,
+      idFilters: previousIdsFilter,
+      sharedFilters: sharedQueryFilters,
+      versionStatus: params.versionStatus || 'published'
+    };
+  })); // This is the final query to be run and response returned to the caller
+  // Only this bit cares about linkDepth, fields and pagination parameters
+
+  query.fields = JSON.parse(params.fields || '[]');
+  query.pageSize = params.pageSize;
+  query.pageIndex = params.pageIndex;
+  query.orderBy = params.orderBy; // console.log(JSON.stringify(query.toJSON()));
+
+  const finalQueryResult = await App.cachedSearch.searchUsingPost(query, linkDepth);
+  const entriesWithResolvedParents = await resolveParentEntries(contentTypeIds, Array.from(new Set(resultsAtLevel[1][1].map(e => e.sys.contentTypeId || ''))), resultsAtLevel[0][0], Util.GetItems(finalQueryResult), params);
+  return { ...finalQueryResult,
+    items: entriesWithResolvedParents
+  };
+};
+
+const resolveParentEntries = async (parentContentTypeIds, replaceContentTypeIds, parentFieldId, results, params) => {
+  // Build variables from query config to use in our Delivery API Query
+  const previousIdsFilter = makeDerivedIdsFilterExpression(0, [[parentFieldId, results]]);
+  const query = searchQuery({
+    contentTypeIds: parentContentTypeIds,
+    idFilters: previousIdsFilter
+  });
+  query.fields = JSON.parse(params.fields || '[]');
+  console.log(JSON.stringify(query.toJSON()));
+  const parentResults = await App.cachedSearch.search(query, 0);
+  return mergeResults(results, Util.GetItems(parentResults), replaceContentTypeIds, parentFieldId);
+};
+
+const mergeResults = (results, parentResults, replaceContentTypeIds, linkFieldId) => results.map(r => {
+  if (replaceContentTypeIds.some(c => c === r.sys.contentTypeId)) {
+    const resolvedParent = parentResults === null || parentResults === void 0 ? void 0 : parentResults.find(e => {
+      var _e$linkFieldId;
+
+      return (_e$linkFieldId = e[linkFieldId]) === null || _e$linkFieldId === void 0 ? void 0 : _e$linkFieldId.some(l => {
+        var _l$sys;
+
+        return ((_l$sys = l.sys) === null || _l$sys === void 0 ? void 0 : _l$sys.id) === r.sys.id;
+      });
+    });
+    if (resolvedParent) return { ...resolvedParent,
+      ...r,
+      entryTitle: resolvedParent.entryTitle,
+      entryDescription: resolvedParent.entryDescription,
+      sys: resolvedParent.sys,
+      originalSys: r.sys
+    };else return r;
+  }
+
+  return r;
+}).filter(r => r);
+
+const finalQuery = ({
+  assetTypes,
+  contentTypeIds,
+  fields,
+  filters,
+  idFilters,
+  sharedFilters,
+  pageSize,
+  pageIndex,
+  orderBy,
+  searchTerm,
+  versionStatus = 'published',
+  webpageTemplates,
+  weightedSearchFields
+}, children) => {
+  const expressions$1 = [...sagas.defaultExpressions(versionStatus), contensisCoreApi.Op.or(contensisCoreApi.Op.and(...sagas.contentTypeIdExpression(contentTypeIds, webpageTemplates, assetTypes), ...sagas.filterExpressions(filters), contensisCoreApi.Op.or(...sagas.filterExpressions(sharedFilters) // Op.and(
+  //   ...sharedFilters.map(sf =>
+  //     Op.not(exp.fieldExpression(sf.key, true, 'exists')[0])
+  //   ),
+  //   ...exp.filterExpressions(idFilters)
+  // )
+  )), ...children.map(child => contensisCoreApi.Op.and(...sagas.contentTypeIdExpression(child.contentTypeIds, child.webpageTemplates, child.assetTypes), ...sagas.filterExpressions(child.sharedFilters), ...sagas.filterExpressions(child.idFilters)))), ...sagas.termExpressions(searchTerm, weightedSearchFields)];
+  const query = new contensisCoreApi.Query(...expressions$1);
+  query.orderBy = sagas.orderByExpression(orderBy);
+
+  if (fields && fields.length > 0) {
+    query.fields = fields;
+  } // (query as any).includeArchived = true;
+  // (query as any).includeDeleted = true;
+
+
+  query.pageIndex = pageIndex;
+  query.pageSize = pageSize;
+  return query;
+};
+/**
+ * Create a filter expression from a provided filters configuration object
+ * and populate them based on the presence of that key in params, filter
+ * out any filter keys that do not have a value set in params
+ * @param f filters configuration from any level
+ * @param params request.query object from Express middleware
+ * @returns FilterExpression[] we can use to use with searchQuery function
+ */
+
+
+const makeFilterExpressions = (f, params) => Object.entries(f).map(([paramKey, filterConfig]) => {
+  var _params$paramKey;
+
+  const filterValues = (_params$paramKey = params[paramKey]) === null || _params$paramKey === void 0 ? void 0 : _params$paramKey.split(',');
+  return typeof filterValues !== 'undefined' ? {
+    key: typeof filterConfig === 'object' ? filterConfig.fieldId : filterConfig,
+    values: filterValues,
+    fieldOperator: typeof filterConfig === 'object' ? filterConfig.fieldOperator : 'equalTo',
+    logicOperator: typeof filterConfig === 'object' ? filterConfig.logicOperator : 'or'
+  } : null;
+}).filter(o => o);
+/**
+ * Builds our complete Delivery API Query object from a set of provided arguments
+ * @param queryParams
+ * @returns Delivery API Query
+ */
+
+
+const searchQuery = ({
+  assetTypes,
+  contentTypeIds,
+  customWhere,
+  fields,
+  filters,
+  idFilters,
+  sharedFilters,
+  pageSize,
+  pageIndex,
+  orderBy,
+  searchTerm,
+  versionStatus = 'published',
+  webpageTemplates,
+  weightedSearchFields
+}) => {
+  const expressions$1 = [...sagas.defaultExpressions(versionStatus), ...sagas.contentTypeIdExpression(contentTypeIds, webpageTemplates, assetTypes), ...sagas.customWhereExpressions(customWhere), ...sagas.filterExpressions(filters), ...sagas.filterExpressions(idFilters), ...((sharedFilters === null || sharedFilters === void 0 ? void 0 : sharedFilters.length) > 0 ? [contensisCoreApi.Op.or(...sagas.filterExpressions(sharedFilters, true))] : []), ...sagas.termExpressions(searchTerm, weightedSearchFields)];
+  const query = new contensisCoreApi.Query(...expressions$1);
+  query.orderBy = sagas.orderByExpression(orderBy);
+
+  if (fields && fields.length > 0) {
+    query.fields = fields;
+  } // (query as any).includeArchived = true;
+  // (query as any).includeDeleted = true;
+
+
+  query.pageIndex = pageIndex;
+  query.pageSize = pageSize;
+  return query;
+};
+/**
+ * Util class holds our search results helper boilerplate methods
+ */
+
+
+class Util {
+  static GetIds(entries, fieldId) {
+    if (fieldId) {
+      return entries.map(e => {
+        var _e$fieldId, _e$fieldId2, _e$fieldId2$sys;
+
+        return Array.isArray(e === null || e === void 0 ? void 0 : e[fieldId]) ? e === null || e === void 0 ? void 0 : (_e$fieldId = e[fieldId]) === null || _e$fieldId === void 0 ? void 0 : _e$fieldId.map(f => {
+          var _f$sys;
+
+          return f === null || f === void 0 ? void 0 : (_f$sys = f.sys) === null || _f$sys === void 0 ? void 0 : _f$sys.id;
+        }) : (e === null || e === void 0 ? void 0 : (_e$fieldId2 = e[fieldId]) === null || _e$fieldId2 === void 0 ? void 0 : (_e$fieldId2$sys = _e$fieldId2.sys) === null || _e$fieldId2$sys === void 0 ? void 0 : _e$fieldId2$sys.id) || '';
+      }).flat();
+    }
+
+    return entries.map(e => {
+      var _e$sys;
+
+      return (e === null || e === void 0 ? void 0 : (_e$sys = e.sys) === null || _e$sys === void 0 ? void 0 : _e$sys.id) || '';
+    });
+  }
+
+  static GetItems(result) {
+    return this.GetResults(result) ? result.items : [];
+  }
+
+  static GetResults(result) {
+    if (result !== null && result !== void 0 && result.items) {
+      return result;
+    } else {
+      return null;
+    }
+  }
+
+}
 
 const servers$1 = SERVERS;
 /* global SERVERS */
@@ -229,8 +637,6 @@ const staticAssets = (app, {
     maxAge: CacheDuration.expressStatic
   }));
 };
-
-var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
 /**
  * Removes all key-value entries from the list cache.
@@ -2400,9 +2806,9 @@ var getNative$1 = _getNative,
     root$2 = _root;
 
 /* Built-in method references that are verified to be native. */
-var Set$1 = getNative$1(root$2, 'Set');
+var Set$2 = getNative$1(root$2, 'Set');
 
-var _Set = Set$1;
+var _Set = Set$2;
 
 var getNative = _getNative,
     root$1 = _root;
@@ -2415,7 +2821,7 @@ var _WeakMap = WeakMap$1;
 var DataView = _DataView,
     Map = _Map,
     Promise$1 = _Promise,
-    Set = _Set,
+    Set$1 = _Set,
     WeakMap = _WeakMap,
     baseGetTag = _baseGetTag,
     toSource = _toSource;
@@ -2433,7 +2839,7 @@ var dataViewTag$2 = '[object DataView]';
 var dataViewCtorString = toSource(DataView),
     mapCtorString = toSource(Map),
     promiseCtorString = toSource(Promise$1),
-    setCtorString = toSource(Set),
+    setCtorString = toSource(Set$1),
     weakMapCtorString = toSource(WeakMap);
 
 /**
@@ -2449,7 +2855,7 @@ var getTag$3 = baseGetTag;
 if ((DataView && getTag$3(new DataView(new ArrayBuffer(1))) != dataViewTag$2) ||
     (Map && getTag$3(new Map) != mapTag$3) ||
     (Promise$1 && getTag$3(Promise$1.resolve()) != promiseTag) ||
-    (Set && getTag$3(new Set) != setTag$3) ||
+    (Set$1 && getTag$3(new Set$1) != setTag$3) ||
     (WeakMap && getTag$3(new WeakMap) != weakMapTag$1)) {
   getTag$3 = function(value) {
     var result = baseGetTag(value),
@@ -3726,4 +4132,5 @@ var internalServer = {
 
 exports.ReactApp = App.AppRoot;
 exports["default"] = internalServer;
+exports.linkDepthApi = makeLinkDepthApi;
 //# sourceMappingURL=contensis-react-base.js.map

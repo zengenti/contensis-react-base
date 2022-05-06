@@ -1,6 +1,6 @@
 import { Context } from '../models/Enums';
 import { QueryParams as QueryParams2 } from '../models/Queries';
-import { CustomApi, QueryParams } from '../models/Search';
+import { CustomApi, SearchQueryParams } from '../models/Search';
 import { AppState, Facet, Facets, Filters, Paging, SelectedFilters, Tab } from '../models/SearchState';
 declare type StateType = 'immutable' | 'js';
 export declare const getSearchContext: (state: AppState) => Context;
@@ -39,11 +39,11 @@ export declare const getTotalCount: (state: AppState, current?: string, context?
 export declare const getSearchTerm: (state: AppState) => string;
 export declare const getSearchTabs: (state: AppState, returnType?: StateType | undefined) => Tab[];
 export declare const getQueryParams: (state: AppState, current?: string, context?: Context) => Record<string, any>;
-export declare const getQueryParameter: <K extends keyof QueryParams, K2 extends "internalPaging" | "linkDepth" | "loadMorePaging" | keyof import("../models/Queries").SearchQueryOptions | "env" | "internalPageIndex" | "pagesLoaded" | "prevPageIndex" | "projectId" | "selectedFilters">({ state, facet, context, }: {
+export declare const getQueryParameter: <K extends keyof SearchQueryParams, K2 extends "internalPaging" | "linkDepth" | "loadMorePaging" | keyof import("../models/Queries").SearchQueryOptions | "env" | "internalPageIndex" | "pagesLoaded" | "prevPageIndex" | "projectId" | "selectedFilters">({ state, facet, context, }: {
     state: AppState;
     facet?: string | undefined;
     context?: Context | undefined;
-}, key: K | K2, ifnull?: any) => QueryParams[K] | QueryParams2[K2];
+}, key: K | K2, ifnull?: any) => SearchQueryParams[K] | QueryParams2[K2];
 export declare const getCustomApi: (state: AppState, current: string, context?: Context, returnType?: StateType | undefined) => CustomApi;
 export declare const getCustomEnv: (state: AppState, current: string, context?: Context) => any;
 export declare const getTabsAndFacets: (state: AppState, returnType?: StateType | undefined) => any;
@@ -76,7 +76,7 @@ export declare const selectFacets: {
     getQueryParameter: ({ state, facet }: {
         state: AppState;
         facet?: string | undefined;
-    }, key: keyof QueryParams | keyof QueryParams2, ifnull: any) => any;
+    }, key: keyof SearchQueryParams | keyof QueryParams2, ifnull: any) => any;
     getRenderableFilters: (state: AppState, facet?: string, context?: Context) => Filters;
     getResults: (state: AppState, current?: string, context?: Context, returnType?: StateType | undefined) => any[];
     getTabFacets: (state: AppState) => {
@@ -105,7 +105,7 @@ export declare const selectListing: {
     getQueryParameter: ({ state, facet }: {
         state: AppState;
         facet?: string | undefined;
-    }, key: keyof QueryParams | keyof QueryParams2, ifnull: any) => any;
+    }, key: keyof SearchQueryParams | keyof QueryParams2, ifnull: any) => any;
     getRenderableFilters: (state: AppState, listing?: string) => Filters;
     getResults: (state: AppState, listing?: string) => any[];
     getSearchTerm: (state: AppState) => string;

@@ -1,3 +1,4 @@
+export * from './Queries';
 export * from './Search';
 export type { SetRouteFiltersOptions } from './SearchActions';
 export * from './SearchProps';

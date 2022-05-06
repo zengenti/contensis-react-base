@@ -30,7 +30,7 @@ export declare type Listing = {
     /** Use this to target the search to a project other than the default configured */
     projectId?: string;
     /** Query params object to drive the search for this facet */
-    queryParams: QueryParams;
+    queryParams: SearchQueryParams;
     /** Display title */
     title?: string;
 };
@@ -91,7 +91,7 @@ export declare type FeaturedResults = {
     /** The number of featured results to retrieve */
     count?: number;
 };
-export declare type QueryParams = {
+export declare type SearchQueryParams = {
     /** An array of assetTypes to search over (sys.dataFormat == 'asset'); Prefix an entry with a "!" to exclude that asset type from the search */
     assetTypes?: string[];
     /** An array of contentTypeIds to search over (sys.dataFormat == 'entry'); Prefix an entry with a "!" to exclude that content type from the search */
@@ -204,7 +204,7 @@ export declare type NavigateMapper = ({ state, facet, orderBy, pageIndex, term, 
 /** Type your Results Info mapper with this, remember "resultsInfo" prop is a custom object you define yourself - you can provide any keys you wish, conveying detailed messaging or UX tweaks to cover all kinds of scenarios based on data in the search state at that time */
 export declare type ResultsInfoMapper<T = any> = (state: AppState) => T;
 /** Experimental**: If you are trying to use the custom API feature you can add specific keys to the resultant querystring that for the custom API GET request */
-export declare type CustomApiParamsMapper = (queryParams: QueryParams) => {
+export declare type CustomApiParamsMapper = (queryParams: SearchQueryParams) => {
     [key: string]: string;
 };
 /** Type your Mappers object with this type to provide a accurate, type-safe "mapper" argument to your search implementation */

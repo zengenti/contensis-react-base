@@ -3,7 +3,7 @@ import { CustomWhereClause, WeightedSearchField } from '../models/Search';
 import { FieldOperators, FilterExpression } from '../models/Queries';
 export declare const fieldExpression: (field: string | string[], value: any, operator?: FieldOperators, weight?: number | undefined) => IExpression[];
 export declare const contentTypeIdExpression: (contentTypeIds: string[], webpageTemplates?: string[] | undefined, assetTypes?: string[] | undefined) => ILogicalExpression[];
-export declare const filterExpressions: (filters: FilterExpression[]) => IExpression[];
+export declare const filterExpressions: (filters: FilterExpression[], isOptional?: boolean) => IExpression[];
 export declare const dataFormatExpression: (contentTypeIds: string[], dataFormat?: string) => ILogicalExpression[];
 export declare const featuredResultsExpression: ({ contentTypeId, fieldId, fieldValue, }?: {
     contentTypeId?: string | string[] | undefined;
@@ -13,6 +13,7 @@ export declare const featuredResultsExpression: ({ contentTypeId, fieldId, field
 export declare const languagesExpression: (languages: string[]) => IExpression[];
 export declare const includeInSearchExpressions: (webpageTemplates: string[], includeInSearchFields: string[]) => IExpression[];
 export declare const defaultExpressions: (versionStatus: VersionStatus) => IExpression[];
+export declare const includeIdsExpression: (includeIds: string[]) => IExpression[];
 export declare const excludeIdsExpression: (excludeIds: string[]) => ILogicalExpression[];
 export declare const orderByExpression: (orderBy: string[]) => import("contensis-core-api").ContensisQueryOrderBy;
 /**
