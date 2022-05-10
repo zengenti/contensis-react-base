@@ -14,6 +14,7 @@ import {
   selectCurrentAncestors,
   selectCurrentNode,
   selectCurrentProject,
+  selectCurrentSiblings,
   selectMappedEntry,
   selectRouteEntry,
   selectRouteEntryEntryId,
@@ -64,7 +65,10 @@ function* getRouteSaga(action) {
     // Variables we will pass to setRouteEntry
     let pathNode = null,
       ancestors = null,
+      children = [],
       siblings = null;
+
+    let contentTypeMapping = {};
 
     // These variables are the return values from
     // calls to withEvents.onRouteLoad and onRouteLoaded
@@ -74,19 +78,11 @@ function* getRouteSaga(action) {
     if (withEvents && withEvents.onRouteLoad) {
       appsays = yield withEvents.onRouteLoad(action);
     }
-    // if appsays customNavigation: true, we will set doNavigation to false
-    // if appsays customNavigation: { ... }, we will set doNavigation to the customNavigation object and check for child elements
-    // if appsays nothing we will set doNavigation to true and continue to do navigation calls
-    const doNavigation =
-      !appsays ||
-      (appsays && appsays.customNavigation === true
-        ? false
-        : (appsays && appsays.customNavigation) || true);
 
     const entryLinkDepth =
       appsays && appsays.entryLinkDepth !== undefined
         ? appsays.entryLinkDepth
-        : 3;
+        : 2;
     const setContentTypeLimits = !!ContentTypeMappings.find(
       ct => ct.fields || ct.linkDepth || ct.nodeOptions
     );
@@ -135,22 +131,10 @@ function* getRouteSaga(action) {
           setRouteEntry,
           routeEntry,
           yield select(selectCurrentNode),
-          yield select(selectCurrentAncestors)
+          yield select(selectCurrentAncestors),
+          yield select(selectCurrentSiblings)
         );
     } else {
-      // // Handle homepage
-      // if (isHome) {
-      //   pathNode = yield cachedSearch.getRootNode(
-      //     {
-      //       depth: childrenDepth,
-      //       entryFields: '*',
-      //       entryLinkDepth,
-      //       language: defaultLang,
-      //       versionStatus: deliveryApiStatus,
-      //     },
-      //     project
-      //   );
-      //   ({ entry } = pathNode || {});
       // Handle preview routes
       if (isPreview) {
         let splitPath = currentPath.split('/');
@@ -179,14 +163,9 @@ function* getRouteSaga(action) {
         }
       } else {
         // Handle all other routes
-        const childrenDepth =
-          doNavigation === true || doNavigation.children === true
-            ? 1
-            : (doNavigation && doNavigation.children) || 0;
-
         pathNode = yield cachedSearch.getNode(
           {
-            depth: childrenDepth,
+            depth: 0,
             path: currentPath,
             entryFields: setContentTypeLimits
               ? ['sys.contentTypeId', 'sys.id']
@@ -199,23 +178,15 @@ function* getRouteSaga(action) {
         );
         ({ entry } = pathNode || {});
 
-        if (
-          setContentTypeLimits &&
-          pathNode &&
-          pathNode.entry &&
-          pathNode.entry.sys &&
-          pathNode.entry.sys.id
-        ) {
+        if (setContentTypeLimits && pathNode?.entry?.sys?.id) {
           // Get fields[] and linkDepth from ContentTypeMapping to get the entry data
-          // at a specified depth with specified fields
-          const {
-            fields,
-            linkDepth,
-            nodeOptions = {},
-          } = findContentTypeMapping(
-            ContentTypeMappings,
-            pathNode.entry.sys.contentTypeId
-          ) || {};
+          // and current node's ordinates at a specified depth with specified fields
+          contentTypeMapping =
+            findContentTypeMapping(
+              ContentTypeMappings,
+              pathNode.entry.sys.contentTypeId
+            ) || {};
+          const { fields, linkDepth } = contentTypeMapping;
           const query = routeEntryByFieldsQuery(
             pathNode.entry.sys.id,
             pathNode.entry.sys.language,
@@ -224,82 +195,41 @@ function* getRouteSaga(action) {
           );
           const payload = yield cachedSearch.search(
             query,
-            linkDepth || entryLinkDepth || 0,
+            typeof linkDepth !== 'undefined' ? linkDepth : entryLinkDepth || 0,
             project
           );
-          if (payload && payload.items && payload.items.length > 0) {
+          if (payload?.items?.length > 0) {
             pathNode.entry = entry = payload.items[0];
           }
-
-          if (childrenDepth > 0 || nodeOptions.children) {
-            const childrenOptions = nodeOptions.children || {};
-            // We need to make a separate call for child nodes if the first node query has been
-            // limited by linkDepth or fields[]
-            const nodeWithChildren = yield cachedSearch.getNode({
-              depth:
-                childrenOptions.depth !== undefined
-                  ? childrenOptions.depth
-                  : childrenDepth,
-              path: currentPath,
-              entryFields: childrenOptions.fields || fields || '*',
-              entryLinkDepth:
-                childrenOptions.linkDepth !== undefined
-                  ? childrenOptions.linkDepth
-                  : linkDepth !== undefined
-                  ? linkDepth
-                  : entryLinkDepth,
-              language: defaultLang,
-              versionStatus: deliveryApiStatus,
-            });
-            if (nodeWithChildren && nodeWithChildren.children) {
-              pathNode.children = nodeWithChildren.children;
-            }
-          }
         }
       }
 
-      if (pathNode && pathNode.id) {
-        if (doNavigation === true || doNavigation.ancestors) {
-          try {
-            ancestors = yield cachedSearch.getAncestors(
-              {
-                id: pathNode.id,
-                language: defaultLang,
-                versionStatus: deliveryApiStatus,
-              },
-              project
-            );
-          } catch (ex) {
-            log.info('Problem fetching ancestors', ex);
-          }
+      // make calls to fetch node ancestors, children,
+      // siblings or entire node tree
+      [ancestors, children, siblings] = yield call(
+        resolveCurrentNodeOrdinates,
+        {
+          appsays,
+          contentTypeMapping,
+          language: defaultLang,
+          path: currentPath,
+          pathNode,
+          project,
+          versionStatus: deliveryApiStatus,
         }
+      );
 
-        if (doNavigation === true || doNavigation.siblings) {
-          try {
-            siblings = yield cachedSearch.getSiblings(
-              {
-                id: pathNode.id,
-                language: defaultLang,
-                versionStatus: deliveryApiStatus,
-              },
-              project
-            );
-          } catch (ex) {
-            log.info('Problem fetching siblings', ex);
-          }
-        }
-      }
+      if (children) pathNode.children = children;
     }
 
-    const contentTypeMapping =
+    const { entryMapper, injectRedux } =
       findContentTypeMapping(
         ContentTypeMappings,
         pathNode?.entry?.sys?.contentTypeId
       ) || {};
 
     // Inject redux { key, reducer, saga } provided by ContentTypeMapping
-    if (contentTypeMapping.injectRedux)
-      yield call(reduxInjectorSaga, contentTypeMapping.injectRedux);
+    if (injectRedux) yield call(reduxInjectorSaga, injectRedux);
 
     if (withEvents && withEvents.onRouteLoaded) {
       // Check if the app has provided a requireLogin boolean flag or groups array
@@ -317,30 +247,6 @@ function* getRouteSaga(action) {
       });
     }
 
-    if (
-      pathNode &&
-      pathNode.entry &&
-      pathNode.entry.sys &&
-      pathNode.entry.sys.id
-    ) {
-      entry = pathNode.entry;
-      const { entryMapper } = contentTypeMapping;
-
-      yield call(
-        setRouteEntry,
-        entry,
-        pathNode,
-        ancestors,
-        siblings,
-        entryMapper,
-        false,
-        appsays && appsays.refetchNode
-      );
-    } else {
-      if (staticRoute)
-        yield call(setRouteEntry, null, pathNode, ancestors, siblings);
-      else yield call(do404);
-    }
     if (!appsays || !appsays.preventScrollTop) {
       // Scroll into View
       if (typeof window !== 'undefined') {
@@ -350,12 +256,143 @@ function* getRouteSaga(action) {
       }
     }
 
-    if (
-      !hasNavigationTree(state) &&
-      (doNavigation === true || doNavigation.tree)
-    )
+    if (pathNode?.entry?.sys?.id) {
+      entry = pathNode.entry;
+
+      yield call(
+        setRouteEntry,
+        entry,
+        pathNode,
+        ancestors,
+        siblings,
+        entryMapper,
+        false,
+        appsays?.refetchNode
+      );
+    } else {
+      if (staticRoute)
+        yield call(setRouteEntry, null, pathNode, ancestors, siblings);
+      else yield call(do404);
+    }
+  } catch (e) {
+    log.error(...['Error running route saga:', e, e.stack]);
+    yield call(do500, e);
+  }
+}
+
+function* resolveCurrentNodeOrdinates({
+  appsays,
+  contentTypeMapping,
+  language,
+  path,
+  pathNode,
+  project,
+  versionStatus,
+}) {
+  const apiCall = [() => null, () => null, () => null, () => null];
+
+  // if appsays customNavigation: true, we will set doNavigation to false
+  // if appsays customNavigation: { ... }, we will set doNavigation to the customNavigation object and check for child elements
+  // if appsays nothing we will set doNavigation to true and continue to do navigation calls
+  const doNavigation =
+    !appsays ||
+    (appsays?.customNavigation === true
+      ? false
+      : appsays?.customNavigation || true);
+
+  const {
+    entryLinkDepth = 0,
+    fields,
+    linkDepth,
+    nodeOptions = {},
+  } = contentTypeMapping;
+
+  if (pathNode && pathNode.id) {
+    if (doNavigation === true || doNavigation.ancestors) {
+      apiCall[0] = function* getAncestors() {
+        try {
+          return yield cachedSearch.getAncestors(
+            {
+              id: pathNode.id,
+              language,
+              versionStatus,
+            },
+            project
+          );
+        } catch (ex) {
+          log.info('Problem fetching ancestors', ex);
+          return [];
+        }
+      };
+    }
+
+    const childrenDepth =
+      doNavigation === true || doNavigation.children === true
+        ? 1
+        : (doNavigation && doNavigation.children) || 0;
+
+    if (childrenDepth > 0 || nodeOptions.children) {
+      const childrenOptions = nodeOptions.children || {};
+      apiCall[1] = function* getChildren() {
+        try {
+          return yield cachedSearch.getNode(
+            {
+              depth:
+                childrenOptions.depth !== undefined
+                  ? childrenOptions.depth
+                  : childrenDepth,
+              path,
+              entryFields: childrenOptions.fields || fields || undefined,
+              entryLinkDepth:
+                typeof childrenOptions.linkDepth !== 'undefined'
+                  ? childrenOptions.linkDepth
+                  : typeof linkDepth !== 'undefined'
+                  ? linkDepth
+                  : entryLinkDepth,
+              language,
+              versionStatus,
+            },
+            project
+          );
+        } catch (ex) {
+          log.info('Problem fetching children', ex);
+          return [];
+        }
+      };
+    }
+
+    if (doNavigation.siblings || nodeOptions.siblings) {
+      apiCall[2] = function* getSiblings() {
+        try {
+          return yield cachedSearch.getSiblings(
+            {
+              id: pathNode.id,
+              entryFields: nodeOptions?.siblings?.fields || fields || undefined,
+              entryLinkDepth:
+                typeof nodeOptions?.siblings?.linkDepth !== 'undefined'
+                  ? nodeOptions.siblings.linkDepth
+                  : typeof linkDepth !== 'undefined'
+                  ? linkDepth
+                  : entryLinkDepth,
+              includeInMenu: true,
+              language,
+              versionStatus,
+            },
+            project
+          );
+        } catch (ex) {
+          log.info('Problem fetching siblings', ex);
+          return [];
+        }
+      };
+    }
+  }
+
+  const isTreeLoaded = yield select(hasNavigationTree);
+  if (!isTreeLoaded && (doNavigation === true || doNavigation.tree))
+    apiCall[3] = function* getNodeTree() {
       if (typeof window !== 'undefined') {
-        yield put({
+        return yield put({
           type: GET_NODE_TREE,
           treeDepth:
             doNavigation === true ||
@@ -365,12 +402,18 @@ function* getRouteSaga(action) {
               : doNavigation.tree,
         });
       } else {
-        yield call(ensureNodeTreeSaga);
+        return yield call(ensureNodeTreeSaga);
       }
-  } catch (e) {
-    log.error(...['Error running route saga:', e, e.stack]);
-    yield call(do500, e);
-  }
+    };
+
+  const [loadAncestors, loadChildren, loadSiblings, loadTree] = apiCall;
+  const [ancestors, nodeWithChildren, siblings] = yield all([
+    loadAncestors(),
+    loadChildren(),
+    loadSiblings(),
+    loadTree(),
+  ]);
+  return [ancestors, nodeWithChildren?.children, siblings];
 }
 
 function* setRouteEntry(
