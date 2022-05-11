@@ -331,8 +331,12 @@ function* resolveCurrentNodeOrdinates({
         ? 1
         : (doNavigation && doNavigation.children) || 0;
 
-    if (childrenDepth > 0 || nodeOptions.children) {
-      const childrenOptions = nodeOptions.children || {};
+    if (
+      (typeof nodeOptions?.children === 'undefined' && childrenDepth > 0) ||
+      nodeOptions.children
+    ) {
+      const childrenOptions =
+        typeof nodeOptions.children === 'boolean' ? {} : nodeOptions.children;
       apiCall[1] = function* getChildren() {
         try {
           return yield cachedSearch.getNode(
@@ -361,7 +365,10 @@ function* resolveCurrentNodeOrdinates({
       };
     }
 
-    if (doNavigation.siblings || nodeOptions.siblings) {
+    if (
+      (typeof nodeOptions?.siblings === 'undefined' && doNavigation.siblings) ||
+      nodeOptions.siblings
+    ) {
       apiCall[2] = function* getSiblings() {
         try {
           return yield cachedSearch.getSiblings(

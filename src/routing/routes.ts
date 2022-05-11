@@ -56,10 +56,19 @@ export type ContentTypeMapping = {
   injectRedux?: ReduxInjector;
   linkDepth?: number;
   nodeOptions?: {
-    children?: {
-      fields?: string[];
-      linkDepth?: number;
-    };
+    children?:
+      | {
+          depth: number;
+          fields?: string[];
+          linkDepth?: number;
+        }
+      | boolean;
+    siblings?:
+      | {
+          fields?: string[];
+          linkDepth?: number;
+        }
+      | boolean;
   };
   requireLogin?: RequireLogin;
 };
