@@ -47,9 +47,14 @@ export declare type ContentTypeMapping = {
     linkDepth?: number;
     nodeOptions?: {
         children?: {
+            depth: number;
             fields?: string[];
             linkDepth?: number;
-        };
+        } | boolean;
+        siblings?: {
+            fields?: string[];
+            linkDepth?: number;
+        } | boolean;
     };
     requireLogin?: RequireLogin;
 };
