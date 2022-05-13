@@ -1,6 +1,6 @@
 import { Context } from './Enums';
 import { CustomWhereClause } from './Search';
-export declare type AppState = Record<'search', SearchState>;
+export declare type AppState = Record<'search', SearchState> & Record<string, any>;
 export declare type SearchState = {
     context: keyof typeof Context;
     currentFacet: string;
@@ -58,6 +58,7 @@ export declare type Filters = {
 export declare type Filter = {
     contentTypeId?: string;
     customWhere?: CustomWhereClause;
+    defaultValue?: string;
     fieldId?: string;
     isGrouped?: boolean;
     isSingleSelect?: boolean;

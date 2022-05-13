@@ -1,6 +1,10 @@
+import { Entry } from 'contensis-delivery-api/lib/models';
 import mapJson, { jpath } from 'jsonpath-mapper';
-import MappingTemplate from 'jsonpath-mapper/dist/models/Template';
-import { EntryMapper } from '~/routing/routes';
+import MappingTemplate, {
+  PureJsFunction,
+} from 'jsonpath-mapper/dist/models/Template';
+import { AppState } from '~/redux/appstate';
+import { EntryMapper, RouteNode } from '~/routing/routes';
 
 export { default as mapJson, jpath } from 'jsonpath-mapper';
 
@@ -104,19 +108,31 @@ export const mapComposer = <
           };
 
           // Add fields and $root item into the composer item source object
-          // for use inside each item mapping
+          // for use inside each item mapping, for arrays we inject the added fields
+          // into the first array item. This is useful if we require any of
+          // composerItem.type, composerItem index/position and composer $root
+          // in scope to influence any composer item's mapping logic
           const sourceObject =
-            itemValue && typeof itemValue === 'object'
-              ? { ...itemValue, ...addedFields, $root: composer }
+            itemValue && Array.isArray(itemValue)
+              ? itemValue.map((iv, idx) =>
+                  idx !== 0
+                    ? iv
+                    : typeof iv === 'object'
+                    ? { ...addedFields, ...iv, $root: composer }
+                    : iv
+                )
+              : typeof itemValue === 'object'
+              ? { ...addedFields, ...itemValue, $root: composer }
               : itemValue || {};
 
+          // Apply the composer item mapping
           const mappedFields = mapJson(sourceObject, mapper) as any;
 
           // Add the extra fields in with the return object
           return mappedFields && typeof mappedFields === 'object'
             ? { ...mappedFields, ...addedFields }
             : mappedFields;
-        } else return;
+        } else return {};
       })
     : composer || [];
 
@@ -145,8 +161,12 @@ export const useComposerMapper = <
  * @returns {mappedEntry}
  */
 export const entryMapper =
-  (mapping: any): EntryMapper =>
+  (
+    mapping:
+      | MappingTemplate<RouteNode & Entry & { state?: AppState }>
+      | PureJsFunction<RouteNode & Entry & { state?: AppState }>
+  ): EntryMapper =>
   (node, state) =>
-    mapJson({ ...node, ...node.entry, state }, mapping);
+    mapJson({ ...node, ...(node.entry || ({} as Entry)), state }, mapping);
 
 export default mapJson;

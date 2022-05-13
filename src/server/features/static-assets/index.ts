@@ -28,6 +28,7 @@ const staticAssets = (
       // these maxage values are different in config but the same in runtime,
       // this one is the true value in seconds
       maxage: CacheDuration.static,
+      staticFolderPath,
       staticRoutePath,
     }),
     resolveStartupMiddleware({

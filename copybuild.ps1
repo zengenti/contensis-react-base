@@ -2,11 +2,10 @@ param (
   [string]$target
 )
 
-# $target = $target + "\node_modules\zengenti-isomorphic-base"
 $target = $target + "\node_modules\@zengenti\contensis-react-base"
 
 # npm run build:lib
-npm run roll:lib
+npm run build
 Copy-Item -Path .\package.json -Destination $target
 Copy-Item -Path .\package-lock.json -Destination $target
 Copy-Item -Path .\cjs -Filter *.js* -Destination $target -Recurse -Force
@@ -15,6 +14,7 @@ Copy-Item -Path .\esm -Filter *.js* -Destination $target -Recurse -Force
 # Copy-Item -Path .\esm -Filter *.js.map -Destination $target -Recurse
 Copy-Item -Path .\client -Filter *.* -Destination $target -Recurse -Force
 Copy-Item -Path .\forms -Filter *.* -Destination $target -Recurse -Force
+Copy-Item -Path .\models -Filter *.* -Destination $target -Recurse -Force
 Copy-Item -Path .\redux -Filter *.* -Destination $target -Recurse -Force
 Copy-Item -Path .\routing -Filter *.* -Destination $target -Recurse -Force
 Copy-Item -Path .\search -Filter *.* -Destination $target -Recurse -Force

@@ -7,10 +7,12 @@ export const bundleManipulationMiddleware =
   ({
     appRootPath,
     maxage,
+    staticFolderPath,
     staticRoutePath,
   }: {
     appRootPath: string;
     maxage: string;
+    staticFolderPath: string;
     staticRoutePath: string;
   }): RequestHandler =>
   (req, res, next) => {
@@ -20,7 +22,9 @@ export const bundleManipulationMiddleware =
     if ((legacyBundle || modernBundle) && filename.startsWith('runtime.')) {
       const jsRuntimeLocation = path.resolve(
         appRootPath,
-        `dist/static/${modernBundle ? 'modern/js' : 'legacy/js'}/${filename}`
+        `dist/${staticFolderPath}/${
+          modernBundle ? 'modern/js' : 'legacy/js'
+        }/${filename}`
       );
       try {
         const jsRuntimeBundle = fs.readFileSync(jsRuntimeLocation, 'utf8');

@@ -1,10 +1,3 @@
-import { UseMinilistProps } from '../models/SearchProps';
-declare const useMinilist: ({ id, config, excludeIds, mapper, mappers, params, defaultLang, debug, }?: UseMinilistProps) => {
-    filters: import("../models/SearchState").Filters;
-    isLoading: boolean;
-    pagingInfo: import("../models/SearchState").Paging;
-    results: any[];
-    searchTerm: string;
-    title: string;
-};
+import { MinilistProps, UseMinilistProps } from '../models/SearchProps';
+declare const useMinilist: <SearchResults extends Record<string, any>>({ id, config, excludeIds, mapper, mappers, params, defaultLang, debug, }?: UseMinilistProps) => MinilistProps<SearchResults>;
 export default useMinilist;

@@ -154,7 +154,10 @@ export const getBundleTags = (
     const modernScriptTags = loadableExtractor?.modern.getScriptTags({
       type: 'module',
     });
-    return `${startupTag}${legacyScriptTags || ''}${modernScriptTags || ''}`;
+    const scriptTags = `${startupTag}${legacyScriptTags || ''}${
+      modernScriptTags || ''
+    }`.replace(/"\/static\//g, `"/${staticRoutePath}/`);
+    return scriptTags;
   }
   return startupTag;
 };

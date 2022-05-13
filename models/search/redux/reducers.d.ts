@@ -1,5 +1,6 @@
 import { SearchConfig } from '../models/Search';
 import { Context } from '../models/Enums';
+import { SearchState } from '../models/SearchState';
 declare const _default: (config: SearchConfig) => <Base extends {
     readonly context: "facets" | "listings" | "minilist";
     readonly currentFacet: string;
@@ -40,6 +41,7 @@ declare const _default: (config: SearchConfig) => <Base extends {
                             readonly field: string;
                         }[];
                     })[] | undefined;
+                    readonly defaultValue?: string | undefined;
                     readonly fieldId?: string | undefined;
                     readonly isGrouped?: boolean | undefined;
                     readonly isSingleSelect?: boolean | undefined;
@@ -118,6 +120,7 @@ declare const _default: (config: SearchConfig) => <Base extends {
                             readonly field: string;
                         }[];
                     })[] | undefined;
+                    readonly defaultValue?: string | undefined;
                     readonly fieldId?: string | undefined;
                     readonly isGrouped?: boolean | undefined;
                     readonly isSingleSelect?: boolean | undefined;
@@ -196,6 +199,7 @@ declare const _default: (config: SearchConfig) => <Base extends {
                             readonly field: string;
                         }[];
                     })[] | undefined;
+                    readonly defaultValue?: string | undefined;
                     readonly fieldId?: string | undefined;
                     readonly isGrouped?: boolean | undefined;
                     readonly isSingleSelect?: boolean | undefined;
@@ -256,5 +260,5 @@ declare const _default: (config: SearchConfig) => <Base extends {
     params: {
         [key: string]: string;
     };
-}) => Base;
+}) => import("immer/dist/internal").WritableDraft<SearchState> | Base;
 export default _default;

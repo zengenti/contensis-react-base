@@ -1,6 +1,8 @@
+import { Entry } from 'contensis-delivery-api/lib/models';
 import mapJson from 'jsonpath-mapper';
-import MappingTemplate from 'jsonpath-mapper/dist/models/Template';
-import { EntryMapper } from "../routing/routes";
+import MappingTemplate, { PureJsFunction } from 'jsonpath-mapper/dist/models/Template';
+import { AppState } from "../redux/appstate";
+import { EntryMapper, RouteNode } from "../routing/routes";
 export { default as mapJson, jpath } from 'jsonpath-mapper';
 declare type Mappers<S> = {
     [contentTypeId: string]: MappingTemplate<S>;
@@ -77,5 +79,9 @@ export declare const useComposerMapper: <S extends {
  * @param mapping the jsonpath-mapper mapping template to apply when the route is resolved
  * @returns {mappedEntry}
  */
-export declare const entryMapper: (mapping: any) => EntryMapper;
+export declare const entryMapper: (mapping: MappingTemplate<RouteNode & Entry & {
+    state?: AppState;
+}> | PureJsFunction<RouteNode & Entry & {
+    state?: AppState;
+}>) => EntryMapper;
 export default mapJson;

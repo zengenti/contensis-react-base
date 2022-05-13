@@ -56,6 +56,13 @@ export default {
     /^contensis-delivery-api*/,
     /^contensis-core-api*/,
   ],
+  // context: 'this',
+  onwarn: function (warning) {
+    if (warning.code === 'THIS_IS_UNDEFINED') {
+      return;
+    }
+    console.error(warning.message);
+  },
   plugins: [
     submoduleResolvePlugin(),
     peerDepsExternal(),

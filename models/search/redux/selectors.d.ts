@@ -1,18 +1,19 @@
 import { Context } from '../models/Enums';
 import { QueryParams as QueryParams2 } from '../models/Queries';
-import { CustomApi, QueryParams } from '../models/Search';
+import { CustomApi, SearchQueryParams } from '../models/Search';
 import { AppState, Facet, Facets, Filters, Paging, SelectedFilters, Tab } from '../models/SearchState';
 declare type StateType = 'immutable' | 'js';
 export declare const getSearchContext: (state: AppState) => Context;
 export declare const getCurrent: (state: AppState, context?: Context) => string;
 export declare const getCurrentFacet: (state: AppState) => string;
 export declare const getCurrentListing: (state: AppState) => string;
-export declare const getCurrentTab: (state: AppState) => Map<string, Tab[keyof Tab]>;
+export declare const getCurrentTab: (state: AppState) => number;
 export declare const getFacets: (state: AppState, returnType?: StateType | undefined) => Facets;
 export declare const getTabFacets: (state: AppState) => {
     [k: string]: Facet;
 };
 export declare const getFacetTitles: (state: AppState) => {
+    isSelected: boolean;
     key: string;
     title: string | undefined;
     totalCount: number;
@@ -28,7 +29,7 @@ export declare const getIsInternalPaging: (state: AppState, current: string, con
 export declare const getIsLoaded: (state: AppState, context?: Context, facet?: string | undefined) => boolean;
 export declare const getIsLoading: (state: AppState, context?: Context, facet?: string | undefined) => boolean;
 export declare const getIsSsr: (state: AppState) => boolean;
-export declare const getFeaturedResults: (state: AppState, current?: string, context?: Context) => any[];
+export declare const getFeaturedResults: (state: AppState, current?: string, context?: Context, returnType?: StateType | undefined) => any[];
 export declare const getPaging: (state: AppState, current?: string, context?: Context, returnType?: StateType | undefined) => Paging;
 export declare const getPageIndex: (state: AppState, current?: string, context?: Context) => number;
 export declare const getPrevPageIndex: (state: AppState, current?: string, context?: Context) => number;
@@ -38,30 +39,31 @@ export declare const getTotalCount: (state: AppState, current?: string, context?
 export declare const getSearchTerm: (state: AppState) => string;
 export declare const getSearchTabs: (state: AppState, returnType?: StateType | undefined) => Tab[];
 export declare const getQueryParams: (state: AppState, current?: string, context?: Context) => Record<string, any>;
-export declare const getQueryParameter: <K extends keyof QueryParams, K2 extends "internalPaging" | "linkDepth" | "loadMorePaging" | keyof import("../models/Queries").SearchQueryOptions | "env" | "internalPageIndex" | "pagesLoaded" | "prevPageIndex" | "projectId" | "selectedFilters">({ state, facet, context, }: {
+export declare const getQueryParameter: <K extends keyof SearchQueryParams, K2 extends "internalPaging" | "linkDepth" | "loadMorePaging" | keyof import("../models/Queries").SearchQueryOptions | "env" | "internalPageIndex" | "pagesLoaded" | "prevPageIndex" | "projectId" | "selectedFilters">({ state, facet, context, }: {
     state: AppState;
     facet?: string | undefined;
     context?: Context | undefined;
-}, key: K | K2, ifnull?: any) => QueryParams[K] | QueryParams2[K2];
+}, key: K | K2, ifnull?: any) => SearchQueryParams[K] | QueryParams2[K2];
 export declare const getCustomApi: (state: AppState, current: string, context?: Context, returnType?: StateType | undefined) => CustomApi;
 export declare const getCustomEnv: (state: AppState, current: string, context?: Context) => any;
 export declare const getTabsAndFacets: (state: AppState, returnType?: StateType | undefined) => any;
-export declare const getSearchTotalCount: (state: AppState) => any;
+export declare const getSearchTotalCount: (state: AppState) => number;
 export declare const getFacetsTotalCount: (state: AppState) => number;
 export declare const selectFacets: {
     getCurrent: (state: AppState) => string;
-    getCurrentTab: (state: AppState) => Map<string, Tab[keyof Tab]>;
+    getCurrentTab: (state: AppState) => number;
     getCustomApi: (state: AppState, current: string, context?: Context, returnType?: StateType | undefined) => CustomApi;
     getCustomEnv: (state: AppState, current: string, context?: Context) => any;
     getFacet: (state: AppState, facetName?: string, context?: Context, returnType?: StateType | undefined) => Facet;
     getFacetTitles: (state: AppState) => {
+        isSelected: boolean;
         key: string;
         title: string | undefined;
         totalCount: number;
     }[];
     getFacets: (state: AppState, returnType?: StateType | undefined) => Facets;
     getFacetsTotalCount: (state: AppState) => number;
-    getFeaturedResults: (state: AppState, current?: string, context?: Context) => any[];
+    getFeaturedResults: (state: AppState, current?: string, context?: Context, returnType?: StateType | undefined) => any[];
     getFilters: (state: AppState, facet: string, context?: Context, returnType?: StateType | undefined) => Filters;
     getFiltersToLoad: (state: AppState, facet: string, context?: Context, returnType?: StateType | undefined) => string[];
     getIsLoaded: (state: AppState, context?: Context, facet?: string | undefined) => boolean;
@@ -73,8 +75,8 @@ export declare const selectFacets: {
     getQueryParams: (state: AppState, facet: string) => Record<string, any>;
     getQueryParameter: ({ state, facet }: {
         state: AppState;
-        facet: string;
-    }, key: keyof QueryParams | keyof QueryParams2, ifnull: any) => any;
+        facet?: string | undefined;
+    }, key: keyof SearchQueryParams | keyof QueryParams2, ifnull: any) => any;
     getRenderableFilters: (state: AppState, facet?: string, context?: Context) => Filters;
     getResults: (state: AppState, current?: string, context?: Context, returnType?: StateType | undefined) => any[];
     getTabFacets: (state: AppState) => {
@@ -84,7 +86,7 @@ export declare const selectFacets: {
     getTotalCount: (state: AppState, current?: string, context?: Context) => number;
     getSearchTabs: (state: AppState, returnType?: StateType | undefined) => Tab[];
     getSearchTerm: (state: AppState) => string;
-    getSearchTotalCount: (state: AppState) => any;
+    getSearchTotalCount: (state: AppState) => number;
     getSelectedFilters: (state: AppState, facet?: string, context?: Context, returnType?: StateType | undefined) => SelectedFilters;
 };
 export declare const selectListing: {
@@ -103,7 +105,7 @@ export declare const selectListing: {
     getQueryParameter: ({ state, facet }: {
         state: AppState;
         facet?: string | undefined;
-    }, key: keyof QueryParams | keyof QueryParams2, ifnull: any) => any;
+    }, key: keyof SearchQueryParams | keyof QueryParams2, ifnull: any) => any;
     getRenderableFilters: (state: AppState, listing?: string) => Filters;
     getResults: (state: AppState, listing?: string) => any[];
     getSearchTerm: (state: AppState) => string;

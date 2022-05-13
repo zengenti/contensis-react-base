@@ -1,13 +1,12 @@
 import { Entry, Node } from 'contensis-delivery-api/lib/models';
 import React from 'react';
-
-type MatchedRoute<T, U> = any;
-type RouteConfig = any;
-
+import { AppState } from "../redux/appstate";
+declare type MatchedRoute<T, U> = any;
+declare type RouteConfig = any;
 declare type RouteComponent<Props> = React.ComponentType<Props>;
-declare type RouteNode = Node & {
-  ancestors: Node[];
-  children: Node[];
+export declare type RouteNode = Node & {
+    ancestors: Node[];
+    children: Node[];
 };
 export declare type AppRoutes = {
   ContentTypeMappings: ContentTypeMapping[];
@@ -29,12 +28,7 @@ export declare type RouteLoaderProps = {
   loadingComponent?: React.ComponentType;
   notFoundComponent?: React.ComponentType;
 };
-export declare type EntryMapper =
-  | (<MappedProps>(node: RouteNode, state?: any) => MappedProps | unknown)
-  | (<MappedProps>(
-      node: RouteNode,
-      state?: any
-    ) => Promise<MappedProps | unknown>);
+export declare type EntryMapper = (<MappedProps>(node: RouteNode, state?: AppState) => MappedProps | unknown) | (<MappedProps>(node: RouteNode, state?: AppState) => Promise<MappedProps | unknown>);
 export declare type ReduxInjector = () => Promise<{
   key: string;
   reducer: any;
@@ -46,16 +40,22 @@ declare type UserGroupRequisite = {
 };
 export declare type RequireLogin = boolean | UserGroupRequisite[];
 export declare type ContentTypeMapping = {
-  contentTypeID: string;
-  component: RouteComponent<RouteComponentProps>;
-  entryMapper?: EntryMapper;
-  fields?: string[];
-  injectRedux?: ReduxInjector;
-  linkDepth?: number;
-  nodeOptions?: {
-    children?: {
-      fields?: string[];
-      linkDepth?: number;
+    contentTypeID: string;
+    component: RouteComponent<RouteComponentProps>;
+    entryMapper?: EntryMapper;
+    fields?: string[];
+    injectRedux?: ReduxInjector;
+    linkDepth?: number;
+    nodeOptions?: {
+        children?: {
+            depth: number;
+            fields?: string[];
+            linkDepth?: number;
+        } | boolean;
+        siblings?: {
+            fields?: string[];
+            linkDepth?: number;
+        } | boolean;
     };
   };
   requireLogin?: RequireLogin;

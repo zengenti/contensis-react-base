@@ -1,7 +1,7 @@
 import { PagedList } from 'contensis-core-api';
 import { Entry, TaxonomyNode } from 'contensis-delivery-api/lib/models';
 import { Context } from '../models/Enums';
-import { Facet, Listing, Mappers } from '../models/Search';
+import { SearchFacet, Listing, Mappers } from '../models/Search';
 import { AppState } from './SearchState';
 import { QueryParams } from './Queries';
 import { TimedSearchResponse } from './SearchUtil';
@@ -16,7 +16,7 @@ export declare type DebugFlags = boolean | {
     preloadOtherFacets?: boolean;
 };
 export declare type TriggerSearchParams = {
-    config?: Facet | Listing;
+    config?: SearchFacet | Listing;
     context: Context;
     debug?: DebugFlags;
     defaultLang?: string;
@@ -87,7 +87,7 @@ export declare type SetSearchEntriesParams = {
     defaultLang: string;
     facet: string;
     mappers: Mappers;
-    nextFacet: Facet;
+    nextFacet: SearchFacet;
     preload: boolean;
     ogState: AppState;
     debug: DebugFlags;

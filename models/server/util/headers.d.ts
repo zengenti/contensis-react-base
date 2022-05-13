@@ -1,9 +1,10 @@
 import { Response } from 'express';
-export declare const addStandardHeaders: (state: any, response: Response, packagejson: any, groups: {
+import { AppState } from "../../redux/appstate";
+export declare const addStandardHeaders: (state: AppState, response: Response, packagejson: any, groups: {
     globalGroups?: any[];
     allowedGroups?: any[];
 }) => void;
-export declare const addVarnishAuthenticationHeaders: (state: any, response: Response, groups?: {
+export declare const addVarnishAuthenticationHeaders: (state: AppState, response: Response, groups?: {
     globalGroups?: any[];
     allowedGroups?: any[];
 }) => void;

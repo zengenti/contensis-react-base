@@ -6,6 +6,7 @@ import { Provider as ReduxProvider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { loadableReady } from '@loadable/component';
 import * as queryString from 'query-string';
+import { CookiesProvider } from 'react-cookie';
 
 import { setVersionStatus } from '~/redux/actions/version';
 import rootSaga from '~/redux/sagas';
@@ -41,11 +42,13 @@ class ClientApp {
     const GetClientJSX = store => {
       const ClientJsx = (
         <AppContainer>
-          <ReduxProvider store={store}>
-            <BrowserRouter>
+          <CookiesProvider>
+            <ReduxProvider store={store}>
+              <BrowserRouter>
               <ReactApp routes={routes} withEvents={withEvents} />
             </BrowserRouter>
-          </ReduxProvider>
+            </ReduxProvider>
+          </CookiesProvider>
         </AppContainer>
       );
       return ClientJsx;
@@ -113,13 +116,11 @@ class ClientApp {
       fetch(`${window.location.pathname}?redux=true`)
         .then(response => response.json())
         .then(data => {
-          /* eslint-disable no-console */
-          // console.log('Got Data Back');
-          // console.log(data);
-          /* eslint-enable no-console */
           const ssRedux = JSON.parse(data);
           createStore(withReducers, ssRedux, history, stateType).then(store => {
-            // store.dispatch(setVersionStatus(versionStatusFromHostname));
+            store.dispatch(
+              setVersionStatus(qs.versionStatus || versionStatusFromHostname)
+            );
 
             store.runSaga(rootSaga(withSagas));
             store.dispatch(
@@ -132,9 +133,7 @@ class ClientApp {
                 window.location.hostname
               )
             );
-            // if (typeof window != 'undefined') {
-            //   store.dispatch(checkUserLoggedIn());
-            // }
+
             HMRRenderer(GetClientJSX(store));
 
             hmr(store);

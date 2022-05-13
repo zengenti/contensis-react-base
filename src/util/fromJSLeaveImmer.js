@@ -10,12 +10,19 @@ const fromJSLeaveImmer = js => {
     // convert the immer parts of the state back
     // to plain JS while retuning an immutable state object
     let immutableState = immutableObj;
-    ['immer', 'form', 'navigation', 'routing', 'search', 'user', 'version'].map(
-      key => {
-        if (js[key] && immutableObj.get(key))
-          immutableState = immutableState.set(key, js[key]);
-      }
-    );
+    [
+      'immer',
+      'form',
+      'forms',
+      'navigation',
+      'routing',
+      'search',
+      'user',
+      'version',
+    ].map(key => {
+      if (js[key] && immutableObj.get(key))
+        immutableState = immutableState.set(key, js[key]);
+    });
     return immutableState;
   }
   return immutableObj;

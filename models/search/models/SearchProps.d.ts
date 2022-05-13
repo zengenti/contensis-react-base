@@ -1,7 +1,20 @@
 import { clearFilters, updateCurrentFacet, updateCurrentTab, updatePageIndex, updateSearchTerm, updateSelectedFilters, updateSortOrder } from '../redux/actions';
-import { Facet, Mappers } from '../models/Search';
+import { SearchFacet, Mappers } from '../models/Search';
 import { DebugFlags } from '../models/SearchActions';
-import { Facet as StateFacet, Facets, Filters, Paging } from '../models/SearchState';
+import { Facet as StateFacet, Facets, Filters, Paging, SelectedFilters, TabAndFacets } from '../models/SearchState';
+export interface MinilistProps<SearchResults = any> {
+    filters: Filters;
+    isLoading: boolean;
+    paging: Paging;
+    results: SearchResults[];
+    resultsInfo: any;
+    searchTerm: string;
+    sortOrder: string[];
+    title: string;
+    updatePageIndex: typeof updatePageIndex;
+    updateSelectedFilters: typeof updateSelectedFilters;
+    updateSortOrder: typeof updateSortOrder;
+}
 export interface ListingProps<SearchResults = any> {
     clearFilters: typeof clearFilters;
     currentListing: string;
@@ -9,12 +22,15 @@ export interface ListingProps<SearchResults = any> {
     featured: SearchResults[];
     filters: Filters;
     isLoading: boolean;
-    paging: Paging;
+    listing: StateFacet;
     pageIsLoading: boolean;
+    paging: Paging;
     results: SearchResults[];
     resultsInfo: any;
     searchTerm: string;
+    selectedFilters: SelectedFilters;
     sortOrder: string[];
+    title: string;
     updateCurrentFacet: typeof updateCurrentFacet;
     updatePageIndex: typeof updatePageIndex;
     updateSearchTerm: typeof updateSearchTerm;
@@ -27,17 +43,26 @@ export interface SearchProps<SearchResults = any> {
     currentPageIndex: number;
     currentTabIndex: number;
     facet: StateFacet;
+    facetTitles: {
+        isSelected: boolean;
+        key: string;
+        title: string;
+        totalCount: number;
+    }[];
     facets: Facets;
-    featuredResults: SearchResults[];
+    featured: SearchResults[];
     filters: Filters;
     isLoading: boolean;
-    paging: Paging;
     pageIsLoading: boolean;
+    paging: Paging;
     results: SearchResults[];
     resultsInfo: any;
     searchTerm: string;
+    searchTotalCount: number;
+    selectedFilters: SelectedFilters;
     sortOrder: string[];
-    tabsAndFacets: any;
+    tabsAndFacets: TabAndFacets;
+    totalCount: number;
     updateCurrentFacet: typeof updateCurrentFacet;
     updateCurrentTab: typeof updateCurrentTab;
     updatePageIndex: typeof updatePageIndex;
@@ -45,9 +70,29 @@ export interface SearchProps<SearchResults = any> {
     updateSelectedFilters: typeof updateSelectedFilters;
     updateSortOrder: typeof updateSortOrder;
 }
+export interface UseFacetsProps {
+    debug?: DebugFlags;
+    defaultLang?: string;
+    mappers?: Mappers;
+    /** Reserved for future use */
+    id?: string;
+    params?: {
+        [key: string]: string;
+    };
+}
+export interface UseListingProps {
+    debug?: DebugFlags;
+    defaultLang?: string;
+    mappers?: Mappers;
+    /** Reserved for future use */
+    id?: string;
+    params?: {
+        [key: string]: string;
+    };
+}
 export interface UseMinilistProps {
     id: string;
-    config?: Facet;
+    config?: SearchFacet;
     debug?: DebugFlags;
     defaultLang?: string;
     excludeIds?: string[];

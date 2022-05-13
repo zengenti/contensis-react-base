@@ -16,6 +16,7 @@ declare class CachedSearch {
     request(key: any, execute: any): any;
     extendTaxonomyNode(node: any): any;
     getTaxonomyId(node: any): any;
+    fetch(uri: any, opts?: {}): any;
 }
 import { Client } from "contensis-delivery-api";
 declare class LruCache {

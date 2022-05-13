@@ -7,9 +7,10 @@ import {
 import { getImmutableOrJS as getIn } from '~/redux/util';
 
 import { getCacheDuration } from '../features/caching/cacheDuration.schema';
+import { AppState } from '~/redux/appstate';
 
 export const addStandardHeaders = (
-  state: any,
+  state: AppState,
   response: Response,
   packagejson: any,
   groups: { globalGroups?: any[]; allowedGroups?: any[] }
@@ -36,7 +37,7 @@ export const addStandardHeaders = (
 };
 
 export const addVarnishAuthenticationHeaders = (
-  state: any,
+  state: AppState,
   response: Response,
   groups: { globalGroups?: any[]; allowedGroups?: any[] } = {}
 ) => {

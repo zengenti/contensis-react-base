@@ -1,3 +1,5 @@
+import { Entry } from 'contensis-delivery-api/lib/models';
+import MappingTemplate from 'jsonpath-mapper/dist/models/Template';
 import { Context } from './Enums';
 import { FieldOperators, LogicOperators } from './Queries';
 import { AppState } from './SearchState';
@@ -28,11 +30,11 @@ export declare type Listing = {
     /** Use this to target the search to a project other than the default configured */
     projectId?: string;
     /** Query params object to drive the search for this facet */
-    queryParams: QueryParams;
+    queryParams: SearchQueryParams;
     /** Display title */
     title?: string;
 };
-export declare type Facet = {
+export declare type SearchFacet = {
     /** The first facet to be shown if no facet is supplied via a route parameter [default false] */
     isDefault?: boolean;
     /** Set to true to temporarily disable the facet [default false] */
@@ -48,6 +50,8 @@ export declare type SearchFilter = {
     contentTypeId?: string | string[];
     /** An array of CustomWhereClause to include in the search query when dynamically loading entries via the contentTypeId key */
     customWhere?: CustomWhereClause;
+    /** Use this to set a specific value to render for the initial / unselected option in this filter */
+    defaultValue?: string;
     /** The content type field we will apply the filter key to, to filter the list of returned results. */
     fieldId: string | string[];
     /** The Delivery API search operator we will use to filter the list of returned results. */
@@ -87,7 +91,7 @@ export declare type FeaturedResults = {
     /** The number of featured results to retrieve */
     count?: number;
 };
-export declare type QueryParams = {
+export declare type SearchQueryParams = {
     /** An array of assetTypes to search over (sys.dataFormat == 'asset'); Prefix an entry with a "!" to exclude that asset type from the search */
     assetTypes?: string[];
     /** An array of contentTypeIds to search over (sys.dataFormat == 'entry'); Prefix an entry with a "!" to exclude that content type from the search */
@@ -147,7 +151,7 @@ export declare type WeightedSearchField = {
 export declare type SearchConfig = {
     /** An object with a key for each facet that is required for the search */
     facets: {
-        [key: string]: Facet;
+        [key: string]: SearchFacet;
     };
     /** An object with a key for each independent listing that is required for the site */
     listings?: {
@@ -161,28 +165,55 @@ export declare type SearchConfig = {
     tabs: Tab[];
 };
 export declare type ConfigTypes = {
-    [key: string]: Facet;
+    [key: string]: SearchFacet;
 } | {
     [key: string]: Listing;
 };
-export declare type Mappers = {
-    customApi?: (queryParams: QueryParams) => {
-        [key: string]: string;
-    };
-    results: (entries: any[], facet?: string, context?: Context, state?: AppState) => any[];
-    filterItems?: (entries: any[]) => any[];
-    navigate?: ({ state, facet, orderBy, pageIndex, term, }: {
-        state: AppState;
-        facet?: string;
-        orderBy?: string;
-        pageIndex: number;
-        term?: string;
-    }) => NavigateUri;
-    resultsInfo?: (state: AppState) => any;
-};
+/**
+ * Type your mapper for mapping API responses (entries) into usable props for your components to render
+ */
+export declare type SearchResultsMapper<Target = any, Source = Entry> = (entries: Source[], facet?: string, context?: Context, state?: AppState) => Target[];
+/**
+ * Type your custom filter item mapping function with this to ensure correctly typed FilterItems are returned to work with search functions
+ */
+export declare type FilterItemsMapper<T = Entry> = (entries: T[]) => FilterItem[];
+/**
+ * The uri object type we need to return from the Navigate mapper after any search action has been called
+ */
 export declare type NavigateUri = {
     path: string;
     search: string;
     hash: string;
 };
+/**
+ * Type your jsonpath-mapper mapping template with this to map your next search uri to your custom uri structure after calling any search action
+ */
+export declare type SearchUriMapping = MappingTemplate<SearchStateParams>;
+/**
+ * Type the argument passed to the Navigate mapper, this provides the relevant keys and data available to manipulate and return the next uri after any search action has been called
+ */
+export declare type SearchStateParams = {
+    state: AppState;
+    facet?: string;
+    orderBy?: string;
+    pageIndex: number;
+    term?: string;
+};
+/** Type your Navigate mapper with this, the Navigate mapper is called after any search action has been called and is required to return the next uri to be parsed by your project's route configuration and provide the right uri parameters to drive the next search query and resulting state */
+export declare type NavigateMapper = ({ state, facet, orderBy, pageIndex, term, }: SearchStateParams) => NavigateUri;
+/** Type your Results Info mapper with this, remember "resultsInfo" prop is a custom object you define yourself - you can provide any keys you wish, conveying detailed messaging or UX tweaks to cover all kinds of scenarios based on data in the search state at that time */
+export declare type ResultsInfoMapper<T = any> = (state: AppState) => T;
+/** Experimental**: If you are trying to use the custom API feature you can add specific keys to the resultant querystring that for the custom API GET request */
+export declare type CustomApiParamsMapper = (queryParams: SearchQueryParams) => {
+    [key: string]: string;
+};
+/** Type your Mappers object with this type to provide a accurate, type-safe "mapper" argument to your search implementation */
+export declare type Mappers = {
+    customApi?: CustomApiParamsMapper;
+    results: SearchResultsMapper;
+    filterItems?: FilterItemsMapper;
+    navigate?: NavigateMapper;
+    resultsInfo?: ResultsInfoMapper;
+};
+/** SearchTransformations is just an alias for Mappers object / argument */
 export declare type SearchTransformations = Mappers;

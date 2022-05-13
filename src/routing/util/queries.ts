@@ -5,7 +5,7 @@ export const routeEntryByFieldsQuery = (
   id: string,
   language = 'en-GB',
   fields: string[] = [],
-  versionStatus = 'published'
+  versionStatus: 'published' | 'latest' = 'published'
 ) => {
   const query = new Query(
     ...[

@@ -3,14 +3,7 @@
 /build
 /dist
 /docs
-npm-debug.log*
 *.log
-yarn-error.log
 __snapshots__
 .cache
-/old
 .DS_Store
-.out
-storybook-static/
-client-stats.html
-/.idea

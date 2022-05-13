@@ -40,9 +40,6 @@ const start = (
   ConfigureWebApp(app, ReactApp, config);
 
   app.on('ready', async () => {
-    // Configure DNS to make life easier
-    // await ConfigureLocalDNS();
-
     const server = app.listen(3001, () => {
       console.info(`HTTP server is listening @ port 3001`);
       setTimeout(function () {

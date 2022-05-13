@@ -12,6 +12,7 @@ declare class CachedSearch {
     cache: LruCache;
     taxonomyLookup: {};
     search(query: any, linkDepth: any, project: any, env: any): any;
+    searchUsingPost(query: any, linkDepth: number | undefined, project: string | undefined, env: any): any;
     get(id: any, linkDepth: any, versionStatus: any, project: any, env: any): any;
     getContentType(id: any, project: any, env: any): any;
     getTaxonomyNode(key: any, project: any, env: any): any;
@@ -21,9 +22,6 @@ declare class CachedSearch {
     getChildren(options: any, project: any, env: any): any;
     getSiblings(options: any, project: any, env: any): any;
     request(key: any, execute: any): any;
-    extendTaxonomyNode(node: any): any;
-    getTaxonomyId(node: any): any;
-    getTaxonomyKey(id: any): any;
 }
 import { Client } from "contensis-delivery-api";
 declare class LruCache {

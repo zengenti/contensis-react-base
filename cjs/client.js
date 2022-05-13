@@ -10,10 +10,11 @@ var reactRedux = require('react-redux');
 var reactRouterDom = require('react-router-dom');
 var component = require('@loadable/component');
 var queryString = require('query-string');
-var version = require('./version-7c4ce67e.js');
-var App = require('./App-ce39a877.js');
-var actions = require('./actions-6b9ef168.js');
-require('./selectors-2c1b1183.js');
+var reactCookie = require('react-cookie');
+var version = require('./version-b3e55cdf.js');
+var App = require('./App-6e2518eb.js');
+var actions = require('./actions-8dc9e8de.js');
+require('./selectors-656da4b7.js');
 require('jsonpath-mapper');
 require('@redux-saga/core/effects');
 require('redux');
@@ -25,13 +26,13 @@ require('deepmerge');
 require('./reducers-3a4f8971.js');
 require('history');
 require('contensis-delivery-api');
-require('./version-dcfdafd9.js');
+require('./version-eba6d09b.js');
 require('loglevel');
-require('./login-d67b82aa.js');
-require('./ToJs-09204afd.js');
+require('./login-6b9de6a1.js');
+require('./ToJs-a9a8522b.js');
 require('await-to-js');
 require('js-cookie');
-require('./RouteLoader-2ed14766.js');
+require('./RouteLoader-2675e1c9.js');
 require('react-router-config');
 require('reselect');
 
@@ -70,14 +71,14 @@ class ClientApp {
     } = config;
 
     const GetClientJSX = store => {
-      const ClientJsx = /*#__PURE__*/React__default["default"].createElement(reactHotLoader.AppContainer, null, /*#__PURE__*/React__default["default"].createElement(reactRedux.Provider, {
+      const ClientJsx = /*#__PURE__*/React__default["default"].createElement(reactHotLoader.AppContainer, null, /*#__PURE__*/React__default["default"].createElement(reactCookie.CookiesProvider, null, /*#__PURE__*/React__default["default"].createElement(reactRedux.Provider, {
         store: store
       }, /*#__PURE__*/React__default["default"].createElement(reactRouterDom.Router, {
         history: App.browserHistory
       }, /*#__PURE__*/React__default["default"].createElement(ReactApp, {
         routes: routes,
         withEvents: withEvents
-      }))));
+      })))));
       return ClientJsx;
     };
 
@@ -123,19 +124,11 @@ class ClientApp {
       });
     } else {
       fetch(`${window.location.pathname}?redux=true`).then(response => response.json()).then(data => {
-        /* eslint-disable no-console */
-        // console.log('Got Data Back');
-        // console.log(data);
-
-        /* eslint-enable no-console */
         const ssRedux = JSON.parse(data);
         version.createStore(withReducers, ssRedux, App.browserHistory, stateType).then(store => {
-          // store.dispatch(setVersionStatus(versionStatusFromHostname));
+          store.dispatch(version.setVersionStatus(qs.versionStatus || versionStatusFromHostname));
           store.runSaga(App.rootSaga(withSagas));
-          store.dispatch(actions.setCurrentProject(App.pickProject(window.location.hostname, queryString__namespace.parse(window.location.search)), [], window.location.hostname)); // if (typeof window != 'undefined') {
-          //   store.dispatch(checkUserLoggedIn());
-          // }
-
+          store.dispatch(actions.setCurrentProject(App.pickProject(window.location.hostname, queryString__namespace.parse(window.location.search)), [], window.location.hostname));
           HMRRenderer(GetClientJSX(store));
           hmr(store);
         });

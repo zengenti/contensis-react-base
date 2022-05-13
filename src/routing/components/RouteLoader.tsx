@@ -39,9 +39,19 @@ import { toJS } from '~/util/ToJs';
 import { Entry } from 'contensis-delivery-api/lib/models';
 import { AppRootProps, RouteLoaderProps, StaticRoute } from '../routes';
 
+const replaceDoubleSlashRecursive = (path: string) => {
+  const nextPath = path.replace(/\/\//, '/');
+
+  if (nextPath.match(/\/\//)) {
+    return replaceDoubleSlashRecursive(nextPath);
+  }
+
+  return nextPath;
+};
+
 const getTrimmedPath = path => {
   if (path !== '/') {
-    const nextPath = path.replace(/\/\//, '/');
+    const nextPath = replaceDoubleSlashRecursive(path);
     const lastChar = nextPath[nextPath.length - 1];
     if (lastChar === '/') {
       return nextPath.substring(0, nextPath.length - 1);
@@ -262,29 +272,10 @@ const mapStateToPropsMemoized = createSelector(
   })
 );
 
-// const mapStateToProps = state => {
-//   return {
-//     contentTypeId: selectRouteEntryContentTypeId(state),
-//     entry: selectRouteEntry(state),
-//     isError: selectRouteIsError(state),
-//     isNotFound: selectIsNotFound(state),
-//     isLoading: selectRouteLoading(state),
-//     isLoggedIn: selectUserIsAuthenticated(state),
-//     mappedEntry: selectMappedEntry(state),
-//     projectId: selectCurrentProject(state),
-//     statePath: selectCurrentPath(state),
-//     statusCode: selectRouteStatusCode(state),
-//     statusText: selectRouteErrorMessage(state),
-//     userGroups: selectUserGroups(state),
-//   };
-// };
-
 const mapDispatchToProps = {
   setNavigationPath,
 };
 
 export default hot(module)(
-  connect(mapStateToPropsMemoized, mapDispatchToProps, null, { pure: false })(
-    toJS(RouteLoader)
-  )
-) as any;
+  connect(mapStateToPropsMemoized, mapDispatchToProps)(toJS(RouteLoader))
+) as unknown as (props: AppRootProps & RouteLoaderProps) => JSX.Element;

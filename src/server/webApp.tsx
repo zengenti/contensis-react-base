@@ -12,6 +12,11 @@ import mapJson from 'jsonpath-mapper';
 import { Express } from 'express';
 
 import { ChunkExtractorManager } from '@loadable/server';
+import { identity, noop } from 'lodash';
+import cloneDeep from 'lodash/cloneDeep';
+import { buildCleaner } from 'lodash-clean';
+import { CookiesProvider } from 'react-cookie';
+import Cookies from 'universal-cookie';
 
 import createStore from '~/redux/store/store';
 import { history } from '~/redux/store/history';
@@ -77,6 +82,7 @@ const webApp = (
 
   app.get('/*', async (request, response) => {
     const { url } = request;
+    const cookies = new Cookies(request.headers.cookie);
 
     const matchedStaticRoute = () =>
       matchRoutes(routes.StaticRoutes as RouteObject[], request.path);
@@ -143,11 +149,13 @@ const webApp = (
       <ChunkExtractorManager
         extractor={loadableExtractor?.commonLoadableExtractor}
       >
-        <ReduxProvider store={store}>
-          <StaticRouter location={url}>
-            <ReactApp routes={routes} withEvents={withEvents} />
-          </StaticRouter>
-        </ReduxProvider>
+        <CookiesProvider cookies={cookies}>
+          <ReduxProvider store={store}>
+            <StaticRouter location={url}>
+              <ReactApp routes={routes} withEvents={withEvents} />
+            </StaticRouter>
+          </ReduxProvider>
+        </CookiesProvider>
       </ChunkExtractorManager>
     );
 
@@ -161,7 +169,11 @@ const webApp = (
 
       // Dynamic page render has only the necessary bundles to start up the app
       // and does not include any react-loadable code-split bundles
-      const bundleTags = getBundleTags(loadableExtractor, scripts);
+      const bundleTags = getBundleTags(
+        loadableExtractor,
+        scripts,
+        staticRoutePath
+      );
 
       const isDynamicHint = `<script ${attributes}>window.isDynamic = true;</script>`;
 
@@ -209,9 +221,24 @@ const webApp = (
 
           // After running rootSaga there should be an additional react-loadable
           // code-split bundles for any page components as well as core app bundles
-          const bundleTags = getBundleTags(loadableExtractor, scripts);
+          const bundleTags = getBundleTags(
+            loadableExtractor,
+            scripts,
+            staticRoutePath
+          );
 
-          let serialisedReduxData = serialize(reduxState);
+          let serialisedReduxData = serialize(
+            buildCleaner({
+              isArray: identity,
+              isBoolean: identity,
+              isDate: identity,
+              isFunction: noop,
+              isNull: identity,
+              isPlainObject: identity,
+              isString: identity,
+              isUndefined: noop,
+            })(cloneDeep(reduxState))
+          );
           if (context.statusCode !== 404) {
             // For a request that returns a redux state object as a response
             if (accessMethod.REDUX) {

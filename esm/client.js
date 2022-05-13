@@ -6,11 +6,12 @@ import { Provider } from 'react-redux';
 import { Router } from 'react-router-dom';
 import { loadableReady } from '@loadable/component';
 import * as queryString from 'query-string';
-import { c as createStore, s as setVersionStatus } from './version-e6a545e1.js';
-import { d as deliveryApi, b as browserHistory, r as rootSaga, p as pickProject } from './App-0d28106a.js';
-export { A as ReactApp } from './App-0d28106a.js';
-import { s as setCurrentProject } from './actions-5437f43d.js';
-import './selectors-65f0f31c.js';
+import { CookiesProvider } from 'react-cookie';
+import { c as createStore, s as setVersionStatus } from './version-470f0b15.js';
+import { d as deliveryApi, b as browserHistory, r as rootSaga, p as pickProject } from './App-5efba16c.js';
+export { A as ReactApp } from './App-5efba16c.js';
+import { s as setCurrentProject } from './actions-fcfc8704.js';
+import './selectors-337be432.js';
 import 'jsonpath-mapper';
 import '@redux-saga/core/effects';
 import 'redux';
@@ -22,13 +23,13 @@ import 'deepmerge';
 import './reducers-8e5d6232.js';
 import 'history';
 import 'contensis-delivery-api';
-import './version-696796d7.js';
+import './version-6dd7b2cd.js';
 import 'loglevel';
-import './login-f6dfbe1b.js';
-import './ToJs-2627ce21.js';
+import './login-ca2dc2f7.js';
+import './ToJs-affd73f1.js';
 import 'await-to-js';
 import 'js-cookie';
-import './RouteLoader-d4b4d320.js';
+import './RouteLoader-f96a61c1.js';
 import 'react-router-config';
 import 'reselect';
 
@@ -44,14 +45,14 @@ class ClientApp {
     } = config;
 
     const GetClientJSX = store => {
-      const ClientJsx = /*#__PURE__*/React.createElement(AppContainer, null, /*#__PURE__*/React.createElement(Provider, {
+      const ClientJsx = /*#__PURE__*/React.createElement(AppContainer, null, /*#__PURE__*/React.createElement(CookiesProvider, null, /*#__PURE__*/React.createElement(Provider, {
         store: store
       }, /*#__PURE__*/React.createElement(Router, {
         history: browserHistory
       }, /*#__PURE__*/React.createElement(ReactApp, {
         routes: routes,
         withEvents: withEvents
-      }))));
+      })))));
       return ClientJsx;
     };
 
@@ -97,19 +98,11 @@ class ClientApp {
       });
     } else {
       fetch(`${window.location.pathname}?redux=true`).then(response => response.json()).then(data => {
-        /* eslint-disable no-console */
-        // console.log('Got Data Back');
-        // console.log(data);
-
-        /* eslint-enable no-console */
         const ssRedux = JSON.parse(data);
         createStore(withReducers, ssRedux, browserHistory, stateType).then(store => {
-          // store.dispatch(setVersionStatus(versionStatusFromHostname));
+          store.dispatch(setVersionStatus(qs.versionStatus || versionStatusFromHostname));
           store.runSaga(rootSaga(withSagas));
-          store.dispatch(setCurrentProject(pickProject(window.location.hostname, queryString.parse(window.location.search)), [], window.location.hostname)); // if (typeof window != 'undefined') {
-          //   store.dispatch(checkUserLoggedIn());
-          // }
-
+          store.dispatch(setCurrentProject(pickProject(window.location.hostname, queryString.parse(window.location.search)), [], window.location.hostname));
           HMRRenderer(GetClientJSX(store));
           hmr(store);
         });

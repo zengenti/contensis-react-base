@@ -1,13 +1,14 @@
 // import { MatchedRoute, RouteConfig } from 'react-router-config';
 import { Entry, Node } from 'contensis-delivery-api/lib/models';
 import React from 'react';
+import { AppState } from '~/redux/appstate';
 
 type MatchedRoute<T, U> = any;
 type RouteConfig = any;
 
 type RouteComponent<Props> = React.ComponentType<Props>;
 
-type RouteNode = Node & { ancestors: Node[]; children: Node[] };
+export type RouteNode = Node & { ancestors: Node[]; children: Node[] };
 
 export type AppRoutes = {
   ContentTypeMappings: ContentTypeMapping[];
@@ -35,10 +36,10 @@ export type RouteLoaderProps = {
 };
 
 export type EntryMapper =
-  | (<MappedProps>(node: RouteNode, state?: any) => MappedProps | unknown)
+  | (<MappedProps>(node: RouteNode, state?: AppState) => MappedProps | unknown)
   | (<MappedProps>(
       node: RouteNode,
-      state?: any
+      state?: AppState
     ) => Promise<MappedProps | unknown>);
 
 export type ReduxInjector = () => Promise<{
@@ -59,10 +60,19 @@ export type ContentTypeMapping = {
   injectRedux?: ReduxInjector;
   linkDepth?: number;
   nodeOptions?: {
-    children?: {
-      fields?: string[];
-      linkDepth?: number;
-    };
+    children?:
+      | {
+          depth: number;
+          fields?: string[];
+          linkDepth?: number;
+        }
+      | boolean;
+    siblings?:
+      | {
+          fields?: string[];
+          linkDepth?: number;
+        }
+      | boolean;
   };
   requireLogin?: RequireLogin;
 };
