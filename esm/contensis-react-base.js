@@ -1,7 +1,7 @@
 import { Op, Query } from 'contensis-core-api';
-import React from 'react';
+import React$1 from 'react';
 import { Provider } from 'react-redux';
-import { d as defaultExpressions, c as contentTypeIdExpression, f as filterExpressions, t as termExpressions, o as orderByExpression, a as customWhereExpressions } from './sagas-a22fc54a.js';
+import { d as defaultExpressions, c as contentTypeIdExpression, f as filterExpressions, t as termExpressions, o as orderByExpression, a as customWhereExpressions } from './sagas-80b35197.js';
 import mapJson from 'jsonpath-mapper';
 import 'reselect';
 import 'deepmerge';
@@ -9,8 +9,8 @@ import 'query-string';
 import 'immer';
 import 'deep-equal';
 import { s as setCachingHeaders } from './VersionInfo-f5403b09.js';
-import { c as cachedSearch, h as history, d as deliveryApi, p as pickProject, r as rootSaga } from './App-5efba16c.js';
-export { A as ReactApp } from './App-5efba16c.js';
+import { c as cachedSearch, h as history$1, d as deliveryApi, p as pickProject, r as rootSaga } from './App-e8b3aa57.js';
+export { A as ReactApp } from './App-e8b3aa57.js';
 import 'isomorphic-fetch';
 import express from 'express';
 import httpProxy from 'http-proxy';
@@ -18,8 +18,8 @@ import fs from 'fs';
 import path from 'path';
 import { path as path$1 } from 'app-root-path';
 import { renderToString } from 'react-dom/server';
-import { StaticRouter } from 'react-router-dom';
-import { matchRoutes } from 'react-router-config';
+import require$$1 from 'history';
+import require$$2, { matchRoutes } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { ServerStyleSheet } from 'styled-components';
 import serialize$1 from 'serialize-javascript';
@@ -28,21 +28,20 @@ import { ChunkExtractor, ChunkExtractorManager } from '@loadable/server';
 import { identity, noop } from 'lodash';
 import { buildCleaner } from 'lodash-clean';
 import { CookiesProvider } from 'react-cookie';
-import { c as createStore, s as setVersionStatus, a as setVersion } from './version-470f0b15.js';
+import { c as createStore, s as setVersionStatus, a as setVersion } from './version-38ccf374.js';
 import { s as setCurrentProject } from './actions-fcfc8704.js';
 import { s as selectSurrogateKeys, a as selectRouteEntry, b as selectCurrentProject, g as getImmutableOrJS } from './selectors-337be432.js';
 import 'loglevel';
 import '@redux-saga/core/effects';
 import 'contensis-delivery-api';
 import './version-6dd7b2cd.js';
-import 'history';
-import './login-ca2dc2f7.js';
+import './login-d00da7b6.js';
 import './reducers-8e5d6232.js';
-import './ToJs-affd73f1.js';
+import './ToJs-fcfaca09.js';
 import 'await-to-js';
 import 'js-cookie';
 import 'react-hot-loader';
-import './RouteLoader-f96a61c1.js';
+import './RouteLoader-d6cace78.js';
 import 'redux';
 import 'redux-thunk';
 import 'redux-saga';
@@ -623,6 +622,73 @@ const staticAssets = (app, {
     maxAge: CacheDuration.expressStatic
   }));
 };
+
+var server = {};
+
+Object.defineProperty(server, '__esModule', { value: true });
+
+var React = React$1;
+var history = require$$1;
+var reactRouterDom = require$$2;
+
+/**
+ * A <Router> that may not transition to any other location. This is useful
+ * on the server where there is no stateful UI.
+ */
+function StaticRouter({
+  basename,
+  children,
+  location: locationProp = "/"
+}) {
+  if (typeof locationProp === "string") {
+    locationProp = history.parsePath(locationProp);
+  }
+
+  let action = history.Action.Pop;
+  let location = {
+    pathname: locationProp.pathname || "/",
+    search: locationProp.search || "",
+    hash: locationProp.hash || "",
+    state: locationProp.state || null,
+    key: locationProp.key || "default"
+  };
+  let staticNavigator = {
+    createHref(to) {
+      return typeof to === "string" ? to : history.createPath(to);
+    },
+
+    push(to) {
+      throw new Error(`You cannot use navigator.push() on the server because it is a stateless ` + `environment. This error was probably triggered when you did a ` + `\`navigate(${JSON.stringify(to)})\` somewhere in your app.`);
+    },
+
+    replace(to) {
+      throw new Error(`You cannot use navigator.replace() on the server because it is a stateless ` + `environment. This error was probably triggered when you did a ` + `\`navigate(${JSON.stringify(to)}, { replace: true })\` somewhere ` + `in your app.`);
+    },
+
+    go(delta) {
+      throw new Error(`You cannot use navigator.go() on the server because it is a stateless ` + `environment. This error was probably triggered when you did a ` + `\`navigate(${delta})\` somewhere in your app.`);
+    },
+
+    back() {
+      throw new Error(`You cannot use navigator.back() on the server because it is a stateless ` + `environment.`);
+    },
+
+    forward() {
+      throw new Error(`You cannot use navigator.forward() on the server because it is a stateless ` + `environment.`);
+    }
+
+  };
+  return /*#__PURE__*/React.createElement(reactRouterDom.Router, {
+    basename: basename,
+    children: children,
+    location: location,
+    navigationType: action,
+    navigator: staticNavigator,
+    static: true
+  });
+}
+
+var StaticRouter_1 = server.StaticRouter = StaticRouter;
 
 /**
  * Removes all key-value entries from the list cache.
@@ -3900,9 +3966,9 @@ const webApp = (app, ReactApp, config) => {
 
     const matchedStaticRoute = () => matchRoutes(routes.StaticRoutes, request.path);
 
-    const isStaticRoute = () => matchedStaticRoute().length > 0;
+    const isStaticRoute = () => matchedStaticRoute && matchedStaticRoute.length > 0;
 
-    const staticRoute = isStaticRoute() && matchedStaticRoute()[0]; // Allow certain routes to avoid SSR
+    const staticRoute = isStaticRoute() && matchedStaticRoute[0]; // Allow certain routes to avoid SSR
 
     const onlyDynamic = staticRoute && staticRoute.route.ssr === false;
     const onlySSR = staticRoute && staticRoute.route.ssrOnly === true;
@@ -3924,11 +3990,13 @@ const webApp = (app, ReactApp, config) => {
         static: value
       }) => normaliseQs(value) || onlySSR
     });
-    const context = {}; // Track the current statusCode via the response object
+    const context = {
+      location: ''
+    }; // Track the current statusCode via the response object
 
     response.status(200); // Create a store (with a memory history) from our current url
 
-    const store = await createStore(withReducers, {}, history({
+    const store = await createStore(withReducers, {}, history$1({
       initialEntries: [url]
     }), stateType); // dispatch any global and non-saga related actions before calling our JSX
 
@@ -3939,17 +4007,17 @@ const webApp = (app, ReactApp, config) => {
     const project = pickProject(request.hostname, request.query);
     const groups = allowedGroups && allowedGroups[project];
     store.dispatch(setCurrentProject(project, groups, request.hostname));
-    const loadableExtractor = loadableChunkExtractors();
-    const jsx = /*#__PURE__*/React.createElement(ChunkExtractorManager, {
+    const loadableExtractor = loadableChunkExtractors(); // Todo: Provide a custom context for the static router to support old redirects.
+
+    const jsx = /*#__PURE__*/React$1.createElement(ChunkExtractorManager, {
       extractor: loadableExtractor === null || loadableExtractor === void 0 ? void 0 : loadableExtractor.commonLoadableExtractor
-    }, /*#__PURE__*/React.createElement(CookiesProvider, {
+    }, /*#__PURE__*/React$1.createElement(CookiesProvider, {
       cookies: cookies
-    }, /*#__PURE__*/React.createElement(Provider, {
+    }, /*#__PURE__*/React$1.createElement(Provider, {
       store: store
-    }, /*#__PURE__*/React.createElement(StaticRouter, {
-      context: context,
+    }, /*#__PURE__*/React$1.createElement(StaticRouter_1, {
       location: url
-    }, /*#__PURE__*/React.createElement(ReactApp, {
+    }, /*#__PURE__*/React$1.createElement(ReactApp, {
       routes: routes,
       withEvents: withEvents
     })))));

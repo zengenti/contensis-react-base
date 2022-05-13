@@ -3,9 +3,9 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 var contensisCoreApi = require('contensis-core-api');
-var React = require('react');
+var React$1 = require('react');
 var reactRedux = require('react-redux');
-var sagas = require('./sagas-8cf21563.js');
+var sagas = require('./sagas-f96b926b.js');
 var mapJson = require('jsonpath-mapper');
 require('reselect');
 require('deepmerge');
@@ -13,39 +13,38 @@ require('query-string');
 require('immer');
 require('deep-equal');
 var VersionInfo = require('./VersionInfo-4c9dfa6a.js');
-var App = require('./App-6e2518eb.js');
+var App = require('./App-6c2ba094.js');
 require('isomorphic-fetch');
 var express = require('express');
 var httpProxy = require('http-proxy');
 var fs = require('fs');
 var path = require('path');
 var appRootPath = require('app-root-path');
-var server$1 = require('react-dom/server');
-var reactRouterDom = require('react-router-dom');
-var reactRouterConfig = require('react-router-config');
+var server$2 = require('react-dom/server');
+var require$$1 = require('history');
+var require$$2 = require('react-router-dom');
 var reactHelmet = require('react-helmet');
 var styled = require('styled-components');
 var serialize$1 = require('serialize-javascript');
 var minifyCssString = require('minify-css-string');
-var server = require('@loadable/server');
+var server$1 = require('@loadable/server');
 var lodash = require('lodash');
 var lodashClean = require('lodash-clean');
 var reactCookie = require('react-cookie');
-var version = require('./version-b3e55cdf.js');
+var version = require('./version-72076f37.js');
 var actions = require('./actions-8dc9e8de.js');
 var selectors = require('./selectors-656da4b7.js');
 require('loglevel');
 require('@redux-saga/core/effects');
 require('contensis-delivery-api');
 require('./version-eba6d09b.js');
-require('history');
-require('./login-6b9de6a1.js');
+require('./login-66885d3b.js');
 require('./reducers-3a4f8971.js');
-require('./ToJs-a9a8522b.js');
+require('./ToJs-55a7536c.js');
 require('await-to-js');
 require('js-cookie');
 require('react-hot-loader');
-require('./RouteLoader-2675e1c9.js');
+require('./RouteLoader-e27146e5.js');
 require('redux');
 require('redux-thunk');
 require('redux-saga');
@@ -53,12 +52,14 @@ require('redux-injectors');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
-var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
+var React__default = /*#__PURE__*/_interopDefaultLegacy(React$1);
 var mapJson__default = /*#__PURE__*/_interopDefaultLegacy(mapJson);
 var express__default = /*#__PURE__*/_interopDefaultLegacy(express);
 var httpProxy__default = /*#__PURE__*/_interopDefaultLegacy(httpProxy);
 var fs__default = /*#__PURE__*/_interopDefaultLegacy(fs);
 var path__default = /*#__PURE__*/_interopDefaultLegacy(path);
+var require$$1__default = /*#__PURE__*/_interopDefaultLegacy(require$$1);
+var require$$2__default = /*#__PURE__*/_interopDefaultLegacy(require$$2);
 var serialize__default = /*#__PURE__*/_interopDefaultLegacy(serialize$1);
 var minifyCssString__default = /*#__PURE__*/_interopDefaultLegacy(minifyCssString);
 
@@ -637,6 +638,73 @@ const staticAssets = (app, {
     maxAge: CacheDuration.expressStatic
   }));
 };
+
+var server = {};
+
+Object.defineProperty(server, '__esModule', { value: true });
+
+var React = React__default["default"];
+var history = require$$1__default["default"];
+var reactRouterDom = require$$2__default["default"];
+
+/**
+ * A <Router> that may not transition to any other location. This is useful
+ * on the server where there is no stateful UI.
+ */
+function StaticRouter({
+  basename,
+  children,
+  location: locationProp = "/"
+}) {
+  if (typeof locationProp === "string") {
+    locationProp = history.parsePath(locationProp);
+  }
+
+  let action = history.Action.Pop;
+  let location = {
+    pathname: locationProp.pathname || "/",
+    search: locationProp.search || "",
+    hash: locationProp.hash || "",
+    state: locationProp.state || null,
+    key: locationProp.key || "default"
+  };
+  let staticNavigator = {
+    createHref(to) {
+      return typeof to === "string" ? to : history.createPath(to);
+    },
+
+    push(to) {
+      throw new Error(`You cannot use navigator.push() on the server because it is a stateless ` + `environment. This error was probably triggered when you did a ` + `\`navigate(${JSON.stringify(to)})\` somewhere in your app.`);
+    },
+
+    replace(to) {
+      throw new Error(`You cannot use navigator.replace() on the server because it is a stateless ` + `environment. This error was probably triggered when you did a ` + `\`navigate(${JSON.stringify(to)}, { replace: true })\` somewhere ` + `in your app.`);
+    },
+
+    go(delta) {
+      throw new Error(`You cannot use navigator.go() on the server because it is a stateless ` + `environment. This error was probably triggered when you did a ` + `\`navigate(${delta})\` somewhere in your app.`);
+    },
+
+    back() {
+      throw new Error(`You cannot use navigator.back() on the server because it is a stateless ` + `environment.`);
+    },
+
+    forward() {
+      throw new Error(`You cannot use navigator.forward() on the server because it is a stateless ` + `environment.`);
+    }
+
+  };
+  return /*#__PURE__*/React.createElement(reactRouterDom.Router, {
+    basename: basename,
+    children: children,
+    location: location,
+    navigationType: action,
+    navigator: staticNavigator,
+    static: true
+  });
+}
+
+var StaticRouter_1 = server.StaticRouter = StaticRouter;
 
 /**
  * Removes all key-value entries from the list cache.
@@ -3793,12 +3861,12 @@ const loadableBundleData = ({
 };
 const loadableChunkExtractors = () => {
   try {
-    const modern = new server.ChunkExtractor({
+    const modern = new server$1.ChunkExtractor({
       entrypoints: ['app'],
       namespace: 'modern',
       statsFile: path__default["default"].resolve('dist/modern/loadable-stats.json')
     });
-    const legacy = new server.ChunkExtractor({
+    const legacy = new server$1.ChunkExtractor({
       entrypoints: ['app'],
       namespace: 'legacy',
       statsFile: path__default["default"].resolve('dist/legacy/loadable-stats.json')
@@ -3912,11 +3980,11 @@ const webApp = (app, ReactApp, config) => {
     } = request;
     const cookies = new Cookies$1(request.headers.cookie);
 
-    const matchedStaticRoute = () => reactRouterConfig.matchRoutes(routes.StaticRoutes, request.path);
+    const matchedStaticRoute = () => require$$2.matchRoutes(routes.StaticRoutes, request.path);
 
-    const isStaticRoute = () => matchedStaticRoute().length > 0;
+    const isStaticRoute = () => matchedStaticRoute && matchedStaticRoute.length > 0;
 
-    const staticRoute = isStaticRoute() && matchedStaticRoute()[0]; // Allow certain routes to avoid SSR
+    const staticRoute = isStaticRoute() && matchedStaticRoute[0]; // Allow certain routes to avoid SSR
 
     const onlyDynamic = staticRoute && staticRoute.route.ssr === false;
     const onlySSR = staticRoute && staticRoute.route.ssrOnly === true;
@@ -3938,7 +4006,9 @@ const webApp = (app, ReactApp, config) => {
         static: value
       }) => normaliseQs(value) || onlySSR
     });
-    const context = {}; // Track the current statusCode via the response object
+    const context = {
+      location: ''
+    }; // Track the current statusCode via the response object
 
     response.status(200); // Create a store (with a memory history) from our current url
 
@@ -3953,15 +4023,15 @@ const webApp = (app, ReactApp, config) => {
     const project = App.pickProject(request.hostname, request.query);
     const groups = allowedGroups && allowedGroups[project];
     store.dispatch(actions.setCurrentProject(project, groups, request.hostname));
-    const loadableExtractor = loadableChunkExtractors();
-    const jsx = /*#__PURE__*/React__default["default"].createElement(server.ChunkExtractorManager, {
+    const loadableExtractor = loadableChunkExtractors(); // Todo: Provide a custom context for the static router to support old redirects.
+
+    const jsx = /*#__PURE__*/React__default["default"].createElement(server$1.ChunkExtractorManager, {
       extractor: loadableExtractor === null || loadableExtractor === void 0 ? void 0 : loadableExtractor.commonLoadableExtractor
     }, /*#__PURE__*/React__default["default"].createElement(reactCookie.CookiesProvider, {
       cookies: cookies
     }, /*#__PURE__*/React__default["default"].createElement(reactRedux.Provider, {
       store: store
-    }, /*#__PURE__*/React__default["default"].createElement(reactRouterDom.StaticRouter, {
-      context: context,
+    }, /*#__PURE__*/React__default["default"].createElement(StaticRouter_1, {
       location: url
     }, /*#__PURE__*/React__default["default"].createElement(ReactApp, {
       routes: routes,
@@ -3975,7 +4045,7 @@ const webApp = (app, ReactApp, config) => {
 
     if (accessMethod.DYNAMIC) {
       // Dynamic doesn't need sagas
-      server$1.renderToString(jsx); // Dynamic page render has only the necessary bundles to start up the app
+      server$2.renderToString(jsx); // Dynamic page render has only the necessary bundles to start up the app
       // and does not include any react-loadable code-split bundles
 
       const bundleTags = getBundleTags(loadableExtractor, scripts, staticRoutePath);
@@ -3991,7 +4061,7 @@ const webApp = (app, ReactApp, config) => {
     if (!accessMethod.DYNAMIC) {
       store.runSaga(App.rootSaga(withSagas)).toPromise().then(() => {
         const sheet = new styled.ServerStyleSheet();
-        const html = server$1.renderToString(sheet.collectStyles(jsx));
+        const html = server$2.renderToString(sheet.collectStyles(jsx));
         const helmet = reactHelmet.Helmet.renderStatic();
         reactHelmet.Helmet.rewind();
         const htmlAttributes = helmet.htmlAttributes.toString();
@@ -4087,7 +4157,7 @@ const webApp = (app, ReactApp, config) => {
         response.status(500);
         responseHandler(request, response, `Error occurred: <br />${err.stack} <br />${JSON.stringify(err)}`);
       });
-      server$1.renderToString(jsx);
+      server$2.renderToString(jsx);
       store.close();
     }
   });

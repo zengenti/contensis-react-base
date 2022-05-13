@@ -1,11 +1,36 @@
-import { takeEvery, put, call, select } from '@redux-saga/core/effects';
-import { L as LOGIN_USER, n as LOGOUT_USER, V as VALIDATE_USER, S as SET_AUTHENTICATION_STATE } from './reducers-8e5d6232.js';
-import { a as selectUserIsAuthenticated, b as selectUserGroups, m as matchUserGroup, s as selectClientCredentials } from './ToJs-affd73f1.js';
-import { f as setRoute } from './actions-fcfc8704.js';
-import { q as queryParams, j as selectCurrentSearch } from './selectors-337be432.js';
-import mapJson from 'jsonpath-mapper';
-import { to } from 'await-to-js';
-import Cookies from 'js-cookie';
+'use strict';
+
+var effects = require('@redux-saga/core/effects');
+var reducers = require('./reducers-3a4f8971.js');
+var ToJs = require('./ToJs-55a7536c.js');
+var actions = require('./actions-8dc9e8de.js');
+var selectors = require('./selectors-656da4b7.js');
+var mapJson = require('jsonpath-mapper');
+var awaitToJs = require('await-to-js');
+var Cookies = require('js-cookie');
+
+function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+
+function _interopNamespace(e) {
+  if (e && e.__esModule) return e;
+  var n = Object.create(null);
+  if (e) {
+    Object.keys(e).forEach(function (k) {
+      if (k !== 'default') {
+        var d = Object.getOwnPropertyDescriptor(e, k);
+        Object.defineProperty(n, k, d.get ? d : {
+          enumerable: true,
+          get: function () { return e[k]; }
+        });
+      }
+    });
+  }
+  n["default"] = e;
+  return Object.freeze(n);
+}
+
+var mapJson__default = /*#__PURE__*/_interopDefaultLegacy(mapJson);
+var Cookies__default = /*#__PURE__*/_interopDefaultLegacy(Cookies);
 
 const findContentTypeMapping = (ContentTypeMappings, contentTypeId) => ContentTypeMappings.find(ct => ct.contentTypeID === contentTypeId);
 
@@ -20,7 +45,7 @@ const clientCredentials = {
   }) => refreshTokenExpiryDate.toISOString(),
   contensisClassicToken: 'contensisClassicToken'
 };
-var mapClientCredentials = (obj => mapJson(obj, clientCredentials));
+var mapClientCredentials = (obj => mapJson__default["default"](obj, clientCredentials));
 
 // import { Client } from 'contensis-management-api';
 const getManagementApiClient = async ({
@@ -59,7 +84,7 @@ const getManagementApiClient = async ({
 
   const {
     Client
-  } = await import('contensis-management-api');
+  } = await Promise.resolve().then(function () { return /*#__PURE__*/_interopNamespace(require('contensis-management-api')); });
   const client = Client.create({ ...config,
     projectId,
     rootUrl
@@ -76,7 +101,7 @@ const COOKIE_VALID_DAYS = 1; // 0 = Session cookie
 // Override the default js-cookie conversion / encoding
 // methods so the written values work with Contensis sites
 
-const _cookie = Cookies.withConverter({
+const _cookie = Cookies__default["default"].withConverter({
   read: value => decodeURIComponent(value),
   write: value => encodeURIComponent(value)
 });
@@ -125,9 +150,9 @@ const createUserManager = async config => {
     try {
       const {
         UserManager
-      } = await import(
+      } = await Promise.resolve().then(function () { return /*#__PURE__*/_interopNamespace(require(
       /* webpackChunkName: "oidcclient" */
-      'oidc-client');
+      'oidc-client')); });
       return new UserManager(config);
     } catch (e) {
       // eslint-disable-next-line no-console
@@ -203,7 +228,7 @@ class LoginHelper {
         password
       }); // Ensure the client has requested a bearer token
 
-      const [loginError, clientBearerToken] = await to(transientClient.ensureBearerToken()); // Problem getting token with username and password
+      const [loginError, clientBearerToken] = await awaitToJs.to(transientClient.ensureBearerToken()); // Problem getting token with username and password
 
       if (loginError) {
         authenticationState = {
@@ -352,7 +377,7 @@ class LoginHelper {
   }
 
   static async GetCredentialsForSecurityToken(securityToken) {
-    const [error, response] = await to(fetch(`${LoginHelper.CMS_URL}/REST/Contensis/Security/IsAuthenticated`, {
+    const [error, response] = await awaitToJs.to(fetch(`${LoginHelper.CMS_URL}/REST/Contensis/Security/IsAuthenticated`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -367,7 +392,7 @@ class LoginHelper {
     }];
 
     if (response.ok) {
-      const [parseError, body] = await to(response.json());
+      const [parseError, body] = await awaitToJs.to(response.json());
       if (parseError) return [parseError];
       const {
         LogonResult,
@@ -430,10 +455,10 @@ LoginHelper.GetUserDetails = async client => {
       groupsError,
       user = {},
       groupsResult;
-  [userError, user] = await to(client.security.users.getCurrent());
+  [userError, user] = await awaitToJs.to(client.security.users.getCurrent());
 
   if (user && user.id) {
-    [groupsError, groupsResult] = await to(client.security.users.getUserGroups({
+    [groupsError, groupsResult] = await awaitToJs.to(client.security.users.getUserGroups({
       userId: user.id,
       includeInherited: true
     })); // Set groups attribute in user object to be the items
@@ -448,7 +473,7 @@ LoginHelper.GetUserDetails = async client => {
   return [userError, user];
 };
 
-const loginSagas = [takeEvery(LOGIN_USER, loginUserSaga), takeEvery(LOGOUT_USER, logoutUserSaga), takeEvery(VALIDATE_USER, validateUserSaga), takeEvery(SET_AUTHENTICATION_STATE, redirectAfterSuccessfulLoginSaga)];
+const loginSagas = [effects.takeEvery(reducers.LOGIN_USER, loginUserSaga), effects.takeEvery(reducers.LOGOUT_USER, logoutUserSaga), effects.takeEvery(reducers.VALIDATE_USER, validateUserSaga), effects.takeEvery(reducers.SET_AUTHENTICATION_STATE, redirectAfterSuccessfulLoginSaga)];
 function* handleRequiresLoginSaga(action) {
   var _entry$sys;
 
@@ -460,9 +485,9 @@ function* handleRequiresLoginSaga(action) {
     },
     staticRoute
   } = action;
-  let userLoggedIn = yield select(selectUserIsAuthenticated); // Check for a securityToken in querystring
+  let userLoggedIn = yield effects.select(ToJs.selectUserIsAuthenticated); // Check for a securityToken in querystring
 
-  const currentQs = queryParams(yield select(selectCurrentSearch));
+  const currentQs = selectors.queryParams(yield effects.select(selectors.selectCurrentSearch));
   const securityToken = currentQs.securityToken || currentQs.securitytoken; // Check if any of the defined routes have "requireLogin" attribute
 
   const {
@@ -481,12 +506,12 @@ function* handleRequiresLoginSaga(action) {
     // always validate and login the user
     if (routeRequiresLogin) {
       // If routeRequiresLogin do a blocking call that returns userLoggedIn
-      userLoggedIn = yield call(validateUserSaga, {
+      userLoggedIn = yield effects.call(validateUserSaga, {
         securityToken
       });
     } // otherwise do a non blocking put to handle validation in the background
-    else yield put({
-      type: VALIDATE_USER,
+    else yield effects.put({
+      type: reducers.VALIDATE_USER,
       securityToken
     });
   }
@@ -497,8 +522,8 @@ function* handleRequiresLoginSaga(action) {
     if (!userLoggedIn && !securityToken) {
       LoginHelper.ClientRedirectToSignInPage(action.location.pathname);
     } else if (routeRequiresGroups.length > 0) {
-      const userGroups = yield select(selectUserGroups, 'js');
-      const groupMatch = matchUserGroup(userGroups, routeRequiresGroups);
+      const userGroups = yield effects.select(ToJs.selectUserGroups, 'js');
+      const groupMatch = ToJs.matchUserGroup(userGroups, routeRequiresGroups);
       if (!groupMatch) LoginHelper.ClientRedirectToAccessDeniedPage(action.location.pathname);
     }
   }
@@ -514,8 +539,8 @@ function* validateUserSaga({
     // We only attempt to validate the user if one of the stored
     // tokens are found, in this case we set loading state manually
     // so we don't need to set and unset loading if there are no stored
-    yield put({
-      type: SET_AUTHENTICATION_STATE,
+    yield effects.put({
+      type: reducers.SET_AUTHENTICATION_STATE,
       authenticationState: {
         isLoading: true
       }
@@ -534,10 +559,10 @@ function* validateUserSaga({
     } // Log the user in if a refreshToken is found
 
 
-    if (clientCredentials.refreshToken) yield call(loginUserSaga, {
+    if (clientCredentials.refreshToken) yield effects.call(loginUserSaga, {
       clientCredentials
-    });else if (error) yield put({
-      type: SET_AUTHENTICATION_STATE,
+    });else if (error) yield effects.put({
+      type: reducers.SET_AUTHENTICATION_STATE,
       authenticationState: {
         isError: true,
         errorMessage: (error === null || error === void 0 ? void 0 : error.message) || error && 'toString' in error && error.toString()
@@ -546,7 +571,7 @@ function* validateUserSaga({
   } // Tell any callers have we successfully logged in?
 
 
-  return yield select(selectUserIsAuthenticated);
+  return yield effects.select(ToJs.selectUserIsAuthenticated);
 }
 
 function* loginUserSaga(action = {}) {
@@ -557,7 +582,7 @@ function* loginUserSaga(action = {}) {
   } = action; // If a WSFED_LOGIN site has dispatched the loginUser action
   // just redirect them to the Identity Provider sign in
 
-  if (action.type === LOGIN_USER && LoginHelper.WSFED_LOGIN) LoginHelper.ClientRedirectToSignInPage();
+  if (action.type === reducers.LOGIN_USER && LoginHelper.WSFED_LOGIN) LoginHelper.ClientRedirectToSignInPage();
   const {
     authenticationState,
     user
@@ -566,8 +591,8 @@ function* loginUserSaga(action = {}) {
     password,
     clientCredentials
   });
-  yield put({
-    type: SET_AUTHENTICATION_STATE,
+  yield effects.put({
+    type: reducers.SET_AUTHENTICATION_STATE,
     authenticationState,
     user
   });
@@ -583,11 +608,11 @@ const removeHostnamePart = path => {
 };
 
 function* redirectAfterSuccessfulLoginSaga() {
-  const isLoggedIn = yield select(selectUserIsAuthenticated);
+  const isLoggedIn = yield effects.select(ToJs.selectUserIsAuthenticated);
   const {
     redirect_uri: redirectPath,
     ReturnURL: assetRedirectPath
-  } = queryParams(yield select(selectCurrentSearch));
+  } = selectors.queryParams(yield effects.select(selectors.selectCurrentSearch));
 
   if (isLoggedIn && assetRedirectPath && typeof window != 'undefined') {
     const path = removeHostnamePart(assetRedirectPath); // This has to be a hard href to get the app to
@@ -595,28 +620,28 @@ function* redirectAfterSuccessfulLoginSaga() {
 
     window.location.href = path; // yield put(setRoute(path)); // does not work in this scenario
   } else if (isLoggedIn && redirectPath) {
-    yield put(setRoute(redirectPath));
+    yield effects.put(actions.setRoute(redirectPath));
   }
 }
 
 function* logoutUserSaga({
   redirectPath
 }) {
-  yield put({
-    type: SET_AUTHENTICATION_STATE,
+  yield effects.put({
+    type: reducers.SET_AUTHENTICATION_STATE,
     user: null
   });
   yield LoginHelper.LogoutUser(redirectPath);
 }
 
 function* refreshSecurityToken() {
-  const clientCredentials = yield select(selectClientCredentials, 'js');
+  const clientCredentials = yield effects.select(ToJs.selectClientCredentials, 'js');
 
   if (Object.keys(clientCredentials).length > 0) {
     const client = yield getManagementApiClient(clientCredentials);
     yield client.authenticate();
-    yield put({
-      type: SET_AUTHENTICATION_STATE,
+    yield effects.put({
+      type: reducers.SET_AUTHENTICATION_STATE,
       authenticationState: {
         clientCredentials: mapClientCredentials(client)
       }
@@ -624,5 +649,10 @@ function* refreshSecurityToken() {
   }
 }
 
-export { LoginHelper as L, findContentTypeMapping as f, getManagementApiClient as g, handleRequiresLoginSaga as h, loginSagas as l, refreshSecurityToken as r };
-//# sourceMappingURL=login-ca2dc2f7.js.map
+exports.LoginHelper = LoginHelper;
+exports.findContentTypeMapping = findContentTypeMapping;
+exports.getManagementApiClient = getManagementApiClient;
+exports.handleRequiresLoginSaga = handleRequiresLoginSaga;
+exports.loginSagas = loginSagas;
+exports.refreshSecurityToken = refreshSecurityToken;
+//# sourceMappingURL=login-66885d3b.js.map

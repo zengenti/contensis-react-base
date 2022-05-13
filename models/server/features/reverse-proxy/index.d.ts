@@ -1,4 +1,5 @@
 import { Express } from 'express';
-export declare const apiProxy: any;
+import httpProxy from 'http-proxy';
+export declare const apiProxy: httpProxy;
 declare const reverseProxies: (app: Express, reverseProxyPaths?: string[]) => void;
 export default reverseProxies;

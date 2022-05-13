@@ -3,13 +3,13 @@ import React from 'react';
 import { hydrate, render } from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 import { Provider } from 'react-redux';
-import { Router } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import { loadableReady } from '@loadable/component';
 import * as queryString from 'query-string';
 import { CookiesProvider } from 'react-cookie';
-import { c as createStore, s as setVersionStatus } from './version-470f0b15.js';
-import { d as deliveryApi, b as browserHistory, r as rootSaga, p as pickProject } from './App-5efba16c.js';
-export { A as ReactApp } from './App-5efba16c.js';
+import { c as createStore, s as setVersionStatus } from './version-38ccf374.js';
+import { d as deliveryApi, b as browserHistory, r as rootSaga, p as pickProject } from './App-e8b3aa57.js';
+export { A as ReactApp } from './App-e8b3aa57.js';
 import { s as setCurrentProject } from './actions-fcfc8704.js';
 import './selectors-337be432.js';
 import 'jsonpath-mapper';
@@ -25,12 +25,11 @@ import 'history';
 import 'contensis-delivery-api';
 import './version-6dd7b2cd.js';
 import 'loglevel';
-import './login-ca2dc2f7.js';
-import './ToJs-affd73f1.js';
+import './login-d00da7b6.js';
+import './ToJs-fcfaca09.js';
 import 'await-to-js';
 import 'js-cookie';
-import './RouteLoader-f96a61c1.js';
-import 'react-router-config';
+import './RouteLoader-d6cace78.js';
 import 'reselect';
 
 class ClientApp {
@@ -47,9 +46,7 @@ class ClientApp {
     const GetClientJSX = store => {
       const ClientJsx = /*#__PURE__*/React.createElement(AppContainer, null, /*#__PURE__*/React.createElement(CookiesProvider, null, /*#__PURE__*/React.createElement(Provider, {
         store: store
-      }, /*#__PURE__*/React.createElement(Router, {
-        history: browserHistory
-      }, /*#__PURE__*/React.createElement(ReactApp, {
+      }, /*#__PURE__*/React.createElement(BrowserRouter, null, /*#__PURE__*/React.createElement(ReactApp, {
         routes: routes,
         withEvents: withEvents
       })))));

@@ -3,12 +3,11 @@
 var React = require('react');
 var reactRedux = require('react-redux');
 var reactHotLoader = require('react-hot-loader');
-var reactRouterDom = require('react-router-dom');
-var reactRouterConfig = require('react-router-config');
+var require$$2 = require('react-router-dom');
 var reselect = require('reselect');
 var selectors = require('./selectors-656da4b7.js');
 var actions = require('./actions-8dc9e8de.js');
-var ToJs = require('./ToJs-a9a8522b.js');
+var ToJs = require('./ToJs-55a7536c.js');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -26,18 +25,23 @@ const NotFound = ({
   }
 }, statusText)));
 
+// Todo: Remove below disable once implemented properly.
+
+/* eslint-disable @typescript-eslint/no-unused-vars */
+// import { Route } from 'react-router-dom';
 const Status = ({
   code,
   children
 }) => {
-  return /*#__PURE__*/React__default["default"].createElement(reactRouterDom.Route, {
-    render: ({
-      staticContext
-    }) => {
-      if (staticContext) staticContext.statusCode = code;
-      return children;
-    }
-  });
+  // Todo: Use our custom context to set a status code.
+  return null; // return (
+  //   <Route
+  //     render={({ staticContext }) => {
+  //       if (staticContext) staticContext.statusCode = code;
+  //       return children;
+  //     }}
+  //   />
+  // );
 };
 
 const replaceDoubleSlashRecursive = path => {
@@ -82,16 +86,32 @@ const RouteLoader = ({
   userGroups,
   withEvents
 }) => {
-  const location = reactRouterDom.useLocation(); // Always ensure paths are trimmed of trailing slashes so urls are always unique
+  const location = require$$2.useLocation(); // Always ensure paths are trimmed of trailing slashes so urls are always unique
 
-  const trimmedPath = getTrimmedPath(location.pathname); // Match any Static Routes a developer has defined
+  const trimmedPath = getTrimmedPath(location.pathname);
+  const staticRoutes = routes.StaticRoutes.map(x => {
+    const route = { ...x
+    };
 
-  const matchedStaticRoute = () => reactRouterConfig.matchRoutes(routes.StaticRoutes, location.pathname);
+    if (route.component) {
+      route.element = /*#__PURE__*/React__default["default"].createElement(route.component, {
+        projectId: projectId,
+        contentTypeId: contentTypeId ? contentTypeId : undefined,
+        entry: entry,
+        mappedEntry: mappedEntry,
+        isLoggedIn: isLoggedIn
+      });
+      delete route.component;
+    }
 
-  const isStaticRoute = () => matchedStaticRoute().length > 0;
+    return route;
+  }); // Match any Static Routes a developer has defined
 
-  const staticRoute = isStaticRoute() && matchedStaticRoute()[0];
+  const matchedStaticRoute = require$$2.matchRoutes(staticRoutes, location);
+  const isStaticRoute = matchedStaticRoute && matchedStaticRoute.length > 0;
+  const staticRoute = isStaticRoute ? matchedStaticRoute[0] : null;
   const routeRequiresLogin = staticRoute && staticRoute.route.requireLogin;
+  const staticRouteElement = require$$2.useRoutes(staticRoutes);
   const setPath = React.useCallback(() => {
     // Use serverPath to control the path we send to siteview node api to resolve a route
     let serverPath = '';
@@ -128,20 +148,15 @@ const RouteLoader = ({
   }, [location, setPath]); // Need to redirect when url endswith a /
 
   if (location.pathname.length > trimmedPath.length) {
-    return /*#__PURE__*/React__default["default"].createElement(reactRouterDom.Redirect, {
+    // Todo: Also handle the redirect serverside
+    return /*#__PURE__*/React__default["default"].createElement(require$$2.Navigate, {
       to: trimmedPath
     });
   } // Render any Static Routes a developer has defined
 
 
-  if (isStaticRoute() && !(!isLoggedIn && routeRequiresLogin)) {
-    if (ToJs.matchUserGroup(userGroups, routeRequiresLogin)) return reactRouterConfig.renderRoutes(routes.StaticRoutes, {
-      projectId,
-      contentTypeId,
-      entry,
-      mappedEntry,
-      isLoggedIn
-    });
+  if (isStaticRoute && !(!isLoggedIn && routeRequiresLogin)) {
+    if (ToJs.matchUserGroup(userGroups, routeRequiresLogin)) return staticRouteElement;
   } // Render a supplied Loading component if the route
   // is not a static route and is in a loading state
 
@@ -200,4 +215,4 @@ const mapDispatchToProps = {
 var RouteLoader$1 = reactHotLoader.hot(module)(reactRedux.connect(mapStateToPropsMemoized, mapDispatchToProps)(ToJs.toJS(RouteLoader)));
 
 exports.RouteLoader = RouteLoader$1;
-//# sourceMappingURL=RouteLoader-2675e1c9.js.map
+//# sourceMappingURL=RouteLoader-e27146e5.js.map

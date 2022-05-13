@@ -7,12 +7,12 @@ var React = require('react');
 var reactDom = require('react-dom');
 var reactHotLoader = require('react-hot-loader');
 var reactRedux = require('react-redux');
-var reactRouterDom = require('react-router-dom');
+var require$$2 = require('react-router-dom');
 var component = require('@loadable/component');
 var queryString = require('query-string');
 var reactCookie = require('react-cookie');
-var version = require('./version-b3e55cdf.js');
-var App = require('./App-6e2518eb.js');
+var version = require('./version-72076f37.js');
+var App = require('./App-6c2ba094.js');
 var actions = require('./actions-8dc9e8de.js');
 require('./selectors-656da4b7.js');
 require('jsonpath-mapper');
@@ -28,12 +28,11 @@ require('history');
 require('contensis-delivery-api');
 require('./version-eba6d09b.js');
 require('loglevel');
-require('./login-6b9de6a1.js');
-require('./ToJs-a9a8522b.js');
+require('./login-66885d3b.js');
+require('./ToJs-55a7536c.js');
 require('await-to-js');
 require('js-cookie');
-require('./RouteLoader-2675e1c9.js');
-require('react-router-config');
+require('./RouteLoader-e27146e5.js');
 require('reselect');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
@@ -73,9 +72,7 @@ class ClientApp {
     const GetClientJSX = store => {
       const ClientJsx = /*#__PURE__*/React__default["default"].createElement(reactHotLoader.AppContainer, null, /*#__PURE__*/React__default["default"].createElement(reactCookie.CookiesProvider, null, /*#__PURE__*/React__default["default"].createElement(reactRedux.Provider, {
         store: store
-      }, /*#__PURE__*/React__default["default"].createElement(reactRouterDom.Router, {
-        history: App.browserHistory
-      }, /*#__PURE__*/React__default["default"].createElement(ReactApp, {
+      }, /*#__PURE__*/React__default["default"].createElement(require$$2.BrowserRouter, null, /*#__PURE__*/React__default["default"].createElement(ReactApp, {
         routes: routes,
         withEvents: withEvents
       })))));
