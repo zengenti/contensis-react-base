@@ -149,7 +149,7 @@ export const getBundleTags = (
   // Get the script tags from their respective extractor instances
   if (loadableExtractor) {
     const legacyScriptTags = loadableExtractor?.legacy.getScriptTags({
-      noModule: true,
+      nomodule: true,
     });
     const modernScriptTags = loadableExtractor?.modern.getScriptTags({
       type: 'module',
