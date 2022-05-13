@@ -3,6 +3,7 @@ import { Entry, Node } from 'contensis-delivery-api/lib/models';
 import React from 'react';
 import { AppState } from '~/redux/appstate';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type MatchedRoute<T, U> = any;
 type RouteConfig = any;
 

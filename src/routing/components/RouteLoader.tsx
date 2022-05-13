@@ -119,7 +119,7 @@ const RouteLoader = ({
   // Match any Static Routes a developer has defined
   const matchedStaticRoute = matchRoutes(
     staticRoutes as RouteObject[],
-    location.pathname
+    location
   );
   const isStaticRoute = matchedStaticRoute && matchedStaticRoute.length > 0;
 

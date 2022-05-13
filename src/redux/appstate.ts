@@ -4,6 +4,7 @@ import { Group, User } from 'contensis-management-api/lib/models';
 // import { MatchedRoute } from 'react-router-config';
 import { StaticRoute } from '~/routing/routes';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type MatchedRoute<T, U> = any;
 
 export type AppState = {

@@ -45,8 +45,8 @@ class ClientApp {
           <CookiesProvider>
             <ReduxProvider store={store}>
               <BrowserRouter>
-              <ReactApp routes={routes} withEvents={withEvents} />
-            </BrowserRouter>
+                <ReactApp routes={routes} withEvents={withEvents} />
+              </BrowserRouter>
             </ReduxProvider>
           </CookiesProvider>
         </AppContainer>
