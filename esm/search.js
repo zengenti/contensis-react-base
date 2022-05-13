@@ -1,7 +1,7 @@
 import React, { useMemo, useEffect } from 'react';
 import { connect, useDispatch, useSelector } from 'react-redux';
-import { g as getCurrentFacet, b as getPageIndex$2, e as getCurrentTab$1, h as getFacet$1, i as getTabFacets$1, j as getFacetsTotalCount$1, k as getFacetTitles$1, l as getFeaturedResults$2, m as getRenderableFilters$2, n as getIsLoading$2, p as getPaging, q as getPageIsLoading$2, r as getResults, s as getSearchTerm$2, u as getSearchTotalCount$1, v as getSelectedFilters, w as getQueryParameter$2, x as getTabsAndFacets$1, y as getTotalCount$1, z as withMappers, A as clearFilters, B as updateCurrentFacet, C as updateCurrentTab, D as updatePageIndex, E as updateSearchTerm, F as updateSelectedFilters, G as updateSortOrder, H as selectListing, I as mapStateToSearchUri, J as Context$1, K as selectFacets, L as triggerSearch, M as getFilters, U as UPDATE_SORT_ORDER, N as toArray, O as UPDATE_SELECTED_FILTERS, P as UPDATE_SEARCH_TERM, Q as UPDATE_PAGE_INDEX, S as SET_SEARCH_FILTERS, R as SET_SEARCH_ENTRIES, T as SET_ROUTE_FILTERS, V as LOAD_FILTERS_COMPLETE, W as LOAD_FILTERS_ERROR, X as LOAD_FILTERS, Y as EXECUTE_SEARCH_ERROR, Z as EXECUTE_SEARCH, _ as CLEAR_FILTERS, $ as APPLY_CONFIG } from './sagas-a22fc54a.js';
-export { a0 as actions, a5 as doSearch, a1 as expressions, a2 as queries, a7 as sagas, a3 as selectors, a6 as setRouteFilters, a4 as types } from './sagas-a22fc54a.js';
+import { g as getCurrentFacet, b as getPageIndex$2, e as getCurrentTab$1, h as getFacet$1, i as getTabFacets$1, j as getFacetsTotalCount$1, k as getFacetTitles$1, l as getFeaturedResults$2, m as getRenderableFilters$2, n as getIsLoading$2, p as getPaging, q as getPageIsLoading$2, r as getResults, s as getSearchTerm$2, u as getSearchTotalCount$1, v as getSelectedFilters, w as getQueryParameter$2, x as getTabsAndFacets$1, y as getTotalCount$1, z as withMappers, A as clearFilters, B as updateCurrentFacet, C as updateCurrentTab, D as updatePageIndex, E as updateSearchTerm, F as updateSelectedFilters, G as updateSortOrder, H as selectListing, I as mapStateToSearchUri, J as Context$1, K as selectFacets, L as triggerSearch, M as getFilters, U as UPDATE_SORT_ORDER, N as toArray, O as UPDATE_SELECTED_FILTERS, P as UPDATE_SEARCH_TERM, Q as UPDATE_PAGE_INDEX, S as SET_SEARCH_FILTERS, R as SET_SEARCH_ENTRIES, T as SET_ROUTE_FILTERS, V as LOAD_FILTERS_COMPLETE, W as LOAD_FILTERS_ERROR, X as LOAD_FILTERS, Y as EXECUTE_SEARCH_ERROR, Z as EXECUTE_SEARCH, _ as CLEAR_FILTERS, $ as APPLY_CONFIG } from './sagas-f53dd366.js';
+export { a0 as actions, a5 as doSearch, a1 as expressions, a2 as queries, a7 as sagas, a3 as selectors, a6 as setRouteFilters, a4 as types } from './sagas-f53dd366.js';
 import 'jsonpath-mapper';
 import { createSelector } from 'reselect';
 import merge from 'deepmerge';
@@ -359,7 +359,7 @@ const useMinilist = ({
   // }));
 
   useEffect(() => {
-    if (id && (mapper || mappers && mappers.results)) {
+    if (id && (mapper || mappers !== null && mappers !== void 0 && mappers.results)) {
       dispatch(triggerSearch({
         config,
         context: Context$1.minilist,
