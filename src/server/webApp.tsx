@@ -3,7 +3,7 @@ import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom/server';
 import { Provider as ReduxProvider } from 'react-redux';
-import { matchRoutes, RouteObject } from 'react-router';
+import { matchRoutes, RouteObject } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { ServerStyleSheet } from 'styled-components';
 import serialize from 'serialize-javascript';

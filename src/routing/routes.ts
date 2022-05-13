@@ -1,6 +1,9 @@
-import { MatchedRoute, RouteConfig } from 'react-router-config';
+// import { MatchedRoute, RouteConfig } from 'react-router-config';
 import { Entry, Node } from 'contensis-delivery-api/lib/models';
 import React from 'react';
+
+type MatchedRoute<T, U> = any;
+type RouteConfig = any;
 
 type RouteComponent<Props> = React.ComponentType<Props>;
 
