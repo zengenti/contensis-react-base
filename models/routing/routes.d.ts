@@ -62,8 +62,9 @@ export declare type ContentTypeMapping = {
     };
     requireLogin?: RequireLogin;
 };
-export declare type StaticRoute = RouteObject & {
+export declare type StaticRoute = Omit<RouteObject, 'children'> & {
     component?: RouteComponent<RouteComponentProps>;
+    children?: StaticRoute[];
     fetchNode?: boolean;
     fetchNodeLevel?: number;
     injectRedux?: ReduxInjector;
