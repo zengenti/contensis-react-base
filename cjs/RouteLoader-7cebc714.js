@@ -13,6 +13,11 @@ function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'defau
 
 var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
 
+const HttpContext = /*#__PURE__*/React.createContext({});
+const useHttpContext = () => {
+  return React.useContext(HttpContext);
+};
+
 const NotFound = ({
   statusCode,
   statusText
@@ -25,23 +30,17 @@ const NotFound = ({
   }
 }, statusText)));
 
-// Todo: Remove below disable once implemented properly.
-
-/* eslint-disable @typescript-eslint/no-unused-vars */
-// import { Route } from 'react-router-dom';
 const Status = ({
   code,
   children
 }) => {
-  // Todo: Use our custom context to set a status code.
-  return null; // return (
-  //   <Route
-  //     render={({ staticContext }) => {
-  //       if (staticContext) staticContext.statusCode = code;
-  //       return children;
-  //     }}
-  //   />
-  // );
+  const httpContext = useHttpContext();
+
+  if (httpContext) {
+    httpContext.statusCode = code;
+  }
+
+  return /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, children);
 };
 
 const replaceDoubleSlashRecursive = path => {
@@ -241,5 +240,7 @@ const mapDispatchToProps = {
 };
 var RouteLoader$1 = reactHotLoader.hot(module)(reactRedux.connect(mapStateToPropsMemoized, mapDispatchToProps)(ToJs.toJS(RouteLoader)));
 
+exports.HttpContext = HttpContext;
 exports.RouteLoader = RouteLoader$1;
-//# sourceMappingURL=RouteLoader-1f58b8be.js.map
+exports.useHttpContext = useHttpContext;
+//# sourceMappingURL=RouteLoader-7cebc714.js.map

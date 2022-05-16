@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useContext, createContext, useCallback, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { hot } from 'react-hot-loader';
 import { useLocation, matchRoutes, useRoutes, Navigate } from 'react-router-dom';
@@ -6,6 +6,11 @@ import { createSelector } from 'reselect';
 import { k as selectRouteEntryContentTypeId, a as selectRouteEntry, l as selectRouteIsError, m as selectIsNotFound, n as selectRouteLoading, i as selectMappedEntry, b as selectCurrentProject, o as selectCurrentPath, p as selectRouteStatusCode, r as selectRouteErrorMessage } from './selectors-337be432.js';
 import { g as setNavigationPath } from './actions-fcfc8704.js';
 import { a as selectUserIsAuthenticated, b as selectUserGroups, t as toJS, m as matchUserGroup } from './ToJs-fcfaca09.js';
+
+const HttpContext = /*#__PURE__*/createContext({});
+const useHttpContext = () => {
+  return useContext(HttpContext);
+};
 
 const NotFound = ({
   statusCode,
@@ -19,23 +24,17 @@ const NotFound = ({
   }
 }, statusText)));
 
-// Todo: Remove below disable once implemented properly.
-
-/* eslint-disable @typescript-eslint/no-unused-vars */
-// import { Route } from 'react-router-dom';
 const Status = ({
   code,
   children
 }) => {
-  // Todo: Use our custom context to set a status code.
-  return null; // return (
-  //   <Route
-  //     render={({ staticContext }) => {
-  //       if (staticContext) staticContext.statusCode = code;
-  //       return children;
-  //     }}
-  //   />
-  // );
+  const httpContext = useHttpContext();
+
+  if (httpContext) {
+    httpContext.statusCode = code;
+  }
+
+  return /*#__PURE__*/React.createElement(React.Fragment, null, children);
 };
 
 const replaceDoubleSlashRecursive = path => {
@@ -235,5 +234,5 @@ const mapDispatchToProps = {
 };
 var RouteLoader$1 = hot(module)(connect(mapStateToPropsMemoized, mapDispatchToProps)(toJS(RouteLoader)));
 
-export { RouteLoader$1 as R };
-//# sourceMappingURL=RouteLoader-804d6019.js.map
+export { HttpContext as H, RouteLoader$1 as R, useHttpContext as u };
+//# sourceMappingURL=RouteLoader-1a87e827.js.map

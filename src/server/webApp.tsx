@@ -23,6 +23,7 @@ import { history } from '~/redux/store/history';
 import rootSaga from '~/redux/sagas';
 
 import { setVersion, setVersionStatus } from '~/redux/actions/version';
+import { HttpContext } from '~/routing/httpContext';
 import { setCurrentProject } from '~/routing/redux/actions';
 
 import { deliveryApi } from '~/util/ContensisDeliveryApi';
@@ -151,9 +152,11 @@ const webApp = (
       >
         <CookiesProvider cookies={cookies}>
           <ReduxProvider store={store}>
-            <StaticRouter location={url}>
-              <ReactApp routes={routes} withEvents={withEvents} />
-            </StaticRouter>
+            <HttpContext.Provider value={context}>
+              <StaticRouter location={url}>
+                <ReactApp routes={routes} withEvents={withEvents} />
+              </StaticRouter>
+            </HttpContext.Provider>
           </ReduxProvider>
         </CookiesProvider>
       </ChunkExtractorManager>

@@ -13,7 +13,7 @@ require('query-string');
 require('immer');
 require('deep-equal');
 var VersionInfo = require('./VersionInfo-4c9dfa6a.js');
-var App = require('./App-5fe57394.js');
+var App = require('./App-6b0c2694.js');
 require('isomorphic-fetch');
 var express = require('express');
 var httpProxy = require('http-proxy');
@@ -32,6 +32,7 @@ var lodash = require('lodash');
 var lodashClean = require('lodash-clean');
 var reactCookie = require('react-cookie');
 var version = require('./version-d1940d25.js');
+var RouteLoader = require('./RouteLoader-7cebc714.js');
 var actions = require('./actions-8dc9e8de.js');
 var selectors = require('./selectors-656da4b7.js');
 require('loglevel');
@@ -44,7 +45,6 @@ require('./ToJs-55a7536c.js');
 require('await-to-js');
 require('js-cookie');
 require('react-hot-loader');
-require('./RouteLoader-1f58b8be.js');
 require('redux');
 require('redux-thunk');
 require('redux-saga');
@@ -4031,12 +4031,14 @@ const webApp = (app, ReactApp, config) => {
       cookies: cookies
     }, /*#__PURE__*/React__default["default"].createElement(reactRedux.Provider, {
       store: store
+    }, /*#__PURE__*/React__default["default"].createElement(RouteLoader.HttpContext.Provider, {
+      value: context
     }, /*#__PURE__*/React__default["default"].createElement(StaticRouter_1, {
       location: url
     }, /*#__PURE__*/React__default["default"].createElement(ReactApp, {
       routes: routes,
       withEvents: withEvents
-    })))));
+    }))))));
     const {
       templateHTML,
       templateHTMLFragment,
