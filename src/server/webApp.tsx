@@ -145,7 +145,6 @@ const webApp = (
 
     const loadableExtractor = loadableChunkExtractors();
 
-    // Todo: Provide a custom context for the static router to support old redirects.
     const jsx = (
       <ChunkExtractorManager
         extractor={loadableExtractor?.commonLoadableExtractor}

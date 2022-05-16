@@ -4023,8 +4023,7 @@ const webApp = (app, ReactApp, config) => {
     const project = App.pickProject(request.hostname, request.query);
     const groups = allowedGroups && allowedGroups[project];
     store.dispatch(actions.setCurrentProject(project, groups, request.hostname));
-    const loadableExtractor = loadableChunkExtractors(); // Todo: Provide a custom context for the static router to support old redirects.
-
+    const loadableExtractor = loadableChunkExtractors();
     const jsx = /*#__PURE__*/React__default["default"].createElement(server$1.ChunkExtractorManager, {
       extractor: loadableExtractor === null || loadableExtractor === void 0 ? void 0 : loadableExtractor.commonLoadableExtractor
     }, /*#__PURE__*/React__default["default"].createElement(reactCookie.CookiesProvider, {
