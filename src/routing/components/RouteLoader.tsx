@@ -8,7 +8,6 @@ import {
   RouteObject,
   useRoutes,
 } from 'react-router-dom';
-// import { renderRoutes, matchRoutes, RouteConfig } from 'react-router-config';
 
 import { createSelector } from 'reselect';
 
@@ -37,7 +36,12 @@ import { matchUserGroup } from '~/user/util/matchGroups';
 
 import { toJS } from '~/util/ToJs';
 import { Entry } from 'contensis-delivery-api/lib/models';
-import { AppRootProps, RouteLoaderProps, StaticRoute } from '../routes';
+import {
+  AppRootProps,
+  RouteLoaderProps,
+  StaticRoute,
+  MatchedRoute,
+} from '../routes';
 
 const replaceDoubleSlashRecursive = (path: string) => {
   const nextPath = path.replace(/\/\//, '/');
@@ -99,6 +103,7 @@ const RouteLoader = ({
   // Always ensure paths are trimmed of trailing slashes so urls are always unique
   const trimmedPath = getTrimmedPath(location.pathname);
 
+  // Convert any react-router-v5 style routes to react-router-v6 style routes.
   const staticRoutes = routes.StaticRoutes.map(x => {
     const route = { ...x };
     if (route.component) {
@@ -123,26 +128,47 @@ const RouteLoader = ({
   );
   const isStaticRoute = matchedStaticRoute && matchedStaticRoute.length > 0;
 
-  const staticRoute: StaticRoute | null = isStaticRoute
-    ? matchedStaticRoute[0]
+  // Combine custom params for all static routes, with the furthest config taking precedence.
+  let finalRoute = {};
+  if (isStaticRoute) {
+    for (const [i, route] of matchedStaticRoute.entries()) {
+      const staticRouteCopy = { ...route.route };
+      if (i === matchedStaticRoute.length - 1) {
+        finalRoute = { ...finalRoute, ...staticRouteCopy };
+        matchedStaticRoute[i].route = finalRoute;
+      } else {
+        delete staticRouteCopy.children;
+        delete staticRouteCopy.index;
+        delete staticRouteCopy.path;
+        delete staticRouteCopy.component;
+        delete staticRouteCopy.element;
+        finalRoute = { ...finalRoute, ...staticRouteCopy };
+      }
+    }
+  }
+
+  const staticRoute: MatchedRoute<string, StaticRoute> | null = isStaticRoute
+    ? matchedStaticRoute.pop() || null
     : null;
 
-  const routeRequiresLogin = staticRoute && staticRoute.route.requireLogin;
+  const routeRequiresLogin = staticRoute
+    ? staticRoute.route.requireLogin
+    : undefined;
 
   const staticRouteElement = useRoutes(staticRoutes as RouteObject[]);
 
   const setPath = useCallback(() => {
     // Use serverPath to control the path we send to siteview node api to resolve a route
     let serverPath = '';
-    if (staticRoute && staticRoute.match && staticRoute.match.isExact) {
-      const { match, route } = staticRoute;
+    if (staticRoute && staticRoute.pathname === staticRoute.pathnameBase) {
+      const { route, pathname } = staticRoute;
 
       if (route.path?.includes('*')) {
         // Send the whole url to api if we have matched route containing wildcard
-        serverPath = match.url;
+        serverPath = pathname;
       } else if (typeof route.fetchNodeLevel === 'number') {
         // Send all url parts to a specified level to api
-        serverPath = match.url
+        serverPath = pathname
           .split('/')
           .splice(0, route.fetchNodeLevel + 1)
           .join('/');

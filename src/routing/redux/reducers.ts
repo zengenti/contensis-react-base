@@ -105,7 +105,7 @@ export default produce((state: Draft<any>, action) => {
           state.location = action.location;
           state.staticRoute = {
             ...staticRoute,
-            route: { ...staticRoute.route, component: null },
+            route: { ...staticRoute.route, element: null },
           };
 
           state.isLoading = typeof window !== 'undefined';
@@ -113,7 +113,7 @@ export default produce((state: Draft<any>, action) => {
           state.location = action.location;
           state.staticRoute = {
             ...staticRoute,
-            route: { ...staticRoute.route, component: null },
+            route: { ...staticRoute.route, element: null },
           };
         }
       }

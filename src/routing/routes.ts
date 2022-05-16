@@ -1,15 +1,18 @@
-// import { MatchedRoute, RouteConfig } from 'react-router-config';
+import type { RouteObject, RouteMatch } from 'react-router';
 import { Entry, Node } from 'contensis-delivery-api/lib/models';
 import React from 'react';
 import { AppState } from '~/redux/appstate';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type MatchedRoute<T, U> = any;
-type RouteConfig = any;
-
 type RouteComponent<Props> = React.ComponentType<Props>;
 
 export type RouteNode = Node & { ancestors: Node[]; children: Node[] };
+
+export type MatchedRoute<
+  ParamKey extends string = string,
+  TRouteObject extends RouteObject = RouteObject
+> = Omit<RouteMatch<ParamKey>, 'route'> & {
+  route: TRouteObject;
+};
 
 export type AppRoutes = {
   ContentTypeMappings: ContentTypeMapping[];
@@ -78,7 +81,7 @@ export type ContentTypeMapping = {
   requireLogin?: RequireLogin;
 };
 
-export type StaticRoute = Omit<RouteConfig, 'component'> & {
+export type StaticRoute = RouteObject & {
   component?: RouteComponent<RouteComponentProps>;
   fetchNode?: boolean;
   fetchNodeLevel?: number;
@@ -91,7 +94,7 @@ export type StaticRoute = Omit<RouteConfig, 'component'> & {
 export type OnRouteLoadArgs = {
   location: { pathname: string; search: string; hash: string; key?: string };
   path: string;
-  staticRoute: MatchedRoute<any, StaticRoute>;
+  staticRoute: MatchedRoute<string, StaticRoute>;
   statePath: string;
 };
 
@@ -99,7 +102,7 @@ export type OnRouteLoadedArgs = {
   entry: Entry | any;
   location: { pathname: string; search: string; hash: string; key?: string };
   path: string;
-  staticRoute: MatchedRoute<any, StaticRoute>;
+  staticRoute: MatchedRoute<string, StaticRoute>;
 };
 
 export type RouteLoadOptions = {
