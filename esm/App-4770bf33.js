@@ -2,7 +2,7 @@ import { createBrowserHistory, createMemoryHistory } from 'history';
 import { takeEvery, select, put, call, all } from '@redux-saga/core/effects';
 import { Client, Op, Query } from 'contensis-delivery-api';
 import { a as setSurrogateKeys, S as SET_NAVIGATION_PATH, b as SET_ROUTE, U as UPDATE_LOADING_STATE, c as SET_ENTRY, d as SET_ANCESTORS, e as SET_SIBLINGS, f as setRoute } from './actions-fcfc8704.js';
-import { r as reduxStore, G as GET_NODE_TREE, h as hasNavigationTree, S as SET_NODE_TREE, b as GET_NODE_TREE_ERROR, i as injectRedux } from './version-38ccf374.js';
+import { r as reduxStore, G as GET_NODE_TREE, h as hasNavigationTree, S as SET_NODE_TREE, b as GET_NODE_TREE_ERROR, i as injectRedux } from './version-10f833e5.js';
 import { s as selectVersionStatus } from './version-6dd7b2cd.js';
 import { b as selectCurrentProject, a as selectRouteEntry, c as selectCurrentNode, d as selectCurrentAncestors, e as selectCurrentSiblings, f as selectRouteEntryEntryId, h as selectRouteEntryLanguage, i as selectMappedEntry, q as queryParams, j as selectCurrentSearch } from './selectors-337be432.js';
 import * as log from 'loglevel';
@@ -14,7 +14,7 @@ import React from 'react';
 import 'react-hot-loader';
 import 'jsonpath-mapper';
 import 'query-string';
-import { R as RouteLoader } from './RouteLoader-d6cace78.js';
+import { R as RouteLoader } from './RouteLoader-804d6019.js';
 
 const storeSurrogateKeys = response => {
   const keys = response.headers.get ? response.headers.get('surrogate-key') : response.headers.map['surrogate-key'];
@@ -1069,4 +1069,4 @@ const AppRoot = props => {
 };
 
 export { AppRoot as A, browserHistory as b, cachedSearch as c, deliveryApi as d, history as h, pickProject as p, rootSaga as r };
-//# sourceMappingURL=App-e8b3aa57.js.map
+//# sourceMappingURL=App-4770bf33.js.map

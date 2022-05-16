@@ -88,7 +88,8 @@ const RouteLoader = ({
 }) => {
   const location = require$$2.useLocation(); // Always ensure paths are trimmed of trailing slashes so urls are always unique
 
-  const trimmedPath = getTrimmedPath(location.pathname);
+  const trimmedPath = getTrimmedPath(location.pathname); // Convert any react-router-v5 style routes to react-router-v6 style routes.
+
   const staticRoutes = routes.StaticRoutes.map(x => {
     const route = { ...x
     };
@@ -108,28 +109,54 @@ const RouteLoader = ({
   }); // Match any Static Routes a developer has defined
 
   const matchedStaticRoute = require$$2.matchRoutes(staticRoutes, location);
-  const isStaticRoute = matchedStaticRoute && matchedStaticRoute.length > 0;
-  const staticRoute = isStaticRoute ? matchedStaticRoute[0] : null;
-  const routeRequiresLogin = staticRoute && staticRoute.route.requireLogin;
+  const isStaticRoute = matchedStaticRoute && matchedStaticRoute.length > 0; // Combine custom params for all static routes, with the furthest config taking precedence.
+
+  let finalRoute = {};
+
+  if (isStaticRoute) {
+    for (const [i, route] of matchedStaticRoute.entries()) {
+      const staticRouteCopy = { ...route.route
+      };
+
+      if (i === matchedStaticRoute.length - 1) {
+        finalRoute = { ...finalRoute,
+          ...staticRouteCopy
+        };
+        matchedStaticRoute[i].route = finalRoute;
+      } else {
+        delete staticRouteCopy.children;
+        delete staticRouteCopy.index;
+        delete staticRouteCopy.path;
+        delete staticRouteCopy.component;
+        delete staticRouteCopy.element;
+        finalRoute = { ...finalRoute,
+          ...staticRouteCopy
+        };
+      }
+    }
+  }
+
+  const staticRoute = isStaticRoute ? matchedStaticRoute.pop() || null : null;
+  const routeRequiresLogin = staticRoute ? staticRoute.route.requireLogin : undefined;
   const staticRouteElement = require$$2.useRoutes(staticRoutes);
   const setPath = React.useCallback(() => {
     // Use serverPath to control the path we send to siteview node api to resolve a route
     let serverPath = '';
 
-    if (staticRoute && staticRoute.match && staticRoute.match.isExact) {
+    if (staticRoute && staticRoute.pathname === staticRoute.pathnameBase) {
       var _route$path;
 
       const {
-        match,
-        route
+        route,
+        pathname
       } = staticRoute;
 
       if ((_route$path = route.path) !== null && _route$path !== void 0 && _route$path.includes('*')) {
         // Send the whole url to api if we have matched route containing wildcard
-        serverPath = match.url;
+        serverPath = pathname;
       } else if (typeof route.fetchNodeLevel === 'number') {
         // Send all url parts to a specified level to api
-        serverPath = match.url.split('/').splice(0, route.fetchNodeLevel + 1).join('/');
+        serverPath = pathname.split('/').splice(0, route.fetchNodeLevel + 1).join('/');
       } else {
         var _route$path2;
 
@@ -215,4 +242,4 @@ const mapDispatchToProps = {
 var RouteLoader$1 = reactHotLoader.hot(module)(reactRedux.connect(mapStateToPropsMemoized, mapDispatchToProps)(ToJs.toJS(RouteLoader)));
 
 exports.RouteLoader = RouteLoader$1;
-//# sourceMappingURL=RouteLoader-e27146e5.js.map
+//# sourceMappingURL=RouteLoader-1f58b8be.js.map

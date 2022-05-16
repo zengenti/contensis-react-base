@@ -4,7 +4,7 @@ var require$$1 = require('history');
 var effects = require('@redux-saga/core/effects');
 var contensisDeliveryApi = require('contensis-delivery-api');
 var actions = require('./actions-8dc9e8de.js');
-var version = require('./version-72076f37.js');
+var version = require('./version-d1940d25.js');
 var version$1 = require('./version-eba6d09b.js');
 var selectors = require('./selectors-656da4b7.js');
 var log = require('loglevel');
@@ -16,7 +16,7 @@ var React = require('react');
 require('react-hot-loader');
 require('jsonpath-mapper');
 require('query-string');
-var RouteLoader = require('./RouteLoader-e27146e5.js');
+var RouteLoader = require('./RouteLoader-1f58b8be.js');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -1100,4 +1100,4 @@ exports.deliveryApi = deliveryApi;
 exports.history = history;
 exports.pickProject = pickProject;
 exports.rootSaga = rootSaga;
-//# sourceMappingURL=App-6c2ba094.js.map
+//# sourceMappingURL=App-5fe57394.js.map

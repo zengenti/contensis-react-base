@@ -7,9 +7,9 @@ import { BrowserRouter } from 'react-router-dom';
 import { loadableReady } from '@loadable/component';
 import * as queryString from 'query-string';
 import { CookiesProvider } from 'react-cookie';
-import { c as createStore, s as setVersionStatus } from './version-38ccf374.js';
-import { d as deliveryApi, b as browserHistory, r as rootSaga, p as pickProject } from './App-e8b3aa57.js';
-export { A as ReactApp } from './App-e8b3aa57.js';
+import { c as createStore, s as setVersionStatus } from './version-10f833e5.js';
+import { d as deliveryApi, b as browserHistory, r as rootSaga, p as pickProject } from './App-4770bf33.js';
+export { A as ReactApp } from './App-4770bf33.js';
 import { s as setCurrentProject } from './actions-fcfc8704.js';
 import './selectors-337be432.js';
 import 'jsonpath-mapper';
@@ -29,7 +29,7 @@ import './login-d00da7b6.js';
 import './ToJs-fcfaca09.js';
 import 'await-to-js';
 import 'js-cookie';
-import './RouteLoader-d6cace78.js';
+import './RouteLoader-804d6019.js';
 import 'reselect';
 
 class ClientApp {

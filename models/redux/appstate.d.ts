@@ -1,8 +1,7 @@
 import { VersionStatus } from 'contensis-core-api';
 import { Entry, Node } from 'contensis-delivery-api/lib/models';
 import { Group, User } from 'contensis-management-api/lib/models';
-import { StaticRoute } from "../routing/routes";
-declare type MatchedRoute<T, U> = any;
+import { StaticRoute, MatchedRoute } from "../routing/routes";
 export declare type AppState = {
     navigation: {
         root: Node | null;
@@ -31,7 +30,7 @@ export declare type AppState = {
         };
         mappedEntry: Record<string, any> | null;
         notFound: boolean;
-        staticRoute: MatchedRoute<Record<string, any>, StaticRoute>;
+        staticRoute: MatchedRoute<string, StaticRoute>;
         statusCode: number;
     };
     user: {
@@ -78,4 +77,3 @@ export declare type AppState = {
         contensisVersionStatus: VersionStatus;
     };
 };
-export {};

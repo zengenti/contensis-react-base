@@ -1,12 +1,14 @@
+import type { RouteObject, RouteMatch } from 'react-router';
 import { Entry, Node } from 'contensis-delivery-api/lib/models';
 import React from 'react';
 import { AppState } from "../redux/appstate";
-declare type MatchedRoute<T, U> = any;
-declare type RouteConfig = any;
 declare type RouteComponent<Props> = React.ComponentType<Props>;
 export declare type RouteNode = Node & {
     ancestors: Node[];
     children: Node[];
+};
+export declare type MatchedRoute<ParamKey extends string = string, TRouteObject extends RouteObject = RouteObject> = Omit<RouteMatch<ParamKey>, 'route'> & {
+    route: TRouteObject;
 };
 export declare type AppRoutes = {
     ContentTypeMappings: ContentTypeMapping[];
@@ -60,7 +62,7 @@ export declare type ContentTypeMapping = {
     };
     requireLogin?: RequireLogin;
 };
-export declare type StaticRoute = Omit<RouteConfig, 'component'> & {
+export declare type StaticRoute = RouteObject & {
     component?: RouteComponent<RouteComponentProps>;
     fetchNode?: boolean;
     fetchNodeLevel?: number;
@@ -77,7 +79,7 @@ export declare type OnRouteLoadArgs = {
         key?: string;
     };
     path: string;
-    staticRoute: MatchedRoute<any, StaticRoute>;
+    staticRoute: MatchedRoute<string, StaticRoute>;
     statePath: string;
 };
 export declare type OnRouteLoadedArgs = {
@@ -89,7 +91,7 @@ export declare type OnRouteLoadedArgs = {
         key?: string;
     };
     path: string;
-    staticRoute: MatchedRoute<any, StaticRoute>;
+    staticRoute: MatchedRoute<string, StaticRoute>;
 };
 export declare type RouteLoadOptions = {
     customNavigation?: boolean | {

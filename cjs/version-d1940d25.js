@@ -195,7 +195,7 @@ var RoutingReducer = immer.produce((state, action) => {
             state.location = action.location;
             state.staticRoute = { ...staticRoute,
               route: { ...staticRoute.route,
-                component: null
+                element: null
               }
             };
             state.isLoading = typeof window !== 'undefined';
@@ -203,7 +203,7 @@ var RoutingReducer = immer.produce((state, action) => {
             state.location = action.location;
             state.staticRoute = { ...staticRoute,
               route: { ...staticRoute.route,
-                component: null
+                element: null
               }
             };
           }
@@ -474,4 +474,4 @@ exports.setVersionStatus = setVersionStatus;
 exports.useInjectRedux = useInjectRedux;
 exports.version = version$1;
 exports.version$1 = version;
-//# sourceMappingURL=version-72076f37.js.map
+//# sourceMappingURL=version-d1940d25.js.map
