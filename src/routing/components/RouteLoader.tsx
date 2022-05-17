@@ -35,6 +35,7 @@ import {
 import { matchUserGroup } from '~/user/util/matchGroups';
 
 import { toJS } from '~/util/ToJs';
+import { mergeStaticRoutes } from '~/util/mergeStaticRoutes';
 import { Entry } from 'contensis-delivery-api/lib/models';
 import {
   AppRootProps,
@@ -62,6 +63,33 @@ const getTrimmedPath = path => {
     }
   }
   return path;
+};
+
+const processStaticRoutes = (
+  staticRoutes: StaticRoute[],
+  componentProps: Partial<IReduxProps>
+) => {
+  const { projectId, contentTypeId, entry, mappedEntry, isLoggedIn } =
+    componentProps;
+  return staticRoutes.map(x => {
+    const route = { ...x };
+    if (route.component) {
+      route.element = (
+        <route.component
+          projectId={projectId}
+          contentTypeId={contentTypeId ? contentTypeId : undefined}
+          entry={entry}
+          mappedEntry={mappedEntry}
+          isLoggedIn={isLoggedIn}
+        />
+      );
+      delete route.component;
+    }
+    if (route.children) {
+      route.children = processStaticRoutes(route.children, componentProps);
+    }
+    return route;
+  });
 };
 
 interface IReduxProps {
@@ -104,21 +132,12 @@ const RouteLoader = ({
   const trimmedPath = getTrimmedPath(location.pathname);
 
   // Convert any react-router-v5 style routes to react-router-v6 style routes.
-  const staticRoutes = routes.StaticRoutes.map(x => {
-    const route = { ...x };
-    if (route.component) {
-      route.element = (
-        <route.component
-          projectId={projectId}
-          contentTypeId={contentTypeId ? contentTypeId : undefined}
-          entry={entry}
-          mappedEntry={mappedEntry}
-          isLoggedIn={isLoggedIn}
-        />
-      );
-      delete route.component;
-    }
-    return route;
+  const staticRoutes = processStaticRoutes(routes.StaticRoutes, {
+    projectId,
+    contentTypeId,
+    entry,
+    mappedEntry,
+    isLoggedIn,
   });
 
   // Match any Static Routes a developer has defined
@@ -129,22 +148,8 @@ const RouteLoader = ({
   const isStaticRoute = matchedStaticRoute && matchedStaticRoute.length > 0;
 
   // Combine custom params for all static routes, with the furthest config taking precedence.
-  let finalRoute = {};
   if (isStaticRoute) {
-    for (const [i, route] of matchedStaticRoute.entries()) {
-      const staticRouteCopy = { ...route.route };
-      if (i === matchedStaticRoute.length - 1) {
-        finalRoute = { ...finalRoute, ...staticRouteCopy };
-        matchedStaticRoute[i].route = finalRoute;
-      } else {
-        delete staticRouteCopy.children;
-        delete staticRouteCopy.index;
-        delete staticRouteCopy.path;
-        delete staticRouteCopy.component;
-        delete staticRouteCopy.element;
-        finalRoute = { ...finalRoute, ...staticRouteCopy };
-      }
-    }
+    mergeStaticRoutes(matchedStaticRoute);
   }
 
   const staticRoute: MatchedRoute<string, StaticRoute> | null = isStaticRoute
@@ -174,7 +179,7 @@ const RouteLoader = ({
           .join('/');
       } else {
         // Send all non-parameterised url parts to api
-        serverPath = (route.path as string)
+        serverPath = (route.fullPath as string)
           ?.split('/')
           .filter(p => !p.startsWith(':'))
           .join('/');

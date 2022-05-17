@@ -29,7 +29,9 @@ import { setCurrentProject } from '~/routing/redux/actions';
 import { deliveryApi } from '~/util/ContensisDeliveryApi';
 import pickProject from '~/util/pickProject';
 import stringifyAttributes from './util/stringifyAttributes';
+import { mergeStaticRoutes } from '~/util/mergeStaticRoutes';
 
+import { MatchedRoute, StaticRoute } from '../';
 import { getCacheDuration } from './features/caching/cacheDuration.schema';
 import handleResponse from './features/response-handler';
 
@@ -85,11 +87,19 @@ const webApp = (
     const { url } = request;
     const cookies = new Cookies(request.headers.cookie);
 
-    const matchedStaticRoute = () =>
-      matchRoutes(routes.StaticRoutes as RouteObject[], request.path);
-    const isStaticRoute = () =>
-      matchedStaticRoute && matchedStaticRoute.length > 0;
-    const staticRoute = isStaticRoute() && matchedStaticRoute[0];
+    const matchedStaticRoute = matchRoutes(
+      routes.StaticRoutes as RouteObject[],
+      request.path
+    );
+    const isStaticRoute = matchedStaticRoute && matchedStaticRoute.length > 0;
+
+    if (isStaticRoute) {
+      mergeStaticRoutes(matchedStaticRoute);
+    }
+
+    const staticRoute: MatchedRoute<string, StaticRoute> | null = isStaticRoute
+      ? matchedStaticRoute.pop() || null
+      : null;
 
     // Allow certain routes to avoid SSR
     const onlyDynamic = staticRoute && staticRoute.route.ssr === false;

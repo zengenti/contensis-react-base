@@ -9,8 +9,8 @@ import 'query-string';
 import 'immer';
 import 'deep-equal';
 import { s as setCachingHeaders } from './VersionInfo-f5403b09.js';
-import { c as cachedSearch, h as history$1, d as deliveryApi, p as pickProject, r as rootSaga } from './App-06a27267.js';
-export { A as ReactApp } from './App-06a27267.js';
+import { c as cachedSearch, h as history$1, d as deliveryApi, p as pickProject, r as rootSaga } from './App-77ca3718.js';
+export { A as ReactApp } from './App-77ca3718.js';
 import 'isomorphic-fetch';
 import express from 'express';
 import httpProxy from 'http-proxy';
@@ -29,7 +29,7 @@ import { identity, noop } from 'lodash';
 import { buildCleaner } from 'lodash-clean';
 import { CookiesProvider } from 'react-cookie';
 import { c as createStore, s as setVersionStatus, a as setVersion } from './version-10f833e5.js';
-import { H as HttpContext } from './RouteLoader-1a87e827.js';
+import { m as mergeStaticRoutes, H as HttpContext } from './RouteLoader-40d1e736.js';
 import { s as setCurrentProject } from './actions-fcfc8704.js';
 import { s as selectSurrogateKeys, a as selectRouteEntry, b as selectCurrentProject, g as getImmutableOrJS } from './selectors-337be432.js';
 import 'loglevel';
@@ -3963,12 +3963,14 @@ const webApp = (app, ReactApp, config) => {
       url
     } = request;
     const cookies = new Cookies$1(request.headers.cookie);
+    const matchedStaticRoute = matchRoutes(routes.StaticRoutes, request.path);
+    const isStaticRoute = matchedStaticRoute && matchedStaticRoute.length > 0;
 
-    const matchedStaticRoute = () => matchRoutes(routes.StaticRoutes, request.path);
+    if (isStaticRoute) {
+      mergeStaticRoutes(matchedStaticRoute);
+    }
 
-    const isStaticRoute = () => matchedStaticRoute && matchedStaticRoute.length > 0;
-
-    const staticRoute = isStaticRoute() && matchedStaticRoute[0]; // Allow certain routes to avoid SSR
+    const staticRoute = isStaticRoute ? matchedStaticRoute.pop() || null : null; // Allow certain routes to avoid SSR
 
     const onlyDynamic = staticRoute && staticRoute.route.ssr === false;
     const onlySSR = staticRoute && staticRoute.route.ssrOnly === true;

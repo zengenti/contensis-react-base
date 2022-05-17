@@ -90,6 +90,7 @@ export type StaticRoute = Omit<RouteObject, 'children'> & {
   requireLogin?: RequireLogin;
   ssr?: boolean;
   ssrOnly?: boolean;
+  fullPath?: string;
 };
 
 export type OnRouteLoadArgs = {

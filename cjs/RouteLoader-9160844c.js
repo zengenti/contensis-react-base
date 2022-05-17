@@ -18,6 +18,33 @@ const useHttpContext = () => {
   return React.useContext(HttpContext);
 };
 
+const mergeStaticRoutes = matchedStaticRoute => {
+  let finalRoute = {};
+
+  for (const [i, route] of matchedStaticRoute.entries()) {
+    const staticRouteCopy = { ...route.route
+    };
+
+    if (i === matchedStaticRoute.length - 1) {
+      finalRoute = { ...finalRoute,
+        ...staticRouteCopy,
+        fullPath: `${finalRoute.fullPath || ''}${route.route.path ? route.route.path : ''}`
+      };
+      matchedStaticRoute[i].route = finalRoute;
+    } else {
+      delete staticRouteCopy.children;
+      delete staticRouteCopy.index;
+      delete staticRouteCopy.path;
+      delete staticRouteCopy.component;
+      delete staticRouteCopy.element;
+      finalRoute = { ...finalRoute,
+        ...staticRouteCopy,
+        fullPath: `${finalRoute.fullPath || ''}${route.route.path ? route.route.path.endsWith('/') ? route.route.path : route.route.path + '/' : ''}`
+      };
+    }
+  }
+};
+
 const NotFound = ({
   statusCode,
   statusText
@@ -66,6 +93,37 @@ const getTrimmedPath = path => {
   return path;
 };
 
+const processStaticRoutes = (staticRoutes, componentProps) => {
+  const {
+    projectId,
+    contentTypeId,
+    entry,
+    mappedEntry,
+    isLoggedIn
+  } = componentProps;
+  return staticRoutes.map(x => {
+    const route = { ...x
+    };
+
+    if (route.component) {
+      route.element = /*#__PURE__*/React__default["default"].createElement(route.component, {
+        projectId: projectId,
+        contentTypeId: contentTypeId ? contentTypeId : undefined,
+        entry: entry,
+        mappedEntry: mappedEntry,
+        isLoggedIn: isLoggedIn
+      });
+      delete route.component;
+    }
+
+    if (route.children) {
+      route.children = processStaticRoutes(route.children, componentProps);
+    }
+
+    return route;
+  });
+};
+
 const RouteLoader = ({
   contentTypeId,
   entry,
@@ -89,50 +147,19 @@ const RouteLoader = ({
 
   const trimmedPath = getTrimmedPath(location.pathname); // Convert any react-router-v5 style routes to react-router-v6 style routes.
 
-  const staticRoutes = routes.StaticRoutes.map(x => {
-    const route = { ...x
-    };
-
-    if (route.component) {
-      route.element = /*#__PURE__*/React__default["default"].createElement(route.component, {
-        projectId: projectId,
-        contentTypeId: contentTypeId ? contentTypeId : undefined,
-        entry: entry,
-        mappedEntry: mappedEntry,
-        isLoggedIn: isLoggedIn
-      });
-      delete route.component;
-    }
-
-    return route;
+  const staticRoutes = processStaticRoutes(routes.StaticRoutes, {
+    projectId,
+    contentTypeId,
+    entry,
+    mappedEntry,
+    isLoggedIn
   }); // Match any Static Routes a developer has defined
 
   const matchedStaticRoute = require$$2.matchRoutes(staticRoutes, location);
   const isStaticRoute = matchedStaticRoute && matchedStaticRoute.length > 0; // Combine custom params for all static routes, with the furthest config taking precedence.
 
-  let finalRoute = {};
-
   if (isStaticRoute) {
-    for (const [i, route] of matchedStaticRoute.entries()) {
-      const staticRouteCopy = { ...route.route
-      };
-
-      if (i === matchedStaticRoute.length - 1) {
-        finalRoute = { ...finalRoute,
-          ...staticRouteCopy
-        };
-        matchedStaticRoute[i].route = finalRoute;
-      } else {
-        delete staticRouteCopy.children;
-        delete staticRouteCopy.index;
-        delete staticRouteCopy.path;
-        delete staticRouteCopy.component;
-        delete staticRouteCopy.element;
-        finalRoute = { ...finalRoute,
-          ...staticRouteCopy
-        };
-      }
-    }
+    mergeStaticRoutes(matchedStaticRoute);
   }
 
   const staticRoute = isStaticRoute ? matchedStaticRoute.pop() || null : null;
@@ -157,10 +184,10 @@ const RouteLoader = ({
         // Send all url parts to a specified level to api
         serverPath = pathname.split('/').splice(0, route.fetchNodeLevel + 1).join('/');
       } else {
-        var _route$path2;
+        var _route$fullPath;
 
         // Send all non-parameterised url parts to api
-        serverPath = (_route$path2 = route.path) === null || _route$path2 === void 0 ? void 0 : _route$path2.split('/').filter(p => !p.startsWith(':')).join('/');
+        serverPath = (_route$fullPath = route.fullPath) === null || _route$fullPath === void 0 ? void 0 : _route$fullPath.split('/').filter(p => !p.startsWith(':')).join('/');
       }
     }
 
@@ -242,5 +269,6 @@ var RouteLoader$1 = reactHotLoader.hot(module)(reactRedux.connect(mapStateToProp
 
 exports.HttpContext = HttpContext;
 exports.RouteLoader = RouteLoader$1;
+exports.mergeStaticRoutes = mergeStaticRoutes;
 exports.useHttpContext = useHttpContext;
-//# sourceMappingURL=RouteLoader-7cebc714.js.map
+//# sourceMappingURL=RouteLoader-9160844c.js.map

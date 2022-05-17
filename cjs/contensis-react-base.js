@@ -13,7 +13,7 @@ require('query-string');
 require('immer');
 require('deep-equal');
 var VersionInfo = require('./VersionInfo-4c9dfa6a.js');
-var App = require('./App-6b0c2694.js');
+var App = require('./App-3df1e749.js');
 require('isomorphic-fetch');
 var express = require('express');
 var httpProxy = require('http-proxy');
@@ -32,7 +32,7 @@ var lodash = require('lodash');
 var lodashClean = require('lodash-clean');
 var reactCookie = require('react-cookie');
 var version = require('./version-d1940d25.js');
-var RouteLoader = require('./RouteLoader-7cebc714.js');
+var RouteLoader = require('./RouteLoader-9160844c.js');
 var actions = require('./actions-8dc9e8de.js');
 var selectors = require('./selectors-656da4b7.js');
 require('loglevel');
@@ -3979,12 +3979,14 @@ const webApp = (app, ReactApp, config) => {
       url
     } = request;
     const cookies = new Cookies$1(request.headers.cookie);
+    const matchedStaticRoute = require$$2.matchRoutes(routes.StaticRoutes, request.path);
+    const isStaticRoute = matchedStaticRoute && matchedStaticRoute.length > 0;
 
-    const matchedStaticRoute = () => require$$2.matchRoutes(routes.StaticRoutes, request.path);
+    if (isStaticRoute) {
+      RouteLoader.mergeStaticRoutes(matchedStaticRoute);
+    }
 
-    const isStaticRoute = () => matchedStaticRoute && matchedStaticRoute.length > 0;
-
-    const staticRoute = isStaticRoute() && matchedStaticRoute[0]; // Allow certain routes to avoid SSR
+    const staticRoute = isStaticRoute ? matchedStaticRoute.pop() || null : null; // Allow certain routes to avoid SSR
 
     const onlyDynamic = staticRoute && staticRoute.route.ssr === false;
     const onlySSR = staticRoute && staticRoute.route.ssrOnly === true;

@@ -71,6 +71,7 @@ export declare type StaticRoute = Omit<RouteObject, 'children'> & {
     requireLogin?: RequireLogin;
     ssr?: boolean;
     ssrOnly?: boolean;
+    fullPath?: string;
 };
 export declare type OnRouteLoadArgs = {
     location: {
