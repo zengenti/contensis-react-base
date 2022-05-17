@@ -3,7 +3,7 @@ import React from 'react';
 import { hydrate, render } from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 import { Provider } from 'react-redux';
-import { BrowserRouter } from 'react-router-dom';
+import { unstable_HistoryRouter } from 'react-router-dom';
 import { loadableReady } from '@loadable/component';
 import * as queryString from 'query-string';
 import { CookiesProvider } from 'react-cookie';
@@ -46,7 +46,9 @@ class ClientApp {
     const GetClientJSX = store => {
       const ClientJsx = /*#__PURE__*/React.createElement(AppContainer, null, /*#__PURE__*/React.createElement(CookiesProvider, null, /*#__PURE__*/React.createElement(Provider, {
         store: store
-      }, /*#__PURE__*/React.createElement(BrowserRouter, null, /*#__PURE__*/React.createElement(ReactApp, {
+      }, /*#__PURE__*/React.createElement(unstable_HistoryRouter, {
+        history: browserHistory
+      }, /*#__PURE__*/React.createElement(ReactApp, {
         routes: routes,
         withEvents: withEvents
       })))));

@@ -72,7 +72,9 @@ class ClientApp {
     const GetClientJSX = store => {
       const ClientJsx = /*#__PURE__*/React__default["default"].createElement(reactHotLoader.AppContainer, null, /*#__PURE__*/React__default["default"].createElement(reactCookie.CookiesProvider, null, /*#__PURE__*/React__default["default"].createElement(reactRedux.Provider, {
         store: store
-      }, /*#__PURE__*/React__default["default"].createElement(require$$2.BrowserRouter, null, /*#__PURE__*/React__default["default"].createElement(ReactApp, {
+      }, /*#__PURE__*/React__default["default"].createElement(require$$2.unstable_HistoryRouter, {
+        history: App.browserHistory
+      }, /*#__PURE__*/React__default["default"].createElement(ReactApp, {
         routes: routes,
         withEvents: withEvents
       })))));

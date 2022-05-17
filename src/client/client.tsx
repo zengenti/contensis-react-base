@@ -3,7 +3,7 @@ import React from 'react';
 import { render, hydrate } from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 import { Provider as ReduxProvider } from 'react-redux';
-import { BrowserRouter } from 'react-router-dom';
+import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
 import { loadableReady } from '@loadable/component';
 import * as queryString from 'query-string';
 import { CookiesProvider } from 'react-cookie';
@@ -44,9 +44,9 @@ class ClientApp {
         <AppContainer>
           <CookiesProvider>
             <ReduxProvider store={store}>
-              <BrowserRouter>
+              <HistoryRouter history={history}>
                 <ReactApp routes={routes} withEvents={withEvents} />
-              </BrowserRouter>
+              </HistoryRouter>
             </ReduxProvider>
           </CookiesProvider>
         </AppContainer>
