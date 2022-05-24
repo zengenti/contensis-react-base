@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, cloneElement } from 'react';
 import { connect } from 'react-redux';
 import { hot } from 'react-hot-loader';
 import {
@@ -6,7 +6,6 @@ import {
   useLocation,
   matchRoutes,
   RouteObject,
-  useRoutes,
 } from 'react-router-dom';
 
 import { createSelector } from 'reselect';
@@ -43,6 +42,7 @@ import {
   StaticRoute,
   MatchedRoute,
 } from '../routes';
+import { StaticRouteLoader } from './StaticRouteLoader';
 
 const replaceDoubleSlashRecursive = (path: string) => {
   const nextPath = path.replace(/\/\//, '/');
@@ -84,6 +84,15 @@ const processStaticRoutes = (
         />
       );
       delete route.component;
+    }
+    if (route.element) {
+      route.element = cloneElement(route.element as React.ReactElement<any>, {
+        projectId,
+        contentTypeId,
+        entry,
+        mappedEntry,
+        isLoggedIn,
+      });
     }
     if (route.children) {
       route.children = processStaticRoutes(route.children, componentProps);
@@ -160,8 +169,6 @@ const RouteLoader = ({
     ? staticRoute.route.requireLogin
     : undefined;
 
-  const staticRouteElement = useRoutes(staticRoutes as RouteObject[]);
-
   const setPath = useCallback(() => {
     // Use serverPath to control the path we send to siteview node api to resolve a route
     let serverPath = '';
@@ -220,7 +227,7 @@ const RouteLoader = ({
   // Render any Static Routes a developer has defined
   if (isStaticRoute && !(!isLoggedIn && routeRequiresLogin)) {
     if (matchUserGroup(userGroups, routeRequiresLogin))
-      return staticRouteElement;
+      return <StaticRouteLoader staticRoutes={staticRoutes} />;
   }
 
   // Render a supplied Loading component if the route
