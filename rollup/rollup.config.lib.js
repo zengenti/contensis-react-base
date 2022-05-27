@@ -84,9 +84,10 @@ export default {
     babel({
       include: [
         'src/**',
+        'node_modules/zengenti-forms-package/**',
+        '../../node_modules/zengenti-forms-package/**',
         'node_modules/zengenti-search-package/**',
         '../../node_modules/zengenti-search-package/**',
-        '../search/**',
       ],
       extensions: ['.js', '.jsx', '.ts', '.tsx'],
       presets: babelConfig.env.modern.presets,
