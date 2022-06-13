@@ -5,7 +5,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 var contensisCoreApi = require('contensis-core-api');
 var React = require('react');
 var reactRedux = require('react-redux');
-var sagas = require('./sagas-2ac68031.js');
+var sagas = require('./sagas-24f5607f.js');
 var mapJson = require('jsonpath-mapper');
 require('reselect');
 require('deepmerge');

@@ -1,7 +1,7 @@
 import React, { useMemo, useEffect } from 'react';
 import { connect, useDispatch, useSelector } from 'react-redux';
-import { g as getCurrentFacet, b as getPageIndex$2, e as getCurrentTab$1, h as getFacet$1, i as getTabFacets$1, j as getFacetsTotalCount$1, k as getFacetTitles$1, l as getFeaturedResults$2, m as getRenderableFilters$2, n as getIsLoading$2, p as getPaging, q as getPageIsLoading$2, r as getResults, s as getSearchTerm$2, u as getSearchTotalCount$1, v as getSelectedFilters, w as getQueryParameter$2, x as getTabsAndFacets$1, y as getTotalCount$1, z as withMappers, A as clearFilters, B as updateCurrentFacet, C as updateCurrentTab, D as updatePageIndex, E as updateSearchTerm, F as updateSelectedFilters, G as updateSortOrder, H as selectListing, I as mapStateToSearchUri, J as Context$1, K as selectFacets, L as triggerSearch, M as getFilters, U as UPDATE_SORT_ORDER, N as toArray, O as UPDATE_SELECTED_FILTERS, P as UPDATE_SEARCH_TERM, Q as UPDATE_PAGE_INDEX, S as SET_SEARCH_FILTERS, R as SET_SEARCH_ENTRIES, T as SET_ROUTE_FILTERS, V as LOAD_FILTERS_COMPLETE, W as LOAD_FILTERS_ERROR, X as LOAD_FILTERS, Y as EXECUTE_SEARCH_ERROR, Z as EXECUTE_SEARCH, _ as CLEAR_FILTERS, $ as APPLY_CONFIG } from './sagas-f53dd366.js';
-export { a0 as actions, a5 as doSearch, a1 as expressions, a2 as queries, a7 as sagas, a3 as selectors, a6 as setRouteFilters, a4 as types } from './sagas-f53dd366.js';
+import { g as getCurrentFacet, b as getPageIndex$2, e as getCurrentTab$1, h as getFacet$1, i as getTabFacets$1, j as getFacetsTotalCount$1, k as getFacetTitles$1, l as getFeaturedResults$2, m as getRenderableFilters$2, n as getIsLoading$2, p as getPaging, q as getPageIsLoading$2, r as getResults, s as getSearchTerm$2, u as getSearchTotalCount$1, v as getSelectedFilters, w as getQueryParameter$2, x as getTabsAndFacets$1, y as getTotalCount$1, z as withMappers, A as clearFilters, B as updateCurrentFacet, C as updateCurrentTab, D as updatePageIndex, E as updateSearchTerm, F as updateSelectedFilters, G as updateSortOrder, H as selectListing, I as mapStateToSearchUri, J as Context$1, K as selectFacets, L as triggerSearch, M as getFilters, U as UPDATE_SORT_ORDER, N as toArray, O as UPDATE_SELECTED_FILTERS, P as UPDATE_SEARCH_TERM, Q as UPDATE_PAGE_INDEX, S as SET_SEARCH_FILTERS, R as SET_SEARCH_ENTRIES, T as SET_ROUTE_FILTERS, V as LOAD_FILTERS_COMPLETE, W as LOAD_FILTERS_ERROR, X as LOAD_FILTERS, Y as EXECUTE_SEARCH_ERROR, Z as EXECUTE_SEARCH, _ as CLEAR_FILTERS, $ as APPLY_CONFIG } from './sagas-489c29ca.js';
+export { a0 as actions, a5 as doSearch, a1 as expressions, a2 as queries, a7 as sagas, a3 as selectors, a6 as setRouteFilters, a4 as types } from './sagas-489c29ca.js';
 import 'jsonpath-mapper';
 import { createSelector } from 'reselect';
 import merge from 'deepmerge';
@@ -66,9 +66,9 @@ const withSearch = mappers => SearchComponent => {
     clearFilters: () => withMappers(clearFilters(), mappers),
     updateCurrentFacet: facet => withMappers(updateCurrentFacet(facet), mappers),
     updateCurrentTab: id => withMappers(updateCurrentTab(id), mappers),
-    updatePageIndex: pageIndex => withMappers(updatePageIndex(pageIndex), mappers),
+    updatePageIndex: (pageIndex, scrollYPos) => withMappers(updatePageIndex(pageIndex, scrollYPos), mappers),
     updateSearchTerm: term => withMappers(updateSearchTerm(term), mappers),
-    updateSelectedFilters: (filter, key, isUnknownItem = false) => withMappers(updateSelectedFilters(filter, key, isUnknownItem), mappers),
+    updateSelectedFilters: (filter, key, isUnknownItem = false, scrollYPos) => withMappers(updateSelectedFilters(filter, key, isUnknownItem, scrollYPos), mappers),
     updateSortOrder: orderBy => withMappers(updateSortOrder(orderBy), mappers)
   };
   const connector = connect(mapStateToProps, mapDispatchToProps);
@@ -118,9 +118,9 @@ const withListing = mappers => ListingComponent => {
   const mapDispatchToProps = {
     clearFilters: () => withMappers(clearFilters(), mappers),
     updateCurrentFacet: facet => withMappers(updateCurrentFacet(facet), mappers),
-    updatePageIndex: pageIndex => withMappers(updatePageIndex(pageIndex), mappers),
+    updatePageIndex: (pageIndex, scrollYPos) => withMappers(updatePageIndex(pageIndex, scrollYPos), mappers),
     updateSearchTerm: term => withMappers(updateSearchTerm(term), mappers),
-    updateSelectedFilters: (filter, key, isUnknownItem = false) => withMappers(updateSelectedFilters(filter, key, isUnknownItem), mappers),
+    updateSelectedFilters: (filter, key, isUnknownItem = false, scrollYPos) => withMappers(updateSelectedFilters(filter, key, isUnknownItem, scrollYPos), mappers),
     updateSortOrder: orderBy => withMappers(updateSortOrder(orderBy), mappers)
   };
   return connect(mapStateToProps, mapDispatchToProps)(toJS(Wrapper));
@@ -187,9 +187,9 @@ const useFacets = ({
     clearFilters: () => dispatch(withMappers(clearFilters(), m)),
     updateCurrentFacet: facet => dispatch(withMappers(updateCurrentFacet(facet), m)),
     updateCurrentTab: id => withMappers(updateCurrentTab(id), m),
-    updatePageIndex: pageIndex => dispatch(withMappers(updatePageIndex(pageIndex), m)),
+    updatePageIndex: (pageIndex, scrollYPos) => dispatch(withMappers(updatePageIndex(pageIndex, scrollYPos), m)),
     updateSearchTerm: term => dispatch(withMappers(updateSearchTerm(term), m)),
-    updateSelectedFilters: (filter, key, isUnknownItem = false) => dispatch(withMappers(updateSelectedFilters(filter, key, isUnknownItem), m)),
+    updateSelectedFilters: (filter, key, isUnknownItem = false, scrollYPos) => dispatch(withMappers(updateSelectedFilters(filter, key, isUnknownItem, scrollYPos), m)),
     updateSortOrder: orderBy => dispatch(withMappers(updateSortOrder(orderBy), m))
   };
   const {
@@ -280,9 +280,9 @@ const useListing = ({
   const dispatchProps = {
     clearFilters: () => dispatch(withMappers(clearFilters(), m)),
     updateCurrentFacet: facet => dispatch(withMappers(updateCurrentFacet(facet), m)),
-    updatePageIndex: pageIndex => dispatch(withMappers(updatePageIndex(pageIndex), m)),
+    updatePageIndex: (pageIndex, scrollYPos) => dispatch(withMappers(updatePageIndex(pageIndex, scrollYPos), m)),
     updateSearchTerm: term => dispatch(withMappers(updateSearchTerm(term), m)),
-    updateSelectedFilters: (filter, key, isUnknownItem = false) => dispatch(withMappers(updateSelectedFilters(filter, key, isUnknownItem), m)),
+    updateSelectedFilters: (filter, key, isUnknownItem = false, scrollYPos) => dispatch(withMappers(updateSelectedFilters(filter, key, isUnknownItem, scrollYPos), m)),
     updateSortOrder: orderBy => dispatch(withMappers(updateSortOrder(orderBy), m))
   };
   const {
