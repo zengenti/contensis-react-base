@@ -3835,7 +3835,7 @@ const getBundleTags = (loadableExtractor, scripts, staticRoutePath = 'static') =
 
   if (loadableExtractor) {
     const legacyScriptTags = loadableExtractor === null || loadableExtractor === void 0 ? void 0 : loadableExtractor.legacy.getScriptTags({
-      nomodule: true
+      nomodule: 'nomodule'
     });
     const modernScriptTags = loadableExtractor === null || loadableExtractor === void 0 ? void 0 : loadableExtractor.modern.getScriptTags({
       type: 'module'
