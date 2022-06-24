@@ -398,18 +398,22 @@ function* resolveCurrentNodeOrdinates({
   const isTreeLoaded = yield select(hasNavigationTree);
   if (!isTreeLoaded && (doNavigation === true || doNavigation.tree))
     apiCall[3] = function* getNodeTree() {
+      const treeDepth =
+        doNavigation === true ||
+        !doNavigation.tree ||
+        doNavigation.tree === true
+          ? 2
+          : doNavigation.tree;
+
       if (typeof window !== 'undefined') {
         return yield put({
           type: GET_NODE_TREE,
-          treeDepth:
-            doNavigation === true ||
-            !doNavigation.tree ||
-            doNavigation.tree === true
-              ? 2
-              : doNavigation.tree,
+          treeDepth,
         });
       } else {
-        return yield call(ensureNodeTreeSaga);
+        return yield call(ensureNodeTreeSaga, {
+          treeDepth,
+        });
       }
     };
 
