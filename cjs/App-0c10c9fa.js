@@ -2,12 +2,12 @@
 
 var history$1 = require('history');
 var effects = require('@redux-saga/core/effects');
+var log = require('loglevel');
 var contensisDeliveryApi = require('contensis-delivery-api');
 var actions = require('./actions-8dc9e8de.js');
-var version = require('./version-b3e55cdf.js');
+var version = require('./version-330551f5.js');
 var version$1 = require('./version-eba6d09b.js');
 var selectors = require('./selectors-656da4b7.js');
-var log = require('loglevel');
 var login = require('./login-6b9de6a1.js');
 var awaitToJs = require('await-to-js');
 var reducers = require('./reducers-3a4f8971.js');
@@ -325,6 +325,7 @@ function* ensureNodeTreeSaga(action) {
       }
     }
   } catch (ex) {
+    log__namespace.error(...['Error running ensureNodeTreeSaga:', ex]);
     yield effects.put({
       type: version.GET_NODE_TREE_ERROR,
       error: ex.toString()
@@ -657,13 +658,17 @@ function* resolveCurrentNodeOrdinates({
 
   const isTreeLoaded = yield effects.select(version.hasNavigationTree);
   if (!isTreeLoaded && (doNavigation === true || doNavigation.tree)) apiCall[3] = function* getNodeTree() {
+    const treeDepth = doNavigation === true || !doNavigation.tree || doNavigation.tree === true ? 2 : doNavigation.tree;
+
     if (typeof window !== 'undefined') {
       return yield effects.put({
         type: version.GET_NODE_TREE,
-        treeDepth: doNavigation === true || !doNavigation.tree || doNavigation.tree === true ? 2 : doNavigation.tree
+        treeDepth
       });
     } else {
-      return yield effects.call(ensureNodeTreeSaga);
+      return yield effects.call(ensureNodeTreeSaga, {
+        treeDepth
+      });
     }
   };
   const [loadAncestors, loadChildren, loadSiblings, loadTree] = apiCall;
@@ -1100,4 +1105,4 @@ exports.deliveryApi = deliveryApi;
 exports.history = history;
 exports.pickProject = pickProject;
 exports.rootSaga = rootSaga;
-//# sourceMappingURL=App-6e2518eb.js.map
+//# sourceMappingURL=App-0c10c9fa.js.map
