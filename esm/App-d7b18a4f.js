@@ -1,11 +1,11 @@
 import { createBrowserHistory, createMemoryHistory } from 'history';
 import { takeEvery, select, put, call, all } from '@redux-saga/core/effects';
+import * as log from 'loglevel';
 import { Client, Op, Query } from 'contensis-delivery-api';
 import { a as setSurrogateKeys, S as SET_NAVIGATION_PATH, b as SET_ROUTE, U as UPDATE_LOADING_STATE, c as SET_ENTRY, d as SET_ANCESTORS, e as SET_SIBLINGS, f as setRoute } from './actions-fcfc8704.js';
-import { r as reduxStore, G as GET_NODE_TREE, h as hasNavigationTree, S as SET_NODE_TREE, b as GET_NODE_TREE_ERROR, i as injectRedux } from './version-470f0b15.js';
+import { r as reduxStore, G as GET_NODE_TREE, h as hasNavigationTree, S as SET_NODE_TREE, b as GET_NODE_TREE_ERROR, i as injectRedux } from './version-c7268214.js';
 import { s as selectVersionStatus } from './version-6dd7b2cd.js';
 import { b as selectCurrentProject, a as selectRouteEntry, c as selectCurrentNode, d as selectCurrentAncestors, e as selectCurrentSiblings, f as selectRouteEntryEntryId, h as selectRouteEntryLanguage, i as selectMappedEntry, q as queryParams, j as selectCurrentSearch } from './selectors-337be432.js';
-import * as log from 'loglevel';
 import { f as findContentTypeMapping, h as handleRequiresLoginSaga, g as getManagementApiClient, l as loginSagas } from './login-ca2dc2f7.js';
 import { to } from 'await-to-js';
 import { R as REGISTER_USER, a as REGISTER_USER_SUCCESS, b as REGISTER_USER_FAILED, c as REQUEST_USER_PASSWORD_RESET, d as RESET_USER_PASSWORD, C as CHANGE_USER_PASSWORD, e as REQUEST_USER_PASSWORD_RESET_SENDING, f as REQUEST_USER_PASSWORD_RESET_SUCCESS, g as REQUEST_USER_PASSWORD_RESET_ERROR, h as RESET_USER_PASSWORD_SENDING, i as RESET_USER_PASSWORD_SUCCESS, j as RESET_USER_PASSWORD_ERROR, k as CHANGE_USER_PASSWORD_ERROR, l as CHANGE_USER_PASSWORD_SENDING, m as CHANGE_USER_PASSWORD_SUCCESS } from './reducers-8e5d6232.js';
@@ -300,6 +300,7 @@ function* ensureNodeTreeSaga(action) {
       }
     }
   } catch (ex) {
+    log.error(...['Error running ensureNodeTreeSaga:', ex]);
     yield put({
       type: GET_NODE_TREE_ERROR,
       error: ex.toString()
@@ -632,13 +633,17 @@ function* resolveCurrentNodeOrdinates({
 
   const isTreeLoaded = yield select(hasNavigationTree);
   if (!isTreeLoaded && (doNavigation === true || doNavigation.tree)) apiCall[3] = function* getNodeTree() {
+    const treeDepth = doNavigation === true || !doNavigation.tree || doNavigation.tree === true ? 2 : doNavigation.tree;
+
     if (typeof window !== 'undefined') {
       return yield put({
         type: GET_NODE_TREE,
-        treeDepth: doNavigation === true || !doNavigation.tree || doNavigation.tree === true ? 2 : doNavigation.tree
+        treeDepth
       });
     } else {
-      return yield call(ensureNodeTreeSaga);
+      return yield call(ensureNodeTreeSaga, {
+        treeDepth
+      });
     }
   };
   const [loadAncestors, loadChildren, loadSiblings, loadTree] = apiCall;
@@ -1069,4 +1074,4 @@ const AppRoot = props => {
 };
 
 export { AppRoot as A, browserHistory as b, cachedSearch as c, deliveryApi as d, history as h, pickProject as p, rootSaga as r };
-//# sourceMappingURL=App-5efba16c.js.map
+//# sourceMappingURL=App-d7b18a4f.js.map
