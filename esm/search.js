@@ -93,7 +93,8 @@ const withListing = mappers => ListingComponent => {
     getQueryParameter,
     getRenderableFilters,
     getResults,
-    getSearchTerm
+    getSearchTerm,
+    getSelectedFilters
   } = selectListing;
 
   const mapStateToProps = state => {

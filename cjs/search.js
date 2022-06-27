@@ -102,7 +102,8 @@ const withListing = mappers => ListingComponent => {
     getQueryParameter,
     getRenderableFilters,
     getResults,
-    getSearchTerm
+    getSearchTerm,
+    getSelectedFilters
   } = sagas.selectListing;
 
   const mapStateToProps = state => {
@@ -117,7 +118,7 @@ const withListing = mappers => ListingComponent => {
       results: getResults(state),
       resultsInfo: mappers && typeof mappers.resultsInfo === 'function' && mappers.resultsInfo(state),
       searchTerm: getSearchTerm(state),
-      selectedFilters: sagas.getSelectedFilters(state),
+      selectedFilters: getSelectedFilters(state),
       sortOrder: getQueryParameter({
         state
       }, 'dynamicOrderBy', [])
