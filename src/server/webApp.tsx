@@ -41,6 +41,7 @@ import { addStandardHeaders } from './util/headers';
 
 import { ServerConfig } from '~/config';
 import { AppState } from '~/redux/appstate';
+import { getVersionInfo } from './util/getVersionInfo';
 
 const webApp = (
   app: Express,
@@ -76,9 +77,7 @@ const webApp = (
   const responseHandler =
     typeof handleResponses === 'function' ? handleResponses : handleResponse;
 
-  const versionInfo = JSON.parse(
-    fs.readFileSync(`dist/${staticFolderPath}/version.json`, 'utf8')
-  );
+  const versionInfo = getVersionInfo(staticFolderPath);
 
   app.get('/*', async (request, response) => {
     const { url } = request;
