@@ -3870,6 +3870,17 @@ const addVarnishAuthenticationHeaders = (state, response, groups = {}) => {
   }
 };
 
+const getVersionInfo = staticFolderPath => {
+  try {
+    const versionData = fs.readFileSync(`dist/${staticFolderPath}/version.json`, 'utf8');
+    const versionInfo = JSON.parse(versionData);
+    return versionInfo;
+  } catch (ex) {
+    console.error(`Unable to read from "version.json"`, ex);
+    return {};
+  }
+};
+
 const webApp = (app, ReactApp, config) => {
   const {
     stateType = 'immutable',
@@ -3891,7 +3902,7 @@ const webApp = (app, ReactApp, config) => {
   const attributes = stringifyAttributes(scripts.attributes);
   scripts.startup = scripts.startup || startupScriptFilename;
   const responseHandler = typeof handleResponses === 'function' ? handleResponses : handleResponse;
-  const versionInfo = JSON.parse(fs.readFileSync(`dist/${staticFolderPath}/version.json`, 'utf8'));
+  const versionInfo = getVersionInfo(staticFolderPath);
   app.get('/*', async (request, response) => {
     const {
       url
@@ -3982,7 +3993,7 @@ const webApp = (app, ReactApp, config) => {
         Helmet.rewind();
         const htmlAttributes = helmet.htmlAttributes.toString();
         let title = helmet.title.toString();
-        const metadata = helmet.meta.toString().concat(helmet.link.toString());
+        const metadata = helmet.meta.toString().concat(helmet.base.toString()).concat(helmet.link.toString()).concat(helmet.script.toString()).concat(helmet.noscript.toString());
 
         if (context.url) {
           return response.redirect(302, context.url);
