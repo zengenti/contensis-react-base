@@ -205,7 +205,10 @@ const webApp = (
           let title = helmet.title.toString();
           const metadata = helmet.meta
             .toString()
-            .concat(helmet.link.toString());
+            .concat(helmet.base.toString())
+            .concat(helmet.link.toString())
+            .concat(helmet.script.toString())
+            .concat(helmet.noscript.toString());
 
           if (context.url) {
             return response.redirect(302, context.url);
