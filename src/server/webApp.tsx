@@ -1,4 +1,3 @@
-import fs from 'fs';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
@@ -142,7 +141,7 @@ const webApp = (
 
     const jsx = (
       <ChunkExtractorManager
-        extractor={loadableExtractor?.commonLoadableExtractor}
+        extractor={loadableExtractor.commonLoadableExtractor}
       >
         <CookiesProvider cookies={cookies}>
           <ReduxProvider store={store}>
@@ -154,8 +153,11 @@ const webApp = (
       </ChunkExtractorManager>
     );
 
-    const { templateHTML, templateHTMLFragment, templateHTMLStatic } =
-      bundleData.default.templates || bundleData.legacy.templates || {};
+    const {
+      templateHTML = '',
+      templateHTMLFragment = '',
+      templateHTMLStatic = '',
+    } = bundleData.default.templates || bundleData.legacy.templates || {};
 
     // Serve a blank HTML page with client scripts to load the app in the browser
     if (accessMethod.DYNAMIC) {

@@ -52,6 +52,7 @@
     "@types/events": "^3.0.0",
     "@types/express": "^4.17.13",
     "@types/loadable__component": "^5.13.4",
+    "@types/loadable__server": "^5.12.6",
     "@types/node": "^16.11.27",
     "@types/query-string": "^5.1.0",
     "@types/react": "^17.0.44",
