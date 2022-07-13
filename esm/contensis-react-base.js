@@ -3758,7 +3758,7 @@ const loadableBundleData = ({
   const bundle = {};
 
   try {
-    bundle.stats = JSON.parse(readFileSync(stats.replace('/target', build ? `/${build}` : '')));
+    bundle.stats = stats ? JSON.parse(readFileSync(stats.replace('/target', build ? `/${build}` : ''))) : null;
   } catch (ex) {
     // console.info(ex);
     bundle.stats = null;
@@ -3778,31 +3778,51 @@ const loadableBundleData = ({
   return bundle;
 };
 const loadableChunkExtractors = () => {
-  try {
-    const modern = new ChunkExtractor({
-      entrypoints: ['app'],
-      namespace: 'modern',
-      statsFile: path.resolve('dist/modern/loadable-stats.json')
-    });
-    const legacy = new ChunkExtractor({
-      entrypoints: ['app'],
-      namespace: 'legacy',
-      statsFile: path.resolve('dist/legacy/loadable-stats.json')
-    });
-    const commonLoadableExtractor = {
-      addChunk(chunk) {
-        modern.addChunk(chunk);
-        if (typeof legacy.stats.assetsByChunkName[chunk] !== 'undefined') legacy.addChunk(chunk);
-      }
+  const commonLoadableExtractor = new ChunkExtractor({
+    stats: {}
+  });
 
+  try {
+    let modern;
+    let legacy;
+
+    try {
+      modern = new ChunkExtractor({
+        entrypoints: ['app'],
+        namespace: 'modern',
+        statsFile: path.resolve('dist/modern/loadable-stats.json')
+      });
+    } catch (e) {
+      console.info('@loadable/server modern ChunkExtractor not available');
+    }
+
+    try {
+      legacy = new ChunkExtractor({
+        entrypoints: ['app'],
+        namespace: 'legacy',
+        statsFile: path.resolve('dist/legacy/loadable-stats.json')
+      });
+    } catch (e) {
+      console.info('@loadable/server legacy ChunkExtractor not available');
+    }
+
+    commonLoadableExtractor.addChunk = chunk => {
+      var _modern, _legacy, _legacy2;
+
+      (_modern = modern) === null || _modern === void 0 ? void 0 : _modern.addChunk(chunk);
+      if (typeof ((_legacy = legacy) === null || _legacy === void 0 ? void 0 : _legacy.stats.assetsByChunkName[chunk]) !== 'undefined') (_legacy2 = legacy) === null || _legacy2 === void 0 ? void 0 : _legacy2.addChunk(chunk);
     };
+
     return {
       commonLoadableExtractor,
       modern,
       legacy
     };
   } catch (e) {
-    console.info('@loadable/server ChunkExtractor not available');
+    console.info('@loadable/server no ChunkExtractor available');
+    return {
+      commonLoadableExtractor
+    };
   }
 };
 const getBundleData = (config, staticRoutePath) => {
@@ -3813,17 +3833,46 @@ const getBundleData = (config, staticRoutePath) => {
   };
   if (!bundleData.default || bundleData.default === {}) bundleData.default = bundleData.legacy || bundleData.modern;
   return bundleData;
-};
+}; // export const buildBundleTags = (
+//   bundles,
+//   differentialBundles = false,
+//   staticRoutePath = 'static',
+//   attributes = ''
+// ) => {
+//   // Take the bundles returned from Loadable.Capture
+//   const bundleTags = bundles
+//     .filter(b => b)
+//     .map(bundle => {
+//       if (bundle.publicPath.includes('/modern/'))
+//         return differentialBundles
+//           ? `<script ${attributes} type="module" src="${replaceStaticPath(
+//               bundle.publicPath,
+//               staticRoutePath
+//             )}"></script>`
+//           : null;
+//       return `<script ${attributes}${
+//         differentialBundles ? ' nomodule' : ''
+//       } src="${replaceStaticPath(
+//         bundle.publicPath,
+//         staticRoutePath
+//       )}"></script>`;
+//     })
+//     .filter(f => f);
+//   return bundleTags;
+// };
+
 const getBundleTags = (loadableExtractor, scripts, staticRoutePath = 'static') => {
   let startupTag = ''; // Add the static startup script to the bundleTags
 
   if (scripts !== null && scripts !== void 0 && scripts.startup) startupTag = `<script ${stringifyAttributes(scripts.attributes)} src="/${staticRoutePath}/${scripts.startup}"></script>`; // Get the script tags from their respective extractor instances
 
   if (loadableExtractor) {
-    const legacyScriptTags = loadableExtractor === null || loadableExtractor === void 0 ? void 0 : loadableExtractor.legacy.getScriptTags({
+    var _loadableExtractor$le, _loadableExtractor$mo;
+
+    const legacyScriptTags = (_loadableExtractor$le = loadableExtractor.legacy) === null || _loadableExtractor$le === void 0 ? void 0 : _loadableExtractor$le.getScriptTags({
       nomodule: 'nomodule'
     });
-    const modernScriptTags = loadableExtractor === null || loadableExtractor === void 0 ? void 0 : loadableExtractor.modern.getScriptTags({
+    const modernScriptTags = (_loadableExtractor$mo = loadableExtractor.modern) === null || _loadableExtractor$mo === void 0 ? void 0 : _loadableExtractor$mo.getScriptTags({
       type: 'module'
     });
     const scriptTags = `${startupTag}${legacyScriptTags || ''}${modernScriptTags || ''}`.replace(/"\/static\//g, `"/${staticRoutePath}/`);
@@ -3952,7 +4001,7 @@ const webApp = (app, ReactApp, config) => {
     store.dispatch(setCurrentProject(project, groups, request.hostname));
     const loadableExtractor = loadableChunkExtractors();
     const jsx = /*#__PURE__*/React.createElement(ChunkExtractorManager, {
-      extractor: loadableExtractor === null || loadableExtractor === void 0 ? void 0 : loadableExtractor.commonLoadableExtractor
+      extractor: loadableExtractor.commonLoadableExtractor
     }, /*#__PURE__*/React.createElement(CookiesProvider, {
       cookies: cookies
     }, /*#__PURE__*/React.createElement(Provider, {
@@ -3965,9 +4014,9 @@ const webApp = (app, ReactApp, config) => {
       withEvents: withEvents
     })))));
     const {
-      templateHTML,
-      templateHTMLFragment,
-      templateHTMLStatic
+      templateHTML = '',
+      templateHTMLFragment = '',
+      templateHTMLStatic = ''
     } = bundleData.default.templates || bundleData.legacy.templates || {}; // Serve a blank HTML page with client scripts to load the app in the browser
 
     if (accessMethod.DYNAMIC) {
