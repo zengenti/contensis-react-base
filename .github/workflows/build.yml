@@ -23,7 +23,7 @@ jobs:
       #     sudo apt-get update
       #     sudo apt-get install libglu1 libxi6 -y
       - name: Install project dependencies
-        run: npm ci
+        run: npm ci --legacy-peer-deps
       - name: Setup GIT
         run: |
           git config user.email "github@zengenti.com"
