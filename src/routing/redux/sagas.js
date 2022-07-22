@@ -249,11 +249,7 @@ function* getRouteSaga(action) {
 
     if (!appsays || !appsays.preventScrollTop) {
       // Scroll into View
-      if (typeof window !== 'undefined') {
-        window.scroll({
-          top: 0,
-        });
-      }
+      if (typeof window !== 'undefined') window.scrollTo(0, 0);
     }
 
     if (pathNode?.entry?.sys?.id) {
