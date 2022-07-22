@@ -12,7 +12,7 @@ var component = require('@loadable/component');
 var queryString = require('query-string');
 var reactCookie = require('react-cookie');
 var version = require('./version-330551f5.js');
-var App = require('./App-0c10c9fa.js');
+var App = require('./App-80a696bc.js');
 var actions = require('./actions-8dc9e8de.js');
 require('./selectors-656da4b7.js');
 require('jsonpath-mapper');

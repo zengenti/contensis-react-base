@@ -13,7 +13,7 @@ require('query-string');
 require('immer');
 require('deep-equal');
 var VersionInfo = require('./VersionInfo-4c9dfa6a.js');
-var App = require('./App-0c10c9fa.js');
+var App = require('./App-80a696bc.js');
 require('isomorphic-fetch');
 var express = require('express');
 var httpProxy = require('http-proxy');

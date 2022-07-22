@@ -555,11 +555,7 @@ function* getRouteSaga(action) {
 
     if (!appsays || !appsays.preventScrollTop) {
       // Scroll into View
-      if (typeof window !== 'undefined') {
-        window.scroll({
-          top: 0
-        });
-      }
+      if (typeof window !== 'undefined') window.scrollTo(0, 0);
     }
 
     if ((_pathNode3 = pathNode) !== null && _pathNode3 !== void 0 && (_pathNode3$entry = _pathNode3.entry) !== null && _pathNode3$entry !== void 0 && (_pathNode3$entry$sys = _pathNode3$entry.sys) !== null && _pathNode3$entry$sys !== void 0 && _pathNode3$entry$sys.id) {
@@ -1105,4 +1101,4 @@ exports.deliveryApi = deliveryApi;
 exports.history = history;
 exports.pickProject = pickProject;
 exports.rootSaga = rootSaga;
-//# sourceMappingURL=App-0c10c9fa.js.map
+//# sourceMappingURL=App-80a696bc.js.map
