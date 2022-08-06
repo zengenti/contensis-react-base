@@ -16,14 +16,16 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: '14.x'
+          node-version: '16.x'
       # - name: Install apt packages for build
       #   # The apt-gets prevent cwebp compiling from source each time.
       #   run: |
       #     sudo apt-get update
       #     sudo apt-get install libglu1 libxi6 -y
       - name: Install project dependencies
-        run: npm ci
+        run: |
+          npm i npm -g
+          npm ci --legacy-peer-deps
       - name: Setup GIT
         run: |
           git config user.email "github@zengenti.com"

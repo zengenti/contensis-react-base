@@ -1,4 +1,5 @@
 import { takeEvery, put, select } from 'redux-saga/effects';
+import * as log from 'loglevel';
 
 import { deliveryApi } from '~/util/ContensisDeliveryApi';
 import {
@@ -30,6 +31,7 @@ export function* ensureNodeTreeSaga(action) {
       }
     }
   } catch (ex) {
+    log.error(...['Error running ensureNodeTreeSaga:', ex]);
     yield put({ type: GET_NODE_TREE_ERROR, error: ex.toString() });
   }
 }

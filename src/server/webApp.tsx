@@ -1,4 +1,3 @@
-import fs from 'fs';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom/server';
@@ -44,6 +43,7 @@ import { addStandardHeaders } from './util/headers';
 
 import { ServerConfig } from '~/config';
 import { AppState } from '~/redux/appstate';
+import { getVersionInfo } from './util/getVersionInfo';
 
 const webApp = (
   app: Express,
@@ -79,9 +79,7 @@ const webApp = (
   const responseHandler =
     typeof handleResponses === 'function' ? handleResponses : handleResponse;
 
-  const versionInfo = JSON.parse(
-    fs.readFileSync(`dist/${staticFolderPath}/version.json`, 'utf8')
-  );
+  const versionInfo = getVersionInfo(staticFolderPath);
 
   app.get('/*', async (request, response) => {
     const { url } = request;
@@ -157,7 +155,7 @@ const webApp = (
 
     const jsx = (
       <ChunkExtractorManager
-        extractor={loadableExtractor?.commonLoadableExtractor}
+        extractor={loadableExtractor.commonLoadableExtractor}
       >
         <CookiesProvider cookies={cookies}>
           <ReduxProvider store={store}>
@@ -171,8 +169,11 @@ const webApp = (
       </ChunkExtractorManager>
     );
 
-    const { templateHTML, templateHTMLFragment, templateHTMLStatic } =
-      bundleData.default.templates || bundleData.legacy.templates || {};
+    const {
+      templateHTML = '',
+      templateHTMLFragment = '',
+      templateHTMLStatic = '',
+    } = bundleData.default.templates || bundleData.legacy.templates || {};
 
     // Serve a blank HTML page with client scripts to load the app in the browser
     if (accessMethod.DYNAMIC) {
@@ -221,7 +222,10 @@ const webApp = (
           let title = helmet.title.toString();
           const metadata = helmet.meta
             .toString()
-            .concat(helmet.link.toString());
+            .concat(helmet.base.toString())
+            .concat(helmet.link.toString())
+            .concat(helmet.script.toString())
+            .concat(helmet.noscript.toString());
 
           if (context.url) {
             return response.redirect(302, context.url);
