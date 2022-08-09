@@ -11,9 +11,10 @@ export declare const navigate: (path: string, state?: any) => {
     state: any;
 };
 export declare const clearFilters: ClearFiltersActionCreator;
-export declare const updatePageIndex: (pageIndex: number) => {
+export declare const updatePageIndex: (pageIndex: number, scrollYPos?: number | undefined) => {
     type: string;
     pageIndex: number;
+    scrollYPos: number | undefined;
 };
 export declare const updateCurrentFacet: (facet: string) => {
     type: string;
@@ -27,11 +28,12 @@ export declare const updateSearchTerm: (term: string) => {
     type: string;
     term: string;
 };
-export declare const updateSelectedFilters: (filter: string, key: string, isUnknownItem?: boolean) => {
+export declare const updateSelectedFilters: (filter: string, key: string, isUnknownItem?: boolean, scrollYPos?: number | undefined) => {
     type: string;
     filter: string;
     key: string;
     isUnknownItem: boolean;
+    scrollYPos: number | undefined;
 };
 export declare const updateSortOrder: (orderBy: string, facet?: string | undefined) => {
     type: string;
