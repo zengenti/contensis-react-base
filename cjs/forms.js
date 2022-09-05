@@ -436,7 +436,7 @@ const validateInput = (field, value) => {
           message: 'You must enter a business email address.'
         };
       }
-    } else {
+    } else if (!isValidRegex(field, value)) {
       return {
         fieldId: field.id,
         groupId: field.groupId,
