@@ -36,7 +36,7 @@ export type RouteComponentProps<P = any> = {
 export type RouteLoaderProps = {
   loadingComponent?: React.ComponentType;
   notFoundComponent?: React.ComponentType;
-  reactRouterContext?: React.ContextType<any>;
+  trailingSlashRedirectCode?: 301 | 302;
 };
 
 export type EntryMapper =

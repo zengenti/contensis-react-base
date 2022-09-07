@@ -1,12 +1,7 @@
 import React, { useEffect, useCallback, cloneElement } from 'react';
 import { connect } from 'react-redux';
 import { hot } from 'react-hot-loader';
-import {
-  Navigate,
-  useLocation,
-  matchRoutes,
-  RouteObject,
-} from 'react-router-dom';
+import { useLocation, matchRoutes, RouteObject } from 'react-router-dom';
 
 import { createSelector } from 'reselect';
 
@@ -43,6 +38,7 @@ import {
   MatchedRoute,
 } from '../routes';
 import { StaticRouteLoader } from './StaticRouteLoader';
+import { Redirect } from './Redirect';
 
 const replaceDoubleSlashRecursive = (path: string) => {
   const nextPath = path.replace(/\/\//, '/');
@@ -135,6 +131,7 @@ const RouteLoader = ({
   statusText,
   userGroups,
   withEvents,
+  trailingSlashRedirectCode,
 }: AppRootProps & RouteLoaderProps & IReduxProps) => {
   const location = useLocation();
   // Always ensure paths are trimmed of trailing slashes so urls are always unique
@@ -220,8 +217,9 @@ const RouteLoader = ({
 
   // Need to redirect when url endswith a /
   if (location.pathname.length > trimmedPath.length) {
-    // Todo: Also handle the redirect serverside
-    return <Navigate to={trimmedPath} />;
+    return (
+      <Redirect code={trailingSlashRedirectCode || 302} to={trimmedPath} />
+    );
   }
 
   // Render any Static Routes a developer has defined
