@@ -34,7 +34,7 @@ const initialSettings = {
   }
 };
 const initialStatus = {
-  isLoading: false,
+  isLoading: true,
   isSubmitting: false,
   hasSuccess: false,
   successMessage: null,
@@ -85,6 +85,7 @@ var reducer = produce((state, action) => {
         state[formId].groups = groups;
         state[formId].defaultLanguage = defaultLanguage;
         state[formId].status.isSubmitting = false;
+        state[formId].status.isLoading = false;
         state[formId].status.hasSuccess = false;
         state[formId].status.hasError = false;
         state[formId].settings = settings;
@@ -623,7 +624,7 @@ function* fetchForm(action) {
 
   const formId = action.formId;
   const schema = yield getFormSchema(formId);
-  const groups = schema === null || schema === void 0 ? void 0 : (_schema$groups = schema.groups) === null || _schema$groups === void 0 ? void 0 : _schema$groups.filter(group => group.id !== 'private');
+  const groups = schema === null || schema === void 0 ? void 0 : (_schema$groups = schema.groups) === null || _schema$groups === void 0 ? void 0 : _schema$groups.filter(group => group.id !== 'private' && group.id !== 'settings');
 
   if (formId && schema) {
     var _schema$groups2, _submitButtonText$def;
@@ -1904,17 +1905,23 @@ FormComposer.propTypes = {
   setCheckboxValue: PropTypes.func
 };
 
-const LoadingSpinner = () => {
+const LoadingSpinner = ({
+  className,
+  color = '#fff',
+  width = 20,
+  height = 20
+}) => {
   return /*#__PURE__*/React.createElement("svg", {
-    width: "20px",
-    height: "20px",
+    className: className,
+    width: `${width}px`,
+    height: `${height}px`,
     viewBox: "0 0 100 100",
     preserveAspectRatio: "xMidYMid"
   }, /*#__PURE__*/React.createElement("circle", {
     cx: "50",
     cy: "50",
     fill: "none",
-    stroke: "#ffffff",
+    stroke: color,
     strokeWidth: "10",
     r: "35",
     strokeDasharray: "164.93361431346415 56.97787143782138",
@@ -1961,7 +1968,10 @@ const Button = ({
     onClick: () => action(),
     disabled: loading,
     useDefaultTheme: useDefaultTheme
-  }, text, loading && /*#__PURE__*/React.createElement(LoadingSpinner, null));
+  }, text, loading && /*#__PURE__*/React.createElement(LoadingSpinner, {
+    height: 18,
+    width: 18
+  }));
 };
 Button.propTypes = {
   className: PropTypes.string,
@@ -2129,7 +2139,7 @@ const Form = ({
       className: className,
       id: formId,
       useDefaultTheme: useDefaultTheme
-    }, !status || status && !status.isLoading && !status.isSubmitting && !status.hasSuccess && /*#__PURE__*/React.createElement(React.Fragment, null, pagingInfo.pageIndex > 0 && /*#__PURE__*/React.createElement(Button, {
+    }, !status || !(status !== null && status !== void 0 && status.hasSuccess) && !(status !== null && status !== void 0 && status.isLoading) ? /*#__PURE__*/React.createElement(React.Fragment, null, pagingInfo.pageIndex > 0 && /*#__PURE__*/React.createElement(Button, {
       type: "button",
       text: "Go Back",
       action: () => _togglePageBack(formId, pagingInfo.pageIndex - 1),
@@ -2155,13 +2165,19 @@ const Form = ({
     }), isLastPage && /*#__PURE__*/React.createElement(Button, {
       text: (settings === null || settings === void 0 ? void 0 : settings.submitButtonText) || "Submit",
       type: "button",
+      loading: status === null || status === void 0 ? void 0 : status.isLoading,
       action: () => {
         _submitForm(formId);
 
         if (customSubmit) customSubmit();
       },
       useDefaultTheme: useDefaultTheme
-    })), status && status.hasSuccess && status.successMessage && /*#__PURE__*/React.createElement("p", {
+    })) : /*#__PURE__*/React.createElement(LoadingSpinner, {
+      className: "loading",
+      height: 24,
+      width: 24,
+      color: "#333"
+    }), (status === null || status === void 0 ? void 0 : status.hasSuccess) && (status === null || status === void 0 ? void 0 : status.successMessage) && /*#__PURE__*/React.createElement("p", {
       className: "success-message"
     }, status.successMessage)));
   } else {
@@ -2171,7 +2187,7 @@ const Form = ({
       className: className,
       id: formId,
       useDefaultTheme: useDefaultTheme
-    }, !status || status && !status.isLoading && !status.isSubmitting && !status.hasSuccess && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(FormComposer, {
+    }, !status || !(status !== null && status !== void 0 && status.hasSuccess) && !(status !== null && status !== void 0 && status.isLoading) ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(FormComposer, {
       fields: fields,
       formId: formId,
       setValue: _setValue,
@@ -2183,6 +2199,7 @@ const Form = ({
       entries: entries,
       setCheckboxValue: _setCheckboxValue
     }), /*#__PURE__*/React.createElement(Button, {
+      loading: status === null || status === void 0 ? void 0 : status.isSubmitting,
       text: (settings === null || settings === void 0 ? void 0 : settings.submitButtonText) || "Submit",
       type: "button",
       action: () => {
@@ -2191,7 +2208,12 @@ const Form = ({
         if (customSubmit) customSubmit();
       },
       useDefaultTheme: useDefaultTheme
-    })), status && status.hasSuccess && status.successMessage && /*#__PURE__*/React.createElement("p", {
+    })) : /*#__PURE__*/React.createElement(LoadingSpinner, {
+      className: "loading",
+      height: 24,
+      width: 24,
+      color: "#333"
+    }), (status === null || status === void 0 ? void 0 : status.hasSuccess) && (status === null || status === void 0 ? void 0 : status.successMessage) && /*#__PURE__*/React.createElement("p", {
       className: "success-message"
     }, status.successMessage)));
   }
