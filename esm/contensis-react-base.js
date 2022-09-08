@@ -1,7 +1,7 @@
 import { Op, Query } from 'contensis-core-api';
 import React$1 from 'react';
 import { Provider } from 'react-redux';
-import { d as defaultExpressions, c as contentTypeIdExpression, f as filterExpressions, t as termExpressions, o as orderByExpression, a as customWhereExpressions } from './sagas-80b35197.js';
+import { d as defaultExpressions, c as contentTypeIdExpression, f as filterExpressions, t as termExpressions, o as orderByExpression, a as customWhereExpressions } from './sagas-1f2b2aa0.js';
 import mapJson from 'jsonpath-mapper';
 import 'reselect';
 import 'deepmerge';
@@ -9,8 +9,8 @@ import 'query-string';
 import 'immer';
 import 'deep-equal';
 import { s as setCachingHeaders } from './VersionInfo-f5403b09.js';
-import { c as cachedSearch, h as history$1, d as deliveryApi, p as pickProject, r as rootSaga } from './App-77ca3718.js';
-export { A as ReactApp } from './App-77ca3718.js';
+import { c as cachedSearch, h as history$1, d as deliveryApi, p as pickProject, r as rootSaga } from './App-8ba0343a.js';
+export { A as ReactApp } from './App-8ba0343a.js';
 import 'isomorphic-fetch';
 import express from 'express';
 import httpProxy from 'http-proxy';
@@ -28,8 +28,8 @@ import { ChunkExtractor, ChunkExtractorManager } from '@loadable/server';
 import { identity, noop } from 'lodash';
 import { buildCleaner } from 'lodash-clean';
 import { CookiesProvider } from 'react-cookie';
-import { c as createStore, s as setVersionStatus, a as setVersion } from './version-10f833e5.js';
-import { m as mergeStaticRoutes, H as HttpContext } from './RouteLoader-40d1e736.js';
+import { c as createStore, s as setVersionStatus, a as setVersion } from './version-805180da.js';
+import { m as mergeStaticRoutes, H as HttpContext } from './RouteLoader-e19aeaa2.js';
 import { s as setCurrentProject } from './actions-fcfc8704.js';
 import { s as selectSurrogateKeys, a as selectRouteEntry, b as selectCurrentProject, g as getImmutableOrJS } from './selectors-337be432.js';
 import 'loglevel';
@@ -3824,7 +3824,7 @@ const loadableBundleData = ({
   const bundle = {};
 
   try {
-    bundle.stats = JSON.parse(readFileSync(stats.replace('/target', build ? `/${build}` : '')));
+    bundle.stats = stats ? JSON.parse(readFileSync(stats.replace('/target', build ? `/${build}` : ''))) : null;
   } catch (ex) {
     // console.info(ex);
     bundle.stats = null;
@@ -3844,31 +3844,51 @@ const loadableBundleData = ({
   return bundle;
 };
 const loadableChunkExtractors = () => {
-  try {
-    const modern = new ChunkExtractor({
-      entrypoints: ['app'],
-      namespace: 'modern',
-      statsFile: path.resolve('dist/modern/loadable-stats.json')
-    });
-    const legacy = new ChunkExtractor({
-      entrypoints: ['app'],
-      namespace: 'legacy',
-      statsFile: path.resolve('dist/legacy/loadable-stats.json')
-    });
-    const commonLoadableExtractor = {
-      addChunk(chunk) {
-        modern.addChunk(chunk);
-        if (typeof legacy.stats.assetsByChunkName[chunk] !== 'undefined') legacy.addChunk(chunk);
-      }
+  const commonLoadableExtractor = new ChunkExtractor({
+    stats: {}
+  });
 
+  try {
+    let modern;
+    let legacy;
+
+    try {
+      modern = new ChunkExtractor({
+        entrypoints: ['app'],
+        namespace: 'modern',
+        statsFile: path.resolve('dist/modern/loadable-stats.json')
+      });
+    } catch (e) {
+      console.info('@loadable/server modern ChunkExtractor not available');
+    }
+
+    try {
+      legacy = new ChunkExtractor({
+        entrypoints: ['app'],
+        namespace: 'legacy',
+        statsFile: path.resolve('dist/legacy/loadable-stats.json')
+      });
+    } catch (e) {
+      console.info('@loadable/server legacy ChunkExtractor not available');
+    }
+
+    commonLoadableExtractor.addChunk = chunk => {
+      var _modern, _legacy, _legacy2;
+
+      (_modern = modern) === null || _modern === void 0 ? void 0 : _modern.addChunk(chunk);
+      if (typeof ((_legacy = legacy) === null || _legacy === void 0 ? void 0 : _legacy.stats.assetsByChunkName[chunk]) !== 'undefined') (_legacy2 = legacy) === null || _legacy2 === void 0 ? void 0 : _legacy2.addChunk(chunk);
     };
+
     return {
       commonLoadableExtractor,
       modern,
       legacy
     };
   } catch (e) {
-    console.info('@loadable/server ChunkExtractor not available');
+    console.info('@loadable/server no ChunkExtractor available');
+    return {
+      commonLoadableExtractor
+    };
   }
 };
 const getBundleData = (config, staticRoutePath) => {
@@ -3879,17 +3899,46 @@ const getBundleData = (config, staticRoutePath) => {
   };
   if (!bundleData.default || bundleData.default === {}) bundleData.default = bundleData.legacy || bundleData.modern;
   return bundleData;
-};
+}; // export const buildBundleTags = (
+//   bundles,
+//   differentialBundles = false,
+//   staticRoutePath = 'static',
+//   attributes = ''
+// ) => {
+//   // Take the bundles returned from Loadable.Capture
+//   const bundleTags = bundles
+//     .filter(b => b)
+//     .map(bundle => {
+//       if (bundle.publicPath.includes('/modern/'))
+//         return differentialBundles
+//           ? `<script ${attributes} type="module" src="${replaceStaticPath(
+//               bundle.publicPath,
+//               staticRoutePath
+//             )}"></script>`
+//           : null;
+//       return `<script ${attributes}${
+//         differentialBundles ? ' nomodule' : ''
+//       } src="${replaceStaticPath(
+//         bundle.publicPath,
+//         staticRoutePath
+//       )}"></script>`;
+//     })
+//     .filter(f => f);
+//   return bundleTags;
+// };
+
 const getBundleTags = (loadableExtractor, scripts, staticRoutePath = 'static') => {
   let startupTag = ''; // Add the static startup script to the bundleTags
 
   if (scripts !== null && scripts !== void 0 && scripts.startup) startupTag = `<script ${stringifyAttributes(scripts.attributes)} src="/${staticRoutePath}/${scripts.startup}"></script>`; // Get the script tags from their respective extractor instances
 
   if (loadableExtractor) {
-    const legacyScriptTags = loadableExtractor === null || loadableExtractor === void 0 ? void 0 : loadableExtractor.legacy.getScriptTags({
-      noModule: true
+    var _loadableExtractor$le, _loadableExtractor$mo;
+
+    const legacyScriptTags = (_loadableExtractor$le = loadableExtractor.legacy) === null || _loadableExtractor$le === void 0 ? void 0 : _loadableExtractor$le.getScriptTags({
+      nomodule: 'nomodule'
     });
-    const modernScriptTags = loadableExtractor === null || loadableExtractor === void 0 ? void 0 : loadableExtractor.modern.getScriptTags({
+    const modernScriptTags = (_loadableExtractor$mo = loadableExtractor.modern) === null || _loadableExtractor$mo === void 0 ? void 0 : _loadableExtractor$mo.getScriptTags({
       type: 'module'
     });
     const scriptTags = `${startupTag}${legacyScriptTags || ''}${modernScriptTags || ''}`.replace(/"\/static\//g, `"/${staticRoutePath}/`);
@@ -3936,6 +3985,17 @@ const addVarnishAuthenticationHeaders = (state, response, groups = {}) => {
   }
 };
 
+const getVersionInfo = staticFolderPath => {
+  try {
+    const versionData = fs.readFileSync(`dist/${staticFolderPath}/version.json`, 'utf8');
+    const versionInfo = JSON.parse(versionData);
+    return versionInfo;
+  } catch (ex) {
+    console.error(`Unable to read from "version.json"`, ex);
+    return {};
+  }
+};
+
 const webApp = (app, ReactApp, config) => {
   const {
     stateType = 'immutable',
@@ -3957,7 +4017,7 @@ const webApp = (app, ReactApp, config) => {
   const attributes = stringifyAttributes(scripts.attributes);
   scripts.startup = scripts.startup || startupScriptFilename;
   const responseHandler = typeof handleResponses === 'function' ? handleResponses : handleResponse;
-  const versionInfo = JSON.parse(fs.readFileSync(`dist/${staticFolderPath}/version.json`, 'utf8'));
+  const versionInfo = getVersionInfo(staticFolderPath);
   app.get('/*', async (request, response) => {
     const {
       url
@@ -4011,7 +4071,7 @@ const webApp = (app, ReactApp, config) => {
     store.dispatch(setCurrentProject(project, groups, request.hostname));
     const loadableExtractor = loadableChunkExtractors();
     const jsx = /*#__PURE__*/React$1.createElement(ChunkExtractorManager, {
-      extractor: loadableExtractor === null || loadableExtractor === void 0 ? void 0 : loadableExtractor.commonLoadableExtractor
+      extractor: loadableExtractor.commonLoadableExtractor
     }, /*#__PURE__*/React$1.createElement(CookiesProvider, {
       cookies: cookies
     }, /*#__PURE__*/React$1.createElement(Provider, {
@@ -4025,9 +4085,9 @@ const webApp = (app, ReactApp, config) => {
       withEvents: withEvents
     }))))));
     const {
-      templateHTML,
-      templateHTMLFragment,
-      templateHTMLStatic
+      templateHTML = '',
+      templateHTMLFragment = '',
+      templateHTMLStatic = ''
     } = bundleData.default.templates || bundleData.legacy.templates || {}; // Serve a blank HTML page with client scripts to load the app in the browser
 
     if (accessMethod.DYNAMIC) {
@@ -4053,10 +4113,10 @@ const webApp = (app, ReactApp, config) => {
         Helmet.rewind();
         const htmlAttributes = helmet.htmlAttributes.toString();
         let title = helmet.title.toString();
-        const metadata = helmet.meta.toString().concat(helmet.link.toString());
+        const metadata = helmet.meta.toString().concat(helmet.base.toString()).concat(helmet.link.toString()).concat(helmet.script.toString()).concat(helmet.noscript.toString());
 
         if (context.url) {
-          return response.redirect(302, context.url);
+          return response.redirect(context.statusCode || 302, context.url);
         }
 
         const reduxState = store.getState();

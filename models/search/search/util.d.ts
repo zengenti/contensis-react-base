@@ -12,6 +12,20 @@ export declare const extractQuotedPhrases: (searchTerm: string) => string[];
 export declare const buildUrl: (route: string, params: {
     [key: string]: string;
 }) => string;
+/**
+ * Returns all params from the current route query string or static route
+ * Supply static route argument if reading parameters from the route path
+ * Supply location argument for the params to be read in SSR
+ * @param staticRoute Matched static route from react-router 5 or 6
+ * @param location location object containing at least pathname and search
+ * @returns Keyed params object
+ */
+export declare const routeParams: (staticRoute?: any, location?: {
+    [key: string]: any;
+    pathname: string;
+    search: string;
+    hash?: string | undefined;
+} | undefined) => any;
 export declare const callCustomApi: <T>(customApi: CustomApi, filters: {
     [key: string]: string;
 }) => Promise<T>;

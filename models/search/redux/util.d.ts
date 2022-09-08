@@ -23,3 +23,4 @@ export declare const runSearch: (action: EnsureSearchAction | SetSearchEntriesAc
  */
 export declare const filterParamsChanged: (action: EnsureSearchAction | SetSearchEntriesAction, state?: AppState | undefined) => boolean;
 export declare const debugExecuteSearch: (action: EnsureSearchAction | SetSearchEntriesAction, state: AppState) => void;
+export declare const scrollTop: (scrollYPos: number) => void;

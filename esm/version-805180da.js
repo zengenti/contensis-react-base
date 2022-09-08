@@ -23,7 +23,10 @@ var navigation$1 = /*#__PURE__*/Object.freeze({
 
 const initialState$2 = {
   root: null,
-  isError: false,
+  error: {
+    isError: false,
+    message: null
+  },
   isReady: false
 };
 var NavigationReducer = produce((state, action) => {
@@ -37,7 +40,8 @@ var NavigationReducer = produce((state, action) => {
 
     case GET_NODE_TREE_ERROR:
       {
-        state.isError = true;
+        state.error.isError = true;
+        state.error.message = action.error || 'Unknown error occurred';
         return;
       }
 
@@ -433,4 +437,4 @@ var version = /*#__PURE__*/Object.freeze({
 });
 
 export { GET_NODE_TREE as G, SET_NODE_TREE as S, setVersion as a, GET_NODE_TREE_ERROR as b, createStore as c, version as d, navigation as e, convertSagaArray as f, injectReducer as g, hasNavigationTree as h, injectRedux as i, injectSaga as j, navigation$1 as n, reduxStore as r, setVersionStatus as s, useInjectRedux as u, version$1 as v };
-//# sourceMappingURL=version-10f833e5.js.map
+//# sourceMappingURL=version-805180da.js.map

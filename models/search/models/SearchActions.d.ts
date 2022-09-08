@@ -17,7 +17,7 @@ export declare type DebugFlags = boolean | {
 };
 export declare type TriggerSearchParams = {
     config?: SearchFacet | Listing;
-    context: Context;
+    context: Context | string;
     debug?: DebugFlags;
     defaultLang?: string;
     excludeIds?: string[];
@@ -99,10 +99,12 @@ export declare type SetSearchEntriesAction = Action & SetSearchEntriesParams;
 export declare type ApplySearchFilterAction = Action & {
     filter: string;
     key: string;
+    isUnknownItem: boolean;
+    scrollYPos?: number;
 };
 export declare type ApplySearchFilterActionCreator = (filter: string, key: string) => ApplySearchFilterAction;
 export declare type ClearFiltersAction = Action;
-export declare type ClearFiltersActionCreator = () => ClearFiltersAction;
+export declare type ClearFiltersActionCreator = (filterKey?: string) => ClearFiltersAction;
 export declare type UpdateCurrentFacetAction = Action & {
     facet: string;
 };
@@ -122,6 +124,7 @@ export declare type UpdateSortOrderAction = Action & {
 export declare type UpdateSortOrderActionCreator = (orderBy: string, facet: string) => UpdateSortOrderAction;
 export declare type UpdatePageIndexAction = Action & {
     pageIndex: number;
+    scrollYPos?: number;
 };
 export declare type UpdatePageIndexActionCreator = (pageIndex: number) => UpdatePageIndexAction;
 export {};

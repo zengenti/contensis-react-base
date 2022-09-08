@@ -4,14 +4,14 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 var React = require('react');
 var reactRedux = require('react-redux');
-var sagas = require('./sagas-f96b926b.js');
+var sagas = require('./sagas-594b5ecd.js');
 require('jsonpath-mapper');
 var reselect = require('reselect');
 var merge = require('deepmerge');
 require('query-string');
-require('contensis-core-api');
 var immer = require('immer');
 var equals = require('deep-equal');
+require('contensis-core-api');
 require('loglevel');
 require('@redux-saga/core/effects');
 require('contensis-delivery-api');
@@ -72,12 +72,12 @@ const withSearch = mappers => SearchComponent => {
   };
 
   const mapDispatchToProps = {
-    clearFilters: () => sagas.withMappers(sagas.clearFilters(), mappers),
+    clearFilters: filterKey => sagas.withMappers(sagas.clearFilters(filterKey), mappers),
     updateCurrentFacet: facet => sagas.withMappers(sagas.updateCurrentFacet(facet), mappers),
     updateCurrentTab: id => sagas.withMappers(sagas.updateCurrentTab(id), mappers),
-    updatePageIndex: pageIndex => sagas.withMappers(sagas.updatePageIndex(pageIndex), mappers),
+    updatePageIndex: (pageIndex, scrollYPos) => sagas.withMappers(sagas.updatePageIndex(pageIndex, scrollYPos), mappers),
     updateSearchTerm: term => sagas.withMappers(sagas.updateSearchTerm(term), mappers),
-    updateSelectedFilters: (filter, key, isUnknownItem = false) => sagas.withMappers(sagas.updateSelectedFilters(filter, key, isUnknownItem), mappers),
+    updateSelectedFilters: (filter, key, isUnknownItem = false, scrollYPos) => sagas.withMappers(sagas.updateSelectedFilters(filter, key, isUnknownItem, scrollYPos), mappers),
     updateSortOrder: orderBy => sagas.withMappers(sagas.updateSortOrder(orderBy), mappers)
   };
   const connector = reactRedux.connect(mapStateToProps, mapDispatchToProps);
@@ -102,7 +102,8 @@ const withListing = mappers => ListingComponent => {
     getQueryParameter,
     getRenderableFilters,
     getResults,
-    getSearchTerm
+    getSearchTerm,
+    getSelectedFilters
   } = sagas.selectListing;
 
   const mapStateToProps = state => {
@@ -117,7 +118,7 @@ const withListing = mappers => ListingComponent => {
       results: getResults(state),
       resultsInfo: mappers && typeof mappers.resultsInfo === 'function' && mappers.resultsInfo(state),
       searchTerm: getSearchTerm(state),
-      selectedFilters: sagas.getSelectedFilters(state),
+      selectedFilters: getSelectedFilters(state),
       sortOrder: getQueryParameter({
         state
       }, 'dynamicOrderBy', [])
@@ -125,11 +126,11 @@ const withListing = mappers => ListingComponent => {
   };
 
   const mapDispatchToProps = {
-    clearFilters: () => sagas.withMappers(sagas.clearFilters(), mappers),
+    clearFilters: filterKey => sagas.withMappers(sagas.clearFilters(filterKey), mappers),
     updateCurrentFacet: facet => sagas.withMappers(sagas.updateCurrentFacet(facet), mappers),
-    updatePageIndex: pageIndex => sagas.withMappers(sagas.updatePageIndex(pageIndex), mappers),
+    updatePageIndex: (pageIndex, scrollYPos) => sagas.withMappers(sagas.updatePageIndex(pageIndex, scrollYPos), mappers),
     updateSearchTerm: term => sagas.withMappers(sagas.updateSearchTerm(term), mappers),
-    updateSelectedFilters: (filter, key, isUnknownItem = false) => sagas.withMappers(sagas.updateSelectedFilters(filter, key, isUnknownItem), mappers),
+    updateSelectedFilters: (filter, key, isUnknownItem = false, scrollYPos) => sagas.withMappers(sagas.updateSelectedFilters(filter, key, isUnknownItem, scrollYPos), mappers),
     updateSortOrder: orderBy => sagas.withMappers(sagas.updateSortOrder(orderBy), mappers)
   };
   return reactRedux.connect(mapStateToProps, mapDispatchToProps)(toJS(Wrapper));
@@ -193,12 +194,12 @@ const useFacets = ({
   const m = mappers || defaultMappers;
   const selectListingProps = React.useMemo(makeSelectFacetsProps, [m]);
   const dispatchProps = {
-    clearFilters: () => dispatch(sagas.withMappers(sagas.clearFilters(), m)),
+    clearFilters: filterKey => dispatch(sagas.withMappers(sagas.clearFilters(filterKey), m)),
     updateCurrentFacet: facet => dispatch(sagas.withMappers(sagas.updateCurrentFacet(facet), m)),
     updateCurrentTab: id => sagas.withMappers(sagas.updateCurrentTab(id), m),
-    updatePageIndex: pageIndex => dispatch(sagas.withMappers(sagas.updatePageIndex(pageIndex), m)),
+    updatePageIndex: (pageIndex, scrollYPos) => dispatch(sagas.withMappers(sagas.updatePageIndex(pageIndex, scrollYPos), m)),
     updateSearchTerm: term => dispatch(sagas.withMappers(sagas.updateSearchTerm(term), m)),
-    updateSelectedFilters: (filter, key, isUnknownItem = false) => dispatch(sagas.withMappers(sagas.updateSelectedFilters(filter, key, isUnknownItem), m)),
+    updateSelectedFilters: (filter, key, isUnknownItem = false, scrollYPos) => dispatch(sagas.withMappers(sagas.updateSelectedFilters(filter, key, isUnknownItem, scrollYPos), m)),
     updateSortOrder: orderBy => dispatch(sagas.withMappers(sagas.updateSortOrder(orderBy), m))
   };
   const {
@@ -287,11 +288,11 @@ const useListing = ({
   const m = mappers || defaultMappers;
   const selectListingProps = React.useMemo(makeSelectListingProps, [m]);
   const dispatchProps = {
-    clearFilters: () => dispatch(sagas.withMappers(sagas.clearFilters(), m)),
+    clearFilters: filterKey => dispatch(sagas.withMappers(sagas.clearFilters(filterKey), m)),
     updateCurrentFacet: facet => dispatch(sagas.withMappers(sagas.updateCurrentFacet(facet), m)),
-    updatePageIndex: pageIndex => dispatch(sagas.withMappers(sagas.updatePageIndex(pageIndex), m)),
+    updatePageIndex: (pageIndex, scrollYPos) => dispatch(sagas.withMappers(sagas.updatePageIndex(pageIndex, scrollYPos), m)),
     updateSearchTerm: term => dispatch(sagas.withMappers(sagas.updateSearchTerm(term), m)),
-    updateSelectedFilters: (filter, key, isUnknownItem = false) => dispatch(sagas.withMappers(sagas.updateSelectedFilters(filter, key, isUnknownItem), m)),
+    updateSelectedFilters: (filter, key, isUnknownItem = false, scrollYPos) => dispatch(sagas.withMappers(sagas.updateSelectedFilters(filter, key, isUnknownItem, scrollYPos), m)),
     updateSortOrder: orderBy => dispatch(sagas.withMappers(sagas.updateSortOrder(orderBy), m))
   };
   const {
@@ -368,7 +369,7 @@ const useMinilist = ({
   // }));
 
   React.useEffect(() => {
-    if (id && (mapper || mappers && mappers.results)) {
+    if (id && (mapper || mappers !== null && mappers !== void 0 && mappers.results)) {
       dispatch(sagas.triggerSearch({
         config,
         context: sagas.Context.minilist,
@@ -607,12 +608,15 @@ var reducers = (config => {
       case sagas.CLEAR_FILTERS:
         {
           const currentFilters = state[context][current].filters;
-          state[context][current].filters = Object.fromEntries(Object.entries(currentFilters).map(([key, filter]) => {
-            const filterItems = filter.items || [];
-            filter.items = filterItems.map(item => ({ ...item,
-              isSelected: false
-            }));
-            return [key, filter];
+          state[context][current].filters = Object.fromEntries(Object.entries(currentFilters).map(([filterKey, filter]) => {
+            if (typeof action.filterKey === 'undefined' || action.filterKey === filterKey) {
+              const filterItems = filter.items || [];
+              filter.items = filterItems.map(item => ({ ...item,
+                isSelected: false
+              }));
+            }
+
+            return [filterKey, filter];
           }));
           state[context][current].queryDuration = 0;
           state[context][current].pagingInfo.pagesLoaded = [];
@@ -844,9 +848,13 @@ exports.actions = sagas.actions;
 exports.doSearch = sagas.doSearch;
 exports.expressions = sagas.expressions;
 exports.queries = sagas.queries;
+exports.routeParams = sagas.routeParams;
 exports.sagas = sagas.searchSagas;
 exports.selectors = sagas.selectors;
 exports.setRouteFilters = sagas.setRouteFilters;
+exports.triggerListingSsr = sagas.triggerListingSsr;
+exports.triggerMinilistSsr = sagas.triggerMinilistSsr;
+exports.triggerSearchSsr = sagas.triggerSearchSsr;
 exports.types = sagas.types;
 exports.Context = Context;
 exports.reducer = reducers;

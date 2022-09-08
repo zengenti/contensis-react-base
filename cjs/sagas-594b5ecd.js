@@ -82,10 +82,7 @@ const withMappers = (action, mappers) => {
   return { ...action,
     mappers
   };
-}; // export const withMappers2 = (actionFunc, args, mappers) => {
-//   return () => ({ ...actionFunc(args), mappers });
-// };
-
+};
 const triggerSearch = ({
   config,
   context,
@@ -94,6 +91,7 @@ const triggerSearch = ({
   excludeIds,
   facet,
   mapper,
+  mappers,
   params
 }) => {
   return {
@@ -105,6 +103,7 @@ const triggerSearch = ({
     excludeIds,
     facet,
     mapper,
+    mappers,
     params
   };
 };
@@ -129,15 +128,17 @@ const navigate = (path, state) => {
     state
   };
 };
-const clearFilters$1 = () => {
+const clearFilters$1 = filterKey => {
   return {
-    type: CLEAR_FILTERS
+    type: CLEAR_FILTERS,
+    filterKey
   };
 };
-const updatePageIndex$1 = pageIndex => {
+const updatePageIndex$1 = (pageIndex, scrollYPos) => {
   return {
     type: UPDATE_PAGE_INDEX,
-    pageIndex
+    pageIndex,
+    scrollYPos
   };
 };
 const updateCurrentFacet$1 = facet => {
@@ -158,12 +159,13 @@ const updateSearchTerm$1 = term => {
     term
   };
 };
-const updateSelectedFilters = (filter, key, isUnknownItem = false) => {
+const updateSelectedFilters = (filter, key, isUnknownItem = false, scrollYPos) => {
   return {
     type: UPDATE_SELECTED_FILTERS,
     filter,
     key,
-    isUnknownItem
+    isUnknownItem,
+    scrollYPos
   };
 };
 const updateSortOrder$1 = (orderBy, facet) => {
@@ -475,6 +477,14 @@ var selectors = /*#__PURE__*/Object.freeze({
   selectVersionStatus: selectVersionStatus
 });
 
+const now = () => {
+  if (typeof window == 'undefined') {
+    return Date.now();
+  }
+
+  return window.performance.now();
+};
+
 const getClientConfig = (project, env) => {
   let config = DELIVERY_API_CONFIG;
   /* global DELIVERY_API_CONFIG */
@@ -639,14 +649,6 @@ class CachedSearch {
 
 const cachedSearch = new CachedSearch();
 
-const now = () => {
-  if (typeof window == 'undefined') {
-    return Date.now();
-  }
-
-  return window.performance.now();
-};
-
 // eslint-disable-next-line import/default
 function fixFreeTextForElastic(s) {
   const illegalChars = ['>', '<', '=', '|', '!', '{', '}', '[', ']', '^', '~', '*', '?', ':', '\\', '/'];
@@ -686,8 +688,28 @@ const extractQuotedPhrases = searchTerm => {
 };
 const buildUrl = (route, params) => {
   const qs = queryString.stringify(params);
-  const path = qs ? `${route}?${qs}` : route;
+  const path = qs ? `${route}${route.includes('?') ? '&' : '?'}${qs}` : route;
   return path;
+};
+/**
+ * Returns all params from the current route query string or static route
+ * Supply static route argument if reading parameters from the route path
+ * Supply location argument for the params to be read in SSR
+ * @param staticRoute Matched static route from react-router 5 or 6
+ * @param location location object containing at least pathname and search
+ * @returns Keyed params object
+ */
+
+const routeParams = (staticRoute, location) => {
+  var _staticRoute$match;
+
+  // match.params is react-router-config/react-router@5 style
+  // params is supplied with RouteObject in react-router@6
+  const pathParams = (staticRoute === null || staticRoute === void 0 ? void 0 : (_staticRoute$match = staticRoute.match) === null || _staticRoute$match === void 0 ? void 0 : _staticRoute$match.params) || (staticRoute === null || staticRoute === void 0 ? void 0 : staticRoute.params) || {};
+  const queryParams = queryString.parse(typeof window !== 'undefined' ? window.location.search : (location === null || location === void 0 ? void 0 : location.search) || '');
+  return { ...pathParams,
+    ...queryParams
+  };
 };
 const callCustomApi = async (customApi, filters) => {
   const apiUri = customApi.uri || '';
@@ -729,6 +751,43 @@ const areArraysEqualSets = (a1, a2) => {
 
   return true;
 };
+
+const searchUriTemplate = {
+  path: ({
+    state,
+    facet,
+    pageIndex
+  }) => {
+    const currentFacet = getSearchContext(state) !== exports.Context.listings && (facet || getCurrentFacet(state));
+    const currentPath = selectCurrentPath(state) || '/search';
+    const newPath = currentFacet ? `${currentPath}/${currentFacet}` : currentPath;
+    if (pageIndex) return `${newPath}/${pageIndex + 1}`;
+    return newPath;
+  },
+  search: ({
+    state,
+    facet,
+    orderBy,
+    term
+  }) => {
+    const searchContext = getSearchContext(state); // Lose stateFilters and currentSearch if a new
+    // term is passed via an argument
+
+    const stateFilters = term ? {} : Object.fromEntries(Object.entries(getSelectedFilters(state, facet, searchContext, 'js')).map(([key, f]) => [key, f === null || f === void 0 ? void 0 : f.join(',')]));
+    const currentSearch = !term && getImmutableOrJS(state, ['routing', 'location', 'search']);
+    const currentQs = removeEmptyAttributes(queryString.parse(currentSearch));
+    if (orderBy) currentQs.orderBy = orderBy;
+    const searchTerm = getSearchTerm(state); // Merge the stateFilters with any current qs to build the new qs
+
+    const mergedSearch = removeEmptyAttributes({ ...merge__default["default"](currentQs, stateFilters),
+      term: searchTerm
+    });
+    return queryString.stringify(mergedSearch);
+  },
+  hash: state => getImmutableOrJS(state, ['routing', 'location', 'hash'], '').replace('#', '')
+};
+
+const mapStateToSearchUri = params => mapJson__default["default"](params, searchUriTemplate);
 
 const DataFormats = {
   asset: 'asset',
@@ -867,10 +926,16 @@ const excludeIdsExpression = excludeIds => {
   } else return [];
 };
 const orderByExpression = orderBy => {
-  let expression = contensisCoreApi.OrderBy;
+  let expression;
 
   if (orderBy && orderBy.length > 0) {
-    orderBy.map(ob => expression = ob.startsWith('-') ? expression.desc(ob.substring(1)) : expression.asc(ob));
+    expression = contensisCoreApi.OrderBy;
+
+    for (const ob of orderBy) {
+      var _expression, _expression2;
+
+      expression = ob.startsWith('-') ? (_expression = expression) === null || _expression === void 0 ? void 0 : _expression.desc(ob.substring(1)) : (_expression2 = expression) === null || _expression2 === void 0 ? void 0 : _expression2.asc(ob);
+    }
   }
 
   return expression;
@@ -1136,43 +1201,6 @@ var queries = /*#__PURE__*/Object.freeze({
   filterQuery: filterQuery,
   searchQuery: searchQuery
 });
-
-const searchUriTemplate = {
-  path: ({
-    state,
-    facet,
-    pageIndex
-  }) => {
-    const currentFacet = getSearchContext(state) !== exports.Context.listings && (facet || getCurrentFacet(state));
-    const currentPath = selectCurrentPath(state) || '/search';
-    const newPath = currentFacet ? `${currentPath}/${currentFacet}` : currentPath;
-    if (pageIndex) return `${newPath}/${pageIndex + 1}`;
-    return newPath;
-  },
-  search: ({
-    state,
-    facet,
-    orderBy,
-    term
-  }) => {
-    const searchContext = getSearchContext(state); // Lose stateFilters and currentSearch if a new
-    // term is passed via an argument
-
-    const stateFilters = term ? {} : Object.fromEntries(Object.entries(getSelectedFilters(state, facet, searchContext, 'js')).map(([key, f]) => [key, f === null || f === void 0 ? void 0 : f.join(',')]));
-    const currentSearch = !term && getImmutableOrJS(state, ['routing', 'location', 'search']);
-    const currentQs = removeEmptyAttributes(queryString.parse(currentSearch));
-    if (orderBy) currentQs.orderBy = orderBy;
-    const searchTerm = getSearchTerm(state); // Merge the stateFilters with any current qs to build the new qs
-
-    const mergedSearch = removeEmptyAttributes({ ...merge__default["default"](currentQs, stateFilters),
-      term: searchTerm
-    });
-    return queryString.stringify(mergedSearch);
-  },
-  hash: state => getImmutableOrJS(state, ['routing', 'location', 'hash'], '').replace('#', '')
-};
-
-const mapStateToSearchUri = params => mapJson__default["default"](params, searchUriTemplate);
 
 const mapEntriesToSearchResults = ({
   mappers,
@@ -1539,6 +1567,9 @@ const debugExecuteSearch = (action, state) => {
   };
   console.log(stateParams, queryParams);
   console.log('getSelectedFilters', getSelectedFilters(action.ogState || state, action.facet, action.context, 'js'), 'params', action.params);
+};
+const scrollTop = scrollYPos => {
+  if (typeof window !== 'undefined') window.scrollTo(0, scrollYPos);
 };
 
 // Base mapping, fields that are the same across all mappings
@@ -1939,20 +1970,24 @@ function* updateSortOrder(action) {
 function* updatePageIndex(action) {
   const {
     pageIndex,
-    mappers
+    mappers,
+    scrollYPos
   } = action;
   const uri = yield buildUri({
     pageIndex
   }, mappers);
   yield effects.put(navigate(uri));
+  if (typeof scrollYPos !== 'undefined') scrollTop(scrollYPos);
 }
 
 function* applySearchFilter(action) {
   const {
-    mappers
+    mappers,
+    scrollYPos
   } = action;
   const uri = yield buildUri({}, mappers);
   yield effects.put(navigate(uri));
+  if (typeof scrollYPos !== 'undefined') scrollTop(scrollYPos);
 }
 
 function* buildUri({
@@ -1972,6 +2007,19 @@ function* buildUri({
   }); // return uri;
 
   return `${uri.path}${uri.search && `?${uri.search}` || ''}${uri.hash && `#${uri.hash}` || ''}`;
+}
+
+function* triggerMinilistSsr(options) {
+  yield effects.call(doSearch, {
+    type: DO_SEARCH,
+    ...options
+  });
+}
+function* triggerListingSsr(options) {
+  yield effects.call(setRouteFilters, options);
+}
+function* triggerSearchSsr(options) {
+  yield effects.call(setRouteFilters, options);
 }
 
 exports.APPLY_CONFIG = APPLY_CONFIG;
@@ -2019,6 +2067,7 @@ exports.getTotalCount = getTotalCount;
 exports.mapStateToSearchUri = mapStateToSearchUri;
 exports.orderByExpression = orderByExpression;
 exports.queries = queries;
+exports.routeParams = routeParams;
 exports.searchSagas = searchSagas;
 exports.selectFacets = selectFacets;
 exports.selectListing = selectListing;
@@ -2026,7 +2075,10 @@ exports.selectors = selectors;
 exports.setRouteFilters = setRouteFilters;
 exports.termExpressions = termExpressions;
 exports.toArray = toArray;
+exports.triggerListingSsr = triggerListingSsr;
+exports.triggerMinilistSsr = triggerMinilistSsr;
 exports.triggerSearch = triggerSearch;
+exports.triggerSearchSsr = triggerSearchSsr;
 exports.types = types;
 exports.updateCurrentFacet = updateCurrentFacet$1;
 exports.updateCurrentTab = updateCurrentTab$1;
@@ -2035,4 +2087,4 @@ exports.updateSearchTerm = updateSearchTerm$1;
 exports.updateSelectedFilters = updateSelectedFilters;
 exports.updateSortOrder = updateSortOrder$1;
 exports.withMappers = withMappers;
-//# sourceMappingURL=sagas-f96b926b.js.map
+//# sourceMappingURL=sagas-594b5ecd.js.map

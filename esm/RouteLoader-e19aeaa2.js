@@ -1,7 +1,7 @@
-import React, { useContext, createContext, useCallback, useEffect } from 'react';
+import React, { useContext, createContext, cloneElement, useCallback, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { hot } from 'react-hot-loader';
-import { useLocation, matchRoutes, useRoutes, Navigate } from 'react-router-dom';
+import { Navigate, useRoutes, useLocation, matchRoutes } from 'react-router-dom';
 import { createSelector } from 'reselect';
 import { k as selectRouteEntryContentTypeId, a as selectRouteEntry, l as selectRouteIsError, m as selectIsNotFound, n as selectRouteLoading, i as selectMappedEntry, b as selectCurrentProject, o as selectCurrentPath, p as selectRouteStatusCode, r as selectRouteErrorMessage } from './selectors-337be432.js';
 import { g as setNavigationPath } from './actions-fcfc8704.js';
@@ -39,17 +39,21 @@ const mergeStaticRoutes = matchedStaticRoute => {
   }
 };
 
-const NotFound = ({
-  statusCode,
-  statusText
-}) => /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("header", null, /*#__PURE__*/React.createElement("h1", null, statusCode || '404', " Page Not Found"), statusText && /*#__PURE__*/React.createElement("h2", {
-  style: {
-    background: '#eee',
-    color: '#666',
-    fontSize: '100%',
-    padding: '10px'
+const Redirect = ({
+  code,
+  to
+}) => {
+  const httpContext = useHttpContext();
+
+  if (httpContext) {
+    httpContext.statusCode = code;
+    httpContext.url = to;
   }
-}, statusText)));
+
+  return /*#__PURE__*/React.createElement(Navigate, {
+    to: to
+  });
+};
 
 const Status = ({
   code,
@@ -62,6 +66,25 @@ const Status = ({
   }
 
   return /*#__PURE__*/React.createElement(React.Fragment, null, children);
+};
+
+const NotFound = ({
+  statusCode,
+  statusText
+}) => /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("header", null, /*#__PURE__*/React.createElement("h1", null, statusCode || '404', " Page Not Found"), statusText && /*#__PURE__*/React.createElement("h2", {
+  style: {
+    background: '#eee',
+    color: '#666',
+    fontSize: '100%',
+    padding: '10px'
+  }
+}, statusText)));
+
+const StaticRouteLoader = ({
+  staticRoutes
+}) => {
+  const staticRouteElement = useRoutes(staticRoutes);
+  return /*#__PURE__*/React.createElement(React.Fragment, null, staticRouteElement);
 };
 
 const replaceDoubleSlashRecursive = path => {
@@ -110,6 +133,16 @@ const processStaticRoutes = (staticRoutes, componentProps) => {
       delete route.component;
     }
 
+    if (route.element) {
+      route.element = /*#__PURE__*/cloneElement(route.element, {
+        projectId,
+        contentTypeId,
+        entry,
+        mappedEntry,
+        isLoggedIn
+      });
+    }
+
     if (route.children) {
       route.children = processStaticRoutes(route.children, componentProps);
     }
@@ -135,7 +168,8 @@ const RouteLoader = ({
   statusCode,
   statusText,
   userGroups,
-  withEvents
+  withEvents,
+  trailingSlashRedirectCode
 }) => {
   const location = useLocation(); // Always ensure paths are trimmed of trailing slashes so urls are always unique
 
@@ -158,7 +192,6 @@ const RouteLoader = ({
 
   const staticRoute = isStaticRoute ? matchedStaticRoute.pop() || null : null;
   const routeRequiresLogin = staticRoute ? staticRoute.route.requireLogin : undefined;
-  const staticRouteElement = useRoutes(staticRoutes);
   const setPath = useCallback(() => {
     // Use serverPath to control the path we send to siteview node api to resolve a route
     let serverPath = '';
@@ -195,15 +228,17 @@ const RouteLoader = ({
   }, [location, setPath]); // Need to redirect when url endswith a /
 
   if (location.pathname.length > trimmedPath.length) {
-    // Todo: Also handle the redirect serverside
-    return /*#__PURE__*/React.createElement(Navigate, {
-      to: trimmedPath
+    return /*#__PURE__*/React.createElement(Redirect, {
+      code: trailingSlashRedirectCode || 302,
+      to: `${trimmedPath}${location.search}${location.hash}`
     });
   } // Render any Static Routes a developer has defined
 
 
   if (isStaticRoute && !(!isLoggedIn && routeRequiresLogin)) {
-    if (matchUserGroup(userGroups, routeRequiresLogin)) return staticRouteElement;
+    if (matchUserGroup(userGroups, routeRequiresLogin)) return /*#__PURE__*/React.createElement(StaticRouteLoader, {
+      staticRoutes: staticRoutes
+    });
   } // Render a supplied Loading component if the route
   // is not a static route and is in a loading state
 
@@ -261,5 +296,5 @@ const mapDispatchToProps = {
 };
 var RouteLoader$1 = hot(module)(connect(mapStateToPropsMemoized, mapDispatchToProps)(toJS(RouteLoader)));
 
-export { HttpContext as H, RouteLoader$1 as R, mergeStaticRoutes as m, useHttpContext as u };
-//# sourceMappingURL=RouteLoader-40d1e736.js.map
+export { HttpContext as H, RouteLoader$1 as R, Status as S, Redirect as a, mergeStaticRoutes as m, useHttpContext as u };
+//# sourceMappingURL=RouteLoader-e19aeaa2.js.map

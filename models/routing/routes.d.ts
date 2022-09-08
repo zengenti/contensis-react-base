@@ -29,7 +29,7 @@ export declare type RouteComponentProps<P = any> = {
 export declare type RouteLoaderProps = {
     loadingComponent?: React.ComponentType;
     notFoundComponent?: React.ComponentType;
-    reactRouterContext?: React.ContextType<any>;
+    trailingSlashRedirectCode?: 301 | 302;
 };
 export declare type EntryMapper = (<MappedProps>(node: RouteNode, state?: AppState) => MappedProps | unknown) | (<MappedProps>(node: RouteNode, state?: AppState) => Promise<MappedProps | unknown>);
 export declare type ReduxInjector = () => Promise<{

@@ -49,7 +49,10 @@ var navigation$1 = /*#__PURE__*/Object.freeze({
 
 const initialState$2 = {
   root: null,
-  isError: false,
+  error: {
+    isError: false,
+    message: null
+  },
   isReady: false
 };
 var NavigationReducer = immer.produce((state, action) => {
@@ -63,7 +66,8 @@ var NavigationReducer = immer.produce((state, action) => {
 
     case GET_NODE_TREE_ERROR:
       {
-        state.isError = true;
+        state.error.isError = true;
+        state.error.message = action.error || 'Unknown error occurred';
         return;
       }
 
@@ -474,4 +478,4 @@ exports.setVersionStatus = setVersionStatus;
 exports.useInjectRedux = useInjectRedux;
 exports.version = version$1;
 exports.version$1 = version;
-//# sourceMappingURL=version-d1940d25.js.map
+//# sourceMappingURL=version-f4f0e0a7.js.map

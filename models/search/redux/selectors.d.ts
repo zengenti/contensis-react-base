@@ -18,7 +18,7 @@ export declare const getFacetTitles: (state: AppState) => {
     title: string | undefined;
     totalCount: number;
 }[];
-export declare const getFacet: (state: AppState, facetName?: string, context?: Context, returnType?: StateType | undefined) => Facet;
+export declare const getFacet: (state: AppState, facetName?: string, context?: Context | string, returnType?: StateType | undefined) => Facet;
 export declare const getListing: (state: AppState, listing?: string) => Facet;
 export declare const getFilters: (state: AppState, facet: string, context?: Context, returnType?: StateType | undefined) => Filters;
 export declare const getRenderableFilters: (state: AppState, facet?: string, context?: Context) => Filters;
@@ -54,7 +54,7 @@ export declare const selectFacets: {
     getCurrentTab: (state: AppState) => number;
     getCustomApi: (state: AppState, current: string, context?: Context, returnType?: StateType | undefined) => CustomApi;
     getCustomEnv: (state: AppState, current: string, context?: Context) => any;
-    getFacet: (state: AppState, facetName?: string, context?: Context, returnType?: StateType | undefined) => Facet;
+    getFacet: (state: AppState, facetName?: string, context?: Context | string, returnType?: StateType | undefined) => Facet;
     getFacetTitles: (state: AppState) => {
         isSelected: boolean;
         key: string;

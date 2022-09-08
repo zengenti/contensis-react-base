@@ -1,4 +1,4 @@
-import { IExpression, ILogicalExpression, VersionStatus } from 'contensis-core-api';
+import { ContensisQueryOrderBy, IExpression, ILogicalExpression, VersionStatus } from 'contensis-core-api';
 import { CustomWhereClause, WeightedSearchField } from '../models/Search';
 import { FieldOperators, FilterExpression } from '../models/Queries';
 export declare const fieldExpression: (field: string | string[], value: any, operator?: FieldOperators, weight?: number | undefined) => IExpression[];
@@ -15,7 +15,7 @@ export declare const includeInSearchExpressions: (webpageTemplates: string[], in
 export declare const defaultExpressions: (versionStatus: VersionStatus) => IExpression[];
 export declare const includeIdsExpression: (includeIds: string[]) => IExpression[];
 export declare const excludeIdsExpression: (excludeIds: string[]) => ILogicalExpression[];
-export declare const orderByExpression: (orderBy: string[]) => import("contensis-core-api").ContensisQueryOrderBy;
+export declare const orderByExpression: (orderBy: string[]) => ContensisQueryOrderBy;
 /**
  * Accept HTTP style objects and map them to
  * their equivalent JS client "Op" expressions
