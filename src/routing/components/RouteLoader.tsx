@@ -218,7 +218,10 @@ const RouteLoader = ({
   // Need to redirect when url endswith a /
   if (location.pathname.length > trimmedPath.length) {
     return (
-      <Redirect code={trailingSlashRedirectCode || 302} to={trimmedPath} />
+      <Redirect
+        code={trailingSlashRedirectCode || 302}
+        to={`${trimmedPath}${location.search}${location.hash}`}
+      />
     );
   }
 
