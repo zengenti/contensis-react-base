@@ -484,13 +484,15 @@ const isBusinessEmailValid = (field, value) => {
 };
 
 const MakeFieldType = field => {
+  var _field$editor, _field$editor$propert;
+
   if (!field) return null;
 
   if (field.dataType === 'string' && field.editor && field.editor.id === 'multiline') {
     return 'textarea';
   } else if (field.dataType === 'string' && field.editor && field.editor.id === 'list-dropdown') {
     return 'dropdown';
-  } else if (field.editor && field.editor.properties && field.editor.properties.readOnly || field.groupId && field.groupId === 'private') {
+  } else if (field !== null && field !== void 0 && (_field$editor = field.editor) !== null && _field$editor !== void 0 && (_field$editor$propert = _field$editor.properties) !== null && _field$editor$propert !== void 0 && _field$editor$propert.readOnly || (field === null || field === void 0 ? void 0 : field.groupId) === 'private' || (field === null || field === void 0 ? void 0 : field.groupId) === 'settings') {
     return 'hidden';
   } else if (field.dataType === 'stringArray' || field.dataType === 'boolean') {
     return 'checkbox';
