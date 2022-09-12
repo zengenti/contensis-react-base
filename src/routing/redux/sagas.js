@@ -79,13 +79,17 @@ function* getRouteSaga(action) {
       appsays = yield withEvents.onRouteLoad(action);
     }
 
+    const staticRouteLinkDepth = staticRoute?.route?.params?.linkDepth;
+    const staticRouteFields = staticRoute?.route?.params?.fields;
     const entryLinkDepth =
       appsays && appsays.entryLinkDepth !== undefined
         ? appsays.entryLinkDepth
         : 2;
-    const setContentTypeLimits = !!ContentTypeMappings.find(
-      ct => ct.fields || ct.linkDepth || ct.nodeOptions
-    );
+    const setContentTypeLimits =
+      (typeof staticRouteLinkDepth === 'undefined' || !staticRouteFields) &&
+      !!ContentTypeMappings.find(
+        ct => ct.fields || ct.linkDepth || ct.nodeOptions
+      );
 
     const state = yield select();
     const routeEntry = selectRouteEntry(state, 'js');
@@ -169,8 +173,12 @@ function* getRouteSaga(action) {
             path: currentPath,
             entryFields: setContentTypeLimits
               ? ['sys.contentTypeId', 'sys.id']
-              : '*',
-            entryLinkDepth: setContentTypeLimits ? 0 : entryLinkDepth,
+              : staticRouteFields || '*',
+            entryLinkDepth: setContentTypeLimits
+              ? 0
+              : typeof staticRouteLinkDepth !== 'undefined'
+              ? staticRouteLinkDepth
+              : entryLinkDepth,
             language: defaultLang,
             versionStatus: deliveryApiStatus,
           },
@@ -222,14 +230,15 @@ function* getRouteSaga(action) {
       if (children) pathNode.children = children;
     }
 
-    const { entryMapper, injectRedux } =
+    const resolvedContentTypeMapping =
       findContentTypeMapping(
         ContentTypeMappings,
         pathNode?.entry?.sys?.contentTypeId
       ) || {};
 
     // Inject redux { key, reducer, saga } provided by ContentTypeMapping
-    if (injectRedux) yield call(reduxInjectorSaga, injectRedux);
+    if (resolvedContentTypeMapping.injectRedux)
+      yield call(reduxInjectorSaga, resolvedContentTypeMapping.injectRedux);
 
     if (withEvents && withEvents.onRouteLoaded) {
       // Check if the app has provided a requireLogin boolean flag or groups array
@@ -261,7 +270,8 @@ function* getRouteSaga(action) {
         pathNode,
         ancestors,
         siblings,
-        entryMapper,
+        staticRoute?.route?.fetchNode?.entryMapper ||
+          resolvedContentTypeMapping.entryMapper,
         false,
         appsays?.refetchNode
       );

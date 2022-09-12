@@ -115,6 +115,25 @@ const RouteLoader = ({
           .split('/')
           .splice(0, route.fetchNodeLevel + 1)
           .join('/');
+      } else if (route.fetchNode?.params) {
+        const fetchNodeParams: string[] = route.fetchNode.params;
+        const routeParams: { [key: string]: string } = match.params;
+
+        const regexExp = new RegExp(
+          Object.keys(routeParams)
+            .map(p => `:${p}`)
+            .join('|'),
+          'g'
+        );
+
+        serverPath = match.path
+          .replace(/\?/g, '')
+          .replace(regexExp, matched => {
+            const param = matched.replace(':', '');
+            if (fetchNodeParams.includes(param)) return routeParams[param];
+            else return '';
+          })
+          .replace(/\/$/, '');
       } else {
         // Send all non-parameterised url parts to api
         serverPath = (route.path as string)
