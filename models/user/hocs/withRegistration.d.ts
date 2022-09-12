@@ -5,8 +5,8 @@ declare function withRegistration(WrappedComponent: any): import("react-redux").
     [key: string]: any;
 } & {
     children?: import("react").ReactNode;
-}, "isLoading" | "error" | "user" | "registerUser" | "isSuccess"> | import("react-redux").Omit<import("react").ClassAttributes<import("react").Component<{
+}, "error" | "isLoading" | "user" | "registerUser" | "isSuccess"> | import("react-redux").Omit<import("react").ClassAttributes<import("react").Component<{
     [key: string]: any;
 }, any, any>> & {
     [key: string]: any;
-}, "isLoading" | "error" | "user" | "registerUser" | "isSuccess">>;
+}, "error" | "isLoading" | "user" | "registerUser" | "isSuccess">>;
