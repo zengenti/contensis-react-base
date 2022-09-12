@@ -1,6 +1,6 @@
 export { j as actions, r as types } from './actions-180948dd.js';
 export { u as selectors } from './selectors-a5e5835b.js';
-export { R as RouteLoader } from './RouteLoader-f607a134.js';
+export { R as RouteLoader } from './RouteLoader-8f19516c.js';
 import 'jsonpath-mapper';
 import 'query-string';
 import 'react';
