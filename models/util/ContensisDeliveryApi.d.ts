@@ -2,7 +2,9 @@ export * from "contensis-delivery-api";
 export const deliveryApi: DeliveryApi;
 export const cachedSearch: CachedSearch;
 declare class DeliveryApi {
-    getClientSideVersionStatus: () => "published" | "latest" | null;
+    getClientSideVersionStatus: () => any;
+    getServerSideVersionStatus: (request: any) => any;
+    getVersionStatusFromHeaders: (headers: any) => any;
     getVersionStatusFromHostname: (currentHostname: any) => "published" | "latest";
     search: (query: any, linkDepth: any, project: any, env: any) => Promise<import("contensis-core-api").PagedList<import("contensis-delivery-api/lib/models").Entry>>;
     getClient: (deliveryApiStatus: string | undefined, project: any, env: any) => Client;

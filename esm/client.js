@@ -5,13 +5,14 @@ import { AppContainer } from 'react-hot-loader';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router-dom';
 import { loadableReady } from '@loadable/component';
-import * as queryString from 'query-string';
+import { parse } from 'query-string';
 import { CookiesProvider } from 'react-cookie';
-import { c as createStore, s as setVersionStatus } from './version-c7268214.js';
-import { d as deliveryApi, b as browserHistory, r as rootSaga, p as pickProject } from './App-af0670fa.js';
-export { A as ReactApp } from './App-af0670fa.js';
-import { s as setCurrentProject } from './actions-fcfc8704.js';
-import './selectors-337be432.js';
+import { s as selectVersionStatus } from './version-2485e2fb.js';
+import { c as createStore, s as setVersionStatus } from './version-c776a92b.js';
+import { d as deliveryApi, b as browserHistory, r as rootSaga, p as pickProject } from './App-a973f962.js';
+export { A as ReactApp } from './App-a973f962.js';
+import { s as setCurrentProject } from './actions-180948dd.js';
+import './selectors-a5e5835b.js';
 import 'jsonpath-mapper';
 import '@redux-saga/core/effects';
 import 'redux';
@@ -24,12 +25,11 @@ import './reducers-8e5d6232.js';
 import 'history';
 import 'loglevel';
 import 'contensis-delivery-api';
-import './version-6dd7b2cd.js';
-import './login-ca2dc2f7.js';
-import './ToJs-affd73f1.js';
+import './login-508cac0f.js';
+import './ToJs-4e02a04d.js';
 import 'await-to-js';
 import 'js-cookie';
-import './RouteLoader-f96a61c1.js';
+import './RouteLoader-f607a134.js';
 import 'react-router-config';
 import 'reselect';
 
@@ -79,12 +79,14 @@ class ClientApp {
       }
     };
 
-    const qs = queryString.parse(window.location.search);
-    const versionStatusFromHostname = deliveryApi.getClientSideVersionStatus();
+    const qs = parse(window.location.search);
+    const versionStatus = deliveryApi.getClientSideVersionStatus();
 
     if (window.isDynamic || window.REDUX_DATA || process.env.NODE_ENV !== 'production') {
       createStore(withReducers, window.REDUX_DATA, browserHistory, stateType).then(store => {
-        store.dispatch(setVersionStatus(qs.versionStatus || versionStatusFromHostname));
+        const state = store.getState();
+        const ssrVersionStatus = selectVersionStatus(state);
+        if (!ssrVersionStatus) store.dispatch(setVersionStatus(versionStatus));
         /* eslint-disable no-console */
 
         console.log('Hydrating from inline Redux');
@@ -100,9 +102,9 @@ class ClientApp {
       fetch(`${window.location.pathname}?redux=true`).then(response => response.json()).then(data => {
         const ssRedux = JSON.parse(data);
         createStore(withReducers, ssRedux, browserHistory, stateType).then(store => {
-          store.dispatch(setVersionStatus(qs.versionStatus || versionStatusFromHostname));
+          store.dispatch(setVersionStatus(versionStatus));
           store.runSaga(rootSaga(withSagas));
-          store.dispatch(setCurrentProject(pickProject(window.location.hostname, queryString.parse(window.location.search)), [], window.location.hostname));
+          store.dispatch(setCurrentProject(pickProject(window.location.hostname, qs), [], window.location.hostname));
           HMRRenderer(GetClientJSX(store));
           hmr(store);
         });

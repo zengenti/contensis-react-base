@@ -11,8 +11,9 @@ var reactRouterDom = require('react-router-dom');
 var component = require('@loadable/component');
 var queryString = require('query-string');
 var reactCookie = require('react-cookie');
+var version$1 = require('./version-eba6d09b.js');
 var version = require('./version-330551f5.js');
-var App = require('./App-80a696bc.js');
+var App = require('./App-5a34ea98.js');
 var actions = require('./actions-8dc9e8de.js');
 require('./selectors-656da4b7.js');
 require('jsonpath-mapper');
@@ -27,7 +28,6 @@ require('./reducers-3a4f8971.js');
 require('history');
 require('loglevel');
 require('contensis-delivery-api');
-require('./version-eba6d09b.js');
 require('./login-6b9de6a1.js');
 require('./ToJs-a9a8522b.js');
 require('await-to-js');
@@ -38,26 +38,7 @@ require('reselect');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
-function _interopNamespace(e) {
-  if (e && e.__esModule) return e;
-  var n = Object.create(null);
-  if (e) {
-    Object.keys(e).forEach(function (k) {
-      if (k !== 'default') {
-        var d = Object.getOwnPropertyDescriptor(e, k);
-        Object.defineProperty(n, k, d.get ? d : {
-          enumerable: true,
-          get: function () { return e[k]; }
-        });
-      }
-    });
-  }
-  n["default"] = e;
-  return Object.freeze(n);
-}
-
 var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
-var queryString__namespace = /*#__PURE__*/_interopNamespace(queryString);
 
 class ClientApp {
   constructor(ReactApp, config) {
@@ -105,12 +86,14 @@ class ClientApp {
       }
     };
 
-    const qs = queryString__namespace.parse(window.location.search);
-    const versionStatusFromHostname = App.deliveryApi.getClientSideVersionStatus();
+    const qs = queryString.parse(window.location.search);
+    const versionStatus = App.deliveryApi.getClientSideVersionStatus();
 
     if (window.isDynamic || window.REDUX_DATA || process.env.NODE_ENV !== 'production') {
       version.createStore(withReducers, window.REDUX_DATA, App.browserHistory, stateType).then(store => {
-        store.dispatch(version.setVersionStatus(qs.versionStatus || versionStatusFromHostname));
+        const state = store.getState();
+        const ssrVersionStatus = version$1.selectVersionStatus(state);
+        if (!ssrVersionStatus) store.dispatch(version.setVersionStatus(versionStatus));
         /* eslint-disable no-console */
 
         console.log('Hydrating from inline Redux');
@@ -126,9 +109,9 @@ class ClientApp {
       fetch(`${window.location.pathname}?redux=true`).then(response => response.json()).then(data => {
         const ssRedux = JSON.parse(data);
         version.createStore(withReducers, ssRedux, App.browserHistory, stateType).then(store => {
-          store.dispatch(version.setVersionStatus(qs.versionStatus || versionStatusFromHostname));
+          store.dispatch(version.setVersionStatus(versionStatus));
           store.runSaga(App.rootSaga(withSagas));
-          store.dispatch(actions.setCurrentProject(App.pickProject(window.location.hostname, queryString__namespace.parse(window.location.search)), [], window.location.hostname));
+          store.dispatch(actions.setCurrentProject(App.pickProject(window.location.hostname, qs), [], window.location.hostname));
           HMRRenderer(GetClientJSX(store));
           hmr(store);
         });

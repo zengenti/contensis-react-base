@@ -4,6 +4,7 @@ var history$1 = require('history');
 var effects = require('@redux-saga/core/effects');
 var log = require('loglevel');
 var contensisDeliveryApi = require('contensis-delivery-api');
+var queryString = require('query-string');
 var actions = require('./actions-8dc9e8de.js');
 var version = require('./version-330551f5.js');
 var version$1 = require('./version-eba6d09b.js');
@@ -15,7 +16,6 @@ var ToJs = require('./ToJs-a9a8522b.js');
 var React = require('react');
 require('react-hot-loader');
 require('jsonpath-mapper');
-require('query-string');
 var RouteLoader = require('./RouteLoader-2675e1c9.js');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
@@ -79,11 +79,27 @@ const getClientConfig = project => {
 class DeliveryApi {
   constructor() {
     this.getClientSideVersionStatus = () => {
-      if (typeof window != 'undefined') {
+      if (typeof window !== 'undefined') {
+        // Allow overriding versionStatus with the querystring
+        const {
+          versionStatus
+        } = queryString.parse(window.location.search);
+        if (versionStatus) return versionStatus; // Client-side we will have a global variable set if rendered by SSR in production
+
+        if (typeof window.versionStatus !== 'undefined') return window.versionStatus; // For localhost development we can only work out versionStatus from the current hostname
+
         const currentHostname = window.location.hostname;
         return this.getVersionStatusFromHostname(currentHostname);
       }
 
+      return null;
+    };
+
+    this.getServerSideVersionStatus = request => request.query.versionStatus || deliveryApi.getVersionStatusFromHeaders(request.headers) || deliveryApi.getVersionStatusFromHostname(request.hostname);
+
+    this.getVersionStatusFromHeaders = headers => {
+      const versionStatusHeader = headers['x-entry-versionstatus'];
+      if (typeof versionStatusHeader !== 'undefined') return versionStatusHeader;
       return null;
     };
 
@@ -1101,4 +1117,4 @@ exports.deliveryApi = deliveryApi;
 exports.history = history;
 exports.pickProject = pickProject;
 exports.rootSaga = rootSaga;
-//# sourceMappingURL=App-80a696bc.js.map
+//# sourceMappingURL=App-5a34ea98.js.map

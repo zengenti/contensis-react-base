@@ -1,5 +1,5 @@
 import { jpath } from 'jsonpath-mapper';
-import queryString__default from 'query-string';
+import queryString from 'query-string';
 
 const action = (type, payload = {}) => ({
   type,
@@ -36,7 +36,7 @@ const getImmutableOrJS = (state, stateKey, fallbackValue, returnType = globalThi
 };
 
 function queryParams(search) {
-  return queryString__default.parse(typeof window != 'undefined' ? window.location.search : search);
+  return queryString.parse(typeof window != 'undefined' ? window.location.search : search);
 }
 
 const selectRouteEntry = (state, returnType) => getImmutableOrJS(state, ['routing', 'entry'], {}, returnType);
@@ -116,4 +116,4 @@ var routing = /*#__PURE__*/Object.freeze({
 });
 
 export { selectRouteEntry as a, selectCurrentProject as b, selectCurrentNode as c, selectCurrentAncestors as d, selectCurrentSiblings as e, selectRouteEntryEntryId as f, getImmutableOrJS as g, selectRouteEntryLanguage as h, selectMappedEntry as i, selectCurrentSearch as j, selectRouteEntryContentTypeId as k, selectRouteIsError as l, selectIsNotFound as m, selectRouteLoading as n, selectCurrentPath as o, selectRouteStatusCode as p, queryParams as q, selectRouteErrorMessage as r, selectSurrogateKeys as s, action as t, routing as u, getJS as v };
-//# sourceMappingURL=selectors-337be432.js.map
+//# sourceMappingURL=selectors-a5e5835b.js.map

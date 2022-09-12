@@ -1,5 +1,5 @@
-import { c as cachedSearch, h as history, d as deliveryApi, p as pickProject, r as rootSaga } from './App-af0670fa.js';
-export { A as ReactApp } from './App-af0670fa.js';
+import { c as cachedSearch, h as history, d as deliveryApi, p as pickProject, r as rootSaga } from './App-a973f962.js';
+export { A as ReactApp } from './App-a973f962.js';
 import { Query as Query$1 } from 'contensis-delivery-api';
 import React from 'react';
 import { Provider } from 'react-redux';
@@ -29,20 +29,20 @@ import { ChunkExtractor, ChunkExtractorManager } from '@loadable/server';
 import { identity, noop } from 'lodash';
 import { buildCleaner } from 'lodash-clean';
 import { CookiesProvider } from 'react-cookie';
-import { c as createStore, s as setVersionStatus, a as setVersion } from './version-c7268214.js';
-import { s as setCurrentProject } from './actions-fcfc8704.js';
-import { s as selectSurrogateKeys, a as selectRouteEntry, b as selectCurrentProject, g as getImmutableOrJS } from './selectors-337be432.js';
+import { c as createStore, s as setVersionStatus, a as setVersion } from './version-c776a92b.js';
+import { s as setCurrentProject } from './actions-180948dd.js';
+import { s as selectSurrogateKeys, a as selectRouteEntry, b as selectCurrentProject, g as getImmutableOrJS } from './selectors-a5e5835b.js';
 import 'history';
 import '@redux-saga/core/effects';
 import 'loglevel';
-import './version-6dd7b2cd.js';
-import './login-ca2dc2f7.js';
+import './version-2485e2fb.js';
+import './login-508cac0f.js';
 import './reducers-8e5d6232.js';
-import './ToJs-affd73f1.js';
+import './ToJs-4e02a04d.js';
 import 'await-to-js';
 import 'js-cookie';
 import 'react-hot-loader';
-import './RouteLoader-f96a61c1.js';
+import './RouteLoader-f607a134.js';
 import 'redux';
 import 'redux-thunk';
 import 'redux-saga';
@@ -4204,9 +4204,9 @@ const webApp = (app, ReactApp, config) => {
       initialEntries: [url]
     }), stateType); // dispatch any global and non-saga related actions before calling our JSX
 
-    const versionStatusFromHostname = deliveryApi.getVersionStatusFromHostname(request.hostname);
-    console.info(`Request for ${request.path} hostname: ${request.hostname} versionStatus: ${versionStatusFromHostname}`);
-    store.dispatch(setVersionStatus(request.query.versionStatus || versionStatusFromHostname));
+    const versionStatus = deliveryApi.getServerSideVersionStatus(request);
+    console.info(`Request for ${request.path} hostname: ${request.hostname} versionStatus: ${versionStatus}`);
+    store.dispatch(setVersionStatus(versionStatus));
     store.dispatch(setVersion(versionInfo.commitRef, versionInfo.buildNo));
     const project = pickProject(request.hostname, request.query);
     const groups = allowedGroups && allowedGroups[project];
@@ -4237,8 +4237,8 @@ const webApp = (app, ReactApp, config) => {
       // and does not include any react-loadable code-split bundles
 
       const bundleTags = getBundleTags(loadableExtractor, scripts, staticRoutePath);
-      const isDynamicHint = `<script ${attributes}>window.isDynamic = true;</script>`;
-      const responseHtmlDynamic = templateHTML.replace('{{TITLE}}', '').replace('{{SEO_CRITICAL_METADATA}}', '').replace('{{CRITICAL_CSS}}', '').replace('{{APP}}', '').replace('{{LOADABLE_CHUNKS}}', bundleTags).replace('{{REDUX_DATA}}', isDynamicHint); // Dynamic pages always return a 200 so we can run
+      const isDynamicHints = `<script ${attributes}>window.versionStatus = "${versionStatus}"; window.isDynamic = true;</script>`;
+      const responseHtmlDynamic = templateHTML.replace('{{TITLE}}', '').replace('{{SEO_CRITICAL_METADATA}}', '').replace('{{CRITICAL_CSS}}', '').replace('{{APP}}', '').replace('{{LOADABLE_CHUNKS}}', bundleTags).replace('{{REDUX_DATA}}', isDynamicHints); // Dynamic pages always return a 200 so we can run
       // the app and serve up all errors inside the client
 
       response.setHeader('Surrogate-Control', `max-age=${getCacheDuration(200)}`);
@@ -4288,7 +4288,10 @@ const webApp = (app, ReactApp, config) => {
           }
 
           if (!disableSsrRedux) {
-            serialisedReduxData = `<script ${attributes}>window.REDUX_DATA = ${serialisedReduxData}</script>`;
+            // window.versionStatus is not strictly required here and is added to support cases
+            // where a consumer may not be using the contensisVersionStatus in redux and calling
+            // the `getClientSideVersionStatus()` method directly
+            serialisedReduxData = `<script ${attributes}>window.versionStatus = "${versionStatus}"; window.REDUX_DATA = ${serialisedReduxData}</script>`;
           }
         }
 

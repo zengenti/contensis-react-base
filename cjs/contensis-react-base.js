@@ -2,7 +2,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var App = require('./App-80a696bc.js');
+var App = require('./App-5a34ea98.js');
 var contensisDeliveryApi = require('contensis-delivery-api');
 var React = require('react');
 var reactRedux = require('react-redux');
@@ -4218,9 +4218,9 @@ const webApp = (app, ReactApp, config) => {
       initialEntries: [url]
     }), stateType); // dispatch any global and non-saga related actions before calling our JSX
 
-    const versionStatusFromHostname = App.deliveryApi.getVersionStatusFromHostname(request.hostname);
-    console.info(`Request for ${request.path} hostname: ${request.hostname} versionStatus: ${versionStatusFromHostname}`);
-    store.dispatch(version.setVersionStatus(request.query.versionStatus || versionStatusFromHostname));
+    const versionStatus = App.deliveryApi.getServerSideVersionStatus(request);
+    console.info(`Request for ${request.path} hostname: ${request.hostname} versionStatus: ${versionStatus}`);
+    store.dispatch(version.setVersionStatus(versionStatus));
     store.dispatch(version.setVersion(versionInfo.commitRef, versionInfo.buildNo));
     const project = App.pickProject(request.hostname, request.query);
     const groups = allowedGroups && allowedGroups[project];
@@ -4251,8 +4251,8 @@ const webApp = (app, ReactApp, config) => {
       // and does not include any react-loadable code-split bundles
 
       const bundleTags = getBundleTags(loadableExtractor, scripts, staticRoutePath);
-      const isDynamicHint = `<script ${attributes}>window.isDynamic = true;</script>`;
-      const responseHtmlDynamic = templateHTML.replace('{{TITLE}}', '').replace('{{SEO_CRITICAL_METADATA}}', '').replace('{{CRITICAL_CSS}}', '').replace('{{APP}}', '').replace('{{LOADABLE_CHUNKS}}', bundleTags).replace('{{REDUX_DATA}}', isDynamicHint); // Dynamic pages always return a 200 so we can run
+      const isDynamicHints = `<script ${attributes}>window.versionStatus = "${versionStatus}"; window.isDynamic = true;</script>`;
+      const responseHtmlDynamic = templateHTML.replace('{{TITLE}}', '').replace('{{SEO_CRITICAL_METADATA}}', '').replace('{{CRITICAL_CSS}}', '').replace('{{APP}}', '').replace('{{LOADABLE_CHUNKS}}', bundleTags).replace('{{REDUX_DATA}}', isDynamicHints); // Dynamic pages always return a 200 so we can run
       // the app and serve up all errors inside the client
 
       response.setHeader('Surrogate-Control', `max-age=${getCacheDuration(200)}`);
@@ -4302,7 +4302,10 @@ const webApp = (app, ReactApp, config) => {
           }
 
           if (!disableSsrRedux) {
-            serialisedReduxData = `<script ${attributes}>window.REDUX_DATA = ${serialisedReduxData}</script>`;
+            // window.versionStatus is not strictly required here and is added to support cases
+            // where a consumer may not be using the contensisVersionStatus in redux and calling
+            // the `getClientSideVersionStatus()` method directly
+            serialisedReduxData = `<script ${attributes}>window.versionStatus = "${versionStatus}"; window.REDUX_DATA = ${serialisedReduxData}</script>`;
           }
         }
 
