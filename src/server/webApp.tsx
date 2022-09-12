@@ -119,17 +119,13 @@ const webApp = (
     );
 
     // dispatch any global and non-saga related actions before calling our JSX
-    const versionStatusFromHostname = deliveryApi.getVersionStatusFromHostname(
-      request.hostname
-    );
+    const versionStatus = deliveryApi.getServerSideVersionStatus(request);
 
     console.info(
-      `Request for ${request.path} hostname: ${request.hostname} versionStatus: ${versionStatusFromHostname}`
+      `Request for ${request.path} hostname: ${request.hostname} versionStatus: ${versionStatus}`
     );
 
-    store.dispatch(
-      setVersionStatus(request.query.versionStatus || versionStatusFromHostname)
-    );
+    store.dispatch(setVersionStatus(versionStatus));
     store.dispatch(setVersion(versionInfo.commitRef, versionInfo.buildNo));
 
     const project = pickProject(request.hostname, request.query);
@@ -172,7 +168,7 @@ const webApp = (
         staticRoutePath
       );
 
-      const isDynamicHint = `<script ${attributes}>window.isDynamic = true;</script>`;
+      const isDynamicHints = `<script ${attributes}>window.versionStatus = "${versionStatus}"; window.isDynamic = true;</script>`;
 
       const responseHtmlDynamic = templateHTML
         .replace('{{TITLE}}', '')
@@ -180,7 +176,7 @@ const webApp = (
         .replace('{{CRITICAL_CSS}}', '')
         .replace('{{APP}}', '')
         .replace('{{LOADABLE_CHUNKS}}', bundleTags)
-        .replace('{{REDUX_DATA}}', isDynamicHint);
+        .replace('{{REDUX_DATA}}', isDynamicHints);
       // Dynamic pages always return a 200 so we can run
       // the app and serve up all errors inside the client
       response.setHeader(
@@ -250,7 +246,10 @@ const webApp = (
               return true;
             }
             if (!disableSsrRedux) {
-              serialisedReduxData = `<script ${attributes}>window.REDUX_DATA = ${serialisedReduxData}</script>`;
+              // window.versionStatus is not strictly required here and is added to support cases
+              // where a consumer may not be using the contensisVersionStatus in redux and calling
+              // the `getClientSideVersionStatus()` method directly
+              serialisedReduxData = `<script ${attributes}>window.versionStatus = "${versionStatus}"; window.REDUX_DATA = ${serialisedReduxData}</script>`;
             }
           }
           if ((context.statusCode || 200) > 400) {

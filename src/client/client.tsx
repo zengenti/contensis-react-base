@@ -5,9 +5,10 @@ import { AppContainer } from 'react-hot-loader';
 import { Provider as ReduxProvider } from 'react-redux';
 import { Router } from 'react-router-dom';
 import { loadableReady } from '@loadable/component';
-import * as queryString from 'query-string';
+import { parse } from 'query-string';
 import { CookiesProvider } from 'react-cookie';
 
+import { selectVersionStatus } from '~/redux/selectors/version';
 import { setVersionStatus } from '~/redux/actions/version';
 import rootSaga from '~/redux/sagas';
 import { browserHistory as history } from '~/redux/store/history';
@@ -80,8 +81,8 @@ class ClientApp {
       }
     };
 
-    const qs = queryString.parse(window.location.search);
-    const versionStatusFromHostname = deliveryApi.getClientSideVersionStatus();
+    const qs = parse(window.location.search);
+    const versionStatus = deliveryApi.getClientSideVersionStatus();
 
     if (
       window.isDynamic ||
@@ -90,9 +91,10 @@ class ClientApp {
     ) {
       createStore(withReducers, window.REDUX_DATA, history, stateType).then(
         store => {
-          store.dispatch(
-            setVersionStatus(qs.versionStatus || versionStatusFromHostname)
-          );
+          const state = store.getState();
+          const ssrVersionStatus = selectVersionStatus(state);
+          if (!ssrVersionStatus)
+            store.dispatch(setVersionStatus(versionStatus));
 
           /* eslint-disable no-console */
           console.log('Hydrating from inline Redux');
@@ -118,17 +120,12 @@ class ClientApp {
         .then(data => {
           const ssRedux = JSON.parse(data);
           createStore(withReducers, ssRedux, history, stateType).then(store => {
-            store.dispatch(
-              setVersionStatus(qs.versionStatus || versionStatusFromHostname)
-            );
+            store.dispatch(setVersionStatus(versionStatus));
 
             store.runSaga(rootSaga(withSagas));
             store.dispatch(
               setCurrentProject(
-                pickProject(
-                  window.location.hostname,
-                  queryString.parse(window.location.search)
-                ),
+                pickProject(window.location.hostname, qs),
                 [],
                 window.location.hostname
               )
