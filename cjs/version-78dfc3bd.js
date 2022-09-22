@@ -271,7 +271,7 @@ var version$1 = /*#__PURE__*/Object.freeze({
 const initialState = {
   commitRef: null,
   buildNo: null,
-  contensisVersionStatus: 'published'
+  contensisVersionStatus: null
 };
 var VersionReducer = immer.produce((state, action) => {
   switch (action.type) {
@@ -478,4 +478,4 @@ exports.setVersionStatus = setVersionStatus;
 exports.useInjectRedux = useInjectRedux;
 exports.version = version$1;
 exports.version$1 = version;
-//# sourceMappingURL=version-330551f5.js.map
+//# sourceMappingURL=version-78dfc3bd.js.map

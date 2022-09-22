@@ -245,7 +245,7 @@ var version$1 = /*#__PURE__*/Object.freeze({
 const initialState = {
   commitRef: null,
   buildNo: null,
-  contensisVersionStatus: 'published'
+  contensisVersionStatus: null
 };
 var VersionReducer = produce((state, action) => {
   switch (action.type) {
@@ -437,4 +437,4 @@ var version = /*#__PURE__*/Object.freeze({
 });
 
 export { GET_NODE_TREE as G, SET_NODE_TREE as S, setVersion as a, GET_NODE_TREE_ERROR as b, createStore as c, version as d, navigation as e, convertSagaArray as f, injectReducer as g, hasNavigationTree as h, injectRedux as i, injectSaga as j, navigation$1 as n, reduxStore as r, setVersionStatus as s, useInjectRedux as u, version$1 as v };
-//# sourceMappingURL=version-c776a92b.js.map
+//# sourceMappingURL=version-e3a5ec66.js.map
