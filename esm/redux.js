@@ -1,5 +1,5 @@
-import { n as navigation$2, v as version$1, G as GET_NODE_TREE, d as version$2, e as navigation$3 } from './version-12da3736.js';
-export { f as convertSagaArray, g as injectReducer, i as injectRedux, j as injectSaga, r as store, u as useInjectRedux } from './version-12da3736.js';
+import { n as navigation$2, v as version$1, G as GET_NODE_TREE, d as version$2, e as navigation$3 } from './version-e3a5ec66.js';
+export { f as convertSagaArray, g as injectReducer, i as injectRedux, j as injectSaga, r as store, u as useInjectRedux } from './version-e3a5ec66.js';
 import { r as routing$1, j as routing$2 } from './actions-180948dd.js';
 import { t as action, u as routing$3 } from './selectors-a5e5835b.js';
 export { t as action, g as getIn, v as getJS } from './selectors-a5e5835b.js';

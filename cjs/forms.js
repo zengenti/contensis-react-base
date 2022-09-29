@@ -44,7 +44,7 @@ const initialSettings = {
   }
 };
 const initialStatus = {
-  isLoading: false,
+  isLoading: true,
   isSubmitting: false,
   hasSuccess: false,
   successMessage: null,
@@ -95,6 +95,7 @@ var reducer = immer.produce((state, action) => {
         state[formId].groups = groups;
         state[formId].defaultLanguage = defaultLanguage;
         state[formId].status.isSubmitting = false;
+        state[formId].status.isLoading = false;
         state[formId].status.hasSuccess = false;
         state[formId].status.hasError = false;
         state[formId].settings = settings;
@@ -288,30 +289,35 @@ const makeSelectIsLoading = formId => reselect.createSelector(selectForms, forms
 
   return (_forms$formId = forms[formId]) === null || _forms$formId === void 0 ? void 0 : _forms$formId.status.isLoading;
 });
-const makeSelectHasSuccess = formId => reselect.createSelector(selectForms, forms => {
+const makeSelectIsSubmitting = formId => reselect.createSelector(selectForms, forms => {
   var _forms$formId2;
 
-  return (_forms$formId2 = forms[formId]) === null || _forms$formId2 === void 0 ? void 0 : _forms$formId2.status.hasSuccess;
+  return (_forms$formId2 = forms[formId]) === null || _forms$formId2 === void 0 ? void 0 : _forms$formId2.status.isSubmitting;
 });
-const makeSelectFormFields = formId => reselect.createSelector(selectForms, forms => {
+const makeSelectHasSuccess = formId => reselect.createSelector(selectForms, forms => {
   var _forms$formId3;
 
-  return (_forms$formId3 = forms[formId]) === null || _forms$formId3 === void 0 ? void 0 : _forms$formId3.fields;
+  return (_forms$formId3 = forms[formId]) === null || _forms$formId3 === void 0 ? void 0 : _forms$formId3.status.hasSuccess;
 });
-const makeSelectDefaultLang = formId => reselect.createSelector(selectForms, forms => {
+const makeSelectFormFields = formId => reselect.createSelector(selectForms, forms => {
   var _forms$formId4;
 
-  return (_forms$formId4 = forms[formId]) === null || _forms$formId4 === void 0 ? void 0 : _forms$formId4.defaultLanguage;
+  return (_forms$formId4 = forms[formId]) === null || _forms$formId4 === void 0 ? void 0 : _forms$formId4.fields;
 });
-const makeSelectFormSuccessMessage = formId => reselect.createSelector(selectForms, forms => {
+const makeSelectDefaultLang = formId => reselect.createSelector(selectForms, forms => {
   var _forms$formId5;
 
-  return (_forms$formId5 = forms[formId]) === null || _forms$formId5 === void 0 ? void 0 : _forms$formId5.status.successMessage;
+  return (_forms$formId5 = forms[formId]) === null || _forms$formId5 === void 0 ? void 0 : _forms$formId5.defaultLanguage;
 });
-const makeSelectFormGroup$1 = formId => reselect.createSelector(selectForms, forms => {
+const makeSelectFormSuccessMessage = formId => reselect.createSelector(selectForms, forms => {
   var _forms$formId6;
 
-  return (_forms$formId6 = forms[formId]) === null || _forms$formId6 === void 0 ? void 0 : _forms$formId6.groups;
+  return (_forms$formId6 = forms[formId]) === null || _forms$formId6 === void 0 ? void 0 : _forms$formId6.status.successMessage;
+});
+const makeSelectFormGroup$1 = formId => reselect.createSelector(selectForms, forms => {
+  var _forms$formId7;
+
+  return (_forms$formId7 = forms[formId]) === null || _forms$formId7 === void 0 ? void 0 : _forms$formId7.groups;
 });
 const selectors = {
   selectForms,
@@ -323,6 +329,7 @@ const selectors = {
   makeSelectFormEntries,
   makeSelectFormPostData,
   makeSelectIsLoading,
+  makeSelectIsSubmitting,
   makeSelectHasSuccess,
   makeSelectFormFields,
   makeSelectDefaultLang,
@@ -484,13 +491,15 @@ const isBusinessEmailValid = (field, value) => {
 };
 
 const MakeFieldType = field => {
+  var _field$editor, _field$editor$propert;
+
   if (!field) return null;
 
   if (field.dataType === 'string' && field.editor && field.editor.id === 'multiline') {
     return 'textarea';
   } else if (field.dataType === 'string' && field.editor && field.editor.id === 'list-dropdown') {
     return 'dropdown';
-  } else if (field.editor && field.editor.properties && field.editor.properties.readOnly || field.groupId && field.groupId === 'private') {
+  } else if (field !== null && field !== void 0 && (_field$editor = field.editor) !== null && _field$editor !== void 0 && (_field$editor$propert = _field$editor.properties) !== null && _field$editor$propert !== void 0 && _field$editor$propert.readOnly || (field === null || field === void 0 ? void 0 : field.groupId) === 'private' || (field === null || field === void 0 ? void 0 : field.groupId) === 'settings') {
     return 'hidden';
   } else if (field.dataType === 'stringArray' || field.dataType === 'boolean') {
     return 'checkbox';
@@ -631,7 +640,7 @@ function* fetchForm(action) {
 
   const formId = action.formId;
   const schema = yield getFormSchema(formId);
-  const groups = schema === null || schema === void 0 ? void 0 : (_schema$groups = schema.groups) === null || _schema$groups === void 0 ? void 0 : _schema$groups.filter(group => group.id !== 'private');
+  const groups = schema === null || schema === void 0 ? void 0 : (_schema$groups = schema.groups) === null || _schema$groups === void 0 ? void 0 : _schema$groups.filter(group => group.id !== 'private' && group.id !== 'settings');
 
   if (formId && schema) {
     var _schema$groups2, _submitButtonText$def;
@@ -1912,17 +1921,23 @@ FormComposer.propTypes = {
   setCheckboxValue: PropTypes__default["default"].func
 };
 
-const LoadingSpinner = () => {
+const LoadingSpinner = ({
+  className,
+  color = '#fff',
+  width = 20,
+  height = 20
+}) => {
   return /*#__PURE__*/React__default["default"].createElement("svg", {
-    width: "20px",
-    height: "20px",
+    className: className,
+    width: `${width}px`,
+    height: `${height}px`,
     viewBox: "0 0 100 100",
     preserveAspectRatio: "xMidYMid"
   }, /*#__PURE__*/React__default["default"].createElement("circle", {
     cx: "50",
     cy: "50",
     fill: "none",
-    stroke: "#ffffff",
+    stroke: color,
     strokeWidth: "10",
     r: "35",
     strokeDasharray: "164.93361431346415 56.97787143782138",
@@ -1969,7 +1984,10 @@ const Button = ({
     onClick: () => action(),
     disabled: loading,
     useDefaultTheme: useDefaultTheme
-  }, text, loading && /*#__PURE__*/React__default["default"].createElement(LoadingSpinner, null));
+  }, text, loading && /*#__PURE__*/React__default["default"].createElement(LoadingSpinner, {
+    height: 18,
+    width: 18
+  }));
 };
 Button.propTypes = {
   className: PropTypes__default["default"].string,
@@ -2137,7 +2155,7 @@ const Form = ({
       className: className,
       id: formId,
       useDefaultTheme: useDefaultTheme
-    }, !status || status && !status.isLoading && !status.isSubmitting && !status.hasSuccess && /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, pagingInfo.pageIndex > 0 && /*#__PURE__*/React__default["default"].createElement(Button, {
+    }, !status || !(status !== null && status !== void 0 && status.hasSuccess) && !(status !== null && status !== void 0 && status.isLoading) ? /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, pagingInfo.pageIndex > 0 && /*#__PURE__*/React__default["default"].createElement(Button, {
       type: "button",
       text: "Go Back",
       action: () => _togglePageBack(formId, pagingInfo.pageIndex - 1),
@@ -2163,13 +2181,19 @@ const Form = ({
     }), isLastPage && /*#__PURE__*/React__default["default"].createElement(Button, {
       text: (settings === null || settings === void 0 ? void 0 : settings.submitButtonText) || "Submit",
       type: "button",
+      loading: status === null || status === void 0 ? void 0 : status.isLoading,
       action: () => {
         _submitForm(formId);
 
         if (customSubmit) customSubmit();
       },
       useDefaultTheme: useDefaultTheme
-    })), status && status.hasSuccess && status.successMessage && /*#__PURE__*/React__default["default"].createElement("p", {
+    })) : /*#__PURE__*/React__default["default"].createElement(LoadingSpinner, {
+      className: "loading",
+      height: 24,
+      width: 24,
+      color: "#333"
+    }), (status === null || status === void 0 ? void 0 : status.hasSuccess) && (status === null || status === void 0 ? void 0 : status.successMessage) && /*#__PURE__*/React__default["default"].createElement("p", {
       className: "success-message"
     }, status.successMessage)));
   } else {
@@ -2179,7 +2203,7 @@ const Form = ({
       className: className,
       id: formId,
       useDefaultTheme: useDefaultTheme
-    }, !status || status && !status.isLoading && !status.isSubmitting && !status.hasSuccess && /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, /*#__PURE__*/React__default["default"].createElement(FormComposer, {
+    }, !status || !(status !== null && status !== void 0 && status.hasSuccess) && !(status !== null && status !== void 0 && status.isLoading) ? /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, /*#__PURE__*/React__default["default"].createElement(FormComposer, {
       fields: fields,
       formId: formId,
       setValue: _setValue,
@@ -2191,6 +2215,7 @@ const Form = ({
       entries: entries,
       setCheckboxValue: _setCheckboxValue
     }), /*#__PURE__*/React__default["default"].createElement(Button, {
+      loading: status === null || status === void 0 ? void 0 : status.isSubmitting,
       text: (settings === null || settings === void 0 ? void 0 : settings.submitButtonText) || "Submit",
       type: "button",
       action: () => {
@@ -2199,7 +2224,12 @@ const Form = ({
         if (customSubmit) customSubmit();
       },
       useDefaultTheme: useDefaultTheme
-    })), status && status.hasSuccess && status.successMessage && /*#__PURE__*/React__default["default"].createElement("p", {
+    })) : /*#__PURE__*/React__default["default"].createElement(LoadingSpinner, {
+      className: "loading",
+      height: 24,
+      width: 24,
+      color: "#333"
+    }), (status === null || status === void 0 ? void 0 : status.hasSuccess) && (status === null || status === void 0 ? void 0 : status.successMessage) && /*#__PURE__*/React__default["default"].createElement("p", {
       className: "success-message"
     }, status.successMessage)));
   }

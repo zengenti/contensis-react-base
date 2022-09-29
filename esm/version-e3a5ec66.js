@@ -1,39 +1,13 @@
-'use strict';
-
-var selectors = require('./selectors-656da4b7.js');
-var effects = require('@redux-saga/core/effects');
-var redux = require('redux');
-var thunkMiddleware = require('redux-thunk');
-var createSagaMiddleware = require('redux-saga');
-var reduxInjectors = require('redux-injectors');
-var immer = require('immer');
-var merge = require('deepmerge');
-var actions = require('./actions-8dc9e8de.js');
-var reducers = require('./reducers-3a4f8971.js');
-
-function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
-
-function _interopNamespace(e) {
-  if (e && e.__esModule) return e;
-  var n = Object.create(null);
-  if (e) {
-    Object.keys(e).forEach(function (k) {
-      if (k !== 'default') {
-        var d = Object.getOwnPropertyDescriptor(e, k);
-        Object.defineProperty(n, k, d.get ? d : {
-          enumerable: true,
-          get: function () { return e[k]; }
-        });
-      }
-    });
-  }
-  n["default"] = e;
-  return Object.freeze(n);
-}
-
-var thunkMiddleware__default = /*#__PURE__*/_interopDefaultLegacy(thunkMiddleware);
-var createSagaMiddleware__default = /*#__PURE__*/_interopDefaultLegacy(createSagaMiddleware);
-var merge__default = /*#__PURE__*/_interopDefaultLegacy(merge);
+import { g as getImmutableOrJS, t as action } from './selectors-a5e5835b.js';
+import { all } from '@redux-saga/core/effects';
+import { compose, applyMiddleware, createStore as createStore$1, combineReducers } from 'redux';
+import thunkMiddleware from 'redux-thunk';
+import createSagaMiddleware, { END } from 'redux-saga';
+import { createInjectorsEnhancer } from 'redux-injectors';
+import { produce } from 'immer';
+import merge from 'deepmerge';
+import { h as SET_TARGET_PROJECT, i as SET_SURROGATE_KEYS, e as SET_SIBLINGS, b as SET_ROUTE, S as SET_NAVIGATION_PATH, U as UPDATE_LOADING_STATE, c as SET_ENTRY, d as SET_ANCESTORS } from './actions-180948dd.js';
+import { U as UserReducer } from './reducers-8e5d6232.js';
 
 const ACTION_PREFIX = '@NAVIGATION/';
 const GET_NODE_TREE = `${ACTION_PREFIX}_GET_NODE_TREE`;
@@ -55,7 +29,7 @@ const initialState$2 = {
   },
   isReady: false
 };
-var NavigationReducer = immer.produce((state, action) => {
+var NavigationReducer = produce((state, action) => {
   switch (action.type) {
     case SET_NODE_TREE:
       {
@@ -82,7 +56,7 @@ const combineMerge = (target, source, options) => {
     if (typeof destination[index] === 'undefined') {
       destination[index] = options.cloneUnlessOtherwiseSpecified(item, options);
     } else if (options.isMergeableObject(item)) {
-      destination[index] = merge__default["default"](target[index], item, options);
+      destination[index] = merge(target[index], item, options);
     } else if (target.indexOf(item) === -1) {
       destination.push(item);
     }
@@ -107,15 +81,15 @@ const initialState$1 = {
   staticRoute: null,
   statusCode: 200
 };
-var RoutingReducer = immer.produce((state, action) => {
+var RoutingReducer = produce((state, action) => {
   switch (action.type) {
-    case actions.SET_ANCESTORS:
+    case SET_ANCESTORS:
       {
         state.currentNodeAncestors = action.ancestors;
         return;
       }
 
-    case actions.SET_ENTRY:
+    case SET_ENTRY:
       {
         const {
           entry,
@@ -173,13 +147,13 @@ var RoutingReducer = immer.produce((state, action) => {
         return;
       }
 
-    case actions.UPDATE_LOADING_STATE:
+    case UPDATE_LOADING_STATE:
       {
         state.isLoading = action.isLoading;
         return;
       }
 
-    case actions.SET_NAVIGATION_PATH:
+    case SET_NAVIGATION_PATH:
       {
         let staticRoute = {};
 
@@ -216,13 +190,13 @@ var RoutingReducer = immer.produce((state, action) => {
         return;
       }
 
-    case actions.SET_ROUTE:
+    case SET_ROUTE:
       {
         state.nextPath = action.path;
         return;
       }
 
-    case actions.SET_SIBLINGS:
+    case SET_SIBLINGS:
       {
         // Can be null in some cases like the homepage.
         let currentNodeSiblingParent = null;
@@ -236,16 +210,16 @@ var RoutingReducer = immer.produce((state, action) => {
         return;
       }
 
-    case actions.SET_SURROGATE_KEYS:
+    case SET_SURROGATE_KEYS:
       {
         // console.info(`SET_SURROGATE_KEYS: '${action.url}' keys: ${action.keys}`);
-        state.surrogateKeys = merge__default["default"](state.surrogateKeys, (action.keys || '').split(' '), {
+        state.surrogateKeys = merge(state.surrogateKeys, (action.keys || '').split(' '), {
           arrayMerge: combineMerge
         });
         return;
       }
 
-    case actions.SET_TARGET_PROJECT:
+    case SET_TARGET_PROJECT:
       {
         state.currentProject = action.project;
         state.allowedGroups = action.allowedGroups;
@@ -273,7 +247,7 @@ const initialState = {
   buildNo: null,
   contensisVersionStatus: null
 };
-var VersionReducer = immer.produce((state, action) => {
+var VersionReducer = produce((state, action) => {
   switch (action.type) {
     case SET_VERSION_STATUS:
       {
@@ -314,7 +288,7 @@ const routerMiddleware = history => store => next => action => {
   history[method](...args);
 };
 
-exports.reduxStore = void 0;
+let reduxStore;
 /* eslint-disable no-underscore-dangle */
 
 var createStore = (async (featureReducers, initialState, history, stateType) => {
@@ -324,63 +298,63 @@ var createStore = (async (featureReducers, initialState, history, stateType) => 
     reduxDevToolsMiddleware = window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f;
   }
 
-  const sagaMiddleware = createSagaMiddleware__default["default"]();
-  const reducers$1 = {
+  const sagaMiddleware = createSagaMiddleware();
+  const reducers = {
     navigation: NavigationReducer,
     routing: RoutingReducer,
-    user: reducers.UserReducer,
+    user: UserReducer,
     version: VersionReducer,
     ...featureReducers
   }; // Reassign the combiner and fromJS functions when
   // stateType is 'immutable' with dynamic imports
 
-  let combiner = redux.combineReducers;
+  let combiner = combineReducers;
 
   let fromJS = obj => obj;
 
   globalThis.STATE_TYPE = stateType;
 
   if (stateType === 'immutable') {
-    globalThis.immutable = await Promise.resolve().then(function () { return /*#__PURE__*/_interopNamespace(require(
+    globalThis.immutable = await import(
     /* webpackChunkName: "immutable" */
-    'immutable')); });
-    fromJS = (await Promise.resolve().then(function () { return require(
+    'immutable');
+    fromJS = (await import(
     /* webpackChunkName: "from-js" */
-    './fromJSLeaveImmer-e74c673c.js'); })).default;
-    combiner = (await Promise.resolve().then(function () { return /*#__PURE__*/_interopNamespace(require(
+    './fromJSLeaveImmer-0114ffcf.js')).default;
+    combiner = (await import(
     /* webpackChunkName: "redux-immutable" */
-    'redux-immutable')); })).combineReducers;
+    'redux-immutable')).combineReducers;
   }
 
   const createReducer = (injectedReducers = {}) => {
     const rootReducer = combiner({ ...injectedReducers,
       // other non-injected reducers go here
-      ...reducers$1
+      ...reducers
     });
     return rootReducer;
   };
 
   const store = initialState => {
     const runSaga = sagaMiddleware.run;
-    const middleware = redux.compose(redux.applyMiddleware(thunkMiddleware__default["default"], sagaMiddleware, routerMiddleware(history)), reduxInjectors.createInjectorsEnhancer({
+    const middleware = compose(applyMiddleware(thunkMiddleware, sagaMiddleware, routerMiddleware(history)), createInjectorsEnhancer({
       createReducer,
       runSaga
     }), reduxDevToolsMiddleware);
-    const store = redux.createStore(createReducer(), initialState, middleware);
+    const store = createStore$1(createReducer(), initialState, middleware);
     store.runSaga = runSaga;
 
-    store.close = () => store.dispatch(createSagaMiddleware.END);
+    store.close = () => store.dispatch(END);
 
     return store;
   };
 
-  exports.reduxStore = store(fromJS(initialState));
-  return exports.reduxStore;
+  reduxStore = store(fromJS(initialState));
+  return reduxStore;
 });
 
-const hasNavigationTree = state => selectors.getImmutableOrJS(state, ['navigation', 'isReady']);
-const selectNavigationRoot = state => selectors.getImmutableOrJS(state, ['navigation', 'root']);
-const selectNavigationChildren = state => selectors.getImmutableOrJS(state, ['navigation', 'root', 'children']);
+const hasNavigationTree = state => getImmutableOrJS(state, ['navigation', 'isReady']);
+const selectNavigationRoot = state => getImmutableOrJS(state, ['navigation', 'root']);
+const selectNavigationChildren = state => getImmutableOrJS(state, ['navigation', 'root', 'children']);
 const selectNavigationDepends = () => [];
 
 var navigation = /*#__PURE__*/Object.freeze({
@@ -393,14 +367,14 @@ var navigation = /*#__PURE__*/Object.freeze({
 
 const convertSagaArray = sagas => {
   if (Array.isArray(sagas)) return function* rootSaga() {
-    yield effects.all(sagas);
+    yield all(sagas);
   };
   return sagas;
 };
 const injectReducer = ({
   key,
   reducer
-}, store = exports.reduxStore) => {
+}, store = reduxStore) => {
   if (Reflect.has(store.injectedReducers, key) && store.injectedReducers[key] === reducer) return;
   store.injectedReducers[key] = reducer;
   store.replaceReducer(store.createReducer(store.injectedReducers));
@@ -408,7 +382,7 @@ const injectReducer = ({
 const injectSaga = ({
   key,
   saga
-}, store = exports.reduxStore) => {
+}, store = reduxStore) => {
   const rootSaga = convertSagaArray(saga);
   let hasSaga = Reflect.has(store.injectedSagas, key);
 
@@ -435,7 +409,7 @@ const injectRedux = ({
   key,
   reducer,
   saga
-}, store = exports.reduxStore) => {
+}, store = reduxStore) => {
   console.info('injectRedux, key: ', key);
   if (reducer) injectReducer({
     key,
@@ -448,11 +422,11 @@ const injectRedux = ({
 };
 const useInjectRedux = injectRedux;
 
-const setVersion = (commitRef, buildNo) => selectors.action(SET_VERSION, {
+const setVersion = (commitRef, buildNo) => action(SET_VERSION, {
   commitRef,
   buildNo
 });
-const setVersionStatus = status => selectors.action(SET_VERSION_STATUS, {
+const setVersionStatus = status => action(SET_VERSION_STATUS, {
   status
 });
 
@@ -462,20 +436,5 @@ var version = /*#__PURE__*/Object.freeze({
   setVersionStatus: setVersionStatus
 });
 
-exports.GET_NODE_TREE = GET_NODE_TREE;
-exports.GET_NODE_TREE_ERROR = GET_NODE_TREE_ERROR;
-exports.SET_NODE_TREE = SET_NODE_TREE;
-exports.convertSagaArray = convertSagaArray;
-exports.createStore = createStore;
-exports.hasNavigationTree = hasNavigationTree;
-exports.injectReducer = injectReducer;
-exports.injectRedux = injectRedux;
-exports.injectSaga = injectSaga;
-exports.navigation = navigation$1;
-exports.navigation$1 = navigation;
-exports.setVersion = setVersion;
-exports.setVersionStatus = setVersionStatus;
-exports.useInjectRedux = useInjectRedux;
-exports.version = version$1;
-exports.version$1 = version;
-//# sourceMappingURL=version-0a7c85ed.js.map
+export { GET_NODE_TREE as G, SET_NODE_TREE as S, setVersion as a, GET_NODE_TREE_ERROR as b, createStore as c, version as d, navigation as e, convertSagaArray as f, injectReducer as g, hasNavigationTree as h, injectRedux as i, injectSaga as j, navigation$1 as n, reduxStore as r, setVersionStatus as s, useInjectRedux as u, version$1 as v };
+//# sourceMappingURL=version-e3a5ec66.js.map
