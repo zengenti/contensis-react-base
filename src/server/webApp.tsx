@@ -208,7 +208,7 @@ const webApp = (
             .concat(helmet.noscript.toString());
 
           if (context.url) {
-            return response.redirect(302, context.url);
+            return response.redirect(context.statusCode || 302, context.url);
           }
 
           const reduxState = store.getState();

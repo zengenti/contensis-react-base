@@ -87,6 +87,7 @@ const RouteLoader = ({
   statusText,
   userGroups,
   withEvents,
+  trailingSlashRedirectCode = 302,
 }: AppRootProps & RouteLoaderProps & IReduxProps) => {
   const location = useLocation();
   // Always ensure paths are trimmed of trailing slashes so urls are always unique
@@ -170,7 +171,11 @@ const RouteLoader = ({
 
   // Need to redirect when url endswith a /
   if (location.pathname.length > trimmedPath.length) {
-    return <Redirect to={trimmedPath} />;
+    return (
+      <Status code={trailingSlashRedirectCode}>
+        <Redirect to={`${trimmedPath}${location.search}${location.hash}`} />
+      </Status>
+    );
   }
 
   // Render any Static Routes a developer has defined
