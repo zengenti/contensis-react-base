@@ -1,5 +1,5 @@
-import { c as cachedSearch, h as history, d as deliveryApi, p as pickProject, r as rootSaga } from './App-e682094c.js';
-export { A as ReactApp } from './App-e682094c.js';
+import { c as cachedSearch, h as history, d as deliveryApi, p as pickProject, r as rootSaga } from './App-04ca8125.js';
+export { A as ReactApp } from './App-04ca8125.js';
 import { Query as Query$1 } from 'contensis-delivery-api';
 import React from 'react';
 import { Provider } from 'react-redux';
@@ -29,20 +29,20 @@ import { ChunkExtractor, ChunkExtractorManager } from '@loadable/server';
 import { identity, noop } from 'lodash';
 import { buildCleaner } from 'lodash-clean';
 import { CookiesProvider } from 'react-cookie';
-import { c as createStore, s as setVersionStatus, a as setVersion } from './version-e3a5ec66.js';
+import { c as createStore, s as setVersionStatus, a as setVersion } from './version-12da3736.js';
 import { s as setCurrentProject } from './actions-180948dd.js';
 import { s as selectSurrogateKeys, a as selectRouteEntry, b as selectCurrentProject, g as getImmutableOrJS } from './selectors-a5e5835b.js';
 import 'history';
 import '@redux-saga/core/effects';
 import 'loglevel';
 import './version-2485e2fb.js';
-import './login-508cac0f.js';
+import './login-f3160f11.js';
 import './reducers-8e5d6232.js';
-import './ToJs-4e02a04d.js';
+import './ToJs-224af110.js';
 import 'await-to-js';
 import 'js-cookie';
 import 'react-hot-loader';
-import './RouteLoader-8f19516c.js';
+import './RouteLoader-20481f10.js';
 import 'redux';
 import 'redux-thunk';
 import 'redux-saga';
@@ -4257,7 +4257,7 @@ const webApp = (app, ReactApp, config) => {
         const metadata = helmet.meta.toString().concat(helmet.base.toString()).concat(helmet.link.toString()).concat(helmet.script.toString()).concat(helmet.noscript.toString());
 
         if (context.url) {
-          return response.redirect(302, context.url);
+          return response.redirect(context.statusCode || 302, context.url);
         }
 
         const reduxState = store.getState();

@@ -34,7 +34,7 @@ const initialSettings = {
   }
 };
 const initialStatus = {
-  isLoading: true,
+  isLoading: false,
   isSubmitting: false,
   hasSuccess: false,
   successMessage: null,
@@ -85,7 +85,6 @@ var reducer = produce((state, action) => {
         state[formId].groups = groups;
         state[formId].defaultLanguage = defaultLanguage;
         state[formId].status.isSubmitting = false;
-        state[formId].status.isLoading = false;
         state[formId].status.hasSuccess = false;
         state[formId].status.hasError = false;
         state[formId].settings = settings;
@@ -279,35 +278,30 @@ const makeSelectIsLoading = formId => createSelector(selectForms, forms => {
 
   return (_forms$formId = forms[formId]) === null || _forms$formId === void 0 ? void 0 : _forms$formId.status.isLoading;
 });
-const makeSelectIsSubmitting = formId => createSelector(selectForms, forms => {
+const makeSelectHasSuccess = formId => createSelector(selectForms, forms => {
   var _forms$formId2;
 
-  return (_forms$formId2 = forms[formId]) === null || _forms$formId2 === void 0 ? void 0 : _forms$formId2.status.isSubmitting;
-});
-const makeSelectHasSuccess = formId => createSelector(selectForms, forms => {
-  var _forms$formId3;
-
-  return (_forms$formId3 = forms[formId]) === null || _forms$formId3 === void 0 ? void 0 : _forms$formId3.status.hasSuccess;
+  return (_forms$formId2 = forms[formId]) === null || _forms$formId2 === void 0 ? void 0 : _forms$formId2.status.hasSuccess;
 });
 const makeSelectFormFields = formId => createSelector(selectForms, forms => {
-  var _forms$formId4;
+  var _forms$formId3;
 
-  return (_forms$formId4 = forms[formId]) === null || _forms$formId4 === void 0 ? void 0 : _forms$formId4.fields;
+  return (_forms$formId3 = forms[formId]) === null || _forms$formId3 === void 0 ? void 0 : _forms$formId3.fields;
 });
 const makeSelectDefaultLang = formId => createSelector(selectForms, forms => {
-  var _forms$formId5;
+  var _forms$formId4;
 
-  return (_forms$formId5 = forms[formId]) === null || _forms$formId5 === void 0 ? void 0 : _forms$formId5.defaultLanguage;
+  return (_forms$formId4 = forms[formId]) === null || _forms$formId4 === void 0 ? void 0 : _forms$formId4.defaultLanguage;
 });
 const makeSelectFormSuccessMessage = formId => createSelector(selectForms, forms => {
-  var _forms$formId6;
+  var _forms$formId5;
 
-  return (_forms$formId6 = forms[formId]) === null || _forms$formId6 === void 0 ? void 0 : _forms$formId6.status.successMessage;
+  return (_forms$formId5 = forms[formId]) === null || _forms$formId5 === void 0 ? void 0 : _forms$formId5.status.successMessage;
 });
 const makeSelectFormGroup$1 = formId => createSelector(selectForms, forms => {
-  var _forms$formId7;
+  var _forms$formId6;
 
-  return (_forms$formId7 = forms[formId]) === null || _forms$formId7 === void 0 ? void 0 : _forms$formId7.groups;
+  return (_forms$formId6 = forms[formId]) === null || _forms$formId6 === void 0 ? void 0 : _forms$formId6.groups;
 });
 const selectors = {
   selectForms,
@@ -319,7 +313,6 @@ const selectors = {
   makeSelectFormEntries,
   makeSelectFormPostData,
   makeSelectIsLoading,
-  makeSelectIsSubmitting,
   makeSelectHasSuccess,
   makeSelectFormFields,
   makeSelectDefaultLang,
@@ -481,15 +474,13 @@ const isBusinessEmailValid = (field, value) => {
 };
 
 const MakeFieldType = field => {
-  var _field$editor, _field$editor$propert;
-
   if (!field) return null;
 
   if (field.dataType === 'string' && field.editor && field.editor.id === 'multiline') {
     return 'textarea';
   } else if (field.dataType === 'string' && field.editor && field.editor.id === 'list-dropdown') {
     return 'dropdown';
-  } else if (field !== null && field !== void 0 && (_field$editor = field.editor) !== null && _field$editor !== void 0 && (_field$editor$propert = _field$editor.properties) !== null && _field$editor$propert !== void 0 && _field$editor$propert.readOnly || (field === null || field === void 0 ? void 0 : field.groupId) === 'private' || (field === null || field === void 0 ? void 0 : field.groupId) === 'settings') {
+  } else if (field.editor && field.editor.properties && field.editor.properties.readOnly || field.groupId && field.groupId === 'private') {
     return 'hidden';
   } else if (field.dataType === 'stringArray' || field.dataType === 'boolean') {
     return 'checkbox';
@@ -630,7 +621,7 @@ function* fetchForm(action) {
 
   const formId = action.formId;
   const schema = yield getFormSchema(formId);
-  const groups = schema === null || schema === void 0 ? void 0 : (_schema$groups = schema.groups) === null || _schema$groups === void 0 ? void 0 : _schema$groups.filter(group => group.id !== 'private' && group.id !== 'settings');
+  const groups = schema === null || schema === void 0 ? void 0 : (_schema$groups = schema.groups) === null || _schema$groups === void 0 ? void 0 : _schema$groups.filter(group => group.id !== 'private');
 
   if (formId && schema) {
     var _schema$groups2, _submitButtonText$def;
@@ -1911,23 +1902,17 @@ FormComposer.propTypes = {
   setCheckboxValue: PropTypes.func
 };
 
-const LoadingSpinner = ({
-  className,
-  color = '#fff',
-  width = 20,
-  height = 20
-}) => {
+const LoadingSpinner = () => {
   return /*#__PURE__*/React.createElement("svg", {
-    className: className,
-    width: `${width}px`,
-    height: `${height}px`,
+    width: "20px",
+    height: "20px",
     viewBox: "0 0 100 100",
     preserveAspectRatio: "xMidYMid"
   }, /*#__PURE__*/React.createElement("circle", {
     cx: "50",
     cy: "50",
     fill: "none",
-    stroke: color,
+    stroke: "#ffffff",
     strokeWidth: "10",
     r: "35",
     strokeDasharray: "164.93361431346415 56.97787143782138",
@@ -1974,10 +1959,7 @@ const Button = ({
     onClick: () => action(),
     disabled: loading,
     useDefaultTheme: useDefaultTheme
-  }, text, loading && /*#__PURE__*/React.createElement(LoadingSpinner, {
-    height: 18,
-    width: 18
-  }));
+  }, text, loading && /*#__PURE__*/React.createElement(LoadingSpinner, null));
 };
 Button.propTypes = {
   className: PropTypes.string,
@@ -2145,7 +2127,7 @@ const Form = ({
       className: className,
       id: formId,
       useDefaultTheme: useDefaultTheme
-    }, !status || !(status !== null && status !== void 0 && status.hasSuccess) && !(status !== null && status !== void 0 && status.isLoading) ? /*#__PURE__*/React.createElement(React.Fragment, null, pagingInfo.pageIndex > 0 && /*#__PURE__*/React.createElement(Button, {
+    }, !status || status && !status.isLoading && !status.isSubmitting && !status.hasSuccess && /*#__PURE__*/React.createElement(React.Fragment, null, pagingInfo.pageIndex > 0 && /*#__PURE__*/React.createElement(Button, {
       type: "button",
       text: "Go Back",
       action: () => _togglePageBack(formId, pagingInfo.pageIndex - 1),
@@ -2171,19 +2153,13 @@ const Form = ({
     }), isLastPage && /*#__PURE__*/React.createElement(Button, {
       text: (settings === null || settings === void 0 ? void 0 : settings.submitButtonText) || "Submit",
       type: "button",
-      loading: status === null || status === void 0 ? void 0 : status.isLoading,
       action: () => {
         _submitForm(formId);
 
         if (customSubmit) customSubmit();
       },
       useDefaultTheme: useDefaultTheme
-    })) : /*#__PURE__*/React.createElement(LoadingSpinner, {
-      className: "loading",
-      height: 24,
-      width: 24,
-      color: "#333"
-    }), (status === null || status === void 0 ? void 0 : status.hasSuccess) && (status === null || status === void 0 ? void 0 : status.successMessage) && /*#__PURE__*/React.createElement("p", {
+    })), status && status.hasSuccess && status.successMessage && /*#__PURE__*/React.createElement("p", {
       className: "success-message"
     }, status.successMessage)));
   } else {
@@ -2193,7 +2169,7 @@ const Form = ({
       className: className,
       id: formId,
       useDefaultTheme: useDefaultTheme
-    }, !status || !(status !== null && status !== void 0 && status.hasSuccess) && !(status !== null && status !== void 0 && status.isLoading) ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(FormComposer, {
+    }, !status || status && !status.isLoading && !status.isSubmitting && !status.hasSuccess && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(FormComposer, {
       fields: fields,
       formId: formId,
       setValue: _setValue,
@@ -2205,7 +2181,6 @@ const Form = ({
       entries: entries,
       setCheckboxValue: _setCheckboxValue
     }), /*#__PURE__*/React.createElement(Button, {
-      loading: status === null || status === void 0 ? void 0 : status.isSubmitting,
       text: (settings === null || settings === void 0 ? void 0 : settings.submitButtonText) || "Submit",
       type: "button",
       action: () => {
@@ -2214,12 +2189,7 @@ const Form = ({
         if (customSubmit) customSubmit();
       },
       useDefaultTheme: useDefaultTheme
-    })) : /*#__PURE__*/React.createElement(LoadingSpinner, {
-      className: "loading",
-      height: 24,
-      width: 24,
-      color: "#333"
-    }), (status === null || status === void 0 ? void 0 : status.hasSuccess) && (status === null || status === void 0 ? void 0 : status.successMessage) && /*#__PURE__*/React.createElement("p", {
+    })), status && status.hasSuccess && status.successMessage && /*#__PURE__*/React.createElement("p", {
       className: "success-message"
     }, status.successMessage)));
   }

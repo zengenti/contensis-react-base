@@ -2,7 +2,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var App = require('./App-ff7dff08.js');
+var App = require('./App-8486a0ba.js');
 var contensisDeliveryApi = require('contensis-delivery-api');
 var React = require('react');
 var reactRedux = require('react-redux');
@@ -32,20 +32,20 @@ var server = require('@loadable/server');
 var lodash = require('lodash');
 var lodashClean = require('lodash-clean');
 var reactCookie = require('react-cookie');
-var version = require('./version-78dfc3bd.js');
+var version = require('./version-0a7c85ed.js');
 var actions = require('./actions-8dc9e8de.js');
 var selectors = require('./selectors-656da4b7.js');
 require('history');
 require('@redux-saga/core/effects');
 require('loglevel');
 require('./version-eba6d09b.js');
-require('./login-6b9de6a1.js');
+require('./login-66885d3b.js');
 require('./reducers-3a4f8971.js');
-require('./ToJs-a9a8522b.js');
+require('./ToJs-55a7536c.js');
 require('await-to-js');
 require('js-cookie');
 require('react-hot-loader');
-require('./RouteLoader-1c431406.js');
+require('./RouteLoader-ddea84c2.js');
 require('redux');
 require('redux-thunk');
 require('redux-saga');
@@ -4271,7 +4271,7 @@ const webApp = (app, ReactApp, config) => {
         const metadata = helmet.meta.toString().concat(helmet.base.toString()).concat(helmet.link.toString()).concat(helmet.script.toString()).concat(helmet.noscript.toString());
 
         if (context.url) {
-          return response.redirect(302, context.url);
+          return response.redirect(context.statusCode || 302, context.url);
         }
 
         const reduxState = store.getState();
