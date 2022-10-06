@@ -23,6 +23,9 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: '16.x'
+      - name: Install npm update
+        run: |
+          npm i npm -g
       - name: Setup GIT
         run: |
           git config user.email "github@zengenti.com"
