@@ -193,6 +193,7 @@ class LruCache {
 
   remove(key) {
     let node = this.map[key];
+    if (!node) return; // This is sometimes null and crashes the container without this check
 
     if (node.prev) {
       node.prev.next = node.next;
@@ -1085,4 +1086,4 @@ const AppRoot = props => {
 };
 
 export { AppRoot as A, browserHistory as b, cachedSearch as c, deliveryApi as d, history as h, pickProject as p, rootSaga as r };
-//# sourceMappingURL=App-986d0bc6.js.map
+//# sourceMappingURL=App-069378e0.js.map

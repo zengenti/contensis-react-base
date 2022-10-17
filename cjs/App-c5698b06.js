@@ -218,6 +218,7 @@ class LruCache {
 
   remove(key) {
     let node = this.map[key];
+    if (!node) return; // This is sometimes null and crashes the container without this check
 
     if (node.prev) {
       node.prev.next = node.next;
@@ -1116,4 +1117,4 @@ exports.deliveryApi = deliveryApi;
 exports.history = history;
 exports.pickProject = pickProject;
 exports.rootSaga = rootSaga;
-//# sourceMappingURL=App-e82ee728.js.map
+//# sourceMappingURL=App-c5698b06.js.map
