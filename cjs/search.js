@@ -329,14 +329,14 @@ const useListing = ({
   };
 };
 
-const makeSelectMinilistProps = () => reselect.createSelector(state => state, (_, id) => id, (state, id) => ({
+const makeSelectMinilistProps = () => reselect.createSelector(state => state, (_, id) => id, (state, id) => id ? {
   facet: sagas.getFacet(state, id, sagas.Context.minilist, 'js'),
   filters: sagas.getFilters(state, id, sagas.Context.minilist, 'js'),
   isLoading: sagas.getIsLoading(state, sagas.Context.minilist, id),
   pagingInfo: sagas.getPaging(state, id, sagas.Context.minilist, 'js'),
   results: sagas.getResults(state, id, sagas.Context.minilist, 'js'),
   searchTerm: sagas.getSearchTerm(state)
-}));
+} : null);
 
 const useMinilist = ({
   id,
@@ -359,7 +359,14 @@ const useMinilist = ({
     pagingInfo,
     results,
     searchTerm
-  } = reactRedux.useSelector(state => selectMinilistProps(state, id)); // useSelector((state: AppState) => ({
+  } = reactRedux.useSelector(state => selectMinilistProps(state, id)) || {
+    facet: {},
+    filters: {},
+    isLoading: false,
+    pagingInfo: {},
+    results: [],
+    searchTerm: ''
+  }; // useSelector((state: AppState) => ({
   //   facet: getFacet(state, id, Context.minilist).toJS(),
   //   filters: getFilters(state, id, Context.minilist).toJS(),
   //   isLoading: getIsLoading(state, Context.minilist, id),

@@ -320,14 +320,14 @@ const useListing = ({
   };
 };
 
-const makeSelectMinilistProps = () => createSelector(state => state, (_, id) => id, (state, id) => ({
+const makeSelectMinilistProps = () => createSelector(state => state, (_, id) => id, (state, id) => id ? {
   facet: getFacet$1(state, id, Context$1.minilist, 'js'),
   filters: getFilters(state, id, Context$1.minilist, 'js'),
   isLoading: getIsLoading$2(state, Context$1.minilist, id),
   pagingInfo: getPaging(state, id, Context$1.minilist, 'js'),
   results: getResults(state, id, Context$1.minilist, 'js'),
   searchTerm: getSearchTerm$2(state)
-}));
+} : null);
 
 const useMinilist = ({
   id,
@@ -350,7 +350,14 @@ const useMinilist = ({
     pagingInfo,
     results,
     searchTerm
-  } = useSelector(state => selectMinilistProps(state, id)); // useSelector((state: AppState) => ({
+  } = useSelector(state => selectMinilistProps(state, id)) || {
+    facet: {},
+    filters: {},
+    isLoading: false,
+    pagingInfo: {},
+    results: [],
+    searchTerm: ''
+  }; // useSelector((state: AppState) => ({
   //   facet: getFacet(state, id, Context.minilist).toJS(),
   //   filters: getFilters(state, id, Context.minilist).toJS(),
   //   isLoading: getIsLoading(state, Context.minilist, id),

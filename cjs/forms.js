@@ -2155,7 +2155,7 @@ const Form = ({
       className: className,
       id: formId,
       useDefaultTheme: useDefaultTheme
-    }, !status || !(status !== null && status !== void 0 && status.hasSuccess) && !(status !== null && status !== void 0 && status.isLoading) ? /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, pagingInfo.pageIndex > 0 && /*#__PURE__*/React__default["default"].createElement(Button, {
+    }, !(status !== null && status !== void 0 && status.hasSuccess) && !(status !== null && status !== void 0 && status.isLoading) && /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, pagingInfo.pageIndex > 0 && /*#__PURE__*/React__default["default"].createElement(Button, {
       type: "button",
       text: "Go Back",
       action: () => _togglePageBack(formId, pagingInfo.pageIndex - 1),
@@ -2188,7 +2188,7 @@ const Form = ({
         if (customSubmit) customSubmit();
       },
       useDefaultTheme: useDefaultTheme
-    })) : /*#__PURE__*/React__default["default"].createElement(LoadingSpinner, {
+    })), (status === null || status === void 0 ? void 0 : status.isLoading) && !(status !== null && status !== void 0 && status.hasSuccess) && /*#__PURE__*/React__default["default"].createElement(LoadingSpinner, {
       className: "loading",
       height: 24,
       width: 24,
@@ -2203,7 +2203,7 @@ const Form = ({
       className: className,
       id: formId,
       useDefaultTheme: useDefaultTheme
-    }, !status || !(status !== null && status !== void 0 && status.hasSuccess) && !(status !== null && status !== void 0 && status.isLoading) ? /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, /*#__PURE__*/React__default["default"].createElement(FormComposer, {
+    }, !(status !== null && status !== void 0 && status.hasSuccess) && !(status !== null && status !== void 0 && status.isLoading) && /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, /*#__PURE__*/React__default["default"].createElement(FormComposer, {
       fields: fields,
       formId: formId,
       setValue: _setValue,
@@ -2224,7 +2224,7 @@ const Form = ({
         if (customSubmit) customSubmit();
       },
       useDefaultTheme: useDefaultTheme
-    })) : /*#__PURE__*/React__default["default"].createElement(LoadingSpinner, {
+    })), (status === null || status === void 0 ? void 0 : status.isLoading) && !(status !== null && status !== void 0 && status.hasSuccess) && /*#__PURE__*/React__default["default"].createElement(LoadingSpinner, {
       className: "loading",
       height: 24,
       width: 24,
