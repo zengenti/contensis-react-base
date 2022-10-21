@@ -14,7 +14,7 @@ require('query-string');
 require('immer');
 require('deep-equal');
 var contensisCoreApi = require('contensis-core-api');
-var setCachingHeaders = require('./setCachingHeaders-ee619bdf.js');
+var urls = require('./urls-6fcaf4c6.js');
 require('isomorphic-fetch');
 var express = require('express');
 var httpProxy = require('http-proxy');
@@ -638,7 +638,7 @@ const makeLinkDepthMiddleware = ({
     const linkDepthMiddleware = async (req, res) => {
       try {
         // Short cache duration copied from canterbury project
-        setCachingHeaders.setCachingHeaders(res, {
+        urls.setCachingHeaders(res, {
           cacheControl: 'private',
           surrogateControl: '10'
         }); // Gather all params from the request, we will use them at the right query levels later
@@ -700,6 +700,13 @@ const DisplayStartupConfiguration = config => {
 const servers = SERVERS;
 /* global SERVERS */
 
+const project = PROJECT;
+/* global PROJECT */
+
+const alias = ALIAS;
+/* global ALIAS */
+
+const deliveryApiHostname = urls.url(alias, project).api;
 const apiProxy = httpProxy__default["default"].createProxyServer();
 
 const reverseProxies = (app, reverseProxyPaths = []) => {
@@ -722,10 +729,9 @@ const deliveryApiProxy = (apiProxy, app) => {
   // This is just here to stop cors requests on localhost. In Production this is mapped using varnish.
   app.all(['/api/delivery/*', '/api/image/*'], (req, res) => {
     /* eslint-disable no-console */
-    const target = servers.cms;
     console.log(`Proxying api request to ${servers.alias}`);
     apiProxy.web(req, res, {
-      target,
+      target: deliveryApiHostname,
       changeOrigin: true
     });
     apiProxy.on('error', e => {

@@ -11,7 +11,7 @@ import 'query-string';
 import 'immer';
 import 'deep-equal';
 import { Op, Query } from 'contensis-core-api';
-import { s as setCachingHeaders } from './setCachingHeaders-d49060e1.js';
+import { s as setCachingHeaders, u as url } from './urls-eac9a747.js';
 import 'isomorphic-fetch';
 import express from 'express';
 import httpProxy from 'http-proxy';
@@ -686,6 +686,13 @@ const DisplayStartupConfiguration = config => {
 const servers = SERVERS;
 /* global SERVERS */
 
+const project = PROJECT;
+/* global PROJECT */
+
+const alias = ALIAS;
+/* global ALIAS */
+
+const deliveryApiHostname = url(alias, project).api;
 const apiProxy = httpProxy.createProxyServer();
 
 const reverseProxies = (app, reverseProxyPaths = []) => {
@@ -708,10 +715,9 @@ const deliveryApiProxy = (apiProxy, app) => {
   // This is just here to stop cors requests on localhost. In Production this is mapped using varnish.
   app.all(['/api/delivery/*', '/api/image/*'], (req, res) => {
     /* eslint-disable no-console */
-    const target = servers.cms;
     console.log(`Proxying api request to ${servers.alias}`);
     apiProxy.web(req, res, {
-      target,
+      target: deliveryApiHostname,
       changeOrigin: true
     });
     apiProxy.on('error', e => {

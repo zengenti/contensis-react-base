@@ -2,7 +2,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var setCachingHeaders = require('./setCachingHeaders-ee619bdf.js');
+var urls = require('./urls-6fcaf4c6.js');
 var mapJson = require('jsonpath-mapper');
 var React = require('react');
 var reactRedux = require('react-redux');
@@ -156,18 +156,6 @@ const stringifyStrings = obj => {
 };
 
 var stringifyStrings_1 = stringifyStrings;
-
-const url = (alias, project) => {
-  const projectAndAlias = project && project.toLowerCase() !== 'website' ? `${project.toLowerCase()}-${alias}` : alias;
-  return {
-    api: `https://api-${alias}.cloud.contensis.com`,
-    cms: `https://cms-${alias}.cloud.contensis.com`,
-    liveWeb: `https://live-${projectAndAlias}.cloud.contensis.com`,
-    previewWeb: `https://preview-${projectAndAlias}.cloud.contensis.com`,
-    iisWeb: `https://iis-live-${projectAndAlias}.cloud.contensis.com`,
-    iisPreviewWeb: `https://iis-preview-${projectAndAlias}.cloud.contensis.com`
-  };
-};
 
 const context = typeof window != 'undefined' ? window : global;
 const isDev = process.env.NODE_ENV === 'development';
@@ -324,7 +312,8 @@ const VersionInfo = ({
 
 var VersionInfo$1 = reactRedux.connect(mapStateToVersionInfo)(VersionInfo);
 
-exports.setCachingHeaders = setCachingHeaders.setCachingHeaders;
+exports.setCachingHeaders = urls.setCachingHeaders;
+exports.urls = urls.url;
 Object.defineProperty(exports, 'jpath', {
   enumerable: true,
   get: function () { return mapJson.jpath; }
@@ -338,7 +327,6 @@ exports.entryMapper = entryMapper;
 exports.mapComposer = mapComposer;
 exports.mapEntries = mapEntries;
 exports.stringifyStrings = stringifyStrings_1;
-exports.urls = url;
 exports.useComposerMapper = useComposerMapper;
 exports.useEntriesMapper = useEntriesMapper;
 exports.useEntryMapper = useEntryMapper;

@@ -1,4 +1,4 @@
-export { s as setCachingHeaders } from './setCachingHeaders-d49060e1.js';
+export { s as setCachingHeaders, u as urls } from './urls-eac9a747.js';
 import mapJson, { jpath } from 'jsonpath-mapper';
 export { jpath, default as mapJson } from 'jsonpath-mapper';
 import React from 'react';
@@ -147,18 +147,6 @@ const stringifyStrings = obj => {
 };
 
 var stringifyStrings_1 = stringifyStrings;
-
-const url = (alias, project) => {
-  const projectAndAlias = project && project.toLowerCase() !== 'website' ? `${project.toLowerCase()}-${alias}` : alias;
-  return {
-    api: `https://api-${alias}.cloud.contensis.com`,
-    cms: `https://cms-${alias}.cloud.contensis.com`,
-    liveWeb: `https://live-${projectAndAlias}.cloud.contensis.com`,
-    previewWeb: `https://preview-${projectAndAlias}.cloud.contensis.com`,
-    iisWeb: `https://iis-live-${projectAndAlias}.cloud.contensis.com`,
-    iisPreviewWeb: `https://iis-preview-${projectAndAlias}.cloud.contensis.com`
-  };
-};
 
 const context = typeof window != 'undefined' ? window : global;
 const isDev = process.env.NODE_ENV === 'development';
@@ -315,5 +303,5 @@ const VersionInfo = ({
 
 var VersionInfo$1 = connect(mapStateToVersionInfo)(VersionInfo);
 
-export { VersionInfo$1 as VersionInfo, entryMapper, mapComposer, mapEntries, stringifyStrings_1 as stringifyStrings, url as urls, useComposerMapper, useEntriesMapper, useEntryMapper, useMapper };
+export { VersionInfo$1 as VersionInfo, entryMapper, mapComposer, mapEntries, stringifyStrings_1 as stringifyStrings, useComposerMapper, useEntriesMapper, useEntryMapper, useMapper };
 //# sourceMappingURL=util.js.map
