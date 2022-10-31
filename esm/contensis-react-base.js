@@ -693,17 +693,18 @@ const alias = ALIAS;
 /* global ALIAS */
 
 const deliveryApiHostname = url(alias, project).api;
-const apiProxy = httpProxy.createProxyServer();
+const assetProxy = httpProxy.createProxyServer();
+const deliveryProxy = httpProxy.createProxyServer();
 
 const reverseProxies = (app, reverseProxyPaths = []) => {
-  deliveryApiProxy(apiProxy, app);
+  deliveryApiProxy(deliveryProxy, app);
   app.all(reverseProxyPaths, (req, res) => {
     const target = req.hostname.indexOf('preview-') || req.hostname.indexOf('preview.') || req.hostname === 'localhost' ? servers.previewIis || servers.iis : servers.iis;
-    apiProxy.web(req, res, {
+    assetProxy.web(req, res, {
       target,
       changeOrigin: true
     });
-    apiProxy.on('error', e => {
+    assetProxy.on('error', e => {
       /* eslint-disable no-console */
       console.log(`Proxy Request for ${req.path} HostName:${req.hostname} failed with ${e}`);
       /* eslint-enable no-console */
@@ -4393,7 +4394,7 @@ const start = (ReactApp, config, ServerFeatures) => {
 
 var internalServer = {
   app,
-  apiProxy,
+  apiProxy: deliveryProxy,
   start
 };
 
