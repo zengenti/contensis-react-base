@@ -3,7 +3,9 @@ import express, { Express } from 'express';
 import React from 'react';
 
 import DisplayStartupConfiguration from './util/displayStartupConfiguration';
-import ConfigureReverseProxies, { apiProxy } from './features/reverse-proxy';
+import ConfigureReverseProxies, {
+  deliveryProxy,
+} from './features/reverse-proxy';
 import ServeStaticAssets from './features/static-assets';
 import ConfigureWebApp from './webApp';
 import { ServerConfig } from '~/config';
@@ -54,4 +56,4 @@ const start = (
   });
 };
 
-export default { app, apiProxy, start };
+export default { app, apiProxy: deliveryProxy, start };

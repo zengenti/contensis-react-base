@@ -7,10 +7,11 @@ const project = PROJECT; /* global PROJECT */
 const alias = ALIAS; /* global ALIAS */
 const deliveryApiHostname = url(alias, project).api;
 
-export const apiProxy = httpProxy.createProxyServer();
+export const assetProxy = httpProxy.createProxyServer();
+export const deliveryProxy = httpProxy.createProxyServer();
 
 const reverseProxies = (app: Express, reverseProxyPaths: string[] = []) => {
-  deliveryApiProxy(apiProxy, app);
+  deliveryApiProxy(deliveryProxy, app);
 
   app.all(reverseProxyPaths, (req, res) => {
     const target =
@@ -20,8 +21,8 @@ const reverseProxies = (app: Express, reverseProxyPaths: string[] = []) => {
         ? servers.previewIis || servers.iis
         : servers.iis;
 
-    apiProxy.web(req, res, { target, changeOrigin: true });
-    apiProxy.on('error', e => {
+    assetProxy.web(req, res, { target, changeOrigin: true });
+    assetProxy.on('error', e => {
       /* eslint-disable no-console */
       console.log(
         `Proxy Request for ${req.path} HostName:${req.hostname} failed with ${e}`
