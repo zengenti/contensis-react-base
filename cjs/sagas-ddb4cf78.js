@@ -715,7 +715,13 @@ const callCustomApi = async (customApi, filters) => {
   const apiUri = customApi.uri || '';
   let uri = buildUrl(apiUri, filters);
   if (!uri) throw new Error('uri is required to use customApi');
-  if (typeof window == 'undefined' && uri.startsWith('/')) uri = `http://localhost:3001${uri}`;
+
+  if (typeof window == 'undefined') {
+    if (!uri.startsWith('http')) uri = `http://localhost:3001${uri}`;
+    const response = await fetch(uri);
+    return await response.json();
+  }
+
   const response = await cachedSearch.fetch(uri);
   return await response.clone().json();
 };
@@ -2087,4 +2093,4 @@ exports.updateSearchTerm = updateSearchTerm$1;
 exports.updateSelectedFilters = updateSelectedFilters;
 exports.updateSortOrder = updateSortOrder$1;
 exports.withMappers = withMappers;
-//# sourceMappingURL=sagas-594b5ecd.js.map
+//# sourceMappingURL=sagas-ddb4cf78.js.map

@@ -2,7 +2,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var login = require('./login-6b9de6a1.js');
+var login = require('./login-840860bc.js');
 var reactRedux = require('react-redux');
 var selectors = require('./selectors-656da4b7.js');
 var reducers = require('./reducers-3a4f8971.js');

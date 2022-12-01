@@ -1,4 +1,5 @@
-export const userManagerConfig: {
+import { UserManagerSettings } from 'oidc-client';
+export declare const userManagerConfig: {
     authority: string;
     client_id: string;
     redirect_uri: string;
@@ -15,4 +16,4 @@ export const userManagerConfig: {
     scope?: undefined;
     filterProtocolClaims?: undefined;
 };
-export function createUserManager(config: any): Promise<{} | undefined>;
+export declare const createUserManager: (config: UserManagerSettings) => Promise<{} | undefined>;

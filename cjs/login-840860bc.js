@@ -7,7 +7,7 @@ var actions = require('./actions-8dc9e8de.js');
 var selectors = require('./selectors-656da4b7.js');
 var mapJson = require('jsonpath-mapper');
 var awaitToJs = require('await-to-js');
-var Cookies = require('js-cookie');
+var JSCookie = require('js-cookie');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -30,7 +30,7 @@ function _interopNamespace(e) {
 }
 
 var mapJson__default = /*#__PURE__*/_interopDefaultLegacy(mapJson);
-var Cookies__default = /*#__PURE__*/_interopDefaultLegacy(Cookies);
+var JSCookie__default = /*#__PURE__*/_interopDefaultLegacy(JSCookie);
 
 const findContentTypeMapping = (ContentTypeMappings, contentTypeId) => ContentTypeMappings.find(ct => ct.contentTypeID === contentTypeId);
 
@@ -101,16 +101,15 @@ const COOKIE_VALID_DAYS = 1; // 0 = Session cookie
 // Override the default js-cookie conversion / encoding
 // methods so the written values work with Contensis sites
 
-const _cookie = Cookies__default["default"].withConverter({
+const Cookies = JSCookie__default["default"].withConverter({
   read: value => decodeURIComponent(value),
   write: value => encodeURIComponent(value)
 });
-
 class CookieHelper {
   static GetCookie(name) {
-    let cookie = _cookie.get(name);
+    const cookie = Cookies.get(name);
 
-    if (typeof cookie == 'undefined') {
+    if (typeof cookie === 'undefined') {
       return null;
     }
 
@@ -118,13 +117,13 @@ class CookieHelper {
   }
 
   static SetCookie(name, value, maxAgeDays = COOKIE_VALID_DAYS) {
-    maxAgeDays === 0 ? _cookie.set(name, value) : _cookie.set(name, value, {
+    if (maxAgeDays === 0) Cookies.set(name, value);else Cookies.set(name, value, {
       expires: maxAgeDays
     });
   }
 
   static DeleteCookie(name) {
-    _cookie.remove(name);
+    Cookies.remove(name);
   }
 
 }
@@ -155,12 +154,10 @@ const createUserManager = async config => {
       'oidc-client')); });
       return new UserManager(config);
     } catch (e) {
-      // eslint-disable-next-line no-console
-      console.log('Exception in createUserManager: ', e);
+      console.error('Exception in createUserManager: ', e);
     }
   } else return {};
-}; //const userManager = createUserManager(userManagerConfig);
-// export default userManager;
+};
 
 /* eslint-disable require-atomic-updates */
 const LOGIN_COOKIE = 'ContensisCMSUserName';
@@ -429,16 +426,15 @@ class LoginHelper {
         message: `Fetch credentials error: ${response.status} ${response.statusText}`
       }];
     }
-  }
+  } // static isZengentiStaff(email) {
+  //   const emailRefs = ['@zengenti', '@contensis'];
+  //   return emailRefs.some(emailRef => {
+  //     if (email.includes(emailRef)) {
+  //       return true;
+  //     }
+  //   });
+  // }
 
-  static isZengentiStaff(email) {
-    const emailRefs = ['@zengenti', '@contensis'];
-    return emailRefs.some(emailRef => {
-      if (email.includes(emailRef)) {
-        return true;
-      }
-    });
-  }
 
 }
 LoginHelper.CMS_URL = SERVERS.cms
@@ -655,4 +651,4 @@ exports.getManagementApiClient = getManagementApiClient;
 exports.handleRequiresLoginSaga = handleRequiresLoginSaga;
 exports.loginSagas = loginSagas;
 exports.refreshSecurityToken = refreshSecurityToken;
-//# sourceMappingURL=login-6b9de6a1.js.map
+//# sourceMappingURL=login-840860bc.js.map

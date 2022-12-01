@@ -1,5 +1,3 @@
-export const LOGIN_COOKIE: "ContensisCMSUserName";
-export const REFRESH_TOKEN_COOKIE: "RefreshToken";
 export class LoginHelper {
     static CMS_URL: string;
     static WSFED_LOGIN: boolean;
@@ -12,9 +10,9 @@ export class LoginHelper {
     static GetCachedCredentials(): {
         bearerToken: null;
         bearerTokenExpiryDate: null;
-        refreshToken: any;
+        refreshToken: string | null;
         refreshTokenExpiryDate: null;
-        contensisClassicToken: any;
+        contensisClassicToken: string | null;
     };
     static ClearCachedCredentials(): void;
     static LoginUser({ username, password, clientCredentials }: {
@@ -49,5 +47,4 @@ export class LoginHelper {
         message: string;
         data: any;
     }[]>;
-    static isZengentiStaff(email: any): boolean;
 }

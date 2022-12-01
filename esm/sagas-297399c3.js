@@ -689,7 +689,13 @@ const callCustomApi = async (customApi, filters) => {
   const apiUri = customApi.uri || '';
   let uri = buildUrl(apiUri, filters);
   if (!uri) throw new Error('uri is required to use customApi');
-  if (typeof window == 'undefined' && uri.startsWith('/')) uri = `http://localhost:3001${uri}`;
+
+  if (typeof window == 'undefined') {
+    if (!uri.startsWith('http')) uri = `http://localhost:3001${uri}`;
+    const response = await fetch(uri);
+    return await response.json();
+  }
+
   const response = await cachedSearch.fetch(uri);
   return await response.clone().json();
 };
@@ -1997,4 +2003,4 @@ function* triggerSearchSsr(options) {
 }
 
 export { APPLY_CONFIG as $, clearFilters$1 as A, updateCurrentFacet$1 as B, updateCurrentTab$1 as C, updatePageIndex$1 as D, updateSearchTerm$1 as E, updateSelectedFilters as F, updateSortOrder$1 as G, selectListing as H, mapStateToSearchUri as I, Context as J, selectFacets as K, triggerSearch as L, getFilters as M, toArray as N, UPDATE_SELECTED_FILTERS as O, UPDATE_SEARCH_TERM as P, UPDATE_PAGE_INDEX as Q, SET_SEARCH_ENTRIES as R, SET_SEARCH_FILTERS as S, SET_ROUTE_FILTERS as T, UPDATE_SORT_ORDER as U, LOAD_FILTERS_COMPLETE as V, LOAD_FILTERS_ERROR as W, LOAD_FILTERS as X, EXECUTE_SEARCH_ERROR as Y, EXECUTE_SEARCH as Z, CLEAR_FILTERS as _, customWhereExpressions as a, actions as a0, selectors as a1, types as a2, expressions as a3, queries as a4, doSearch as a5, setRouteFilters as a6, searchSagas as a7, triggerListingSsr as a8, triggerMinilistSsr as a9, triggerSearchSsr as aa, routeParams as ab, getPageIndex as b, contentTypeIdExpression as c, defaultExpressions as d, getCurrentTab as e, filterExpressions as f, getCurrentFacet as g, getFacet as h, getTabFacets as i, getFacetsTotalCount as j, getFacetTitles as k, getFeaturedResults as l, getRenderableFilters as m, getIsLoading as n, orderByExpression as o, getPaging as p, getPageIsLoading as q, getResults as r, getSearchTerm as s, termExpressions as t, getSearchTotalCount as u, getSelectedFilters as v, getQueryParameter as w, getTabsAndFacets as x, getTotalCount as y, withMappers as z };
-//# sourceMappingURL=sagas-1f2b2aa0.js.map
+//# sourceMappingURL=sagas-297399c3.js.map
