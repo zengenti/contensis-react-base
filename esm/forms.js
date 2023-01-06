@@ -289,6 +289,11 @@ const makeSelectHasSuccess = formId => createSelector(selectForms, forms => {
 
   return (_forms$formId3 = forms[formId]) === null || _forms$formId3 === void 0 ? void 0 : _forms$formId3.status.hasSuccess;
 });
+const makeSelectHasError = formId => createSelector(selectForms, forms => {
+  var _forms$formId4;
+
+  return (_forms$formId4 = forms[formId]) === null || _forms$formId4 === void 0 ? void 0 : _forms$formId4.status.hasError;
+});
 const makeSelectFormFields = formId => createSelector(selectForms, forms => {
   var _forms$formId5;
 
@@ -324,7 +329,8 @@ const selectors = {
   makeSelectFormFields,
   makeSelectDefaultLang,
   makeSelectFormSuccessMessage,
-  makeSelectFormGroup: makeSelectFormGroup$1
+  makeSelectFormGroup: makeSelectFormGroup$1,
+  makeSelectHasError
 };
 
 const URI = '/forms';
