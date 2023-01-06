@@ -300,24 +300,24 @@ const makeSelectHasSuccess = formId => reselect.createSelector(selectForms, form
   return (_forms$formId3 = forms[formId]) === null || _forms$formId3 === void 0 ? void 0 : _forms$formId3.status.hasSuccess;
 });
 const makeSelectFormFields = formId => reselect.createSelector(selectForms, forms => {
-  var _forms$formId4;
-
-  return (_forms$formId4 = forms[formId]) === null || _forms$formId4 === void 0 ? void 0 : _forms$formId4.fields;
-});
-const makeSelectDefaultLang = formId => reselect.createSelector(selectForms, forms => {
   var _forms$formId5;
 
-  return (_forms$formId5 = forms[formId]) === null || _forms$formId5 === void 0 ? void 0 : _forms$formId5.defaultLanguage;
+  return (_forms$formId5 = forms[formId]) === null || _forms$formId5 === void 0 ? void 0 : _forms$formId5.fields;
 });
-const makeSelectFormSuccessMessage = formId => reselect.createSelector(selectForms, forms => {
+const makeSelectDefaultLang = formId => reselect.createSelector(selectForms, forms => {
   var _forms$formId6;
 
-  return (_forms$formId6 = forms[formId]) === null || _forms$formId6 === void 0 ? void 0 : _forms$formId6.status.successMessage;
+  return (_forms$formId6 = forms[formId]) === null || _forms$formId6 === void 0 ? void 0 : _forms$formId6.defaultLanguage;
 });
-const makeSelectFormGroup$1 = formId => reselect.createSelector(selectForms, forms => {
+const makeSelectFormSuccessMessage = formId => reselect.createSelector(selectForms, forms => {
   var _forms$formId7;
 
-  return (_forms$formId7 = forms[formId]) === null || _forms$formId7 === void 0 ? void 0 : _forms$formId7.groups;
+  return (_forms$formId7 = forms[formId]) === null || _forms$formId7 === void 0 ? void 0 : _forms$formId7.status.successMessage;
+});
+const makeSelectFormGroup$1 = formId => reselect.createSelector(selectForms, forms => {
+  var _forms$formId8;
+
+  return (_forms$formId8 = forms[formId]) === null || _forms$formId8 === void 0 ? void 0 : _forms$formId8.groups;
 });
 const selectors = {
   selectForms,
