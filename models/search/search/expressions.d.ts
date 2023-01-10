@@ -1,7 +1,7 @@
 import { ContensisQueryOrderBy, IExpression, ILogicalExpression, VersionStatus } from 'contensis-core-api';
 import { CustomWhereClause, WeightedSearchField } from '../models/Search';
 import { FieldOperators, FilterExpression } from '../models/Queries';
-export declare const fieldExpression: (field: string | string[], value: any, operator?: FieldOperators, weight?: number | undefined) => IExpression[];
+export declare const fieldExpression: (field: string | string[], value: any, operator?: FieldOperators, weight?: number | undefined, fuzzySearch?: boolean) => IExpression[];
 export declare const contentTypeIdExpression: (contentTypeIds: string[], webpageTemplates?: string[] | undefined, assetTypes?: string[] | undefined) => ILogicalExpression[];
 export declare const filterExpressions: (filters: FilterExpression[], isOptional?: boolean) => IExpression[];
 export declare const dataFormatExpression: (contentTypeIds: string[], dataFormat?: string) => ILogicalExpression[];
@@ -23,4 +23,4 @@ export declare const orderByExpression: (orderBy: string[]) => ContensisQueryOrd
  * @returns {array} array of constructed Delivery API Operators
  */
 export declare const customWhereExpressions: (where?: CustomWhereClause | undefined) => IExpression[];
-export declare const termExpressions: (searchTerm: string, weightedSearchFields: WeightedSearchField[]) => any[];
+export declare const termExpressions: (searchTerm: string, weightedSearchFields: WeightedSearchField[], fuzzySearch?: boolean | undefined) => any[];

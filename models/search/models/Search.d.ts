@@ -102,6 +102,8 @@ export declare type SearchQueryParams = {
     featuredResults?: FeaturedResults;
     /** An array of fields to return for each entry in the items[] */
     fields?: string[];
+    /** Allows a “fuzzy” search (defaults to `false`) */
+    fuzzySearch?: boolean;
     /** Specify a boolean type field to use for excluding entries we don't want returned in search result  */
     includeInSearch?: string[];
     /** Whether or not to load all results with the first page and handle all pagination yourself */

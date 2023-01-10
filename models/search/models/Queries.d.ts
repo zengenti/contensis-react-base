@@ -19,6 +19,7 @@ export declare type SearchQueryOptions = {
     featuredResults: FeaturedResults;
     fields: string[];
     filters: FilterExpression[];
+    fuzzySearch?: boolean;
     includeInSearchFields: string[];
     languages: string[];
     pageSize: number;
@@ -42,5 +43,5 @@ export declare type QueryParams = SearchQueryOptions & {
         [key: string]: string;
     };
 };
-export declare type SearchQuery = ({ contentTypeIds, customWhere, dynamicOrderBy, excludeIds, featuredResults, fields, filters, languages, pageSize, pageIndex, orderBy, searchTerm, versionStatus, webpageTemplates, weightedSearchFields, }: SearchQueryOptions, isFeatured?: boolean) => Query;
+export declare type SearchQuery = ({ contentTypeIds, customWhere, dynamicOrderBy, excludeIds, featuredResults, fields, filters, fuzzySearch, languages, pageSize, pageIndex, orderBy, searchTerm, versionStatus, webpageTemplates, weightedSearchFields, }: SearchQueryOptions, isFeatured?: boolean) => Query;
 export declare type FilterQuery = (contentTypeIds: string[], versionStatus: VersionStatus, customWhere?: CustomWhereClause) => Query;
