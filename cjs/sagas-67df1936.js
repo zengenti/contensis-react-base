@@ -838,13 +838,13 @@ const Fields = {
   wildcard: '*'
 };
 
-const fieldExpression = (field, value, operator = 'equalTo', weight) => {
+const fieldExpression = (field, value, operator = 'equalTo', weight, fuzzySearch = false) => {
   if (!field || !value || Array.isArray(value) && value.length === 0) return [];
   if (Array.isArray(field)) // If an array of fieldIds have been provided, call self for each fieldId
     // to generate expressions that are combined with an 'or' operator
-    return [contensisCoreApi.Op.or(...field.map(fieldId => fieldExpression(fieldId, value, operator, weight)).flat())];
+    return [contensisCoreApi.Op.or(...field.map(fieldId => fieldExpression(fieldId, value, operator, weight, fuzzySearch)).flat())];
   if (operator === 'between') return between(field, value);
-  if (Array.isArray(value)) return equalToOrIn(field, value, operator);else return !weight ? equalToOrIn(field, value, operator) : [equalToOrIn(field, value, operator)[0].weight(weight)];
+  if (Array.isArray(value)) return equalToOrIn(field, value, operator, fuzzySearch);else return !weight ? equalToOrIn(field, value, operator, fuzzySearch) : [equalToOrIn(field, value, operator, fuzzySearch)[0].weight(weight)];
 };
 const contentTypeIdExpression = (contentTypeIds, webpageTemplates, assetTypes) => {
   const expressions = [];
@@ -960,7 +960,7 @@ const orderByExpression = orderBy => {
   return expression;
 };
 
-const equalToOrIn = (field, value, operator = 'equalTo') => {
+const equalToOrIn = (field, value, operator = 'equalTo', fuzzySearch = false) => {
   if (value.length === 0) return [];
 
   if (Array.isArray(value)) {
@@ -980,7 +980,7 @@ const equalToOrIn = (field, value, operator = 'equalTo') => {
 
         case 'freeText':
           // TODO: Potentially needs further implementation of new options
-          return contensisCoreApi.Op[operator](field, innerValue, false, undefined);
+          return contensisCoreApi.Op[operator](field, innerValue, fuzzySearch, undefined);
 
         default:
           return contensisCoreApi.Op[operator](field, innerValue);
@@ -998,7 +998,7 @@ const equalToOrIn = (field, value, operator = 'equalTo') => {
 
     case 'freeText':
       // TODO: Potentially needs further implementation of new options
-      return [contensisCoreApi.Op.freeText(field, value, false, undefined)];
+      return [contensisCoreApi.Op.freeText(field, value, fuzzySearch, undefined)];
 
     default:
       return [contensisCoreApi.Op[operator](field, value)];
@@ -1104,7 +1104,7 @@ const customWhereExpressions = where => {
 
 const makeJsExpression = (operator, field, value) => operator === 'freeText' || operator === 'contains' ? contensisCoreApi.Op[operator](field, value) : operator === 'in' ? contensisCoreApi.Op[operator](field, ...value) : operator === 'exists' ? contensisCoreApi.Op[operator](field, value) : operator === 'between' ? contensisCoreApi.Op[operator](field, value[0], value[1]) : operator === 'distanceWithin' ? contensisCoreApi.Op[operator](field, value === null || value === void 0 ? void 0 : value.lat, value === null || value === void 0 ? void 0 : value.lon, value === null || value === void 0 ? void 0 : value.distance) : contensisCoreApi.Op[operator](field, value);
 
-const termExpressions = (searchTerm, weightedSearchFields) => {
+const termExpressions = (searchTerm, weightedSearchFields, fuzzySearch) => {
   if (searchTerm && weightedSearchFields && weightedSearchFields.length > 0) {
     // Extract any phrases in quotes to array
     const quotedPhrases = extractQuotedPhrases(searchTerm); // Modify the search term to remove any quoted phrases to leave any remaining terms
@@ -1116,7 +1116,7 @@ const termExpressions = (searchTerm, weightedSearchFields) => {
 
     const containsOp = (f, term) => fieldExpression(f.fieldId, fixFreeTextForElastic(term), 'contains', f.weight);
 
-    const freeTextOp = (f, term) => fieldExpression(f.fieldId, fixFreeTextForElastic(term), 'freeText', f.weight); // For each weighted search field
+    const freeTextOp = (f, term) => fieldExpression(f.fieldId, fixFreeTextForElastic(term), 'freeText', f.weight, fuzzySearch); // For each weighted search field
 
 
     weightedSearchFields.forEach(wsf => {
@@ -1147,11 +1147,11 @@ const termExpressions = (searchTerm, weightedSearchFields) => {
       }
     }); // Wrap operators in an Or operator
 
-    return [contensisCoreApi.Op.or().addRange(operators).add(contensisCoreApi.Op.freeText(Fields.searchContent, searchTerm))];
+    return [contensisCoreApi.Op.or().addRange(operators).add(contensisCoreApi.Op.freeText(Fields.searchContent, searchTerm, fuzzySearch))];
   } else if (searchTerm) {
     // Searching without weightedSearchFields defined will fall back
     // to a default set of search fields with arbritary weights set.
-    return [contensisCoreApi.Op.or(contensisCoreApi.Op.equalTo(Fields.entryTitle, searchTerm).weight(10), contensisCoreApi.Op.freeText(Fields.entryTitle, searchTerm).weight(2), contensisCoreApi.Op.freeText(Fields.entryDescription, searchTerm).weight(2), contensisCoreApi.Op.contains(Fields.keywords, searchTerm).weight(2), contensisCoreApi.Op.contains(Fields.sys.uri, searchTerm).weight(2), contensisCoreApi.Op.contains(Fields.sys.allUris, searchTerm), contensisCoreApi.Op.freeText(Fields.searchContent, searchTerm))];
+    return [contensisCoreApi.Op.or(contensisCoreApi.Op.equalTo(Fields.entryTitle, searchTerm).weight(10), contensisCoreApi.Op.freeText(Fields.entryTitle, searchTerm, fuzzySearch).weight(2), contensisCoreApi.Op.freeText(Fields.entryDescription, searchTerm, fuzzySearch).weight(2), contensisCoreApi.Op.contains(Fields.keywords, searchTerm).weight(2), contensisCoreApi.Op.contains(Fields.sys.uri, searchTerm).weight(2), contensisCoreApi.Op.contains(Fields.sys.allUris, searchTerm), contensisCoreApi.Op.freeText(Fields.searchContent, searchTerm, fuzzySearch))];
   } else {
     return [];
   }
@@ -1189,6 +1189,7 @@ const searchQuery = ({
   featuredResults,
   fields,
   filters,
+  fuzzySearch,
   includeInSearchFields,
   languages,
   pageSize,
@@ -1199,7 +1200,7 @@ const searchQuery = ({
   webpageTemplates,
   weightedSearchFields
 }, isFeatured = false) => {
-  let expressions = [...termExpressions(searchTerm, weightedSearchFields), ...defaultExpressions(versionStatus), ...includeInSearchExpressions(webpageTemplates, includeInSearchFields), ...languagesExpression(languages), ...customWhereExpressions(customWhere), ...excludeIdsExpression(excludeIds)];
+  let expressions = [...termExpressions(searchTerm, weightedSearchFields, fuzzySearch), ...defaultExpressions(versionStatus), ...includeInSearchExpressions(webpageTemplates, includeInSearchFields), ...languagesExpression(languages), ...customWhereExpressions(customWhere), ...excludeIdsExpression(excludeIds)];
   if (isFeatured) expressions = [...expressions, ...featuredResultsExpression(featuredResults)];
   if (!isFeatured || featuredResults && !featuredResults.contentTypeId) expressions = [...expressions, ...filterExpressions(filters), ...contentTypeIdExpression(contentTypeIds, webpageTemplates, assetTypes)];
   const query = new contensisCoreApi.Query(...expressions);
@@ -1427,6 +1428,7 @@ const queryParamsTemplate = {
     const filterParams = mapFiltersToFilterExpression(stateFilters, selectedFilters);
     return filterParams;
   },
+  fuzzySearch: root => getQueryParameter(root, 'fuzzySearch', false),
   includeInSearchFields: root => getQueryParameter(root, 'includeInSearch', []),
   internalPageIndex: ({
     action,
@@ -2106,4 +2108,4 @@ exports.updateSearchTerm = updateSearchTerm$1;
 exports.updateSelectedFilters = updateSelectedFilters;
 exports.updateSortOrder = updateSortOrder$1;
 exports.withMappers = withMappers;
-//# sourceMappingURL=sagas-03b7a270.js.map
+//# sourceMappingURL=sagas-67df1936.js.map

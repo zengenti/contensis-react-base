@@ -812,13 +812,13 @@ const Fields = {
   wildcard: '*'
 };
 
-const fieldExpression = (field, value, operator = 'equalTo', weight) => {
+const fieldExpression = (field, value, operator = 'equalTo', weight, fuzzySearch = false) => {
   if (!field || !value || Array.isArray(value) && value.length === 0) return [];
   if (Array.isArray(field)) // If an array of fieldIds have been provided, call self for each fieldId
     // to generate expressions that are combined with an 'or' operator
-    return [Op.or(...field.map(fieldId => fieldExpression(fieldId, value, operator, weight)).flat())];
+    return [Op.or(...field.map(fieldId => fieldExpression(fieldId, value, operator, weight, fuzzySearch)).flat())];
   if (operator === 'between') return between(field, value);
-  if (Array.isArray(value)) return equalToOrIn(field, value, operator);else return !weight ? equalToOrIn(field, value, operator) : [equalToOrIn(field, value, operator)[0].weight(weight)];
+  if (Array.isArray(value)) return equalToOrIn(field, value, operator, fuzzySearch);else return !weight ? equalToOrIn(field, value, operator, fuzzySearch) : [equalToOrIn(field, value, operator, fuzzySearch)[0].weight(weight)];
 };
 const contentTypeIdExpression = (contentTypeIds, webpageTemplates, assetTypes) => {
   const expressions = [];
@@ -934,7 +934,7 @@ const orderByExpression = orderBy => {
   return expression;
 };
 
-const equalToOrIn = (field, value, operator = 'equalTo') => {
+const equalToOrIn = (field, value, operator = 'equalTo', fuzzySearch = false) => {
   if (value.length === 0) return [];
 
   if (Array.isArray(value)) {
@@ -954,7 +954,7 @@ const equalToOrIn = (field, value, operator = 'equalTo') => {
 
         case 'freeText':
           // TODO: Potentially needs further implementation of new options
-          return Op[operator](field, innerValue, false, undefined);
+          return Op[operator](field, innerValue, fuzzySearch, undefined);
 
         default:
           return Op[operator](field, innerValue);
@@ -972,7 +972,7 @@ const equalToOrIn = (field, value, operator = 'equalTo') => {
 
     case 'freeText':
       // TODO: Potentially needs further implementation of new options
-      return [Op.freeText(field, value, false, undefined)];
+      return [Op.freeText(field, value, fuzzySearch, undefined)];
 
     default:
       return [Op[operator](field, value)];
@@ -1078,7 +1078,7 @@ const customWhereExpressions = where => {
 
 const makeJsExpression = (operator, field, value) => operator === 'freeText' || operator === 'contains' ? Op[operator](field, value) : operator === 'in' ? Op[operator](field, ...value) : operator === 'exists' ? Op[operator](field, value) : operator === 'between' ? Op[operator](field, value[0], value[1]) : operator === 'distanceWithin' ? Op[operator](field, value === null || value === void 0 ? void 0 : value.lat, value === null || value === void 0 ? void 0 : value.lon, value === null || value === void 0 ? void 0 : value.distance) : Op[operator](field, value);
 
-const termExpressions = (searchTerm, weightedSearchFields) => {
+const termExpressions = (searchTerm, weightedSearchFields, fuzzySearch) => {
   if (searchTerm && weightedSearchFields && weightedSearchFields.length > 0) {
     // Extract any phrases in quotes to array
     const quotedPhrases = extractQuotedPhrases(searchTerm); // Modify the search term to remove any quoted phrases to leave any remaining terms
@@ -1090,7 +1090,7 @@ const termExpressions = (searchTerm, weightedSearchFields) => {
 
     const containsOp = (f, term) => fieldExpression(f.fieldId, fixFreeTextForElastic(term), 'contains', f.weight);
 
-    const freeTextOp = (f, term) => fieldExpression(f.fieldId, fixFreeTextForElastic(term), 'freeText', f.weight); // For each weighted search field
+    const freeTextOp = (f, term) => fieldExpression(f.fieldId, fixFreeTextForElastic(term), 'freeText', f.weight, fuzzySearch); // For each weighted search field
 
 
     weightedSearchFields.forEach(wsf => {
@@ -1121,11 +1121,11 @@ const termExpressions = (searchTerm, weightedSearchFields) => {
       }
     }); // Wrap operators in an Or operator
 
-    return [Op.or().addRange(operators).add(Op.freeText(Fields.searchContent, searchTerm))];
+    return [Op.or().addRange(operators).add(Op.freeText(Fields.searchContent, searchTerm, fuzzySearch))];
   } else if (searchTerm) {
     // Searching without weightedSearchFields defined will fall back
     // to a default set of search fields with arbritary weights set.
-    return [Op.or(Op.equalTo(Fields.entryTitle, searchTerm).weight(10), Op.freeText(Fields.entryTitle, searchTerm).weight(2), Op.freeText(Fields.entryDescription, searchTerm).weight(2), Op.contains(Fields.keywords, searchTerm).weight(2), Op.contains(Fields.sys.uri, searchTerm).weight(2), Op.contains(Fields.sys.allUris, searchTerm), Op.freeText(Fields.searchContent, searchTerm))];
+    return [Op.or(Op.equalTo(Fields.entryTitle, searchTerm).weight(10), Op.freeText(Fields.entryTitle, searchTerm, fuzzySearch).weight(2), Op.freeText(Fields.entryDescription, searchTerm, fuzzySearch).weight(2), Op.contains(Fields.keywords, searchTerm).weight(2), Op.contains(Fields.sys.uri, searchTerm).weight(2), Op.contains(Fields.sys.allUris, searchTerm), Op.freeText(Fields.searchContent, searchTerm, fuzzySearch))];
   } else {
     return [];
   }
@@ -1163,6 +1163,7 @@ const searchQuery = ({
   featuredResults,
   fields,
   filters,
+  fuzzySearch,
   includeInSearchFields,
   languages,
   pageSize,
@@ -1173,7 +1174,7 @@ const searchQuery = ({
   webpageTemplates,
   weightedSearchFields
 }, isFeatured = false) => {
-  let expressions = [...termExpressions(searchTerm, weightedSearchFields), ...defaultExpressions(versionStatus), ...includeInSearchExpressions(webpageTemplates, includeInSearchFields), ...languagesExpression(languages), ...customWhereExpressions(customWhere), ...excludeIdsExpression(excludeIds)];
+  let expressions = [...termExpressions(searchTerm, weightedSearchFields, fuzzySearch), ...defaultExpressions(versionStatus), ...includeInSearchExpressions(webpageTemplates, includeInSearchFields), ...languagesExpression(languages), ...customWhereExpressions(customWhere), ...excludeIdsExpression(excludeIds)];
   if (isFeatured) expressions = [...expressions, ...featuredResultsExpression(featuredResults)];
   if (!isFeatured || featuredResults && !featuredResults.contentTypeId) expressions = [...expressions, ...filterExpressions(filters), ...contentTypeIdExpression(contentTypeIds, webpageTemplates, assetTypes)];
   const query = new Query(...expressions);
@@ -1401,6 +1402,7 @@ const queryParamsTemplate = {
     const filterParams = mapFiltersToFilterExpression(stateFilters, selectedFilters);
     return filterParams;
   },
+  fuzzySearch: root => getQueryParameter(root, 'fuzzySearch', false),
   includeInSearchFields: root => getQueryParameter(root, 'includeInSearch', []),
   internalPageIndex: ({
     action,
@@ -2016,4 +2018,4 @@ function* triggerSearchSsr(options) {
 }
 
 export { APPLY_CONFIG as $, clearFilters$1 as A, updateCurrentFacet$1 as B, updateCurrentTab$1 as C, updatePageIndex$1 as D, updateSearchTerm$1 as E, updateSelectedFilters as F, updateSortOrder$1 as G, selectListing as H, mapStateToSearchUri as I, Context as J, selectFacets as K, triggerSearch as L, getFilters as M, toArray as N, UPDATE_SELECTED_FILTERS as O, UPDATE_SEARCH_TERM as P, UPDATE_PAGE_INDEX as Q, SET_SEARCH_ENTRIES as R, SET_SEARCH_FILTERS as S, SET_ROUTE_FILTERS as T, UPDATE_SORT_ORDER as U, LOAD_FILTERS_COMPLETE as V, LOAD_FILTERS_ERROR as W, LOAD_FILTERS as X, EXECUTE_SEARCH_ERROR as Y, EXECUTE_SEARCH as Z, CLEAR_FILTERS as _, customWhereExpressions as a, actions as a0, selectors as a1, types as a2, expressions as a3, queries as a4, doSearch as a5, setRouteFilters as a6, searchSagas as a7, triggerListingSsr as a8, triggerMinilistSsr as a9, triggerSearchSsr as aa, routeParams as ab, getPageIndex as b, contentTypeIdExpression as c, defaultExpressions as d, getCurrentTab as e, filterExpressions as f, getCurrentFacet as g, getFacet as h, getTabFacets as i, getFacetsTotalCount as j, getFacetTitles as k, getFeaturedResults as l, getRenderableFilters as m, getIsLoading as n, orderByExpression as o, getPaging as p, getPageIsLoading as q, getResults as r, getSearchTerm as s, termExpressions as t, getSearchTotalCount as u, getSelectedFilters as v, getQueryParameter as w, getTabsAndFacets as x, getTotalCount as y, withMappers as z };
-//# sourceMappingURL=sagas-a7f7ded0.js.map
+//# sourceMappingURL=sagas-023783fd.js.map

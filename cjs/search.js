@@ -4,7 +4,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 var React = require('react');
 var reactRedux = require('react-redux');
-var sagas = require('./sagas-03b7a270.js');
+var sagas = require('./sagas-67df1936.js');
 require('jsonpath-mapper');
 var reselect = require('reselect');
 var merge = require('deepmerge');
