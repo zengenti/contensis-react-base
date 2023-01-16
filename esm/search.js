@@ -623,7 +623,9 @@ var reducers = (config => {
 
       case EXECUTE_SEARCH:
         {
-          state[action.context][action.facet].entries.isLoading = true;
+          state[action.context][action.facet].entries = { ...(state[action.context][action.facet].entries || entries),
+            isLoading: true
+          };
           return;
         }
 
@@ -685,6 +687,8 @@ var reducers = (config => {
 
       case SET_ROUTE_FILTERS:
         {
+          var _state$context$facet$;
+
           const {
             facet,
             params,
@@ -723,7 +727,9 @@ var reducers = (config => {
           state[action.context === Context$1.facets ? 'currentFacet' : 'currentListing'] = facet;
           state.term = term;
           state.tabs[tabId].currentFacet = facet;
-          state[context][facet].pagingInfo.pageIndex = Number(pageIndex) - 1 || (state[context][facet].queryParams.loadMorePaging ? state[context][facet].pagingInfo.pageIndex || 0 : 0);
+          state[context][facet].pagingInfo = { ...(state[context][facet].pagingInfo || pagingInfo),
+            pageIndex: Number(pageIndex) - 1 || (state[context][facet].queryParams.loadMorePaging ? ((_state$context$facet$ = state[context][facet].pagingInfo) === null || _state$context$facet$ === void 0 ? void 0 : _state$context$facet$.pageIndex) || 0 : 0)
+          };
           state.config.isLoaded = true;
           state.config.ssr = typeof window === 'undefined';
           if (resetAllFacets) state[context] = resetFacets(state, context);
