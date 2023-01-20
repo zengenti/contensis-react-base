@@ -491,7 +491,9 @@ const addConfigToState = (state, action) => {
     };
   } else if (config) {
     // Changing the entire search config
-    state = config;
+    state = { ...config,
+      config: initialState.config
+    };
   }
 
   return state;
