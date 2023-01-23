@@ -1,13 +1,15 @@
 import 'isomorphic-fetch';
 import express, { Express } from 'express';
+import { Server } from 'http';
 import React from 'react';
 
-import DisplayStartupConfiguration from './util/displayStartupConfiguration';
 import ConfigureReverseProxies, {
   deliveryProxy,
 } from './features/reverse-proxy';
 import ServeStaticAssets from './features/static-assets';
+import DisplayStartupConfiguration from './util/displayStartupConfiguration';
 import ConfigureWebApp from './webApp';
+
 import { ServerConfig } from '~/config';
 
 declare let global: typeof globalThis & {
@@ -17,7 +19,9 @@ declare let global: typeof globalThis & {
   REVERSE_PROXY_PATHS: string[];
 };
 
-const app: Express = express();
+const app = express();
+
+let server = new Server(); // new Server() is just a stub to assert the type for the export
 
 const start = (
   ReactApp: React.ComponentType<any>,
@@ -42,7 +46,7 @@ const start = (
   ConfigureWebApp(app, ReactApp, config);
 
   app.on('ready', async () => {
-    const server = app.listen(3001, () => {
+    server = app.listen(3001, () => {
       console.info(`HTTP server is listening @ port 3001`);
       setTimeout(function () {
         app.emit('app_started');
@@ -56,4 +60,4 @@ const start = (
   });
 };
 
-export default { app, apiProxy: deliveryProxy, start };
+export default { app, apiProxy: deliveryProxy, server, start };
