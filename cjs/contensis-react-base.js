@@ -17,24 +17,26 @@ var contensisCoreApi = require('contensis-core-api');
 var urls = require('./urls-6fcaf4c6.js');
 require('isomorphic-fetch');
 var express = require('express');
+var http = require('http');
 var httpProxy = require('http-proxy');
 var fs = require('fs');
 var path = require('path');
 var appRootPath = require('app-root-path');
-var server$1 = require('react-dom/server');
+var server$2 = require('react-dom/server');
 var reactRouterDom = require('react-router-dom');
 var reactRouterConfig = require('react-router-config');
 var reactHelmet = require('react-helmet');
 var styled = require('styled-components');
 var serialize$1 = require('serialize-javascript');
 var minifyCssString = require('minify-css-string');
-var server = require('@loadable/server');
+var server$1 = require('@loadable/server');
 var lodash = require('lodash');
 var lodashClean = require('lodash-clean');
 var reactCookie = require('react-cookie');
 var version = require('./version-78dfc3bd.js');
 var actions = require('./actions-8dc9e8de.js');
 var selectors = require('./selectors-656da4b7.js');
+var chalk = require('chalk');
 require('history');
 require('@redux-saga/core/effects');
 require('loglevel');
@@ -61,6 +63,7 @@ var fs__default = /*#__PURE__*/_interopDefaultLegacy(fs);
 var path__default = /*#__PURE__*/_interopDefaultLegacy(path);
 var serialize__default = /*#__PURE__*/_interopDefaultLegacy(serialize$1);
 var minifyCssString__default = /*#__PURE__*/_interopDefaultLegacy(minifyCssString);
+var chalk__default = /*#__PURE__*/_interopDefaultLegacy(chalk);
 
 /**
  * Util class holds our search results helper boilerplate methods
@@ -679,27 +682,6 @@ const makeLinkDepthMiddleware = ({
 const servers$1 = SERVERS;
 /* global SERVERS */
 
-const projects = PROJECTS;
-/* global PROJECTS */
-
-const DisplayStartupConfiguration = config => {
-  /* eslint-disable no-console */
-  console.log();
-  console.log(`Configured servers:
-`, JSON.stringify(servers$1, null, 2));
-  console.log();
-  console.log(`Configured projects:
-`, JSON.stringify(projects, null, 2));
-  console.log();
-  console.log('Reverse proxy paths: ', JSON.stringify(config.reverseProxyPaths, null, 2));
-  console.log();
-  if (config.staticFolderPath) console.log(`Serving static assets from: "/dist/${config.staticFolderPath}/"`);
-  /* eslint-enable no-console */
-};
-
-const servers = SERVERS;
-/* global SERVERS */
-
 const project = PROJECT;
 /* global PROJECT */
 
@@ -713,7 +695,7 @@ const deliveryProxy = httpProxy__default["default"].createProxyServer();
 const reverseProxies = (app, reverseProxyPaths = []) => {
   deliveryApiProxy(deliveryProxy, app);
   app.all(reverseProxyPaths, (req, res) => {
-    const target = req.hostname.indexOf('preview-') || req.hostname.indexOf('preview.') || req.hostname === 'localhost' ? servers.previewIis || servers.iis : servers.iis;
+    const target = req.hostname.indexOf('preview-') || req.hostname.indexOf('preview.') || req.hostname === 'localhost' ? servers$1.previewIis || servers$1.iis : servers$1.iis;
     assetProxy.web(req, res, {
       target,
       changeOrigin: true
@@ -730,7 +712,7 @@ const deliveryApiProxy = (apiProxy, app) => {
   // This is just here to stop cors requests on localhost. In Production this is mapped using varnish.
   app.all(['/api/delivery/*', '/api/image/*'], (req, res) => {
     /* eslint-disable no-console */
-    console.log(`Proxying api request to ${servers.alias}`);
+    console.log(`Proxying api request to ${servers$1.alias}`);
     apiProxy.web(req, res, {
       target: deliveryApiHostname,
       changeOrigin: true
@@ -853,6 +835,27 @@ const staticAssets = (app, {
     // this one is somehow converted and should end up being the same as CacheDuration.static
     maxAge: CacheDuration.expressStatic
   }));
+};
+
+const servers = SERVERS;
+/* global SERVERS */
+
+const projects = PROJECTS;
+/* global PROJECTS */
+
+const DisplayStartupConfiguration = config => {
+  /* eslint-disable no-console */
+  console.log();
+  console.log(`Configured servers:
+`, JSON.stringify(servers, null, 2));
+  console.log();
+  console.log(`Configured projects:
+`, JSON.stringify(projects, null, 2));
+  console.log();
+  console.log('Reverse proxy paths: ', JSON.stringify(config.reverseProxyPaths, null, 2));
+  console.log();
+  if (config.staticFolderPath) console.log(`Serving static assets from: "/dist/${config.staticFolderPath}/"`);
+  /* eslint-enable no-console */
 };
 
 var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
@@ -4011,7 +4014,7 @@ const loadableBundleData = ({
   return bundle;
 };
 const loadableChunkExtractors = () => {
-  const commonLoadableExtractor = new server.ChunkExtractor({
+  const commonLoadableExtractor = new server$1.ChunkExtractor({
     stats: {}
   });
 
@@ -4020,7 +4023,7 @@ const loadableChunkExtractors = () => {
     let legacy;
 
     try {
-      modern = new server.ChunkExtractor({
+      modern = new server$1.ChunkExtractor({
         entrypoints: ['app'],
         namespace: 'modern',
         statsFile: path__default["default"].resolve('dist/modern/loadable-stats.json')
@@ -4030,7 +4033,7 @@ const loadableChunkExtractors = () => {
     }
 
     try {
-      legacy = new server.ChunkExtractor({
+      legacy = new server$1.ChunkExtractor({
         entrypoints: ['app'],
         namespace: 'legacy',
         statsFile: path__default["default"].resolve('dist/legacy/loadable-stats.json')
@@ -4163,6 +4166,25 @@ const getVersionInfo = staticFolderPath => {
   }
 };
 
+/* eslint-disable no-console */
+const unhandledExceptionHandler = (handleExceptions = true) => {
+  const exceptionTypes = handleExceptions === true ? ['uncaughtException', 'unhandledRejection', 'SIGTERM', 'SIGINT'] // Default exception types to add event listeners for
+  : Array.isArray(handleExceptions) // In future we could accept an array of specific exception types to handle for a specific application?
+  ? handleExceptions : [];
+
+  for (const type of exceptionTypes) {
+    process.on(type, err => {
+      if (err && err instanceof Error) {
+        // Print a message to inform admins and developers the error should not be ignored
+        console.log(`${`[contensis-react-base] ❌ ${chalk__default["default"].red.bold(`${type} - ${err.message}`)}`}`);
+        console.log(chalk__default["default"].gray` - you are seeing this because we have tried to prevent the app from completely crashing - you should not ignore this problem`); // Log the error to server console
+
+        console.error(err);
+      }
+    });
+  }
+};
+
 const webApp = (app, ReactApp, config) => {
   const {
     stateType = 'immutable',
@@ -4177,13 +4199,16 @@ const webApp = (app, ReactApp, config) => {
     allowedGroups,
     globalGroups,
     disableSsrRedux,
-    handleResponses
+    handleResponses,
+    handleExceptions = true
   } = config;
   const staticRoutePath = config.staticRoutePath || staticFolderPath;
   const bundleData = getBundleData(config, staticRoutePath);
   const attributes = stringifyAttributes(scripts.attributes);
   scripts.startup = scripts.startup || startupScriptFilename;
   const responseHandler = typeof handleResponses === 'function' ? handleResponses : handleResponse;
+  if (handleExceptions !== false) unhandledExceptionHandler(); // Create `process.on` event handlers for unhandled exceptions (Node v15+)
+
   const versionInfo = getVersionInfo(staticFolderPath);
   app.get('/*', async (request, response) => {
     const {
@@ -4233,7 +4258,7 @@ const webApp = (app, ReactApp, config) => {
     const groups = allowedGroups && allowedGroups[project];
     store.dispatch(actions.setCurrentProject(project, groups, request.hostname));
     const loadableExtractor = loadableChunkExtractors();
-    const jsx = /*#__PURE__*/React__default["default"].createElement(server.ChunkExtractorManager, {
+    const jsx = /*#__PURE__*/React__default["default"].createElement(server$1.ChunkExtractorManager, {
       extractor: loadableExtractor.commonLoadableExtractor
     }, /*#__PURE__*/React__default["default"].createElement(reactCookie.CookiesProvider, {
       cookies: cookies
@@ -4254,7 +4279,7 @@ const webApp = (app, ReactApp, config) => {
 
     if (accessMethod.DYNAMIC) {
       // Dynamic doesn't need sagas
-      server$1.renderToString(jsx); // Dynamic page render has only the necessary bundles to start up the app
+      server$2.renderToString(jsx); // Dynamic page render has only the necessary bundles to start up the app
       // and does not include any react-loadable code-split bundles
 
       const bundleTags = getBundleTags(loadableExtractor, scripts, staticRoutePath);
@@ -4270,7 +4295,7 @@ const webApp = (app, ReactApp, config) => {
     if (!accessMethod.DYNAMIC) {
       store.runSaga(App.rootSaga(withSagas)).toPromise().then(() => {
         const sheet = new styled.ServerStyleSheet();
-        const html = server$1.renderToString(sheet.collectStyles(jsx));
+        const html = server$2.renderToString(sheet.collectStyles(jsx));
         const helmet = reactHelmet.Helmet.renderStatic();
         reactHelmet.Helmet.rewind();
         const htmlAttributes = helmet.htmlAttributes.toString();
@@ -4369,13 +4394,14 @@ const webApp = (app, ReactApp, config) => {
         response.status(500);
         responseHandler(request, response, `Error occurred: <br />${err.stack} <br />${JSON.stringify(err)}`);
       });
-      server$1.renderToString(jsx);
+      server$2.renderToString(jsx);
       store.close();
     }
   });
 };
 
 const app = express__default["default"]();
+let server = new http.Server(); // new Server() is just a stub to assert the type for the export
 
 const start = (ReactApp, config, ServerFeatures) => {
   global.PACKAGE_JSON = config.packagejson;
@@ -4392,7 +4418,7 @@ const start = (ReactApp, config, ServerFeatures) => {
   staticAssets(app, config);
   webApp(app, ReactApp, config);
   app.on('ready', async () => {
-    const server = app.listen(3001, () => {
+    server = app.listen(3001, () => {
       console.info(`HTTP server is listening @ port 3001`);
       setTimeout(function () {
         app.emit('app_started');
@@ -4409,6 +4435,7 @@ const start = (ReactApp, config, ServerFeatures) => {
 var internalServer = {
   app,
   apiProxy: deliveryProxy,
+  server,
   start
 };
 

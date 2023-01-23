@@ -14,6 +14,7 @@ import { Op, Query } from 'contensis-core-api';
 import { s as setCachingHeaders, u as url } from './urls-eac9a747.js';
 import 'isomorphic-fetch';
 import express from 'express';
+import { Server } from 'http';
 import httpProxy from 'http-proxy';
 import fs from 'fs';
 import path from 'path';
@@ -32,6 +33,7 @@ import { CookiesProvider } from 'react-cookie';
 import { c as createStore, s as setVersionStatus, a as setVersion } from './version-e3a5ec66.js';
 import { s as setCurrentProject } from './actions-180948dd.js';
 import { s as selectSurrogateKeys, a as selectRouteEntry, b as selectCurrentProject, g as getImmutableOrJS } from './selectors-a5e5835b.js';
+import chalk from 'chalk';
 import 'history';
 import '@redux-saga/core/effects';
 import 'loglevel';
@@ -665,27 +667,6 @@ const makeLinkDepthMiddleware = ({
 const servers$1 = SERVERS;
 /* global SERVERS */
 
-const projects = PROJECTS;
-/* global PROJECTS */
-
-const DisplayStartupConfiguration = config => {
-  /* eslint-disable no-console */
-  console.log();
-  console.log(`Configured servers:
-`, JSON.stringify(servers$1, null, 2));
-  console.log();
-  console.log(`Configured projects:
-`, JSON.stringify(projects, null, 2));
-  console.log();
-  console.log('Reverse proxy paths: ', JSON.stringify(config.reverseProxyPaths, null, 2));
-  console.log();
-  if (config.staticFolderPath) console.log(`Serving static assets from: "/dist/${config.staticFolderPath}/"`);
-  /* eslint-enable no-console */
-};
-
-const servers = SERVERS;
-/* global SERVERS */
-
 const project = PROJECT;
 /* global PROJECT */
 
@@ -699,7 +680,7 @@ const deliveryProxy = httpProxy.createProxyServer();
 const reverseProxies = (app, reverseProxyPaths = []) => {
   deliveryApiProxy(deliveryProxy, app);
   app.all(reverseProxyPaths, (req, res) => {
-    const target = req.hostname.indexOf('preview-') || req.hostname.indexOf('preview.') || req.hostname === 'localhost' ? servers.previewIis || servers.iis : servers.iis;
+    const target = req.hostname.indexOf('preview-') || req.hostname.indexOf('preview.') || req.hostname === 'localhost' ? servers$1.previewIis || servers$1.iis : servers$1.iis;
     assetProxy.web(req, res, {
       target,
       changeOrigin: true
@@ -716,7 +697,7 @@ const deliveryApiProxy = (apiProxy, app) => {
   // This is just here to stop cors requests on localhost. In Production this is mapped using varnish.
   app.all(['/api/delivery/*', '/api/image/*'], (req, res) => {
     /* eslint-disable no-console */
-    console.log(`Proxying api request to ${servers.alias}`);
+    console.log(`Proxying api request to ${servers$1.alias}`);
     apiProxy.web(req, res, {
       target: deliveryApiHostname,
       changeOrigin: true
@@ -839,6 +820,27 @@ const staticAssets = (app, {
     // this one is somehow converted and should end up being the same as CacheDuration.static
     maxAge: CacheDuration.expressStatic
   }));
+};
+
+const servers = SERVERS;
+/* global SERVERS */
+
+const projects = PROJECTS;
+/* global PROJECTS */
+
+const DisplayStartupConfiguration = config => {
+  /* eslint-disable no-console */
+  console.log();
+  console.log(`Configured servers:
+`, JSON.stringify(servers, null, 2));
+  console.log();
+  console.log(`Configured projects:
+`, JSON.stringify(projects, null, 2));
+  console.log();
+  console.log('Reverse proxy paths: ', JSON.stringify(config.reverseProxyPaths, null, 2));
+  console.log();
+  if (config.staticFolderPath) console.log(`Serving static assets from: "/dist/${config.staticFolderPath}/"`);
+  /* eslint-enable no-console */
 };
 
 var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
@@ -4149,6 +4151,25 @@ const getVersionInfo = staticFolderPath => {
   }
 };
 
+/* eslint-disable no-console */
+const unhandledExceptionHandler = (handleExceptions = true) => {
+  const exceptionTypes = handleExceptions === true ? ['uncaughtException', 'unhandledRejection', 'SIGTERM', 'SIGINT'] // Default exception types to add event listeners for
+  : Array.isArray(handleExceptions) // In future we could accept an array of specific exception types to handle for a specific application?
+  ? handleExceptions : [];
+
+  for (const type of exceptionTypes) {
+    process.on(type, err => {
+      if (err && err instanceof Error) {
+        // Print a message to inform admins and developers the error should not be ignored
+        console.log(`${`[contensis-react-base] ❌ ${chalk.red.bold(`${type} - ${err.message}`)}`}`);
+        console.log(chalk.gray` - you are seeing this because we have tried to prevent the app from completely crashing - you should not ignore this problem`); // Log the error to server console
+
+        console.error(err);
+      }
+    });
+  }
+};
+
 const webApp = (app, ReactApp, config) => {
   const {
     stateType = 'immutable',
@@ -4163,13 +4184,16 @@ const webApp = (app, ReactApp, config) => {
     allowedGroups,
     globalGroups,
     disableSsrRedux,
-    handleResponses
+    handleResponses,
+    handleExceptions = true
   } = config;
   const staticRoutePath = config.staticRoutePath || staticFolderPath;
   const bundleData = getBundleData(config, staticRoutePath);
   const attributes = stringifyAttributes(scripts.attributes);
   scripts.startup = scripts.startup || startupScriptFilename;
   const responseHandler = typeof handleResponses === 'function' ? handleResponses : handleResponse;
+  if (handleExceptions !== false) unhandledExceptionHandler(); // Create `process.on` event handlers for unhandled exceptions (Node v15+)
+
   const versionInfo = getVersionInfo(staticFolderPath);
   app.get('/*', async (request, response) => {
     const {
@@ -4362,6 +4386,7 @@ const webApp = (app, ReactApp, config) => {
 };
 
 const app = express();
+let server = new Server(); // new Server() is just a stub to assert the type for the export
 
 const start = (ReactApp, config, ServerFeatures) => {
   global.PACKAGE_JSON = config.packagejson;
@@ -4378,7 +4403,7 @@ const start = (ReactApp, config, ServerFeatures) => {
   staticAssets(app, config);
   webApp(app, ReactApp, config);
   app.on('ready', async () => {
-    const server = app.listen(3001, () => {
+    server = app.listen(3001, () => {
       console.info(`HTTP server is listening @ port 3001`);
       setTimeout(function () {
         app.emit('app_started');
@@ -4395,6 +4420,7 @@ const start = (ReactApp, config, ServerFeatures) => {
 var internalServer = {
   app,
   apiProxy: deliveryProxy,
+  server,
   start
 };
 
