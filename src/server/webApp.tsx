@@ -41,6 +41,7 @@ import { addStandardHeaders } from './util/headers';
 import { ServerConfig } from '~/config';
 import { AppState } from '~/redux/appstate';
 import { getVersionInfo } from './util/getVersionInfo';
+import { unhandledExceptionHandler } from './util/handleExceptions';
 
 const webApp = (
   app: Express,
@@ -65,6 +66,7 @@ const webApp = (
     globalGroups,
     disableSsrRedux,
     handleResponses,
+    handleExceptions = true,
   } = config;
   const staticRoutePath = config.staticRoutePath || staticFolderPath;
 
@@ -75,6 +77,8 @@ const webApp = (
 
   const responseHandler =
     typeof handleResponses === 'function' ? handleResponses : handleResponse;
+
+  if (handleExceptions !== false) unhandledExceptionHandler(); // Create `process.on` event handlers for unhandled exceptions (Node v15+)
 
   const versionInfo = getVersionInfo(staticFolderPath);
 

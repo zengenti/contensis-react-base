@@ -14,6 +14,7 @@ export declare type ServerConfig = AppConfig & {
     appRootPath?: string;
     disableSsrRedux?: boolean;
     handleResponses?: typeof handleResponse;
+    handleExceptions?: boolean;
     reverseProxyPaths?: string[];
     packagejson: any;
     proxyDeliveryApi?: boolean;
