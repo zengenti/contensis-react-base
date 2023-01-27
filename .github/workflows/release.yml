@@ -25,7 +25,7 @@ jobs:
           node-version: '16.x'
       - name: Install npm dependencies (for pre/post npm publish scripts)
         run: |
-          npm install
+          npm i --legacy-peer-deps
       - name: Setup GIT
         run: |
           git config user.email "github@zengenti.com"
