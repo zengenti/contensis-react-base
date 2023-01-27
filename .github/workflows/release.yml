@@ -30,17 +30,17 @@ jobs:
         run: |
           git config user.email "github@zengenti.com"
           git config user.name "$GITHUB_ACTOR"
-      # - name: Increment version (if prerelease)
-      #   if: contains(github.event.inputs.version, 'prerelease')
-      #   run: npm version prerelease --preid=beta
-      # - name: Increment version (if other release)
-      #   if: contains(github.event.inputs.version, 'prerelease') == false
-      #   run: npm version ${{ github.event.inputs.version }}
-      # - name: Push version increment to GIT
-      #   run: git push --follow-tags
-      #   env:
-      #     # The secret is passed automatically. Nothing to configure.
-      #     github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Increment version (if prerelease)
+        if: contains(github.event.inputs.version, 'prerelease')
+        run: npm version prerelease --preid=beta
+      - name: Increment version (if other release)
+        if: contains(github.event.inputs.version, 'prerelease') == false
+        run: npm version ${{ github.event.inputs.version }}
+      - name: Push version increment to GIT
+        run: git push --follow-tags
+        env:
+          # The secret is passed automatically. Nothing to configure.
+          github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Publish release package "${{ github.event.inputs.version }}" with tag "${{ github.event.inputs.tag }}"
         run: |
           npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
