@@ -17,7 +17,7 @@
     "roll:watch": "cross-env NODE_ENV=production rollup -c rollup/rollup.config.lib.js --watch",
     "clean:lib": "rimraf ./models && rimraf ./esm && rimraf ./cjs",
     "copymodels": "copyfiles --up 3 --follow \"./node_modules/zengenti-search-package/models/**/*\" models/search --verbose",
-    "changelog": "generate-changelog -x ci,chore --tag v2.5.0...",
+    "changelog": "generate-changelog -x ci,chore --tag v3.0.0...",
     "lint": "eslint ./src",
     "lint:fix": "eslint --fix ./src",
     "test": "jest  -c ./config/jest.config.js --detectOpenHandles --forceExit",

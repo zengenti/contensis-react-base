@@ -1,3 +1,24 @@
+#### 3.0.1 (2023-01-27)
+
+##### Bug Fixes
+
+- search package update supporting 'fuzzy' search (67bf14f3)
+- revert package `chalk@4` as v5 requires total ESM environment which is incompatible with the Node.js app server today (4dcd478d)
+- node process terminating on unhandled exception / promise rejection when running on node.js 15+, implement default behaviour as in <15 with the option to turn this off. Export express `server` for package consumers who need to access server methods in app handlers (677cd00a)
+- search package null errors when replacing entire search state with a fresh config, remove redundant nav code (b74a526b)
+- state-to-searchuri - fix crash when app state is immutable (f4e265eb)
+- search package issue with APPLY_CONFIG after immer conversion (a827d075)
+- Update from Search Package to use ?pageIndex over /pageIndex by default (99e42b90)
+- search package fix resolving customApi response in ssr causes thread to hang (c4bed5e8)
+- always use `api-` uri for delivery api proxy requests (6887e440)
+- useMinilist hook, handle undefined arguments. (12d906d7)
+- ContensisDeliveryApi.js -Add null check in LruCache.remove method (95cb63bf)
+
+##### Refactors
+
+- convert some files to typescript (5c3b74e2)
+- Split deliveryApi and asset proxy servers into separate instances (7ae1e007)
+
 #### 3.0.0 (2022-10-06)
 
 ##### New Features
