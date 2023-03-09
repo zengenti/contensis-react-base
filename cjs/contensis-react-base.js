@@ -58,6 +58,7 @@ function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'defau
 var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
 var mapJson__default = /*#__PURE__*/_interopDefaultLegacy(mapJson);
 var express__default = /*#__PURE__*/_interopDefaultLegacy(express);
+var http__default = /*#__PURE__*/_interopDefaultLegacy(http);
 var httpProxy__default = /*#__PURE__*/_interopDefaultLegacy(httpProxy);
 var fs__default = /*#__PURE__*/_interopDefaultLegacy(fs);
 var path__default = /*#__PURE__*/_interopDefaultLegacy(path);
@@ -4401,7 +4402,7 @@ const webApp = (app, ReactApp, config) => {
 };
 
 const app = express__default["default"]();
-let server = new http.Server(); // new Server() is just a stub to assert the type for the export
+const server = http__default["default"].createServer(app);
 
 const start = (ReactApp, config, ServerFeatures) => {
   global.PACKAGE_JSON = config.packagejson;
@@ -4418,7 +4419,7 @@ const start = (ReactApp, config, ServerFeatures) => {
   staticAssets(app, config);
   webApp(app, ReactApp, config);
   app.on('ready', async () => {
-    server = app.listen(3001, () => {
+    server.listen(3001, () => {
       console.info(`HTTP server is listening @ port 3001`);
       setTimeout(function () {
         app.emit('app_started');

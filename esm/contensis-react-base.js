@@ -14,7 +14,7 @@ import { Op, Query } from 'contensis-core-api';
 import { s as setCachingHeaders, u as url } from './urls-eac9a747.js';
 import 'isomorphic-fetch';
 import express from 'express';
-import { Server } from 'http';
+import http from 'http';
 import httpProxy from 'http-proxy';
 import fs from 'fs';
 import path from 'path';
@@ -4386,7 +4386,7 @@ const webApp = (app, ReactApp, config) => {
 };
 
 const app = express();
-let server = new Server(); // new Server() is just a stub to assert the type for the export
+const server = http.createServer(app);
 
 const start = (ReactApp, config, ServerFeatures) => {
   global.PACKAGE_JSON = config.packagejson;
@@ -4403,7 +4403,7 @@ const start = (ReactApp, config, ServerFeatures) => {
   staticAssets(app, config);
   webApp(app, ReactApp, config);
   app.on('ready', async () => {
-    server = app.listen(3001, () => {
+    server.listen(3001, () => {
       console.info(`HTTP server is listening @ port 3001`);
       setTimeout(function () {
         app.emit('app_started');
