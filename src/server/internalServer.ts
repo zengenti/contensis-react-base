@@ -1,6 +1,6 @@
 import 'isomorphic-fetch';
 import express, { Express } from 'express';
-import { Server } from 'http';
+import http from 'http';
 import React from 'react';
 
 import ConfigureReverseProxies, {
@@ -21,7 +21,7 @@ declare let global: typeof globalThis & {
 
 const app = express();
 
-let server = new Server(); // new Server() is just a stub to assert the type for the export
+const server = http.createServer(app);
 
 const start = (
   ReactApp: React.ComponentType<any>,
@@ -46,7 +46,7 @@ const start = (
   ConfigureWebApp(app, ReactApp, config);
 
   app.on('ready', async () => {
-    server = app.listen(3001, () => {
+    server.listen(3001, () => {
       console.info(`HTTP server is listening @ port 3001`);
       setTimeout(function () {
         app.emit('app_started');
