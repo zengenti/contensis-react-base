@@ -1,4 +1,6 @@
 // const defineConfig = require('./webpack/define-config').build;
+const path = require('path');
+const projectRootDir = require('app-root-path').path;
 
 const presets = {
   base: [],
@@ -36,6 +38,10 @@ const plugins = {
       {
         root: './src',
         alias: {
+          '~': path.resolve(
+            projectRootDir,
+            'node_modules/zengenti-forms-package/src/app'
+          ),
           '~': './src',
           '-': './',
         },
