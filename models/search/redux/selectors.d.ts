@@ -32,6 +32,7 @@ export declare const getIsSsr: (state: AppState) => boolean;
 export declare const getFeaturedResults: (state: AppState, current?: string, context?: Context, returnType?: StateType | undefined) => any[];
 export declare const getPaging: (state: AppState, current?: string, context?: Context, returnType?: StateType | undefined) => Paging;
 export declare const getPageIndex: (state: AppState, current?: string, context?: Context) => number;
+export declare const getPageSize: (state: AppState, current?: string, context?: Context) => number;
 export declare const getPrevPageIndex: (state: AppState, current?: string, context?: Context) => number;
 export declare const getPageIsLoading: (state: AppState, current?: string, context?: Context) => boolean;
 export declare const getPagesLoaded: (state: AppState, current?: string, context?: Context) => number[];

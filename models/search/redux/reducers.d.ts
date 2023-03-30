@@ -75,6 +75,7 @@ declare const _default: (config: SearchConfig) => <Base extends {
             readonly queryParams: {
                 readonly contentTypeIds: readonly string[];
                 readonly dynamicOrderBy: readonly string[];
+                readonly pageSize: number;
                 readonly excludeIds: readonly string[];
                 readonly internalPaging: boolean;
                 readonly loadMorePaging: boolean;
@@ -154,6 +155,7 @@ declare const _default: (config: SearchConfig) => <Base extends {
             readonly queryParams: {
                 readonly contentTypeIds: readonly string[];
                 readonly dynamicOrderBy: readonly string[];
+                readonly pageSize: number;
                 readonly excludeIds: readonly string[];
                 readonly internalPaging: boolean;
                 readonly loadMorePaging: boolean;
@@ -233,6 +235,7 @@ declare const _default: (config: SearchConfig) => <Base extends {
             readonly queryParams: {
                 readonly contentTypeIds: readonly string[];
                 readonly dynamicOrderBy: readonly string[];
+                readonly pageSize: number;
                 readonly excludeIds: readonly string[];
                 readonly internalPaging: boolean;
                 readonly loadMorePaging: boolean;

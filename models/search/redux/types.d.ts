@@ -16,5 +16,6 @@ export declare const UPDATE_CURRENT_FACET: string;
 export declare const UPDATE_CURRENT_TAB: string;
 export declare const UPDATE_SORT_ORDER: string;
 export declare const UPDATE_PAGE_INDEX: string;
+export declare const UPDATE_PAGE_SIZE: string;
 export declare const UPDATE_SEARCH_TERM: string;
 export declare const UPDATE_SELECTED_FILTERS: string;

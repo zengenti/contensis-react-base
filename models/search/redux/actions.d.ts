@@ -16,6 +16,11 @@ export declare const updatePageIndex: (pageIndex: number, scrollYPos?: number | 
     pageIndex: number;
     scrollYPos: number | undefined;
 };
+export declare const updatePageSize: (pageSize: number, scrollYPos?: number | undefined) => {
+    type: string;
+    pageSize: number;
+    scrollYPos: number | undefined;
+};
 export declare const updateCurrentFacet: (facet: string) => {
     type: string;
     facet: string;

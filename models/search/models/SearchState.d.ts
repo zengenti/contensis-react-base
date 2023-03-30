@@ -43,6 +43,7 @@ export declare type Facet = {
     queryParams: {
         contentTypeIds: string[];
         dynamicOrderBy: string[];
+        pageSize: number;
         excludeIds: string[];
         internalPaging: boolean;
         loadMorePaging: boolean;

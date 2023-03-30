@@ -199,10 +199,11 @@ export declare type SearchStateParams = {
     facet?: string;
     orderBy?: string;
     pageIndex: number;
+    pageSize?: number;
     term?: string;
 };
 /** Type your Navigate mapper with this, the Navigate mapper is called after any search action has been called and is required to return the next uri to be parsed by your project's route configuration and provide the right uri parameters to drive the next search query and resulting state */
-export declare type NavigateMapper = ({ state, facet, orderBy, pageIndex, term, }: SearchStateParams) => NavigateUri;
+export declare type NavigateMapper = ({ state, facet, orderBy, pageIndex, pageSize, term, }: SearchStateParams) => NavigateUri;
 /** Type your Results Info mapper with this, remember "resultsInfo" prop is a custom object you define yourself - you can provide any keys you wish, conveying detailed messaging or UX tweaks to cover all kinds of scenarios based on data in the search state at that time */
 export declare type ResultsInfoMapper<T = any> = (state: AppState) => T;
 /** Experimental**: If you are trying to use the custom API feature you can add specific keys to the resultant querystring that for the custom API GET request */

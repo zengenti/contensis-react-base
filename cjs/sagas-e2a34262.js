@@ -51,6 +51,7 @@ const UPDATE_CURRENT_FACET = `${ACTION_PREFIX}UPDATE_CURRENT_FACET`;
 const UPDATE_CURRENT_TAB = `${ACTION_PREFIX}UPDATE_CURRENT_TAB`;
 const UPDATE_SORT_ORDER = `${ACTION_PREFIX}UPDATE_SORT_ORDER`;
 const UPDATE_PAGE_INDEX = `${ACTION_PREFIX}UPDATE_PAGE_INDEX`;
+const UPDATE_PAGE_SIZE = `${ACTION_PREFIX}UPDATE_PAGE_SIZE`;
 const UPDATE_SEARCH_TERM = `${ACTION_PREFIX}UPDATE_SEARCH_TERM`;
 const UPDATE_SELECTED_FILTERS = `${ACTION_PREFIX}UPDATE_SELECTED_FILTERS`;
 
@@ -74,6 +75,7 @@ var types = /*#__PURE__*/Object.freeze({
   UPDATE_CURRENT_TAB: UPDATE_CURRENT_TAB,
   UPDATE_SORT_ORDER: UPDATE_SORT_ORDER,
   UPDATE_PAGE_INDEX: UPDATE_PAGE_INDEX,
+  UPDATE_PAGE_SIZE: UPDATE_PAGE_SIZE,
   UPDATE_SEARCH_TERM: UPDATE_SEARCH_TERM,
   UPDATE_SELECTED_FILTERS: UPDATE_SELECTED_FILTERS
 });
@@ -141,6 +143,13 @@ const updatePageIndex$1 = (pageIndex, scrollYPos) => {
     scrollYPos
   };
 };
+const updatePageSize$1 = (pageSize, scrollYPos) => {
+  return {
+    type: UPDATE_PAGE_SIZE,
+    pageSize,
+    scrollYPos
+  };
+};
 const updateCurrentFacet$1 = facet => {
   return {
     type: UPDATE_CURRENT_FACET,
@@ -184,6 +193,7 @@ var actions = /*#__PURE__*/Object.freeze({
   navigate: navigate,
   clearFilters: clearFilters$1,
   updatePageIndex: updatePageIndex$1,
+  updatePageSize: updatePageSize$1,
   updateCurrentFacet: updateCurrentFacet$1,
   updateCurrentTab: updateCurrentTab$1,
   updateSearchTerm: updateSearchTerm$1,
@@ -298,6 +308,10 @@ const getPaging = (state, current = '', context = exports.Context.facets, return
 };
 const getPageIndex = (state, current = '', context = exports.Context.facets) => {
   return getImmutableOrJS(state, ['search', context, current || getCurrent(state, context), 'pagingInfo', 'pageIndex']);
+};
+const getPageSize = (state, current = '', context = exports.Context.facets) => {
+  return getImmutableOrJS(state, ['search', context, current || getCurrent(state, context), 'pagingInfo', 'pageSize'], 0 // Defaults to 0 because we want it to fall back to a query param if not defined
+  );
 };
 const getPrevPageIndex = (state, current = '', context = exports.Context.facets) => {
   return getImmutableOrJS(state, ['search', context, current || getCurrent(state, context), 'pagingInfo', 'prevPageIndex']);
@@ -457,6 +471,7 @@ var selectors = /*#__PURE__*/Object.freeze({
   getFeaturedResults: getFeaturedResults,
   getPaging: getPaging,
   getPageIndex: getPageIndex,
+  getPageSize: getPageSize,
   getPrevPageIndex: getPrevPageIndex,
   getPageIsLoading: getPageIsLoading,
   getPagesLoaded: getPagesLoaded,
@@ -782,7 +797,8 @@ const searchUriTemplate = {
     facet,
     orderBy,
     term,
-    pageIndex
+    pageIndex,
+    pageSize
   }) => {
     const searchContext = getSearchContext(state); // Lose stateFilters and currentSearch if a new
     // term is passed via an argument
@@ -797,7 +813,8 @@ const searchUriTemplate = {
     const mergedSearch = removeEmptyAttributes(merge__default["default"](currentQs, stateFilters));
     if (searchTerm) mergedSearch.term = searchTerm;
     if (pageIndex) mergedSearch.pageIndex = pageIndex + 1;
-    if (pageIndex === 0) mergedSearch.pageIndex = undefined; // We don't want these as search params in the url, we just need the search package to see them
+    if (pageIndex === 0) mergedSearch.pageIndex = undefined;
+    if (pageSize) mergedSearch.pageSize = pageSize; // We don't want these as search params in the url, we just need the search package to see them
 
     return queryString.stringify(mergedSearch);
   },
@@ -1450,7 +1467,13 @@ const queryParamsTemplate = {
     if (action.type === UPDATE_PAGE_INDEX) return action.params.pageIndex;
     return !action.preload ? getPageIndex(state, action.facet, action.context) : 0;
   },
-  pageSize: root => getQueryParameter(root, 'pageSize'),
+  pageSize: root => {
+    const {
+      action,
+      state
+    } = root;
+    return getPageSize(state, action.facet, action.context) || getQueryParameter(root, 'pageSize');
+  },
   pagesLoaded: ({
     state,
     facet,
@@ -1642,7 +1665,7 @@ const mapQueryParamsToCustomApi = queryParams => {
   return mapJson__default["default"](queryParams, customApiMapping);
 };
 
-const searchSagas = [effects.takeEvery(CLEAR_FILTERS, clearFilters), effects.takeEvery(DO_SEARCH, doSearch), effects.takeEvery(SET_ROUTE_FILTERS, loadFilters), effects.takeEvery(SET_SEARCH_ENTRIES, preloadOtherFacets), effects.takeEvery(UPDATE_CURRENT_FACET, updateCurrentFacet), effects.takeEvery(UPDATE_CURRENT_TAB, updateCurrentTab), effects.takeEvery(UPDATE_PAGE_INDEX, updatePageIndex), effects.takeEvery(UPDATE_SEARCH_TERM, updateSearchTerm), effects.takeEvery(UPDATE_SORT_ORDER, updateSortOrder), effects.takeEvery(UPDATE_SELECTED_FILTERS, applySearchFilter)];
+const searchSagas = [effects.takeEvery(CLEAR_FILTERS, clearFilters), effects.takeEvery(DO_SEARCH, doSearch), effects.takeEvery(SET_ROUTE_FILTERS, loadFilters), effects.takeEvery(SET_SEARCH_ENTRIES, preloadOtherFacets), effects.takeEvery(UPDATE_CURRENT_FACET, updateCurrentFacet), effects.takeEvery(UPDATE_CURRENT_TAB, updateCurrentTab), effects.takeEvery(UPDATE_PAGE_INDEX, updatePageIndex), effects.takeEvery(UPDATE_PAGE_SIZE, updatePageSize), effects.takeEvery(UPDATE_SEARCH_TERM, updateSearchTerm), effects.takeEvery(UPDATE_SORT_ORDER, updateSortOrder), effects.takeEvery(UPDATE_SELECTED_FILTERS, applySearchFilter)];
 
 const toJS = obj => obj && 'toJS' in obj && typeof obj.toJS === 'function' ? obj.toJS() : obj;
 
@@ -2001,6 +2024,19 @@ function* updatePageIndex(action) {
   if (typeof scrollYPos !== 'undefined') scrollTop(scrollYPos);
 }
 
+function* updatePageSize(action) {
+  const {
+    pageSize,
+    mappers,
+    scrollYPos
+  } = action;
+  const uri = yield buildUri({
+    pageSize
+  }, mappers);
+  yield effects.put(navigate(uri));
+  if (typeof scrollYPos !== 'undefined') scrollTop(scrollYPos);
+}
+
 function* applySearchFilter(action) {
   const {
     mappers,
@@ -2015,6 +2051,7 @@ function* buildUri({
   facet,
   orderBy,
   pageIndex = 0,
+  pageSize,
   term
 }, mappers) {
   const state = yield effects.select();
@@ -2024,6 +2061,7 @@ function* buildUri({
     facet,
     orderBy,
     pageIndex,
+    pageSize,
     term
   }); // return uri;
 
@@ -2054,6 +2092,7 @@ exports.SET_ROUTE_FILTERS = SET_ROUTE_FILTERS;
 exports.SET_SEARCH_ENTRIES = SET_SEARCH_ENTRIES;
 exports.SET_SEARCH_FILTERS = SET_SEARCH_FILTERS;
 exports.UPDATE_PAGE_INDEX = UPDATE_PAGE_INDEX;
+exports.UPDATE_PAGE_SIZE = UPDATE_PAGE_SIZE;
 exports.UPDATE_SEARCH_TERM = UPDATE_SEARCH_TERM;
 exports.UPDATE_SELECTED_FILTERS = UPDATE_SELECTED_FILTERS;
 exports.UPDATE_SORT_ORDER = UPDATE_SORT_ORDER;
@@ -2104,8 +2143,9 @@ exports.types = types;
 exports.updateCurrentFacet = updateCurrentFacet$1;
 exports.updateCurrentTab = updateCurrentTab$1;
 exports.updatePageIndex = updatePageIndex$1;
+exports.updatePageSize = updatePageSize$1;
 exports.updateSearchTerm = updateSearchTerm$1;
 exports.updateSelectedFilters = updateSelectedFilters;
 exports.updateSortOrder = updateSortOrder$1;
 exports.withMappers = withMappers;
-//# sourceMappingURL=sagas-7c19ce8e.js.map
+//# sourceMappingURL=sagas-e2a34262.js.map

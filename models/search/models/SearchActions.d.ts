@@ -127,4 +127,9 @@ export declare type UpdatePageIndexAction = Action & {
     scrollYPos?: number;
 };
 export declare type UpdatePageIndexActionCreator = (pageIndex: number) => UpdatePageIndexAction;
+export declare type UpdatePageSizeAction = Action & {
+    pageSize: number;
+    scrollYPos?: number;
+};
+export declare type UpdatePageSizeActionCreator = (pageSize: number) => UpdatePageSizeAction;
 export {};

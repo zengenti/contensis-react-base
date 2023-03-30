@@ -1,4 +1,4 @@
-import { clearFilters, updateCurrentFacet, updateCurrentTab, updatePageIndex, updateSearchTerm, updateSelectedFilters, updateSortOrder } from '../redux/actions';
+import { clearFilters, updateCurrentFacet, updateCurrentTab, updatePageIndex, updatePageSize, updateSearchTerm, updateSelectedFilters, updateSortOrder } from '../redux/actions';
 import { SearchFacet, Mappers } from '../models/Search';
 import { DebugFlags } from '../models/SearchActions';
 import { Facet as StateFacet, Facets, Filters, Paging, SelectedFilters, TabAndFacets } from '../models/SearchState';
@@ -12,6 +12,7 @@ export interface MinilistProps<SearchResults = any> {
     sortOrder: string[];
     title: string;
     updatePageIndex: typeof updatePageIndex;
+    updatePageSize: typeof updatePageSize;
     updateSelectedFilters: typeof updateSelectedFilters;
     updateSortOrder: typeof updateSortOrder;
 }
@@ -33,6 +34,7 @@ export interface ListingProps<SearchResults = any> {
     title: string;
     updateCurrentFacet: typeof updateCurrentFacet;
     updatePageIndex: typeof updatePageIndex;
+    updatePageSize: typeof updatePageSize;
     updateSearchTerm: typeof updateSearchTerm;
     updateSelectedFilters: typeof updateSelectedFilters;
     updateSortOrder: typeof updateSortOrder;
@@ -66,6 +68,7 @@ export interface SearchProps<SearchResults = any> {
     updateCurrentFacet: typeof updateCurrentFacet;
     updateCurrentTab: typeof updateCurrentTab;
     updatePageIndex: typeof updatePageIndex;
+    updatePageSize: typeof updatePageSize;
     updateSearchTerm: typeof updateSearchTerm;
     updateSelectedFilters: typeof updateSelectedFilters;
     updateSortOrder: typeof updateSortOrder;

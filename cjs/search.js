@@ -4,7 +4,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 var React = require('react');
 var reactRedux = require('react-redux');
-var sagas = require('./sagas-7c19ce8e.js');
+var sagas = require('./sagas-e2a34262.js');
 require('jsonpath-mapper');
 var reselect = require('reselect');
 var merge = require('deepmerge');
@@ -76,6 +76,7 @@ const withSearch = mappers => SearchComponent => {
     updateCurrentFacet: facet => sagas.withMappers(sagas.updateCurrentFacet(facet), mappers),
     updateCurrentTab: id => sagas.withMappers(sagas.updateCurrentTab(id), mappers),
     updatePageIndex: (pageIndex, scrollYPos) => sagas.withMappers(sagas.updatePageIndex(pageIndex, scrollYPos), mappers),
+    updatePageSize: (pageSize, scrollYPos) => sagas.withMappers(sagas.updatePageSize(pageSize, scrollYPos), mappers),
     updateSearchTerm: term => sagas.withMappers(sagas.updateSearchTerm(term), mappers),
     updateSelectedFilters: (filter, key, isUnknownItem = false, scrollYPos) => sagas.withMappers(sagas.updateSelectedFilters(filter, key, isUnknownItem, scrollYPos), mappers),
     updateSortOrder: orderBy => sagas.withMappers(sagas.updateSortOrder(orderBy), mappers)
@@ -129,6 +130,7 @@ const withListing = mappers => ListingComponent => {
     clearFilters: filterKey => sagas.withMappers(sagas.clearFilters(filterKey), mappers),
     updateCurrentFacet: facet => sagas.withMappers(sagas.updateCurrentFacet(facet), mappers),
     updatePageIndex: (pageIndex, scrollYPos) => sagas.withMappers(sagas.updatePageIndex(pageIndex, scrollYPos), mappers),
+    updatePageSize: (pageSize, scrollYPos) => sagas.withMappers(sagas.updatePageSize(pageSize, scrollYPos), mappers),
     updateSearchTerm: term => sagas.withMappers(sagas.updateSearchTerm(term), mappers),
     updateSelectedFilters: (filter, key, isUnknownItem = false, scrollYPos) => sagas.withMappers(sagas.updateSelectedFilters(filter, key, isUnknownItem, scrollYPos), mappers),
     updateSortOrder: orderBy => sagas.withMappers(sagas.updateSortOrder(orderBy), mappers)
@@ -198,6 +200,7 @@ const useFacets = ({
     updateCurrentFacet: facet => dispatch(sagas.withMappers(sagas.updateCurrentFacet(facet), m)),
     updateCurrentTab: id => sagas.withMappers(sagas.updateCurrentTab(id), m),
     updatePageIndex: (pageIndex, scrollYPos) => dispatch(sagas.withMappers(sagas.updatePageIndex(pageIndex, scrollYPos), m)),
+    updatePageSize: (pageSize, scrollYPos) => dispatch(sagas.withMappers(sagas.updatePageSize(pageSize, scrollYPos), m)),
     updateSearchTerm: term => dispatch(sagas.withMappers(sagas.updateSearchTerm(term), m)),
     updateSelectedFilters: (filter, key, isUnknownItem = false, scrollYPos) => dispatch(sagas.withMappers(sagas.updateSelectedFilters(filter, key, isUnknownItem, scrollYPos), m)),
     updateSortOrder: orderBy => dispatch(sagas.withMappers(sagas.updateSortOrder(orderBy), m))
@@ -291,6 +294,7 @@ const useListing = ({
     clearFilters: filterKey => dispatch(sagas.withMappers(sagas.clearFilters(filterKey), m)),
     updateCurrentFacet: facet => dispatch(sagas.withMappers(sagas.updateCurrentFacet(facet), m)),
     updatePageIndex: (pageIndex, scrollYPos) => dispatch(sagas.withMappers(sagas.updatePageIndex(pageIndex, scrollYPos), m)),
+    updatePageSize: (pageSize, scrollYPos) => dispatch(sagas.withMappers(sagas.updatePageSize(pageSize, scrollYPos), m)),
     updateSearchTerm: term => dispatch(sagas.withMappers(sagas.updateSearchTerm(term), m)),
     updateSelectedFilters: (filter, key, isUnknownItem = false, scrollYPos) => dispatch(sagas.withMappers(sagas.updateSelectedFilters(filter, key, isUnknownItem, scrollYPos), m)),
     updateSortOrder: orderBy => dispatch(sagas.withMappers(sagas.updateSortOrder(orderBy), m))
@@ -708,6 +712,7 @@ var reducers = (config => {
           const {
             term = '',
             pageIndex,
+            pageSize,
             orderBy
           } = params;
           const stateTerm = state.term;
@@ -739,7 +744,8 @@ var reducers = (config => {
           state.term = term;
           state.tabs[tabId].currentFacet = facet;
           state[context][facet].pagingInfo = { ...(state[context][facet].pagingInfo || pagingInfo),
-            pageIndex: Number(pageIndex) - 1 || (state[context][facet].queryParams.loadMorePaging ? ((_state$context$facet$ = state[context][facet].pagingInfo) === null || _state$context$facet$ === void 0 ? void 0 : _state$context$facet$.pageIndex) || 0 : 0)
+            pageIndex: Number(pageIndex) - 1 || (state[context][facet].queryParams.loadMorePaging ? ((_state$context$facet$ = state[context][facet].pagingInfo) === null || _state$context$facet$ === void 0 ? void 0 : _state$context$facet$.pageIndex) || 0 : 0),
+            pageSize: Number(pageSize) || state[context][facet].queryParams.pageSize
           };
           state.config.isLoaded = true;
           state.config.ssr = typeof window === 'undefined';
@@ -789,6 +795,18 @@ var reducers = (config => {
           state[context][current].pagingInfo.prevPageIndex = currentPageIndex;
           state[context][current].pagingInfo.isLoading = true;
           if (internalPaging) return;
+          state[context][current].queryDuration = 0;
+          return;
+        }
+
+      case sagas.UPDATE_PAGE_SIZE:
+        {
+          const {
+            pageSize
+          } = action;
+          state[context][current].pagingInfo.pageSize = pageSize;
+          state[context][current].pagingInfo.pageIndex = 0;
+          state[context][current].pagingInfo.isLoading = true;
           state[context][current].queryDuration = 0;
           return;
         }
