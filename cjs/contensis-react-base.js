@@ -6,7 +6,7 @@ var App = require('./App-ee485b92.js');
 var contensisDeliveryApi = require('contensis-delivery-api');
 var React = require('react');
 var reactRedux = require('react-redux');
-var sagas = require('./sagas-e2a34262.js');
+var sagas = require('./sagas-8a20e424.js');
 var mapJson = require('jsonpath-mapper');
 require('reselect');
 require('deepmerge');

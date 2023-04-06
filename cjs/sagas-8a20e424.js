@@ -1555,6 +1555,7 @@ const runSearch = (action, state, queryParams) => {
   };
   stateParams.pageIndex = getPageIndex(ogState, facet, context);
   stateParams.searchTerm = getSearchTerm(ogState);
+  stateParams.pageSize = getPageSize(ogState, facet, context);
 
   if (context === exports.Context.facets && ssr || // context === Context.minilist ||
   preload || !facetIsLoaded || filterParamsChanged(action) || defaultLang) {
@@ -2148,4 +2149,4 @@ exports.updateSearchTerm = updateSearchTerm$1;
 exports.updateSelectedFilters = updateSelectedFilters;
 exports.updateSortOrder = updateSortOrder$1;
 exports.withMappers = withMappers;
-//# sourceMappingURL=sagas-e2a34262.js.map
+//# sourceMappingURL=sagas-8a20e424.js.map
