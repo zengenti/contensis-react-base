@@ -13,7 +13,7 @@ var queryString = require('query-string');
 var reactCookie = require('react-cookie');
 var version$1 = require('./version-eba6d09b.js');
 var version = require('./version-78dfc3bd.js');
-var App = require('./App-ee485b92.js');
+var App = require('./App-5b34574e.js');
 var actions = require('./actions-8dc9e8de.js');
 require('./selectors-656da4b7.js');
 require('jsonpath-mapper');
