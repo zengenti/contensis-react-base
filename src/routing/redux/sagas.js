@@ -444,6 +444,10 @@ function* setRouteEntry(
 ) {
   const entrySys = (entry && entry.sys) || {};
 
+  // Update a window global to provide the preview toolbar
+  // an updated entry id in client-side navigation
+  if (typeof window !== 'undefined') window.ContensisEntryId = entrySys.id;
+
   const currentEntryId = yield select(selectRouteEntryEntryId);
   const currentEntryLang = yield select(selectRouteEntryLanguage);
   const mappedEntry =
