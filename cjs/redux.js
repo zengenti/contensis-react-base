@@ -2,7 +2,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var version$1 = require('./version-78dfc3bd.js');
+var version$1 = require('./version-bf9ef45e.js');
 var actions$1 = require('./actions-8dc9e8de.js');
 var selectors$1 = require('./selectors-656da4b7.js');
 var version$2 = require('./version-eba6d09b.js');
@@ -13,7 +13,7 @@ require('redux-saga');
 require('redux-injectors');
 require('immer');
 require('deepmerge');
-require('./reducers-3a4f8971.js');
+require('./reducers-73a03ef4.js');
 require('jsonpath-mapper');
 require('query-string');
 
