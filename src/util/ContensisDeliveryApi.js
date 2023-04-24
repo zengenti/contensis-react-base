@@ -10,7 +10,7 @@ const storeSurrogateKeys = response => {
   if (keys) reduxStore?.dispatch(setSurrogateKeys(keys, response.url));
 };
 
-const getClientConfig = project => {
+export const getClientConfig = project => {
   let config = DELIVERY_API_CONFIG; /* global DELIVERY_API_CONFIG */
   config.responseHandler = {};
 
