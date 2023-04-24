@@ -2,11 +2,9 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var version$1 = require('./version-bf9ef45e.js');
-var actions$1 = require('./actions-8dc9e8de.js');
-var selectors$1 = require('./selectors-656da4b7.js');
-var version$2 = require('./version-eba6d09b.js');
-require('@redux-saga/core/effects');
+var version$1 = require('./version-7ce96442.js');
+var selectors$1 = require('./selectors-fa607198.js');
+var version$2 = require('./version-d6e26cc4.js');
 require('redux');
 require('redux-thunk');
 require('redux-saga');
@@ -16,10 +14,11 @@ require('deepmerge');
 require('./reducers-73a03ef4.js');
 require('jsonpath-mapper');
 require('query-string');
+require('@redux-saga/core/effects');
 
 var types = {
   navigation: version$1.navigation,
-  routing: actions$1.routing,
+  routing: selectors$1.routing,
   version: version$1.version
 };
 
@@ -32,14 +31,14 @@ var navigation$1 = /*#__PURE__*/Object.freeze({
 
 var actions = {
   navigation: navigation$1,
-  routing: actions$1.routing$1,
-  version: version$1.version$1
+  routing: selectors$1.routing$1,
+  version: version$2.version
 };
 
 var selectors = {
-  navigation: version$1.navigation$1,
-  routing: selectors$1.routing,
-  version: version$2.version
+  navigation: version$2.navigation,
+  routing: selectors$1.routing$2,
+  version: version$1.version$1
 };
 
 // e.g. { routing: { types, actions }, navigation: { types, actions } }
@@ -61,18 +60,18 @@ const version = {
   selectors: selectors.version
 };
 
-exports.convertSagaArray = version$1.convertSagaArray;
-exports.injectReducer = version$1.injectReducer;
-exports.injectRedux = version$1.injectRedux;
-exports.injectSaga = version$1.injectSaga;
 Object.defineProperty(exports, 'store', {
   enumerable: true,
   get: function () { return version$1.reduxStore; }
 });
-exports.useInjectRedux = version$1.useInjectRedux;
 exports.action = selectors$1.action;
 exports.getIn = selectors$1.getImmutableOrJS;
 exports.getJS = selectors$1.getJS;
+exports.convertSagaArray = version$2.convertSagaArray;
+exports.injectReducer = version$2.injectReducer;
+exports.injectRedux = version$2.injectRedux;
+exports.injectSaga = version$2.injectSaga;
+exports.useInjectRedux = version$2.useInjectRedux;
 exports.navigation = navigation;
 exports.routing = routing;
 exports.version = version;

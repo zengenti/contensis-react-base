@@ -3,13 +3,22 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 var urls = require('./urls-6fcaf4c6.js');
+var ContensisDeliveryApi = require('./ContensisDeliveryApi-cfdefe17.js');
 var mapJson = require('jsonpath-mapper');
 var React = require('react');
 var reactRedux = require('react-redux');
-var selectors = require('./selectors-656da4b7.js');
-var version = require('./version-eba6d09b.js');
+var selectors = require('./selectors-fa607198.js');
+var version = require('./version-7ce96442.js');
 var styled = require('styled-components');
+require('contensis-delivery-api');
 require('query-string');
+require('redux');
+require('redux-thunk');
+require('redux-saga');
+require('redux-injectors');
+require('immer');
+require('deepmerge');
+require('./reducers-73a03ef4.js');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -314,6 +323,9 @@ var VersionInfo$1 = reactRedux.connect(mapStateToVersionInfo)(VersionInfo);
 
 exports.setCachingHeaders = urls.setCachingHeaders;
 exports.urls = urls.url;
+exports.cachedSearch = ContensisDeliveryApi.cachedSearch;
+exports.deliveryApi = ContensisDeliveryApi.deliveryApi;
+exports.getClientConfig = ContensisDeliveryApi.getClientConfig;
 Object.defineProperty(exports, 'jpath', {
   enumerable: true,
   get: function () { return mapJson.jpath; }

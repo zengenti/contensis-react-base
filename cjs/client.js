@@ -11,13 +11,11 @@ var reactRouterDom = require('react-router-dom');
 var component = require('@loadable/component');
 var queryString = require('query-string');
 var reactCookie = require('react-cookie');
-var version$1 = require('./version-eba6d09b.js');
-var version = require('./version-bf9ef45e.js');
-var App = require('./App-a2783f8b.js');
-var actions = require('./actions-8dc9e8de.js');
-require('./selectors-656da4b7.js');
-require('jsonpath-mapper');
-require('@redux-saga/core/effects');
+var version = require('./version-7ce96442.js');
+var version$1 = require('./version-d6e26cc4.js');
+var App = require('./App-48706fde.js');
+var selectors = require('./selectors-fa607198.js');
+var ContensisDeliveryApi = require('./ContensisDeliveryApi-cfdefe17.js');
 require('redux');
 require('redux-thunk');
 require('redux-saga');
@@ -25,14 +23,16 @@ require('redux-injectors');
 require('immer');
 require('deepmerge');
 require('./reducers-73a03ef4.js');
+require('@redux-saga/core/effects');
 require('history');
 require('loglevel');
-require('contensis-delivery-api');
-require('./login-e711a19e.js');
-require('./ToJs-a9a8522b.js');
+require('./login-dfcea036.js');
+require('./ToJs-d962c80f.js');
+require('jsonpath-mapper');
 require('await-to-js');
 require('js-cookie');
-require('./RouteLoader-3aa6456e.js');
+require('contensis-delivery-api');
+require('./RouteLoader-fcd1e4f1.js');
 require('react-router-config');
 require('reselect');
 
@@ -87,20 +87,20 @@ class ClientApp {
     };
 
     const qs = queryString.parse(window.location.search);
-    const versionStatus = App.deliveryApi.getClientSideVersionStatus();
+    const versionStatus = ContensisDeliveryApi.deliveryApi.getClientSideVersionStatus();
 
     if (window.isDynamic || window.REDUX_DATA || process.env.NODE_ENV !== 'production') {
       version.createStore(withReducers, window.REDUX_DATA, App.browserHistory, stateType).then(store => {
         const state = store.getState();
-        const ssrVersionStatus = version$1.selectVersionStatus(state);
-        if (!ssrVersionStatus) store.dispatch(version.setVersionStatus(versionStatus));
+        const ssrVersionStatus = version.selectVersionStatus(state);
+        if (!ssrVersionStatus) store.dispatch(version$1.setVersionStatus(versionStatus));
         /* eslint-disable no-console */
 
         console.log('Hydrating from inline Redux');
         /* eslint-enable no-console */
 
         store.runSaga(App.rootSaga(withSagas));
-        store.dispatch(actions.setCurrentProject(App.pickProject(window.location.hostname, qs), [], window.location.hostname));
+        store.dispatch(selectors.setCurrentProject(App.pickProject(window.location.hostname, qs), [], window.location.hostname));
         delete window.REDUX_DATA;
         HMRRenderer(GetClientJSX(store));
         hmr(store);
@@ -109,9 +109,9 @@ class ClientApp {
       fetch(`${window.location.pathname}?redux=true`).then(response => response.json()).then(data => {
         const ssRedux = JSON.parse(data);
         version.createStore(withReducers, ssRedux, App.browserHistory, stateType).then(store => {
-          store.dispatch(version.setVersionStatus(versionStatus));
+          store.dispatch(version$1.setVersionStatus(versionStatus));
           store.runSaga(App.rootSaga(withSagas));
-          store.dispatch(actions.setCurrentProject(App.pickProject(window.location.hostname, qs), [], window.location.hostname));
+          store.dispatch(selectors.setCurrentProject(App.pickProject(window.location.hostname, qs), [], window.location.hostname));
           HMRRenderer(GetClientJSX(store));
           hmr(store);
         });

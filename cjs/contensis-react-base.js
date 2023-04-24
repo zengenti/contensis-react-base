@@ -2,7 +2,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var App = require('./App-a2783f8b.js');
+var ContensisDeliveryApi = require('./ContensisDeliveryApi-cfdefe17.js');
 var contensisDeliveryApi = require('contensis-delivery-api');
 var React = require('react');
 var reactRedux = require('react-redux');
@@ -33,25 +33,25 @@ var server$1 = require('@loadable/server');
 var lodash = require('lodash');
 var lodashClean = require('lodash-clean');
 var reactCookie = require('react-cookie');
-var version = require('./version-bf9ef45e.js');
-var actions = require('./actions-8dc9e8de.js');
-var selectors = require('./selectors-656da4b7.js');
+var version = require('./version-7ce96442.js');
+var App = require('./App-48706fde.js');
+var version$1 = require('./version-d6e26cc4.js');
+var selectors = require('./selectors-fa607198.js');
 var chalk = require('chalk');
-require('history');
-require('@redux-saga/core/effects');
 require('loglevel');
-require('./version-eba6d09b.js');
-require('./login-e711a19e.js');
-require('./reducers-73a03ef4.js');
-require('./ToJs-a9a8522b.js');
-require('await-to-js');
-require('js-cookie');
-require('react-hot-loader');
-require('./RouteLoader-3aa6456e.js');
+require('@redux-saga/core/effects');
 require('redux');
 require('redux-thunk');
 require('redux-saga');
 require('redux-injectors');
+require('./reducers-73a03ef4.js');
+require('history');
+require('./login-dfcea036.js');
+require('./ToJs-d962c80f.js');
+require('await-to-js');
+require('js-cookie');
+require('react-hot-loader');
+require('./RouteLoader-fcd1e4f1.js');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -252,7 +252,7 @@ const resolveParentEntries = async (parentContentTypeIds, replaceContentTypeIds,
   });
   query.fields = params.fields ? [...JSON.parse(params.fields), parentFieldId] : [];
   if (debug) console.log(`\nResolve parent entries query: \n${JSON.stringify(query.toJSON()).substring(0, 1000)}`);
-  const parentResults = await App.cachedSearch.searchUsingPost(query, Number(params.linkDepth || 0), params.projectId);
+  const parentResults = await ContensisDeliveryApi.cachedSearch.searchUsingPost(query, Number(params.linkDepth || 0), params.projectId);
   return mergeResults(results, Util.GetItems(parentResults), replaceContentTypeIds, parentFieldId);
 };
 
@@ -314,7 +314,7 @@ class QueryLevelResults {
 
       if (runFirstQuery) {
         if (this.debug) console.log(`\nLevel ${this.level} - First query: \n${JSON.stringify(query.toJSON()).substring(0, 1000)}`);
-        this.firstResults = await App.cachedSearch.searchUsingPost(query, 0, params.projectId); // mapResultsToValidatedLinks
+        this.firstResults = await ContensisDeliveryApi.cachedSearch.searchUsingPost(query, 0, params.projectId); // mapResultsToValidatedLinks
 
         for (const linkFieldId of this.linkFieldIds) {
           this.validatedLinks.push({
@@ -353,7 +353,7 @@ class QueryLevelResults {
 
       if (runFinalQuery) {
         if (this.debug) console.log(`\nLevel ${this.level} - Final query: \n${JSON.stringify(query.toJSON()).substring(0, 1000)}`);
-        this.finalResults = await App.cachedSearch.searchUsingPost(query, Number(params.linkDepth) || 0, params.projectId);
+        this.finalResults = await ContensisDeliveryApi.cachedSearch.searchUsingPost(query, Number(params.linkDepth) || 0, params.projectId);
         if (this.parent) this.parent.runFinalQuery = true; // mapResultsToValidatedLinks
 
         for (const linkFieldId of ((_this$parent = this.parent) === null || _this$parent === void 0 ? void 0 : _this$parent.linkFieldIds) || []) {
@@ -511,7 +511,7 @@ class LinkDepthSearchService {
           };
         })) || []);
         if (this.debug) console.log(`\nFinal query: ${derivedIds.reduce((accumulator, object) => accumulator + object.entryIds.length, 0)} derived ids \n${JSON.stringify(query.toJSON()).substring(0, 1000)}`);
-        const finalQueryResult = await App.cachedSearch.searchUsingPost(query, Number(params.linkDepth) || 0, params.projectId); // Resolve any parent entries
+        const finalQueryResult = await ContensisDeliveryApi.cachedSearch.searchUsingPost(query, Number(params.linkDepth) || 0, params.projectId); // Resolve any parent entries
 
         const resolveParentLevels = finalQueryLevels.filter(ql => ql.resolveFirstParent);
         let entries = finalQueryResult.items;
@@ -4251,13 +4251,13 @@ const webApp = (app, ReactApp, config) => {
       initialEntries: [url]
     }), stateType); // dispatch any global and non-saga related actions before calling our JSX
 
-    const versionStatus = App.deliveryApi.getServerSideVersionStatus(request);
+    const versionStatus = ContensisDeliveryApi.deliveryApi.getServerSideVersionStatus(request);
     console.info(`Request for ${request.path} hostname: ${request.hostname} versionStatus: ${versionStatus}`);
-    store.dispatch(version.setVersionStatus(versionStatus));
-    store.dispatch(version.setVersion(versionInfo.commitRef, versionInfo.buildNo));
+    store.dispatch(version$1.setVersionStatus(versionStatus));
+    store.dispatch(version$1.setVersion(versionInfo.commitRef, versionInfo.buildNo));
     const project = App.pickProject(request.hostname, request.query);
     const groups = allowedGroups && allowedGroups[project];
-    store.dispatch(actions.setCurrentProject(project, groups, request.hostname));
+    store.dispatch(selectors.setCurrentProject(project, groups, request.hostname));
     const loadableExtractor = loadableChunkExtractors();
     const jsx = /*#__PURE__*/React__default["default"].createElement(server$1.ChunkExtractorManager, {
       extractor: loadableExtractor.commonLoadableExtractor

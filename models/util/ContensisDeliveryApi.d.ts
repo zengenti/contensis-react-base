@@ -1,3 +1,9 @@
+export function getClientConfig(project: any): {
+    rootUrl: string;
+    accessToken: string;
+    projectId: string;
+    livePublishingRootUrl: string;
+};
 export * from "contensis-delivery-api";
 export const deliveryApi: DeliveryApi;
 export const cachedSearch: CachedSearch;
