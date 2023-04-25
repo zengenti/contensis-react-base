@@ -2,11 +2,11 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var login = require('./login-dfcea036.js');
+var login = require('./login-2ea569cc.js');
 var reactRedux = require('react-redux');
-var selectors = require('./selectors-fa607198.js');
-var reducers = require('./reducers-73a03ef4.js');
-var ToJs = require('./ToJs-d962c80f.js');
+var selectors = require('./selectors-c76c2676.js');
+var reducers = require('./reducers-9afb5f89.js');
+var ToJs = require('./ToJs-61c03582.js');
 require('@redux-saga/core/effects');
 require('jsonpath-mapper');
 require('await-to-js');
@@ -76,7 +76,6 @@ const LoginContainer = ({
   const userProps = useLogin();
   return children(userProps);
 };
-
 LoginContainer.propTypes = {};
 var Login_container = ToJs.toJS(LoginContainer);
 
@@ -99,7 +98,6 @@ const RegistrationContainer = ({
   const userProps = useRegistration();
   return children(userProps);
 };
-
 RegistrationContainer.propTypes = {};
 var Registration_container = ToJs.toJS(RegistrationContainer);
 
@@ -128,7 +126,6 @@ const ForgotPasswordContainer = ({
   const userProps = useForgotPassword();
   return children(userProps);
 };
-
 ForgotPasswordContainer.propTypes = {};
 var ForgotPassword_container = ToJs.toJS(ForgotPasswordContainer);
 
@@ -152,14 +149,12 @@ const ChangePasswordContainer = ({
   const userProps = useChangePassword();
   return children(userProps);
 };
-
 ChangePasswordContainer.propTypes = {};
 var ChangePassword_container = ToJs.toJS(ChangePasswordContainer);
 
 const getDisplayName$1 = WrappedComponent => {
   return WrappedComponent.displayName || WrappedComponent.name || 'Component';
 };
-
 const withLogin = WrappedComponent => {
   const mapStateToProps = state => {
     return {
@@ -174,7 +169,6 @@ const withLogin = WrappedComponent => {
       error: ToJs.selectUserIsError(state)
     };
   };
-
   const mapDispatchToProps = {
     loginUser,
     logoutUser
@@ -187,7 +181,6 @@ const withLogin = WrappedComponent => {
 const getDisplayName = WrappedComponent => {
   return WrappedComponent.displayName || WrappedComponent.name || 'Component';
 };
-
 const withRegistration = WrappedComponent => {
   const mapStateToProps = state => {
     return {
@@ -197,7 +190,6 @@ const withRegistration = WrappedComponent => {
       user: ToJs.selectUserRegistration(state)
     };
   };
-
   const mapDispatchToProps = {
     registerUser
   };

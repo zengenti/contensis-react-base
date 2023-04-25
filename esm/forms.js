@@ -75,7 +75,6 @@ var reducer = produce((state, action) => {
         state[formId] = initialFormData;
         return;
       }
-
     case SET_FORM_DATA:
       {
         const {
@@ -96,7 +95,6 @@ var reducer = produce((state, action) => {
         state[formId].settings = settings;
         return;
       }
-
     case SET_CURRENT_PAGE:
       {
         const {
@@ -110,7 +108,6 @@ var reducer = produce((state, action) => {
         state[formId].pagingInfo.pageCount = pageCount;
         return;
       }
-
     case SET_FIELD_VALUE:
       {
         const {
@@ -121,7 +118,6 @@ var reducer = produce((state, action) => {
         state[formId].data[id] = value;
         return;
       }
-
     case SET_DEFAULT_FIELD_VALUE:
       {
         const {
@@ -131,7 +127,6 @@ var reducer = produce((state, action) => {
         state[formId].data = value;
         return;
       }
-
     case SET_CHECKBOX_VALUE:
       {
         const {
@@ -141,12 +136,12 @@ var reducer = produce((state, action) => {
           isChecked
         } = action || {};
         let values = state[formId].data[id] || [];
-        if (isChecked) state[formId].data[id] = { ...values,
+        if (isChecked) state[formId].data[id] = {
+          ...values,
           value
         };else state[formId].data[id] = values.filter(v => v !== value);
         return;
       }
-
     case SET_DATE_RANGE_VALUES:
       {
         const {
@@ -158,7 +153,6 @@ var reducer = produce((state, action) => {
         state[formId].data[id][dateType] = value;
         return;
       }
-
     case SET_FIELD_ERROR:
       {
         const {
@@ -168,7 +162,6 @@ var reducer = produce((state, action) => {
         state[formId].fieldErrors = value;
         return;
       }
-
     case SET_SUBMITTING_FORM:
       {
         const {
@@ -178,7 +171,6 @@ var reducer = produce((state, action) => {
         state[formId].status.isSubmitting = isSubmitting;
         return;
       }
-
     case SUBMIT_FORM_SUCCESS:
       {
         const {
@@ -190,7 +182,6 @@ var reducer = produce((state, action) => {
         state[formId].status.validation.sent = false;
         return;
       }
-
     case SUBMIT_FORM_FOR_VALIDATION:
       {
         const {
@@ -202,7 +193,6 @@ var reducer = produce((state, action) => {
         state[formId].status.hasError = false;
         return;
       }
-
     case SET_SUCCESS_MESSAGE:
       {
         const {
@@ -212,7 +202,6 @@ var reducer = produce((state, action) => {
         state[formId].status.message.success = message;
         return;
       }
-
     case SUBMIT_FORM_ERROR:
       {
         const {
@@ -223,7 +212,6 @@ var reducer = produce((state, action) => {
         state[formId].status.validation.sent = false;
         return;
       }
-
     case SET_FORM_ENTRIES:
       {
         const {
@@ -239,7 +227,6 @@ var reducer = produce((state, action) => {
         state[formId].entries = entryObject;
         return;
       }
-
     case SET_ERROR:
       {
         const {
@@ -249,7 +236,6 @@ var reducer = produce((state, action) => {
         state[formId].status.isSubmitting = false;
         return;
       }
-
     default:
       return state;
   }
@@ -259,7 +245,6 @@ const selectForms = state => state.forms;
 const makeSelectPagedFields = formId => createSelector(selectForms, forms => {
   if (forms !== null && forms !== void 0 && forms[formId]) {
     var _forms$formId, _forms$formId2;
-
     const pagingInfo = forms === null || forms === void 0 ? void 0 : (_forms$formId = forms[formId]) === null || _forms$formId === void 0 ? void 0 : _forms$formId.pagingInfo;
     const fields = forms === null || forms === void 0 ? void 0 : (_forms$formId2 = forms[formId]) === null || _forms$formId2 === void 0 ? void 0 : _forms$formId2.fields;
     if ((fields === null || fields === void 0 ? void 0 : fields.length) > 0 && pagingInfo.pageCount > 1) return fields.filter(f => f.groupId == pagingInfo.currentPageId);else return fields;
@@ -267,77 +252,62 @@ const makeSelectPagedFields = formId => createSelector(selectForms, forms => {
 });
 const makeSelectFormStatus = formId => createSelector(selectForms, forms => {
   var _forms$formId3;
-
   return forms === null || forms === void 0 ? void 0 : (_forms$formId3 = forms[formId]) === null || _forms$formId3 === void 0 ? void 0 : _forms$formId3.status;
 });
 const makeSelectPagingInfo = formId => createSelector(selectForms, forms => {
   var _forms$formId4;
-
   return forms === null || forms === void 0 ? void 0 : (_forms$formId4 = forms[formId]) === null || _forms$formId4 === void 0 ? void 0 : _forms$formId4.pagingInfo;
 });
 const makeSelectFormSettings = formId => createSelector(selectForms, forms => {
   var _forms$formId5;
-
   return forms === null || forms === void 0 ? void 0 : (_forms$formId5 = forms[formId]) === null || _forms$formId5 === void 0 ? void 0 : _forms$formId5.settings;
 });
 const makeSelectFormFieldErrors = formId => createSelector(selectForms, forms => {
   var _forms$formId6;
-
   return forms === null || forms === void 0 ? void 0 : (_forms$formId6 = forms[formId]) === null || _forms$formId6 === void 0 ? void 0 : _forms$formId6.fieldErrors;
 });
 const makeSelectFormEntries = formId => createSelector(selectForms, forms => {
   var _forms$formId7;
-
   return forms === null || forms === void 0 ? void 0 : (_forms$formId7 = forms[formId]) === null || _forms$formId7 === void 0 ? void 0 : _forms$formId7.entries;
 });
 const makeSelectFormPostData = formId => createSelector(selectForms, forms => {
   var _forms$formId8;
-
   return forms === null || forms === void 0 ? void 0 : (_forms$formId8 = forms[formId]) === null || _forms$formId8 === void 0 ? void 0 : _forms$formId8.data;
 });
 const makeSelectIsLoading = formId => createSelector(selectForms, forms => {
   var _forms$formId9;
-
   return forms === null || forms === void 0 ? void 0 : (_forms$formId9 = forms[formId]) === null || _forms$formId9 === void 0 ? void 0 : _forms$formId9.status.isLoading;
 });
 const makeSelectIsSubmitting = formId => createSelector(selectForms, forms => {
   var _forms$formId10;
-
   return forms === null || forms === void 0 ? void 0 : (_forms$formId10 = forms[formId]) === null || _forms$formId10 === void 0 ? void 0 : _forms$formId10.status.isSubmitting;
 });
 const makeSelectHasSuccess = formId => createSelector(selectForms, forms => {
   var _forms$formId11;
-
   return forms === null || forms === void 0 ? void 0 : (_forms$formId11 = forms[formId]) === null || _forms$formId11 === void 0 ? void 0 : _forms$formId11.status.hasSuccess;
 });
 const makeSelectHasError = formId => createSelector(selectForms, forms => {
   var _forms$formId12;
-
   return forms === null || forms === void 0 ? void 0 : (_forms$formId12 = forms[formId]) === null || _forms$formId12 === void 0 ? void 0 : _forms$formId12.status.hasError;
 });
 const makeSelectFormFields = formId => createSelector(selectForms, forms => {
   var _forms$formId13;
-
   return forms === null || forms === void 0 ? void 0 : (_forms$formId13 = forms[formId]) === null || _forms$formId13 === void 0 ? void 0 : _forms$formId13.fields;
 });
 const makeSelectDefaultLang = formId => createSelector(selectForms, forms => {
   var _forms$formId14;
-
   return forms === null || forms === void 0 ? void 0 : (_forms$formId14 = forms[formId]) === null || _forms$formId14 === void 0 ? void 0 : _forms$formId14.defaultLanguage;
 });
 const makeSelectFormSuccessMessage = formId => createSelector(selectForms, forms => {
   var _forms$formId15;
-
   return forms === null || forms === void 0 ? void 0 : (_forms$formId15 = forms[formId]) === null || _forms$formId15 === void 0 ? void 0 : _forms$formId15.status.messages.success;
 });
 const makeSelectFormValidationSent = formId => createSelector(selectForms, forms => {
   var _forms$formId16;
-
   return forms === null || forms === void 0 ? void 0 : (_forms$formId16 = forms[formId]) === null || _forms$formId16 === void 0 ? void 0 : _forms$formId16.status.validation.sent;
 });
 const makeSelectFormGroup$1 = formId => createSelector(selectForms, forms => {
   var _forms$formId17;
-
   return forms === null || forms === void 0 ? void 0 : (_forms$formId17 = forms[formId]) === null || _forms$formId17 === void 0 ? void 0 : _forms$formId17.groups;
 });
 const selectors = {
@@ -400,11 +370,11 @@ const postForm = async formObj => {
   const submitted = await request(URI, options);
   return submitted;
 };
-
 const request = async (url, options) => {
   return fetch(url, options).then(response => response.json()).then(result => {
     return result;
-  }) // eslint-disable-next-line no-console
+  })
+  // eslint-disable-next-line no-console
   .catch(error => console.log('error', error));
 };
 
@@ -412,14 +382,12 @@ const domains = ['1033edge.com', '11mail.com', '123.com', '123box.net', '123indi
 
 const doA11yValidation = (v, field, formValidationSent) => {
   const error = doValidateField(field, v);
-
   if (JSON.stringify(field.validations) !== '{}') {
     if (((v === null || v === void 0 ? void 0 : v.length) >= 1 || formValidationSent) && (error === null || error === void 0 ? void 0 : error.fieldId) === field.id) return 'true';else if ((v === null || v === void 0 ? void 0 : v.length) >= 1) return 'false';else return '';
   }
 };
 const doValidateField = (field, value) => {
   var _field$validations, _field$validations$re;
-
   const isRequired = field.validations && field.validations.required;
   const minLength = field.validations && field.validations.minLength;
   const maxLength = field.validations && field.validations.maxLength;
@@ -427,10 +395,8 @@ const doValidateField = (field, value) => {
   const integer = field.dataType === 'integer';
   const decimal = field.dataType === 'decimal';
   const isBusinessEmail = field.id === 'businessEmail';
-
   if (isRequired && (value === null || value === void 0 ? void 0 : value.length) <= 0) {
     var _isRequired$message, _field$name;
-
     const errorMessage = (isRequired === null || isRequired === void 0 ? void 0 : (_isRequired$message = isRequired.message) === null || _isRequired$message === void 0 ? void 0 : _isRequired$message['en-GB']) || `${(_field$name = field.name) === null || _field$name === void 0 ? void 0 : _field$name['en-GB']} is required`;
     return {
       fieldId: field.id,
@@ -438,7 +404,6 @@ const doValidateField = (field, value) => {
       message: errorMessage
     };
   }
-
   if (minLength && minLength.value > value.length) {
     const errorMessage = minLength.message ? minLength.message['en-GB'] : `Minimum characters ${minLength.value}`;
     return {
@@ -447,7 +412,6 @@ const doValidateField = (field, value) => {
       message: errorMessage
     };
   }
-
   if (maxLength && maxLength.value < value.length) {
     const errorMessage = maxLength.message && maxLength.message['en-GB'] ? maxLength.message['en-GB'] : `Maximum characters ${maxLength.value}`;
     return {
@@ -457,14 +421,10 @@ const doValidateField = (field, value) => {
     };
   }
   /** Check Regex and Business Emails */
-
-
   if (hasRegex && value.length >= 1) {
     var _r$message;
-
     const r = field.validations.regex;
     const msg = (r === null || r === void 0 ? void 0 : (_r$message = r.message) === null || _r$message === void 0 ? void 0 : _r$message['en-GB']) || `${field.name['en-GB']} is invalid`;
-
     if (isValidRegex(field, value) && isBusinessEmail) {
       if (!isBusinessEmailValid(field, value)) {
         return {
@@ -481,10 +441,8 @@ const doValidateField = (field, value) => {
       };
     }
   }
-
   if (integer) {
     const isInteger = value % 1 === 0;
-
     if (!isInteger) {
       const errorMessage = `${value} is not an ${field.dataType}`;
       return {
@@ -494,10 +452,8 @@ const doValidateField = (field, value) => {
       };
     }
   }
-
   if (decimal) {
     const isDecimal = value % 1 !== 0;
-
     if (!isDecimal) {
       const errorMessage = `${value} is not an ${field.dataType}`;
       return {
@@ -508,13 +464,11 @@ const doValidateField = (field, value) => {
     }
   }
 };
-
 const isValidRegex = (field, value) => {
   const regex = field.validations.regex.pattern;
   const regexPattern = RegExp(regex);
   if (!regexPattern.test(value)) return false;else return true;
 };
-
 const isBusinessEmailValid = (field, value) => {
   const domain = value.split('@').pop();
   if (!domains.includes(domain)) return true;else return false;
@@ -522,7 +476,6 @@ const isBusinessEmailValid = (field, value) => {
 
 const doCreateMessage = (type, minLength, maxLength, currentLength, defaultLanguage) => {
   if (!type) return null;
-
   switch (type) {
     case 'min':
       {
@@ -530,28 +483,24 @@ const doCreateMessage = (type, minLength, maxLength, currentLength, defaultLangu
         const minLengthVal = minLength && minLength.value;
         const errorMessage = minLength && minLength.message && minLength.message[defaultLanguage];
         const minText = `Minimum of ${minLengthVal.toString()} characters`;
-
         if (errorMessage) {
           return errorMessage;
         } else {
           return minText;
         }
       }
-
     case 'max':
       {
         if (!maxLength) return;
         const maxLengthVal = maxLength && maxLength.value;
         const errorMessage = maxLength && maxLength.message && maxLength.message[defaultLanguage];
         const maxText = `Maximum of ${maxLengthVal.toString()} characters`;
-
         if (errorMessage) {
           return errorMessage;
         } else {
           return maxText;
         }
       }
-
     case 'between':
       {
         if (!maxLength || !minLength) return;
@@ -559,7 +508,6 @@ const doCreateMessage = (type, minLength, maxLength, currentLength, defaultLangu
         const maxLengthVal = maxLength && maxLength.value;
         const errorMessage = minLength && minLength.message && minLength.message[defaultLanguage];
         const rangeText = `Between ${minLengthVal.toString()}-${maxLengthVal.toString()} characters)`;
-
         if (errorMessage) {
           return errorMessage;
         } else if (currentLength < minLengthVal) {
@@ -572,16 +520,13 @@ const doCreateMessage = (type, minLength, maxLength, currentLength, defaultLangu
           return rangeText;
         }
       }
-
     default:
       return null;
   }
 };
 const getFieldType = field => {
   var _field$editor, _field$editor$propert;
-
   if (!field) return null;
-
   if (field.dataType === 'string' && field.editor && field.editor.id === 'multiline') {
     return 'textarea';
   } else if (field.dataType === 'string' && field.editor && field.editor.id === 'list-dropdown') {
@@ -606,7 +551,6 @@ const getFieldType = field => {
 };
 
 const sagas = [takeEvery(SUBMIT_FORM_SUCCESS, onFormSuccess), takeEvery(SUBMIT_FORM_FOR_VALIDATION, doValidateForm), takeEvery(SUBMIT_FORM, onSubmitForm), takeEvery(SET_FORM_ID, doFetchForm), takeLatest(VALIDATE_FIELD, onValidateField$1), takeEvery(PAGE_FORWARD, doTogglePage), takeEvery(PAGE_BACK, doTogglePage), takeEvery(SET_FORM_DATA, getEntryPickerData), takeLatest(SET_FORM_DATA, setDefaultValueFields)];
-
 function* doValidateForm(action) {
   const {
     formId
@@ -617,7 +561,6 @@ function* doValidateForm(action) {
     formId
   });
 }
-
 function* onValidateField$1(action) {
   const {
     formId,
@@ -626,7 +569,6 @@ function* onValidateField$1(action) {
   } = action;
   if ((value === null || value === void 0 ? void 0 : value.length) >= 1) yield call(onValidateSingleField, formId, id, value);
 }
-
 function* validateGroupfields(formId, groupId) {
   const state = yield select();
   const selectPostData = makeSelectFormPostData(formId);
@@ -637,11 +579,9 @@ function* validateGroupfields(formId, groupId) {
   let newErrors = [];
   groupFields.forEach(field => {
     let val = '';
-
     if (postData[field.id]) {
       val = postData[field.id];
     }
-
     const err = doValidateField(field, val);
     if (err) newErrors.push(err);
   });
@@ -651,7 +591,6 @@ function* validateGroupfields(formId, groupId) {
     value: newErrors
   });
 }
-
 function* onValidateAllFields(formId) {
   const state = yield select();
   const selectPostData = makeSelectFormPostData(formId);
@@ -661,11 +600,9 @@ function* onValidateAllFields(formId) {
   let newErrors = [];
   fields.forEach(field => {
     let val = '';
-
     if (postData[field.id]) {
       val = postData[field.id];
     }
-
     const err = doValidateField(field, val);
     if (err) newErrors.push(err);
   });
@@ -675,7 +612,6 @@ function* onValidateAllFields(formId) {
     value: newErrors
   });
 }
-
 function* onValidateSingleField(formId, fieldId, value) {
   const state = yield select();
   const selectFormFields = makeSelectFormFields(formId);
@@ -683,8 +619,8 @@ function* onValidateSingleField(formId, fieldId, value) {
   const selectFormFieldErrors = makeSelectFormFieldErrors(formId);
   const errors = selectFormFieldErrors(state);
   const fieldData = fields.find(f => f.id == fieldId);
-  const newErrors = []; //loop through current errors to remove any of the item we currently edit
-
+  const newErrors = [];
+  //loop through current errors to remove any of the item we currently edit
   errors.forEach(error => {
     if (error.fieldId !== fieldId) {
       //push any existing errors to new array
@@ -699,7 +635,6 @@ function* onValidateSingleField(formId, fieldId, value) {
     value: newErrors
   });
 }
-
 function* doTogglePage(action) {
   const {
     formId,
@@ -708,11 +643,9 @@ function* doTogglePage(action) {
   const state = yield select();
   const selectFormGroups = makeSelectFormGroup(formId);
   const formGroups = selectFormGroups(state);
-
   if (action.type === PAGE_FORWARD) {
     yield validateGroupfields(formId, formGroups[pageIndex].id);
   }
-
   yield put({
     type: SET_CURRENT_PAGE,
     formId: formId,
@@ -721,17 +654,13 @@ function* doTogglePage(action) {
     pageIndex: pageIndex
   });
 }
-
 function* doFetchForm(action) {
   var _schema$groups;
-
   const formId = action.formId;
   const schema = yield getFormSchema(formId);
   const groups = schema === null || schema === void 0 ? void 0 : (_schema$groups = schema.groups) === null || _schema$groups === void 0 ? void 0 : _schema$groups.filter(group => group.id !== 'private' && group.id !== 'settings');
-
   if (formId && schema) {
     var _schema$groups2, _submitButtonText$def;
-
     if ((schema === null || schema === void 0 ? void 0 : (_schema$groups2 = schema.groups) === null || _schema$groups2 === void 0 ? void 0 : _schema$groups2.length) > 0) {
       yield put({
         type: SET_CURRENT_PAGE,
@@ -741,10 +670,10 @@ function* doFetchForm(action) {
         pageCount: groups.length
       });
     }
-
     const submitButtonText = schema.fields.find(f => f.id === 'submitButtonText');
     const fields = schema === null || schema === void 0 ? void 0 : schema.fields.map(field => {
-      return { ...field,
+      return {
+        ...field,
         type: getFieldType(field)
       };
     });
@@ -760,18 +689,15 @@ function* doFetchForm(action) {
     });
   }
 }
-
 function* onFormSuccess(action) {
   const state = yield select();
   const selectFormFields = makeSelectFormFields(action.formId);
   const fields = selectFormFields(state);
   const redirect = fields.find(f => f.id === 'formSettingsRedirect');
   const message = fields.find(f => f.id === 'formSettingsMessage');
-
   if (redirect !== null && redirect !== void 0 && redirect.default) {
     window.location.href = redirect.default['en-GB'];
   }
-
   if (message !== null && message !== void 0 && message.default) {
     yield put({
       type: SET_SUCCESS_MESSAGE,
@@ -780,7 +706,6 @@ function* onFormSuccess(action) {
     });
   }
 }
-
 function* onSubmitForm(action) {
   const {
     formId
@@ -789,10 +714,8 @@ function* onSubmitForm(action) {
   const selectFormFieldErrors = makeSelectFormFieldErrors(formId);
   const errors = selectFormFieldErrors(state);
   const canSubmit = (errors === null || errors === void 0 ? void 0 : errors.length) === 0;
-
   if (canSubmit) {
     var _formResObj$sys;
-
     yield put({
       type: SET_SUBMITTING_FORM,
       isSubmitting: true,
@@ -805,7 +728,6 @@ function* onSubmitForm(action) {
       formPost: rawData.data
     };
     const formResObj = yield postForm(formObj);
-
     if (formResObj !== null && formResObj !== void 0 && (_formResObj$sys = formResObj.sys) !== null && _formResObj$sys !== void 0 && _formResObj$sys.id) {
       yield put({
         type: SUBMIT_FORM_SUCCESS,
@@ -819,7 +741,6 @@ function* onSubmitForm(action) {
     }
   }
 }
-
 function* setDefaultValueFields(action) {
   const {
     formId,
@@ -831,15 +752,12 @@ function* setDefaultValueFields(action) {
   fields.forEach(field => {
     if (field.dataType == 'string' && field.default) {
       const val = field.default[defaultLanguage];
-
       if (val) {
         fieldObj[field.id] = val;
       }
     }
-
     if (field.id == 'sourceEntry') {
       const val = entryId;
-
       if (val) {
         fieldObj[field.id] = val;
       }
@@ -851,7 +769,6 @@ function* setDefaultValueFields(action) {
     value: fieldObj
   });
 }
-
 function* getEntryPickerData(action) {
   const {
     formId,
@@ -859,7 +776,6 @@ function* getEntryPickerData(action) {
   } = action;
   const entriesToGet = fields.filter(f => f.dataFormat == 'entry');
   let entriesList = [];
-
   if (entriesToGet) {
     entriesList = yield all(entriesToGet.map(entry => {
       const entriesObj = {
@@ -882,7 +798,6 @@ const action = (type, payload = {}) => ({
   type,
   ...payload
 });
-
 const onSubmit = formId => action(SUBMIT_FORM_FOR_VALIDATION, {
   formId
 });
@@ -931,7 +846,6 @@ const actions = {
 };
 
 const ThemeContext = /*#__PURE__*/createContext();
-
 const ThemeProvider = ({
   children,
   theme
@@ -942,7 +856,6 @@ const ThemeProvider = ({
     theme: theme
   }, children));
 };
-
 ThemeProvider.propTypes = {
   children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
   theme: PropTypes.object
@@ -1007,7 +920,6 @@ const Label = ({
     className: "visuallyHidden"
   }, " (required)"));
 };
-
 Label.propTypes = {
   className: PropTypes.string,
   label: PropTypes.string,
@@ -1065,7 +977,6 @@ const TextfieldStyled = styled.div.withConfig({
 }) => {
   return css(["display:", ";"], isHidden ? 'none' : 'block');
 });
-
 const Textfield = ({
   className,
   field,
@@ -1157,7 +1068,6 @@ const Textfield = ({
     d: "m2 8 4.418 4.667L14 4.659l-1.246-1.326-6.336 6.692-3.18-3.332L2 8Z"
   }))));
 };
-
 Textfield.propTypes = {
   className: PropTypes.string,
   field: PropTypes.any,
@@ -1264,7 +1174,6 @@ const Textarea = ({
     d: "m2 8 4.418 4.667L14 4.659l-1.246-1.326-6.336 6.692-3.18-3.332L2 8Z"
   }))));
 };
-
 Textarea.propTypes = {
   className: PropTypes.string,
   field: PropTypes.any,
@@ -1302,7 +1211,6 @@ const HiddenField = ({
     isHidden: true
   });
 };
-
 HiddenField.propTypes = {
   className: PropTypes.string,
   id: PropTypes.string,
@@ -1350,7 +1258,6 @@ const Dropdown = ({
     }, val[defaultLanguage]);
   })));
 };
-
 Dropdown.propTypes = {
   className: PropTypes.string,
   formId: PropTypes.string,
@@ -1370,7 +1277,6 @@ const CheckboxStyled = styled.div.withConfig({
 }) => {
   return css(["", ""], useDefaultTheme && css([".checkbox-wrapper{display:flex;flex-wrap:wrap;justify-content:flex-start;align-items:center;input{height:auto;width:auto;margin:0 4px 0 0;}label{display:inline-block;}}"]));
 });
-
 const Checkbox = ({
   className,
   formId,
@@ -1387,18 +1293,15 @@ const Checkbox = ({
   // NF change rules of hooks
   let isDefaultChecked = defaultValue && defaultValue[defaultLanguage];
   const [isChecked, setIsChecked] = useState(isDefaultChecked || '');
-
   switch (type) {
     case 'multiple':
       {
         if (!validations) return null;
         const isRequired = validations && validations.required ? true : false;
         const cbValues = validations && validations.allowedValues && validations.allowedValues.values;
-
         const _handleChange = (value, isChecked) => {
           setCheckboxValue(formId, id, value, isChecked);
         };
-
         if (!cbValues || cbValues.length < 1) return null;
         return /*#__PURE__*/React.createElement(CheckboxStyled, {
           className: `checkbox-container`,
@@ -1426,14 +1329,12 @@ const Checkbox = ({
           }));
         }));
       }
-
     case 'single':
       {
         const _handleChange = isChecked => {
           setIsChecked(isChecked);
           setCheckboxValue(formId, id, isChecked);
         };
-
         return /*#__PURE__*/React.createElement(CheckboxStyled, {
           className: `checkbox-container`,
           useDefaultTheme: useDefaultTheme
@@ -1455,7 +1356,6 @@ const Checkbox = ({
       }
   }
 };
-
 Checkbox.propTypes = {
   className: PropTypes.string,
   formId: PropTypes.string,
@@ -1477,7 +1377,6 @@ const RadioButtonStyled = styled.div.withConfig({
 }) => {
   return css(["", ""], useDefaultTheme && css([".radio-wrapper{display:flex;flex-wrap:wrap;justify-content:flex-start;align-items:center;input{height:auto;width:auto;margin:0 4px 0 0;}label{display:inline-block;}}"]));
 });
-
 const RadioButton = ({
   className,
   formId,
@@ -1521,7 +1420,6 @@ const RadioButton = ({
     }));
   }));
 };
-
 RadioButton.propTypes = {
   className: PropTypes.string,
   formId: PropTypes.string,
@@ -1553,6 +1451,7 @@ RadioButton.propTypes = {
 //m > minutes, eg ...T16:05:00 = 5
 //t > abbreviated AM / PM, e.g. A or P
 //tt > AM / PM, e.g. AM or PM
+
 const formatDate = (date, format = 'dd MMMM yyyy') => {
   if (!date) return null;
   const dateObj = new Date(date);
@@ -1564,8 +1463,9 @@ const formatDate = (date, format = 'dd MMMM yyyy') => {
   const dayNameInt = dateObj.getDay();
   const timeArr = dateString[1].split(':');
   const hour = timeArr[0];
-  const minute = timeArr[1]; //convert to abstract strings to avoid character replacement along the chain, eg. Monday would match 'M' month single parameter
+  const minute = timeArr[1];
 
+  //convert to abstract strings to avoid character replacement along the chain, eg. Monday would match 'M' month single parameter
   const YEAR = ['&&', '&'];
   const MONTH = ['££££', '£££', '££', '£'];
   const DAY = ['%%%%', '%%%', '%%', '%'];
@@ -1577,16 +1477,13 @@ const formatDate = (date, format = 'dd MMMM yyyy') => {
   .replace('MMMM', MONTH[0]).replace('MMM', MONTH[1]).replace('MM', MONTH[2]).replace('M', MONTH[3]).replace('dddd', DAY[0]).replace('ddd', DAY[1]).replace('dd', DAY[2]).replace('d', DAY[3]).replace('HH', HOUR24[0]).replace('H', HOUR24[1]).replace('hh', HOUR12[0]).replace('h', HOUR12[1]).replace('mm', MINUTE[0]).replace('m', MINUTE[1]).replace('tt', TF[0]).replace('t', TF[1]).replace(YEAR[0], year).replace(YEAR[1], year.slice(-2)).replace(MONTH[0], monthsLong[parseInt(month, 10)]).replace(MONTH[1], monthsShort[parseInt(month, 10)]).replace(MONTH[2], month).replace(MONTH[3], parseInt(month, 10)).replace(DAY[0], daysLong[dayNameInt]).replace(DAY[1], daysShort[dayNameInt]).replace(DAY[2], day).replace(DAY[3], parseInt(day, 10)).replace(HOUR24[0], hour).replace(HOUR24[1], parseInt(hour, 10)).replace(HOUR12[0], parseHour(hour)).replace(HOUR12[1], parseInt(parseHour(hour), 10)).replace(MINUTE[0], minute).replace(MINUTE[1], parseInt(minute, 10)).replace(TF[0], parseTF(hour)).replace(TF[1], parseTF(hour).slice(0, -1));
   return formattedDate;
 };
-
 const monthsShort = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const monthsLong = ['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 const daysShort = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const daysLong = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-
 const parseHour = hour => {
   return hour > 12 ? hour - 12 : hour;
 };
-
 const parseTF = hour => {
   return hour > 11 ? 'PM' : 'AM';
 };
@@ -1604,13 +1501,11 @@ const SingleDate = ({
   const onlyPassedDates = validations && validations.pastDateTime;
   const d = new Date();
   const todaysDate = d.toISOString();
-
   const _handleChange = (formId, id, value) => {
     const d = new Date(value);
     const isoDate = d.toISOString();
     setValue(formId, id, isoDate);
   };
-
   return /*#__PURE__*/React.createElement("div", {
     className: "date-container"
   }, /*#__PURE__*/React.createElement(Label, {
@@ -1627,7 +1522,6 @@ const SingleDate = ({
     onChange: e => _handleChange(formId, id, e.target.value)
   }));
 };
-
 SingleDate.propTypes = {
   className: PropTypes.string,
   formId: PropTypes.string,
@@ -1646,7 +1540,6 @@ const DateRangeStyled = styled.div.withConfig({
 }) => {
   return css(["", ""], useDefaultTheme && css([".daterange-wrapper{display:flex;flex-direction:column;input{&:first-child{margin:0 0 8px 0;}}}"]));
 });
-
 const DateRange = ({
   className,
   id,
@@ -1662,15 +1555,12 @@ const DateRange = ({
   const todaysDate = d.toISOString();
   const [toDate, setToDate] = useState('');
   const [fromDate, setFromDate] = useState('');
-
   const _handleDateChange = (dateType, formId, id, value) => {
     _updateDateProps(dateType, value);
-
     const d = new Date(value);
     const isoDate = d.toISOString();
     setDateRangeValues(formId, id, dateType, isoDate);
   };
-
   const _updateDateProps = (type, date) => {
     switch (type) {
       case 'from':
@@ -1680,7 +1570,6 @@ const DateRange = ({
           setFromDate(newDate);
           break;
         }
-
       case 'to':
         {
           const d = new Date(date);
@@ -1688,12 +1577,10 @@ const DateRange = ({
           setToDate(newDate);
           break;
         }
-
       default:
         return;
     }
   };
-
   return /*#__PURE__*/React.createElement(DateRangeStyled, {
     className: `daterange-container`,
     useDefaultTheme: useDefaultTheme
@@ -1730,7 +1617,6 @@ const DateRange = ({
     onChange: e => _handleDateChange('to', formId, id, e.target.value)
   })));
 };
-
 DateRange.propTypes = {
   className: PropTypes.string,
   formId: PropTypes.string,
@@ -1750,7 +1636,6 @@ const EntryPickerStyled = styled.div.withConfig({
 }) => {
   return css(["", ""], useDefaultTheme && css([".radio-wrapper,.checkbox-wrapper{display:flex;flex-wrap:wrap;justify-content:flex-start;align-items:center;input{height:auto;width:auto;margin:0 4px 0 0;}label{display:inline-block;}}"]));
 });
-
 const EntryPicker = ({
   className,
   results,
@@ -1765,7 +1650,6 @@ const EntryPicker = ({
   if (!results || results.length > 3) return null;
   const isRequired = validations && validations.required ? true : false;
   let valArr = [];
-
   const _handleChange = (formId, id, value, isChecked) => {
     if (type === 'checkbox') {
       if (isChecked) {
@@ -1773,13 +1657,11 @@ const EntryPicker = ({
       } else if (!isChecked) {
         valArr = valArr.filter(valItem => valItem !== value);
       }
-
       setValue(formId, id, valArr);
     } else {
       setValue(formId, id, value);
     }
   };
-
   return /*#__PURE__*/React.createElement(EntryPickerStyled, {
     className: `${type}-container`,
     useDefaultTheme: useDefaultTheme
@@ -1806,7 +1688,6 @@ const EntryPicker = ({
     }));
   }));
 };
-
 EntryPicker.propTypes = {
   className: PropTypes.string,
   results: PropTypes.array,
@@ -1835,7 +1716,6 @@ const FormComposer = ({
   if (!fields || fields.length < 1) return null;
   return fields.map((field, idx) => {
     if (!field) return null;
-
     switch (field.type) {
       case 'number':
       case 'textfield':
@@ -1857,7 +1737,6 @@ const FormComposer = ({
             useDefaultTheme: useDefaultTheme
           });
         }
-
       case 'textarea':
         {
           return /*#__PURE__*/React.createElement(Textarea, {
@@ -1877,7 +1756,6 @@ const FormComposer = ({
             errors: errors
           });
         }
-
       case 'dropdown':
         {
           return /*#__PURE__*/React.createElement(Dropdown, {
@@ -1892,7 +1770,6 @@ const FormComposer = ({
             useDefaultTheme: useDefaultTheme
           });
         }
-
       case 'checkbox':
         {
           return /*#__PURE__*/React.createElement(Checkbox, {
@@ -1910,7 +1787,6 @@ const FormComposer = ({
             setCheckboxValue: setCheckboxValue
           });
         }
-
       case 'radio':
         {
           return /*#__PURE__*/React.createElement(RadioButton, {
@@ -1925,7 +1801,6 @@ const FormComposer = ({
             useDefaultTheme: useDefaultTheme
           });
         }
-
       case 'entryPicker':
         {
           const type = field.dataType === 'objectArray' ? 'checkbox' : 'radio';
@@ -1942,7 +1817,6 @@ const FormComposer = ({
             formId: formId
           });
         }
-
       case 'date':
         {
           return /*#__PURE__*/React.createElement(SingleDate, {
@@ -1956,7 +1830,6 @@ const FormComposer = ({
             useDefaultTheme: useDefaultTheme
           });
         }
-
       case 'dateRange':
         {
           return /*#__PURE__*/React.createElement(DateRange, {
@@ -1969,7 +1842,6 @@ const FormComposer = ({
             useDefaultTheme: useDefaultTheme
           });
         }
-
       case 'hidden':
         {
           return /*#__PURE__*/React.createElement(HiddenField, {
@@ -1985,7 +1857,6 @@ const FormComposer = ({
     }
   });
 };
-
 FormComposer.propTypes = {
   fields: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
   formData: PropTypes.object,
@@ -2106,23 +1977,14 @@ const Form = ({
   onCustomSubmit
 }) => {
   const dispatch = useDispatch();
-
   const _setFormId = formId => dispatch(setFormId(formId));
-
   const _setValue = (formId, id, value) => dispatch(setValue(formId, id, value));
-
   const _setCheckboxValue = (formId, id, value, isChecked) => dispatch(setCheckboxValue(formId, id, value, isChecked));
-
   const _setDateRangeValues = (formId, id, dateType, value) => dispatch(setDateRangeValues(formId, id, dateType, value));
-
   const _onValidateField = (formId, id, value) => dispatch(onValidateField(formId, id, value));
-
   const _doTogglePageForward = (formId, pageIndex) => dispatch(doTogglePageForward(formId, pageIndex));
-
   const _doTogglePageBack = (formId, pageIndex) => dispatch(doTogglePageBack(formId, pageIndex));
-
   const _onSubmit = formId => dispatch(onSubmit(formId));
-
   useEffect(() => {
     if (formId) _setFormId(formId);
   }, [formId]);
@@ -2144,7 +2006,6 @@ const Form = ({
   const entries = useSelector(selectFormEntries);
   const formData = useSelector(selectFormPostData);
   const validate = useSelector(selectFormValidationSent);
-
   if (pagingInfo && pagingInfo.pageCount > 1) {
     const isLastPage = pagingInfo.pageCount == pagingInfo.pageIndex + 1;
     return /*#__PURE__*/React.createElement(ThemeProvider, {
@@ -2182,7 +2043,6 @@ const Form = ({
       loading: status === null || status === void 0 ? void 0 : status.isLoading,
       action: () => {
         _onSubmit(formId);
-
         if (onCustomSubmit) onCustomSubmit();
       },
       useDefaultTheme: useDefaultTheme
@@ -2229,7 +2089,6 @@ const Form = ({
       type: "button",
       action: () => {
         _onSubmit(formId);
-
         if (onCustomSubmit) onCustomSubmit();
       },
       useDefaultTheme: useDefaultTheme
@@ -2254,7 +2113,6 @@ const Form = ({
     }))));
   }
 };
-
 Form.propTypes = {
   className: PropTypes.string,
   formId: PropTypes.string,

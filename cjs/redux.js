@@ -2,16 +2,16 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var version$1 = require('./version-7ce96442.js');
-var selectors$1 = require('./selectors-fa607198.js');
-var version$2 = require('./version-d6e26cc4.js');
+var version$1 = require('./version-38afaf2a.js');
+var selectors$1 = require('./selectors-c76c2676.js');
+var version$2 = require('./version-886f49d8.js');
 require('redux');
 require('redux-thunk');
 require('redux-saga');
 require('redux-injectors');
 require('immer');
 require('deepmerge');
-require('./reducers-73a03ef4.js');
+require('./reducers-9afb5f89.js');
 require('jsonpath-mapper');
 require('query-string');
 require('@redux-saga/core/effects');
@@ -41,6 +41,7 @@ var selectors = {
   version: version$1.version$1
 };
 
+// Remap the objects so they are presented in "feature" hierarchy
 // e.g. { routing: { types, actions }, navigation: { types, actions } }
 // instead of { types: { routing, navigation }, actions: { routing, navigation } }
 

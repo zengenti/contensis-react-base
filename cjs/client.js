@@ -11,28 +11,28 @@ var reactRouterDom = require('react-router-dom');
 var component = require('@loadable/component');
 var queryString = require('query-string');
 var reactCookie = require('react-cookie');
-var version = require('./version-7ce96442.js');
-var version$1 = require('./version-d6e26cc4.js');
-var App = require('./App-48706fde.js');
-var selectors = require('./selectors-fa607198.js');
-var ContensisDeliveryApi = require('./ContensisDeliveryApi-cfdefe17.js');
+var version = require('./version-38afaf2a.js');
+var version$1 = require('./version-886f49d8.js');
+var App = require('./App-2a7a16ad.js');
+var selectors = require('./selectors-c76c2676.js');
+var ContensisDeliveryApi = require('./ContensisDeliveryApi-de88df2a.js');
 require('redux');
 require('redux-thunk');
 require('redux-saga');
 require('redux-injectors');
 require('immer');
 require('deepmerge');
-require('./reducers-73a03ef4.js');
+require('./reducers-9afb5f89.js');
 require('@redux-saga/core/effects');
 require('history');
 require('loglevel');
-require('./login-dfcea036.js');
-require('./ToJs-d962c80f.js');
+require('./login-2ea569cc.js');
+require('./ToJs-61c03582.js');
 require('jsonpath-mapper');
 require('await-to-js');
 require('js-cookie');
 require('contensis-delivery-api');
-require('./RouteLoader-fcd1e4f1.js');
+require('./RouteLoader-47d70a26.js');
 require('react-router-config');
 require('reselect');
 
@@ -50,7 +50,6 @@ class ClientApp {
       withSagas,
       withEvents
     } = config;
-
     const GetClientJSX = store => {
       const ClientJsx = /*#__PURE__*/React__default["default"].createElement(reactHotLoader.AppContainer, null, /*#__PURE__*/React__default["default"].createElement(reactCookie.CookiesProvider, null, /*#__PURE__*/React__default["default"].createElement(reactRedux.Provider, {
         store: store
@@ -62,12 +61,11 @@ class ClientApp {
       })))));
       return ClientJsx;
     };
-
     const isProduction = !(process.env.NODE_ENV !== 'production');
+
     /**
      * Webpack HMR Setup.
      */
-
     const HMRRenderer = Component => {
       if (isProduction) component.loadableReady(() => {
         reactDom.hydrate(Component, documentRoot);
@@ -75,7 +73,6 @@ class ClientApp {
         namespace: 'modern'
       });else reactDom.render(Component, documentRoot);
     };
-
     const hmr = store => {
       // webpack Hot Module Replacement API
       if (module.hot) {
@@ -85,20 +82,17 @@ class ClientApp {
         });
       }
     };
-
     const qs = queryString.parse(window.location.search);
     const versionStatus = ContensisDeliveryApi.deliveryApi.getClientSideVersionStatus();
-
     if (window.isDynamic || window.REDUX_DATA || process.env.NODE_ENV !== 'production') {
       version.createStore(withReducers, window.REDUX_DATA, App.browserHistory, stateType).then(store => {
         const state = store.getState();
         const ssrVersionStatus = version.selectVersionStatus(state);
         if (!ssrVersionStatus) store.dispatch(version$1.setVersionStatus(versionStatus));
-        /* eslint-disable no-console */
 
+        /* eslint-disable no-console */
         console.log('Hydrating from inline Redux');
         /* eslint-enable no-console */
-
         store.runSaga(App.rootSaga(withSagas));
         store.dispatch(selectors.setCurrentProject(App.pickProject(window.location.hostname, qs), [], window.location.hostname));
         delete window.REDUX_DATA;
@@ -118,7 +112,6 @@ class ClientApp {
       });
     }
   }
-
 }
 
 exports.ReactApp = App.AppRoot;
