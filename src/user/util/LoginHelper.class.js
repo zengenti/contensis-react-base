@@ -160,6 +160,7 @@ export class LoginHelper {
         client.security.users.getUserGroups({
           userId: user.id,
           includeInherited: true,
+          pageOptions: { pageSize: 100 }
         })
       );
       // Set groups attribute in user object to be the items
