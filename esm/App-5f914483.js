@@ -5,7 +5,7 @@ import { d as deliveryApi, c as cachedSearch } from './ContensisDeliveryApi-ad06
 import { G as GET_NODE_TREE, s as selectVersionStatus, S as SET_NODE_TREE, a as GET_NODE_TREE_ERROR } from './version-dd31c7f0.js';
 import { h as hasNavigationTree, i as injectRedux } from './version-f4629693.js';
 import { b as selectCurrentProject, S as SET_NAVIGATION_PATH, d as SET_ROUTE, a as selectRouteEntry, e as selectCurrentNode, U as UPDATE_LOADING_STATE, f as selectCurrentAncestors, h as selectCurrentSiblings, i as selectRouteEntryEntryId, j as selectRouteEntryLanguage, k as selectMappedEntry, l as SET_ENTRY, m as SET_ANCESTORS, n as SET_SIBLINGS, q as queryParams, o as selectCurrentSearch, p as setRoute } from './selectors-3f0d804d.js';
-import { f as findContentTypeMapping, h as handleRequiresLoginSaga, g as getManagementApiClient, l as loginSagas } from './login-bffb081f.js';
+import { f as findContentTypeMapping, h as handleRequiresLoginSaga, g as getManagementApiClient, l as loginSagas } from './login-4d07c2de.js';
 import { Op, Query } from 'contensis-delivery-api';
 import { to } from 'await-to-js';
 import { R as REGISTER_USER, a as REGISTER_USER_SUCCESS, b as REGISTER_USER_FAILED, c as REQUEST_USER_PASSWORD_RESET, d as RESET_USER_PASSWORD, C as CHANGE_USER_PASSWORD, e as REQUEST_USER_PASSWORD_RESET_SENDING, f as REQUEST_USER_PASSWORD_RESET_SUCCESS, g as REQUEST_USER_PASSWORD_RESET_ERROR, h as RESET_USER_PASSWORD_SENDING, i as RESET_USER_PASSWORD_SUCCESS, j as RESET_USER_PASSWORD_ERROR, k as CHANGE_USER_PASSWORD_ERROR, l as CHANGE_USER_PASSWORD_SENDING, m as CHANGE_USER_PASSWORD_SUCCESS } from './reducers-3d5c37d1.js';
@@ -772,4 +772,4 @@ const AppRoot = props => {
 };
 
 export { AppRoot as A, browserHistory as b, history as h, pickProject as p, rootSaga as r };
-//# sourceMappingURL=App-4fb1fc44.js.map
+//# sourceMappingURL=App-5f914483.js.map
