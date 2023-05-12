@@ -124,7 +124,10 @@ var reducer = produce((state, action) => {
           formId,
           value
         } = action || {};
-        state[formId].data = value;
+        state[formId].data = {
+          ...state[formId].data,
+          value
+        };
         return;
       }
     case SET_CHECKBOX_VALUE:
