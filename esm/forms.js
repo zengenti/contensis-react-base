@@ -126,7 +126,7 @@ var reducer = produce((state, action) => {
         } = action || {};
         state[formId].data = {
           ...state[formId].data,
-          value
+          ...value
         };
         return;
       }
