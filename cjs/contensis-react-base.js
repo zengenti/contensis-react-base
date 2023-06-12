@@ -10,7 +10,7 @@ var mapJson = require('jsonpath-mapper');
 require('reselect');
 require('deepmerge');
 require('query-string');
-var sagas = require('./sagas-6d12e7ca.js');
+var sagas = require('./sagas-7fe150ac.js');
 require('immer');
 require('deep-equal');
 var contensisCoreApi = require('contensis-core-api');
