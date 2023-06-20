@@ -112,6 +112,8 @@ export declare type SearchQueryParams = {
     linkDepth?: number;
     /** Alters the pagination style to retain previously loaded pages of results after loading next pages */
     loadMorePaging?: boolean;
+    /** A list of fields to omit from the default search fields that are added to weightedSearchFields */
+    omitDefaultSearchFields?: string[];
     /** An array of orderBy expressions to add to the search query */
     orderBy?: string[];
     /** The number of items returned per page in the search */
