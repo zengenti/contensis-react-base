@@ -27,6 +27,7 @@ type SearchQueryArgs = WithOptional<
   | 'fields'
   | 'includeInSearchFields'
   | 'languages'
+  | 'omitDefaultSearchFields'
   | 'orderBy'
   | 'pageIndex'
   | 'searchTerm'
