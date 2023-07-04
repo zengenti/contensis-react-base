@@ -202,7 +202,7 @@ var reducer = produce((state, action) => {
           formId,
           message
         } = action || {};
-        state[formId].status.message.success = message;
+        state[formId].status.messages.success = message;
         return;
       }
     case SUBMIT_FORM_ERROR:
@@ -702,11 +702,14 @@ function* onFormSuccess(action) {
     window.location.href = redirect.default['en-GB'];
   }
   if (message !== null && message !== void 0 && message.default) {
-    yield put({
-      type: SET_SUCCESS_MESSAGE,
-      message: message.default['en-GB'],
-      formId: action.formId
-    });
+    const m = message.default['en-GB'];
+    if (m) {
+      yield put({
+        type: SET_SUCCESS_MESSAGE,
+        message: m,
+        formId: action.formId
+      });
+    }
   }
 }
 function* onSubmitForm(action) {
