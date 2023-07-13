@@ -4,8 +4,8 @@ import 'jsonpath-mapper';
 import { createSelector } from 'reselect';
 import merge from 'deepmerge';
 import 'query-string';
-import { g as getCurrentFacet, b as getPageIndex$2, e as getCurrentTab$1, h as getFacet$1, i as getTabFacets$1, j as getFacetsTotalCount$1, k as getFacetTitles$1, l as getFeaturedResults$2, m as getRenderableFilters$2, n as getIsLoading$2, p as getPaging, q as getPageIsLoading$2, r as getResults, s as getSearchTerm$2, u as getSearchTotalCount$1, v as getSelectedFilters, w as getQueryParameter$2, x as getTabsAndFacets$1, y as getTotalCount$1, z as withMappers, A as clearFilters, B as updateCurrentFacet, C as updateCurrentTab, D as updatePageIndex, E as updatePageSize, F as updateSearchTerm, G as updateSelectedFilters, H as updateSortOrder, I as selectListing, J as mapStateToSearchUri, K as Context$1, L as selectFacets, M as triggerSearch, N as getFilters, U as UPDATE_SORT_ORDER, O as toArray, P as UPDATE_SELECTED_FILTERS, Q as UPDATE_SEARCH_TERM, R as UPDATE_PAGE_SIZE, S as UPDATE_PAGE_INDEX, T as SET_SEARCH_FILTERS, V as SET_SEARCH_ENTRIES, W as SET_ROUTE_FILTERS, X as LOAD_FILTERS_COMPLETE, Y as LOAD_FILTERS_ERROR, Z as LOAD_FILTERS, _ as EXECUTE_SEARCH_ERROR, $ as EXECUTE_SEARCH, a0 as CLEAR_FILTERS, a1 as APPLY_CONFIG } from './sagas-0efcf4b0.js';
-export { a2 as actions, a7 as doSearch, a5 as expressions, a6 as queries, ad as routeParams, a9 as sagas, a3 as selectors, a8 as setRouteFilters, aa as triggerListingSsr, ab as triggerMinilistSsr, ac as triggerSearchSsr, a4 as types } from './sagas-0efcf4b0.js';
+import { g as getCurrentFacet, b as getPageIndex$2, e as getCurrentTab$1, h as getFacet$1, i as getTabFacets$1, j as getFacetsTotalCount$1, k as getFacetTitles$1, l as getFeaturedResults$2, m as getRenderableFilters$2, n as getIsLoading$2, p as getPaging, q as getPageIsLoading$2, r as getResults, s as getSearchTerm$2, u as getSearchTotalCount$1, v as getSelectedFilters, w as getQueryParameter$2, x as getTabsAndFacets$1, y as getTotalCount$1, z as withMappers, A as clearFilters, B as updateCurrentFacet, C as updateCurrentTab, D as updatePageIndex, E as updatePageSize, F as updateSearchTerm, G as updateSelectedFilters, H as updateSortOrder, I as selectListing, J as mapStateToSearchUri, K as Context$1, L as selectFacets, M as triggerSearch, N as getFilters, U as UPDATE_SORT_ORDER, O as toArray, P as UPDATE_SELECTED_FILTERS, Q as UPDATE_SEARCH_TERM, R as UPDATE_PAGE_SIZE, S as UPDATE_PAGE_INDEX, T as SET_SEARCH_FILTERS, V as SET_SEARCH_ENTRIES, W as SET_ROUTE_FILTERS, X as LOAD_FILTERS_COMPLETE, Y as LOAD_FILTERS_ERROR, Z as LOAD_FILTERS, _ as EXECUTE_SEARCH_ERROR, $ as EXECUTE_SEARCH, a0 as CLEAR_FILTERS, a1 as APPLY_CONFIG } from './sagas-933a8fc8.js';
+export { a2 as actions, a7 as doSearch, a5 as expressions, a6 as queries, ad as routeParams, a9 as sagas, a3 as selectors, a8 as setRouteFilters, aa as triggerListingSsr, ab as triggerMinilistSsr, ac as triggerSearchSsr, a4 as types } from './sagas-933a8fc8.js';
 import { produce } from 'immer';
 import equals from 'deep-equal';
 import 'contensis-core-api';
@@ -62,10 +62,10 @@ const withSearch = mappers => SearchComponent => {
     clearFilters: filterKey => withMappers(clearFilters(filterKey), mappers),
     updateCurrentFacet: facet => withMappers(updateCurrentFacet(facet), mappers),
     updateCurrentTab: id => withMappers(updateCurrentTab(id), mappers),
-    updatePageIndex: (pageIndex, scrollYPos) => withMappers(updatePageIndex(pageIndex, scrollYPos), mappers),
-    updatePageSize: (pageSize, scrollYPos) => withMappers(updatePageSize(pageSize, scrollYPos), mappers),
+    updatePageIndex: (pageIndex, scrollToElement) => withMappers(updatePageIndex(pageIndex, scrollToElement), mappers),
+    updatePageSize: (pageSize, scrollToElement) => withMappers(updatePageSize(pageSize, scrollToElement), mappers),
     updateSearchTerm: term => withMappers(updateSearchTerm(term), mappers),
-    updateSelectedFilters: (filter, key, isUnknownItem = false, scrollYPos) => withMappers(updateSelectedFilters(filter, key, isUnknownItem, scrollYPos), mappers),
+    updateSelectedFilters: (filter, key, isUnknownItem = false, scrollToElement) => withMappers(updateSelectedFilters(filter, key, isUnknownItem, scrollToElement), mappers),
     updateSortOrder: orderBy => withMappers(updateSortOrder(orderBy), mappers)
   };
   const connector = connect(mapStateToProps, mapDispatchToProps);
@@ -112,10 +112,10 @@ const withListing = mappers => ListingComponent => {
   const mapDispatchToProps = {
     clearFilters: filterKey => withMappers(clearFilters(filterKey), mappers),
     updateCurrentFacet: facet => withMappers(updateCurrentFacet(facet), mappers),
-    updatePageIndex: (pageIndex, scrollYPos) => withMappers(updatePageIndex(pageIndex, scrollYPos), mappers),
-    updatePageSize: (pageSize, scrollYPos) => withMappers(updatePageSize(pageSize, scrollYPos), mappers),
+    updatePageIndex: (pageIndex, scrollToElement) => withMappers(updatePageIndex(pageIndex, scrollToElement), mappers),
+    updatePageSize: (pageSize, scrollToElement) => withMappers(updatePageSize(pageSize, scrollToElement), mappers),
     updateSearchTerm: term => withMappers(updateSearchTerm(term), mappers),
-    updateSelectedFilters: (filter, key, isUnknownItem = false, scrollYPos) => withMappers(updateSelectedFilters(filter, key, isUnknownItem, scrollYPos), mappers),
+    updateSelectedFilters: (filter, key, isUnknownItem = false, scrollToElement) => withMappers(updateSelectedFilters(filter, key, isUnknownItem, scrollToElement), mappers),
     updateSortOrder: orderBy => withMappers(updateSortOrder(orderBy), mappers)
   };
   return connect(mapStateToProps, mapDispatchToProps)(toJS(Wrapper));
@@ -180,10 +180,10 @@ const useFacets = ({
     clearFilters: filterKey => dispatch(withMappers(clearFilters(filterKey), m)),
     updateCurrentFacet: facet => dispatch(withMappers(updateCurrentFacet(facet), m)),
     updateCurrentTab: id => withMappers(updateCurrentTab(id), m),
-    updatePageIndex: (pageIndex, scrollYPos) => dispatch(withMappers(updatePageIndex(pageIndex, scrollYPos), m)),
-    updatePageSize: (pageSize, scrollYPos) => dispatch(withMappers(updatePageSize(pageSize, scrollYPos), m)),
+    updatePageIndex: (pageIndex, scrollToElement) => dispatch(withMappers(updatePageIndex(pageIndex, scrollToElement), m)),
+    updatePageSize: (pageSize, scrollToElement) => dispatch(withMappers(updatePageSize(pageSize, scrollToElement), m)),
     updateSearchTerm: term => dispatch(withMappers(updateSearchTerm(term), m)),
-    updateSelectedFilters: (filter, key, isUnknownItem = false, scrollYPos) => dispatch(withMappers(updateSelectedFilters(filter, key, isUnknownItem, scrollYPos), m)),
+    updateSelectedFilters: (filter, key, isUnknownItem = false, scrollToElement) => dispatch(withMappers(updateSelectedFilters(filter, key, isUnknownItem, scrollToElement), m)),
     updateSortOrder: orderBy => dispatch(withMappers(updateSortOrder(orderBy), m))
   };
   const {
@@ -272,10 +272,10 @@ const useListing = ({
   const dispatchProps = {
     clearFilters: filterKey => dispatch(withMappers(clearFilters(filterKey), m)),
     updateCurrentFacet: facet => dispatch(withMappers(updateCurrentFacet(facet), m)),
-    updatePageIndex: (pageIndex, scrollYPos) => dispatch(withMappers(updatePageIndex(pageIndex, scrollYPos), m)),
-    updatePageSize: (pageSize, scrollYPos) => dispatch(withMappers(updatePageSize(pageSize, scrollYPos), m)),
+    updatePageIndex: (pageIndex, scrollToElement) => dispatch(withMappers(updatePageIndex(pageIndex, scrollToElement), m)),
+    updatePageSize: (pageSize, scrollToElement) => dispatch(withMappers(updatePageSize(pageSize, scrollToElement), m)),
     updateSearchTerm: term => dispatch(withMappers(updateSearchTerm(term), m)),
-    updateSelectedFilters: (filter, key, isUnknownItem = false, scrollYPos) => dispatch(withMappers(updateSelectedFilters(filter, key, isUnknownItem, scrollYPos), m)),
+    updateSelectedFilters: (filter, key, isUnknownItem = false, scrollToElement) => dispatch(withMappers(updateSelectedFilters(filter, key, isUnknownItem, scrollToElement), m)),
     updateSortOrder: orderBy => dispatch(withMappers(updateSortOrder(orderBy), m))
   };
   const {

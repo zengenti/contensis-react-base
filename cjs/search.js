@@ -8,7 +8,7 @@ require('jsonpath-mapper');
 var reselect = require('reselect');
 var merge = require('deepmerge');
 require('query-string');
-var sagas = require('./sagas-e122fc26.js');
+var sagas = require('./sagas-e04b94c1.js');
 var immer = require('immer');
 var equals = require('deep-equal');
 require('contensis-core-api');
@@ -71,10 +71,10 @@ const withSearch = mappers => SearchComponent => {
     clearFilters: filterKey => sagas.withMappers(sagas.clearFilters(filterKey), mappers),
     updateCurrentFacet: facet => sagas.withMappers(sagas.updateCurrentFacet(facet), mappers),
     updateCurrentTab: id => sagas.withMappers(sagas.updateCurrentTab(id), mappers),
-    updatePageIndex: (pageIndex, scrollYPos) => sagas.withMappers(sagas.updatePageIndex(pageIndex, scrollYPos), mappers),
-    updatePageSize: (pageSize, scrollYPos) => sagas.withMappers(sagas.updatePageSize(pageSize, scrollYPos), mappers),
+    updatePageIndex: (pageIndex, scrollToElement) => sagas.withMappers(sagas.updatePageIndex(pageIndex, scrollToElement), mappers),
+    updatePageSize: (pageSize, scrollToElement) => sagas.withMappers(sagas.updatePageSize(pageSize, scrollToElement), mappers),
     updateSearchTerm: term => sagas.withMappers(sagas.updateSearchTerm(term), mappers),
-    updateSelectedFilters: (filter, key, isUnknownItem = false, scrollYPos) => sagas.withMappers(sagas.updateSelectedFilters(filter, key, isUnknownItem, scrollYPos), mappers),
+    updateSelectedFilters: (filter, key, isUnknownItem = false, scrollToElement) => sagas.withMappers(sagas.updateSelectedFilters(filter, key, isUnknownItem, scrollToElement), mappers),
     updateSortOrder: orderBy => sagas.withMappers(sagas.updateSortOrder(orderBy), mappers)
   };
   const connector = reactRedux.connect(mapStateToProps, mapDispatchToProps);
@@ -121,10 +121,10 @@ const withListing = mappers => ListingComponent => {
   const mapDispatchToProps = {
     clearFilters: filterKey => sagas.withMappers(sagas.clearFilters(filterKey), mappers),
     updateCurrentFacet: facet => sagas.withMappers(sagas.updateCurrentFacet(facet), mappers),
-    updatePageIndex: (pageIndex, scrollYPos) => sagas.withMappers(sagas.updatePageIndex(pageIndex, scrollYPos), mappers),
-    updatePageSize: (pageSize, scrollYPos) => sagas.withMappers(sagas.updatePageSize(pageSize, scrollYPos), mappers),
+    updatePageIndex: (pageIndex, scrollToElement) => sagas.withMappers(sagas.updatePageIndex(pageIndex, scrollToElement), mappers),
+    updatePageSize: (pageSize, scrollToElement) => sagas.withMappers(sagas.updatePageSize(pageSize, scrollToElement), mappers),
     updateSearchTerm: term => sagas.withMappers(sagas.updateSearchTerm(term), mappers),
-    updateSelectedFilters: (filter, key, isUnknownItem = false, scrollYPos) => sagas.withMappers(sagas.updateSelectedFilters(filter, key, isUnknownItem, scrollYPos), mappers),
+    updateSelectedFilters: (filter, key, isUnknownItem = false, scrollToElement) => sagas.withMappers(sagas.updateSelectedFilters(filter, key, isUnknownItem, scrollToElement), mappers),
     updateSortOrder: orderBy => sagas.withMappers(sagas.updateSortOrder(orderBy), mappers)
   };
   return reactRedux.connect(mapStateToProps, mapDispatchToProps)(toJS(Wrapper));
@@ -189,10 +189,10 @@ const useFacets = ({
     clearFilters: filterKey => dispatch(sagas.withMappers(sagas.clearFilters(filterKey), m)),
     updateCurrentFacet: facet => dispatch(sagas.withMappers(sagas.updateCurrentFacet(facet), m)),
     updateCurrentTab: id => sagas.withMappers(sagas.updateCurrentTab(id), m),
-    updatePageIndex: (pageIndex, scrollYPos) => dispatch(sagas.withMappers(sagas.updatePageIndex(pageIndex, scrollYPos), m)),
-    updatePageSize: (pageSize, scrollYPos) => dispatch(sagas.withMappers(sagas.updatePageSize(pageSize, scrollYPos), m)),
+    updatePageIndex: (pageIndex, scrollToElement) => dispatch(sagas.withMappers(sagas.updatePageIndex(pageIndex, scrollToElement), m)),
+    updatePageSize: (pageSize, scrollToElement) => dispatch(sagas.withMappers(sagas.updatePageSize(pageSize, scrollToElement), m)),
     updateSearchTerm: term => dispatch(sagas.withMappers(sagas.updateSearchTerm(term), m)),
-    updateSelectedFilters: (filter, key, isUnknownItem = false, scrollYPos) => dispatch(sagas.withMappers(sagas.updateSelectedFilters(filter, key, isUnknownItem, scrollYPos), m)),
+    updateSelectedFilters: (filter, key, isUnknownItem = false, scrollToElement) => dispatch(sagas.withMappers(sagas.updateSelectedFilters(filter, key, isUnknownItem, scrollToElement), m)),
     updateSortOrder: orderBy => dispatch(sagas.withMappers(sagas.updateSortOrder(orderBy), m))
   };
   const {
@@ -281,10 +281,10 @@ const useListing = ({
   const dispatchProps = {
     clearFilters: filterKey => dispatch(sagas.withMappers(sagas.clearFilters(filterKey), m)),
     updateCurrentFacet: facet => dispatch(sagas.withMappers(sagas.updateCurrentFacet(facet), m)),
-    updatePageIndex: (pageIndex, scrollYPos) => dispatch(sagas.withMappers(sagas.updatePageIndex(pageIndex, scrollYPos), m)),
-    updatePageSize: (pageSize, scrollYPos) => dispatch(sagas.withMappers(sagas.updatePageSize(pageSize, scrollYPos), m)),
+    updatePageIndex: (pageIndex, scrollToElement) => dispatch(sagas.withMappers(sagas.updatePageIndex(pageIndex, scrollToElement), m)),
+    updatePageSize: (pageSize, scrollToElement) => dispatch(sagas.withMappers(sagas.updatePageSize(pageSize, scrollToElement), m)),
     updateSearchTerm: term => dispatch(sagas.withMappers(sagas.updateSearchTerm(term), m)),
-    updateSelectedFilters: (filter, key, isUnknownItem = false, scrollYPos) => dispatch(sagas.withMappers(sagas.updateSelectedFilters(filter, key, isUnknownItem, scrollYPos), m)),
+    updateSelectedFilters: (filter, key, isUnknownItem = false, scrollToElement) => dispatch(sagas.withMappers(sagas.updateSelectedFilters(filter, key, isUnknownItem, scrollToElement), m)),
     updateSortOrder: orderBy => dispatch(sagas.withMappers(sagas.updateSortOrder(orderBy), m))
   };
   const {
