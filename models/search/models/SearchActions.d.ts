@@ -100,7 +100,7 @@ export declare type ApplySearchFilterAction = Action & {
     filter: string;
     key: string;
     isUnknownItem: boolean;
-    scrollYPos?: number;
+    scrollToElement?: string;
 };
 export declare type ApplySearchFilterActionCreator = (filter: string, key: string) => ApplySearchFilterAction;
 export declare type ClearFiltersAction = Action;
@@ -124,12 +124,12 @@ export declare type UpdateSortOrderAction = Action & {
 export declare type UpdateSortOrderActionCreator = (orderBy: string, facet: string) => UpdateSortOrderAction;
 export declare type UpdatePageIndexAction = Action & {
     pageIndex: number;
-    scrollYPos?: number;
+    scrollToElement?: string;
 };
 export declare type UpdatePageIndexActionCreator = (pageIndex: number) => UpdatePageIndexAction;
 export declare type UpdatePageSizeAction = Action & {
     pageSize: number;
-    scrollYPos?: number;
+    scrollToElement?: string;
 };
 export declare type UpdatePageSizeActionCreator = (pageSize: number) => UpdatePageSizeAction;
 export {};
