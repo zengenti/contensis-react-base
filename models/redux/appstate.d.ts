@@ -10,6 +10,7 @@ export declare type AppState = {
         isReady: boolean;
     };
     routing: {
+        canonicalPath: string | null;
         currentHostname: null;
         currentPath: string;
         currentNode: Node & {

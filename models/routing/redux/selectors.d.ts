@@ -10,6 +10,7 @@ export declare const selectRouteEntryContentTypeId: (state: AppState) => any;
 export declare const selectRouteEntryLanguage: (state: AppState) => any;
 export declare const selectRouteEntrySlug: (state: AppState) => any;
 export declare const selectRouteEntryID: (state: AppState) => any;
+export declare const selectCanonicalPath: (state: AppState) => any;
 export declare const selectCurrentPath: (state: AppState) => any;
 export declare const selectCurrentLocation: (state: AppState) => any;
 export declare const selectCurrentSearch: (state: AppState) => any;
