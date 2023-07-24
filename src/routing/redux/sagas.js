@@ -133,6 +133,7 @@ function* getRouteSaga(action) {
       } else
         yield call(
           setRouteEntry,
+          currentPath,
           routeEntry,
           yield select(selectCurrentNode),
           yield select(selectCurrentAncestors),
@@ -266,6 +267,7 @@ function* getRouteSaga(action) {
 
       yield call(
         setRouteEntry,
+        currentPath,
         entry,
         pathNode,
         ancestors,
@@ -277,7 +279,14 @@ function* getRouteSaga(action) {
       );
     } else {
       if (staticRoute)
-        yield call(setRouteEntry, null, pathNode, ancestors, siblings);
+        yield call(
+          setRouteEntry,
+          currentPath,
+          null,
+          pathNode,
+          ancestors,
+          siblings
+        );
       else yield call(do404);
     }
   } catch (e) {
@@ -434,6 +443,7 @@ function* resolveCurrentNodeOrdinates({
 }
 
 function* setRouteEntry(
+  currentPath,
   entry,
   node,
   ancestors,
@@ -466,6 +476,7 @@ function* setRouteEntry(
     put({
       type: SET_ENTRY,
       id: entrySys.id,
+      currentPath,
       entry,
       mappedEntry,
       node,
