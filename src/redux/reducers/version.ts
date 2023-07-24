@@ -4,7 +4,7 @@ import { SET_VERSION, SET_VERSION_STATUS } from '~/redux/types/version';
 const initialState = {
   commitRef: null,
   buildNo: null,
-  contensisVersionStatus: 'published',
+  contensisVersionStatus: null as 'latest' | 'published' | null,
 };
 
 export default produce((state: Draft<any>, action) => {

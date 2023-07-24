@@ -6,14 +6,14 @@ import commonjs from '@rollup/plugin-commonjs';
 // import postcss from 'rollup-plugin-postcss';
 import submoduleResolvePlugin from './submodule-resolve-plugin';
 
-const path = require('path');
+import path from 'path';
 
 const babelConfig = require('../babel.config.js');
 const packagejson = require('../package.json');
 const formsPackageJson = require('zengenti-forms-package/package.json');
 const searchPackageJson = require('zengenti-search-package/package.json');
 
-const projectRootDir = path.resolve(__dirname);
+const projectRootDir = require('app-root-path').path;
 
 export default {
   input: {
@@ -68,6 +68,13 @@ export default {
     peerDepsExternal(),
     alias({
       entries: [
+        {
+          find: 'zengenti-forms-package',
+          replacement: path.resolve(
+            projectRootDir,
+            'node_modules/zengenti-forms-package/src/app/zengenti-forms-package'
+          ),
+        },
         {
           find: '~',
           replacement: path.resolve(projectRootDir, 'src/app'),

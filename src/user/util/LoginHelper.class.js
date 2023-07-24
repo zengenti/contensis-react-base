@@ -7,8 +7,8 @@ import { CookieHelper } from './CookieHelper.class';
 import mapClientCredentials from '../transformations/mapClientCredentials';
 import { createUserManager, userManagerConfig } from './OidcUserManager';
 
-export const LOGIN_COOKIE = 'ContensisCMSUserName';
-export const REFRESH_TOKEN_COOKIE = 'RefreshToken';
+const LOGIN_COOKIE = 'ContensisCMSUserName';
+const REFRESH_TOKEN_COOKIE = 'RefreshToken';
 
 const context = typeof window != 'undefined' ? window : global;
 
@@ -160,6 +160,7 @@ export class LoginHelper {
         client.security.users.getUserGroups({
           userId: user.id,
           includeInherited: true,
+          pageOptions: { pageSize: 100 }
         })
       );
       // Set groups attribute in user object to be the items
@@ -319,13 +320,13 @@ export class LoginHelper {
     }
   }
 
-  static isZengentiStaff(email) {
-    const emailRefs = ['@zengenti', '@contensis'];
+  // static isZengentiStaff(email) {
+  //   const emailRefs = ['@zengenti', '@contensis'];
 
-    return emailRefs.some(emailRef => {
-      if (email.includes(emailRef)) {
-        return true;
-      }
-    });
-  }
+  //   return emailRefs.some(emailRef => {
+  //     if (email.includes(emailRef)) {
+  //       return true;
+  //     }
+  //   });
+  // }
 }

@@ -128,8 +128,10 @@ export default produce((state: Draft<AppState['user']>, action) => {
       return;
     }
     case REQUEST_USER_PASSWORD_RESET_SENDING:
-      state.passwordResetRequest = defaultPasswordResetRequestValues;
-      state.passwordResetRequest.isSending = true;
+      if (state.passwordResetRequest) {
+        state.passwordResetRequest = { ...defaultPasswordResetRequestValues };
+        state.passwordResetRequest.isSending = true;
+      }
       return;
     case REQUEST_USER_PASSWORD_RESET_SUCCESS:
       if (state.passwordResetRequest) {

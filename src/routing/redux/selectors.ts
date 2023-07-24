@@ -41,8 +41,13 @@ export const selectRouteEntrySlug = (state: AppState) => {
 export const selectRouteEntryID = (state: AppState) =>
   getIn(state, ['routing', 'entryID']);
 
+export const selectCanonicalPath = (state: AppState) => {
+  return getIn(state, ['routing', 'canonicalPath']);
+};
+
 export const selectCurrentPath = (state: AppState) =>
   getIn(state, ['routing', 'currentPath']);
+
 export const selectCurrentLocation = (state: AppState) =>
   getIn(state, ['routing', 'location']);
 export const selectCurrentSearch = (state: AppState) =>

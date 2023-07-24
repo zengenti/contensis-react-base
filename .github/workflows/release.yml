@@ -23,6 +23,9 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: '16.x'
+      - name: Install npm dependencies (for pre/post npm publish scripts)
+        run: |
+          npm i --legacy-peer-deps
       - name: Setup GIT
         run: |
           git config user.email "github@zengenti.com"
@@ -41,6 +44,6 @@ jobs:
       - name: Publish release package "${{ github.event.inputs.version }}" with tag "${{ github.event.inputs.tag }}"
         run: |
           npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
-          npm publish --tag ${{ github.event.inputs.tag }} --ignore-scripts
+          npm publish --tag ${{ github.event.inputs.tag }}
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

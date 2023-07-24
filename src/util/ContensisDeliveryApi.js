@@ -1,4 +1,5 @@
 import { Client } from 'contensis-delivery-api';
+import { parse } from 'query-string';
 import { setSurrogateKeys } from '../routing/redux/actions';
 import { reduxStore } from '~/redux/store/store';
 
@@ -9,7 +10,7 @@ const storeSurrogateKeys = response => {
   if (keys) reduxStore?.dispatch(setSurrogateKeys(keys, response.url));
 };
 
-const getClientConfig = project => {
+export const getClientConfig = project => {
   let config = DELIVERY_API_CONFIG; /* global DELIVERY_API_CONFIG */
   config.responseHandler = {};
 
@@ -40,10 +41,26 @@ export * from 'contensis-delivery-api';
 
 class DeliveryApi {
   getClientSideVersionStatus = () => {
-    if (typeof window != 'undefined') {
+    if (typeof window !== 'undefined') {
+      // Allow overriding versionStatus with the querystring
+      const { versionStatus } = parse(window.location.search);
+      if (versionStatus) return versionStatus;
+      // Client-side we will have a global variable set if rendered by SSR in production
+      if (typeof window.versionStatus !== 'undefined')
+        return window.versionStatus;
+      // For localhost development we can only work out versionStatus from the current hostname
       const currentHostname = window.location.hostname;
       return this.getVersionStatusFromHostname(currentHostname);
     }
+    return null;
+  };
+  getServerSideVersionStatus = request =>
+    request.query.versionStatus ||
+    deliveryApi.getVersionStatusFromHeaders(request.headers) ||
+    deliveryApi.getVersionStatusFromHostname(request.hostname);
+  getVersionStatusFromHeaders = headers => {
+    const versionStatusHeader = headers['x-entry-versionstatus'];
+    if (typeof versionStatusHeader !== 'undefined') return versionStatusHeader;
     return null;
   };
   getVersionStatusFromHostname = currentHostname => {
@@ -155,6 +172,8 @@ class LruCache {
 
   remove(key) {
     let node = this.map[key];
+    if (!node) return; // This is sometimes null and crashes the container without this check
+
     if (node.prev) {
       node.prev.next = node.next;
     } else {

@@ -14,6 +14,8 @@ export type LinkFieldConfig = {
   filters?: LinkDepthApiFilters;
   sharedFilters?: LinkDepthApiFilters;
   linkFields?: LinkFields;
+  returnEntries?: boolean;
+  resolveFirstParent?: boolean;
 };
 
 export type LinkFields = {
@@ -26,6 +28,8 @@ export type LinkDepthApiConfig = {
   filters?: LinkDepthApiFilters;
   sharedFilters?: LinkDepthApiFilters;
   linkFields: LinkFields;
+  returnEntries?: false;
+  debug?: boolean;
 };
 
 export type QueryConfigAtLevel = {

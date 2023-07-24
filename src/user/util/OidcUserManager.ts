@@ -1,4 +1,11 @@
-const context = typeof window != 'undefined' ? window : global;
+import { UserManagerSettings } from 'oidc-client';
+
+const context = (
+  typeof window != 'undefined' ? window : global
+) as typeof globalThis & {
+  WSFED_LOGIN: string;
+};
+
 const requireOidc =
   process.env.NODE_ENV === 'development'
     ? WSFED_LOGIN === 'true' /* global WSFED_LOGIN */
@@ -19,7 +26,7 @@ export const userManagerConfig =
       }
     : {};
 
-export const createUserManager = async config => {
+export const createUserManager = async (config: UserManagerSettings) => {
   if (typeof window !== 'undefined' && requireOidc) {
     try {
       const { UserManager } = await import(
@@ -27,12 +34,7 @@ export const createUserManager = async config => {
       );
       return new UserManager(config);
     } catch (e) {
-      // eslint-disable-next-line no-console
-      console.log('Exception in createUserManager: ', e);
+      console.error('Exception in createUserManager: ', e);
     }
   } else return {};
 };
-
-//const userManager = createUserManager(userManagerConfig);
-
-// export default userManager;

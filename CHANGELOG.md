@@ -1,3 +1,151 @@
+#### 3.0.1 (2023-01-27)
+
+##### Bug Fixes
+
+- search package update supporting 'fuzzy' search (67bf14f3)
+- revert package `chalk@4` as v5 requires total ESM environment which is incompatible with the Node.js app server today (4dcd478d)
+- node process terminating on unhandled exception / promise rejection when running on node.js 15+, implement default behaviour as in <15 with the option to turn this off. Export express `server` for package consumers who need to access server methods in app handlers (677cd00a)
+- search package null errors when replacing entire search state with a fresh config, remove redundant nav code (b74a526b)
+- state-to-searchuri - fix crash when app state is immutable (f4e265eb)
+- search package issue with APPLY_CONFIG after immer conversion (a827d075)
+- Update from Search Package to use ?pageIndex over /pageIndex by default (99e42b90)
+- search package fix resolving customApi response in ssr causes thread to hang (c4bed5e8)
+- always use `api-` uri for delivery api proxy requests (6887e440)
+- useMinilist hook, handle undefined arguments. (12d906d7)
+- ContensisDeliveryApi.js -Add null check in LruCache.remove method (95cb63bf)
+
+##### Refactors
+
+- convert some files to typescript (5c3b74e2)
+- Split deliveryApi and asset proxy servers into separate instances (7ae1e007)
+
+#### 3.0.0 (2022-10-06)
+
+##### New Features
+
+- Allow choosing 301/302 for trailing slash redirect. (49921fcb)
+- new feature which allows you to pass params to the site view query that fetches the static node, also you can now specify linkDepth, fields and a entry mapper in the static routes file (6dbf1517)
+- support setting versionStatus via new header 'x-entry-versionstatus' (b867bb04)
+- initial commit for final implementation of LinkDepthApi (6e581a43)
+- additional exports from search package, `routeParams` helper util for use with react-router@6 or 5 (2cf19338)
+- initial commit for linkdepth-api for use with search package (802a7edc)
+- add CookiesProvider JSX from react-cookie to support use of useCookie() hook inside components which should return any cookies in a keyed object and optionally other cookie manipulation methods (5e0c3184)
+- expose new navigation selector and remove redundant keys from routing and navigation state (1ae609ee)
+- search feature filter config added logicOperator support (9a0d83d0)
+- add routing selectors selectCurrentLocation and selectStaticRoute (23d45292)
+- add additional mapping fields to mapComposer, \_index and $root, make all additional fields availalbe in item mappings returning only \_type and \_index with each mapped result (15acc8d0)
+- add AppState typing, add stateType as an app start option to specify whether the app will load with an immer or an immutable state, with immutable references dynamically imported. createStore becomes async to support dynamic imports. remove toJS wrapper component and ensure selectors are reurned in plain JS instead (f9dd353e)
+- upgrade dependency to support react 17 (c2843beb)
+
+##### Bug Fixes
+
+- incorrectly setting versionStatus to published in localhost after recent change (ef9fd02a)
+- use scrollTo instead of scroll window function as this was causing inconsistent scroll behaviour on FF (364f1744)
+- build add --legacy-peer-deps flag when installing node_modules (cd865b87)
+- missing legacy build stats does not affect the server-side ChunkExtractor, add missing typings and update project to use node 16 / npm 8 (dce347a2)
+- add error handling when reading /static/version.json in server startup (aef8d3a5)
+- render script, noscript and base tags as well as meta and link in SSR (b899547a)
+- give `nomodule` attribute in script tag an acceptable value (786a6366)
+- invalid nomodule attribute on script tags, must be lower case (2dac2cff)
+- update search package for better handling of customApi usage (7241e243)
+- enable use of boolean in nodeOptions in ContentTypeMappings to override any global setting from onRouteLoad, add missing keys to ContentTypeMapping type (82960b5a)
+- add forms key to convert this part of state to immer when used with immutable store (74f5a017)
+- default export formv2 (fe1a4eae)
+- missing return from double slash fix (b5601e37)
+- preserve empty objects when cleaning serialised redux state in SSR (194bd8e7)
+- resolve double-slash redirect vulnerability and remove non JSON-safe undefined and empty values from the serialised redux state in SSR (5618df7d)
+- setting staticFolderPath outside of env files causing runtime file not found and 404 errors (c704682d)
+- custom staticRoutePath not taking effect with loadable chunkExtractor in SSR (d9f63ae3)
+- mapComposer will return empty object for any composeritem.type that isn't resolved to a keyed mapper (5202a5a5)
+- search APPLY_CONFIG not persisting state in SSR (aa410755)
+- between operator works with dates (11977f69)
+- don't treat homepage differently from a normally routed page in routing saga so we can apply the same api loading sequence for any route when applying field and node restrictions for example, fix issue with entryLinkDepth 0 treated as falsy (19b4b5e3)
+- search package expression tweaks and filter enhancement (267a0eeb)
+- mapComposer util converting arrays into indexed object unintentionally, add some missing types for entryMapper and expose RouteNode type for writing entry mapping functions (9f4a5e3d)
+- correctly set isLoading user prop when validating a security token from an Azure login or stored contensis credentials, LOGOUT_USER action without a redirect does not adequately remove the user from state (3e2e1b36)
+- search package project switching issue (006905a6)
+- log the url when calling SET_SURROGATE_KEYS to assist debugging (b5d6a0fc)
+- incorrect fallback type for setting surrogate keys (39db75d2)
+- retire nodeDepends from routing state and fix issue with not all surrogateKeys being provided in the SSR page response (f748ac24)
+- update search package to resolve filtering issue (03bb7479)
+- issues with consuming immutable selectors in user sagas after recent immer change (50bb525e)
+- user selectors not working, return an object in an immer reducer, possibly to cover an immer faux pas? (fe24547b)
+- allow <link> tags from react helmet to be added in to the <head /> server side (0fce150a)
+- Enable retrieving arbitrary depth of children in contentTypeMapping node settings (36eecf5b)
+- use memoised selector in RouteLoader to stop needless re-renders when using immutable app state (94132300)
+- add form to fromJSLeaveImmer as this is now converted to use immer reducers (6fd2c9ab)
+- broken version and user selectors (90c30ad9)
+- ssr error due to serialize syntax after package upgrade (009a788a)
+- back button gives 404 as we have mutated the cached node response by deleting the entry key in the routing reducer (95a41ab0)
+- update search package to receive immer fixes (21fa682f)
+- `loadableReady()` requires state error on hydrate (d9b4e685)
+- undefined appearing in render after recent loadable changes (ff6eaf30)
+- siteview nodes with no entry attached will now 404, unless the node has been requested via a defined staticRoute (258a169e)
+- provide a way of providing consistent selector return types to internal sagas (8b1a970e)
+- missing fromJS in return from getIn (a1b45be4)
+- convert selectors to use new getIn function (56e5c903)
+- dynamically load immutable library into global scope when immutable state type is used, set global var STATE_TYPE during async createStore (d0154681)
+- typo in new function, better checking that input object is actually an object (2c91aefe)
+- avoid calling toJS() inside selectors, create utility method to replace immutable's getIn (ea58df45)
+- reinstate toJS HoC (6f37fe2a)
+- getIn is not defined in selectors (81c80cbe)
+- fromJS is not a function error (d5adfb34)
+- react17 not getting installed in consumer project (48e2bacc)
+
+##### Other Changes
+
+- add a error message section in the navigation redux state so this is easier to debug in the future (e2cf6638)
+- SideEffect(NullComponent)" error in development, update other packages checking for breaking changes, Helmet no longer has a default export (42f374c8)
+- zengenti/contensis-react-base into feat/react17 (3ae0f5e6)
+- converting redux store to immer and most reducers and selectors (d77ca793)
+
+##### Performance Improvements
+
+- refactor siteview api calls so they are all made at the same time, reduce footprint of network calls if nodes options have been set carelessly, fix issue with linkDepth 0 treated as falsy and expose nodeOptions.siblings in ContentTypeMappings (fc8900e5)
+- only add additional composer fields to first array item in mapComposer instead of every field (6b443144)
+- avoid referencing immutable library in ToJS component (3574319a)
+
+##### Refactors
+
+- add missing typings and exports for search mappers (3b9de097)
+- use "is" naming convention for boolean values in user state (d9d4cb87)
+- deprecate authenticationErrorMessage from authenticationState, instead use errorMessage (4658461e)
+- add type for RouteComponentProps (eec4ef45)
+- Remove react-loadable dependancies. Complete loadable-components implementation (99acc6fe)
+- replace immutable getin when setting headers in ssr, preserve plain JS for parts of immutable state to maintain compatibility with immer reducers (ecbba1a2)
+- tidy up webApp and load startup script from getBundleTags function (e4e2bfb4)
+- remove react-loadable bundle generation from webApp as it is not working and use the loadable/server chunk extractors instead. This should fail gracefully if loadable-stats.json cannot be found (1dfc5199)
+- move utility code out of webApp, wip for loadable/server implementation (08443957)
+
+##### Build System / Dependencies
+
+- resolve patch-package error (03a4198e)
+- resolve ci error `package-lock.json file was created with an old version of npm` (36114b30)
+- rebuild /forms subpackage from source code with each build (bc9f5a76)
+- update dependency redux-injectors to resolve react 16 peerDependency error in npm 8 (eabe8d57)
+- update contensis packages to latest and update outdated npm packages, fix build error with RouteLoader returning an unintelligable type due to the way it is exported (3ea987ab)
+- remove excess console.info (5c72037f)
+- update contensis packages to latest versions, add missing typings to fix broken build (e79c9dbe)
+- change immer version to be greater than to resolve multiple versions getting installed with consumers, remove peerDependencies as they were not the required fix (5a4baf6b)
+- introduce peerDependencies to allow npm to not separate key dependency installations such as immer when multiple conflicting versions exist to install (e5c2f390)
+- add missing prod dependencies (065423f2)
+- fix rollup error (d4d9cf81)
+- replace deprecated babel-eslint (748fc4f1)
+- remove postcss from build (0c547f03)
+- update all known safe outdated dependencies (ec2a9417)
+- update nodemon dev dependency to latest (d36c125c)
+- add back react-loadable dependency to help out users who are yet to upgrade to loadable/components (8a83e367)
+- update search package to use immer branch (5bdef918)
+- export getImmutableOrJS utility function as /redux/getIn (4787b447)
+
+##### Documentation Changes
+
+- fix typo in readme [skip ci] (842faa3c)
+- update README to be for v3.0 not v2.6 (343e9001)
+- add loadable components to README (15ba287c)
+- add further installation notes to fix Storybook errors when upgrading to react@17 (920a66b1)
+- add v2.6 react17 upgrade installation notes (b569df73)
+
 #### 2.5.0 (2021-09-20)
 
 ##### New Features

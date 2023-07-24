@@ -14,6 +14,7 @@ import {
 import { combineMerge } from '~/util/merge';
 
 const initialState = {
+  canonicalPath: null,
   currentHostname: null,
   currentPath: '/',
   currentNode: {},
@@ -47,6 +48,7 @@ export default produce((state: Draft<any>, action) => {
         isLoading = false,
         notFound = false,
         statusCode,
+        currentPath,
       } = action;
 
       let defaultStatus = 200;
@@ -62,6 +64,7 @@ export default produce((state: Draft<any>, action) => {
         state.isLoading = isLoading;
         state.notFound = notFound;
         state.statusCode = statusCode || defaultStatus;
+        state.canonicalPath = currentPath;
       } else {
         state.entryID = action.id;
         state.entry = entry;
@@ -70,6 +73,7 @@ export default produce((state: Draft<any>, action) => {
         state.isLoading = isLoading;
         state.notFound = notFound;
         state.statusCode = statusCode || defaultStatus;
+        state.canonicalPath = entry.sys.uri || currentPath;
 
         if (mappedEntry && Object.keys(mappedEntry).length > 0) {
           state.mappedEntry = mappedEntry;
@@ -86,6 +90,7 @@ export default produce((state: Draft<any>, action) => {
         const { entry, ...nodeWithoutEntry } = node; // We have the entry stored elsewhere, so lets not keep it twice.
         state.currentNode = nodeWithoutEntry;
       }
+
       return;
     }
     case UPDATE_LOADING_STATE: {
@@ -107,7 +112,6 @@ export default produce((state: Draft<any>, action) => {
             ...staticRoute,
             route: { ...staticRoute.route, element: null },
           };
-
           state.isLoading = typeof window !== 'undefined';
         } else {
           state.location = action.location;

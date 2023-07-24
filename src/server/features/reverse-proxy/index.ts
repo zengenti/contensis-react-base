@@ -1,11 +1,17 @@
 import { Express } from 'express';
 import httpProxy from 'http-proxy';
+import url from '~/util/urls';
 
 const servers = SERVERS; /* global SERVERS */
-export const apiProxy = httpProxy.createProxyServer();
+const project = PROJECT; /* global PROJECT */
+const alias = ALIAS; /* global ALIAS */
+const deliveryApiHostname = url(alias, project).api;
+
+export const assetProxy = httpProxy.createProxyServer();
+export const deliveryProxy = httpProxy.createProxyServer();
 
 const reverseProxies = (app: Express, reverseProxyPaths: string[] = []) => {
-  deliveryApiProxy(apiProxy, app);
+  deliveryApiProxy(deliveryProxy, app);
 
   app.all(reverseProxyPaths, (req, res) => {
     const target =
@@ -15,8 +21,8 @@ const reverseProxies = (app: Express, reverseProxyPaths: string[] = []) => {
         ? servers.previewIis || servers.iis
         : servers.iis;
 
-    apiProxy.web(req, res, { target, changeOrigin: true });
-    apiProxy.on('error', e => {
+    assetProxy.web(req, res, { target, changeOrigin: true });
+    assetProxy.on('error', e => {
       /* eslint-disable no-console */
       console.log(
         `Proxy Request for ${req.path} HostName:${req.hostname} failed with ${e}`
@@ -30,10 +36,9 @@ const deliveryApiProxy = (apiProxy, app) => {
   // This is just here to stop cors requests on localhost. In Production this is mapped using varnish.
   app.all(['/api/delivery/*', '/api/image/*'], (req, res) => {
     /* eslint-disable no-console */
-    const target = servers.cms;
     console.log(`Proxying api request to ${servers.alias}`);
     apiProxy.web(req, res, {
-      target,
+      target: deliveryApiHostname,
       changeOrigin: true,
     });
     apiProxy.on('error', e => {
