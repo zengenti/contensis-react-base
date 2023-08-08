@@ -319,7 +319,7 @@ const makeSelectFormValidationSent = formId => reselect.createSelector(selectFor
   var _forms$formId16;
   return forms === null || forms === void 0 ? void 0 : (_forms$formId16 = forms[formId]) === null || _forms$formId16 === void 0 ? void 0 : _forms$formId16.status.validation.sent;
 });
-const makeSelectFormGroup$1 = formId => reselect.createSelector(selectForms, forms => {
+const makeSelectFormGroup = formId => reselect.createSelector(selectForms, forms => {
   var _forms$formId17;
   return forms === null || forms === void 0 ? void 0 : (_forms$formId17 = forms[formId]) === null || _forms$formId17 === void 0 ? void 0 : _forms$formId17.groups;
 });
@@ -339,7 +339,7 @@ const selectors = {
   makeSelectDefaultLang,
   makeSelectFormSuccessMessage,
   makeSelectFormValidationSent,
-  makeSelectFormGroup: makeSelectFormGroup$1,
+  makeSelectFormGroup,
   makeSelectHasError
 };
 
@@ -917,7 +917,7 @@ const FormStyled = styled__default["default"].form.withConfig({
   theme,
   useDefaultTheme
 }) => {
-  return styled.css(["", ""], useDefaultTheme && styled.css(["> div:not(:first-child){margin-top:16px;}padding:0 16px;.success-message{font-size:18px;margin:0;}.visuallyHidden{position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden;}.loading{display:block;margin:24px auto;}label{display:inline-block;.isRequired{color:", ";}}input,textarea,select{display:block;font-family:inherit;background-color:", ";border-radius:3px;border:1px solid ", ";height:40px;padding:8px;margin-top:4px;width:100%;}input:-webkit-autofill,input:-webkit-autofill:hover,input:-webkit-autofill:focus,input:-webkit-autofill:active{-webkit-box-shadow:0 0 0 30px ", " inset;}textarea{height:200px;resize:none;}[aria-invalid='false']{background:", ";border:1px solid ", ";&:-webkit-autofill,&:-webkit-autofill:hover,&:-webkit-autofill:focus,&:-webkit-autofill:active{-webkit-box-shadow:0 0 0 30px", " inset;}}[aria-invalid='true']{background:", ";border:1px solid ", ";&:-webkit-autofill,&:-webkit-autofill:hover,&:-webkit-autofill:focus,&:-webkit-autofill:active{-webkit-box-shadow:0 0 0 30px", " inset;}}input ~ .svg{position:absolute;right:8px;top:50%;transform:translateY(-50%);}textarea ~ .svg{position:absolute;right:8px;top:8px;}"], theme.colors.red_darker, theme.colors.white, theme.colors.light_grey_darkest, theme.colors.white, theme.colors.green_lightest, theme.colors.green_darker, theme.colors.green_lightest, theme.colors.red_lightest, theme.colors.red_darker, theme.colors.red_lightest));
+  return styled.css(["", ""], useDefaultTheme && styled.css(["> div:not(:first-child){margin-top:16px;}padding:0 16px;.success-message{font-size:18px;margin:0;}.visuallyHidden{position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden;}.loading{display:block;margin:24px auto;}label{display:inline-block;.isRequired{color:", ";}}input,textarea,select{display:block;font-family:inherit;background-color:", ";border-radius:3px;border:1px solid ", ";height:40px;padding:8px;margin-top:4px;width:100%;}input:-webkit-autofill,input:-webkit-autofill:hover,input:-webkit-autofill:focus,input:-webkit-autofill:active{-webkit-box-shadow:0 0 0 30px ", " inset;}textarea{height:200px;resize:none;}[aria-invalid='false']{background:", ";border:1px solid ", ";&:-webkit-autofill,&:-webkit-autofill:hover,&:-webkit-autofill:focus,&:-webkit-autofill:active{-webkit-box-shadow:0 0 0 30px", " inset;}}[aria-invalid='true']{background:", ";border:1px solid ", ";&:-webkit-autofill,&:-webkit-autofill:hover,&:-webkit-autofill:focus,&:-webkit-autofill:active{-webkit-box-shadow:0 0 0 30px", " inset;}}input ~ .svg{position:absolute;right:8px;top:50%;transform:translateY(-50%);}textarea ~ .svg{position:absolute;right:8px;top:8px;}button:not(:last-of-type){margin-right:16px;}"], theme.colors.red_darker, theme.colors.white, theme.colors.light_grey_darkest, theme.colors.white, theme.colors.green_lightest, theme.colors.green_darker, theme.colors.green_lightest, theme.colors.red_lightest, theme.colors.red_darker, theme.colors.red_lightest));
 });
 
 const Label = ({
@@ -2030,12 +2030,7 @@ const Form = ({
       className: className,
       id: formId,
       useDefaultTheme: useDefaultTheme
-    }, !(status !== null && status !== void 0 && status.hasSuccess) && !(status !== null && status !== void 0 && status.isLoading) && /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, pagingInfo.pageIndex > 0 && /*#__PURE__*/React__default["default"].createElement(Button, {
-      type: "button",
-      text: "Go Back",
-      action: () => _doTogglePageBack(formId, pagingInfo.pageIndex - 1),
-      useDefaultTheme: useDefaultTheme
-    }), /*#__PURE__*/React__default["default"].createElement(FormComposer, {
+    }, !(status !== null && status !== void 0 && status.hasSuccess) && !(status !== null && status !== void 0 && status.isLoading) && /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, /*#__PURE__*/React__default["default"].createElement(FormComposer, {
       fields: fields,
       formData: formData,
       formId: formId,
@@ -2048,6 +2043,11 @@ const Form = ({
       entries: entries,
       setDateRangeValues: _setDateRangeValues,
       setCheckboxValue: _setCheckboxValue
+    }), pagingInfo.pageIndex > 0 && /*#__PURE__*/React__default["default"].createElement(Button, {
+      type: "button",
+      text: "Go Back",
+      action: () => _doTogglePageBack(formId, pagingInfo.pageIndex - 1),
+      useDefaultTheme: useDefaultTheme
     }), !isLastPage && /*#__PURE__*/React__default["default"].createElement(Button, {
       type: "button",
       text: "Next",
