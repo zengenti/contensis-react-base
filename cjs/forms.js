@@ -563,7 +563,9 @@ const getFieldType = field => {
   }
 };
 
-const sagas = [effects.takeEvery(SUBMIT_FORM_SUCCESS, onFormSuccess), effects.takeEvery(SUBMIT_FORM_FOR_VALIDATION, doValidateForm), effects.takeEvery(SUBMIT_FORM, onSubmitForm), effects.takeEvery(SET_FORM_ID, doFetchForm), effects.takeLatest(VALIDATE_FIELD, onValidateField$1), effects.takeEvery(PAGE_FORWARD, doTogglePage), effects.takeEvery(PAGE_BACK, doTogglePage), effects.takeEvery(SET_FORM_DATA, getEntryPickerData), effects.takeLatest(SET_FORM_DATA, setDefaultValueFields)];
+const sagas = [effects.takeEvery(SUBMIT_FORM_SUCCESS, onFormSuccess), effects.takeEvery(SUBMIT_FORM_FOR_VALIDATION, doValidateForm), effects.takeEvery(SUBMIT_FORM, onSubmitForm), effects.takeEvery(SET_FORM_ID, doFetchForm),
+// takeLatest(VALIDATE_FIELD, onValidateField),
+effects.takeEvery(PAGE_FORWARD, doTogglePage), effects.takeEvery(PAGE_BACK, doTogglePage), effects.takeEvery(SET_FORM_DATA, getEntryPickerData), effects.takeLatest(SET_FORM_DATA, setDefaultValueFields)];
 function* doValidateForm(action) {
   const {
     formId
@@ -574,35 +576,31 @@ function* doValidateForm(action) {
     formId
   });
 }
-function* onValidateField$1(action) {
-  const {
-    formId,
-    id,
-    value
-  } = action;
-  if ((value === null || value === void 0 ? void 0 : value.length) >= 1) yield effects.call(onValidateSingleField, formId, id, value);
-}
-function* validateGroupfields(formId, groupId) {
+// function* onValidateField(action) {
+//   const { formId, id, value } = action;
+//   if (value?.length >= 1) yield call(onValidateSingleField, formId, id, value);
+// }
+
+function* onValidateGroupFields(formId, groupId) {
   const state = yield effects.select();
   const selectPostData = makeSelectFormPostData(formId);
   const postData = selectPostData(state);
   const selectFormFields = makeSelectFormFields(formId);
   const fields = selectFormFields(state);
-  const groupFields = fields.filter(f => f.groupid == groupId);
-  let newErrors = [];
+  const groupFields = fields.filter(f => f.groupId == groupId);
+  let errors = [];
   groupFields.forEach(field => {
-    let val = '';
-    if (postData[field.id]) {
-      val = postData[field.id];
-    }
-    const err = doValidateField(field, val);
-    if (err) newErrors.push(err);
+    let value = '';
+    if (postData[field.id]) value = postData[field.id];
+    const error = doValidateField(field, value);
+    if (error) errors.push(error);
   });
   yield effects.put({
     type: SET_FIELD_ERROR,
     formId: formId,
-    value: newErrors
+    value: errors
   });
+  return errors;
 }
 function* onValidateAllFields(formId) {
   const state = yield effects.select();
@@ -610,42 +608,17 @@ function* onValidateAllFields(formId) {
   const postData = selectPostData(state);
   const selectFormFields = makeSelectFormFields(formId);
   const fields = selectFormFields(state);
-  let newErrors = [];
+  const errors = [];
   fields.forEach(field => {
-    let val = '';
-    if (postData[field.id]) {
-      val = postData[field.id];
-    }
-    const err = doValidateField(field, val);
-    if (err) newErrors.push(err);
+    let value = '';
+    if (postData[field.id]) value = postData[field.id];
+    const error = doValidateField(field, value);
+    if (error) errors.push(error);
   });
   yield effects.put({
     type: SET_FIELD_ERROR,
     formId: formId,
-    value: newErrors
-  });
-}
-function* onValidateSingleField(formId, fieldId, value) {
-  const state = yield effects.select();
-  const selectFormFields = makeSelectFormFields(formId);
-  const fields = selectFormFields(state);
-  const selectFormFieldErrors = makeSelectFormFieldErrors(formId);
-  const errors = selectFormFieldErrors(state);
-  const fieldData = fields.find(f => f.id == fieldId);
-  const newErrors = [];
-  //loop through current errors to remove any of the item we currently edit
-  errors.forEach(error => {
-    if (error.fieldId !== fieldId) {
-      //push any existing errors to new array
-      newErrors.push(error);
-    }
-  });
-  const err = doValidateField(fieldData, value);
-  if (err) newErrors.push(err);
-  yield effects.put({
-    type: SET_FIELD_ERROR,
-    formId: formId,
-    value: newErrors
+    value: errors
   });
 }
 function* doTogglePage(action) {
@@ -657,15 +630,25 @@ function* doTogglePage(action) {
   const selectFormGroups = makeSelectFormGroup(formId);
   const formGroups = selectFormGroups(state);
   if (action.type === PAGE_FORWARD) {
-    yield validateGroupfields(formId, formGroups[pageIndex].id);
+    const errors = yield onValidateGroupFields(formId, formGroups[pageIndex - 1].id);
+    if (errors && errors.length <= 0) {
+      yield effects.put({
+        type: SET_CURRENT_PAGE,
+        formId: formId,
+        pageId: formGroups[pageIndex].id,
+        pageCount: formGroups.length,
+        pageIndex: pageIndex
+      });
+    }
+  } else if (action.type === PAGE_BACK) {
+    yield effects.put({
+      type: SET_CURRENT_PAGE,
+      formId: formId,
+      pageId: formGroups[pageIndex].id,
+      pageCount: formGroups.length,
+      pageIndex: pageIndex
+    });
   }
-  yield effects.put({
-    type: SET_CURRENT_PAGE,
-    formId: formId,
-    pageId: formGroups[pageIndex].id,
-    pageCount: formGroups.length,
-    pageIndex: pageIndex
-  });
 }
 function* doFetchForm(action) {
   var _schema$groups;
@@ -1945,7 +1928,7 @@ const Button = ({
   useDefaultTheme
 }) => {
   return /*#__PURE__*/React__default["default"].createElement(ButtonStyled, {
-    className: `${className ? className : ''} btnSubmit`,
+    className: className,
     type: type,
     onClick: () => action(),
     disabled: loading,
@@ -2012,7 +1995,6 @@ const Form = ({
   const selectFormFieldErrors = makeSelectFormFieldErrors(formId);
   const selectFormEntries = makeSelectFormEntries(formId);
   const selectFormPostData = makeSelectFormPostData(formId);
-  const selectFormValidationSent = makeSelectFormValidationSent(formId);
   const status = reactRedux.useSelector(selectFormStatus);
   const fields = reactRedux.useSelector(selectFormFields);
   const pagingInfo = reactRedux.useSelector(selectPagingInfo);
@@ -2021,7 +2003,6 @@ const Form = ({
   const errors = reactRedux.useSelector(selectFormFieldErrors);
   const entries = reactRedux.useSelector(selectFormEntries);
   const formData = reactRedux.useSelector(selectFormPostData);
-  const validate = reactRedux.useSelector(selectFormValidationSent);
   if (pagingInfo && pagingInfo.pageCount > 1) {
     const isLastPage = pagingInfo.pageCount == pagingInfo.pageIndex + 1;
     return /*#__PURE__*/React__default["default"].createElement(ThemeProvider, {
@@ -2044,19 +2025,22 @@ const Form = ({
       setDateRangeValues: _setDateRangeValues,
       setCheckboxValue: _setCheckboxValue
     }), pagingInfo.pageIndex > 0 && /*#__PURE__*/React__default["default"].createElement(Button, {
+      className: "form__btn--prev",
       type: "button",
       text: "Go Back",
       action: () => _doTogglePageBack(formId, pagingInfo.pageIndex - 1),
       useDefaultTheme: useDefaultTheme
     }), !isLastPage && /*#__PURE__*/React__default["default"].createElement(Button, {
+      className: "form__btn--next",
       type: "button",
       text: "Next",
       action: () => _doTogglePageForward(formId, pagingInfo.pageIndex + 1),
       useDefaultTheme: useDefaultTheme
     }), isLastPage && /*#__PURE__*/React__default["default"].createElement(Button, {
+      className: "form__btn--submit",
       text: (settings === null || settings === void 0 ? void 0 : settings.submitButtonText) || "Submit",
       type: "button",
-      loading: status === null || status === void 0 ? void 0 : status.isLoading,
+      loading: status === null || status === void 0 ? void 0 : status.isSubmitting,
       action: () => {
         _onSubmit(formId);
         if (onCustomSubmit) onCustomSubmit();
@@ -2069,7 +2053,7 @@ const Form = ({
       color: "#333"
     }), (status === null || status === void 0 ? void 0 : status.hasSuccess) && (status === null || status === void 0 ? void 0 : status.messages.success) && /*#__PURE__*/React__default["default"].createElement("p", {
       className: "success-message"
-    }, status.messages.success), (errors === null || errors === void 0 ? void 0 : errors.length) >= 1 && validate && /*#__PURE__*/React__default["default"].createElement("div", {
+    }, status.messages.success), (errors === null || errors === void 0 ? void 0 : errors.length) >= 1 && /*#__PURE__*/React__default["default"].createElement("div", {
       className: "form__errors",
       role: "alert"
     }, errors === null || errors === void 0 ? void 0 : errors.map(({
@@ -2100,6 +2084,7 @@ const Form = ({
       entries: entries,
       setCheckboxValue: _setCheckboxValue
     }), /*#__PURE__*/React__default["default"].createElement(Button, {
+      className: "form__btn--submit",
       loading: status === null || status === void 0 ? void 0 : status.isSubmitting,
       text: (settings === null || settings === void 0 ? void 0 : settings.submitButtonText) || "Submit",
       type: "button",
@@ -2115,7 +2100,7 @@ const Form = ({
       color: "#333"
     }), (status === null || status === void 0 ? void 0 : status.hasSuccess) && (status === null || status === void 0 ? void 0 : status.messages.success) && /*#__PURE__*/React__default["default"].createElement("p", {
       className: "success-message"
-    }, status.messages.success), (errors === null || errors === void 0 ? void 0 : errors.length) >= 1 && validate && /*#__PURE__*/React__default["default"].createElement("div", {
+    }, status.messages.success), (errors === null || errors === void 0 ? void 0 : errors.length) >= 1 && /*#__PURE__*/React__default["default"].createElement("div", {
       className: "form__errors",
       role: "alert"
     }, errors === null || errors === void 0 ? void 0 : errors.map(({
