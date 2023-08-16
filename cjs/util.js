@@ -3,12 +3,12 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 var urls = require('./urls-6fcaf4c6.js');
-var ContensisDeliveryApi = require('./ContensisDeliveryApi-cab9b34d.js');
+var ContensisDeliveryApi = require('./ContensisDeliveryApi-c079b03a.js');
 var mapJson = require('jsonpath-mapper');
 var React = require('react');
 var reactRedux = require('react-redux');
-var selectors = require('./selectors-1ab616aa.js');
-var version = require('./version-0d11a071.js');
+var selectors = require('./selectors-bcca60f4.js');
+var version = require('./version-4077e706.js');
 var styled = require('styled-components');
 require('contensis-delivery-api');
 require('query-string');
