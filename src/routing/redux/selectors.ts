@@ -70,7 +70,7 @@ export const selectCurrentChildren = state =>
   getIn(state, ['routing', 'currentNode', 'children'], []);
 
 export const selectBreadcrumb = (state: AppState) => {
-  return selectCurrentAncestors(state).push(selectCurrentNode(state));
+  return [...selectCurrentAncestors(state), selectCurrentNode(state)];
 };
 export const selectRouteErrorMessage = (state: AppState) => {
   const error = getIn(state, ['routing', 'error']);
