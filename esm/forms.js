@@ -26,7 +26,8 @@ const SET_FIELD_ERROR = `${ACTION_PREFIX}SET_FIELD_ERROR`;
 const SET_DATE_RANGE_VALUES = `${ACTION_PREFIX}SET_DATE_RANGE_VALUES`;
 const SET_FORM_ENTRIES = `${ACTION_PREFIX}SET_FORM_ENTRIES`;
 const SET_SUCCESS_MESSAGE = `${ACTION_PREFIX}SET_SUCCESS_MESSAGE`;
-const SET_CHECKBOX_VALUE = `${ACTION_PREFIX}SET_CHECKBOX_VALUE`;
+const SET_MULTIPLE_CHECKBOX_VALUE = `${ACTION_PREFIX}SET_MULTIPLE_CHECKBOX_VALUE`;
+const SET_SINGLE_CHECKBOX_VALUE = `${ACTION_PREFIX}SET_SINGLE_CHECKBOX_VALUE`;
 
 const initialSettings = {
   recaptcha: {
@@ -130,19 +131,26 @@ var reducer = produce((state, action) => {
         };
         return;
       }
-    case SET_CHECKBOX_VALUE:
+    case SET_SINGLE_CHECKBOX_VALUE:
       {
         const {
           formId,
           id,
-          value,
-          isChecked
-        } = action || {};
-        let values = state[formId].data[id] || [];
-        if (isChecked) state[formId].data[id] = {
-          ...values,
           value
-        };else state[formId].data[id] = values.filter(v => v !== value);
+        } = action || {};
+        state[formId].data[id] = value;
+        return;
+      }
+    case SET_MULTIPLE_CHECKBOX_VALUE:
+      {
+        const {
+          formId,
+          id,
+          label,
+          value
+        } = action || {};
+        const checked = state[formId].data[id] || [];
+        if (value) state[formId].data[id] = [...checked, label];else state[formId].data[id] = checked.filter(v => v !== label);
         return;
       }
     case SET_DATE_RANGE_VALUES:
@@ -798,11 +806,16 @@ const setValue = (formId, id, value) => action(SET_FIELD_VALUE, {
   id,
   value
 });
-const setCheckboxValue = (formId, id, value, isChecked) => action(SET_CHECKBOX_VALUE, {
+const setSingleCheckboxValue = (formId, id, value) => action(SET_SINGLE_CHECKBOX_VALUE, {
   formId,
   id,
-  value,
-  isChecked
+  value
+});
+const setMultipleCheckboxValue = (formId, id, label, value) => action(SET_MULTIPLE_CHECKBOX_VALUE, {
+  formId,
+  id,
+  label,
+  value
 });
 const setDateRangeValues = (formId, id, dateType, value) => action(SET_DATE_RANGE_VALUES, {
   formId,
@@ -827,8 +840,8 @@ const actions = {
   onSubmit,
   setFormId,
   setValue,
-  setCheckboxValue,
-  setDateRangeValues,
+  setSingleCheckboxValue,
+  setMultipleCheckboxValue,
   onValidateField,
   doTogglePageForward,
   doTogglePageBack
@@ -1269,7 +1282,6 @@ const CheckboxStyled = styled.div.withConfig({
 const Checkbox = ({
   className,
   formId,
-  setCheckboxValue,
   id,
   type,
   label,
@@ -1282,14 +1294,15 @@ const Checkbox = ({
   // NF change rules of hooks
   let isDefaultChecked = defaultValue && defaultValue[defaultLanguage];
   const [isChecked, setIsChecked] = useState(isDefaultChecked || '');
+  const dispatch = useDispatch();
   switch (type) {
     case 'multiple':
       {
         if (!validations) return null;
         const isRequired = validations && validations.required ? true : false;
         const cbValues = validations && validations.allowedValues && validations.allowedValues.values;
-        const _handleChange = (value, isChecked) => {
-          setCheckboxValue(formId, id, value, isChecked);
+        const _handleChange = (label, value) => {
+          dispatch(setMultipleCheckboxValue(formId, id, label, value));
         };
         if (!cbValues || cbValues.length < 1) return null;
         return /*#__PURE__*/React.createElement(CheckboxStyled, {
@@ -1320,9 +1333,9 @@ const Checkbox = ({
       }
     case 'single':
       {
-        const _handleChange = isChecked => {
-          setIsChecked(isChecked);
-          setCheckboxValue(formId, id, isChecked);
+        const _handleChange = value => {
+          setIsChecked(value);
+          dispatch(setSingleCheckboxValue(formId, id, value));
         };
         return /*#__PURE__*/React.createElement(CheckboxStyled, {
           className: `checkbox-container`,
@@ -1351,7 +1364,6 @@ Checkbox.propTypes = {
   id: PropTypes.string,
   type: PropTypes.string,
   label: PropTypes.string,
-  setCheckboxValue: PropTypes.func,
   validations: PropTypes.object,
   defaultLanguage: PropTypes.string,
   name: PropTypes.object,
@@ -1699,8 +1711,7 @@ const FormComposer = ({
   defaultLanguage,
   errors,
   useDefaultTheme,
-  entries,
-  setCheckboxValue
+  entries
 }) => {
   if (!fields || fields.length < 1) return null;
   return fields.map((field, idx) => {
@@ -1772,8 +1783,7 @@ const FormComposer = ({
             formId: formId,
             defaultValue: formData && formData[field.id] || field.default,
             type: field.dataType === 'boolean' ? 'single' : 'multiple',
-            useDefaultTheme: useDefaultTheme,
-            setCheckboxValue: setCheckboxValue
+            useDefaultTheme: useDefaultTheme
           });
         }
       case 'radio':
@@ -1856,8 +1866,7 @@ FormComposer.propTypes = {
   setDateRangeValues: PropTypes.func,
   defaultLanguage: PropTypes.string,
   errors: PropTypes.array,
-  useDefaultTheme: PropTypes.bool,
-  setCheckboxValue: PropTypes.func
+  useDefaultTheme: PropTypes.bool
 };
 
 const Loader = ({
@@ -1968,7 +1977,6 @@ const Form = ({
   const dispatch = useDispatch();
   const _setFormId = formId => dispatch(setFormId(formId));
   const _setValue = (formId, id, value) => dispatch(setValue(formId, id, value));
-  const _setCheckboxValue = (formId, id, value, isChecked) => dispatch(setCheckboxValue(formId, id, value, isChecked));
   const _setDateRangeValues = (formId, id, dateType, value) => dispatch(setDateRangeValues(formId, id, dateType, value));
   const _onValidateField = (formId, id, value) => dispatch(onValidateField(formId, id, value));
   const _doTogglePageForward = (formId, pageIndex) => dispatch(doTogglePageForward(formId, pageIndex));
@@ -2012,8 +2020,7 @@ const Form = ({
       pagingInfo: pagingInfo,
       useDefaultTheme: useDefaultTheme,
       entries: entries,
-      setDateRangeValues: _setDateRangeValues,
-      setCheckboxValue: _setCheckboxValue
+      setDateRangeValues: _setDateRangeValues
     }), pagingInfo.pageIndex > 0 && /*#__PURE__*/React.createElement(Button, {
       className: "form__btn--prev",
       type: "button",
@@ -2071,8 +2078,7 @@ const Form = ({
       defaultLanguage: defaultLanguage,
       errors: errors,
       useDefaultTheme: useDefaultTheme,
-      entries: entries,
-      setCheckboxValue: _setCheckboxValue
+      entries: entries
     }), /*#__PURE__*/React.createElement(Button, {
       className: "form__btn--submit",
       loading: status === null || status === void 0 ? void 0 : status.isSubmitting,
