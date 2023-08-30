@@ -423,10 +423,12 @@ function* resolveCurrentNodeOrdinates({
       if (typeof window !== 'undefined') {
         return yield put({
           type: GET_NODE_TREE,
+          language,
           treeDepth,
         });
       } else {
         return yield call(ensureNodeTreeSaga, {
+          language,
           treeDepth,
         });
       }

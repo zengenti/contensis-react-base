@@ -23,6 +23,7 @@ export function* ensureNodeTreeSaga(action) {
         .getClient(deliveryApiVersionStatus, project)
         .nodes.getRoot({
           depth: action.treeDepth || 0,
+          language: action.language,
         });
       if (nodes) {
         yield put({ type: SET_NODE_TREE, nodes });
