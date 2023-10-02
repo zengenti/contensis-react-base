@@ -4192,12 +4192,16 @@ const webApp = (app, ReactApp, config) => {
 
     // dispatch any global and non-saga related actions before calling our JSX
     const versionStatus = ContensisDeliveryApi.deliveryApi.getServerSideVersionStatus(request);
-    console.info(`Request for ${request.path} hostname: ${request.hostname} versionStatus: ${versionStatus}`);
+
+    // In server-side blocks world, the hostname requested by the client resides in the x-orig-host header
+    // Because of this, we prioritize x-orig-host when setting our hostname
+    const hostname = request.headers['x-orig-host'] || request.hostname;
+    console.info(`Request for ${request.path} hostname: ${hostname} versionStatus: ${versionStatus}`);
     store.dispatch(version$1.setVersionStatus(versionStatus));
     store.dispatch(version$1.setVersion(versionInfo.commitRef, versionInfo.buildNo));
-    const project = App.pickProject(request.hostname, request.query);
+    const project = App.pickProject(hostname, request.query);
     const groups = allowedGroups && allowedGroups[project];
-    store.dispatch(selectors.setCurrentProject(project, groups, request.hostname));
+    store.dispatch(selectors.setCurrentProject(project, groups, hostname));
     const loadableExtractor = loadableChunkExtractors();
     const jsx = /*#__PURE__*/React__default["default"].createElement(server$1.ChunkExtractorManager, {
       extractor: loadableExtractor.commonLoadableExtractor
