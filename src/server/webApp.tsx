@@ -125,17 +125,21 @@ const webApp = (
     // dispatch any global and non-saga related actions before calling our JSX
     const versionStatus = deliveryApi.getServerSideVersionStatus(request);
 
+    // In server-side blocks world, the hostname requested by the client resides in the x-orig-host header
+    // Because of this, we prioritize x-orig-host when setting our hostname
+    const hostname = request.headers['x-orig-host'] || request.hostname;
+
     console.info(
-      `Request for ${request.path} hostname: ${request.hostname} versionStatus: ${versionStatus}`
+      `Request for ${request.path} hostname: ${hostname} versionStatus: ${versionStatus}`
     );
 
     store.dispatch(setVersionStatus(versionStatus));
     store.dispatch(setVersion(versionInfo.commitRef, versionInfo.buildNo));
 
-    const project = pickProject(request.hostname, request.query);
+    const project = pickProject(hostname, request.query);
 
     const groups = allowedGroups && allowedGroups[project];
-    store.dispatch(setCurrentProject(project, groups, request.hostname));
+    store.dispatch(setCurrentProject(project, groups, hostname));
 
     const loadableExtractor = loadableChunkExtractors();
 
