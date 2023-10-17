@@ -34,7 +34,6 @@ const start = (
   global.REVERSE_PROXY_PATHS = Object(config.reverseProxyPaths);
 
   app.disable('x-powered-by');
-
   // Output some information about the used build/startup configuration
   DisplayStartupConfiguration(config);
 
@@ -60,4 +59,15 @@ const start = (
   });
 };
 
-export default { app, apiProxy: deliveryProxy, server, start };
+type Exporting = {
+  app: Express;
+  apiProxy: typeof deliveryProxy;
+  server: http.Server<typeof http.IncomingMessage, typeof http.ServerResponse>;
+  start: (
+    ReactApp: React.ComponentType<any>,
+    config: ServerConfig,
+    ServerFeatures: (app: Express) => void
+  ) => void;
+};
+
+export default { app, apiProxy: deliveryProxy, server, start } as Exporting;
