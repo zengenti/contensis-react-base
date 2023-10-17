@@ -3994,7 +3994,7 @@ const getBundleData = (config, staticRoutePath) => {
     legacy: loadableBundleData(config, staticRoutePath, 'legacy'),
     modern: loadableBundleData(config, staticRoutePath, 'modern')
   };
-  if (!bundleData.default || bundleData.default === {}) bundleData.default = bundleData.legacy || bundleData.modern;
+  if (!bundleData.default || Object.keys(bundleData.default || {}).length === 0) bundleData.default = bundleData.legacy || bundleData.modern;
   return bundleData;
 };
 
@@ -4334,7 +4334,6 @@ const start = (ReactApp, config, ServerFeatures) => {
   global.PROXY_DELIVERY_API = config.proxyDeliveryApi;
   global.REVERSE_PROXY_PATHS = Object(config.reverseProxyPaths);
   app.disable('x-powered-by');
-
   // Output some information about the used build/startup configuration
   DisplayStartupConfiguration(config);
   ServerFeatures(app);

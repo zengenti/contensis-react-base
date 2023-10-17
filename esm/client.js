@@ -33,6 +33,9 @@ import './RouteLoader-6eac364e.js';
 import 'react-router-config';
 import 'reselect';
 
+// Fix TS2769 error No overload matches this call
+const Container = AppContainer; // as typeof AppContainer;
+
 class ClientApp {
   constructor(ReactApp, config) {
     const documentRoot = document.getElementById('root');
@@ -44,7 +47,7 @@ class ClientApp {
       withEvents
     } = config;
     const GetClientJSX = store => {
-      const ClientJsx = /*#__PURE__*/React.createElement(AppContainer, null, /*#__PURE__*/React.createElement(CookiesProvider, null, /*#__PURE__*/React.createElement(Provider, {
+      const ClientJsx = /*#__PURE__*/React.createElement(Container, null, /*#__PURE__*/React.createElement(CookiesProvider, null, /*#__PURE__*/React.createElement(Provider, {
         store: store
       }, /*#__PURE__*/React.createElement(Router, {
         history: browserHistory

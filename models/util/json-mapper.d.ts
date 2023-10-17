@@ -1,10 +1,10 @@
 import { Entry } from 'contensis-delivery-api/lib/models';
 import mapJson from 'jsonpath-mapper';
 import MappingTemplate, { PureJsFunction } from 'jsonpath-mapper/dist/models/Template';
-import { AppState } from "../redux/appstate";
-import { EntryMapper, RouteNode } from "../routing/routes";
+import { AppState } from '~/redux/appstate';
+import { EntryMapper, RouteNode } from '~/routing/routes';
 export { default as mapJson, jpath } from 'jsonpath-mapper';
-declare type Mappers<S> = {
+type Mappers<S> = {
     [contentTypeId: string]: MappingTemplate<S>;
 };
 /**

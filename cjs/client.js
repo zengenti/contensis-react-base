@@ -40,6 +40,9 @@ function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'defau
 
 var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
 
+// Fix TS2769 error No overload matches this call
+const Container = reactHotLoader.AppContainer; // as typeof AppContainer;
+
 class ClientApp {
   constructor(ReactApp, config) {
     const documentRoot = document.getElementById('root');
@@ -51,7 +54,7 @@ class ClientApp {
       withEvents
     } = config;
     const GetClientJSX = store => {
-      const ClientJsx = /*#__PURE__*/React__default["default"].createElement(reactHotLoader.AppContainer, null, /*#__PURE__*/React__default["default"].createElement(reactCookie.CookiesProvider, null, /*#__PURE__*/React__default["default"].createElement(reactRedux.Provider, {
+      const ClientJsx = /*#__PURE__*/React__default["default"].createElement(Container, null, /*#__PURE__*/React__default["default"].createElement(reactCookie.CookiesProvider, null, /*#__PURE__*/React__default["default"].createElement(reactRedux.Provider, {
         store: store
       }, /*#__PURE__*/React__default["default"].createElement(reactRouterDom.Router, {
         history: App.browserHistory

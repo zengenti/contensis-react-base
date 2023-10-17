@@ -1,9 +1,9 @@
-import { FilterExpression, SearchQueryOptions } from "../../../search";
+import { FilterExpression, SearchQueryOptions } from '~/search';
 import { Query } from 'contensis-core-api';
 import { Entry } from 'contensis-delivery-api/lib/models';
 import { LinkDepthApiFilters } from './api.d';
-declare type WithOptional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
-declare type SearchQueryArgs = WithOptional<SearchQueryOptions & {
+type WithOptional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
+type SearchQueryArgs = WithOptional<SearchQueryOptions & {
     idFilters?: SearchQueryOptions['filters'];
     sharedFilters?: SearchQueryOptions['filters'];
 }, 'assetTypes' | 'customWhere' | 'dynamicOrderBy' | 'excludeIds' | 'featuredResults' | 'fields' | 'includeInSearchFields' | 'languages' | 'omitDefaultSearchFields' | 'orderBy' | 'pageIndex' | 'searchTerm' | 'webpageTemplates' | 'weightedSearchFields'>;

@@ -1,5 +1,5 @@
 import { Response } from 'express';
-import { AppState } from "../../redux/appstate";
+import { AppState } from '~/redux/appstate';
 export declare const addStandardHeaders: (state: AppState, response: Response, packagejson: any, groups: {
     globalGroups?: any[];
     allowedGroups?: any[];

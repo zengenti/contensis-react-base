@@ -1,7 +1,7 @@
 import { AppRoutes, WithEvents } from './routing/routes';
 import handleResponse from './server/features/response-handler';
-export declare type StateType = 'immutable' | 'js';
-export declare type AppConfig = {
+export type StateType = 'immutable' | 'js';
+export type AppConfig = {
     stateType?: StateType;
     routes: AppRoutes;
     withReducers: {
@@ -10,7 +10,7 @@ export declare type AppConfig = {
     withSagas: any[];
     withEvents: WithEvents;
 };
-export declare type ServerConfig = AppConfig & {
+export type ServerConfig = AppConfig & {
     appRootPath?: string;
     disableSsrRedux?: boolean;
     handleResponses?: typeof handleResponse;

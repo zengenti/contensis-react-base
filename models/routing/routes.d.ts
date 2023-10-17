@@ -1,21 +1,21 @@
 import { MatchedRoute, RouteConfig } from 'react-router-config';
 import { Entry, Node } from 'contensis-delivery-api/lib/models';
 import React from 'react';
-import { AppState } from "../redux/appstate";
-declare type RouteComponent<Props> = React.ComponentType<Props>;
-export declare type RouteNode = Node & {
+import { AppState } from '~/redux/appstate';
+type RouteComponent<Props> = React.ComponentType<Props>;
+export type RouteNode = Node & {
     ancestors: Node[];
     children: Node[];
 };
-export declare type AppRoutes = {
+export type AppRoutes = {
     ContentTypeMappings: ContentTypeMapping[];
     StaticRoutes: StaticRoute[];
 };
-export declare type AppRootProps = {
+export type AppRootProps = {
     routes: AppRoutes;
     withEvents: WithEvents;
 };
-export declare type RouteComponentProps<P = any> = {
+export type RouteComponentProps<P = any> = {
     [key: string]: any;
     projectId?: string;
     contentTypeId?: string;
@@ -23,23 +23,23 @@ export declare type RouteComponentProps<P = any> = {
     mappedEntry?: P;
     isLoggedIn?: boolean;
 };
-export declare type RouteLoaderProps = {
+export type RouteLoaderProps = {
     loadingComponent?: React.ComponentType;
     notFoundComponent?: React.ComponentType;
     trailingSlashRedirectCode?: 301 | 302;
 };
-export declare type EntryMapper = (<MappedProps>(node: RouteNode, state?: AppState) => MappedProps | unknown) | (<MappedProps>(node: RouteNode, state?: AppState) => Promise<MappedProps | unknown>);
-export declare type ReduxInjector = () => Promise<{
+export type EntryMapper = (<MappedProps>(node: RouteNode, state?: AppState) => MappedProps | unknown) | (<MappedProps>(node: RouteNode, state?: AppState) => Promise<MappedProps | unknown>);
+export type ReduxInjector = () => Promise<{
     key: string;
     reducer: any;
     saga: any;
 }>;
-declare type UserGroupRequisite = {
+type UserGroupRequisite = {
     id?: string;
     name?: string;
 };
-export declare type RequireLogin = boolean | UserGroupRequisite[];
-export declare type ContentTypeMapping = {
+export type RequireLogin = boolean | UserGroupRequisite[];
+export type ContentTypeMapping = {
     contentTypeID: string;
     component: RouteComponent<RouteComponentProps>;
     entryMapper?: EntryMapper;
@@ -59,7 +59,7 @@ export declare type ContentTypeMapping = {
     };
     requireLogin?: RequireLogin;
 };
-export declare type StaticRoute = Omit<RouteConfig, 'component'> & {
+export type StaticRoute = Omit<RouteConfig, 'component'> & {
     component: RouteComponent<RouteComponentProps>;
     fetchNode?: boolean | {
         /**
@@ -79,7 +79,7 @@ export declare type StaticRoute = Omit<RouteConfig, 'component'> & {
     ssr?: boolean;
     ssrOnly?: boolean;
 };
-export declare type OnRouteLoadArgs = {
+export type OnRouteLoadArgs = {
     location: {
         pathname: string;
         search: string;
@@ -90,7 +90,7 @@ export declare type OnRouteLoadArgs = {
     staticRoute: MatchedRoute<any, StaticRoute>;
     statePath: string;
 };
-export declare type OnRouteLoadedArgs = {
+export type OnRouteLoadedArgs = {
     entry: Entry | any;
     location: {
         pathname: string;
@@ -101,7 +101,7 @@ export declare type OnRouteLoadedArgs = {
     path: string;
     staticRoute: MatchedRoute<any, StaticRoute>;
 };
-export declare type RouteLoadOptions = {
+export type RouteLoadOptions = {
     customNavigation?: boolean | {
         ancestors: boolean | number;
         children: boolean | number;
@@ -114,10 +114,10 @@ export declare type RouteLoadOptions = {
     preventScrollTop?: boolean;
     refetchNode?: true;
 };
-export declare type RouteLoadedOptions = {
+export type RouteLoadedOptions = {
     requireLogin?: RequireLogin;
 };
-export declare type WithEvents = {
+export type WithEvents = {
     onRouteLoad: (args: OnRouteLoadArgs) => Generator<void | RouteLoadOptions>;
     onRouteLoaded: (args: OnRouteLoadedArgs) => Generator<void | RouteLoadedOptions>;
 };
