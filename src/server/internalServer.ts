@@ -62,7 +62,7 @@ const start = (
 type Exporting = {
   app: Express;
   apiProxy: typeof deliveryProxy;
-  server: http.Server<typeof http.IncomingMessage, typeof http.ServerResponse>;
+  server: http.Server;
   start: (
     ReactApp: React.ComponentType<any>,
     config: ServerConfig,
