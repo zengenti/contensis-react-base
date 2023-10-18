@@ -1,22 +1,26 @@
+import { useLocation } from 'react-router-dom';
 import { action } from '~/redux/util';
 import {
   SET_ENTRY,
-  SET_NAVIGATION_NOT_FOUND,
   SET_NAVIGATION_PATH,
   SET_TARGET_PROJECT,
   SET_ROUTE,
   SET_SURROGATE_KEYS,
 } from './types';
 
-export const setNotFound = notFound =>
-  action(SET_NAVIGATION_NOT_FOUND, { notFound });
+import { Entry } from 'contensis-delivery-api/lib/models';
+import { MatchedRoute, RouteConfig } from 'react-router-config';
+import { AppRoutes, WithEvents } from '../routes';
+import { CookieHelper } from '~/user/util/CookieHelper.class';
+
 export const setNavigationPath = (
-  path,
-  location,
-  staticRoute,
-  withEvents,
-  statePath,
-  routes
+  path: string,
+  location: ReturnType<typeof useLocation>,
+  staticRoute: MatchedRoute<any, RouteConfig> | undefined,
+  withEvents: WithEvents,
+  statePath: string,
+  routes: AppRoutes,
+  cookies: CookieHelper
 ) =>
   action(SET_NAVIGATION_PATH, {
     path,
@@ -25,10 +29,19 @@ export const setNavigationPath = (
     withEvents,
     statePath,
     routes,
+    cookies,
   });
-export const setCurrentProject = (project, allowedGroups, hostname) =>
-  action(SET_TARGET_PROJECT, { project, allowedGroups, hostname });
-export const setRoute = (path, state) => action(SET_ROUTE, { path, state });
-export const setRouteEntry = entry => action(SET_ENTRY, { entry });
-export const setSurrogateKeys = (keys, url) =>
+
+export const setCurrentProject = (
+  project: string,
+  allowedGroups: any,
+  hostname: string
+) => action(SET_TARGET_PROJECT, { project, allowedGroups, hostname });
+
+export const setRoute = (path: string, state?: any) =>
+  action(SET_ROUTE, { path, state });
+
+export const setRouteEntry = (entry: Entry) => action(SET_ENTRY, { entry });
+
+export const setSurrogateKeys = (keys: string, url: string) =>
   action(SET_SURROGATE_KEYS, { keys, url });

@@ -2,6 +2,8 @@ import { Client } from 'contensis-delivery-api';
 import { parse } from 'query-string';
 import { setSurrogateKeys } from '../routing/redux/actions';
 import { reduxStore } from '~/redux/store/store';
+import { findLoginCookies } from '~/user/util/CookieConstants';
+import { mapCookieHeader } from '~/user/util/CookieHelper.class';
 
 const storeSurrogateKeys = response => {
   const keys = response.headers.get
@@ -10,7 +12,7 @@ const storeSurrogateKeys = response => {
   if (keys) reduxStore?.dispatch(setSurrogateKeys(keys, response.url));
 };
 
-export const getClientConfig = project => {
+export const getClientConfig = (project, cookies) => {
   let config = DELIVERY_API_CONFIG; /* global DELIVERY_API_CONFIG */
   config.responseHandler = {};
 
@@ -20,9 +22,9 @@ export const getClientConfig = project => {
 
   // we only want the surrogate key header in a server context
   if (typeof window === 'undefined') {
-    config.defaultHeaders = {
+    config.defaultHeaders = Object.assign(config.defaultHeaders || {}, {
       'x-require-surrogate-key': true,
-    };
+    });
     config.responseHandler[200] = storeSurrogateKeys;
   }
 
@@ -34,12 +36,30 @@ export const getClientConfig = project => {
     config.rootUrl = '';
     config.responseHandler[404] = () => null;
   }
+
+  if (cookies) {
+    const cookieHeader = mapCookieHeader(findLoginCookies(cookies));
+    if (cookieHeader) {
+      config.defaultHeaders = Object.assign(config.defaultHeaders || {}, {
+        Cookie: cookieHeader,
+      });
+      console.info(
+        `config.defaultHeaders: ${JSON.stringify(config.defaultHeaders)}`
+      );
+    }
+  }
+
   return config;
 };
 
 export * from 'contensis-delivery-api';
 
 class DeliveryApi {
+  cookies;
+  constructor(cookies) {
+    this.cookies = cookies;
+  }
+
   getClientSideVersionStatus = () => {
     if (typeof window !== 'undefined') {
       // Allow overriding versionStatus with the querystring
@@ -84,26 +104,20 @@ class DeliveryApi {
 
     return 'published';
   };
-  search = (query, linkDepth, project, env) => {
-    const client = Client.create(getClientConfig(project, env));
+  search = (query, linkDepth, project) => {
+    const client = Client.create(getClientConfig(project, this.cookies));
     return client.entries.search(
       query,
       typeof linkDepth !== 'undefined' ? linkDepth : 1
     );
   };
-  getClient = (deliveryApiStatus = 'published', project, env) => {
-    const baseConfig = getClientConfig(project, env);
+  getClient = (deliveryApiStatus = 'published', project) => {
+    const baseConfig = getClientConfig(project, this.cookies);
     baseConfig.versionStatus = deliveryApiStatus;
     return Client.create(baseConfig);
   };
-  getEntry = (
-    id,
-    linkDepth = 0,
-    deliveryApiStatus = 'published',
-    project,
-    env
-  ) => {
-    const baseConfig = getClientConfig(project, env);
+  getEntry = (id, linkDepth = 0, deliveryApiStatus = 'published', project) => {
+    const baseConfig = getClientConfig(project, this.cookies);
     baseConfig.versionStatus = deliveryApiStatus;
     const client = Client.create(baseConfig);
     // return client.entries.get(id, linkDepth);
@@ -112,6 +126,7 @@ class DeliveryApi {
 }
 
 export const deliveryApi = new DeliveryApi();
+export const deliveryApiWithCookies = cookies => new DeliveryApi(cookies);
 
 class CacheNode {
   constructor(key, value) {
@@ -189,41 +204,49 @@ class LruCache {
   }
 }
 
+// CachedSearch does not cache results in SSR by design
 class CachedSearch {
   cache = new LruCache();
+  cookies;
   taxonomyLookup = {};
 
-  search(query, linkDepth, project, env) {
-    const client = Client.create(getClientConfig(project, env));
+  constructor(cookies) {
+    this.cookies = cookies;
+  }
+
+  getClient = new DeliveryApi(this.cookies).getClient;
+
+  search(query, linkDepth, project) {
+    const client = Client.create(getClientConfig(project, this.cookies));
     return this.request(
       project + JSON.stringify(query) + linkDepth.toString(),
       () => client.entries.search(query, linkDepth)
     );
   }
 
-  searchUsingPost(query, linkDepth = 0, project = '', env) {
-    const client = Client.create(getClientConfig(project, env));
+  searchUsingPost(query, linkDepth = 0, project = '') {
+    const client = Client.create(getClientConfig(project, this.cookies));
     return this.request(
       project + JSON.stringify(query) + linkDepth.toString(),
       () => client.entries.searchUsingPost(query, linkDepth)
     );
   }
 
-  get(id, linkDepth, versionStatus, project, env) {
-    const client = Client.create(getClientConfig(project, env));
+  get(id, linkDepth, versionStatus, project) {
+    const client = Client.create(getClientConfig(project, this.cookies));
     client.clientConfig.versionStatus = versionStatus;
     return this.request(id, () => client.entries.get({ id, linkDepth }));
   }
 
-  getContentType(id, project, env) {
-    const client = Client.create(getClientConfig(project, env));
+  getContentType(id, project) {
+    const client = Client.create(getClientConfig(project, this.cookies));
     return this.request(`[CONTENT TYPE] ${id} ${project}`, () =>
       client.contentTypes.get(id)
     );
   }
 
-  getTaxonomyNode(key, project, env) {
-    const client = Client.create(getClientConfig(project, env));
+  getTaxonomyNode(key, project) {
+    const client = Client.create(getClientConfig(project, this.cookies));
     return this.request(`[TAXONOMY NODE] ${key}`, () =>
       client.taxonomy
         .resolveChildren(key)
@@ -231,15 +254,15 @@ class CachedSearch {
     );
   }
 
-  getRootNode(options, project, env) {
-    const client = Client.create(getClientConfig(project, env));
+  getRootNode(options, project) {
+    const client = Client.create(getClientConfig(project, this.cookies));
     return this.request(`${project} / ${JSON.stringify(options)}`, () =>
       client.nodes.getRoot(options)
     );
   }
 
-  getNode(options, project, env) {
-    const client = Client.create(getClientConfig(project, env));
+  getNode(options, project) {
+    const client = Client.create(getClientConfig(project, this.cookies));
     return this.request(
       `${project} ${(options && options.path) || options} ${JSON.stringify(
         options
@@ -248,8 +271,8 @@ class CachedSearch {
     );
   }
 
-  getAncestors(options, project, env) {
-    const client = Client.create(getClientConfig(project, env));
+  getAncestors(options, project) {
+    const client = Client.create(getClientConfig(project, this.cookies));
     return this.request(
       `${project} [A] ${(options && options.id) || options} ${JSON.stringify(
         options
@@ -258,8 +281,8 @@ class CachedSearch {
     );
   }
 
-  getChildren(options, project, env) {
-    const client = Client.create(getClientConfig(project, env));
+  getChildren(options, project) {
+    const client = Client.create(getClientConfig(project, this.cookies));
     return this.request(
       `${project} [C] ${(options && options.id) || options} ${JSON.stringify(
         options
@@ -268,8 +291,8 @@ class CachedSearch {
     );
   }
 
-  getSiblings(options, project, env) {
-    const client = Client.create(getClientConfig(project, env));
+  getSiblings(options, project) {
+    const client = Client.create(getClientConfig(project, this.cookies));
     return this.request(
       `${project} [S] ${(options && options.id) || options} ${JSON.stringify(
         options
@@ -279,6 +302,7 @@ class CachedSearch {
   }
 
   request(key, execute) {
+    // do not cache results in SSR
     if (!this.cache.get(key) || typeof window == 'undefined') {
       let promise = execute();
       this.cache.set(key, promise);
@@ -291,3 +315,4 @@ class CachedSearch {
 }
 
 export const cachedSearch = new CachedSearch();
+export const cachedSearchWithCookies = cookies => new CachedSearch(cookies);

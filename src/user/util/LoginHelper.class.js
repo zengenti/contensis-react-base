@@ -1,14 +1,11 @@
 /* eslint-disable require-atomic-updates */
-import { getManagementApiClient } from './ContensisManagementApi';
 import { to } from 'await-to-js';
 
-import { CookieHelper } from './CookieHelper.class';
+import { getManagementApiClient } from './ContensisManagementApi';
 
 import mapClientCredentials from '../transformations/mapClientCredentials';
 import { createUserManager, userManagerConfig } from './OidcUserManager';
-
-const LOGIN_COOKIE = 'ContensisCMSUserName';
-const REFRESH_TOKEN_COOKIE = 'RefreshToken';
+import { LOGIN_COOKIE, REFRESH_TOKEN_COOKIE } from './CookieConstants';
 
 const context = typeof window != 'undefined' ? window : global;
 
@@ -21,7 +18,12 @@ export class LoginHelper {
   static LOGIN_ROUTE = '/account/login';
   static ACCESS_DENIED_ROUTE = '/account/access-denied';
 
-  static SetLoginCookies({ contensisClassicToken, refreshToken }) {
+  cookies;
+  constructor(cookies) {
+    this.cookies = cookies;
+  }
+
+  SetLoginCookies({ contensisClassicToken, refreshToken }) {
     console.info(
       'SetLoginCookies:',
       LOGIN_COOKIE,
@@ -29,25 +31,27 @@ export class LoginHelper {
       REFRESH_TOKEN_COOKIE,
       refreshToken
     );
+
     if (contensisClassicToken)
-      CookieHelper.SetCookie(LOGIN_COOKIE, contensisClassicToken);
+      this.cookies.SetCookie(LOGIN_COOKIE, contensisClassicToken);
+
     if (refreshToken)
-      CookieHelper.SetCookie(REFRESH_TOKEN_COOKIE, refreshToken);
+      this.cookies.SetCookie(REFRESH_TOKEN_COOKIE, refreshToken);
   }
 
-  static GetCachedCredentials() {
+  GetCachedCredentials() {
     return {
       bearerToken: null,
       bearerTokenExpiryDate: null,
-      refreshToken: CookieHelper.GetCookie(REFRESH_TOKEN_COOKIE),
+      refreshToken: this.cookies.GetCookie(REFRESH_TOKEN_COOKIE),
       refreshTokenExpiryDate: null,
-      contensisClassicToken: CookieHelper.GetCookie(LOGIN_COOKIE),
+      contensisClassicToken: this.cookies.GetCookie(LOGIN_COOKIE),
     };
   }
 
-  static ClearCachedCredentials() {
-    CookieHelper.DeleteCookie(LOGIN_COOKIE);
-    CookieHelper.DeleteCookie(REFRESH_TOKEN_COOKIE);
+  ClearCachedCredentials() {
+    this.cookies.DeleteCookie(LOGIN_COOKIE);
+    this.cookies.DeleteCookie(REFRESH_TOKEN_COOKIE);
 
     if (LoginHelper.WSFED_LOGIN && typeof window !== 'undefined') {
       // remove any oidc keys left over in localStorage
@@ -62,7 +66,7 @@ export class LoginHelper {
     }
   }
 
-  static async LoginUser({ username, password, clientCredentials }) {
+  async LoginUser({ username, password, clientCredentials }) {
     let credentials = clientCredentials;
     let authenticationState = {
       clientCredentials: null,
@@ -96,14 +100,14 @@ export class LoginHelper {
           ),
           isError: true,
         };
-        LoginHelper.ClearCachedCredentials();
+        this.ClearCachedCredentials();
       }
 
       // Got a token using username and password
       if (clientBearerToken) {
         // Set credentials so we can continue to GetUserDetails
         credentials = mapClientCredentials(transientClient);
-        LoginHelper.SetLoginCookies(credentials);
+        this.SetLoginCookies(credentials);
         authenticationState = {
           clientCredentials: credentials,
           isAuthenticated: true,
@@ -129,11 +133,11 @@ export class LoginHelper {
           isAuthenticationError: false,
           isError: true,
         };
-        LoginHelper.ClearCachedCredentials();
+        this.ClearCachedCredentials();
       } else {
         // Ensure we get latest refreshToken and contensisClassicToken from the latest client
         const latestCredentials = mapClientCredentials(client);
-        LoginHelper.SetLoginCookies(latestCredentials);
+        this.SetLoginCookies(latestCredentials);
 
         user = userDetails;
         authenticationState = {
@@ -148,6 +152,18 @@ export class LoginHelper {
     return { authenticationState, user };
   }
 
+  LogoutUser(redirectPath) {
+    this.ClearCachedCredentials();
+    if (LoginHelper.WSFED_LOGIN) {
+      LoginHelper.WsFedLogout(redirectPath);
+    } else {
+      if (redirectPath) LoginHelper.ClientRedirectToPath(redirectPath);
+      else LoginHelper.ClientRedirectToSignInPage();
+    }
+  }
+
+  static withCookies = cookieHelper => new LoginHelper(cookieHelper);
+
   static GetUserDetails = async client => {
     let userError,
       groupsError,
@@ -160,7 +176,7 @@ export class LoginHelper {
         client.security.users.getUserGroups({
           userId: user.id,
           includeInherited: true,
-          pageOptions: { pageSize: 100 }
+          pageOptions: { pageSize: 100 },
         })
       );
       // Set groups attribute in user object to be the items
@@ -173,16 +189,6 @@ export class LoginHelper {
     }
     return [userError, user];
   };
-
-  static LogoutUser(redirectPath) {
-    LoginHelper.ClearCachedCredentials();
-    if (LoginHelper.WSFED_LOGIN) {
-      LoginHelper.WsFedLogout(redirectPath);
-    } else {
-      if (redirectPath) LoginHelper.ClientRedirectToPath(redirectPath);
-      else LoginHelper.ClientRedirectToSignInPage();
-    }
-  }
 
   static ClientRedirectToHome(location) {
     if (typeof window != 'undefined') {
@@ -197,6 +203,7 @@ export class LoginHelper {
   }
 
   static async ClientRedirectToSignInPage(redirectPath) {
+    if (typeof location === 'undefined') return;
     if (LoginHelper.WSFED_LOGIN) {
       await LoginHelper.WsFedLogout();
       await LoginHelper.WsFedLogin();
@@ -284,6 +291,7 @@ export class LoginHelper {
 
       const { LogonResult, ApplicationData = [] } = body;
       if (LogonResult !== 0) {
+        console.info(`Security token is invalid - LogonResult: ${LogonResult}`);
         return [
           { message: 'Security token is invalid', data: ApplicationData },
         ];
