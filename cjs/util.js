@@ -3,7 +3,7 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 var urls = require('./urls-6fcaf4c6.js');
-var ContensisDeliveryApi = require('./ContensisDeliveryApi-76de5ca9.js');
+var ContensisDeliveryApi = require('./ContensisDeliveryApi-98c0016f.js');
 var mapJson = require('jsonpath-mapper');
 var React = require('react');
 var reactRedux = require('react-redux');
@@ -306,7 +306,9 @@ var VersionInfo$1 = reactRedux.connect(mapStateToVersionInfo)(VersionInfo);
 exports.setCachingHeaders = urls.setCachingHeaders;
 exports.urls = urls.url;
 exports.cachedSearch = ContensisDeliveryApi.cachedSearch;
+exports.cachedSearchWithCookies = ContensisDeliveryApi.cachedSearchWithCookies;
 exports.deliveryApi = ContensisDeliveryApi.deliveryApi;
+exports.deliveryApiWithCookies = ContensisDeliveryApi.deliveryApiWithCookies;
 exports.getClientConfig = ContensisDeliveryApi.getClientConfig;
 Object.defineProperty(exports, 'jpath', {
   enumerable: true,

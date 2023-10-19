@@ -104,6 +104,7 @@ class DeliveryApi {
   }
 }
 const deliveryApi = new DeliveryApi();
+const deliveryApiWithCookies = cookies => new DeliveryApi(cookies);
 class CacheNode {
   constructor(key, value) {
     this.key = key;
@@ -243,5 +244,5 @@ class CachedSearch {
 const cachedSearch = new CachedSearch();
 const cachedSearchWithCookies = cookies => new CachedSearch(cookies);
 
-export { cachedSearchWithCookies as a, cachedSearch as c, deliveryApi as d, getClientConfig as g };
-//# sourceMappingURL=ContensisDeliveryApi-91398551.js.map
+export { cachedSearchWithCookies as a, deliveryApiWithCookies as b, cachedSearch as c, deliveryApi as d, getClientConfig as g };
+//# sourceMappingURL=ContensisDeliveryApi-137270c0.js.map
