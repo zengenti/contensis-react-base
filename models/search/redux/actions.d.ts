@@ -11,12 +11,12 @@ export declare const navigate: (path: string, state?: any) => {
     state: any;
 };
 export declare const clearFilters: ClearFiltersActionCreator;
-export declare const updatePageIndex: (pageIndex: number, scrollToElement?: string | undefined) => {
+export declare const updatePageIndex: (pageIndex: number, scrollToElement?: string) => {
     type: string;
     pageIndex: number;
     scrollToElement: string | undefined;
 };
-export declare const updatePageSize: (pageSize: number, scrollToElement?: string | undefined) => {
+export declare const updatePageSize: (pageSize: number, scrollToElement?: string) => {
     type: string;
     pageSize: number;
     scrollToElement: string | undefined;
@@ -33,14 +33,14 @@ export declare const updateSearchTerm: (term: string) => {
     type: string;
     term: string;
 };
-export declare const updateSelectedFilters: (filter: string, key: string, isUnknownItem?: boolean, scrollToElement?: string | undefined) => {
+export declare const updateSelectedFilters: (filter: string, key: string, isUnknownItem?: boolean, scrollToElement?: string) => {
     type: string;
     filter: string;
     key: string;
     isUnknownItem: boolean;
     scrollToElement: string | undefined;
 };
-export declare const updateSortOrder: (orderBy: string, facet?: string | undefined) => {
+export declare const updateSortOrder: (orderBy: string, facet?: string) => {
     type: string;
     orderBy: string;
     facet: string | undefined;

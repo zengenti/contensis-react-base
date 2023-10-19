@@ -1,5 +1,5 @@
 import { Facet, Filter, Paging, Tab } from './SearchState';
-export declare type WithSearch<T> = {
+export type WithSearch<T> = {
     className: string;
     /** Dispatch action to clear all selected filters */
     clearFilters: Function;

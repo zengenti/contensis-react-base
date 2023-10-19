@@ -1,24 +1,28 @@
-export { L as LoginHelper, h as handleRequiresLoginSaga, r as refreshSecurityToken } from './login-71ff3fcb.js';
+export { L as LoginHelper, h as handleRequiresLoginSaga, r as refreshSecurityToken } from './login-950e0b92.js';
+import { useCookies } from 'react-cookie';
 import { useDispatch, useSelector, connect } from 'react-redux';
-import { D as action, o as selectCurrentSearch } from './selectors-74de49a3.js';
+import { D as action, o as selectCurrentSearch } from './selectors-1a3c1725.js';
 import { L as LOGIN_USER, n as LOGOUT_USER, R as REGISTER_USER, c as REQUEST_USER_PASSWORD_RESET, d as RESET_USER_PASSWORD, C as CHANGE_USER_PASSWORD } from './reducers-3d5c37d1.js';
 export { o as initialUserState, U as reducer, t as types } from './reducers-3d5c37d1.js';
-import { c as selectUserErrorMessage, a as selectUserIsAuthenticated, d as selectUserIsAuthenticationError, e as selectUserIsError, f as selectUserIsLoading, g as selectUser, t as toJS, h as selectUserRegistrationError, i as selectUserRegistrationIsLoading, j as selectUserRegistrationIsSuccess, k as selectUserRegistration, l as selectPasswordResetRequestSending, n as selectPasswordResetRequestSent, o as selectPasswordResetRequestError, p as selectResetPasswordSending, q as selectResetPasswordSent, r as selectResetPasswordError, u as selectChangePasswordSending, v as selectChangePasswordSent, w as selectUserGuid, x as selectChangePasswordError } from './ToJs-9b30636a.js';
-export { y as selectors } from './ToJs-9b30636a.js';
+import { c as selectUserErrorMessage, a as selectUserIsAuthenticated, d as selectUserIsAuthenticationError, e as selectUserIsError, f as selectUserIsLoading, g as selectUser, t as toJS, h as selectUserRegistrationError, i as selectUserRegistrationIsLoading, j as selectUserRegistrationIsSuccess, k as selectUserRegistration, l as selectPasswordResetRequestSending, n as selectPasswordResetRequestSent, o as selectPasswordResetRequestError, p as selectResetPasswordSending, q as selectResetPasswordSent, r as selectResetPasswordError, u as selectChangePasswordSending, v as selectChangePasswordSent, w as selectUserGuid, x as selectChangePasswordError } from './ToJs-e1af7030.js';
+export { y as selectors } from './ToJs-e1af7030.js';
+import { C as CookieHelper } from './CookieHelper.class-4d6ee27b.js';
+import React from 'react';
 import '@redux-saga/core/effects';
 import 'jsonpath-mapper';
 import 'await-to-js';
-import 'js-cookie';
+import './CookieConstants-3d3b6531.js';
 import 'query-string';
 import 'immer';
-import 'react';
 
-const loginUser = (username, password) => action(LOGIN_USER, {
+const loginUser = (username, password, cookies) => action(LOGIN_USER, {
   username,
-  password
+  password,
+  cookies
 });
-const logoutUser = redirectPath => action(LOGOUT_USER, {
-  redirectPath
+const logoutUser = (redirectPath, cookies) => action(LOGOUT_USER, {
+  redirectPath,
+  cookies
 });
 const registerUser = (user, mappers) => action(REGISTER_USER, {
   user,
@@ -47,11 +51,12 @@ var actions = /*#__PURE__*/Object.freeze({
 });
 
 const useLogin = () => {
+  const cookies = new CookieHelper(...useCookies());
   const dispatch = useDispatch();
   const select = useSelector;
   return {
-    loginUser: (username, password) => dispatch(loginUser(username, password)),
-    logoutUser: redirectPath => dispatch(logoutUser(redirectPath)),
+    loginUser: (username, password) => dispatch(loginUser(username, password, cookies)),
+    logoutUser: redirectPath => dispatch(logoutUser(redirectPath, cookies)),
     errorMessage: select(selectUserErrorMessage),
     isAuthenticated: select(selectUserIsAuthenticated),
     isAuthenticationError: select(selectUserIsAuthenticationError),
@@ -156,6 +161,7 @@ const getDisplayName$1 = WrappedComponent => {
 const withLogin = WrappedComponent => {
   const mapStateToProps = state => {
     return {
+      errorMessage: selectUserErrorMessage(state),
       isAuthenticated: selectUserIsAuthenticated(state),
       isAuthenticationError: selectUserIsAuthenticationError(state),
       isError: selectUserIsError(state),
@@ -167,12 +173,17 @@ const withLogin = WrappedComponent => {
       error: selectUserIsError(state)
     };
   };
-  const mapDispatchToProps = {
-    loginUser,
-    logoutUser
+  const ConnectedComponent = () => {
+    const cookies = new CookieHelper(...useCookies());
+    const mapDispatchToProps = {
+      loginUser: (username, password) => loginUser(username, password, cookies),
+      logoutUser: redirectPath => logoutUser(redirectPath, cookies)
+    };
+    const FinalComponent = connect(mapStateToProps, mapDispatchToProps)(toJS(WrappedComponent));
+    return /*#__PURE__*/React.createElement(FinalComponent, null);
   };
-  const ConnectedComponent = connect(mapStateToProps, mapDispatchToProps)(toJS(WrappedComponent));
   ConnectedComponent.displayName = `${getDisplayName$1(WrappedComponent)}`;
+  ConnectedComponent.WrappedComponent = WrappedComponent;
   return ConnectedComponent;
 };
 

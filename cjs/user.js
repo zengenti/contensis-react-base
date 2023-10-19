@@ -2,25 +2,33 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var login = require('./login-2a6b5be0.js');
+var login = require('./login-c94a3369.js');
+var reactCookie = require('react-cookie');
 var reactRedux = require('react-redux');
-var selectors = require('./selectors-bcca60f4.js');
+var selectors = require('./selectors-bb991331.js');
 var reducers = require('./reducers-9afb5f89.js');
-var ToJs = require('./ToJs-6e9cfa69.js');
+var ToJs = require('./ToJs-5169fe56.js');
+var CookieHelper_class = require('./CookieHelper.class-daeb09dd.js');
+var React = require('react');
 require('@redux-saga/core/effects');
 require('jsonpath-mapper');
 require('await-to-js');
-require('js-cookie');
+require('./CookieConstants-000427db.js');
 require('query-string');
 require('immer');
-require('react');
 
-const loginUser = (username, password) => selectors.action(reducers.LOGIN_USER, {
+function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+
+var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
+
+const loginUser = (username, password, cookies) => selectors.action(reducers.LOGIN_USER, {
   username,
-  password
+  password,
+  cookies
 });
-const logoutUser = redirectPath => selectors.action(reducers.LOGOUT_USER, {
-  redirectPath
+const logoutUser = (redirectPath, cookies) => selectors.action(reducers.LOGOUT_USER, {
+  redirectPath,
+  cookies
 });
 const registerUser = (user, mappers) => selectors.action(reducers.REGISTER_USER, {
   user,
@@ -49,11 +57,12 @@ var actions = /*#__PURE__*/Object.freeze({
 });
 
 const useLogin = () => {
+  const cookies = new CookieHelper_class.CookieHelper(...reactCookie.useCookies());
   const dispatch = reactRedux.useDispatch();
   const select = reactRedux.useSelector;
   return {
-    loginUser: (username, password) => dispatch(loginUser(username, password)),
-    logoutUser: redirectPath => dispatch(logoutUser(redirectPath)),
+    loginUser: (username, password) => dispatch(loginUser(username, password, cookies)),
+    logoutUser: redirectPath => dispatch(logoutUser(redirectPath, cookies)),
     errorMessage: select(ToJs.selectUserErrorMessage),
     isAuthenticated: select(ToJs.selectUserIsAuthenticated),
     isAuthenticationError: select(ToJs.selectUserIsAuthenticationError),
@@ -158,6 +167,7 @@ const getDisplayName$1 = WrappedComponent => {
 const withLogin = WrappedComponent => {
   const mapStateToProps = state => {
     return {
+      errorMessage: ToJs.selectUserErrorMessage(state),
       isAuthenticated: ToJs.selectUserIsAuthenticated(state),
       isAuthenticationError: ToJs.selectUserIsAuthenticationError(state),
       isError: ToJs.selectUserIsError(state),
@@ -169,12 +179,17 @@ const withLogin = WrappedComponent => {
       error: ToJs.selectUserIsError(state)
     };
   };
-  const mapDispatchToProps = {
-    loginUser,
-    logoutUser
+  const ConnectedComponent = () => {
+    const cookies = new CookieHelper_class.CookieHelper(...reactCookie.useCookies());
+    const mapDispatchToProps = {
+      loginUser: (username, password) => loginUser(username, password, cookies),
+      logoutUser: redirectPath => logoutUser(redirectPath, cookies)
+    };
+    const FinalComponent = reactRedux.connect(mapStateToProps, mapDispatchToProps)(ToJs.toJS(WrappedComponent));
+    return /*#__PURE__*/React__default["default"].createElement(FinalComponent, null);
   };
-  const ConnectedComponent = reactRedux.connect(mapStateToProps, mapDispatchToProps)(ToJs.toJS(WrappedComponent));
   ConnectedComponent.displayName = `${getDisplayName$1(WrappedComponent)}`;
+  ConnectedComponent.WrappedComponent = WrappedComponent;
   return ConnectedComponent;
 };
 

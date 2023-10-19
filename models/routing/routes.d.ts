@@ -2,6 +2,7 @@ import { MatchedRoute, RouteConfig } from 'react-router-config';
 import { Entry, Node } from 'contensis-delivery-api/lib/models';
 import React from 'react';
 import { AppState } from '~/redux/appstate';
+import { CookieHelper } from '~/user/util/CookieHelper.class';
 type RouteComponent<Props> = React.ComponentType<Props>;
 export type RouteNode = Node & {
     ancestors: Node[];
@@ -80,6 +81,7 @@ export type StaticRoute = Omit<RouteConfig, 'component'> & {
     ssrOnly?: boolean;
 };
 export type OnRouteLoadArgs = {
+    cookies: CookieHelper;
     location: {
         pathname: string;
         search: string;
@@ -91,6 +93,7 @@ export type OnRouteLoadArgs = {
     statePath: string;
 };
 export type OnRouteLoadedArgs = {
+    cookies: CookieHelper;
     entry: Entry | any;
     location: {
         pathname: string;
