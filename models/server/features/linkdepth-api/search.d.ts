@@ -1,4 +1,4 @@
-import { FilterExpression, SearchQueryOptions } from '~/search';
+import { FilterExpression, SearchQueryOptions } from "../../../search";
 import { Query } from 'contensis-core-api';
 import { Entry } from 'contensis-delivery-api/lib/models';
 import { LinkDepthApiFilters } from './api.d';

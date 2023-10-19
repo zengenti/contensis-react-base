@@ -1,8 +1,8 @@
 import { MatchedRoute, RouteConfig } from 'react-router-config';
 import { Entry, Node } from 'contensis-delivery-api/lib/models';
 import React from 'react';
-import { AppState } from '~/redux/appstate';
-import { CookieHelper } from '~/user/util/CookieHelper.class';
+import { AppState } from "../redux/appstate";
+import { CookieHelper } from "../user/util/CookieHelper.class";
 type RouteComponent<Props> = React.ComponentType<Props>;
 export type RouteNode = Node & {
     ancestors: Node[];

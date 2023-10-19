@@ -4,7 +4,7 @@ import { Express } from 'express';
 import http from 'http';
 import React from 'react';
 import { deliveryProxy } from './features/reverse-proxy';
-import { ServerConfig } from '~/config';
+import { ServerConfig } from "../config";
 type Exporting = {
     app: Express;
     apiProxy: typeof deliveryProxy;

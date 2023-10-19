@@ -2,7 +2,7 @@ import { VersionStatus } from 'contensis-core-api';
 import { Entry, Node } from 'contensis-delivery-api/lib/models';
 import { Group, User } from 'contensis-management-api/lib/models';
 import { MatchedRoute } from 'react-router-config';
-import { StaticRoute } from '~/routing/routes';
+import { StaticRoute } from "../routing/routes";
 export type AppState = {
     navigation: {
         root: Node | null;
