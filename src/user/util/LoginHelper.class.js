@@ -220,13 +220,16 @@ export class LoginHelper {
     }
   }
 
-  static ClientRedirectToAccessDeniedPage(originalPath) {
+  static GetAccessDeniedRoute(originalPath) {
     let url = LoginHelper.ACCESS_DENIED_ROUTE;
-    if (originalPath === url) return;
-
-    if (typeof originalPath === 'string')
+    if (originalPath !== url && typeof originalPath === 'string')
       url = `${url}?original_uri=${originalPath}`;
-    if (typeof location !== 'undefined') location.href = url;
+    return url;
+  }
+
+  static ClientRedirectToAccessDeniedPage(originalPath) {
+    if (typeof location !== 'undefined')
+      location.href = LoginHelper.GetAccessDeniedRoute(originalPath);
   }
 
   static ClientRedirectToPath(redirectPath) {

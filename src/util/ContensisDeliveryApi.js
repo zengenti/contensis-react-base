@@ -43,9 +43,6 @@ export const getClientConfig = (project, cookies) => {
       config.defaultHeaders = Object.assign(config.defaultHeaders || {}, {
         Cookie: cookieHeader,
       });
-      console.info(
-        `config.defaultHeaders: ${JSON.stringify(config.defaultHeaders)}`
-      );
     }
   }
 

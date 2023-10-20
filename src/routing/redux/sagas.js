@@ -23,13 +23,14 @@ import {
 } from './selectors';
 import { hasNavigationTree } from '~/redux/selectors/navigation';
 import { selectVersionStatus } from '~/redux/selectors/version';
-import { ensureNodeTreeSaga } from '~/redux/sagas/navigation';
 import { handleRequiresLoginSaga } from '~/user/redux/sagas/login';
+import { ensureNodeTreeSaga } from '~/redux/sagas/navigation';
+import { injectRedux as reduxInjector } from '~/redux/store/injectors';
 
+import { LoginHelper } from '~/user';
 import { findContentTypeMapping } from '../util/find-contenttype-mapping';
 import { routeEntryByFieldsQuery } from '../util/queries';
 import { cachedSearchWithCookies } from '~/util/ContensisDeliveryApi';
-import { injectRedux as reduxInjector } from '~/redux/store/injectors';
 
 export const routingSagas = [
   takeEvery(SET_NAVIGATION_PATH, getRouteSaga),
@@ -201,11 +202,14 @@ function* getRouteSaga(action) {
               ...action,
               requireLogin: true,
             });
-            if (userLoggedIn) {
+            if (userLoggedIn && nodeError.status === 401) {
               // Reload the route so we can re-run the routing request now the
               // authentication cookies are written
               return yield call(setRouteSaga, { path: currentPath });
-              // return yield call(getRouteSaga, action);
+            } else if (userLoggedIn && nodeError.status === 403) {
+              return yield call(setRouteSaga, {
+                path: LoginHelper.GetAccessDeniedRoute(currentPath),
+              });
             } else {
               return yield call(do500, nodeError);
             }
