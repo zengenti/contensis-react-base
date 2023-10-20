@@ -9,6 +9,7 @@ export class LoginHelper {
     } | null)[]>;
     static ClientRedirectToHome(location: any): void;
     static ClientRedirectToSignInPage(redirectPath: any): Promise<void>;
+    static GetAccessDeniedRoute(originalPath: any): string;
     static ClientRedirectToAccessDeniedPage(originalPath: any): void;
     static ClientRedirectToPath(redirectPath: any): void;
     static WsFedLogin(redirectUri: any): Promise<void>;

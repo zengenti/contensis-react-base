@@ -1,18 +1,20 @@
 import { createBrowserHistory, createMemoryHistory } from 'history';
 import { takeEvery, select, put, call, all } from '@redux-saga/core/effects';
 import * as log from 'loglevel';
-import { d as deliveryApi, a as cachedSearchWithCookies } from './ContensisDeliveryApi-137270c0.js';
+import { d as deliveryApi, a as cachedSearchWithCookies } from './ContensisDeliveryApi-f6e6147e.js';
 import { G as GET_NODE_TREE, s as selectVersionStatus, S as SET_NODE_TREE, a as GET_NODE_TREE_ERROR } from './version-6cc0418c.js';
 import { h as hasNavigationTree, i as injectRedux } from './version-ec722079.js';
 import { b as selectCurrentProject, S as SET_NAVIGATION_PATH, d as SET_ROUTE, a as selectRouteEntry, e as selectCurrentNode, U as UPDATE_LOADING_STATE, f as selectCurrentAncestors, h as selectCurrentSiblings, i as selectRouteEntryEntryId, j as selectRouteEntryLanguage, k as selectMappedEntry, l as SET_ENTRY, m as SET_ANCESTORS, n as SET_SIBLINGS, q as queryParams, o as selectCurrentSearch, p as setRoute } from './selectors-1a3c1725.js';
 import to, { to as to$1 } from 'await-to-js';
-import { h as handleRequiresLoginSaga, f as findContentTypeMapping, g as getManagementApiClient, l as loginSagas } from './login-950e0b92.js';
-import { Op, Query } from 'contensis-delivery-api';
-import { R as REGISTER_USER, a as REGISTER_USER_SUCCESS, b as REGISTER_USER_FAILED, c as REQUEST_USER_PASSWORD_RESET, d as RESET_USER_PASSWORD, C as CHANGE_USER_PASSWORD, e as REQUEST_USER_PASSWORD_RESET_SENDING, f as REQUEST_USER_PASSWORD_RESET_SUCCESS, g as REQUEST_USER_PASSWORD_RESET_ERROR, h as RESET_USER_PASSWORD_SENDING, i as RESET_USER_PASSWORD_SUCCESS, j as RESET_USER_PASSWORD_ERROR, k as CHANGE_USER_PASSWORD_ERROR, l as CHANGE_USER_PASSWORD_SENDING, m as CHANGE_USER_PASSWORD_SUCCESS } from './reducers-3d5c37d1.js';
-import { s as selectClientCredentials } from './ToJs-e1af7030.js';
+import { h as handleRequiresLoginSaga, L as LoginHelper, f as findContentTypeMapping, g as getManagementApiClient, l as loginSagas } from './ChangePassword.container-eed60788.js';
 import React from 'react';
-import 'react-hot-loader';
+import 'react-cookie';
+import 'react-redux';
 import 'jsonpath-mapper';
+import { R as REGISTER_USER, a as REGISTER_USER_SUCCESS, b as REGISTER_USER_FAILED, c as REQUEST_USER_PASSWORD_RESET, d as RESET_USER_PASSWORD, C as CHANGE_USER_PASSWORD, e as REQUEST_USER_PASSWORD_RESET_SENDING, f as REQUEST_USER_PASSWORD_RESET_SUCCESS, g as REQUEST_USER_PASSWORD_RESET_ERROR, h as RESET_USER_PASSWORD_SENDING, i as RESET_USER_PASSWORD_SUCCESS, j as RESET_USER_PASSWORD_ERROR, k as CHANGE_USER_PASSWORD_ERROR, l as CHANGE_USER_PASSWORD_SENDING, m as CHANGE_USER_PASSWORD_SUCCESS } from './reducers-3d5c37d1.js';
+import { Op, Query } from 'contensis-delivery-api';
+import { s as selectClientCredentials } from './ToJs-e1af7030.js';
+import 'react-hot-loader';
 import 'query-string';
 import { R as RouteLoader } from './RouteLoader-d36840dd.js';
 
@@ -219,13 +221,16 @@ function* getRouteSaga(action) {
               ...action,
               requireLogin: true
             });
-            if (userLoggedIn) {
+            if (userLoggedIn && nodeError.status === 401) {
               // Reload the route so we can re-run the routing request now the
               // authentication cookies are written
               return yield call(setRouteSaga, {
                 path: currentPath
               });
-              // return yield call(getRouteSaga, action);
+            } else if (userLoggedIn && nodeError.status === 403) {
+              return yield call(setRouteSaga, {
+                path: LoginHelper.GetAccessDeniedRoute(currentPath)
+              });
             } else {
               return yield call(do500, nodeError);
             }
@@ -802,4 +807,4 @@ const AppRoot = props => {
 };
 
 export { AppRoot as A, browserHistory as b, history as h, pickProject as p, rootSaga as r };
-//# sourceMappingURL=App-f7ef3cb9.js.map
+//# sourceMappingURL=App-8a14a21c.js.map

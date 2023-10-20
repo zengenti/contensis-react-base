@@ -3,18 +3,20 @@
 var history$1 = require('history');
 var effects = require('@redux-saga/core/effects');
 var log = require('loglevel');
-var ContensisDeliveryApi = require('./ContensisDeliveryApi-98c0016f.js');
+var ContensisDeliveryApi = require('./ContensisDeliveryApi-606ba588.js');
 var version = require('./version-153ec9ef.js');
 var version$1 = require('./version-963a7634.js');
 var selectors = require('./selectors-bb991331.js');
 var to = require('await-to-js');
-var login = require('./login-c94a3369.js');
-var contensisDeliveryApi = require('contensis-delivery-api');
-var reducers = require('./reducers-9afb5f89.js');
-var ToJs = require('./ToJs-5169fe56.js');
+var ChangePassword_container = require('./ChangePassword.container-6acc4afb.js');
 var React = require('react');
-require('react-hot-loader');
+require('react-cookie');
+require('react-redux');
 require('jsonpath-mapper');
+var reducers = require('./reducers-9afb5f89.js');
+var contensisDeliveryApi = require('contensis-delivery-api');
+var ToJs = require('./ToJs-5169fe56.js');
+require('react-hot-loader');
 require('query-string');
 var RouteLoader = require('./RouteLoader-005d7f4e.js');
 
@@ -241,17 +243,20 @@ function* getRouteSaga(action) {
             // and fire the user down the handleRequiresLoginSaga
             // If auth was successful via a refreshToken we need to reload the page
             // to run this getRouteSaga again with the security token cookie
-            const userLoggedIn = yield effects.call(login.handleRequiresLoginSaga, {
+            const userLoggedIn = yield effects.call(ChangePassword_container.handleRequiresLoginSaga, {
               ...action,
               requireLogin: true
             });
-            if (userLoggedIn) {
+            if (userLoggedIn && nodeError.status === 401) {
               // Reload the route so we can re-run the routing request now the
               // authentication cookies are written
               return yield effects.call(setRouteSaga, {
                 path: currentPath
               });
-              // return yield call(getRouteSaga, action);
+            } else if (userLoggedIn && nodeError.status === 403) {
+              return yield effects.call(setRouteSaga, {
+                path: ChangePassword_container.LoginHelper.GetAccessDeniedRoute(currentPath)
+              });
             } else {
               return yield effects.call(do500, nodeError);
             }
@@ -263,7 +268,7 @@ function* getRouteSaga(action) {
           var _payload$items;
           // Get fields[] and linkDepth from ContentTypeMapping to get the entry data
           // and current node's ordinates at a specified depth with specified fields
-          contentTypeMapping = login.findContentTypeMapping(ContentTypeMappings, pathNode.entry.sys.contentTypeId) || {};
+          contentTypeMapping = ChangePassword_container.findContentTypeMapping(ContentTypeMappings, pathNode.entry.sys.contentTypeId) || {};
           const {
             fields,
             linkDepth
@@ -290,7 +295,7 @@ function* getRouteSaga(action) {
       });
       if (children) pathNode.children = children;
     }
-    const resolvedContentTypeMapping = login.findContentTypeMapping(ContentTypeMappings, (_pathNode2 = pathNode) === null || _pathNode2 === void 0 ? void 0 : (_pathNode2$entry = _pathNode2.entry) === null || _pathNode2$entry === void 0 ? void 0 : (_pathNode2$entry$sys = _pathNode2$entry.sys) === null || _pathNode2$entry$sys === void 0 ? void 0 : _pathNode2$entry$sys.contentTypeId) || {};
+    const resolvedContentTypeMapping = ChangePassword_container.findContentTypeMapping(ContentTypeMappings, (_pathNode2 = pathNode) === null || _pathNode2 === void 0 ? void 0 : (_pathNode2$entry = _pathNode2.entry) === null || _pathNode2$entry === void 0 ? void 0 : (_pathNode2$entry$sys = _pathNode2$entry.sys) === null || _pathNode2$entry$sys === void 0 ? void 0 : _pathNode2$entry$sys.contentTypeId) || {};
 
     // Inject redux { key, reducer, saga } provided by ContentTypeMapping
     if (resolvedContentTypeMapping.injectRedux) yield effects.call(reduxInjectorSaga, resolvedContentTypeMapping.injectRedux);
@@ -306,7 +311,7 @@ function* getRouteSaga(action) {
     }
     if (requireLogin !== false) {
       // Do not call the login feature saga if requireLogin is false
-      yield effects.call(login.handleRequiresLoginSaga, {
+      yield effects.call(ChangePassword_container.handleRequiresLoginSaga, {
         ...action,
         entry,
         requireLogin
@@ -745,7 +750,7 @@ function* changePasswordSaga(action) {
       type: reducers.CHANGE_USER_PASSWORD_SENDING
     });
     const clientCredentials = yield effects.select(ToJs.selectClientCredentials, 'js');
-    const client = yield login.getManagementApiClient({
+    const client = yield ChangePassword_container.getManagementApiClient({
       ...clientCredentials
     });
     const [err, res] = yield to.to(client.security.users.updatePassword(changePasswordObject));
@@ -774,7 +779,7 @@ function* changePasswordSaga(action) {
   }
 }
 
-const userSagas = [...login.loginSagas, ...registerSagas, ...resetPasswordSagas];
+const userSagas = [...ChangePassword_container.loginSagas, ...registerSagas, ...resetPasswordSagas];
 
 // index.js
 function rootSaga (featureSagas = []) {
@@ -832,4 +837,4 @@ exports.browserHistory = browserHistory;
 exports.history = history;
 exports.pickProject = pickProject;
 exports.rootSaga = rootSaga;
-//# sourceMappingURL=App-ad6f7fa7.js.map
+//# sourceMappingURL=App-2b7af947.js.map
