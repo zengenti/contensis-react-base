@@ -4044,6 +4044,7 @@ const start = (ReactApp, config, ServerFeatures) => {
     app.on('stop', () => {
       server.close(function () {
         console.info('GoodBye :(');
+        process.exit();
       });
     });
   });
