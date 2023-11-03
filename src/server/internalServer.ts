@@ -54,6 +54,7 @@ const start = (
     app.on('stop', () => {
       server.close(function () {
         console.info('GoodBye :(');
+        process.exit();
       });
     });
   });
