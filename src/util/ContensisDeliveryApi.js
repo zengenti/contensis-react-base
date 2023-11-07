@@ -2,8 +2,25 @@ import { Client } from 'contensis-delivery-api';
 import { parse } from 'query-string';
 import { setSurrogateKeys } from '../routing/redux/actions';
 import { reduxStore } from '~/redux/store/store';
+import {
+  selectCurrentHostname,
+  selectCurrentPath,
+  selectCurrentSearch,
+} from '~/routing/redux/selectors';
 import { findLoginCookies } from '~/user/util/CookieConstants';
 import { mapCookieHeader } from '~/user/util/CookieHelper.class';
+
+const getSsrReferer = () => {
+  if (typeof window === 'undefined') {
+    const state = reduxStore.getState();
+    const referer = `${selectCurrentHostname(state)}${selectCurrentPath(
+      state
+    )}${selectCurrentSearch(state)}`;
+
+    return referer;
+  }
+  return '';
+};
 
 const storeSurrogateKeys = response => {
   const keys = response.headers.get
@@ -23,7 +40,9 @@ export const getClientConfig = (project, cookies) => {
   // we only want the surrogate key header in a server context
   if (typeof window === 'undefined') {
     config.defaultHeaders = Object.assign(config.defaultHeaders || {}, {
+      referer: getSsrReferer(),
       'x-require-surrogate-key': true,
+      'x-crb-ssr': true, // add this for support tracing
     });
     config.responseHandler[200] = storeSurrogateKeys;
   }
