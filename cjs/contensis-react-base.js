@@ -3787,10 +3787,11 @@ const getVersionInfo = staticFolderPath => {
 };
 
 /* eslint-disable no-console */
-const unhandledExceptionHandler = (handleExceptions = true) => {
-  const exceptionTypes = handleExceptions === true ? ['uncaughtException', 'unhandledRejection', 'SIGTERM', 'SIGINT'] // Default exception types to add event listeners for
-  : Array.isArray(handleExceptions) // In future we could accept an array of specific exception types to handle for a specific application?
-  ? handleExceptions : [];
+
+// Default exception types to add event listeners for
+const handleDefaultEvents = ['uncaughtException', 'unhandledRejection'];
+const unhandledExceptionHandler = (handleExceptions = handleDefaultEvents) => {
+  const exceptionTypes = Array.isArray(handleExceptions) ? handleExceptions : handleExceptions === false ? [] : handleDefaultEvents;
   for (const type of exceptionTypes) {
     process.on(type, err => {
       if (err && err instanceof Error) {
@@ -3826,7 +3827,7 @@ const webApp = (app, ReactApp, config) => {
   const attributes = stringifyAttributes(scripts.attributes);
   scripts.startup = scripts.startup || startupScriptFilename;
   const responseHandler = typeof handleResponses === 'function' ? handleResponses : handleResponse;
-  if (handleExceptions !== false) unhandledExceptionHandler(); // Create `process.on` event handlers for unhandled exceptions (Node v15+)
+  if (handleExceptions !== false) unhandledExceptionHandler(handleExceptions); // Create `process.on` event handlers for unhandled exceptions (Node v15+)
 
   const versionInfo = getVersionInfo(staticFolderPath);
   app.get('/*', cookiesMiddleware__default["default"](), async (request, response) => {
