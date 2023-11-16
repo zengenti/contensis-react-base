@@ -79,7 +79,7 @@ const webApp = (
   const responseHandler =
     typeof handleResponses === 'function' ? handleResponses : handleResponse;
 
-  if (handleExceptions !== false) unhandledExceptionHandler(); // Create `process.on` event handlers for unhandled exceptions (Node v15+)
+  if (handleExceptions !== false) unhandledExceptionHandler(handleExceptions); // Create `process.on` event handlers for unhandled exceptions (Node v15+)
 
   const versionInfo = getVersionInfo(staticFolderPath);
 
