@@ -476,9 +476,18 @@ const doValidateField = (field, value) => {
   }
 };
 const isValidRegex = (field, value) => {
-  const regex = field.validations.regex.pattern;
-  const regexPattern = RegExp(regex);
-  if (!regexPattern.test(value)) return false;else return true;
+  var _field$validations2, _field$validations2$r;
+  const regexPattern = field === null || field === void 0 ? void 0 : (_field$validations2 = field.validations) === null || _field$validations2 === void 0 ? void 0 : (_field$validations2$r = _field$validations2.regex) === null || _field$validations2$r === void 0 ? void 0 : _field$validations2$r.pattern;
+  if (!regexPattern || regexPattern === '') return false;
+  try {
+    // Create RegExp object from string pattern
+    const regexObject = new RegExp(regexPattern.replace(/^\/|\/$/g, ''));
+    // Check the value being tested
+    const result = regexObject.test(value);
+    return result;
+  } catch (err) {
+    return false;
+  }
 };
 const isBusinessEmailValid = (field, value) => {
   const domain = value.split('@').pop();
@@ -2763,55 +2772,13 @@ const countries = [{
   "code": "uk"
 }];
 
-const useClickOutside = (ref, callback) => {
-  useEffect(() => {
-    const element = ref === null || ref === void 0 ? void 0 : ref.current;
-    const listener = evt => {
-      if (!element || element.contains(evt.target)) return;
-      callback(evt);
-    };
-    document.addEventListener('mousedown', listener);
-    document.addEventListener('touchstart', listener);
-    return () => {
-      document.removeEventListener('mousedown', listener);
-      document.removeEventListener('touchstart', listener);
-    };
-  }, [ref, callback]);
-};
-const useKeyPress = targetKey => {
-  const [pressed, setPressed] = useState(false);
-  useEffect(() => {
-    const onKeydown = e => {
-      const keyPressed = e.key;
-      if (keyPressed === targetKey) setPressed(true);
-    };
-    const onKeyup = e => {
-      const keyPressed = e.key;
-      if (keyPressed === targetKey) setPressed(false);
-    };
-    window.addEventListener('keydown', onKeydown);
-    window.addEventListener('keyup', onKeyup);
-    return () => {
-      window.removeEventListener('keydown', onKeydown);
-      window.removeEventListener('keyup', onKeyup);
-    };
-  }, [targetKey]);
-  return pressed;
-};
-const CountrySelectStyled = styled.div.withConfig({
-  displayName: "country__CountrySelectStyled",
-  componentId: "sc-93yqgk-0"
-})(["", ";"], ({
-  theme
-}) => {
-  return css(["div[aria-hidden=\"true\"]{display:none;}[aria-invalid='true']{background:#F9D7D7!important;border:1px solid #ca2121 !important;}[aria-invalid='false']{background:#D5FCE9 !important;border:1px solid #008A48 !important;}.country-select__label{display:block;margin:0 0 8px;}.country-select__wrapper{padding:16px 8px;margin:8px 0 0;}.country-select__btn--toggle{padding:8px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;font-family:inherit;background:#fff;border-radius:3px;border:1px solid #949494;height:40px;width:100%;max-width:100%;padding:8px;.country-select__icons{margin-left:auto;display:flex;align-items:center;}}.country-select__input{margin:0 8px 16px;font-family:inherit;background-color:#fff;border-radius:3px;border:1px solid #949494;height:40px;width:100%;max-width:calc(100% - 16px);padding:8px;}.country-select__options{overflow-y:scroll;height:247px;list-style:none;padding:0;margin:0;}.country-select__option{padding:8px;display:flex;align-items:center;cursor:pointer;background:transparent;border:none;width:100%;svg{margin-right:4px;}}img{margin-left:4px;width:16px;height:16px;}.required{color:", ";}"], theme.colors.red_darker);
-});
 const CountrySelect = ({
   formId,
   id,
   field,
   validations,
-  defaultValue
+  defaultValue,
+  placeholder
 }) => {
   var _options$filter, _options$filter$;
   const [options, setOptions] = useState(countries);
@@ -2920,10 +2887,10 @@ const CountrySelect = ({
       e.preventDefault();
       toggleDropdown(!toggled);
     }
-  }, selected, selected && /*#__PURE__*/React.createElement("img", {
+  }, selected ? /*#__PURE__*/React.createElement(React.Fragment, null, selected, selected && /*#__PURE__*/React.createElement("img", {
     src: (_options$filter = options.filter(opt => opt.country === selected)) === null || _options$filter === void 0 ? void 0 : (_options$filter$ = _options$filter[0]) === null || _options$filter$ === void 0 ? void 0 : _options$filter$.flag,
     alt: ""
-  }), /*#__PURE__*/React.createElement("span", {
+  })) : /*#__PURE__*/React.createElement(React.Fragment, null, placeholder && /*#__PURE__*/React.createElement("span", null, placeholder)), /*#__PURE__*/React.createElement("span", {
     className: "sr-only"
   }, "Open the Country select searchable dropdown"), /*#__PURE__*/React.createElement("div", {
     className: "country-select__icons"
@@ -3037,17 +3004,66 @@ const CountrySelect = ({
     })));
   }))));
 };
-const CountryOption = /*#__PURE__*/forwardRef(function SelectItem(props, ref = null) {
-  const {
-    className,
-    children,
-    ...rest
-  } = props;
+const CountryOption = /*#__PURE__*/forwardRef(({
+  onClick,
+  onKeyDown,
+  value,
+  children,
+  ...rest
+}, ref) => {
   return /*#__PURE__*/React.createElement("button", _extends({
     className: "country-select__option",
+    onClick: onClick,
+    onKeyDown: onKeyDown,
     role: "option",
     ref: ref
   }, rest), children);
+});
+const useClickOutside = (ref, callback) => {
+  useEffect(() => {
+    const element = ref === null || ref === void 0 ? void 0 : ref.current;
+    const listener = evt => {
+      if (!element || element.contains(evt.target)) return;
+      callback(evt);
+    };
+    document.addEventListener('mousedown', listener);
+    document.addEventListener('touchstart', listener);
+    return () => {
+      document.removeEventListener('mousedown', listener);
+      document.removeEventListener('touchstart', listener);
+    };
+  }, [ref, callback]);
+};
+const useKeyPress = targetKey => {
+  const [pressed, setPressed] = useState(false);
+  useEffect(() => {
+    const onKeydown = e => {
+      const keyPressed = e.key;
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        e.preventDefault();
+      }
+      if (keyPressed === targetKey) setPressed(true);
+    };
+    const onKeyup = e => {
+      const keyPressed = e.key;
+      if (keyPressed === targetKey) setPressed(false);
+    };
+    window.addEventListener('keydown', onKeydown);
+    window.addEventListener('keyup', onKeyup);
+    return () => {
+      window.removeEventListener('keydown', onKeydown);
+      window.removeEventListener('keyup', onKeyup);
+    };
+  }, [targetKey]);
+  return pressed;
+};
+const CountrySelectStyled = styled.div.withConfig({
+  displayName: "country__CountrySelectStyled",
+  componentId: "sc-93yqgk-0"
+})(["", ";"], ({
+  theme
+}) => {
+  return css(["div[aria-hidden=\"true\"]{display:none;}[aria-invalid='true']{background:#F9D7D7!important;border:1px solid #ca2121 !important;}[aria-invalid='false']{background:#D5FCE9 !important;border:1px solid #008A48 !important;}.country-select__label{display:block;margin:0 0 8px;}.country-select__wrapper{padding:16px 8px;margin:8px 0 0;}.country-select__btn--toggle{padding:8px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;font-family:inherit;background:#fff;border-radius:3px;border:1px solid #949494;height:40px;width:100%;max-width:100%;padding:8px;.country-select__icons{margin-left:auto;display:flex;align-items:center;}}.country-select__input{margin:0 8px 16px;font-family:inherit;background-color:#fff;border-radius:3px;border:1px solid #949494;height:40px;width:100%;max-width:calc(100% - 16px);padding:8px;}.country-select__options{overflow-y:scroll;height:247px;list-style:none;padding:0;margin:0;}.country-select__option{padding:8px;display:flex;align-items:center;cursor:pointer;background:transparent;border:none;width:100%;svg{margin-right:4px;}}img{margin-left:4px;width:16px;height:16px;}.required{color:", ";}"], theme.colors.red_darker);
 });
 
 const FormComposer = ({
@@ -3204,14 +3220,15 @@ const FormComposer = ({
         }
       case 'country':
         {
-          var _field$default;
+          var _field$default, _field$editor, _field$editor$propert, _field$editor$propert2;
           return /*#__PURE__*/React.createElement(CountrySelect, {
             key: `${field.id}-${idx}`,
             formId: formId,
             field: field,
             id: field.id,
             validations: field.validations,
-            defaultValue: field === null || field === void 0 ? void 0 : (_field$default = field.default) === null || _field$default === void 0 ? void 0 : _field$default[defaultLanguage]
+            defaultValue: field === null || field === void 0 ? void 0 : (_field$default = field.default) === null || _field$default === void 0 ? void 0 : _field$default[defaultLanguage],
+            placeholder: field === null || field === void 0 ? void 0 : (_field$editor = field.editor) === null || _field$editor === void 0 ? void 0 : (_field$editor$propert = _field$editor.properties) === null || _field$editor$propert === void 0 ? void 0 : (_field$editor$propert2 = _field$editor$propert.placeholderText) === null || _field$editor$propert2 === void 0 ? void 0 : _field$editor$propert2[defaultLanguage]
           });
         }
     }
