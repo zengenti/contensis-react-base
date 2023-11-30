@@ -1,46 +1,22 @@
-export function getClientConfig(project: any): {
-    rootUrl: string;
-    accessToken: string;
-    projectId: string;
-    livePublishingRootUrl: string;
-};
-export * from "contensis-delivery-api";
-export const deliveryApi: DeliveryApi;
-export const cachedSearch: CachedSearch;
-declare class DeliveryApi {
+/// <reference types="qs" />
+import { VersionStatus } from 'contensis-core-api';
+import { Client, Query } from 'contensis-delivery-api';
+import { Config } from 'contensis-delivery-api/lib/models';
+import { CookieObject } from "../user/util/CookieConstants";
+import { Request } from 'express';
+import { IncomingHttpHeaders } from 'http';
+export declare const getClientConfig: (project?: string | undefined, cookies?: CookieObject | undefined) => Config;
+export declare class DeliveryApi {
+    cookies?: CookieObject;
+    constructor(cookies?: CookieObject);
     getClientSideVersionStatus: () => any;
-    getServerSideVersionStatus: (request: any) => any;
-    getVersionStatusFromHeaders: (headers: any) => any;
-    getVersionStatusFromHostname: (currentHostname: any) => "published" | "latest";
-    search: (query: any, linkDepth: any, project: any, env: any) => Promise<import("contensis-core-api").PagedList<import("contensis-delivery-api/lib/models").Entry>>;
-    getClient: (deliveryApiStatus: string | undefined, project: any, env: any) => Client;
-    getEntry: (id: any, linkDepth: number | undefined, deliveryApiStatus: string | undefined, project: any, env: any) => Promise<import("contensis-delivery-api/lib/models").Entry>;
+    getServerSideVersionStatus: (request: Request) => string | string[] | import("qs").ParsedQs | import("qs").ParsedQs[];
+    getVersionStatusFromHeaders: (headers: IncomingHttpHeaders) => string | string[] | null;
+    getVersionStatusFromHostname: (currentHostname: string) => "published" | "latest";
+    search: (query: Query, linkDepth?: number, project?: string | undefined) => Promise<import("contensis-core-api").PagedList<import("contensis-delivery-api/lib/models").Entry>>;
+    getClient: (versionStatus: VersionStatus | undefined, project: any) => Client;
+    getEntry: (id: string, linkDepth?: number, versionStatus?: VersionStatus, project?: string | undefined) => Promise<import("contensis-delivery-api/lib/models").Entry>;
 }
-declare class CachedSearch {
-    cache: LruCache;
-    taxonomyLookup: {};
-    search(query: any, linkDepth: any, project: any, env: any): any;
-    searchUsingPost(query: any, linkDepth: number | undefined, project: string | undefined, env: any): any;
-    get(id: any, linkDepth: any, versionStatus: any, project: any, env: any): any;
-    getContentType(id: any, project: any, env: any): any;
-    getTaxonomyNode(key: any, project: any, env: any): any;
-    getRootNode(options: any, project: any, env: any): any;
-    getNode(options: any, project: any, env: any): any;
-    getAncestors(options: any, project: any, env: any): any;
-    getChildren(options: any, project: any, env: any): any;
-    getSiblings(options: any, project: any, env: any): any;
-    request(key: any, execute: any): any;
-}
-import { Client } from "contensis-delivery-api";
-declare class LruCache {
-    constructor(limit?: number);
-    map: {};
-    head: any;
-    tail: any;
-    limit: number;
-    size: number;
-    get(key: any): any;
-    set(key: any, value: any): void;
-    setHead(node: any): void;
-    remove(key: any): void;
-}
+export declare const deliveryApi: DeliveryApi;
+export declare const deliveryApiWithCookies: (cookies?: CookieObject | undefined) => DeliveryApi;
+export * from './CachedDeliveryApi';
