@@ -31,6 +31,7 @@ var serialize$1 = require('serialize-javascript');
 var minifyCssString = require('minify-css-string');
 var server$1 = require('@loadable/server');
 var lodash = require('lodash');
+var _commonjsHelpers = require('./_commonjsHelpers-b3309d7b.js');
 var lodashClean = require('lodash-clean');
 var reactCookie = require('react-cookie');
 var version = require('./version-4077e706.js');
@@ -811,8 +812,6 @@ const DisplayStartupConfiguration = config => {
   /* eslint-enable no-console */
 };
 
-var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
-
 /**
  * Removes all key-value entries from the list cache.
  *
@@ -1092,7 +1091,7 @@ var _stackHas = stackHas$1;
 
 /** Detect free variable `global` from Node.js. */
 
-var freeGlobal$1 = typeof commonjsGlobal == 'object' && commonjsGlobal && commonjsGlobal.Object === Object && commonjsGlobal;
+var freeGlobal$1 = typeof _commonjsHelpers.commonjsGlobal == 'object' && _commonjsHelpers.commonjsGlobal && _commonjsHelpers.commonjsGlobal.Object === Object && _commonjsHelpers.commonjsGlobal;
 
 var _freeGlobal = freeGlobal$1;
 

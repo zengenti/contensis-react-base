@@ -27,6 +27,7 @@ import serialize$1 from 'serialize-javascript';
 import minifyCssString from 'minify-css-string';
 import { ChunkExtractor, ChunkExtractorManager } from '@loadable/server';
 import { identity, noop } from 'lodash';
+import { c as commonjsGlobal } from './_commonjsHelpers-1789f0cf.js';
 import { buildCleaner } from 'lodash-clean';
 import { CookiesProvider } from 'react-cookie';
 import { c as createStore } from './version-ef107106.js';
@@ -794,8 +795,6 @@ const DisplayStartupConfiguration = config => {
   if (config.staticFolderPath) console.log(`Serving static assets from: "/dist/${config.staticFolderPath}/"`);
   /* eslint-enable no-console */
 };
-
-var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
 /**
  * Removes all key-value entries from the list cache.
