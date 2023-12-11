@@ -4949,6 +4949,7 @@ const countries = [{
 const CountrySelect = ({
   formId,
   id,
+  label,
   field,
   validations,
   defaultValue,
@@ -5007,7 +5008,7 @@ const CountrySelect = ({
   }, /*#__PURE__*/React__default["default"].createElement("label", {
     className: "input__label",
     htmlFor: "country-searchable-select"
-  }, "Select a country", isRequired ? /*#__PURE__*/React__default["default"].createElement("span", {
+  }, label, isRequired ? /*#__PURE__*/React__default["default"].createElement("span", {
     className: "label__required"
   }, "(required)") : /*#__PURE__*/React__default["default"].createElement("span", {
     className: "label__optional"
@@ -5230,6 +5231,7 @@ const FormComposer = ({
             formId: formId,
             field: field,
             id: field.id,
+            label: field.name && field.name[defaultLanguage],
             validations: field.validations,
             defaultValue: field === null || field === void 0 ? void 0 : (_field$default = field.default) === null || _field$default === void 0 ? void 0 : _field$default[defaultLanguage],
             placeholder: field === null || field === void 0 ? void 0 : (_field$editor = field.editor) === null || _field$editor === void 0 ? void 0 : (_field$editor$propert = _field$editor.properties) === null || _field$editor$propert === void 0 ? void 0 : (_field$editor$propert2 = _field$editor$propert.placeholderText) === null || _field$editor$propert2 === void 0 ? void 0 : _field$editor$propert2[defaultLanguage]
