@@ -4,11 +4,13 @@ import {
   LOGIN_USER,
   LOGOUT_USER,
   VALIDATE_USER,
+  VERIFY_TWO_FA_TOKEN,
 } from '../types';
 import {
   selectUserIsAuthenticated,
   selectClientCredentials,
   selectUserGroups,
+  selectUser,
 } from '../selectors';
 
 import { setRoute } from '~/routing/redux/actions';
@@ -24,6 +26,7 @@ import { queryParams } from '~/util/navigation';
 
 export const loginSagas = [
   takeEvery(LOGIN_USER, loginUserSaga),
+  takeEvery(VERIFY_TWO_FA_TOKEN, verifyTwoFaTokenSaga),
   takeEvery(LOGOUT_USER, logoutUserSaga),
   takeEvery(VALIDATE_USER, validateUserSaga),
   takeEvery(SET_AUTHENTICATION_STATE, redirectAfterSuccessfulLoginSaga),
@@ -150,6 +153,25 @@ function* loginUserSaga(action = {}) {
     user,
   });
 }
+
+function* verifyTwoFaTokenSaga(action = {}) {
+  const { twoFaToken } = action;
+  const userIn = yield select(selectUser);
+  const clientCredentials = yield select(selectClientCredentials);
+
+  const { authenticationState, user } = yield LoginHelper.LoginUser({
+    clientCredentials,
+    userIn,
+    twoFaToken,
+  });
+
+  yield put({
+    type: SET_AUTHENTICATION_STATE,
+    authenticationState,
+    user,
+  });
+}
+
 const removeHostnamePart = path => {
   // eslint-disable-next-line no-console
   console.log(path);

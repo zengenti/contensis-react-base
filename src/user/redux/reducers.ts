@@ -19,6 +19,7 @@ import {
 } from './types';
 
 const defaultAuthenticationState = {
+  requiresTwoFa: false,
   clientCredentials: null,
   errorMessage: null,
   isAuthenticated: false,
@@ -72,6 +73,7 @@ export default produce((state: Draft<AppState['user']>, action) => {
 
       const {
         authenticationState: {
+          requiresTwoFa = false,
           clientCredentials = null,
           errorMessage = null,
           isAuthenticated,
@@ -82,17 +84,21 @@ export default produce((state: Draft<AppState['user']>, action) => {
         user,
       } = action;
 
+      // userObj is so we aren't trying to modify user prop directly, as it can be immutable
+      const userObj: any = {};
       if (user) {
-        user.name =
+        userObj.name =
           `${user.firstName}${user.lastName ? ` ${user.lastName}` : ''}` ||
           null;
-        user.isZengentiStaff = user.email.includes('@zengenti.com');
+        userObj.isZengentiStaff = user.email.includes('@zengenti.com');
       }
 
       state = {
         ...initialUserState,
         ...(user || state),
+        ...userObj,
         authenticationState: {
+          requiresTwoFa,
           clientCredentials,
           errorMessage,
           isAuthenticated:

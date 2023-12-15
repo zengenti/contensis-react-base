@@ -2,6 +2,9 @@ import { StateType } from '~/config';
 import { AppState } from '~/redux/appstate';
 import { getImmutableOrJS as getIn } from '~/redux/util';
 
+export const selectUserRequiresTwoFa = (state: AppState) =>
+  getIn(state, ['user', 'authenticationState', 'requiresTwoFa']);
+
 export const selectUserIsLoading = (state: AppState) =>
   getIn(state, ['user', 'authenticationState', 'isLoading']);
 

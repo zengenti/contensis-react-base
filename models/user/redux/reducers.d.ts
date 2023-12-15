@@ -1,5 +1,6 @@
 export declare const initialUserState: {
     authenticationState: {
+        requiresTwoFa: boolean;
         clientCredentials: null;
         errorMessage: null;
         isAuthenticated: boolean;

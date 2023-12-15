@@ -37,6 +37,7 @@ export declare type AppState = {
     };
     user: {
         authenticationState: {
+            requiresTwoFa: boolean;
             clientCredentials: {
                 bearerToken: string;
                 bearerTokenExpiryDate: Date;

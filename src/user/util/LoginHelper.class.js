@@ -20,6 +20,7 @@ export class LoginHelper {
       : context.WSFED_LOGIN === 'true';
   static LOGIN_ROUTE = '/account/login';
   static ACCESS_DENIED_ROUTE = '/account/access-denied';
+  static IS_TWO_FA = TWO_FACTOR_AUTH; /* global TWO_FACTOR_AUTH */
 
   static SetLoginCookies({ contensisClassicToken, refreshToken }) {
     console.info(
@@ -62,7 +63,187 @@ export class LoginHelper {
     }
   }
 
-  static async LoginUser({ username, password, clientCredentials }) {
+  static RequestTwoFaAuthToken = async username => {
+    const [error, res] = await to(
+      fetch(`/account/authenticate`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username,
+        }),
+      })
+    );
+
+    return [error, res];
+  };
+
+  static async LoginUserTwoFactorAuth({
+    username,
+    password,
+    clientCredentials,
+    userIn,
+    twoFaToken,
+  }) {
+    let authenticationState = {
+      clientCredentials: null,
+      isAuthenticated: false,
+      isAuthenticationError: false,
+      isError: false,
+    };
+    let transientClient;
+    let user = userIn;
+    let credentials = clientCredentials;
+
+    if (user && credentials && twoFaToken) {
+      const tokenExpiryString = userIn.custom.authTokenExpiryDate;
+      const tokenExpiryDate = tokenExpiryString
+        ? new Date(tokenExpiryString)
+        : undefined;
+      const isAuthTokenExpired =
+        tokenExpiryDate && tokenExpiryDate < new Date();
+
+      if (isAuthTokenExpired) {
+        authenticationState = {
+          clientCredentials: clientCredentials,
+          errorMessage:
+            'Auth token is expired, please restart the login process',
+          isAuthenticated: false,
+          isAuthenticationError: false,
+          isError: true,
+        };
+        LoginHelper.ClearCachedCredentials();
+      }
+
+      const authToken = userIn.custom.authToken;
+      const isAuthTokenWrong = authToken !== twoFaToken;
+
+      if (isAuthTokenWrong) {
+        authenticationState = {
+          requiresTwoFa: true,
+          clientCredentials: clientCredentials,
+          errorMessage: 'Auth token is incorrect',
+          isAuthenticated: false,
+          isAuthenticationError: false,
+          isError: true,
+        };
+        LoginHelper.ClearCachedCredentials();
+      }
+
+      if (!isAuthTokenWrong && !isAuthTokenExpired) {
+        LoginHelper.SetLoginCookies(clientCredentials);
+        authenticationState = {
+          clientCredentials: clientCredentials,
+          isAuthenticated: true,
+          isAuthenticationError: false,
+          isError: false,
+        };
+      }
+    } else if (username && password) {
+      // Get a management client with username and password
+      transientClient = await getManagementApiClient({
+        username,
+        password,
+      });
+
+      // Ensure the client has requested a bearer token
+      const [loginError, clientBearerToken] = await to(
+        transientClient.ensureBearerToken()
+      );
+
+      // Problem getting token with username and password
+      if (loginError) {
+        authenticationState = {
+          clientCredentials: null,
+          errorMessage: loginError.message || null,
+          isAuthenticated: false,
+          isAuthenticationError: loginError.name.includes(
+            'ContensisAuthenticationError'
+          ),
+          isError: true,
+        };
+        LoginHelper.ClearCachedCredentials();
+      }
+
+      // Got a token using username and password
+      if (clientBearerToken) {
+        // Next, we need to request the 2fa token
+        const [tokenError] = await LoginHelper.RequestTwoFaAuthToken(username);
+        if (tokenError) {
+          // eslint-disable-next-line no-console
+          console.log(`Error requesting two-factor auth token: ${tokenError}`);
+          authenticationState = {
+            clientCredentials: null,
+            errorMessage: tokenError || null,
+            isAuthenticated: false,
+            isAuthenticationError: false,
+            isError: true,
+          };
+          LoginHelper.ClearCachedCredentials();
+        } else {
+          // If we have successfully obtained a 2fa token, get the user details next
+          const [userDetailsError, userDetails] =
+            await LoginHelper.GetUserDetails(transientClient);
+
+          if (userDetailsError) {
+            authenticationState = {
+              clientCredentials: null,
+              errorMessage: userDetailsError.message,
+              isAuthenticated: false,
+              isAuthenticationError: false,
+              isError: true,
+            };
+            LoginHelper.ClearCachedCredentials();
+          } else {
+            user = userDetails;
+            const credentials = mapClientCredentials(transientClient);
+
+            authenticationState = {
+              requiresTwoFa: true,
+              clientCredentials: credentials,
+              errorMessage: null,
+              isAuthenticated: false,
+              isAuthenticationError: false,
+              isError: false,
+            };
+          }
+        }
+      }
+    } else if (credentials) {
+      const client =
+        transientClient || (await getManagementApiClient(credentials));
+      const [error, userDetails] = await LoginHelper.GetUserDetails(client);
+
+      if (error) {
+        authenticationState = {
+          clientCredentials: null,
+          errorMessage: error.message,
+          isAuthenticated: false,
+          isAuthenticationError: false,
+          isError: true,
+        };
+        LoginHelper.ClearCachedCredentials();
+      } else {
+        // Ensure we get latest refreshToken and contensisClassicToken from the latest client
+        const latestCredentials = mapClientCredentials(client);
+        LoginHelper.SetLoginCookies(latestCredentials);
+
+        user = userDetails;
+        authenticationState = {
+          clientCredentials: latestCredentials,
+          isAuthenticated: true,
+          isAuthenticationError: false,
+          isError: false,
+        };
+      }
+    }
+
+    return { authenticationState, user };
+  }
+
+  static async LoginUserRegular({ username, password, clientCredentials }) {
     let credentials = clientCredentials;
     let authenticationState = {
       clientCredentials: null,
@@ -148,6 +329,28 @@ export class LoginHelper {
     return { authenticationState, user };
   }
 
+  static async LoginUser({
+    username,
+    password,
+    clientCredentials,
+    userIn,
+    twoFaToken,
+  }) {
+    return LoginHelper.IS_TWO_FA
+      ? LoginHelper.LoginUserTwoFactorAuth({
+          username,
+          password,
+          clientCredentials,
+          userIn,
+          twoFaToken,
+        })
+      : LoginHelper.LoginUserRegular({
+          username,
+          password,
+          clientCredentials,
+        });
+  }
+
   static GetUserDetails = async client => {
     let userError,
       groupsError,
@@ -160,7 +363,7 @@ export class LoginHelper {
         client.security.users.getUserGroups({
           userId: user.id,
           includeInherited: true,
-          pageOptions: { pageSize: 100 }
+          pageOptions: { pageSize: 100 },
         })
       );
       // Set groups attribute in user object to be the items

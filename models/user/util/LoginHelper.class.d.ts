@@ -3,6 +3,7 @@ export class LoginHelper {
     static WSFED_LOGIN: boolean;
     static LOGIN_ROUTE: string;
     static ACCESS_DENIED_ROUTE: string;
+    static IS_TWO_FA: any;
     static SetLoginCookies({ contensisClassicToken, refreshToken }: {
         contensisClassicToken: any;
         refreshToken: any;
@@ -15,7 +16,23 @@ export class LoginHelper {
         contensisClassicToken: string | null;
     };
     static ClearCachedCredentials(): void;
-    static LoginUser({ username, password, clientCredentials }: {
+    static RequestTwoFaAuthToken: (username: any) => Promise<(Error | Response | null | undefined)[]>;
+    static LoginUserTwoFactorAuth({ username, password, clientCredentials, userIn, twoFaToken, }: {
+        username: any;
+        password: any;
+        clientCredentials: any;
+        userIn: any;
+        twoFaToken: any;
+    }): Promise<{
+        authenticationState: {
+            clientCredentials: null;
+            isAuthenticated: boolean;
+            isAuthenticationError: boolean;
+            isError: boolean;
+        };
+        user: any;
+    }>;
+    static LoginUserRegular({ username, password, clientCredentials }: {
         username: any;
         password: any;
         clientCredentials: any;
@@ -29,6 +46,21 @@ export class LoginHelper {
         user: Error | {
             groups: any;
         } | null | undefined;
+    }>;
+    static LoginUser({ username, password, clientCredentials, userIn, twoFaToken, }: {
+        username: any;
+        password: any;
+        clientCredentials: any;
+        userIn: any;
+        twoFaToken: any;
+    }): Promise<{
+        authenticationState: {
+            clientCredentials: null;
+            isAuthenticated: boolean;
+            isAuthenticationError: boolean;
+            isError: boolean;
+        };
+        user: any;
     }>;
     static GetUserDetails: (client: any) => Promise<(Error | {
         groups: any;

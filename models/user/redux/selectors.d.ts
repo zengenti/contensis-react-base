@@ -1,5 +1,6 @@
 import { StateType } from "../../config";
 import { AppState } from "../../redux/appstate";
+export declare const selectUserRequiresTwoFa: (state: AppState) => any;
 export declare const selectUserIsLoading: (state: AppState) => any;
 export declare const selectUserIsAuthenticated: (state: AppState) => any;
 export declare const selectUserIsAuthenticationError: (state: AppState) => any;

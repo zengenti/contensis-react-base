@@ -6,10 +6,14 @@ import {
   REGISTER_USER,
   REQUEST_USER_PASSWORD_RESET,
   RESET_USER_PASSWORD,
+  VERIFY_TWO_FA_TOKEN,
 } from './types';
 
 export const loginUser = (username, password) =>
   action(LOGIN_USER, { username, password });
+
+export const verifyTwoFa = twoFaToken =>
+  action(VERIFY_TWO_FA_TOKEN, { twoFaToken });
 
 export const logoutUser = redirectPath => action(LOGOUT_USER, { redirectPath });
 

@@ -1,6 +1,7 @@
 export const VALIDATE_USER: string;
 export const SET_AUTHENTICATION_STATE: string;
 export const LOGIN_USER: string;
+export const VERIFY_TWO_FA_TOKEN: string;
 export const LOGIN_SUCCESSFUL: string;
 export const LOGIN_FAILED: string;
 export const LOGOUT_USER: string;
