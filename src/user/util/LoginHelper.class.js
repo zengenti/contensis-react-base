@@ -65,7 +65,7 @@ export class LoginHelper {
 
   static RequestTwoFaAuthToken = async username => {
     const [error, res] = await to(
-      fetch(`/account/authenticate`, {
+      fetch(`/account/token`, {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -75,6 +75,24 @@ export class LoginHelper {
           username,
         }),
       })
+    );
+
+    return [error, res];
+  };
+
+  static VerifyTwoFaAuthToken = async (username, token) => {
+    const [error, res] = await to(
+      fetch(`/account/token/verify`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username,
+          token,
+        }),
+      }).then(res => res.json())
     );
 
     return [error, res];
@@ -98,48 +116,32 @@ export class LoginHelper {
     let credentials = clientCredentials;
 
     if (user && credentials && twoFaToken) {
-      const tokenExpiryString = userIn.custom.authTokenExpiryDate;
-      const tokenExpiryDate = tokenExpiryString
-        ? new Date(tokenExpiryString)
-        : undefined;
-      const isAuthTokenExpired =
-        tokenExpiryDate && tokenExpiryDate < new Date();
+      const [authTokenError, authTokenResponse] =
+        await LoginHelper.VerifyTwoFaAuthToken(user.username, twoFaToken);
 
-      if (isAuthTokenExpired) {
-        authenticationState = {
-          clientCredentials: clientCredentials,
-          errorMessage:
-            'Auth token is expired, please restart the login process',
-          isAuthenticated: false,
-          isAuthenticationError: false,
-          isError: true,
-        };
-        LoginHelper.ClearCachedCredentials();
-      }
-
-      const authToken = userIn.custom.authToken;
-      const isAuthTokenWrong = authToken !== twoFaToken;
-
-      if (isAuthTokenWrong) {
-        authenticationState = {
-          requiresTwoFa: true,
-          clientCredentials: clientCredentials,
-          errorMessage: 'Auth token is incorrect',
-          isAuthenticated: false,
-          isAuthenticationError: false,
-          isError: true,
-        };
-        LoginHelper.ClearCachedCredentials();
-      }
-
-      if (!isAuthTokenWrong && !isAuthTokenExpired) {
+      if (authTokenResponse?.isTokenValid) {
         LoginHelper.SetLoginCookies(clientCredentials);
         authenticationState = {
+          requiresTwoFa: false,
           clientCredentials: clientCredentials,
           isAuthenticated: true,
           isAuthenticationError: false,
           isError: false,
         };
+      } else {
+        const errorMessage =
+          authTokenError || authTokenResponse?.error || 'Unknown error';
+        authenticationState = {
+          requiresTwoFa: true,
+          clientCredentials: clientCredentials,
+          errorMessage,
+          isAuthenticated: false,
+          isAuthenticationError: false,
+          isError: true,
+        };
+        LoginHelper.ClearCachedCredentials();
+        // eslint-disable-next-line no-console
+        console.log('Error verifying 2fa token: ', errorMessage);
       }
     } else if (username && password) {
       // Get a management client with username and password
@@ -183,7 +185,7 @@ export class LoginHelper {
           };
           LoginHelper.ClearCachedCredentials();
         } else {
-          // If we have successfully obtained a 2fa token, get the user details next
+          // If we have successfully generated a 2fa token, get the user details next
           const [userDetailsError, userDetails] =
             await LoginHelper.GetUserDetails(transientClient);
 

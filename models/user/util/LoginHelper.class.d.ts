@@ -17,6 +17,7 @@ export class LoginHelper {
     };
     static ClearCachedCredentials(): void;
     static RequestTwoFaAuthToken: (username: any) => Promise<(Error | Response | null | undefined)[]>;
+    static VerifyTwoFaAuthToken: (username: any, token: any) => Promise<any[]>;
     static LoginUserTwoFactorAuth({ username, password, clientCredentials, userIn, twoFaToken, }: {
         username: any;
         password: any;

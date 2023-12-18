@@ -15,9 +15,7 @@ export function handleRequiresLoginSaga(action: any): Generator<import("redux-sa
         isAuthenticationError: boolean;
         isError: boolean;
     };
-    user: Error | {
-        groups: any;
-    } | null | undefined;
+    user: any;
 }> | import("redux-saga/effects").PutEffect<{
     type: string;
     authenticationState: any;
