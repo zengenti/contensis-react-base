@@ -2,11 +2,11 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var login = require('./login-3df93749.js');
+var login = require('./login-888ea612.js');
 var reactRedux = require('react-redux');
 var selectors = require('./selectors-c7873cd7.js');
-var reducers = require('./reducers-9afb5f89.js');
-var ToJs = require('./ToJs-c5bbd17a.js');
+var reducers = require('./reducers-84b5db70.js');
+var ToJs = require('./ToJs-4099e8f0.js');
 require('@redux-saga/core/effects');
 require('jsonpath-mapper');
 require('await-to-js');
@@ -18,6 +18,9 @@ require('react');
 const loginUser = (username, password) => selectors.action(reducers.LOGIN_USER, {
   username,
   password
+});
+const verifyTwoFa = twoFaToken => selectors.action(reducers.VERIFY_TWO_FA_TOKEN, {
+  twoFaToken
 });
 const logoutUser = redirectPath => selectors.action(reducers.LOGOUT_USER, {
   redirectPath
@@ -41,6 +44,7 @@ const changePassword = (userId, currentPassword, newPassword) => selectors.actio
 var actions = /*#__PURE__*/Object.freeze({
   __proto__: null,
   loginUser: loginUser,
+  verifyTwoFa: verifyTwoFa,
   logoutUser: logoutUser,
   registerUser: registerUser,
   requestPasswordReset: requestPasswordReset,
@@ -53,8 +57,10 @@ const useLogin = () => {
   const select = reactRedux.useSelector;
   return {
     loginUser: (username, password) => dispatch(loginUser(username, password)),
+    verifyTwoFa: twoFaToken => dispatch(verifyTwoFa(twoFaToken)),
     logoutUser: redirectPath => dispatch(logoutUser(redirectPath)),
     errorMessage: select(ToJs.selectUserErrorMessage),
+    requiresTwoFa: select(ToJs.selectUserRequiresTwoFa),
     isAuthenticated: select(ToJs.selectUserIsAuthenticated),
     isAuthenticationError: select(ToJs.selectUserIsAuthenticationError),
     isError: select(ToJs.selectUserIsError),

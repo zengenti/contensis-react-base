@@ -1,10 +1,10 @@
-export { L as LoginHelper, h as handleRequiresLoginSaga, r as refreshSecurityToken } from './login-c3cfb5ad.js';
+export { L as LoginHelper, h as handleRequiresLoginSaga, r as refreshSecurityToken } from './login-e4f53fec.js';
 import { useDispatch, useSelector, connect } from 'react-redux';
 import { E as action, o as selectCurrentSearch } from './selectors-ff21e98a.js';
-import { L as LOGIN_USER, n as LOGOUT_USER, R as REGISTER_USER, c as REQUEST_USER_PASSWORD_RESET, d as RESET_USER_PASSWORD, C as CHANGE_USER_PASSWORD } from './reducers-3d5c37d1.js';
-export { o as initialUserState, U as reducer, t as types } from './reducers-3d5c37d1.js';
-import { c as selectUserErrorMessage, a as selectUserIsAuthenticated, d as selectUserIsAuthenticationError, e as selectUserIsError, f as selectUserIsLoading, g as selectUser, t as toJS, h as selectUserRegistrationError, i as selectUserRegistrationIsLoading, j as selectUserRegistrationIsSuccess, k as selectUserRegistration, l as selectPasswordResetRequestSending, n as selectPasswordResetRequestSent, o as selectPasswordResetRequestError, p as selectResetPasswordSending, q as selectResetPasswordSent, r as selectResetPasswordError, u as selectChangePasswordSending, v as selectChangePasswordSent, w as selectUserGuid, x as selectChangePasswordError } from './ToJs-7233c038.js';
-export { y as selectors } from './ToJs-7233c038.js';
+import { L as LOGIN_USER, V as VERIFY_TWO_FA_TOKEN, n as LOGOUT_USER, R as REGISTER_USER, c as REQUEST_USER_PASSWORD_RESET, d as RESET_USER_PASSWORD, C as CHANGE_USER_PASSWORD } from './reducers-74f651dd.js';
+export { p as initialUserState, U as reducer, t as types } from './reducers-74f651dd.js';
+import { d as selectUserErrorMessage, e as selectUserRequiresTwoFa, a as selectUserIsAuthenticated, f as selectUserIsAuthenticationError, g as selectUserIsError, h as selectUserIsLoading, c as selectUser, t as toJS, i as selectUserRegistrationError, j as selectUserRegistrationIsLoading, k as selectUserRegistrationIsSuccess, l as selectUserRegistration, n as selectPasswordResetRequestSending, o as selectPasswordResetRequestSent, p as selectPasswordResetRequestError, q as selectResetPasswordSending, r as selectResetPasswordSent, u as selectResetPasswordError, v as selectChangePasswordSending, w as selectChangePasswordSent, x as selectUserGuid, y as selectChangePasswordError } from './ToJs-03fa077a.js';
+export { z as selectors } from './ToJs-03fa077a.js';
 import '@redux-saga/core/effects';
 import 'jsonpath-mapper';
 import 'await-to-js';
@@ -16,6 +16,9 @@ import 'react';
 const loginUser = (username, password) => action(LOGIN_USER, {
   username,
   password
+});
+const verifyTwoFa = twoFaToken => action(VERIFY_TWO_FA_TOKEN, {
+  twoFaToken
 });
 const logoutUser = redirectPath => action(LOGOUT_USER, {
   redirectPath
@@ -39,6 +42,7 @@ const changePassword = (userId, currentPassword, newPassword) => action(CHANGE_U
 var actions = /*#__PURE__*/Object.freeze({
   __proto__: null,
   loginUser: loginUser,
+  verifyTwoFa: verifyTwoFa,
   logoutUser: logoutUser,
   registerUser: registerUser,
   requestPasswordReset: requestPasswordReset,
@@ -51,8 +55,10 @@ const useLogin = () => {
   const select = useSelector;
   return {
     loginUser: (username, password) => dispatch(loginUser(username, password)),
+    verifyTwoFa: twoFaToken => dispatch(verifyTwoFa(twoFaToken)),
     logoutUser: redirectPath => dispatch(logoutUser(redirectPath)),
     errorMessage: select(selectUserErrorMessage),
+    requiresTwoFa: select(selectUserRequiresTwoFa),
     isAuthenticated: select(selectUserIsAuthenticated),
     isAuthenticationError: select(selectUserIsAuthenticationError),
     isError: select(selectUserIsError),

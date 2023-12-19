@@ -1,11 +1,11 @@
 export { s as setCachingHeaders, u as urls } from './urls-eac9a747.js';
-export { c as cachedSearch, d as deliveryApi, g as getClientConfig } from './ContensisDeliveryApi-5bb364b9.js';
+export { c as cachedSearch, d as deliveryApi, g as getClientConfig } from './ContensisDeliveryApi-79fea22b.js';
 import mapJson, { jpath } from 'jsonpath-mapper';
 export { jpath, default as mapJson } from 'jsonpath-mapper';
 import React from 'react';
 import { connect } from 'react-redux';
 import { b as selectCurrentProject } from './selectors-ff21e98a.js';
-import { f as selectCommitRef, g as selectBuildNumber, s as selectVersionStatus } from './version-aebe50f2.js';
+import { f as selectCommitRef, g as selectBuildNumber, s as selectVersionStatus } from './version-9fb5f2a3.js';
 import styled from 'styled-components';
 import 'contensis-delivery-api';
 import 'query-string';
@@ -15,7 +15,7 @@ import 'redux-saga';
 import 'redux-injectors';
 import 'immer';
 import 'deepmerge';
-import './reducers-3d5c37d1.js';
+import './reducers-74f651dd.js';
 
 /**
  *
