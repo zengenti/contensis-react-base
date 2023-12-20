@@ -20,7 +20,10 @@ export class LoginHelper {
       : context.WSFED_LOGIN === 'true';
   static LOGIN_ROUTE = '/account/login';
   static ACCESS_DENIED_ROUTE = '/account/access-denied';
-  static IS_TWO_FA = TWO_FACTOR_AUTH; /* global TWO_FACTOR_AUTH */
+  static IS_TWO_FA =
+    typeof TWO_FACTOR_AUTH === 'undefined'
+      ? false
+      : TWO_FACTOR_AUTH; /* global TWO_FACTOR_AUTH */
 
   static SetLoginCookies({ contensisClassicToken, refreshToken }) {
     console.info(
