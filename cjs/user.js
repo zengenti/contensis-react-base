@@ -2,15 +2,14 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var ChangePassword_container = require('./ChangePassword.container-7306be55.js');
+var ChangePassword_container = require('./ChangePassword.container-7de62d6b.js');
 var React = require('react');
 var reactCookie = require('react-cookie');
 var reactRedux = require('react-redux');
-var ToJs = require('./ToJs-29de3c36.js');
-var CookieHelper_class = require('./CookieHelper.class-daeb09dd.js');
+var ToJs = require('./ToJs-42cadab5.js');
 var reducers = require('./reducers-9afb5f89.js');
 require('@redux-saga/core/effects');
-require('./selectors-a6eac513.js');
+require('./selectors-e0ddc9ad.js');
 require('jsonpath-mapper');
 require('query-string');
 require('await-to-js');
@@ -40,7 +39,7 @@ const withLogin = WrappedComponent => {
     };
   };
   const ConnectedComponent = () => {
-    const cookies = new CookieHelper_class.CookieHelper(...reactCookie.useCookies());
+    const cookies = new ToJs.CookieHelper(...reactCookie.useCookies());
     const mapDispatchToProps = {
       loginUser: (username, password) => ChangePassword_container.loginUser(username, password, cookies),
       logoutUser: redirectPath => ChangePassword_container.logoutUser(redirectPath, cookies)

@@ -1,2 +1,3 @@
-import { Query } from "../../util/ContensisDeliveryApi";
-export declare const routeEntryByFieldsQuery: (id: string, language?: string, fields?: string[], versionStatus?: 'published' | 'latest') => Query;
+import { VersionStatus } from 'contensis-core-api';
+import { Query } from 'contensis-delivery-api';
+export declare const routeEntryByFieldsQuery: (id: string, language?: string, fields?: string[], versionStatus?: VersionStatus) => Query;

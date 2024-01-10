@@ -1,7 +1,9 @@
 export const LOGIN_COOKIE = 'ContensisCMSUserName';
 export const REFRESH_TOKEN_COOKIE = 'RefreshToken';
 
-export const findLoginCookies = (cookies: { [name: string]: any } | string) =>
+export type CookieObject = { [name: string]: any };
+
+export const findLoginCookies = (cookies: CookieObject | string) =>
   typeof cookies === 'object'
     ? Object.fromEntries(
         Object.entries(cookies).filter(([name]) =>

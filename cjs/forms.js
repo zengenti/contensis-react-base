@@ -10,6 +10,7 @@ var React = require('react');
 var PropTypes = require('prop-types');
 var reactRedux = require('react-redux');
 var styled = require('styled-components');
+var _commonjsHelpers = require('./_commonjsHelpers-b3309d7b.js');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -486,9 +487,18 @@ const doValidateField = (field, value) => {
   }
 };
 const isValidRegex = (field, value) => {
-  const regex = field.validations.regex.pattern;
-  const regexPattern = RegExp(regex);
-  if (!regexPattern.test(value)) return false;else return true;
+  var _field$validations2, _field$validations2$r;
+  const regexPattern = field === null || field === void 0 ? void 0 : (_field$validations2 = field.validations) === null || _field$validations2 === void 0 ? void 0 : (_field$validations2$r = _field$validations2.regex) === null || _field$validations2$r === void 0 ? void 0 : _field$validations2$r.pattern;
+  if (!regexPattern || regexPattern === '') return false;
+  try {
+    // Create RegExp object from string pattern
+    const regexObject = new RegExp(regexPattern.replace(/^\/|\/$/g, ''));
+    // Check the value being tested
+    const result = regexObject.test(value);
+    return result;
+  } catch (err) {
+    return false;
+  }
 };
 const isBusinessEmailValid = (field, value) => {
   const domain = value.split('@').pop();
@@ -1714,1252 +1724,3305 @@ EntryPicker.propTypes = {
   formId: PropTypes__default["default"].string
 };
 
-function _extends() {
-  _extends = Object.assign ? Object.assign.bind() : function (target) {
-    for (var i = 1; i < arguments.length; i++) {
-      var source = arguments[i];
-      for (var key in source) {
-        if (Object.prototype.hasOwnProperty.call(source, key)) {
-          target[key] = source[key];
+var dist = {exports: {}};
+
+(function (module, exports) {
+!function (t, e) {
+  module.exports = e() ;
+}("undefined" != typeof self ? self : _commonjsHelpers.commonjsGlobal, function () {
+  return function (t) {
+    var e = {};
+    function n(r) {
+      if (e[r]) return e[r].exports;
+      var i = e[r] = {
+        i: r,
+        l: !1,
+        exports: {}
+      };
+      return t[r].call(i.exports, i, i.exports, n), i.l = !0, i.exports;
+    }
+    return n.m = t, n.c = e, n.d = function (t, e, r) {
+      n.o(t, e) || Object.defineProperty(t, e, {
+        configurable: !1,
+        enumerable: !0,
+        get: r
+      });
+    }, n.n = function (t) {
+      var e = t && t.__esModule ? function () {
+        return t.default;
+      } : function () {
+        return t;
+      };
+      return n.d(e, "a", e), e;
+    }, n.o = function (t, e) {
+      return Object.prototype.hasOwnProperty.call(t, e);
+    }, n.p = "", n(n.s = 2);
+  }([function (t, e) {
+    var n;
+    n = function () {
+      return this;
+    }();
+    try {
+      n = n || Function("return this")() || (0, eval)("this");
+    } catch (t) {
+      "object" == typeof window && (n = window);
+    }
+    t.exports = n;
+  }, function (t, e, n) {
+
+    t.exports = u;
+    var r = n(3),
+      i = n(4),
+      o = Array.prototype;
+    function u(t) {
+      if (!(this instanceof u)) return new u(t);
+      var e,
+        n = i(t.className).split(/\s+/);
+      for (this._elem = t, this.length = 0, e = 0; e < n.length; e += 1) n[e] && o.push.call(this, n[e]);
+    }
+    u.prototype.add = function () {
+      var t, e;
+      for (e = 0; e < arguments.length; e += 1) t = "" + arguments[e], r(this, t) >= 0 || o.push.call(this, t);
+      return this._elem.className = this.toString(), this;
+    }, u.prototype.remove = function () {
+      var t, e, n;
+      for (n = 0; n < arguments.length; n += 1) e = "" + arguments[n], (t = r(this, e)) < 0 || o.splice.call(this, t, 1);
+      return this._elem.className = this.toString(), this;
+    }, u.prototype.contains = function (t) {
+      return r(this, t += "") >= 0;
+    }, u.prototype.toggle = function (t, e) {
+      return t += "", !0 === e ? this.add(t) : !1 === e ? this.remove(t) : this[this.contains(t) ? "remove" : "add"](t);
+    }, u.prototype.toString = function () {
+      return o.join.call(this, " ");
+    };
+  }, function (t, e, n) {
+
+    var r = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (t) {
+        return typeof t;
+      } : function (t) {
+        return t && "function" == typeof Symbol && t.constructor === Symbol && t !== Symbol.prototype ? "symbol" : typeof t;
+      },
+      i = function () {
+        function t(t, e) {
+          for (var n = 0; n < e.length; n++) {
+            var r = e[n];
+            r.enumerable = r.enumerable || !1, r.configurable = !0, "value" in r && (r.writable = !0), Object.defineProperty(t, r.key, r);
+          }
+        }
+        return function (e, n, r) {
+          return n && t(e.prototype, n), r && t(e, r), e;
+        };
+      }(),
+      o = E(n(1)),
+      u = E(n(5)),
+      s = E(n(6)),
+      a = E(n(7)),
+      c = E(n(8)),
+      f = E(n(9)),
+      l = E(n(10)),
+      h = E(n(12)),
+      p = E(n(14)),
+      d = E(n(15)),
+      g = E(n(17)),
+      y = E(n(18)),
+      v = E(n(19)),
+      m = E(n(31)),
+      b = E(n(32)),
+      w = E(n(35));
+    function E(t) {
+      return t && t.__esModule ? t : {
+        default: t
+      };
+    }
+    t.exports = function () {
+      function t(e) {
+        var n = this;
+        if (function (t, e) {
+          if (!(t instanceof e)) throw new TypeError("Cannot call a class as a function");
+        }(this, t), e = e || {}, this.config = (0, b.default)(e), this.input = (0, d.default)(this.config.input), this.list = (0, d.default)(this.config.list), this.cachedOpts = this.currentOpts = (0, d.default)(this.config.options, !0, this.list), this.isOpen = !1, this.currentOption = null, this.selected = [], this.groups = [], this.isHovering = !1, this.autoFilter = this.config.autoFilter, this.optionsWithEventHandlers = new Set(), this.optionsWithKeyEventHandlers = new Set(), this.config.groups) {
+          var r = (0, d.default)(this.config.groups, !0, this.list);
+          this.groups = r.map(function (t) {
+            return {
+              element: t,
+              options: n.cachedOpts.filter(function (e) {
+                return t.contains(e);
+              })
+            };
+          });
+        }
+        if (!this.input || !this.list) throw new Error("Unable to find required elements (list/input)");
+        (0, v.default)(this.input, this.list, this.cachedOpts), this.config.useLiveRegion && (this.liveRegion = new s.default({
+          ariaLive: "assertive"
+        })), this.initEvents();
+      }
+      return i(t, [{
+        key: "initEvents",
+        value: function () {
+          var t = this;
+          (0, u.default)(this), this.optionsWithKeyEventHandlers.has(this.input) || (this.input.addEventListener("click", function () {
+            t.openList().goTo(t.getOptIndex() || 0);
+          }), this.input.addEventListener("blur", function () {
+            t.isHovering || t.closeList();
+          }), this.input.addEventListener("focus", function () {
+            t.selected.length && (t.input.value = t.selected.length >= 2 ? "" : t.config.selectionValue(t.selected)), t.input.select();
+          }), document.addEventListener("click", function (e) {
+            !(0, p.default)(e.target, [t.input, t.list], !0) && t.isOpen && t.closeList();
+          })), this.optionEvents(), this.initKeys();
+        }
+      }, {
+        key: "getOptIndex",
+        value: function () {
+          return this.currentOption && this.currentOpts.indexOf(this.currentOption);
+        }
+      }, {
+        key: "optionEvents",
+        value: function () {
+          var t = this;
+          this.cachedOpts.forEach(function (e) {
+            t.optionsWithEventHandlers.has(e.id) || t.selected.includes(e) || (e.addEventListener("click", function () {
+              t.goTo(t.currentOpts.indexOf(e)).select();
+            }), e.addEventListener("mouseover", function () {
+              var n = t.currentOption;
+              n && (0, o.default)(n).remove(t.config.activeClass), (0, o.default)(e).add(t.config.activeClass), t.isHovering = !0;
+            }), e.addEventListener("mouseout", function () {
+              (0, o.default)(e).remove(t.config.activeClass), t.isHovering = !1;
+            }), t.optionsWithEventHandlers.add(e.id));
+          });
+        }
+      }, {
+        key: "openList",
+        value: function () {
+          (0, o.default)(this.list).add(this.config.openClass), this.input.setAttribute("aria-expanded", "true"), this.isOpen || this.announceCount(), this.isOpen = !0, this.emit("list:open");
+          var t = (0, f.default)(this.list);
+          if (!t.visible) {
+            var e = "bottom" === t.position ? 0 - (window.innerHeight - (this.input.clientHeight + this.list.clientHeight)) : 0;
+            (0, a.default)({
+              element: this.input,
+              offset: e,
+              bezier: [.19, 1, .22, 1],
+              duration: 100
+            });
+          }
+          return this;
+        }
+      }, {
+        key: "closeList",
+        value: function (t, e) {
+          return (0, o.default)(this.list).remove(this.config.openClass), this.input.setAttribute("aria-expanded", "false"), this.isOpen = !1, t && this.input.focus(), !this.multiselect && this.selected.length && (this.input.value = this.config.selectionValue(this.selected)), e && this.input.select(), this.emit("list:close"), this;
+        }
+      }, {
+        key: "initKeys",
+        value: function () {
+          var t = this;
+          if (!this.optionsWithKeyEventHandlers.has(this.input)) {
+            this.optionsWithKeyEventHandlers.add(this.input), h.default.down(this.input, [{
+              keys: ["up", "down"],
+              callback: function (e, n) {
+                if (t.isOpen) return -1 === t.currentOpts.indexOf(t.currentOption) ? t.goTo(0, !0) : t.goTo("down" === n ? "next" : "prev", !0);
+                var r = t.selected.length ? t.currentOpts.indexOf(t.selected[t.selected.length - 1]) : 0;
+                t.goTo(r, !0).openList();
+              },
+              preventDefault: !0
+            }, {
+              keys: ["enter"],
+              callback: function (e) {
+                t.isOpen && (e.preventDefault(), e.stopPropagation(), t.select());
+              }
+            }, {
+              keys: ["escape"],
+              callback: function (e) {
+                t.isOpen && (e.stopPropagation(), t.closeList(!0, !0));
+              }
+            }, {
+              keys: ["backspace"],
+              callback: function () {
+                t.selected.length >= 2 && (t.input.value = "");
+              }
+            }]);
+            var e = [9, 13, 27, 16];
+            h.default.up(this.input, function (n) {
+              if (t.autoFilter) {
+                var r = t.config.filter,
+                  i = t.cachedInputValue;
+                e.indexOf(n.which) > -1 || !r || (t.freshSelection ? (t.clearFilters(), i && i.trim() !== t.input.value.trim() && (t.filter().openList(), t.freshSelection = !1)) : t.filter().openList(), (0, y.default)(t.list, t.currentOpts, t.config.noResultsText));
+              }
+            });
+          }
+        }
+      }, {
+        key: "clearFilters",
+        value: function () {
+          return this.cachedOpts.forEach(function (t) {
+            return t.style.display = "";
+          }), this.groups.forEach(function (t) {
+            return t.element.style.display = "";
+          }), this.currentOpts = this.cachedOpts, this;
+        }
+      }, {
+        key: "filter",
+        value: function (t) {
+          var e = this,
+            n = this.config.filter,
+            r = this.currentOpts;
+          return this.currentOpts = "function" == typeof n ? n(this.input.value.trim(), this.cachedOpts) : l.default[n](this.input.value.trim(), this.cachedOpts), this.currentOpts = this.currentOpts || [], this.updateOpts(), r.every(function (t) {
+            return e.currentOpts.indexOf(t) > -1;
+          }) || t || this.announceCount(), this;
+        }
+      }, {
+        key: "announceCount",
+        value: function () {
+          var t = this.config.announcement && this.config.announcement.count;
+          return t && this.liveRegion && this.liveRegion.announce(t(this.currentOpts.length), 500), this;
+        }
+      }, {
+        key: "updateOpts",
+        value: function () {
+          var t = this,
+            e = this.config.optionValue;
+          return this.cachedOpts.forEach(function (n) {
+            n.style.display = -1 === t.currentOpts.indexOf(n) ? "none" : "", n.innerHTML = "string" == typeof e ? (0, m.default)(n, t.input, e) : e(n);
+          }), this.updateGroups(), this;
+        }
+      }, {
+        key: "updateGroups",
+        value: function () {
+          return this.groups.forEach(function (t) {
+            var e = t.options.filter(function (t) {
+              return "" === t.style.display;
+            });
+            t.element.style.display = e.length ? "" : "none";
+          }), this;
+        }
+      }, {
+        key: "select",
+        value: function () {
+          var t = this,
+            e = this.currentOption;
+          if (e) {
+            !this.config.multiselect && this.selected.length && (0, o.default)(this.selected[0]).remove(this.config.selectedClass);
+            var n = this.selected.indexOf(e),
+              r = n > -1;
+            return this.config.multiselect ? r ? this.selected.splice(n, 1) : this.selected.push(e) : this.selected = this.config.allowEmpty && r ? [] : [e], this.cachedOpts.forEach(function (e) {
+              e.setAttribute("aria-selected", t.selected.indexOf(e) > -1 ? "true" : "false");
+            }), r ? (e.classList.remove(this.config.selectedClass), this.emit("deselection", {
+              text: this.input.value,
+              option: e
+            })) : (e.classList.add(this.config.selectedClass), this.emit("selection", {
+              text: this.input.value,
+              option: e
+            })), this.freshSelection = !0, this.input.value = this.selected.length ? this.config.selectionValue(this.selected) : "", this.cachedInputValue = this.input.value, this.filter(!0).clearFilters(), this.config.multiselect || (this.closeList(), this.input.select()), this;
+          }
+        }
+      }, {
+        key: "reset",
+        value: function () {
+          var t = this;
+          return this.clearFilters(), this.input.value = "", this.updateOpts(), this.input.removeAttribute("aria-activedescendant"), this.input.removeAttribute("data-active-option"), this.currentOption = null, this.selected = [], this.cachedOpts.forEach(function (e) {
+            (0, o.default)(e).remove(t.config.selectedClass), (0, o.default)(e).remove(t.config.activeClass), e.setAttribute("aria-selected", "false");
+          }), this;
+        }
+      }, {
+        key: "goTo",
+        value: function (t, e) {
+          var n = this;
+          if ("string" == typeof t) {
+            var r = this.getOptIndex();
+            return this.goTo("next" === t ? r + 1 : r - 1, e);
+          }
+          var i = this.currentOpts[t],
+            o = !1;
+          if (!this.currentOpts[t]) return 0 === this.getOptIndex() && (this.list.scrollTop = 0), this;
+          if (this.groups.length) {
+            var u = (0, g.default)(this.groups, i);
+            o = u && u !== this.currentGroup, this.currentGroup = u;
+          }
+          return this.currentOption = i, this.pseudoFocus(o), this.currentOpts.forEach(function (t) {
+            t.classList.contains(n.config.activeClass) && !(0, c.default)(n.list, t) && (0, a.default)(t);
+          }), this;
+        }
+      }, {
+        key: "pseudoFocus",
+        value: function (t) {
+          var e = this.currentOption,
+            n = this.config.activeClass,
+            r = this.input.getAttribute("data-active-option"),
+            i = r && document.getElementById(r);
+          return i && n && (0, o.default)(i).remove(n), e && (this.input.setAttribute("data-active-option", e.id), n && (0, o.default)(e).add(n), this.liveRegion && (0, w.default)(e, this.config, this.liveRegion.announce.bind(this.liveRegion), t, this.currentGroup && this.currentGroup.element), this.input.setAttribute("aria-activedescendant", e.id), this.currentOption = e, this.emit("change")), this;
+        }
+      }, {
+        key: "setOptions",
+        value: function (t) {
+          return "object" === (void 0 === t ? "undefined" : r(t)) && this.config.list.append(t), this.cachedOpts.push(t), -1 === this.currentOpts.indexOf(t) && this.currentOpts.push(t), this;
+        }
+      }, {
+        key: "setCurrentOptions",
+        value: function () {
+          return this.currentOption = this.currentOpts[0], this;
+        }
+      }, {
+        key: "updateSelectedOptions",
+        value: function () {
+          var t = this,
+            e = document.getElementById(this.config.list.id),
+            n = this.selected;
+          for (this.emptyDropdownList(); e.hasChildNodes();) e.removeChild(e.firstChild);
+          return n.length > 0 && n.forEach(function (e) {
+            t.setOptions(e);
+          }), this;
+        }
+      }, {
+        key: "emptyDropdownList",
+        value: function () {
+          return this.currentOpts = [], this.cachedOpts = [], this.optionsWithEventHandlers.clear(), this;
+        }
+      }, {
+        key: "setNoResultFound",
+        value: function () {
+          (0, y.default)(this.list, this.currentOpts, this.config.noResultsText);
+        }
+      }]), t;
+    }();
+  }, function (t, e) {
+    t.exports = function (t, e) {
+      if (t.indexOf) return t.indexOf(e);
+      for (var n = 0; n < t.length; ++n) if (t[n] === e) return n;
+      return -1;
+    };
+  }, function (t, e) {
+    (e = t.exports = function (t) {
+      return t.replace(/^\s*|\s*$/g, "");
+    }).left = function (t) {
+      return t.replace(/^\s*/, "");
+    }, e.right = function (t) {
+      return t.replace(/\s*$/, "");
+    };
+  }, function (t, e, n) {
+    function r(t) {
+      if (t) return function (t) {
+        for (var e in r.prototype) t[e] = r.prototype[e];
+        return t;
+      }(t);
+    }
+    t.exports = r, r.prototype.on = r.prototype.addEventListener = function (t, e) {
+      return this._callbacks = this._callbacks || {}, (this._callbacks["$" + t] = this._callbacks["$" + t] || []).push(e), this;
+    }, r.prototype.once = function (t, e) {
+      function n() {
+        this.off(t, n), e.apply(this, arguments);
+      }
+      return n.fn = e, this.on(t, n), this;
+    }, r.prototype.off = r.prototype.removeListener = r.prototype.removeAllListeners = r.prototype.removeEventListener = function (t, e) {
+      if (this._callbacks = this._callbacks || {}, 0 == arguments.length) return this._callbacks = {}, this;
+      var n,
+        r = this._callbacks["$" + t];
+      if (!r) return this;
+      if (1 == arguments.length) return delete this._callbacks["$" + t], this;
+      for (var i = 0; i < r.length; i++) if ((n = r[i]) === e || n.fn === e) {
+        r.splice(i, 1);
+        break;
+      }
+      return this;
+    }, r.prototype.emit = function (t) {
+      this._callbacks = this._callbacks || {};
+      var e = [].slice.call(arguments, 1),
+        n = this._callbacks["$" + t];
+      if (n) for (var r = 0, i = (n = n.slice(0)).length; r < i; ++r) n[r].apply(this, e);
+      return this;
+    }, r.prototype.listeners = function (t) {
+      return this._callbacks = this._callbacks || {}, this._callbacks["$" + t] || [];
+    }, r.prototype.hasListeners = function (t) {
+      return !!this.listeners(t).length;
+    };
+  }, function (t, e, n) {
+
+    function r(t) {
+      this.region = document.createElement("div"), this.options = t || {}, this.configure(), document.body.appendChild(this.region);
+    }
+    r.prototype.configure = function () {
+      var t = this.options,
+        e = this.region;
+      e.setAttribute("aria-live", t.ariaLive || "polite"), e.setAttribute("role", t.role || "log"), e.setAttribute("aria-relevant", t.ariaRelevant || "additions"), e.setAttribute("aria-atomic", t.ariaAtomic || "false"), this.region.style.position = "absolute", this.region.style.width = "1px", this.region.style.height = "1px", this.region.style.marginTop = "-1px", this.region.style.clip = "rect(1px, 1px, 1px, 1px)", this.region.style.overflow = "hidden";
+    }, r.prototype.announce = function (t, e) {
+      var n = document.createElement("div");
+      n.innerHTML = t, this.region.appendChild(n), (e || void 0 === e) && setTimeout(function () {
+        this.region.removeChild(n);
+      }.bind(this), e || 7e3);
+    }, t.exports = r;
+  }, function (t, e, n) {
+    var r;
+    r = function () {
+      return function (t) {
+        function e(r) {
+          if (n[r]) return n[r].exports;
+          var i = n[r] = {
+            i: r,
+            l: !1,
+            exports: {}
+          };
+          return t[r].call(i.exports, i, i.exports, e), i.l = !0, i.exports;
+        }
+        var n = {};
+        return e.m = t, e.c = n, e.i = function (t) {
+          return t;
+        }, e.d = function (t, n, r) {
+          e.o(t, n) || Object.defineProperty(t, n, {
+            configurable: !1,
+            enumerable: !0,
+            get: r
+          });
+        }, e.n = function (t) {
+          var n = t && t.__esModule ? function () {
+            return t.default;
+          } : function () {
+            return t;
+          };
+          return e.d(n, "a", n), n;
+        }, e.o = function (t, e) {
+          return Object.prototype.hasOwnProperty.call(t, e);
+        }, e.p = "", e(e.s = 1);
+      }([function (t, e, n) {
+
+        function r(t) {
+          return t && t.__esModule ? t : {
+            default: t
+          };
+        }
+        function i() {}
+        Object.defineProperty(e, "__esModule", {
+          value: !0
+        });
+        var o = r(n(4)),
+          u = r(n(7)),
+          s = n(2),
+          a = r(n(3)),
+          c = [.19, 1, .22, 1];
+        e.default = function (t) {
+          var e = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : 100,
+            n = 0,
+            r = void 0,
+            f = void 0;
+          if ((0, s.isElement)(t)) r = o.default.apply(void 0, c), f = i;else {
+            if (!(0, s.isObject)(t)) throw new TypeError("The first argument must be HTMLElement or Object.");
+            if (!(0, s.isElement)(t.element)) throw new TypeError("`element` must be HTMLElement.");
+            n = (0, s.isNumeric)(t.offset) ? t.offset : 0, r = (0, s.isArray)(t.bezier) && 4 === t.bezier.length ? o.default.apply(void 0, function (t) {
+              if (Array.isArray(t)) {
+                for (var e = 0, n = Array(t.length); e < t.length; e++) n[e] = t[e];
+                return n;
+              }
+              return Array.from(t);
+            }(t.bezier)) : o.default.apply(void 0, c), e = t.duration, f = (0, s.isFunction)(t.then) ? t.then : i, t = t.element;
+          }
+          (!(0, s.isNumeric)(e) || e < 0) && (e = 100);
+          var l = (0, a.default)(t),
+            h = l.scrollTop,
+            p = l.offsetTop,
+            d = null,
+            g = ("BODY" === l.nodeName ? t.getBoundingClientRect().top + (window.scrollY || window.pageYOffset || document.body.scrollTop) - p : t.offsetTop - p) - h + n;
+          (0, u.default)(function t(n) {
+            null === d && (d = n);
+            var i = n - d,
+              o = r(i / e) * g;
+            l.scrollTop = Math.round(h + o), i < e ? (0, u.default)(t) : f();
+          });
+        };
+      }, function (t, e, n) {
+
+        var r = function (t) {
+          return t && t.__esModule ? t : {
+            default: t
+          };
+        }(n(0));
+        t.exports = r.default;
+      }, function (t, e, n) {
+
+        function r(t) {
+          return Object.prototype.toString.call(t);
+        }
+        function i(t) {
+          return !isNaN(parseFloat(t)) && isFinite(t);
+        }
+        Object.defineProperty(e, "__esModule", {
+          value: !0
+        });
+        var o = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (t) {
+          return typeof t;
+        } : function (t) {
+          return t && "function" == typeof Symbol && t.constructor === Symbol && t !== Symbol.prototype ? "symbol" : typeof t;
+        };
+        e.isObject = function (t) {
+          return "[object Object]" === r(t);
+        }, e.isArray = function (t) {
+          return null != t && "[object Array]" === r(t);
+        }, e.isNumeric = i, e.isPositive = function (t) {
+          return i(t) && t >= 0;
+        }, e.isFunction = function (t) {
+          return null != t && "[object Function]" === r(t);
+        }, e.isElement = function (t) {
+          return "object" === o(window.HTMLElement) ? t instanceof window.HTMLElement : !!t && "object" === (void 0 === t ? "undefined" : o(t)) && null !== t && 1 === t.nodeType && "string" == typeof t.nodeName;
+        };
+      }, function (t, e, n) {
+
+        function r(t, e) {
+          return window.getComputedStyle(t, null).getPropertyValue(e);
+        }
+        function i(t) {
+          if (1 === t.nodeType) return o.test(function (t) {
+            return r(t, "overflow") + r(t, "overflow-y");
+          }(t)) && t.scrollHeight > t.clientHeight;
+        }
+        Object.defineProperty(e, "__esModule", {
+          value: !0
+        });
+        var o = /(auto|scroll)/;
+        e.default = function (t) {
+          for (var e = function t(e) {
+              var n = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : [],
+                r = e.parentNode;
+              return null === r || "HTML" === r.nodeName ? n : t(r, n.concat(r));
+            }(t), n = document.body, r = 0, o = e.length; r < o; r++) if (i(e[r])) {
+            n = e[r];
+            break;
+          }
+          return n;
+        };
+      }, function (t, e) {
+        function n(t, e) {
+          return 1 - 3 * e + 3 * t;
+        }
+        function r(t, e) {
+          return 3 * e - 6 * t;
+        }
+        function i(t) {
+          return 3 * t;
+        }
+        function o(t, e, o) {
+          return ((n(e, o) * t + r(e, o)) * t + i(e)) * t;
+        }
+        function u(t, e, o) {
+          return 3 * n(e, o) * t * t + 2 * r(e, o) * t + i(e);
+        }
+        function s(t, e, n, r, i) {
+          var u,
+            s,
+            a = 0;
+          do {
+            (u = o(s = e + (n - e) / 2, r, i) - t) > 0 ? n = s : e = s;
+          } while (Math.abs(u) > f && ++a < l);
+          return s;
+        }
+        function a(t, e, n, r) {
+          for (var i = 0; i < c; ++i) {
+            var s = u(e, n, r);
+            if (0 === s) return e;
+            e -= (o(e, n, r) - t) / s;
+          }
+          return e;
+        }
+        var c = 4,
+          f = 1e-7,
+          l = 10,
+          h = 11,
+          p = 1 / (h - 1),
+          d = "function" == typeof Float32Array;
+        t.exports = function (t, e, n, r) {
+          function i(e) {
+            for (var r = 0, i = 1, o = h - 1; i !== o && c[i] <= e; ++i) r += p;
+            var f = r + (e - c[--i]) / (c[i + 1] - c[i]) * p,
+              l = u(f, t, n);
+            return l >= .001 ? a(e, f, t, n) : 0 === l ? f : s(e, r, r + p, t, n);
+          }
+          if (!(0 <= t && t <= 1 && 0 <= n && n <= 1)) throw new Error("bezier x values must be in [0, 1] range");
+          var c = d ? new Float32Array(h) : new Array(h);
+          if (t !== e || n !== r) for (var f = 0; f < h; ++f) c[f] = o(f * p, t, n);
+          return function (u) {
+            return t === e && n === r ? u : 0 === u ? 0 : 1 === u ? 1 : o(i(u), e, r);
+          };
+        };
+      }, function (t, e, n) {
+        (function (e) {
+          (function () {
+            var n, r, i, o, u, s;
+            "undefined" != typeof performance && null !== performance && performance.now ? t.exports = function () {
+              return performance.now();
+            } : void 0 !== e && null !== e && e.hrtime ? (t.exports = function () {
+              return (n() - u) / 1e6;
+            }, r = e.hrtime, o = (n = function () {
+              var t;
+              return 1e9 * (t = r())[0] + t[1];
+            })(), s = 1e9 * e.uptime(), u = o - s) : Date.now ? (t.exports = function () {
+              return Date.now() - i;
+            }, i = Date.now()) : (t.exports = function () {
+              return new Date().getTime() - i;
+            }, i = new Date().getTime());
+          }).call(this);
+        }).call(e, n(6));
+      }, function (t, e) {
+        function n() {
+          throw new Error("setTimeout has not been defined");
+        }
+        function r() {
+          throw new Error("clearTimeout has not been defined");
+        }
+        function i(t) {
+          if (c === setTimeout) return setTimeout(t, 0);
+          if ((c === n || !c) && setTimeout) return c = setTimeout, setTimeout(t, 0);
+          try {
+            return c(t, 0);
+          } catch (e) {
+            try {
+              return c.call(null, t, 0);
+            } catch (e) {
+              return c.call(this, t, 0);
+            }
+          }
+        }
+        function o() {
+          d && h && (d = !1, h.length ? p = h.concat(p) : g = -1, p.length && u());
+        }
+        function u() {
+          if (!d) {
+            var t = i(o);
+            d = !0;
+            for (var e = p.length; e;) {
+              for (h = p, p = []; ++g < e;) h && h[g].run();
+              g = -1, e = p.length;
+            }
+            h = null, d = !1, function (t) {
+              if (f === clearTimeout) return clearTimeout(t);
+              if ((f === r || !f) && clearTimeout) return f = clearTimeout, clearTimeout(t);
+              try {
+                f(t);
+              } catch (e) {
+                try {
+                  return f.call(null, t);
+                } catch (e) {
+                  return f.call(this, t);
+                }
+              }
+            }(t);
+          }
+        }
+        function s(t, e) {
+          this.fun = t, this.array = e;
+        }
+        function a() {}
+        var c,
+          f,
+          l = t.exports = {};
+        !function () {
+          try {
+            c = "function" == typeof setTimeout ? setTimeout : n;
+          } catch (t) {
+            c = n;
+          }
+          try {
+            f = "function" == typeof clearTimeout ? clearTimeout : r;
+          } catch (t) {
+            f = r;
+          }
+        }();
+        var h,
+          p = [],
+          d = !1,
+          g = -1;
+        l.nextTick = function (t) {
+          var e = new Array(arguments.length - 1);
+          if (arguments.length > 1) for (var n = 1; n < arguments.length; n++) e[n - 1] = arguments[n];
+          p.push(new s(t, e)), 1 !== p.length || d || i(u);
+        }, s.prototype.run = function () {
+          this.fun.apply(null, this.array);
+        }, l.title = "browser", l.browser = !0, l.env = {}, l.argv = [], l.version = "", l.versions = {}, l.on = a, l.addListener = a, l.once = a, l.off = a, l.removeListener = a, l.removeAllListeners = a, l.emit = a, l.binding = function (t) {
+          throw new Error("process.binding is not supported");
+        }, l.cwd = function () {
+          return "/";
+        }, l.chdir = function (t) {
+          throw new Error("process.chdir is not supported");
+        }, l.umask = function () {
+          return 0;
+        };
+      }, function (t, e, n) {
+        (function (e) {
+          for (var r = n(5), i = "undefined" == typeof window ? e : window, o = ["moz", "webkit"], u = "AnimationFrame", s = i["request" + u], a = i["cancel" + u] || i["cancelRequest" + u], c = 0; !s && c < o.length; c++) s = i[o[c] + "Request" + u], a = i[o[c] + "Cancel" + u] || i[o[c] + "CancelRequest" + u];
+          if (!s || !a) {
+            var f = 0,
+              l = 0,
+              h = [];
+            s = function (t) {
+              if (0 === h.length) {
+                var e = r(),
+                  n = Math.max(0, 1e3 / 60 - (e - f));
+                f = n + e, setTimeout(function () {
+                  var t = h.slice(0);
+                  h.length = 0;
+                  for (var e = 0; e < t.length; e++) if (!t[e].cancelled) try {
+                    t[e].callback(f);
+                  } catch (t) {
+                    setTimeout(function () {
+                      throw t;
+                    }, 0);
+                  }
+                }, Math.round(n));
+              }
+              return h.push({
+                handle: ++l,
+                callback: t,
+                cancelled: !1
+              }), l;
+            }, a = function (t) {
+              for (var e = 0; e < h.length; e++) h[e].handle === t && (h[e].cancelled = !0);
+            };
+          }
+          t.exports = function (t) {
+            return s.call(i, t);
+          }, t.exports.cancel = function () {
+            a.apply(i, arguments);
+          }, t.exports.polyfill = function () {
+            i.requestAnimationFrame = s, i.cancelAnimationFrame = a;
+          };
+        }).call(e, n(8));
+      }, function (t, e) {
+        var n;
+        n = function () {
+          return this;
+        }();
+        try {
+          n = n || Function("return this")() || (0, eval)("this");
+        } catch (t) {
+          "object" == typeof window && (n = window);
+        }
+        t.exports = n;
+      }]);
+    }, t.exports = r();
+  }, function (t, e, n) {
+
+    t.exports = function (t, e) {
+      var n = t.clientHeight,
+        r = e.clientHeight,
+        i = t.scrollTop,
+        o = e.offsetTop;
+      return !(i > o) && !(i + n - r < o);
+    };
+  }, function (t, e, n) {
+
+    t.exports = function (t) {
+      var e = window.innerHeight,
+        n = t.getBoundingClientRect(),
+        r = n.top < 0,
+        i = n.bottom > e,
+        o = !r && !i,
+        u = {
+          visible: o
+        };
+      return o || (u.position = r ? "top" : "bottom"), u;
+    };
+  }, function (t, e, n) {
+
+    var r,
+      i = n(11),
+      o = (r = i) && r.__esModule ? r : {
+        default: r
+      };
+    t.exports = {
+      contains: function (t, e) {
+        return e.filter(function (e) {
+          return (0, o.default)(e).toLowerCase().indexOf(t.toLowerCase()) > -1;
+        });
+      },
+      equals: function (t, e) {
+        return e.filter(function (e) {
+          return (0, o.default)(e).toLowerCase() === t.toLowerCase();
+        });
+      },
+      "starts-with": function (t, e) {
+        return e.filter(function (e) {
+          return 0 === (0, o.default)(e).toLowerCase().indexOf(t.toLowerCase());
+        });
+      }
+    };
+  }, function (t, e, n) {
+
+    t.exports = function (t) {
+      return t.getAttribute("data-value") || t.innerText;
+    };
+  }, function (t, e, n) {
+
+    var r,
+      i = n(13),
+      o = (r = i) && r.__esModule ? r : {
+        default: r
+      };
+    e.attach = function (t, e, n) {
+      if ("function" == typeof n) return e.addEventListener(t, n);
+      n && n.length && e.addEventListener(t, function (t) {
+        var e = o.default[t.which];
+        n.forEach(function (n) {
+          n.keys.indexOf(e) > -1 && (n.preventDefault && t.preventDefault(), n.callback(t, e));
+        });
+      });
+    }, e.up = function (t, n) {
+      return e.attach("keyup", t, n);
+    }, e.down = function (t, n) {
+      return e.attach("keydown", t, n);
+    }, e.press = function (t, n) {
+      return e.attach("keypress", t, n);
+    };
+  }, function (t, e, n) {
+
+    t.exports = {
+      8: "backspace",
+      9: "tab",
+      13: "enter",
+      27: "escape",
+      32: "space",
+      37: "left",
+      38: "up",
+      39: "right",
+      40: "down"
+    };
+  }, function (t, e, n) {
+
+    t.exports = function (t, e, n) {
+      if (e = e.length ? e : [e], n && e.indexOf(t) > -1) return !0;
+      for (var r = t.parentNode; r && "HTML" !== r.tagName;) {
+        if (e.indexOf(r) > -1) return !0;
+        r = r.parentNode;
+      }
+      return !1;
+    };
+  }, function (t, e, n) {
+
+    var r,
+      i = n(16),
+      o = (r = i) && r.__esModule ? r : {
+        default: r
+      };
+    t.exports = function (t, e, n) {
+      return n = n || document, "string" == typeof t ? e ? o.default.all(t, n) : (0, o.default)(t, n) : t;
+    };
+  }, function (t, e, n) {
+
+    (t.exports = function (t, e) {
+      return (e = e || document).querySelector(t);
+    }).all = function (t, e) {
+      return e = e || document, Array.prototype.slice.call(e.querySelectorAll(t));
+    };
+  }, function (t, e, n) {
+
+    t.exports = function (t, e) {
+      var n = t.filter(function (t) {
+        return t.options.indexOf(e) > -1;
+      });
+      return n.length && n[0];
+    };
+  }, function (t, e, n) {
+
+    var r,
+      i = n(1),
+      o = (r = i) && r.__esModule ? r : {
+        default: r
+      };
+    t.exports = function (t, e, n) {
+      var r = t.querySelector(".combobo-no-results");
+      !n || e.length || r ? r && e.length && t.removeChild(r) : (r = document.createElement("div"), (0, o.default)(r).add("combobo-no-results"), r.innerHTML = n, t.appendChild(r));
+    };
+  }, function (t, e, n) {
+
+    var r,
+      i = n(20),
+      o = (r = i) && r.__esModule ? r : {
+        default: r
+      };
+    t.exports = function (t, e, n) {
+      e.id = e.id || (0, o.default)(), t.setAttribute("role", "combobox"), e.setAttribute("role", "listbox"), t.setAttribute("aria-controls", e.id), t.setAttribute("aria-autocomplete", "list"), t.setAttribute("aria-expanded", "false"), n.forEach(function (t) {
+        t.setAttribute("role", "option"), t.id = t.id || (0, o.default)();
+      });
+    };
+  }, function (t, e, n) {
+
+    var r,
+      i = n(21),
+      o = (r = i) && r.__esModule ? r : {
+        default: r
+      };
+    t.exports = function t(e) {
+      e = e || 8;
+      var n = (0, o.default)(e);
+      if (document.getElementById(n)) return t(e);
+      return n;
+    };
+  }, function (t, e, n) {
+    (function (r) {
+      var i = n(26);
+      function o(t) {
+        i("string" == typeof t, "the list of characters must be a string!");
+        var e = r.byteLength(t);
+        return function (n) {
+          i("number" == typeof (n = n || 10) && n >= 0, "the length of the random string must be a number!");
+          for (var r = "", o = 0; o < n; o++) r += t[Math.floor(e * Math.random())];
+          return r;
+        };
+      }
+      (e = t.exports = o("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789")).base62 = e, e.base36 = o("abcdefghijklmnopqrstuvwxyz0123456789"), e.base10 = o("0123456789"), e.create = o;
+    }).call(e, n(22).Buffer);
+  }, function (t, e, n) {
+
+    (function (t) {
+      var r = n(23),
+        i = n(24),
+        o = n(25);
+      function u() {
+        return a.TYPED_ARRAY_SUPPORT ? 2147483647 : 1073741823;
+      }
+      function s(t, e) {
+        if (u() < e) throw new RangeError("Invalid typed array length");
+        return a.TYPED_ARRAY_SUPPORT ? (t = new Uint8Array(e)).__proto__ = a.prototype : (null === t && (t = new a(e)), t.length = e), t;
+      }
+      function a(t, e, n) {
+        if (!(a.TYPED_ARRAY_SUPPORT || this instanceof a)) return new a(t, e, n);
+        if ("number" == typeof t) {
+          if ("string" == typeof e) throw new Error("If encoding is specified then the first argument must be a string");
+          return l(this, t);
+        }
+        return c(this, t, e, n);
+      }
+      function c(t, e, n, r) {
+        if ("number" == typeof e) throw new TypeError('"value" argument must not be a number');
+        return "undefined" != typeof ArrayBuffer && e instanceof ArrayBuffer ? function (t, e, n, r) {
+          if (e.byteLength, n < 0 || e.byteLength < n) throw new RangeError("'offset' is out of bounds");
+          if (e.byteLength < n + (r || 0)) throw new RangeError("'length' is out of bounds");
+          e = void 0 === n && void 0 === r ? new Uint8Array(e) : void 0 === r ? new Uint8Array(e, n) : new Uint8Array(e, n, r);
+          a.TYPED_ARRAY_SUPPORT ? (t = e).__proto__ = a.prototype : t = h(t, e);
+          return t;
+        }(t, e, n, r) : "string" == typeof e ? function (t, e, n) {
+          "string" == typeof n && "" !== n || (n = "utf8");
+          if (!a.isEncoding(n)) throw new TypeError('"encoding" must be a valid string encoding');
+          var r = 0 | d(e, n),
+            i = (t = s(t, r)).write(e, n);
+          i !== r && (t = t.slice(0, i));
+          return t;
+        }(t, e, n) : function (t, e) {
+          if (a.isBuffer(e)) {
+            var n = 0 | p(e.length);
+            return 0 === (t = s(t, n)).length ? t : (e.copy(t, 0, 0, n), t);
+          }
+          if (e) {
+            if ("undefined" != typeof ArrayBuffer && e.buffer instanceof ArrayBuffer || "length" in e) return "number" != typeof e.length || (r = e.length) != r ? s(t, 0) : h(t, e);
+            if ("Buffer" === e.type && o(e.data)) return h(t, e.data);
+          }
+          var r;
+          throw new TypeError("First argument must be a string, Buffer, ArrayBuffer, Array, or array-like object.");
+        }(t, e);
+      }
+      function f(t) {
+        if ("number" != typeof t) throw new TypeError('"size" argument must be a number');
+        if (t < 0) throw new RangeError('"size" argument must not be negative');
+      }
+      function l(t, e) {
+        if (f(e), t = s(t, e < 0 ? 0 : 0 | p(e)), !a.TYPED_ARRAY_SUPPORT) for (var n = 0; n < e; ++n) t[n] = 0;
+        return t;
+      }
+      function h(t, e) {
+        var n = e.length < 0 ? 0 : 0 | p(e.length);
+        t = s(t, n);
+        for (var r = 0; r < n; r += 1) t[r] = 255 & e[r];
+        return t;
+      }
+      function p(t) {
+        if (t >= u()) throw new RangeError("Attempt to allocate Buffer larger than maximum size: 0x" + u().toString(16) + " bytes");
+        return 0 | t;
+      }
+      function d(t, e) {
+        if (a.isBuffer(t)) return t.length;
+        if ("undefined" != typeof ArrayBuffer && "function" == typeof ArrayBuffer.isView && (ArrayBuffer.isView(t) || t instanceof ArrayBuffer)) return t.byteLength;
+        "string" != typeof t && (t = "" + t);
+        var n = t.length;
+        if (0 === n) return 0;
+        for (var r = !1;;) switch (e) {
+          case "ascii":
+          case "latin1":
+          case "binary":
+            return n;
+          case "utf8":
+          case "utf-8":
+          case void 0:
+            return N(t).length;
+          case "ucs2":
+          case "ucs-2":
+          case "utf16le":
+          case "utf-16le":
+            return 2 * n;
+          case "hex":
+            return n >>> 1;
+          case "base64":
+            return F(t).length;
+          default:
+            if (r) return N(t).length;
+            e = ("" + e).toLowerCase(), r = !0;
+        }
+      }
+      function g(t, e, n) {
+        var r = t[e];
+        t[e] = t[n], t[n] = r;
+      }
+      function y(t, e, n, r, i) {
+        if (0 === t.length) return -1;
+        if ("string" == typeof n ? (r = n, n = 0) : n > 2147483647 ? n = 2147483647 : n < -2147483648 && (n = -2147483648), n = +n, isNaN(n) && (n = i ? 0 : t.length - 1), n < 0 && (n = t.length + n), n >= t.length) {
+          if (i) return -1;
+          n = t.length - 1;
+        } else if (n < 0) {
+          if (!i) return -1;
+          n = 0;
+        }
+        if ("string" == typeof e && (e = a.from(e, r)), a.isBuffer(e)) return 0 === e.length ? -1 : v(t, e, n, r, i);
+        if ("number" == typeof e) return e &= 255, a.TYPED_ARRAY_SUPPORT && "function" == typeof Uint8Array.prototype.indexOf ? i ? Uint8Array.prototype.indexOf.call(t, e, n) : Uint8Array.prototype.lastIndexOf.call(t, e, n) : v(t, [e], n, r, i);
+        throw new TypeError("val must be string, number or Buffer");
+      }
+      function v(t, e, n, r, i) {
+        var o,
+          u = 1,
+          s = t.length,
+          a = e.length;
+        if (void 0 !== r && ("ucs2" === (r = String(r).toLowerCase()) || "ucs-2" === r || "utf16le" === r || "utf-16le" === r)) {
+          if (t.length < 2 || e.length < 2) return -1;
+          u = 2, s /= 2, a /= 2, n /= 2;
+        }
+        function c(t, e) {
+          return 1 === u ? t[e] : t.readUInt16BE(e * u);
+        }
+        if (i) {
+          var f = -1;
+          for (o = n; o < s; o++) if (c(t, o) === c(e, -1 === f ? 0 : o - f)) {
+            if (-1 === f && (f = o), o - f + 1 === a) return f * u;
+          } else -1 !== f && (o -= o - f), f = -1;
+        } else for (n + a > s && (n = s - a), o = n; o >= 0; o--) {
+          for (var l = !0, h = 0; h < a; h++) if (c(t, o + h) !== c(e, h)) {
+            l = !1;
+            break;
+          }
+          if (l) return o;
+        }
+        return -1;
+      }
+      function m(t, e, n, r) {
+        n = Number(n) || 0;
+        var i = t.length - n;
+        r ? (r = Number(r)) > i && (r = i) : r = i;
+        var o = e.length;
+        if (o % 2 != 0) throw new TypeError("Invalid hex string");
+        r > o / 2 && (r = o / 2);
+        for (var u = 0; u < r; ++u) {
+          var s = parseInt(e.substr(2 * u, 2), 16);
+          if (isNaN(s)) return u;
+          t[n + u] = s;
+        }
+        return u;
+      }
+      function b(t, e, n, r) {
+        return z(N(e, t.length - n), t, n, r);
+      }
+      function w(t, e, n, r) {
+        return z(function (t) {
+          for (var e = [], n = 0; n < t.length; ++n) e.push(255 & t.charCodeAt(n));
+          return e;
+        }(e), t, n, r);
+      }
+      function E(t, e, n, r) {
+        return w(t, e, n, r);
+      }
+      function O(t, e, n, r) {
+        return z(F(e), t, n, r);
+      }
+      function A(t, e, n, r) {
+        return z(function (t, e) {
+          for (var n, r, i, o = [], u = 0; u < t.length && !((e -= 2) < 0); ++u) n = t.charCodeAt(u), r = n >> 8, i = n % 256, o.push(i), o.push(r);
+          return o;
+        }(e, t.length - n), t, n, r);
+      }
+      function x(t, e, n) {
+        return 0 === e && n === t.length ? r.fromByteArray(t) : r.fromByteArray(t.slice(e, n));
+      }
+      function T(t, e, n) {
+        n = Math.min(t.length, n);
+        for (var r = [], i = e; i < n;) {
+          var o,
+            u,
+            s,
+            a,
+            c = t[i],
+            f = null,
+            l = c > 239 ? 4 : c > 223 ? 3 : c > 191 ? 2 : 1;
+          if (i + l <= n) switch (l) {
+            case 1:
+              c < 128 && (f = c);
+              break;
+            case 2:
+              128 == (192 & (o = t[i + 1])) && (a = (31 & c) << 6 | 63 & o) > 127 && (f = a);
+              break;
+            case 3:
+              o = t[i + 1], u = t[i + 2], 128 == (192 & o) && 128 == (192 & u) && (a = (15 & c) << 12 | (63 & o) << 6 | 63 & u) > 2047 && (a < 55296 || a > 57343) && (f = a);
+              break;
+            case 4:
+              o = t[i + 1], u = t[i + 2], s = t[i + 3], 128 == (192 & o) && 128 == (192 & u) && 128 == (192 & s) && (a = (15 & c) << 18 | (63 & o) << 12 | (63 & u) << 6 | 63 & s) > 65535 && a < 1114112 && (f = a);
+          }
+          null === f ? (f = 65533, l = 1) : f > 65535 && (f -= 65536, r.push(f >>> 10 & 1023 | 55296), f = 56320 | 1023 & f), r.push(f), i += l;
+        }
+        return function (t) {
+          var e = t.length;
+          if (e <= _) return String.fromCharCode.apply(String, t);
+          var n = "",
+            r = 0;
+          for (; r < e;) n += String.fromCharCode.apply(String, t.slice(r, r += _));
+          return n;
+        }(r);
+      }
+      e.Buffer = a, e.SlowBuffer = function (t) {
+        +t != t && (t = 0);
+        return a.alloc(+t);
+      }, e.INSPECT_MAX_BYTES = 50, a.TYPED_ARRAY_SUPPORT = void 0 !== t.TYPED_ARRAY_SUPPORT ? t.TYPED_ARRAY_SUPPORT : function () {
+        try {
+          var t = new Uint8Array(1);
+          return t.__proto__ = {
+            __proto__: Uint8Array.prototype,
+            foo: function () {
+              return 42;
+            }
+          }, 42 === t.foo() && "function" == typeof t.subarray && 0 === t.subarray(1, 1).byteLength;
+        } catch (t) {
+          return !1;
+        }
+      }(), e.kMaxLength = u(), a.poolSize = 8192, a._augment = function (t) {
+        return t.__proto__ = a.prototype, t;
+      }, a.from = function (t, e, n) {
+        return c(null, t, e, n);
+      }, a.TYPED_ARRAY_SUPPORT && (a.prototype.__proto__ = Uint8Array.prototype, a.__proto__ = Uint8Array, "undefined" != typeof Symbol && Symbol.species && a[Symbol.species] === a && Object.defineProperty(a, Symbol.species, {
+        value: null,
+        configurable: !0
+      })), a.alloc = function (t, e, n) {
+        return function (t, e, n, r) {
+          return f(e), e <= 0 ? s(t, e) : void 0 !== n ? "string" == typeof r ? s(t, e).fill(n, r) : s(t, e).fill(n) : s(t, e);
+        }(null, t, e, n);
+      }, a.allocUnsafe = function (t) {
+        return l(null, t);
+      }, a.allocUnsafeSlow = function (t) {
+        return l(null, t);
+      }, a.isBuffer = function (t) {
+        return !(null == t || !t._isBuffer);
+      }, a.compare = function (t, e) {
+        if (!a.isBuffer(t) || !a.isBuffer(e)) throw new TypeError("Arguments must be Buffers");
+        if (t === e) return 0;
+        for (var n = t.length, r = e.length, i = 0, o = Math.min(n, r); i < o; ++i) if (t[i] !== e[i]) {
+          n = t[i], r = e[i];
+          break;
+        }
+        return n < r ? -1 : r < n ? 1 : 0;
+      }, a.isEncoding = function (t) {
+        switch (String(t).toLowerCase()) {
+          case "hex":
+          case "utf8":
+          case "utf-8":
+          case "ascii":
+          case "latin1":
+          case "binary":
+          case "base64":
+          case "ucs2":
+          case "ucs-2":
+          case "utf16le":
+          case "utf-16le":
+            return !0;
+          default:
+            return !1;
+        }
+      }, a.concat = function (t, e) {
+        if (!o(t)) throw new TypeError('"list" argument must be an Array of Buffers');
+        if (0 === t.length) return a.alloc(0);
+        var n;
+        if (void 0 === e) for (e = 0, n = 0; n < t.length; ++n) e += t[n].length;
+        var r = a.allocUnsafe(e),
+          i = 0;
+        for (n = 0; n < t.length; ++n) {
+          var u = t[n];
+          if (!a.isBuffer(u)) throw new TypeError('"list" argument must be an Array of Buffers');
+          u.copy(r, i), i += u.length;
+        }
+        return r;
+      }, a.byteLength = d, a.prototype._isBuffer = !0, a.prototype.swap16 = function () {
+        var t = this.length;
+        if (t % 2 != 0) throw new RangeError("Buffer size must be a multiple of 16-bits");
+        for (var e = 0; e < t; e += 2) g(this, e, e + 1);
+        return this;
+      }, a.prototype.swap32 = function () {
+        var t = this.length;
+        if (t % 4 != 0) throw new RangeError("Buffer size must be a multiple of 32-bits");
+        for (var e = 0; e < t; e += 4) g(this, e, e + 3), g(this, e + 1, e + 2);
+        return this;
+      }, a.prototype.swap64 = function () {
+        var t = this.length;
+        if (t % 8 != 0) throw new RangeError("Buffer size must be a multiple of 64-bits");
+        for (var e = 0; e < t; e += 8) g(this, e, e + 7), g(this, e + 1, e + 6), g(this, e + 2, e + 5), g(this, e + 3, e + 4);
+        return this;
+      }, a.prototype.toString = function () {
+        var t = 0 | this.length;
+        return 0 === t ? "" : 0 === arguments.length ? T(this, 0, t) : function (t, e, n) {
+          var r = !1;
+          if ((void 0 === e || e < 0) && (e = 0), e > this.length) return "";
+          if ((void 0 === n || n > this.length) && (n = this.length), n <= 0) return "";
+          if ((n >>>= 0) <= (e >>>= 0)) return "";
+          for (t || (t = "utf8");;) switch (t) {
+            case "hex":
+              return k(this, e, n);
+            case "utf8":
+            case "utf-8":
+              return T(this, e, n);
+            case "ascii":
+              return S(this, e, n);
+            case "latin1":
+            case "binary":
+              return R(this, e, n);
+            case "base64":
+              return x(this, e, n);
+            case "ucs2":
+            case "ucs-2":
+            case "utf16le":
+            case "utf-16le":
+              return P(this, e, n);
+            default:
+              if (r) throw new TypeError("Unknown encoding: " + t);
+              t = (t + "").toLowerCase(), r = !0;
+          }
+        }.apply(this, arguments);
+      }, a.prototype.equals = function (t) {
+        if (!a.isBuffer(t)) throw new TypeError("Argument must be a Buffer");
+        return this === t || 0 === a.compare(this, t);
+      }, a.prototype.inspect = function () {
+        var t = "",
+          n = e.INSPECT_MAX_BYTES;
+        return this.length > 0 && (t = this.toString("hex", 0, n).match(/.{2}/g).join(" "), this.length > n && (t += " ... ")), "<Buffer " + t + ">";
+      }, a.prototype.compare = function (t, e, n, r, i) {
+        if (!a.isBuffer(t)) throw new TypeError("Argument must be a Buffer");
+        if (void 0 === e && (e = 0), void 0 === n && (n = t ? t.length : 0), void 0 === r && (r = 0), void 0 === i && (i = this.length), e < 0 || n > t.length || r < 0 || i > this.length) throw new RangeError("out of range index");
+        if (r >= i && e >= n) return 0;
+        if (r >= i) return -1;
+        if (e >= n) return 1;
+        if (e >>>= 0, n >>>= 0, r >>>= 0, i >>>= 0, this === t) return 0;
+        for (var o = i - r, u = n - e, s = Math.min(o, u), c = this.slice(r, i), f = t.slice(e, n), l = 0; l < s; ++l) if (c[l] !== f[l]) {
+          o = c[l], u = f[l];
+          break;
+        }
+        return o < u ? -1 : u < o ? 1 : 0;
+      }, a.prototype.includes = function (t, e, n) {
+        return -1 !== this.indexOf(t, e, n);
+      }, a.prototype.indexOf = function (t, e, n) {
+        return y(this, t, e, n, !0);
+      }, a.prototype.lastIndexOf = function (t, e, n) {
+        return y(this, t, e, n, !1);
+      }, a.prototype.write = function (t, e, n, r) {
+        if (void 0 === e) r = "utf8", n = this.length, e = 0;else if (void 0 === n && "string" == typeof e) r = e, n = this.length, e = 0;else {
+          if (!isFinite(e)) throw new Error("Buffer.write(string, encoding, offset[, length]) is no longer supported");
+          e |= 0, isFinite(n) ? (n |= 0, void 0 === r && (r = "utf8")) : (r = n, n = void 0);
+        }
+        var i = this.length - e;
+        if ((void 0 === n || n > i) && (n = i), t.length > 0 && (n < 0 || e < 0) || e > this.length) throw new RangeError("Attempt to write outside buffer bounds");
+        r || (r = "utf8");
+        for (var o = !1;;) switch (r) {
+          case "hex":
+            return m(this, t, e, n);
+          case "utf8":
+          case "utf-8":
+            return b(this, t, e, n);
+          case "ascii":
+            return w(this, t, e, n);
+          case "latin1":
+          case "binary":
+            return E(this, t, e, n);
+          case "base64":
+            return O(this, t, e, n);
+          case "ucs2":
+          case "ucs-2":
+          case "utf16le":
+          case "utf-16le":
+            return A(this, t, e, n);
+          default:
+            if (o) throw new TypeError("Unknown encoding: " + r);
+            r = ("" + r).toLowerCase(), o = !0;
+        }
+      }, a.prototype.toJSON = function () {
+        return {
+          type: "Buffer",
+          data: Array.prototype.slice.call(this._arr || this, 0)
+        };
+      };
+      var _ = 4096;
+      function S(t, e, n) {
+        var r = "";
+        n = Math.min(t.length, n);
+        for (var i = e; i < n; ++i) r += String.fromCharCode(127 & t[i]);
+        return r;
+      }
+      function R(t, e, n) {
+        var r = "";
+        n = Math.min(t.length, n);
+        for (var i = e; i < n; ++i) r += String.fromCharCode(t[i]);
+        return r;
+      }
+      function k(t, e, n) {
+        var r = t.length;
+        (!e || e < 0) && (e = 0), (!n || n < 0 || n > r) && (n = r);
+        for (var i = "", o = e; o < n; ++o) i += Y(t[o]);
+        return i;
+      }
+      function P(t, e, n) {
+        for (var r = t.slice(e, n), i = "", o = 0; o < r.length; o += 2) i += String.fromCharCode(r[o] + 256 * r[o + 1]);
+        return i;
+      }
+      function L(t, e, n) {
+        if (t % 1 != 0 || t < 0) throw new RangeError("offset is not uint");
+        if (t + e > n) throw new RangeError("Trying to access beyond buffer length");
+      }
+      function B(t, e, n, r, i, o) {
+        if (!a.isBuffer(t)) throw new TypeError('"buffer" argument must be a Buffer instance');
+        if (e > i || e < o) throw new RangeError('"value" argument is out of bounds');
+        if (n + r > t.length) throw new RangeError("Index out of range");
+      }
+      function C(t, e, n, r) {
+        e < 0 && (e = 65535 + e + 1);
+        for (var i = 0, o = Math.min(t.length - n, 2); i < o; ++i) t[n + i] = (e & 255 << 8 * (r ? i : 1 - i)) >>> 8 * (r ? i : 1 - i);
+      }
+      function j(t, e, n, r) {
+        e < 0 && (e = 4294967295 + e + 1);
+        for (var i = 0, o = Math.min(t.length - n, 4); i < o; ++i) t[n + i] = e >>> 8 * (r ? i : 3 - i) & 255;
+      }
+      function M(t, e, n, r, i, o) {
+        if (n + r > t.length) throw new RangeError("Index out of range");
+        if (n < 0) throw new RangeError("Index out of range");
+      }
+      function U(t, e, n, r, o) {
+        return o || M(t, 0, n, 4), i.write(t, e, n, r, 23, 4), n + 4;
+      }
+      function D(t, e, n, r, o) {
+        return o || M(t, 0, n, 8), i.write(t, e, n, r, 52, 8), n + 8;
+      }
+      a.prototype.slice = function (t, e) {
+        var n,
+          r = this.length;
+        if (t = ~~t, e = void 0 === e ? r : ~~e, t < 0 ? (t += r) < 0 && (t = 0) : t > r && (t = r), e < 0 ? (e += r) < 0 && (e = 0) : e > r && (e = r), e < t && (e = t), a.TYPED_ARRAY_SUPPORT) (n = this.subarray(t, e)).__proto__ = a.prototype;else {
+          var i = e - t;
+          n = new a(i, void 0);
+          for (var o = 0; o < i; ++o) n[o] = this[o + t];
+        }
+        return n;
+      }, a.prototype.readUIntLE = function (t, e, n) {
+        t |= 0, e |= 0, n || L(t, e, this.length);
+        for (var r = this[t], i = 1, o = 0; ++o < e && (i *= 256);) r += this[t + o] * i;
+        return r;
+      }, a.prototype.readUIntBE = function (t, e, n) {
+        t |= 0, e |= 0, n || L(t, e, this.length);
+        for (var r = this[t + --e], i = 1; e > 0 && (i *= 256);) r += this[t + --e] * i;
+        return r;
+      }, a.prototype.readUInt8 = function (t, e) {
+        return e || L(t, 1, this.length), this[t];
+      }, a.prototype.readUInt16LE = function (t, e) {
+        return e || L(t, 2, this.length), this[t] | this[t + 1] << 8;
+      }, a.prototype.readUInt16BE = function (t, e) {
+        return e || L(t, 2, this.length), this[t] << 8 | this[t + 1];
+      }, a.prototype.readUInt32LE = function (t, e) {
+        return e || L(t, 4, this.length), (this[t] | this[t + 1] << 8 | this[t + 2] << 16) + 16777216 * this[t + 3];
+      }, a.prototype.readUInt32BE = function (t, e) {
+        return e || L(t, 4, this.length), 16777216 * this[t] + (this[t + 1] << 16 | this[t + 2] << 8 | this[t + 3]);
+      }, a.prototype.readIntLE = function (t, e, n) {
+        t |= 0, e |= 0, n || L(t, e, this.length);
+        for (var r = this[t], i = 1, o = 0; ++o < e && (i *= 256);) r += this[t + o] * i;
+        return r >= (i *= 128) && (r -= Math.pow(2, 8 * e)), r;
+      }, a.prototype.readIntBE = function (t, e, n) {
+        t |= 0, e |= 0, n || L(t, e, this.length);
+        for (var r = e, i = 1, o = this[t + --r]; r > 0 && (i *= 256);) o += this[t + --r] * i;
+        return o >= (i *= 128) && (o -= Math.pow(2, 8 * e)), o;
+      }, a.prototype.readInt8 = function (t, e) {
+        return e || L(t, 1, this.length), 128 & this[t] ? -1 * (255 - this[t] + 1) : this[t];
+      }, a.prototype.readInt16LE = function (t, e) {
+        e || L(t, 2, this.length);
+        var n = this[t] | this[t + 1] << 8;
+        return 32768 & n ? 4294901760 | n : n;
+      }, a.prototype.readInt16BE = function (t, e) {
+        e || L(t, 2, this.length);
+        var n = this[t + 1] | this[t] << 8;
+        return 32768 & n ? 4294901760 | n : n;
+      }, a.prototype.readInt32LE = function (t, e) {
+        return e || L(t, 4, this.length), this[t] | this[t + 1] << 8 | this[t + 2] << 16 | this[t + 3] << 24;
+      }, a.prototype.readInt32BE = function (t, e) {
+        return e || L(t, 4, this.length), this[t] << 24 | this[t + 1] << 16 | this[t + 2] << 8 | this[t + 3];
+      }, a.prototype.readFloatLE = function (t, e) {
+        return e || L(t, 4, this.length), i.read(this, t, !0, 23, 4);
+      }, a.prototype.readFloatBE = function (t, e) {
+        return e || L(t, 4, this.length), i.read(this, t, !1, 23, 4);
+      }, a.prototype.readDoubleLE = function (t, e) {
+        return e || L(t, 8, this.length), i.read(this, t, !0, 52, 8);
+      }, a.prototype.readDoubleBE = function (t, e) {
+        return e || L(t, 8, this.length), i.read(this, t, !1, 52, 8);
+      }, a.prototype.writeUIntLE = function (t, e, n, r) {
+        (t = +t, e |= 0, n |= 0, r) || B(this, t, e, n, Math.pow(2, 8 * n) - 1, 0);
+        var i = 1,
+          o = 0;
+        for (this[e] = 255 & t; ++o < n && (i *= 256);) this[e + o] = t / i & 255;
+        return e + n;
+      }, a.prototype.writeUIntBE = function (t, e, n, r) {
+        (t = +t, e |= 0, n |= 0, r) || B(this, t, e, n, Math.pow(2, 8 * n) - 1, 0);
+        var i = n - 1,
+          o = 1;
+        for (this[e + i] = 255 & t; --i >= 0 && (o *= 256);) this[e + i] = t / o & 255;
+        return e + n;
+      }, a.prototype.writeUInt8 = function (t, e, n) {
+        return t = +t, e |= 0, n || B(this, t, e, 1, 255, 0), a.TYPED_ARRAY_SUPPORT || (t = Math.floor(t)), this[e] = 255 & t, e + 1;
+      }, a.prototype.writeUInt16LE = function (t, e, n) {
+        return t = +t, e |= 0, n || B(this, t, e, 2, 65535, 0), a.TYPED_ARRAY_SUPPORT ? (this[e] = 255 & t, this[e + 1] = t >>> 8) : C(this, t, e, !0), e + 2;
+      }, a.prototype.writeUInt16BE = function (t, e, n) {
+        return t = +t, e |= 0, n || B(this, t, e, 2, 65535, 0), a.TYPED_ARRAY_SUPPORT ? (this[e] = t >>> 8, this[e + 1] = 255 & t) : C(this, t, e, !1), e + 2;
+      }, a.prototype.writeUInt32LE = function (t, e, n) {
+        return t = +t, e |= 0, n || B(this, t, e, 4, 4294967295, 0), a.TYPED_ARRAY_SUPPORT ? (this[e + 3] = t >>> 24, this[e + 2] = t >>> 16, this[e + 1] = t >>> 8, this[e] = 255 & t) : j(this, t, e, !0), e + 4;
+      }, a.prototype.writeUInt32BE = function (t, e, n) {
+        return t = +t, e |= 0, n || B(this, t, e, 4, 4294967295, 0), a.TYPED_ARRAY_SUPPORT ? (this[e] = t >>> 24, this[e + 1] = t >>> 16, this[e + 2] = t >>> 8, this[e + 3] = 255 & t) : j(this, t, e, !1), e + 4;
+      }, a.prototype.writeIntLE = function (t, e, n, r) {
+        if (t = +t, e |= 0, !r) {
+          var i = Math.pow(2, 8 * n - 1);
+          B(this, t, e, n, i - 1, -i);
+        }
+        var o = 0,
+          u = 1,
+          s = 0;
+        for (this[e] = 255 & t; ++o < n && (u *= 256);) t < 0 && 0 === s && 0 !== this[e + o - 1] && (s = 1), this[e + o] = (t / u >> 0) - s & 255;
+        return e + n;
+      }, a.prototype.writeIntBE = function (t, e, n, r) {
+        if (t = +t, e |= 0, !r) {
+          var i = Math.pow(2, 8 * n - 1);
+          B(this, t, e, n, i - 1, -i);
+        }
+        var o = n - 1,
+          u = 1,
+          s = 0;
+        for (this[e + o] = 255 & t; --o >= 0 && (u *= 256);) t < 0 && 0 === s && 0 !== this[e + o + 1] && (s = 1), this[e + o] = (t / u >> 0) - s & 255;
+        return e + n;
+      }, a.prototype.writeInt8 = function (t, e, n) {
+        return t = +t, e |= 0, n || B(this, t, e, 1, 127, -128), a.TYPED_ARRAY_SUPPORT || (t = Math.floor(t)), t < 0 && (t = 255 + t + 1), this[e] = 255 & t, e + 1;
+      }, a.prototype.writeInt16LE = function (t, e, n) {
+        return t = +t, e |= 0, n || B(this, t, e, 2, 32767, -32768), a.TYPED_ARRAY_SUPPORT ? (this[e] = 255 & t, this[e + 1] = t >>> 8) : C(this, t, e, !0), e + 2;
+      }, a.prototype.writeInt16BE = function (t, e, n) {
+        return t = +t, e |= 0, n || B(this, t, e, 2, 32767, -32768), a.TYPED_ARRAY_SUPPORT ? (this[e] = t >>> 8, this[e + 1] = 255 & t) : C(this, t, e, !1), e + 2;
+      }, a.prototype.writeInt32LE = function (t, e, n) {
+        return t = +t, e |= 0, n || B(this, t, e, 4, 2147483647, -2147483648), a.TYPED_ARRAY_SUPPORT ? (this[e] = 255 & t, this[e + 1] = t >>> 8, this[e + 2] = t >>> 16, this[e + 3] = t >>> 24) : j(this, t, e, !0), e + 4;
+      }, a.prototype.writeInt32BE = function (t, e, n) {
+        return t = +t, e |= 0, n || B(this, t, e, 4, 2147483647, -2147483648), t < 0 && (t = 4294967295 + t + 1), a.TYPED_ARRAY_SUPPORT ? (this[e] = t >>> 24, this[e + 1] = t >>> 16, this[e + 2] = t >>> 8, this[e + 3] = 255 & t) : j(this, t, e, !1), e + 4;
+      }, a.prototype.writeFloatLE = function (t, e, n) {
+        return U(this, t, e, !0, n);
+      }, a.prototype.writeFloatBE = function (t, e, n) {
+        return U(this, t, e, !1, n);
+      }, a.prototype.writeDoubleLE = function (t, e, n) {
+        return D(this, t, e, !0, n);
+      }, a.prototype.writeDoubleBE = function (t, e, n) {
+        return D(this, t, e, !1, n);
+      }, a.prototype.copy = function (t, e, n, r) {
+        if (n || (n = 0), r || 0 === r || (r = this.length), e >= t.length && (e = t.length), e || (e = 0), r > 0 && r < n && (r = n), r === n) return 0;
+        if (0 === t.length || 0 === this.length) return 0;
+        if (e < 0) throw new RangeError("targetStart out of bounds");
+        if (n < 0 || n >= this.length) throw new RangeError("sourceStart out of bounds");
+        if (r < 0) throw new RangeError("sourceEnd out of bounds");
+        r > this.length && (r = this.length), t.length - e < r - n && (r = t.length - e + n);
+        var i,
+          o = r - n;
+        if (this === t && n < e && e < r) for (i = o - 1; i >= 0; --i) t[i + e] = this[i + n];else if (o < 1e3 || !a.TYPED_ARRAY_SUPPORT) for (i = 0; i < o; ++i) t[i + e] = this[i + n];else Uint8Array.prototype.set.call(t, this.subarray(n, n + o), e);
+        return o;
+      }, a.prototype.fill = function (t, e, n, r) {
+        if ("string" == typeof t) {
+          if ("string" == typeof e ? (r = e, e = 0, n = this.length) : "string" == typeof n && (r = n, n = this.length), 1 === t.length) {
+            var i = t.charCodeAt(0);
+            i < 256 && (t = i);
+          }
+          if (void 0 !== r && "string" != typeof r) throw new TypeError("encoding must be a string");
+          if ("string" == typeof r && !a.isEncoding(r)) throw new TypeError("Unknown encoding: " + r);
+        } else "number" == typeof t && (t &= 255);
+        if (e < 0 || this.length < e || this.length < n) throw new RangeError("Out of range index");
+        if (n <= e) return this;
+        var o;
+        if (e >>>= 0, n = void 0 === n ? this.length : n >>> 0, t || (t = 0), "number" == typeof t) for (o = e; o < n; ++o) this[o] = t;else {
+          var u = a.isBuffer(t) ? t : N(new a(t, r).toString()),
+            s = u.length;
+          for (o = 0; o < n - e; ++o) this[o + e] = u[o % s];
+        }
+        return this;
+      };
+      var I = /[^+\/0-9A-Za-z-_]/g;
+      function Y(t) {
+        return t < 16 ? "0" + t.toString(16) : t.toString(16);
+      }
+      function N(t, e) {
+        var n;
+        e = e || 1 / 0;
+        for (var r = t.length, i = null, o = [], u = 0; u < r; ++u) {
+          if ((n = t.charCodeAt(u)) > 55295 && n < 57344) {
+            if (!i) {
+              if (n > 56319) {
+                (e -= 3) > -1 && o.push(239, 191, 189);
+                continue;
+              }
+              if (u + 1 === r) {
+                (e -= 3) > -1 && o.push(239, 191, 189);
+                continue;
+              }
+              i = n;
+              continue;
+            }
+            if (n < 56320) {
+              (e -= 3) > -1 && o.push(239, 191, 189), i = n;
+              continue;
+            }
+            n = 65536 + (i - 55296 << 10 | n - 56320);
+          } else i && (e -= 3) > -1 && o.push(239, 191, 189);
+          if (i = null, n < 128) {
+            if ((e -= 1) < 0) break;
+            o.push(n);
+          } else if (n < 2048) {
+            if ((e -= 2) < 0) break;
+            o.push(n >> 6 | 192, 63 & n | 128);
+          } else if (n < 65536) {
+            if ((e -= 3) < 0) break;
+            o.push(n >> 12 | 224, n >> 6 & 63 | 128, 63 & n | 128);
+          } else {
+            if (!(n < 1114112)) throw new Error("Invalid code point");
+            if ((e -= 4) < 0) break;
+            o.push(n >> 18 | 240, n >> 12 & 63 | 128, n >> 6 & 63 | 128, 63 & n | 128);
+          }
+        }
+        return o;
+      }
+      function F(t) {
+        return r.toByteArray(function (t) {
+          if ((t = function (t) {
+            return t.trim ? t.trim() : t.replace(/^\s+|\s+$/g, "");
+          }(t).replace(I, "")).length < 2) return "";
+          for (; t.length % 4 != 0;) t += "=";
+          return t;
+        }(t));
+      }
+      function z(t, e, n, r) {
+        for (var i = 0; i < r && !(i + n >= e.length || i >= t.length); ++i) e[i + n] = t[i];
+        return i;
+      }
+    }).call(e, n(0));
+  }, function (t, e, n) {
+
+    e.byteLength = function (t) {
+      return 3 * t.length / 4 - c(t);
+    }, e.toByteArray = function (t) {
+      var e,
+        n,
+        r,
+        u,
+        s,
+        a = t.length;
+      u = c(t), s = new o(3 * a / 4 - u), n = u > 0 ? a - 4 : a;
+      var f = 0;
+      for (e = 0; e < n; e += 4) r = i[t.charCodeAt(e)] << 18 | i[t.charCodeAt(e + 1)] << 12 | i[t.charCodeAt(e + 2)] << 6 | i[t.charCodeAt(e + 3)], s[f++] = r >> 16 & 255, s[f++] = r >> 8 & 255, s[f++] = 255 & r;
+      2 === u ? (r = i[t.charCodeAt(e)] << 2 | i[t.charCodeAt(e + 1)] >> 4, s[f++] = 255 & r) : 1 === u && (r = i[t.charCodeAt(e)] << 10 | i[t.charCodeAt(e + 1)] << 4 | i[t.charCodeAt(e + 2)] >> 2, s[f++] = r >> 8 & 255, s[f++] = 255 & r);
+      return s;
+    }, e.fromByteArray = function (t) {
+      for (var e, n = t.length, i = n % 3, o = "", u = [], s = 0, a = n - i; s < a; s += 16383) u.push(f(t, s, s + 16383 > a ? a : s + 16383));
+      1 === i ? (e = t[n - 1], o += r[e >> 2], o += r[e << 4 & 63], o += "==") : 2 === i && (e = (t[n - 2] << 8) + t[n - 1], o += r[e >> 10], o += r[e >> 4 & 63], o += r[e << 2 & 63], o += "=");
+      return u.push(o), u.join("");
+    };
+    for (var r = [], i = [], o = "undefined" != typeof Uint8Array ? Uint8Array : Array, u = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/", s = 0, a = u.length; s < a; ++s) r[s] = u[s], i[u.charCodeAt(s)] = s;
+    function c(t) {
+      var e = t.length;
+      if (e % 4 > 0) throw new Error("Invalid string. Length must be a multiple of 4");
+      return "=" === t[e - 2] ? 2 : "=" === t[e - 1] ? 1 : 0;
+    }
+    function f(t, e, n) {
+      for (var i, o, u = [], s = e; s < n; s += 3) i = (t[s] << 16 & 16711680) + (t[s + 1] << 8 & 65280) + (255 & t[s + 2]), u.push(r[(o = i) >> 18 & 63] + r[o >> 12 & 63] + r[o >> 6 & 63] + r[63 & o]);
+      return u.join("");
+    }
+    i["-".charCodeAt(0)] = 62, i["_".charCodeAt(0)] = 63;
+  }, function (t, e) {
+    e.read = function (t, e, n, r, i) {
+      var o,
+        u,
+        s = 8 * i - r - 1,
+        a = (1 << s) - 1,
+        c = a >> 1,
+        f = -7,
+        l = n ? i - 1 : 0,
+        h = n ? -1 : 1,
+        p = t[e + l];
+      for (l += h, o = p & (1 << -f) - 1, p >>= -f, f += s; f > 0; o = 256 * o + t[e + l], l += h, f -= 8);
+      for (u = o & (1 << -f) - 1, o >>= -f, f += r; f > 0; u = 256 * u + t[e + l], l += h, f -= 8);
+      if (0 === o) o = 1 - c;else {
+        if (o === a) return u ? NaN : 1 / 0 * (p ? -1 : 1);
+        u += Math.pow(2, r), o -= c;
+      }
+      return (p ? -1 : 1) * u * Math.pow(2, o - r);
+    }, e.write = function (t, e, n, r, i, o) {
+      var u,
+        s,
+        a,
+        c = 8 * o - i - 1,
+        f = (1 << c) - 1,
+        l = f >> 1,
+        h = 23 === i ? Math.pow(2, -24) - Math.pow(2, -77) : 0,
+        p = r ? 0 : o - 1,
+        d = r ? 1 : -1,
+        g = e < 0 || 0 === e && 1 / e < 0 ? 1 : 0;
+      for (e = Math.abs(e), isNaN(e) || e === 1 / 0 ? (s = isNaN(e) ? 1 : 0, u = f) : (u = Math.floor(Math.log(e) / Math.LN2), e * (a = Math.pow(2, -u)) < 1 && (u--, a *= 2), (e += u + l >= 1 ? h / a : h * Math.pow(2, 1 - l)) * a >= 2 && (u++, a /= 2), u + l >= f ? (s = 0, u = f) : u + l >= 1 ? (s = (e * a - 1) * Math.pow(2, i), u += l) : (s = e * Math.pow(2, l - 1) * Math.pow(2, i), u = 0)); i >= 8; t[n + p] = 255 & s, p += d, s /= 256, i -= 8);
+      for (u = u << i | s, c += i; c > 0; t[n + p] = 255 & u, p += d, u /= 256, c -= 8);
+      t[n + p - d] |= 128 * g;
+    };
+  }, function (t, e) {
+    var n = {}.toString;
+    t.exports = Array.isArray || function (t) {
+      return "[object Array]" == n.call(t);
+    };
+  }, function (t, e, n) {
+
+    (function (e) {
+      function r(t, e) {
+        if (t === e) return 0;
+        for (var n = t.length, r = e.length, i = 0, o = Math.min(n, r); i < o; ++i) if (t[i] !== e[i]) {
+          n = t[i], r = e[i];
+          break;
+        }
+        return n < r ? -1 : r < n ? 1 : 0;
+      }
+      function i(t) {
+        return e.Buffer && "function" == typeof e.Buffer.isBuffer ? e.Buffer.isBuffer(t) : !(null == t || !t._isBuffer);
+      }
+      var o = n(27),
+        u = Object.prototype.hasOwnProperty,
+        s = Array.prototype.slice,
+        a = "foo" === function () {}.name;
+      function c(t) {
+        return Object.prototype.toString.call(t);
+      }
+      function f(t) {
+        return !i(t) && "function" == typeof e.ArrayBuffer && ("function" == typeof ArrayBuffer.isView ? ArrayBuffer.isView(t) : !!t && (t instanceof DataView || !!(t.buffer && t.buffer instanceof ArrayBuffer)));
+      }
+      var l = t.exports = v,
+        h = /\s*function\s+([^\(\s]*)\s*/;
+      function p(t) {
+        if (o.isFunction(t)) {
+          if (a) return t.name;
+          var e = t.toString().match(h);
+          return e && e[1];
+        }
+      }
+      function d(t, e) {
+        return "string" == typeof t ? t.length < e ? t : t.slice(0, e) : t;
+      }
+      function g(t) {
+        if (a || !o.isFunction(t)) return o.inspect(t);
+        var e = p(t);
+        return "[Function" + (e ? ": " + e : "") + "]";
+      }
+      function y(t, e, n, r, i) {
+        throw new l.AssertionError({
+          message: n,
+          actual: t,
+          expected: e,
+          operator: r,
+          stackStartFunction: i
+        });
+      }
+      function v(t, e) {
+        t || y(t, !0, e, "==", l.ok);
+      }
+      function m(t, e, n, u) {
+        if (t === e) return !0;
+        if (i(t) && i(e)) return 0 === r(t, e);
+        if (o.isDate(t) && o.isDate(e)) return t.getTime() === e.getTime();
+        if (o.isRegExp(t) && o.isRegExp(e)) return t.source === e.source && t.global === e.global && t.multiline === e.multiline && t.lastIndex === e.lastIndex && t.ignoreCase === e.ignoreCase;
+        if (null !== t && "object" == typeof t || null !== e && "object" == typeof e) {
+          if (f(t) && f(e) && c(t) === c(e) && !(t instanceof Float32Array || t instanceof Float64Array)) return 0 === r(new Uint8Array(t.buffer), new Uint8Array(e.buffer));
+          if (i(t) !== i(e)) return !1;
+          var a = (u = u || {
+            actual: [],
+            expected: []
+          }).actual.indexOf(t);
+          return -1 !== a && a === u.expected.indexOf(e) || (u.actual.push(t), u.expected.push(e), function (t, e, n, r) {
+            if (null === t || void 0 === t || null === e || void 0 === e) return !1;
+            if (o.isPrimitive(t) || o.isPrimitive(e)) return t === e;
+            if (n && Object.getPrototypeOf(t) !== Object.getPrototypeOf(e)) return !1;
+            var i = b(t),
+              u = b(e);
+            if (i && !u || !i && u) return !1;
+            if (i) return t = s.call(t), e = s.call(e), m(t, e, n);
+            var a,
+              c,
+              f = O(t),
+              l = O(e);
+            if (f.length !== l.length) return !1;
+            for (f.sort(), l.sort(), c = f.length - 1; c >= 0; c--) if (f[c] !== l[c]) return !1;
+            for (c = f.length - 1; c >= 0; c--) if (a = f[c], !m(t[a], e[a], n, r)) return !1;
+            return !0;
+          }(t, e, n, u));
+        }
+        return n ? t === e : t == e;
+      }
+      function b(t) {
+        return "[object Arguments]" == Object.prototype.toString.call(t);
+      }
+      function w(t, e) {
+        if (!t || !e) return !1;
+        if ("[object RegExp]" == Object.prototype.toString.call(e)) return e.test(t);
+        try {
+          if (t instanceof e) return !0;
+        } catch (t) {}
+        return !Error.isPrototypeOf(e) && !0 === e.call({}, t);
+      }
+      function E(t, e, n, r) {
+        var i;
+        if ("function" != typeof e) throw new TypeError('"block" argument must be a function');
+        "string" == typeof n && (r = n, n = null), i = function (t) {
+          var e;
+          try {
+            t();
+          } catch (t) {
+            e = t;
+          }
+          return e;
+        }(e), r = (n && n.name ? " (" + n.name + ")." : ".") + (r ? " " + r : "."), t && !i && y(i, n, "Missing expected exception" + r);
+        var u = "string" == typeof r,
+          s = !t && o.isError(i),
+          a = !t && i && !n;
+        if ((s && u && w(i, n) || a) && y(i, n, "Got unwanted exception" + r), t && i && n && !w(i, n) || !t && i) throw i;
+      }
+      l.AssertionError = function (t) {
+        var e;
+        this.name = "AssertionError", this.actual = t.actual, this.expected = t.expected, this.operator = t.operator, t.message ? (this.message = t.message, this.generatedMessage = !1) : (this.message = d(g((e = this).actual), 128) + " " + e.operator + " " + d(g(e.expected), 128), this.generatedMessage = !0);
+        var n = t.stackStartFunction || y;
+        if (Error.captureStackTrace) Error.captureStackTrace(this, n);else {
+          var r = new Error();
+          if (r.stack) {
+            var i = r.stack,
+              o = p(n),
+              u = i.indexOf("\n" + o);
+            if (u >= 0) {
+              var s = i.indexOf("\n", u + 1);
+              i = i.substring(s + 1);
+            }
+            this.stack = i;
+          }
+        }
+      }, o.inherits(l.AssertionError, Error), l.fail = y, l.ok = v, l.equal = function (t, e, n) {
+        t != e && y(t, e, n, "==", l.equal);
+      }, l.notEqual = function (t, e, n) {
+        t == e && y(t, e, n, "!=", l.notEqual);
+      }, l.deepEqual = function (t, e, n) {
+        m(t, e, !1) || y(t, e, n, "deepEqual", l.deepEqual);
+      }, l.deepStrictEqual = function (t, e, n) {
+        m(t, e, !0) || y(t, e, n, "deepStrictEqual", l.deepStrictEqual);
+      }, l.notDeepEqual = function (t, e, n) {
+        m(t, e, !1) && y(t, e, n, "notDeepEqual", l.notDeepEqual);
+      }, l.notDeepStrictEqual = function t(e, n, r) {
+        m(e, n, !0) && y(e, n, r, "notDeepStrictEqual", t);
+      }, l.strictEqual = function (t, e, n) {
+        t !== e && y(t, e, n, "===", l.strictEqual);
+      }, l.notStrictEqual = function (t, e, n) {
+        t === e && y(t, e, n, "!==", l.notStrictEqual);
+      }, l.throws = function (t, e, n) {
+        E(!0, t, e, n);
+      }, l.doesNotThrow = function (t, e, n) {
+        E(!1, t, e, n);
+      }, l.ifError = function (t) {
+        if (t) throw t;
+      };
+      var O = Object.keys || function (t) {
+        var e = [];
+        for (var n in t) u.call(t, n) && e.push(n);
+        return e;
+      };
+    }).call(e, n(0));
+  }, function (t, e, n) {
+    (function (t, r) {
+      var i = /%[sdj%]/g;
+      e.format = function (t) {
+        if (!v(t)) {
+          for (var e = [], n = 0; n < arguments.length; n++) e.push(s(arguments[n]));
+          return e.join(" ");
+        }
+        n = 1;
+        for (var r = arguments, o = r.length, u = String(t).replace(i, function (t) {
+            if ("%%" === t) return "%";
+            if (n >= o) return t;
+            switch (t) {
+              case "%s":
+                return String(r[n++]);
+              case "%d":
+                return Number(r[n++]);
+              case "%j":
+                try {
+                  return JSON.stringify(r[n++]);
+                } catch (t) {
+                  return "[Circular]";
+                }
+              default:
+                return t;
+            }
+          }), a = r[n]; n < o; a = r[++n]) g(a) || !w(a) ? u += " " + a : u += " " + s(a);
+        return u;
+      }, e.deprecate = function (n, i) {
+        if (m(t.process)) return function () {
+          return e.deprecate(n, i).apply(this, arguments);
+        };
+        if (!0 === r.noDeprecation) return n;
+        var o = !1;
+        return function () {
+          if (!o) {
+            if (r.throwDeprecation) throw new Error(i);
+            r.traceDeprecation ? console.trace(i) : console.error(i), o = !0;
+          }
+          return n.apply(this, arguments);
+        };
+      };
+      var o,
+        u = {};
+      function s(t, n) {
+        var r = {
+          seen: [],
+          stylize: c
+        };
+        return arguments.length >= 3 && (r.depth = arguments[2]), arguments.length >= 4 && (r.colors = arguments[3]), d(n) ? r.showHidden = n : n && e._extend(r, n), m(r.showHidden) && (r.showHidden = !1), m(r.depth) && (r.depth = 2), m(r.colors) && (r.colors = !1), m(r.customInspect) && (r.customInspect = !0), r.colors && (r.stylize = a), f(r, t, r.depth);
+      }
+      function a(t, e) {
+        var n = s.styles[e];
+        return n ? "[" + s.colors[n][0] + "m" + t + "[" + s.colors[n][1] + "m" : t;
+      }
+      function c(t, e) {
+        return t;
+      }
+      function f(t, n, r) {
+        if (t.customInspect && n && A(n.inspect) && n.inspect !== e.inspect && (!n.constructor || n.constructor.prototype !== n)) {
+          var i = n.inspect(r, t);
+          return v(i) || (i = f(t, i, r)), i;
+        }
+        var o = function (t, e) {
+          if (m(e)) return t.stylize("undefined", "undefined");
+          if (v(e)) {
+            var n = "'" + JSON.stringify(e).replace(/^"|"$/g, "").replace(/'/g, "\\'").replace(/\\"/g, '"') + "'";
+            return t.stylize(n, "string");
+          }
+          if (y(e)) return t.stylize("" + e, "number");
+          if (d(e)) return t.stylize("" + e, "boolean");
+          if (g(e)) return t.stylize("null", "null");
+        }(t, n);
+        if (o) return o;
+        var u = Object.keys(n),
+          s = function (t) {
+            var e = {};
+            return t.forEach(function (t, n) {
+              e[t] = !0;
+            }), e;
+          }(u);
+        if (t.showHidden && (u = Object.getOwnPropertyNames(n)), O(n) && (u.indexOf("message") >= 0 || u.indexOf("description") >= 0)) return l(n);
+        if (0 === u.length) {
+          if (A(n)) {
+            var a = n.name ? ": " + n.name : "";
+            return t.stylize("[Function" + a + "]", "special");
+          }
+          if (b(n)) return t.stylize(RegExp.prototype.toString.call(n), "regexp");
+          if (E(n)) return t.stylize(Date.prototype.toString.call(n), "date");
+          if (O(n)) return l(n);
+        }
+        var c,
+          w = "",
+          x = !1,
+          T = ["{", "}"];
+        (p(n) && (x = !0, T = ["[", "]"]), A(n)) && (w = " [Function" + (n.name ? ": " + n.name : "") + "]");
+        return b(n) && (w = " " + RegExp.prototype.toString.call(n)), E(n) && (w = " " + Date.prototype.toUTCString.call(n)), O(n) && (w = " " + l(n)), 0 !== u.length || x && 0 != n.length ? r < 0 ? b(n) ? t.stylize(RegExp.prototype.toString.call(n), "regexp") : t.stylize("[Object]", "special") : (t.seen.push(n), c = x ? function (t, e, n, r, i) {
+          for (var o = [], u = 0, s = e.length; u < s; ++u) S(e, String(u)) ? o.push(h(t, e, n, r, String(u), !0)) : o.push("");
+          return i.forEach(function (i) {
+            i.match(/^\d+$/) || o.push(h(t, e, n, r, i, !0));
+          }), o;
+        }(t, n, r, s, u) : u.map(function (e) {
+          return h(t, n, r, s, e, x);
+        }), t.seen.pop(), function (t, e, n) {
+          if (t.reduce(function (t, e) {
+            return e.indexOf("\n") >= 0 && 0, t + e.replace(/\u001b\[\d\d?m/g, "").length + 1;
+          }, 0) > 60) return n[0] + ("" === e ? "" : e + "\n ") + " " + t.join(",\n  ") + " " + n[1];
+          return n[0] + e + " " + t.join(", ") + " " + n[1];
+        }(c, w, T)) : T[0] + w + T[1];
+      }
+      function l(t) {
+        return "[" + Error.prototype.toString.call(t) + "]";
+      }
+      function h(t, e, n, r, i, o) {
+        var u, s, a;
+        if ((a = Object.getOwnPropertyDescriptor(e, i) || {
+          value: e[i]
+        }).get ? s = a.set ? t.stylize("[Getter/Setter]", "special") : t.stylize("[Getter]", "special") : a.set && (s = t.stylize("[Setter]", "special")), S(r, i) || (u = "[" + i + "]"), s || (t.seen.indexOf(a.value) < 0 ? (s = g(n) ? f(t, a.value, null) : f(t, a.value, n - 1)).indexOf("\n") > -1 && (s = o ? s.split("\n").map(function (t) {
+          return "  " + t;
+        }).join("\n").substr(2) : "\n" + s.split("\n").map(function (t) {
+          return "   " + t;
+        }).join("\n")) : s = t.stylize("[Circular]", "special")), m(u)) {
+          if (o && i.match(/^\d+$/)) return s;
+          (u = JSON.stringify("" + i)).match(/^"([a-zA-Z_][a-zA-Z_0-9]*)"$/) ? (u = u.substr(1, u.length - 2), u = t.stylize(u, "name")) : (u = u.replace(/'/g, "\\'").replace(/\\"/g, '"').replace(/(^"|"$)/g, "'"), u = t.stylize(u, "string"));
+        }
+        return u + ": " + s;
+      }
+      function p(t) {
+        return Array.isArray(t);
+      }
+      function d(t) {
+        return "boolean" == typeof t;
+      }
+      function g(t) {
+        return null === t;
+      }
+      function y(t) {
+        return "number" == typeof t;
+      }
+      function v(t) {
+        return "string" == typeof t;
+      }
+      function m(t) {
+        return void 0 === t;
+      }
+      function b(t) {
+        return w(t) && "[object RegExp]" === x(t);
+      }
+      function w(t) {
+        return "object" == typeof t && null !== t;
+      }
+      function E(t) {
+        return w(t) && "[object Date]" === x(t);
+      }
+      function O(t) {
+        return w(t) && ("[object Error]" === x(t) || t instanceof Error);
+      }
+      function A(t) {
+        return "function" == typeof t;
+      }
+      function x(t) {
+        return Object.prototype.toString.call(t);
+      }
+      function T(t) {
+        return t < 10 ? "0" + t.toString(10) : t.toString(10);
+      }
+      e.debuglog = function (t) {
+        if (m(o) && (o = Object({
+          NODE_ENV: "production"
+        }).NODE_DEBUG || ""), t = t.toUpperCase(), !u[t]) if (new RegExp("\\b" + t + "\\b", "i").test(o)) {
+          var n = r.pid;
+          u[t] = function () {
+            var r = e.format.apply(e, arguments);
+            console.error("%s %d: %s", t, n, r);
+          };
+        } else u[t] = function () {};
+        return u[t];
+      }, e.inspect = s, s.colors = {
+        bold: [1, 22],
+        italic: [3, 23],
+        underline: [4, 24],
+        inverse: [7, 27],
+        white: [37, 39],
+        grey: [90, 39],
+        black: [30, 39],
+        blue: [34, 39],
+        cyan: [36, 39],
+        green: [32, 39],
+        magenta: [35, 39],
+        red: [31, 39],
+        yellow: [33, 39]
+      }, s.styles = {
+        special: "cyan",
+        number: "yellow",
+        boolean: "yellow",
+        undefined: "grey",
+        null: "bold",
+        string: "green",
+        date: "magenta",
+        regexp: "red"
+      }, e.isArray = p, e.isBoolean = d, e.isNull = g, e.isNullOrUndefined = function (t) {
+        return null == t;
+      }, e.isNumber = y, e.isString = v, e.isSymbol = function (t) {
+        return "symbol" == typeof t;
+      }, e.isUndefined = m, e.isRegExp = b, e.isObject = w, e.isDate = E, e.isError = O, e.isFunction = A, e.isPrimitive = function (t) {
+        return null === t || "boolean" == typeof t || "number" == typeof t || "string" == typeof t || "symbol" == typeof t || void 0 === t;
+      }, e.isBuffer = n(29);
+      var _ = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+      function S(t, e) {
+        return Object.prototype.hasOwnProperty.call(t, e);
+      }
+      e.log = function () {
+        var t, n;
+        console.log("%s - %s", (t = new Date(), n = [T(t.getHours()), T(t.getMinutes()), T(t.getSeconds())].join(":"), [t.getDate(), _[t.getMonth()], n].join(" ")), e.format.apply(e, arguments));
+      }, e.inherits = n(30), e._extend = function (t, e) {
+        if (!e || !w(e)) return t;
+        for (var n = Object.keys(e), r = n.length; r--;) t[n[r]] = e[n[r]];
+        return t;
+      };
+    }).call(e, n(0), n(28));
+  }, function (t, e) {
+    var n,
+      r,
+      i = t.exports = {};
+    function o() {
+      throw new Error("setTimeout has not been defined");
+    }
+    function u() {
+      throw new Error("clearTimeout has not been defined");
+    }
+    function s(t) {
+      if (n === setTimeout) return setTimeout(t, 0);
+      if ((n === o || !n) && setTimeout) return n = setTimeout, setTimeout(t, 0);
+      try {
+        return n(t, 0);
+      } catch (e) {
+        try {
+          return n.call(null, t, 0);
+        } catch (e) {
+          return n.call(this, t, 0);
         }
       }
     }
-    return target;
-  };
-  return _extends.apply(this, arguments);
-}
+    !function () {
+      try {
+        n = "function" == typeof setTimeout ? setTimeout : o;
+      } catch (t) {
+        n = o;
+      }
+      try {
+        r = "function" == typeof clearTimeout ? clearTimeout : u;
+      } catch (t) {
+        r = u;
+      }
+    }();
+    var a,
+      c = [],
+      f = !1,
+      l = -1;
+    function h() {
+      f && a && (f = !1, a.length ? c = a.concat(c) : l = -1, c.length && p());
+    }
+    function p() {
+      if (!f) {
+        var t = s(h);
+        f = !0;
+        for (var e = c.length; e;) {
+          for (a = c, c = []; ++l < e;) a && a[l].run();
+          l = -1, e = c.length;
+        }
+        a = null, f = !1, function (t) {
+          if (r === clearTimeout) return clearTimeout(t);
+          if ((r === u || !r) && clearTimeout) return r = clearTimeout, clearTimeout(t);
+          try {
+            r(t);
+          } catch (e) {
+            try {
+              return r.call(null, t);
+            } catch (e) {
+              return r.call(this, t);
+            }
+          }
+        }(t);
+      }
+    }
+    function d(t, e) {
+      this.fun = t, this.array = e;
+    }
+    function g() {}
+    i.nextTick = function (t) {
+      var e = new Array(arguments.length - 1);
+      if (arguments.length > 1) for (var n = 1; n < arguments.length; n++) e[n - 1] = arguments[n];
+      c.push(new d(t, e)), 1 !== c.length || f || s(p);
+    }, d.prototype.run = function () {
+      this.fun.apply(null, this.array);
+    }, i.title = "browser", i.browser = !0, i.env = {}, i.argv = [], i.version = "", i.versions = {}, i.on = g, i.addListener = g, i.once = g, i.off = g, i.removeListener = g, i.removeAllListeners = g, i.emit = g, i.prependListener = g, i.prependOnceListener = g, i.listeners = function (t) {
+      return [];
+    }, i.binding = function (t) {
+      throw new Error("process.binding is not supported");
+    }, i.cwd = function () {
+      return "/";
+    }, i.chdir = function (t) {
+      throw new Error("process.chdir is not supported");
+    }, i.umask = function () {
+      return 0;
+    };
+  }, function (t, e) {
+    t.exports = function (t) {
+      return t && "object" == typeof t && "function" == typeof t.copy && "function" == typeof t.fill && "function" == typeof t.readUInt8;
+    };
+  }, function (t, e) {
+    "function" == typeof Object.create ? t.exports = function (t, e) {
+      t.super_ = e, t.prototype = Object.create(e.prototype, {
+        constructor: {
+          value: t,
+          enumerable: !1,
+          writable: !0,
+          configurable: !0
+        }
+      });
+    } : t.exports = function (t, e) {
+      t.super_ = e;
+      var n = function () {};
+      n.prototype = e.prototype, t.prototype = new n(), t.prototype.constructor = t;
+    };
+  }, function (t, e, n) {
+
+    t.exports = function (t, e, n) {
+      var r = e.value,
+        i = t.innerText,
+        o = i.toLowerCase().indexOf(r.toLowerCase()),
+        u = r.length;
+      return r && o >= 0 ? i.substring(0, o) + '<span class="' + n + '">' + i.substr(o, u) + "</span>" + i.substring(o + u) : i;
+    };
+  }, function (t, e, n) {
+
+    var r,
+      i = n(33),
+      o = (r = i) && r.__esModule ? r : {
+        default: r
+      };
+    var u = {
+      input: ".combobox",
+      list: ".listbox",
+      options: ".option",
+      groups: null,
+      openClass: "open",
+      activeClass: "active",
+      selectedClass: "selected",
+      useLiveRegion: !0,
+      allowEmpty: !0,
+      multiselect: !1,
+      noResultsText: null,
+      selectionValue: function (t) {
+        return t.map(function (t) {
+          return t.innerText.trim();
+        }).join(" - ");
+      },
+      optionValue: function (t) {
+        return t.innerHTML;
+      },
+      announcement: {
+        count: function (t) {
+          return t + " options available";
+        },
+        selected: "Selected."
+      },
+      filter: "contains",
+      autoFilter: !0
+    };
+    t.exports = function (t) {
+      var e = {},
+        n = {};
+      return t.announcement = t.announcement || {}, (0, o.default)(n, u.announcement, t.announcement), (0, o.default)(e, u, t), e.announcement = n, e;
+    };
+  }, function (t, e, n) {
+
+    var r = n(34);
+    function i(t, e) {
+      for (var n in e) o(e, n) && (t[n] = e[n]);
+    }
+    function o(t, e) {
+      return Object.prototype.hasOwnProperty.call(t, e);
+    }
+    t.exports = function (t) {
+      r(t) || (t = {});
+      for (var e = arguments.length, n = 1; n < e; n++) {
+        var o = arguments[n];
+        r(o) && i(t, o);
+      }
+      return t;
+    };
+  }, function (t, e, n) {
+
+    t.exports = function (t) {
+      return void 0 !== t && null !== t && ("object" == typeof t || "function" == typeof t);
+    };
+  }, function (t, e, n) {
+
+    t.exports = function (t, e, n, r, i) {
+      var o = "true" === t.getAttribute("aria-selected"),
+        u = e.announcement.selected,
+        s = t.innerText;
+      s = r && e.announcement && e.announcement.groupChange ? e.announcement.groupChange(i) + " " + s : s, n(s = o && u ? s + " " + u : s, 500);
+    };
+  }]);
+});
+}(dist));
+
+var Combobo = /*@__PURE__*/_commonjsHelpers.getDefaultExportFromCjs(dist.exports);
 
 const countries = [{
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e6-1f1e8.svg",
-  "country": "Ascension Island",
-  "code": "ac"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e6-1f1e9.svg",
-  "country": "Andorra",
-  "code": "ad"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e6-1f1ea.svg",
-  "country": "United Arab Emirates",
-  "code": "ae"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e6-1f1eb.svg",
-  "country": "Afghanistan",
-  "code": "af"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e6-1f1ec.svg",
-  "country": "Antigua & Barbuda",
-  "code": "ag"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e6-1f1ee.svg",
-  "country": "Anguilla",
-  "code": "ai"
+  "name": "Afghanistan",
+  "code": "AF",
+  "flag": "🇦🇫"
+}, {
+  "name": "Egypt",
+  "code": "EG",
+  "flag": "🇪🇬"
+}, {
+  "name": "Åland Islands",
+  "code": "AX",
+  "flag": "🇦🇽"
+}, {
+  "name": "Albania",
+  "code": "AL",
+  "flag": "🇦🇱"
 }, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e6-1f1f1.svg",
-  "country": "Albania",
-  "code": "al"
+  "name": "Algeria",
+  "code": "DZ",
+  "flag": "🇩🇿"
 }, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e6-1f1f2.svg",
-  "country": "Armenia",
-  "code": "am"
+  "name": "American Samoa",
+  "code": "AS",
+  "flag": "🇦🇸"
 }, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e6-1f1f4.svg",
-  "country": "Angola",
-  "code": "ad"
+  "name": "Andorra",
+  "code": "AD",
+  "flag": "🇦🇩"
 }, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e6-1f1f6.svg",
-  "country": "Antarctica",
-  "code": "aq"
+  "name": "Angola",
+  "code": "AO",
+  "flag": "🇦🇴"
 }, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e6-1f1f7.svg",
-  "country": "Argentina",
-  "code": "ar"
+  "name": "Anguilla",
+  "code": "AI",
+  "flag": "🇦🇮"
 }, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e6-1f1f8.svg",
-  "country": "American Samoa",
-  "code": "as"
+  "name": "Antarctica",
+  "code": "AQ",
+  "flag": "🇦🇶"
 }, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e6-1f1f9.svg",
-  "country": "Austria",
-  "code": "at"
+  "name": "Antigua and Barbuda",
+  "code": "AG",
+  "flag": "🇦🇬"
 }, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e6-1f1fa.svg",
-  "country": "Australia",
-  "code": "au"
+  "name": "Equatorial Guinea",
+  "code": "GQ",
+  "flag": "🇬🇶"
 }, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e6-1f1fc.svg",
-  "country": "Aruba",
-  "code": "aw"
+  "name": "Argentina",
+  "code": "AR",
+  "flag": "🇦🇷"
 }, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e6-1f1fd.svg",
-  "country": "Åland Islands",
-  "code": "ax"
+  "name": "Armenia",
+  "code": "AM",
+  "flag": "🇦🇲"
 }, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e6-1f1ff.svg",
-  "country": "Azerbaijan",
-  "code": "az"
+  "name": "Aruba",
+  "code": "AW",
+  "flag": "🇦🇼"
 }, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e7-1f1e6.svg",
-  "country": "Bosnia & Herzegovina",
-  "code": "ba"
+  "name": "Azerbaijan",
+  "code": "AZ",
+  "flag": "🇦🇿"
 }, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e7-1f1e7.svg",
-  "country": "Barbados",
-  "code": "bb"
+  "name": "Ethiopia",
+  "code": "ET",
+  "flag": "🇪🇹"
 }, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e7-1f1e9.svg",
-  "country": "Bangladesh",
-  "code": "bd"
+  "name": "Australia",
+  "code": "AU",
+  "flag": "🇦🇺"
 }, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e7-1f1ea.svg",
-  "country": "Belgium",
-  "code": "be"
+  "name": "Bahamas",
+  "code": "BS",
+  "flag": "🇧🇸"
 }, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e7-1f1eb.svg",
-  "country": "Burkina Faso",
-  "code": "bf"
+  "name": "Bahrain",
+  "code": "BH",
+  "flag": "🇧🇭"
 }, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e7-1f1ec.svg",
-  "country": "Bulgaria",
-  "code": "bg"
+  "name": "Bangladesh",
+  "code": "BD",
+  "flag": "🇧🇩"
 }, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e7-1f1ed.svg",
-  "country": "Bahrain",
-  "code": "bh"
+  "name": "Barbados",
+  "code": "BB",
+  "flag": "🇧🇧"
 }, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e7-1f1ee.svg",
-  "country": "Burundi",
-  "code": "bi"
+  "name": "Belarus",
+  "code": "BY",
+  "flag": "🇧🇾"
 }, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e7-1f1ef.svg",
-  "country": "Benin",
-  "code": "bj"
+  "name": "Belgium",
+  "code": "BE",
+  "flag": "🇧🇪"
 }, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e7-1f1f1.svg",
-  "country": "St. Barthélemy",
-  "code": "bl"
+  "name": "Belize",
+  "code": "BZ",
+  "flag": "🇧🇿"
 }, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e7-1f1f2.svg",
-  "country": "Bermuda",
-  "code": "bm"
+  "name": "Benin",
+  "code": "BJ",
+  "flag": "🇧🇯"
 }, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e7-1f1f3.svg",
-  "country": "Brunei",
-  "code": "bn"
+  "name": "Bermuda",
+  "code": "BM",
+  "flag": "🇧🇲"
 }, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e7-1f1f4.svg",
-  "country": "Bolivia",
-  "code": "bo"
+  "name": "Bhutan",
+  "code": "BT",
+  "flag": "🇧🇹"
 }, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e7-1f1f6.svg",
-  "country": "Caribbean Netherlands"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e7-1f1f7.svg",
-  "country": "Brazil",
-  "code": "br"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e7-1f1f8.svg",
-  "country": "Bahamas",
-  "code": "bs"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e7-1f1f9.svg",
-  "country": "Bhutan",
-  "code": "bt"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e7-1f1fb.svg",
-  "country": "Bouvet Island",
-  "code": "bv"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e7-1f1fc.svg",
-  "country": "Botswana",
-  "code": "bw"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e7-1f1fe.svg",
-  "country": "Belarus",
-  "code": "by"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e7-1f1ff.svg",
-  "country": "Belize",
-  "code": "bz"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e8-1f1e6.svg",
-  "country": "Canada",
-  "code": "ca"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e8-1f1e8.svg",
-  "country": "Cocos (Keeling) Islands",
-  "code": "cc"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e8-1f1e9.svg",
-  "country": "Congo - Kinshasa",
-  "code": "cg"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e8-1f1eb.svg",
-  "country": "Central African Republic",
-  "code": "cf"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e8-1f1ec.svg",
-  "country": "Congo - Brazzaville",
-  "code": "cd"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e8-1f1ed.svg",
-  "country": "Switzerland",
-  "code": "ch"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e8-1f1ee.svg",
-  "country": "Côte d’Ivoire",
-  "code": "ci"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e8-1f1f0.svg",
-  "country": "Cook Islands",
-  "code": "ck"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e8-1f1f1.svg",
-  "country": "Chile",
-  "code": "cl"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e8-1f1f2.svg",
-  "country": "Cameroon",
-  "code": "cm"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e8-1f1f3.svg",
-  "country": "China",
-  "code": "cn"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e8-1f1f4.svg",
-  "country": "Colombia",
-  "code": "co"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e8-1f1f5.svg",
-  "country": "Clipperton Island",
-  "code": "cp"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e8-1f1f7.svg",
-  "country": "Costa Rica",
-  "code": "cr"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e8-1f1fa.svg",
-  "country": "Cuba",
-  "code": "cu"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e8-1f1fb.svg",
-  "country": "Cape Verde",
-  "code": "cv"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e8-1f1fc.svg",
-  "country": "Curaçao",
-  "code": "cw"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e8-1f1fd.svg",
-  "country": "Christmas Island",
-  "code": "cx"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e8-1f1fe.svg",
-  "country": "Cyprus",
-  "code": "cy"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e8-1f1ff.svg",
-  "country": "Czechia",
-  "code": "cz"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e9-1f1ea.svg",
-  "country": "Germany",
-  "code": "de"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e9-1f1ec.svg",
-  "country": "Diego Garcia",
-  "code": "dg"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e9-1f1ef.svg",
-  "country": "Djibouti",
-  "code": "dj"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e9-1f1f0.svg",
-  "country": "Denmark",
-  "code": "dk"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e9-1f1f2.svg",
-  "country": "Dominica",
-  "code": "dm"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e9-1f1f4.svg",
-  "country": "Dominican Republic",
-  "code": "do"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1e9-1f1ff.svg",
-  "country": "Algeria",
-  "code": "dz"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1ea-1f1e6.svg",
-  "country": "Ceuta & Melilla",
-  "code": "ea"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1ea-1f1e8.svg",
-  "country": "Ecuador",
-  "code": "ec"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1ea-1f1ea.svg",
-  "country": "Estonia",
-  "code": "ee"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1ea-1f1ec.svg",
-  "country": "Egypt",
-  "code": "eg"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1ea-1f1ed.svg",
-  "country": "Western Sahara",
-  "code": "eh"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1ea-1f1f7.svg",
-  "country": "Eritrea",
-  "code": "er"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1ea-1f1f8.svg",
-  "country": "Spain",
-  "code": "es"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1ea-1f1f9.svg",
-  "country": "Ethiopia",
-  "code": "et"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1ea-1f1fa.svg",
-  "country": "European Union",
-  "code": "eu"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1eb-1f1ee.svg",
-  "country": "Finland",
-  "code": "fi"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1eb-1f1ef.svg",
-  "country": "Fiji",
-  "code": "fj"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1eb-1f1f0.svg",
-  "country": "Falkland Islands",
-  "code": "fk"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1eb-1f1f2.svg",
-  "country": "Micronesia",
-  "code": "fm"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1eb-1f1f4.svg",
-  "country": "Faroe Islands",
-  "code": "fo"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1eb-1f1f7.svg",
-  "country": "France",
-  "code": "fr"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1ec-1f1e6.svg",
-  "country": "Gabon",
-  "code": "ga"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1ec-1f1e7.svg",
-  "country": "United Kingdom",
-  "code": "gb"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1ec-1f1e9.svg",
-  "country": "Grenada",
-  "code": "gd"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1ec-1f1ea.svg",
-  "country": "Georgia",
-  "code": "ge"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1ec-1f1eb.svg",
-  "country": "French Guiana",
-  "code": "gf"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1ec-1f1ec.svg",
-  "country": "Guernsey",
-  "code": "gg"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1ec-1f1ed.svg",
-  "country": "Ghana",
-  "code": "gh"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1ec-1f1ee.svg",
-  "country": "Gibraltar",
-  "code": "gi"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1ec-1f1f1.svg",
-  "country": "Greenland",
-  "code": "gl"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1ec-1f1f2.svg",
-  "country": "Gambia",
-  "code": "gm"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1ec-1f1f3.svg",
-  "country": "Guinea",
-  "code": "gn"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1ec-1f1f5.svg",
-  "country": "Guadeloupe",
-  "code": "gp"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1ec-1f1f6.svg",
-  "country": "Equatorial Guinea",
-  "code": "gq"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1ec-1f1f7.svg",
-  "country": "Greece",
-  "code": "gr"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1ec-1f1f8.svg",
-  "country": "South Georgia & South', Sandwich Islands",
-  "code": "gs"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1ec-1f1f9.svg",
-  "country": "Guatemala",
-  "code": "gt"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1ec-1f1fa.svg",
-  "country": "Guam",
-  "code": "gu"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1ec-1f1fc.svg",
-  "country": "Guinea-Bissau",
-  "code": "gw"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1ec-1f1fe.svg",
-  "country": "Guyana",
-  "code": "gy"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1ed-1f1f0.svg",
-  "country": "Hong Kong SAR China",
-  "code": "hk"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1ed-1f1f2.svg",
-  "country": "Heard & McDonald Islands",
-  "code": "hm"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1ed-1f1f3.svg",
-  "country": "Honduras",
-  "code": "hn"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1ed-1f1f7.svg",
-  "country": "Croatia",
-  "code": "hr"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1ed-1f1f9.svg",
-  "country": "Haiti",
-  "code": "ht"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1ed-1f1fa.svg",
-  "country": "Hungary",
-  "code": "hu"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1ee-1f1e8.svg",
-  "country": "Canary Islands",
-  "code": "ic"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1ee-1f1e9.svg",
-  "country": "Indonesia",
-  "code": "id"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1ee-1f1ea.svg",
-  "country": "Ireland",
-  "code": "ie"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1ee-1f1f1.svg",
-  "country": "Israel",
-  "code": "il"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1ee-1f1f2.svg",
-  "country": "Isle of Man",
-  "code": "im"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1ee-1f1f3.svg",
-  "country": "India",
-  "code": "in"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1ee-1f1f4.svg",
-  "country": "British Indian Ocean Territory",
-  "code": "io"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1ee-1f1f6.svg",
-  "country": "Iraq",
-  "code": "iq"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1ee-1f1f7.svg",
-  "country": "Iran"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1ee-1f1f8.svg",
-  "country": "Iceland",
-  "code": "is"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1ee-1f1f9.svg",
-  "country": "Italy",
-  "code": "it"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1ef-1f1ea.svg",
-  "country": "Jersey",
-  "code": "je"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1ef-1f1f2.svg",
-  "country": "Jamaica",
-  "code": "jm"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1ef-1f1f4.svg",
-  "country": "Jordan",
-  "code": "jo"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1ef-1f1f5.svg",
-  "country": "Japan",
-  "code": "jp"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f0-1f1ea.svg",
-  "country": "Kenya",
-  "code": "ke"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f0-1f1ec.svg",
-  "country": "Kyrgyzstan",
-  "code": "kg"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f0-1f1ed.svg",
-  "country": "Cambodia",
-  "code": "kh"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f0-1f1ee.svg",
-  "country": "Kiribati",
-  "code": "ki"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f0-1f1f2.svg",
-  "country": "Comoros",
-  "code": "km"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f0-1f1f3.svg",
-  "country": "St. Kitts & Nevis",
-  "code": "kn"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f0-1f1f5.svg",
-  "country": "North Korea",
-  "code": "kp"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f0-1f1f7.svg",
-  "country": "South Korea",
-  "code": "kr"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f0-1f1fc.svg",
-  "country": "Kuwait",
-  "code": "kw"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f0-1f1fe.svg",
-  "country": "Cayman Islands",
-  "code": "ky"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f0-1f1ff.svg",
-  "country": "Kazakhstan",
-  "code": "kz"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f1-1f1e6.svg",
-  "country": "Laos",
-  "code": "la"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f1-1f1e7.svg",
-  "country": "Lebanon",
-  "code": "lb"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f1-1f1e8.svg",
-  "country": "St. Lucia",
-  "code": "lc"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f1-1f1ee.svg",
-  "country": "Liechtenstein",
-  "code": "li"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f1-1f1f0.svg",
-  "country": "Sri Lanka",
-  "code": "lk"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f1-1f1f7.svg",
-  "country": "Liberia",
-  "code": "lr"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f1-1f1f8.svg",
-  "country": "Lesotho",
-  "code": "ls"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f1-1f1f9.svg",
-  "country": "Lithuania",
-  "code": "lt"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f1-1f1fa.svg",
-  "country": "Luxembourg",
-  "code": "lu"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f1-1f1fb.svg",
-  "country": "Latvia",
-  "code": "lv"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f1-1f1fe.svg",
-  "country": "Libya",
-  "code": "ly"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f2-1f1e6.svg",
-  "country": "Morocco",
-  "code": "ma"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f2-1f1e8.svg",
-  "country": "Monaco",
-  "code": "mc"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f2-1f1e9.svg",
-  "country": "Moldova",
-  "code": "md"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f2-1f1ea.svg",
-  "country": "Montenegro",
-  "code": "me"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f2-1f1eb.svg",
-  "country": "St. Martin",
-  "code": "mf"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f2-1f1ec.svg",
-  "country": "Madagascar",
-  "code": "mg"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f2-1f1ed.svg",
-  "country": "Marshall Islands",
-  "code": "mh"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f2-1f1f0.svg",
-  "country": "North Macedonia",
-  "code": "mk"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f2-1f1f1.svg",
-  "country": "Mali",
-  "code": "ml"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f2-1f1f2.svg",
-  "country": "Myanmar (Burma)",
-  "code": "mm"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f2-1f1f3.svg",
-  "country": "Mongolia",
-  "code": "mn"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f2-1f1f4.svg",
-  "country": "Macao Sar China",
-  "code": "mo"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f2-1f1f5.svg",
-  "country": "Northern Mariana Islands",
-  "code": "mp"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f2-1f1f6.svg",
-  "country": "Martinique",
-  "code": "mq"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f2-1f1f7.svg",
-  "country": "Mauritania",
-  "code": "mr"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f2-1f1f8.svg",
-  "country": "Montserrat",
-  "code": "ms"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f2-1f1f9.svg",
-  "country": "Malta",
-  "code": "mt"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f2-1f1fa.svg",
-  "country": "Mauritius",
-  "code": "mu"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f2-1f1fb.svg",
-  "country": "Maldives",
-  "code": "mv"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f2-1f1fc.svg",
-  "country": "Malawi",
-  "code": "mw"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f2-1f1fd.svg",
-  "country": "Mexico",
-  "code": "mx"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f2-1f1fe.svg",
-  "country": "Malaysia",
-  "code": "my"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f2-1f1ff.svg",
-  "country": "Mozambique",
-  "code": "mz"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f3-1f1e6.svg",
-  "country": "Namibia",
-  "code": "na"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f3-1f1e8.svg",
-  "country": "New Caledonia",
-  "code": "nc"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f3-1f1ea.svg",
-  "country": "Niger",
-  "code": "ne"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f3-1f1eb.svg",
-  "country": "Norfolk Island",
-  "code": "nf"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f3-1f1ec.svg",
-  "country": "Nigeria",
-  "code": "ng"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f3-1f1ee.svg",
-  "country": "Nicaragua",
-  "code": "ni"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f3-1f1f1.svg",
-  "country": "Netherlands",
-  "code": "nl"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f3-1f1f4.svg",
-  "country": "Norway",
-  "code": "no"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f3-1f1f5.svg",
-  "country": "Nepal",
-  "code": "np"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f3-1f1f7.svg",
-  "country": "Nauru",
-  "code": "nr"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f3-1f1fa.svg",
-  "country": "Niue",
-  "code": "nu"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f3-1f1ff.svg",
-  "country": "New Zealand",
-  "code": "nz"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f4-1f1f2.svg",
-  "country": "Oman",
-  "code": "om"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f5-1f1e6.svg",
-  "country": "Panama",
-  "code": "pa"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f5-1f1ea.svg",
-  "country": "Peru",
-  "code": "pe"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f5-1f1eb.svg",
-  "country": "French Polynesia",
-  "code": "pf"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f5-1f1ec.svg",
-  "country": "Papua New Guinea",
-  "code": "pg"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f5-1f1ed.svg",
-  "country": "Philippines",
-  "code": "ph"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f5-1f1f0.svg",
-  "country": "Pakistan",
-  "code": "pk"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f5-1f1f1.svg",
-  "country": "Poland",
-  "code": "pl"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f5-1f1f2.svg",
-  "country": "St. Pierre & Miquelon",
-  "code": "pm"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f5-1f1f3.svg",
-  "country": "Pitcairn Islands",
-  "code": "pn"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f5-1f1f7.svg",
-  "country": "Puerto Rico",
-  "code": "pr"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f5-1f1f8.svg",
-  "country": "Palestinian Territories",
-  "code": "ps"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f5-1f1f9.svg",
-  "country": "Portugal",
-  "code": "pt"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f5-1f1fc.svg",
-  "country": "Palau",
-  "code": "pw"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f5-1f1fe.svg",
-  "country": "Paraguay",
-  "code": "py"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f6-1f1e6.svg",
-  "country": "Qatar",
-  "code": "qa"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f7-1f1ea.svg",
-  "country": "Réunion",
-  "code": "re"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f7-1f1f4.svg",
-  "country": "Romania",
-  "code": "ro"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f7-1f1f8.svg",
-  "country": "Serbia",
-  "code": "yu"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f7-1f1fa.svg",
-  "country": "Russia",
-  "code": "ru"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f7-1f1fc.svg",
-  "country": "Rwanda",
-  "code": "rw"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f8-1f1e6.svg",
-  "country": "Saudi Arabia",
-  "code": "sa"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f8-1f1e7.svg",
-  "country": "Solomon Islands",
-  "code": "sb"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f8-1f1e8.svg",
-  "country": "Seychelles",
-  "code": "sc"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f8-1f1e9.svg",
-  "country": "Sudan",
-  "code": "sd"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f8-1f1ea.svg",
-  "country": "Sweden",
-  "code": "se"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f8-1f1ec.svg",
-  "country": "Singapore",
-  "code": "sg"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f8-1f1ed.svg",
-  "country": "St. Helena",
-  "code": "sh"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f8-1f1ee.svg",
-  "country": "Slovenia",
-  "code": "si"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f8-1f1ef.svg",
-  "country": "Svalbard & Jan Mayen",
-  "code": "sj"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f8-1f1f0.svg",
-  "country": "Slovakia",
-  "code": "sk"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f8-1f1f1.svg",
-  "country": "Sierra Leone",
-  "code": "sl"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f8-1f1f2.svg",
-  "country": "San Marino",
-  "code": "sm"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f8-1f1f3.svg",
-  "country": "Senegal",
-  "code": "sn"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f8-1f1f4.svg",
-  "country": "Somalia",
-  "code": "so"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f8-1f1f7.svg",
-  "country": "Suriname",
-  "code": "sr"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f8-1f1f8.svg",
-  "country": "South Sudan",
-  "code": "ss"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f8-1f1f9.svg",
-  "country": "São Tomé & Príncipe",
-  "code": "st"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f8-1f1fb.svg",
-  "country": "El Salvador",
-  "code": "sv"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f8-1f1fd.svg",
-  "country": "Sint Maarten",
-  "code": "sx"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f8-1f1fe.svg",
-  "country": "Syria",
-  "code": "sy"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f8-1f1ff.svg",
-  "country": "Eswatini",
-  "code": "sz"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f9-1f1e6.svg",
-  "country": "Tristan Da Cunha",
-  "code": "sh"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f9-1f1e8.svg",
-  "country": "Turks & Caicos Islands",
-  "code": "tc"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f9-1f1e9.svg",
-  "country": "Chad",
-  "code": "td"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f9-1f1eb.svg",
-  "country": "French Southern Territories",
-  "code": "tf"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f9-1f1ec.svg",
-  "country": "Togo",
-  "code": "tg"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f9-1f1ed.svg",
-  "country": "Thailand",
-  "code": "th"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f9-1f1ef.svg",
-  "country": "Tajikistan",
-  "code": "tj"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f9-1f1f0.svg",
-  "country": "Tokelau",
-  "code": "tk"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f9-1f1f1.svg",
-  "country": "Timor-Leste",
-  "code": "tl"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f9-1f1f2.svg",
-  "country": "Turkmenistan",
-  "code": "tm"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f9-1f1f3.svg",
-  "country": "Tunisia",
-  "code": "tn"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f9-1f1f4.svg",
-  "country": "Tonga",
-  "code": "to"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f9-1f1f7.svg",
-  "country": "Turkey",
-  "code": "tr"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f9-1f1f9.svg",
-  "country": "Trinidad & Tobago",
-  "code": "tt"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f9-1f1fb.svg",
-  "country": "Tuvalu",
-  "code": "tv"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f9-1f1fc.svg",
-  "country": "Taiwan",
-  "code": "tw"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1f9-1f1ff.svg",
-  "country": "Tanzania",
-  "code": "tz"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1fa-1f1e6.svg",
-  "country": "Ukraine",
-  "code": "ua"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1fa-1f1ec.svg",
-  "country": "Uganda",
-  "code": "ug"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1fa-1f1f2.svg",
-  "country": "U.S. Outlying Islands",
-  "code": "um"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1fa-1f1f3.svg",
-  "country": "United Nations",
-  "code": "un"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1fa-1f1f8.svg",
-  "country": "United States",
-  "code": "us"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1fa-1f1fe.svg",
-  "country": "Uruguay",
-  "code": "uy"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1fa-1f1ff.svg",
-  "country": "Uzbekistan",
-  "code": "uz"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1fb-1f1e6.svg",
-  "country": "Vatican City",
-  "code": "va"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1fb-1f1e8.svg",
-  "country": "St. Vincent & Grenadines",
-  "code": "vc"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1fb-1f1ea.svg",
-  "country": "Venezuela",
-  "code": "ve"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1fb-1f1ec.svg",
-  "country": "British Virgin Islands",
-  "code": "vg"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1fb-1f1ee.svg",
-  "country": "U.S. Virgin Islands",
-  "code": "vi"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1fb-1f1f3.svg",
-  "country": "Vietnam",
-  "code": "vn"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1fb-1f1fa.svg",
-  "country": "Vanuatu",
-  "code": "vu"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1fc-1f1eb.svg",
-  "country": "Wallis & Futuna",
-  "code": "wf"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1fc-1f1f8.svg",
-  "country": "Samoa",
-  "code": "ws"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1fd-1f1f0.svg",
-  "country": "Kosovo",
-  "code": "xk"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1fe-1f1ea.svg",
-  "country": "Yemen",
-  "code": "ye"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1fe-1f1f9.svg",
-  "country": "Mayotte",
-  "code": "yt"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1ff-1f1e6.svg",
-  "country": "South Africa",
-  "code": "za"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1ff-1f1f2.svg",
-  "country": "Zambia",
-  "code": "zm"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f1ff-1f1fc.svg",
-  "country": "Zimbabwe",
-  "code": "zw"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f3f4-e0067-e0062-e0065-e006e-e0067-e007f.svg",
-  "country": "England",
-  "code": "uk"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f3f4-e0067-e0062-e0073-e0063-e0074-e007f.svg",
-  "country": "Scotland",
-  "code": "uk"
-}, {
-  "flag": "https://twemoji.maxcdn.com/2/svg/1f3f4-e0067-e0062-e0077-e006c-e0073-e007f.svg",
-  "country": "Wales",
-  "code": "uk"
+  "name": "Bolivia",
+  "flag": "🇧🇴"
+}, {
+  "name": "Bosnia and Herzegovina",
+  "code": "BA",
+  "flag": "🇧🇦"
+}, {
+  "name": "Botswana",
+  "code": "BW",
+  "flag": "🇧🇼"
+}, {
+  "name": "Bouvet Island",
+  "code": "BV",
+  "flag": "🇧🇻"
+}, {
+  "name": "Brazil",
+  "code": "BR",
+  "flag": "🇧🇷"
+}, {
+  "name": "British Indian Ocean Territory",
+  "code": "IO",
+  "flag": "🇮🇴"
+}, {
+  "name": "Brunei",
+  "code": "BN",
+  "flag": "🇧🇳"
+}, {
+  "name": "Bulgaria",
+  "code": "BG",
+  "flag": "🇧🇬"
+}, {
+  "name": "Burkina Faso",
+  "code": "BF",
+  "flag": "🇧🇫"
+}, {
+  "name": "Burundi",
+  "code": "BI",
+  "flag": "🇧🇮"
+}, {
+  "name": "Chile",
+  "code": "CL",
+  "flag": "🇨🇱"
+}, {
+  "name": "China",
+  "code": "CN",
+  "flag": "🇨🇳"
+}, {
+  "name": "Cook Islands",
+  "code": "CK",
+  "flag": "🇨🇰"
+}, {
+  "name": "Costa Rica",
+  "code": "CR",
+  "flag": "🇨🇷"
+}, {
+  "name": "Curacao",
+  "code": "CW",
+  "flag": "🇨🇼"
+}, {
+  "name": "Denmark",
+  "code": "DK",
+  "flag": "🇩🇰"
+}, {
+  "name": "Democratic Republic of the Congo",
+  "code": "CD",
+  "flag": "🇨🇩"
+}, {
+  "name": "Germany",
+  "code": "DE",
+  "flag": "🇩🇪"
+}, {
+  "name": "Dominica",
+  "code": "DM",
+  "flag": "🇩🇲"
+}, {
+  "name": "Dominican Republic",
+  "code": "DO",
+  "flag": "🇩🇴"
+}, {
+  "name": "Djibouti",
+  "code": "DJ",
+  "flag": "🇩🇯"
+}, {
+  "name": "Ecuador",
+  "code": "EC",
+  "flag": "🇪🇨"
+}, {
+  "name": "El Salvador",
+  "code": "SV",
+  "flag": "🇸🇻"
+}, {
+  "name": "Ivory Coast",
+  "code": "CI",
+  "flag": "🇨🇮"
+}, {
+  "name": "Eritrea",
+  "code": "ER",
+  "flag": "🇪🇷"
+}, {
+  "name": "Estonia",
+  "code": "EE",
+  "flag": "🇪🇪"
+}, {
+  "name": "Eswatini",
+  "code": "SZ",
+  "flag": "🇸🇿"
+}, {
+  "name": "Falkland Islands",
+  "code": "FK",
+  "flag": "🇫🇰"
+}, {
+  "name": "Faroe Islands",
+  "code": "FO",
+  "flag": "🇫🇴"
+}, {
+  "name": "Fiji",
+  "code": "FJ",
+  "flag": "🇫🇯"
+}, {
+  "name": "Finland",
+  "code": "FI",
+  "flag": "🇫🇮"
+}, {
+  "name": "Federated States of Micronesia",
+  "code": "FM",
+  "flag": "🇫🇲"
+}, {
+  "name": "France",
+  "code": "FR",
+  "flag": "🇫🇷"
+}, {
+  "name": "French Guiana",
+  "code": "GF",
+  "flag": "🇬🇫"
+}, {
+  "name": "French Polynesia",
+  "code": "PF",
+  "flag": "🇵🇫"
+}, {
+  "name": "French Southern and Antarctic Lands",
+  "code": "TF",
+  "flag": "🇹🇫"
+}, {
+  "name": "Principality of Monaco",
+  "code": "MC",
+  "flag": "🇲🇨"
+}, {
+  "name": "Gabon",
+  "code": "GA",
+  "flag": "🇬🇦"
+}, {
+  "name": "Gambia",
+  "code": "GM",
+  "flag": "🇬🇲"
+}, {
+  "name": "Georgia",
+  "code": "GE",
+  "flag": "🇬🇪"
+}, {
+  "name": "Ghana",
+  "code": "GH",
+  "flag": "🇬🇭"
+}, {
+  "name": "Gibraltar",
+  "code": "GI",
+  "flag": "🇬🇮"
+}, {
+  "name": "Grenada",
+  "code": "GD",
+  "flag": "🇬🇩"
+}, {
+  "name": "Greece",
+  "code": "GR",
+  "flag": "🇬🇷"
+}, {
+  "name": "Greenland",
+  "code": "GL",
+  "flag": "🇬🇱"
+}, {
+  "name": "Guadeloupe",
+  "code": "GP",
+  "flag": "🇬🇵"
+}, {
+  "name": "Guam",
+  "code": "GU",
+  "flag": "🇬🇺"
+}, {
+  "name": "Guatemala",
+  "code": "GT",
+  "flag": "🇬🇹"
+}, {
+  "name": "Guernsey",
+  "code": "GG",
+  "flag": "🇬🇬"
+}, {
+  "name": "Guinea",
+  "code": "GN",
+  "flag": "🇬🇳"
+}, {
+  "name": "Guinea-Bissau",
+  "code": "GW",
+  "flag": "🇬🇼"
+}, {
+  "name": "Guyana",
+  "code": "GY",
+  "flag": "🇬🇾"
+}, {
+  "name": "Haiti",
+  "code": "HT",
+  "flag": "🇭🇹"
+}, {
+  "name": "Heard Island and McDonald Islands",
+  "code": "HM",
+  "flag": "🇭🇲"
+}, {
+  "name": "Honduras",
+  "code": "HN",
+  "flag": "🇭🇳"
+}, {
+  "name": "Hong Kong",
+  "code": "HK",
+  "flag": "🇭🇰"
+}, {
+  "name": "India",
+  "code": "IN",
+  "flag": "🇮🇳"
+}, {
+  "name": "Indonesia",
+  "code": "ID",
+  "flag": "🇮🇩"
+}, {
+  "name": "Isle of Man",
+  "code": "IM",
+  "flag": "🇮🇲"
+}, {
+  "name": "Iraq",
+  "code": "IQ",
+  "flag": "🇮🇶"
+}, {
+  "name": "Iran",
+  "code": "IR",
+  "flag": "🇮🇷"
+}, {
+  "name": "Ireland",
+  "code": "IE",
+  "flag": "🇮🇪"
+}, {
+  "name": "Iceland",
+  "code": "IS",
+  "flag": "🇮🇸"
+}, {
+  "name": "Israel",
+  "code": "IL",
+  "flag": "🇮🇱"
+}, {
+  "name": "Italy",
+  "code": "IT",
+  "flag": "🇮🇹"
+}, {
+  "name": "Jamaica",
+  "code": "JM",
+  "flag": "🇯🇲"
+}, {
+  "name": "Japan",
+  "code": "JP",
+  "flag": "🇯🇵"
+}, {
+  "name": "Yemen",
+  "code": "YE",
+  "flag": "🇾🇪"
+}, {
+  "name": "Jersey",
+  "code": "JE",
+  "flag": "🇯🇪"
+}, {
+  "name": "Jordan",
+  "code": "JO",
+  "flag": "🇯🇴"
+}, {
+  "name": "British Virgin Islands",
+  "code": "VG",
+  "flag": "🇻🇬"
+}, {
+  "name": "Virgin Islands",
+  "code": "VI",
+  "flag": "🇻🇮"
+}, {
+  "name": "Cayman Islands",
+  "code": "KY",
+  "flag": "🇰🇾"
+}, {
+  "name": "Cambodia",
+  "code": "KH",
+  "flag": "🇰🇭"
+}, {
+  "name": "Cameroon",
+  "code": "CM",
+  "flag": "🇨🇲"
+}, {
+  "name": "Canada",
+  "code": "CA",
+  "flag": "🇨🇦"
+}, {
+  "name": "Cape Verde",
+  "code": "CV",
+  "flag": "🇨🇻"
+}, {
+  "name": "Caribbean Netherlands",
+  "code": "BQ",
+  "flag": "🇧🇶"
+}, {
+  "name": "Kazakhstan",
+  "code": "KZ",
+  "flag": "🇰🇿"
+}, {
+  "name": "Qatar",
+  "code": "QA",
+  "flag": "🇶🇦"
+}, {
+  "name": "Kenya",
+  "code": "KE",
+  "flag": "🇰🇪"
+}, {
+  "name": "Kyrgyzstan",
+  "code": "KG",
+  "flag": "🇰🇬"
+}, {
+  "name": "Kiribati",
+  "code": "KI",
+  "flag": "🇰🇮"
+}, {
+  "name": "United States Minor Outlying Islands",
+  "code": "UM",
+  "flag": "🇺🇲"
+}, {
+  "name": "Cocos (Keeling) Islands",
+  "code": "CC",
+  "flag": "🇨🇨"
+}, {
+  "name": "Colombia",
+  "code": "CO",
+  "flag": "🇨🇴"
+}, {
+  "name": "Comoros",
+  "code": "KM",
+  "flag": "🇰🇲"
+}, {
+  "name": "Kosovo",
+  "code": "XK",
+  "flag": "🇽🇰"
+}, {
+  "name": "Croatia",
+  "code": "HR",
+  "flag": "🇭🇷"
+}, {
+  "name": "Cuba",
+  "code": "CU",
+  "flag": "🇨🇺"
+}, {
+  "name": "Kuwait",
+  "code": "KW",
+  "flag": "🇰🇼"
+}, {
+  "name": "Laos",
+  "code": "LA",
+  "flag": "🇱🇦"
+}, {
+  "name": "Lesotho",
+  "code": "LS",
+  "flag": "🇱🇸"
+}, {
+  "name": "Latvia",
+  "code": "LV",
+  "flag": "🇱🇻"
+}, {
+  "name": "Lebanon",
+  "code": "LB",
+  "flag": "🇱🇧"
+}, {
+  "name": "Liberia",
+  "code": "LR",
+  "flag": "🇱🇷"
+}, {
+  "name": "Libya",
+  "code": "LY",
+  "flag": "🇱🇾"
+}, {
+  "name": "Liechtenstein",
+  "code": "LI",
+  "flag": "🇱🇮"
+}, {
+  "name": "Lithuania",
+  "code": "LT",
+  "flag": "🇱🇹"
+}, {
+  "name": "Luxembourg",
+  "code": "LU",
+  "flag": "🇱🇺"
+}, {
+  "name": "Macao",
+  "code": "MO",
+  "flag": "🇲🇴"
+}, {
+  "name": "Madagascar",
+  "code": "MG",
+  "flag": "🇲🇬"
+}, {
+  "name": "Malawi",
+  "code": "MW",
+  "flag": "🇲🇼"
+}, {
+  "name": "Malaysia",
+  "code": "MY",
+  "flag": "🇲🇾"
+}, {
+  "name": "Maldives",
+  "code": "MV",
+  "flag": "🇲🇻"
+}, {
+  "name": "Mali",
+  "code": "ML",
+  "flag": "🇲🇱"
+}, {
+  "name": "Malta",
+  "code": "MT",
+  "flag": "🇲🇹"
+}, {
+  "name": "Morocco",
+  "code": "MA",
+  "flag": "🇲🇦"
+}, {
+  "name": "Marshall Islands",
+  "code": "MH",
+  "flag": "🇲🇭"
+}, {
+  "name": "Martinique",
+  "code": "MQ",
+  "flag": "🇲🇶"
+}, {
+  "name": "Mauritania",
+  "code": "MR",
+  "flag": "🇲🇷"
+}, {
+  "name": "Mauritius",
+  "code": "MU",
+  "flag": "🇲🇺"
+}, {
+  "name": "Mayotte",
+  "code": "YT",
+  "flag": "🇾🇹"
+}, {
+  "name": "Mexico",
+  "code": "MX",
+  "flag": "🇲🇽"
+}, {
+  "name": "Moldova",
+  "code": "MD",
+  "flag": "🇲🇩"
+}, {
+  "name": "Mongolia",
+  "code": "MN",
+  "flag": "🇲🇳"
+}, {
+  "name": "Montenegro",
+  "code": "ME",
+  "flag": "🇲🇪"
+}, {
+  "name": "Montserrat",
+  "code": "MS",
+  "flag": "🇲🇸"
+}, {
+  "name": "Mozambique",
+  "code": "MZ",
+  "flag": "🇲🇿"
+}, {
+  "name": "Myanmar",
+  "code": "MM",
+  "flag": "🇲🇲"
+}, {
+  "name": "Namibia",
+  "code": "NA",
+  "flag": "🇳🇦"
+}, {
+  "name": "Nauru",
+  "code": "NR",
+  "flag": "🇳🇷"
+}, {
+  "name": "Nepal",
+  "code": "NP",
+  "flag": "🇳🇵"
+}, {
+  "name": "New Caledonia",
+  "code": "NC",
+  "flag": "🇳🇨"
+}, {
+  "name": "New Zealand",
+  "code": "NZ",
+  "flag": "🇳🇿"
+}, {
+  "name": "Nicaragua",
+  "code": "NI",
+  "flag": "🇳🇮"
+}, {
+  "name": "Netherlands",
+  "code": "NL",
+  "flag": "🇳🇱"
+}, {
+  "name": "Niger",
+  "code": "NE",
+  "flag": "🇳🇪"
+}, {
+  "name": "Nigeria",
+  "code": "NG",
+  "flag": "🇳🇬"
+}, {
+  "name": "Niue",
+  "code": "NU",
+  "flag": "🇳🇺"
+}, {
+  "name": "North Korea",
+  "code": "KP",
+  "flag": "🇰🇵"
+}, {
+  "name": "Northern Mariana Islands",
+  "code": "MP",
+  "flag": "🇲🇵"
+}, {
+  "name": "North Macedonia",
+  "code": "MK",
+  "flag": "🇲🇰"
+}, {
+  "name": "Norfolk Island",
+  "code": "NF",
+  "flag": "🇳🇫"
+}, {
+  "name": "Norway",
+  "code": "NO",
+  "flag": "🇳🇴"
+}, {
+  "name": "Oman",
+  "code": "OM",
+  "flag": "🇴🇲"
+}, {
+  "name": "Austria",
+  "code": "AT",
+  "flag": "🇦🇹"
+}, {
+  "name": "East Timor",
+  "code": "TL",
+  "flag": "🇹🇱"
+}, {
+  "name": "Pakistan",
+  "code": "PK",
+  "flag": "🇵🇰"
+}, {
+  "name": "Palestine",
+  "code": "PS",
+  "flag": "🇵🇸"
+}, {
+  "name": "Palau",
+  "code": "PW",
+  "flag": "🇵🇼"
+}, {
+  "name": "Panama",
+  "code": "PA",
+  "flag": "🇵🇦"
+}, {
+  "name": "Papua New Guinea",
+  "code": "PG",
+  "flag": "🇵🇬"
+}, {
+  "name": "Paraguay",
+  "code": "PY",
+  "flag": "🇵🇾"
+}, {
+  "name": "Peru",
+  "code": "PE",
+  "flag": "🇵🇪"
+}, {
+  "name": "Philippines",
+  "code": "PH",
+  "flag": "🇵🇭"
+}, {
+  "name": "Pitcairn Islands",
+  "code": "PN",
+  "flag": "🇵🇳"
+}, {
+  "name": "Poland",
+  "code": "PL",
+  "flag": "🇵🇱"
+}, {
+  "name": "Portugal",
+  "code": "PT",
+  "flag": "🇵🇹"
+}, {
+  "name": "Puerto Rico",
+  "code": "PR",
+  "flag": "🇵🇷"
+}, {
+  "name": "Republic of the Congo",
+  "code": "CG",
+  "flag": "🇨🇬"
+}, {
+  "name": "Reunion",
+  "code": "RE",
+  "flag": "🇷🇪"
+}, {
+  "name": "Rwanda",
+  "code": "RW",
+  "flag": "🇷🇼"
+}, {
+  "name": "Romania",
+  "code": "RO",
+  "flag": "🇷🇴"
+}, {
+  "name": "Russia",
+  "code": "RU",
+  "flag": "🇷🇺"
+}, {
+  "name": "Saint Martin",
+  "code": "MF",
+  "flag": "🇲🇫"
+}, {
+  "name": "Solomon Islands",
+  "code": "SB",
+  "flag": "🇸🇧"
+}, {
+  "name": "Zambia",
+  "code": "ZM",
+  "flag": "🇿🇲"
+}, {
+  "name": "Samoa",
+  "code": "WS",
+  "flag": "🇼🇸"
+}, {
+  "name": "San Marino",
+  "code": "SM",
+  "flag": "🇸🇲"
+}, {
+  "name": "Saint Barthelemy",
+  "code": "BL",
+  "flag": "🇧🇱"
+}, {
+  "name": "Sao Tome and Principe",
+  "code": "ST",
+  "flag": "🇸🇹"
+}, {
+  "name": "Saudi Arabia",
+  "code": "SA",
+  "flag": "🇸🇦"
+}, {
+  "name": "Sweden",
+  "code": "SE",
+  "flag": "🇸🇪"
+}, {
+  "name": "Switzerland",
+  "code": "CH",
+  "flag": "🇨🇭"
+}, {
+  "name": "Senegal",
+  "code": "SN",
+  "flag": "🇸🇳"
+}, {
+  "name": "Serbia",
+  "code": "RS",
+  "flag": "🇷🇸"
+}, {
+  "name": "Seychelles",
+  "code": "SC",
+  "flag": "🇸🇨"
+}, {
+  "name": "Sierra Leone",
+  "code": "SL",
+  "flag": "🇸🇱"
+}, {
+  "name": "Zimbabwe",
+  "code": "ZW",
+  "flag": "🇿🇼"
+}, {
+  "name": "Singapore",
+  "code": "SG",
+  "flag": "🇸🇬"
+}, {
+  "name": "Sint Maarten",
+  "code": "SX",
+  "flag": "🇸🇽"
+}, {
+  "name": "Slovakia",
+  "code": "SK",
+  "flag": "🇸🇰"
+}, {
+  "name": "Slovenia",
+  "code": "SI",
+  "flag": "🇸🇮"
+}, {
+  "name": "Somalia",
+  "code": "SO",
+  "flag": "🇸🇴"
+}, {
+  "name": "Spain",
+  "code": "ES",
+  "flag": "🇪🇸"
+}, {
+  "name": "Sri Lanka",
+  "code": "LK",
+  "flag": "🇱🇰"
+}, {
+  "name": "Saint Helena, Ascension and Tristan da Cunha",
+  "code": "SH",
+  "flag": "🇸🇭"
+}, {
+  "name": "Saint Kitts and Nevis",
+  "code": "KN",
+  "flag": "🇰🇳"
+}, {
+  "name": "Saint Lucia",
+  "code": "LC",
+  "flag": "🇱🇨"
+}, {
+  "name": "Saint Pierre and Miquelon",
+  "code": "PM",
+  "flag": "🇵🇲"
+}, {
+  "name": "Saint Vincent and the Grenadines",
+  "code": "VC",
+  "flag": "🇻🇨"
+}, {
+  "name": "South Africa",
+  "code": "ZA",
+  "flag": "🇿🇦"
+}, {
+  "name": "Sudan",
+  "code": "SD",
+  "flag": "🇸🇩"
+}, {
+  "name": "South Georgia and South Sandwich Islands",
+  "code": "GS",
+  "flag": "🇬🇸"
+}, {
+  "name": "South Korea",
+  "code": "KR",
+  "flag": "🇰🇷"
+}, {
+  "name": "South Sudan",
+  "code": "SS",
+  "flag": "🇸🇸"
+}, {
+  "name": "Suriname",
+  "code": "SR",
+  "flag": "🇸🇷"
+}, {
+  "name": "Svalbard",
+  "code": "SJ",
+  "flag": "🇸🇯"
+}, {
+  "name": "Syria",
+  "code": "SY",
+  "flag": "🇸🇾"
+}, {
+  "name": "Tajikistan",
+  "code": "TJ",
+  "flag": "🇹🇯"
+}, {
+  "name": "Taiwan",
+  "code": "TW",
+  "flag": "🇹🇼"
+}, {
+  "name": "Tanzania",
+  "code": "TZ",
+  "flag": "🇹🇿"
+}, {
+  "name": "Thailand",
+  "code": "TH",
+  "flag": "🇹🇭"
+}, {
+  "name": "Togo",
+  "code": "TG",
+  "flag": "🇹🇬"
+}, {
+  "name": "Tokelau",
+  "code": "TK",
+  "flag": "🇹🇰"
+}, {
+  "name": "Tonga",
+  "code": "TO",
+  "flag": "🇹🇴"
+}, {
+  "name": "Trinidad and Tobago",
+  "code": "TT",
+  "flag": "🇹🇹"
+}, {
+  "name": "Chad",
+  "code": "TD",
+  "flag": "🇹🇩"
+}, {
+  "name": "Czechia",
+  "code": "CZ",
+  "flag": "🇨🇿"
+}, {
+  "name": "Tunisia",
+  "code": "TN",
+  "flag": "🇹🇳"
+}, {
+  "name": "Turkey",
+  "code": "TR",
+  "flag": "🇹🇷"
+}, {
+  "name": "Turkmenistan",
+  "code": "TM",
+  "flag": "🇹🇲"
+}, {
+  "name": "Turks and Caicos Islands",
+  "code": "TC",
+  "flag": "🇹🇨"
+}, {
+  "name": "Tuvalu",
+  "code": "TV",
+  "flag": "🇹🇻"
+}, {
+  "name": "Uganda",
+  "code": "UG",
+  "flag": "🇺🇬"
+}, {
+  "name": "Ukraine",
+  "code": "UA",
+  "flag": "🇺🇦"
+}, {
+  "name": "Hungary",
+  "code": "HU",
+  "flag": "🇭🇺"
+}, {
+  "name": "Uruguay",
+  "code": "UY",
+  "flag": "🇺🇾"
+}, {
+  "name": "Uzbekistan",
+  "code": "UZ",
+  "flag": "🇺🇿"
+}, {
+  "name": "Vanuatu",
+  "code": "VU",
+  "flag": "🇻🇺"
+}, {
+  "name": "Vatican City",
+  "code": "VA",
+  "flag": "🇻🇦"
+}, {
+  "name": "Venezuela",
+  "code": "VE",
+  "flag": "🇻🇪"
+}, {
+  "name": "United Arab Emirates",
+  "code": "AE",
+  "flag": "🇦🇪"
+}, {
+  "name": "United States of America",
+  "code": "US",
+  "flag": "🇺🇸"
+}, {
+  "name": "United Kingdom",
+  "code": "GB",
+  "flag": "🇬🇧"
+}, {
+  "name": "Vietnam",
+  "code": "VN",
+  "flag": "🇻🇳"
+}, {
+  "name": "Wallis and Futuna",
+  "code": "WF",
+  "flag": "🇼🇫"
+}, {
+  "name": "Christmas Island",
+  "code": "CX",
+  "flag": "🇨🇽"
+}, {
+  "name": "Western Sahara",
+  "code": "EH",
+  "flag": "🇪🇭"
+}, {
+  "name": "Central African Republic",
+  "code": "CF",
+  "flag": "🇨🇫"
+}, {
+  "name": "Cyprus",
+  "code": "CY",
+  "flag": "🇨🇾"
 }];
 
-const useClickOutside = (ref, callback) => {
-  React.useEffect(() => {
-    const element = ref === null || ref === void 0 ? void 0 : ref.current;
-    const listener = evt => {
-      if (!element || element.contains(evt.target)) return;
-      callback(evt);
-    };
-    document.addEventListener('mousedown', listener);
-    document.addEventListener('touchstart', listener);
-    return () => {
-      document.removeEventListener('mousedown', listener);
-      document.removeEventListener('touchstart', listener);
-    };
-  }, [ref, callback]);
-};
-const useKeyPress = targetKey => {
-  const [pressed, setPressed] = React.useState(false);
-  React.useEffect(() => {
-    const onKeydown = e => {
-      const keyPressed = e.key;
-      if (keyPressed === targetKey) setPressed(true);
-    };
-    const onKeyup = e => {
-      const keyPressed = e.key;
-      if (keyPressed === targetKey) setPressed(false);
-    };
-    window.addEventListener('keydown', onKeydown);
-    window.addEventListener('keyup', onKeyup);
-    return () => {
-      window.removeEventListener('keydown', onKeydown);
-      window.removeEventListener('keyup', onKeyup);
-    };
-  }, [targetKey]);
-  return pressed;
-};
-const CountrySelectStyled = styled__default["default"].div.withConfig({
-  displayName: "country__CountrySelectStyled",
-  componentId: "sc-93yqgk-0"
-})(["", ";"], ({
-  theme
-}) => {
-  return styled.css(["div[aria-hidden=\"true\"]{display:none;}[aria-invalid='true']{background:#F9D7D7!important;border:1px solid #ca2121 !important;}[aria-invalid='false']{background:#D5FCE9 !important;border:1px solid #008A48 !important;}.country-select__label{display:block;margin:0 0 8px;}.country-select__wrapper{padding:16px 8px;margin:8px 0 0;}.country-select__btn--toggle{padding:8px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;font-family:inherit;background:#fff;border-radius:3px;border:1px solid #949494;height:40px;width:100%;max-width:100%;padding:8px;.country-select__icons{margin-left:auto;display:flex;align-items:center;}}.country-select__input{margin:0 8px 16px;font-family:inherit;background-color:#fff;border-radius:3px;border:1px solid #949494;height:40px;width:100%;max-width:calc(100% - 16px);padding:8px;}.country-select__options{overflow-y:scroll;height:247px;list-style:none;padding:0;margin:0;}.country-select__option{padding:8px;display:flex;align-items:center;cursor:pointer;background:transparent;border:none;width:100%;svg{margin-right:4px;}}img{margin-left:4px;width:16px;height:16px;}.required{color:", ";}"], theme.colors.red_darker);
-});
 const CountrySelect = ({
   formId,
   id,
+  label,
   field,
   validations,
-  defaultValue
+  defaultValue,
+  placeholder
 }) => {
-  var _options$filter, _options$filter$;
-  const [options, setOptions] = React.useState(countries);
-  const [selected, setSelected] = React.useState(defaultValue || '');
-  const [toggled, toggleDropdown] = React.useState(false);
-  React.useEffect(() => {
-    if (defaultValue) {
-      var _countries$filter, _countries$filter$;
-      const defaultCountry = ((_countries$filter = countries.filter(({
-        country
-      }) => country === defaultValue)) === null || _countries$filter === void 0 ? void 0 : (_countries$filter$ = _countries$filter[0]) === null || _countries$filter$ === void 0 ? void 0 : _countries$filter$.country) || '';
-      if (defaultCountry) setSelected(defaultCountry);
-    }
-  }, [defaultValue]);
-  const isRequired = validations && validations.required ? true : false;
-  const onChange = value => {
-    if (value && value.length >= 1) {
-      const opts = countries;
-      const optsfiltered = opts.filter(({
-        country
-      }) => country.toLowerCase().includes(value.toLowerCase()));
-      setOptions(optsfiltered);
-    } else setOptions(countries);
-  };
-
-  // Validation
-  const dispatch = reactRedux.useDispatch();
+  const elInputRef = React.useRef(null);
+  const [country, setCountry] = React.useState('');
   const selectFormValidationSent = makeSelectFormValidationSent(formId);
   const formValidationSent = reactRedux.useSelector(selectFormValidationSent);
   const [a11yInvalid, setA11yInvalid] = React.useState('');
+  const isRequired = validations && validations.required ? true : false;
   React.useEffect(() => {
-    if (formValidationSent) setA11yInvalid(doA11yValidation(selected, field, true));
+    if (formValidationSent) setA11yInvalid(doA11yValidation(country, field, true));
   }, [formValidationSent]);
-  const elOptionRef = React.useRef();
-  const elContainerRef = React.useRef();
-  const close = () => toggleDropdown(false);
-  useClickOutside(elContainerRef, close);
-
-  // Keyboard Navigation
-  const isArrowUpPressed = useKeyPress('ArrowUp');
-  const isArrowDownPressed = useKeyPress('ArrowDown');
-  const isEscapePressed = useKeyPress('Escape');
-  const [initState, setInitState] = React.useState({
-    selectedIndex: -1
-  });
-  const updateState = (type, i) => {
-    const max = options.length - 1;
-    if (type === 'ARROW_UP') {
-      let updatedState = {
-        ...initState
-      };
-      const updatedIndex = updatedState.selectedIndex !== 0 ? updatedState.selectedIndex - 1 : max;
-      updatedState.selectedIndex = updatedIndex;
-      setInitState(updatedState);
-    }
-    if (type === 'ARROW_DOWN') {
-      let updatedState = {
-        ...initState
-      };
-      const updatedIndex = updatedState.selectedIndex !== max ? updatedState.selectedIndex + 1 : 0;
-      updatedState.selectedIndex = updatedIndex;
-      setInitState(updatedState);
-    }
-    if (type === 'SELECT') {
-      let updatedState = {
-        ...initState
-      };
-      updatedState.selectedIndex = i;
-      setInitState(updatedState);
+  const dispatch = reactRedux.useDispatch();
+  const doUpdate = value => {
+    setCountry(value);
+    dispatch(setValue(formId, id, value));
+    setA11yInvalid(doA11yValidation(value, field, formValidationSent));
+  };
+  const onKeyDown = evt => {
+    if (evt.key === 'Enter') {
+      doUpdate(evt.target.value);
     }
   };
   React.useEffect(() => {
-    if (toggled) {
-      if (isArrowDownPressed) updateState('ARROW_DOWN');
-      if (isArrowUpPressed) updateState('ARROW_UP');
-      if (isEscapePressed) toggleDropdown(false);
-      doFocus();
+    if (elInputRef !== null && elInputRef !== void 0 && elInputRef.current) {
+      var _elInputRef$current;
+      const combo = new Combobo({
+        input: elInputRef === null || elInputRef === void 0 ? void 0 : elInputRef.current,
+        list: '.input__countries .input__listbox',
+        noResultsText: 'No countries found.',
+        onSelect: value => {
+          doUpdate(value);
+        },
+        onKeyDown: evt => {
+          if (evt.key === 'Escape') combo.close();
+        }
+      });
+      elInputRef === null || elInputRef === void 0 ? void 0 : (_elInputRef$current = elInputRef.current) === null || _elInputRef$current === void 0 ? void 0 : _elInputRef$current.addEventListener('keydown', onKeyDown);
+      return () => {
+        var _elInputRef$current2;
+        elInputRef === null || elInputRef === void 0 ? void 0 : (_elInputRef$current2 = elInputRef.current) === null || _elInputRef$current2 === void 0 ? void 0 : _elInputRef$current2.removeEventListener('keydown', onKeyDown);
+        if (combo && typeof combo.destroy === 'function') combo.destroy();
+      };
     }
-  }, [toggled, isArrowDownPressed, isArrowUpPressed, isEscapePressed]);
-  const doFocus = () => {
-    var _element$;
-    const attr = `[aria-pressed="true"]`;
-    const element = document.querySelectorAll(attr);
-    if (element && element.length >= 1) (_element$ = element[0]) === null || _element$ === void 0 ? void 0 : _element$.focus();
-  };
+  }, []);
+  React.useEffect(() => {
+    if (defaultValue) {
+      setCountry(defaultValue);
+      dispatch(setValue(formId, id, defaultValue));
+    }
+  }, [defaultValue]);
   return /*#__PURE__*/React__default["default"].createElement(CountrySelectStyled, {
-    ref: elContainerRef,
-    role: "region",
-    id: "country",
-    "aria-live": "polite"
-  }, /*#__PURE__*/React__default["default"].createElement("span", {
-    className: "country-select__label",
-    role: "label",
-    "aria-label": `Select a country ${isRequired ? 'required' : 'optional'} ${selected}`,
-    htmlFor: "country"
-  }, "Select a country", isRequired ? /*#__PURE__*/React__default["default"].createElement("span", {
+    className: "input__countries"
+  }, /*#__PURE__*/React__default["default"].createElement("label", {
+    className: "input__label",
+    htmlFor: "country-searchable-select"
+  }, label, isRequired ? /*#__PURE__*/React__default["default"].createElement("span", {
     className: "label__required"
   }, "(required)") : /*#__PURE__*/React__default["default"].createElement("span", {
     className: "label__optional"
-  }, "(optional)")), /*#__PURE__*/React__default["default"].createElement("button", {
-    className: "country-select__btn--toggle",
-    "aria-controls": "country",
+  }, "(optional)")), /*#__PURE__*/React__default["default"].createElement("div", {
+    className: "input__wrapper"
+  }, /*#__PURE__*/React__default["default"].createElement("input", {
+    type: "text",
+    placeholder: placeholder,
+    className: "input",
+    id: "country-searchable-select",
+    ref: elInputRef,
     "aria-invalid": a11yInvalid,
-    "aria-expanded": toggled,
-    onClick: e => {
-      e.preventDefault();
-      toggleDropdown(!toggled);
-    }
-  }, selected, selected && /*#__PURE__*/React__default["default"].createElement("img", {
-    src: (_options$filter = options.filter(opt => opt.country === selected)) === null || _options$filter === void 0 ? void 0 : (_options$filter$ = _options$filter[0]) === null || _options$filter$ === void 0 ? void 0 : _options$filter$.flag,
-    alt: ""
-  }), /*#__PURE__*/React__default["default"].createElement("span", {
-    className: "sr-only"
-  }, "Open the Country select searchable dropdown"), /*#__PURE__*/React__default["default"].createElement("div", {
-    className: "country-select__icons"
-  }, toggled ? /*#__PURE__*/React__default["default"].createElement("svg", {
-    xmlns: "http://www.w3.org/2000/svg",
-    width: "24",
-    height: "24",
-    fill: "none",
-    focusable: "false",
-    "aria-hidden": "true",
-    role: "presentation"
-  }, /*#__PURE__*/React__default["default"].createElement("path", {
-    fill: "#333",
-    d: "m7 15 4.293-4.293L15.586 15 17 13.586l-5.707-5.707-5.707 5.707L7 15Z"
-  })) : /*#__PURE__*/React__default["default"].createElement("svg", {
-    xmlns: "http://www.w3.org/2000/svg",
-    width: "24",
-    height: "24",
-    fill: "none",
-    focusable: "false",
-    "aria-hidden": "true",
-    role: "presentation"
-  }, /*#__PURE__*/React__default["default"].createElement("path", {
-    fill: "#333",
-    d: "m16 8-4.293 4.293L7.414 8 6 9.414l5.707 5.707 5.707-5.707L16 8Z"
-  })), a11yInvalid == 'true' && /*#__PURE__*/React__default["default"].createElement("svg", {
+    defaultValue: defaultValue
+  }), a11yInvalid == 'true' && /*#__PURE__*/React__default["default"].createElement("svg", {
     className: "svg",
     xmlns: "http://www.w3.org/2000/svg",
     focusable: "false",
@@ -2983,81 +5046,29 @@ const CountrySelect = ({
   }, /*#__PURE__*/React__default["default"].createElement("path", {
     fill: "#333",
     d: "m2 8 4.418 4.667L14 4.659l-1.246-1.326-6.336 6.692-3.18-3.332L2 8Z"
-  })))), /*#__PURE__*/React__default["default"].createElement("div", {
-    className: "country-select__wrapper",
-    "aria-hidden": !toggled
-  }, /*#__PURE__*/React__default["default"].createElement("label", {
-    htmlFor: "search-country-name",
-    className: "sr-only"
-  }, "Search country name"), /*#__PURE__*/React__default["default"].createElement("input", {
-    id: "search-country-name",
-    className: "country-select__input",
-    placeholder: "Search country name",
-    onChange: e => {
-      e.preventDefault();
-      onChange(e.target.value);
+  })), /*#__PURE__*/React__default["default"].createElement("ul", {
+    className: "input__listbox",
+    "aria-labelledby": "List of countries"
+  }, countries.map((country, i) => /*#__PURE__*/React__default["default"].createElement("li", {
+    key: `${country.code}-${i}`,
+    className: "option",
+    onClick: () => doUpdate(country.name),
+    "aria-labelledby": country.name
+  }, /*#__PURE__*/React__default["default"].createElement("span", {
+    role: "presentation",
+    style: {
+      display: 'flex',
+      alignItems: 'center'
     }
-  }), /*#__PURE__*/React__default["default"].createElement("ul", {
-    id: "contry",
-    role: "select",
-    name: "country",
-    className: "country-select__options"
-  }, options.map((option, i) => {
-    const isSelected = selected === option.country;
-    return /*#__PURE__*/React__default["default"].createElement("li", {
-      key: i,
-      "aria-hidden": isSelected,
-      "aria-selected": isSelected,
-      role: "option"
-    }, /*#__PURE__*/React__default["default"].createElement(CountryOption, {
-      onClick: e => {
-        e.preventDefault();
-        setSelected(option.country);
-        dispatch(setValue(formId, id, e.target.value));
-        setA11yInvalid(doA11yValidation(e.target.value, field, formValidationSent));
-      },
-      onKeyDown: e => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          setSelected(option.country);
-          dispatch(setValue(formId, id, e.target.value));
-          setA11yInvalid(doA11yValidation(e.target.value, field, formValidationSent));
-          updateState('SELECT', i);
-          e.target.blur();
-        }
-      },
-      ref: elOptionRef,
-      value: option.country,
-      "aria-pressed": i === initState.selectedIndex,
-      tabIndex: 0
-    }, isSelected && /*#__PURE__*/React__default["default"].createElement("svg", {
-      focusable: "false",
-      "aria-hidden": "true",
-      role: "presentation",
-      xmlns: "http://www.w3.org/2000/svg",
-      width: "16px",
-      height: "16px",
-      viewBox: "0 0 24 24",
-      fill: "none"
-    }, /*#__PURE__*/React__default["default"].createElement("path", {
-      fill: "#333",
-      d: "m3 12 6.627 7L21 6.988 19.131 5 9.627 15.038 4.856 10.04 3 12Z"
-    })), option.country, /*#__PURE__*/React__default["default"].createElement("img", {
-      src: option.flag,
-      alt: ""
-    })));
-  }))));
+  }, /*#__PURE__*/React__default["default"].createElement("span", null, country.name, ' ', /*#__PURE__*/React__default["default"].createElement("span", {
+    "aria-hidden": "true"
+  }, country.flag))))))));
 };
-const CountryOption = /*#__PURE__*/React.forwardRef(function SelectItem(props, ref = null) {
-  const {
-    className,
-    children,
-    ...rest
-  } = props;
-  return /*#__PURE__*/React__default["default"].createElement("button", _extends({
-    className: "country-select__option",
-    role: "option",
-    ref: ref
-  }, rest), children);
+const CountrySelectStyled = styled__default["default"].div.withConfig({
+  displayName: "country__CountrySelectStyled",
+  componentId: "sc-93yqgk-0"
+})(["", ";"], () => {
+  return styled.css(["display:flex;flex-direction:column;--semantic-type-1:#01010c;--semantic-background-1:#fff;--semantic-active-background-1:#efefef;--semantic-border-1:#949494;.input__label{margin-bottom:4px;}.input__wrapper{position:relative;}.input__listbox{display:none;position:absolute;top:40px;left:0;width:100%;padding:8px;background:var(--semantic-background-1);z-index:99;text-align:left;overflow-y:auto;border:1px solid var(--semantic-border-1);max-height:400px;}.input__listbox.open{display:block;}.input__listbox .option{padding:8px;cursor:default;display:flex;align-items:center;border:none;width:100%;}.input__listbox .option.selected{color:var(--semantic-type-1);background-color:var(--semantic-active-background-1);}.input__listbox .option.active{color:var(--semantic-type-1);background-color:var(--semantic-active-background-1);}"]);
 });
 
 const FormComposer = ({
@@ -3214,14 +5225,16 @@ const FormComposer = ({
         }
       case 'country':
         {
-          var _field$default;
+          var _field$default, _field$editor, _field$editor$propert, _field$editor$propert2;
           return /*#__PURE__*/React__default["default"].createElement(CountrySelect, {
             key: `${field.id}-${idx}`,
             formId: formId,
             field: field,
             id: field.id,
+            label: field.name && field.name[defaultLanguage],
             validations: field.validations,
-            defaultValue: field === null || field === void 0 ? void 0 : (_field$default = field.default) === null || _field$default === void 0 ? void 0 : _field$default[defaultLanguage]
+            defaultValue: field === null || field === void 0 ? void 0 : (_field$default = field.default) === null || _field$default === void 0 ? void 0 : _field$default[defaultLanguage],
+            placeholder: field === null || field === void 0 ? void 0 : (_field$editor = field.editor) === null || _field$editor === void 0 ? void 0 : (_field$editor$propert = _field$editor.properties) === null || _field$editor$propert === void 0 ? void 0 : (_field$editor$propert2 = _field$editor$propert.placeholderText) === null || _field$editor$propert2 === void 0 ? void 0 : _field$editor$propert2[defaultLanguage]
           });
         }
     }

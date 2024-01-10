@@ -22,6 +22,8 @@ export const addStandardHeaders = (
 
       const surrogateKeyHeader = ` ${packagejson.name}-app ${routingSurrogateKeys}`;
 
+      // if > 2000 `envalias_any-update`
+
       response.header('surrogate-key', surrogateKeyHeader);
 
       addVarnishAuthenticationHeaders(state, response, groups);

@@ -2,7 +2,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var ContensisDeliveryApi = require('./ContensisDeliveryApi-e2b3ce60.js');
+var ContensisDeliveryApi = require('./ContensisDeliveryApi-e320ef2a.js');
 var contensisDeliveryApi = require('contensis-delivery-api');
 var React = require('react');
 var reactRedux = require('react-redux');
@@ -10,7 +10,7 @@ var mapJson = require('jsonpath-mapper');
 require('reselect');
 require('deepmerge');
 require('query-string');
-var sagas = require('./sagas-e04b94c1.js');
+var sagas = require('./sagas-aced65bc.js');
 require('immer');
 require('deep-equal');
 var contensisCoreApi = require('contensis-core-api');
@@ -31,16 +31,16 @@ var serialize = require('serialize-javascript');
 var minifyCssString = require('minify-css-string');
 var server$1 = require('@loadable/server');
 var lodash = require('lodash');
+var _commonjsHelpers = require('./_commonjsHelpers-b3309d7b.js');
 var lodashClean = require('lodash-clean');
 var reactCookie = require('react-cookie');
 var cookiesMiddleware = require('universal-cookie-express');
-var version = require('./version-9edb5540.js');
-var App = require('./App-eefb5b8f.js');
-var version$1 = require('./version-d3b5fbde.js');
-var selectors = require('./selectors-a6eac513.js');
+var version = require('./version-7c9f983e.js');
+var App = require('./App-5c3337e8.js');
+var version$1 = require('./version-6d864ecd.js');
+var selectors = require('./selectors-e0ddc9ad.js');
 var chalk = require('chalk');
 require('./CookieConstants-000427db.js');
-require('./CookieHelper.class-daeb09dd.js');
 require('loglevel');
 require('@redux-saga/core/effects');
 require('redux');
@@ -50,10 +50,10 @@ require('redux-injectors');
 require('./reducers-9afb5f89.js');
 require('history');
 require('await-to-js');
-require('./ChangePassword.container-7306be55.js');
-require('./ToJs-29de3c36.js');
+require('./ChangePassword.container-7de62d6b.js');
+require('./ToJs-42cadab5.js');
 require('react-hot-loader');
-require('./RouteLoader-85bee645.js');
+require('./RouteLoader-c1ec4870.js');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -814,8 +814,6 @@ const DisplayStartupConfiguration = config => {
   /* eslint-enable no-console */
 };
 
-var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
-
 /**
  * Removes all key-value entries from the list cache.
  *
@@ -1095,7 +1093,7 @@ var _stackHas = stackHas$1;
 
 /** Detect free variable `global` from Node.js. */
 
-var freeGlobal$1 = typeof commonjsGlobal == 'object' && commonjsGlobal && commonjsGlobal.Object === Object && commonjsGlobal;
+var freeGlobal$1 = typeof _commonjsHelpers.commonjsGlobal == 'object' && _commonjsHelpers.commonjsGlobal && _commonjsHelpers.commonjsGlobal.Object === Object && _commonjsHelpers.commonjsGlobal;
 
 var _freeGlobal = freeGlobal$1;
 
@@ -3746,6 +3744,9 @@ const addStandardHeaders = (state, response, packagejson, groups) => {
       console.info('About to add headers');
       const routingSurrogateKeys = selectors.selectSurrogateKeys(state);
       const surrogateKeyHeader = ` ${packagejson.name}-app ${routingSurrogateKeys}`;
+
+      // if > 2000 `envalias_any-update`
+
       response.header('surrogate-key', surrogateKeyHeader);
       addVarnishAuthenticationHeaders(state, response, groups);
       response.setHeader('Surrogate-Control', `max-age=${getCacheDuration(response.statusCode)}`);

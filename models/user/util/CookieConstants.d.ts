@@ -1,7 +1,8 @@
 export declare const LOGIN_COOKIE = "ContensisCMSUserName";
 export declare const REFRESH_TOKEN_COOKIE = "RefreshToken";
-export declare const findLoginCookies: (cookies: string | {
+export type CookieObject = {
     [name: string]: any;
-}) => string | {
+};
+export declare const findLoginCookies: (cookies: CookieObject | string) => string | {
     [k: string]: any;
 };
