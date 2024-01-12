@@ -1,4 +1,4 @@
-import { Draft, produce } from 'immer';
+import { Draft, original, produce } from 'immer';
 
 import {
   SET_ENTRY,
@@ -138,7 +138,8 @@ export default produce((state: Draft<any>, action) => {
     }
     case SET_SURROGATE_KEYS: {
       const newKeys = (action.keys || '').split(' ');
-      const allKeys = [...state.surrogateKeys, ...newKeys];
+      const stateKeys = original(state.surrogateKeys);
+      const allKeys = [...stateKeys, ...newKeys];
       const uniqueKeys = [...new Set(allKeys)];
       state.surrogateKeys = uniqueKeys;
       return;
