@@ -1,9 +1,9 @@
 import { createBrowserHistory, createMemoryHistory } from 'history';
 import { takeEvery, select, put, call, all } from '@redux-saga/core/effects';
 import * as log from 'loglevel';
-import { d as deliveryApi, c as cachedSearch } from './ContensisDeliveryApi-c4387b7a.js';
-import { G as GET_NODE_TREE, s as selectVersionStatus, S as SET_NODE_TREE, a as GET_NODE_TREE_ERROR } from './version-feb15e9b.js';
-import { h as hasNavigationTree, i as injectRedux } from './version-36efe098.js';
+import { d as deliveryApi, c as cachedSearch } from './ContensisDeliveryApi-0040d62d.js';
+import { G as GET_NODE_TREE, s as selectVersionStatus, S as SET_NODE_TREE, a as GET_NODE_TREE_ERROR } from './version-5c0924cc.js';
+import { h as hasNavigationTree, i as injectRedux } from './version-43590cb2.js';
 import { b as selectCurrentProject, S as SET_NAVIGATION_PATH, d as SET_ROUTE, a as selectRouteEntry, e as selectCurrentNode, U as UPDATE_LOADING_STATE, f as selectCurrentAncestors, h as selectCurrentSiblings, i as selectRouteEntryEntryId, j as selectRouteEntryLanguage, k as selectMappedEntry, l as SET_ENTRY, m as SET_ANCESTORS, n as SET_SIBLINGS, q as queryParams, o as selectCurrentSearch, p as setRoute } from './selectors-62746dce.js';
 import { f as findContentTypeMapping, h as handleRequiresLoginSaga, g as getManagementApiClient, l as loginSagas } from './login-e4b1447e.js';
 import { Op, Query } from 'contensis-delivery-api';
@@ -776,4 +776,4 @@ const AppRoot = props => {
 };
 
 export { AppRoot as A, browserHistory as b, history as h, pickProject as p, rootSaga as r };
-//# sourceMappingURL=App-abf1f776.js.map
+//# sourceMappingURL=App-10d03a42.js.map

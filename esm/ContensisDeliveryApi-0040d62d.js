@@ -1,7 +1,7 @@
 import { Client } from 'contensis-delivery-api';
 import { parse } from 'query-string';
 import { A as selectCurrentHostname, w as selectCurrentPath, o as selectCurrentSearch, B as setSurrogateKeys } from './selectors-62746dce.js';
-import { r as reduxStore } from './version-feb15e9b.js';
+import { r as reduxStore } from './version-5c0924cc.js';
 
 const LOGIN_COOKIE = 'ContensisCMSUserName';
 const REFRESH_TOKEN_COOKIE = 'RefreshToken';
@@ -257,4 +257,4 @@ class DeliveryApi {
 const deliveryApi = new DeliveryApi();
 
 export { cachedSearch as c, deliveryApi as d, getClientConfig as g };
-//# sourceMappingURL=ContensisDeliveryApi-c4387b7a.js.map
+//# sourceMappingURL=ContensisDeliveryApi-0040d62d.js.map

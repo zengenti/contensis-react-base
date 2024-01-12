@@ -3,7 +3,7 @@
 var contensisDeliveryApi = require('contensis-delivery-api');
 var queryString = require('query-string');
 var selectors = require('./selectors-fa836926.js');
-var version = require('./version-3e108108.js');
+var version = require('./version-430b7606.js');
 
 const LOGIN_COOKIE = 'ContensisCMSUserName';
 const REFRESH_TOKEN_COOKIE = 'RefreshToken';
@@ -261,4 +261,4 @@ const deliveryApi = new DeliveryApi();
 exports.cachedSearch = cachedSearch;
 exports.deliveryApi = deliveryApi;
 exports.getClientConfig = getClientConfig;
-//# sourceMappingURL=ContensisDeliveryApi-9d14954d.js.map
+//# sourceMappingURL=ContensisDeliveryApi-17b54492.js.map
