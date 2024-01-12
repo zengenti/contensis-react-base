@@ -25,7 +25,7 @@ The core of your Contensis React application is in package `@zengenti/contensis-
 The package handles things such as:
 
 - Peer dependencies such as React, react-router-dom, immutable, react-redux... etc.
-- Server side express application serving an isomorphic web app
+- Server side express application serving a Universal JavaScript web app
 - Client side sub-package to handle client-side rendering and hydration
 - Creation of redux store and global state management for core features
 - Routing handled automatically via RouteLoader component which will load entries based on a given url
