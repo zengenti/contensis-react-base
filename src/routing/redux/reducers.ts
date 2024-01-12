@@ -138,7 +138,9 @@ export default produce((state: Draft<any>, action) => {
     }
     case SET_SURROGATE_KEYS: {
       const newKeys = (action.keys || '').split(' ');
-      const stateKeys = original(state.surrogateKeys);
+      const stateKeys = state.surrogateKeys
+        ? original(state.surrogateKeys)
+        : [];
       const allKeys = [...stateKeys, ...newKeys];
       const uniqueKeys = [...new Set(allKeys)];
       state.surrogateKeys = uniqueKeys;
