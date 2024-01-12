@@ -210,7 +210,7 @@ var RoutingReducer = immer.produce((state, action) => {
     case selectors.SET_SURROGATE_KEYS:
       {
         const newKeys = (action.keys || '').split(' ');
-        const stateKeys = immer.original(state.surrogateKeys);
+        const stateKeys = state.surrogateKeys ? immer.original(state.surrogateKeys) : [];
         const allKeys = [...stateKeys, ...newKeys];
         const uniqueKeys = [...new Set(allKeys)];
         state.surrogateKeys = uniqueKeys;
@@ -354,4 +354,4 @@ exports.selectCommitRef = selectCommitRef;
 exports.selectVersionStatus = selectVersionStatus;
 exports.version = version$1;
 exports.version$1 = version;
-//# sourceMappingURL=version-430b7606.js.map
+//# sourceMappingURL=version-396cb8de.js.map

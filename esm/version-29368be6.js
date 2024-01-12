@@ -185,7 +185,7 @@ var RoutingReducer = produce((state, action) => {
     case SET_SURROGATE_KEYS:
       {
         const newKeys = (action.keys || '').split(' ');
-        const stateKeys = original(state.surrogateKeys);
+        const stateKeys = state.surrogateKeys ? original(state.surrogateKeys) : [];
         const allKeys = [...stateKeys, ...newKeys];
         const uniqueKeys = [...new Set(allKeys)];
         state.surrogateKeys = uniqueKeys;
@@ -318,4 +318,4 @@ var version = /*#__PURE__*/Object.freeze({
 });
 
 export { GET_NODE_TREE as G, SET_NODE_TREE as S, GET_NODE_TREE_ERROR as a, SET_VERSION_STATUS as b, createStore as c, SET_VERSION as d, version as e, selectCommitRef as f, selectBuildNumber as g, navigation as n, reduxStore as r, selectVersionStatus as s, version$1 as v };
-//# sourceMappingURL=version-5c0924cc.js.map
+//# sourceMappingURL=version-29368be6.js.map

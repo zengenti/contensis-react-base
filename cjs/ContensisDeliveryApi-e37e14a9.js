@@ -1,7 +1,9 @@
-import { Client } from 'contensis-delivery-api';
-import { parse } from 'query-string';
-import { A as selectCurrentHostname, w as selectCurrentPath, o as selectCurrentSearch, B as setSurrogateKeys } from './selectors-62746dce.js';
-import { r as reduxStore } from './version-5c0924cc.js';
+'use strict';
+
+var contensisDeliveryApi = require('contensis-delivery-api');
+var queryString = require('query-string');
+var selectors = require('./selectors-fa836926.js');
+var version = require('./version-396cb8de.js');
 
 const LOGIN_COOKIE = 'ContensisCMSUserName';
 const REFRESH_TOKEN_COOKIE = 'RefreshToken';
@@ -89,15 +91,15 @@ class CachedSearch {
     return new DeliveryApi(this.cookies).getClient(...args);
   }
   search(query, linkDepth = 0, project) {
-    const client = Client.create(getClientConfig(project, this.cookies));
+    const client = contensisDeliveryApi.Client.create(getClientConfig(project, this.cookies));
     return this.request(`${project}+${JSON.stringify(query)}+${linkDepth}`, () => client.entries.search(query, linkDepth));
   }
   searchUsingPost(query, linkDepth = 0, project = '') {
-    const client = Client.create(getClientConfig(project, this.cookies));
+    const client = contensisDeliveryApi.Client.create(getClientConfig(project, this.cookies));
     return this.request(`${project}+${JSON.stringify(query)}+${linkDepth}`, () => client.entries.searchUsingPost(query, linkDepth));
   }
   get(id, linkDepth = 0, versionStatus = 'published', project) {
-    const client = Client.create(getClientConfig(project, this.cookies));
+    const client = contensisDeliveryApi.Client.create(getClientConfig(project, this.cookies));
     client.clientConfig.versionStatus = versionStatus;
     return this.request(id, () => client.entries.get({
       id,
@@ -105,27 +107,27 @@ class CachedSearch {
     }));
   }
   getContentType(id, project) {
-    const client = Client.create(getClientConfig(project, this.cookies));
+    const client = contensisDeliveryApi.Client.create(getClientConfig(project, this.cookies));
     return this.request(`[CONTENT TYPE] ${id} ${project}`, () => client.contentTypes.get(id));
   }
   getRootNode(options, project) {
-    const client = Client.create(getClientConfig(project, this.cookies));
+    const client = contensisDeliveryApi.Client.create(getClientConfig(project, this.cookies));
     return this.request(`${project} / ${JSON.stringify(options)}`, () => client.nodes.getRoot(options));
   }
   getNode(options, project) {
-    const client = Client.create(getClientConfig(project, this.cookies));
+    const client = contensisDeliveryApi.Client.create(getClientConfig(project, this.cookies));
     return this.request(`${project} ${options && typeof options !== 'string' ? 'path' in options ? options.path : options.id : options} ${JSON.stringify(options)}`, () => client.nodes.get(options));
   }
   getAncestors(options, project) {
-    const client = Client.create(getClientConfig(project, this.cookies));
+    const client = contensisDeliveryApi.Client.create(getClientConfig(project, this.cookies));
     return this.request(`${project} [A] ${options && typeof options !== 'string' && options.id || options} ${JSON.stringify(options)}`, () => client.nodes.getAncestors(options));
   }
   getChildren(options, project) {
-    const client = Client.create(getClientConfig(project, this.cookies));
+    const client = contensisDeliveryApi.Client.create(getClientConfig(project, this.cookies));
     return this.request(`${project} [C] ${options && typeof options !== 'string' && options.id || options} ${JSON.stringify(options)}`, () => client.nodes.getChildren(options));
   }
   getSiblings(options, project) {
-    const client = Client.create(getClientConfig(project, this.cookies));
+    const client = contensisDeliveryApi.Client.create(getClientConfig(project, this.cookies));
     return this.request(`${project} [S] ${options && typeof options !== 'string' && options.id || options} ${JSON.stringify(options)}`, () => client.nodes.getSiblings(options));
   }
   request(key, execute) {
@@ -145,15 +147,15 @@ const cachedSearch = new CachedSearch();
 const mapCookieHeader = cookies => typeof cookies === 'object' ? Object.entries(cookies).map(([name, value]) => `${name}=${value}`).join('; ') : cookies;
 const getSsrReferer = () => {
   if (typeof window === 'undefined') {
-    const state = reduxStore.getState();
-    const referer = `${selectCurrentHostname(state)}${selectCurrentPath(state)}${selectCurrentSearch(state)}`;
+    const state = version.reduxStore.getState();
+    const referer = `${selectors.selectCurrentHostname(state)}${selectors.selectCurrentPath(state)}${selectors.selectCurrentSearch(state)}`;
     return referer;
   }
   return '';
 };
 const storeSurrogateKeys = response => {
   const keys = response.headers.get ? response.headers.get('surrogate-key') : response.headers.map['surrogate-key'];
-  if (keys) reduxStore === null || reduxStore === void 0 ? void 0 : reduxStore.dispatch(setSurrogateKeys(keys, response.url));
+  if (keys) version.reduxStore === null || version.reduxStore === void 0 ? void 0 : version.reduxStore.dispatch(selectors.setSurrogateKeys(keys, response.url));
 };
 const getClientConfig = (project, cookies) => {
   const config = DELIVERY_API_CONFIG; /* global DELIVERY_API_CONFIG */
@@ -198,7 +200,7 @@ class DeliveryApi {
         // Allow overriding versionStatus with the querystring
         const {
           versionStatus
-        } = parse(window.location.search);
+        } = queryString.parse(window.location.search);
         if (versionStatus) return versionStatus;
         // Client-side we will have a global variable set if rendered by SSR in production
         if (typeof window.versionStatus !== 'undefined') return window.versionStatus;
@@ -233,18 +235,18 @@ class DeliveryApi {
       return 'published';
     };
     this.search = (query, linkDepth = 0, project) => {
-      const client = Client.create(getClientConfig(project, this.cookies));
+      const client = contensisDeliveryApi.Client.create(getClientConfig(project, this.cookies));
       return client.entries.search(query, typeof linkDepth !== 'undefined' ? linkDepth : 1);
     };
     this.getClient = (versionStatus = 'published', project) => {
       const baseConfig = getClientConfig(project, this.cookies);
       baseConfig.versionStatus = versionStatus;
-      return Client.create(baseConfig);
+      return contensisDeliveryApi.Client.create(baseConfig);
     };
     this.getEntry = (id, linkDepth = 0, versionStatus = 'published', project) => {
       const baseConfig = getClientConfig(project, this.cookies);
       baseConfig.versionStatus = versionStatus;
-      const client = Client.create(baseConfig);
+      const client = contensisDeliveryApi.Client.create(baseConfig);
       // return client.entries.get(id, linkDepth);
       return client.entries.get({
         id,
@@ -256,5 +258,7 @@ class DeliveryApi {
 }
 const deliveryApi = new DeliveryApi();
 
-export { cachedSearch as c, deliveryApi as d, getClientConfig as g };
-//# sourceMappingURL=ContensisDeliveryApi-0040d62d.js.map
+exports.cachedSearch = cachedSearch;
+exports.deliveryApi = deliveryApi;
+exports.getClientConfig = getClientConfig;
+//# sourceMappingURL=ContensisDeliveryApi-e37e14a9.js.map
