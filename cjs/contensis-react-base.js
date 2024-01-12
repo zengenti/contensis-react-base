@@ -2,7 +2,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var ContensisDeliveryApi = require('./ContensisDeliveryApi-c373405a.js');
+var ContensisDeliveryApi = require('./ContensisDeliveryApi-9d14954d.js');
 var contensisDeliveryApi = require('contensis-delivery-api');
 var React = require('react');
 var reactRedux = require('react-redux');
@@ -34,10 +34,10 @@ var lodash = require('lodash');
 var _commonjsHelpers = require('./_commonjsHelpers-b3309d7b.js');
 var lodashClean = require('lodash-clean');
 var reactCookie = require('react-cookie');
-var version = require('./version-6998435a.js');
-var App = require('./App-c74fb1ff.js');
-var version$1 = require('./version-fe0119b6.js');
-var selectors = require('./selectors-c7873cd7.js');
+var version = require('./version-3e108108.js');
+var App = require('./App-95681dca.js');
+var version$1 = require('./version-2ea51d94.js');
+var selectors = require('./selectors-fa836926.js');
 var chalk = require('chalk');
 require('loglevel');
 require('@redux-saga/core/effects');
@@ -47,12 +47,12 @@ require('redux-saga');
 require('redux-injectors');
 require('./reducers-9afb5f89.js');
 require('history');
-require('./login-3df93749.js');
-require('./ToJs-c5bbd17a.js');
+require('./login-8eed92af.js');
+require('./ToJs-43cedc5c.js');
 require('await-to-js');
 require('js-cookie');
 require('react-hot-loader');
-require('./RouteLoader-c048673f.js');
+require('./RouteLoader-a49e4e93.js');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -647,8 +647,8 @@ const makeLinkDepthMiddleware = ({
 
 const servers$1 = SERVERS; /* global SERVERS */
 const project = PROJECT; /* global PROJECT */
-const alias = ALIAS; /* global ALIAS */
-const deliveryApiHostname = urls.url(alias, project).api;
+const alias$1 = ALIAS; /* global ALIAS */
+const deliveryApiHostname = urls.url(alias$1, project).api;
 const assetProxy = httpProxy__default["default"].createProxyServer();
 const deliveryProxy = httpProxy__default["default"].createProxyServer();
 const reverseProxies = (app, reverseProxyPaths = []) => {
@@ -4009,7 +4009,7 @@ const getBundleData = (config, staticRoutePath) => {
     legacy: loadableBundleData(config, staticRoutePath, 'legacy'),
     modern: loadableBundleData(config, staticRoutePath, 'modern')
   };
-  if (!bundleData.default || bundleData.default === {}) bundleData.default = bundleData.legacy || bundleData.modern;
+  if (!bundleData.default) bundleData.default = bundleData.legacy || bundleData.modern;
   return bundleData;
 };
 
@@ -4062,15 +4062,22 @@ const getBundleTags = (loadableExtractor, scripts, staticRoutePath = 'static') =
   return startupTag;
 };
 
+const alias = ALIAS; /* global ALIAS */
+
 const addStandardHeaders = (state, response, packagejson, groups) => {
   if (state) {
     try {
       console.info('About to add headers');
       const routingSurrogateKeys = selectors.selectSurrogateKeys(state);
-      const surrogateKeyHeader = ` ${packagejson.name}-app ${routingSurrogateKeys}`;
-      response.header('surrogate-key', surrogateKeyHeader);
+
+      // Check length of surrogate keys and prevent potential header overflow
+      // errors in prod by replacing with `any-update` header that will indiscriminately
+      // invalidate the SSR page cache when any content is updated
+      const surrogateKeys = routingSurrogateKeys.length >= 2000 ? `${alias}_any-update` : routingSurrogateKeys.join(' ');
+      const surrogateKeyHeader = `${packagejson.name}-app ${surrogateKeys}`;
+      response.setHeader('surrogate-key', surrogateKeyHeader);
       addVarnishAuthenticationHeaders(state, response, groups);
-      response.setHeader('Surrogate-Control', `max-age=${getCacheDuration(response.statusCode)}`);
+      response.setHeader('surrogate-control', `max-age=${getCacheDuration(response.statusCode)}`);
     } catch (e) {
       console.info('Error Adding headers', e.message);
     }

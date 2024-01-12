@@ -3,12 +3,12 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 var urls = require('./urls-6fcaf4c6.js');
-var ContensisDeliveryApi = require('./ContensisDeliveryApi-c373405a.js');
+var ContensisDeliveryApi = require('./ContensisDeliveryApi-9d14954d.js');
 var mapJson = require('jsonpath-mapper');
 var React = require('react');
 var reactRedux = require('react-redux');
-var selectors = require('./selectors-c7873cd7.js');
-var version = require('./version-6998435a.js');
+var selectors = require('./selectors-fa836926.js');
+var version = require('./version-3e108108.js');
 var styled = require('styled-components');
 require('contensis-delivery-api');
 require('query-string');
@@ -17,7 +17,6 @@ require('redux-thunk');
 require('redux-saga');
 require('redux-injectors');
 require('immer');
-require('deepmerge');
 require('./reducers-9afb5f89.js');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }

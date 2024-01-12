@@ -1,4 +1,4 @@
-import { c as cachedSearch, d as deliveryApi } from './ContensisDeliveryApi-5bb364b9.js';
+import { c as cachedSearch, d as deliveryApi } from './ContensisDeliveryApi-c4387b7a.js';
 import { Query as Query$1 } from 'contensis-delivery-api';
 import React from 'react';
 import { Provider } from 'react-redux';
@@ -30,11 +30,11 @@ import { identity, noop } from 'lodash';
 import { c as commonjsGlobal } from './_commonjsHelpers-1789f0cf.js';
 import { buildCleaner } from 'lodash-clean';
 import { CookiesProvider } from 'react-cookie';
-import { c as createStore } from './version-aebe50f2.js';
-import { h as history, p as pickProject, r as rootSaga } from './App-ade8773a.js';
-export { A as ReactApp } from './App-ade8773a.js';
-import { s as setVersionStatus, a as setVersion } from './version-88653900.js';
-import { s as selectSurrogateKeys, a as selectRouteEntry, b as selectCurrentProject, g as getImmutableOrJS, c as setCurrentProject } from './selectors-ff21e98a.js';
+import { c as createStore } from './version-feb15e9b.js';
+import { h as history, p as pickProject, r as rootSaga } from './App-abf1f776.js';
+export { A as ReactApp } from './App-abf1f776.js';
+import { s as setVersionStatus, a as setVersion } from './version-36efe098.js';
+import { s as selectSurrogateKeys, a as selectRouteEntry, b as selectCurrentProject, g as getImmutableOrJS, c as setCurrentProject } from './selectors-62746dce.js';
 import chalk from 'chalk';
 import 'loglevel';
 import '@redux-saga/core/effects';
@@ -44,12 +44,12 @@ import 'redux-saga';
 import 'redux-injectors';
 import './reducers-3d5c37d1.js';
 import 'history';
-import './login-c3cfb5ad.js';
-import './ToJs-7233c038.js';
+import './login-e4b1447e.js';
+import './ToJs-b18ab86e.js';
 import 'await-to-js';
 import 'js-cookie';
 import 'react-hot-loader';
-import './RouteLoader-e6c2c8d6.js';
+import './RouteLoader-58774c81.js';
 
 /**
  * Util class holds our search results helper boilerplate methods
@@ -631,8 +631,8 @@ const makeLinkDepthMiddleware = ({
 
 const servers$1 = SERVERS; /* global SERVERS */
 const project = PROJECT; /* global PROJECT */
-const alias = ALIAS; /* global ALIAS */
-const deliveryApiHostname = url(alias, project).api;
+const alias$1 = ALIAS; /* global ALIAS */
+const deliveryApiHostname = url(alias$1, project).api;
 const assetProxy = httpProxy.createProxyServer();
 const deliveryProxy = httpProxy.createProxyServer();
 const reverseProxies = (app, reverseProxyPaths = []) => {
@@ -3993,7 +3993,7 @@ const getBundleData = (config, staticRoutePath) => {
     legacy: loadableBundleData(config, staticRoutePath, 'legacy'),
     modern: loadableBundleData(config, staticRoutePath, 'modern')
   };
-  if (!bundleData.default || bundleData.default === {}) bundleData.default = bundleData.legacy || bundleData.modern;
+  if (!bundleData.default) bundleData.default = bundleData.legacy || bundleData.modern;
   return bundleData;
 };
 
@@ -4046,15 +4046,22 @@ const getBundleTags = (loadableExtractor, scripts, staticRoutePath = 'static') =
   return startupTag;
 };
 
+const alias = ALIAS; /* global ALIAS */
+
 const addStandardHeaders = (state, response, packagejson, groups) => {
   if (state) {
     try {
       console.info('About to add headers');
       const routingSurrogateKeys = selectSurrogateKeys(state);
-      const surrogateKeyHeader = ` ${packagejson.name}-app ${routingSurrogateKeys}`;
-      response.header('surrogate-key', surrogateKeyHeader);
+
+      // Check length of surrogate keys and prevent potential header overflow
+      // errors in prod by replacing with `any-update` header that will indiscriminately
+      // invalidate the SSR page cache when any content is updated
+      const surrogateKeys = routingSurrogateKeys.length >= 2000 ? `${alias}_any-update` : routingSurrogateKeys.join(' ');
+      const surrogateKeyHeader = `${packagejson.name}-app ${surrogateKeys}`;
+      response.setHeader('surrogate-key', surrogateKeyHeader);
       addVarnishAuthenticationHeaders(state, response, groups);
-      response.setHeader('Surrogate-Control', `max-age=${getCacheDuration(response.statusCode)}`);
+      response.setHeader('surrogate-control', `max-age=${getCacheDuration(response.statusCode)}`);
     } catch (e) {
       console.info('Error Adding headers', e.message);
     }
