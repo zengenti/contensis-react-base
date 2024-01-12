@@ -105,7 +105,7 @@ Sometimes VSCode may import the reference automatically from an unsupported plac
 
 As of v2.5.0 TypeScript declarations are available to use, and will also benefit applications written in JavaScript
 
-All models are exported with the default package `@zengenti/contensis-react-base`
+All models are exported with the default package `@zengenti/contensis-react-base` 
 
 When importing Types to use in your own TypeScript project, try to always use the root import path e.g. `import { ModelName } from '@zengenti/contensis-react-base';`
 
