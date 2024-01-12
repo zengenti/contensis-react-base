@@ -9,6 +9,8 @@ import { getImmutableOrJS as getIn } from '~/redux/util';
 import { getCacheDuration } from '../features/caching/cacheDuration.schema';
 import { AppState } from '~/redux/appstate';
 
+const alias = ALIAS; /* global ALIAS */
+
 export const addStandardHeaders = (
   state: AppState,
   response: Response,
@@ -20,16 +22,22 @@ export const addStandardHeaders = (
       console.info('About to add headers');
       const routingSurrogateKeys = selectSurrogateKeys(state);
 
-      const surrogateKeyHeader = ` ${packagejson.name}-app ${routingSurrogateKeys}`;
+      // Check length of surrogate keys and prevent potential header overflow
+      // errors in prod by replacing with `any-update` header that will indiscriminately
+      // invalidate the SSR page cache when any content is updated
+      const surrogateKeys =
+        routingSurrogateKeys.length >= 2000
+          ? `${alias}_any-update`
+          : routingSurrogateKeys.join(' ');
 
-      // if > 2000 `envalias_any-update`
+      const surrogateKeyHeader = `${packagejson.name}-app ${surrogateKeys}`;
 
-      response.header('surrogate-key', surrogateKeyHeader);
+      response.setHeader('surrogate-key', surrogateKeyHeader);
 
       addVarnishAuthenticationHeaders(state, response, groups);
 
       response.setHeader(
-        'Surrogate-Control',
+        'surrogate-control',
         `max-age=${getCacheDuration(response.statusCode)}`
       );
     } catch (e: any) {
