@@ -116,7 +116,7 @@ export const getBundleData = (
     legacy: loadableBundleData(config, staticRoutePath, 'legacy'),
     modern: loadableBundleData(config, staticRoutePath, 'modern'),
   };
-  if (!bundleData.default || bundleData.default === {})
+  if (!bundleData.default)
     bundleData.default = bundleData.legacy || bundleData.modern;
   return bundleData;
 };

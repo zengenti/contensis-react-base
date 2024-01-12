@@ -1,5 +1,4 @@
 import { Draft, produce } from 'immer';
-import merge from 'deepmerge';
 
 import {
   SET_ENTRY,
@@ -11,7 +10,6 @@ import {
   SET_SURROGATE_KEYS,
   UPDATE_LOADING_STATE,
 } from './types';
-import { combineMerge } from '~/util/merge';
 
 const initialState = {
   canonicalPath: null,
@@ -139,12 +137,10 @@ export default produce((state: Draft<any>, action) => {
       return;
     }
     case SET_SURROGATE_KEYS: {
-      // console.info(`SET_SURROGATE_KEYS: '${action.url}' keys: ${action.keys}`);
-      state.surrogateKeys = merge(
-        state.surrogateKeys,
-        (action.keys || '').split(' '),
-        { arrayMerge: combineMerge }
-      );
+      const newKeys = (action.keys || '').split(' ');
+      const allKeys = [...state.surrogateKeys, ...newKeys];
+      const uniqueKeys = [...new Set(allKeys)];
+      state.surrogateKeys = uniqueKeys;
       return;
     }
     case SET_TARGET_PROJECT: {

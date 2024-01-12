@@ -12,7 +12,7 @@ export const selectMappedEntry = (state: AppState, returnType?: StateType) =>
 
 export const selectSurrogateKeys = (state: AppState) => {
   const keys = getIn(state, ['routing', 'surrogateKeys'], [], 'js');
-  return keys.join(' ');
+  return keys;
 };
 export const selectCurrentHostname = (state: AppState) =>
   getIn(state, ['routing', 'currentHostname']);
