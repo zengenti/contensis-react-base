@@ -29,7 +29,13 @@ export const getManagementApiClient = async ({
       },
     };
   }
-  const { Client } = await import('contensis-management-api');
+
+  let { Client } = await import('contensis-management-api');
+
+  if (typeof window === 'undefined') {
+    const { UniversalClient } = await import('contensis-management-api');
+    Client = UniversalClient;
+  }
 
   const client = Client.create({
     ...config,

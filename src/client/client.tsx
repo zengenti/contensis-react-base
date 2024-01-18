@@ -28,6 +28,9 @@ declare let window: typeof globalThis & {
 
 type ReactAppProps = { routes: any; withEvents: any };
 
+// Fix TS2769 error No overload matches this call
+const Container = AppContainer as any; // as typeof AppContainer;
+
 class ClientApp {
   constructor(ReactApp: React.ComponentType<ReactAppProps>, config: AppConfig) {
     const documentRoot = document.getElementById('root');
@@ -42,7 +45,7 @@ class ClientApp {
 
     const GetClientJSX = store => {
       const ClientJsx = (
-        <AppContainer>
+        <Container>
           <CookiesProvider>
             <ReduxProvider store={store}>
               <Router history={history}>
@@ -50,7 +53,7 @@ class ClientApp {
               </Router>
             </ReduxProvider>
           </CookiesProvider>
-        </AppContainer>
+        </Container>
       );
       return ClientJsx;
     };

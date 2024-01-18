@@ -5,7 +5,6 @@ export declare const SET_ANCESTORS: string;
 export declare const SET_SIBLINGS: string;
 export declare const SET_ENTRY_ID: string;
 export declare const SET_SURROGATE_KEYS: string;
-export declare const SET_NAVIGATION_NOT_FOUND: string;
 export declare const SET_NAVIGATION_PATH: string;
 export declare const SET_TARGET_PROJECT: string;
 export declare const SET_ROUTE: string;

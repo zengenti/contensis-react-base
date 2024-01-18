@@ -3,6 +3,7 @@ import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import alias from '@rollup/plugin-alias';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
+import json from '@rollup/plugin-json';
 // import postcss from 'rollup-plugin-postcss';
 import submoduleResolvePlugin from './submodule-resolve-plugin';
 
@@ -100,6 +101,7 @@ export default {
       presets: babelConfig.env.modern.presets,
       plugins: babelConfig.env.modern.plugins,
     }),
+    json(),
     commonjs(),
     // postcss(),
   ],

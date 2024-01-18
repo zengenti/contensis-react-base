@@ -1,6 +1,6 @@
 import { ChunkExtractor } from '@loadable/server';
 import { ServerConfig } from "../../config";
-export declare const loadableBundleData: ({ stats, templates }: ServerConfig, staticRoutePath: string, build?: string | undefined) => {
+export declare const loadableBundleData: ({ stats, templates }: ServerConfig, staticRoutePath: string, build?: string) => {
     stats?: string | null | undefined;
     templates?: {
         templateHTML: string;
@@ -8,7 +8,7 @@ export declare const loadableBundleData: ({ stats, templates }: ServerConfig, st
         templateHTMLFragment: string;
     } | null | undefined;
 };
-declare type LoadableChunkExtractors = {
+type LoadableChunkExtractors = {
     legacy?: ChunkExtractor;
     modern?: ChunkExtractor;
     commonLoadableExtractor: ChunkExtractor;

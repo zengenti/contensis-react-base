@@ -1,6 +1,10 @@
-export declare const setNotFound: (notFound: any) => any;
-export declare const setNavigationPath: (path: any, location: any, staticRoute: any, withEvents: any, statePath: any, routes: any) => any;
-export declare const setCurrentProject: (project: any, allowedGroups: any, hostname: any) => any;
-export declare const setRoute: (path: any, state: any) => any;
-export declare const setRouteEntry: (entry: any) => any;
-export declare const setSurrogateKeys: (keys: any, url: any) => any;
+import { useLocation } from 'react-router-dom';
+import { Entry } from 'contensis-delivery-api/lib/models';
+import { MatchedRoute, RouteConfig } from 'react-router-config';
+import { AppRoutes, WithEvents } from '../routes';
+import { CookieHelper } from "../../user/util/CookieHelper.class";
+export declare const setNavigationPath: (path: string, location: ReturnType<typeof useLocation>, staticRoute: MatchedRoute<any, RouteConfig> | undefined, withEvents: WithEvents, statePath: string, routes: AppRoutes, cookies: CookieHelper) => any;
+export declare const setCurrentProject: (project: string, allowedGroups: any, hostname: string) => any;
+export declare const setRoute: (path: string, state?: any) => any;
+export declare const setRouteEntry: (entry: Entry) => any;
+export declare const setSurrogateKeys: (keys: string, url: string) => any;

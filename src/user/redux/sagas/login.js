@@ -31,7 +31,9 @@ export const loginSagas = [
 
 export function* handleRequiresLoginSaga(action) {
   const {
+    cookies,
     entry,
+    path,
     requireLogin,
     routes: { ContentTypeMappings },
     staticRoute,
@@ -62,11 +64,16 @@ export function* handleRequiresLoginSaga(action) {
     // If cookies or securityToken are found on any route change
     // always validate and login the user
     if (routeRequiresLogin) {
+      console.info(`Route requires login: ${path}`);
       // If routeRequiresLogin do a blocking call that returns userLoggedIn
-      userLoggedIn = yield call(validateUserSaga, { securityToken });
+      userLoggedIn = yield call(validateUserSaga, {
+        cookies,
+        securityToken,
+      });
+      console.info(`User logged in: ${userLoggedIn}`);
     }
     // otherwise do a non blocking put to handle validation in the background
-    else yield put({ type: VALIDATE_USER, securityToken });
+    else yield put({ type: VALIDATE_USER, cookies, securityToken });
   }
 
   if (routeRequiresLogin) {
@@ -82,13 +89,20 @@ export function* handleRequiresLoginSaga(action) {
         LoginHelper.ClientRedirectToAccessDeniedPage(action.location.pathname);
     }
   }
+
+  return userLoggedIn;
 }
 
-function* validateUserSaga({ securityToken }) {
+function* validateUserSaga({ cookies, securityToken }) {
+  const login = LoginHelper.withCookies(cookies);
   // Check for refreshToken in cookies
-  let clientCredentials = LoginHelper.GetCachedCredentials();
+  let clientCredentials = login.GetCachedCredentials();
 
-  if (securityToken || clientCredentials.refreshToken) {
+  if (
+    securityToken ||
+    clientCredentials.securityToken ||
+    clientCredentials.refreshToken
+  ) {
     // We only attempt to validate the user if one of the stored
     // tokens are found, in this case we set loading state manually
     // so we don't need to set and unset loading if there are no stored
@@ -100,30 +114,46 @@ function* validateUserSaga({ securityToken }) {
     });
     // If we have just a security token we will call a CMS endpoint
     // and provide us with a RefreshToken cookie we can use during login
-    const [error, refreshToken] =
-      yield LoginHelper.GetCredentialsForSecurityToken(securityToken);
-    if (refreshToken) {
-      // Set cookies and reload values
-      LoginHelper.SetLoginCookies({
-        contensisClassicToken: securityToken,
-        refreshToken,
-      });
-      clientCredentials = LoginHelper.GetCachedCredentials();
+    if (
+      securityToken ||
+      (clientCredentials.securityToken && !clientCredentials.refreshToken)
+    ) {
+      const [error, refreshToken] =
+        yield LoginHelper.GetCredentialsForSecurityToken(
+          securityToken || clientCredentials.securityToken
+        );
+      if (refreshToken) {
+        // Set cookies and reload values
+        login.SetLoginCookies({
+          contensisClassicToken: securityToken,
+          refreshToken,
+        });
+        clientCredentials = login.GetCachedCredentials();
+      }
+      if (error) {
+        login.ClearCachedCredentials();
+        yield put({
+          type: SET_AUTHENTICATION_STATE,
+          authenticationState: {
+            isError: true,
+            errorMessage:
+              error?.message ||
+              (error && 'toString' in error && error.toString()),
+          },
+        });
+      }
     }
 
     // Log the user in if a refreshToken is found
-    if (clientCredentials.refreshToken)
-      yield call(loginUserSaga, { clientCredentials });
-    else if (error)
-      yield put({
-        type: SET_AUTHENTICATION_STATE,
-        authenticationState: {
-          isError: true,
-          errorMessage:
-            error?.message ||
-            (error && 'toString' in error && error.toString()),
-        },
+    if (clientCredentials.refreshToken) {
+      console.info(
+        `Login user with refreshToken ${clientCredentials.refreshToken}`
+      );
+      yield call(loginUserSaga, {
+        clientCredentials,
+        cookies: login.cookies,
       });
+    }
   }
 
   // Tell any callers have we successfully logged in?
@@ -131,14 +161,15 @@ function* validateUserSaga({ securityToken }) {
 }
 
 function* loginUserSaga(action = {}) {
-  const { username, password, clientCredentials } = action;
+  const { username, password, clientCredentials, cookies } = action;
+  const login = LoginHelper.withCookies(cookies);
 
   // If a WSFED_LOGIN site has dispatched the loginUser action
   // just redirect them to the Identity Provider sign in
   if (action.type === LOGIN_USER && LoginHelper.WSFED_LOGIN)
     LoginHelper.ClientRedirectToSignInPage();
 
-  const { authenticationState, user } = yield LoginHelper.LoginUser({
+  const { authenticationState, user } = yield login.LoginUser({
     username,
     password,
     clientCredentials,
@@ -150,6 +181,7 @@ function* loginUserSaga(action = {}) {
     user,
   });
 }
+
 const removeHostnamePart = path => {
   // eslint-disable-next-line no-console
   console.log(path);
@@ -175,12 +207,12 @@ function* redirectAfterSuccessfulLoginSaga() {
   }
 }
 
-function* logoutUserSaga({ redirectPath }) {
+function* logoutUserSaga({ redirectPath, cookies }) {
   yield put({
     type: SET_AUTHENTICATION_STATE,
     user: null,
   });
-  yield LoginHelper.LogoutUser(redirectPath);
+  yield LoginHelper.withCookies(cookies).LogoutUser(redirectPath);
 }
 
 export function* refreshSecurityToken() {

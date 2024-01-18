@@ -1,6 +1,6 @@
 'use strict';
 
-var selectors$1 = require('./selectors-fa836926.js');
+var selectors$1 = require('./selectors-e0ddc9ad.js');
 var React = require('react');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
@@ -87,6 +87,52 @@ const matchUserGroup = (userGroups = [], requiredGroups = []) => {
   return groupMatch;
 };
 
+const COOKIE_VALID_DAYS = 1; // 0 = Session cookie
+
+// CookieHelper is a class that takes in and lets us pass around the methods provided
+// by `useCookie` react hook in backend code that is connected to the universal-cookies
+// instance created in SSR middleware (and provides browser cookies)
+class CookieHelper {
+  get raw() {
+    return this.cookies;
+  }
+  constructor(cookies, setCookie, removeCookie) {
+    this.cookies = void 0;
+    this.setCookie = void 0;
+    this.removeCookie = void 0;
+    this.cookies = cookies;
+    this.setCookie = setCookie;
+    this.removeCookie = removeCookie;
+  }
+  GetCookie(name) {
+    const cookie = this.cookies[name];
+    if (typeof cookie === 'undefined') {
+      return null;
+    }
+    return cookie;
+  }
+  SetCookie(name, value, maxAgeDays = COOKIE_VALID_DAYS) {
+    // update local cookies object as this is provided as a clone of `req.universalCookies`
+    this.cookies[name] = value;
+
+    // call the passed setCookie method so we can update the `universal-cookie` instance
+    // with the change listener attached so the cookies can be set in SSR response
+    if (maxAgeDays === 0) this.setCookie(name, value);else this.setCookie(name, value, {
+      expires: addDays(new Date(), maxAgeDays)
+    });
+  }
+  DeleteCookie(name) {
+    // update local cookies object as this is provided as a clone of `req.universalCookies`
+    delete this.cookies[name];
+    this.removeCookie(name);
+  }
+}
+const addDays = (date = new Date(), days) => {
+  const result = new Date(date);
+  result.setDate(result.getDate() + days);
+  return result;
+};
+
 /* eslint-disable react/display-name */
 const toJS = WrappedComponent => wrappedComponentProps => {
   const KEY = 0;
@@ -100,6 +146,7 @@ const toJS = WrappedComponent => wrappedComponentProps => {
   return /*#__PURE__*/React__default["default"].createElement(WrappedComponent, propsJS);
 };
 
+exports.CookieHelper = CookieHelper;
 exports.matchUserGroup = matchUserGroup;
 exports.selectChangePasswordError = selectChangePasswordError;
 exports.selectChangePasswordSending = selectChangePasswordSending;
@@ -125,4 +172,4 @@ exports.selectUserRegistrationIsLoading = selectUserRegistrationIsLoading;
 exports.selectUserRegistrationIsSuccess = selectUserRegistrationIsSuccess;
 exports.selectors = selectors;
 exports.toJS = toJS;
-//# sourceMappingURL=ToJs-43cedc5c.js.map
+//# sourceMappingURL=ToJs-42cadab5.js.map

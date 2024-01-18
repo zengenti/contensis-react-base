@@ -21,6 +21,6 @@ export declare const runSearch: (action: EnsureSearchAction | SetSearchEntriesAc
  * @param action
  * @returns true or false
  */
-export declare const filterParamsChanged: (action: EnsureSearchAction | SetSearchEntriesAction, state?: AppState | undefined) => boolean;
+export declare const filterParamsChanged: (action: EnsureSearchAction | SetSearchEntriesAction, state?: AppState) => boolean;
 export declare const debugExecuteSearch: (action: EnsureSearchAction | SetSearchEntriesAction, state: AppState) => void;
 export declare const scrollTo: (scrollToElement: string) => void;

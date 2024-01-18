@@ -3,20 +3,22 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 var urls = require('./urls-6fcaf4c6.js');
-var ContensisDeliveryApi = require('./ContensisDeliveryApi-e37e14a9.js');
+var ContensisDeliveryApi = require('./ContensisDeliveryApi-e320ef2a.js');
 var mapJson = require('jsonpath-mapper');
 var React = require('react');
 var reactRedux = require('react-redux');
-var selectors = require('./selectors-fa836926.js');
-var version = require('./version-396cb8de.js');
+var selectors = require('./selectors-e0ddc9ad.js');
+var version = require('./version-7c9f983e.js');
 var styled = require('styled-components');
 require('contensis-delivery-api');
 require('query-string');
+require('./CookieConstants-000427db.js');
 require('redux');
 require('redux-thunk');
 require('redux-saga');
 require('redux-injectors');
 require('immer');
+require('deepmerge');
 require('./reducers-9afb5f89.js');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
@@ -303,7 +305,9 @@ var VersionInfo$1 = reactRedux.connect(mapStateToVersionInfo)(VersionInfo);
 exports.setCachingHeaders = urls.setCachingHeaders;
 exports.urls = urls.url;
 exports.cachedSearch = ContensisDeliveryApi.cachedSearch;
+exports.cachedSearchWithCookies = ContensisDeliveryApi.cachedSearchWithCookies;
 exports.deliveryApi = ContensisDeliveryApi.deliveryApi;
+exports.deliveryApiWithCookies = ContensisDeliveryApi.deliveryApiWithCookies;
 exports.getClientConfig = ContensisDeliveryApi.getClientConfig;
 Object.defineProperty(exports, 'jpath', {
   enumerable: true,

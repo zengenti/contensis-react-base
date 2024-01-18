@@ -15,7 +15,7 @@ export type ServerConfig = AppConfig & {
   appRootPath?: string;
   disableSsrRedux?: boolean;
   handleResponses?: typeof handleResponse;
-  handleExceptions?: boolean;
+  handleExceptions?: boolean | string[];
   reverseProxyPaths?: string[];
   packagejson: any;
   proxyDeliveryApi?: boolean;

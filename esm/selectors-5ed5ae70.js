@@ -1,11 +1,5 @@
-'use strict';
-
-var mapJson = require('jsonpath-mapper');
-var queryString = require('query-string');
-
-function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
-
-var queryString__default = /*#__PURE__*/_interopDefaultLegacy(queryString);
+import { jpath } from 'jsonpath-mapper';
+import queryString from 'query-string';
 
 const action = (type, payload = {}) => ({
   type,
@@ -27,7 +21,7 @@ const getImmutableOrJS = (state, stateKey, fallbackValue, returnType = globalThi
     return fromJS(state.get(stateKey, fallbackValue));
   }
   if (Array.isArray(stateKey) && state && typeof state === 'object') {
-    const result = mapJson.jpath(stateKey.join('.'), state);
+    const result = jpath(stateKey.join('.'), state);
     if (typeof result === 'undefined') return fallbackValue;
     return result;
   }
@@ -44,7 +38,6 @@ const SET_ANCESTORS = `${ROUTING_PREFIX}_SET_ANCESTORS`;
 const SET_SIBLINGS = `${ROUTING_PREFIX}_SET_SIBLINGS`;
 const SET_ENTRY_ID = `${ROUTING_PREFIX}_SET_ENTRY_ID`;
 const SET_SURROGATE_KEYS = `${ROUTING_PREFIX}_SET_SURROGATE_KEYS`;
-const SET_NAVIGATION_NOT_FOUND = `${ROUTING_PREFIX}_SET_NOT_FOUND`;
 const SET_NAVIGATION_PATH = `${ROUTING_PREFIX}_SET_NAVIGATION_PATH`;
 const SET_TARGET_PROJECT = `${ROUTING_PREFIX}_SET_TARGET_PROJECT`;
 const SET_ROUTE = `${ROUTING_PREFIX}_SET_ROUTE`;
@@ -59,23 +52,20 @@ var routing$2 = /*#__PURE__*/Object.freeze({
   SET_SIBLINGS: SET_SIBLINGS,
   SET_ENTRY_ID: SET_ENTRY_ID,
   SET_SURROGATE_KEYS: SET_SURROGATE_KEYS,
-  SET_NAVIGATION_NOT_FOUND: SET_NAVIGATION_NOT_FOUND,
   SET_NAVIGATION_PATH: SET_NAVIGATION_PATH,
   SET_TARGET_PROJECT: SET_TARGET_PROJECT,
   SET_ROUTE: SET_ROUTE,
   UPDATE_LOADING_STATE: UPDATE_LOADING_STATE
 });
 
-const setNotFound = notFound => action(SET_NAVIGATION_NOT_FOUND, {
-  notFound
-});
-const setNavigationPath = (path, location, staticRoute, withEvents, statePath, routes) => action(SET_NAVIGATION_PATH, {
+const setNavigationPath = (path, location, staticRoute, withEvents, statePath, routes, cookies) => action(SET_NAVIGATION_PATH, {
   path,
   location,
   staticRoute,
   withEvents,
   statePath,
-  routes
+  routes,
+  cookies
 });
 const setCurrentProject = (project, allowedGroups, hostname) => action(SET_TARGET_PROJECT, {
   project,
@@ -96,7 +86,6 @@ const setSurrogateKeys = (keys, url) => action(SET_SURROGATE_KEYS, {
 
 var routing$1 = /*#__PURE__*/Object.freeze({
   __proto__: null,
-  setNotFound: setNotFound,
   setNavigationPath: setNavigationPath,
   setCurrentProject: setCurrentProject,
   setRoute: setRoute,
@@ -105,14 +94,17 @@ var routing$1 = /*#__PURE__*/Object.freeze({
 });
 
 function queryParams(search) {
-  return queryString__default["default"].parse(typeof window != 'undefined' ? window.location.search : search);
+  return queryString.parse(typeof window != 'undefined' ? window.location.search : search);
 }
 
 const selectRouteEntry = (state, returnType) => getImmutableOrJS(state, ['routing', 'entry'], {}, returnType);
 const selectMappedEntry = (state, returnType) => getImmutableOrJS(state, ['routing', 'mappedEntry'], null, returnType);
 const selectSurrogateKeys = state => {
   const keys = getImmutableOrJS(state, ['routing', 'surrogateKeys'], [], 'js');
-  return keys;
+  if (keys.length >= 2000) {
+    return `any-update`;
+  }
+  return keys.join(' ');
 };
 const selectCurrentHostname = state => getImmutableOrJS(state, ['routing', 'currentHostname']);
 const selectCurrentTreeID = state => getImmutableOrJS(state, ['routing', 'currentHostname']);
@@ -188,41 +180,5 @@ var routing = /*#__PURE__*/Object.freeze({
   selectStaticRoute: selectStaticRoute
 });
 
-exports.SET_ANCESTORS = SET_ANCESTORS;
-exports.SET_ENTRY = SET_ENTRY;
-exports.SET_NAVIGATION_PATH = SET_NAVIGATION_PATH;
-exports.SET_ROUTE = SET_ROUTE;
-exports.SET_SIBLINGS = SET_SIBLINGS;
-exports.SET_SURROGATE_KEYS = SET_SURROGATE_KEYS;
-exports.SET_TARGET_PROJECT = SET_TARGET_PROJECT;
-exports.UPDATE_LOADING_STATE = UPDATE_LOADING_STATE;
-exports.action = action;
-exports.getImmutableOrJS = getImmutableOrJS;
-exports.getJS = getJS;
-exports.queryParams = queryParams;
-exports.routing = routing$2;
-exports.routing$1 = routing$1;
-exports.routing$2 = routing;
-exports.selectCurrentAncestors = selectCurrentAncestors;
-exports.selectCurrentHostname = selectCurrentHostname;
-exports.selectCurrentNode = selectCurrentNode;
-exports.selectCurrentPath = selectCurrentPath;
-exports.selectCurrentProject = selectCurrentProject;
-exports.selectCurrentSearch = selectCurrentSearch;
-exports.selectCurrentSiblings = selectCurrentSiblings;
-exports.selectIsNotFound = selectIsNotFound;
-exports.selectMappedEntry = selectMappedEntry;
-exports.selectRouteEntry = selectRouteEntry;
-exports.selectRouteEntryContentTypeId = selectRouteEntryContentTypeId;
-exports.selectRouteEntryEntryId = selectRouteEntryEntryId;
-exports.selectRouteEntryLanguage = selectRouteEntryLanguage;
-exports.selectRouteErrorMessage = selectRouteErrorMessage;
-exports.selectRouteIsError = selectRouteIsError;
-exports.selectRouteLoading = selectRouteLoading;
-exports.selectRouteStatusCode = selectRouteStatusCode;
-exports.selectSurrogateKeys = selectSurrogateKeys;
-exports.setCurrentProject = setCurrentProject;
-exports.setNavigationPath = setNavigationPath;
-exports.setRoute = setRoute;
-exports.setSurrogateKeys = setSurrogateKeys;
-//# sourceMappingURL=selectors-fa836926.js.map
+export { selectCurrentHostname as A, setSurrogateKeys as B, SET_TARGET_PROJECT as C, SET_SURROGATE_KEYS as D, action as E, routing$2 as F, routing$1 as G, routing as H, getJS as I, SET_NAVIGATION_PATH as S, UPDATE_LOADING_STATE as U, selectRouteEntry as a, selectCurrentProject as b, setCurrentProject as c, SET_ROUTE as d, selectCurrentNode as e, selectCurrentAncestors as f, getImmutableOrJS as g, selectCurrentSiblings as h, selectRouteEntryEntryId as i, selectRouteEntryLanguage as j, selectMappedEntry as k, SET_ENTRY as l, SET_ANCESTORS as m, SET_SIBLINGS as n, selectCurrentSearch as o, setRoute as p, queryParams as q, selectRouteEntryContentTypeId as r, selectSurrogateKeys as s, selectRouteIsError as t, selectIsNotFound as u, selectRouteLoading as v, selectCurrentPath as w, selectRouteStatusCode as x, selectRouteErrorMessage as y, setNavigationPath as z };
+//# sourceMappingURL=selectors-5ed5ae70.js.map

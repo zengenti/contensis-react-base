@@ -2,14 +2,15 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var version$1 = require('./version-396cb8de.js');
-var selectors$1 = require('./selectors-fa836926.js');
-var version$2 = require('./version-3060974c.js');
+var version$1 = require('./version-7c9f983e.js');
+var selectors$1 = require('./selectors-e0ddc9ad.js');
+var version$2 = require('./version-6d864ecd.js');
 require('redux');
 require('redux-thunk');
 require('redux-saga');
 require('redux-injectors');
 require('immer');
+require('deepmerge');
 require('./reducers-9afb5f89.js');
 require('jsonpath-mapper');
 require('query-string');

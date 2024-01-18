@@ -21,5 +21,5 @@ declare class CachedSearch {
     request<T extends () => Promise<any>>(key: string, execute: T): ReturnType<T>;
 }
 export declare const cachedSearch: CachedSearch;
-export declare const cachedSearchWithCookies: (cookies?: CookieObject | undefined) => CachedSearch;
+export declare const cachedSearchWithCookies: (cookies?: CookieObject) => CachedSearch;
 export {};

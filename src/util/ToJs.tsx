@@ -5,7 +5,7 @@ import React from 'react';
 export const toJS =
   <Props extends { [key: string]: any }>(
     WrappedComponent: React.ComponentType<Props>
-  ): React.ComponentType<Props> =>
+  ) =>
   (wrappedComponentProps: Props) => {
     const KEY = 0;
     const VALUE = 1;

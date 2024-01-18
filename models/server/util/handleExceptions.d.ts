@@ -1,1 +1,1 @@
-export declare const unhandledExceptionHandler: (handleExceptions?: boolean) => void;
+export declare const unhandledExceptionHandler: (handleExceptions?: boolean | string[]) => void;

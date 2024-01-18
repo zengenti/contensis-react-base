@@ -1,4 +1,4 @@
-import { g as getImmutableOrJS } from './selectors-62746dce.js';
+import { g as getImmutableOrJS } from './selectors-5ed5ae70.js';
 import React from 'react';
 
 const selectUserIsLoading = state => getImmutableOrJS(state, ['user', 'authenticationState', 'isLoading']);
@@ -81,6 +81,52 @@ const matchUserGroup = (userGroups = [], requiredGroups = []) => {
   return groupMatch;
 };
 
+const COOKIE_VALID_DAYS = 1; // 0 = Session cookie
+
+// CookieHelper is a class that takes in and lets us pass around the methods provided
+// by `useCookie` react hook in backend code that is connected to the universal-cookies
+// instance created in SSR middleware (and provides browser cookies)
+class CookieHelper {
+  get raw() {
+    return this.cookies;
+  }
+  constructor(cookies, setCookie, removeCookie) {
+    this.cookies = void 0;
+    this.setCookie = void 0;
+    this.removeCookie = void 0;
+    this.cookies = cookies;
+    this.setCookie = setCookie;
+    this.removeCookie = removeCookie;
+  }
+  GetCookie(name) {
+    const cookie = this.cookies[name];
+    if (typeof cookie === 'undefined') {
+      return null;
+    }
+    return cookie;
+  }
+  SetCookie(name, value, maxAgeDays = COOKIE_VALID_DAYS) {
+    // update local cookies object as this is provided as a clone of `req.universalCookies`
+    this.cookies[name] = value;
+
+    // call the passed setCookie method so we can update the `universal-cookie` instance
+    // with the change listener attached so the cookies can be set in SSR response
+    if (maxAgeDays === 0) this.setCookie(name, value);else this.setCookie(name, value, {
+      expires: addDays(new Date(), maxAgeDays)
+    });
+  }
+  DeleteCookie(name) {
+    // update local cookies object as this is provided as a clone of `req.universalCookies`
+    delete this.cookies[name];
+    this.removeCookie(name);
+  }
+}
+const addDays = (date = new Date(), days) => {
+  const result = new Date(date);
+  result.setDate(result.getDate() + days);
+  return result;
+};
+
 /* eslint-disable react/display-name */
 const toJS = WrappedComponent => wrappedComponentProps => {
   const KEY = 0;
@@ -94,5 +140,5 @@ const toJS = WrappedComponent => wrappedComponentProps => {
   return /*#__PURE__*/React.createElement(WrappedComponent, propsJS);
 };
 
-export { selectUserIsAuthenticated as a, selectUserGroups as b, selectUserErrorMessage as c, selectUserIsAuthenticationError as d, selectUserIsError as e, selectUserIsLoading as f, selectUser as g, selectUserRegistrationError as h, selectUserRegistrationIsLoading as i, selectUserRegistrationIsSuccess as j, selectUserRegistration as k, selectPasswordResetRequestSending as l, matchUserGroup as m, selectPasswordResetRequestSent as n, selectPasswordResetRequestError as o, selectResetPasswordSending as p, selectResetPasswordSent as q, selectResetPasswordError as r, selectClientCredentials as s, toJS as t, selectChangePasswordSending as u, selectChangePasswordSent as v, selectUserGuid as w, selectChangePasswordError as x, selectors as y };
-//# sourceMappingURL=ToJs-b18ab86e.js.map
+export { CookieHelper as C, selectUserIsAuthenticated as a, selectUserGroups as b, selectUserErrorMessage as c, selectUserIsAuthenticationError as d, selectUserIsError as e, selectUserIsLoading as f, selectUser as g, selectUserRegistrationError as h, selectUserRegistrationIsLoading as i, selectUserRegistrationIsSuccess as j, selectUserRegistration as k, selectPasswordResetRequestSending as l, matchUserGroup as m, selectPasswordResetRequestSent as n, selectPasswordResetRequestError as o, selectResetPasswordSending as p, selectResetPasswordSent as q, selectResetPasswordError as r, selectClientCredentials as s, toJS as t, selectChangePasswordSending as u, selectChangePasswordSent as v, selectUserGuid as w, selectChangePasswordError as x, selectors as y };
+//# sourceMappingURL=ToJs-e50a9380.js.map

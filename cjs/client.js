@@ -11,33 +11,37 @@ var reactRouterDom = require('react-router-dom');
 var component = require('@loadable/component');
 var queryString = require('query-string');
 var reactCookie = require('react-cookie');
-var version = require('./version-396cb8de.js');
-var version$1 = require('./version-3060974c.js');
-var App = require('./App-6c803238.js');
-var selectors = require('./selectors-fa836926.js');
-var ContensisDeliveryApi = require('./ContensisDeliveryApi-e37e14a9.js');
+var version = require('./version-7c9f983e.js');
+var version$1 = require('./version-6d864ecd.js');
+var App = require('./App-5c3337e8.js');
+var selectors = require('./selectors-e0ddc9ad.js');
+var ContensisDeliveryApi = require('./ContensisDeliveryApi-e320ef2a.js');
 require('redux');
 require('redux-thunk');
 require('redux-saga');
 require('redux-injectors');
 require('immer');
+require('deepmerge');
 require('./reducers-9afb5f89.js');
 require('@redux-saga/core/effects');
 require('history');
 require('loglevel');
-require('./login-8eed92af.js');
-require('./ToJs-43cedc5c.js');
-require('jsonpath-mapper');
 require('await-to-js');
-require('js-cookie');
+require('./ChangePassword.container-7de62d6b.js');
+require('./ToJs-42cadab5.js');
+require('jsonpath-mapper');
+require('./CookieConstants-000427db.js');
 require('contensis-delivery-api');
-require('./RouteLoader-a49e4e93.js');
+require('./RouteLoader-c1ec4870.js');
 require('react-router-config');
 require('reselect');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
 var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
+
+// Fix TS2769 error No overload matches this call
+const Container = reactHotLoader.AppContainer; // as typeof AppContainer;
 
 class ClientApp {
   constructor(ReactApp, config) {
@@ -50,7 +54,7 @@ class ClientApp {
       withEvents
     } = config;
     const GetClientJSX = store => {
-      const ClientJsx = /*#__PURE__*/React__default["default"].createElement(reactHotLoader.AppContainer, null, /*#__PURE__*/React__default["default"].createElement(reactCookie.CookiesProvider, null, /*#__PURE__*/React__default["default"].createElement(reactRedux.Provider, {
+      const ClientJsx = /*#__PURE__*/React__default["default"].createElement(Container, null, /*#__PURE__*/React__default["default"].createElement(reactCookie.CookiesProvider, null, /*#__PURE__*/React__default["default"].createElement(reactRedux.Provider, {
         store: store
       }, /*#__PURE__*/React__default["default"].createElement(reactRouterDom.Router, {
         history: App.browserHistory

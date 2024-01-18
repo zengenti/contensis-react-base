@@ -1,6 +1,6 @@
 import { LinkDepthApiConfig, LinkDepthApiFilters, LinkFields } from './api.d';
 import QueryLevelResults from './QueryLevelResults';
-export declare type LinkDepthSearchServiceConstuctorArgs = Partial<LinkDepthApiConfig> & {
+export type LinkDepthSearchServiceConstuctorArgs = Partial<LinkDepthApiConfig> & {
     params: {
         [key: string]: string | undefined;
     };
