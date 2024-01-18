@@ -1,6 +1,6 @@
 import 'isomorphic-fetch';
 import React from 'react';
-import { render, hydrate } from 'react-dom';
+import { createRoot, hydrateRoot } from 'react-dom/client';
 import { AppContainer } from 'react-hot-loader';
 import { Provider as ReduxProvider } from 'react-redux';
 import { Router } from 'react-router-dom';
@@ -30,7 +30,7 @@ type ReactAppProps = { routes: any; withEvents: any };
 
 class ClientApp {
   constructor(ReactApp: React.ComponentType<ReactAppProps>, config: AppConfig) {
-    const documentRoot = document.getElementById('root');
+    const documentRoot = document.getElementById('root') as HTMLElement;
 
     const {
       stateType = 'immutable',
@@ -64,11 +64,11 @@ class ClientApp {
       if (isProduction)
         loadableReady(
           () => {
-            hydrate(Component, documentRoot);
+            hydrateRoot(documentRoot, Component);
           },
           { namespace: 'modern' }
         );
-      else render(Component, documentRoot);
+      else createRoot(documentRoot).render(Component);
     };
 
     const hmr = store => {

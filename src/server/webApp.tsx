@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ClassType, Component, ComponentClass } from 'react';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
 import { Provider as ReduxProvider } from 'react-redux';
@@ -10,7 +10,10 @@ import minifyCssString from 'minify-css-string';
 import mapJson from 'jsonpath-mapper';
 import { Express } from 'express';
 import { StaticRouterContext } from 'react-router';
-import { ChunkExtractorManager } from '@loadable/server';
+import {
+  ChunkExtractorManager,
+  ChunkExtractorManagerProps,
+} from '@loadable/server';
 import { identity, noop } from 'lodash';
 import cloneDeep from 'lodash/cloneDeep';
 import { buildCleaner } from 'lodash-clean';
@@ -143,10 +146,19 @@ const webApp = (
 
     const loadableExtractor = loadableChunkExtractors();
 
+    type ChunkExtractorManagerPropsForReact18 = ChunkExtractorManagerProps & {
+      children?: React.ReactNode;
+    };
+
+    // Recast ChunkExtractorManager to avoid TS error `Property 'children' does not exist on type...`
+    const ChunkExtractor = ChunkExtractorManager as ClassType<
+      ChunkExtractorManagerPropsForReact18,
+      Component<ChunkExtractorManagerPropsForReact18>,
+      ComponentClass<ChunkExtractorManagerPropsForReact18>
+    >;
+
     const jsx = (
-      <ChunkExtractorManager
-        extractor={loadableExtractor.commonLoadableExtractor}
-      >
+      <ChunkExtractor extractor={loadableExtractor.commonLoadableExtractor}>
         <CookiesProvider cookies={cookies}>
           <ReduxProvider store={store}>
             <StaticRouter context={context} location={url}>
@@ -154,7 +166,7 @@ const webApp = (
             </StaticRouter>
           </ReduxProvider>
         </CookiesProvider>
-      </ChunkExtractorManager>
+      </ChunkExtractor>
     );
 
     const {
