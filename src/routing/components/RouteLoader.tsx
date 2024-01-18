@@ -1,4 +1,5 @@
 import React, { useEffect, useCallback } from 'react';
+import { useCookies } from 'react-cookie';
 import { connect } from 'react-redux';
 import { hot } from 'react-hot-loader';
 import { Redirect, useLocation } from 'react-router-dom';
@@ -27,8 +28,9 @@ import {
   selectUserIsAuthenticated,
 } from '~/user/redux/selectors';
 import { matchUserGroup } from '~/user/util/matchGroups';
-
 import { toJS } from '~/util/ToJs';
+import { CookieHelper } from '~/user/util/CookieHelper.class';
+
 import { Entry } from 'contensis-delivery-api/lib/models';
 import { AppRootProps, RouteComponentProps, RouteLoaderProps } from '../routes';
 
@@ -90,6 +92,7 @@ const RouteLoader = ({
   trailingSlashRedirectCode = 302,
 }: AppRootProps & RouteLoaderProps & IReduxProps) => {
   const location = useLocation();
+  const cookies = new CookieHelper(...useCookies());
   // Always ensure paths are trimmed of trailing slashes so urls are always unique
   const trimmedPath = getTrimmedPath(location.pathname);
 
@@ -98,7 +101,7 @@ const RouteLoader = ({
     matchRoutes(routes.StaticRoutes as RouteConfig[], location.pathname);
   const isStaticRoute = () => matchedStaticRoute().length > 0;
 
-  const staticRoute = isStaticRoute() && matchedStaticRoute()[0];
+  const staticRoute = isStaticRoute() ? matchedStaticRoute()[0] : undefined;
   const routeRequiresLogin = staticRoute && staticRoute.route.requireLogin;
 
   const setPath = useCallback(() => {
@@ -150,7 +153,8 @@ const RouteLoader = ({
       staticRoute,
       withEvents,
       statePath,
-      routes
+      routes,
+      cookies
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
@@ -222,6 +226,10 @@ const RouteLoader = ({
 
   const NotFoundComponent = notFoundComponent ? notFoundComponent : NotFound;
   if (isNotFound || isError) {
+    console.info(
+      `RouteLoader rendering NotFound component: statusCode ${statusCode}, isNotFound ${isNotFound}, isError ${isError}`
+    );
+
     return (
       <Status code={statusCode}>
         <NotFoundComponent statusCode={statusCode} statusText={statusText} />
@@ -278,5 +286,5 @@ const mapDispatchToProps = {
 };
 
 export default hot(module)(
-  connect(mapStateToPropsMemoized, mapDispatchToProps)(toJS(RouteLoader))
+  connect(mapStateToPropsMemoized, mapDispatchToProps)(toJS(RouteLoader as any))
 ) as unknown as (props: AppRootProps & RouteLoaderProps) => JSX.Element;

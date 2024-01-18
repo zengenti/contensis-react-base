@@ -1,13 +1,17 @@
 /* eslint-disable no-console */
 import chalk from 'chalk';
 
-export const unhandledExceptionHandler = (handleExceptions = true) => {
-  const exceptionTypes =
-    handleExceptions === true
-      ? ['uncaughtException', 'unhandledRejection', 'SIGTERM', 'SIGINT'] // Default exception types to add event listeners for
-      : Array.isArray(handleExceptions) // In future we could accept an array of specific exception types to handle for a specific application?
-      ? handleExceptions
-      : [];
+// Default exception types to add event listeners for
+const handleDefaultEvents = ['uncaughtException', 'unhandledRejection'];
+
+export const unhandledExceptionHandler = (
+  handleExceptions: boolean | string[] = handleDefaultEvents
+) => {
+  const exceptionTypes = Array.isArray(handleExceptions)
+    ? handleExceptions
+    : handleExceptions === false
+    ? []
+    : handleDefaultEvents;
 
   for (const type of exceptionTypes) {
     process.on(type, (err: Error) => {

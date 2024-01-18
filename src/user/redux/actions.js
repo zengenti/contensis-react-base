@@ -8,10 +8,11 @@ import {
   RESET_USER_PASSWORD,
 } from './types';
 
-export const loginUser = (username, password) =>
-  action(LOGIN_USER, { username, password });
+export const loginUser = (username, password, cookies) =>
+  action(LOGIN_USER, { username, password, cookies });
 
-export const logoutUser = redirectPath => action(LOGOUT_USER, { redirectPath });
+export const logoutUser = (redirectPath, cookies) =>
+  action(LOGOUT_USER, { redirectPath, cookies });
 
 export const registerUser = (user, mappers) =>
   action(REGISTER_USER, {

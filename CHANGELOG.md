@@ -1,3 +1,39 @@
+#### 3.1.0 (2024-01-18)
+
+##### New Features
+
+*  Handle 401/403 response from Delivery API (27628a7)
+*  add referer header to delivery api requests in ssr (27628a7)
+*  able to specify an array of specific exception types to add listeners and exception handlers for and fixes server not exiting cleanly (27628a7)
+*  Canonical Path support (033e212c)
+*  Upgraded to Styled Components v6 beta (breaking change for Styled Components) (19c114ce)
+*  /search package support for setting dynamic pageSize and fix for /forms subpackage after recent refactoring of imports (1b04662d)
+
+##### Bug Fixes
+
+*  ensure `surrogate-key` response header does not exceed 2000 keys and dedupe surrogate keys as they are collected and aggregated (e50c3583)
+*  update forms package - accessible country searchable dropdown (ab1bd37d)
+*  manually update version to align with another branch so that the ci versioning doesn't fail. (ef0cf3ba)
+*  prefer x-orig-host over host header for currentHostname (6f34c5e2)
+*  ensureNodeTreeSaga now respects language setting (1e67e8fb)
+*  forms package import fix (e847ceca)
+*  `object is not extensible` error when using `selectBreadcrumb` with immer state (59ca555b)
+*  Revert update of Styled Components due to babel compiling issues. (23ef4ab4)
+*  Increase number of user groups returned when requesting user details. (7d9e59a0)
+*  allow use of exported delivery api methods which inherit cache invalidation features (2eeaed7b)
+*  User reducer - Create object copy instead of referencing directly (1dad589b)
+*  preview toolbar cannot edit the correct entry after client-side navigation (4df782cc)
+*  exported `server` object is not working as expected (b3ce8a81)
+
+##### Refactors
+
+*  delivery api utilities now in TypeScript (0b1e8911)
+
+##### Build System / Dependencies
+
+*  fix error in release action (c03516c9)
+*  fix issue with path transformations not applied to alias imports in d.ts files (27628a7)
+
 #### 3.0.1 (2023-01-27)
 
 ##### Bug Fixes

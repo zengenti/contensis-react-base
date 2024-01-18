@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - master
-      - contensis-14
 
 jobs:
   build:

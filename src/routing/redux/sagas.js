@@ -1,3 +1,4 @@
+import to from 'await-to-js';
 import * as log from 'loglevel';
 import { takeEvery, put, select, call, all } from 'redux-saga/effects';
 
@@ -22,13 +23,14 @@ import {
 } from './selectors';
 import { hasNavigationTree } from '~/redux/selectors/navigation';
 import { selectVersionStatus } from '~/redux/selectors/version';
-import { ensureNodeTreeSaga } from '~/redux/sagas/navigation';
 import { handleRequiresLoginSaga } from '~/user/redux/sagas/login';
+import { ensureNodeTreeSaga } from '~/redux/sagas/navigation';
+import { injectRedux as reduxInjector } from '~/redux/store/injectors';
 
+import { LoginHelper } from '~/user';
 import { findContentTypeMapping } from '../util/find-contenttype-mapping';
 import { routeEntryByFieldsQuery } from '../util/queries';
-import { cachedSearch, deliveryApi } from '~/util/ContensisDeliveryApi';
-import { injectRedux as reduxInjector } from '~/redux/store/injectors';
+import { cachedSearchWithCookies } from '~/util/ContensisDeliveryApi';
 
 export const routingSagas = [
   takeEvery(SET_NAVIGATION_PATH, getRouteSaga),
@@ -56,7 +58,9 @@ function* getRouteSaga(action) {
       withEvents,
       routes: { ContentTypeMappings = {} } = {},
       staticRoute,
+      cookies,
     } = action;
+    const api = cachedSearchWithCookies(cookies.raw);
 
     // Inject redux { key, reducer, saga } provided by staticRoute
     if (staticRoute && staticRoute.route.injectRedux)
@@ -154,7 +158,7 @@ function* getRouteSaga(action) {
           // -- apparently it is not correct to request latest content
           // with Node API
 
-          let previewEntry = yield deliveryApi
+          let previewEntry = yield api
             .getClient(deliveryApiStatus, project)
             .entries.get({
               id: entryGuid,
@@ -168,24 +172,49 @@ function* getRouteSaga(action) {
         }
       } else {
         // Handle all other routes
-        pathNode = yield cachedSearch.getNode(
-          {
-            depth: 0,
-            path: currentPath,
-            entryFields: setContentTypeLimits
-              ? ['sys.contentTypeId', 'sys.id']
-              : staticRouteFields || '*',
-            entryLinkDepth: setContentTypeLimits
-              ? 0
-              : typeof staticRouteLinkDepth !== 'undefined'
-              ? staticRouteLinkDepth
-              : entryLinkDepth,
-            language: defaultLang,
-            versionStatus: deliveryApiStatus,
-          },
-          project
+        let nodeError = undefined;
+        [nodeError, pathNode] = yield to(
+          api.getNode(
+            {
+              depth: 0,
+              path: currentPath,
+              entryFields: setContentTypeLimits
+                ? ['sys.contentTypeId', 'sys.id']
+                : staticRouteFields || '*',
+              entryLinkDepth: setContentTypeLimits
+                ? 0
+                : typeof staticRouteLinkDepth !== 'undefined'
+                ? staticRouteLinkDepth
+                : entryLinkDepth,
+              language: defaultLang,
+              versionStatus: deliveryApiStatus,
+            },
+            project
+          )
         );
-        ({ entry } = pathNode || {});
+        if (nodeError) {
+          if ([401, 403].includes(nodeError.status)) {
+            // Capture specific auth errors with the delivery api
+            // and fire the user down the handleRequiresLoginSaga
+            // If auth was successful via a refreshToken we need to reload the page
+            // to run this getRouteSaga again with the security token cookie
+            const userLoggedIn = yield call(handleRequiresLoginSaga, {
+              ...action,
+              requireLogin: true,
+            });
+            if (userLoggedIn && nodeError.status === 401) {
+              // Reload the route so we can re-run the routing request now the
+              // authentication cookies are written
+              return yield call(setRouteSaga, { path: currentPath });
+            } else if (userLoggedIn && nodeError.status === 403) {
+              return yield call(setRouteSaga, {
+                path: LoginHelper.GetAccessDeniedRoute(currentPath),
+              });
+            } else {
+              return yield call(do500, nodeError);
+            }
+          } else throw nodeError;
+        } else ({ entry } = pathNode || {});
 
         if (setContentTypeLimits && pathNode?.entry?.sys?.id) {
           // Get fields[] and linkDepth from ContentTypeMapping to get the entry data
@@ -202,7 +231,7 @@ function* getRouteSaga(action) {
             fields,
             deliveryApiStatus
           );
-          const payload = yield cachedSearch.search(
+          const payload = yield api.search(
             query,
             typeof linkDepth !== 'undefined' ? linkDepth : entryLinkDepth || 0,
             project
@@ -218,6 +247,7 @@ function* getRouteSaga(action) {
       [ancestors, children, siblings] = yield call(
         resolveCurrentNodeOrdinates,
         {
+          api,
           appsays,
           contentTypeMapping,
           language: defaultLang,
@@ -296,6 +326,7 @@ function* getRouteSaga(action) {
 }
 
 function* resolveCurrentNodeOrdinates({
+  api,
   appsays,
   contentTypeMapping,
   language,
@@ -326,7 +357,7 @@ function* resolveCurrentNodeOrdinates({
     if (doNavigation === true || doNavigation.ancestors) {
       apiCall[0] = function* getAncestors() {
         try {
-          return yield cachedSearch.getAncestors(
+          return yield api.getAncestors(
             {
               id: pathNode.id,
               language,
@@ -354,7 +385,7 @@ function* resolveCurrentNodeOrdinates({
         typeof nodeOptions.children === 'boolean' ? {} : nodeOptions.children;
       apiCall[1] = function* getChildren() {
         try {
-          return yield cachedSearch.getNode(
+          return yield api.getNode(
             {
               depth:
                 childrenOptions.depth !== undefined
@@ -386,7 +417,7 @@ function* resolveCurrentNodeOrdinates({
     ) {
       apiCall[2] = function* getSiblings() {
         try {
-          return yield cachedSearch.getSiblings(
+          return yield api.getSiblings(
             {
               id: pathNode.id,
               entryFields: nodeOptions?.siblings?.fields || fields || undefined,
