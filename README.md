@@ -25,7 +25,7 @@ The core of your Contensis React application is in package `@zengenti/contensis-
 The package handles things such as:
 
 - Peer dependencies such as React, react-router-dom, immutable, react-redux... etc.
-- Server side express application serving an isomorphic web app
+- Server side express application serving a Universal JavaScript web app
 - Client side sub-package to handle client-side rendering and hydration
 - Creation of redux store and global state management for core features
 - Routing handled automatically via RouteLoader component which will load entries based on a given url
@@ -105,7 +105,7 @@ Sometimes VSCode may import the reference automatically from an unsupported plac
 
 As of v2.5.0 TypeScript declarations are available to use, and will also benefit applications written in JavaScript
 
-All models are exported with the default package `@zengenti/contensis-react-base`
+All models are exported with the default package `@zengenti/contensis-react-base` 
 
 When importing Types to use in your own TypeScript project, try to always use the root import path e.g. `import { ModelName } from '@zengenti/contensis-react-base';`
 
