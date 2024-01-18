@@ -88,7 +88,7 @@
     "rollup": "^2.70.2",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "ttypescript": "^1.5.15",
-    "typescript": "^5.3.3",
+    "typescript": "^4.9.5",
     "typescript-transform-paths": "^3.4.6",
     "zengenti-forms-package": "git+https://gitlab+deploy-token-11:DRbTWzdaRzkjDWc_VixQ@gitlab.zengenti.com/zengenti-packages/forms.git#next",
     "zengenti-search-package": "git+https://gitlab+deploy-token-5:XKRGRE1p2PrFAxnWwLNz@gitlab.zengenti.com/zengenti-packages/search.git#immer"
