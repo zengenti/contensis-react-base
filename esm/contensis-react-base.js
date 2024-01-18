@@ -1,4 +1,4 @@
-import { c as cachedSearch, d as deliveryApi } from './ContensisDeliveryApi-f05d38c9.js';
+import { c as cachedSearch, d as deliveryApi } from './ContensisDeliveryApi-c66b0cc3.js';
 import { Query as Query$1 } from 'contensis-delivery-api';
 import React from 'react';
 import { Provider } from 'react-redux';
@@ -6,7 +6,7 @@ import mapJson from 'jsonpath-mapper';
 import 'reselect';
 import 'deepmerge';
 import 'query-string';
-import { d as defaultExpressions, c as contentTypeIdExpression, f as filterExpressions, t as termExpressions, o as orderByExpression, a as customWhereExpressions } from './sagas-e7ccebb4.js';
+import { d as defaultExpressions, c as contentTypeIdExpression, f as filterExpressions, t as termExpressions, o as orderByExpression, a as customWhereExpressions } from './sagas-933a8fc8.js';
 import 'immer';
 import 'deep-equal';
 import { Op, Query } from 'contensis-core-api';
@@ -31,11 +31,11 @@ import { c as commonjsGlobal } from './_commonjsHelpers-1789f0cf.js';
 import { buildCleaner } from 'lodash-clean';
 import { CookiesProvider } from 'react-cookie';
 import cookiesMiddleware from 'universal-cookie-express';
-import { c as createStore } from './version-5ef7b2f0.js';
-import { h as history, p as pickProject, r as rootSaga } from './App-153f4a5f.js';
-export { A as ReactApp } from './App-153f4a5f.js';
-import { s as setVersionStatus, a as setVersion } from './version-6f984155.js';
-import { s as selectSurrogateKeys, a as selectRouteEntry, b as selectCurrentProject, g as getImmutableOrJS, c as setCurrentProject } from './selectors-5ed5ae70.js';
+import { c as createStore } from './version-346a9787.js';
+import { h as history, p as pickProject, r as rootSaga } from './App-ff944c78.js';
+export { A as ReactApp } from './App-ff944c78.js';
+import { s as setVersionStatus, a as setVersion } from './version-0fbd1b82.js';
+import { s as selectSurrogateKeys, a as selectRouteEntry, b as selectCurrentProject, g as getImmutableOrJS, c as setCurrentProject } from './selectors-01074974.js';
 import chalk from 'chalk';
 import './CookieConstants-3d3b6531.js';
 import 'loglevel';
@@ -47,10 +47,10 @@ import 'redux-injectors';
 import './reducers-3d5c37d1.js';
 import 'history';
 import 'await-to-js';
-import './ChangePassword.container-6cb4994d.js';
-import './ToJs-e50a9380.js';
+import './ChangePassword.container-ae0f9ce4.js';
+import './ToJs-ae860aad.js';
 import 'react-hot-loader';
-import './RouteLoader-4478e43d.js';
+import './RouteLoader-02eef6d9.js';
 
 /**
  * Util class holds our search results helper boilerplate methods
@@ -632,8 +632,8 @@ const makeLinkDepthMiddleware = ({
 
 const servers$1 = SERVERS; /* global SERVERS */
 const project = PROJECT; /* global PROJECT */
-const alias = ALIAS; /* global ALIAS */
-const deliveryApiHostname = url(alias, project).api;
+const alias$1 = ALIAS; /* global ALIAS */
+const deliveryApiHostname = url(alias$1, project).api;
 const assetProxy = httpProxy.createProxyServer();
 const deliveryProxy = httpProxy.createProxyServer();
 const reverseProxies = (app, reverseProxyPaths = []) => {
@@ -3721,18 +3721,22 @@ const getBundleTags = (loadableExtractor, scripts, staticRoutePath = 'static') =
   return startupTag;
 };
 
+const alias = ALIAS; /* global ALIAS */
+
 const addStandardHeaders = (state, response, packagejson, groups) => {
   if (state) {
     try {
       console.info('About to add headers');
       const routingSurrogateKeys = selectSurrogateKeys(state);
-      const surrogateKeyHeader = ` ${packagejson.name}-app ${routingSurrogateKeys}`;
 
-      // if > 2000 `envalias_any-update`
-
-      response.header('surrogate-key', surrogateKeyHeader);
+      // Check length of surrogate keys and prevent potential header overflow
+      // errors in prod by replacing with `any-update` header that will indiscriminately
+      // invalidate the SSR page cache when any content is updated
+      const surrogateKeys = routingSurrogateKeys.length >= 2000 ? `${alias}_any-update` : routingSurrogateKeys.join(' ');
+      const surrogateKeyHeader = `${packagejson.name}-app ${surrogateKeys}`;
+      response.setHeader('surrogate-key', surrogateKeyHeader);
       addVarnishAuthenticationHeaders(state, response, groups);
-      response.setHeader('Surrogate-Control', `max-age=${getCacheDuration(response.statusCode)}`);
+      response.setHeader('surrogate-control', `max-age=${getCacheDuration(response.statusCode)}`);
     } catch (e) {
       console.info('Error Adding headers', e.message);
     }

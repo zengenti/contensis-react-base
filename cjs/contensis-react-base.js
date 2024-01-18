@@ -2,7 +2,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var ContensisDeliveryApi = require('./ContensisDeliveryApi-e320ef2a.js');
+var ContensisDeliveryApi = require('./ContensisDeliveryApi-9e32960d.js');
 var contensisDeliveryApi = require('contensis-delivery-api');
 var React = require('react');
 var reactRedux = require('react-redux');
@@ -10,7 +10,7 @@ var mapJson = require('jsonpath-mapper');
 require('reselect');
 require('deepmerge');
 require('query-string');
-var sagas = require('./sagas-aced65bc.js');
+var sagas = require('./sagas-e04b94c1.js');
 require('immer');
 require('deep-equal');
 var contensisCoreApi = require('contensis-core-api');
@@ -35,10 +35,10 @@ var _commonjsHelpers = require('./_commonjsHelpers-b3309d7b.js');
 var lodashClean = require('lodash-clean');
 var reactCookie = require('react-cookie');
 var cookiesMiddleware = require('universal-cookie-express');
-var version = require('./version-7c9f983e.js');
-var App = require('./App-5c3337e8.js');
-var version$1 = require('./version-6d864ecd.js');
-var selectors = require('./selectors-e0ddc9ad.js');
+var version = require('./version-79a027cb.js');
+var App = require('./App-7ff737fa.js');
+var version$1 = require('./version-afd4f77e.js');
+var selectors = require('./selectors-46b689d0.js');
 var chalk = require('chalk');
 require('./CookieConstants-000427db.js');
 require('loglevel');
@@ -50,10 +50,10 @@ require('redux-injectors');
 require('./reducers-9afb5f89.js');
 require('history');
 require('await-to-js');
-require('./ChangePassword.container-7de62d6b.js');
-require('./ToJs-42cadab5.js');
+require('./ChangePassword.container-a617190b.js');
+require('./ToJs-149fc5e1.js');
 require('react-hot-loader');
-require('./RouteLoader-c1ec4870.js');
+require('./RouteLoader-049e81e5.js');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -649,8 +649,8 @@ const makeLinkDepthMiddleware = ({
 
 const servers$1 = SERVERS; /* global SERVERS */
 const project = PROJECT; /* global PROJECT */
-const alias = ALIAS; /* global ALIAS */
-const deliveryApiHostname = urls.url(alias, project).api;
+const alias$1 = ALIAS; /* global ALIAS */
+const deliveryApiHostname = urls.url(alias$1, project).api;
 const assetProxy = httpProxy__default["default"].createProxyServer();
 const deliveryProxy = httpProxy__default["default"].createProxyServer();
 const reverseProxies = (app, reverseProxyPaths = []) => {
@@ -3738,18 +3738,22 @@ const getBundleTags = (loadableExtractor, scripts, staticRoutePath = 'static') =
   return startupTag;
 };
 
+const alias = ALIAS; /* global ALIAS */
+
 const addStandardHeaders = (state, response, packagejson, groups) => {
   if (state) {
     try {
       console.info('About to add headers');
       const routingSurrogateKeys = selectors.selectSurrogateKeys(state);
-      const surrogateKeyHeader = ` ${packagejson.name}-app ${routingSurrogateKeys}`;
 
-      // if > 2000 `envalias_any-update`
-
-      response.header('surrogate-key', surrogateKeyHeader);
+      // Check length of surrogate keys and prevent potential header overflow
+      // errors in prod by replacing with `any-update` header that will indiscriminately
+      // invalidate the SSR page cache when any content is updated
+      const surrogateKeys = routingSurrogateKeys.length >= 2000 ? `${alias}_any-update` : routingSurrogateKeys.join(' ');
+      const surrogateKeyHeader = `${packagejson.name}-app ${surrogateKeys}`;
+      response.setHeader('surrogate-key', surrogateKeyHeader);
       addVarnishAuthenticationHeaders(state, response, groups);
-      response.setHeader('Surrogate-Control', `max-age=${getCacheDuration(response.statusCode)}`);
+      response.setHeader('surrogate-control', `max-age=${getCacheDuration(response.statusCode)}`);
     } catch (e) {
       console.info('Error Adding headers', e.message);
     }
