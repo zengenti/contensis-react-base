@@ -1,7 +1,7 @@
 import { Context } from './Enums';
 import { CustomWhereClause } from './Search';
-export declare type AppState = Record<'search', SearchState> & Record<string, any>;
-export declare type SearchState = {
+export type AppState = Record<'search', SearchState> & Record<string, any>;
+export type SearchState = {
     context: keyof typeof Context;
     currentFacet: string;
     currentListing: string;
@@ -12,10 +12,10 @@ export declare type SearchState = {
     tabs: Tab[];
     config: Record<string, boolean>;
 };
-export declare type Facets = {
+export type Facets = {
     [key: string]: Facet;
 };
-export declare type Facet = {
+export type Facet = {
     entries: {
         isLoading: boolean;
         isError: boolean;
@@ -53,10 +53,10 @@ export declare type Facet = {
     tabId: number;
     title: string;
 };
-export declare type Filters = {
+export type Filters = {
     [key: string]: Filter;
 };
-export declare type Filter = {
+export type Filter = {
     contentTypeId?: string;
     customWhere?: CustomWhereClause;
     defaultValue?: string;
@@ -70,7 +70,7 @@ export declare type Filter = {
     renderable?: boolean;
     title?: string;
 };
-export declare type FilterItem = {
+export type FilterItem = {
     contentTypeId?: string;
     title?: string;
     type?: string;
@@ -78,10 +78,10 @@ export declare type FilterItem = {
     path?: string;
     isSelected: boolean;
 };
-export declare type SelectedFilters = {
+export type SelectedFilters = {
     [k: string]: string[];
 };
-export declare type Paging = {
+export type Paging = {
     isLoading: boolean;
     pageCount: number;
     pageIndex: number;
@@ -90,14 +90,14 @@ export declare type Paging = {
     prevPageIndex: number;
     totalCount: number;
 };
-export declare type Tab = {
+export type Tab = {
     currentFacet: string;
     defaultFacet: string;
     id: number;
     label: string;
     totalCount: number;
 };
-export declare type TabAndFacets = Tab & {
+export type TabAndFacets = Tab & {
     facets: {
         [key: string]: Facet;
     };

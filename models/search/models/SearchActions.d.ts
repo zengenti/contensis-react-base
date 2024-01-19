@@ -5,17 +5,17 @@ import { SearchFacet, Listing, Mappers } from '../models/Search';
 import { AppState } from './SearchState';
 import { QueryParams } from './Queries';
 import { TimedSearchResponse } from './SearchUtil';
-declare type Action = {
+type Action = {
     type: string;
 };
-export declare type WithMappers<T> = T & {
+export type WithMappers<T> = T & {
     mappers: Mappers;
 };
-export declare type DebugFlags = boolean | {
+export type DebugFlags = boolean | {
     executeSearch?: boolean;
     preloadOtherFacets?: boolean;
 };
-export declare type TriggerSearchParams = {
+export type TriggerSearchParams = {
     config?: SearchFacet | Listing;
     context: Context | string;
     debug?: DebugFlags;
@@ -28,9 +28,9 @@ export declare type TriggerSearchParams = {
         [key: string]: string;
     };
 };
-export declare type TriggerSearchAction = Action & TriggerSearchParams;
-export declare type TriggerSearchActionCreator = (p: TriggerSearchParams) => TriggerSearchAction;
-declare type InitListingParams = {
+export type TriggerSearchAction = Action & TriggerSearchParams;
+export type TriggerSearchActionCreator = (p: TriggerSearchParams) => TriggerSearchAction;
+type InitListingParams = {
     context: Context;
     debug?: DebugFlags;
     defaultLang?: string;
@@ -43,12 +43,12 @@ declare type InitListingParams = {
     };
     preload?: boolean;
 };
-export declare type InitListingAction = Action & InitListingParams & {
+export type InitListingAction = Action & InitListingParams & {
     ssr?: boolean;
 };
-export declare type SetRouteFiltersOptions = Partial<InitListingAction>;
-export declare type InitListingActionCreator = (p: InitListingParams) => InitListingAction;
-export declare type LoadFiltersSearchResults = Action & {
+export type SetRouteFiltersOptions = Partial<InitListingAction>;
+export type InitListingActionCreator = (p: InitListingParams) => InitListingAction;
+export type LoadFiltersSearchResults = Action & {
     error: any;
     facetKey: string;
     filterKey: string;
@@ -57,7 +57,7 @@ export declare type LoadFiltersSearchResults = Action & {
     context: Context;
     mapper: Mappers['filterItems'];
 };
-export declare type SearchResults = {
+export type SearchResults = {
     action: ExecuteSearchAction;
     featuredResult?: TimedSearchResponse;
     pageIndex: number;
@@ -65,7 +65,7 @@ export declare type SearchResults = {
     result: TimedSearchResponse;
     state: AppState;
 };
-export declare type LoadFiltersCompleteAction = Action & {
+export type LoadFiltersCompleteAction = Action & {
     error: any;
     facetKey: string;
     filterKey: string;
@@ -74,14 +74,14 @@ export declare type LoadFiltersCompleteAction = Action & {
     context: Context;
     mapper: Mappers['filterItems'];
 };
-export declare type EnsureSearchAction = InitListingAction & {
+export type EnsureSearchAction = InitListingAction & {
     ogState: AppState;
 };
-export declare type ExecuteSearchAction = EnsureSearchAction & {
+export type ExecuteSearchAction = EnsureSearchAction & {
     preload: boolean;
     queryParams: QueryParams;
 };
-export declare type SetSearchEntriesParams = {
+export type SetSearchEntriesParams = {
     type: string;
     context: Context;
     defaultLang: string;
@@ -95,41 +95,41 @@ export declare type SetSearchEntriesParams = {
         [key: string]: string;
     };
 };
-export declare type SetSearchEntriesAction = Action & SetSearchEntriesParams;
-export declare type ApplySearchFilterAction = Action & {
+export type SetSearchEntriesAction = Action & SetSearchEntriesParams;
+export type ApplySearchFilterAction = Action & {
     filter: string;
     key: string;
     isUnknownItem: boolean;
     scrollToElement?: string;
 };
-export declare type ApplySearchFilterActionCreator = (filter: string, key: string) => ApplySearchFilterAction;
-export declare type ClearFiltersAction = Action;
-export declare type ClearFiltersActionCreator = (filterKey?: string) => ClearFiltersAction;
-export declare type UpdateCurrentFacetAction = Action & {
+export type ApplySearchFilterActionCreator = (filter: string, key: string) => ApplySearchFilterAction;
+export type ClearFiltersAction = Action;
+export type ClearFiltersActionCreator = (filterKey?: string) => ClearFiltersAction;
+export type UpdateCurrentFacetAction = Action & {
     facet: string;
 };
-export declare type UpdateCurrentFacetActionCreator = (facet: string) => UpdateCurrentFacetAction;
-export declare type UpdateCurrentTabAction = Action & {
+export type UpdateCurrentFacetActionCreator = (facet: string) => UpdateCurrentFacetAction;
+export type UpdateCurrentTabAction = Action & {
     id: number;
 };
-export declare type UpdateCurrentTabActionCreator = (id: number) => UpdateCurrentFacetAction;
-export declare type UpdateSearchTermAction = Action & {
+export type UpdateCurrentTabActionCreator = (id: number) => UpdateCurrentFacetAction;
+export type UpdateSearchTermAction = Action & {
     term: string;
 };
-export declare type UpdateSearchTermActionCreator = (term: string) => UpdateSearchTermAction;
-export declare type UpdateSortOrderAction = Action & {
+export type UpdateSearchTermActionCreator = (term: string) => UpdateSearchTermAction;
+export type UpdateSortOrderAction = Action & {
     orderBy: string;
     facet: string;
 };
-export declare type UpdateSortOrderActionCreator = (orderBy: string, facet: string) => UpdateSortOrderAction;
-export declare type UpdatePageIndexAction = Action & {
+export type UpdateSortOrderActionCreator = (orderBy: string, facet: string) => UpdateSortOrderAction;
+export type UpdatePageIndexAction = Action & {
     pageIndex: number;
     scrollToElement?: string;
 };
-export declare type UpdatePageIndexActionCreator = (pageIndex: number) => UpdatePageIndexAction;
-export declare type UpdatePageSizeAction = Action & {
+export type UpdatePageIndexActionCreator = (pageIndex: number) => UpdatePageIndexAction;
+export type UpdatePageSizeAction = Action & {
     pageSize: number;
     scrollToElement?: string;
 };
-export declare type UpdatePageSizeActionCreator = (pageSize: number) => UpdatePageSizeAction;
+export type UpdatePageSizeActionCreator = (pageSize: number) => UpdatePageSizeAction;
 export {};

@@ -4,7 +4,7 @@ import MappingTemplate, { PureJsFunction } from 'jsonpath-mapper/dist/models/Tem
 import { AppState } from "../redux/appstate";
 import { EntryMapper, RouteNode } from "../routing/routes";
 export { default as mapJson, jpath } from 'jsonpath-mapper';
-declare type Mappers<S> = {
+type Mappers<S> = {
     [contentTypeId: string]: MappingTemplate<S>;
 };
 /**

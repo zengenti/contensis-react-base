@@ -3,11 +3,11 @@ import { PagedList, Query } from 'contensis-core-api';
 import { CustomApi } from '../models/Search';
 import { TimedSearchResponse } from '../models/SearchUtil';
 export declare function fixFreeTextForElastic(s: string): string;
-export declare const timedSearch: (query: Query, linkDepth?: number, projectId?: string | undefined, env?: string | undefined) => Promise<null | TimedSearchResponse>;
+export declare const timedSearch: (query: Query, linkDepth?: number, projectId?: string, env?: string) => Promise<null | TimedSearchResponse>;
 export declare const getItemsFromResult: (result?: {
     duration: number;
     payload: PagedList<Entry> | any[];
-} | undefined) => Entry[];
+}) => Entry[];
 export declare const extractQuotedPhrases: (searchTerm: string) => string[];
 export declare const buildUrl: (route: string, params: {
     [key: string]: string;

@@ -1,16 +1,14 @@
-import { Query } from 'contensis-core-api';
-import { VersionStatus } from 'contensis-core-api/lib/models';
-import { Operators } from 'contensis-delivery-api/lib/entries/query';
+import { Operators, Query, VersionStatus } from 'contensis-core-api';
 import { CustomWhereClause, FeaturedResults, WeightedSearchField } from './Search';
-export declare type FieldOperators = Exclude<keyof Operators, 'and' | 'or' | 'not'>;
-export declare type LogicOperators = 'and' | 'or' | 'not';
-export declare type FilterExpression = {
+export type FieldOperators = Exclude<keyof Operators, 'and' | 'or' | 'not'>;
+export type LogicOperators = 'and' | 'or' | 'not';
+export type FilterExpression = {
     key: string;
     values: string[];
     fieldOperator: FieldOperators;
     logicOperator: LogicOperators;
 };
-export declare type SearchQueryOptions = {
+export type SearchQueryOptions = {
     assetTypes: string[];
     contentTypeIds: string[];
     customWhere: any;
@@ -31,7 +29,7 @@ export declare type SearchQueryOptions = {
     webpageTemplates: string[];
     weightedSearchFields: WeightedSearchField[];
 };
-export declare type QueryParams = SearchQueryOptions & {
+export type QueryParams = SearchQueryOptions & {
     env: string;
     internalPageIndex: number;
     internalPaging: boolean;
@@ -44,5 +42,5 @@ export declare type QueryParams = SearchQueryOptions & {
         [key: string]: string;
     };
 };
-export declare type SearchQuery = ({ contentTypeIds, customWhere, dynamicOrderBy, excludeIds, featuredResults, fields, filters, fuzzySearch, languages, pageSize, pageIndex, omitDefaultSearchFields, orderBy, searchTerm, versionStatus, webpageTemplates, weightedSearchFields, }: SearchQueryOptions, isFeatured?: boolean) => Query;
-export declare type FilterQuery = (contentTypeIds: string[], versionStatus: VersionStatus, customWhere?: CustomWhereClause) => Query;
+export type SearchQuery = ({ contentTypeIds, customWhere, dynamicOrderBy, excludeIds, featuredResults, fields, filters, fuzzySearch, languages, pageSize, pageIndex, omitDefaultSearchFields, orderBy, searchTerm, versionStatus, webpageTemplates, weightedSearchFields, }: SearchQueryOptions, isFeatured?: boolean) => Query;
+export type FilterQuery = (contentTypeIds: string[], versionStatus: VersionStatus, customWhere?: CustomWhereClause) => Query;

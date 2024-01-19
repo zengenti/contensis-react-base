@@ -1,4 +1,4 @@
-/// <reference types="react" />
+import React from 'react';
 export interface IVersionInfoProps {
     deliveryApi: {
         rootUrl: string;
@@ -6,7 +6,9 @@ export interface IVersionInfoProps {
         projectId: string;
         livePublishingRootUrl: string;
     };
-    devEnv: any;
+    devEnv: {
+        [k: string]: string;
+    };
     disableSsrRedux: boolean;
     nodeEnv: string;
     packageDetail: any;
@@ -36,5 +38,5 @@ export interface IVersionInfoProps {
     };
     zenPackageVersions: string[];
 }
-declare const _default: import("react-redux").ConnectedComponent<({ deliveryApi, devEnv, disableSsrRedux, nodeEnv, packageDetail, project, projects, proxyDeliveryApi, publicUri, reverseProxyPaths, servers, uris, version, zenPackageVersions, }: IVersionInfoProps) => JSX.Element, import("react-redux").Omit<IVersionInfoProps, "version" | "project" | "projects" | "disableSsrRedux" | "reverseProxyPaths" | "proxyDeliveryApi" | "packageDetail" | "uris" | "zenPackageVersions" | "deliveryApi" | "devEnv" | "nodeEnv" | "publicUri" | "servers">>;
+declare const _default: import("react-redux").ConnectedComponent<({ deliveryApi, devEnv, disableSsrRedux, nodeEnv, packageDetail, project, projects, proxyDeliveryApi, publicUri, reverseProxyPaths, servers, uris, version, zenPackageVersions, }: IVersionInfoProps) => React.JSX.Element, import("react-redux").Omit<IVersionInfoProps, "version" | "project" | "projects" | "disableSsrRedux" | "reverseProxyPaths" | "proxyDeliveryApi" | "packageDetail" | "uris" | "zenPackageVersions" | "deliveryApi" | "devEnv" | "nodeEnv" | "publicUri" | "servers">>;
 export default _default;

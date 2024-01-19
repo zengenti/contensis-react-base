@@ -1,7 +1,7 @@
 import 'isomorphic-fetch';
 import React from 'react';
 import { AppConfig } from "../config";
-declare type ReactAppProps = {
+type ReactAppProps = {
     routes: any;
     withEvents: any;
 };

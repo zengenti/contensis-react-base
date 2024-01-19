@@ -1,5 +1,5 @@
-/// <reference types="react" />
+import React from 'react';
 export declare const Loading: {
-    (): JSX.Element;
+    (): React.JSX.Element;
     propTypes: {};
 };
