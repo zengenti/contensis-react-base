@@ -1,7 +1,6 @@
 import React, { useEffect, useCallback } from 'react';
 import { useCookies } from 'react-cookie';
 import { connect } from 'react-redux';
-import { hot } from 'react-hot-loader';
 import { Redirect, useLocation } from 'react-router-dom';
 import { renderRoutes, matchRoutes, RouteConfig } from 'react-router-config';
 import { createSelector } from 'reselect';
@@ -285,6 +284,9 @@ const mapDispatchToProps = {
   setNavigationPath,
 };
 
-export default hot(module)(
-  connect(mapStateToPropsMemoized, mapDispatchToProps)(toJS(RouteLoader as any))
-) as unknown as (props: AppRootProps & RouteLoaderProps) => JSX.Element;
+export default connect(
+  mapStateToPropsMemoized,
+  mapDispatchToProps
+)(toJS(RouteLoader as any)) as unknown as (
+  props: AppRootProps & RouteLoaderProps
+) => JSX.Element;

@@ -1,7 +1,6 @@
 import 'isomorphic-fetch';
 import React from 'react';
 import { createRoot, hydrateRoot } from 'react-dom/client';
-import { AppContainer } from 'react-hot-loader';
 import { Provider as ReduxProvider } from 'react-redux';
 import { Router } from 'react-router-dom';
 import { loadableReady } from '@loadable/component';
@@ -28,9 +27,6 @@ declare let window: typeof globalThis & {
 
 type ReactAppProps = { routes: any; withEvents: any };
 
-// Fix TS2769 error No overload matches this call
-const Container = AppContainer as any; // as typeof AppContainer;
-
 class ClientApp {
   constructor(ReactApp: React.ComponentType<ReactAppProps>, config: AppConfig) {
     const documentRoot = document.getElementById('root') as HTMLElement;
@@ -45,15 +41,13 @@ class ClientApp {
 
     const GetClientJSX = store => {
       const ClientJsx = (
-        <Container>
-          <CookiesProvider>
-            <ReduxProvider store={store}>
-              <Router history={history}>
-                <ReactApp routes={routes} withEvents={withEvents} />
-              </Router>
-            </ReduxProvider>
-          </CookiesProvider>
-        </Container>
+        <CookiesProvider>
+          <ReduxProvider store={store}>
+            <Router history={history}>
+              <ReactApp routes={routes} withEvents={withEvents} />
+            </Router>
+          </ReduxProvider>
+        </CookiesProvider>
       );
       return ClientJsx;
     };
