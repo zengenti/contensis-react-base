@@ -1,0 +1,45 @@
+name: Node.js CI
+
+on:
+  push:
+    branches:
+      - feat/react18
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    # runs-on: self-hosted
+    env:
+      NPM_TAG: next
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '16.x'
+      - name: Install project dependencies
+        run: |
+          npm i npm@^9.8.1 -g
+          npm ci --legacy-peer-deps
+      - name: Setup GIT
+        run: |
+          git config user.email "github@zengenti.com"
+          git config user.name "$GITHUB_ACTOR"
+      - name: Build package and increment version
+        run: |
+          npm run build
+          npm version prerelease --preid=beta --no-git-tag-version
+      - name: Push version increment to GIT
+        run: |
+          git add -A
+          git commit -m "ci: bumps version [skip ci]"
+          git push
+        env:
+          # The secret is passed automatically. Nothing to configure.
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish prerelease package
+        run: |
+          npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
+          npm publish --tag ${{ env.NPM_TAG }} --ignore-scripts
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
