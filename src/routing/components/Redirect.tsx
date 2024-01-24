@@ -1,13 +1,15 @@
 import React, { PropsWithChildren } from 'react';
+import { Navigate } from 'react-router-dom';
 import { useHttpContext } from '../httpContext';
 
-export const Status = ({
+export const Redirect = ({
   code,
-  children,
-}: PropsWithChildren<{ code: number }>) => {
+  to,
+}: PropsWithChildren<{ code: 301 | 302; to: string }>) => {
   const httpContext = useHttpContext();
   if (httpContext) {
     httpContext.statusCode = code;
+    httpContext.url = to;
   }
-  return <>{children}</>;
+  return <Navigate to={to} />;
 };

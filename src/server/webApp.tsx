@@ -1,15 +1,14 @@
 import React, { ClassType, Component, ComponentClass } from 'react';
 import { renderToString } from 'react-dom/server';
-import { StaticRouter } from 'react-router-dom';
+import { StaticRouter } from 'react-router-dom/server';
 import { Provider as ReduxProvider } from 'react-redux';
-import { matchRoutes } from 'react-router-config';
+import { matchRoutes, RouteObject } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { ServerStyleSheet } from 'styled-components';
 import serialize from 'serialize-javascript';
 import minifyCssString from 'minify-css-string';
 import mapJson from 'jsonpath-mapper';
 import { Express, Request, Response } from 'express';
-import { StaticRouterContext } from 'react-router';
 import {
   ChunkExtractorManager,
   ChunkExtractorManagerProps,
@@ -26,12 +25,15 @@ import { history } from '~/redux/store/history';
 import rootSaga from '~/redux/sagas';
 
 import { setVersion, setVersionStatus } from '~/redux/actions/version';
+import { HttpContext } from '~/routing/httpContext';
 import { setCurrentProject } from '~/routing/redux/actions';
 
 import { deliveryApi } from '~/util/ContensisDeliveryApi';
+import { mergeStaticRoutes } from '~/util/mergeStaticRoutes';
 import pickProject from '~/util/pickProject';
 import stringifyAttributes from './util/stringifyAttributes';
 
+import { MatchedRoute, StaticRoute } from '../';
 import { getCacheDuration } from './features/caching/cacheDuration.schema';
 import handleResponse from './features/response-handler';
 
@@ -97,10 +99,18 @@ const webApp = (
     ) => {
       const { url } = request;
 
-      const matchedStaticRoute = () =>
-        matchRoutes(routes.StaticRoutes, request.path);
-      const isStaticRoute = () => matchedStaticRoute().length > 0;
-      const staticRoute = isStaticRoute() && matchedStaticRoute()[0];
+      const matchedStaticRoute = matchRoutes(
+        routes.StaticRoutes as RouteObject[],
+        request.path
+      );
+      const isStaticRoute = matchedStaticRoute && matchedStaticRoute.length > 0;
+
+      if (isStaticRoute) {
+        mergeStaticRoutes(matchedStaticRoute);
+      }
+
+      const staticRoute: MatchedRoute<string, StaticRoute> | null =
+        isStaticRoute ? matchedStaticRoute.pop() || null : null;
 
       // Allow certain routes to avoid SSR
       const onlyDynamic = staticRoute && staticRoute.route.ssr === false;
@@ -119,7 +129,9 @@ const webApp = (
         STATIC: ({ static: value }) => normaliseQs(value) || onlySSR,
       });
 
-      const context: StaticRouterContext = {};
+      const context: any = {
+        location: '',
+      };
       // Track the current statusCode via the response object
       response.status(200);
 
@@ -153,30 +165,32 @@ const webApp = (
       const groups = allowedGroups && allowedGroups[project];
       store.dispatch(setCurrentProject(project, groups, hostname));
 
-    const loadableExtractor = loadableChunkExtractors();
+      const loadableExtractor = loadableChunkExtractors();
 
-    type ChunkExtractorManagerPropsForReact18 = ChunkExtractorManagerProps & {
-      children?: React.ReactNode;
-    };
+      type ChunkExtractorManagerPropsForReact18 = ChunkExtractorManagerProps & {
+        children?: React.ReactNode;
+      };
 
-    // Recast ChunkExtractorManager to avoid TS error `Property 'children' does not exist on type...`
-    const ChunkExtractor = ChunkExtractorManager as ClassType<
-      ChunkExtractorManagerPropsForReact18,
-      Component<ChunkExtractorManagerPropsForReact18>,
-      ComponentClass<ChunkExtractorManagerPropsForReact18>
-    >;
+      // Recast ChunkExtractorManager to avoid TS error `Property 'children' does not exist on type...`
+      const ChunkExtractor = ChunkExtractorManager as ClassType<
+        ChunkExtractorManagerPropsForReact18,
+        Component<ChunkExtractorManagerPropsForReact18>,
+        ComponentClass<ChunkExtractorManagerPropsForReact18>
+      >;
 
-    const jsx = (
-      <ChunkExtractor extractor={loadableExtractor.commonLoadableExtractor}>
-        <CookiesProvider cookies={request.universalCookies}>
-          <ReduxProvider store={store}>
-            <StaticRouter context={context} location={url}>
-              <ReactApp routes={routes} withEvents={withEvents} />
-            </StaticRouter>
-          </ReduxProvider>
-        </CookiesProvider>
-      </ChunkExtractor>
-    );
+      const jsx = (
+        <ChunkExtractor extractor={loadableExtractor.commonLoadableExtractor}>
+          <CookiesProvider cookies={request.universalCookies}>
+            <ReduxProvider store={store}>
+              <HttpContext.Provider value={context}>
+                <StaticRouter location={url}>
+                  <ReactApp routes={routes} withEvents={withEvents} />
+                </StaticRouter>
+              </HttpContext.Provider>
+            </ReduxProvider>
+          </CookiesProvider>
+        </ChunkExtractor>
+      );
 
       const {
         templateHTML = '',

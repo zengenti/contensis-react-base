@@ -1,8 +1,8 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, cloneElement } from 'react';
 import { useCookies } from 'react-cookie';
 import { connect } from 'react-redux';
-import { Redirect, useLocation } from 'react-router-dom';
-import { renderRoutes, matchRoutes, RouteConfig } from 'react-router-config';
+import { useLocation, matchRoutes, RouteObject } from 'react-router-dom';
+
 import { createSelector } from 'reselect';
 
 import NotFound from './NotFound';
@@ -30,8 +30,16 @@ import { matchUserGroup } from '~/user/util/matchGroups';
 import { toJS } from '~/util/ToJs';
 import { CookieHelper } from '~/user/util/CookieHelper.class';
 
+import { mergeStaticRoutes } from '~/util/mergeStaticRoutes';
 import { Entry } from 'contensis-delivery-api/lib/models';
-import { AppRootProps, RouteComponentProps, RouteLoaderProps } from '../routes';
+import {
+  AppRootProps,
+  RouteLoaderProps,
+  StaticRoute,
+  MatchedRoute,
+} from '../routes';
+import { StaticRouteLoader } from './StaticRouteLoader';
+import { Redirect } from './Redirect';
 
 const replaceDoubleSlashRecursive = (path: string) => {
   const nextPath = path.replace(/\/\//, '/');
@@ -52,6 +60,42 @@ const getTrimmedPath = path => {
     }
   }
   return path;
+};
+
+const processStaticRoutes = (
+  staticRoutes: StaticRoute[],
+  componentProps: Partial<IReduxProps>
+) => {
+  const { projectId, contentTypeId, entry, mappedEntry, isLoggedIn } =
+    componentProps;
+  return staticRoutes.map(x => {
+    const route = { ...x };
+    if (route.component) {
+      route.element = (
+        <route.component
+          projectId={projectId}
+          contentTypeId={contentTypeId ? contentTypeId : undefined}
+          entry={entry}
+          mappedEntry={mappedEntry}
+          isLoggedIn={isLoggedIn}
+        />
+      );
+      delete route.component;
+    }
+    if (route.element) {
+      route.element = cloneElement(route.element as React.ReactElement<any>, {
+        projectId,
+        contentTypeId,
+        entry,
+        mappedEntry,
+        isLoggedIn,
+      });
+    }
+    if (route.children) {
+      route.children = processStaticRoutes(route.children, componentProps);
+    }
+    return route;
+  });
 };
 
 interface IReduxProps {
@@ -95,32 +139,55 @@ const RouteLoader = ({
   // Always ensure paths are trimmed of trailing slashes so urls are always unique
   const trimmedPath = getTrimmedPath(location.pathname);
 
-  // Match any Static Routes a developer has defined
-  const matchedStaticRoute = () =>
-    matchRoutes(routes.StaticRoutes as RouteConfig[], location.pathname);
-  const isStaticRoute = () => matchedStaticRoute().length > 0;
+  // Convert any react-router-v5 style routes to react-router-v6 style routes.
+  const staticRoutes = processStaticRoutes(routes.StaticRoutes, {
+    projectId,
+    contentTypeId,
+    entry,
+    mappedEntry,
+    isLoggedIn,
+  });
 
-  const staticRoute = isStaticRoute() ? matchedStaticRoute()[0] : undefined;
-  const routeRequiresLogin = staticRoute && staticRoute.route.requireLogin;
+  // Match any Static Routes a developer has defined
+  const matchedStaticRoute = matchRoutes(
+    staticRoutes as RouteObject[],
+    location
+  );
+  const isStaticRoute = matchedStaticRoute && matchedStaticRoute.length > 0;
+
+  // Combine custom params for all static routes, with the furthest config taking precedence.
+  if (isStaticRoute) {
+    mergeStaticRoutes(matchedStaticRoute);
+  }
+
+  const staticRoute: MatchedRoute<string, StaticRoute> | undefined =
+    isStaticRoute ? matchedStaticRoute.pop() || undefined : undefined;
+
+  const routeRequiresLogin = staticRoute
+    ? staticRoute.route.requireLogin
+    : undefined;
 
   const setPath = useCallback(() => {
     // Use serverPath to control the path we send to siteview node api to resolve a route
     let serverPath = '';
-    if (staticRoute && staticRoute.match && staticRoute.match.isExact) {
-      const { match, route } = staticRoute;
+    if (staticRoute && staticRoute.pathname === staticRoute.pathnameBase) {
+      const { route, pathname, params } = staticRoute;
 
       if (route.path?.includes('*')) {
         // Send the whole url to api if we have matched route containing wildcard
-        serverPath = match.url;
+        serverPath = pathname;
       } else if (typeof route.fetchNodeLevel === 'number') {
         // Send all url parts to a specified level to api
-        serverPath = match.url
+        serverPath = pathname
           .split('/')
           .splice(0, route.fetchNodeLevel + 1)
           .join('/');
-      } else if (route.fetchNode?.params) {
+      } else if (
+        typeof route.fetchNode === 'object' &&
+        route.fetchNode?.params
+      ) {
         const fetchNodeParams: string[] = route.fetchNode.params;
-        const routeParams: { [key: string]: string } = match.params;
+        const routeParams = params;
 
         const regexExp = new RegExp(
           Object.keys(routeParams)
@@ -129,17 +196,18 @@ const RouteLoader = ({
           'g'
         );
 
-        serverPath = match.path
+        serverPath = pathname
           .replace(/\?/g, '')
           .replace(regexExp, matched => {
             const param = matched.replace(':', '');
-            if (fetchNodeParams.includes(param)) return routeParams[param];
+            if (fetchNodeParams.includes(param))
+              return routeParams[param] || '';
             else return '';
           })
           .replace(/\/$/, '');
       } else {
         // Send all non-parameterised url parts to api
-        serverPath = (route.path as string)
+        serverPath = (route.fullPath as string)
           ?.split('/')
           .filter(p => !p.startsWith(':'))
           .join('/');
@@ -175,25 +243,17 @@ const RouteLoader = ({
   // Need to redirect when url endswith a /
   if (location.pathname.length > trimmedPath.length) {
     return (
-      <Status code={trailingSlashRedirectCode}>
-        <Redirect to={`${trimmedPath}${location.search}${location.hash}`} />
-      </Status>
+      <Redirect
+        code={trailingSlashRedirectCode || 302}
+        to={`${trimmedPath}${location.search}${location.hash}`}
+      />
     );
   }
 
   // Render any Static Routes a developer has defined
-  if (isStaticRoute() && !(!isLoggedIn && routeRequiresLogin)) {
+  if (isStaticRoute && !(!isLoggedIn && routeRequiresLogin)) {
     if (matchUserGroup(userGroups, routeRequiresLogin))
-      return renderRoutes(
-        routes.StaticRoutes as RouteConfig[],
-        {
-          projectId,
-          contentTypeId,
-          entry,
-          mappedEntry,
-          isLoggedIn,
-        } as RouteComponentProps
-      );
+      return <StaticRouteLoader staticRoutes={staticRoutes} />;
   }
 
   // Render a supplied Loading component if the route

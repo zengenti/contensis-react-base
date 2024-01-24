@@ -2,7 +2,7 @@ import 'isomorphic-fetch';
 import React from 'react';
 import { createRoot, hydrateRoot } from 'react-dom/client';
 import { Provider as ReduxProvider } from 'react-redux';
-import { Router } from 'react-router-dom';
+import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
 import { loadableReady } from '@loadable/component';
 import { parse } from 'query-string';
 import { CookiesProvider } from 'react-cookie';
@@ -43,9 +43,9 @@ class ClientApp {
       const ClientJsx = (
         <CookiesProvider>
           <ReduxProvider store={store}>
-            <Router history={history}>
+            <HistoryRouter history={history as any}>
               <ReactApp routes={routes} withEvents={withEvents} />
-            </Router>
+            </HistoryRouter>
           </ReduxProvider>
         </CookiesProvider>
       );

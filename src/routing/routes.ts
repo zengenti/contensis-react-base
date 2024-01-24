@@ -1,4 +1,4 @@
-import { MatchedRoute, RouteConfig } from 'react-router-config';
+import type { RouteObject, RouteMatch } from 'react-router';
 import { Entry, Node } from 'contensis-delivery-api/lib/models';
 import React from 'react';
 import { AppState } from '~/redux/appstate';
@@ -7,6 +7,13 @@ import { CookieHelper } from '~/user/util/CookieHelper.class';
 type RouteComponent<Props> = React.ComponentType<Props>;
 
 export type RouteNode = Node & { ancestors: Node[]; children: Node[] };
+
+export type MatchedRoute<
+  ParamKey extends string = string,
+  TRouteObject extends RouteObject = RouteObject
+> = Omit<RouteMatch<ParamKey>, 'route'> & {
+  route: TRouteObject;
+};
 
 export type AppRoutes = {
   ContentTypeMappings: ContentTypeMapping[];
@@ -75,8 +82,10 @@ export type ContentTypeMapping = {
   requireLogin?: RequireLogin;
 };
 
-export type StaticRoute = Omit<RouteConfig, 'component'> & {
-  component: RouteComponent<RouteComponentProps>;
+export type StaticRoute = Omit<RouteObject, 'children'> & {
+  index?: false | undefined; // TS2344: Type 'StaticRoute' is not assignable to type 'NonIndexRouteObject'. Type 'boolean | undefined' is not assignable to type 'false | undefined'.
+  component?: RouteComponent<RouteComponentProps>;
+  children?: StaticRoute[];
   fetchNode?:
     | boolean
     | {
@@ -96,13 +105,14 @@ export type StaticRoute = Omit<RouteConfig, 'component'> & {
   requireLogin?: RequireLogin;
   ssr?: boolean;
   ssrOnly?: boolean;
+  fullPath?: string;
 };
 
 export type OnRouteLoadArgs = {
   cookies: CookieHelper;
   location: { pathname: string; search: string; hash: string; key?: string };
   path: string;
-  staticRoute: MatchedRoute<any, StaticRoute>;
+  staticRoute: MatchedRoute<string, StaticRoute>;
   statePath: string;
 };
 
@@ -111,7 +121,7 @@ export type OnRouteLoadedArgs = {
   entry: Entry | any;
   location: { pathname: string; search: string; hash: string; key?: string };
   path: string;
-  staticRoute: MatchedRoute<any, StaticRoute>;
+  staticRoute: MatchedRoute<string, StaticRoute>;
 };
 
 export type RouteLoadOptions = {
