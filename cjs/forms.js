@@ -87,6 +87,7 @@ var reducer = immer.produce((state, action) => {
         state[formId] = initialFormData;
         return;
       }
+
     case SET_FORM_DATA:
       {
         const {
@@ -107,6 +108,7 @@ var reducer = immer.produce((state, action) => {
         state[formId].settings = settings;
         return;
       }
+
     case SET_CURRENT_PAGE:
       {
         const {
@@ -120,6 +122,7 @@ var reducer = immer.produce((state, action) => {
         state[formId].pagingInfo.pageCount = pageCount;
         return;
       }
+
     case SET_FIELD_VALUE:
       {
         const {
@@ -130,18 +133,19 @@ var reducer = immer.produce((state, action) => {
         state[formId].data[id] = value;
         return;
       }
+
     case SET_DEFAULT_FIELD_VALUE:
       {
         const {
           formId,
           value
         } = action || {};
-        state[formId].data = {
-          ...state[formId].data,
+        state[formId].data = { ...state[formId].data,
           ...value
         };
         return;
       }
+
     case SET_SINGLE_CHECKBOX_VALUE:
       {
         const {
@@ -152,6 +156,7 @@ var reducer = immer.produce((state, action) => {
         state[formId].data[id] = value;
         return;
       }
+
     case SET_MULTIPLE_CHECKBOX_VALUE:
       {
         const {
@@ -164,6 +169,7 @@ var reducer = immer.produce((state, action) => {
         if (value) state[formId].data[id] = [...checked, label];else state[formId].data[id] = checked.filter(v => v !== label);
         return;
       }
+
     case SET_DATE_RANGE_VALUES:
       {
         const {
@@ -175,6 +181,7 @@ var reducer = immer.produce((state, action) => {
         state[formId].data[id][dateType] = value;
         return;
       }
+
     case SET_FIELD_ERROR:
       {
         const {
@@ -184,6 +191,7 @@ var reducer = immer.produce((state, action) => {
         state[formId].fieldErrors = value;
         return;
       }
+
     case SET_SUBMITTING_FORM:
       {
         const {
@@ -193,6 +201,7 @@ var reducer = immer.produce((state, action) => {
         state[formId].status.isSubmitting = isSubmitting;
         return;
       }
+
     case SUBMIT_FORM_SUCCESS:
       {
         const {
@@ -204,6 +213,7 @@ var reducer = immer.produce((state, action) => {
         state[formId].status.validation.sent = false;
         return;
       }
+
     case SUBMIT_FORM_FOR_VALIDATION:
       {
         const {
@@ -215,6 +225,7 @@ var reducer = immer.produce((state, action) => {
         state[formId].status.hasError = false;
         return;
       }
+
     case SET_SUCCESS_MESSAGE:
       {
         const {
@@ -224,6 +235,7 @@ var reducer = immer.produce((state, action) => {
         state[formId].status.messages.success = message;
         return;
       }
+
     case SUBMIT_FORM_ERROR:
       {
         const {
@@ -234,6 +246,7 @@ var reducer = immer.produce((state, action) => {
         state[formId].status.validation.sent = false;
         return;
       }
+
     case SET_FORM_ENTRIES:
       {
         const {
@@ -249,6 +262,7 @@ var reducer = immer.produce((state, action) => {
         state[formId].entries = entryObject;
         return;
       }
+
     case SET_ERROR:
       {
         const {
@@ -258,6 +272,7 @@ var reducer = immer.produce((state, action) => {
         state[formId].status.isSubmitting = false;
         return;
       }
+
     default:
       return state;
   }
@@ -267,6 +282,7 @@ const selectForms = state => state.forms;
 const makeSelectPagedFields = formId => reselect.createSelector(selectForms, forms => {
   if (forms !== null && forms !== void 0 && forms[formId]) {
     var _forms$formId, _forms$formId2;
+
     const pagingInfo = forms === null || forms === void 0 ? void 0 : (_forms$formId = forms[formId]) === null || _forms$formId === void 0 ? void 0 : _forms$formId.pagingInfo;
     const fields = forms === null || forms === void 0 ? void 0 : (_forms$formId2 = forms[formId]) === null || _forms$formId2 === void 0 ? void 0 : _forms$formId2.fields;
     if ((fields === null || fields === void 0 ? void 0 : fields.length) > 0 && pagingInfo.pageCount > 1) return fields.filter(f => f.groupId == pagingInfo.currentPageId);else return fields;
@@ -274,62 +290,77 @@ const makeSelectPagedFields = formId => reselect.createSelector(selectForms, for
 });
 const makeSelectFormStatus = formId => reselect.createSelector(selectForms, forms => {
   var _forms$formId3;
+
   return forms === null || forms === void 0 ? void 0 : (_forms$formId3 = forms[formId]) === null || _forms$formId3 === void 0 ? void 0 : _forms$formId3.status;
 });
 const makeSelectPagingInfo = formId => reselect.createSelector(selectForms, forms => {
   var _forms$formId4;
+
   return forms === null || forms === void 0 ? void 0 : (_forms$formId4 = forms[formId]) === null || _forms$formId4 === void 0 ? void 0 : _forms$formId4.pagingInfo;
 });
 const makeSelectFormSettings = formId => reselect.createSelector(selectForms, forms => {
   var _forms$formId5;
+
   return forms === null || forms === void 0 ? void 0 : (_forms$formId5 = forms[formId]) === null || _forms$formId5 === void 0 ? void 0 : _forms$formId5.settings;
 });
 const makeSelectFormFieldErrors = formId => reselect.createSelector(selectForms, forms => {
   var _forms$formId6;
+
   return forms === null || forms === void 0 ? void 0 : (_forms$formId6 = forms[formId]) === null || _forms$formId6 === void 0 ? void 0 : _forms$formId6.fieldErrors;
 });
 const makeSelectFormEntries = formId => reselect.createSelector(selectForms, forms => {
   var _forms$formId7;
+
   return forms === null || forms === void 0 ? void 0 : (_forms$formId7 = forms[formId]) === null || _forms$formId7 === void 0 ? void 0 : _forms$formId7.entries;
 });
 const makeSelectFormPostData = formId => reselect.createSelector(selectForms, forms => {
   var _forms$formId8;
+
   return forms === null || forms === void 0 ? void 0 : (_forms$formId8 = forms[formId]) === null || _forms$formId8 === void 0 ? void 0 : _forms$formId8.data;
 });
 const makeSelectIsLoading = formId => reselect.createSelector(selectForms, forms => {
   var _forms$formId9;
+
   return forms === null || forms === void 0 ? void 0 : (_forms$formId9 = forms[formId]) === null || _forms$formId9 === void 0 ? void 0 : _forms$formId9.status.isLoading;
 });
 const makeSelectIsSubmitting = formId => reselect.createSelector(selectForms, forms => {
   var _forms$formId10;
+
   return forms === null || forms === void 0 ? void 0 : (_forms$formId10 = forms[formId]) === null || _forms$formId10 === void 0 ? void 0 : _forms$formId10.status.isSubmitting;
 });
 const makeSelectHasSuccess = formId => reselect.createSelector(selectForms, forms => {
   var _forms$formId11;
+
   return forms === null || forms === void 0 ? void 0 : (_forms$formId11 = forms[formId]) === null || _forms$formId11 === void 0 ? void 0 : _forms$formId11.status.hasSuccess;
 });
 const makeSelectHasError = formId => reselect.createSelector(selectForms, forms => {
   var _forms$formId12;
+
   return forms === null || forms === void 0 ? void 0 : (_forms$formId12 = forms[formId]) === null || _forms$formId12 === void 0 ? void 0 : _forms$formId12.status.hasError;
 });
 const makeSelectFormFields = formId => reselect.createSelector(selectForms, forms => {
   var _forms$formId13;
+
   return forms === null || forms === void 0 ? void 0 : (_forms$formId13 = forms[formId]) === null || _forms$formId13 === void 0 ? void 0 : _forms$formId13.fields;
 });
 const makeSelectDefaultLang = formId => reselect.createSelector(selectForms, forms => {
   var _forms$formId14;
+
   return forms === null || forms === void 0 ? void 0 : (_forms$formId14 = forms[formId]) === null || _forms$formId14 === void 0 ? void 0 : _forms$formId14.defaultLanguage;
 });
 const makeSelectFormSuccessMessage = formId => reselect.createSelector(selectForms, forms => {
   var _forms$formId15;
+
   return forms === null || forms === void 0 ? void 0 : (_forms$formId15 = forms[formId]) === null || _forms$formId15 === void 0 ? void 0 : _forms$formId15.status.messages.success;
 });
 const makeSelectFormValidationSent = formId => reselect.createSelector(selectForms, forms => {
   var _forms$formId16;
+
   return forms === null || forms === void 0 ? void 0 : (_forms$formId16 = forms[formId]) === null || _forms$formId16 === void 0 ? void 0 : _forms$formId16.status.validation.sent;
 });
 const makeSelectFormGroup = formId => reselect.createSelector(selectForms, forms => {
   var _forms$formId17;
+
   return forms === null || forms === void 0 ? void 0 : (_forms$formId17 = forms[formId]) === null || _forms$formId17 === void 0 ? void 0 : _forms$formId17.groups;
 });
 const selectors = {
@@ -392,11 +423,11 @@ const postForm = async formObj => {
   const submitted = await request(URI, options);
   return submitted;
 };
+
 const request = async (url, options) => {
   return fetch(url, options).then(response => response.json()).then(result => {
     return result;
-  })
-  // eslint-disable-next-line no-console
+  }) // eslint-disable-next-line no-console
   .catch(error => console.log('error', error));
 };
 
@@ -404,12 +435,14 @@ const domains = ['1033edge.com', '11mail.com', '123.com', '123box.net', '123indi
 
 const doA11yValidation = (v, field, formValidationSent) => {
   const error = doValidateField(field, v);
+
   if (JSON.stringify(field.validations) !== '{}') {
     if (((v === null || v === void 0 ? void 0 : v.length) >= 1 || formValidationSent) && (error === null || error === void 0 ? void 0 : error.fieldId) === field.id) return 'true';else if ((v === null || v === void 0 ? void 0 : v.length) >= 1) return 'false';else return '';
   }
 };
 const doValidateField = (field, value) => {
   var _field$validations, _field$validations$re;
+
   const isRequired = field.validations && field.validations.required;
   const minLength = field.validations && field.validations.minLength;
   const maxLength = field.validations && field.validations.maxLength;
@@ -417,8 +450,10 @@ const doValidateField = (field, value) => {
   const integer = field.dataType === 'integer';
   const decimal = field.dataType === 'decimal';
   const isBusinessEmail = field.id === 'businessEmail';
+
   if (isRequired && (value === null || value === void 0 ? void 0 : value.length) <= 0) {
     var _isRequired$message, _field$name;
+
     const errorMessage = (isRequired === null || isRequired === void 0 ? void 0 : (_isRequired$message = isRequired.message) === null || _isRequired$message === void 0 ? void 0 : _isRequired$message['en-GB']) || `${(_field$name = field.name) === null || _field$name === void 0 ? void 0 : _field$name['en-GB']} is required`;
     return {
       fieldId: field.id,
@@ -426,6 +461,7 @@ const doValidateField = (field, value) => {
       message: errorMessage
     };
   }
+
   if (minLength && minLength.value > value.length) {
     const errorMessage = minLength.message ? minLength.message['en-GB'] : `Minimum characters ${minLength.value}`;
     return {
@@ -434,6 +470,7 @@ const doValidateField = (field, value) => {
       message: errorMessage
     };
   }
+
   if (maxLength && maxLength.value < value.length) {
     const errorMessage = maxLength.message && maxLength.message['en-GB'] ? maxLength.message['en-GB'] : `Maximum characters ${maxLength.value}`;
     return {
@@ -443,10 +480,14 @@ const doValidateField = (field, value) => {
     };
   }
   /** Check Regex and Business Emails */
+
+
   if (hasRegex && value.length >= 1) {
     var _r$message;
+
     const r = field.validations.regex;
     const msg = (r === null || r === void 0 ? void 0 : (_r$message = r.message) === null || _r$message === void 0 ? void 0 : _r$message['en-GB']) || `${field.name['en-GB']} is invalid`;
+
     if (isValidRegex(field, value) && isBusinessEmail) {
       if (!isBusinessEmailValid(field, value)) {
         return {
@@ -463,8 +504,10 @@ const doValidateField = (field, value) => {
       };
     }
   }
+
   if (integer) {
     const isInteger = value % 1 === 0;
+
     if (!isInteger) {
       const errorMessage = `${value} is not an ${field.dataType}`;
       return {
@@ -474,8 +517,10 @@ const doValidateField = (field, value) => {
       };
     }
   }
+
   if (decimal) {
     const isDecimal = value % 1 !== 0;
+
     if (!isDecimal) {
       const errorMessage = `${value} is not an ${field.dataType}`;
       return {
@@ -486,20 +531,24 @@ const doValidateField = (field, value) => {
     }
   }
 };
+
 const isValidRegex = (field, value) => {
   var _field$validations2, _field$validations2$r;
+
   const regexPattern = field === null || field === void 0 ? void 0 : (_field$validations2 = field.validations) === null || _field$validations2 === void 0 ? void 0 : (_field$validations2$r = _field$validations2.regex) === null || _field$validations2$r === void 0 ? void 0 : _field$validations2$r.pattern;
   if (!regexPattern || regexPattern === '') return false;
+
   try {
     // Create RegExp object from string pattern
-    const regexObject = new RegExp(regexPattern.replace(/^\/|\/$/g, ''));
-    // Check the value being tested
+    const regexObject = new RegExp(regexPattern.replace(/^\/|\/$/g, '')); // Check the value being tested
+
     const result = regexObject.test(value);
     return result;
   } catch (err) {
     return false;
   }
 };
+
 const isBusinessEmailValid = (field, value) => {
   const domain = value.split('@').pop();
   if (!domains.includes(domain)) return true;else return false;
@@ -507,6 +556,7 @@ const isBusinessEmailValid = (field, value) => {
 
 const doCreateMessage = (type, minLength, maxLength, currentLength, defaultLanguage) => {
   if (!type) return null;
+
   switch (type) {
     case 'min':
       {
@@ -514,24 +564,28 @@ const doCreateMessage = (type, minLength, maxLength, currentLength, defaultLangu
         const minLengthVal = minLength && minLength.value;
         const errorMessage = minLength && minLength.message && minLength.message[defaultLanguage];
         const minText = `Minimum of ${minLengthVal.toString()} characters`;
+
         if (errorMessage) {
           return errorMessage;
         } else {
           return minText;
         }
       }
+
     case 'max':
       {
         if (!maxLength) return;
         const maxLengthVal = maxLength && maxLength.value;
         const errorMessage = maxLength && maxLength.message && maxLength.message[defaultLanguage];
         const maxText = `Maximum of ${maxLengthVal.toString()} characters`;
+
         if (errorMessage) {
           return errorMessage;
         } else {
           return maxText;
         }
       }
+
     case 'between':
       {
         if (!maxLength || !minLength) return;
@@ -539,6 +593,7 @@ const doCreateMessage = (type, minLength, maxLength, currentLength, defaultLangu
         const maxLengthVal = maxLength && maxLength.value;
         const errorMessage = minLength && minLength.message && minLength.message[defaultLanguage];
         const rangeText = `Between ${minLengthVal.toString()}-${maxLengthVal.toString()} characters)`;
+
         if (errorMessage) {
           return errorMessage;
         } else if (currentLength < minLengthVal) {
@@ -551,16 +606,20 @@ const doCreateMessage = (type, minLength, maxLength, currentLength, defaultLangu
           return rangeText;
         }
       }
+
     default:
       return null;
   }
 };
 const getFieldType = field => {
   var _field$editor, _field$editor$propert;
+
   if (!field) return null;
+
   if (field.id === 'country' && field.dataType === 'string') {
     return 'country';
   }
+
   if (field.dataType === 'string' && field.editor && field.editor.id === 'multiline') {
     return 'textarea';
   } else if (field.dataType === 'string' && field.editor && field.editor.id === 'list-dropdown') {
@@ -584,9 +643,9 @@ const getFieldType = field => {
   }
 };
 
-const sagas = [effects.takeEvery(SUBMIT_FORM_SUCCESS, onFormSuccess), effects.takeEvery(SUBMIT_FORM_FOR_VALIDATION, doValidateForm), effects.takeEvery(SUBMIT_FORM, onSubmitForm), effects.takeEvery(SET_FORM_ID, doFetchForm),
-// takeLatest(VALIDATE_FIELD, onValidateField),
+const sagas = [effects.takeEvery(SUBMIT_FORM_SUCCESS, onFormSuccess), effects.takeEvery(SUBMIT_FORM_FOR_VALIDATION, doValidateForm), effects.takeEvery(SUBMIT_FORM, onSubmitForm), effects.takeEvery(SET_FORM_ID, doFetchForm), // takeLatest(VALIDATE_FIELD, onValidateField),
 effects.takeEvery(PAGE_FORWARD, doTogglePage), effects.takeEvery(PAGE_BACK, doTogglePage), effects.takeEvery(SET_FORM_DATA, getEntryPickerData), effects.takeLatest(SET_FORM_DATA, setDefaultValueFields)];
+
 function* doValidateForm(action) {
   const {
     formId
@@ -596,11 +655,11 @@ function* doValidateForm(action) {
     type: SUBMIT_FORM,
     formId
   });
-}
-// function* onValidateField(action) {
+} // function* onValidateField(action) {
 //   const { formId, id, value } = action;
 //   if (value?.length >= 1) yield call(onValidateSingleField, formId, id, value);
 // }
+
 
 function* onValidateGroupFields(formId, groupId) {
   const state = yield effects.select();
@@ -623,6 +682,7 @@ function* onValidateGroupFields(formId, groupId) {
   });
   return errors;
 }
+
 function* onValidateAllFields(formId) {
   const state = yield effects.select();
   const selectPostData = makeSelectFormPostData(formId);
@@ -642,6 +702,7 @@ function* onValidateAllFields(formId) {
     value: errors
   });
 }
+
 function* doTogglePage(action) {
   const {
     formId,
@@ -650,8 +711,10 @@ function* doTogglePage(action) {
   const state = yield effects.select();
   const selectFormGroups = makeSelectFormGroup(formId);
   const formGroups = selectFormGroups(state);
+
   if (action.type === PAGE_FORWARD) {
     const errors = yield onValidateGroupFields(formId, formGroups[pageIndex - 1].id);
+
     if (errors && errors.length <= 0) {
       yield effects.put({
         type: SET_CURRENT_PAGE,
@@ -671,13 +734,17 @@ function* doTogglePage(action) {
     });
   }
 }
+
 function* doFetchForm(action) {
   var _schema$groups;
+
   const formId = action.formId;
   const schema = yield getFormSchema(formId);
   const groups = schema === null || schema === void 0 ? void 0 : (_schema$groups = schema.groups) === null || _schema$groups === void 0 ? void 0 : _schema$groups.filter(group => group.id !== 'private' && group.id !== 'settings');
+
   if (formId && schema) {
     var _schema$groups2, _submitButtonText$def;
+
     if ((schema === null || schema === void 0 ? void 0 : (_schema$groups2 = schema.groups) === null || _schema$groups2 === void 0 ? void 0 : _schema$groups2.length) > 0) {
       yield effects.put({
         type: SET_CURRENT_PAGE,
@@ -687,10 +754,10 @@ function* doFetchForm(action) {
         pageCount: groups.length
       });
     }
+
     const submitButtonText = schema.fields.find(f => f.id === 'submitButtonText');
     const fields = schema === null || schema === void 0 ? void 0 : schema.fields.map(field => {
-      return {
-        ...field,
+      return { ...field,
         type: getFieldType(field)
       };
     });
@@ -706,17 +773,21 @@ function* doFetchForm(action) {
     });
   }
 }
+
 function* onFormSuccess(action) {
   const state = yield effects.select();
   const selectFormFields = makeSelectFormFields(action.formId);
   const fields = selectFormFields(state);
   const redirect = fields.find(f => f.id === 'formSettingsRedirect');
   const message = fields.find(f => f.id === 'formSettingsMessage');
+
   if (redirect !== null && redirect !== void 0 && redirect.default) {
     window.location.href = redirect.default['en-GB'];
   }
+
   if (message !== null && message !== void 0 && message.default) {
     const m = message.default['en-GB'];
+
     if (m) {
       yield effects.put({
         type: SET_SUCCESS_MESSAGE,
@@ -726,6 +797,7 @@ function* onFormSuccess(action) {
     }
   }
 }
+
 function* onSubmitForm(action) {
   const {
     formId
@@ -734,8 +806,10 @@ function* onSubmitForm(action) {
   const selectFormFieldErrors = makeSelectFormFieldErrors(formId);
   const errors = selectFormFieldErrors(state);
   const canSubmit = (errors === null || errors === void 0 ? void 0 : errors.length) === 0;
+
   if (canSubmit) {
     var _formResObj$sys;
+
     yield effects.put({
       type: SET_SUBMITTING_FORM,
       isSubmitting: true,
@@ -748,6 +822,7 @@ function* onSubmitForm(action) {
       formPost: rawData.data
     };
     const formResObj = yield postForm(formObj);
+
     if (formResObj !== null && formResObj !== void 0 && (_formResObj$sys = formResObj.sys) !== null && _formResObj$sys !== void 0 && _formResObj$sys.id) {
       yield effects.put({
         type: SUBMIT_FORM_SUCCESS,
@@ -761,6 +836,7 @@ function* onSubmitForm(action) {
     }
   }
 }
+
 function* setDefaultValueFields(action) {
   const {
     formId,
@@ -772,12 +848,15 @@ function* setDefaultValueFields(action) {
   fields.forEach(field => {
     if (field.dataType == 'string' && field.default) {
       const val = field.default[defaultLanguage];
+
       if (val) {
         fieldObj[field.id] = val;
       }
     }
+
     if (field.id == 'sourceEntry') {
       const val = entryId;
+
       if (val) {
         fieldObj[field.id] = val;
       }
@@ -789,6 +868,7 @@ function* setDefaultValueFields(action) {
     value: fieldObj
   });
 }
+
 function* getEntryPickerData(action) {
   const {
     formId,
@@ -796,6 +876,7 @@ function* getEntryPickerData(action) {
   } = action;
   const entriesToGet = fields.filter(f => f.dataFormat == 'entry');
   let entriesList = [];
+
   if (entriesToGet) {
     entriesList = yield effects.all(entriesToGet.map(entry => {
       const entriesObj = {
@@ -818,6 +899,7 @@ const action = (type, payload = {}) => ({
   type,
   ...payload
 });
+
 const onSubmit = formId => action(SUBMIT_FORM_FOR_VALIDATION, {
   formId
 });
@@ -871,6 +953,7 @@ const actions = {
 };
 
 const ThemeContext = /*#__PURE__*/React.createContext();
+
 const ThemeProvider = ({
   children,
   theme
@@ -881,6 +964,7 @@ const ThemeProvider = ({
     theme: theme
   }, children));
 };
+
 ThemeProvider.propTypes = {
   children: PropTypes__default["default"].oneOfType([PropTypes__default["default"].arrayOf(PropTypes__default["default"].node), PropTypes__default["default"].node]),
   theme: PropTypes__default["default"].object
@@ -945,6 +1029,7 @@ const Label = ({
     className: "label__optional"
   }, "(optional)"));
 };
+
 Label.propTypes = {
   className: PropTypes__default["default"].string,
   label: PropTypes__default["default"].string,
@@ -1002,6 +1087,7 @@ const TextfieldStyled = styled__default["default"].div.withConfig({
 }) => {
   return styled.css(["display:", ";"], isHidden ? 'none' : 'block');
 });
+
 const Textfield = ({
   className,
   field,
@@ -1093,6 +1179,7 @@ const Textfield = ({
     d: "m2 8 4.418 4.667L14 4.659l-1.246-1.326-6.336 6.692-3.18-3.332L2 8Z"
   }))));
 };
+
 Textfield.propTypes = {
   className: PropTypes__default["default"].string,
   field: PropTypes__default["default"].any,
@@ -1199,6 +1286,7 @@ const Textarea = ({
     d: "m2 8 4.418 4.667L14 4.659l-1.246-1.326-6.336 6.692-3.18-3.332L2 8Z"
   }))));
 };
+
 Textarea.propTypes = {
   className: PropTypes__default["default"].string,
   field: PropTypes__default["default"].any,
@@ -1236,6 +1324,7 @@ const HiddenField = ({
     isHidden: true
   });
 };
+
 HiddenField.propTypes = {
   className: PropTypes__default["default"].string,
   id: PropTypes__default["default"].string,
@@ -1283,6 +1372,7 @@ const Dropdown = ({
     }, val[defaultLanguage]);
   })));
 };
+
 Dropdown.propTypes = {
   className: PropTypes__default["default"].string,
   formId: PropTypes__default["default"].string,
@@ -1302,6 +1392,7 @@ const CheckboxStyled = styled__default["default"].div.withConfig({
 }) => {
   return styled.css(["", ""], useDefaultTheme && styled.css([".checkbox-wrapper{display:flex;flex-wrap:wrap;justify-content:flex-start;align-items:center;input{height:auto;width:auto;margin:0 4px 0 0;}label{display:inline-block;}}"]));
 });
+
 const Checkbox = ({
   className,
   formId,
@@ -1318,15 +1409,18 @@ const Checkbox = ({
   let isDefaultChecked = defaultValue && defaultValue[defaultLanguage];
   const [isChecked, setIsChecked] = React.useState(isDefaultChecked || '');
   const dispatch = reactRedux.useDispatch();
+
   switch (type) {
     case 'multiple':
       {
         if (!validations) return null;
         const isRequired = validations && validations.required ? true : false;
         const cbValues = validations && validations.allowedValues && validations.allowedValues.values;
+
         const _handleChange = (label, value) => {
           dispatch(setMultipleCheckboxValue(formId, id, label, value));
         };
+
         if (!cbValues || cbValues.length < 1) return null;
         return /*#__PURE__*/React__default["default"].createElement(CheckboxStyled, {
           className: `checkbox-container`,
@@ -1354,12 +1448,14 @@ const Checkbox = ({
           }, val[defaultLanguage]));
         }));
       }
+
     case 'single':
       {
         const _handleChange = value => {
           setIsChecked(value);
           dispatch(setSingleCheckboxValue(formId, id, value));
         };
+
         return /*#__PURE__*/React__default["default"].createElement(CheckboxStyled, {
           className: `checkbox-container`,
           useDefaultTheme: useDefaultTheme
@@ -1381,6 +1477,7 @@ const Checkbox = ({
       }
   }
 };
+
 Checkbox.propTypes = {
   className: PropTypes__default["default"].string,
   formId: PropTypes__default["default"].string,
@@ -1401,6 +1498,7 @@ const RadioButtonStyled = styled__default["default"].div.withConfig({
 }) => {
   return styled.css(["", ""], useDefaultTheme && styled.css([".radio-wrapper{display:flex;flex-wrap:wrap;justify-content:flex-start;align-items:center;input{height:auto;width:auto;margin:0 4px 0 0;}label{display:inline-block;}}"]));
 });
+
 const RadioButton = ({
   className,
   formId,
@@ -1444,6 +1542,7 @@ const RadioButton = ({
     }, val[defaultLanguage]));
   }));
 };
+
 RadioButton.propTypes = {
   className: PropTypes__default["default"].string,
   formId: PropTypes__default["default"].string,
@@ -1475,7 +1574,6 @@ RadioButton.propTypes = {
 //m > minutes, eg ...T16:05:00 = 5
 //t > abbreviated AM / PM, e.g. A or P
 //tt > AM / PM, e.g. AM or PM
-
 const formatDate = (date, format = 'dd MMMM yyyy') => {
   if (!date) return null;
   const dateObj = new Date(date);
@@ -1487,9 +1585,8 @@ const formatDate = (date, format = 'dd MMMM yyyy') => {
   const dayNameInt = dateObj.getDay();
   const timeArr = dateString[1].split(':');
   const hour = timeArr[0];
-  const minute = timeArr[1];
+  const minute = timeArr[1]; //convert to abstract strings to avoid character replacement along the chain, eg. Monday would match 'M' month single parameter
 
-  //convert to abstract strings to avoid character replacement along the chain, eg. Monday would match 'M' month single parameter
   const YEAR = ['&&', '&'];
   const MONTH = ['££££', '£££', '££', '£'];
   const DAY = ['%%%%', '%%%', '%%', '%'];
@@ -1501,13 +1598,16 @@ const formatDate = (date, format = 'dd MMMM yyyy') => {
   .replace('MMMM', MONTH[0]).replace('MMM', MONTH[1]).replace('MM', MONTH[2]).replace('M', MONTH[3]).replace('dddd', DAY[0]).replace('ddd', DAY[1]).replace('dd', DAY[2]).replace('d', DAY[3]).replace('HH', HOUR24[0]).replace('H', HOUR24[1]).replace('hh', HOUR12[0]).replace('h', HOUR12[1]).replace('mm', MINUTE[0]).replace('m', MINUTE[1]).replace('tt', TF[0]).replace('t', TF[1]).replace(YEAR[0], year).replace(YEAR[1], year.slice(-2)).replace(MONTH[0], monthsLong[parseInt(month, 10)]).replace(MONTH[1], monthsShort[parseInt(month, 10)]).replace(MONTH[2], month).replace(MONTH[3], parseInt(month, 10)).replace(DAY[0], daysLong[dayNameInt]).replace(DAY[1], daysShort[dayNameInt]).replace(DAY[2], day).replace(DAY[3], parseInt(day, 10)).replace(HOUR24[0], hour).replace(HOUR24[1], parseInt(hour, 10)).replace(HOUR12[0], parseHour(hour)).replace(HOUR12[1], parseInt(parseHour(hour), 10)).replace(MINUTE[0], minute).replace(MINUTE[1], parseInt(minute, 10)).replace(TF[0], parseTF(hour)).replace(TF[1], parseTF(hour).slice(0, -1));
   return formattedDate;
 };
+
 const monthsShort = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const monthsLong = ['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 const daysShort = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const daysLong = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
 const parseHour = hour => {
   return hour > 12 ? hour - 12 : hour;
 };
+
 const parseTF = hour => {
   return hour > 11 ? 'PM' : 'AM';
 };
@@ -1525,11 +1625,13 @@ const SingleDate = ({
   const onlyPassedDates = validations && validations.pastDateTime;
   const d = new Date();
   const todaysDate = d.toISOString();
+
   const _handleChange = (formId, id, value) => {
     const d = new Date(value);
     const isoDate = d.toISOString();
     setValue(formId, id, isoDate);
   };
+
   return /*#__PURE__*/React__default["default"].createElement("div", {
     className: "date-container"
   }, /*#__PURE__*/React__default["default"].createElement(Label, {
@@ -1546,6 +1648,7 @@ const SingleDate = ({
     onChange: e => _handleChange(formId, id, e.target.value)
   }));
 };
+
 SingleDate.propTypes = {
   className: PropTypes__default["default"].string,
   formId: PropTypes__default["default"].string,
@@ -1564,6 +1667,7 @@ const DateRangeStyled = styled__default["default"].div.withConfig({
 }) => {
   return styled.css(["", ""], useDefaultTheme && styled.css([".daterange-wrapper{display:flex;flex-direction:column;input{&:first-child{margin:0 0 8px 0;}}}"]));
 });
+
 const DateRange = ({
   className,
   id,
@@ -1579,12 +1683,15 @@ const DateRange = ({
   const todaysDate = d.toISOString();
   const [toDate, setToDate] = React.useState('');
   const [fromDate, setFromDate] = React.useState('');
+
   const _handleDateChange = (dateType, formId, id, value) => {
     _updateDateProps(dateType, value);
+
     const d = new Date(value);
     const isoDate = d.toISOString();
     setDateRangeValues(formId, id, dateType, isoDate);
   };
+
   const _updateDateProps = (type, date) => {
     switch (type) {
       case 'from':
@@ -1594,6 +1701,7 @@ const DateRange = ({
           setFromDate(newDate);
           break;
         }
+
       case 'to':
         {
           const d = new Date(date);
@@ -1601,10 +1709,12 @@ const DateRange = ({
           setToDate(newDate);
           break;
         }
+
       default:
         return;
     }
   };
+
   return /*#__PURE__*/React__default["default"].createElement(DateRangeStyled, {
     className: `daterange-container`,
     useDefaultTheme: useDefaultTheme
@@ -1641,6 +1751,7 @@ const DateRange = ({
     onChange: e => _handleDateChange('to', formId, id, e.target.value)
   })));
 };
+
 DateRange.propTypes = {
   className: PropTypes__default["default"].string,
   formId: PropTypes__default["default"].string,
@@ -1660,6 +1771,7 @@ const EntryPickerStyled = styled__default["default"].div.withConfig({
 }) => {
   return styled.css(["", ""], useDefaultTheme && styled.css([".radio-wrapper,.checkbox-wrapper{display:flex;flex-wrap:wrap;justify-content:flex-start;align-items:center;input{height:auto;width:auto;margin:0 4px 0 0;}label{display:inline-block;}}"]));
 });
+
 const EntryPicker = ({
   className,
   results,
@@ -1674,6 +1786,7 @@ const EntryPicker = ({
   if (!results || results.length > 3) return null;
   const isRequired = validations && validations.required ? true : false;
   let valArr = [];
+
   const _handleChange = (formId, id, value, isChecked) => {
     if (type === 'checkbox') {
       if (isChecked) {
@@ -1681,11 +1794,13 @@ const EntryPicker = ({
       } else if (!isChecked) {
         valArr = valArr.filter(valItem => valItem !== value);
       }
+
       setValue(formId, id, valArr);
     } else {
       setValue(formId, id, value);
     }
   };
+
   return /*#__PURE__*/React__default["default"].createElement(EntryPickerStyled, {
     className: `${type}-container`,
     useDefaultTheme: useDefaultTheme
@@ -1712,6 +1827,7 @@ const EntryPicker = ({
     }));
   }));
 };
+
 EntryPicker.propTypes = {
   className: PropTypes__default["default"].string,
   results: PropTypes__default["default"].array,
@@ -1732,6 +1848,7 @@ var dist = {exports: {}};
 }("undefined" != typeof self ? self : _commonjsHelpers.commonjsGlobal, function () {
   return function (t) {
     var e = {};
+
     function n(r) {
       if (e[r]) return e[r].exports;
       var i = e[r] = {
@@ -1741,6 +1858,7 @@ var dist = {exports: {}};
       };
       return t[r].call(i.exports, i, i.exports, n), i.l = !0, i.exports;
     }
+
     return n.m = t, n.c = e, n.d = function (t, e, r) {
       n.o(t, e) || Object.defineProperty(t, e, {
         configurable: !1,
@@ -1759,34 +1877,44 @@ var dist = {exports: {}};
     }, n.p = "", n(n.s = 2);
   }([function (t, e) {
     var n;
+
     n = function () {
       return this;
     }();
+
     try {
       n = n || Function("return this")() || (0, eval)("this");
     } catch (t) {
       "object" == typeof window && (n = window);
     }
+
     t.exports = n;
   }, function (t, e, n) {
 
     t.exports = u;
     var r = n(3),
-      i = n(4),
-      o = Array.prototype;
+        i = n(4),
+        o = Array.prototype;
+
     function u(t) {
       if (!(this instanceof u)) return new u(t);
       var e,
-        n = i(t.className).split(/\s+/);
+          n = i(t.className).split(/\s+/);
+
       for (this._elem = t, this.length = 0, e = 0; e < n.length; e += 1) n[e] && o.push.call(this, n[e]);
     }
+
     u.prototype.add = function () {
       var t, e;
+
       for (e = 0; e < arguments.length; e += 1) t = "" + arguments[e], r(this, t) >= 0 || o.push.call(this, t);
+
       return this._elem.className = this.toString(), this;
     }, u.prototype.remove = function () {
       var t, e, n;
+
       for (n = 0; n < arguments.length; n += 1) e = "" + arguments[n], (t = r(this, e)) < 0 || o.splice.call(this, t, 1);
+
       return this._elem.className = this.toString(), this;
     }, u.prototype.contains = function (t) {
       return r(this, t += "") >= 0;
@@ -1798,45 +1926,49 @@ var dist = {exports: {}};
   }, function (t, e, n) {
 
     var r = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (t) {
-        return typeof t;
-      } : function (t) {
-        return t && "function" == typeof Symbol && t.constructor === Symbol && t !== Symbol.prototype ? "symbol" : typeof t;
-      },
-      i = function () {
-        function t(t, e) {
-          for (var n = 0; n < e.length; n++) {
-            var r = e[n];
-            r.enumerable = r.enumerable || !1, r.configurable = !0, "value" in r && (r.writable = !0), Object.defineProperty(t, r.key, r);
-          }
+      return typeof t;
+    } : function (t) {
+      return t && "function" == typeof Symbol && t.constructor === Symbol && t !== Symbol.prototype ? "symbol" : typeof t;
+    },
+        i = function () {
+      function t(t, e) {
+        for (var n = 0; n < e.length; n++) {
+          var r = e[n];
+          r.enumerable = r.enumerable || !1, r.configurable = !0, "value" in r && (r.writable = !0), Object.defineProperty(t, r.key, r);
         }
-        return function (e, n, r) {
-          return n && t(e.prototype, n), r && t(e, r), e;
-        };
-      }(),
-      o = E(n(1)),
-      u = E(n(5)),
-      s = E(n(6)),
-      a = E(n(7)),
-      c = E(n(8)),
-      f = E(n(9)),
-      l = E(n(10)),
-      h = E(n(12)),
-      p = E(n(14)),
-      d = E(n(15)),
-      g = E(n(17)),
-      y = E(n(18)),
-      v = E(n(19)),
-      m = E(n(31)),
-      b = E(n(32)),
-      w = E(n(35));
+      }
+
+      return function (e, n, r) {
+        return n && t(e.prototype, n), r && t(e, r), e;
+      };
+    }(),
+        o = E(n(1)),
+        u = E(n(5)),
+        s = E(n(6)),
+        a = E(n(7)),
+        c = E(n(8)),
+        f = E(n(9)),
+        l = E(n(10)),
+        h = E(n(12)),
+        p = E(n(14)),
+        d = E(n(15)),
+        g = E(n(17)),
+        y = E(n(18)),
+        v = E(n(19)),
+        m = E(n(31)),
+        b = E(n(32)),
+        w = E(n(35));
+
     function E(t) {
       return t && t.__esModule ? t : {
         default: t
       };
     }
+
     t.exports = function () {
       function t(e) {
         var n = this;
+
         if (function (t, e) {
           if (!(t instanceof e)) throw new TypeError("Cannot call a class as a function");
         }(this, t), e = e || {}, this.config = (0, b.default)(e), this.input = (0, d.default)(this.config.input), this.list = (0, d.default)(this.config.list), this.cachedOpts = this.currentOpts = (0, d.default)(this.config.options, !0, this.list), this.isOpen = !1, this.currentOption = null, this.selected = [], this.groups = [], this.isHovering = !1, this.autoFilter = this.config.autoFilter, this.optionsWithEventHandlers = new Set(), this.optionsWithKeyEventHandlers = new Set(), this.config.groups) {
@@ -1850,11 +1982,13 @@ var dist = {exports: {}};
             };
           });
         }
+
         if (!this.input || !this.list) throw new Error("Unable to find required elements (list/input)");
         (0, v.default)(this.input, this.list, this.cachedOpts), this.config.useLiveRegion && (this.liveRegion = new s.default({
           ariaLive: "assertive"
         })), this.initEvents();
       }
+
       return i(t, [{
         key: "initEvents",
         value: function () {
@@ -1894,6 +2028,7 @@ var dist = {exports: {}};
         value: function () {
           (0, o.default)(this.list).add(this.config.openClass), this.input.setAttribute("aria-expanded", "true"), this.isOpen || this.announceCount(), this.isOpen = !0, this.emit("list:open");
           var t = (0, f.default)(this.list);
+
           if (!t.visible) {
             var e = "bottom" === t.position ? 0 - (window.innerHeight - (this.input.clientHeight + this.list.clientHeight)) : 0;
             (0, a.default)({
@@ -1903,6 +2038,7 @@ var dist = {exports: {}};
               duration: 100
             });
           }
+
           return this;
         }
       }, {
@@ -1914,6 +2050,7 @@ var dist = {exports: {}};
         key: "initKeys",
         value: function () {
           var t = this;
+
           if (!this.optionsWithKeyEventHandlers.has(this.input)) {
             this.optionsWithKeyEventHandlers.add(this.input), h.default.down(this.input, [{
               keys: ["up", "down"],
@@ -1943,7 +2080,7 @@ var dist = {exports: {}};
             h.default.up(this.input, function (n) {
               if (t.autoFilter) {
                 var r = t.config.filter,
-                  i = t.cachedInputValue;
+                    i = t.cachedInputValue;
                 e.indexOf(n.which) > -1 || !r || (t.freshSelection ? (t.clearFilters(), i && i.trim() !== t.input.value.trim() && (t.filter().openList(), t.freshSelection = !1)) : t.filter().openList(), (0, y.default)(t.list, t.currentOpts, t.config.noResultsText));
               }
             });
@@ -1962,8 +2099,8 @@ var dist = {exports: {}};
         key: "filter",
         value: function (t) {
           var e = this,
-            n = this.config.filter,
-            r = this.currentOpts;
+              n = this.config.filter,
+              r = this.currentOpts;
           return this.currentOpts = "function" == typeof n ? n(this.input.value.trim(), this.cachedOpts) : l.default[n](this.input.value.trim(), this.cachedOpts), this.currentOpts = this.currentOpts || [], this.updateOpts(), r.every(function (t) {
             return e.currentOpts.indexOf(t) > -1;
           }) || t || this.announceCount(), this;
@@ -1978,7 +2115,7 @@ var dist = {exports: {}};
         key: "updateOpts",
         value: function () {
           var t = this,
-            e = this.config.optionValue;
+              e = this.config.optionValue;
           return this.cachedOpts.forEach(function (n) {
             n.style.display = -1 === t.currentOpts.indexOf(n) ? "none" : "", n.innerHTML = "string" == typeof e ? (0, m.default)(n, t.input, e) : e(n);
           }), this.updateGroups(), this;
@@ -1997,11 +2134,12 @@ var dist = {exports: {}};
         key: "select",
         value: function () {
           var t = this,
-            e = this.currentOption;
+              e = this.currentOption;
+
           if (e) {
             !this.config.multiselect && this.selected.length && (0, o.default)(this.selected[0]).remove(this.config.selectedClass);
             var n = this.selected.indexOf(e),
-              r = n > -1;
+                r = n > -1;
             return this.config.multiselect ? r ? this.selected.splice(n, 1) : this.selected.push(e) : this.selected = this.config.allowEmpty && r ? [] : [e], this.cachedOpts.forEach(function (e) {
               e.setAttribute("aria-selected", t.selected.indexOf(e) > -1 ? "true" : "false");
             }), r ? (e.classList.remove(this.config.selectedClass), this.emit("deselection", {
@@ -2025,17 +2163,21 @@ var dist = {exports: {}};
         key: "goTo",
         value: function (t, e) {
           var n = this;
+
           if ("string" == typeof t) {
             var r = this.getOptIndex();
             return this.goTo("next" === t ? r + 1 : r - 1, e);
           }
+
           var i = this.currentOpts[t],
-            o = !1;
+              o = !1;
           if (!this.currentOpts[t]) return 0 === this.getOptIndex() && (this.list.scrollTop = 0), this;
+
           if (this.groups.length) {
             var u = (0, g.default)(this.groups, i);
             o = u && u !== this.currentGroup, this.currentGroup = u;
           }
+
           return this.currentOption = i, this.pseudoFocus(o), this.currentOpts.forEach(function (t) {
             t.classList.contains(n.config.activeClass) && !(0, c.default)(n.list, t) && (0, a.default)(t);
           }), this;
@@ -2044,9 +2186,9 @@ var dist = {exports: {}};
         key: "pseudoFocus",
         value: function (t) {
           var e = this.currentOption,
-            n = this.config.activeClass,
-            r = this.input.getAttribute("data-active-option"),
-            i = r && document.getElementById(r);
+              n = this.config.activeClass,
+              r = this.input.getAttribute("data-active-option"),
+              i = r && document.getElementById(r);
           return i && n && (0, o.default)(i).remove(n), e && (this.input.setAttribute("data-active-option", e.id), n && (0, o.default)(e).add(n), this.liveRegion && (0, w.default)(e, this.config, this.liveRegion.announce.bind(this.liveRegion), t, this.currentGroup && this.currentGroup.element), this.input.setAttribute("aria-activedescendant", e.id), this.currentOption = e, this.emit("change")), this;
         }
       }, {
@@ -2063,9 +2205,11 @@ var dist = {exports: {}};
         key: "updateSelectedOptions",
         value: function () {
           var t = this,
-            e = document.getElementById(this.config.list.id),
-            n = this.selected;
+              e = document.getElementById(this.config.list.id),
+              n = this.selected;
+
           for (this.emptyDropdownList(); e.hasChildNodes();) e.removeChild(e.firstChild);
+
           return n.length > 0 && n.forEach(function (e) {
             t.setOptions(e);
           }), this;
@@ -2085,7 +2229,9 @@ var dist = {exports: {}};
   }, function (t, e) {
     t.exports = function (t, e) {
       if (t.indexOf) return t.indexOf(e);
+
       for (var n = 0; n < t.length; ++n) if (t[n] === e) return n;
+
       return -1;
     };
   }, function (t, e) {
@@ -2100,31 +2246,36 @@ var dist = {exports: {}};
     function r(t) {
       if (t) return function (t) {
         for (var e in r.prototype) t[e] = r.prototype[e];
+
         return t;
       }(t);
     }
+
     t.exports = r, r.prototype.on = r.prototype.addEventListener = function (t, e) {
       return this._callbacks = this._callbacks || {}, (this._callbacks["$" + t] = this._callbacks["$" + t] || []).push(e), this;
     }, r.prototype.once = function (t, e) {
       function n() {
         this.off(t, n), e.apply(this, arguments);
       }
+
       return n.fn = e, this.on(t, n), this;
     }, r.prototype.off = r.prototype.removeListener = r.prototype.removeAllListeners = r.prototype.removeEventListener = function (t, e) {
       if (this._callbacks = this._callbacks || {}, 0 == arguments.length) return this._callbacks = {}, this;
       var n,
-        r = this._callbacks["$" + t];
+          r = this._callbacks["$" + t];
       if (!r) return this;
       if (1 == arguments.length) return delete this._callbacks["$" + t], this;
+
       for (var i = 0; i < r.length; i++) if ((n = r[i]) === e || n.fn === e) {
         r.splice(i, 1);
         break;
       }
+
       return this;
     }, r.prototype.emit = function (t) {
       this._callbacks = this._callbacks || {};
       var e = [].slice.call(arguments, 1),
-        n = this._callbacks["$" + t];
+          n = this._callbacks["$" + t];
       if (n) for (var r = 0, i = (n = n.slice(0)).length; r < i; ++r) n[r].apply(this, e);
       return this;
     }, r.prototype.listeners = function (t) {
@@ -2137,9 +2288,10 @@ var dist = {exports: {}};
     function r(t) {
       this.region = document.createElement("div"), this.options = t || {}, this.configure(), document.body.appendChild(this.region);
     }
+
     r.prototype.configure = function () {
       var t = this.options,
-        e = this.region;
+          e = this.region;
       e.setAttribute("aria-live", t.ariaLive || "polite"), e.setAttribute("role", t.role || "log"), e.setAttribute("aria-relevant", t.ariaRelevant || "additions"), e.setAttribute("aria-atomic", t.ariaAtomic || "false"), this.region.style.position = "absolute", this.region.style.width = "1px", this.region.style.height = "1px", this.region.style.marginTop = "-1px", this.region.style.clip = "rect(1px, 1px, 1px, 1px)", this.region.style.overflow = "hidden";
     }, r.prototype.announce = function (t, e) {
       var n = document.createElement("div");
@@ -2160,6 +2312,7 @@ var dist = {exports: {}};
           };
           return t[r].call(i.exports, i, i.exports, e), i.l = !0, i.exports;
         }
+
         var n = {};
         return e.m = t, e.c = n, e.i = function (t) {
           return t;
@@ -2186,41 +2339,46 @@ var dist = {exports: {}};
             default: t
           };
         }
+
         function i() {}
+
         Object.defineProperty(e, "__esModule", {
           value: !0
         });
         var o = r(n(4)),
-          u = r(n(7)),
-          s = n(2),
-          a = r(n(3)),
-          c = [.19, 1, .22, 1];
+            u = r(n(7)),
+            s = n(2),
+            a = r(n(3)),
+            c = [.19, 1, .22, 1];
+
         e.default = function (t) {
           var e = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : 100,
-            n = 0,
-            r = void 0,
-            f = void 0;
+              n = 0,
+              r = void 0,
+              f = void 0;
           if ((0, s.isElement)(t)) r = o.default.apply(void 0, c), f = i;else {
             if (!(0, s.isObject)(t)) throw new TypeError("The first argument must be HTMLElement or Object.");
             if (!(0, s.isElement)(t.element)) throw new TypeError("`element` must be HTMLElement.");
             n = (0, s.isNumeric)(t.offset) ? t.offset : 0, r = (0, s.isArray)(t.bezier) && 4 === t.bezier.length ? o.default.apply(void 0, function (t) {
               if (Array.isArray(t)) {
                 for (var e = 0, n = Array(t.length); e < t.length; e++) n[e] = t[e];
+
                 return n;
               }
+
               return Array.from(t);
             }(t.bezier)) : o.default.apply(void 0, c), e = t.duration, f = (0, s.isFunction)(t.then) ? t.then : i, t = t.element;
           }
           (!(0, s.isNumeric)(e) || e < 0) && (e = 100);
           var l = (0, a.default)(t),
-            h = l.scrollTop,
-            p = l.offsetTop,
-            d = null,
-            g = ("BODY" === l.nodeName ? t.getBoundingClientRect().top + (window.scrollY || window.pageYOffset || document.body.scrollTop) - p : t.offsetTop - p) - h + n;
+              h = l.scrollTop,
+              p = l.offsetTop,
+              d = null,
+              g = ("BODY" === l.nodeName ? t.getBoundingClientRect().top + (window.scrollY || window.pageYOffset || document.body.scrollTop) - p : t.offsetTop - p) - h + n;
           (0, u.default)(function t(n) {
             null === d && (d = n);
             var i = n - d,
-              o = r(i / e) * g;
+                o = r(i / e) * g;
             l.scrollTop = Math.round(h + o), i < e ? (0, u.default)(t) : f();
           });
         };
@@ -2231,15 +2389,18 @@ var dist = {exports: {}};
             default: t
           };
         }(n(0));
+
         t.exports = r.default;
       }, function (t, e, n) {
 
         function r(t) {
           return Object.prototype.toString.call(t);
         }
+
         function i(t) {
           return !isNaN(parseFloat(t)) && isFinite(t);
         }
+
         Object.defineProperty(e, "__esModule", {
           value: !0
         });
@@ -2264,72 +2425,89 @@ var dist = {exports: {}};
         function r(t, e) {
           return window.getComputedStyle(t, null).getPropertyValue(e);
         }
+
         function i(t) {
           if (1 === t.nodeType) return o.test(function (t) {
             return r(t, "overflow") + r(t, "overflow-y");
           }(t)) && t.scrollHeight > t.clientHeight;
         }
+
         Object.defineProperty(e, "__esModule", {
           value: !0
         });
         var o = /(auto|scroll)/;
+
         e.default = function (t) {
           for (var e = function t(e) {
-              var n = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : [],
+            var n = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : [],
                 r = e.parentNode;
-              return null === r || "HTML" === r.nodeName ? n : t(r, n.concat(r));
-            }(t), n = document.body, r = 0, o = e.length; r < o; r++) if (i(e[r])) {
+            return null === r || "HTML" === r.nodeName ? n : t(r, n.concat(r));
+          }(t), n = document.body, r = 0, o = e.length; r < o; r++) if (i(e[r])) {
             n = e[r];
             break;
           }
+
           return n;
         };
       }, function (t, e) {
         function n(t, e) {
           return 1 - 3 * e + 3 * t;
         }
+
         function r(t, e) {
           return 3 * e - 6 * t;
         }
+
         function i(t) {
           return 3 * t;
         }
+
         function o(t, e, o) {
           return ((n(e, o) * t + r(e, o)) * t + i(e)) * t;
         }
+
         function u(t, e, o) {
           return 3 * n(e, o) * t * t + 2 * r(e, o) * t + i(e);
         }
+
         function s(t, e, n, r, i) {
           var u,
-            s,
-            a = 0;
+              s,
+              a = 0;
+
           do {
             (u = o(s = e + (n - e) / 2, r, i) - t) > 0 ? n = s : e = s;
           } while (Math.abs(u) > f && ++a < l);
+
           return s;
         }
+
         function a(t, e, n, r) {
           for (var i = 0; i < c; ++i) {
             var s = u(e, n, r);
             if (0 === s) return e;
             e -= (o(e, n, r) - t) / s;
           }
+
           return e;
         }
+
         var c = 4,
-          f = 1e-7,
-          l = 10,
-          h = 11,
-          p = 1 / (h - 1),
-          d = "function" == typeof Float32Array;
+            f = 1e-7,
+            l = 10,
+            h = 11,
+            p = 1 / (h - 1),
+            d = "function" == typeof Float32Array;
+
         t.exports = function (t, e, n, r) {
           function i(e) {
             for (var r = 0, i = 1, o = h - 1; i !== o && c[i] <= e; ++i) r += p;
+
             var f = r + (e - c[--i]) / (c[i + 1] - c[i]) * p,
-              l = u(f, t, n);
+                l = u(f, t, n);
             return l >= .001 ? a(e, f, t, n) : 0 === l ? f : s(e, r, r + p, t, n);
           }
+
           if (!(0 <= t && t <= 1 && 0 <= n && n <= 1)) throw new Error("bezier x values must be in [0, 1] range");
           var c = d ? new Float32Array(h) : new Array(h);
           if (t !== e || n !== r) for (var f = 0; f < h; ++f) c[f] = o(f * p, t, n);
@@ -2359,12 +2537,15 @@ var dist = {exports: {}};
         function n() {
           throw new Error("setTimeout has not been defined");
         }
+
         function r() {
           throw new Error("clearTimeout has not been defined");
         }
+
         function i(t) {
           if (c === setTimeout) return setTimeout(t, 0);
           if ((c === n || !c) && setTimeout) return c = setTimeout, setTimeout(t, 0);
+
           try {
             return c(t, 0);
           } catch (e) {
@@ -2375,20 +2556,26 @@ var dist = {exports: {}};
             }
           }
         }
+
         function o() {
           d && h && (d = !1, h.length ? p = h.concat(p) : g = -1, p.length && u());
         }
+
         function u() {
           if (!d) {
             var t = i(o);
             d = !0;
+
             for (var e = p.length; e;) {
               for (h = p, p = []; ++g < e;) h && h[g].run();
+
               g = -1, e = p.length;
             }
+
             h = null, d = !1, function (t) {
               if (f === clearTimeout) return clearTimeout(t);
               if ((f === r || !f) && clearTimeout) return f = clearTimeout, clearTimeout(t);
+
               try {
                 f(t);
               } catch (e) {
@@ -2401,19 +2588,23 @@ var dist = {exports: {}};
             }(t);
           }
         }
+
         function s(t, e) {
           this.fun = t, this.array = e;
         }
+
         function a() {}
+
         var c,
-          f,
-          l = t.exports = {};
+            f,
+            l = t.exports = {};
         !function () {
           try {
             c = "function" == typeof setTimeout ? setTimeout : n;
           } catch (t) {
             c = n;
           }
+
           try {
             f = "function" == typeof clearTimeout ? clearTimeout : r;
           } catch (t) {
@@ -2421,9 +2612,9 @@ var dist = {exports: {}};
           }
         }();
         var h,
-          p = [],
-          d = !1,
-          g = -1;
+            p = [],
+            d = !1,
+            g = -1;
         l.nextTick = function (t) {
           var e = new Array(arguments.length - 1);
           if (arguments.length > 1) for (var n = 1; n < arguments.length; n++) e[n - 1] = arguments[n];
@@ -2442,17 +2633,19 @@ var dist = {exports: {}};
       }, function (t, e, n) {
         (function (e) {
           for (var r = n(5), i = "undefined" == typeof window ? e : window, o = ["moz", "webkit"], u = "AnimationFrame", s = i["request" + u], a = i["cancel" + u] || i["cancelRequest" + u], c = 0; !s && c < o.length; c++) s = i[o[c] + "Request" + u], a = i[o[c] + "Cancel" + u] || i[o[c] + "CancelRequest" + u];
+
           if (!s || !a) {
             var f = 0,
-              l = 0,
-              h = [];
+                l = 0,
+                h = [];
             s = function (t) {
               if (0 === h.length) {
                 var e = r(),
-                  n = Math.max(0, 1e3 / 60 - (e - f));
+                    n = Math.max(0, 1e3 / 60 - (e - f));
                 f = n + e, setTimeout(function () {
                   var t = h.slice(0);
                   h.length = 0;
+
                   for (var e = 0; e < t.length; e++) if (!t[e].cancelled) try {
                     t[e].callback(f);
                   } catch (t) {
@@ -2462,6 +2655,7 @@ var dist = {exports: {}};
                   }
                 }, Math.round(n));
               }
+
               return h.push({
                 handle: ++l,
                 callback: t,
@@ -2471,6 +2665,7 @@ var dist = {exports: {}};
               for (var e = 0; e < h.length; e++) h[e].handle === t && (h[e].cancelled = !0);
             };
           }
+
           t.exports = function (t) {
             return s.call(i, t);
           }, t.exports.cancel = function () {
@@ -2481,14 +2676,17 @@ var dist = {exports: {}};
         }).call(e, n(8));
       }, function (t, e) {
         var n;
+
         n = function () {
           return this;
         }();
+
         try {
           n = n || Function("return this")() || (0, eval)("this");
         } catch (t) {
           "object" == typeof window && (n = window);
         }
+
         t.exports = n;
       }]);
     }, t.exports = r();
@@ -2496,31 +2694,31 @@ var dist = {exports: {}};
 
     t.exports = function (t, e) {
       var n = t.clientHeight,
-        r = e.clientHeight,
-        i = t.scrollTop,
-        o = e.offsetTop;
+          r = e.clientHeight,
+          i = t.scrollTop,
+          o = e.offsetTop;
       return !(i > o) && !(i + n - r < o);
     };
   }, function (t, e, n) {
 
     t.exports = function (t) {
       var e = window.innerHeight,
-        n = t.getBoundingClientRect(),
-        r = n.top < 0,
-        i = n.bottom > e,
-        o = !r && !i,
-        u = {
-          visible: o
-        };
+          n = t.getBoundingClientRect(),
+          r = n.top < 0,
+          i = n.bottom > e,
+          o = !r && !i,
+          u = {
+        visible: o
+      };
       return o || (u.position = r ? "top" : "bottom"), u;
     };
   }, function (t, e, n) {
 
     var r,
-      i = n(11),
-      o = (r = i) && r.__esModule ? r : {
-        default: r
-      };
+        i = n(11),
+        o = (r = i) && r.__esModule ? r : {
+      default: r
+    };
     t.exports = {
       contains: function (t, e) {
         return e.filter(function (e) {
@@ -2546,10 +2744,10 @@ var dist = {exports: {}};
   }, function (t, e, n) {
 
     var r,
-      i = n(13),
-      o = (r = i) && r.__esModule ? r : {
-        default: r
-      };
+        i = n(13),
+        o = (r = i) && r.__esModule ? r : {
+      default: r
+    };
     e.attach = function (t, e, n) {
       if ("function" == typeof n) return e.addEventListener(t, n);
       n && n.length && e.addEventListener(t, function (t) {
@@ -2582,19 +2780,22 @@ var dist = {exports: {}};
 
     t.exports = function (t, e, n) {
       if (e = e.length ? e : [e], n && e.indexOf(t) > -1) return !0;
+
       for (var r = t.parentNode; r && "HTML" !== r.tagName;) {
         if (e.indexOf(r) > -1) return !0;
         r = r.parentNode;
       }
+
       return !1;
     };
   }, function (t, e, n) {
 
     var r,
-      i = n(16),
-      o = (r = i) && r.__esModule ? r : {
-        default: r
-      };
+        i = n(16),
+        o = (r = i) && r.__esModule ? r : {
+      default: r
+    };
+
     t.exports = function (t, e, n) {
       return n = n || document, "string" == typeof t ? e ? o.default.all(t, n) : (0, o.default)(t, n) : t;
     };
@@ -2616,10 +2817,11 @@ var dist = {exports: {}};
   }, function (t, e, n) {
 
     var r,
-      i = n(1),
-      o = (r = i) && r.__esModule ? r : {
-        default: r
-      };
+        i = n(1),
+        o = (r = i) && r.__esModule ? r : {
+      default: r
+    };
+
     t.exports = function (t, e, n) {
       var r = t.querySelector(".combobo-no-results");
       !n || e.length || r ? r && e.length && t.removeChild(r) : (r = document.createElement("div"), (0, o.default)(r).add("combobo-no-results"), r.innerHTML = n, t.appendChild(r));
@@ -2627,10 +2829,11 @@ var dist = {exports: {}};
   }, function (t, e, n) {
 
     var r,
-      i = n(20),
-      o = (r = i) && r.__esModule ? r : {
-        default: r
-      };
+        i = n(20),
+        o = (r = i) && r.__esModule ? r : {
+      default: r
+    };
+
     t.exports = function (t, e, n) {
       e.id = e.id || (0, o.default)(), t.setAttribute("role", "combobox"), e.setAttribute("role", "listbox"), t.setAttribute("aria-controls", e.id), t.setAttribute("aria-autocomplete", "list"), t.setAttribute("aria-expanded", "false"), n.forEach(function (t) {
         t.setAttribute("role", "option"), t.id = t.id || (0, o.default)();
@@ -2639,10 +2842,11 @@ var dist = {exports: {}};
   }, function (t, e, n) {
 
     var r,
-      i = n(21),
-      o = (r = i) && r.__esModule ? r : {
-        default: r
-      };
+        i = n(21),
+        o = (r = i) && r.__esModule ? r : {
+      default: r
+    };
+
     t.exports = function t(e) {
       e = e || 8;
       var n = (0, o.default)(e);
@@ -2652,38 +2856,48 @@ var dist = {exports: {}};
   }, function (t, e, n) {
     (function (r) {
       var i = n(26);
+
       function o(t) {
         i("string" == typeof t, "the list of characters must be a string!");
         var e = r.byteLength(t);
         return function (n) {
           i("number" == typeof (n = n || 10) && n >= 0, "the length of the random string must be a number!");
+
           for (var r = "", o = 0; o < n; o++) r += t[Math.floor(e * Math.random())];
+
           return r;
         };
       }
+
       (e = t.exports = o("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789")).base62 = e, e.base36 = o("abcdefghijklmnopqrstuvwxyz0123456789"), e.base10 = o("0123456789"), e.create = o;
     }).call(e, n(22).Buffer);
   }, function (t, e, n) {
 
     (function (t) {
       var r = n(23),
-        i = n(24),
-        o = n(25);
+          i = n(24),
+          o = n(25);
+
       function u() {
         return a.TYPED_ARRAY_SUPPORT ? 2147483647 : 1073741823;
       }
+
       function s(t, e) {
         if (u() < e) throw new RangeError("Invalid typed array length");
         return a.TYPED_ARRAY_SUPPORT ? (t = new Uint8Array(e)).__proto__ = a.prototype : (null === t && (t = new a(e)), t.length = e), t;
       }
+
       function a(t, e, n) {
         if (!(a.TYPED_ARRAY_SUPPORT || this instanceof a)) return new a(t, e, n);
+
         if ("number" == typeof t) {
           if ("string" == typeof e) throw new Error("If encoding is specified then the first argument must be a string");
           return l(this, t);
         }
+
         return c(this, t, e, n);
       }
+
       function c(t, e, n, r) {
         if ("number" == typeof e) throw new TypeError('"value" argument must not be a number');
         return "undefined" != typeof ArrayBuffer && e instanceof ArrayBuffer ? function (t, e, n, r) {
@@ -2696,7 +2910,7 @@ var dist = {exports: {}};
           "string" == typeof n && "" !== n || (n = "utf8");
           if (!a.isEncoding(n)) throw new TypeError('"encoding" must be a valid string encoding');
           var r = 0 | d(e, n),
-            i = (t = s(t, r)).write(e, n);
+              i = (t = s(t, r)).write(e, n);
           i !== r && (t = t.slice(0, i));
           return t;
         }(t, e, n) : function (t, e) {
@@ -2704,67 +2918,85 @@ var dist = {exports: {}};
             var n = 0 | p(e.length);
             return 0 === (t = s(t, n)).length ? t : (e.copy(t, 0, 0, n), t);
           }
+
           if (e) {
             if ("undefined" != typeof ArrayBuffer && e.buffer instanceof ArrayBuffer || "length" in e) return "number" != typeof e.length || (r = e.length) != r ? s(t, 0) : h(t, e);
             if ("Buffer" === e.type && o(e.data)) return h(t, e.data);
           }
+
           var r;
           throw new TypeError("First argument must be a string, Buffer, ArrayBuffer, Array, or array-like object.");
         }(t, e);
       }
+
       function f(t) {
         if ("number" != typeof t) throw new TypeError('"size" argument must be a number');
         if (t < 0) throw new RangeError('"size" argument must not be negative');
       }
+
       function l(t, e) {
         if (f(e), t = s(t, e < 0 ? 0 : 0 | p(e)), !a.TYPED_ARRAY_SUPPORT) for (var n = 0; n < e; ++n) t[n] = 0;
         return t;
       }
+
       function h(t, e) {
         var n = e.length < 0 ? 0 : 0 | p(e.length);
         t = s(t, n);
+
         for (var r = 0; r < n; r += 1) t[r] = 255 & e[r];
+
         return t;
       }
+
       function p(t) {
         if (t >= u()) throw new RangeError("Attempt to allocate Buffer larger than maximum size: 0x" + u().toString(16) + " bytes");
         return 0 | t;
       }
+
       function d(t, e) {
         if (a.isBuffer(t)) return t.length;
         if ("undefined" != typeof ArrayBuffer && "function" == typeof ArrayBuffer.isView && (ArrayBuffer.isView(t) || t instanceof ArrayBuffer)) return t.byteLength;
         "string" != typeof t && (t = "" + t);
         var n = t.length;
         if (0 === n) return 0;
+
         for (var r = !1;;) switch (e) {
           case "ascii":
           case "latin1":
           case "binary":
             return n;
+
           case "utf8":
           case "utf-8":
           case void 0:
             return N(t).length;
+
           case "ucs2":
           case "ucs-2":
           case "utf16le":
           case "utf-16le":
             return 2 * n;
+
           case "hex":
             return n >>> 1;
+
           case "base64":
             return F(t).length;
+
           default:
             if (r) return N(t).length;
             e = ("" + e).toLowerCase(), r = !0;
         }
       }
+
       function g(t, e, n) {
         var r = t[e];
         t[e] = t[n], t[n] = r;
       }
+
       function y(t, e, n, r, i) {
         if (0 === t.length) return -1;
+
         if ("string" == typeof n ? (r = n, n = 0) : n > 2147483647 ? n = 2147483647 : n < -2147483648 && (n = -2147483648), n = +n, isNaN(n) && (n = i ? 0 : t.length - 1), n < 0 && (n = t.length + n), n >= t.length) {
           if (i) return -1;
           n = t.length - 1;
@@ -2772,24 +3004,30 @@ var dist = {exports: {}};
           if (!i) return -1;
           n = 0;
         }
+
         if ("string" == typeof e && (e = a.from(e, r)), a.isBuffer(e)) return 0 === e.length ? -1 : v(t, e, n, r, i);
         if ("number" == typeof e) return e &= 255, a.TYPED_ARRAY_SUPPORT && "function" == typeof Uint8Array.prototype.indexOf ? i ? Uint8Array.prototype.indexOf.call(t, e, n) : Uint8Array.prototype.lastIndexOf.call(t, e, n) : v(t, [e], n, r, i);
         throw new TypeError("val must be string, number or Buffer");
       }
+
       function v(t, e, n, r, i) {
         var o,
-          u = 1,
-          s = t.length,
-          a = e.length;
+            u = 1,
+            s = t.length,
+            a = e.length;
+
         if (void 0 !== r && ("ucs2" === (r = String(r).toLowerCase()) || "ucs-2" === r || "utf16le" === r || "utf-16le" === r)) {
           if (t.length < 2 || e.length < 2) return -1;
           u = 2, s /= 2, a /= 2, n /= 2;
         }
+
         function c(t, e) {
           return 1 === u ? t[e] : t.readUInt16BE(e * u);
         }
+
         if (i) {
           var f = -1;
+
           for (o = n; o < s; o++) if (c(t, o) === c(e, -1 === f ? 0 : o - f)) {
             if (-1 === f && (f = o), o - f + 1 === a) return f * u;
           } else -1 !== f && (o -= o - f), f = -1;
@@ -2798,10 +3036,13 @@ var dist = {exports: {}};
             l = !1;
             break;
           }
+
           if (l) return o;
         }
+
         return -1;
       }
+
       function m(t, e, n, r) {
         n = Number(n) || 0;
         var i = t.length - n;
@@ -2809,71 +3050,90 @@ var dist = {exports: {}};
         var o = e.length;
         if (o % 2 != 0) throw new TypeError("Invalid hex string");
         r > o / 2 && (r = o / 2);
+
         for (var u = 0; u < r; ++u) {
           var s = parseInt(e.substr(2 * u, 2), 16);
           if (isNaN(s)) return u;
           t[n + u] = s;
         }
+
         return u;
       }
+
       function b(t, e, n, r) {
         return z(N(e, t.length - n), t, n, r);
       }
+
       function w(t, e, n, r) {
         return z(function (t) {
           for (var e = [], n = 0; n < t.length; ++n) e.push(255 & t.charCodeAt(n));
+
           return e;
         }(e), t, n, r);
       }
+
       function E(t, e, n, r) {
         return w(t, e, n, r);
       }
+
       function O(t, e, n, r) {
         return z(F(e), t, n, r);
       }
+
       function A(t, e, n, r) {
         return z(function (t, e) {
           for (var n, r, i, o = [], u = 0; u < t.length && !((e -= 2) < 0); ++u) n = t.charCodeAt(u), r = n >> 8, i = n % 256, o.push(i), o.push(r);
+
           return o;
         }(e, t.length - n), t, n, r);
       }
+
       function x(t, e, n) {
         return 0 === e && n === t.length ? r.fromByteArray(t) : r.fromByteArray(t.slice(e, n));
       }
+
       function T(t, e, n) {
         n = Math.min(t.length, n);
+
         for (var r = [], i = e; i < n;) {
           var o,
-            u,
-            s,
-            a,
-            c = t[i],
-            f = null,
-            l = c > 239 ? 4 : c > 223 ? 3 : c > 191 ? 2 : 1;
+              u,
+              s,
+              a,
+              c = t[i],
+              f = null,
+              l = c > 239 ? 4 : c > 223 ? 3 : c > 191 ? 2 : 1;
           if (i + l <= n) switch (l) {
             case 1:
               c < 128 && (f = c);
               break;
+
             case 2:
               128 == (192 & (o = t[i + 1])) && (a = (31 & c) << 6 | 63 & o) > 127 && (f = a);
               break;
+
             case 3:
               o = t[i + 1], u = t[i + 2], 128 == (192 & o) && 128 == (192 & u) && (a = (15 & c) << 12 | (63 & o) << 6 | 63 & u) > 2047 && (a < 55296 || a > 57343) && (f = a);
               break;
+
             case 4:
               o = t[i + 1], u = t[i + 2], s = t[i + 3], 128 == (192 & o) && 128 == (192 & u) && 128 == (192 & s) && (a = (15 & c) << 18 | (63 & o) << 12 | (63 & u) << 6 | 63 & s) > 65535 && a < 1114112 && (f = a);
           }
           null === f ? (f = 65533, l = 1) : f > 65535 && (f -= 65536, r.push(f >>> 10 & 1023 | 55296), f = 56320 | 1023 & f), r.push(f), i += l;
         }
+
         return function (t) {
           var e = t.length;
           if (e <= _) return String.fromCharCode.apply(String, t);
           var n = "",
-            r = 0;
+              r = 0;
+
           for (; r < e;) n += String.fromCharCode.apply(String, t.slice(r, r += _));
+
           return n;
         }(r);
       }
+
       e.Buffer = a, e.SlowBuffer = function (t) {
         +t != t && (t = 0);
         return a.alloc(+t);
@@ -2909,10 +3169,12 @@ var dist = {exports: {}};
       }, a.compare = function (t, e) {
         if (!a.isBuffer(t) || !a.isBuffer(e)) throw new TypeError("Arguments must be Buffers");
         if (t === e) return 0;
+
         for (var n = t.length, r = e.length, i = 0, o = Math.min(n, r); i < o; ++i) if (t[i] !== e[i]) {
           n = t[i], r = e[i];
           break;
         }
+
         return n < r ? -1 : r < n ? 1 : 0;
       }, a.isEncoding = function (t) {
         switch (String(t).toLowerCase()) {
@@ -2928,6 +3190,7 @@ var dist = {exports: {}};
           case "utf16le":
           case "utf-16le":
             return !0;
+
           default:
             return !1;
         }
@@ -2937,27 +3200,35 @@ var dist = {exports: {}};
         var n;
         if (void 0 === e) for (e = 0, n = 0; n < t.length; ++n) e += t[n].length;
         var r = a.allocUnsafe(e),
-          i = 0;
+            i = 0;
+
         for (n = 0; n < t.length; ++n) {
           var u = t[n];
           if (!a.isBuffer(u)) throw new TypeError('"list" argument must be an Array of Buffers');
           u.copy(r, i), i += u.length;
         }
+
         return r;
       }, a.byteLength = d, a.prototype._isBuffer = !0, a.prototype.swap16 = function () {
         var t = this.length;
         if (t % 2 != 0) throw new RangeError("Buffer size must be a multiple of 16-bits");
+
         for (var e = 0; e < t; e += 2) g(this, e, e + 1);
+
         return this;
       }, a.prototype.swap32 = function () {
         var t = this.length;
         if (t % 4 != 0) throw new RangeError("Buffer size must be a multiple of 32-bits");
+
         for (var e = 0; e < t; e += 4) g(this, e, e + 3), g(this, e + 1, e + 2);
+
         return this;
       }, a.prototype.swap64 = function () {
         var t = this.length;
         if (t % 8 != 0) throw new RangeError("Buffer size must be a multiple of 64-bits");
+
         for (var e = 0; e < t; e += 8) g(this, e, e + 7), g(this, e + 1, e + 6), g(this, e + 2, e + 5), g(this, e + 3, e + 4);
+
         return this;
       }, a.prototype.toString = function () {
         var t = 0 | this.length;
@@ -2966,24 +3237,31 @@ var dist = {exports: {}};
           if ((void 0 === e || e < 0) && (e = 0), e > this.length) return "";
           if ((void 0 === n || n > this.length) && (n = this.length), n <= 0) return "";
           if ((n >>>= 0) <= (e >>>= 0)) return "";
+
           for (t || (t = "utf8");;) switch (t) {
             case "hex":
               return k(this, e, n);
+
             case "utf8":
             case "utf-8":
               return T(this, e, n);
+
             case "ascii":
               return S(this, e, n);
+
             case "latin1":
             case "binary":
               return R(this, e, n);
+
             case "base64":
               return x(this, e, n);
+
             case "ucs2":
             case "ucs-2":
             case "utf16le":
             case "utf-16le":
               return P(this, e, n);
+
             default:
               if (r) throw new TypeError("Unknown encoding: " + t);
               t = (t + "").toLowerCase(), r = !0;
@@ -2994,7 +3272,7 @@ var dist = {exports: {}};
         return this === t || 0 === a.compare(this, t);
       }, a.prototype.inspect = function () {
         var t = "",
-          n = e.INSPECT_MAX_BYTES;
+            n = e.INSPECT_MAX_BYTES;
         return this.length > 0 && (t = this.toString("hex", 0, n).match(/.{2}/g).join(" "), this.length > n && (t += " ... ")), "<Buffer " + t + ">";
       }, a.prototype.compare = function (t, e, n, r, i) {
         if (!a.isBuffer(t)) throw new TypeError("Argument must be a Buffer");
@@ -3003,10 +3281,12 @@ var dist = {exports: {}};
         if (r >= i) return -1;
         if (e >= n) return 1;
         if (e >>>= 0, n >>>= 0, r >>>= 0, i >>>= 0, this === t) return 0;
+
         for (var o = i - r, u = n - e, s = Math.min(o, u), c = this.slice(r, i), f = t.slice(e, n), l = 0; l < s; ++l) if (c[l] !== f[l]) {
           o = c[l], u = f[l];
           break;
         }
+
         return o < u ? -1 : u < o ? 1 : 0;
       }, a.prototype.includes = function (t, e, n) {
         return -1 !== this.indexOf(t, e, n);
@@ -3022,24 +3302,31 @@ var dist = {exports: {}};
         var i = this.length - e;
         if ((void 0 === n || n > i) && (n = i), t.length > 0 && (n < 0 || e < 0) || e > this.length) throw new RangeError("Attempt to write outside buffer bounds");
         r || (r = "utf8");
+
         for (var o = !1;;) switch (r) {
           case "hex":
             return m(this, t, e, n);
+
           case "utf8":
           case "utf-8":
             return b(this, t, e, n);
+
           case "ascii":
             return w(this, t, e, n);
+
           case "latin1":
           case "binary":
             return E(this, t, e, n);
+
           case "base64":
             return O(this, t, e, n);
+
           case "ucs2":
           case "ucs-2":
           case "utf16le":
           case "utf-16le":
             return A(this, t, e, n);
+
           default:
             if (o) throw new TypeError("Unknown encoding: " + r);
             r = ("" + r).toLowerCase(), o = !0;
@@ -3051,71 +3338,97 @@ var dist = {exports: {}};
         };
       };
       var _ = 4096;
+
       function S(t, e, n) {
         var r = "";
         n = Math.min(t.length, n);
+
         for (var i = e; i < n; ++i) r += String.fromCharCode(127 & t[i]);
+
         return r;
       }
+
       function R(t, e, n) {
         var r = "";
         n = Math.min(t.length, n);
+
         for (var i = e; i < n; ++i) r += String.fromCharCode(t[i]);
+
         return r;
       }
+
       function k(t, e, n) {
         var r = t.length;
         (!e || e < 0) && (e = 0), (!n || n < 0 || n > r) && (n = r);
+
         for (var i = "", o = e; o < n; ++o) i += Y(t[o]);
+
         return i;
       }
+
       function P(t, e, n) {
         for (var r = t.slice(e, n), i = "", o = 0; o < r.length; o += 2) i += String.fromCharCode(r[o] + 256 * r[o + 1]);
+
         return i;
       }
+
       function L(t, e, n) {
         if (t % 1 != 0 || t < 0) throw new RangeError("offset is not uint");
         if (t + e > n) throw new RangeError("Trying to access beyond buffer length");
       }
+
       function B(t, e, n, r, i, o) {
         if (!a.isBuffer(t)) throw new TypeError('"buffer" argument must be a Buffer instance');
         if (e > i || e < o) throw new RangeError('"value" argument is out of bounds');
         if (n + r > t.length) throw new RangeError("Index out of range");
       }
+
       function C(t, e, n, r) {
         e < 0 && (e = 65535 + e + 1);
+
         for (var i = 0, o = Math.min(t.length - n, 2); i < o; ++i) t[n + i] = (e & 255 << 8 * (r ? i : 1 - i)) >>> 8 * (r ? i : 1 - i);
       }
+
       function j(t, e, n, r) {
         e < 0 && (e = 4294967295 + e + 1);
+
         for (var i = 0, o = Math.min(t.length - n, 4); i < o; ++i) t[n + i] = e >>> 8 * (r ? i : 3 - i) & 255;
       }
+
       function M(t, e, n, r, i, o) {
         if (n + r > t.length) throw new RangeError("Index out of range");
         if (n < 0) throw new RangeError("Index out of range");
       }
+
       function U(t, e, n, r, o) {
         return o || M(t, 0, n, 4), i.write(t, e, n, r, 23, 4), n + 4;
       }
+
       function D(t, e, n, r, o) {
         return o || M(t, 0, n, 8), i.write(t, e, n, r, 52, 8), n + 8;
       }
+
       a.prototype.slice = function (t, e) {
         var n,
-          r = this.length;
+            r = this.length;
         if (t = ~~t, e = void 0 === e ? r : ~~e, t < 0 ? (t += r) < 0 && (t = 0) : t > r && (t = r), e < 0 ? (e += r) < 0 && (e = 0) : e > r && (e = r), e < t && (e = t), a.TYPED_ARRAY_SUPPORT) (n = this.subarray(t, e)).__proto__ = a.prototype;else {
           var i = e - t;
           n = new a(i, void 0);
+
           for (var o = 0; o < i; ++o) n[o] = this[o + t];
         }
         return n;
       }, a.prototype.readUIntLE = function (t, e, n) {
         t |= 0, e |= 0, n || L(t, e, this.length);
+
         for (var r = this[t], i = 1, o = 0; ++o < e && (i *= 256);) r += this[t + o] * i;
+
         return r;
       }, a.prototype.readUIntBE = function (t, e, n) {
         t |= 0, e |= 0, n || L(t, e, this.length);
+
         for (var r = this[t + --e], i = 1; e > 0 && (i *= 256);) r += this[t + --e] * i;
+
         return r;
       }, a.prototype.readUInt8 = function (t, e) {
         return e || L(t, 1, this.length), this[t];
@@ -3129,11 +3442,15 @@ var dist = {exports: {}};
         return e || L(t, 4, this.length), 16777216 * this[t] + (this[t + 1] << 16 | this[t + 2] << 8 | this[t + 3]);
       }, a.prototype.readIntLE = function (t, e, n) {
         t |= 0, e |= 0, n || L(t, e, this.length);
+
         for (var r = this[t], i = 1, o = 0; ++o < e && (i *= 256);) r += this[t + o] * i;
+
         return r >= (i *= 128) && (r -= Math.pow(2, 8 * e)), r;
       }, a.prototype.readIntBE = function (t, e, n) {
         t |= 0, e |= 0, n || L(t, e, this.length);
+
         for (var r = e, i = 1, o = this[t + --r]; r > 0 && (i *= 256);) o += this[t + --r] * i;
+
         return o >= (i *= 128) && (o -= Math.pow(2, 8 * e)), o;
       }, a.prototype.readInt8 = function (t, e) {
         return e || L(t, 1, this.length), 128 & this[t] ? -1 * (255 - this[t] + 1) : this[t];
@@ -3160,14 +3477,18 @@ var dist = {exports: {}};
       }, a.prototype.writeUIntLE = function (t, e, n, r) {
         (t = +t, e |= 0, n |= 0, r) || B(this, t, e, n, Math.pow(2, 8 * n) - 1, 0);
         var i = 1,
-          o = 0;
+            o = 0;
+
         for (this[e] = 255 & t; ++o < n && (i *= 256);) this[e + o] = t / i & 255;
+
         return e + n;
       }, a.prototype.writeUIntBE = function (t, e, n, r) {
         (t = +t, e |= 0, n |= 0, r) || B(this, t, e, n, Math.pow(2, 8 * n) - 1, 0);
         var i = n - 1,
-          o = 1;
+            o = 1;
+
         for (this[e + i] = 255 & t; --i >= 0 && (o *= 256);) this[e + i] = t / o & 255;
+
         return e + n;
       }, a.prototype.writeUInt8 = function (t, e, n) {
         return t = +t, e |= 0, n || B(this, t, e, 1, 255, 0), a.TYPED_ARRAY_SUPPORT || (t = Math.floor(t)), this[e] = 255 & t, e + 1;
@@ -3184,20 +3505,26 @@ var dist = {exports: {}};
           var i = Math.pow(2, 8 * n - 1);
           B(this, t, e, n, i - 1, -i);
         }
+
         var o = 0,
-          u = 1,
-          s = 0;
+            u = 1,
+            s = 0;
+
         for (this[e] = 255 & t; ++o < n && (u *= 256);) t < 0 && 0 === s && 0 !== this[e + o - 1] && (s = 1), this[e + o] = (t / u >> 0) - s & 255;
+
         return e + n;
       }, a.prototype.writeIntBE = function (t, e, n, r) {
         if (t = +t, e |= 0, !r) {
           var i = Math.pow(2, 8 * n - 1);
           B(this, t, e, n, i - 1, -i);
         }
+
         var o = n - 1,
-          u = 1,
-          s = 0;
+            u = 1,
+            s = 0;
+
         for (this[e + o] = 255 & t; --o >= 0 && (u *= 256);) t < 0 && 0 === s && 0 !== this[e + o + 1] && (s = 1), this[e + o] = (t / u >> 0) - s & 255;
+
         return e + n;
       }, a.prototype.writeInt8 = function (t, e, n) {
         return t = +t, e |= 0, n || B(this, t, e, 1, 127, -128), a.TYPED_ARRAY_SUPPORT || (t = Math.floor(t)), t < 0 && (t = 255 + t + 1), this[e] = 255 & t, e + 1;
@@ -3225,7 +3552,7 @@ var dist = {exports: {}};
         if (r < 0) throw new RangeError("sourceEnd out of bounds");
         r > this.length && (r = this.length), t.length - e < r - n && (r = t.length - e + n);
         var i,
-          o = r - n;
+            o = r - n;
         if (this === t && n < e && e < r) for (i = o - 1; i >= 0; --i) t[i + e] = this[i + n];else if (o < 1e3 || !a.TYPED_ARRAY_SUPPORT) for (i = 0; i < o; ++i) t[i + e] = this[i + n];else Uint8Array.prototype.set.call(t, this.subarray(n, n + o), e);
         return o;
       }, a.prototype.fill = function (t, e, n, r) {
@@ -3234,26 +3561,32 @@ var dist = {exports: {}};
             var i = t.charCodeAt(0);
             i < 256 && (t = i);
           }
+
           if (void 0 !== r && "string" != typeof r) throw new TypeError("encoding must be a string");
           if ("string" == typeof r && !a.isEncoding(r)) throw new TypeError("Unknown encoding: " + r);
         } else "number" == typeof t && (t &= 255);
+
         if (e < 0 || this.length < e || this.length < n) throw new RangeError("Out of range index");
         if (n <= e) return this;
         var o;
         if (e >>>= 0, n = void 0 === n ? this.length : n >>> 0, t || (t = 0), "number" == typeof t) for (o = e; o < n; ++o) this[o] = t;else {
           var u = a.isBuffer(t) ? t : N(new a(t, r).toString()),
-            s = u.length;
+              s = u.length;
+
           for (o = 0; o < n - e; ++o) this[o + e] = u[o % s];
         }
         return this;
       };
       var I = /[^+\/0-9A-Za-z-_]/g;
+
       function Y(t) {
         return t < 16 ? "0" + t.toString(16) : t.toString(16);
       }
+
       function N(t, e) {
         var n;
         e = e || 1 / 0;
+
         for (var r = t.length, i = null, o = [], u = 0; u < r; ++u) {
           if ((n = t.charCodeAt(u)) > 55295 && n < 57344) {
             if (!i) {
@@ -3261,19 +3594,24 @@ var dist = {exports: {}};
                 (e -= 3) > -1 && o.push(239, 191, 189);
                 continue;
               }
+
               if (u + 1 === r) {
                 (e -= 3) > -1 && o.push(239, 191, 189);
                 continue;
               }
+
               i = n;
               continue;
             }
+
             if (n < 56320) {
               (e -= 3) > -1 && o.push(239, 191, 189), i = n;
               continue;
             }
+
             n = 65536 + (i - 55296 << 10 | n - 56320);
           } else i && (e -= 3) > -1 && o.push(239, 191, 189);
+
           if (i = null, n < 128) {
             if ((e -= 1) < 0) break;
             o.push(n);
@@ -3289,19 +3627,25 @@ var dist = {exports: {}};
             o.push(n >> 18 | 240, n >> 12 & 63 | 128, n >> 6 & 63 | 128, 63 & n | 128);
           }
         }
+
         return o;
       }
+
       function F(t) {
         return r.toByteArray(function (t) {
           if ((t = function (t) {
             return t.trim ? t.trim() : t.replace(/^\s+|\s+$/g, "");
           }(t).replace(I, "")).length < 2) return "";
+
           for (; t.length % 4 != 0;) t += "=";
+
           return t;
         }(t));
       }
+
       function z(t, e, n, r) {
         for (var i = 0; i < r && !(i + n >= e.length || i >= t.length); ++i) e[i + n] = t[i];
+
         return i;
       }
     }).call(e, n(0));
@@ -3311,45 +3655,56 @@ var dist = {exports: {}};
       return 3 * t.length / 4 - c(t);
     }, e.toByteArray = function (t) {
       var e,
-        n,
-        r,
-        u,
-        s,
-        a = t.length;
+          n,
+          r,
+          u,
+          s,
+          a = t.length;
       u = c(t), s = new o(3 * a / 4 - u), n = u > 0 ? a - 4 : a;
       var f = 0;
+
       for (e = 0; e < n; e += 4) r = i[t.charCodeAt(e)] << 18 | i[t.charCodeAt(e + 1)] << 12 | i[t.charCodeAt(e + 2)] << 6 | i[t.charCodeAt(e + 3)], s[f++] = r >> 16 & 255, s[f++] = r >> 8 & 255, s[f++] = 255 & r;
+
       2 === u ? (r = i[t.charCodeAt(e)] << 2 | i[t.charCodeAt(e + 1)] >> 4, s[f++] = 255 & r) : 1 === u && (r = i[t.charCodeAt(e)] << 10 | i[t.charCodeAt(e + 1)] << 4 | i[t.charCodeAt(e + 2)] >> 2, s[f++] = r >> 8 & 255, s[f++] = 255 & r);
       return s;
     }, e.fromByteArray = function (t) {
       for (var e, n = t.length, i = n % 3, o = "", u = [], s = 0, a = n - i; s < a; s += 16383) u.push(f(t, s, s + 16383 > a ? a : s + 16383));
+
       1 === i ? (e = t[n - 1], o += r[e >> 2], o += r[e << 4 & 63], o += "==") : 2 === i && (e = (t[n - 2] << 8) + t[n - 1], o += r[e >> 10], o += r[e >> 4 & 63], o += r[e << 2 & 63], o += "=");
       return u.push(o), u.join("");
     };
+
     for (var r = [], i = [], o = "undefined" != typeof Uint8Array ? Uint8Array : Array, u = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/", s = 0, a = u.length; s < a; ++s) r[s] = u[s], i[u.charCodeAt(s)] = s;
+
     function c(t) {
       var e = t.length;
       if (e % 4 > 0) throw new Error("Invalid string. Length must be a multiple of 4");
       return "=" === t[e - 2] ? 2 : "=" === t[e - 1] ? 1 : 0;
     }
+
     function f(t, e, n) {
       for (var i, o, u = [], s = e; s < n; s += 3) i = (t[s] << 16 & 16711680) + (t[s + 1] << 8 & 65280) + (255 & t[s + 2]), u.push(r[(o = i) >> 18 & 63] + r[o >> 12 & 63] + r[o >> 6 & 63] + r[63 & o]);
+
       return u.join("");
     }
+
     i["-".charCodeAt(0)] = 62, i["_".charCodeAt(0)] = 63;
   }, function (t, e) {
     e.read = function (t, e, n, r, i) {
       var o,
-        u,
-        s = 8 * i - r - 1,
-        a = (1 << s) - 1,
-        c = a >> 1,
-        f = -7,
-        l = n ? i - 1 : 0,
-        h = n ? -1 : 1,
-        p = t[e + l];
+          u,
+          s = 8 * i - r - 1,
+          a = (1 << s) - 1,
+          c = a >> 1,
+          f = -7,
+          l = n ? i - 1 : 0,
+          h = n ? -1 : 1,
+          p = t[e + l];
+
       for (l += h, o = p & (1 << -f) - 1, p >>= -f, f += s; f > 0; o = 256 * o + t[e + l], l += h, f -= 8);
+
       for (u = o & (1 << -f) - 1, o >>= -f, f += r; f > 0; u = 256 * u + t[e + l], l += h, f -= 8);
+
       if (0 === o) o = 1 - c;else {
         if (o === a) return u ? NaN : 1 / 0 * (p ? -1 : 1);
         u += Math.pow(2, r), o -= c;
@@ -3357,21 +3712,25 @@ var dist = {exports: {}};
       return (p ? -1 : 1) * u * Math.pow(2, o - r);
     }, e.write = function (t, e, n, r, i, o) {
       var u,
-        s,
-        a,
-        c = 8 * o - i - 1,
-        f = (1 << c) - 1,
-        l = f >> 1,
-        h = 23 === i ? Math.pow(2, -24) - Math.pow(2, -77) : 0,
-        p = r ? 0 : o - 1,
-        d = r ? 1 : -1,
-        g = e < 0 || 0 === e && 1 / e < 0 ? 1 : 0;
+          s,
+          a,
+          c = 8 * o - i - 1,
+          f = (1 << c) - 1,
+          l = f >> 1,
+          h = 23 === i ? Math.pow(2, -24) - Math.pow(2, -77) : 0,
+          p = r ? 0 : o - 1,
+          d = r ? 1 : -1,
+          g = e < 0 || 0 === e && 1 / e < 0 ? 1 : 0;
+
       for (e = Math.abs(e), isNaN(e) || e === 1 / 0 ? (s = isNaN(e) ? 1 : 0, u = f) : (u = Math.floor(Math.log(e) / Math.LN2), e * (a = Math.pow(2, -u)) < 1 && (u--, a *= 2), (e += u + l >= 1 ? h / a : h * Math.pow(2, 1 - l)) * a >= 2 && (u++, a /= 2), u + l >= f ? (s = 0, u = f) : u + l >= 1 ? (s = (e * a - 1) * Math.pow(2, i), u += l) : (s = e * Math.pow(2, l - 1) * Math.pow(2, i), u = 0)); i >= 8; t[n + p] = 255 & s, p += d, s /= 256, i -= 8);
+
       for (u = u << i | s, c += i; c > 0; t[n + p] = 255 & u, p += d, u /= 256, c -= 8);
+
       t[n + p - d] |= 128 * g;
     };
   }, function (t, e) {
     var n = {}.toString;
+
     t.exports = Array.isArray || function (t) {
       return "[object Array]" == n.call(t);
     };
@@ -3380,27 +3739,35 @@ var dist = {exports: {}};
     (function (e) {
       function r(t, e) {
         if (t === e) return 0;
+
         for (var n = t.length, r = e.length, i = 0, o = Math.min(n, r); i < o; ++i) if (t[i] !== e[i]) {
           n = t[i], r = e[i];
           break;
         }
+
         return n < r ? -1 : r < n ? 1 : 0;
       }
+
       function i(t) {
         return e.Buffer && "function" == typeof e.Buffer.isBuffer ? e.Buffer.isBuffer(t) : !(null == t || !t._isBuffer);
       }
+
       var o = n(27),
-        u = Object.prototype.hasOwnProperty,
-        s = Array.prototype.slice,
-        a = "foo" === function () {}.name;
+          u = Object.prototype.hasOwnProperty,
+          s = Array.prototype.slice,
+          a = "foo" === function () {}.name;
+
       function c(t) {
         return Object.prototype.toString.call(t);
       }
+
       function f(t) {
         return !i(t) && "function" == typeof e.ArrayBuffer && ("function" == typeof ArrayBuffer.isView ? ArrayBuffer.isView(t) : !!t && (t instanceof DataView || !!(t.buffer && t.buffer instanceof ArrayBuffer)));
       }
+
       var l = t.exports = v,
-        h = /\s*function\s+([^\(\s]*)\s*/;
+          h = /\s*function\s+([^\(\s]*)\s*/;
+
       function p(t) {
         if (o.isFunction(t)) {
           if (a) return t.name;
@@ -3408,14 +3775,17 @@ var dist = {exports: {}};
           return e && e[1];
         }
       }
+
       function d(t, e) {
         return "string" == typeof t ? t.length < e ? t : t.slice(0, e) : t;
       }
+
       function g(t) {
         if (a || !o.isFunction(t)) return o.inspect(t);
         var e = p(t);
         return "[Function" + (e ? ": " + e : "") + "]";
       }
+
       function y(t, e, n, r, i) {
         throw new l.AssertionError({
           message: n,
@@ -3425,14 +3795,17 @@ var dist = {exports: {}};
           stackStartFunction: i
         });
       }
+
       function v(t, e) {
         t || y(t, !0, e, "==", l.ok);
       }
+
       function m(t, e, n, u) {
         if (t === e) return !0;
         if (i(t) && i(e)) return 0 === r(t, e);
         if (o.isDate(t) && o.isDate(e)) return t.getTime() === e.getTime();
         if (o.isRegExp(t) && o.isRegExp(e)) return t.source === e.source && t.global === e.global && t.multiline === e.multiline && t.lastIndex === e.lastIndex && t.ignoreCase === e.ignoreCase;
+
         if (null !== t && "object" == typeof t || null !== e && "object" == typeof e) {
           if (f(t) && f(e) && c(t) === c(e) && !(t instanceof Float32Array || t instanceof Float64Array)) return 0 === r(new Uint8Array(t.buffer), new Uint8Array(e.buffer));
           if (i(t) !== i(e)) return !1;
@@ -3445,63 +3818,78 @@ var dist = {exports: {}};
             if (o.isPrimitive(t) || o.isPrimitive(e)) return t === e;
             if (n && Object.getPrototypeOf(t) !== Object.getPrototypeOf(e)) return !1;
             var i = b(t),
-              u = b(e);
+                u = b(e);
             if (i && !u || !i && u) return !1;
             if (i) return t = s.call(t), e = s.call(e), m(t, e, n);
             var a,
-              c,
-              f = O(t),
-              l = O(e);
+                c,
+                f = O(t),
+                l = O(e);
             if (f.length !== l.length) return !1;
+
             for (f.sort(), l.sort(), c = f.length - 1; c >= 0; c--) if (f[c] !== l[c]) return !1;
+
             for (c = f.length - 1; c >= 0; c--) if (a = f[c], !m(t[a], e[a], n, r)) return !1;
+
             return !0;
           }(t, e, n, u));
         }
+
         return n ? t === e : t == e;
       }
+
       function b(t) {
         return "[object Arguments]" == Object.prototype.toString.call(t);
       }
+
       function w(t, e) {
         if (!t || !e) return !1;
         if ("[object RegExp]" == Object.prototype.toString.call(e)) return e.test(t);
+
         try {
           if (t instanceof e) return !0;
         } catch (t) {}
+
         return !Error.isPrototypeOf(e) && !0 === e.call({}, t);
       }
+
       function E(t, e, n, r) {
         var i;
         if ("function" != typeof e) throw new TypeError('"block" argument must be a function');
         "string" == typeof n && (r = n, n = null), i = function (t) {
           var e;
+
           try {
             t();
           } catch (t) {
             e = t;
           }
+
           return e;
         }(e), r = (n && n.name ? " (" + n.name + ")." : ".") + (r ? " " + r : "."), t && !i && y(i, n, "Missing expected exception" + r);
         var u = "string" == typeof r,
-          s = !t && o.isError(i),
-          a = !t && i && !n;
+            s = !t && o.isError(i),
+            a = !t && i && !n;
         if ((s && u && w(i, n) || a) && y(i, n, "Got unwanted exception" + r), t && i && n && !w(i, n) || !t && i) throw i;
       }
+
       l.AssertionError = function (t) {
         var e;
         this.name = "AssertionError", this.actual = t.actual, this.expected = t.expected, this.operator = t.operator, t.message ? (this.message = t.message, this.generatedMessage = !1) : (this.message = d(g((e = this).actual), 128) + " " + e.operator + " " + d(g(e.expected), 128), this.generatedMessage = !0);
         var n = t.stackStartFunction || y;
         if (Error.captureStackTrace) Error.captureStackTrace(this, n);else {
           var r = new Error();
+
           if (r.stack) {
             var i = r.stack,
-              o = p(n),
-              u = i.indexOf("\n" + o);
+                o = p(n),
+                u = i.indexOf("\n" + o);
+
             if (u >= 0) {
               var s = i.indexOf("\n", u + 1);
               i = i.substring(s + 1);
             }
+
             this.stack = i;
           }
         }
@@ -3528,9 +3916,12 @@ var dist = {exports: {}};
       }, l.ifError = function (t) {
         if (t) throw t;
       };
+
       var O = Object.keys || function (t) {
         var e = [];
+
         for (var n in t) u.call(t, n) && e.push(n);
+
         return e;
       };
     }).call(e, n(0));
@@ -3540,27 +3931,35 @@ var dist = {exports: {}};
       e.format = function (t) {
         if (!v(t)) {
           for (var e = [], n = 0; n < arguments.length; n++) e.push(s(arguments[n]));
+
           return e.join(" ");
         }
+
         n = 1;
+
         for (var r = arguments, o = r.length, u = String(t).replace(i, function (t) {
-            if ("%%" === t) return "%";
-            if (n >= o) return t;
-            switch (t) {
-              case "%s":
-                return String(r[n++]);
-              case "%d":
-                return Number(r[n++]);
-              case "%j":
-                try {
-                  return JSON.stringify(r[n++]);
-                } catch (t) {
-                  return "[Circular]";
-                }
-              default:
-                return t;
-            }
-          }), a = r[n]; n < o; a = r[++n]) g(a) || !w(a) ? u += " " + a : u += " " + s(a);
+          if ("%%" === t) return "%";
+          if (n >= o) return t;
+
+          switch (t) {
+            case "%s":
+              return String(r[n++]);
+
+            case "%d":
+              return Number(r[n++]);
+
+            case "%j":
+              try {
+                return JSON.stringify(r[n++]);
+              } catch (t) {
+                return "[Circular]";
+              }
+
+            default:
+              return t;
+          }
+        }), a = r[n]; n < o; a = r[++n]) g(a) || !w(a) ? u += " " + a : u += " " + s(a);
+
         return u;
       }, e.deprecate = function (n, i) {
         if (m(t.process)) return function () {
@@ -3573,11 +3972,13 @@ var dist = {exports: {}};
             if (r.throwDeprecation) throw new Error(i);
             r.traceDeprecation ? console.trace(i) : console.error(i), o = !0;
           }
+
           return n.apply(this, arguments);
         };
       };
       var o,
-        u = {};
+          u = {};
+
       function s(t, n) {
         var r = {
           seen: [],
@@ -3585,53 +3986,66 @@ var dist = {exports: {}};
         };
         return arguments.length >= 3 && (r.depth = arguments[2]), arguments.length >= 4 && (r.colors = arguments[3]), d(n) ? r.showHidden = n : n && e._extend(r, n), m(r.showHidden) && (r.showHidden = !1), m(r.depth) && (r.depth = 2), m(r.colors) && (r.colors = !1), m(r.customInspect) && (r.customInspect = !0), r.colors && (r.stylize = a), f(r, t, r.depth);
       }
+
       function a(t, e) {
         var n = s.styles[e];
         return n ? "[" + s.colors[n][0] + "m" + t + "[" + s.colors[n][1] + "m" : t;
       }
+
       function c(t, e) {
         return t;
       }
+
       function f(t, n, r) {
         if (t.customInspect && n && A(n.inspect) && n.inspect !== e.inspect && (!n.constructor || n.constructor.prototype !== n)) {
           var i = n.inspect(r, t);
           return v(i) || (i = f(t, i, r)), i;
         }
+
         var o = function (t, e) {
           if (m(e)) return t.stylize("undefined", "undefined");
+
           if (v(e)) {
             var n = "'" + JSON.stringify(e).replace(/^"|"$/g, "").replace(/'/g, "\\'").replace(/\\"/g, '"') + "'";
             return t.stylize(n, "string");
           }
+
           if (y(e)) return t.stylize("" + e, "number");
           if (d(e)) return t.stylize("" + e, "boolean");
           if (g(e)) return t.stylize("null", "null");
         }(t, n);
+
         if (o) return o;
+
         var u = Object.keys(n),
-          s = function (t) {
-            var e = {};
-            return t.forEach(function (t, n) {
-              e[t] = !0;
-            }), e;
-          }(u);
+            s = function (t) {
+          var e = {};
+          return t.forEach(function (t, n) {
+            e[t] = !0;
+          }), e;
+        }(u);
+
         if (t.showHidden && (u = Object.getOwnPropertyNames(n)), O(n) && (u.indexOf("message") >= 0 || u.indexOf("description") >= 0)) return l(n);
+
         if (0 === u.length) {
           if (A(n)) {
             var a = n.name ? ": " + n.name : "";
             return t.stylize("[Function" + a + "]", "special");
           }
+
           if (b(n)) return t.stylize(RegExp.prototype.toString.call(n), "regexp");
           if (E(n)) return t.stylize(Date.prototype.toString.call(n), "date");
           if (O(n)) return l(n);
         }
+
         var c,
-          w = "",
-          x = !1,
-          T = ["{", "}"];
+            w = "",
+            x = !1,
+            T = ["{", "}"];
         (p(n) && (x = !0, T = ["[", "]"]), A(n)) && (w = " [Function" + (n.name ? ": " + n.name : "") + "]");
         return b(n) && (w = " " + RegExp.prototype.toString.call(n)), E(n) && (w = " " + Date.prototype.toUTCString.call(n)), O(n) && (w = " " + l(n)), 0 !== u.length || x && 0 != n.length ? r < 0 ? b(n) ? t.stylize(RegExp.prototype.toString.call(n), "regexp") : t.stylize("[Object]", "special") : (t.seen.push(n), c = x ? function (t, e, n, r, i) {
           for (var o = [], u = 0, s = e.length; u < s; ++u) S(e, String(u)) ? o.push(h(t, e, n, r, String(u), !0)) : o.push("");
+
           return i.forEach(function (i) {
             i.match(/^\d+$/) || o.push(h(t, e, n, r, i, !0));
           }), o;
@@ -3644,11 +4058,14 @@ var dist = {exports: {}};
           return n[0] + e + " " + t.join(", ") + " " + n[1];
         }(c, w, T)) : T[0] + w + T[1];
       }
+
       function l(t) {
         return "[" + Error.prototype.toString.call(t) + "]";
       }
+
       function h(t, e, n, r, i, o) {
         var u, s, a;
+
         if ((a = Object.getOwnPropertyDescriptor(e, i) || {
           value: e[i]
         }).get ? s = a.set ? t.stylize("[Getter/Setter]", "special") : t.stylize("[Getter]", "special") : a.set && (s = t.stylize("[Setter]", "special")), S(r, i) || (u = "[" + i + "]"), s || (t.seen.indexOf(a.value) < 0 ? (s = g(n) ? f(t, a.value, null) : f(t, a.value, n - 1)).indexOf("\n") > -1 && (s = o ? s.split("\n").map(function (t) {
@@ -3659,52 +4076,68 @@ var dist = {exports: {}};
           if (o && i.match(/^\d+$/)) return s;
           (u = JSON.stringify("" + i)).match(/^"([a-zA-Z_][a-zA-Z_0-9]*)"$/) ? (u = u.substr(1, u.length - 2), u = t.stylize(u, "name")) : (u = u.replace(/'/g, "\\'").replace(/\\"/g, '"').replace(/(^"|"$)/g, "'"), u = t.stylize(u, "string"));
         }
+
         return u + ": " + s;
       }
+
       function p(t) {
         return Array.isArray(t);
       }
+
       function d(t) {
         return "boolean" == typeof t;
       }
+
       function g(t) {
         return null === t;
       }
+
       function y(t) {
         return "number" == typeof t;
       }
+
       function v(t) {
         return "string" == typeof t;
       }
+
       function m(t) {
         return void 0 === t;
       }
+
       function b(t) {
         return w(t) && "[object RegExp]" === x(t);
       }
+
       function w(t) {
         return "object" == typeof t && null !== t;
       }
+
       function E(t) {
         return w(t) && "[object Date]" === x(t);
       }
+
       function O(t) {
         return w(t) && ("[object Error]" === x(t) || t instanceof Error);
       }
+
       function A(t) {
         return "function" == typeof t;
       }
+
       function x(t) {
         return Object.prototype.toString.call(t);
       }
+
       function T(t) {
         return t < 10 ? "0" + t.toString(10) : t.toString(10);
       }
+
       e.debuglog = function (t) {
         if (m(o) && (o = Object({
           NODE_ENV: "production"
         }).NODE_DEBUG || ""), t = t.toUpperCase(), !u[t]) if (new RegExp("\\b" + t + "\\b", "i").test(o)) {
           var n = r.pid;
+
           u[t] = function () {
             var r = e.format.apply(e, arguments);
             console.error("%s %d: %s", t, n, r);
@@ -3742,31 +4175,39 @@ var dist = {exports: {}};
         return null === t || "boolean" == typeof t || "number" == typeof t || "string" == typeof t || "symbol" == typeof t || void 0 === t;
       }, e.isBuffer = n(29);
       var _ = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
       function S(t, e) {
         return Object.prototype.hasOwnProperty.call(t, e);
       }
+
       e.log = function () {
         var t, n;
         console.log("%s - %s", (t = new Date(), n = [T(t.getHours()), T(t.getMinutes()), T(t.getSeconds())].join(":"), [t.getDate(), _[t.getMonth()], n].join(" ")), e.format.apply(e, arguments));
       }, e.inherits = n(30), e._extend = function (t, e) {
         if (!e || !w(e)) return t;
+
         for (var n = Object.keys(e), r = n.length; r--;) t[n[r]] = e[n[r]];
+
         return t;
       };
     }).call(e, n(0), n(28));
   }, function (t, e) {
     var n,
-      r,
-      i = t.exports = {};
+        r,
+        i = t.exports = {};
+
     function o() {
       throw new Error("setTimeout has not been defined");
     }
+
     function u() {
       throw new Error("clearTimeout has not been defined");
     }
+
     function s(t) {
       if (n === setTimeout) return setTimeout(t, 0);
       if ((n === o || !n) && setTimeout) return n = setTimeout, setTimeout(t, 0);
+
       try {
         return n(t, 0);
       } catch (e) {
@@ -3777,12 +4218,14 @@ var dist = {exports: {}};
         }
       }
     }
+
     !function () {
       try {
         n = "function" == typeof setTimeout ? setTimeout : o;
       } catch (t) {
         n = o;
       }
+
       try {
         r = "function" == typeof clearTimeout ? clearTimeout : u;
       } catch (t) {
@@ -3790,23 +4233,29 @@ var dist = {exports: {}};
       }
     }();
     var a,
-      c = [],
-      f = !1,
-      l = -1;
+        c = [],
+        f = !1,
+        l = -1;
+
     function h() {
       f && a && (f = !1, a.length ? c = a.concat(c) : l = -1, c.length && p());
     }
+
     function p() {
       if (!f) {
         var t = s(h);
         f = !0;
+
         for (var e = c.length; e;) {
           for (a = c, c = []; ++l < e;) a && a[l].run();
+
           l = -1, e = c.length;
         }
+
         a = null, f = !1, function (t) {
           if (r === clearTimeout) return clearTimeout(t);
           if ((r === u || !r) && clearTimeout) return r = clearTimeout, clearTimeout(t);
+
           try {
             r(t);
           } catch (e) {
@@ -3819,10 +4268,13 @@ var dist = {exports: {}};
         }(t);
       }
     }
+
     function d(t, e) {
       this.fun = t, this.array = e;
     }
+
     function g() {}
+
     i.nextTick = function (t) {
       var e = new Array(arguments.length - 1);
       if (arguments.length > 1) for (var n = 1; n < arguments.length; n++) e[n - 1] = arguments[n];
@@ -3856,25 +4308,27 @@ var dist = {exports: {}};
       });
     } : t.exports = function (t, e) {
       t.super_ = e;
+
       var n = function () {};
+
       n.prototype = e.prototype, t.prototype = new n(), t.prototype.constructor = t;
     };
   }, function (t, e, n) {
 
     t.exports = function (t, e, n) {
       var r = e.value,
-        i = t.innerText,
-        o = i.toLowerCase().indexOf(r.toLowerCase()),
-        u = r.length;
+          i = t.innerText,
+          o = i.toLowerCase().indexOf(r.toLowerCase()),
+          u = r.length;
       return r && o >= 0 ? i.substring(0, o) + '<span class="' + n + '">' + i.substr(o, u) + "</span>" + i.substring(o + u) : i;
     };
   }, function (t, e, n) {
 
     var r,
-      i = n(33),
-      o = (r = i) && r.__esModule ? r : {
-        default: r
-      };
+        i = n(33),
+        o = (r = i) && r.__esModule ? r : {
+      default: r
+    };
     var u = {
       input: ".combobox",
       list: ".listbox",
@@ -3904,26 +4358,32 @@ var dist = {exports: {}};
       filter: "contains",
       autoFilter: !0
     };
+
     t.exports = function (t) {
       var e = {},
-        n = {};
+          n = {};
       return t.announcement = t.announcement || {}, (0, o.default)(n, u.announcement, t.announcement), (0, o.default)(e, u, t), e.announcement = n, e;
     };
   }, function (t, e, n) {
 
     var r = n(34);
+
     function i(t, e) {
       for (var n in e) o(e, n) && (t[n] = e[n]);
     }
+
     function o(t, e) {
       return Object.prototype.hasOwnProperty.call(t, e);
     }
+
     t.exports = function (t) {
       r(t) || (t = {});
+
       for (var e = arguments.length, n = 1; n < e; n++) {
         var o = arguments[n];
         r(o) && i(t, o);
       }
+
       return t;
     };
   }, function (t, e, n) {
@@ -3935,8 +4395,8 @@ var dist = {exports: {}};
 
     t.exports = function (t, e, n, r, i) {
       var o = "true" === t.getAttribute("aria-selected"),
-        u = e.announcement.selected,
-        s = t.innerText;
+          u = e.announcement.selected,
+          s = t.innerText;
       s = r && e.announcement && e.announcement.groupChange ? e.announcement.groupChange(i) + " " + s : s, n(s = o && u ? s + " " + u : s, 500);
     };
   }]);
@@ -4965,19 +5425,23 @@ const CountrySelect = ({
     if (formValidationSent) setA11yInvalid(doA11yValidation(country, field, true));
   }, [formValidationSent]);
   const dispatch = reactRedux.useDispatch();
+
   const doUpdate = value => {
     setCountry(value);
     dispatch(setValue(formId, id, value));
     setA11yInvalid(doA11yValidation(value, field, formValidationSent));
   };
+
   const onKeyDown = evt => {
     if (evt.key === 'Enter') {
       doUpdate(evt.target.value);
     }
   };
+
   React.useEffect(() => {
     if (elInputRef !== null && elInputRef !== void 0 && elInputRef.current) {
       var _elInputRef$current;
+
       const combo = new Combobo({
         input: elInputRef === null || elInputRef === void 0 ? void 0 : elInputRef.current,
         list: '.input__countries .input__listbox',
@@ -4992,6 +5456,7 @@ const CountrySelect = ({
       elInputRef === null || elInputRef === void 0 ? void 0 : (_elInputRef$current = elInputRef.current) === null || _elInputRef$current === void 0 ? void 0 : _elInputRef$current.addEventListener('keydown', onKeyDown);
       return () => {
         var _elInputRef$current2;
+
         elInputRef === null || elInputRef === void 0 ? void 0 : (_elInputRef$current2 = elInputRef.current) === null || _elInputRef$current2 === void 0 ? void 0 : _elInputRef$current2.removeEventListener('keydown', onKeyDown);
         if (combo && typeof combo.destroy === 'function') combo.destroy();
       };
@@ -5086,6 +5551,7 @@ const FormComposer = ({
   if (!fields || fields.length < 1) return null;
   return fields.map((field, idx) => {
     if (!field) return null;
+
     switch (field.type) {
       case 'number':
       case 'textfield':
@@ -5107,6 +5573,7 @@ const FormComposer = ({
             useDefaultTheme: useDefaultTheme
           });
         }
+
       case 'textarea':
         {
           return /*#__PURE__*/React__default["default"].createElement(Textarea, {
@@ -5126,6 +5593,7 @@ const FormComposer = ({
             errors: errors
           });
         }
+
       case 'dropdown':
         {
           return /*#__PURE__*/React__default["default"].createElement(Dropdown, {
@@ -5140,6 +5608,7 @@ const FormComposer = ({
             useDefaultTheme: useDefaultTheme
           });
         }
+
       case 'checkbox':
         {
           return /*#__PURE__*/React__default["default"].createElement(Checkbox, {
@@ -5156,6 +5625,7 @@ const FormComposer = ({
             useDefaultTheme: useDefaultTheme
           });
         }
+
       case 'radio':
         {
           return /*#__PURE__*/React__default["default"].createElement(RadioButton, {
@@ -5170,6 +5640,7 @@ const FormComposer = ({
             useDefaultTheme: useDefaultTheme
           });
         }
+
       case 'entryPicker':
         {
           const type = field.dataType === 'objectArray' ? 'checkbox' : 'radio';
@@ -5186,6 +5657,7 @@ const FormComposer = ({
             formId: formId
           });
         }
+
       case 'date':
         {
           return /*#__PURE__*/React__default["default"].createElement(SingleDate, {
@@ -5199,6 +5671,7 @@ const FormComposer = ({
             useDefaultTheme: useDefaultTheme
           });
         }
+
       case 'dateRange':
         {
           return /*#__PURE__*/React__default["default"].createElement(DateRange, {
@@ -5211,6 +5684,7 @@ const FormComposer = ({
             useDefaultTheme: useDefaultTheme
           });
         }
+
       case 'hidden':
         {
           return /*#__PURE__*/React__default["default"].createElement(HiddenField, {
@@ -5223,9 +5697,11 @@ const FormComposer = ({
             placeholder: field.editor
           });
         }
+
       case 'country':
         {
           var _field$default, _field$editor, _field$editor$propert, _field$editor$propert2;
+
           return /*#__PURE__*/React__default["default"].createElement(CountrySelect, {
             key: `${field.id}-${idx}`,
             formId: formId,
@@ -5240,6 +5716,7 @@ const FormComposer = ({
     }
   });
 };
+
 FormComposer.propTypes = {
   fields: PropTypes__default["default"].oneOfType([PropTypes__default["default"].array, PropTypes__default["default"].object]),
   formData: PropTypes__default["default"].object,
@@ -5359,13 +5836,21 @@ const Form = ({
   onCustomSubmit
 }) => {
   const dispatch = reactRedux.useDispatch();
+
   const _setFormId = formId => dispatch(setFormId(formId));
+
   const _setValue = (formId, id, value) => dispatch(setValue(formId, id, value));
+
   const _setDateRangeValues = (formId, id, dateType, value) => dispatch(setDateRangeValues(formId, id, dateType, value));
+
   const _onValidateField = (formId, id, value) => dispatch(onValidateField(formId, id, value));
+
   const _doTogglePageForward = (formId, pageIndex) => dispatch(doTogglePageForward(formId, pageIndex));
+
   const _doTogglePageBack = (formId, pageIndex) => dispatch(doTogglePageBack(formId, pageIndex));
+
   const _onSubmit = formId => dispatch(onSubmit(formId));
+
   React.useEffect(() => {
     if (formId) _setFormId(formId);
   }, [formId]);
@@ -5385,6 +5870,7 @@ const Form = ({
   const errors = reactRedux.useSelector(selectFormFieldErrors);
   const entries = reactRedux.useSelector(selectFormEntries);
   const formData = reactRedux.useSelector(selectFormPostData);
+
   if (pagingInfo && pagingInfo.pageCount > 1) {
     const isLastPage = pagingInfo.pageCount == pagingInfo.pageIndex + 1;
     return /*#__PURE__*/React__default["default"].createElement(ThemeProvider, {
@@ -5424,6 +5910,7 @@ const Form = ({
       loading: status === null || status === void 0 ? void 0 : status.isSubmitting,
       action: () => {
         _onSubmit(formId);
+
         if (onCustomSubmit) onCustomSubmit();
       },
       useDefaultTheme: useDefaultTheme
@@ -5470,6 +5957,7 @@ const Form = ({
       type: "button",
       action: () => {
         _onSubmit(formId);
+
         if (onCustomSubmit) onCustomSubmit();
       },
       useDefaultTheme: useDefaultTheme
@@ -5494,6 +5982,7 @@ const Form = ({
     }))));
   }
 };
+
 Form.propTypes = {
   className: PropTypes__default["default"].string,
   formId: PropTypes__default["default"].string,

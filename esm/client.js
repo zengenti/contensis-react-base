@@ -2,33 +2,32 @@ import 'isomorphic-fetch';
 import React from 'react';
 import require$$0 from 'react-dom';
 import { Provider } from 'react-redux';
-import { Router } from 'react-router-dom';
+import { unstable_HistoryRouter } from 'react-router-dom';
 import { loadableReady } from '@loadable/component';
 import { parse } from 'query-string';
 import { CookiesProvider } from 'react-cookie';
-import { c as createStore, s as selectVersionStatus } from './version-346a9787.js';
-import { s as setVersionStatus } from './version-0fbd1b82.js';
-import { b as browserHistory, r as rootSaga, p as pickProject } from './App-6e8e803b.js';
-export { A as ReactApp } from './App-6e8e803b.js';
-import { c as setCurrentProject } from './selectors-01074974.js';
-import { d as deliveryApi } from './ContensisDeliveryApi-c66b0cc3.js';
+import { c as createStore, s as selectVersionStatus } from './version-3d9911e2.js';
+import { s as setVersionStatus } from './version-9f29becb.js';
+import { b as browserHistory, r as rootSaga, p as pickProject } from './App-83107d7e.js';
+export { A as ReactApp } from './App-83107d7e.js';
+import { c as setCurrentProject } from './selectors-691caf02.js';
+import { d as deliveryApi } from './ContensisDeliveryApi-fe57a037.js';
 import 'redux';
 import 'redux-thunk';
 import 'redux-saga';
 import 'redux-injectors';
 import 'immer';
-import './reducers-3d5c37d1.js';
+import './reducers-aa8cef1e.js';
 import '@redux-saga/core/effects';
 import 'history';
 import 'loglevel';
 import 'await-to-js';
-import './ChangePassword.container-ae0f9ce4.js';
-import './ToJs-ae860aad.js';
+import './ChangePassword.container-76fd5e9b.js';
+import './ToJs-df57f31d.js';
 import 'jsonpath-mapper';
 import './CookieConstants-3d3b6531.js';
 import 'contensis-delivery-api';
-import './RouteLoader-e3c5505f.js';
-import 'react-router-config';
+import './RouteLoader-29fd689a.js';
 import 'reselect';
 
 var hydrateRoot;
@@ -68,10 +67,11 @@ class ClientApp {
       withSagas,
       withEvents
     } = config;
+
     const GetClientJSX = store => {
       const ClientJsx = /*#__PURE__*/React.createElement(CookiesProvider, null, /*#__PURE__*/React.createElement(Provider, {
         store: store
-      }, /*#__PURE__*/React.createElement(Router, {
+      }, /*#__PURE__*/React.createElement(unstable_HistoryRouter, {
         history: browserHistory
       }, /*#__PURE__*/React.createElement(ReactApp, {
         routes: routes,
@@ -79,11 +79,12 @@ class ClientApp {
       }))));
       return ClientJsx;
     };
-    const isProduction = !(process.env.NODE_ENV !== 'production');
 
+    const isProduction = !(process.env.NODE_ENV !== 'production');
     /**
      * Webpack HMR Setup.
      */
+
     const HMRRenderer = Component => {
       if (isProduction) loadableReady(() => {
         hydrateRoot(documentRoot, Component);
@@ -91,6 +92,7 @@ class ClientApp {
         namespace: 'modern'
       });else createRoot(documentRoot).render(Component);
     };
+
     const hmr = store => {
       // webpack Hot Module Replacement API
       if (module.hot) {
@@ -100,17 +102,20 @@ class ClientApp {
         });
       }
     };
+
     const qs = parse(window.location.search);
     const versionStatus = deliveryApi.getClientSideVersionStatus();
+
     if (window.isDynamic || window.REDUX_DATA || process.env.NODE_ENV !== 'production') {
       createStore(withReducers, window.REDUX_DATA, browserHistory, stateType).then(store => {
         const state = store.getState();
         const ssrVersionStatus = selectVersionStatus(state);
         if (!ssrVersionStatus) store.dispatch(setVersionStatus(versionStatus));
-
         /* eslint-disable no-console */
+
         console.log('Hydrating from inline Redux');
         /* eslint-enable no-console */
+
         store.runSaga(rootSaga(withSagas));
         store.dispatch(setCurrentProject(pickProject(window.location.hostname, qs), [], window.location.hostname));
         delete window.REDUX_DATA;
@@ -130,6 +135,7 @@ class ClientApp {
       });
     }
   }
+
 }
 
 export { ClientApp as default };

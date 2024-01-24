@@ -1,12 +1,12 @@
-import { c as cachedSearch, d as deliveryApi } from './ContensisDeliveryApi-c66b0cc3.js';
+import { c as cachedSearch, d as deliveryApi } from './ContensisDeliveryApi-fe57a037.js';
 import { Query as Query$1 } from 'contensis-delivery-api';
-import React from 'react';
+import React$1 from 'react';
 import { Provider } from 'react-redux';
+import { d as defaultExpressions, c as contentTypeIdExpression, f as filterExpressions, t as termExpressions, o as orderByExpression, a as customWhereExpressions } from './sagas-07e82e18.js';
 import mapJson from 'jsonpath-mapper';
 import 'reselect';
 import 'deepmerge';
 import 'query-string';
-import { d as defaultExpressions, c as contentTypeIdExpression, f as filterExpressions, t as termExpressions, o as orderByExpression, a as customWhereExpressions } from './sagas-933a8fc8.js';
 import 'immer';
 import 'deep-equal';
 import { Op, Query } from 'contensis-core-api';
@@ -19,8 +19,8 @@ import fs from 'fs';
 import path from 'path';
 import { path as path$1 } from 'app-root-path';
 import { renderToString } from 'react-dom/server';
-import { StaticRouter } from 'react-router-dom';
-import { matchRoutes } from 'react-router-config';
+import require$$1 from 'history';
+import require$$2, { matchRoutes } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { ServerStyleSheet } from 'styled-components';
 import serialize from 'serialize-javascript';
@@ -31,11 +31,12 @@ import { c as commonjsGlobal } from './_commonjsHelpers-1789f0cf.js';
 import { buildCleaner } from 'lodash-clean';
 import { CookiesProvider } from 'react-cookie';
 import cookiesMiddleware from 'universal-cookie-express';
-import { c as createStore } from './version-346a9787.js';
-import { h as history, p as pickProject, r as rootSaga } from './App-6e8e803b.js';
-export { A as ReactApp } from './App-6e8e803b.js';
-import { s as setVersionStatus, a as setVersion } from './version-0fbd1b82.js';
-import { s as selectSurrogateKeys, a as selectRouteEntry, b as selectCurrentProject, g as getImmutableOrJS, c as setCurrentProject } from './selectors-01074974.js';
+import { c as createStore } from './version-3d9911e2.js';
+import { h as history$1, p as pickProject, r as rootSaga } from './App-83107d7e.js';
+export { A as ReactApp } from './App-83107d7e.js';
+import { s as setVersionStatus, a as setVersion } from './version-9f29becb.js';
+import { m as mergeStaticRoutes, H as HttpContext } from './RouteLoader-29fd689a.js';
+import { s as selectSurrogateKeys, a as selectRouteEntry, b as selectCurrentProject, g as getImmutableOrJS, c as setCurrentProject } from './selectors-691caf02.js';
 import chalk from 'chalk';
 import './CookieConstants-3d3b6531.js';
 import 'loglevel';
@@ -44,12 +45,10 @@ import 'redux';
 import 'redux-thunk';
 import 'redux-saga';
 import 'redux-injectors';
-import './reducers-3d5c37d1.js';
-import 'history';
+import './reducers-aa8cef1e.js';
 import 'await-to-js';
-import './ChangePassword.container-ae0f9ce4.js';
-import './ToJs-ae860aad.js';
-import './RouteLoader-e3c5505f.js';
+import './ChangePassword.container-76fd5e9b.js';
+import './ToJs-df57f31d.js';
 
 /**
  * Util class holds our search results helper boilerplate methods
@@ -59,20 +58,26 @@ class Util {
     if (fieldId) {
       return entries === null || entries === void 0 ? void 0 : entries.map(e => {
         var _e$fieldId, _e$fieldId2, _e$fieldId2$sys;
+
         return Array.isArray(e === null || e === void 0 ? void 0 : e[fieldId]) ? e === null || e === void 0 ? void 0 : (_e$fieldId = e[fieldId]) === null || _e$fieldId === void 0 ? void 0 : _e$fieldId.map(f => {
           var _f$sys;
+
           return f === null || f === void 0 ? void 0 : (_f$sys = f.sys) === null || _f$sys === void 0 ? void 0 : _f$sys.id;
         }) : (e === null || e === void 0 ? void 0 : (_e$fieldId2 = e[fieldId]) === null || _e$fieldId2 === void 0 ? void 0 : (_e$fieldId2$sys = _e$fieldId2.sys) === null || _e$fieldId2$sys === void 0 ? void 0 : _e$fieldId2$sys.id) || '';
       }).flat();
     }
+
     return entries === null || entries === void 0 ? void 0 : entries.map(e => {
       var _e$sys;
+
       return (e === null || e === void 0 ? void 0 : (_e$sys = e.sys) === null || _e$sys === void 0 ? void 0 : _e$sys.id) || '';
     });
   }
+
   static GetItems(result) {
     return this.GetResults(result) ? result.items : [];
   }
+
   static GetResults(result) {
     if (result !== null && result !== void 0 && result.items) {
       return result;
@@ -80,18 +85,20 @@ class Util {
       return null;
     }
   }
+
 }
 const mergeResults = (results, parentResults, replaceContentTypeIds, linkFieldId) => results.map(r => {
   if (replaceContentTypeIds.some(c => c === r.sys.contentTypeId)) {
     const resolvedParent = parentResults === null || parentResults === void 0 ? void 0 : parentResults.find(e => {
       var _e$linkFieldId;
+
       return (_e$linkFieldId = e[linkFieldId]) === null || _e$linkFieldId === void 0 ? void 0 : _e$linkFieldId.some(l => {
         var _l$sys;
+
         return ((_l$sys = l.sys) === null || _l$sys === void 0 ? void 0 : _l$sys.id) === r.sys.id;
       });
     });
-    if (resolvedParent) return {
-      ...resolvedParent,
+    if (resolvedParent) return { ...resolvedParent,
       ...r,
       entryTitle: resolvedParent.entryTitle,
       entryDescription: resolvedParent.entryDescription,
@@ -99,10 +106,12 @@ const mergeResults = (results, parentResults, replaceContentTypeIds, linkFieldId
       originalSys: r.sys
     };else return r;
   }
+
   return r;
 }).filter(r => r);
 
 /* eslint-disable no-console */
+
 /**
  * Builds our complete Delivery API Query object from a set of provided arguments
  * @param queryParams
@@ -127,12 +136,13 @@ const searchQuery = ({
   const expressions$1 = [...defaultExpressions(versionStatus), ...contentTypeIdExpression(contentTypeIds, webpageTemplates, assetTypes), ...customWhereExpressions(customWhere), ...filterExpressions(filters), ...filterExpressions(idFilters), ...((sharedFilters === null || sharedFilters === void 0 ? void 0 : sharedFilters.length) > 0 ? [Op.or(...filterExpressions(sharedFilters, true))] : []), ...termExpressions(searchTerm || '', weightedSearchFields || [])];
   const query = new Query(...expressions$1);
   query.orderBy = orderByExpression(orderBy || []);
+
   if (fields && fields.length > 0) {
     query.fields = fields;
-  }
-
-  // (query as any).includeArchived = true;
+  } // (query as any).includeArchived = true;
   // (query as any).includeDeleted = true;
+
+
   query.pageIndex = pageIndex;
   query.pageSize = pageSize;
   return query;
@@ -155,8 +165,7 @@ const finalQuery = ({
   webpageTemplates,
   weightedSearchFields
 }, children) => {
-  const expressions$1 = [...defaultExpressions(versionStatus), Op.or(Op.and(...contentTypeIdExpression(contentTypeIds, webpageTemplates, assetTypes), ...filterExpressions(filters), ...filterExpressions(idFilters || []), ...(sharedFilters !== null && sharedFilters !== void 0 && sharedFilters.length ? [Op.or(...filterExpressions(sharedFilters || [])
-  // Op.and(
+  const expressions$1 = [...defaultExpressions(versionStatus), Op.or(Op.and(...contentTypeIdExpression(contentTypeIds, webpageTemplates, assetTypes), ...filterExpressions(filters), ...filterExpressions(idFilters || []), ...(sharedFilters !== null && sharedFilters !== void 0 && sharedFilters.length ? [Op.or(...filterExpressions(sharedFilters || []) // Op.and(
   //   ...sharedFilters.map(sf =>
   //     Op.not(exp.fieldExpression(sf.key, true, 'exists')[0])
   //   ),
@@ -165,17 +174,17 @@ const finalQuery = ({
   )] : [])), ...children.map(child => Op.and(...contentTypeIdExpression(child.contentTypeIds, child.webpageTemplates, child.assetTypes), ...filterExpressions(child.sharedFilters || []), ...filterExpressions(child.idFilters || [])))), ...termExpressions(searchTerm || '', weightedSearchFields || [])];
   const query = new Query(...expressions$1);
   query.orderBy = orderByExpression(orderBy || []);
+
   if (fields && fields.length > 0) {
     query.fields = fields;
-  }
-
-  // (query as any).includeArchived = true;
+  } // (query as any).includeArchived = true;
   // (query as any).includeDeleted = true;
+
+
   query.pageIndex = pageIndex || 0;
   query.pageSize = pageSize;
   return query;
 };
-
 /**
  * Create a filter expression from a provided filters configuration object
  * and populate them based on the presence of that key in params, filter
@@ -184,10 +193,13 @@ const finalQuery = ({
  * @param params request.query object from Express middleware
  * @returns FilterExpression[] we can use to use with searchQuery function
  */
+
 const makeFilterExpressions = (f, params) => {
   const expressions = [];
+
   for (const [paramKey, filterConfig] of Object.entries(f)) {
     var _params$paramKey;
+
     const filterValues = (_params$paramKey = params[paramKey]) === null || _params$paramKey === void 0 ? void 0 : _params$paramKey.split(',');
     if (typeof filterValues !== 'undefined') expressions.push({
       key: typeof filterConfig === 'object' ? filterConfig.fieldId : filterConfig,
@@ -196,6 +208,7 @@ const makeFilterExpressions = (f, params) => {
       logicOperator: typeof filterConfig === 'object' && filterConfig.logicOperator ? filterConfig.logicOperator : 'or'
     });
   }
+
   return expressions;
 };
 const makeDerivedIdsFilterExpression = (prevFieldId, entries, ownIds = false, alwaysApplyFilter = false) => {
@@ -228,6 +241,7 @@ const resolveParentEntries = async (parentContentTypeIds, replaceContentTypeIds,
 };
 
 /* eslint-disable no-console */
+
 class QueryLevelResults {
   constructor({
     level: _level,
@@ -260,11 +274,13 @@ class QueryLevelResults {
     this.firstResults = {};
     this.finalQuery = new Query$1();
     this.finalResults = {};
+
     this.AddChild = ({
       child
     }) => {
       this.children.push(child);
     };
+
     this.RunFirstQuery = async () => {
       const {
         firstQuery: query,
@@ -272,17 +288,18 @@ class QueryLevelResults {
         parent,
         runFirstQuery
       } = this;
+
       if (parent !== null && parent !== void 0 && parent.validatedLinks.length) {
         // add any idFilters derived from parent query results
         appendSearchQueryFilters(query, makeFilterExpressions(Object.fromEntries(parent.validatedLinks.map(vl => [vl.linkFieldId, {
           fieldId: `sys.id`
         }])), Object.fromEntries(parent.validatedLinks.map(vl => [vl.linkFieldId, vl.entryIds.join(',') || `no ids from parent ${parent.level}`]))));
       }
+
       if (runFirstQuery) {
         if (this.debug) console.log(`\nLevel ${this.level} - First query: \n${JSON.stringify(query.toJSON()).substring(0, 1000)}`);
-        this.firstResults = await cachedSearch.searchUsingPost(query, 0, params.projectId);
+        this.firstResults = await cachedSearch.searchUsingPost(query, 0, params.projectId); // mapResultsToValidatedLinks
 
-        // mapResultsToValidatedLinks
         for (const linkFieldId of this.linkFieldIds) {
           this.validatedLinks.push({
             contentTypeId: this.linkFields[linkFieldId].contentTypeId || '',
@@ -292,6 +309,7 @@ class QueryLevelResults {
         }
       }
     };
+
     this.RunFinalQuery = async () => {
       const {
         level,
@@ -300,30 +318,31 @@ class QueryLevelResults {
         params,
         runFinalQuery
       } = this;
+
       if (!children.some(c => c.returnEntries)) {
-        const firstChild = children === null || children === void 0 ? void 0 : children[0];
-        // add any idFilters derived from child query results
+        const firstChild = children === null || children === void 0 ? void 0 : children[0]; // add any idFilters derived from child query results
+
         if (firstChild) appendSearchQueryFilters(query, makeFilterExpressions(Object.fromEntries(firstChild.validatedLinks.map(vl => [vl.linkFieldId, {
           fieldId: `${vl.linkFieldId}.sys.id`
         }])), Object.fromEntries(firstChild.validatedLinks.map(vl => [vl.linkFieldId, vl.entryIds.join(',') || `no ids from child ${firstChild.level}`]))));
       }
+
       if (level === 0 && this.returnEntries) {
         // This is the final query to be run and response returned to the caller
         // Only this bit cares about linkDepth, fields and pagination parameters
         query.fields = JSON.parse(params.fields || '[]');
         query.pageSize = params.pageSize;
-        query.pageIndex = params.pageIndex;
-        // query.orderBy = params.orderBy;
+        query.pageIndex = params.pageIndex; // query.orderBy = params.orderBy;
       }
 
       if (runFinalQuery) {
         if (this.debug) console.log(`\nLevel ${this.level} - Final query: \n${JSON.stringify(query.toJSON()).substring(0, 1000)}`);
         this.finalResults = await cachedSearch.searchUsingPost(query, Number(params.linkDepth) || 0, params.projectId);
-        if (this.parent) this.parent.runFinalQuery = true;
+        if (this.parent) this.parent.runFinalQuery = true; // mapResultsToValidatedLinks
 
-        // mapResultsToValidatedLinks
         for (const linkFieldId of ((_this$parent = this.parent) === null || _this$parent === void 0 ? void 0 : _this$parent.linkFieldIds) || []) {
           var _this$parent, _this$parent2;
+
           this.validatedLinks.push({
             contentTypeId: ((_this$parent2 = this.parent) === null || _this$parent2 === void 0 ? void 0 : _this$parent2.linkFields[linkFieldId].contentTypeId) || '',
             linkFieldId,
@@ -332,14 +351,17 @@ class QueryLevelResults {
         }
       }
     };
+
     this.GetResultsEntries = () => {
       var _finalResults$items;
+
       const {
         finalResults,
         firstResults
       } = this;
       return finalResults !== null && finalResults !== void 0 && (_finalResults$items = finalResults.items) !== null && _finalResults$items !== void 0 && _finalResults$items.length ? finalResults.items : firstResults.items;
     };
+
     this.GetResults = () => {
       const {
         finalResults,
@@ -347,6 +369,7 @@ class QueryLevelResults {
       } = this;
       return typeof (finalResults === null || finalResults === void 0 ? void 0 : finalResults.totalCount) !== 'undefined' ? finalResults : firstResults;
     };
+
     this.level = _level;
     this.contentTypeIds = contentTypeIds;
     this.linkFields = linkFields;
@@ -383,9 +406,11 @@ class QueryLevelResults {
       versionStatus: _params.versionStatus
     });
   }
+
 }
 
 /* eslint-disable no-console */
+
 class LinkDepthSearchService {
   constructor({
     contentTypeId: _contentTypeId = '',
@@ -402,27 +427,29 @@ class LinkDepthSearchService {
     this.params = void 0;
     this.debug = void 0;
     this.queryLevels = void 0;
+
     this.DoSearch = async () => {
       // Run queries "top-down" through each level of `linkField`
       for (const queryLevel of this.queryLevels) {
         await queryLevel.RunFirstQuery();
-      }
+      } // Run queries "bottom-up" through each level of `linkField`
 
-      // Run queries "bottom-up" through each level of `linkField`
+
       for (const queryLevel of [...this.queryLevels].reverse()) {
         await queryLevel.RunFinalQuery();
-      }
-
-      // Run a final query that will aggregate the results from all levels
+      } // Run a final query that will aggregate the results from all levels
       // adding all levels to the query that have `returnEntries` set true
+
+
       return await this.RunFinalQueries();
     };
-    this.RunFinalQueries = async () => {
-      const finalQueryLevels = this.queryLevels.filter(ql => ql.level > 0 && ql.returnEntries || ql.level === 0 && ql.returnEntries !== false);
 
-      // Decide if we need a further final query if any child level(s) have had `returnEntries` set to true
+    this.RunFinalQueries = async () => {
+      const finalQueryLevels = this.queryLevels.filter(ql => ql.level > 0 && ql.returnEntries || ql.level === 0 && ql.returnEntries !== false); // Decide if we need a further final query if any child level(s) have had `returnEntries` set to true
+
       if (finalQueryLevels.length > 1 || finalQueryLevels.length === 1 && finalQueryLevels[0].level !== 0) {
         var _params$orderBy;
+
         // Build final query
         const {
           contentTypeIds,
@@ -437,9 +464,9 @@ class LinkDepthSearchService {
           }
         }, {
           [vl.linkFieldId]: vl.entryIds.join(',') || 'no results for filter'
-        })).flat() || [];
-        // This is the final query to be run and response returned to the caller
+        })).flat() || []; // This is the final query to be run and response returned to the caller
         // Only this bit cares about linkDepth, fields and pagination parameters
+
         const query = finalQuery({
           contentTypeIds,
           filters: makeFilterExpressions(filters, params),
@@ -447,6 +474,7 @@ class LinkDepthSearchService {
           idFilters: derivedIdFilters,
           fields: params.fields ? [...JSON.parse(params.fields), ...finalQueryLevels.map(l => {
             var _l$parent;
+
             return ((_l$parent = l.parent) === null || _l$parent === void 0 ? void 0 : _l$parent.linkFieldIds) || [];
           }).flat()] : [],
           orderBy: (_params$orderBy = params.orderBy) === null || _params$orderBy === void 0 ? void 0 : _params$orderBy.split(','),
@@ -456,6 +484,7 @@ class LinkDepthSearchService {
           versionStatus: params.versionStatus
         }, (finalQueryLevels === null || finalQueryLevels === void 0 ? void 0 : finalQueryLevels[0].children.filter(ql => ql.returnEntries).map(ql => {
           var _ql$parent, _ql$parent2;
+
           const entriesAtLevel = ql.GetResultsEntries() || ((_ql$parent = ql.parent) === null || _ql$parent === void 0 ? void 0 : _ql$parent.GetResultsEntries());
           const previousIdsFilter = ql.returnEntries || !!ql.children.some(qc => qc.returnEntries) ? (_ql$parent2 = ql.parent) === null || _ql$parent2 === void 0 ? void 0 : _ql$parent2.linkFieldIds.map(fieldId => makeDerivedIdsFilterExpression(fieldId, entriesAtLevel, true, ql.runFinalQuery)).flat() : [];
           return {
@@ -466,28 +495,29 @@ class LinkDepthSearchService {
           };
         })) || []);
         if (this.debug) console.log(`\nFinal query: ${derivedIds.reduce((accumulator, object) => accumulator + object.entryIds.length, 0)} derived ids \n${JSON.stringify(query.toJSON()).substring(0, 1000)}`);
-        const finalQueryResult = await cachedSearch.searchUsingPost(query, Number(params.linkDepth) || 0, params.projectId);
-
-        // Resolve any parent entries
+        const finalQueryResult = await cachedSearch.searchUsingPost(query, Number(params.linkDepth) || 0, params.projectId); // Resolve any parent entries
 
         const resolveParentLevels = finalQueryLevels.filter(ql => ql.resolveFirstParent);
         let entries = finalQueryResult.items;
+
         for (const resolveParents of resolveParentLevels) {
           var _resolveParents$paren, _resolveParents$paren2;
-          entries = await resolveParentEntries(((_resolveParents$paren = resolveParents.parent) === null || _resolveParents$paren === void 0 ? void 0 : _resolveParents$paren.contentTypeIds) || [], resolveParents.contentTypeIds, ((_resolveParents$paren2 = resolveParents.parent) === null || _resolveParents$paren2 === void 0 ? void 0 : _resolveParents$paren2.linkFieldIds[0]) || 'unknown', finalQueryResult.items,
-          // or entries?
+
+          entries = await resolveParentEntries(((_resolveParents$paren = resolveParents.parent) === null || _resolveParents$paren === void 0 ? void 0 : _resolveParents$paren.contentTypeIds) || [], resolveParents.contentTypeIds, ((_resolveParents$paren2 = resolveParents.parent) === null || _resolveParents$paren2 === void 0 ? void 0 : _resolveParents$paren2.linkFieldIds[0]) || 'unknown', finalQueryResult.items, // or entries?
           this.params, this.debug);
         }
-        return {
-          ...finalQueryResult,
+
+        return { ...finalQueryResult,
           items: entries
         };
       } else {
         var _this$queryLevels$fin;
+
         if (this.debug) console.log(`\nNo further queries required\n`);
         return (_this$queryLevels$fin = this.queryLevels.find(ql => ql.level === 0)) === null || _this$queryLevels$fin === void 0 ? void 0 : _this$queryLevels$fin.GetResults();
       }
     };
+
     this.InitQueryLevels = () => {
       const createChildQueryLevels = (linkFields, parentQueryLevel, level = 1) => {
         return Object.entries(linkFields).map(([, {
@@ -520,6 +550,7 @@ class LinkDepthSearchService {
           return [thisLevel, ...createChildQueryLevels(linkFields, thisLevel, level + 1)];
         }).flat();
       };
+
       const {
         contentTypeIds,
         filters,
@@ -540,17 +571,17 @@ class LinkDepthSearchService {
         params,
         debug: this.debug
       });
-      const queryLevels = [firstLevel, ...createChildQueryLevels(linkFields, firstLevel)];
-      // return queryLevels;
-
+      const queryLevels = [firstLevel, ...createChildQueryLevels(linkFields, firstLevel)]; // return queryLevels;
       // If we are only returning entries from level 0
       // we can skip running the first query and finalQuery will suffice
+
       if (queryLevels.find(ql => ql.returnEntries && ql.level !== 0)) return queryLevels;else return queryLevels.map(ql => {
-        ql.runFirstQuery = false;
-        // ql.runFinalQuery = false;
+        ql.runFirstQuery = false; // ql.runFinalQuery = false;
+
         return ql;
       });
     };
+
     this.contentTypeIds = Array.isArray(_contentTypeId) ? _contentTypeId : [_contentTypeId];
     this.filters = _filters;
     this.sharedFilters = _sharedFilters;
@@ -559,6 +590,7 @@ class LinkDepthSearchService {
     this.debug = debug;
     this.queryLevels = this.InitQueryLevels();
   }
+
 }
 
 /**
@@ -578,9 +610,10 @@ const makeLinkDepthApi = (app, middlewareConfig) => {
   if (!contentTypeId || !linkFields || !uri) return;
   app.get(uri, makeLinkDepthMiddleware(middlewareConfig));
 };
-
 /** Create a content type hierarchy from supplied config and produces
  * a RequestHandler function to serve our Express middleware */
+
+
 const makeLinkDepthMiddleware = ({
   contentTypeId,
   filters = {},
@@ -596,9 +629,8 @@ const makeLinkDepthMiddleware = ({
         setCachingHeaders(res, {
           cacheControl: 'private',
           surrogateControl: '10'
-        });
+        }); // Gather all params from the request, we will use them at the right query levels later
 
-        // Gather all params from the request, we will use them at the right query levels later
         const params = Object.fromEntries([...Object.entries(req.params), ...Object.entries(req.query)].map(([k, v]) => [k, v === null || v === void 0 ? void 0 : v.toString()]));
         const result = await new LinkDepthSearchService({
           contentTypeId,
@@ -616,25 +648,35 @@ const makeLinkDepthMiddleware = ({
         res.json(error);
       }
     };
+
     return linkDepthMiddleware;
   } catch (error) {
     // This will be an error building the middleware
     // we can only serve what the error was as the request handler instead
     console.error(error);
+
     const errorMiddleware = async (req, res) => {
       res.statusCode = 500;
       res.json(JSON.stringify(error));
     };
+
     return errorMiddleware;
   }
 };
 
-const servers$1 = SERVERS; /* global SERVERS */
-const project = PROJECT; /* global PROJECT */
-const alias$1 = ALIAS; /* global ALIAS */
+const servers$1 = SERVERS;
+/* global SERVERS */
+
+const project = PROJECT;
+/* global PROJECT */
+
+const alias$1 = ALIAS;
+/* global ALIAS */
+
 const deliveryApiHostname = url(alias$1, project).api;
 const assetProxy = httpProxy.createProxyServer();
 const deliveryProxy = httpProxy.createProxyServer();
+
 const reverseProxies = (app, reverseProxyPaths = []) => {
   deliveryApiProxy(deliveryProxy, app);
   app.all(reverseProxyPaths, (req, res) => {
@@ -674,8 +716,8 @@ const CacheDuration = {
   static: '31536000',
   // Believe it or not these two max ages are the same in runtime
   expressStatic: '31557600h' // Believe it or not these two max ages are the same in runtime
-};
 
+};
 const getCacheDuration = (status = 200) => {
   if (status > 400) return CacheDuration[404];
   return CacheDuration[200];
@@ -692,8 +734,10 @@ const bundleManipulationMiddleware = ({
   const filename = path.basename(req.path);
   const modernBundle = filename.endsWith('.mjs');
   const legacyBundle = filename.endsWith('.js');
+
   if ((legacyBundle || modernBundle) && filename.startsWith('runtime.')) {
     const jsRuntimeLocation = path.resolve(appRootPath, `dist/${staticFolderPath}/${modernBundle ? 'modern/js' : 'legacy/js'}/${filename}`);
+
     try {
       const jsRuntimeBundle = fs.readFileSync(jsRuntimeLocation, 'utf8');
       const modifiedBundle = replaceStaticPath(jsRuntimeBundle, staticRoutePath);
@@ -716,6 +760,7 @@ const bundleManipulationMiddleware = ({
  * @returns Response | next()
  * A middleware function to resolve /dist/static/startup.js under a supplied startupScriptFilename variable
  */
+
 const resolveStartupMiddleware = ({
   appRootPath,
   maxage,
@@ -724,6 +769,7 @@ const resolveStartupMiddleware = ({
 }) => async (req, res, next) => {
   if (startupScriptFilename !== 'startup.js' && req.path === `/${startupScriptFilename}`) {
     let startupFileLocation = '';
+
     try {
       const startupFilePaths = [`dist/static/startup.js`, `dist/${staticFolderPath}/startup.js`];
       let startupFilePath = '';
@@ -731,8 +777,7 @@ const resolveStartupMiddleware = ({
         try {
           fs.accessSync(testPath);
           startupFilePath = testPath;
-        } catch (ex) {
-          // Do nothing
+        } catch (ex) {// Do nothing
         }
       });
       startupFileLocation = path.resolve(appRootPath, startupFilePath);
@@ -769,8 +814,7 @@ const staticAssets = (app, {
     maxage: CacheDuration.static,
     startupScriptFilename: scripts.startup || startupScriptFilename,
     staticFolderPath
-  }),
-  // eslint-disable-next-line import/no-named-as-default-member
+  }), // eslint-disable-next-line import/no-named-as-default-member
   express.static(`dist/${staticFolderPath}`, {
     // these maxage values are different in config but the same in runtime,
     // this one is somehow converted and should end up being the same as CacheDuration.static
@@ -778,8 +822,11 @@ const staticAssets = (app, {
   }));
 };
 
-const servers = SERVERS; /* global SERVERS */
-const projects = PROJECTS; /* global PROJECTS */
+const servers = SERVERS;
+/* global SERVERS */
+
+const projects = PROJECTS;
+/* global PROJECTS */
 
 const DisplayStartupConfiguration = config => {
   /* eslint-disable no-console */
@@ -795,6 +842,73 @@ const DisplayStartupConfiguration = config => {
   if (config.staticFolderPath) console.log(`Serving static assets from: "/dist/${config.staticFolderPath}/"`);
   /* eslint-enable no-console */
 };
+
+var server$1 = {};
+
+Object.defineProperty(server$1, '__esModule', { value: true });
+
+var React = React$1;
+var history = require$$1;
+var reactRouterDom = require$$2;
+
+/**
+ * A <Router> that may not transition to any other location. This is useful
+ * on the server where there is no stateful UI.
+ */
+function StaticRouter({
+  basename,
+  children,
+  location: locationProp = "/"
+}) {
+  if (typeof locationProp === "string") {
+    locationProp = history.parsePath(locationProp);
+  }
+
+  let action = history.Action.Pop;
+  let location = {
+    pathname: locationProp.pathname || "/",
+    search: locationProp.search || "",
+    hash: locationProp.hash || "",
+    state: locationProp.state || null,
+    key: locationProp.key || "default"
+  };
+  let staticNavigator = {
+    createHref(to) {
+      return typeof to === "string" ? to : history.createPath(to);
+    },
+
+    push(to) {
+      throw new Error(`You cannot use navigator.push() on the server because it is a stateless ` + `environment. This error was probably triggered when you did a ` + `\`navigate(${JSON.stringify(to)})\` somewhere in your app.`);
+    },
+
+    replace(to) {
+      throw new Error(`You cannot use navigator.replace() on the server because it is a stateless ` + `environment. This error was probably triggered when you did a ` + `\`navigate(${JSON.stringify(to)}, { replace: true })\` somewhere ` + `in your app.`);
+    },
+
+    go(delta) {
+      throw new Error(`You cannot use navigator.go() on the server because it is a stateless ` + `environment. This error was probably triggered when you did a ` + `\`navigate(${delta})\` somewhere in your app.`);
+    },
+
+    back() {
+      throw new Error(`You cannot use navigator.back() on the server because it is a stateless ` + `environment.`);
+    },
+
+    forward() {
+      throw new Error(`You cannot use navigator.forward() on the server because it is a stateless ` + `environment.`);
+    }
+
+  };
+  return /*#__PURE__*/React.createElement(reactRouterDom.Router, {
+    basename: basename,
+    children: children,
+    location: location,
+    navigationType: action,
+    navigator: staticNavigator,
+    static: true
+  });
+}
+
+var StaticRouter_1 = server$1.StaticRouter = StaticRouter;
 
 /**
  * Removes all key-value entries from the list cache.
@@ -3596,17 +3710,20 @@ const handleResponse = (request, response, content, send = 'send') => {
 };
 
 const readFileSync = path => fs.readFileSync(path, 'utf8');
+
 const loadableBundleData = ({
   stats,
   templates
 }, staticRoutePath, build) => {
   const bundle = {};
+
   try {
     bundle.stats = stats ? JSON.parse(readFileSync(stats.replace('/target', build ? `/${build}` : ''))) : null;
   } catch (ex) {
     // console.info(ex);
     bundle.stats = null;
   }
+
   try {
     bundle.templates = {
       templateHTML: replaceStaticPath(readFileSync(templates.html.replace('/target', build ? `/${build}` : '')), staticRoutePath),
@@ -3617,15 +3734,18 @@ const loadableBundleData = ({
     // console.info(ex);
     bundle.templates = null;
   }
+
   return bundle;
 };
 const loadableChunkExtractors = () => {
   const commonLoadableExtractor = new ChunkExtractor({
     stats: {}
   });
+
   try {
     let modern;
     let legacy;
+
     try {
       modern = new ChunkExtractor({
         entrypoints: ['app'],
@@ -3635,6 +3755,7 @@ const loadableChunkExtractors = () => {
     } catch (e) {
       console.info('@loadable/server modern ChunkExtractor not available');
     }
+
     try {
       legacy = new ChunkExtractor({
         entrypoints: ['app'],
@@ -3644,11 +3765,14 @@ const loadableChunkExtractors = () => {
     } catch (e) {
       console.info('@loadable/server legacy ChunkExtractor not available');
     }
+
     commonLoadableExtractor.addChunk = chunk => {
       var _modern, _legacy, _legacy2;
+
       (_modern = modern) === null || _modern === void 0 ? void 0 : _modern.addChunk(chunk);
       if (typeof ((_legacy = legacy) === null || _legacy === void 0 ? void 0 : _legacy.stats.assetsByChunkName[chunk]) !== 'undefined') (_legacy2 = legacy) === null || _legacy2 === void 0 ? void 0 : _legacy2.addChunk(chunk);
     };
+
     return {
       commonLoadableExtractor,
       modern,
@@ -3669,9 +3793,7 @@ const getBundleData = (config, staticRoutePath) => {
   };
   if (!bundleData.default || Object.keys(bundleData.default || {}).length === 0) bundleData.default = bundleData.legacy || bundleData.modern;
   return bundleData;
-};
-
-// export const buildBundleTags = (
+}; // export const buildBundleTags = (
 //   bundles,
 //   differentialBundles = false,
 //   staticRoutePath = 'static',
@@ -3696,18 +3818,17 @@ const getBundleData = (config, staticRoutePath) => {
 //       )}"></script>`;
 //     })
 //     .filter(f => f);
-
 //   return bundleTags;
 // };
 
 const getBundleTags = (loadableExtractor, scripts, staticRoutePath = 'static') => {
-  let startupTag = '';
-  // Add the static startup script to the bundleTags
-  if (scripts !== null && scripts !== void 0 && scripts.startup) startupTag = `<script ${stringifyAttributes(scripts.attributes)} src="/${staticRoutePath}/${scripts.startup}"></script>`;
+  let startupTag = ''; // Add the static startup script to the bundleTags
 
-  // Get the script tags from their respective extractor instances
+  if (scripts !== null && scripts !== void 0 && scripts.startup) startupTag = `<script ${stringifyAttributes(scripts.attributes)} src="/${staticRoutePath}/${scripts.startup}"></script>`; // Get the script tags from their respective extractor instances
+
   if (loadableExtractor) {
     var _loadableExtractor$le, _loadableExtractor$mo;
+
     const legacyScriptTags = (_loadableExtractor$le = loadableExtractor.legacy) === null || _loadableExtractor$le === void 0 ? void 0 : _loadableExtractor$le.getScriptTags({
       nomodule: 'nomodule'
     });
@@ -3717,20 +3838,21 @@ const getBundleTags = (loadableExtractor, scripts, staticRoutePath = 'static') =
     const scriptTags = `${startupTag}${legacyScriptTags || ''}${modernScriptTags || ''}`.replace(/"\/static\//g, `"/${staticRoutePath}/`);
     return scriptTags;
   }
+
   return startupTag;
 };
 
-const alias = ALIAS; /* global ALIAS */
+const alias = ALIAS;
+/* global ALIAS */
 
 const addStandardHeaders = (state, response, packagejson, groups) => {
   if (state) {
     try {
       console.info('About to add headers');
-      const routingSurrogateKeys = selectSurrogateKeys(state);
-
-      // Check length of surrogate keys and prevent potential header overflow
+      const routingSurrogateKeys = selectSurrogateKeys(state); // Check length of surrogate keys and prevent potential header overflow
       // errors in prod by replacing with `any-update` header that will indiscriminately
       // invalidate the SSR page cache when any content is updated
+
       const surrogateKeys = routingSurrogateKeys.length >= 2000 ? `${alias}_any-update` : routingSurrogateKeys.join(' ');
       const surrogateKeyHeader = `${packagejson.name}-app ${surrogateKeys}`;
       response.setHeader('surrogate-key', surrogateKeyHeader);
@@ -3749,12 +3871,14 @@ const addVarnishAuthenticationHeaders = (state, response, groups = {}) => {
       const {
         globalGroups,
         allowedGroups
-      } = groups;
-      // console.info(globalGroups, allowedGroups);
+      } = groups; // console.info(globalGroups, allowedGroups);
+
       let allGroups = Array.from(globalGroups && globalGroups[project] || {});
+
       if (stateEntry && getImmutableOrJS(stateEntry, ['authentication', 'isLoginRequired']) && allowedGroups && allowedGroups[project]) {
         allGroups = [...allGroups, ...allowedGroups[project]];
       }
+
       response.header('x-contensis-viewer-groups', allGroups.join('|'));
     } catch (e) {
       console.info('Error adding authentication header', e);
@@ -3775,17 +3899,17 @@ const getVersionInfo = staticFolderPath => {
 
 /* eslint-disable no-console */
 
-// Default exception types to add event listeners for
 const handleDefaultEvents = ['uncaughtException', 'unhandledRejection'];
 const unhandledExceptionHandler = (handleExceptions = handleDefaultEvents) => {
   const exceptionTypes = Array.isArray(handleExceptions) ? handleExceptions : handleExceptions === false ? [] : handleDefaultEvents;
+
   for (const type of exceptionTypes) {
     process.on(type, err => {
       if (err && err instanceof Error) {
         // Print a message to inform admins and developers the error should not be ignored
         console.log(`${`[contensis-react-base] ❌ ${chalk.red.bold(`${type} - ${err.message}`)}`}`);
-        console.log(chalk.gray` - you are seeing this because we have tried to prevent the app from completely crashing - you should not ignore this problem`);
-        // Log the error to server console
+        console.log(chalk.gray` - you are seeing this because we have tried to prevent the app from completely crashing - you should not ignore this problem`); // Log the error to server console
+
         console.error(err);
       }
     });
@@ -3821,16 +3945,21 @@ const webApp = (app, ReactApp, config) => {
     const {
       url
     } = request;
-    const matchedStaticRoute = () => matchRoutes(routes.StaticRoutes, request.path);
-    const isStaticRoute = () => matchedStaticRoute().length > 0;
-    const staticRoute = isStaticRoute() && matchedStaticRoute()[0];
+    const matchedStaticRoute = matchRoutes(routes.StaticRoutes, request.path);
+    const isStaticRoute = matchedStaticRoute && matchedStaticRoute.length > 0;
 
-    // Allow certain routes to avoid SSR
+    if (isStaticRoute) {
+      mergeStaticRoutes(matchedStaticRoute);
+    }
+
+    const staticRoute = isStaticRoute ? matchedStaticRoute.pop() || null : null; // Allow certain routes to avoid SSR
+
     const onlyDynamic = staticRoute && staticRoute.route.ssr === false;
     const onlySSR = staticRoute && staticRoute.route.ssrOnly === true;
-    const normaliseQs = q => q && q.toLowerCase() === 'true' ? true : false;
 
-    // Determine functional params from QueryString and set access methods
+    const normaliseQs = q => q && q.toLowerCase() === 'true' ? true : false; // Determine functional params from QueryString and set access methods
+
+
     const accessMethod = mapJson(request.query, {
       DYNAMIC: ({
         dynamic
@@ -3845,20 +3974,19 @@ const webApp = (app, ReactApp, config) => {
         static: value
       }) => normaliseQs(value) || onlySSR
     });
-    const context = {};
-    // Track the current statusCode via the response object
-    response.status(200);
+    const context = {
+      location: ''
+    }; // Track the current statusCode via the response object
 
-    // Create a store (with a memory history) from our current url
-    const store = await createStore(withReducers, {}, history({
+    response.status(200); // Create a store (with a memory history) from our current url
+
+    const store = await createStore(withReducers, {}, history$1({
       initialEntries: [url]
-    }), stateType);
+    }), stateType); // dispatch any global and non-saga related actions before calling our JSX
 
-    // dispatch any global and non-saga related actions before calling our JSX
-    const versionStatus = deliveryApi.getServerSideVersionStatus(request);
-
-    // In server-side blocks world, the hostname requested by the client resides in the x-orig-host header
+    const versionStatus = deliveryApi.getServerSideVersionStatus(request); // In server-side blocks world, the hostname requested by the client resides in the x-orig-host header
     // Because of this, we prioritize x-orig-host when setting our hostname
+
     const hostname = request.headers['x-orig-host'] || request.hostname;
     console.info(`Request for ${request.path} hostname: ${hostname} versionStatus: ${versionStatus}`);
     store.dispatch(setVersionStatus(versionStatus));
@@ -3869,42 +3997,41 @@ const webApp = (app, ReactApp, config) => {
     const loadableExtractor = loadableChunkExtractors();
     // Recast ChunkExtractorManager to avoid TS error `Property 'children' does not exist on type...`
     const ChunkExtractor = ChunkExtractorManager;
-    const jsx = /*#__PURE__*/React.createElement(ChunkExtractor, {
+    const jsx = /*#__PURE__*/React$1.createElement(ChunkExtractor, {
       extractor: loadableExtractor.commonLoadableExtractor
-    }, /*#__PURE__*/React.createElement(CookiesProvider, {
+    }, /*#__PURE__*/React$1.createElement(CookiesProvider, {
       cookies: request.universalCookies
-    }, /*#__PURE__*/React.createElement(Provider, {
+    }, /*#__PURE__*/React$1.createElement(Provider, {
       store: store
-    }, /*#__PURE__*/React.createElement(StaticRouter, {
-      context: context,
+    }, /*#__PURE__*/React$1.createElement(HttpContext.Provider, {
+      value: context
+    }, /*#__PURE__*/React$1.createElement(StaticRouter_1, {
       location: url
-    }, /*#__PURE__*/React.createElement(ReactApp, {
+    }, /*#__PURE__*/React$1.createElement(ReactApp, {
       routes: routes,
       withEvents: withEvents
-    })))));
+    }))))));
     const {
       templateHTML = '',
       templateHTMLFragment = '',
       templateHTMLStatic = ''
-    } = bundleData.default.templates || bundleData.legacy.templates || {};
+    } = bundleData.default.templates || bundleData.legacy.templates || {}; // Serve a blank HTML page with client scripts to load the app in the browser
 
-    // Serve a blank HTML page with client scripts to load the app in the browser
     if (accessMethod.DYNAMIC) {
       // Dynamic doesn't need sagas
-      renderToString(jsx);
-
-      // Dynamic page render has only the necessary bundles to start up the app
+      renderToString(jsx); // Dynamic page render has only the necessary bundles to start up the app
       // and does not include any react-loadable code-split bundles
+
       const bundleTags = getBundleTags(loadableExtractor, scripts, staticRoutePath);
       const isDynamicHints = `<script ${attributes}>window.versionStatus = "${versionStatus}"; window.isDynamic = true;</script>`;
-      const responseHtmlDynamic = templateHTML.replace('{{TITLE}}', '').replace('{{SEO_CRITICAL_METADATA}}', '').replace('{{CRITICAL_CSS}}', '').replace('{{APP}}', '').replace('{{LOADABLE_CHUNKS}}', bundleTags).replace('{{REDUX_DATA}}', isDynamicHints);
-      // Dynamic pages always return a 200 so we can run
+      const responseHtmlDynamic = templateHTML.replace('{{TITLE}}', '').replace('{{SEO_CRITICAL_METADATA}}', '').replace('{{CRITICAL_CSS}}', '').replace('{{APP}}', '').replace('{{LOADABLE_CHUNKS}}', bundleTags).replace('{{REDUX_DATA}}', isDynamicHints); // Dynamic pages always return a 200 so we can run
       // the app and serve up all errors inside the client
+
       response.setHeader('Surrogate-Control', `max-age=${getCacheDuration(200)}`);
       responseHandler(request, response, responseHtmlDynamic);
-    }
+    } // Render the JSX server side and send response as per access method options
 
-    // Render the JSX server side and send response as per access method options
+
     if (!accessMethod.DYNAMIC) {
       store.runSaga(rootSaga(withSagas)).toPromise().then(() => {
         const sheet = new ServerStyleSheet();
@@ -3914,14 +4041,15 @@ const webApp = (app, ReactApp, config) => {
         const htmlAttributes = helmet.htmlAttributes.toString();
         let title = helmet.title.toString();
         const metadata = helmet.meta.toString().concat(helmet.base.toString()).concat(helmet.link.toString()).concat(helmet.script.toString()).concat(helmet.noscript.toString());
+
         if (context.url) {
           return response.redirect(context.statusCode || 302, context.url);
         }
-        const reduxState = store.getState();
-        const styleTags = sheet.getStyleTags();
 
-        // After running rootSaga there should be an additional react-loadable
+        const reduxState = store.getState();
+        const styleTags = sheet.getStyleTags(); // After running rootSaga there should be an additional react-loadable
         // code-split bundles for any page components as well as core app bundles
+
         const bundleTags = getBundleTags(loadableExtractor, scripts, staticRoutePath);
         let serialisedReduxData = serialize(buildCleaner({
           isArray: identity,
@@ -3933,6 +4061,7 @@ const webApp = (app, ReactApp, config) => {
           isString: identity,
           isUndefined: noop
         })(cloneDeep_1(reduxState)));
+
         if (context.statusCode !== 404) {
           // For a request that returns a redux state object as a response
           if (accessMethod.REDUX) {
@@ -3943,6 +4072,7 @@ const webApp = (app, ReactApp, config) => {
             responseHandler(request, response, serialisedReduxData, 'json');
             return true;
           }
+
           if (!disableSsrRedux) {
             // window.versionStatus is not strictly required here and is added to support cases
             // where a consumer may not be using the contensisVersionStatus in redux and calling
@@ -3950,40 +4080,41 @@ const webApp = (app, ReactApp, config) => {
             serialisedReduxData = `<script ${attributes}>window.versionStatus = "${versionStatus}"; window.REDUX_DATA = ${serialisedReduxData}</script>`;
           }
         }
+
         if ((context.statusCode || 200) >= 404) {
           accessMethod.STATIC = true;
-        }
+        } // Responses
 
-        // Responses
+
         let responseHTML = '';
-        if (context.statusCode === 404) title = '<title>404 page not found</title>';
+        if (context.statusCode === 404) title = '<title>404 page not found</title>'; // Static page served as a fragment
 
-        // Static page served as a fragment
         if (accessMethod.FRAGMENT && accessMethod.STATIC) {
           responseHTML = minifyCssString(styleTags) + html;
-        }
+        } // Page fragment served with client scripts and redux data that hydrate the app client side
 
-        // Page fragment served with client scripts and redux data that hydrate the app client side
+
         if (accessMethod.FRAGMENT && !accessMethod.STATIC) {
           responseHTML = templateHTMLFragment.replace('{{TITLE}}', title).replace('{{SEO_CRITICAL_METADATA}}', metadata).replace('{{CRITICAL_CSS}}', minifyCssString(styleTags)).replace('{{APP}}', html).replace('{{LOADABLE_CHUNKS}}', bundleTags).replace('{{REDUX_DATA}}', serialisedReduxData);
-        }
+        } // Full HTML page served statically
 
-        // Full HTML page served statically
+
         if (!accessMethod.FRAGMENT && accessMethod.STATIC) {
           responseHTML = templateHTMLStatic.replace('{{TITLE}}', title).replace('{{SEO_CRITICAL_METADATA}}', metadata).replace('{{CRITICAL_CSS}}', minifyCssString(styleTags)).replace('{{APP}}', html).replace('{{LOADABLE_CHUNKS}}', '');
-        }
+        } // Full HTML page served with client scripts and redux data that hydrate the app client side
 
-        // Full HTML page served with client scripts and redux data that hydrate the app client side
+
         if (!accessMethod.FRAGMENT && !accessMethod.STATIC) {
           responseHTML = templateHTML.replace('{{TITLE}}', title).replace('{{SEO_CRITICAL_METADATA}}', metadata).replace('{{CRITICAL_CSS}}', styleTags).replace('{{APP}}', html).replace('{{LOADABLE_CHUNKS}}', bundleTags).replace('{{REDUX_DATA}}', serialisedReduxData);
-        }
+        } // Set response.status from React StaticRouter
 
-        // Set response.status from React StaticRouter
+
         if (typeof context.statusCode === 'number') response.status(context.statusCode);
         addStandardHeaders(reduxState, response, packagejson, {
           allowedGroups,
           globalGroups
         });
+
         try {
           // If react-helmet htmlAttributes are being used,
           // replace the html tag with those attributes sepcified
@@ -3991,6 +4122,7 @@ const webApp = (app, ReactApp, config) => {
           if (htmlAttributes) {
             responseHTML = responseHTML.replace(/<html?.+?>/, `<html ${htmlAttributes}>`);
           }
+
           responseHandler(request, response, responseHTML);
         } catch (err) {
           console.info(err.message);
@@ -4010,17 +4142,18 @@ const webApp = (app, ReactApp, config) => {
 
 const app = express();
 const server = http.createServer(app);
+
 const start = (ReactApp, config, ServerFeatures) => {
   global.PACKAGE_JSON = config.packagejson;
   global.DISABLE_SSR_REDUX = config.disableSsrRedux;
   global.PROXY_DELIVERY_API = config.proxyDeliveryApi;
   global.REVERSE_PROXY_PATHS = Object(config.reverseProxyPaths);
-  app.disable('x-powered-by');
-  // Output some information about the used build/startup configuration
+  app.disable('x-powered-by'); // Output some information about the used build/startup configuration
+
   DisplayStartupConfiguration(config);
-  ServerFeatures(app);
-  // Set-up local proxy for images from cms, and delivery api requests
+  ServerFeatures(app); // Set-up local proxy for images from cms, and delivery api requests
   // to save doing rewrites and extra code
+
   reverseProxies(app, config.reverseProxyPaths);
   staticAssets(app, config);
   webApp(app, ReactApp, config);
@@ -4039,6 +4172,7 @@ const start = (ReactApp, config, ServerFeatures) => {
     });
   });
 };
+
 var internalServer = {
   app,
   apiProxy: deliveryProxy,

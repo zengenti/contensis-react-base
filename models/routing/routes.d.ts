@@ -1,4 +1,4 @@
-import { MatchedRoute, RouteConfig } from 'react-router-config';
+import type { RouteObject, RouteMatch } from 'react-router';
 import { Entry, Node } from 'contensis-delivery-api/lib/models';
 import React from 'react';
 import { AppState } from "../redux/appstate";
@@ -7,6 +7,9 @@ type RouteComponent<Props> = React.ComponentType<Props>;
 export type RouteNode = Node & {
     ancestors: Node[];
     children: Node[];
+};
+export type MatchedRoute<ParamKey extends string = string, TRouteObject extends RouteObject = RouteObject> = Omit<RouteMatch<ParamKey>, 'route'> & {
+    route: TRouteObject;
 };
 export type AppRoutes = {
     ContentTypeMappings: ContentTypeMapping[];
@@ -60,8 +63,10 @@ export type ContentTypeMapping = {
     };
     requireLogin?: RequireLogin;
 };
-export type StaticRoute = Omit<RouteConfig, 'component'> & {
-    component: RouteComponent<RouteComponentProps>;
+export type StaticRoute = Omit<RouteObject, 'children'> & {
+    index?: false | undefined;
+    component?: RouteComponent<RouteComponentProps>;
+    children?: StaticRoute[];
     fetchNode?: boolean | {
         /**
          * Params[] allows you pass parameters into the site view query on your static node fetch
@@ -79,6 +84,7 @@ export type StaticRoute = Omit<RouteConfig, 'component'> & {
     requireLogin?: RequireLogin;
     ssr?: boolean;
     ssrOnly?: boolean;
+    fullPath?: string;
 };
 export type OnRouteLoadArgs = {
     cookies: CookieHelper;
@@ -89,7 +95,7 @@ export type OnRouteLoadArgs = {
         key?: string;
     };
     path: string;
-    staticRoute: MatchedRoute<any, StaticRoute>;
+    staticRoute: MatchedRoute<string, StaticRoute>;
     statePath: string;
 };
 export type OnRouteLoadedArgs = {
@@ -102,7 +108,7 @@ export type OnRouteLoadedArgs = {
         key?: string;
     };
     path: string;
-    staticRoute: MatchedRoute<any, StaticRoute>;
+    staticRoute: MatchedRoute<string, StaticRoute>;
 };
 export type RouteLoadOptions = {
     customNavigation?: boolean | {

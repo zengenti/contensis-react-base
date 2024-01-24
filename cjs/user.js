@@ -2,14 +2,14 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var ChangePassword_container = require('./ChangePassword.container-a617190b.js');
+var ChangePassword_container = require('./ChangePassword.container-ae35785e.js');
 var React = require('react');
 var reactCookie = require('react-cookie');
 var reactRedux = require('react-redux');
-var ToJs = require('./ToJs-149fc5e1.js');
-var reducers = require('./reducers-9afb5f89.js');
+var ToJs = require('./ToJs-a8d8f3f0.js');
+var reducers = require('./reducers-73a03ef4.js');
 require('@redux-saga/core/effects');
-require('./selectors-46b689d0.js');
+require('./selectors-14caa813.js');
 require('jsonpath-mapper');
 require('query-string');
 require('await-to-js');
@@ -23,6 +23,7 @@ var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
 const getDisplayName$1 = WrappedComponent => {
   return WrappedComponent.displayName || WrappedComponent.name || 'Component';
 };
+
 const withLogin = WrappedComponent => {
   const mapStateToProps = state => {
     return {
@@ -38,6 +39,7 @@ const withLogin = WrappedComponent => {
       error: ToJs.selectUserIsError(state)
     };
   };
+
   const ConnectedComponent = () => {
     const cookies = new ToJs.CookieHelper(...reactCookie.useCookies());
     const mapDispatchToProps = {
@@ -47,6 +49,7 @@ const withLogin = WrappedComponent => {
     const FinalComponent = reactRedux.connect(mapStateToProps, mapDispatchToProps)(ToJs.toJS(WrappedComponent));
     return /*#__PURE__*/React__default["default"].createElement(FinalComponent, null);
   };
+
   ConnectedComponent.displayName = `${getDisplayName$1(WrappedComponent)}`;
   ConnectedComponent.WrappedComponent = WrappedComponent;
   return ConnectedComponent;
@@ -55,6 +58,7 @@ const withLogin = WrappedComponent => {
 const getDisplayName = WrappedComponent => {
   return WrappedComponent.displayName || WrappedComponent.name || 'Component';
 };
+
 const withRegistration = WrappedComponent => {
   const mapStateToProps = state => {
     return {
@@ -64,6 +68,7 @@ const withRegistration = WrappedComponent => {
       user: ToJs.selectUserRegistration(state)
     };
   };
+
   const mapDispatchToProps = {
     registerUser: ChangePassword_container.registerUser
   };

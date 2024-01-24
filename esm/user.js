@@ -1,13 +1,13 @@
-import { a as loginUser, b as logoutUser, r as registerUser } from './ChangePassword.container-ae0f9ce4.js';
-export { C as ChangePassword, F as ForgotPasswordContainer, d as LoginContainer, L as LoginHelper, R as RegistrationContainer, c as actions, h as handleRequiresLoginSaga, k as refreshSecurityToken, j as useChangePassword, i as useForgotPassword, u as useLogin, e as useRegistration } from './ChangePassword.container-ae0f9ce4.js';
+import { a as loginUser, b as logoutUser, r as registerUser } from './ChangePassword.container-76fd5e9b.js';
+export { C as ChangePassword, F as ForgotPasswordContainer, d as LoginContainer, L as LoginHelper, R as RegistrationContainer, c as actions, h as handleRequiresLoginSaga, k as refreshSecurityToken, j as useChangePassword, i as useForgotPassword, u as useLogin, e as useRegistration } from './ChangePassword.container-76fd5e9b.js';
 import React from 'react';
 import { useCookies } from 'react-cookie';
 import { connect } from 'react-redux';
-import { C as CookieHelper, t as toJS, c as selectUserErrorMessage, a as selectUserIsAuthenticated, d as selectUserIsAuthenticationError, e as selectUserIsError, f as selectUserIsLoading, g as selectUser, h as selectUserRegistrationError, i as selectUserRegistrationIsLoading, j as selectUserRegistrationIsSuccess, k as selectUserRegistration } from './ToJs-ae860aad.js';
-export { y as selectors } from './ToJs-ae860aad.js';
-export { o as initialUserState, U as reducer, t as types } from './reducers-3d5c37d1.js';
+import { C as CookieHelper, t as toJS, c as selectUserErrorMessage, a as selectUserIsAuthenticated, d as selectUserIsAuthenticationError, e as selectUserIsError, f as selectUserIsLoading, g as selectUser, h as selectUserRegistrationError, i as selectUserRegistrationIsLoading, j as selectUserRegistrationIsSuccess, k as selectUserRegistration } from './ToJs-df57f31d.js';
+export { y as selectors } from './ToJs-df57f31d.js';
+export { o as initialUserState, U as reducer, t as types } from './reducers-aa8cef1e.js';
 import '@redux-saga/core/effects';
-import './selectors-01074974.js';
+import './selectors-691caf02.js';
 import 'jsonpath-mapper';
 import 'query-string';
 import 'await-to-js';
@@ -17,6 +17,7 @@ import 'immer';
 const getDisplayName$1 = WrappedComponent => {
   return WrappedComponent.displayName || WrappedComponent.name || 'Component';
 };
+
 const withLogin = WrappedComponent => {
   const mapStateToProps = state => {
     return {
@@ -32,6 +33,7 @@ const withLogin = WrappedComponent => {
       error: selectUserIsError(state)
     };
   };
+
   const ConnectedComponent = () => {
     const cookies = new CookieHelper(...useCookies());
     const mapDispatchToProps = {
@@ -41,6 +43,7 @@ const withLogin = WrappedComponent => {
     const FinalComponent = connect(mapStateToProps, mapDispatchToProps)(toJS(WrappedComponent));
     return /*#__PURE__*/React.createElement(FinalComponent, null);
   };
+
   ConnectedComponent.displayName = `${getDisplayName$1(WrappedComponent)}`;
   ConnectedComponent.WrappedComponent = WrappedComponent;
   return ConnectedComponent;
@@ -49,6 +52,7 @@ const withLogin = WrappedComponent => {
 const getDisplayName = WrappedComponent => {
   return WrappedComponent.displayName || WrappedComponent.name || 'Component';
 };
+
 const withRegistration = WrappedComponent => {
   const mapStateToProps = state => {
     return {
@@ -58,6 +62,7 @@ const withRegistration = WrappedComponent => {
       user: selectUserRegistration(state)
     };
   };
+
   const mapDispatchToProps = {
     registerUser
   };
