@@ -159,29 +159,35 @@ const storeSurrogateKeys = response => {
   }
   version.reduxStore === null || version.reduxStore === void 0 ? void 0 : version.reduxStore.dispatch(selectors.setSurrogateKeys(keys, response.url, response.status));
 };
-const getClientConfig = (project, cookies) => {
-  const config = DELIVERY_API_CONFIG; /* global DELIVERY_API_CONFIG */
-  config.responseHandler = {}; // TODO: this needs moving to be scoped at server level
+const deliveryApiConfig = () => {
+  const config = {
+    ...DELIVERY_API_CONFIG /* global DELIVERY_API_CONFIG */
+  };
 
-  if (project) {
-    config.projectId = project;
-  }
-
-  // we only want the surrogate key header in a server context
-  // TODO: this needs moving to be scoped at server level
   if (typeof window === 'undefined') {
-    config.defaultHeaders = Object.assign(config.defaultHeaders || {}, {
+    config.defaultHeaders = {
       referer: getSsrReferer(),
-      'x-require-surrogate-key': true,
-      'x-crb-ssr': true // add this for support tracing
-    });
-    // config.responseHandler[200] = storeSurrogateKeys;
-    config.responseHandler['*'] = storeSurrogateKeys;
+      'x-require-surrogate-key': 'true',
+      'x-crb-ssr': 'true' // add this for support tracing
+    };
+
+    config.responseHandler = {
+      ['*']: storeSurrogateKeys
+    };
   }
   if (typeof window !== 'undefined' && PROXY_DELIVERY_API /* global PROXY_DELIVERY_API */) {
     // ensure a relative url is used to bypass the need for CORS (separate OPTIONS calls)
     config.rootUrl = '';
-    config.responseHandler[404] = () => null;
+    config.responseHandler = {
+      [404]: () => null
+    };
+  }
+  return config;
+};
+const getClientConfig = (project, cookies) => {
+  const config = deliveryApiConfig();
+  if (project) {
+    config.projectId = project;
   }
   if (cookies) {
     const cookieHeader = mapCookieHeader(CookieConstants.findLoginCookies(cookies));
@@ -268,4 +274,4 @@ exports.cachedSearchWithCookies = cachedSearchWithCookies;
 exports.deliveryApi = deliveryApi;
 exports.deliveryApiWithCookies = deliveryApiWithCookies;
 exports.getClientConfig = getClientConfig;
-//# sourceMappingURL=ContensisDeliveryApi-8db91e16.js.map
+//# sourceMappingURL=ContensisDeliveryApi-f521ae6d.js.map

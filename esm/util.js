@@ -1,5 +1,5 @@
 export { s as setCachingHeaders, u as urls } from './urls-eac9a747.js';
-export { c as cachedSearch, a as cachedSearchWithCookies, d as deliveryApi, b as deliveryApiWithCookies, g as getClientConfig } from './ContensisDeliveryApi-649d46e4.js';
+export { c as cachedSearch, a as cachedSearchWithCookies, d as deliveryApi, b as deliveryApiWithCookies, g as getClientConfig } from './ContensisDeliveryApi-f2dbd377.js';
 import mapJson, { jpath } from 'jsonpath-mapper';
 export { jpath, default as mapJson } from 'jsonpath-mapper';
 import React from 'react';
