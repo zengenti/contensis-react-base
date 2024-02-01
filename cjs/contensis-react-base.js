@@ -2,7 +2,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var ContensisDeliveryApi = require('./ContensisDeliveryApi-9e32960d.js');
+var ContensisDeliveryApi = require('./ContensisDeliveryApi-ea5ffdc2.js');
 var contensisDeliveryApi = require('contensis-delivery-api');
 var React = require('react');
 var reactRedux = require('react-redux');
@@ -35,10 +35,10 @@ var _commonjsHelpers = require('./_commonjsHelpers-b3309d7b.js');
 var lodashClean = require('lodash-clean');
 var reactCookie = require('react-cookie');
 var cookiesMiddleware = require('universal-cookie-express');
-var version = require('./version-79a027cb.js');
-var App = require('./App-7ff737fa.js');
-var version$1 = require('./version-afd4f77e.js');
-var selectors = require('./selectors-46b689d0.js');
+var version = require('./version-fb4ba30b.js');
+var App = require('./App-555eebb0.js');
+var version$1 = require('./version-91b90ee8.js');
+var selectors = require('./selectors-8e56cc34.js');
 var chalk = require('chalk');
 require('./CookieConstants-000427db.js');
 require('loglevel');
@@ -50,10 +50,10 @@ require('redux-injectors');
 require('./reducers-9afb5f89.js');
 require('history');
 require('await-to-js');
-require('./ChangePassword.container-a617190b.js');
-require('./ToJs-149fc5e1.js');
+require('./ChangePassword.container-f3f94d8f.js');
+require('./ToJs-64970869.js');
 require('react-hot-loader');
-require('./RouteLoader-049e81e5.js');
+require('./RouteLoader-014a95b9.js');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -3745,7 +3745,7 @@ const addStandardHeaders = (state, response, packagejson, groups) => {
     try {
       console.info('About to add headers');
       const routingSurrogateKeys = selectors.selectSurrogateKeys(state);
-
+      console.info(`[addStandardHeaders] ${routingSurrogateKeys.length} surrogate keys for ${response.req.url}`);
       // Check length of surrogate keys and prevent potential header overflow
       // errors in prod by replacing with `any-update` header that will indiscriminately
       // invalidate the SSR page cache when any content is updated
@@ -3755,7 +3755,7 @@ const addStandardHeaders = (state, response, packagejson, groups) => {
       addVarnishAuthenticationHeaders(state, response, groups);
       response.setHeader('surrogate-control', `max-age=${getCacheDuration(response.statusCode)}`);
     } catch (e) {
-      console.info('Error Adding headers', e.message);
+      console.info('Error adding headers', e.message);
     }
   }
 };

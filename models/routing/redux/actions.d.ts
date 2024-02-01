@@ -7,4 +7,4 @@ export declare const setNavigationPath: (path: string, location: ReturnType<type
 export declare const setCurrentProject: (project: string, allowedGroups: any, hostname: string) => any;
 export declare const setRoute: (path: string, state?: any) => any;
 export declare const setRouteEntry: (entry: Entry) => any;
-export declare const setSurrogateKeys: (keys: string, url: string) => any;
+export declare const setSurrogateKeys: (keys: string, url: string, status: number) => any;

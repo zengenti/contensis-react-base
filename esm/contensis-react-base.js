@@ -1,4 +1,4 @@
-import { c as cachedSearch, d as deliveryApi } from './ContensisDeliveryApi-c66b0cc3.js';
+import { c as cachedSearch, d as deliveryApi } from './ContensisDeliveryApi-fe53fa10.js';
 import { Query as Query$1 } from 'contensis-delivery-api';
 import React from 'react';
 import { Provider } from 'react-redux';
@@ -31,11 +31,11 @@ import { c as commonjsGlobal } from './_commonjsHelpers-1789f0cf.js';
 import { buildCleaner } from 'lodash-clean';
 import { CookiesProvider } from 'react-cookie';
 import cookiesMiddleware from 'universal-cookie-express';
-import { c as createStore } from './version-346a9787.js';
-import { h as history, p as pickProject, r as rootSaga } from './App-ff944c78.js';
-export { A as ReactApp } from './App-ff944c78.js';
-import { s as setVersionStatus, a as setVersion } from './version-0fbd1b82.js';
-import { s as selectSurrogateKeys, a as selectRouteEntry, b as selectCurrentProject, g as getImmutableOrJS, c as setCurrentProject } from './selectors-01074974.js';
+import { c as createStore } from './version-7ea8bea8.js';
+import { h as history, p as pickProject, r as rootSaga } from './App-aaea6310.js';
+export { A as ReactApp } from './App-aaea6310.js';
+import { s as setVersionStatus, a as setVersion } from './version-f42f7bdc.js';
+import { s as selectSurrogateKeys, a as selectRouteEntry, b as selectCurrentProject, g as getImmutableOrJS, c as setCurrentProject } from './selectors-0fe67d47.js';
 import chalk from 'chalk';
 import './CookieConstants-3d3b6531.js';
 import 'loglevel';
@@ -47,10 +47,10 @@ import 'redux-injectors';
 import './reducers-3d5c37d1.js';
 import 'history';
 import 'await-to-js';
-import './ChangePassword.container-ae0f9ce4.js';
-import './ToJs-ae860aad.js';
+import './ChangePassword.container-724c8e0a.js';
+import './ToJs-c75473e9.js';
 import 'react-hot-loader';
-import './RouteLoader-02eef6d9.js';
+import './RouteLoader-fe64ca81.js';
 
 /**
  * Util class holds our search results helper boilerplate methods
@@ -3728,7 +3728,7 @@ const addStandardHeaders = (state, response, packagejson, groups) => {
     try {
       console.info('About to add headers');
       const routingSurrogateKeys = selectSurrogateKeys(state);
-
+      console.info(`[addStandardHeaders] ${routingSurrogateKeys.length} surrogate keys for ${response.req.url}`);
       // Check length of surrogate keys and prevent potential header overflow
       // errors in prod by replacing with `any-update` header that will indiscriminately
       // invalidate the SSR page cache when any content is updated
@@ -3738,7 +3738,7 @@ const addStandardHeaders = (state, response, packagejson, groups) => {
       addVarnishAuthenticationHeaders(state, response, groups);
       response.setHeader('surrogate-control', `max-age=${getCacheDuration(response.statusCode)}`);
     } catch (e) {
-      console.info('Error Adding headers', e.message);
+      console.info('Error adding headers', e.message);
     }
   }
 };
