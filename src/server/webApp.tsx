@@ -24,6 +24,7 @@ import rootSaga from '~/redux/sagas';
 
 import { setVersion, setVersionStatus } from '~/redux/actions/version';
 import { setCurrentProject } from '~/routing/redux/actions';
+import { selectCurrentSearch } from '~/routing/redux/selectors';
 
 import { deliveryApi } from '~/util/ContensisDeliveryApi';
 import pickProject from '~/util/pickProject';
@@ -240,18 +241,23 @@ const webApp = (
               staticRoutePath
             );
 
-            let serialisedReduxData = serialize(
-              buildCleaner({
-                isArray: identity,
-                isBoolean: identity,
-                isDate: identity,
-                isFunction: noop,
-                isNull: identity,
-                isPlainObject: identity,
-                isString: identity,
-                isUndefined: noop,
-              })(cloneDeep(reduxState))
-            );
+            const clonedState = buildCleaner({
+              isArray: identity,
+              isBoolean: identity,
+              isDate: identity,
+              isFunction: noop,
+              isNull: identity,
+              isPlainObject: identity,
+              isString: identity,
+              isUndefined: noop,
+            })(cloneDeep(reduxState));
+            // These keys are used for preparing server-side response headers only
+            // and are not required in the client at all except for debugging ssr
+            if (!selectCurrentSearch(reduxState)?.includes('includeApiCalls')) {
+              delete clonedState.routing.apiCalls;
+              delete clonedState.routing.surrogateKeys;
+            }
+            let serialisedReduxData = serialize(clonedState);
             if (context.statusCode !== 404) {
               // For a request that returns a redux state object as a response
               if (accessMethod.REDUX) {

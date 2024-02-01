@@ -19,7 +19,6 @@ export const addStandardHeaders = (
 ) => {
   if (state) {
     try {
-      console.info('About to add headers');
       const routingSurrogateKeys = selectSurrogateKeys(state);
       console.info(
         `[addStandardHeaders] ${routingSurrogateKeys.length} surrogate keys for ${response.req.url}`
@@ -43,7 +42,7 @@ export const addStandardHeaders = (
         `max-age=${getCacheDuration(response.statusCode)}`
       );
     } catch (e: any) {
-      console.info('Error adding headers', e.message);
+      console.info('[addStandardHeaders] Error adding headers', e.message);
     }
   }
 };
