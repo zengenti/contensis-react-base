@@ -43,5 +43,5 @@ export const setRoute = (path: string, state?: any) =>
 
 export const setRouteEntry = (entry: Entry) => action(SET_ENTRY, { entry });
 
-export const setSurrogateKeys = (keys: string, url: string) =>
-  action(SET_SURROGATE_KEYS, { keys, url });
+export const setSurrogateKeys = (keys: string, url: string, status: number) =>
+  action(SET_SURROGATE_KEYS, { keys, url, status });

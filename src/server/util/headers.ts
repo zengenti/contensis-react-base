@@ -21,7 +21,9 @@ export const addStandardHeaders = (
     try {
       console.info('About to add headers');
       const routingSurrogateKeys = selectSurrogateKeys(state);
-
+      console.info(
+        `[addStandardHeaders] ${routingSurrogateKeys.length} surrogate keys for ${response.req.url}`
+      );
       // Check length of surrogate keys and prevent potential header overflow
       // errors in prod by replacing with `any-update` header that will indiscriminately
       // invalidate the SSR page cache when any content is updated
@@ -41,7 +43,7 @@ export const addStandardHeaders = (
         `max-age=${getCacheDuration(response.statusCode)}`
       );
     } catch (e: any) {
-      console.info('Error Adding headers', e.message);
+      console.info('Error adding headers', e.message);
     }
   }
 };

@@ -33,28 +33,34 @@ const getSsrReferer = () => {
 };
 
 const storeSurrogateKeys = (response: any) => {
-  const keys = response.headers.get
-    ? response.headers.get('surrogate-key')
-    : response.headers.map['surrogate-key'];
-  if (keys) reduxStore?.dispatch(setSurrogateKeys(keys, response.url));
+  let keys = '';
+  if (response.status === 200) {
+    keys = response.headers.get
+      ? response.headers.get('surrogate-key')
+      : response.headers.map['surrogate-key'];
+    if (!keys) console.info(`[storeSurrogateKeys] No keys in ${response.url}`);
+  }
+  reduxStore?.dispatch(setSurrogateKeys(keys, response.url, response.status));
 };
 
 export const getClientConfig = (project?: string, cookies?: CookieObject) => {
   const config: Config = DELIVERY_API_CONFIG; /* global DELIVERY_API_CONFIG */
-  config.responseHandler = {};
+  config.responseHandler = {}; // TODO: this needs moving to be scoped at server level
 
   if (project) {
     config.projectId = project;
   }
 
   // we only want the surrogate key header in a server context
+  // TODO: this needs moving to be scoped at server level
   if (typeof window === 'undefined') {
     config.defaultHeaders = Object.assign(config.defaultHeaders || {}, {
       referer: getSsrReferer(),
       'x-require-surrogate-key': true,
       'x-crb-ssr': true, // add this for support tracing
     });
-    config.responseHandler[200] = storeSurrogateKeys;
+    // config.responseHandler[200] = storeSurrogateKeys;
+    config.responseHandler['*'] = storeSurrogateKeys;
   }
 
   if (

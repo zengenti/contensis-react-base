@@ -28,6 +28,7 @@ const initialState = {
   notFound: false,
   staticRoute: null,
   statusCode: 200,
+  apiCalls: [],
 };
 
 export default produce((state: Draft<any>, action) => {
@@ -138,6 +139,14 @@ export default produce((state: Draft<any>, action) => {
     }
     case SET_SURROGATE_KEYS: {
       const newKeys = (action.keys || '').split(' ');
+      console.info(
+        `[SET_SURROGATE_KEYS:${action.status}] ${newKeys.length} ${action.url}`
+      );
+
+      state.apiCalls = [
+        ...original(state.apiCalls),
+        [action.status, newKeys.length, action.url],
+      ];
       const stateKeys = state.surrogateKeys
         ? original(state.surrogateKeys)
         : [];
