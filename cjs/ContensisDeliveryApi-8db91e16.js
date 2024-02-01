@@ -3,7 +3,7 @@
 var contensisDeliveryApi = require('contensis-delivery-api');
 var queryString = require('query-string');
 var selectors = require('./selectors-8e56cc34.js');
-var version = require('./version-fb4ba30b.js');
+var version = require('./version-989bde88.js');
 var CookieConstants = require('./CookieConstants-000427db.js');
 
 class CacheNode {
@@ -268,4 +268,4 @@ exports.cachedSearchWithCookies = cachedSearchWithCookies;
 exports.deliveryApi = deliveryApi;
 exports.deliveryApiWithCookies = deliveryApiWithCookies;
 exports.getClientConfig = getClientConfig;
-//# sourceMappingURL=ContensisDeliveryApi-ea5ffdc2.js.map
+//# sourceMappingURL=ContensisDeliveryApi-8db91e16.js.map

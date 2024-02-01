@@ -3,7 +3,7 @@ import thunkMiddleware from 'redux-thunk';
 import createSagaMiddleware, { END } from 'redux-saga';
 import { createInjectorsEnhancer } from 'redux-injectors';
 import { produce, original } from 'immer';
-import { C as SET_TARGET_PROJECT, D as SET_SURROGATE_KEYS, n as SET_SIBLINGS, d as SET_ROUTE, S as SET_NAVIGATION_PATH, U as UPDATE_LOADING_STATE, l as SET_ENTRY, m as SET_ANCESTORS, g as getImmutableOrJS } from './selectors-0fe67d47.js';
+import { C as SET_TARGET_PROJECT, D as SET_SURROGATE_KEYS, o as SET_SIBLINGS, e as SET_ROUTE, S as SET_NAVIGATION_PATH, U as UPDATE_LOADING_STATE, m as SET_ENTRY, n as SET_ANCESTORS, g as getImmutableOrJS } from './selectors-1f0cc787.js';
 import { U as UserReducer } from './reducers-3d5c37d1.js';
 
 const ACTION_PREFIX = '@NAVIGATION/';
@@ -62,6 +62,7 @@ const initialState$1 = {
   notFound: false,
   staticRoute: null,
   statusCode: 200,
+  surrogateKeys: [],
   apiCalls: []
 };
 var RoutingReducer = produce((state, action) => {
@@ -186,12 +187,10 @@ var RoutingReducer = produce((state, action) => {
     case SET_SURROGATE_KEYS:
       {
         const newKeys = (action.keys || '').split(' ');
-        console.info(`[SET_SURROGATE_KEYS:${action.status}] ${newKeys.length} ${action.url}`);
-        state.apiCalls = [...original(state.apiCalls), [action.status, newKeys.length, action.url]];
-        const stateKeys = state.surrogateKeys ? original(state.surrogateKeys) : [];
-        const allKeys = [...stateKeys, ...newKeys];
+        const allKeys = [...original(state.surrogateKeys), ...newKeys];
         const uniqueKeys = [...new Set(allKeys)];
         state.surrogateKeys = uniqueKeys;
+        state.apiCalls = [...original(state.apiCalls), [action.status, newKeys.length, action.url]];
         return;
       }
     case SET_TARGET_PROJECT:
@@ -258,10 +257,9 @@ const routerMiddleware = history => store => next => action => {
   history[method](...args);
 };
 
-let reduxStore;
-
 /* eslint-disable no-underscore-dangle */
 
+let reduxStore;
 var createStore = (async (featureReducers, initialState, history, stateType) => {
   let reduxDevToolsMiddleware = f => f;
   if (typeof window != 'undefined') {
@@ -321,4 +319,4 @@ var version = /*#__PURE__*/Object.freeze({
 });
 
 export { GET_NODE_TREE as G, SET_NODE_TREE as S, GET_NODE_TREE_ERROR as a, SET_VERSION_STATUS as b, createStore as c, SET_VERSION as d, version as e, selectCommitRef as f, selectBuildNumber as g, navigation as n, reduxStore as r, selectVersionStatus as s, version$1 as v };
-//# sourceMappingURL=version-7ea8bea8.js.map
+//# sourceMappingURL=version-36d9d7e8.js.map

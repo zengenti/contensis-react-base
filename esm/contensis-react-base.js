@@ -1,4 +1,4 @@
-import { c as cachedSearch, d as deliveryApi } from './ContensisDeliveryApi-fe53fa10.js';
+import { c as cachedSearch, d as deliveryApi } from './ContensisDeliveryApi-649d46e4.js';
 import { Query as Query$1 } from 'contensis-delivery-api';
 import React from 'react';
 import { Provider } from 'react-redux';
@@ -31,11 +31,11 @@ import { c as commonjsGlobal } from './_commonjsHelpers-1789f0cf.js';
 import { buildCleaner } from 'lodash-clean';
 import { CookiesProvider } from 'react-cookie';
 import cookiesMiddleware from 'universal-cookie-express';
-import { c as createStore } from './version-7ea8bea8.js';
-import { h as history, p as pickProject, r as rootSaga } from './App-aaea6310.js';
-export { A as ReactApp } from './App-aaea6310.js';
-import { s as setVersionStatus, a as setVersion } from './version-f42f7bdc.js';
-import { s as selectSurrogateKeys, a as selectRouteEntry, b as selectCurrentProject, g as getImmutableOrJS, c as setCurrentProject } from './selectors-0fe67d47.js';
+import { c as createStore } from './version-36d9d7e8.js';
+import { h as history, p as pickProject, r as rootSaga } from './App-f5e31c03.js';
+export { A as ReactApp } from './App-f5e31c03.js';
+import { s as setVersionStatus, a as setVersion } from './version-f1375303.js';
+import { s as selectSurrogateKeys, a as selectRouteEntry, b as selectCurrentProject, g as getImmutableOrJS, c as setCurrentProject, d as selectCurrentSearch } from './selectors-1f0cc787.js';
 import chalk from 'chalk';
 import './CookieConstants-3d3b6531.js';
 import 'loglevel';
@@ -47,10 +47,10 @@ import 'redux-injectors';
 import './reducers-3d5c37d1.js';
 import 'history';
 import 'await-to-js';
-import './ChangePassword.container-724c8e0a.js';
-import './ToJs-c75473e9.js';
+import './ChangePassword.container-7cedf0d7.js';
+import './ToJs-f92e40c1.js';
 import 'react-hot-loader';
-import './RouteLoader-fe64ca81.js';
+import './RouteLoader-cf80cfd0.js';
 
 /**
  * Util class holds our search results helper boilerplate methods
@@ -3726,7 +3726,6 @@ const alias = ALIAS; /* global ALIAS */
 const addStandardHeaders = (state, response, packagejson, groups) => {
   if (state) {
     try {
-      console.info('About to add headers');
       const routingSurrogateKeys = selectSurrogateKeys(state);
       console.info(`[addStandardHeaders] ${routingSurrogateKeys.length} surrogate keys for ${response.req.url}`);
       // Check length of surrogate keys and prevent potential header overflow
@@ -3738,7 +3737,7 @@ const addStandardHeaders = (state, response, packagejson, groups) => {
       addVarnishAuthenticationHeaders(state, response, groups);
       response.setHeader('surrogate-control', `max-age=${getCacheDuration(response.statusCode)}`);
     } catch (e) {
-      console.info('Error adding headers', e.message);
+      console.info('[addStandardHeaders] Error adding headers', e.message);
     }
   }
 };
@@ -3906,6 +3905,7 @@ const webApp = (app, ReactApp, config) => {
     // Render the JSX server side and send response as per access method options
     if (!accessMethod.DYNAMIC) {
       store.runSaga(rootSaga(withSagas)).toPromise().then(() => {
+        var _selectCurrentSearch;
         const sheet = new ServerStyleSheet();
         const html = renderToString(sheet.collectStyles(jsx));
         const helmet = Helmet.renderStatic();
@@ -3922,7 +3922,7 @@ const webApp = (app, ReactApp, config) => {
         // After running rootSaga there should be an additional react-loadable
         // code-split bundles for any page components as well as core app bundles
         const bundleTags = getBundleTags(loadableExtractor, scripts, staticRoutePath);
-        let serialisedReduxData = serialize(buildCleaner({
+        const clonedState = buildCleaner({
           isArray: identity,
           isBoolean: identity,
           isDate: identity,
@@ -3931,7 +3931,14 @@ const webApp = (app, ReactApp, config) => {
           isPlainObject: identity,
           isString: identity,
           isUndefined: noop
-        })(cloneDeep_1(reduxState)));
+        })(cloneDeep_1(reduxState));
+        // These keys are used for preparing server-side response headers only
+        // and are not required in the client at all except for debugging ssr
+        if (!((_selectCurrentSearch = selectCurrentSearch(reduxState)) !== null && _selectCurrentSearch !== void 0 && _selectCurrentSearch.includes('includeApiCalls'))) {
+          delete clonedState.routing.apiCalls;
+          delete clonedState.routing.surrogateKeys;
+        }
+        let serialisedReduxData = serialize(clonedState);
         if (context.statusCode !== 404) {
           // For a request that returns a redux state object as a response
           if (accessMethod.REDUX) {

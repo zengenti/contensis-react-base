@@ -1,22 +1,22 @@
 import { createBrowserHistory, createMemoryHistory } from 'history';
 import { takeEvery, select, put, call, all } from '@redux-saga/core/effects';
 import * as log from 'loglevel';
-import { d as deliveryApi, a as cachedSearchWithCookies } from './ContensisDeliveryApi-fe53fa10.js';
-import { G as GET_NODE_TREE, s as selectVersionStatus, S as SET_NODE_TREE, a as GET_NODE_TREE_ERROR } from './version-7ea8bea8.js';
-import { h as hasNavigationTree, i as injectRedux } from './version-f42f7bdc.js';
-import { b as selectCurrentProject, S as SET_NAVIGATION_PATH, d as SET_ROUTE, a as selectRouteEntry, e as selectCurrentNode, U as UPDATE_LOADING_STATE, f as selectCurrentAncestors, h as selectCurrentSiblings, i as selectRouteEntryEntryId, j as selectRouteEntryLanguage, k as selectMappedEntry, l as SET_ENTRY, m as SET_ANCESTORS, n as SET_SIBLINGS, q as queryParams, o as selectCurrentSearch, p as setRoute } from './selectors-0fe67d47.js';
+import { d as deliveryApi, a as cachedSearchWithCookies } from './ContensisDeliveryApi-649d46e4.js';
+import { G as GET_NODE_TREE, s as selectVersionStatus, S as SET_NODE_TREE, a as GET_NODE_TREE_ERROR } from './version-36d9d7e8.js';
+import { h as hasNavigationTree, i as injectRedux } from './version-f1375303.js';
+import { b as selectCurrentProject, S as SET_NAVIGATION_PATH, e as SET_ROUTE, a as selectRouteEntry, f as selectCurrentNode, U as UPDATE_LOADING_STATE, h as selectCurrentAncestors, i as selectCurrentSiblings, j as selectRouteEntryEntryId, k as selectRouteEntryLanguage, l as selectMappedEntry, m as SET_ENTRY, n as SET_ANCESTORS, o as SET_SIBLINGS, q as queryParams, d as selectCurrentSearch, p as setRoute } from './selectors-1f0cc787.js';
 import to, { to as to$1 } from 'await-to-js';
-import { h as handleRequiresLoginSaga, L as LoginHelper, f as findContentTypeMapping, g as getManagementApiClient, l as loginSagas } from './ChangePassword.container-724c8e0a.js';
+import { h as handleRequiresLoginSaga, L as LoginHelper, f as findContentTypeMapping, g as getManagementApiClient, l as loginSagas } from './ChangePassword.container-7cedf0d7.js';
 import React from 'react';
 import 'react-cookie';
 import 'react-redux';
 import 'jsonpath-mapper';
 import { R as REGISTER_USER, a as REGISTER_USER_SUCCESS, b as REGISTER_USER_FAILED, c as REQUEST_USER_PASSWORD_RESET, d as RESET_USER_PASSWORD, C as CHANGE_USER_PASSWORD, e as REQUEST_USER_PASSWORD_RESET_SENDING, f as REQUEST_USER_PASSWORD_RESET_SUCCESS, g as REQUEST_USER_PASSWORD_RESET_ERROR, h as RESET_USER_PASSWORD_SENDING, i as RESET_USER_PASSWORD_SUCCESS, j as RESET_USER_PASSWORD_ERROR, k as CHANGE_USER_PASSWORD_ERROR, l as CHANGE_USER_PASSWORD_SENDING, m as CHANGE_USER_PASSWORD_SUCCESS } from './reducers-3d5c37d1.js';
 import { Op, Query } from 'contensis-delivery-api';
-import { s as selectClientCredentials } from './ToJs-c75473e9.js';
+import { s as selectClientCredentials } from './ToJs-f92e40c1.js';
 import 'react-hot-loader';
 import 'query-string';
-import { R as RouteLoader } from './RouteLoader-fe64ca81.js';
+import { R as RouteLoader } from './RouteLoader-cf80cfd0.js';
 
 // Create a history depending on the environment
 const selectedHistory = typeof window !== 'undefined' ? createBrowserHistory : createMemoryHistory;
@@ -807,4 +807,4 @@ const AppRoot = props => {
 };
 
 export { AppRoot as A, browserHistory as b, history as h, pickProject as p, rootSaga as r };
-//# sourceMappingURL=App-aaea6310.js.map
+//# sourceMappingURL=App-f5e31c03.js.map

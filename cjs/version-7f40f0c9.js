@@ -1,10 +1,12 @@
-import { g as getImmutableOrJS, E as action } from './selectors-0fe67d47.js';
-import { all } from '@redux-saga/core/effects';
-import { r as reduxStore, b as SET_VERSION_STATUS, d as SET_VERSION } from './version-7ea8bea8.js';
+'use strict';
 
-const hasNavigationTree = state => getImmutableOrJS(state, ['navigation', 'isReady']);
-const selectNavigationRoot = state => getImmutableOrJS(state, ['navigation', 'root']);
-const selectNavigationChildren = state => getImmutableOrJS(state, ['navigation', 'root', 'children']);
+var selectors = require('./selectors-8e56cc34.js');
+var effects = require('@redux-saga/core/effects');
+var version$1 = require('./version-989bde88.js');
+
+const hasNavigationTree = state => selectors.getImmutableOrJS(state, ['navigation', 'isReady']);
+const selectNavigationRoot = state => selectors.getImmutableOrJS(state, ['navigation', 'root']);
+const selectNavigationChildren = state => selectors.getImmutableOrJS(state, ['navigation', 'root', 'children']);
 const selectNavigationDepends = () => [];
 
 var navigation = /*#__PURE__*/Object.freeze({
@@ -17,14 +19,14 @@ var navigation = /*#__PURE__*/Object.freeze({
 
 const convertSagaArray = sagas => {
   if (Array.isArray(sagas)) return function* rootSaga() {
-    yield all(sagas);
+    yield effects.all(sagas);
   };
   return sagas;
 };
 const injectReducer = ({
   key,
   reducer
-}, store = reduxStore) => {
+}, store = version$1.reduxStore) => {
   if (Reflect.has(store.injectedReducers, key) && store.injectedReducers[key] === reducer) return;
   store.injectedReducers[key] = reducer;
   store.replaceReducer(store.createReducer(store.injectedReducers));
@@ -32,7 +34,7 @@ const injectReducer = ({
 const injectSaga = ({
   key,
   saga
-}, store = reduxStore) => {
+}, store = version$1.reduxStore) => {
   const rootSaga = convertSagaArray(saga);
   let hasSaga = Reflect.has(store.injectedSagas, key);
   if (process.env.NODE_ENV !== 'production') {
@@ -56,7 +58,7 @@ const injectRedux = ({
   key,
   reducer,
   saga
-}, store = reduxStore) => {
+}, store = version$1.reduxStore) => {
   console.info('injectRedux, key: ', key);
   if (reducer) injectReducer({
     key,
@@ -69,11 +71,11 @@ const injectRedux = ({
 };
 const useInjectRedux = injectRedux;
 
-const setVersion = (commitRef, buildNo) => action(SET_VERSION, {
+const setVersion = (commitRef, buildNo) => selectors.action(version$1.SET_VERSION, {
   commitRef,
   buildNo
 });
-const setVersionStatus = status => action(SET_VERSION_STATUS, {
+const setVersionStatus = status => selectors.action(version$1.SET_VERSION_STATUS, {
   status
 });
 
@@ -83,5 +85,14 @@ var version = /*#__PURE__*/Object.freeze({
   setVersionStatus: setVersionStatus
 });
 
-export { setVersion as a, injectReducer as b, convertSagaArray as c, injectSaga as d, hasNavigationTree as h, injectRedux as i, navigation as n, setVersionStatus as s, useInjectRedux as u, version as v };
-//# sourceMappingURL=version-f42f7bdc.js.map
+exports.convertSagaArray = convertSagaArray;
+exports.hasNavigationTree = hasNavigationTree;
+exports.injectReducer = injectReducer;
+exports.injectRedux = injectRedux;
+exports.injectSaga = injectSaga;
+exports.navigation = navigation;
+exports.setVersion = setVersion;
+exports.setVersionStatus = setVersionStatus;
+exports.useInjectRedux = useInjectRedux;
+exports.version = version;
+//# sourceMappingURL=version-7f40f0c9.js.map

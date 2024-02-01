@@ -87,6 +87,7 @@ const initialState$1 = {
   notFound: false,
   staticRoute: null,
   statusCode: 200,
+  surrogateKeys: [],
   apiCalls: []
 };
 var RoutingReducer = immer.produce((state, action) => {
@@ -211,12 +212,10 @@ var RoutingReducer = immer.produce((state, action) => {
     case selectors.SET_SURROGATE_KEYS:
       {
         const newKeys = (action.keys || '').split(' ');
-        console.info(`[SET_SURROGATE_KEYS:${action.status}] ${newKeys.length} ${action.url}`);
-        state.apiCalls = [...immer.original(state.apiCalls), [action.status, newKeys.length, action.url]];
-        const stateKeys = state.surrogateKeys ? immer.original(state.surrogateKeys) : [];
-        const allKeys = [...stateKeys, ...newKeys];
+        const allKeys = [...immer.original(state.surrogateKeys), ...newKeys];
         const uniqueKeys = [...new Set(allKeys)];
         state.surrogateKeys = uniqueKeys;
+        state.apiCalls = [...immer.original(state.apiCalls), [action.status, newKeys.length, action.url]];
         return;
       }
     case selectors.SET_TARGET_PROJECT:
@@ -283,10 +282,9 @@ const routerMiddleware = history => store => next => action => {
   history[method](...args);
 };
 
-exports.reduxStore = void 0;
-
 /* eslint-disable no-underscore-dangle */
 
+exports.reduxStore = void 0;
 var createStore = (async (featureReducers, initialState, history, stateType) => {
   let reduxDevToolsMiddleware = f => f;
   if (typeof window != 'undefined') {
@@ -357,4 +355,4 @@ exports.selectCommitRef = selectCommitRef;
 exports.selectVersionStatus = selectVersionStatus;
 exports.version = version$1;
 exports.version$1 = version;
-//# sourceMappingURL=version-fb4ba30b.js.map
+//# sourceMappingURL=version-989bde88.js.map

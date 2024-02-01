@@ -2,7 +2,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var ContensisDeliveryApi = require('./ContensisDeliveryApi-ea5ffdc2.js');
+var ContensisDeliveryApi = require('./ContensisDeliveryApi-8db91e16.js');
 var contensisDeliveryApi = require('contensis-delivery-api');
 var React = require('react');
 var reactRedux = require('react-redux');
@@ -35,9 +35,9 @@ var _commonjsHelpers = require('./_commonjsHelpers-b3309d7b.js');
 var lodashClean = require('lodash-clean');
 var reactCookie = require('react-cookie');
 var cookiesMiddleware = require('universal-cookie-express');
-var version = require('./version-fb4ba30b.js');
-var App = require('./App-555eebb0.js');
-var version$1 = require('./version-91b90ee8.js');
+var version = require('./version-989bde88.js');
+var App = require('./App-3eefc743.js');
+var version$1 = require('./version-7f40f0c9.js');
 var selectors = require('./selectors-8e56cc34.js');
 var chalk = require('chalk');
 require('./CookieConstants-000427db.js');
@@ -3743,7 +3743,6 @@ const alias = ALIAS; /* global ALIAS */
 const addStandardHeaders = (state, response, packagejson, groups) => {
   if (state) {
     try {
-      console.info('About to add headers');
       const routingSurrogateKeys = selectors.selectSurrogateKeys(state);
       console.info(`[addStandardHeaders] ${routingSurrogateKeys.length} surrogate keys for ${response.req.url}`);
       // Check length of surrogate keys and prevent potential header overflow
@@ -3755,7 +3754,7 @@ const addStandardHeaders = (state, response, packagejson, groups) => {
       addVarnishAuthenticationHeaders(state, response, groups);
       response.setHeader('surrogate-control', `max-age=${getCacheDuration(response.statusCode)}`);
     } catch (e) {
-      console.info('Error adding headers', e.message);
+      console.info('[addStandardHeaders] Error adding headers', e.message);
     }
   }
 };
@@ -3923,6 +3922,7 @@ const webApp = (app, ReactApp, config) => {
     // Render the JSX server side and send response as per access method options
     if (!accessMethod.DYNAMIC) {
       store.runSaga(App.rootSaga(withSagas)).toPromise().then(() => {
+        var _selectCurrentSearch;
         const sheet = new styled.ServerStyleSheet();
         const html = server$2.renderToString(sheet.collectStyles(jsx));
         const helmet = reactHelmet.Helmet.renderStatic();
@@ -3939,7 +3939,7 @@ const webApp = (app, ReactApp, config) => {
         // After running rootSaga there should be an additional react-loadable
         // code-split bundles for any page components as well as core app bundles
         const bundleTags = getBundleTags(loadableExtractor, scripts, staticRoutePath);
-        let serialisedReduxData = serialize__default["default"](lodashClean.buildCleaner({
+        const clonedState = lodashClean.buildCleaner({
           isArray: lodash.identity,
           isBoolean: lodash.identity,
           isDate: lodash.identity,
@@ -3948,7 +3948,14 @@ const webApp = (app, ReactApp, config) => {
           isPlainObject: lodash.identity,
           isString: lodash.identity,
           isUndefined: lodash.noop
-        })(cloneDeep_1(reduxState)));
+        })(cloneDeep_1(reduxState));
+        // These keys are used for preparing server-side response headers only
+        // and are not required in the client at all except for debugging ssr
+        if (!((_selectCurrentSearch = selectors.selectCurrentSearch(reduxState)) !== null && _selectCurrentSearch !== void 0 && _selectCurrentSearch.includes('includeApiCalls'))) {
+          delete clonedState.routing.apiCalls;
+          delete clonedState.routing.surrogateKeys;
+        }
+        let serialisedReduxData = serialize__default["default"](clonedState);
         if (context.statusCode !== 404) {
           // For a request that returns a redux state object as a response
           if (accessMethod.REDUX) {
