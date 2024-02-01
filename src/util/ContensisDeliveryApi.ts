@@ -43,24 +43,18 @@ const storeSurrogateKeys = (response: any) => {
   reduxStore?.dispatch(setSurrogateKeys(keys, response.url, response.status));
 };
 
-export const getClientConfig = (project?: string, cookies?: CookieObject) => {
-  const config: Config = DELIVERY_API_CONFIG; /* global DELIVERY_API_CONFIG */
-  config.responseHandler = {}; // TODO: this needs moving to be scoped at server level
+const deliveryApiConfig = () => {
+  const config: Config = {
+    ...DELIVERY_API_CONFIG /* global DELIVERY_API_CONFIG */,
+  };
 
-  if (project) {
-    config.projectId = project;
-  }
-
-  // we only want the surrogate key header in a server context
-  // TODO: this needs moving to be scoped at server level
   if (typeof window === 'undefined') {
-    config.defaultHeaders = Object.assign(config.defaultHeaders || {}, {
+    config.defaultHeaders = {
       referer: getSsrReferer(),
-      'x-require-surrogate-key': true,
-      'x-crb-ssr': true, // add this for support tracing
-    });
-    // config.responseHandler[200] = storeSurrogateKeys;
-    config.responseHandler['*'] = storeSurrogateKeys;
+      'x-require-surrogate-key': 'true',
+      'x-crb-ssr': 'true', // add this for support tracing
+    };
+    config.responseHandler = { ['*']: storeSurrogateKeys };
   }
 
   if (
@@ -69,7 +63,16 @@ export const getClientConfig = (project?: string, cookies?: CookieObject) => {
   ) {
     // ensure a relative url is used to bypass the need for CORS (separate OPTIONS calls)
     config.rootUrl = '';
-    config.responseHandler[404] = () => null;
+    config.responseHandler = { [404]: () => null };
+  }
+  return config;
+};
+
+export const getClientConfig = (project?: string, cookies?: CookieObject) => {
+  const config = deliveryApiConfig();
+
+  if (project) {
+    config.projectId = project;
   }
 
   if (cookies) {
