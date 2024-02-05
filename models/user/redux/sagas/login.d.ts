@@ -1,9 +1,5 @@
-export function handleRequiresLoginSaga(action: any): Generator<import("redux-saga/effects").SelectEffect | import("redux-saga/effects").CallEffect<Generator<import("redux-saga/effects").SelectEffect | Promise<undefined[] | Error[] | {
-    message: string;
-}[] | {
-    message: string;
-    data: any;
-}[]> | import("redux-saga/effects").PutEffect<{
+export declare const loginSagas: import("redux-saga/effects").ForkEffect<never>[];
+export declare function handleRequiresLoginSaga(action: any): Generator<import("redux-saga/effects").SelectEffect | import("redux-saga/effects").CallEffect<Generator<import("redux-saga/effects").SelectEffect | Promise<any[]> | import("redux-saga/effects").PutEffect<{
     type: string;
     authenticationState: {
         isLoading: boolean;
@@ -15,15 +11,8 @@ export function handleRequiresLoginSaga(action: any): Generator<import("redux-sa
         errorMessage: any;
     };
 }> | import("redux-saga/effects").CallEffect<Generator<Promise<{
-    authenticationState: {
-        clientCredentials: null;
-        isAuthenticated: boolean;
-        isAuthenticationError: boolean;
-        isError: boolean;
-    };
-    user: Error | {
-        groups: any;
-    } | null | undefined;
+    authenticationState: import("../../state").AuthenticationState;
+    user: any;
 }> | import("redux-saga/effects").PutEffect<{
     type: string;
     authenticationState: any;
@@ -36,5 +25,4 @@ export function handleRequiresLoginSaga(action: any): Generator<import("redux-sa
     cookies: any;
     securityToken: any;
 }>, any, any>;
-export function refreshSecurityToken(): Generator<any, void, unknown>;
-export const loginSagas: import("redux-saga/effects").ForkEffect<never>[];
+export declare function refreshSecurityToken(): Generator<any, void, unknown>;

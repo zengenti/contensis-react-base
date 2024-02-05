@@ -1,54 +1,45 @@
-export class LoginHelper {
+import { ManagementApiClientCredentials } from './ContensisManagementApi';
+import { AuthenticationState, UserWithGroups } from '../state';
+import { Client } from 'contensis-management-api';
+import { CookieHelper } from './CookieHelper.class';
+export declare class LoginHelper {
     static CMS_URL: string;
     static WSFED_LOGIN: boolean;
     static LOGIN_ROUTE: string;
     static ACCESS_DENIED_ROUTE: string;
-    static withCookies: (cookieHelper: any) => LoginHelper;
-    static GetUserDetails: (client: any) => Promise<(Error | {
-        groups: any;
-    } | null)[]>;
-    static ClientRedirectToHome(location: any): void;
-    static ClientRedirectToSignInPage(redirectPath: any): Promise<void>;
+    cookies: CookieHelper;
+    constructor(cookies?: CookieHelper);
+    static withCookies: (cookieHelper: CookieHelper) => LoginHelper;
+    static GetUserDetails: (client: Client) => Promise<[Error | null, UserWithGroups | undefined]>;
+    static ClientRedirectToHome(location?: Location): void;
+    static ClientRedirectToSignInPage(redirectPath?: string): Promise<void>;
     static GetAccessDeniedRoute(originalPath: any): string;
     static ClientRedirectToAccessDeniedPage(originalPath: any): void;
     static ClientRedirectToPath(redirectPath: any): void;
-    static WsFedLogin(redirectUri: any): Promise<void>;
+    static WsFedLogin(redirectUri?: string): Promise<void>;
     static RemoveSecurityTokenQuery(): void;
-    static WsFedLogout(redirectPath: any): Promise<void>;
-    static GetCredentialsForSecurityToken(securityToken: any): Promise<undefined[] | Error[] | {
-        message: string;
-    }[] | {
-        message: string;
-        data: any;
-    }[]>;
-    constructor(cookies: any);
-    cookies: any;
-    SetLoginCookies({ contensisClassicToken, refreshToken }: {
-        contensisClassicToken: any;
-        refreshToken: any;
+    static WsFedLogout(redirectPath?: string): Promise<void>;
+    static GetCredentialsForSecurityToken(securityToken: string): Promise<any[]>;
+    SetLoginCookies({ contensisClassicToken, refreshToken, }: {
+        contensisClassicToken?: string;
+        refreshToken?: string;
     }): void;
     GetCachedCredentials(): {
         bearerToken: null;
         bearerTokenExpiryDate: null;
-        refreshToken: any;
+        refreshToken: string | null;
         refreshTokenExpiryDate: null;
-        contensisClassicToken: any;
+        contensisClassicToken: string | null;
+        securityToken: null;
     };
     ClearCachedCredentials(): void;
-    LoginUser({ username, password, clientCredentials }: {
-        username: any;
-        password: any;
-        clientCredentials: any;
+    LoginUser({ username, password, clientCredentials, }: {
+        username?: string;
+        password?: string;
+        clientCredentials?: ManagementApiClientCredentials;
     }): Promise<{
-        authenticationState: {
-            clientCredentials: null;
-            isAuthenticated: boolean;
-            isAuthenticationError: boolean;
-            isError: boolean;
-        };
-        user: Error | {
-            groups: any;
-        } | null | undefined;
+        authenticationState: AuthenticationState;
+        user: any;
     }>;
-    LogoutUser(redirectPath: any): void;
+    LogoutUser(redirectPath?: string): void;
 }

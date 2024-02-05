@@ -1,6 +1,7 @@
-export default withLogin;
-declare function withLogin(WrappedComponent: any): {
+import React from 'react';
+declare const withLogin: (WrappedComponent: React.ComponentType) => {
     (): JSX.Element;
     displayName: string;
-    WrappedComponent: any;
+    WrappedComponent: React.ComponentType<{}>;
 };
+export default withLogin;
