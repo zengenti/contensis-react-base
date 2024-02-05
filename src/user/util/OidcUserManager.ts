@@ -36,5 +36,5 @@ export const createUserManager = async (config: UserManagerSettings) => {
     } catch (e) {
       console.error('Exception in createUserManager: ', e);
     }
-  } else return {};
+  } else return;
 };

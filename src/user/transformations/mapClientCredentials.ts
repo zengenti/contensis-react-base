@@ -1,4 +1,6 @@
+import { Client } from 'contensis-management-api';
 import { mapJson } from '~/util/json-mapper';
+import { ManagementApiClientCredentials } from '../util/ContensisManagementApi';
 
 const clientCredentials = {
   bearerToken: 'bearerToken',
@@ -9,4 +11,5 @@ const clientCredentials = {
     refreshTokenExpiryDate.toISOString(),
   contensisClassicToken: 'contensisClassicToken',
 };
-export default obj => mapJson(obj, clientCredentials);
+export default (obj: Client) =>
+  mapJson(obj, clientCredentials) as ManagementApiClientCredentials;

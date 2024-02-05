@@ -1,4 +1,12 @@
-// import { Client } from 'contensis-management-api';
+export type ManagementApiClientCredentials = {
+  bearerToken?: string;
+  bearerTokenExpiryDate?: Date;
+  refreshToken?: string;
+  refreshTokenExpiryDate?: Date;
+  contensisClassicToken?: string;
+  username?: string;
+  password?: string;
+};
 
 export const getManagementApiClient = async ({
   bearerToken,
@@ -8,7 +16,7 @@ export const getManagementApiClient = async ({
   contensisClassicToken,
   username,
   password,
-}) => {
+}: ManagementApiClientCredentials) => {
   const rootUrl = SERVERS.api || SERVERS.cms; /* global SERVERS */
   const projectId = PROJECTS[0].id; /* global PROJECTS */
 
@@ -50,7 +58,7 @@ export const getManagementApiClient = async ({
   if (refreshTokenExpiryDate)
     client.refreshTokenExpiryDate = refreshTokenExpiryDate;
   if (contensisClassicToken)
-    client.contensisClassicToken = contensisClassicToken;
+    (client as any).contensisClassicToken = contensisClassicToken;
 
   return client;
 };

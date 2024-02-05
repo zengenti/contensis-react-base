@@ -12,13 +12,14 @@ import {
 } from '../redux/selectors';
 import { CookieHelper } from '../util/CookieHelper.class';
 import { toJS } from '~/util/ToJs';
+import { AppState } from '~/redux/appstate';
 
-const getDisplayName = WrappedComponent => {
+const getDisplayName = (WrappedComponent: React.ComponentType) => {
   return WrappedComponent.displayName || WrappedComponent.name || 'Component';
 };
 
-const withLogin = WrappedComponent => {
-  const mapStateToProps = state => {
+const withLogin = (WrappedComponent: React.ComponentType) => {
+  const mapStateToProps = (state: AppState) => {
     return {
       errorMessage: selectUserErrorMessage(state),
       isAuthenticated: selectUserIsAuthenticated(state),
@@ -37,8 +38,9 @@ const withLogin = WrappedComponent => {
     const cookies = new CookieHelper(...useCookies());
 
     const mapDispatchToProps = {
-      loginUser: (username, password) => loginUser(username, password, cookies),
-      logoutUser: redirectPath => logoutUser(redirectPath, cookies),
+      loginUser: (username: string, password: string) =>
+        loginUser(username, password, cookies),
+      logoutUser: (redirectPath?: string) => logoutUser(redirectPath, cookies),
     };
 
     const FinalComponent = connect(

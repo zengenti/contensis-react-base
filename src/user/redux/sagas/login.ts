@@ -29,7 +29,7 @@ export const loginSagas = [
   takeEvery(SET_AUTHENTICATION_STATE, redirectAfterSuccessfulLoginSaga),
 ];
 
-export function* handleRequiresLoginSaga(action) {
+export function* handleRequiresLoginSaga(action: any) {
   const {
     cookies,
     entry,
@@ -93,7 +93,7 @@ export function* handleRequiresLoginSaga(action) {
   return userLoggedIn;
 }
 
-function* validateUserSaga({ cookies, securityToken }) {
+function* validateUserSaga({ cookies, securityToken }: any) {
   const login = LoginHelper.withCookies(cookies);
   // Check for refreshToken in cookies
   let clientCredentials = login.GetCachedCredentials();
@@ -160,7 +160,7 @@ function* validateUserSaga({ cookies, securityToken }) {
   return yield select(selectUserIsAuthenticated);
 }
 
-function* loginUserSaga(action = {}) {
+function* loginUserSaga(action: any = {}) {
   const { username, password, clientCredentials, cookies } = action;
   const login = LoginHelper.withCookies(cookies);
 
@@ -207,7 +207,7 @@ function* redirectAfterSuccessfulLoginSaga() {
   }
 }
 
-function* logoutUserSaga({ redirectPath, cookies }) {
+function* logoutUserSaga({ redirectPath, cookies }: any) {
   yield put({
     type: SET_AUTHENTICATION_STATE,
     user: null,

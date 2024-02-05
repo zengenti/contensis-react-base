@@ -7,11 +7,15 @@ import {
   REQUEST_USER_PASSWORD_RESET,
   RESET_USER_PASSWORD,
 } from './types';
+import { CookieHelper } from '../util/CookieHelper.class';
 
-export const loginUser = (username, password, cookies) =>
-  action(LOGIN_USER, { username, password, cookies });
+export const loginUser = (
+  username: string,
+  password: string,
+  cookies?: CookieHelper
+) => action(LOGIN_USER, { username, password, cookies });
 
-export const logoutUser = (redirectPath, cookies) =>
+export const logoutUser = (redirectPath?: string, cookies?: CookieHelper) =>
   action(LOGOUT_USER, { redirectPath, cookies });
 
 export const registerUser = (user, mappers) =>
