@@ -1,6 +1,6 @@
 declare const useLogin: () => {
     loginUser: (username: string, password: string) => any;
-    logoutUser: (redirectPath: any) => any;
+    logoutUser: (redirectPath?: string) => any;
     errorMessage: any;
     isAuthenticated: any;
     isAuthenticationError: any;

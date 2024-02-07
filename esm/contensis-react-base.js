@@ -3938,6 +3938,8 @@ const webApp = (app, ReactApp, config) => {
           delete clonedState.routing.apiCalls;
           delete clonedState.routing.surrogateKeys;
         }
+        // Reset user state to prevent user details from being cached in SSR
+        delete clonedState.user;
         let serialisedReduxData = serialize(clonedState);
         if (context.statusCode !== 404) {
           // For a request that returns a redux state object as a response
