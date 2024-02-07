@@ -21,7 +21,7 @@ export class CookieHelper {
     return this.cookies;
   }
 
-  get cookie() {
+  get cookie(): FallbackCookies {
     return (this.set ? this : this.fallback) as FallbackCookies;
   }
 
@@ -57,6 +57,7 @@ export class CookieHelper {
     else
       this.cookie.set(name, value, {
         expires: addDays(new Date(), maxAgeDays),
+        path: '/',
       });
   }
 
@@ -64,7 +65,9 @@ export class CookieHelper {
     // update local cookies object as this is provided as a clone of `req.universalCookies`
     delete this.cookies[name];
 
-    this.cookie.remove(name);
+    this.cookie.remove(name, {
+      path: '/',
+    });
   }
 }
 const addDays = (date = new Date(), days: number) => {
