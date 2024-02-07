@@ -20,7 +20,8 @@ const useLogin = () => {
   return {
     loginUser: (username: string, password: string) =>
       dispatch(loginUser(username, password, cookies)),
-    logoutUser: redirectPath => dispatch(logoutUser(redirectPath, cookies)),
+    logoutUser: (redirectPath?: string) =>
+      dispatch(logoutUser(redirectPath, cookies)),
     errorMessage: select(selectUserErrorMessage),
     isAuthenticated: select(selectUserIsAuthenticated),
     isAuthenticationError: select(selectUserIsAuthenticationError),
