@@ -32,8 +32,8 @@ import { buildCleaner } from 'lodash-clean';
 import { CookiesProvider } from 'react-cookie';
 import cookiesMiddleware from 'universal-cookie-express';
 import { c as createStore } from './version-f6660b69.js';
-import { h as history, p as pickProject, r as rootSaga } from './App-24dd05d6.js';
-export { A as ReactApp } from './App-24dd05d6.js';
+import { h as history, p as pickProject, r as rootSaga } from './App-78adea10.js';
+export { A as ReactApp } from './App-78adea10.js';
 import { s as setVersionStatus, a as setVersion } from './version-5a0b9406.js';
 import { s as selectSurrogateKeys, a as selectRouteEntry, b as selectCurrentProject, g as getImmutableOrJS, c as setCurrentProject, d as selectCurrentSearch } from './selectors-1f0cc787.js';
 import chalk from 'chalk';
@@ -47,10 +47,10 @@ import 'redux-injectors';
 import './reducers-919da5e0.js';
 import 'history';
 import 'await-to-js';
-import './ChangePassword.container-51c4a04b.js';
-import './ToJs-d321983a.js';
+import './ChangePassword.container-fb0b418d.js';
+import './ToJs-efd029ae.js';
 import 'react-hot-loader';
-import './RouteLoader-3837e459.js';
+import './RouteLoader-e794c46b.js';
 
 /**
  * Util class holds our search results helper boilerplate methods

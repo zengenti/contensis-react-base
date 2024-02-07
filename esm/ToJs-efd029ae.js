@@ -1,45 +1,39 @@
-'use strict';
+import { g as getImmutableOrJS } from './selectors-1f0cc787.js';
+import React from 'react';
 
-var selectors$1 = require('./selectors-8e56cc34.js');
-var React = require('react');
-
-function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
-
-var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
-
-const selectUserIsLoading = state => selectors$1.getImmutableOrJS(state, ['user', 'authenticationState', 'isLoading']);
-const selectUserIsAuthenticated = state => selectors$1.getImmutableOrJS(state, ['user', 'authenticationState', 'isAuthenticated']);
-const selectUserIsAuthenticationError = state => selectors$1.getImmutableOrJS(state, ['user', 'authenticationState', 'isAuthenticationError']);
-const selectUserIsError = state => selectors$1.getImmutableOrJS(state, ['user', 'authenticationState', 'isError']);
+const selectUserIsLoading = state => getImmutableOrJS(state, ['user', 'authenticationState', 'isLoading']);
+const selectUserIsAuthenticated = state => getImmutableOrJS(state, ['user', 'authenticationState', 'isAuthenticated']);
+const selectUserIsAuthenticationError = state => getImmutableOrJS(state, ['user', 'authenticationState', 'isAuthenticationError']);
+const selectUserIsError = state => getImmutableOrJS(state, ['user', 'authenticationState', 'isError']);
 
 /**
  * DEPRECATED 12/2021 - use selectUserErrorMessage instead
  * @param state AppState
  * @returns string
  */
-const selectUserAuthenticationErrorMessage = state => selectors$1.getImmutableOrJS(state, ['user', 'authenticationState', 'errorMessage']);
-const selectUserErrorMessage = state => selectors$1.getImmutableOrJS(state, ['user', 'authenticationState', 'errorMessage']);
-const selectClientCredentials = (state, returnType) => selectors$1.getImmutableOrJS(state, ['user', 'authenticationState', 'clientCredentials'], {}, returnType);
-const selectUser = (state, returnType) => selectors$1.getImmutableOrJS(state, 'user', {}, returnType);
-const selectUserIsZengentiStaff = state => selectors$1.getImmutableOrJS(state, ['user', 'isZengentiStaff']);
-const selectUserGuid = state => selectors$1.getImmutableOrJS(state, ['user', 'id']);
-const selectUsername = state => selectors$1.getImmutableOrJS(state, ['user', 'username']);
-const selectUserEmail = state => selectors$1.getImmutableOrJS(state, ['user', 'email']);
-const selectUserGroups = (state, returnType) => selectors$1.getImmutableOrJS(state, ['user', 'groups'], [], returnType);
-const selectUserSecurityToken = state => selectors$1.getImmutableOrJS(state, ['user', 'authenticationState', 'clientCredentials', 'contensisClassicToken']);
-const selectUserRegistration = (state, returnType) => selectors$1.getImmutableOrJS(state, ['user', 'registration'], {}, returnType);
-const selectUserRegistrationError = state => selectors$1.getImmutableOrJS(state, ['user', 'registration', 'error'], false);
-const selectUserRegistrationIsLoading = state => selectors$1.getImmutableOrJS(state, ['user', 'registration', 'isLoading'], false);
-const selectUserRegistrationIsSuccess = state => selectors$1.getImmutableOrJS(state, ['user', 'registration', 'success'], false);
-const selectPasswordResetRequestSending = state => selectors$1.getImmutableOrJS(state, ['user', 'passwordResetRequest', 'isSending']);
-const selectPasswordResetRequestSent = state => selectors$1.getImmutableOrJS(state, ['user', 'passwordResetRequest', 'sent']);
-const selectPasswordResetRequestError = state => selectors$1.getImmutableOrJS(state, ['user', 'passwordResetRequest', 'error']);
-const selectResetPasswordSending = state => selectors$1.getImmutableOrJS(state, ['user', 'resetPassword', 'isSending']);
-const selectResetPasswordSent = state => selectors$1.getImmutableOrJS(state, ['user', 'resetPassword', 'sent']);
-const selectResetPasswordError = state => selectors$1.getImmutableOrJS(state, ['user', 'resetPassword', 'error']);
-const selectChangePasswordSending = state => selectors$1.getImmutableOrJS(state, ['user', 'changePassword', 'isSending']);
-const selectChangePasswordSent = state => selectors$1.getImmutableOrJS(state, ['user', 'changePassword', 'sent']);
-const selectChangePasswordError = state => selectors$1.getImmutableOrJS(state, ['user', 'changePassword', 'error']);
+const selectUserAuthenticationErrorMessage = state => getImmutableOrJS(state, ['user', 'authenticationState', 'errorMessage']);
+const selectUserErrorMessage = state => getImmutableOrJS(state, ['user', 'authenticationState', 'errorMessage']);
+const selectClientCredentials = (state, returnType) => getImmutableOrJS(state, ['user', 'authenticationState', 'clientCredentials'], {}, returnType);
+const selectUser = (state, returnType) => getImmutableOrJS(state, 'user', {}, returnType);
+const selectUserIsZengentiStaff = state => getImmutableOrJS(state, ['user', 'isZengentiStaff']);
+const selectUserGuid = state => getImmutableOrJS(state, ['user', 'id']);
+const selectUsername = state => getImmutableOrJS(state, ['user', 'username']);
+const selectUserEmail = state => getImmutableOrJS(state, ['user', 'email']);
+const selectUserGroups = (state, returnType) => getImmutableOrJS(state, ['user', 'groups'], [], returnType);
+const selectUserSecurityToken = state => getImmutableOrJS(state, ['user', 'authenticationState', 'clientCredentials', 'contensisClassicToken']);
+const selectUserRegistration = (state, returnType) => getImmutableOrJS(state, ['user', 'registration'], {}, returnType);
+const selectUserRegistrationError = state => getImmutableOrJS(state, ['user', 'registration', 'error'], false);
+const selectUserRegistrationIsLoading = state => getImmutableOrJS(state, ['user', 'registration', 'isLoading'], false);
+const selectUserRegistrationIsSuccess = state => getImmutableOrJS(state, ['user', 'registration', 'success'], false);
+const selectPasswordResetRequestSending = state => getImmutableOrJS(state, ['user', 'passwordResetRequest', 'isSending']);
+const selectPasswordResetRequestSent = state => getImmutableOrJS(state, ['user', 'passwordResetRequest', 'sent']);
+const selectPasswordResetRequestError = state => getImmutableOrJS(state, ['user', 'passwordResetRequest', 'error']);
+const selectResetPasswordSending = state => getImmutableOrJS(state, ['user', 'resetPassword', 'isSending']);
+const selectResetPasswordSent = state => getImmutableOrJS(state, ['user', 'resetPassword', 'sent']);
+const selectResetPasswordError = state => getImmutableOrJS(state, ['user', 'resetPassword', 'error']);
+const selectChangePasswordSending = state => getImmutableOrJS(state, ['user', 'changePassword', 'isSending']);
+const selectChangePasswordSent = state => getImmutableOrJS(state, ['user', 'changePassword', 'sent']);
+const selectChangePasswordError = state => getImmutableOrJS(state, ['user', 'changePassword', 'error']);
 
 var selectors = /*#__PURE__*/Object.freeze({
   __proto__: null,
@@ -435,13 +429,16 @@ class CookieHelper {
     // call the passed setCookie method so we can update the `universal-cookie` instance
     // with the change listener attached so the cookies can be set in SSR response
     if (maxAgeDays === 0) this.cookie.set(name, value);else this.cookie.set(name, value, {
-      expires: addDays(new Date(), maxAgeDays)
+      expires: addDays(new Date(), maxAgeDays),
+      path: '/'
     });
   }
   DeleteCookie(name) {
     // update local cookies object as this is provided as a clone of `req.universalCookies`
     delete this.cookies[name];
-    this.cookie.remove(name);
+    this.cookie.remove(name, {
+      path: '/'
+    });
   }
 }
 const addDays = (date = new Date(), days) => {
@@ -475,33 +472,8 @@ const toJS = WrappedComponent => wrappedComponentProps => {
     newProps[propKey] = propValue && typeof propValue === 'object' && 'toJS' in propValue ? propValue.toJS() : propValue;
     return newProps;
   }, {});
-  return /*#__PURE__*/React__default["default"].createElement(WrappedComponent, propsJS);
+  return /*#__PURE__*/React.createElement(WrappedComponent, propsJS);
 };
 
-exports.CookieHelper = CookieHelper;
-exports.matchUserGroup = matchUserGroup;
-exports.selectChangePasswordError = selectChangePasswordError;
-exports.selectChangePasswordSending = selectChangePasswordSending;
-exports.selectChangePasswordSent = selectChangePasswordSent;
-exports.selectClientCredentials = selectClientCredentials;
-exports.selectPasswordResetRequestError = selectPasswordResetRequestError;
-exports.selectPasswordResetRequestSending = selectPasswordResetRequestSending;
-exports.selectPasswordResetRequestSent = selectPasswordResetRequestSent;
-exports.selectResetPasswordError = selectResetPasswordError;
-exports.selectResetPasswordSending = selectResetPasswordSending;
-exports.selectResetPasswordSent = selectResetPasswordSent;
-exports.selectUser = selectUser;
-exports.selectUserErrorMessage = selectUserErrorMessage;
-exports.selectUserGroups = selectUserGroups;
-exports.selectUserGuid = selectUserGuid;
-exports.selectUserIsAuthenticated = selectUserIsAuthenticated;
-exports.selectUserIsAuthenticationError = selectUserIsAuthenticationError;
-exports.selectUserIsError = selectUserIsError;
-exports.selectUserIsLoading = selectUserIsLoading;
-exports.selectUserRegistration = selectUserRegistration;
-exports.selectUserRegistrationError = selectUserRegistrationError;
-exports.selectUserRegistrationIsLoading = selectUserRegistrationIsLoading;
-exports.selectUserRegistrationIsSuccess = selectUserRegistrationIsSuccess;
-exports.selectors = selectors;
-exports.toJS = toJS;
-//# sourceMappingURL=ToJs-0a4a398d.js.map
+export { CookieHelper as C, selectUserIsAuthenticated as a, selectUserGroups as b, selectUserErrorMessage as c, selectUserIsAuthenticationError as d, selectUserIsError as e, selectUserIsLoading as f, selectUser as g, selectUserRegistrationError as h, selectUserRegistrationIsLoading as i, selectUserRegistrationIsSuccess as j, selectUserRegistration as k, selectPasswordResetRequestSending as l, matchUserGroup as m, selectPasswordResetRequestSent as n, selectPasswordResetRequestError as o, selectResetPasswordSending as p, selectResetPasswordSent as q, selectResetPasswordError as r, selectClientCredentials as s, toJS as t, selectChangePasswordSending as u, selectChangePasswordSent as v, selectUserGuid as w, selectChangePasswordError as x, selectors as y };
+//# sourceMappingURL=ToJs-efd029ae.js.map

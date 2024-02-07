@@ -2,7 +2,7 @@
 
 var effects = require('@redux-saga/core/effects');
 var reducers = require('./reducers-ea1b2dc0.js');
-var ToJs = require('./ToJs-0a4a398d.js');
+var ToJs = require('./ToJs-353158e2.js');
 var selectors = require('./selectors-8e56cc34.js');
 var mapJson = require('jsonpath-mapper');
 var to = require('await-to-js');
@@ -760,4 +760,4 @@ exports.useChangePassword = useChangePassword;
 exports.useForgotPassword = useForgotPassword;
 exports.useLogin = useLogin;
 exports.useRegistration = useRegistration;
-//# sourceMappingURL=ChangePassword.container-10176dc6.js.map
+//# sourceMappingURL=ChangePassword.container-b87dba73.js.map

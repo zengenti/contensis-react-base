@@ -8,7 +8,7 @@ var reactRouterDom = require('react-router-dom');
 var reactRouterConfig = require('react-router-config');
 var reselect = require('reselect');
 var selectors = require('./selectors-8e56cc34.js');
-var ToJs = require('./ToJs-0a4a398d.js');
+var ToJs = require('./ToJs-353158e2.js');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -200,4 +200,4 @@ const mapDispatchToProps = {
 var RouteLoader$1 = reactHotLoader.hot(module)(reactRedux.connect(mapStateToPropsMemoized, mapDispatchToProps)(ToJs.toJS(RouteLoader)));
 
 exports.RouteLoader = RouteLoader$1;
-//# sourceMappingURL=RouteLoader-b74a77b5.js.map
+//# sourceMappingURL=RouteLoader-0b37fe07.js.map
