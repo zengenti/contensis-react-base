@@ -1,4 +1,4 @@
-import { c as cachedSearch, d as deliveryApi } from './ContensisDeliveryApi-e2c1c1f5.js';
+import { c as cachedSearch, d as deliveryApi } from './ContensisDeliveryApi-7b71bb3e.js';
 import { Query as Query$1 } from 'contensis-delivery-api';
 import React from 'react';
 import { Provider } from 'react-redux';
@@ -32,8 +32,8 @@ import { buildCleaner } from 'lodash-clean';
 import { CookiesProvider } from 'react-cookie';
 import cookiesMiddleware from 'universal-cookie-express';
 import { c as createStore } from './version-f6660b69.js';
-import { h as history, p as pickProject, r as rootSaga } from './App-78adea10.js';
-export { A as ReactApp } from './App-78adea10.js';
+import { h as history, p as pickProject, r as rootSaga } from './App-0af18d4b.js';
+export { A as ReactApp } from './App-0af18d4b.js';
 import { s as setVersionStatus, a as setVersion } from './version-5a0b9406.js';
 import { s as selectSurrogateKeys, a as selectRouteEntry, b as selectCurrentProject, g as getImmutableOrJS, c as setCurrentProject, d as selectCurrentSearch } from './selectors-1f0cc787.js';
 import chalk from 'chalk';
