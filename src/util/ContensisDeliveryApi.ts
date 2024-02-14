@@ -50,10 +50,11 @@ const deliveryApiConfig = () => {
 
   if (typeof window === 'undefined') {
     config.defaultHeaders = {
-      referer: getSsrReferer(),
       'x-require-surrogate-key': 'true',
       'x-crb-ssr': 'true', // add this for support tracing
     };
+    if (reduxStore) config.defaultHeaders.referer = getSsrReferer();
+
     config.responseHandler = { ['*']: storeSurrogateKeys };
   }
 
