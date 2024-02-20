@@ -34,9 +34,10 @@ var lodash = require('lodash');
 var _commonjsHelpers = require('./_commonjsHelpers-b3309d7b.js');
 var lodashClean = require('lodash-clean');
 var reactCookie = require('react-cookie');
+var ToJs = require('./ToJs-374a7fbd.js');
 var cookiesMiddleware = require('universal-cookie-express');
 var version = require('./version-bb4a3418.js');
-var App = require('./App-319b7d9c.js');
+var App = require('./App-4c9e6d1b.js');
 var version$1 = require('./version-c2a37225.js');
 var selectors = require('./selectors-8e56cc34.js');
 var chalk = require('chalk');
@@ -50,10 +51,9 @@ require('redux-injectors');
 require('./reducers-ea1b2dc0.js');
 require('history');
 require('await-to-js');
-require('./ChangePassword.container-b87dba73.js');
-require('./ToJs-353158e2.js');
+require('./ChangePassword.container-15acbce2.js');
 require('react-hot-loader');
-require('./RouteLoader-0b37fe07.js');
+require('./RouteLoader-190ac009.js');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -3823,6 +3823,7 @@ const webApp = (app, ReactApp, config) => {
     allowedGroups,
     globalGroups,
     disableSsrRedux,
+    enableSsrCookies,
     handleResponses,
     handleExceptions = true
   } = config;
@@ -3884,10 +3885,16 @@ const webApp = (app, ReactApp, config) => {
     const groups = allowedGroups && allowedGroups[project];
     store.dispatch(selectors.setCurrentProject(project, groups, hostname));
     const loadableExtractor = loadableChunkExtractors();
+    const ssrCookies = enableSsrCookies ?
+    // these cookies are managed by the cookiesMiddleware and contain listeners
+    // when cookies are read or written in ssr can be added to the `set-cookie` response header
+    request.universalCookies :
+    // this is a stub cookie collection so cookie methods can be used in code
+    new ToJs.Cookies();
     const jsx = /*#__PURE__*/React__default["default"].createElement(server$1.ChunkExtractorManager, {
       extractor: loadableExtractor.commonLoadableExtractor
     }, /*#__PURE__*/React__default["default"].createElement(reactCookie.CookiesProvider, {
-      cookies: request.universalCookies
+      cookies: ssrCookies
     }, /*#__PURE__*/React__default["default"].createElement(reactRedux.Provider, {
       store: store
     }, /*#__PURE__*/React__default["default"].createElement(reactRouterDom.StaticRouter, {
@@ -3952,11 +3959,18 @@ const webApp = (app, ReactApp, config) => {
         // These keys are used for preparing server-side response headers only
         // and are not required in the client at all except for debugging ssr
         if (!((_selectCurrentSearch = selectors.selectCurrentSearch(reduxState)) !== null && _selectCurrentSearch !== void 0 && _selectCurrentSearch.includes('includeApiCalls'))) {
-          delete clonedState.routing.apiCalls;
-          delete clonedState.routing.surrogateKeys;
+          if (stateType === 'immutable') {
+            clonedState.deleteIn(['routing'], 'apiCalls');
+            clonedState.deleteIn(['routing'], 'surrogateKeys');
+          } else {
+            delete clonedState.routing.apiCalls;
+            delete clonedState.routing.surrogateKeys;
+          }
         }
         // Reset user state to prevent user details from being cached in SSR
-        delete clonedState.user;
+        if (stateType === 'immutable') {
+          clonedState.delete('user');
+        } else delete clonedState.user;
         let serialisedReduxData = serialize__default["default"](clonedState);
         if (context.statusCode !== 404) {
           // For a request that returns a redux state object as a response

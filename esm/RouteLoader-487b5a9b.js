@@ -1,23 +1,17 @@
-'use strict';
-
-var React = require('react');
-var reactCookie = require('react-cookie');
-var reactRedux = require('react-redux');
-var reactHotLoader = require('react-hot-loader');
-var reactRouterDom = require('react-router-dom');
-var reactRouterConfig = require('react-router-config');
-var reselect = require('reselect');
-var selectors = require('./selectors-8e56cc34.js');
-var ToJs = require('./ToJs-353158e2.js');
-
-function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
-
-var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
+import React, { useCallback, useEffect } from 'react';
+import { useCookies } from 'react-cookie';
+import { connect } from 'react-redux';
+import { hot } from 'react-hot-loader';
+import { Route, useLocation, Redirect } from 'react-router-dom';
+import { matchRoutes, renderRoutes } from 'react-router-config';
+import { createSelector } from 'reselect';
+import { r as selectRouteEntryContentTypeId, a as selectRouteEntry, t as selectRouteIsError, u as selectIsNotFound, v as selectRouteLoading, l as selectMappedEntry, b as selectCurrentProject, w as selectCurrentPath, x as selectRouteStatusCode, y as selectRouteErrorMessage, z as setNavigationPath } from './selectors-1f0cc787.js';
+import { a as selectUserIsAuthenticated, b as selectUserGroups, t as toJS, c as CookieHelper, m as matchUserGroup } from './ToJs-48b1f586.js';
 
 const NotFound = ({
   statusCode,
   statusText
-}) => /*#__PURE__*/React__default["default"].createElement(React__default["default"].Fragment, null, /*#__PURE__*/React__default["default"].createElement("header", null, /*#__PURE__*/React__default["default"].createElement("h1", null, statusCode || '404', " Page Not Found"), statusText && /*#__PURE__*/React__default["default"].createElement("h2", {
+}) => /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("header", null, /*#__PURE__*/React.createElement("h1", null, statusCode || '404', " Page Not Found"), statusText && /*#__PURE__*/React.createElement("h2", {
   style: {
     background: '#eee',
     color: '#666',
@@ -30,7 +24,7 @@ const Status = ({
   code,
   children
 }) => {
-  return /*#__PURE__*/React__default["default"].createElement(reactRouterDom.Route, {
+  return /*#__PURE__*/React.createElement(Route, {
     render: ({
       staticContext
     }) => {
@@ -77,17 +71,17 @@ const RouteLoader = ({
   withEvents,
   trailingSlashRedirectCode = 302
 }) => {
-  const location = reactRouterDom.useLocation();
-  const cookies = new ToJs.CookieHelper(...reactCookie.useCookies());
+  const location = useLocation();
+  const cookies = new CookieHelper(...useCookies());
   // Always ensure paths are trimmed of trailing slashes so urls are always unique
   const trimmedPath = getTrimmedPath(location.pathname);
 
   // Match any Static Routes a developer has defined
-  const matchedStaticRoute = () => reactRouterConfig.matchRoutes(routes.StaticRoutes, location.pathname);
+  const matchedStaticRoute = () => matchRoutes(routes.StaticRoutes, location.pathname);
   const isStaticRoute = () => matchedStaticRoute().length > 0;
   const staticRoute = isStaticRoute() ? matchedStaticRoute()[0] : undefined;
   const routeRequiresLogin = staticRoute && staticRoute.route.requireLogin;
-  const setPath = React.useCallback(() => {
+  const setPath = useCallback(() => {
     // Use serverPath to control the path we send to siteview node api to resolve a route
     let serverPath = '';
     if (staticRoute && staticRoute.match && staticRoute.match.isExact) {
@@ -124,22 +118,22 @@ const RouteLoader = ({
   // statePath,
   trimmedPath]);
   if (typeof window == 'undefined') setPath();
-  React.useEffect(() => {
+  useEffect(() => {
     setPath();
   }, [location, setPath]);
 
   // Need to redirect when url endswith a /
   if (location.pathname.length > trimmedPath.length) {
-    return /*#__PURE__*/React__default["default"].createElement(Status, {
+    return /*#__PURE__*/React.createElement(Status, {
       code: trailingSlashRedirectCode
-    }, /*#__PURE__*/React__default["default"].createElement(reactRouterDom.Redirect, {
+    }, /*#__PURE__*/React.createElement(Redirect, {
       to: `${trimmedPath}${location.search}${location.hash}`
     }));
   }
 
   // Render any Static Routes a developer has defined
   if (isStaticRoute() && !(!isLoggedIn && routeRequiresLogin)) {
-    if (ToJs.matchUserGroup(userGroups, routeRequiresLogin)) return reactRouterConfig.renderRoutes(routes.StaticRoutes, {
+    if (matchUserGroup(userGroups, routeRequiresLogin)) return renderRoutes(routes.StaticRoutes, {
       projectId,
       contentTypeId,
       entry,
@@ -152,14 +146,14 @@ const RouteLoader = ({
   // is not a static route and is in a loading state
   if (isLoading && !isNotFound && loadingComponent) {
     const LoadingComponent = loadingComponent;
-    return /*#__PURE__*/React__default["default"].createElement(LoadingComponent, null);
+    return /*#__PURE__*/React.createElement(LoadingComponent, null);
   }
 
   // Match any defined Content Type Mappings
   if (contentTypeId && !(!isLoggedIn && routeRequiresLogin)) {
     const MatchedComponent = routes.ContentTypeMappings.find(item => item.contentTypeID === contentTypeId);
     if (MatchedComponent && !(MatchedComponent.requireLogin && !isLoggedIn)) {
-      if (ToJs.matchUserGroup(userGroups, MatchedComponent.requireLogin)) return /*#__PURE__*/React__default["default"].createElement(MatchedComponent.component, {
+      if (matchUserGroup(userGroups, MatchedComponent.requireLogin)) return /*#__PURE__*/React.createElement(MatchedComponent.component, {
         projectId: projectId,
         contentTypeId: contentTypeId,
         entry: entry,
@@ -171,16 +165,16 @@ const RouteLoader = ({
   const NotFoundComponent = notFoundComponent ? notFoundComponent : NotFound;
   if (isNotFound || isError) {
     console.info(`RouteLoader rendering NotFound component: statusCode ${statusCode}, isNotFound ${isNotFound}, isError ${isError}`);
-    return /*#__PURE__*/React__default["default"].createElement(Status, {
+    return /*#__PURE__*/React.createElement(Status, {
       code: statusCode
-    }, /*#__PURE__*/React__default["default"].createElement(NotFoundComponent, {
+    }, /*#__PURE__*/React.createElement(NotFoundComponent, {
       statusCode: statusCode,
       statusText: statusText
     }));
   }
   return null;
 };
-const mapStateToPropsMemoized = reselect.createSelector(selectors.selectRouteEntryContentTypeId, selectors.selectRouteEntry, selectors.selectRouteIsError, selectors.selectIsNotFound, selectors.selectRouteLoading, ToJs.selectUserIsAuthenticated, selectors.selectMappedEntry, selectors.selectCurrentProject, selectors.selectCurrentPath, selectors.selectRouteStatusCode, selectors.selectRouteErrorMessage, ToJs.selectUserGroups, (contentTypeId, entry, isError, isNotFound, isLoading, isLoggedIn, mappedEntry, projectId, statePath, statusCode, statusText, userGroups) => ({
+const mapStateToPropsMemoized = createSelector(selectRouteEntryContentTypeId, selectRouteEntry, selectRouteIsError, selectIsNotFound, selectRouteLoading, selectUserIsAuthenticated, selectMappedEntry, selectCurrentProject, selectCurrentPath, selectRouteStatusCode, selectRouteErrorMessage, selectUserGroups, (contentTypeId, entry, isError, isNotFound, isLoading, isLoggedIn, mappedEntry, projectId, statePath, statusCode, statusText, userGroups) => ({
   contentTypeId,
   entry,
   isError,
@@ -195,9 +189,9 @@ const mapStateToPropsMemoized = reselect.createSelector(selectors.selectRouteEnt
   userGroups
 }));
 const mapDispatchToProps = {
-  setNavigationPath: selectors.setNavigationPath
+  setNavigationPath
 };
-var RouteLoader$1 = reactHotLoader.hot(module)(reactRedux.connect(mapStateToPropsMemoized, mapDispatchToProps)(ToJs.toJS(RouteLoader)));
+var RouteLoader$1 = hot(module)(connect(mapStateToPropsMemoized, mapDispatchToProps)(toJS(RouteLoader)));
 
-exports.RouteLoader = RouteLoader$1;
-//# sourceMappingURL=RouteLoader-0b37fe07.js.map
+export { RouteLoader$1 as R };
+//# sourceMappingURL=RouteLoader-487b5a9b.js.map

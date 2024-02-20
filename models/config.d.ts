@@ -13,6 +13,7 @@ export type AppConfig = {
 export type ServerConfig = AppConfig & {
     appRootPath?: string;
     disableSsrRedux?: boolean;
+    enableSsrCookies?: boolean;
     handleResponses?: typeof handleResponse;
     handleExceptions?: boolean | string[];
     reverseProxyPaths?: string[];

@@ -30,10 +30,11 @@ import { identity, noop } from 'lodash';
 import { c as commonjsGlobal } from './_commonjsHelpers-1789f0cf.js';
 import { buildCleaner } from 'lodash-clean';
 import { CookiesProvider } from 'react-cookie';
+import { C as Cookies } from './ToJs-48b1f586.js';
 import cookiesMiddleware from 'universal-cookie-express';
 import { c as createStore } from './version-f6660b69.js';
-import { h as history, p as pickProject, r as rootSaga } from './App-0af18d4b.js';
-export { A as ReactApp } from './App-0af18d4b.js';
+import { h as history, p as pickProject, r as rootSaga } from './App-b8c75933.js';
+export { A as ReactApp } from './App-b8c75933.js';
 import { s as setVersionStatus, a as setVersion } from './version-5a0b9406.js';
 import { s as selectSurrogateKeys, a as selectRouteEntry, b as selectCurrentProject, g as getImmutableOrJS, c as setCurrentProject, d as selectCurrentSearch } from './selectors-1f0cc787.js';
 import chalk from 'chalk';
@@ -47,10 +48,9 @@ import 'redux-injectors';
 import './reducers-919da5e0.js';
 import 'history';
 import 'await-to-js';
-import './ChangePassword.container-fb0b418d.js';
-import './ToJs-efd029ae.js';
+import './ChangePassword.container-6a1c60f3.js';
 import 'react-hot-loader';
-import './RouteLoader-e794c46b.js';
+import './RouteLoader-487b5a9b.js';
 
 /**
  * Util class holds our search results helper boilerplate methods
@@ -3806,6 +3806,7 @@ const webApp = (app, ReactApp, config) => {
     allowedGroups,
     globalGroups,
     disableSsrRedux,
+    enableSsrCookies,
     handleResponses,
     handleExceptions = true
   } = config;
@@ -3867,10 +3868,16 @@ const webApp = (app, ReactApp, config) => {
     const groups = allowedGroups && allowedGroups[project];
     store.dispatch(setCurrentProject(project, groups, hostname));
     const loadableExtractor = loadableChunkExtractors();
+    const ssrCookies = enableSsrCookies ?
+    // these cookies are managed by the cookiesMiddleware and contain listeners
+    // when cookies are read or written in ssr can be added to the `set-cookie` response header
+    request.universalCookies :
+    // this is a stub cookie collection so cookie methods can be used in code
+    new Cookies();
     const jsx = /*#__PURE__*/React.createElement(ChunkExtractorManager, {
       extractor: loadableExtractor.commonLoadableExtractor
     }, /*#__PURE__*/React.createElement(CookiesProvider, {
-      cookies: request.universalCookies
+      cookies: ssrCookies
     }, /*#__PURE__*/React.createElement(Provider, {
       store: store
     }, /*#__PURE__*/React.createElement(StaticRouter, {
@@ -3935,11 +3942,18 @@ const webApp = (app, ReactApp, config) => {
         // These keys are used for preparing server-side response headers only
         // and are not required in the client at all except for debugging ssr
         if (!((_selectCurrentSearch = selectCurrentSearch(reduxState)) !== null && _selectCurrentSearch !== void 0 && _selectCurrentSearch.includes('includeApiCalls'))) {
-          delete clonedState.routing.apiCalls;
-          delete clonedState.routing.surrogateKeys;
+          if (stateType === 'immutable') {
+            clonedState.deleteIn(['routing'], 'apiCalls');
+            clonedState.deleteIn(['routing'], 'surrogateKeys');
+          } else {
+            delete clonedState.routing.apiCalls;
+            delete clonedState.routing.surrogateKeys;
+          }
         }
         // Reset user state to prevent user details from being cached in SSR
-        delete clonedState.user;
+        if (stateType === 'immutable') {
+          clonedState.delete('user');
+        } else delete clonedState.user;
         let serialisedReduxData = serialize(clonedState);
         if (context.statusCode !== 404) {
           // For a request that returns a redux state object as a response
