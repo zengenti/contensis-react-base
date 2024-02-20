@@ -67,6 +67,7 @@ const webApp = (
     allowedGroups,
     globalGroups,
     disableSsrRedux,
+    enableSsrCookies,
     handleResponses,
     handleExceptions = true,
   } = config;
@@ -153,11 +154,18 @@ const webApp = (
 
       const loadableExtractor = loadableChunkExtractors();
 
+      const ssrCookies = enableSsrCookies
+        ? // these cookies are managed by the cookiesMiddleware and contain listeners
+          // when cookies are read or written in ssr can be added to the `set-cookie` response header
+          request.universalCookies
+        : // this is a stub cookie collection so cookie methods can be used in code
+          new Cookies();
+
       const jsx = (
         <ChunkExtractorManager
           extractor={loadableExtractor.commonLoadableExtractor}
         >
-          <CookiesProvider cookies={request.universalCookies}>
+          <CookiesProvider cookies={ssrCookies}>
             <ReduxProvider store={store}>
               <StaticRouter context={context} location={url}>
                 <ReactApp routes={routes} withEvents={withEvents} />
@@ -258,8 +266,8 @@ const webApp = (
                 clonedState.deleteIn(['routing'], 'apiCalls');
                 clonedState.deleteIn(['routing'], 'surrogateKeys');
               } else {
-              delete clonedState.routing.apiCalls;
-              delete clonedState.routing.surrogateKeys;
+                delete clonedState.routing.apiCalls;
+                delete clonedState.routing.surrogateKeys;
               }
             }
             // Reset user state to prevent user details from being cached in SSR
