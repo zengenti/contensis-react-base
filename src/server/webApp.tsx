@@ -249,7 +249,7 @@ const webApp = (
               staticRoutePath
             );
 
-            const clonedState = buildCleaner({
+            let clonedState = buildCleaner({
               isArray: identity,
               isBoolean: identity,
               isDate: identity,
@@ -262,17 +262,18 @@ const webApp = (
             // These keys are used for preparing server-side response headers only
             // and are not required in the client at all except for debugging ssr
             if (!selectCurrentSearch(reduxState)?.includes('includeApiCalls')) {
-              if (stateType === 'immutable') {
-                clonedState.deleteIn(['routing'], 'apiCalls');
-                clonedState.deleteIn(['routing'], 'surrogateKeys');
-              } else {
+              if (stateType === 'immutable')
+                clonedState = clonedState
+                  .deleteIn(['routing'], 'apiCalls')
+                  .deleteIn(['routing'], 'surrogateKeys');
+              else {
                 delete clonedState.routing.apiCalls;
                 delete clonedState.routing.surrogateKeys;
               }
             }
             // Reset user state to prevent user details from being cached in SSR
             if (stateType === 'immutable') {
-              clonedState.delete('user');
+              clonedState = clonedState.delete('user');
             } else delete clonedState.user;
 
             let serialisedReduxData = serialize(clonedState);
