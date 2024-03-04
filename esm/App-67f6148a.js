@@ -82,9 +82,10 @@ const defaultExpressions = versionStatus => {
 };
 const equalToOrIn = (field, arr, operator = 'equalTo') => arr.length === 0 ? [] : arr.length === 1 ? [Op[operator](field, arr[0])] : [Op.in(field, ...arr)];
 
-const routeEntryByFieldsQuery = (id, language = 'en-GB', fields = [], versionStatus = 'published') => {
+const routeEntryByFieldsQuery = (id, language = 'en-GB', fields = [], fieldLinkDepths, versionStatus = 'published') => {
   const query = new Query(...[...fieldExpression('sys.id', id), ...fieldExpression('sys.language', language), ...defaultExpressions(versionStatus)]);
   query.fields = fields;
+  query.fieldLinkDepths = fieldLinkDepths;
   return query;
 };
 
@@ -106,7 +107,7 @@ function* setRouteSaga(action) {
 function* getRouteSaga(action) {
   let entry = null;
   try {
-    var _staticRoute$route, _staticRoute$route$pa, _staticRoute$route2, _staticRoute$route2$p, _pathNode2, _pathNode2$entry, _pathNode2$entry$sys, _pathNode3, _pathNode3$entry, _pathNode3$entry$sys;
+    var _staticRoute$route, _staticRoute$route$pa, _staticRoute$route2, _staticRoute$route2$p, _staticRoute$route3, _staticRoute$route3$p, _appsays, _appsays2, _appsays3, _pathNode2, _pathNode2$entry, _pathNode2$entry$sys, _pathNode3, _pathNode3$entry, _pathNode3$entry$sys;
     const {
       withEvents,
       routes: {
@@ -136,8 +137,10 @@ function* getRouteSaga(action) {
     }
     const staticRouteLinkDepth = staticRoute === null || staticRoute === void 0 ? void 0 : (_staticRoute$route = staticRoute.route) === null || _staticRoute$route === void 0 ? void 0 : (_staticRoute$route$pa = _staticRoute$route.params) === null || _staticRoute$route$pa === void 0 ? void 0 : _staticRoute$route$pa.linkDepth;
     const staticRouteFields = staticRoute === null || staticRoute === void 0 ? void 0 : (_staticRoute$route2 = staticRoute.route) === null || _staticRoute$route2 === void 0 ? void 0 : (_staticRoute$route2$p = _staticRoute$route2.params) === null || _staticRoute$route2$p === void 0 ? void 0 : _staticRoute$route2$p.fields;
+    const staticRouteFieldLinkDepths = staticRoute === null || staticRoute === void 0 ? void 0 : (_staticRoute$route3 = staticRoute.route) === null || _staticRoute$route3 === void 0 ? void 0 : (_staticRoute$route3$p = _staticRoute$route3.params) === null || _staticRoute$route3$p === void 0 ? void 0 : _staticRoute$route3$p.fieldLinkDepths;
     const entryLinkDepth = appsays && appsays.entryLinkDepth !== undefined ? appsays.entryLinkDepth : 2;
-    const setContentTypeLimits = (typeof staticRouteLinkDepth === 'undefined' || !staticRouteFields) && !!ContentTypeMappings.find(ct => ct.fields || ct.linkDepth || ct.nodeOptions);
+    const entryFieldLinkDepths = (_appsays = appsays) === null || _appsays === void 0 ? void 0 : _appsays.entryFieldLinkDepths;
+    const setContentTypeLimits = (typeof staticRouteLinkDepth === 'undefined' || !staticRouteFields) && !!ContentTypeMappings.find(ct => ct.fields || ct.linkDepth || ct.nodeOptions || ct.fieldLinkDepths);
     const state = yield select();
     const routeEntry = selectRouteEntry(state, 'js');
     const routeNode = selectCurrentNode(state, 'js');
@@ -147,12 +150,13 @@ function* getRouteSaga(action) {
     // const isHome = currentPath === '/';
     const isPreview = currentPath && currentPath.startsWith('/preview/');
     const defaultLang = appsays && appsays.defaultLang || 'en-GB';
-    if (!isPreview && (appsays && appsays.customRouting || staticRoute && !staticRoute.route.fetchNode || routeEntry && action.statePath === action.path && (appsays && appsays.refetchNode) !== true)) {
+    if (!isPreview && ((_appsays2 = appsays) !== null && _appsays2 !== void 0 && _appsays2.customRouting || staticRoute && !staticRoute.route.fetchNode || routeEntry && action.statePath === action.path && ((_appsays3 = appsays) === null || _appsays3 === void 0 ? void 0 : _appsays3.refetchNode) !== true)) {
+      var _staticRoute$route4;
       // To prevent erroneous 404s and wasted network calls, this covers
       // - appsays customRouting and does SET_ENTRY etc. via the consuming app
       // - all staticRoutes (where custom 'route.fetchNode' attribute is falsey)
       // - standard Contensis SiteView Routing where we already have that entry in state
-      if (routeEntry && (!staticRoute || staticRoute.route && staticRoute.route.fetchNode)) {
+      if (routeEntry && (!staticRoute || staticRoute !== null && staticRoute !== void 0 && (_staticRoute$route4 = staticRoute.route) !== null && _staticRoute$route4 !== void 0 && _staticRoute$route4.fetchNode)) {
         pathNode = {
           ...routeNode,
           entry: null
@@ -206,8 +210,9 @@ function* getRouteSaga(action) {
         [nodeError, pathNode] = yield to(api.getNode({
           depth: 0,
           path: currentPath,
-          entryFields: setContentTypeLimits ? ['sys.contentTypeId', 'sys.id'] : staticRouteFields || '*',
-          entryLinkDepth: setContentTypeLimits ? 0 : typeof staticRouteLinkDepth !== 'undefined' ? staticRouteLinkDepth : entryLinkDepth,
+          entryFields: staticRouteFields || (setContentTypeLimits ? ['sys.contentTypeId', 'sys.id'] : '*'),
+          entryLinkDepth: typeof staticRouteLinkDepth !== 'undefined' ? staticRouteLinkDepth : entryLinkDepth || 0,
+          entryFieldLinkDepths: staticRouteFieldLinkDepths || (!setContentTypeLimits ? entryFieldLinkDepths : undefined),
           language: defaultLang,
           versionStatus: deliveryApiStatus
         }, project));
@@ -244,10 +249,11 @@ function* getRouteSaga(action) {
           // and current node's ordinates at a specified depth with specified fields
           contentTypeMapping = findContentTypeMapping(ContentTypeMappings, pathNode.entry.sys.contentTypeId) || {};
           const {
+            fieldLinkDepths,
             fields,
             linkDepth
           } = contentTypeMapping;
-          const query = routeEntryByFieldsQuery(pathNode.entry.sys.id, pathNode.entry.sys.language, fields, deliveryApiStatus);
+          const query = routeEntryByFieldsQuery(pathNode.entry.sys.id, pathNode.entry.sys.language, fields, fieldLinkDepths, deliveryApiStatus);
           const payload = yield api.search(query, typeof linkDepth !== 'undefined' ? linkDepth : entryLinkDepth || 0, project);
           if ((payload === null || payload === void 0 ? void 0 : (_payload$items = payload.items) === null || _payload$items === void 0 ? void 0 : _payload$items.length) > 0) {
             pathNode.entry = entry = payload.items[0];
@@ -296,9 +302,9 @@ function* getRouteSaga(action) {
       if (typeof window !== 'undefined') window.scrollTo(0, 0);
     }
     if ((_pathNode3 = pathNode) !== null && _pathNode3 !== void 0 && (_pathNode3$entry = _pathNode3.entry) !== null && _pathNode3$entry !== void 0 && (_pathNode3$entry$sys = _pathNode3$entry.sys) !== null && _pathNode3$entry$sys !== void 0 && _pathNode3$entry$sys.id) {
-      var _staticRoute$route3, _staticRoute$route3$f, _appsays;
+      var _staticRoute$route5, _staticRoute$route5$f, _appsays4;
       entry = pathNode.entry;
-      yield call(setRouteEntry, currentPath, entry, pathNode, ancestors, siblings, (staticRoute === null || staticRoute === void 0 ? void 0 : (_staticRoute$route3 = staticRoute.route) === null || _staticRoute$route3 === void 0 ? void 0 : (_staticRoute$route3$f = _staticRoute$route3.fetchNode) === null || _staticRoute$route3$f === void 0 ? void 0 : _staticRoute$route3$f.entryMapper) || resolvedContentTypeMapping.entryMapper, false, (_appsays = appsays) === null || _appsays === void 0 ? void 0 : _appsays.refetchNode);
+      yield call(setRouteEntry, currentPath, entry, pathNode, ancestors, siblings, (staticRoute === null || staticRoute === void 0 ? void 0 : (_staticRoute$route5 = staticRoute.route) === null || _staticRoute$route5 === void 0 ? void 0 : (_staticRoute$route5$f = _staticRoute$route5.fetchNode) === null || _staticRoute$route5$f === void 0 ? void 0 : _staticRoute$route5$f.entryMapper) || resolvedContentTypeMapping.entryMapper, false, (_appsays4 = appsays) === null || _appsays4 === void 0 ? void 0 : _appsays4.refetchNode);
     } else {
       if (staticRoute) yield call(setRouteEntry, currentPath, null, pathNode, ancestors, siblings);else yield call(do404);
     }
@@ -325,6 +331,7 @@ function* resolveCurrentNodeOrdinates({
   const doNavigation = !appsays || ((appsays === null || appsays === void 0 ? void 0 : appsays.customNavigation) === true ? false : (appsays === null || appsays === void 0 ? void 0 : appsays.customNavigation) || true);
   const {
     entryLinkDepth = 0,
+    fieldLinkDepths,
     fields,
     linkDepth,
     nodeOptions = {}
@@ -352,6 +359,7 @@ function* resolveCurrentNodeOrdinates({
           return yield api.getNode({
             depth: childrenOptions.depth !== undefined ? childrenOptions.depth : childrenDepth,
             path,
+            entryFieldLinkDepths: childrenOptions.fieldLinkDepths || fieldLinkDepths,
             entryFields: childrenOptions.fields || fields || undefined,
             entryLinkDepth: typeof childrenOptions.linkDepth !== 'undefined' ? childrenOptions.linkDepth : typeof linkDepth !== 'undefined' ? linkDepth : entryLinkDepth,
             language,
@@ -366,11 +374,12 @@ function* resolveCurrentNodeOrdinates({
     if (typeof (nodeOptions === null || nodeOptions === void 0 ? void 0 : nodeOptions.siblings) === 'undefined' && doNavigation.siblings || nodeOptions.siblings) {
       apiCall[2] = function* getSiblings() {
         try {
-          var _nodeOptions$siblings, _nodeOptions$siblings2;
+          var _nodeOptions$siblings, _nodeOptions$siblings2, _nodeOptions$siblings3;
           return yield api.getSiblings({
             id: pathNode.id,
-            entryFields: (nodeOptions === null || nodeOptions === void 0 ? void 0 : (_nodeOptions$siblings = nodeOptions.siblings) === null || _nodeOptions$siblings === void 0 ? void 0 : _nodeOptions$siblings.fields) || fields || undefined,
-            entryLinkDepth: typeof (nodeOptions === null || nodeOptions === void 0 ? void 0 : (_nodeOptions$siblings2 = nodeOptions.siblings) === null || _nodeOptions$siblings2 === void 0 ? void 0 : _nodeOptions$siblings2.linkDepth) !== 'undefined' ? nodeOptions.siblings.linkDepth : typeof linkDepth !== 'undefined' ? linkDepth : entryLinkDepth,
+            entryFieldLinkDepths: (nodeOptions === null || nodeOptions === void 0 ? void 0 : (_nodeOptions$siblings = nodeOptions.siblings) === null || _nodeOptions$siblings === void 0 ? void 0 : _nodeOptions$siblings.fieldLinkDepths) || fieldLinkDepths,
+            entryFields: (nodeOptions === null || nodeOptions === void 0 ? void 0 : (_nodeOptions$siblings2 = nodeOptions.siblings) === null || _nodeOptions$siblings2 === void 0 ? void 0 : _nodeOptions$siblings2.fields) || fields || undefined,
+            entryLinkDepth: typeof (nodeOptions === null || nodeOptions === void 0 ? void 0 : (_nodeOptions$siblings3 = nodeOptions.siblings) === null || _nodeOptions$siblings3 === void 0 ? void 0 : _nodeOptions$siblings3.linkDepth) !== 'undefined' ? nodeOptions.siblings.linkDepth : typeof linkDepth !== 'undefined' ? linkDepth : entryLinkDepth,
             includeInMenu: true,
             language,
             versionStatus
@@ -807,4 +816,4 @@ const AppRoot = props => {
 };
 
 export { AppRoot as A, browserHistory as b, history as h, pickProject as p, rootSaga as r };
-//# sourceMappingURL=App-b8c75933.js.map
+//# sourceMappingURL=App-67f6148a.js.map

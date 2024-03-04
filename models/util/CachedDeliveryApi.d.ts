@@ -9,15 +9,15 @@ declare class CachedSearch {
     cookies?: CookieObject;
     constructor(cookies?: CookieObject);
     getClient(...args: Parameters<DeliveryApi['getClient']>): Client;
-    search(query: Query, linkDepth?: number, project?: string): Promise<import("contensis-core-api").PagedList<import("contensis-delivery-api/lib/models").Entry>>;
+    search(query: Query, linkDepth?: number, project?: string): Promise<import("contensis-core-api").PagedList<import("contensis-delivery-api").Entry>>;
     searchUsingPost(query: Query, linkDepth?: number, project?: string): any;
-    get(id: string, linkDepth?: number, versionStatus?: VersionStatus, project?: string): Promise<import("contensis-delivery-api/lib/models").Entry>;
+    get(id: string, linkDepth?: number, versionStatus?: VersionStatus, project?: string): Promise<import("contensis-delivery-api").Entry>;
     getContentType(id: string, project?: string): Promise<import("contensis-core-api").ContentType>;
-    getRootNode(options: NodeGetRootOptions, project?: string): Promise<import("contensis-delivery-api/lib/models").Node>;
-    getNode(options: Parameters<INodeOperations['get']>[0], project?: string): Promise<import("contensis-delivery-api/lib/models").Node>;
-    getAncestors(options: Parameters<INodeOperations['getAncestors']>[0], project?: string): Promise<import("contensis-delivery-api/lib/models").Node[]>;
-    getChildren(options: Parameters<INodeOperations['getChildren']>[0], project?: string): Promise<import("contensis-delivery-api/lib/models").Node[]>;
-    getSiblings(options: Parameters<INodeOperations['getSiblings']>[0], project?: string): Promise<import("contensis-delivery-api/lib/models").Node[]>;
+    getRootNode(options: NodeGetRootOptions, project?: string): Promise<import("contensis-delivery-api").Node>;
+    getNode(options: Parameters<INodeOperations['get']>[0], project?: string): Promise<import("contensis-delivery-api").Node>;
+    getAncestors(options: Parameters<INodeOperations['getAncestors']>[0], project?: string): Promise<import("contensis-delivery-api").Node[]>;
+    getChildren(options: Parameters<INodeOperations['getChildren']>[0], project?: string): Promise<import("contensis-delivery-api").Node[]>;
+    getSiblings(options: Parameters<INodeOperations['getSiblings']>[0], project?: string): Promise<import("contensis-delivery-api").Node[]>;
     request<T extends () => Promise<any>>(key: string, execute: T): ReturnType<T>;
 }
 export declare const cachedSearch: CachedSearch;

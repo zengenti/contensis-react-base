@@ -1123,6 +1123,7 @@ const searchQuery = ({
   dynamicOrderBy,
   excludeIds,
   featuredResults,
+  fieldLinkDepths,
   fields,
   filters,
   fuzzySearch,
@@ -1143,9 +1144,8 @@ const searchQuery = ({
   const query = new Query(...expressions);
   if (!searchTerm) query.orderBy = orderByExpression(orderBy);
   if (dynamicOrderBy && dynamicOrderBy.length) query.orderBy = orderByExpression(dynamicOrderBy);
-  if (fields && fields.length > 0 && !isFeatured) {
-    query.fields = fields;
-  }
+  if (Object.keys(fieldLinkDepths || {}).length && !isFeatured) query.fieldLinkDepths = fieldLinkDepths;
+  if (fields !== null && fields !== void 0 && fields.length && !isFeatured) query.fields = fields;
   query.pageIndex = isFeatured ? 0 : pageIndex;
   query.pageSize = isFeatured && typeof featuredResults.count === 'number' ? featuredResults.count : pageSize;
   return query;
@@ -1349,6 +1349,7 @@ const queryParamsTemplate = {
     return null;
   },
   featuredResults: root => getQueryParameter(root, 'featuredResults', null),
+  fieldLinkDepths: root => getQueryParameter(root, 'fieldLinkDepths', []),
   fields: root => getQueryParameter(root, 'fields', []),
   filters: ({
     state,
@@ -1565,6 +1566,9 @@ const mapEntriesToFilterItems = entries => {
 
 const mapQueryParamsToCustomApi = queryParams => {
   const customApiMapping = {
+    fieldLinkDepths: ({
+      fieldLinkDepths
+    }) => JSON.stringify(fieldLinkDepths),
     fields: ({
       fields
     }) => JSON.stringify(fields),
@@ -1980,4 +1984,4 @@ function* triggerSearchSsr(options) {
 }
 
 export { EXECUTE_SEARCH as $, clearFilters$1 as A, updateCurrentFacet$1 as B, updateCurrentTab$1 as C, updatePageIndex$1 as D, updatePageSize$1 as E, updateSearchTerm$1 as F, updateSelectedFilters as G, updateSortOrder$1 as H, selectListing as I, mapStateToSearchUri as J, Context as K, selectFacets as L, triggerSearch as M, getFilters as N, toArray as O, UPDATE_SELECTED_FILTERS as P, UPDATE_SEARCH_TERM as Q, UPDATE_PAGE_SIZE as R, UPDATE_PAGE_INDEX as S, SET_SEARCH_FILTERS as T, UPDATE_SORT_ORDER as U, SET_SEARCH_ENTRIES as V, SET_ROUTE_FILTERS as W, LOAD_FILTERS_COMPLETE as X, LOAD_FILTERS_ERROR as Y, LOAD_FILTERS as Z, EXECUTE_SEARCH_ERROR as _, customWhereExpressions as a, CLEAR_FILTERS as a0, APPLY_CONFIG as a1, actions as a2, selectors as a3, types as a4, expressions as a5, queries as a6, doSearch as a7, setRouteFilters as a8, searchSagas as a9, triggerListingSsr as aa, triggerMinilistSsr as ab, triggerSearchSsr as ac, routeParams as ad, getPageIndex as b, contentTypeIdExpression as c, defaultExpressions as d, getCurrentTab as e, filterExpressions as f, getCurrentFacet as g, getFacet as h, getTabFacets as i, getFacetsTotalCount as j, getFacetTitles as k, getFeaturedResults as l, getRenderableFilters as m, getIsLoading as n, orderByExpression as o, getPaging as p, getPageIsLoading as q, getResults as r, getSearchTerm as s, termExpressions as t, getSearchTotalCount as u, getSelectedFilters as v, getQueryParameter as w, getTabsAndFacets as x, getTotalCount as y, withMappers as z };
-//# sourceMappingURL=sagas-933a8fc8.js.map
+//# sourceMappingURL=sagas-66c305a8.js.map

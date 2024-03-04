@@ -1149,6 +1149,7 @@ const searchQuery = ({
   dynamicOrderBy,
   excludeIds,
   featuredResults,
+  fieldLinkDepths,
   fields,
   filters,
   fuzzySearch,
@@ -1169,9 +1170,8 @@ const searchQuery = ({
   const query = new contensisCoreApi.Query(...expressions);
   if (!searchTerm) query.orderBy = orderByExpression(orderBy);
   if (dynamicOrderBy && dynamicOrderBy.length) query.orderBy = orderByExpression(dynamicOrderBy);
-  if (fields && fields.length > 0 && !isFeatured) {
-    query.fields = fields;
-  }
+  if (Object.keys(fieldLinkDepths || {}).length && !isFeatured) query.fieldLinkDepths = fieldLinkDepths;
+  if (fields !== null && fields !== void 0 && fields.length && !isFeatured) query.fields = fields;
   query.pageIndex = isFeatured ? 0 : pageIndex;
   query.pageSize = isFeatured && typeof featuredResults.count === 'number' ? featuredResults.count : pageSize;
   return query;
@@ -1375,6 +1375,7 @@ const queryParamsTemplate = {
     return null;
   },
   featuredResults: root => getQueryParameter(root, 'featuredResults', null),
+  fieldLinkDepths: root => getQueryParameter(root, 'fieldLinkDepths', []),
   fields: root => getQueryParameter(root, 'fields', []),
   filters: ({
     state,
@@ -1591,6 +1592,9 @@ const mapEntriesToFilterItems = entries => {
 
 const mapQueryParamsToCustomApi = queryParams => {
   const customApiMapping = {
+    fieldLinkDepths: ({
+      fieldLinkDepths
+    }) => JSON.stringify(fieldLinkDepths),
     fields: ({
       fields
     }) => JSON.stringify(fields),
@@ -2073,4 +2077,4 @@ exports.updateSearchTerm = updateSearchTerm$1;
 exports.updateSelectedFilters = updateSelectedFilters;
 exports.updateSortOrder = updateSortOrder$1;
 exports.withMappers = withMappers;
-//# sourceMappingURL=sagas-e04b94c1.js.map
+//# sourceMappingURL=sagas-4e8b68f0.js.map

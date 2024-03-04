@@ -1,4 +1,5 @@
 import { MatchedRoute, RouteConfig } from 'react-router-config';
+import { FieldLinkDepths } from 'contensis-core-api';
 import { Entry, Node } from 'contensis-delivery-api/lib/models';
 import React from 'react';
 import { AppState } from "../redux/appstate";
@@ -47,15 +48,18 @@ export type ContentTypeMapping = {
     fields?: string[];
     injectRedux?: ReduxInjector;
     linkDepth?: number;
+    fieldLinkDepths?: FieldLinkDepths;
     nodeOptions?: {
         children?: {
             depth: number;
             fields?: string[];
             linkDepth?: number;
+            fieldLinkDepths?: FieldLinkDepths;
         } | boolean;
         siblings?: {
             fields?: string[];
             linkDepth?: number;
+            fieldLinkDepths?: FieldLinkDepths;
         } | boolean;
     };
     requireLogin?: RequireLogin;
@@ -69,8 +73,9 @@ export type StaticRoute = Omit<RouteConfig, 'component'> & {
          * `{ params: [ 'author' ] }`, this will grab the route params and replace it with it's value
          * e.g `{` author: 'jane-doe' }`, your path would become `/authors/jane-doe`
          */
-        params: string[];
+        params?: string[];
         linkDepth?: number;
+        fieldLinkDepths?: FieldLinkDepths;
         fields?: string[];
         entryMapper?: EntryMapper;
     };
@@ -114,6 +119,7 @@ export type RouteLoadOptions = {
     customRouting?: boolean;
     defaultLang?: string;
     entryLinkDepth?: number;
+    entryFieldLinkDepths?: FieldLinkDepths;
     preventScrollTop?: boolean;
     refetchNode?: true;
 };

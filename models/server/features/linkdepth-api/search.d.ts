@@ -6,7 +6,7 @@ type WithOptional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 type SearchQueryArgs = WithOptional<SearchQueryOptions & {
     idFilters?: SearchQueryOptions['filters'];
     sharedFilters?: SearchQueryOptions['filters'];
-}, 'assetTypes' | 'customWhere' | 'dynamicOrderBy' | 'excludeIds' | 'featuredResults' | 'fields' | 'includeInSearchFields' | 'languages' | 'omitDefaultSearchFields' | 'orderBy' | 'pageIndex' | 'searchTerm' | 'webpageTemplates' | 'weightedSearchFields'>;
+}, 'assetTypes' | 'customWhere' | 'dynamicOrderBy' | 'excludeIds' | 'featuredResults' | 'fieldLinkDepths' | 'fields' | 'includeInSearchFields' | 'languages' | 'omitDefaultSearchFields' | 'orderBy' | 'pageIndex' | 'searchTerm' | 'webpageTemplates' | 'weightedSearchFields'>;
 /**
  * Builds our complete Delivery API Query object from a set of provided arguments
  * @param queryParams

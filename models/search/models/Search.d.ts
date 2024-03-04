@@ -1,3 +1,4 @@
+import { FieldLinkDepths } from 'contensis-core-api';
 import { Entry } from 'contensis-delivery-api/lib/models';
 import MappingTemplate from 'jsonpath-mapper/dist/models/Template';
 import { Context } from './Enums';
@@ -100,6 +101,8 @@ export type SearchQueryParams = {
     customWhere?: CustomWhereClause;
     /** Add parameters to drive an additional set of featured results */
     featuredResults?: FeaturedResults;
+    /** An array of fields to return for each entry in the items[] */
+    fieldLinkDepths?: FieldLinkDepths;
     /** An array of fields to return for each entry in the items[] */
     fields?: string[];
     /** Allows a “fuzzy” search (defaults to `false`) */

@@ -1,4 +1,4 @@
-import { Operators, Query, VersionStatus } from 'contensis-core-api';
+import { FieldLinkDepths, Operators, Query, VersionStatus } from 'contensis-core-api';
 import { CustomWhereClause, FeaturedResults, WeightedSearchField } from './Search';
 export type FieldOperators = Exclude<keyof Operators, 'and' | 'or' | 'not'>;
 export type LogicOperators = 'and' | 'or' | 'not';
@@ -15,6 +15,7 @@ export type SearchQueryOptions = {
     dynamicOrderBy: string[];
     excludeIds: string[];
     featuredResults: FeaturedResults;
+    fieldLinkDepths: FieldLinkDepths;
     fields: string[];
     filters: FilterExpression[];
     fuzzySearch?: boolean;

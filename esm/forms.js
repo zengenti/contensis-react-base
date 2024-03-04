@@ -569,9 +569,8 @@ const getFieldType = field => {
     return 'dateRange';
   } else if (field.dataFormat === 'entry') {
     return 'entryPicker';
-  } else {
-    return 'textfield';
   }
+  if (field.dataFormat === 'quote') return 'title';else return 'textfield';
 };
 
 const sagas = [takeEvery(SUBMIT_FORM_SUCCESS, onFormSuccess), takeEvery(SUBMIT_FORM_FOR_VALIDATION, doValidateForm), takeEvery(SUBMIT_FORM, onSubmitForm), takeEvery(SET_FORM_ID, doFetchForm),
@@ -594,12 +593,15 @@ function* doValidateForm(action) {
 
 function* onValidateGroupFields(formId, groupId) {
   const state = yield select();
+  const selectFormFieldErrors = makeSelectFormFieldErrors(formId);
+  const existingErrors = selectFormFieldErrors(state) || [];
+  const existingErrorsFiltered = (existingErrors === null || existingErrors === void 0 ? void 0 : existingErrors.filter(ee => (ee === null || ee === void 0 ? void 0 : ee.groupId) !== groupId)) || [];
   const selectPostData = makeSelectFormPostData(formId);
   const postData = selectPostData(state);
   const selectFormFields = makeSelectFormFields(formId);
   const fields = selectFormFields(state);
   const groupFields = fields.filter(f => f.groupId == groupId);
-  let errors = [];
+  let errors = [...existingErrorsFiltered];
   groupFields.forEach(field => {
     let value = '';
     if (postData[field.id]) value = postData[field.id];
@@ -632,6 +634,28 @@ function* onValidateAllFields(formId) {
     value: errors
   });
 }
+
+// function* onValidateSingleField(formId, fieldId, value) {
+//   const state = yield select();
+//   const selectFormFields = makeSelectFormFields(formId);
+//   const fields = selectFormFields(state);
+
+//   const selectFormFieldErrors = makeSelectFormFieldErrors(formId)
+//   const errors = selectFormFieldErrors(state);
+
+//   const fieldData = fields.find(f => f.id == fieldId);
+
+//   const newErrors = [];
+//   // loop through current errors to remove any of the item we currently edit
+//   errors.forEach(error => {
+//     // push any existing errors to new array
+//     if (error.fieldId !== fieldId) newErrors.push(error);
+//   });
+//   const err = doValidateField(fieldData, value);
+//   if (err) newErrors.push(err);
+//   yield put({ type: SET_FIELD_ERROR, formId: formId, value: newErrors });
+// }
+
 function* doTogglePage(action) {
   const {
     formId,
@@ -641,8 +665,10 @@ function* doTogglePage(action) {
   const selectFormGroups = makeSelectFormGroup(formId);
   const formGroups = selectFormGroups(state);
   if (action.type === PAGE_FORWARD) {
-    const errors = yield onValidateGroupFields(formId, formGroups[pageIndex - 1].id);
-    if (errors && errors.length <= 0) {
+    const groupdId = formGroups[pageIndex - 1].id;
+    const errors = yield onValidateGroupFields(formId, groupdId);
+    const hasErrorsWithinGroup = errors === null || errors === void 0 ? void 0 : errors.filter(e => e.groupId === groupdId).length;
+    if (!hasErrorsWithinGroup) {
       yield put({
         type: SET_CURRENT_PAGE,
         formId: formId,
@@ -4942,11 +4968,11 @@ const CountrySelect = ({
   label,
   field,
   validations,
-  defaultValue,
+  defaultValue = '',
   placeholder
 }) => {
   const elInputRef = useRef(null);
-  const [country, setCountry] = useState('');
+  const [country, setCountry] = useState(defaultValue);
   const selectFormValidationSent = makeSelectFormValidationSent(formId);
   const formValidationSent = useSelector(selectFormValidationSent);
   const [a11yInvalid, setA11yInvalid] = useState('');
@@ -5223,9 +5249,19 @@ const FormComposer = ({
             id: field.id,
             label: field.name && field.name[defaultLanguage],
             validations: field.validations,
-            defaultValue: field === null || field === void 0 ? void 0 : (_field$default = field.default) === null || _field$default === void 0 ? void 0 : _field$default[defaultLanguage],
+            defaultValue: formData && formData[field.id] || (field === null || field === void 0 ? void 0 : (_field$default = field.default) === null || _field$default === void 0 ? void 0 : _field$default[defaultLanguage]),
             placeholder: field === null || field === void 0 ? void 0 : (_field$editor = field.editor) === null || _field$editor === void 0 ? void 0 : (_field$editor$propert = _field$editor.properties) === null || _field$editor$propert === void 0 ? void 0 : (_field$editor$propert2 = _field$editor$propert.placeholderText) === null || _field$editor$propert2 === void 0 ? void 0 : _field$editor$propert2[defaultLanguage]
           });
+        }
+      case 'title':
+        {
+          return /*#__PURE__*/React.createElement("span", {
+            className: "form__title",
+            "data-form": "title",
+            style: {
+              display: 'block'
+            }
+          }, field.name && field.name[defaultLanguage]);
         }
     }
   });
@@ -5375,6 +5411,7 @@ const Form = ({
   const errors = useSelector(selectFormFieldErrors);
   const entries = useSelector(selectFormEntries);
   const formData = useSelector(selectFormPostData);
+  const currentGroup = pagingInfo === null || pagingInfo === void 0 ? void 0 : pagingInfo.currentPageId;
   if (pagingInfo && pagingInfo.pageCount > 1) {
     const isLastPage = pagingInfo.pageCount == pagingInfo.pageIndex + 1;
     return /*#__PURE__*/React.createElement(ThemeProvider, {
@@ -5428,13 +5465,16 @@ const Form = ({
       className: "form__errors",
       role: "alert"
     }, errors === null || errors === void 0 ? void 0 : errors.map(({
-      message
+      message,
+      groupId
     }, i) => {
-      return /*#__PURE__*/React.createElement(Callout, {
-        className: "form__error",
-        text: message,
-        key: i
-      });
+      if (currentGroup === groupId) {
+        return /*#__PURE__*/React.createElement(Callout, {
+          className: "form__error",
+          text: message,
+          key: i
+        });
+      }
     }))));
   } else {
     return /*#__PURE__*/React.createElement(ThemeProvider, {

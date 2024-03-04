@@ -13,9 +13,9 @@ export declare class DeliveryApi {
     getServerSideVersionStatus: (request: Request) => string | string[] | import("qs").ParsedQs | import("qs").ParsedQs[];
     getVersionStatusFromHeaders: (headers: IncomingHttpHeaders) => string | string[] | null;
     getVersionStatusFromHostname: (currentHostname: string) => "published" | "latest";
-    search: (query: Query, linkDepth?: number, project?: string) => Promise<import("contensis-core-api").PagedList<import("contensis-delivery-api/lib/models").Entry>>;
+    search: (query: Query, linkDepth?: number, project?: string) => Promise<import("contensis-core-api").PagedList<import("contensis-delivery-api").Entry>>;
     getClient: (versionStatus: VersionStatus | undefined, project: any) => Client;
-    getEntry: (id: string, linkDepth?: number, versionStatus?: VersionStatus, project?: string) => Promise<import("contensis-delivery-api/lib/models").Entry>;
+    getEntry: (id: string, linkDepth?: number, versionStatus?: VersionStatus, project?: string) => Promise<import("contensis-delivery-api").Entry>;
 }
 export declare const deliveryApi: DeliveryApi;
 export declare const deliveryApiWithCookies: (cookies?: CookieObject) => DeliveryApi;

@@ -8,7 +8,7 @@ require('jsonpath-mapper');
 var reselect = require('reselect');
 var merge = require('deepmerge');
 require('query-string');
-var sagas = require('./sagas-e04b94c1.js');
+var sagas = require('./sagas-4e8b68f0.js');
 var immer = require('immer');
 var equals = require('deep-equal');
 require('contensis-core-api');
