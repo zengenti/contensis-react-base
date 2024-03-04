@@ -2,14 +2,16 @@ import { Response } from 'express';
 import {
   selectCurrentProject,
   selectRouteEntry,
+  selectSsrApiCalls,
   selectSurrogateKeys,
 } from '~/routing/redux/selectors';
 import { getImmutableOrJS as getIn } from '~/redux/util';
 
-import { getCacheDuration } from '../features/caching/cacheDuration.schema';
+import {
+  anyUpdateHeader,
+  getCacheDuration,
+} from '../features/caching/cacheDuration.schema';
 import { AppState } from '~/redux/appstate';
-
-const alias = ALIAS; /* global ALIAS */
 
 export const addStandardHeaders = (
   state: AppState,
@@ -20,16 +22,28 @@ export const addStandardHeaders = (
   if (state) {
     try {
       const routingSurrogateKeys = selectSurrogateKeys(state);
+      const apiCalls = selectSsrApiCalls(state);
+      const anyApiError = !!apiCalls.find(([status]) => status >= 400);
+
+      // Check length of surrogate keys and prevent potential header overflow errors in prod
+      // Check for any error set in the page response
+      // And check if we have seen any error in any of the Delivery API calls
+      // - add `any-update` header that will indiscriminately
+      //   invalidate the SSR page cache when any content is updated
+      const addAnyUpdateHeader =
+        routingSurrogateKeys.length >= 2000 ||
+        response.statusCode >= 400 ||
+        anyApiError;
+
       console.info(
-        `[addStandardHeaders] ${routingSurrogateKeys.length} surrogate keys for ${response.req.url}`
+        `[addStandardHeaders] ${
+          addAnyUpdateHeader ? anyUpdateHeader : routingSurrogateKeys.length
+        } surrogate keys for ${response.req.url}`
       );
-      // Check length of surrogate keys and prevent potential header overflow
-      // errors in prod by replacing with `any-update` header that will indiscriminately
-      // invalidate the SSR page cache when any content is updated
-      const surrogateKeys =
-        routingSurrogateKeys.length >= 2000
-          ? `${alias}_any-update`
-          : routingSurrogateKeys.join(' ');
+
+      const surrogateKeys = addAnyUpdateHeader
+        ? anyUpdateHeader
+        : routingSurrogateKeys.join(' ');
 
       const surrogateKeyHeader = `${packagejson.name}-app ${surrogateKeys}`;
 

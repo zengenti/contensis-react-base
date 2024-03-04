@@ -14,6 +14,9 @@ export const selectSurrogateKeys = (state: AppState) => {
   const keys = getIn(state, ['routing', 'surrogateKeys'], [], 'js');
   return keys;
 };
+export const selectSsrApiCalls = (state: AppState) => {
+  return getIn(state, ['routing', 'apiCalls'], [], 'js');
+};
 export const selectCurrentHostname = (state: AppState) =>
   getIn(state, ['routing', 'currentHostname']);
 
