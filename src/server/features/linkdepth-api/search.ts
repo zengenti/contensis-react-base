@@ -24,6 +24,7 @@ type SearchQueryArgs = WithOptional<
   | 'dynamicOrderBy'
   | 'excludeIds'
   | 'featuredResults'
+  | 'fieldLinkDepths'
   | 'fields'
   | 'includeInSearchFields'
   | 'languages'

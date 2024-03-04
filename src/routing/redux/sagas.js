@@ -85,14 +85,17 @@ function* getRouteSaga(action) {
 
     const staticRouteLinkDepth = staticRoute?.route?.params?.linkDepth;
     const staticRouteFields = staticRoute?.route?.params?.fields;
+    const staticRouteFieldLinkDepths =
+      staticRoute?.route?.params?.fieldLinkDepths;
     const entryLinkDepth =
       appsays && appsays.entryLinkDepth !== undefined
         ? appsays.entryLinkDepth
         : 2;
+    const entryFieldLinkDepths = appsays?.entryFieldLinkDepths;
     const setContentTypeLimits =
       (typeof staticRouteLinkDepth === 'undefined' || !staticRouteFields) &&
       !!ContentTypeMappings.find(
-        ct => ct.fields || ct.linkDepth || ct.nodeOptions
+        ct => ct.fields || ct.linkDepth || ct.nodeOptions || ct.fieldLinkDepths
       );
 
     const state = yield select();
@@ -107,20 +110,17 @@ function* getRouteSaga(action) {
 
     if (
       !isPreview &&
-      ((appsays && appsays.customRouting) ||
+      (appsays?.customRouting ||
         (staticRoute && !staticRoute.route.fetchNode) ||
         (routeEntry &&
           action.statePath === action.path &&
-          (appsays && appsays.refetchNode) !== true))
+          appsays?.refetchNode !== true))
     ) {
       // To prevent erroneous 404s and wasted network calls, this covers
       // - appsays customRouting and does SET_ENTRY etc. via the consuming app
       // - all staticRoutes (where custom 'route.fetchNode' attribute is falsey)
       // - standard Contensis SiteView Routing where we already have that entry in state
-      if (
-        routeEntry &&
-        (!staticRoute || (staticRoute.route && staticRoute.route.fetchNode))
-      ) {
+      if (routeEntry && (!staticRoute || staticRoute?.route?.fetchNode)) {
         pathNode = { ...routeNode, entry: null };
         pathNode.entry = entry = routeEntry;
         //Do nothing, the entry is allready the right one.
@@ -178,14 +178,16 @@ function* getRouteSaga(action) {
             {
               depth: 0,
               path: currentPath,
-              entryFields: setContentTypeLimits
-                ? ['sys.contentTypeId', 'sys.id']
-                : staticRouteFields || '*',
-              entryLinkDepth: setContentTypeLimits
-                ? 0
-                : typeof staticRouteLinkDepth !== 'undefined'
-                ? staticRouteLinkDepth
-                : entryLinkDepth,
+              entryFields:
+                staticRouteFields ||
+                (setContentTypeLimits ? ['sys.contentTypeId', 'sys.id'] : '*'),
+              entryLinkDepth:
+                typeof staticRouteLinkDepth !== 'undefined'
+                  ? staticRouteLinkDepth
+                  : entryLinkDepth || 0,
+              entryFieldLinkDepths:
+                staticRouteFieldLinkDepths ||
+                (!setContentTypeLimits ? entryFieldLinkDepths : undefined),
               language: defaultLang,
               versionStatus: deliveryApiStatus,
             },
@@ -224,11 +226,12 @@ function* getRouteSaga(action) {
               ContentTypeMappings,
               pathNode.entry.sys.contentTypeId
             ) || {};
-          const { fields, linkDepth } = contentTypeMapping;
+          const { fieldLinkDepths, fields, linkDepth } = contentTypeMapping;
           const query = routeEntryByFieldsQuery(
             pathNode.entry.sys.id,
             pathNode.entry.sys.language,
             fields,
+            fieldLinkDepths,
             deliveryApiStatus
           );
           const payload = yield api.search(
@@ -348,6 +351,7 @@ function* resolveCurrentNodeOrdinates({
 
   const {
     entryLinkDepth = 0,
+    fieldLinkDepths,
     fields,
     linkDepth,
     nodeOptions = {},
@@ -392,6 +396,8 @@ function* resolveCurrentNodeOrdinates({
                   ? childrenOptions.depth
                   : childrenDepth,
               path,
+              entryFieldLinkDepths:
+                childrenOptions.fieldLinkDepths || fieldLinkDepths,
               entryFields: childrenOptions.fields || fields || undefined,
               entryLinkDepth:
                 typeof childrenOptions.linkDepth !== 'undefined'
@@ -420,6 +426,8 @@ function* resolveCurrentNodeOrdinates({
           return yield api.getSiblings(
             {
               id: pathNode.id,
+              entryFieldLinkDepths:
+                nodeOptions?.siblings?.fieldLinkDepths || fieldLinkDepths,
               entryFields: nodeOptions?.siblings?.fields || fields || undefined,
               entryLinkDepth:
                 typeof nodeOptions?.siblings?.linkDepth !== 'undefined'
