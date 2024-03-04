@@ -1,11 +1,11 @@
 export { s as setCachingHeaders, u as urls } from './urls-eac9a747.js';
-export { c as cachedSearch, a as cachedSearchWithCookies, d as deliveryApi, b as deliveryApiWithCookies, g as getClientConfig } from './ContensisDeliveryApi-7b71bb3e.js';
+export { c as cachedSearch, a as cachedSearchWithCookies, d as deliveryApi, b as deliveryApiWithCookies, g as getClientConfig } from './ContensisDeliveryApi-192305e8.js';
 import mapJson, { jpath } from 'jsonpath-mapper';
 export { jpath, default as mapJson } from 'jsonpath-mapper';
 import React from 'react';
 import { connect } from 'react-redux';
-import { b as selectCurrentProject } from './selectors-1f0cc787.js';
-import { f as selectCommitRef, g as selectBuildNumber, s as selectVersionStatus } from './version-f6660b69.js';
+import { c as selectCurrentProject } from './selectors-08a9e1f0.js';
+import { f as selectCommitRef, g as selectBuildNumber, s as selectVersionStatus } from './version-45170b74.js';
 import styled from 'styled-components';
 import 'contensis-delivery-api';
 import 'query-string';

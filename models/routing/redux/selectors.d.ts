@@ -3,6 +3,7 @@ import { AppState } from "../../redux/appstate";
 export declare const selectRouteEntry: (state: AppState, returnType?: StateType) => any;
 export declare const selectMappedEntry: (state: AppState, returnType?: StateType) => any;
 export declare const selectSurrogateKeys: (state: AppState) => any;
+export declare const selectSsrApiCalls: (state: AppState) => any;
 export declare const selectCurrentHostname: (state: AppState) => any;
 export declare const selectCurrentTreeID: (state: AppState) => any;
 export declare const selectRouteEntryEntryId: (state: AppState) => any;

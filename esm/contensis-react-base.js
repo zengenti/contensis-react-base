@@ -1,4 +1,4 @@
-import { c as cachedSearch, d as deliveryApi } from './ContensisDeliveryApi-7b71bb3e.js';
+import { c as cachedSearch, d as deliveryApi } from './ContensisDeliveryApi-192305e8.js';
 import { Query as Query$1 } from 'contensis-delivery-api';
 import React from 'react';
 import { Provider } from 'react-redux';
@@ -30,13 +30,13 @@ import { identity, noop } from 'lodash';
 import { c as commonjsGlobal } from './_commonjsHelpers-1789f0cf.js';
 import { buildCleaner } from 'lodash-clean';
 import { CookiesProvider } from 'react-cookie';
-import { C as Cookies } from './ToJs-48b1f586.js';
+import { C as Cookies } from './ToJs-e0b935d4.js';
 import cookiesMiddleware from 'universal-cookie-express';
-import { c as createStore } from './version-f6660b69.js';
-import { h as history, p as pickProject, r as rootSaga } from './App-67f6148a.js';
-export { A as ReactApp } from './App-67f6148a.js';
-import { s as setVersionStatus, a as setVersion } from './version-5a0b9406.js';
-import { s as selectSurrogateKeys, a as selectRouteEntry, b as selectCurrentProject, g as getImmutableOrJS, c as setCurrentProject, d as selectCurrentSearch } from './selectors-1f0cc787.js';
+import { c as createStore } from './version-45170b74.js';
+import { h as history, p as pickProject, r as rootSaga } from './App-15ac452b.js';
+export { A as ReactApp } from './App-15ac452b.js';
+import { s as setVersionStatus, a as setVersion } from './version-31aa860d.js';
+import { s as selectSurrogateKeys, a as selectSsrApiCalls, b as selectRouteEntry, c as selectCurrentProject, g as getImmutableOrJS, d as setCurrentProject, e as selectCurrentSearch } from './selectors-08a9e1f0.js';
 import chalk from 'chalk';
 import './CookieConstants-3d3b6531.js';
 import 'loglevel';
@@ -48,9 +48,9 @@ import 'redux-injectors';
 import './reducers-919da5e0.js';
 import 'history';
 import 'await-to-js';
-import './ChangePassword.container-6a1c60f3.js';
+import './ChangePassword.container-8a4873c6.js';
 import 'react-hot-loader';
-import './RouteLoader-487b5a9b.js';
+import './RouteLoader-a419b98c.js';
 
 /**
  * Util class holds our search results helper boilerplate methods
@@ -678,9 +678,12 @@ const CacheDuration = {
 };
 
 const getCacheDuration = (status = 200) => {
-  if (status > 400) return CacheDuration[404];
+  if (status >= 400) return CacheDuration[404];
   return CacheDuration[200];
 };
+const alias = ALIAS; /* global ALIAS */
+
+const anyUpdateHeader = `${alias}_any-update`;
 
 const replaceStaticPath = (str, staticFolderPath = 'static') => str.replace(/static\//g, `${staticFolderPath}/`);
 
@@ -3721,17 +3724,21 @@ const getBundleTags = (loadableExtractor, scripts, staticRoutePath = 'static') =
   return startupTag;
 };
 
-const alias = ALIAS; /* global ALIAS */
-
 const addStandardHeaders = (state, response, packagejson, groups) => {
   if (state) {
     try {
       const routingSurrogateKeys = selectSurrogateKeys(state);
-      console.info(`[addStandardHeaders] ${routingSurrogateKeys.length} surrogate keys for ${response.req.url}`);
-      // Check length of surrogate keys and prevent potential header overflow
-      // errors in prod by replacing with `any-update` header that will indiscriminately
-      // invalidate the SSR page cache when any content is updated
-      const surrogateKeys = routingSurrogateKeys.length >= 2000 ? `${alias}_any-update` : routingSurrogateKeys.join(' ');
+      const apiCalls = selectSsrApiCalls(state);
+      const anyApiError = !!apiCalls.find(([status]) => status >= 400);
+
+      // Check length of surrogate keys and prevent potential header overflow errors in prod
+      // Check for any error set in the page response
+      // And check if we have seen any error in any of the Delivery API calls
+      // - add `any-update` header that will indiscriminately
+      //   invalidate the SSR page cache when any content is updated
+      const addAnyUpdateHeader = routingSurrogateKeys.length >= 2000 || response.statusCode >= 400 || anyApiError;
+      console.info(`[addStandardHeaders] ${addAnyUpdateHeader ? anyUpdateHeader : routingSurrogateKeys.length} surrogate keys for ${response.req.url}`);
+      const surrogateKeys = addAnyUpdateHeader ? anyUpdateHeader : routingSurrogateKeys.join(' ');
       const surrogateKeyHeader = `${packagejson.name}-app ${surrogateKeys}`;
       response.setHeader('surrogate-key', surrogateKeyHeader);
       addVarnishAuthenticationHeaders(state, response, groups);
