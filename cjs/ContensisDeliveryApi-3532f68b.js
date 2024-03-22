@@ -172,7 +172,7 @@ const deliveryApiConfig = () => {
 
     if (version.reduxStore) config.defaultHeaders.referer = getSsrReferer();
     config.responseHandler = {
-      ['*']: storeSurrogateKeys
+      [200]: storeSurrogateKeys
     };
   }
   if (typeof window !== 'undefined' && PROXY_DELIVERY_API /* global PROXY_DELIVERY_API */) {
@@ -274,4 +274,4 @@ exports.cachedSearchWithCookies = cachedSearchWithCookies;
 exports.deliveryApi = deliveryApi;
 exports.deliveryApiWithCookies = deliveryApiWithCookies;
 exports.getClientConfig = getClientConfig;
-//# sourceMappingURL=ContensisDeliveryApi-307120a5.js.map
+//# sourceMappingURL=ContensisDeliveryApi-3532f68b.js.map
