@@ -55,7 +55,7 @@ const deliveryApiConfig = () => {
     };
     if (reduxStore) config.defaultHeaders.referer = getSsrReferer();
 
-    config.responseHandler = { ['*']: storeSurrogateKeys };
+    config.responseHandler = { [200]: storeSurrogateKeys };
   }
 
   if (
