@@ -386,7 +386,9 @@ function* resolveCurrentNodeOrdinates({
       nodeOptions.children
     ) {
       const childrenOptions =
-        typeof nodeOptions.children === 'boolean' ? {} : nodeOptions.children;
+        !nodeOptions.children || typeof nodeOptions.children === 'boolean'
+          ? {}
+          : nodeOptions.children;
       apiCall[1] = function* getChildren() {
         try {
           return yield api.getNode(
