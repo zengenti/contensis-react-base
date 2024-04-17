@@ -13,7 +13,7 @@ var queryString = require('query-string');
 var reactCookie = require('react-cookie');
 var version = require('./version-1fd3379a.js');
 var version$1 = require('./version-34d2733c.js');
-var App = require('./App-ef6e6b20.js');
+var App = require('./App-8d7eecdb.js');
 var selectors = require('./selectors-ce76f972.js');
 var ContensisDeliveryApi = require('./ContensisDeliveryApi-3532f68b.js');
 require('redux');
