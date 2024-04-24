@@ -2,19 +2,18 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var ChangePassword_container = require('./ChangePassword.container-647da27e.js');
+var ChangePassword_container = require('./ChangePassword.container-efcb1fcd.js');
 var React = require('react');
 var reactCookie = require('react-cookie');
 var reactRedux = require('react-redux');
-var ToJs = require('./ToJs-56c5315e.js');
-var reducers = require('./reducers-ea1b2dc0.js');
+var ToJs = require('./ToJs-7f965106.js');
+var CookieHelper_class = require('./CookieHelper.class-34994aa1.js');
+var selectors = require('./selectors-e3f1fd85.js');
 require('@redux-saga/core/effects');
-require('./selectors-ce76f972.js');
 require('jsonpath-mapper');
-require('query-string');
 require('await-to-js');
-require('./CookieConstants-000427db.js');
 require('immer');
+require('query-string');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -39,7 +38,7 @@ const withLogin = WrappedComponent => {
     };
   };
   const ConnectedComponent = () => {
-    const cookies = new ToJs.CookieHelper(...reactCookie.useCookies());
+    const cookies = new CookieHelper_class.CookieHelper(...reactCookie.useCookies());
     const mapDispatchToProps = {
       loginUser: (username, password) => ChangePassword_container.loginUser(username, password, cookies),
       logoutUser: redirectPath => ChangePassword_container.logoutUser(redirectPath, cookies)
@@ -85,9 +84,9 @@ exports.useForgotPassword = ChangePassword_container.useForgotPassword;
 exports.useLogin = ChangePassword_container.useLogin;
 exports.useRegistration = ChangePassword_container.useRegistration;
 exports.selectors = ToJs.selectors;
-exports.initialUserState = reducers.initialUserState;
-exports.reducer = reducers.UserReducer;
-exports.types = reducers.types;
+exports.initialUserState = selectors.initialUserState;
+exports.reducer = selectors.UserReducer;
+exports.types = selectors.types;
 exports.withLogin = withLogin;
 exports.withRegistration = withRegistration;
 //# sourceMappingURL=user.js.map

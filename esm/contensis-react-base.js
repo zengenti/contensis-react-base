@@ -1,4 +1,4 @@
-import { c as cachedSearch, d as deliveryApi } from './ContensisDeliveryApi-4b5e0510.js';
+import { c as cachedSearch, d as deliveryApi, S as SSRContextProvider } from './SSRContext-88841734.js';
 import { Query as Query$1 } from 'contensis-delivery-api';
 import React from 'react';
 import { Provider } from 'react-redux';
@@ -30,27 +30,27 @@ import { identity, noop } from 'lodash';
 import { c as commonjsGlobal } from './_commonjsHelpers-1789f0cf.js';
 import { buildCleaner } from 'lodash-clean';
 import { CookiesProvider } from 'react-cookie';
-import { C as Cookies } from './ToJs-e0b935d4.js';
+import { C as Cookies } from './CookieHelper.class-6d649751.js';
 import cookiesMiddleware from 'universal-cookie-express';
-import { c as createStore } from './version-45170b74.js';
-import { h as history, p as pickProject, r as rootSaga } from './App-1fea61dc.js';
-export { A as ReactApp } from './App-1fea61dc.js';
-import { s as setVersionStatus, a as setVersion } from './version-31aa860d.js';
-import { s as selectSurrogateKeys, a as selectSsrApiCalls, b as selectRouteEntry, c as selectCurrentProject, g as getImmutableOrJS, d as setCurrentProject, e as selectCurrentSearch } from './selectors-08a9e1f0.js';
+import { c as createStore } from './store-f524c50d.js';
+import { h as history, p as pickProject, r as rootSaga } from './App-91d81f0c.js';
+export { A as ReactApp } from './App-91d81f0c.js';
+import { s as setVersionStatus, a as setVersion } from './version-dcc28b32.js';
+import { s as selectSurrogateKeys, a as selectSsrApiCalls, b as selectRouteEntry, c as selectCurrentProject, g as getImmutableOrJS, d as setCurrentProject, e as selectCurrentSearch } from './selectors-d2bdfe22.js';
 import chalk from 'chalk';
-import './CookieConstants-3d3b6531.js';
 import 'loglevel';
 import '@redux-saga/core/effects';
 import 'redux';
 import 'redux-thunk';
 import 'redux-saga';
 import 'redux-injectors';
-import './reducers-919da5e0.js';
 import 'history';
 import 'await-to-js';
-import './ChangePassword.container-8a4873c6.js';
+import './version-7f50b694.js';
+import './ChangePassword.container-96dab474.js';
+import './ToJs-67b34be1.js';
 import 'react-hot-loader';
-import './RouteLoader-a419b98c.js';
+import './RouteLoader-94ca1c51.js';
 
 /**
  * Util class holds our search results helper boilerplate methods
@@ -3890,10 +3890,13 @@ const webApp = (app, ReactApp, config) => {
     }, /*#__PURE__*/React.createElement(StaticRouter, {
       context: context,
       location: url
+    }, /*#__PURE__*/React.createElement(SSRContextProvider, {
+      request: request,
+      response: response
     }, /*#__PURE__*/React.createElement(ReactApp, {
       routes: routes,
       withEvents: withEvents
-    })))));
+    }))))));
     const {
       templateHTML = '',
       templateHTMLFragment = '',

@@ -3,22 +3,23 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 var urls = require('./urls-6fcaf4c6.js');
-var ContensisDeliveryApi = require('./ContensisDeliveryApi-3532f68b.js');
+var SSRContext = require('./SSRContext-433c53e4.js');
 var mapJson = require('jsonpath-mapper');
 var React = require('react');
 var reactRedux = require('react-redux');
-var selectors = require('./selectors-ce76f972.js');
-var version = require('./version-1fd3379a.js');
+var selectors = require('./selectors-e3f1fd85.js');
+var version = require('./version-7b43af3e.js');
 var styled = require('styled-components');
+require('react-cookie');
 require('contensis-delivery-api');
 require('query-string');
-require('./CookieConstants-000427db.js');
+require('./store-665c229b.js');
 require('redux');
 require('redux-thunk');
 require('redux-saga');
 require('redux-injectors');
 require('immer');
-require('./reducers-ea1b2dc0.js');
+require('./CookieHelper.class-34994aa1.js');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -303,11 +304,14 @@ var VersionInfo$1 = reactRedux.connect(mapStateToVersionInfo)(VersionInfo);
 
 exports.setCachingHeaders = urls.setCachingHeaders;
 exports.urls = urls.url;
-exports.cachedSearch = ContensisDeliveryApi.cachedSearch;
-exports.cachedSearchWithCookies = ContensisDeliveryApi.cachedSearchWithCookies;
-exports.deliveryApi = ContensisDeliveryApi.deliveryApi;
-exports.deliveryApiWithCookies = ContensisDeliveryApi.deliveryApiWithCookies;
-exports.getClientConfig = ContensisDeliveryApi.getClientConfig;
+exports.SSRContextProvider = SSRContext.SSRContextProvider;
+exports.cachedSearch = SSRContext.cachedSearch;
+exports.cachedSearchWithCookies = SSRContext.cachedSearchWithCookies;
+exports.deliveryApi = SSRContext.deliveryApi;
+exports.deliveryApiWithCookies = SSRContext.deliveryApiWithCookies;
+exports.getClientConfig = SSRContext.getClientConfig;
+exports.useDeliveryApi = SSRContext.useDeliveryApi;
+exports.useSSRContext = SSRContext.useSSRContext;
 Object.defineProperty(exports, 'jpath', {
   enumerable: true,
   get: function () { return mapJson.jpath; }

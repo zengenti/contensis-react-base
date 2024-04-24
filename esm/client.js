@@ -7,30 +7,30 @@ import { Router } from 'react-router-dom';
 import { loadableReady } from '@loadable/component';
 import { parse } from 'query-string';
 import { CookiesProvider } from 'react-cookie';
-import { c as createStore, s as selectVersionStatus } from './version-45170b74.js';
-import { s as setVersionStatus } from './version-31aa860d.js';
-import { b as browserHistory, r as rootSaga, p as pickProject } from './App-1fea61dc.js';
-export { A as ReactApp } from './App-1fea61dc.js';
-import { d as setCurrentProject } from './selectors-08a9e1f0.js';
-import { d as deliveryApi } from './ContensisDeliveryApi-4b5e0510.js';
+import { s as selectVersionStatus } from './version-7f50b694.js';
+import { s as setVersionStatus } from './version-dcc28b32.js';
+import { b as browserHistory, r as rootSaga, p as pickProject } from './App-91d81f0c.js';
+export { A as ReactApp } from './App-91d81f0c.js';
+import { c as createStore } from './store-f524c50d.js';
+import { d as setCurrentProject } from './selectors-d2bdfe22.js';
+import { d as deliveryApi, S as SSRContextProvider } from './SSRContext-88841734.js';
+import '@redux-saga/core/effects';
+import 'history';
+import 'loglevel';
+import 'await-to-js';
+import './ChangePassword.container-96dab474.js';
+import './ToJs-67b34be1.js';
+import 'jsonpath-mapper';
+import './CookieHelper.class-6d649751.js';
+import 'contensis-delivery-api';
+import './RouteLoader-94ca1c51.js';
+import 'react-router-config';
+import 'reselect';
 import 'redux';
 import 'redux-thunk';
 import 'redux-saga';
 import 'redux-injectors';
 import 'immer';
-import './reducers-919da5e0.js';
-import '@redux-saga/core/effects';
-import 'history';
-import 'loglevel';
-import 'await-to-js';
-import './ChangePassword.container-8a4873c6.js';
-import './ToJs-e0b935d4.js';
-import 'jsonpath-mapper';
-import './CookieConstants-3d3b6531.js';
-import 'contensis-delivery-api';
-import './RouteLoader-a419b98c.js';
-import 'react-router-config';
-import 'reselect';
 
 // Fix TS2769 error No overload matches this call
 const Container = AppContainer; // as typeof AppContainer;
@@ -50,10 +50,10 @@ class ClientApp {
         store: store
       }, /*#__PURE__*/React.createElement(Router, {
         history: browserHistory
-      }, /*#__PURE__*/React.createElement(ReactApp, {
+      }, /*#__PURE__*/React.createElement(SSRContextProvider, null, /*#__PURE__*/React.createElement(ReactApp, {
         routes: routes,
         withEvents: withEvents
-      })))));
+      }))))));
       return ClientJsx;
     };
     const isProduction = !(process.env.NODE_ENV !== 'production');

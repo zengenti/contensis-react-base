@@ -11,29 +11,29 @@ var reactRouterDom = require('react-router-dom');
 var component = require('@loadable/component');
 var queryString = require('query-string');
 var reactCookie = require('react-cookie');
-var version = require('./version-1fd3379a.js');
-var version$1 = require('./version-34d2733c.js');
-var App = require('./App-8d7eecdb.js');
-var selectors = require('./selectors-ce76f972.js');
-var ContensisDeliveryApi = require('./ContensisDeliveryApi-3532f68b.js');
+var version = require('./version-7b43af3e.js');
+var version$1 = require('./version-3b05d6c8.js');
+var App = require('./App-8a2f85d5.js');
+var store = require('./store-665c229b.js');
+var selectors = require('./selectors-e3f1fd85.js');
+var SSRContext = require('./SSRContext-433c53e4.js');
+require('@redux-saga/core/effects');
+require('history');
+require('loglevel');
+require('await-to-js');
+require('./ChangePassword.container-efcb1fcd.js');
+require('./ToJs-7f965106.js');
+require('jsonpath-mapper');
+require('./CookieHelper.class-34994aa1.js');
+require('contensis-delivery-api');
+require('./RouteLoader-4fb33db9.js');
+require('react-router-config');
+require('reselect');
 require('redux');
 require('redux-thunk');
 require('redux-saga');
 require('redux-injectors');
 require('immer');
-require('./reducers-ea1b2dc0.js');
-require('@redux-saga/core/effects');
-require('history');
-require('loglevel');
-require('await-to-js');
-require('./ChangePassword.container-647da27e.js');
-require('./ToJs-56c5315e.js');
-require('jsonpath-mapper');
-require('./CookieConstants-000427db.js');
-require('contensis-delivery-api');
-require('./RouteLoader-5e6ee174.js');
-require('react-router-config');
-require('reselect');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -57,10 +57,10 @@ class ClientApp {
         store: store
       }, /*#__PURE__*/React__default["default"].createElement(reactRouterDom.Router, {
         history: App.browserHistory
-      }, /*#__PURE__*/React__default["default"].createElement(ReactApp, {
+      }, /*#__PURE__*/React__default["default"].createElement(SSRContext.SSRContextProvider, null, /*#__PURE__*/React__default["default"].createElement(ReactApp, {
         routes: routes,
         withEvents: withEvents
-      })))));
+      }))))));
       return ClientJsx;
     };
     const isProduction = !(process.env.NODE_ENV !== 'production');
@@ -85,9 +85,9 @@ class ClientApp {
       }
     };
     const qs = queryString.parse(window.location.search);
-    const versionStatus = ContensisDeliveryApi.deliveryApi.getClientSideVersionStatus();
+    const versionStatus = SSRContext.deliveryApi.getClientSideVersionStatus();
     if (window.isDynamic || window.REDUX_DATA || process.env.NODE_ENV !== 'production') {
-      version.createStore(withReducers, window.REDUX_DATA, App.browserHistory, stateType).then(store => {
+      store.createStore(withReducers, window.REDUX_DATA, App.browserHistory, stateType).then(store => {
         const state = store.getState();
         const ssrVersionStatus = version.selectVersionStatus(state);
         if (!ssrVersionStatus) store.dispatch(version$1.setVersionStatus(versionStatus));
@@ -104,7 +104,7 @@ class ClientApp {
     } else {
       fetch(`${window.location.pathname}?redux=true`).then(response => response.json()).then(data => {
         const ssRedux = JSON.parse(data);
-        version.createStore(withReducers, ssRedux, App.browserHistory, stateType).then(store => {
+        store.createStore(withReducers, ssRedux, App.browserHistory, stateType).then(store => {
           store.dispatch(version$1.setVersionStatus(versionStatus));
           store.runSaga(App.rootSaga(withSagas));
           store.dispatch(selectors.setCurrentProject(App.pickProject(window.location.hostname, qs), [], window.location.hostname));

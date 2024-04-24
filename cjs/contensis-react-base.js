@@ -2,7 +2,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var ContensisDeliveryApi = require('./ContensisDeliveryApi-3532f68b.js');
+var SSRContext = require('./SSRContext-433c53e4.js');
 var contensisDeliveryApi = require('contensis-delivery-api');
 var React = require('react');
 var reactRedux = require('react-redux');
@@ -34,26 +34,26 @@ var lodash = require('lodash');
 var _commonjsHelpers = require('./_commonjsHelpers-b3309d7b.js');
 var lodashClean = require('lodash-clean');
 var reactCookie = require('react-cookie');
-var ToJs = require('./ToJs-56c5315e.js');
+var CookieHelper_class = require('./CookieHelper.class-34994aa1.js');
 var cookiesMiddleware = require('universal-cookie-express');
-var version = require('./version-1fd3379a.js');
-var App = require('./App-8d7eecdb.js');
-var version$1 = require('./version-34d2733c.js');
-var selectors = require('./selectors-ce76f972.js');
+var store = require('./store-665c229b.js');
+var App = require('./App-8a2f85d5.js');
+var version = require('./version-3b05d6c8.js');
+var selectors = require('./selectors-e3f1fd85.js');
 var chalk = require('chalk');
-require('./CookieConstants-000427db.js');
 require('loglevel');
 require('@redux-saga/core/effects');
 require('redux');
 require('redux-thunk');
 require('redux-saga');
 require('redux-injectors');
-require('./reducers-ea1b2dc0.js');
 require('history');
 require('await-to-js');
-require('./ChangePassword.container-647da27e.js');
+require('./version-7b43af3e.js');
+require('./ChangePassword.container-efcb1fcd.js');
+require('./ToJs-7f965106.js');
 require('react-hot-loader');
-require('./RouteLoader-5e6ee174.js');
+require('./RouteLoader-4fb33db9.js');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -241,7 +241,7 @@ const resolveParentEntries = async (parentContentTypeIds, replaceContentTypeIds,
   });
   query.fields = params.fields ? [...JSON.parse(params.fields), parentFieldId] : [];
   if (debug) console.log(`\nResolve parent entries query: \n${JSON.stringify(query.toJSON()).substring(0, 1000)}`);
-  const parentResults = await ContensisDeliveryApi.cachedSearch.searchUsingPost(query, Number(params.linkDepth || 0), params.projectId);
+  const parentResults = await SSRContext.cachedSearch.searchUsingPost(query, Number(params.linkDepth || 0), params.projectId);
   return mergeResults(results, Util.GetItems(parentResults), replaceContentTypeIds, parentFieldId);
 };
 
@@ -298,7 +298,7 @@ class QueryLevelResults {
       }
       if (runFirstQuery) {
         if (this.debug) console.log(`\nLevel ${this.level} - First query: \n${JSON.stringify(query.toJSON()).substring(0, 1000)}`);
-        this.firstResults = await ContensisDeliveryApi.cachedSearch.searchUsingPost(query, 0, params.projectId);
+        this.firstResults = await SSRContext.cachedSearch.searchUsingPost(query, 0, params.projectId);
 
         // mapResultsToValidatedLinks
         for (const linkFieldId of this.linkFieldIds) {
@@ -336,7 +336,7 @@ class QueryLevelResults {
 
       if (runFinalQuery) {
         if (this.debug) console.log(`\nLevel ${this.level} - Final query: \n${JSON.stringify(query.toJSON()).substring(0, 1000)}`);
-        this.finalResults = await ContensisDeliveryApi.cachedSearch.searchUsingPost(query, Number(params.linkDepth) || 0, params.projectId);
+        this.finalResults = await SSRContext.cachedSearch.searchUsingPost(query, Number(params.linkDepth) || 0, params.projectId);
         if (this.parent) this.parent.runFinalQuery = true;
 
         // mapResultsToValidatedLinks
@@ -484,7 +484,7 @@ class LinkDepthSearchService {
           };
         })) || []);
         if (this.debug) console.log(`\nFinal query: ${derivedIds.reduce((accumulator, object) => accumulator + object.entryIds.length, 0)} derived ids \n${JSON.stringify(query.toJSON()).substring(0, 1000)}`);
-        const finalQueryResult = await ContensisDeliveryApi.cachedSearch.searchUsingPost(query, Number(params.linkDepth) || 0, params.projectId);
+        const finalQueryResult = await SSRContext.cachedSearch.searchUsingPost(query, Number(params.linkDepth) || 0, params.projectId);
 
         // Resolve any parent entries
 
@@ -3875,42 +3875,45 @@ const webApp = (app, ReactApp, config) => {
     response.status(200);
 
     // Create a store (with a memory history) from our current url
-    const store = await version.createStore(withReducers, {}, App.history({
+    const store$1 = await store.createStore(withReducers, {}, App.history({
       initialEntries: [url]
     }), stateType);
 
     // dispatch any global and non-saga related actions before calling our JSX
-    const versionStatus = ContensisDeliveryApi.deliveryApi.getServerSideVersionStatus(request);
+    const versionStatus = SSRContext.deliveryApi.getServerSideVersionStatus(request);
 
     // In server-side blocks world, the hostname requested by the client resides in the x-orig-host header
     // Because of this, we prioritize x-orig-host when setting our hostname
     const hostname = request.headers['x-orig-host'] || request.hostname;
     console.info(`Request for ${request.path} hostname: ${hostname} versionStatus: ${versionStatus}`);
-    store.dispatch(version$1.setVersionStatus(versionStatus));
-    store.dispatch(version$1.setVersion(versionInfo.commitRef, versionInfo.buildNo));
+    store$1.dispatch(version.setVersionStatus(versionStatus));
+    store$1.dispatch(version.setVersion(versionInfo.commitRef, versionInfo.buildNo));
     const project = App.pickProject(hostname, request.query);
     const groups = allowedGroups && allowedGroups[project];
-    store.dispatch(selectors.setCurrentProject(project, groups, hostname));
+    store$1.dispatch(selectors.setCurrentProject(project, groups, hostname));
     const loadableExtractor = loadableChunkExtractors();
     const ssrCookies = enableSsrCookies ?
     // these cookies are managed by the cookiesMiddleware and contain listeners
     // when cookies are read or written in ssr can be added to the `set-cookie` response header
     request.universalCookies :
     // this is a stub cookie collection so cookie methods can be used in code
-    new ToJs.Cookies();
+    new CookieHelper_class.Cookies();
     const jsx = /*#__PURE__*/React__default["default"].createElement(server$1.ChunkExtractorManager, {
       extractor: loadableExtractor.commonLoadableExtractor
     }, /*#__PURE__*/React__default["default"].createElement(reactCookie.CookiesProvider, {
       cookies: ssrCookies
     }, /*#__PURE__*/React__default["default"].createElement(reactRedux.Provider, {
-      store: store
+      store: store$1
     }, /*#__PURE__*/React__default["default"].createElement(reactRouterDom.StaticRouter, {
       context: context,
       location: url
+    }, /*#__PURE__*/React__default["default"].createElement(SSRContext.SSRContextProvider, {
+      request: request,
+      response: response
     }, /*#__PURE__*/React__default["default"].createElement(ReactApp, {
       routes: routes,
       withEvents: withEvents
-    })))));
+    }))))));
     const {
       templateHTML = '',
       templateHTMLFragment = '',
@@ -3935,7 +3938,7 @@ const webApp = (app, ReactApp, config) => {
 
     // Render the JSX server side and send response as per access method options
     if (!accessMethod.DYNAMIC) {
-      store.runSaga(App.rootSaga(withSagas)).toPromise().then(() => {
+      store$1.runSaga(App.rootSaga(withSagas)).toPromise().then(() => {
         var _selectCurrentSearch;
         const sheet = new styled.ServerStyleSheet();
         const html = server$2.renderToString(sheet.collectStyles(jsx));
@@ -3947,7 +3950,7 @@ const webApp = (app, ReactApp, config) => {
         if (context.url) {
           return response.redirect(context.statusCode || 302, context.url);
         }
-        const reduxState = store.getState();
+        const reduxState = store$1.getState();
         const styleTags = sheet.getStyleTags();
 
         // After running rootSaga there should be an additional react-loadable
@@ -4046,7 +4049,7 @@ const webApp = (app, ReactApp, config) => {
         responseHandler(request, response, `Error occurred: <br />${err.stack} <br />${JSON.stringify(err)}`);
       });
       server$2.renderToString(jsx);
-      store.close();
+      store$1.close();
     }
   });
 };
