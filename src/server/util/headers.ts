@@ -11,7 +11,7 @@ import {
   anyUpdateHeader,
   getCacheDuration,
 } from '../features/caching/cacheDuration.schema';
-import { AppState } from '~/redux/appstate';
+import { AppState } from '~/models';
 
 export const addStandardHeaders = (
   state: AppState,

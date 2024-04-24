@@ -3,8 +3,7 @@ import mapJson, { jpath } from 'jsonpath-mapper';
 import MappingTemplate, {
   PureJsFunction,
 } from 'jsonpath-mapper/dist/models/Template';
-import { AppState } from '~/redux/appstate';
-import { EntryMapper, RouteNode } from '~/routing/routes';
+import { AppState, EntryMapper, RouteNode } from '~/models';
 
 export { default as mapJson, jpath } from 'jsonpath-mapper';
 

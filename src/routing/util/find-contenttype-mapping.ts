@@ -1,4 +1,4 @@
-import { ContentTypeMapping } from '../routes';
+import { ContentTypeMapping } from '~/models';
 
 export const findContentTypeMapping = (
   ContentTypeMappings: ContentTypeMapping[],

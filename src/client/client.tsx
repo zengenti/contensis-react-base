@@ -19,7 +19,7 @@ import { setCurrentProject } from '~/routing/redux/actions';
 import { deliveryApi } from '~/util/ContensisDeliveryApi';
 import pickProject from '~/util/pickProject';
 
-import { AppConfig } from '~/config';
+import { AppConfig } from '~/models';
 
 declare let window: typeof globalThis & {
   isDynamic;

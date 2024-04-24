@@ -17,9 +17,8 @@ import RoutingReducer from '~/routing/redux/reducers';
 import UserReducer from '~/user/redux/reducers';
 import VersionReducer from '../reducers/version';
 import routerMiddleware from './routerMiddleware';
-import { AppState } from '../appstate';
+import { AppState, StateType } from '~/models';
 import { History, MemoryHistory } from 'history';
-import { StateType } from '~/config';
 
 /* eslint-disable no-underscore-dangle */
 declare let window: Window &

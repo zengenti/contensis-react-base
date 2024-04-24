@@ -1,6 +1,5 @@
 import { Entry } from 'contensis-delivery-api/lib/models';
-import { StateType } from '~/config';
-import { AppState } from '~/redux/appstate';
+import { AppState, StateType } from '~/models';
 import { getImmutableOrJS as getIn } from '~/redux/util';
 import { queryParams } from '~/util/navigation';
 

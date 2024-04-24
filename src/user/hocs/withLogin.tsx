@@ -12,7 +12,7 @@ import {
 } from '../redux/selectors';
 import { CookieHelper } from '../util/CookieHelper.class';
 import { toJS } from '~/util/ToJs';
-import { AppState } from '~/redux/appstate';
+import { AppState } from '~/models';
 
 const getDisplayName = (WrappedComponent: React.ComponentType) => {
   return WrappedComponent.displayName || WrappedComponent.name || 'Component';

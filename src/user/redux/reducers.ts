@@ -1,5 +1,5 @@
 import { Draft, produce } from 'immer';
-import { AppState } from '~/redux/appstate';
+import { AppState } from '~/models';
 import {
   REGISTER_USER,
   REGISTER_USER_FAILED,

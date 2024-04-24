@@ -32,7 +32,7 @@ import { toJS } from '~/util/ToJs';
 import { CookieHelper } from '~/user/util/CookieHelper.class';
 
 import { Entry } from 'contensis-delivery-api/lib/models';
-import { AppRootProps, RouteComponentProps, RouteLoaderProps } from '../routes';
+import { AppRootProps, RouteComponentProps, RouteLoaderProps } from '~/models';
 
 const replaceDoubleSlashRecursive = (path: string) => {
   const nextPath = path.replace(/\/\//, '/');

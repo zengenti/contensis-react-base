@@ -4,7 +4,7 @@ import { bundleManipulationMiddleware } from '~/server/middleware/bundleManipula
 import { resolveStartupMiddleware } from '~/server/middleware/resolveStartup';
 
 import { path as appPath } from 'app-root-path';
-import { ServerConfig } from '~/config';
+import { ServerConfig } from '~/models';
 // Serving static assets
 const staticAssets = (
   app,

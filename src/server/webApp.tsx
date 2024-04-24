@@ -40,8 +40,7 @@ import {
 } from './util/bundles';
 import { addStandardHeaders } from './util/headers';
 
-import { ServerConfig } from '~/config';
-import { AppState } from '~/redux/appstate';
+import { AppState, ServerConfig } from '~/models';
 import { getVersionInfo } from './util/getVersionInfo';
 import { unhandledExceptionHandler } from './util/handleExceptions';
 
