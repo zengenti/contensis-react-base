@@ -30,7 +30,6 @@ import { injectRedux as reduxInjector } from '~/redux/store/injectors';
 import { LoginHelper } from '~/user';
 import { findContentTypeMapping } from '../util/find-contenttype-mapping';
 import { routeEntryByFieldsQuery } from '../util/queries';
-import { cachedSearchWithCookies } from '~/util/ContensisDeliveryApi';
 
 export const routingSagas = [
   takeEvery(SET_NAVIGATION_PATH, getRouteSaga),
@@ -58,9 +57,9 @@ function* getRouteSaga(action) {
       withEvents,
       routes: { ContentTypeMappings = {} } = {},
       staticRoute,
-      cookies,
+      // get api instance from ssr context that is connected to the specific request in ssr
+      ssr: { api },
     } = action;
-    const api = cachedSearchWithCookies(cookies.raw);
 
     // Inject redux { key, reducer, saga } provided by staticRoute
     if (staticRoute && staticRoute.route.injectRedux)
@@ -328,16 +327,17 @@ function* getRouteSaga(action) {
   }
 }
 
-function* resolveCurrentNodeOrdinates({
-  api,
-  appsays,
-  contentTypeMapping,
-  language,
-  path,
-  pathNode,
-  project,
-  versionStatus,
-}) {
+function* resolveCurrentNodeOrdinates(action) {
+  const {
+    api,
+    appsays,
+    contentTypeMapping,
+    language,
+    path,
+    pathNode,
+    project,
+    versionStatus,
+  } = action;
   const apiCall = [() => null, () => null, () => null, () => null];
 
   // if appsays customNavigation: true, we will set doNavigation to false
@@ -464,14 +464,11 @@ function* resolveCurrentNodeOrdinates({
       if (typeof window !== 'undefined') {
         return yield put({
           type: GET_NODE_TREE,
-          language,
+          ...action,
           treeDepth,
         });
       } else {
-        return yield call(ensureNodeTreeSaga, {
-          language,
-          treeDepth,
-        });
+        return yield call(ensureNodeTreeSaga, { ...action, treeDepth });
       }
     };
 

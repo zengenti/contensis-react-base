@@ -43,6 +43,7 @@ import { addStandardHeaders } from './util/headers';
 import { AppState, ServerConfig } from '~/models';
 import { getVersionInfo } from './util/getVersionInfo';
 import { unhandledExceptionHandler } from './util/handleExceptions';
+import { SSRContextProvider } from '~/util/SSRContext';
 
 const webApp = (
   app: Express,
@@ -167,7 +168,9 @@ const webApp = (
           <CookiesProvider cookies={ssrCookies}>
             <ReduxProvider store={store}>
               <StaticRouter context={context} location={url}>
-                <ReactApp routes={routes} withEvents={withEvents} />
+                <SSRContextProvider request={request} response={response}>
+                  <ReactApp routes={routes} withEvents={withEvents} />
+                </SSRContextProvider>
               </StaticRouter>
             </ReduxProvider>
           </CookiesProvider>

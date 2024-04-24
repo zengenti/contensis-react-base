@@ -10,8 +10,7 @@ import {
 
 import { Entry } from 'contensis-delivery-api/lib/models';
 import { MatchedRoute, RouteConfig } from 'react-router-config';
-import { AppRoutes, WithEvents } from '../routes';
-import { CookieHelper } from '~/user/util/CookieHelper.class';
+import { AppRoutes, SSRContext, WithEvents } from '~/models';
 
 export const setNavigationPath = (
   path: string,
@@ -20,7 +19,7 @@ export const setNavigationPath = (
   withEvents: WithEvents,
   statePath: string,
   routes: AppRoutes,
-  cookies: CookieHelper
+  ssr: SSRContext
 ) =>
   action(SET_NAVIGATION_PATH, {
     path,
@@ -29,7 +28,7 @@ export const setNavigationPath = (
     withEvents,
     statePath,
     routes,
-    cookies,
+    ssr,
   });
 
 export const setCurrentProject = (

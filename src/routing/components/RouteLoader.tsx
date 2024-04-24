@@ -1,5 +1,4 @@
 import React, { useEffect, useCallback } from 'react';
-import { useCookies } from 'react-cookie';
 import { connect } from 'react-redux';
 import { hot } from 'react-hot-loader';
 import { Redirect, useLocation } from 'react-router-dom';
@@ -29,7 +28,7 @@ import {
 } from '~/user/redux/selectors';
 import { matchUserGroup } from '~/user/util/matchGroups';
 import { toJS } from '~/util/ToJs';
-import { CookieHelper } from '~/user/util/CookieHelper.class';
+import { useSSRContext } from '~/util/SSRContext';
 
 import { Entry } from 'contensis-delivery-api/lib/models';
 import { AppRootProps, RouteComponentProps, RouteLoaderProps } from '~/models';
@@ -92,7 +91,11 @@ const RouteLoader = ({
   trailingSlashRedirectCode = 302,
 }: AppRootProps & RouteLoaderProps & IReduxProps) => {
   const location = useLocation();
-  const cookies = new CookieHelper(...useCookies());
+
+  // In SSR pass references to things in backing sagas
+  // we cannot access in a global scope
+  const ssrContext = useSSRContext();
+
   // Always ensure paths are trimmed of trailing slashes so urls are always unique
   const trimmedPath = getTrimmedPath(location.pathname);
 
@@ -154,7 +157,7 @@ const RouteLoader = ({
       withEvents,
       statePath,
       routes,
-      cookies
+      ssrContext
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [

@@ -5,7 +5,11 @@ import {
   NodeGetRootOptions,
 } from 'contensis-delivery-api/lib/models';
 
-import { DeliveryApi, getClientConfig } from './ContensisDeliveryApi';
+import {
+  DeliveryApi,
+  SSRContext,
+  getClientConfig,
+} from './ContensisDeliveryApi';
 import { LruCache } from './LruCache';
 import { CookieObject } from '~/user/util/CookieConstants';
 
@@ -13,17 +17,19 @@ import { CookieObject } from '~/user/util/CookieConstants';
 class CachedSearch {
   cache = new LruCache();
   cookies?: CookieObject;
+  ssr?: SSRContext;
 
-  constructor(cookies?: CookieObject) {
-    this.cookies = cookies;
+  constructor(ssr?: SSRContext) {
+    this.ssr = ssr;
+    this.cookies = this.ssr?.cookies.raw;
   }
 
   getClient(...args: Parameters<DeliveryApi['getClient']>) {
-    return new DeliveryApi(this.cookies).getClient(...args);
+    return new DeliveryApi(this.ssr).getClient(...args);
   }
 
   search(query: Query, linkDepth = 0, project?: string) {
-    const client = Client.create(getClientConfig(project, this.cookies));
+    const client = Client.create(getClientConfig(project, this.ssr));
     return this.request(
       `${project}+${JSON.stringify(query)}+${linkDepth}`,
       () => client.entries.search(query, linkDepth)
@@ -31,7 +37,7 @@ class CachedSearch {
   }
 
   searchUsingPost(query: Query, linkDepth = 0, project = '') {
-    const client = Client.create(getClientConfig(project, this.cookies));
+    const client = Client.create(getClientConfig(project, this.ssr));
     return this.request(
       `${project}+${JSON.stringify(query)}+${linkDepth}`,
       () => (client.entries as any).searchUsingPost(query, linkDepth)
@@ -44,27 +50,36 @@ class CachedSearch {
     versionStatus: VersionStatus = 'published',
     project?: string
   ) {
-    const client = Client.create(getClientConfig(project, this.cookies));
-    client.clientConfig.versionStatus = versionStatus;
+    const client = Client.create({
+      ...getClientConfig(project, this.ssr),
+      versionStatus,
+    });
     return this.request(id, () => client.entries.get({ id, linkDepth }));
   }
 
   getContentType(id: string, project?: string) {
-    const client = Client.create(getClientConfig(project, this.cookies));
+    const client = Client.create(getClientConfig(project, this.ssr));
     return this.request(`[CONTENT TYPE] ${id} ${project}`, () =>
       client.contentTypes.get(id)
     );
   }
 
-  getRootNode(options: NodeGetRootOptions, project?: string) {
-    const client = Client.create(getClientConfig(project, this.cookies));
+  getRootNode(
+    options: NodeGetRootOptions,
+    versionStatus: VersionStatus = 'published',
+    project?: string
+  ) {
+    const client = Client.create({
+      ...getClientConfig(project, this.ssr),
+      versionStatus,
+    });
     return this.request(`${project} / ${JSON.stringify(options)}`, () =>
       client.nodes.getRoot(options)
     );
   }
 
   getNode(options: Parameters<INodeOperations['get']>[0], project?: string) {
-    const client = Client.create(getClientConfig(project, this.cookies));
+    const client = Client.create(getClientConfig(project, this.ssr));
     return this.request(
       `${project} ${
         options && typeof options !== 'string'
@@ -81,7 +96,7 @@ class CachedSearch {
     options: Parameters<INodeOperations['getAncestors']>[0],
     project?: string
   ) {
-    const client = Client.create(getClientConfig(project, this.cookies));
+    const client = Client.create(getClientConfig(project, this.ssr));
     return this.request(
       `${project} [A] ${
         (options && typeof options !== 'string' && options.id) || options
@@ -94,7 +109,7 @@ class CachedSearch {
     options: Parameters<INodeOperations['getChildren']>[0],
     project?: string
   ) {
-    const client = Client.create(getClientConfig(project, this.cookies));
+    const client = Client.create(getClientConfig(project, this.ssr));
     return this.request(
       `${project} [C] ${
         (options && typeof options !== 'string' && options.id) || options
@@ -107,7 +122,7 @@ class CachedSearch {
     options: Parameters<INodeOperations['getSiblings']>[0],
     project?: string
   ) {
-    const client = Client.create(getClientConfig(project, this.cookies));
+    const client = Client.create(getClientConfig(project, this.ssr));
     return this.request(
       `${project} [S] ${
         (options && typeof options !== 'string' && options.id) || options
@@ -130,5 +145,5 @@ class CachedSearch {
 }
 
 export const cachedSearch = new CachedSearch();
-export const cachedSearchWithCookies = (cookies?: CookieObject) =>
-  new CachedSearch(cookies);
+export const cachedSearchWithCookies = (ssr?: SSRContext) =>
+  new CachedSearch(ssr);

@@ -3,6 +3,7 @@ export * from './AppRouteProps';
 export * from './AppState';
 export * from './ContentTypeMapping';
 export * from './EntryMapper';
+export * from './GetRouteActionArgs';
 export * from './ReduxInjector';
 export * from './RequireLogin';
 export * from './RouteComponent';

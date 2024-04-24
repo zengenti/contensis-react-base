@@ -1,24 +1,14 @@
 import { FieldLinkDepths } from 'contensis-core-api';
-import { MatchedRoute } from 'react-router-config';
-import { SSRContext } from './SSRContext';
-import { StaticRoute } from './StaticRoute';
 import { Entry } from 'contensis-delivery-api';
+import { GetRouteActionArgs } from './GetRouteActionArgs';
 import { RequireLogin } from './RequireLogin';
 
-export type OnRouteLoadArgs = {
-  location: { pathname: string; search: string; hash: string; key?: string };
-  path: string;
-  ssr: SSRContext;
-  staticRoute: MatchedRoute<any, StaticRoute>;
-  statePath: string;
-};
+// These args are passed through from the GetRouteSaga action arg
+export type OnRouteLoadArgs = Omit<GetRouteActionArgs, 'withEvents'>;
 
-export type OnRouteLoadedArgs = {
+// These args are as above and any resolved entry is also provided
+export type OnRouteLoadedArgs = OnRouteLoadArgs & {
   entry?: Entry | any;
-  location: { pathname: string; search: string; hash: string; key?: string };
-  path: string;
-  ssr: SSRContext;
-  staticRoute: MatchedRoute<any, StaticRoute>;
 };
 
 export type RouteLoadOptions = {
