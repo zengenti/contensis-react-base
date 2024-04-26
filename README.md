@@ -126,6 +126,42 @@ https://www.conventionalcommits.org/en/v1.0.0/#summary
 
 # Changelog
 
+#### 3.2.0 (2024-04-26)
+
+##### New Features
+
+*  add support for new delivery api search parameter `fieldLinkDepths` (3f6d1def)
+*  introduce `SSRContext` allowing us to hold and access request-scope references throughout the component tree and use these refs in backing code reliably scoped to the current request (915e9f97)
+
+##### Bug Fixes
+
+*  cache invalidation - surrogate key count inconsistencies in high concurrent load scenario (915e9f97)
+*  Routing sagas - childrenOptions object undefined if nodeOptions.children not specified, meaning children saga would error with global children customNavigation setting (55b389b5)
+*  restore delivery api response handler to handle 200 responses only due to inconsistent behaviour in non-ok fetch responses (5f69d2db)
+*  add `any_update` header in SSR for any page request with any delivery api errors (3d404e4f)
+*  correct syntax for last immutable fix (f415a487)
+*  add server startup option `enableSsrCookies` as processing cookies in ssr can cause authentication information to become cached (67b0d011)
+*  undefined error in ssr when using immutable state type (afd2f147)
+*  undefined error on Redux in server features (e1e4842a)
+*  need to provide path attribute when using `universal-cookie` package (95fe9f12)
+*  Reset user state to prevent user details from being cached in SSR response (f8fb5bfe)
+*  allow CookieHelper  fallback to browser cookies when cookies args not provided (457c4f56)
+*  prevent mutation of DELIVERY_API_CONFIG when building client config (cafbe5e1)
+
+##### Performance Improvements
+
+*  remove surrogateKeys routing key from serialised redux state in ssr (749782bc)
+
+##### Refactors
+
+*  remove redundant types files (dac4cf52)
+*  consolidate typescript types in models folder (de959949)
+*  convert user login JS code to TypeScript (75ef4e0c)
+
+##### Code Style Changes
+
+*  fix return types in store creation (f611e88c)
+
 #### 3.1.0 (2024-01-18)
 
 ##### New Features
