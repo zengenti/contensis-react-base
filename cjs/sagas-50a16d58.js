@@ -274,11 +274,9 @@ const getFiltersToLoad = (state, facet, context = Context.facets, returnType) =>
 // We lowercase the filter key unless it's an ISO date string where the T must be uppercase
 const getSelectedFilters = (state, facet = '', context = Context.facets, returnType) => {
   const filters = getFilters(state, facet, context, 'js');
-  const isoDateRegex = RegExp(/\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d/);
   const selectedFilters = Object.fromEntries(Object.entries(filters).map(([key, filter = {}]) => [key, (filter.items || []).filter(item => !!(item.isSelected || false)).map(item => {
     const key = (item === null || item === void 0 ? void 0 : item.key) || '';
-    const isIsoDate = isoDateRegex.test(key);
-    return isIsoDate ? key : typeof key.toLowerCase !== 'undefined' ? key.toLowerCase() : key;
+    return key;
   })]));
   const fromJS = makeFromJS(returnType);
   return fromJS(selectedFilters);
@@ -2077,4 +2075,4 @@ exports.updateSearchTerm = updateSearchTerm$1;
 exports.updateSelectedFilters = updateSelectedFilters;
 exports.updateSortOrder = updateSortOrder$1;
 exports.withMappers = withMappers;
-//# sourceMappingURL=sagas-4e8b68f0.js.map
+//# sourceMappingURL=sagas-50a16d58.js.map
