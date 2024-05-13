@@ -48,13 +48,14 @@ class CachedSearch {
     id: string,
     linkDepth = 0,
     versionStatus: VersionStatus = 'published',
-    project?: string
+    project?: string,
+    fields?: string[]
   ) {
     const client = Client.create({
       ...getClientConfig(project, this.ssr),
       versionStatus,
     });
-    return this.request(id, () => client.entries.get({ id, linkDepth }));
+    return this.request(id, () => client.entries.get({ id, linkDepth, fields }));
   }
 
   getContentType(id: string, project?: string) {
