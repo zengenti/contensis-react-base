@@ -3,7 +3,7 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 var urls = require('./urls-6fcaf4c6.js');
-var SSRContext = require('./SSRContext-433c53e4.js');
+var SSRContext = require('./SSRContext-5360635c.js');
 var mapJson = require('jsonpath-mapper');
 var React = require('react');
 var reactRedux = require('react-redux');

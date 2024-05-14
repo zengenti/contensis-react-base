@@ -19,7 +19,7 @@ export declare const useDeliveryApi: () => {
     getClient(versionStatus?: import("contensis-core-api").VersionStatus | undefined, project?: string | undefined): import("contensis-delivery-api").Client;
     search(query: import("contensis-core-api").Query, linkDepth?: number, project?: string | undefined): Promise<import("contensis-core-api").PagedList<import("contensis-delivery-api").Entry>>;
     searchUsingPost(query: import("contensis-core-api").Query, linkDepth?: number, project?: string): any;
-    get(id: string, linkDepth?: number, versionStatus?: import("contensis-core-api").VersionStatus, project?: string | undefined): Promise<import("contensis-delivery-api").Entry>;
+    get(id: string, linkDepth?: number, versionStatus?: import("contensis-core-api").VersionStatus, project?: string | undefined, fields?: string[] | undefined): Promise<import("contensis-delivery-api").Entry>;
     getContentType(id: string, project?: string | undefined): Promise<import("contensis-core-api").ContentType>;
     getRootNode(options: import("contensis-delivery-api").NodeGetRootOptions, versionStatus?: import("contensis-core-api").VersionStatus, project?: string | undefined): Promise<import("contensis-delivery-api").Node>;
     getNode(options: string | import("contensis-delivery-api").NodeGetByIdOptions | import("contensis-delivery-api").NodeGetByPathOptions, project?: string | undefined): Promise<import("contensis-delivery-api").Node>;

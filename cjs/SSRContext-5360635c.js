@@ -105,14 +105,15 @@ class CachedSearch {
     const client = contensisDeliveryApi.Client.create(getClientConfig(project, this.ssr));
     return this.request(`${project}+${JSON.stringify(query)}+${linkDepth}`, () => client.entries.searchUsingPost(query, linkDepth));
   }
-  get(id, linkDepth = 0, versionStatus = 'published', project) {
+  get(id, linkDepth = 0, versionStatus = 'published', project, fields) {
     const client = contensisDeliveryApi.Client.create({
       ...getClientConfig(project, this.ssr),
       versionStatus
     });
     return this.request(id, () => client.entries.get({
       id,
-      linkDepth
+      linkDepth,
+      fields
     }));
   }
   getContentType(id, project) {
@@ -335,4 +336,4 @@ exports.deliveryApiWithCookies = deliveryApiWithCookies;
 exports.getClientConfig = getClientConfig;
 exports.useDeliveryApi = useDeliveryApi;
 exports.useSSRContext = useSSRContext;
-//# sourceMappingURL=SSRContext-433c53e4.js.map
+//# sourceMappingURL=SSRContext-5360635c.js.map

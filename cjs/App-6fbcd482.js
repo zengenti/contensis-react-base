@@ -1,28 +1,54 @@
-import { createBrowserHistory, createMemoryHistory } from 'history';
-import { takeEvery, select, put, call, all } from '@redux-saga/core/effects';
-import * as log from 'loglevel';
-import { G as GET_NODE_TREE, S as SET_NODE_TREE, a as GET_NODE_TREE_ERROR } from './store-f524c50d.js';
-import { h as hasNavigationTree, i as injectRedux } from './version-dcc28b32.js';
-import to, { to as to$1 } from 'await-to-js';
-import { S as SET_NAVIGATION_PATH, f as SET_ROUTE, b as selectRouteEntry, h as selectCurrentNode, c as selectCurrentProject, U as UPDATE_LOADING_STATE, i as selectCurrentAncestors, j as selectCurrentSiblings, k as selectRouteEntryEntryId, l as selectRouteEntryLanguage, m as selectMappedEntry, n as SET_ENTRY, o as SET_ANCESTORS, p as SET_SIBLINGS, R as REGISTER_USER, q as REGISTER_USER_SUCCESS, r as REGISTER_USER_FAILED, t as queryParams, e as selectCurrentSearch, u as setRoute, v as REQUEST_USER_PASSWORD_RESET, w as RESET_USER_PASSWORD, C as CHANGE_USER_PASSWORD, x as REQUEST_USER_PASSWORD_RESET_SENDING, y as REQUEST_USER_PASSWORD_RESET_SUCCESS, z as REQUEST_USER_PASSWORD_RESET_ERROR, A as RESET_USER_PASSWORD_SENDING, B as RESET_USER_PASSWORD_SUCCESS, D as RESET_USER_PASSWORD_ERROR, E as CHANGE_USER_PASSWORD_ERROR, F as CHANGE_USER_PASSWORD_SENDING, G as CHANGE_USER_PASSWORD_SUCCESS } from './selectors-d2bdfe22.js';
-import { s as selectVersionStatus } from './version-7f50b694.js';
-import { h as handleRequiresLoginSaga, L as LoginHelper, f as findContentTypeMapping, g as getManagementApiClient, l as loginSagas } from './ChangePassword.container-96dab474.js';
-import React from 'react';
-import 'react-cookie';
-import 'react-redux';
-import 'jsonpath-mapper';
-import { Op, Query } from 'contensis-delivery-api';
-import { s as selectClientCredentials } from './ToJs-67b34be1.js';
-import 'react-hot-loader';
-import 'query-string';
-import { R as RouteLoader } from './RouteLoader-94ca1c51.js';
+'use strict';
+
+var history$1 = require('history');
+var effects = require('@redux-saga/core/effects');
+var log = require('loglevel');
+var store = require('./store-665c229b.js');
+var version = require('./version-3b05d6c8.js');
+var to = require('await-to-js');
+var selectors = require('./selectors-e3f1fd85.js');
+var version$1 = require('./version-7b43af3e.js');
+var ChangePassword_container = require('./ChangePassword.container-efcb1fcd.js');
+var React = require('react');
+require('react-cookie');
+require('react-redux');
+require('jsonpath-mapper');
+var contensisDeliveryApi = require('contensis-delivery-api');
+var ToJs = require('./ToJs-7f965106.js');
+require('react-hot-loader');
+require('query-string');
+var RouteLoader = require('./RouteLoader-bf91b09e.js');
+
+function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+
+function _interopNamespace(e) {
+  if (e && e.__esModule) return e;
+  var n = Object.create(null);
+  if (e) {
+    Object.keys(e).forEach(function (k) {
+      if (k !== 'default') {
+        var d = Object.getOwnPropertyDescriptor(e, k);
+        Object.defineProperty(n, k, d.get ? d : {
+          enumerable: true,
+          get: function () { return e[k]; }
+        });
+      }
+    });
+  }
+  n["default"] = e;
+  return Object.freeze(n);
+}
+
+var log__namespace = /*#__PURE__*/_interopNamespace(log);
+var to__default = /*#__PURE__*/_interopDefaultLegacy(to);
+var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
 
 // Create a history depending on the environment
-const selectedHistory = typeof window !== 'undefined' ? createBrowserHistory : createMemoryHistory;
+const selectedHistory = typeof window !== 'undefined' ? history$1.createBrowserHistory : history$1.createMemoryHistory;
 const history = (options = {}) => selectedHistory(options);
 const browserHistory = selectedHistory();
 
-const navigationSagas = [takeEvery(GET_NODE_TREE, ensureNodeTreeSaga)];
+const navigationSagas = [effects.takeEvery(store.GET_NODE_TREE, ensureNodeTreeSaga)];
 function* ensureNodeTreeSaga(action) {
   const {
     api,
@@ -31,28 +57,28 @@ function* ensureNodeTreeSaga(action) {
     versionStatus,
     treeDepth
   } = action;
-  const state = yield select();
+  const state = yield effects.select();
   try {
-    if (!hasNavigationTree(state)) {
+    if (!version.hasNavigationTree(state)) {
       const nodes = yield api.getRootNode({
         depth: treeDepth || 0,
         language
       }, versionStatus, project);
       if (nodes) {
-        yield put({
-          type: SET_NODE_TREE,
+        yield effects.put({
+          type: store.SET_NODE_TREE,
           nodes
         });
       } else {
-        yield put({
-          type: GET_NODE_TREE_ERROR
+        yield effects.put({
+          type: store.GET_NODE_TREE_ERROR
         });
       }
     }
   } catch (ex) {
-    log.error(...['Error running ensureNodeTreeSaga:', ex]);
-    yield put({
-      type: GET_NODE_TREE_ERROR,
+    log__namespace.error(...['Error running ensureNodeTreeSaga:', ex]);
+    yield effects.put({
+      type: store.GET_NODE_TREE_ERROR,
       error: ex.toString()
     });
   }
@@ -79,28 +105,28 @@ const Fields = {
 
 const fieldExpression = (field, value, operator = 'equalTo', weight = null) => {
   if (!field || !value) return [];
-  if (Array.isArray(value)) return equalToOrIn(field, value, operator);else return !weight ? [Op[operator](field, value)] : [Op[operator](field, value).weight(weight)];
+  if (Array.isArray(value)) return equalToOrIn(field, value, operator);else return !weight ? [contensisDeliveryApi.Op[operator](field, value)] : [contensisDeliveryApi.Op[operator](field, value).weight(weight)];
 };
 const defaultExpressions = versionStatus => {
-  return [Op.equalTo(Fields.sys.versionStatus, versionStatus)];
+  return [contensisDeliveryApi.Op.equalTo(Fields.sys.versionStatus, versionStatus)];
 };
-const equalToOrIn = (field, arr, operator = 'equalTo') => arr.length === 0 ? [] : arr.length === 1 ? [Op[operator](field, arr[0])] : [Op.in(field, ...arr)];
+const equalToOrIn = (field, arr, operator = 'equalTo') => arr.length === 0 ? [] : arr.length === 1 ? [contensisDeliveryApi.Op[operator](field, arr[0])] : [contensisDeliveryApi.Op.in(field, ...arr)];
 
 const routeEntryByFieldsQuery = (id, language = 'en-GB', fields = [], fieldLinkDepths, versionStatus = 'published') => {
-  const query = new Query(...[...fieldExpression('sys.id', id), ...fieldExpression('sys.language', language), ...defaultExpressions(versionStatus)]);
+  const query = new contensisDeliveryApi.Query(...[...fieldExpression('sys.id', id), ...fieldExpression('sys.language', language), ...defaultExpressions(versionStatus)]);
   query.fields = fields;
   query.fieldLinkDepths = fieldLinkDepths;
   return query;
 };
 
-const routingSagas = [takeEvery(SET_NAVIGATION_PATH, getRouteSaga), takeEvery(SET_ROUTE, setRouteSaga)];
+const routingSagas = [effects.takeEvery(selectors.SET_NAVIGATION_PATH, getRouteSaga), effects.takeEvery(selectors.SET_ROUTE, setRouteSaga)];
 
 /**
  * To navigate / push a specific route via redux middleware
  * @param {path, state} action
  */
 function* setRouteSaga(action) {
-  yield put({
+  yield effects.put({
     type: 'CALL_HISTORY_METHOD',
     payload: {
       method: 'push',
@@ -125,7 +151,7 @@ function* getRouteSaga(action) {
     } = action;
 
     // Inject redux { key, reducer, saga } provided by staticRoute
-    if (staticRoute && staticRoute.route.injectRedux) yield call(reduxInjectorSaga, staticRoute.route.injectRedux);
+    if (staticRoute && staticRoute.route.injectRedux) yield effects.call(reduxInjectorSaga, staticRoute.route.injectRedux);
 
     // Variables we will pass to setRouteEntry
     let pathNode = null,
@@ -147,12 +173,12 @@ function* getRouteSaga(action) {
     const entryLinkDepth = appsays && appsays.entryLinkDepth !== undefined ? appsays.entryLinkDepth : 2;
     const entryFieldLinkDepths = (_appsays = appsays) === null || _appsays === void 0 ? void 0 : _appsays.entryFieldLinkDepths;
     const setContentTypeLimits = (typeof staticRouteLinkDepth === 'undefined' || !staticRouteFields) && !!ContentTypeMappings.find(ct => ct.fields || ct.linkDepth || ct.nodeOptions || ct.fieldLinkDepths);
-    const state = yield select();
-    const routeEntry = selectRouteEntry(state, 'js');
-    const routeNode = selectCurrentNode(state, 'js');
+    const state = yield effects.select();
+    const routeEntry = selectors.selectRouteEntry(state, 'js');
+    const routeNode = selectors.selectCurrentNode(state, 'js');
     const currentPath = action.path; //selectCurrentPath(state);
-    const deliveryApiStatus = selectVersionStatus(state);
-    const project = selectCurrentProject(state);
+    const deliveryApiStatus = version$1.selectVersionStatus(state);
+    const project = selectors.selectCurrentProject(state);
     // const isHome = currentPath === '/';
     const isPreview = currentPath && currentPath.startsWith('/preview/');
     const defaultLang = appsays && appsays.defaultLang || 'en-GB';
@@ -175,11 +201,11 @@ function* getRouteSaga(action) {
         //   node: routeNode,
         //   isLoading: false,
         // });
-        yield put({
-          type: UPDATE_LOADING_STATE,
+        yield effects.put({
+          type: selectors.UPDATE_LOADING_STATE,
           isLoading: false
         });
-      } else yield call(setRouteEntry, currentPath, routeEntry, yield select(selectCurrentNode), yield select(selectCurrentAncestors), yield select(selectCurrentSiblings));
+      } else yield effects.call(setRouteEntry, currentPath, routeEntry, yield effects.select(selectors.selectCurrentNode), yield effects.select(selectors.selectCurrentAncestors), yield effects.select(selectors.selectCurrentSiblings));
     } else {
       // Handle preview routes
       if (isPreview) {
@@ -213,7 +239,7 @@ function* getRouteSaga(action) {
         var _pathNode, _pathNode$entry, _pathNode$entry$sys;
         // Handle all other routes
         let nodeError = undefined;
-        [nodeError, pathNode] = yield to(api.getNode({
+        [nodeError, pathNode] = yield to__default["default"](api.getNode({
           depth: 0,
           path: currentPath,
           entryFields: staticRouteFields || (setContentTypeLimits ? ['sys.contentTypeId', 'sys.id'] : '*'),
@@ -228,22 +254,22 @@ function* getRouteSaga(action) {
             // and fire the user down the handleRequiresLoginSaga
             // If auth was successful via a refreshToken we need to reload the page
             // to run this getRouteSaga again with the security token cookie
-            const userLoggedIn = yield call(handleRequiresLoginSaga, {
+            const userLoggedIn = yield effects.call(ChangePassword_container.handleRequiresLoginSaga, {
               ...action,
               requireLogin: true
             });
             if (userLoggedIn && nodeError.status === 401) {
               // Reload the route so we can re-run the routing request now the
               // authentication cookies are written
-              return yield call(setRouteSaga, {
+              return yield effects.call(setRouteSaga, {
                 path: currentPath
               });
             } else if (userLoggedIn && nodeError.status === 403) {
-              return yield call(setRouteSaga, {
-                path: LoginHelper.GetAccessDeniedRoute(currentPath)
+              return yield effects.call(setRouteSaga, {
+                path: ChangePassword_container.LoginHelper.GetAccessDeniedRoute(currentPath)
               });
             } else {
-              return yield call(do500, nodeError);
+              return yield effects.call(do500, nodeError);
             }
           } else throw nodeError;
         } else ({
@@ -253,7 +279,7 @@ function* getRouteSaga(action) {
           var _payload$items;
           // Get fields[] and linkDepth from ContentTypeMapping to get the entry data
           // and current node's ordinates at a specified depth with specified fields
-          contentTypeMapping = findContentTypeMapping(ContentTypeMappings, pathNode.entry.sys.contentTypeId) || {};
+          contentTypeMapping = ChangePassword_container.findContentTypeMapping(ContentTypeMappings, pathNode.entry.sys.contentTypeId) || {};
           const {
             fieldLinkDepths,
             fields,
@@ -269,7 +295,7 @@ function* getRouteSaga(action) {
 
       // make calls to fetch node ancestors, children,
       // siblings or entire node tree
-      [ancestors, children, siblings] = yield call(resolveCurrentNodeOrdinates, {
+      [ancestors, children, siblings] = yield effects.call(resolveCurrentNodeOrdinates, {
         api,
         appsays,
         contentTypeMapping,
@@ -281,10 +307,10 @@ function* getRouteSaga(action) {
       });
       if (children) pathNode.children = children;
     }
-    const resolvedContentTypeMapping = findContentTypeMapping(ContentTypeMappings, (_pathNode2 = pathNode) === null || _pathNode2 === void 0 ? void 0 : (_pathNode2$entry = _pathNode2.entry) === null || _pathNode2$entry === void 0 ? void 0 : (_pathNode2$entry$sys = _pathNode2$entry.sys) === null || _pathNode2$entry$sys === void 0 ? void 0 : _pathNode2$entry$sys.contentTypeId) || {};
+    const resolvedContentTypeMapping = ChangePassword_container.findContentTypeMapping(ContentTypeMappings, (_pathNode2 = pathNode) === null || _pathNode2 === void 0 ? void 0 : (_pathNode2$entry = _pathNode2.entry) === null || _pathNode2$entry === void 0 ? void 0 : (_pathNode2$entry$sys = _pathNode2$entry.sys) === null || _pathNode2$entry$sys === void 0 ? void 0 : _pathNode2$entry$sys.contentTypeId) || {};
 
     // Inject redux { key, reducer, saga } provided by ContentTypeMapping
-    if (resolvedContentTypeMapping.injectRedux) yield call(reduxInjectorSaga, resolvedContentTypeMapping.injectRedux);
+    if (resolvedContentTypeMapping.injectRedux) yield effects.call(reduxInjectorSaga, resolvedContentTypeMapping.injectRedux);
     if (withEvents && withEvents.onRouteLoaded) {
       // Check if the app has provided a requireLogin boolean flag or groups array
       // in addition to checking if requireLogin is set in the route definition
@@ -297,7 +323,7 @@ function* getRouteSaga(action) {
     }
     if (requireLogin !== false) {
       // Do not call the login feature saga if requireLogin is false
-      yield call(handleRequiresLoginSaga, {
+      yield effects.call(ChangePassword_container.handleRequiresLoginSaga, {
         ...action,
         entry,
         requireLogin
@@ -310,13 +336,13 @@ function* getRouteSaga(action) {
     if ((_pathNode3 = pathNode) !== null && _pathNode3 !== void 0 && (_pathNode3$entry = _pathNode3.entry) !== null && _pathNode3$entry !== void 0 && (_pathNode3$entry$sys = _pathNode3$entry.sys) !== null && _pathNode3$entry$sys !== void 0 && _pathNode3$entry$sys.id) {
       var _staticRoute$route5, _staticRoute$route5$f, _appsays4;
       entry = pathNode.entry;
-      yield call(setRouteEntry, currentPath, entry, pathNode, ancestors, siblings, (staticRoute === null || staticRoute === void 0 ? void 0 : (_staticRoute$route5 = staticRoute.route) === null || _staticRoute$route5 === void 0 ? void 0 : (_staticRoute$route5$f = _staticRoute$route5.fetchNode) === null || _staticRoute$route5$f === void 0 ? void 0 : _staticRoute$route5$f.entryMapper) || resolvedContentTypeMapping.entryMapper, false, (_appsays4 = appsays) === null || _appsays4 === void 0 ? void 0 : _appsays4.refetchNode);
+      yield effects.call(setRouteEntry, currentPath, entry, pathNode, ancestors, siblings, (staticRoute === null || staticRoute === void 0 ? void 0 : (_staticRoute$route5 = staticRoute.route) === null || _staticRoute$route5 === void 0 ? void 0 : (_staticRoute$route5$f = _staticRoute$route5.fetchNode) === null || _staticRoute$route5$f === void 0 ? void 0 : _staticRoute$route5$f.entryMapper) || resolvedContentTypeMapping.entryMapper, false, (_appsays4 = appsays) === null || _appsays4 === void 0 ? void 0 : _appsays4.refetchNode);
     } else {
-      if (staticRoute) yield call(setRouteEntry, currentPath, null, pathNode, ancestors, siblings);else yield call(do404);
+      if (staticRoute) yield effects.call(setRouteEntry, currentPath, null, pathNode, ancestors, siblings);else yield effects.call(do404);
     }
   } catch (e) {
-    log.error(...['Error running route saga:', e, e.stack]);
-    yield call(do500, e);
+    log__namespace.error(...['Error running route saga:', e, e.stack]);
+    yield effects.call(do500, e);
   }
 }
 function* resolveCurrentNodeOrdinates(action) {
@@ -353,7 +379,7 @@ function* resolveCurrentNodeOrdinates(action) {
             versionStatus
           }, project);
         } catch (ex) {
-          log.info('Problem fetching ancestors', ex);
+          log__namespace.info('Problem fetching ancestors', ex);
           return [];
         }
       };
@@ -373,7 +399,7 @@ function* resolveCurrentNodeOrdinates(action) {
             versionStatus
           }, project);
         } catch (ex) {
-          log.info('Problem fetching children', ex);
+          log__namespace.info('Problem fetching children', ex);
           return [];
         }
       };
@@ -392,30 +418,30 @@ function* resolveCurrentNodeOrdinates(action) {
             versionStatus
           }, project);
         } catch (ex) {
-          log.info('Problem fetching siblings', ex);
+          log__namespace.info('Problem fetching siblings', ex);
           return [];
         }
       };
     }
   }
-  const isTreeLoaded = yield select(hasNavigationTree);
+  const isTreeLoaded = yield effects.select(version.hasNavigationTree);
   if (!isTreeLoaded && (doNavigation === true || doNavigation.tree)) apiCall[3] = function* getNodeTree() {
     const treeDepth = doNavigation === true || !doNavigation.tree || doNavigation.tree === true ? 2 : doNavigation.tree;
     if (typeof window !== 'undefined') {
-      return yield put({
-        type: GET_NODE_TREE,
+      return yield effects.put({
+        type: store.GET_NODE_TREE,
         ...action,
         treeDepth
       });
     } else {
-      return yield call(ensureNodeTreeSaga, {
+      return yield effects.call(ensureNodeTreeSaga, {
         ...action,
         treeDepth
       });
     }
   };
   const [loadAncestors, loadChildren, loadSiblings, loadTree] = apiCall;
-  const [ancestors, nodeWithChildren, siblings] = yield all([loadAncestors(), loadChildren(), loadSiblings(), loadTree()]);
+  const [ancestors, nodeWithChildren, siblings] = yield effects.all([loadAncestors(), loadChildren(), loadSiblings(), loadTree()]);
   return [ancestors, nodeWithChildren === null || nodeWithChildren === void 0 ? void 0 : nodeWithChildren.children, siblings];
 }
 function* setRouteEntry(currentPath, entry, node, ancestors, siblings, entryMapper, notFound = false, remapEntry = false) {
@@ -424,53 +450,53 @@ function* setRouteEntry(currentPath, entry, node, ancestors, siblings, entryMapp
   // Update a window global to provide the preview toolbar
   // an updated entry id in client-side navigation
   if (typeof window !== 'undefined') window.ContensisEntryId = entrySys.id;
-  const currentEntryId = yield select(selectRouteEntryEntryId);
-  const currentEntryLang = yield select(selectRouteEntryLanguage);
-  const mappedEntry = currentEntryId === entrySys.id && currentEntryLang === entrySys.language && remapEntry === false ? (yield select(selectMappedEntry, 'js')) || {} : yield mapRouteEntry(entryMapper, {
+  const currentEntryId = yield effects.select(selectors.selectRouteEntryEntryId);
+  const currentEntryLang = yield effects.select(selectors.selectRouteEntryLanguage);
+  const mappedEntry = currentEntryId === entrySys.id && currentEntryLang === entrySys.language && remapEntry === false ? (yield effects.select(selectors.selectMappedEntry, 'js')) || {} : yield mapRouteEntry(entryMapper, {
     ...node,
     entry,
     ancestors,
     siblings
   });
-  yield all([put({
-    type: SET_ENTRY,
+  yield effects.all([effects.put({
+    type: selectors.SET_ENTRY,
     id: entrySys.id,
     currentPath,
     entry,
     mappedEntry,
     node,
     notFound
-  }), ancestors && put({
-    type: SET_ANCESTORS,
+  }), ancestors && effects.put({
+    type: selectors.SET_ANCESTORS,
     ancestors
-  }), siblings && put({
-    type: SET_SIBLINGS,
+  }), siblings && effects.put({
+    type: selectors.SET_SIBLINGS,
     siblings
   })]);
 }
 function* mapRouteEntry(entryMapper, node) {
   try {
     if (typeof entryMapper === 'function') {
-      const state = yield select();
-      const mappedEntry = yield call(entryMapper, node, state);
+      const state = yield effects.select();
+      const mappedEntry = yield effects.call(entryMapper, node, state);
       return mappedEntry;
     }
   } catch (e) {
-    log.error(...['Error running entryMapper:', e, e.stack]);
+    log__namespace.error(...['Error running entryMapper:', e, e.stack]);
   }
   return;
 }
 function* do404() {
-  yield call(clientReloadHitServer);
-  yield put({
-    type: SET_ENTRY,
+  yield effects.call(clientReloadHitServer);
+  yield effects.put({
+    type: selectors.SET_ENTRY,
     id: null,
     entry: null,
     notFound: true
   });
 }
 function* clientReloadHitServer() {
-  const stateEntry = yield select(selectRouteEntry);
+  const stateEntry = yield effects.select(selectors.selectRouteEntry);
 
   // If in client and there is a stateEntry.sys field reload the page,
   // on the 2nd load stateEntry.sys should be null at this point,
@@ -480,8 +506,8 @@ function* clientReloadHitServer() {
   }
 }
 function* do500(error) {
-  yield put({
-    type: SET_ENTRY,
+  yield effects.put({
+    type: selectors.SET_ENTRY,
     id: null,
     entry: null,
     notFound: true,
@@ -497,7 +523,7 @@ function* reduxInjectorSaga(injectorFn) {
       reducer,
       saga
     } = yield injectorFn();
-    injectRedux({
+    version.injectRedux({
       key,
       reducer,
       saga
@@ -505,7 +531,7 @@ function* reduxInjectorSaga(injectorFn) {
   }
 }
 
-const registerSagas = [takeEvery(REGISTER_USER, registerSaga), takeEvery(REGISTER_USER_SUCCESS, redirectSaga)];
+const registerSagas = [effects.takeEvery(selectors.REGISTER_USER, registerSaga), effects.takeEvery(selectors.REGISTER_USER_SUCCESS, redirectSaga)];
 function* registerSaga({
   user,
   mappers
@@ -528,7 +554,7 @@ function* registerSaga({
   });
   if (response.ok) {
     let mappedResponse;
-    const [, responseBody] = yield to$1(response.json());
+    const [, responseBody] = yield to.to(response.json());
     if (responseBody) {
       // Allow use of response mapper to convert the successful user object
       // from the api response body into a user object of any format
@@ -536,14 +562,14 @@ function* registerSaga({
         mappedResponse = yield mappers.response(responseBody);
       }
       // Update user object with mappedResponse or responseBody
-      yield put({
-        type: REGISTER_USER_SUCCESS,
+      yield effects.put({
+        type: selectors.REGISTER_USER_SUCCESS,
         user: mappedResponse || responseBody
       });
     } else {
       // OK response but unable to parse the response body
-      yield put({
-        type: REGISTER_USER_FAILED,
+      yield effects.put({
+        type: selectors.REGISTER_USER_FAILED,
         error: {
           message: 'Unable to parse the created user from the register service response'
         }
@@ -553,26 +579,26 @@ function* registerSaga({
     // Not OK responses, these can be due to service availability
     // or status codes echoed from the responses received from
     // management api when registering the user
-    const [, errorResponse] = yield to$1(response.json());
+    const [, errorResponse] = yield to.to(response.json());
     const error = errorResponse && errorResponse.error || errorResponse || {};
     // Get something meaningful from the response if there is no message in the body
     if (!error.message) {
       error.message = `Registration service: ${response.statusText}`;
       error.status = response.status;
     }
-    yield put({
-      type: REGISTER_USER_FAILED,
+    yield effects.put({
+      type: selectors.REGISTER_USER_FAILED,
       error
     });
   }
 }
 function* redirectSaga() {
   // Check if querystring contains a redirect_uri
-  const currentQs = queryParams(yield select(selectCurrentSearch));
+  const currentQs = selectors.queryParams(yield effects.select(selectors.selectCurrentSearch));
   const redirectUri = currentQs.redirect_uri || currentQs.redirect;
 
   // We must use redux based navigation to preserve the registration state
-  if (redirectUri) yield put(setRoute(redirectUri));
+  if (redirectUri) yield effects.put(selectors.setRoute(redirectUri));
 }
 
 const PAP_URL = 'https://pap.zengenti.com';
@@ -640,80 +666,80 @@ async function api(url, options) {
   });
 }
 
-const resetPasswordSagas = [takeEvery(REQUEST_USER_PASSWORD_RESET, requestPasswordResetSaga), takeEvery(RESET_USER_PASSWORD, resetPasswordSaga), takeEvery(CHANGE_USER_PASSWORD, changePasswordSaga)];
+const resetPasswordSagas = [effects.takeEvery(selectors.REQUEST_USER_PASSWORD_RESET, requestPasswordResetSaga), effects.takeEvery(selectors.RESET_USER_PASSWORD, resetPasswordSaga), effects.takeEvery(selectors.CHANGE_USER_PASSWORD, changePasswordSaga)];
 function* requestPasswordResetSaga(action) {
   const userEmailObject = action.userEmailObject;
-  yield put({
-    type: REQUEST_USER_PASSWORD_RESET_SENDING
+  yield effects.put({
+    type: selectors.REQUEST_USER_PASSWORD_RESET_SENDING
   });
   if (userEmailObject && userEmailObject.userEmail) {
     try {
       const passwordResetRequestResponse = yield UserHelper.RequestPasswordReset(userEmailObject);
       if (passwordResetRequestResponse) {
         if (!passwordResetRequestResponse.error) {
-          yield put({
-            type: REQUEST_USER_PASSWORD_RESET_SUCCESS
+          yield effects.put({
+            type: selectors.REQUEST_USER_PASSWORD_RESET_SUCCESS
           });
         } else {
-          yield put({
-            type: REQUEST_USER_PASSWORD_RESET_ERROR,
+          yield effects.put({
+            type: selectors.REQUEST_USER_PASSWORD_RESET_ERROR,
             error: passwordResetRequestResponse.error.message
           });
         }
       } else {
-        yield put({
-          type: REQUEST_USER_PASSWORD_RESET_ERROR,
+        yield effects.put({
+          type: selectors.REQUEST_USER_PASSWORD_RESET_ERROR,
           error: 'No response from server'
         });
       }
     } catch (error) {
-      yield put({
-        type: REQUEST_USER_PASSWORD_RESET_ERROR,
+      yield effects.put({
+        type: selectors.REQUEST_USER_PASSWORD_RESET_ERROR,
         error: error && error.toString()
       });
     }
   } else {
-    yield put({
-      type: REQUEST_USER_PASSWORD_RESET_ERROR,
+    yield effects.put({
+      type: selectors.REQUEST_USER_PASSWORD_RESET_ERROR,
       error: 'Invalid object'
     });
   }
 }
 function* resetPasswordSaga(action) {
   const resetPasswordObject = action.resetPasswordObject;
-  yield put({
-    type: RESET_USER_PASSWORD_SENDING
+  yield effects.put({
+    type: selectors.RESET_USER_PASSWORD_SENDING
   });
   if (resetPasswordObject.token && resetPasswordObject.password) {
     try {
       const resetPasswordResponse = yield UserHelper.ResetPassword(resetPasswordObject);
       if (resetPasswordResponse) {
         if (!resetPasswordResponse.error) {
-          yield put({
-            type: RESET_USER_PASSWORD_SUCCESS
+          yield effects.put({
+            type: selectors.RESET_USER_PASSWORD_SUCCESS
           });
         } else {
           const error = resetPasswordResponse.error.data && resetPasswordResponse.error.data.length > 0 && resetPasswordResponse.error.data[0].message || resetPasswordResponse.error.message;
-          yield put({
-            type: RESET_USER_PASSWORD_ERROR,
+          yield effects.put({
+            type: selectors.RESET_USER_PASSWORD_ERROR,
             error
           });
         }
       } else {
-        yield put({
-          type: RESET_USER_PASSWORD_ERROR,
+        yield effects.put({
+          type: selectors.RESET_USER_PASSWORD_ERROR,
           error: 'No response from server'
         });
       }
     } catch (error) {
-      yield put({
-        type: RESET_USER_PASSWORD_ERROR,
+      yield effects.put({
+        type: selectors.RESET_USER_PASSWORD_ERROR,
         error: error && error.toString()
       });
     }
   } else {
-    yield put({
-      type: RESET_USER_PASSWORD_ERROR,
+    yield effects.put({
+      type: selectors.RESET_USER_PASSWORD_ERROR,
       error: 'Invalid object'
     });
   }
@@ -724,8 +750,8 @@ function* resetPasswordSaga(action) {
 // newPassword
 function* changePasswordSaga(action) {
   if (!action || !action.userId || !action.currentPassword || !action.newPassword) {
-    yield put({
-      type: CHANGE_USER_PASSWORD_ERROR,
+    yield effects.put({
+      type: selectors.CHANGE_USER_PASSWORD_ERROR,
       error: 'Invalid action object sent to changePassword saga'
     });
     return;
@@ -736,19 +762,19 @@ function* changePasswordSaga(action) {
       existing: action.currentPassword,
       new: action.newPassword
     };
-    yield put({
-      type: CHANGE_USER_PASSWORD_SENDING
+    yield effects.put({
+      type: selectors.CHANGE_USER_PASSWORD_SENDING
     });
-    const clientCredentials = yield select(selectClientCredentials, 'js');
-    const client = yield getManagementApiClient({
+    const clientCredentials = yield effects.select(ToJs.selectClientCredentials, 'js');
+    const client = yield ChangePassword_container.getManagementApiClient({
       ...clientCredentials
     });
-    const [err, res] = yield to$1(client.security.users.updatePassword(changePasswordObject));
+    const [err, res] = yield to.to(client.security.users.updatePassword(changePasswordObject));
     if (err) {
       var _err$data, _err$data$data, _err$data2;
       const error = (err === null || err === void 0 ? void 0 : (_err$data = err.data) === null || _err$data === void 0 ? void 0 : (_err$data$data = _err$data.data) === null || _err$data$data === void 0 ? void 0 : _err$data$data.length) > 0 && err.data.data[0].message || (err === null || err === void 0 ? void 0 : (_err$data2 = err.data) === null || _err$data2 === void 0 ? void 0 : _err$data2.message);
-      yield put({
-        type: CHANGE_USER_PASSWORD_ERROR,
+      yield effects.put({
+        type: selectors.CHANGE_USER_PASSWORD_ERROR,
         error
       });
       return;
@@ -758,24 +784,24 @@ function* changePasswordSaga(action) {
     // console.log(changePasswordObject);
     // // eslint-disable-next-line no-console
     // console.log(userCredentialsObject);
-    yield put({
-      type: CHANGE_USER_PASSWORD_SUCCESS
+    yield effects.put({
+      type: selectors.CHANGE_USER_PASSWORD_SUCCESS
     });
   } catch (error) {
-    yield put({
-      type: CHANGE_USER_PASSWORD_ERROR,
+    yield effects.put({
+      type: selectors.CHANGE_USER_PASSWORD_ERROR,
       error: error && error.toString()
     });
   }
 }
 
-const userSagas = [...loginSagas, ...registerSagas, ...resetPasswordSagas];
+const userSagas = [...ChangePassword_container.loginSagas, ...registerSagas, ...resetPasswordSagas];
 
 // index.js
 function rootSaga (featureSagas = []) {
   return function* rootSaga() {
     const subSagas = [...routingSagas, ...navigationSagas, ...userSagas];
-    yield all([...subSagas, ...featureSagas]);
+    yield effects.all([...subSagas, ...featureSagas]);
   };
 }
 
@@ -819,8 +845,12 @@ const pickProject = (hostname, query) => {
 };
 
 const AppRoot = props => {
-  return /*#__PURE__*/React.createElement(RouteLoader, props);
+  return /*#__PURE__*/React__default["default"].createElement(RouteLoader.RouteLoader, props);
 };
 
-export { AppRoot as A, browserHistory as b, history as h, pickProject as p, rootSaga as r };
-//# sourceMappingURL=App-91d81f0c.js.map
+exports.AppRoot = AppRoot;
+exports.browserHistory = browserHistory;
+exports.history = history;
+exports.pickProject = pickProject;
+exports.rootSaga = rootSaga;
+//# sourceMappingURL=App-6fbcd482.js.map

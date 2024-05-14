@@ -99,14 +99,15 @@ class CachedSearch {
     const client = Client.create(getClientConfig(project, this.ssr));
     return this.request(`${project}+${JSON.stringify(query)}+${linkDepth}`, () => client.entries.searchUsingPost(query, linkDepth));
   }
-  get(id, linkDepth = 0, versionStatus = 'published', project) {
+  get(id, linkDepth = 0, versionStatus = 'published', project, fields) {
     const client = Client.create({
       ...getClientConfig(project, this.ssr),
       versionStatus
     });
     return this.request(id, () => client.entries.get({
       id,
-      linkDepth
+      linkDepth,
+      fields
     }));
   }
   getContentType(id, project) {
@@ -322,4 +323,4 @@ const useDeliveryApi = () => {
 };
 
 export { SSRContextProvider as S, cachedSearchWithCookies as a, deliveryApiWithCookies as b, cachedSearch as c, deliveryApi as d, useDeliveryApi as e, getClientConfig as g, useSSRContext as u };
-//# sourceMappingURL=SSRContext-88841734.js.map
+//# sourceMappingURL=SSRContext-42cc028d.js.map

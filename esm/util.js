@@ -1,5 +1,5 @@
 export { s as setCachingHeaders, u as urls } from './urls-eac9a747.js';
-export { S as SSRContextProvider, c as cachedSearch, a as cachedSearchWithCookies, d as deliveryApi, b as deliveryApiWithCookies, g as getClientConfig, e as useDeliveryApi, u as useSSRContext } from './SSRContext-88841734.js';
+export { S as SSRContextProvider, c as cachedSearch, a as cachedSearchWithCookies, d as deliveryApi, b as deliveryApiWithCookies, g as getClientConfig, e as useDeliveryApi, u as useSSRContext } from './SSRContext-42cc028d.js';
 import mapJson, { jpath } from 'jsonpath-mapper';
 export { jpath, default as mapJson } from 'jsonpath-mapper';
 import React from 'react';
