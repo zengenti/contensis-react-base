@@ -17,7 +17,7 @@ export const getManagementApiClient = async ({
   username,
   password,
 }: ManagementApiClientCredentials) => {
-  const rootUrl = SERVERS.api || SERVERS.cms; /* global SERVERS */
+  const rootUrl = SERVERS.cms || SERVERS.api; /* global SERVERS */
   const projectId = PROJECTS[0].id; /* global PROJECTS */
 
   let config = {};
