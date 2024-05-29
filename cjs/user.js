@@ -2,7 +2,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var ChangePassword_container = require('./ChangePassword.container-efcb1fcd.js');
+var ChangePassword_container = require('./ChangePassword.container-98448cf3.js');
 var React = require('react');
 var reactCookie = require('react-cookie');
 var reactRedux = require('react-redux');

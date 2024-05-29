@@ -55,7 +55,7 @@ const getManagementApiClient = async ({
   username,
   password
 }) => {
-  const rootUrl = SERVERS.api || SERVERS.cms; /* global SERVERS */
+  const rootUrl = SERVERS.cms || SERVERS.api; /* global SERVERS */
   const projectId = PROJECTS[0].id; /* global PROJECTS */
 
   let config = {};
@@ -759,4 +759,4 @@ exports.useChangePassword = useChangePassword;
 exports.useForgotPassword = useForgotPassword;
 exports.useLogin = useLogin;
 exports.useRegistration = useRegistration;
-//# sourceMappingURL=ChangePassword.container-efcb1fcd.js.map
+//# sourceMappingURL=ChangePassword.container-98448cf3.js.map

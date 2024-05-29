@@ -31,7 +31,7 @@ const getManagementApiClient = async ({
   username,
   password
 }) => {
-  const rootUrl = SERVERS.api || SERVERS.cms; /* global SERVERS */
+  const rootUrl = SERVERS.cms || SERVERS.api; /* global SERVERS */
   const projectId = PROJECTS[0].id; /* global PROJECTS */
 
   let config = {};
@@ -718,4 +718,4 @@ ChangePasswordContainer.propTypes = {};
 var ChangePassword_container = toJS(ChangePasswordContainer);
 
 export { ChangePassword_container as C, ForgotPassword_container as F, LoginHelper as L, Registration_container as R, loginUser as a, logoutUser as b, actions as c, Login_container as d, useRegistration as e, findContentTypeMapping as f, getManagementApiClient as g, handleRequiresLoginSaga as h, useForgotPassword as i, useChangePassword as j, refreshSecurityToken as k, loginSagas as l, registerUser as r, useLogin as u };
-//# sourceMappingURL=ChangePassword.container-96dab474.js.map
+//# sourceMappingURL=ChangePassword.container-ab6cc22d.js.map
