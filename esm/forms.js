@@ -6,7 +6,6 @@ import React, { createContext, useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import styled, { ThemeProvider as ThemeProvider$1, css } from 'styled-components';
-import Markdown from 'markdown-to-jsx';
 import { c as commonjsGlobal, g as getDefaultExportFromCjs } from './_commonjsHelpers-1789f0cf.js';
 
 const ACTION_PREFIX = '@FORM2/';
@@ -1011,6 +1010,8 @@ CharacterLimit.propTypes = {
   useDefaultTheme: PropTypes.bool
 };
 
+// import Markdown from 'markdown-to-jsx';
+
 const TextfieldStyled = styled.div.withConfig({
   displayName: "textfield__TextfieldStyled",
   componentId: "sc-whkw86-0"
@@ -1110,9 +1111,7 @@ const Textfield = ({
   }, /*#__PURE__*/React.createElement("path", {
     fill: "#333",
     d: "m2 8 4.418 4.667L14 4.659l-1.246-1.326-6.336 6.692-3.18-3.332L2 8Z"
-  }))), instructions && /*#__PURE__*/React.createElement(Markdown, {
-    className: "text-field__input--markdown"
-  }, instructions), id === 'password' && /*#__PURE__*/React.createElement("button", {
+  }))), id === 'password' && /*#__PURE__*/React.createElement("button", {
     className: "text-input__button--pw",
     type: "button",
     onClick: () => setVisible(!isVisible),
@@ -5119,6 +5118,8 @@ const CountrySelectStyled = styled.div.withConfig({
   return css(["display:flex;flex-direction:column;--semantic-type-1:#01010c;--semantic-background-1:#fff;--semantic-active-background-1:#efefef;--semantic-border-1:#949494;.input__label{margin-bottom:4px;}.input__wrapper{position:relative;}.input__listbox{display:none;position:absolute;top:40px;left:0;width:100%;padding:8px;background:var(--semantic-background-1);z-index:99;text-align:left;overflow-y:auto;border:1px solid var(--semantic-border-1);max-height:400px;}.input__listbox.open{display:block;}.input__listbox .option{padding:8px;cursor:default;display:flex;align-items:center;border:none;width:100%;}.input__listbox .option.selected{color:var(--semantic-type-1);background-color:var(--semantic-active-background-1);}.input__listbox .option.active{color:var(--semantic-type-1);background-color:var(--semantic-active-background-1);}"]);
 });
 
+// import Markdown from 'markdown-to-jsx';
+
 const FormComposer = ({
   fields,
   formData,
@@ -5295,7 +5296,7 @@ const FormComposer = ({
             name,
             editor
           } = field || {};
-          const instructions = editor === null || editor === void 0 ? void 0 : (_editor$instructions = editor.instructions) === null || _editor$instructions === void 0 ? void 0 : _editor$instructions[defaultLanguage];
+          editor === null || editor === void 0 ? void 0 : (_editor$instructions = editor.instructions) === null || _editor$instructions === void 0 ? void 0 : _editor$instructions[defaultLanguage];
           return /*#__PURE__*/React.createElement("span", {
             className: "form__content",
             "data-form": "title",
@@ -5305,9 +5306,7 @@ const FormComposer = ({
             key: `${field.id}-${idx}`
           }, /*#__PURE__*/React.createElement("span", {
             className: "form__content--title"
-          }, name === null || name === void 0 ? void 0 : name[defaultLanguage]), instructions && /*#__PURE__*/React.createElement(Markdown, {
-            className: "form__content--markdown"
-          }, instructions));
+          }, name === null || name === void 0 ? void 0 : name[defaultLanguage]));
         }
     }
   });

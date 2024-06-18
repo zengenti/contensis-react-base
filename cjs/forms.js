@@ -10,7 +10,6 @@ var React = require('react');
 var PropTypes = require('prop-types');
 var reactRedux = require('react-redux');
 var styled = require('styled-components');
-var Markdown = require('markdown-to-jsx');
 var _commonjsHelpers = require('./_commonjsHelpers-b3309d7b.js');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
@@ -18,7 +17,6 @@ function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'defau
 var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
 var PropTypes__default = /*#__PURE__*/_interopDefaultLegacy(PropTypes);
 var styled__default = /*#__PURE__*/_interopDefaultLegacy(styled);
-var Markdown__default = /*#__PURE__*/_interopDefaultLegacy(Markdown);
 
 const ACTION_PREFIX = '@FORM2/';
 const SET_FORM_DATA = `${ACTION_PREFIX}SET_FORM_DATA`;
@@ -1022,6 +1020,8 @@ CharacterLimit.propTypes = {
   useDefaultTheme: PropTypes__default["default"].bool
 };
 
+// import Markdown from 'markdown-to-jsx';
+
 const TextfieldStyled = styled__default["default"].div.withConfig({
   displayName: "textfield__TextfieldStyled",
   componentId: "sc-whkw86-0"
@@ -1121,9 +1121,7 @@ const Textfield = ({
   }, /*#__PURE__*/React__default["default"].createElement("path", {
     fill: "#333",
     d: "m2 8 4.418 4.667L14 4.659l-1.246-1.326-6.336 6.692-3.18-3.332L2 8Z"
-  }))), instructions && /*#__PURE__*/React__default["default"].createElement(Markdown__default["default"], {
-    className: "text-field__input--markdown"
-  }, instructions), id === 'password' && /*#__PURE__*/React__default["default"].createElement("button", {
+  }))), id === 'password' && /*#__PURE__*/React__default["default"].createElement("button", {
     className: "text-input__button--pw",
     type: "button",
     onClick: () => setVisible(!isVisible),
@@ -5130,6 +5128,8 @@ const CountrySelectStyled = styled__default["default"].div.withConfig({
   return styled.css(["display:flex;flex-direction:column;--semantic-type-1:#01010c;--semantic-background-1:#fff;--semantic-active-background-1:#efefef;--semantic-border-1:#949494;.input__label{margin-bottom:4px;}.input__wrapper{position:relative;}.input__listbox{display:none;position:absolute;top:40px;left:0;width:100%;padding:8px;background:var(--semantic-background-1);z-index:99;text-align:left;overflow-y:auto;border:1px solid var(--semantic-border-1);max-height:400px;}.input__listbox.open{display:block;}.input__listbox .option{padding:8px;cursor:default;display:flex;align-items:center;border:none;width:100%;}.input__listbox .option.selected{color:var(--semantic-type-1);background-color:var(--semantic-active-background-1);}.input__listbox .option.active{color:var(--semantic-type-1);background-color:var(--semantic-active-background-1);}"]);
 });
 
+// import Markdown from 'markdown-to-jsx';
+
 const FormComposer = ({
   fields,
   formData,
@@ -5306,7 +5306,7 @@ const FormComposer = ({
             name,
             editor
           } = field || {};
-          const instructions = editor === null || editor === void 0 ? void 0 : (_editor$instructions = editor.instructions) === null || _editor$instructions === void 0 ? void 0 : _editor$instructions[defaultLanguage];
+          editor === null || editor === void 0 ? void 0 : (_editor$instructions = editor.instructions) === null || _editor$instructions === void 0 ? void 0 : _editor$instructions[defaultLanguage];
           return /*#__PURE__*/React__default["default"].createElement("span", {
             className: "form__content",
             "data-form": "title",
@@ -5316,9 +5316,7 @@ const FormComposer = ({
             key: `${field.id}-${idx}`
           }, /*#__PURE__*/React__default["default"].createElement("span", {
             className: "form__content--title"
-          }, name === null || name === void 0 ? void 0 : name[defaultLanguage]), instructions && /*#__PURE__*/React__default["default"].createElement(Markdown__default["default"], {
-            className: "form__content--markdown"
-          }, instructions));
+          }, name === null || name === void 0 ? void 0 : name[defaultLanguage]));
         }
     }
   });
