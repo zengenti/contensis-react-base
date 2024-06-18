@@ -10,6 +10,7 @@ var React = require('react');
 var PropTypes = require('prop-types');
 var reactRedux = require('react-redux');
 var styled = require('styled-components');
+var Markdown = require('markdown-to-jsx');
 var _commonjsHelpers = require('./_commonjsHelpers-b3309d7b.js');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
@@ -17,6 +18,7 @@ function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'defau
 var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
 var PropTypes__default = /*#__PURE__*/_interopDefaultLegacy(PropTypes);
 var styled__default = /*#__PURE__*/_interopDefaultLegacy(styled);
+var Markdown__default = /*#__PURE__*/_interopDefaultLegacy(Markdown);
 
 const ACTION_PREFIX = '@FORM2/';
 const SET_FORM_DATA = `${ACTION_PREFIX}SET_FORM_DATA`;
@@ -565,8 +567,6 @@ const getFieldType = field => {
     return 'textarea';
   } else if (field.dataType === 'string' && field.editor && field.editor.id === 'list-dropdown') {
     return 'dropdown';
-  } else if (field !== null && field !== void 0 && (_field$editor = field.editor) !== null && _field$editor !== void 0 && (_field$editor$propert = _field$editor.properties) !== null && _field$editor$propert !== void 0 && _field$editor$propert.readOnly || (field === null || field === void 0 ? void 0 : field.groupId) === 'private' || (field === null || field === void 0 ? void 0 : field.groupId) === 'settings') {
-    return 'hidden';
   } else if (field.dataType === 'stringArray' || field.dataType === 'boolean') {
     return 'checkbox';
   } else if (field.dataType === 'string' && field.validations && field.validations.allowedValues) {
@@ -580,7 +580,9 @@ const getFieldType = field => {
   } else if (field.dataFormat === 'entry') {
     return 'entryPicker';
   }
-  if (field.dataFormat === 'quote') return 'title';else return 'textfield';
+  if (field.dataFormat === 'quote') return 'content';else if (field !== null && field !== void 0 && (_field$editor = field.editor) !== null && _field$editor !== void 0 && (_field$editor$propert = _field$editor.properties) !== null && _field$editor$propert !== void 0 && _field$editor$propert.readOnly || (field === null || field === void 0 ? void 0 : field.groupId) === 'private' || (field === null || field === void 0 ? void 0 : field.groupId) === 'settings') {
+    return 'hidden';
+  } else return 'textfield';
 };
 
 const sagas = [effects.takeEvery(SUBMIT_FORM_SUCCESS, onFormSuccess), effects.takeEvery(SUBMIT_FORM_FOR_VALIDATION, doValidateForm), effects.takeEvery(SUBMIT_FORM, onSubmitForm), effects.takeEvery(SET_FORM_ID, doFetchForm),
@@ -1026,7 +1028,7 @@ const TextfieldStyled = styled__default["default"].div.withConfig({
 })(["", ";"], ({
   isHidden
 }) => {
-  return styled.css(["display:", ";"], isHidden ? 'none' : 'block');
+  return styled.css(["display:", ";position:relative;"], isHidden ? 'none' : 'block');
 });
 const Textfield = ({
   className,
@@ -1042,7 +1044,8 @@ const Textfield = ({
   defaultLanguage,
   placeholder,
   isHidden,
-  useDefaultTheme
+  useDefaultTheme,
+  instructions
 }) => {
   const [hasCharLimit, setCharLimit] = React.useState(false);
   const isRequired = validations && validations.required ? true : false;
@@ -1055,6 +1058,7 @@ const Textfield = ({
   React.useEffect(() => {
     if (formValidationSent) setA11yInvalid(doA11yValidation(_, field, true));
   }, [formValidationSent]);
+  const [isVisible, setVisible] = React__default["default"].useState(false);
   return /*#__PURE__*/React__default["default"].createElement(TextfieldStyled, {
     className: className,
     isHidden: isHidden
@@ -1075,7 +1079,7 @@ const Textfield = ({
     }
   }, /*#__PURE__*/React__default["default"].createElement("input", {
     className: "text-field__input",
-    type: type,
+    type: (isVisible != null ? isVisible : 'text') || type,
     defaultValue: defaultValueText,
     placeholder: placeholderText,
     "aria-invalid": a11yInvalid,
@@ -1117,6 +1121,35 @@ const Textfield = ({
   }, /*#__PURE__*/React__default["default"].createElement("path", {
     fill: "#333",
     d: "m2 8 4.418 4.667L14 4.659l-1.246-1.326-6.336 6.692-3.18-3.332L2 8Z"
+  }))), instructions && /*#__PURE__*/React__default["default"].createElement(Markdown__default["default"], {
+    className: "text-field__input--markdown"
+  }, instructions), id === 'password' && /*#__PURE__*/React__default["default"].createElement("button", {
+    className: "text-input__button--pw",
+    type: "button",
+    onClick: () => setVisible(!isVisible),
+    "aria-label": `${isVisible ? 'Hide' : 'Show'} Password.`
+  }, isVisible ? /*#__PURE__*/React__default["default"].createElement("svg", {
+    width: "15",
+    height: "15",
+    viewBox: "0 0 15 15",
+    fill: "none",
+    xmlns: "http://www.w3.org/2000/svg"
+  }, /*#__PURE__*/React__default["default"].createElement("path", {
+    d: "M13.3536 2.35355C13.5488 2.15829 13.5488 1.84171 13.3536 1.64645C13.1583 1.45118 12.8417 1.45118 12.6464 1.64645L10.6828 3.61012C9.70652 3.21671 8.63759 3 7.5 3C4.30786 3 1.65639 4.70638 0.0760002 7.23501C-0.0253338 7.39715 -0.0253334 7.60288 0.0760014 7.76501C0.902945 9.08812 2.02314 10.1861 3.36061 10.9323L1.64645 12.6464C1.45118 12.8417 1.45118 13.1583 1.64645 13.3536C1.84171 13.5488 2.15829 13.5488 2.35355 13.3536L4.31723 11.3899C5.29348 11.7833 6.36241 12 7.5 12C10.6921 12 13.3436 10.2936 14.924 7.76501C15.0253 7.60288 15.0253 7.39715 14.924 7.23501C14.0971 5.9119 12.9769 4.81391 11.6394 4.06771L13.3536 2.35355ZM9.90428 4.38861C9.15332 4.1361 8.34759 4 7.5 4C4.80285 4 2.52952 5.37816 1.09622 7.50001C1.87284 8.6497 2.89609 9.58106 4.09974 10.1931L9.90428 4.38861ZM5.09572 10.6114L10.9003 4.80685C12.1039 5.41894 13.1272 6.35031 13.9038 7.50001C12.4705 9.62183 10.1971 11 7.5 11C6.65241 11 5.84668 10.8639 5.09572 10.6114Z",
+    fill: "currentColor",
+    "fill-rule": "evenodd",
+    "clip-rule": "evenodd"
+  })) : /*#__PURE__*/React__default["default"].createElement("svg", {
+    width: "15",
+    height: "15",
+    viewBox: "0 0 15 15",
+    fill: "none",
+    xmlns: "http://www.w3.org/2000/svg"
+  }, /*#__PURE__*/React__default["default"].createElement("path", {
+    d: "M7.5 11C4.80285 11 2.52952 9.62184 1.09622 7.50001C2.52952 5.37816 4.80285 4 7.5 4C10.1971 4 12.4705 5.37816 13.9038 7.50001C12.4705 9.62183 10.1971 11 7.5 11ZM7.5 3C4.30786 3 1.65639 4.70638 0.0760002 7.23501C-0.0253338 7.39715 -0.0253334 7.60288 0.0760014 7.76501C1.65639 10.2936 4.30786 12 7.5 12C10.6921 12 13.3436 10.2936 14.924 7.76501C15.0253 7.60288 15.0253 7.39715 14.924 7.23501C13.3436 4.70638 10.6921 3 7.5 3ZM7.5 9.5C8.60457 9.5 9.5 8.60457 9.5 7.5C9.5 6.39543 8.60457 5.5 7.5 5.5C6.39543 5.5 5.5 6.39543 5.5 7.5C5.5 8.60457 6.39543 9.5 7.5 9.5Z",
+    fill: "currentColor",
+    "fill-rule": "evenodd",
+    "clip-rule": "evenodd"
   }))));
 };
 Textfield.propTypes = {
@@ -5116,10 +5149,12 @@ const FormComposer = ({
       case 'number':
       case 'textfield':
         {
+          var _field$editor, _field$editor$instruc;
+          const instructions = field === null || field === void 0 ? void 0 : (_field$editor = field.editor) === null || _field$editor === void 0 ? void 0 : (_field$editor$instruc = _field$editor.instructions) === null || _field$editor$instruc === void 0 ? void 0 : _field$editor$instruc[defaultLanguage];
           return /*#__PURE__*/React__default["default"].createElement(Textfield, {
             key: `${field.id}-${idx}`,
             field: field,
-            type: field.type,
+            type: field.id === 'password' ? 'password' : field.type,
             id: field.id,
             label: field.name && field.name[defaultLanguage],
             formId: formId,
@@ -5130,7 +5165,8 @@ const FormComposer = ({
             defaultValue: formData && formData[field.id] || field.default,
             placeholder: field.editor,
             errors: errors,
-            useDefaultTheme: useDefaultTheme
+            useDefaultTheme: useDefaultTheme,
+            instructions: instructions
           });
         }
       case 'textarea':
@@ -5251,7 +5287,7 @@ const FormComposer = ({
         }
       case 'country':
         {
-          var _field$default, _field$editor, _field$editor$propert, _field$editor$propert2;
+          var _field$default, _field$editor2, _field$editor2$proper, _field$editor2$proper2;
           return /*#__PURE__*/React__default["default"].createElement(CountrySelect, {
             key: `${field.id}-${idx}`,
             formId: formId,
@@ -5260,18 +5296,29 @@ const FormComposer = ({
             label: field.name && field.name[defaultLanguage],
             validations: field.validations,
             defaultValue: formData && formData[field.id] || (field === null || field === void 0 ? void 0 : (_field$default = field.default) === null || _field$default === void 0 ? void 0 : _field$default[defaultLanguage]),
-            placeholder: field === null || field === void 0 ? void 0 : (_field$editor = field.editor) === null || _field$editor === void 0 ? void 0 : (_field$editor$propert = _field$editor.properties) === null || _field$editor$propert === void 0 ? void 0 : (_field$editor$propert2 = _field$editor$propert.placeholderText) === null || _field$editor$propert2 === void 0 ? void 0 : _field$editor$propert2[defaultLanguage]
+            placeholder: field === null || field === void 0 ? void 0 : (_field$editor2 = field.editor) === null || _field$editor2 === void 0 ? void 0 : (_field$editor2$proper = _field$editor2.properties) === null || _field$editor2$proper === void 0 ? void 0 : (_field$editor2$proper2 = _field$editor2$proper.placeholderText) === null || _field$editor2$proper2 === void 0 ? void 0 : _field$editor2$proper2[defaultLanguage]
           });
         }
-      case 'title':
+      case 'content':
         {
+          var _editor$instructions;
+          const {
+            name,
+            editor
+          } = field || {};
+          const instructions = editor === null || editor === void 0 ? void 0 : (_editor$instructions = editor.instructions) === null || _editor$instructions === void 0 ? void 0 : _editor$instructions[defaultLanguage];
           return /*#__PURE__*/React__default["default"].createElement("span", {
-            className: "form__title",
+            className: "form__content",
             "data-form": "title",
             style: {
               display: 'block'
-            }
-          }, field.name && field.name[defaultLanguage]);
+            },
+            key: `${field.id}-${idx}`
+          }, /*#__PURE__*/React__default["default"].createElement("span", {
+            className: "form__content--title"
+          }, name === null || name === void 0 ? void 0 : name[defaultLanguage]), instructions && /*#__PURE__*/React__default["default"].createElement(Markdown__default["default"], {
+            className: "form__content--markdown"
+          }, instructions));
         }
     }
   });
@@ -5442,7 +5489,9 @@ const Form = ({
       useDefaultTheme: useDefaultTheme,
       entries: entries,
       setDateRangeValues: _setDateRangeValues
-    }), pagingInfo.pageIndex > 0 && /*#__PURE__*/React__default["default"].createElement(Button, {
+    }), pagingInfo.pageCount >= 2 && /*#__PURE__*/React__default["default"].createElement("div", {
+      className: "form__btns"
+    }, pagingInfo.pageIndex > 0 && /*#__PURE__*/React__default["default"].createElement(Button, {
       className: "form__btn--prev",
       type: "button",
       text: "Go Back",
@@ -5464,7 +5513,7 @@ const Form = ({
         if (onCustomSubmit) onCustomSubmit();
       },
       useDefaultTheme: useDefaultTheme
-    })), (status === null || status === void 0 ? void 0 : status.isLoading) && !(status !== null && status !== void 0 && status.hasSuccess) && /*#__PURE__*/React__default["default"].createElement(Loader, {
+    }))), (status === null || status === void 0 ? void 0 : status.isLoading) && !(status !== null && status !== void 0 && status.hasSuccess) && /*#__PURE__*/React__default["default"].createElement(Loader, {
       className: "loading",
       height: 24,
       width: 24,
