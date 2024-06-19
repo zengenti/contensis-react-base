@@ -556,31 +556,35 @@ const doCreateMessage = (type, minLength, maxLength, currentLength, defaultLangu
   }
 };
 const getFieldType = field => {
-  var _field$editor, _field$editor$propert;
+  var _editor$properties, _editor$properties2;
   if (!field) return null;
-  if (field.id === 'country' && field.dataType === 'string') {
-    return 'country';
+  const {
+    dataType,
+    dataFormat,
+    editor,
+    validations,
+    id,
+    groupId
+  } = field || {};
+  if (groupId === 'private' || groupId === 'settings') return 'hidden';
+  if (editor !== null && editor !== void 0 && (_editor$properties = editor.properties) !== null && _editor$properties !== void 0 && _editor$properties.readOnly && dataFormat !== 'quote') return 'hidden';
+  if (dataFormat === 'quote') return 'content';
+  if (dataFormat === 'quote' && editor !== null && editor !== void 0 && (_editor$properties2 = editor.properties) !== null && _editor$properties2 !== void 0 && _editor$properties2.readOnly) return 'content';
+  if (dataType === 'string') {
+    if ((editor === null || editor === void 0 ? void 0 : editor.id) === 'multiline') return 'textarea';
+    if ((editor === null || editor === void 0 ? void 0 : editor.id) === 'list-dropdown') return 'dropdown';
+    if (validations !== null && validations !== void 0 && validations.allowedValues) return 'radio';
+    if (id === 'country') return 'country';
+    return 'textfield'; // Default string type
   }
-  if (field.dataType === 'string' && field.editor && field.editor.id === 'multiline') {
-    return 'textarea';
-  } else if (field.dataType === 'string' && field.editor && field.editor.id === 'list-dropdown') {
-    return 'dropdown';
-  } else if (field.dataType === 'stringArray' || field.dataType === 'boolean') {
-    return 'checkbox';
-  } else if (field.dataType === 'string' && field.validations && field.validations.allowedValues) {
-    return 'radio';
-  } else if (field.dataType === 'integer') {
-    return 'number';
-  } else if (field.dataType === 'dateTime') {
-    return 'date';
-  } else if (field.dataFormat === 'daterange') {
-    return 'dateRange';
-  } else if (field.dataFormat === 'entry') {
-    return 'entryPicker';
-  }
-  if (field.dataFormat === 'quote') return 'content';else if (field !== null && field !== void 0 && (_field$editor = field.editor) !== null && _field$editor !== void 0 && (_field$editor$propert = _field$editor.properties) !== null && _field$editor$propert !== void 0 && _field$editor$propert.readOnly || (field === null || field === void 0 ? void 0 : field.groupId) === 'private' || (field === null || field === void 0 ? void 0 : field.groupId) === 'settings') {
-    return 'hidden';
-  } else return 'textfield';
+
+  if (dataType === 'stringArray' || dataType === 'boolean') return 'checkbox';
+  if (dataType === 'integer') return 'number';
+  if (dataType === 'dateTime') return 'date';
+  if (dataFormat === 'daterange') return 'dateRange';
+  if (dataFormat === 'entry') return 'entryPicker';
+  if (groupId === 'private' || groupId === 'settings') return 'hidden';
+  return 'textfield'; // Default fallback
 };
 
 const sagas = [effects.takeEvery(SUBMIT_FORM_SUCCESS, onFormSuccess), effects.takeEvery(SUBMIT_FORM_FOR_VALIDATION, doValidateForm), effects.takeEvery(SUBMIT_FORM, onSubmitForm), effects.takeEvery(SET_FORM_ID, doFetchForm),
@@ -1020,7 +1024,69 @@ CharacterLimit.propTypes = {
   useDefaultTheme: PropTypes__default["default"].bool
 };
 
-// import Markdown from 'markdown-to-jsx';
+const doParse = markdown => {
+  const LINES = markdown.split('\n');
+  const ELEMENTS = [];
+  let inList = false; // Track if we are currently inside a list
+  let inNestedList = false; // Track if we are inside a nested list
+
+  LINES.forEach((LINE, INDEX) => {
+    LINE = LINE.trim(); // Trim whitespace from the beginning and end of the line
+
+    if (LINE.startsWith('* ')) {
+      // Top-level list item
+      if (!inList) {
+        ELEMENTS.push('<ul>'); // Start the outermost list
+        inList = true;
+      }
+      if (inNestedList) {
+        // Close the previous nested list
+        ELEMENTS.push('</ul>');
+        inNestedList = false;
+      }
+      ELEMENTS.push(`<li key=${INDEX}>${LINE.substring(2)}</li>`);
+    } else if (LINE.startsWith('**')) {
+      // Nested list item
+      if (!inNestedList) {
+        ELEMENTS.push('<ul>'); // Start a nested list
+        inNestedList = true;
+      }
+      ELEMENTS.push(`<li key=${INDEX}>${LINE.substring(2)}</li>`);
+    } else {
+      // Non-list item
+      if (inList) {
+        if (inNestedList) {
+          ELEMENTS.push('</ul>'); // Close any open nested list
+          inNestedList = false;
+        }
+        ELEMENTS.push('</ul>'); // Close the outermost list
+        inList = false;
+      }
+      ELEMENTS.push(`<span key=${INDEX}>${LINE}</span>`);
+    }
+  });
+  if (inNestedList) {
+    ELEMENTS.push('</ul>'); // Close any remaining open nested list
+  } else if (inList) {
+    ELEMENTS.push('</ul>'); // Close the outermost list
+  }
+
+  return ELEMENTS.join(''); // Join all elements into a single string
+};
+
+const MarkdownRenderer = ({
+  className,
+  markdown
+}) => {
+  if (!markdown) return null;
+  const elements = doParse(markdown);
+  return /*#__PURE__*/React__default["default"].createElement("div", {
+    className: className,
+    dangerouslySetInnerHTML: {
+      __html: elements
+    }
+  });
+};
 
 const TextfieldStyled = styled__default["default"].div.withConfig({
   displayName: "textfield__TextfieldStyled",
@@ -1121,7 +1187,10 @@ const Textfield = ({
   }, /*#__PURE__*/React__default["default"].createElement("path", {
     fill: "#333",
     d: "m2 8 4.418 4.667L14 4.659l-1.246-1.326-6.336 6.692-3.18-3.332L2 8Z"
-  }))), id === 'password' && /*#__PURE__*/React__default["default"].createElement("button", {
+  }))), instructions && /*#__PURE__*/React__default["default"].createElement(MarkdownRenderer, {
+    className: "text-field__input--markdown",
+    markdown: instructions
+  }), id === 'password' && /*#__PURE__*/React__default["default"].createElement("button", {
     className: "text-input__button--pw",
     type: "button",
     onClick: () => setVisible(!isVisible),
@@ -1135,8 +1204,8 @@ const Textfield = ({
   }, /*#__PURE__*/React__default["default"].createElement("path", {
     d: "M13.3536 2.35355C13.5488 2.15829 13.5488 1.84171 13.3536 1.64645C13.1583 1.45118 12.8417 1.45118 12.6464 1.64645L10.6828 3.61012C9.70652 3.21671 8.63759 3 7.5 3C4.30786 3 1.65639 4.70638 0.0760002 7.23501C-0.0253338 7.39715 -0.0253334 7.60288 0.0760014 7.76501C0.902945 9.08812 2.02314 10.1861 3.36061 10.9323L1.64645 12.6464C1.45118 12.8417 1.45118 13.1583 1.64645 13.3536C1.84171 13.5488 2.15829 13.5488 2.35355 13.3536L4.31723 11.3899C5.29348 11.7833 6.36241 12 7.5 12C10.6921 12 13.3436 10.2936 14.924 7.76501C15.0253 7.60288 15.0253 7.39715 14.924 7.23501C14.0971 5.9119 12.9769 4.81391 11.6394 4.06771L13.3536 2.35355ZM9.90428 4.38861C9.15332 4.1361 8.34759 4 7.5 4C4.80285 4 2.52952 5.37816 1.09622 7.50001C1.87284 8.6497 2.89609 9.58106 4.09974 10.1931L9.90428 4.38861ZM5.09572 10.6114L10.9003 4.80685C12.1039 5.41894 13.1272 6.35031 13.9038 7.50001C12.4705 9.62183 10.1971 11 7.5 11C6.65241 11 5.84668 10.8639 5.09572 10.6114Z",
     fill: "currentColor",
-    "fill-rule": "evenodd",
-    "clip-rule": "evenodd"
+    fillRule: "evenodd",
+    clipRule: "evenodd"
   })) : /*#__PURE__*/React__default["default"].createElement("svg", {
     width: "15",
     height: "15",
@@ -1146,8 +1215,8 @@ const Textfield = ({
   }, /*#__PURE__*/React__default["default"].createElement("path", {
     d: "M7.5 11C4.80285 11 2.52952 9.62184 1.09622 7.50001C2.52952 5.37816 4.80285 4 7.5 4C10.1971 4 12.4705 5.37816 13.9038 7.50001C12.4705 9.62183 10.1971 11 7.5 11ZM7.5 3C4.30786 3 1.65639 4.70638 0.0760002 7.23501C-0.0253338 7.39715 -0.0253334 7.60288 0.0760014 7.76501C1.65639 10.2936 4.30786 12 7.5 12C10.6921 12 13.3436 10.2936 14.924 7.76501C15.0253 7.60288 15.0253 7.39715 14.924 7.23501C13.3436 4.70638 10.6921 3 7.5 3ZM7.5 9.5C8.60457 9.5 9.5 8.60457 9.5 7.5C9.5 6.39543 8.60457 5.5 7.5 5.5C6.39543 5.5 5.5 6.39543 5.5 7.5C5.5 8.60457 6.39543 9.5 7.5 9.5Z",
     fill: "currentColor",
-    "fill-rule": "evenodd",
-    "clip-rule": "evenodd"
+    fillRule: "evenodd",
+    clipRule: "evenodd"
   }))));
 };
 Textfield.propTypes = {
@@ -5128,8 +5197,6 @@ const CountrySelectStyled = styled__default["default"].div.withConfig({
   return styled.css(["display:flex;flex-direction:column;--semantic-type-1:#01010c;--semantic-background-1:#fff;--semantic-active-background-1:#efefef;--semantic-border-1:#949494;.input__label{margin-bottom:4px;}.input__wrapper{position:relative;}.input__listbox{display:none;position:absolute;top:40px;left:0;width:100%;padding:8px;background:var(--semantic-background-1);z-index:99;text-align:left;overflow-y:auto;border:1px solid var(--semantic-border-1);max-height:400px;}.input__listbox.open{display:block;}.input__listbox .option{padding:8px;cursor:default;display:flex;align-items:center;border:none;width:100%;}.input__listbox .option.selected{color:var(--semantic-type-1);background-color:var(--semantic-active-background-1);}.input__listbox .option.active{color:var(--semantic-type-1);background-color:var(--semantic-active-background-1);}"]);
 });
 
-// import Markdown from 'markdown-to-jsx';
-
 const FormComposer = ({
   fields,
   formData,
@@ -5306,7 +5373,7 @@ const FormComposer = ({
             name,
             editor
           } = field || {};
-          editor === null || editor === void 0 ? void 0 : (_editor$instructions = editor.instructions) === null || _editor$instructions === void 0 ? void 0 : _editor$instructions[defaultLanguage];
+          const instructions = editor === null || editor === void 0 ? void 0 : (_editor$instructions = editor.instructions) === null || _editor$instructions === void 0 ? void 0 : _editor$instructions[defaultLanguage];
           return /*#__PURE__*/React__default["default"].createElement("span", {
             className: "form__content",
             "data-form": "title",
@@ -5316,7 +5383,10 @@ const FormComposer = ({
             key: `${field.id}-${idx}`
           }, /*#__PURE__*/React__default["default"].createElement("span", {
             className: "form__content--title"
-          }, name === null || name === void 0 ? void 0 : name[defaultLanguage]));
+          }, name === null || name === void 0 ? void 0 : name[defaultLanguage]), instructions && /*#__PURE__*/React__default["default"].createElement(MarkdownRenderer, {
+            className: "form__content--markdown",
+            markdown: instructions
+          }));
         }
     }
   });
@@ -5487,7 +5557,7 @@ const Form = ({
       useDefaultTheme: useDefaultTheme,
       entries: entries,
       setDateRangeValues: _setDateRangeValues
-    }), pagingInfo.pageCount >= 2 && /*#__PURE__*/React__default["default"].createElement("div", {
+    }), /*#__PURE__*/React__default["default"].createElement("div", {
       className: "form__btns"
     }, pagingInfo.pageIndex > 0 && /*#__PURE__*/React__default["default"].createElement(Button, {
       className: "form__btn--prev",
@@ -5550,7 +5620,9 @@ const Form = ({
       errors: errors,
       useDefaultTheme: useDefaultTheme,
       entries: entries
-    }), /*#__PURE__*/React__default["default"].createElement(Button, {
+    }), /*#__PURE__*/React__default["default"].createElement("div", {
+      className: "form__btns"
+    }, /*#__PURE__*/React__default["default"].createElement(Button, {
       className: "form__btn--submit",
       loading: status === null || status === void 0 ? void 0 : status.isSubmitting,
       text: (settings === null || settings === void 0 ? void 0 : settings.submitButtonText) || "Submit",
@@ -5560,7 +5632,7 @@ const Form = ({
         if (onCustomSubmit) onCustomSubmit();
       },
       useDefaultTheme: useDefaultTheme
-    })), (status === null || status === void 0 ? void 0 : status.isLoading) && !(status !== null && status !== void 0 && status.hasSuccess) && /*#__PURE__*/React__default["default"].createElement(Loader, {
+    }))), (status === null || status === void 0 ? void 0 : status.isLoading) && !(status !== null && status !== void 0 && status.hasSuccess) && /*#__PURE__*/React__default["default"].createElement(Loader, {
       className: "loading",
       height: 24,
       width: 24,
