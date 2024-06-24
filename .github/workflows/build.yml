@@ -11,9 +11,9 @@ jobs:
     # runs-on: self-hosted
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Use Node.js
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v4
         with:
           node-version: '16.x'
       # - name: Install apt packages for build
@@ -33,10 +33,12 @@ jobs:
         run: |
           npm run build
           npm version prerelease --preid=beta --no-git-tag-version
+          APP_VERSION=$(node --eval="process.stdout.write(require('./package.json').version)")
+          echo "APP_VERSION=$APP_VERSION" >> $GITHUB_ENV
       - name: Push version increment to GIT
         run: |
           git add -A
-          git commit -m "ci: bumps version [skip ci]"
+          git commit -m "ci: bumps version to ${{ env.APP_VERSION }} [skip ci]"
           git push
         env:
           # The secret is passed automatically. Nothing to configure.
