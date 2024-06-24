@@ -126,6 +126,13 @@ https://www.conventionalcommits.org/en/v1.0.0/#summary
 
 # Changelog
 
+#### 3.2.1 (2024-06-24)
+
+##### Bug Fixes
+
+*  use `cms` uri in user-based operations for DR scenario (135ccb54)
+*  update CachedDeliveryAPI to access the 'fields' query param (#11) (1110bf43)
+
 #### 3.2.0 (2024-04-26)
 
 ##### New Features
