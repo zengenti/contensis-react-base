@@ -4,11 +4,7 @@ import { Config } from 'contensis-delivery-api/lib/models';
 import { parse } from 'query-string';
 import { setSurrogateKeys } from '~/routing/redux/actions';
 import { reduxStore } from '~/redux/store/store';
-import {
-  selectCurrentHostname,
-  selectCurrentPath,
-  selectCurrentSearch,
-} from '~/routing/redux/selectors';
+
 import { CookieObject, findLoginCookies } from '~/user/util/CookieConstants';
 import { Request } from 'express';
 import { IncomingHttpHeaders } from 'http';
@@ -23,18 +19,37 @@ const mapCookieHeader = (cookies: CookieObject | string) =>
         .join('; ')
     : cookies;
 
-const getSsrReferer = () => {
-  if (typeof window === 'undefined') {
-    const state = reduxStore.getState();
-    const referer = `${selectCurrentHostname(state)}${selectCurrentPath(
-      state
-    )}${selectCurrentSearch(state)}`;
+const getSsrReferer = ({ request }: SSRContext) => {
+  if (request) {
+    try {
+      const url = new URL(
+        request.url,
+        `${request.protocol || `http`}://${request.headers.host}`
+      );
+      return url.href;
+    } catch (ex) {
+      console.error(
+        `getSsrReferer cannot parse url ${request.url} and host ${request.headers.host}`
+      );
 
-    return referer;
+      return request.url;
+    }
   }
+
+  // if (typeof window === 'undefined') {
+  //   const state = reduxStore.getState();
+  //   const referer = `${selectCurrentHostname(state)}${selectCurrentPath(
+  //     state
+  //   )}${selectCurrentSearch(state)}`;
+
+  //   return referer;
+  // }
   return '';
 };
 
+/**
+ * Store the surrogate-key header contents in redux state to output in SSR response
+ */
 const storeSurrogateKeys = (ssr?: SSRContext) => (response: any) => {
   let keys = '';
   if (response.status === 200) {
@@ -43,23 +58,30 @@ const storeSurrogateKeys = (ssr?: SSRContext) => (response: any) => {
       : response.headers.map['surrogate-key'];
     if (!keys) console.info(`[storeSurrogateKeys] No keys in ${response.url}`);
   }
+  // Using imported reduxStore in SSR is unreliable during high
+  // concurrent loads and exists here as a best effort fallback
+  // in case the SSRContext is not provided
   const put = ssr?.dispatch || reduxStore?.dispatch;
   put?.(setSurrogateKeys(keys, response.url, response.status));
 };
 
+/**
+ * Create a new Config object to create a DeliveryAPI Client
+ */
 const deliveryApiConfig = (ssr?: SSRContext) => {
   const config: Config = {
     ...DELIVERY_API_CONFIG /* global DELIVERY_API_CONFIG */,
   };
 
+  // Add SSR headers and handlers
   if (typeof window === 'undefined') {
     config.defaultHeaders = {
-      'x-require-surrogate-key': 'true',
+      'x-require-surrogate-key': 'true', // request surrogate-key response header
       'x-crb-ssr': 'true', // add this for support tracing
     };
-    if (reduxStore) config.defaultHeaders.referer = getSsrReferer();
+    if (ssr) config.defaultHeaders.referer = getSsrReferer(ssr); // add this for support tracing
 
-    config.responseHandler = { [200]: storeSurrogateKeys(ssr) };
+    config.responseHandler = { [200]: storeSurrogateKeys(ssr) }; // for handling page cache invalidation
   }
 
   if (
