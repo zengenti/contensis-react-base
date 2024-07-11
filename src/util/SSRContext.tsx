@@ -27,7 +27,7 @@ export const SSRContextProvider = ({
   // we cannot access in a global scope
   const dispatch = useDispatch();
   const cookies = new CookieHelper(...useCookies());
-  const api = cachedSearchWithCookies({ cookies, dispatch });
+  const api = cachedSearchWithCookies({ cookies, dispatch, request, response });
 
   const [context] = useState<SSRContextType>({
     api,
