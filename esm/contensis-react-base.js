@@ -654,7 +654,7 @@ const reverseProxies = (app, reverseProxyPaths = []) => {
 
 const deliveryApiProxy = (apiProxy, app) => {
   // This is just here to stop cors requests on localhost. In Production this is mapped using varnish.
-  app.all(['/api/delivery/*', '/api/forms/*', '/api/image/*'], (req, res) => {
+  app.all(['/api/delivery/*', '/api/forms/*', '/api/image/*', '/authenticate/*'], (req, res) => {
     /* eslint-disable no-console */
     console.log(`Proxying api request to ${servers$1.alias}`);
     apiProxy.web(req, res, {
