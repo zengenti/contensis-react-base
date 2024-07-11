@@ -55,7 +55,9 @@ class CachedSearch {
       ...getClientConfig(project, this.ssr),
       versionStatus,
     });
-    return this.request(id, () => client.entries.get({ id, linkDepth, fields }));
+    return this.request(id, () =>
+      client.entries.get({ id, linkDepth, fields })
+    );
   }
 
   getContentType(id: string, project?: string) {
