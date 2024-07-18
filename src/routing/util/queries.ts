@@ -5,6 +5,7 @@ import { fieldExpression, defaultExpressions } from './expressions';
 export const routeEntryByFieldsQuery = (
   id: string,
   language = 'en-GB',
+  contentTypeId = '',
   fields: string[] = [],
   fieldLinkDepths: FieldLinkDepths,
   versionStatus: VersionStatus = 'published'
@@ -13,6 +14,9 @@ export const routeEntryByFieldsQuery = (
     ...[
       ...fieldExpression('sys.id', id),
       ...fieldExpression('sys.language', language),
+      ...(contentTypeId
+        ? fieldExpression('sys.contentTypeId', contentTypeId)
+        : fieldExpression('sys.dataFormat', 'entry')),
       ...defaultExpressions(versionStatus),
     ]
   );
