@@ -501,17 +501,18 @@ function* setRouteEntry(
 
   const currentEntryId = yield select(selectRouteEntryEntryId);
   const currentEntryLang = yield select(selectRouteEntryLanguage);
-  const mappedEntry =
-    currentEntryId === entrySys.id &&
-    currentEntryLang === entrySys.language &&
-    remapEntry === false
-      ? (yield select(selectMappedEntry, 'js')) || {}
-      : yield mapRouteEntry(entryMapper, {
-          ...node,
-          entry,
-          ancestors,
-          siblings,
-        });
+  const mappedEntry = !entryMapper
+    ? null
+    : currentEntryId === entrySys.id &&
+      currentEntryLang === entrySys.language &&
+      remapEntry === false
+    ? (yield select(selectMappedEntry, 'js')) || {}
+    : yield mapRouteEntry(entryMapper, {
+        ...node,
+        entry,
+        ancestors,
+        siblings,
+      });
 
   yield all([
     put({
