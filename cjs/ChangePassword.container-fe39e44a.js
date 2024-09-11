@@ -1,11 +1,35 @@
-import { takeEvery, put, call, select } from '@redux-saga/core/effects';
-import { X as LOGIN_USER, Y as LOGOUT_USER, Z as VALIDATE_USER, _ as SET_AUTHENTICATION_STATE, t as queryParams, e as selectCurrentSearch, u as setRoute, W as action, R as REGISTER_USER, v as REQUEST_USER_PASSWORD_RESET, w as RESET_USER_PASSWORD, C as CHANGE_USER_PASSWORD } from './selectors-bb117d1b.js';
-import { a as selectUserIsAuthenticated, b as selectUserGroups, m as matchUserGroup, s as selectClientCredentials, c as selectUserErrorMessage, d as selectUserIsAuthenticationError, e as selectUserIsError, f as selectUserIsLoading, g as selectUser, t as toJS, h as selectUserRegistrationError, i as selectUserRegistrationIsLoading, j as selectUserRegistrationIsSuccess, k as selectUserRegistration, l as selectPasswordResetRequestSending, n as selectPasswordResetRequestSent, o as selectPasswordResetRequestError, p as selectResetPasswordSending, q as selectResetPasswordSent, r as selectResetPasswordError, u as selectChangePasswordSending, v as selectChangePasswordSent, w as selectUserGuid, x as selectChangePasswordError } from './ToJs-0ed7c7db.js';
-import mapJson from 'jsonpath-mapper';
-import { to } from 'await-to-js';
-import { a as CookieHelper, L as LOGIN_COOKIE, R as REFRESH_TOKEN_COOKIE } from './CookieHelper.class-6d649751.js';
-import { useCookies } from 'react-cookie';
-import { useDispatch, useSelector } from 'react-redux';
+'use strict';
+
+var effects = require('@redux-saga/core/effects');
+var selectors = require('./selectors-d5cd6b19.js');
+var ToJs = require('./ToJs-8fd54c8e.js');
+var mapJson = require('jsonpath-mapper');
+var to = require('await-to-js');
+var CookieHelper_class = require('./CookieHelper.class-e0908573.js');
+var reactCookie = require('react-cookie');
+var reactRedux = require('react-redux');
+
+function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+
+function _interopNamespace(e) {
+  if (e && e.__esModule) return e;
+  var n = Object.create(null);
+  if (e) {
+    Object.keys(e).forEach(function (k) {
+      if (k !== 'default') {
+        var d = Object.getOwnPropertyDescriptor(e, k);
+        Object.defineProperty(n, k, d.get ? d : {
+          enumerable: true,
+          get: function () { return e[k]; }
+        });
+      }
+    });
+  }
+  n["default"] = e;
+  return Object.freeze(n);
+}
+
+var mapJson__default = /*#__PURE__*/_interopDefaultLegacy(mapJson);
 
 const findContentTypeMapping = (ContentTypeMappings, contentTypeId) => ContentTypeMappings.find(ct => ct.contentTypeID === contentTypeId);
 
@@ -20,7 +44,7 @@ const clientCredentials = {
   }) => refreshTokenExpiryDate.toISOString(),
   contensisClassicToken: 'contensisClassicToken'
 };
-var mapClientCredentials = (obj => mapJson(obj, clientCredentials));
+var mapClientCredentials = (obj => mapJson__default["default"](obj, clientCredentials));
 
 const getManagementApiClient = async ({
   bearerToken,
@@ -53,11 +77,11 @@ const getManagementApiClient = async ({
   }
   let {
     Client
-  } = await import('contensis-management-api');
+  } = await Promise.resolve().then(function () { return /*#__PURE__*/_interopNamespace(require('contensis-management-api')); });
   if (typeof window === 'undefined') {
     const {
       UniversalClient
-    } = await import('contensis-management-api');
+    } = await Promise.resolve().then(function () { return /*#__PURE__*/_interopNamespace(require('contensis-management-api')); });
     Client = UniversalClient;
   }
   const client = Client.create({
@@ -91,7 +115,7 @@ const createUserManager = async config => {
     try {
       const {
         UserManager
-      } = await import( /* webpackChunkName: "oidcclient" */'oidc-client');
+      } = await Promise.resolve().then(function () { return /*#__PURE__*/_interopNamespace(require( /* webpackChunkName: "oidcclient" */'oidc-client')); });
       return new UserManager(config);
     } catch (e) {
       console.error('Exception in createUserManager: ', e);
@@ -103,7 +127,7 @@ const context = typeof window != 'undefined' ? window : global;
 class LoginHelper {
   constructor(cookies) {
     this.cookies = void 0;
-    this.cookies = cookies || new CookieHelper();
+    this.cookies = cookies || new CookieHelper_class.CookieHelper();
   }
   static ClientRedirectToHome(location) {
     if (typeof window != 'undefined') {
@@ -173,7 +197,7 @@ class LoginHelper {
     }
   }
   static async GetCredentialsForSecurityToken(securityToken) {
-    const [error, response] = await to(fetch(`${LoginHelper.CMS_URL}/REST/Contensis/Security/IsAuthenticated`, {
+    const [error, response] = await to.to(fetch(`${LoginHelper.CMS_URL}/REST/Contensis/Security/IsAuthenticated`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -187,7 +211,7 @@ class LoginHelper {
       message: 'Failed to fetch credentials'
     }];
     if (response.ok) {
-      const [parseError, body] = await to(response.json());
+      const [parseError, body] = await to.to(response.json());
       if (parseError) return [parseError];
       const {
         LogonResult,
@@ -237,23 +261,23 @@ class LoginHelper {
     contensisClassicToken,
     refreshToken
   }) {
-    console.info('SetLoginCookies:', LOGIN_COOKIE, contensisClassicToken, REFRESH_TOKEN_COOKIE, refreshToken);
-    if (contensisClassicToken) this.cookies.SetCookie(LOGIN_COOKIE, contensisClassicToken);
-    if (refreshToken) this.cookies.SetCookie(REFRESH_TOKEN_COOKIE, refreshToken);
+    console.info('SetLoginCookies:', CookieHelper_class.LOGIN_COOKIE, contensisClassicToken, CookieHelper_class.REFRESH_TOKEN_COOKIE, refreshToken);
+    if (contensisClassicToken) this.cookies.SetCookie(CookieHelper_class.LOGIN_COOKIE, contensisClassicToken);
+    if (refreshToken) this.cookies.SetCookie(CookieHelper_class.REFRESH_TOKEN_COOKIE, refreshToken);
   }
   GetCachedCredentials() {
     return {
       bearerToken: null,
       bearerTokenExpiryDate: null,
-      refreshToken: this.cookies.GetCookie(REFRESH_TOKEN_COOKIE),
+      refreshToken: this.cookies.GetCookie(CookieHelper_class.REFRESH_TOKEN_COOKIE),
       refreshTokenExpiryDate: null,
-      contensisClassicToken: this.cookies.GetCookie(LOGIN_COOKIE),
+      contensisClassicToken: this.cookies.GetCookie(CookieHelper_class.LOGIN_COOKIE),
       securityToken: null
     };
   }
   ClearCachedCredentials() {
-    this.cookies.DeleteCookie(LOGIN_COOKIE);
-    this.cookies.DeleteCookie(REFRESH_TOKEN_COOKIE);
+    this.cookies.DeleteCookie(CookieHelper_class.LOGIN_COOKIE);
+    this.cookies.DeleteCookie(CookieHelper_class.REFRESH_TOKEN_COOKIE);
     if (LoginHelper.WSFED_LOGIN && typeof window !== 'undefined') {
       // remove any oidc keys left over in localStorage
       const {
@@ -289,7 +313,7 @@ class LoginHelper {
       });
 
       // Ensure the client has requested a bearer token
-      const [loginError, clientBearerToken] = await to(transientClient.ensureBearerToken());
+      const [loginError, clientBearerToken] = await to.to(transientClient.ensureBearerToken());
 
       // Problem getting token with username and password
       if (loginError) {
@@ -366,9 +390,9 @@ LoginHelper.LOGIN_ROUTE = '/account/login';
 LoginHelper.ACCESS_DENIED_ROUTE = '/account/access-denied';
 LoginHelper.withCookies = cookieHelper => new LoginHelper(cookieHelper);
 LoginHelper.GetUserDetails = async client => {
-  const [userError, user] = await to(client.security.users.getCurrent());
+  const [userError, user] = await to.to(client.security.users.getCurrent());
   if (user && user.id) {
-    const [groupsError, groupsResult] = await to(client.security.users.getUserGroups({
+    const [groupsError, groupsResult] = await to.to(client.security.users.getUserGroups({
       userId: user.id,
       includeInherited: true,
       pageOptions: {
@@ -386,7 +410,7 @@ LoginHelper.GetUserDetails = async client => {
   return [userError, user];
 };
 
-const loginSagas = [takeEvery(LOGIN_USER, loginUserSaga), takeEvery(LOGOUT_USER, logoutUserSaga), takeEvery(VALIDATE_USER, validateUserSaga), takeEvery(SET_AUTHENTICATION_STATE, redirectAfterSuccessfulLoginSaga)];
+const loginSagas = [effects.takeEvery(selectors.LOGIN_USER, loginUserSaga), effects.takeEvery(selectors.LOGOUT_USER, logoutUserSaga), effects.takeEvery(selectors.VALIDATE_USER, validateUserSaga), effects.takeEvery(selectors.SET_AUTHENTICATION_STATE, redirectAfterSuccessfulLoginSaga)];
 function* handleRequiresLoginSaga(action) {
   var _entry$sys;
   const {
@@ -399,10 +423,10 @@ function* handleRequiresLoginSaga(action) {
     },
     staticRoute
   } = action;
-  let userLoggedIn = yield select(selectUserIsAuthenticated);
+  let userLoggedIn = yield effects.select(ToJs.selectUserIsAuthenticated);
 
   // Check for a securityToken in querystring
-  const currentQs = queryParams(yield select(selectCurrentSearch));
+  const currentQs = selectors.queryParams(yield effects.select(selectors.selectCurrentSearch));
   const securityToken = currentQs.securityToken || currentQs.securitytoken;
 
   // Check if any of the defined routes have "requireLogin" attribute
@@ -423,15 +447,15 @@ function* handleRequiresLoginSaga(action) {
     if (routeRequiresLogin) {
       console.info(`Route requires login: ${path}`);
       // If routeRequiresLogin do a blocking call that returns userLoggedIn
-      userLoggedIn = yield call(validateUserSaga, {
+      userLoggedIn = yield effects.call(validateUserSaga, {
         cookies,
         securityToken
       });
       console.info(`User logged in: ${userLoggedIn}`);
     }
     // otherwise do a non blocking put to handle validation in the background
-    else yield put({
-      type: VALIDATE_USER,
+    else yield effects.put({
+      type: selectors.VALIDATE_USER,
       cookies,
       securityToken
     });
@@ -442,8 +466,8 @@ function* handleRequiresLoginSaga(action) {
     if (!userLoggedIn && !securityToken) {
       LoginHelper.ClientRedirectToSignInPage(action.location.pathname);
     } else if (routeRequiresGroups.length > 0) {
-      const userGroups = yield select(selectUserGroups, 'js');
-      const groupMatch = matchUserGroup(userGroups, routeRequiresGroups);
+      const userGroups = yield effects.select(ToJs.selectUserGroups, 'js');
+      const groupMatch = ToJs.matchUserGroup(userGroups, routeRequiresGroups);
       if (!groupMatch) LoginHelper.ClientRedirectToAccessDeniedPage(action.location.pathname);
     }
   }
@@ -460,8 +484,8 @@ function* validateUserSaga({
     // We only attempt to validate the user if one of the stored
     // tokens are found, in this case we set loading state manually
     // so we don't need to set and unset loading if there are no stored
-    yield put({
-      type: SET_AUTHENTICATION_STATE,
+    yield effects.put({
+      type: selectors.SET_AUTHENTICATION_STATE,
       authenticationState: {
         isLoading: true
       }
@@ -480,8 +504,8 @@ function* validateUserSaga({
       }
       if (error) {
         login.ClearCachedCredentials();
-        yield put({
-          type: SET_AUTHENTICATION_STATE,
+        yield effects.put({
+          type: selectors.SET_AUTHENTICATION_STATE,
           authenticationState: {
             isError: true,
             errorMessage: (error === null || error === void 0 ? void 0 : error.message) || error && 'toString' in error && error.toString()
@@ -493,7 +517,7 @@ function* validateUserSaga({
     // Log the user in if a refreshToken is found
     if (clientCredentials.refreshToken) {
       console.info(`Login user with refreshToken ${clientCredentials.refreshToken}`);
-      yield call(loginUserSaga, {
+      yield effects.call(loginUserSaga, {
         clientCredentials,
         cookies: login.cookies
       });
@@ -501,7 +525,7 @@ function* validateUserSaga({
   }
 
   // Tell any callers have we successfully logged in?
-  return yield select(selectUserIsAuthenticated);
+  return yield effects.select(ToJs.selectUserIsAuthenticated);
 }
 function* loginUserSaga(action = {}) {
   const {
@@ -514,7 +538,7 @@ function* loginUserSaga(action = {}) {
 
   // If a WSFED_LOGIN site has dispatched the loginUser action
   // just redirect them to the Identity Provider sign in
-  if (action.type === LOGIN_USER && LoginHelper.WSFED_LOGIN) LoginHelper.ClientRedirectToSignInPage();
+  if (action.type === selectors.LOGIN_USER && LoginHelper.WSFED_LOGIN) LoginHelper.ClientRedirectToSignInPage();
   const {
     authenticationState,
     user
@@ -523,8 +547,8 @@ function* loginUserSaga(action = {}) {
     password,
     clientCredentials
   });
-  yield put({
-    type: SET_AUTHENTICATION_STATE,
+  yield effects.put({
+    type: selectors.SET_AUTHENTICATION_STATE,
     authenticationState,
     user
   });
@@ -538,11 +562,11 @@ const removeHostnamePart = path => {
   return relativePath;
 };
 function* redirectAfterSuccessfulLoginSaga() {
-  const isLoggedIn = yield select(selectUserIsAuthenticated);
+  const isLoggedIn = yield effects.select(ToJs.selectUserIsAuthenticated);
   const {
     redirect_uri: redirectPath,
     ReturnURL: assetRedirectPath
-  } = queryParams(yield select(selectCurrentSearch));
+  } = selectors.queryParams(yield effects.select(selectors.selectCurrentSearch));
   if (isLoggedIn && assetRedirectPath && typeof window != 'undefined') {
     const path = removeHostnamePart(assetRedirectPath);
     // This has to be a hard href to get the app to
@@ -550,26 +574,26 @@ function* redirectAfterSuccessfulLoginSaga() {
     window.location.href = path;
     // yield put(setRoute(path)); // does not work in this scenario
   } else if (isLoggedIn && redirectPath) {
-    yield put(setRoute(redirectPath));
+    yield effects.put(selectors.setRoute(redirectPath));
   }
 }
 function* logoutUserSaga({
   redirectPath,
   cookies
 }) {
-  yield put({
-    type: SET_AUTHENTICATION_STATE,
+  yield effects.put({
+    type: selectors.SET_AUTHENTICATION_STATE,
     user: null
   });
   yield LoginHelper.withCookies(cookies).LogoutUser(redirectPath);
 }
 function* refreshSecurityToken() {
-  const clientCredentials = yield select(selectClientCredentials, 'js');
+  const clientCredentials = yield effects.select(ToJs.selectClientCredentials, 'js');
   if (Object.keys(clientCredentials).length > 0) {
     const client = yield getManagementApiClient(clientCredentials);
     yield client.authenticate();
-    yield put({
-      type: SET_AUTHENTICATION_STATE,
+    yield effects.put({
+      type: selectors.SET_AUTHENTICATION_STATE,
       authenticationState: {
         clientCredentials: mapClientCredentials(client)
       }
@@ -577,26 +601,26 @@ function* refreshSecurityToken() {
   }
 }
 
-const loginUser = (username, password, cookies) => action(LOGIN_USER, {
+const loginUser = (username, password, cookies) => selectors.action(selectors.LOGIN_USER, {
   username,
   password,
   cookies
 });
-const logoutUser = (redirectPath, cookies) => action(LOGOUT_USER, {
+const logoutUser = (redirectPath, cookies) => selectors.action(selectors.LOGOUT_USER, {
   redirectPath,
   cookies
 });
-const registerUser = (user, mappers) => action(REGISTER_USER, {
+const registerUser = (user, mappers) => selectors.action(selectors.REGISTER_USER, {
   user,
   mappers
 });
-const requestPasswordReset = userEmailObject => action(REQUEST_USER_PASSWORD_RESET, {
+const requestPasswordReset = userEmailObject => selectors.action(selectors.REQUEST_USER_PASSWORD_RESET, {
   userEmailObject
 });
-const resetPassword = resetPasswordObject => action(RESET_USER_PASSWORD, {
+const resetPassword = resetPasswordObject => selectors.action(selectors.RESET_USER_PASSWORD, {
   resetPasswordObject
 });
-const changePassword = (userId, currentPassword, newPassword) => action(CHANGE_USER_PASSWORD, {
+const changePassword = (userId, currentPassword, newPassword) => selectors.action(selectors.CHANGE_USER_PASSWORD, {
   userId,
   currentPassword,
   newPassword
@@ -613,24 +637,24 @@ var actions = /*#__PURE__*/Object.freeze({
 });
 
 const useLogin = () => {
-  const cookies = new CookieHelper(...useCookies());
-  const dispatch = useDispatch();
-  const select = useSelector;
+  const cookies = new CookieHelper_class.CookieHelper(...reactCookie.useCookies());
+  const dispatch = reactRedux.useDispatch();
+  const select = reactRedux.useSelector;
   return {
     loginUser: (username, password) => dispatch(loginUser(username, password, cookies)),
     logoutUser: redirectPath => dispatch(logoutUser(redirectPath, cookies)),
-    errorMessage: select(selectUserErrorMessage),
-    isAuthenticated: select(selectUserIsAuthenticated),
-    isAuthenticationError: select(selectUserIsAuthenticationError),
-    isError: select(selectUserIsError),
-    isLoading: select(selectUserIsLoading),
-    user: select(selectUser),
+    errorMessage: select(ToJs.selectUserErrorMessage),
+    isAuthenticated: select(ToJs.selectUserIsAuthenticated),
+    isAuthenticationError: select(ToJs.selectUserIsAuthenticationError),
+    isError: select(ToJs.selectUserIsError),
+    isLoading: select(ToJs.selectUserIsLoading),
+    user: select(ToJs.selectUser),
     // DEPRECATED: authenticationError is deprecated use isAuthenticationError instead
-    authenticationError: select(selectUserIsAuthenticationError),
+    authenticationError: select(ToJs.selectUserIsAuthenticationError),
     // DEPRECATED: authenticationErrorMessage is deprecated use errorMessage instead
-    authenticationErrorMessage: select(selectUserErrorMessage),
+    authenticationErrorMessage: select(ToJs.selectUserErrorMessage),
     // DEPRECATED: error is deprecated use isError instead
-    error: select(selectUserIsError)
+    error: select(ToJs.selectUserIsError)
   };
 };
 
@@ -642,17 +666,17 @@ const LoginContainer = ({
   return children(userProps);
 };
 LoginContainer.propTypes = {};
-var Login_container = toJS(LoginContainer);
+var Login_container = ToJs.toJS(LoginContainer);
 
 const useRegistration = () => {
-  const dispatch = useDispatch();
-  const select = useSelector;
+  const dispatch = reactRedux.useDispatch();
+  const select = reactRedux.useSelector;
   return {
     registerUser: (user, mappers) => dispatch(registerUser(user, mappers)),
-    error: select(selectUserRegistrationError),
-    isLoading: select(selectUserRegistrationIsLoading),
-    isSuccess: select(selectUserRegistrationIsSuccess),
-    user: select(selectUserRegistration)
+    error: select(ToJs.selectUserRegistrationError),
+    isLoading: select(ToJs.selectUserRegistrationIsLoading),
+    isSuccess: select(ToJs.selectUserRegistrationIsSuccess),
+    user: select(ToJs.selectUserRegistration)
   };
 };
 
@@ -664,21 +688,21 @@ const RegistrationContainer = ({
   return children(userProps);
 };
 RegistrationContainer.propTypes = {};
-var Registration_container = toJS(RegistrationContainer);
+var Registration_container = ToJs.toJS(RegistrationContainer);
 
 const useForgotPassword = () => {
-  const dispatch = useDispatch();
-  const select = useSelector;
+  const dispatch = reactRedux.useDispatch();
+  const select = reactRedux.useSelector;
   return {
-    isLoading: select(selectPasswordResetRequestSending),
-    isSuccess: select(selectPasswordResetRequestSent),
-    error: select(selectPasswordResetRequestError),
+    isLoading: select(ToJs.selectPasswordResetRequestSending),
+    isSuccess: select(ToJs.selectPasswordResetRequestSent),
+    error: select(ToJs.selectPasswordResetRequestError),
     requestPasswordReset: userEmailObject => dispatch(requestPasswordReset(userEmailObject)),
     setNewPassword: {
-      queryString: select(selectCurrentSearch),
-      isLoading: select(selectResetPasswordSending),
-      isSuccess: select(selectResetPasswordSent),
-      error: select(selectResetPasswordError),
+      queryString: select(selectors.selectCurrentSearch),
+      isLoading: select(ToJs.selectResetPasswordSending),
+      isSuccess: select(ToJs.selectResetPasswordSent),
+      error: select(ToJs.selectResetPasswordError),
       submit: resetPasswordObject => dispatch(resetPassword(resetPasswordObject))
     }
   };
@@ -692,17 +716,17 @@ const ForgotPasswordContainer = ({
   return children(userProps);
 };
 ForgotPasswordContainer.propTypes = {};
-var ForgotPassword_container = toJS(ForgotPasswordContainer);
+var ForgotPassword_container = ToJs.toJS(ForgotPasswordContainer);
 
 const useChangePassword = () => {
-  const dispatch = useDispatch();
-  const select = useSelector;
+  const dispatch = reactRedux.useDispatch();
+  const select = reactRedux.useSelector;
   return {
-    isLoading: select(selectChangePasswordSending),
-    isSuccess: select(selectChangePasswordSent),
-    userId: select(selectUserGuid),
-    isLoggedIn: select(selectUserIsAuthenticated),
-    error: select(selectChangePasswordError),
+    isLoading: select(ToJs.selectChangePasswordSending),
+    isSuccess: select(ToJs.selectChangePasswordSent),
+    userId: select(ToJs.selectUserGuid),
+    isLoggedIn: select(ToJs.selectUserIsAuthenticated),
+    error: select(ToJs.selectChangePasswordError),
     changePassword: (userId, currentPassword, newPassword) => dispatch(changePassword(userId, currentPassword, newPassword))
   };
 };
@@ -715,7 +739,24 @@ const ChangePasswordContainer = ({
   return children(userProps);
 };
 ChangePasswordContainer.propTypes = {};
-var ChangePassword_container = toJS(ChangePasswordContainer);
+var ChangePassword_container = ToJs.toJS(ChangePasswordContainer);
 
-export { ChangePassword_container as C, ForgotPassword_container as F, LoginHelper as L, Registration_container as R, loginUser as a, logoutUser as b, actions as c, Login_container as d, useRegistration as e, findContentTypeMapping as f, getManagementApiClient as g, handleRequiresLoginSaga as h, useForgotPassword as i, useChangePassword as j, refreshSecurityToken as k, loginSagas as l, registerUser as r, useLogin as u };
-//# sourceMappingURL=ChangePassword.container-596ed529.js.map
+exports.ChangePassword_container = ChangePassword_container;
+exports.ForgotPassword_container = ForgotPassword_container;
+exports.LoginHelper = LoginHelper;
+exports.Login_container = Login_container;
+exports.Registration_container = Registration_container;
+exports.actions = actions;
+exports.findContentTypeMapping = findContentTypeMapping;
+exports.getManagementApiClient = getManagementApiClient;
+exports.handleRequiresLoginSaga = handleRequiresLoginSaga;
+exports.loginSagas = loginSagas;
+exports.loginUser = loginUser;
+exports.logoutUser = logoutUser;
+exports.refreshSecurityToken = refreshSecurityToken;
+exports.registerUser = registerUser;
+exports.useChangePassword = useChangePassword;
+exports.useForgotPassword = useForgotPassword;
+exports.useLogin = useLogin;
+exports.useRegistration = useRegistration;
+//# sourceMappingURL=ChangePassword.container-fe39e44a.js.map

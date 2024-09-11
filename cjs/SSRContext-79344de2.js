@@ -1,11 +1,17 @@
-import React, { useState, useContext, createContext } from 'react';
-import { useCookies } from 'react-cookie';
-import { useDispatch } from 'react-redux';
-import { Client } from 'contensis-delivery-api';
-import { parse } from 'query-string';
-import { P as setSurrogateKeys } from './selectors-bb117d1b.js';
-import { r as reduxStore } from './store-2ff73952.js';
-import { f as findLoginCookies, a as CookieHelper } from './CookieHelper.class-6d649751.js';
+'use strict';
+
+var React = require('react');
+var reactCookie = require('react-cookie');
+var reactRedux = require('react-redux');
+var contensisDeliveryApi = require('contensis-delivery-api');
+var queryString = require('query-string');
+var selectors = require('./selectors-d5cd6b19.js');
+var store = require('./store-0ef9b570.js');
+var CookieHelper_class = require('./CookieHelper.class-e0908573.js');
+
+function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+
+var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
 
 class CacheNode {
   constructor(key, value) {
@@ -92,15 +98,15 @@ class CachedSearch {
     return new DeliveryApi(this.ssr).getClient(...args);
   }
   search(query, linkDepth = 0, project) {
-    const client = Client.create(getClientConfig(project, this.ssr));
+    const client = contensisDeliveryApi.Client.create(getClientConfig(project, this.ssr));
     return this.request(`${project}+${JSON.stringify(query)}+${linkDepth}`, () => client.entries.search(query, linkDepth));
   }
   searchUsingPost(query, linkDepth = 0, project = '') {
-    const client = Client.create(getClientConfig(project, this.ssr));
+    const client = contensisDeliveryApi.Client.create(getClientConfig(project, this.ssr));
     return this.request(`${project}+${JSON.stringify(query)}+${linkDepth}`, () => client.entries.searchUsingPost(query, linkDepth));
   }
   get(id, linkDepth = 0, versionStatus = 'published', project, fields) {
-    const client = Client.create({
+    const client = contensisDeliveryApi.Client.create({
       ...getClientConfig(project, this.ssr),
       versionStatus
     });
@@ -111,30 +117,30 @@ class CachedSearch {
     }));
   }
   getContentType(id, project) {
-    const client = Client.create(getClientConfig(project, this.ssr));
+    const client = contensisDeliveryApi.Client.create(getClientConfig(project, this.ssr));
     return this.request(`[CONTENT TYPE] ${id} ${project}`, () => client.contentTypes.get(id));
   }
   getRootNode(options, versionStatus = 'published', project) {
-    const client = Client.create({
+    const client = contensisDeliveryApi.Client.create({
       ...getClientConfig(project, this.ssr),
       versionStatus
     });
     return this.request(`${project} / ${JSON.stringify(options)}`, () => client.nodes.getRoot(options));
   }
   getNode(options, project) {
-    const client = Client.create(getClientConfig(project, this.ssr));
+    const client = contensisDeliveryApi.Client.create(getClientConfig(project, this.ssr));
     return this.request(`${project} ${options && typeof options !== 'string' ? 'path' in options ? options.path : options.id : options} ${JSON.stringify(options)}`, () => client.nodes.get(options));
   }
   getAncestors(options, project) {
-    const client = Client.create(getClientConfig(project, this.ssr));
+    const client = contensisDeliveryApi.Client.create(getClientConfig(project, this.ssr));
     return this.request(`${project} [A] ${options && typeof options !== 'string' && options.id || options} ${JSON.stringify(options)}`, () => client.nodes.getAncestors(options));
   }
   getChildren(options, project) {
-    const client = Client.create(getClientConfig(project, this.ssr));
+    const client = contensisDeliveryApi.Client.create(getClientConfig(project, this.ssr));
     return this.request(`${project} [C] ${options && typeof options !== 'string' && options.id || options} ${JSON.stringify(options)}`, () => client.nodes.getChildren(options));
   }
   getSiblings(options, project) {
-    const client = Client.create(getClientConfig(project, this.ssr));
+    const client = contensisDeliveryApi.Client.create(getClientConfig(project, this.ssr));
     return this.request(`${project} [S] ${options && typeof options !== 'string' && options.id || options} ${JSON.stringify(options)}`, () => client.nodes.getSiblings(options));
   }
   request(key, execute) {
@@ -189,8 +195,8 @@ const storeSurrogateKeys = ssr => response => {
   // Using imported reduxStore in SSR is unreliable during high
   // concurrent loads and exists here as a best effort fallback
   // in case the SSRContext is not provided
-  const put = (ssr === null || ssr === void 0 ? void 0 : ssr.dispatch) || (reduxStore === null || reduxStore === void 0 ? void 0 : reduxStore.dispatch);
-  put === null || put === void 0 ? void 0 : put(setSurrogateKeys(keys, response.url, response.status));
+  const put = (ssr === null || ssr === void 0 ? void 0 : ssr.dispatch) || (store.reduxStore === null || store.reduxStore === void 0 ? void 0 : store.reduxStore.dispatch);
+  put === null || put === void 0 ? void 0 : put(selectors.setSurrogateKeys(keys, response.url, response.status));
 };
 
 /**
@@ -231,7 +237,7 @@ const getClientConfig = (project, ssr) => {
     config.projectId = project;
   }
   if (ssr !== null && ssr !== void 0 && ssr.cookies) {
-    const cookieHeader = mapCookieHeader(findLoginCookies(ssr.cookies));
+    const cookieHeader = mapCookieHeader(CookieHelper_class.findLoginCookies(ssr.cookies));
     if (cookieHeader) {
       config.defaultHeaders = Object.assign(config.defaultHeaders || {}, {
         Cookie: cookieHeader
@@ -252,7 +258,7 @@ class DeliveryApi {
         // Allow overriding versionStatus with the querystring
         const {
           versionStatus
-        } = parse(window.location.search);
+        } = queryString.parse(window.location.search);
         if (versionStatus) return versionStatus;
         // Client-side we will have a global variable set if rendered by SSR in production
         if (typeof window.versionStatus !== 'undefined') return window.versionStatus;
@@ -287,15 +293,15 @@ class DeliveryApi {
       return 'published';
     };
     this.search = (query, linkDepth = 0, project) => {
-      const client = Client.create(getClientConfig(project, this.ssr));
+      const client = contensisDeliveryApi.Client.create(getClientConfig(project, this.ssr));
       return client.entries.search(query, typeof linkDepth !== 'undefined' ? linkDepth : 1);
     };
-    this.getClient = (versionStatus = 'published', project) => Client.create({
+    this.getClient = (versionStatus = 'published', project) => contensisDeliveryApi.Client.create({
       ...getClientConfig(project, this.ssr),
       versionStatus
     });
     this.getEntry = (id, linkDepth = 0, versionStatus = 'published', project) => {
-      const client = Client.create({
+      const client = contensisDeliveryApi.Client.create({
         ...getClientConfig(project, this.ssr),
         versionStatus
       });
@@ -311,7 +317,7 @@ class DeliveryApi {
 const deliveryApi = new DeliveryApi();
 const deliveryApiWithCookies = ssr => new DeliveryApi(ssr);
 
-const SSRContext = /*#__PURE__*/createContext(null);
+const SSRContext = /*#__PURE__*/React.createContext(null);
 
 /** SSRContextProvider allows us to hold and access request-scoped references
  *  throughout the component tree
@@ -325,28 +331,28 @@ const SSRContextProvider = ({
 }) => {
   // In SSR pass references to things in backing sagas
   // we cannot access in a global scope
-  const dispatch = useDispatch();
-  const cookies = new CookieHelper(...useCookies());
+  const dispatch = reactRedux.useDispatch();
+  const cookies = new CookieHelper_class.CookieHelper(...reactCookie.useCookies());
   const api = cachedSearchWithCookies({
     cookies,
     dispatch,
     request,
     response
   });
-  const [context] = useState({
+  const [context] = React.useState({
     api,
     cookies,
     dispatch,
     request,
     response
   });
-  return /*#__PURE__*/React.createElement(SSRContext.Provider, {
+  return /*#__PURE__*/React__default["default"].createElement(SSRContext.Provider, {
     value: {
       ...context
     }
   }, children);
 };
-const useSSRContext = () => useContext(SSRContext);
+const useSSRContext = () => React.useContext(SSRContext);
 const useDeliveryApi = () => {
   const {
     api
@@ -354,5 +360,12 @@ const useDeliveryApi = () => {
   return api;
 };
 
-export { SSRContextProvider as S, cachedSearchWithCookies as a, deliveryApiWithCookies as b, cachedSearch as c, deliveryApi as d, useDeliveryApi as e, getClientConfig as g, useSSRContext as u };
-//# sourceMappingURL=SSRContext-36d8e2e2.js.map
+exports.SSRContextProvider = SSRContextProvider;
+exports.cachedSearch = cachedSearch;
+exports.cachedSearchWithCookies = cachedSearchWithCookies;
+exports.deliveryApi = deliveryApi;
+exports.deliveryApiWithCookies = deliveryApiWithCookies;
+exports.getClientConfig = getClientConfig;
+exports.useDeliveryApi = useDeliveryApi;
+exports.useSSRContext = useSSRContext;
+//# sourceMappingURL=SSRContext-79344de2.js.map

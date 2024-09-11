@@ -6,7 +6,7 @@ import { h as hasNavigationTree, i as injectRedux } from './version-49ad9e9d.js'
 import to, { to as to$1 } from 'await-to-js';
 import { S as SET_NAVIGATION_PATH, f as SET_ROUTE, b as selectRouteEntry, h as selectCurrentNode, c as selectCurrentProject, U as UPDATE_LOADING_STATE, i as selectCurrentAncestors, j as selectCurrentSiblings, k as selectRouteEntryEntryId, l as selectRouteEntryLanguage, m as selectMappedEntry, n as SET_ENTRY, o as SET_ANCESTORS, p as SET_SIBLINGS, R as REGISTER_USER, q as REGISTER_USER_SUCCESS, r as REGISTER_USER_FAILED, t as queryParams, e as selectCurrentSearch, u as setRoute, v as REQUEST_USER_PASSWORD_RESET, w as RESET_USER_PASSWORD, C as CHANGE_USER_PASSWORD, x as REQUEST_USER_PASSWORD_RESET_SENDING, y as REQUEST_USER_PASSWORD_RESET_SUCCESS, z as REQUEST_USER_PASSWORD_RESET_ERROR, A as RESET_USER_PASSWORD_SENDING, B as RESET_USER_PASSWORD_SUCCESS, D as RESET_USER_PASSWORD_ERROR, E as CHANGE_USER_PASSWORD_ERROR, F as CHANGE_USER_PASSWORD_SENDING, G as CHANGE_USER_PASSWORD_SUCCESS } from './selectors-bb117d1b.js';
 import { s as selectVersionStatus } from './version-df7f7154.js';
-import { h as handleRequiresLoginSaga, L as LoginHelper, f as findContentTypeMapping, g as getManagementApiClient, l as loginSagas } from './ChangePassword.container-596ed529.js';
+import { h as handleRequiresLoginSaga, L as LoginHelper, f as findContentTypeMapping, g as getManagementApiClient, l as loginSagas } from './ChangePassword.container-572653e2.js';
 import React from 'react';
 import 'react-cookie';
 import 'react-redux';
@@ -15,7 +15,7 @@ import { Op, Query } from 'contensis-delivery-api';
 import { s as selectClientCredentials } from './ToJs-0ed7c7db.js';
 import 'react-hot-loader';
 import 'query-string';
-import { R as RouteLoader } from './RouteLoader-a12af77f.js';
+import { R as RouteLoader } from './RouteLoader-11833209.js';
 
 // Create a history depending on the environment
 const selectedHistory = typeof window !== 'undefined' ? createBrowserHistory : createMemoryHistory;
@@ -823,4 +823,4 @@ const AppRoot = props => {
 };
 
 export { AppRoot as A, browserHistory as b, history as h, pickProject as p, rootSaga as r };
-//# sourceMappingURL=App-a058dd0a.js.map
+//# sourceMappingURL=App-71b8475e.js.map

@@ -6,12 +6,13 @@ export declare class CookieHelper {
     private cookies;
     private set?;
     private remove?;
+    private update?;
     private fallback;
     get raw(): Cookies;
     get cookie(): FallbackCookies;
     constructor(cookies?: {
         [k: string]: string;
-    }, setCookie?: CookieHelper['set'], removeCookie?: CookieHelper['remove']);
+    }, setCookie?: CookieHelper['set'], removeCookie?: CookieHelper['remove'], updateCookies?: CookieHelper['update']);
     GetCookie(name: string): string | null;
     SetCookie(name: string, value: string, maxAgeDays?: number): void;
     DeleteCookie(name: string): void;
