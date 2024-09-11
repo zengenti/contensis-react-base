@@ -7,6 +7,7 @@ type CookieHook = ReturnType<typeof useCookies>;
 type Cookies = { [k: string]: string };
 type SetCookie = CookieHook[1];
 type RemoveCookie = CookieHook[2];
+type UpdateCookie = CookieHook[3];
 
 // CookieHelper is a class that takes in and lets us pass around the methods provided
 // by `useCookie` react hook in backend code that is connected to the universal-cookies
@@ -15,6 +16,7 @@ export class CookieHelper {
   private cookies: Cookies;
   private set?: SetCookie;
   private remove?: RemoveCookie;
+  private update?: UpdateCookie;
   private fallback!: FallbackCookies;
 
   get raw() {
@@ -28,7 +30,8 @@ export class CookieHelper {
   constructor(
     cookies?: { [k: string]: string },
     setCookie?: CookieHelper['set'],
-    removeCookie?: CookieHelper['remove']
+    removeCookie?: CookieHelper['remove'],
+    updateCookies?: CookieHelper['update']
   ) {
     // Add fallback methods if global cookies not supplied
     if (!cookies || !setCookie || !removeCookie)
@@ -37,6 +40,7 @@ export class CookieHelper {
     this.cookies = cookies || this.fallback.getAll();
     if (setCookie) this.set = setCookie;
     if (removeCookie) this.remove = removeCookie;
+    if (updateCookies) this.update = updateCookies;
   }
 
   GetCookie(name: string) {
