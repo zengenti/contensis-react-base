@@ -7,7 +7,7 @@ var reselect = require('reselect');
 var merge = require('deepmerge');
 require('query-string');
 require('contensis-delivery-api');
-var sagas = require('./sagas-B5gohSpf.js');
+var sagas = require('./sagas-DFdRjqSX.js');
 var immer = require('immer');
 var equals = require('deep-equal');
 require('contensis-core-api');
@@ -757,7 +757,7 @@ var reducers = config => {
             ...action,
             isCurrentFacet: true
           }, state);
-          const term = action === null || action === void 0 ? void 0 : (_action$params = action.params) === null || _action$params === void 0 ? void 0 : _action$params.term;
+          const term = action === null || action === void 0 || (_action$params = action.params) === null || _action$params === void 0 ? void 0 : _action$params.term;
           const useSearchTerm = state[action.context || sagas.Context.minilist][action.facet].queryParams.useSearchTerm || false;
           state[action.context || sagas.Context.minilist][action.facet].filters = filters;
           state[action.context || sagas.Context.minilist][action.facet].queryParams.excludeIds = action.excludeIds;
@@ -809,7 +809,7 @@ var reducers = config => {
           if (isGrouped) state[context] = resetFacets(state, context);
           state[context][current] = resetFacet(state[context][current]);
           if (isUnknownItem && (currentItems === null || currentItems === void 0 ? void 0 : currentItems.findIndex(item => (item === null || item === void 0 ? void 0 : item.key) === key)) === -1) {
-            currentItems === null || currentItems === void 0 ? void 0 : currentItems.push({
+            currentItems === null || currentItems === void 0 || currentItems.push({
               key,
               isSelected: false
             });

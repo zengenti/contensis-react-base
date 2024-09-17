@@ -1,18 +1,18 @@
 'use strict';
 
 var urls = require('./urls-DVIwGZmd.js');
-var SSRContext = require('./SSRContext-BPOCHuNE.js');
+var SSRContext = require('./SSRContext-CmXDzwPL.js');
 var _commonjsHelpers = require('./_commonjsHelpers-BJu3ubxk.js');
 var mapJson = require('jsonpath-mapper');
 var React = require('react');
 var reactRedux = require('react-redux');
-var selectors = require('./selectors-VGpE6wyV.js');
-var version = require('./version-CY850L7T.js');
+var selectors = require('./selectors-wCs5fHD4.js');
+var version = require('./version-CM-bJ62L.js');
 var styled = require('styled-components');
 require('react-cookie');
 require('contensis-delivery-api');
 require('query-string');
-require('./store-C7cLStZQ.js');
+require('./store-D8dJBaFw.js');
 require('redux');
 require('redux-thunk');
 require('redux-saga');

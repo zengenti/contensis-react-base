@@ -1,4 +1,4 @@
-import { c as cachedSearch, d as deliveryApi, S as SSRContextProvider } from './SSRContext-aOrFy6DJ.js';
+import { c as cachedSearch, d as deliveryApi, S as SSRContextProvider } from './SSRContext-BoisoiyV.js';
 import { Query as Query$1 } from 'contensis-delivery-api';
 import React from 'react';
 import { Provider } from 'react-redux';
@@ -6,7 +6,7 @@ import mapJson from 'jsonpath-mapper';
 import 'reselect';
 import 'deepmerge';
 import 'query-string';
-import { a8 as defaultExpressions, a9 as contentTypeIdExpression, aa as filterExpressions, ab as termExpressions, ac as orderByExpression, ad as customWhereExpressions } from './sagas-COFJLvDA.js';
+import { a8 as defaultExpressions, a9 as contentTypeIdExpression, aa as filterExpressions, ab as termExpressions, ac as orderByExpression, ad as customWhereExpressions } from './sagas-waBQR0Ek.js';
 import 'immer';
 import 'deep-equal';
 import { Op, Query } from 'contensis-core-api';
@@ -32,11 +32,11 @@ import { buildCleaner } from 'lodash-clean';
 import { CookiesProvider } from 'react-cookie';
 import { a as Cookies } from './CookieHelper.class-DqJ_o1jL.js';
 import cookiesMiddleware from 'universal-cookie-express';
-import { c as createStore } from './store-BX4iG2-k.js';
-import { h as history, p as pickProject, r as rootSaga } from './App-BpGG43cE.js';
-export { A as ReactApp } from './App-BpGG43cE.js';
-import { s as setVersionStatus, d as setVersion } from './version-cetMyLmp.js';
-import { a3 as selectSurrogateKeys, a4 as selectSsrApiCalls, e as selectRouteEntry, l as selectCurrentProject, g as getImmutableOrJS, s as setCurrentProject, K as selectCurrentSearch } from './selectors-CAjGfIyu.js';
+import { c as createStore } from './store-Cr0lmZNr.js';
+import { h as history, p as pickProject, r as rootSaga } from './App-BE7fh-wb.js';
+export { A as ReactApp } from './App-BE7fh-wb.js';
+import { s as setVersionStatus, d as setVersion } from './version-CB7rIyoF.js';
+import { a3 as selectSurrogateKeys, a4 as selectSsrApiCalls, e as selectRouteEntry, l as selectCurrentProject, g as getImmutableOrJS, s as setCurrentProject, K as selectCurrentSearch } from './selectors-BRzliwbK.js';
 import chalk from 'chalk';
 import 'loglevel';
 import '@redux-saga/core/effects';
@@ -46,11 +46,11 @@ import 'redux-saga';
 import 'redux-injectors';
 import 'history';
 import 'await-to-js';
-import './version-DtJjY5QT.js';
-import './ChangePassword.container-6SpIHof-.js';
-import './ToJs-8AwNF3Q4.js';
+import './version-78jjDnHU.js';
+import './ChangePassword.container-6fQXhkzW.js';
+import './ToJs-B4MH53fx.js';
 import 'react-hot-loader';
-import './RouteLoader-CYib224B.js';
+import './RouteLoader-BNKfOnU8.js';
 
 /**
  * Util class holds our search results helper boilerplate methods
@@ -59,16 +59,16 @@ class Util {
   static GetIds(entries, fieldId) {
     if (fieldId) {
       return entries === null || entries === void 0 ? void 0 : entries.map(e => {
-        var _e$fieldId, _e$fieldId2, _e$fieldId2$sys;
-        return Array.isArray(e === null || e === void 0 ? void 0 : e[fieldId]) ? e === null || e === void 0 ? void 0 : (_e$fieldId = e[fieldId]) === null || _e$fieldId === void 0 ? void 0 : _e$fieldId.map(f => {
+        var _e$fieldId, _e$fieldId2;
+        return Array.isArray(e === null || e === void 0 ? void 0 : e[fieldId]) ? e === null || e === void 0 || (_e$fieldId = e[fieldId]) === null || _e$fieldId === void 0 ? void 0 : _e$fieldId.map(f => {
           var _f$sys;
-          return f === null || f === void 0 ? void 0 : (_f$sys = f.sys) === null || _f$sys === void 0 ? void 0 : _f$sys.id;
-        }) : (e === null || e === void 0 ? void 0 : (_e$fieldId2 = e[fieldId]) === null || _e$fieldId2 === void 0 ? void 0 : (_e$fieldId2$sys = _e$fieldId2.sys) === null || _e$fieldId2$sys === void 0 ? void 0 : _e$fieldId2$sys.id) || '';
+          return f === null || f === void 0 || (_f$sys = f.sys) === null || _f$sys === void 0 ? void 0 : _f$sys.id;
+        }) : (e === null || e === void 0 || (_e$fieldId2 = e[fieldId]) === null || _e$fieldId2 === void 0 || (_e$fieldId2 = _e$fieldId2.sys) === null || _e$fieldId2 === void 0 ? void 0 : _e$fieldId2.id) || '';
       }).flat();
     }
     return entries === null || entries === void 0 ? void 0 : entries.map(e => {
       var _e$sys;
-      return (e === null || e === void 0 ? void 0 : (_e$sys = e.sys) === null || _e$sys === void 0 ? void 0 : _e$sys.id) || '';
+      return (e === null || e === void 0 || (_e$sys = e.sys) === null || _e$sys === void 0 ? void 0 : _e$sys.id) || '';
     });
   }
   static GetItems(result) {
@@ -3643,8 +3643,8 @@ const loadableChunkExtractors = () => {
     }
     commonLoadableExtractor.addChunk = chunk => {
       var _modern, _legacy, _legacy2;
-      (_modern = modern) === null || _modern === void 0 ? void 0 : _modern.addChunk(chunk);
-      if (typeof ((_legacy = legacy) === null || _legacy === void 0 ? void 0 : _legacy.stats.assetsByChunkName[chunk]) !== 'undefined') (_legacy2 = legacy) === null || _legacy2 === void 0 ? void 0 : _legacy2.addChunk(chunk);
+      (_modern = modern) === null || _modern === void 0 || _modern.addChunk(chunk);
+      if (typeof ((_legacy = legacy) === null || _legacy === void 0 ? void 0 : _legacy.stats.assetsByChunkName[chunk]) !== 'undefined') (_legacy2 = legacy) === null || _legacy2 === void 0 || _legacy2.addChunk(chunk);
     };
     return {
       commonLoadableExtractor,

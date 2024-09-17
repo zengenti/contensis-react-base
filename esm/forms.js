@@ -257,70 +257,70 @@ const selectForms = state => state.forms;
 const makeSelectPagedFields = formId => createSelector(selectForms, forms => {
   if (forms !== null && forms !== void 0 && forms[formId]) {
     var _forms$formId, _forms$formId2;
-    const pagingInfo = forms === null || forms === void 0 ? void 0 : (_forms$formId = forms[formId]) === null || _forms$formId === void 0 ? void 0 : _forms$formId.pagingInfo;
-    const fields = forms === null || forms === void 0 ? void 0 : (_forms$formId2 = forms[formId]) === null || _forms$formId2 === void 0 ? void 0 : _forms$formId2.fields;
+    const pagingInfo = forms === null || forms === void 0 || (_forms$formId = forms[formId]) === null || _forms$formId === void 0 ? void 0 : _forms$formId.pagingInfo;
+    const fields = forms === null || forms === void 0 || (_forms$formId2 = forms[formId]) === null || _forms$formId2 === void 0 ? void 0 : _forms$formId2.fields;
     if ((fields === null || fields === void 0 ? void 0 : fields.length) > 0 && pagingInfo.pageCount > 1) return fields.filter(f => f.groupId == pagingInfo.currentPageId);else return fields;
   }
 });
 const makeSelectFormStatus = formId => createSelector(selectForms, forms => {
   var _forms$formId3;
-  return forms === null || forms === void 0 ? void 0 : (_forms$formId3 = forms[formId]) === null || _forms$formId3 === void 0 ? void 0 : _forms$formId3.status;
+  return forms === null || forms === void 0 || (_forms$formId3 = forms[formId]) === null || _forms$formId3 === void 0 ? void 0 : _forms$formId3.status;
 });
 const makeSelectPagingInfo = formId => createSelector(selectForms, forms => {
   var _forms$formId4;
-  return forms === null || forms === void 0 ? void 0 : (_forms$formId4 = forms[formId]) === null || _forms$formId4 === void 0 ? void 0 : _forms$formId4.pagingInfo;
+  return forms === null || forms === void 0 || (_forms$formId4 = forms[formId]) === null || _forms$formId4 === void 0 ? void 0 : _forms$formId4.pagingInfo;
 });
 const makeSelectFormSettings = formId => createSelector(selectForms, forms => {
   var _forms$formId5;
-  return forms === null || forms === void 0 ? void 0 : (_forms$formId5 = forms[formId]) === null || _forms$formId5 === void 0 ? void 0 : _forms$formId5.settings;
+  return forms === null || forms === void 0 || (_forms$formId5 = forms[formId]) === null || _forms$formId5 === void 0 ? void 0 : _forms$formId5.settings;
 });
 const makeSelectFormFieldErrors = formId => createSelector(selectForms, forms => {
   var _forms$formId6;
-  return forms === null || forms === void 0 ? void 0 : (_forms$formId6 = forms[formId]) === null || _forms$formId6 === void 0 ? void 0 : _forms$formId6.fieldErrors;
+  return forms === null || forms === void 0 || (_forms$formId6 = forms[formId]) === null || _forms$formId6 === void 0 ? void 0 : _forms$formId6.fieldErrors;
 });
 const makeSelectFormEntries = formId => createSelector(selectForms, forms => {
   var _forms$formId7;
-  return forms === null || forms === void 0 ? void 0 : (_forms$formId7 = forms[formId]) === null || _forms$formId7 === void 0 ? void 0 : _forms$formId7.entries;
+  return forms === null || forms === void 0 || (_forms$formId7 = forms[formId]) === null || _forms$formId7 === void 0 ? void 0 : _forms$formId7.entries;
 });
 const makeSelectFormPostData = formId => createSelector(selectForms, forms => {
   var _forms$formId8;
-  return forms === null || forms === void 0 ? void 0 : (_forms$formId8 = forms[formId]) === null || _forms$formId8 === void 0 ? void 0 : _forms$formId8.data;
+  return forms === null || forms === void 0 || (_forms$formId8 = forms[formId]) === null || _forms$formId8 === void 0 ? void 0 : _forms$formId8.data;
 });
 const makeSelectIsLoading = formId => createSelector(selectForms, forms => {
   var _forms$formId9;
-  return forms === null || forms === void 0 ? void 0 : (_forms$formId9 = forms[formId]) === null || _forms$formId9 === void 0 ? void 0 : _forms$formId9.status.isLoading;
+  return forms === null || forms === void 0 || (_forms$formId9 = forms[formId]) === null || _forms$formId9 === void 0 ? void 0 : _forms$formId9.status.isLoading;
 });
 const makeSelectIsSubmitting = formId => createSelector(selectForms, forms => {
   var _forms$formId10;
-  return forms === null || forms === void 0 ? void 0 : (_forms$formId10 = forms[formId]) === null || _forms$formId10 === void 0 ? void 0 : _forms$formId10.status.isSubmitting;
+  return forms === null || forms === void 0 || (_forms$formId10 = forms[formId]) === null || _forms$formId10 === void 0 ? void 0 : _forms$formId10.status.isSubmitting;
 });
 const makeSelectHasSuccess = formId => createSelector(selectForms, forms => {
   var _forms$formId11;
-  return forms === null || forms === void 0 ? void 0 : (_forms$formId11 = forms[formId]) === null || _forms$formId11 === void 0 ? void 0 : _forms$formId11.status.hasSuccess;
+  return forms === null || forms === void 0 || (_forms$formId11 = forms[formId]) === null || _forms$formId11 === void 0 ? void 0 : _forms$formId11.status.hasSuccess;
 });
 const makeSelectHasError = formId => createSelector(selectForms, forms => {
   var _forms$formId12;
-  return forms === null || forms === void 0 ? void 0 : (_forms$formId12 = forms[formId]) === null || _forms$formId12 === void 0 ? void 0 : _forms$formId12.status.hasError;
+  return forms === null || forms === void 0 || (_forms$formId12 = forms[formId]) === null || _forms$formId12 === void 0 ? void 0 : _forms$formId12.status.hasError;
 });
 const makeSelectFormFields = formId => createSelector(selectForms, forms => {
   var _forms$formId13;
-  return forms === null || forms === void 0 ? void 0 : (_forms$formId13 = forms[formId]) === null || _forms$formId13 === void 0 ? void 0 : _forms$formId13.fields;
+  return forms === null || forms === void 0 || (_forms$formId13 = forms[formId]) === null || _forms$formId13 === void 0 ? void 0 : _forms$formId13.fields;
 });
 const makeSelectDefaultLang = formId => createSelector(selectForms, forms => {
   var _forms$formId14;
-  return forms === null || forms === void 0 ? void 0 : (_forms$formId14 = forms[formId]) === null || _forms$formId14 === void 0 ? void 0 : _forms$formId14.defaultLanguage;
+  return forms === null || forms === void 0 || (_forms$formId14 = forms[formId]) === null || _forms$formId14 === void 0 ? void 0 : _forms$formId14.defaultLanguage;
 });
 const makeSelectFormSuccessMessage = formId => createSelector(selectForms, forms => {
   var _forms$formId15;
-  return forms === null || forms === void 0 ? void 0 : (_forms$formId15 = forms[formId]) === null || _forms$formId15 === void 0 ? void 0 : _forms$formId15.status.messages.success;
+  return forms === null || forms === void 0 || (_forms$formId15 = forms[formId]) === null || _forms$formId15 === void 0 ? void 0 : _forms$formId15.status.messages.success;
 });
 const makeSelectFormValidationSent = formId => createSelector(selectForms, forms => {
   var _forms$formId16;
-  return forms === null || forms === void 0 ? void 0 : (_forms$formId16 = forms[formId]) === null || _forms$formId16 === void 0 ? void 0 : _forms$formId16.status.validation.sent;
+  return forms === null || forms === void 0 || (_forms$formId16 = forms[formId]) === null || _forms$formId16 === void 0 ? void 0 : _forms$formId16.status.validation.sent;
 });
 const makeSelectFormGroup = formId => createSelector(selectForms, forms => {
   var _forms$formId17;
-  return forms === null || forms === void 0 ? void 0 : (_forms$formId17 = forms[formId]) === null || _forms$formId17 === void 0 ? void 0 : _forms$formId17.groups;
+  return forms === null || forms === void 0 || (_forms$formId17 = forms[formId]) === null || _forms$formId17 === void 0 ? void 0 : _forms$formId17.groups;
 });
 const selectors = {
   selectForms,
@@ -399,17 +399,17 @@ const doA11yValidation = (v, field, formValidationSent) => {
   }
 };
 const doValidateField = (field, value) => {
-  var _field$validations, _field$validations$re;
+  var _field$validations;
   const isRequired = field.validations && field.validations.required;
   const minLength = field.validations && field.validations.minLength;
   const maxLength = field.validations && field.validations.maxLength;
-  const hasRegex = field !== null && field !== void 0 && (_field$validations = field.validations) !== null && _field$validations !== void 0 && (_field$validations$re = _field$validations.regex) !== null && _field$validations$re !== void 0 && _field$validations$re.pattern ? true : false;
+  const hasRegex = field !== null && field !== void 0 && (_field$validations = field.validations) !== null && _field$validations !== void 0 && (_field$validations = _field$validations.regex) !== null && _field$validations !== void 0 && _field$validations.pattern ? true : false;
   const integer = field.dataType === 'integer';
   const decimal = field.dataType === 'decimal';
   const isBusinessEmail = field.id === 'businessEmail';
   if (isRequired && (value === null || value === void 0 ? void 0 : value.length) <= 0) {
     var _isRequired$message, _field$name;
-    const errorMessage = (isRequired === null || isRequired === void 0 ? void 0 : (_isRequired$message = isRequired.message) === null || _isRequired$message === void 0 ? void 0 : _isRequired$message['en-GB']) || `${(_field$name = field.name) === null || _field$name === void 0 ? void 0 : _field$name['en-GB']} is required`;
+    const errorMessage = (isRequired === null || isRequired === void 0 || (_isRequired$message = isRequired.message) === null || _isRequired$message === void 0 ? void 0 : _isRequired$message['en-GB']) || `${(_field$name = field.name) === null || _field$name === void 0 ? void 0 : _field$name['en-GB']} is required`;
     return {
       fieldId: field.id,
       groupId: field.groupId,
@@ -436,7 +436,7 @@ const doValidateField = (field, value) => {
   if (hasRegex && value.length >= 1) {
     var _r$message;
     const r = field.validations.regex;
-    const msg = (r === null || r === void 0 ? void 0 : (_r$message = r.message) === null || _r$message === void 0 ? void 0 : _r$message['en-GB']) || `${field.name['en-GB']} is invalid`;
+    const msg = (r === null || r === void 0 || (_r$message = r.message) === null || _r$message === void 0 ? void 0 : _r$message['en-GB']) || `${field.name['en-GB']} is invalid`;
     if (isValidRegex(field, value) && isBusinessEmail) {
       if (!isBusinessEmailValid(field, value)) {
         return {
@@ -477,8 +477,8 @@ const doValidateField = (field, value) => {
   }
 };
 const isValidRegex = (field, value) => {
-  var _field$validations2, _field$validations2$r;
-  const regexPattern = field === null || field === void 0 ? void 0 : (_field$validations2 = field.validations) === null || _field$validations2 === void 0 ? void 0 : (_field$validations2$r = _field$validations2.regex) === null || _field$validations2$r === void 0 ? void 0 : _field$validations2$r.pattern;
+  var _field$validations2;
+  const regexPattern = field === null || field === void 0 || (_field$validations2 = field.validations) === null || _field$validations2 === void 0 || (_field$validations2 = _field$validations2.regex) === null || _field$validations2 === void 0 ? void 0 : _field$validations2.pattern;
   if (!regexPattern || regexPattern === '') return false;
   try {
     // Create RegExp object from string pattern
@@ -694,10 +694,10 @@ function* doFetchForm(action) {
   var _schema$groups;
   const formId = action.formId;
   const schema = yield getFormSchema(formId);
-  const groups = schema === null || schema === void 0 ? void 0 : (_schema$groups = schema.groups) === null || _schema$groups === void 0 ? void 0 : _schema$groups.filter(group => group.id !== 'private' && group.id !== 'settings');
+  const groups = schema === null || schema === void 0 || (_schema$groups = schema.groups) === null || _schema$groups === void 0 ? void 0 : _schema$groups.filter(group => group.id !== 'private' && group.id !== 'settings');
   if (formId && schema) {
     var _schema$groups2, _submitButtonText$def;
-    if ((schema === null || schema === void 0 ? void 0 : (_schema$groups2 = schema.groups) === null || _schema$groups2 === void 0 ? void 0 : _schema$groups2.length) > 0) {
+    if ((schema === null || schema === void 0 || (_schema$groups2 = schema.groups) === null || _schema$groups2 === void 0 ? void 0 : _schema$groups2.length) > 0) {
       yield put({
         type: SET_CURRENT_PAGE,
         formId: formId,
@@ -720,7 +720,7 @@ function* doFetchForm(action) {
       groups: groups,
       defaultLanguage: schema.defaultLanguage,
       settings: {
-        submitButtonText: submitButtonText === null || submitButtonText === void 0 ? void 0 : (_submitButtonText$def = submitButtonText.default) === null || _submitButtonText$def === void 0 ? void 0 : _submitButtonText$def['en-GB']
+        submitButtonText: submitButtonText === null || submitButtonText === void 0 || (_submitButtonText$def = submitButtonText.default) === null || _submitButtonText$def === void 0 ? void 0 : _submitButtonText$def['en-GB']
       }
     });
   }
@@ -5103,10 +5103,10 @@ const CountrySelect = ({
           if (evt.key === 'Escape') combo.close();
         }
       });
-      elInputRef === null || elInputRef === void 0 ? void 0 : (_elInputRef$current = elInputRef.current) === null || _elInputRef$current === void 0 ? void 0 : _elInputRef$current.addEventListener('keydown', onKeyDown);
+      elInputRef === null || elInputRef === void 0 || (_elInputRef$current = elInputRef.current) === null || _elInputRef$current === void 0 || _elInputRef$current.addEventListener('keydown', onKeyDown);
       return () => {
         var _elInputRef$current2;
-        elInputRef === null || elInputRef === void 0 ? void 0 : (_elInputRef$current2 = elInputRef.current) === null || _elInputRef$current2 === void 0 ? void 0 : _elInputRef$current2.removeEventListener('keydown', onKeyDown);
+        elInputRef === null || elInputRef === void 0 || (_elInputRef$current2 = elInputRef.current) === null || _elInputRef$current2 === void 0 || _elInputRef$current2.removeEventListener('keydown', onKeyDown);
         if (combo && typeof combo.destroy === 'function') combo.destroy();
       };
     }
@@ -5204,8 +5204,8 @@ const FormComposer = ({
       case 'number':
       case 'textfield':
         {
-          var _field$editor, _field$editor$instruc;
-          const instructions = field === null || field === void 0 ? void 0 : (_field$editor = field.editor) === null || _field$editor === void 0 ? void 0 : (_field$editor$instruc = _field$editor.instructions) === null || _field$editor$instruc === void 0 ? void 0 : _field$editor$instruc[defaultLanguage];
+          var _field$editor;
+          const instructions = field === null || field === void 0 || (_field$editor = field.editor) === null || _field$editor === void 0 || (_field$editor = _field$editor.instructions) === null || _field$editor === void 0 ? void 0 : _field$editor[defaultLanguage];
           return /*#__PURE__*/React.createElement(Textfield, {
             key: `${field.id}-${idx}`,
             field: field,
@@ -5342,7 +5342,7 @@ const FormComposer = ({
         }
       case 'country':
         {
-          var _field$default, _field$editor2, _field$editor2$proper, _field$editor2$proper2;
+          var _field$default, _field$editor2;
           return /*#__PURE__*/React.createElement(CountrySelect, {
             key: `${field.id}-${idx}`,
             formId: formId,
@@ -5350,8 +5350,8 @@ const FormComposer = ({
             id: field.id,
             label: field.name && field.name[defaultLanguage],
             validations: field.validations,
-            defaultValue: formData && formData[field.id] || (field === null || field === void 0 ? void 0 : (_field$default = field.default) === null || _field$default === void 0 ? void 0 : _field$default[defaultLanguage]),
-            placeholder: field === null || field === void 0 ? void 0 : (_field$editor2 = field.editor) === null || _field$editor2 === void 0 ? void 0 : (_field$editor2$proper = _field$editor2.properties) === null || _field$editor2$proper === void 0 ? void 0 : (_field$editor2$proper2 = _field$editor2$proper.placeholderText) === null || _field$editor2$proper2 === void 0 ? void 0 : _field$editor2$proper2[defaultLanguage]
+            defaultValue: formData && formData[field.id] || (field === null || field === void 0 || (_field$default = field.default) === null || _field$default === void 0 ? void 0 : _field$default[defaultLanguage]),
+            placeholder: field === null || field === void 0 || (_field$editor2 = field.editor) === null || _field$editor2 === void 0 || (_field$editor2 = _field$editor2.properties) === null || _field$editor2 === void 0 || (_field$editor2 = _field$editor2.placeholderText) === null || _field$editor2 === void 0 ? void 0 : _field$editor2[defaultLanguage]
           });
         }
       case 'content':
@@ -5361,7 +5361,7 @@ const FormComposer = ({
             name,
             editor
           } = field || {};
-          const instructions = editor === null || editor === void 0 ? void 0 : (_editor$instructions = editor.instructions) === null || _editor$instructions === void 0 ? void 0 : _editor$instructions[defaultLanguage];
+          const instructions = editor === null || editor === void 0 || (_editor$instructions = editor.instructions) === null || _editor$instructions === void 0 ? void 0 : _editor$instructions[defaultLanguage];
           return /*#__PURE__*/React.createElement("span", {
             className: "form__content",
             "data-form": "title",
