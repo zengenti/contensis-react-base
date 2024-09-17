@@ -1,28 +1,28 @@
 'use strict';
 
-Object.defineProperty(exports, '__esModule', { value: true });
-
 var React = require('react');
 var reactRedux = require('react-redux');
 require('jsonpath-mapper');
 var reselect = require('reselect');
 var merge = require('deepmerge');
 require('query-string');
-var sagas = require('./sagas-497c6e94.js');
+require('contensis-delivery-api');
+var sagas = require('./sagas-B5gohSpf.js');
 var immer = require('immer');
 var equals = require('deep-equal');
 require('contensis-core-api');
 require('loglevel');
 require('@redux-saga/core/effects');
-require('contensis-delivery-api');
 
-function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+function _interopDefault (e) { return e && e.__esModule ? e : { default: e }; }
 
-var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
-var merge__default = /*#__PURE__*/_interopDefaultLegacy(merge);
-var equals__default = /*#__PURE__*/_interopDefaultLegacy(equals);
+var React__default = /*#__PURE__*/_interopDefault(React);
+var merge__default = /*#__PURE__*/_interopDefault(merge);
+var equals__default = /*#__PURE__*/_interopDefault(equals);
 
 /* eslint-disable import/default */
+/* eslint-disable react/display-name */
+/* eslint-disable @typescript-eslint/naming-convention */
 const toJS = WrappedComponent => wrappedComponentProps => {
   const KEY = 0;
   const VALUE = 1;
@@ -32,13 +32,13 @@ const toJS = WrappedComponent => wrappedComponentProps => {
     newProps[propKey] = propValue && typeof propValue === 'object' && 'toJS' in propValue ? propValue.toJS() : propValue;
     return newProps;
   }, {});
-  return /*#__PURE__*/React__default["default"].createElement(WrappedComponent, propsJS);
+  return /*#__PURE__*/React__default.default.createElement(WrappedComponent, propsJS);
 };
 
 // eslint-disable-next-line import/default
 const withSearch = mappers => SearchComponent => {
   const Wrapper = props => {
-    return /*#__PURE__*/React__default["default"].createElement(SearchComponent, props);
+    return /*#__PURE__*/React__default.default.createElement(SearchComponent, props);
   };
   Wrapper.displayName = `withSearch(${SearchComponent.displayName || SearchComponent.name})`;
   const mapStateToProps = state => {
@@ -82,9 +82,10 @@ const withSearch = mappers => SearchComponent => {
 };
 
 /* eslint-disable @typescript-eslint/naming-convention */
+// eslint-disable-next-line import/default
 const withListing = mappers => ListingComponent => {
   const Wrapper = props => {
-    return /*#__PURE__*/React__default["default"].createElement(ListingComponent, props);
+    return /*#__PURE__*/React__default.default.createElement(ListingComponent, props);
   };
   Wrapper.displayName = `withListing(${ListingComponent.displayName || ListingComponent.name})`;
   const {
@@ -462,12 +463,12 @@ const initialState = searchState;
 var schema = /*#__PURE__*/Object.freeze({
   __proto__: null,
   entries: entries,
+  filterItem: filterItem,
+  filtering: filtering,
+  initialState: initialState,
   pagingInfo: pagingInfo,
   searchFacet: searchFacet,
-  searchTab: searchTab,
-  filtering: filtering,
-  filterItem: filterItem,
-  initialState: initialState
+  searchTab: searchTab
 });
 
 const addConfigToState = (state, action) => {
@@ -497,7 +498,7 @@ const generateSearchFacets = (context, config) => {
     const thisConfig = config[context] || {};
     if (Object.keys(thisConfig).length > 0) {
       Object.entries(thisConfig).map(([facetName, facet]) => {
-        const newFacet = merge__default["default"](searchFacet, facet);
+        const newFacet = merge__default.default(searchFacet, facet);
         if (!('isDisabled' in facet) || facet.isDisabled !== true) facets[facetName] = newFacet;
       });
     }
@@ -582,7 +583,7 @@ const resetFacet = facet => {
   facet.queryDuration = 0;
   return facet;
 };
-var reducers = (config => {
+var reducers = config => {
   // Add facets from SearchConfig to initialState
   const initState = {
     ...initialState,
@@ -675,7 +676,7 @@ var reducers = (config => {
             };
             return;
           }
-          state[action.context][facetKey].filters[filterKey] = merge__default["default"](filter, nextFilter, {
+          state[action.context][facetKey].filters[filterKey] = merge__default.default(filter, nextFilter, {
             arrayMerge: (source, inbound) => inbound
           });
           return;
@@ -713,7 +714,7 @@ var reducers = (config => {
               context,
               isCurrentFacet
             }, state);
-            resetCurrentFacet = state.config.isLoaded === true && !equals__default["default"](nextFilters, stateFacet.filters);
+            resetCurrentFacet = state.config.isLoaded === true && !equals__default.default(nextFilters, stateFacet.filters);
             stateFacet = resetCurrentFacet ? resetFacet(stateFacet) : stateFacet;
             stateFacet.filters = nextFilters;
             stateFacet.queryParams.dynamicOrderBy = sagas.toArray(orderBy) || [];
@@ -738,7 +739,7 @@ var reducers = (config => {
         {
           const thisContext = action.context || context;
           const currentFacet = state[thisContext][action.facet];
-          state[thisContext][action.facet] = merge__default["default"](currentFacet, action.nextFacet, {
+          state[thisContext][action.facet] = merge__default.default(currentFacet, action.nextFacet, {
             arrayMerge: (source, inbound) => inbound
           });
           return;
@@ -843,7 +844,7 @@ var reducers = (config => {
         return;
     }
   }, initState);
-});
+};
 
 const Context = {
   facets: 'facets',

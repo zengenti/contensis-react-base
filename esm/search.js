@@ -4,16 +4,18 @@ import 'jsonpath-mapper';
 import { createSelector } from 'reselect';
 import merge from 'deepmerge';
 import 'query-string';
-import { g as getCurrentFacet, b as getPageIndex$2, e as getCurrentTab$1, h as getFacet$1, i as getTabFacets$1, j as getFacetsTotalCount$1, k as getFacetTitles$1, l as getFeaturedResults$2, m as getRenderableFilters$2, n as getIsLoading$2, p as getPaging, q as getPageIsLoading$2, r as getResults, s as getSearchTerm$2, u as getSearchTotalCount$1, v as getSelectedFilters, w as getQueryParameter$2, x as getTabsAndFacets$1, y as getTotalCount$1, z as withMappers, A as clearFilters, B as updateCurrentFacet, C as updateCurrentTab, D as updatePageIndex, E as updatePageSize, F as updateSearchTerm, G as updateSelectedFilters, H as updateSortOrder, I as selectListing, J as mapStateToSearchUri, K as Context$1, L as selectFacets, M as triggerSearch, N as getFilters, U as UPDATE_SORT_ORDER, O as toArray, P as UPDATE_SELECTED_FILTERS, Q as UPDATE_SEARCH_TERM, R as UPDATE_PAGE_SIZE, S as UPDATE_PAGE_INDEX, T as SET_SEARCH_FILTERS, V as SET_SEARCH_ENTRIES, W as SET_ROUTE_FILTERS, X as LOAD_FILTERS_COMPLETE, Y as LOAD_FILTERS_ERROR, Z as LOAD_FILTERS, _ as EXECUTE_SEARCH_ERROR, $ as EXECUTE_SEARCH, a0 as CLEAR_FILTERS, a1 as APPLY_CONFIG } from './sagas-b654d1a6.js';
-export { a2 as actions, a7 as doSearch, a5 as expressions, a6 as queries, ad as routeParams, a9 as sagas, a3 as selectors, a8 as setRouteFilters, aa as triggerListingSsr, ab as triggerMinilistSsr, ac as triggerSearchSsr, a4 as types } from './sagas-b654d1a6.js';
+import 'contensis-delivery-api';
+import { g as getCurrentFacet, a as getPageIndex$2, b as getCurrentTab$1, c as getFacet$1, d as getTabFacets$1, e as getFacetsTotalCount$1, f as getFacetTitles$1, h as getFeaturedResults$2, i as getRenderableFilters$2, j as getIsLoading$2, k as getPaging, l as getPageIsLoading$2, m as getResults, n as getSearchTerm$2, o as getSearchTotalCount$1, p as getSelectedFilters, q as getQueryParameter$2, r as getTabsAndFacets$1, s as getTotalCount$1, w as withMappers, t as clearFilters, u as updateCurrentFacet, v as updateCurrentTab, x as updatePageIndex, y as updatePageSize, z as updateSearchTerm, A as updateSelectedFilters, B as updateSortOrder, C as selectListing, D as mapStateToSearchUri, E as Context$1, F as selectFacets, G as triggerSearch, H as getFilters, U as UPDATE_SORT_ORDER, I as toArray, J as UPDATE_SELECTED_FILTERS, K as UPDATE_SEARCH_TERM, L as UPDATE_PAGE_SIZE, M as UPDATE_PAGE_INDEX, S as SET_SEARCH_FILTERS, N as SET_SEARCH_ENTRIES, O as SET_ROUTE_FILTERS, P as LOAD_FILTERS_COMPLETE, Q as LOAD_FILTERS_ERROR, R as LOAD_FILTERS, T as EXECUTE_SEARCH_ERROR, V as EXECUTE_SEARCH, W as CLEAR_FILTERS, X as APPLY_CONFIG } from './sagas-COFJLvDA.js';
+export { Y as actions, a1 as doSearch, $ as expressions, a0 as queries, a7 as routeParams, a3 as sagas, Z as selectors, a2 as setRouteFilters, a4 as triggerListingSsr, a5 as triggerMinilistSsr, a6 as triggerSearchSsr, _ as types } from './sagas-COFJLvDA.js';
 import { produce } from 'immer';
 import equals from 'deep-equal';
 import 'contensis-core-api';
 import 'loglevel';
 import '@redux-saga/core/effects';
-import 'contensis-delivery-api';
 
 /* eslint-disable import/default */
+/* eslint-disable react/display-name */
+/* eslint-disable @typescript-eslint/naming-convention */
 const toJS = WrappedComponent => wrappedComponentProps => {
   const KEY = 0;
   const VALUE = 1;
@@ -73,6 +75,7 @@ const withSearch = mappers => SearchComponent => {
 };
 
 /* eslint-disable @typescript-eslint/naming-convention */
+// eslint-disable-next-line import/default
 const withListing = mappers => ListingComponent => {
   const Wrapper = props => {
     return /*#__PURE__*/React.createElement(ListingComponent, props);
@@ -453,12 +456,12 @@ const initialState = searchState;
 var schema = /*#__PURE__*/Object.freeze({
   __proto__: null,
   entries: entries,
+  filterItem: filterItem,
+  filtering: filtering,
+  initialState: initialState,
   pagingInfo: pagingInfo,
   searchFacet: searchFacet,
-  searchTab: searchTab,
-  filtering: filtering,
-  filterItem: filterItem,
-  initialState: initialState
+  searchTab: searchTab
 });
 
 const addConfigToState = (state, action) => {
@@ -573,7 +576,7 @@ const resetFacet = facet => {
   facet.queryDuration = 0;
   return facet;
 };
-var reducers = (config => {
+var reducers = config => {
   // Add facets from SearchConfig to initialState
   const initState = {
     ...initialState,
@@ -834,7 +837,7 @@ var reducers = (config => {
         return;
     }
   }, initState);
-});
+};
 
 const Context = {
   facets: 'facets',

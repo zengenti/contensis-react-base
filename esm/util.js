@@ -1,22 +1,23 @@
-export { s as setCachingHeaders, u as urls } from './urls-eac9a747.js';
-export { S as SSRContextProvider, c as cachedSearch, a as cachedSearchWithCookies, d as deliveryApi, b as deliveryApiWithCookies, g as getClientConfig, e as useDeliveryApi, u as useSSRContext } from './SSRContext-0177db9c.js';
+export { s as setCachingHeaders, u as urls } from './urls-DfCisos-.js';
+export { S as SSRContextProvider, c as cachedSearch, a as cachedSearchWithCookies, d as deliveryApi, b as deliveryApiWithCookies, g as getClientConfig, e as useDeliveryApi, u as useSSRContext } from './SSRContext-aOrFy6DJ.js';
+import { g as getDefaultExportFromCjs } from './_commonjsHelpers-BFTU3MAI.js';
 import mapJson, { jpath } from 'jsonpath-mapper';
 export { jpath, default as mapJson } from 'jsonpath-mapper';
 import React from 'react';
 import { connect } from 'react-redux';
-import { c as selectCurrentProject } from './selectors-bb117d1b.js';
-import { a as selectCommitRef, b as selectBuildNumber, s as selectVersionStatus } from './version-df7f7154.js';
+import { l as selectCurrentProject } from './selectors-CAjGfIyu.js';
+import { a as selectCommitRef, b as selectBuildNumber, s as selectVersionStatus } from './version-DtJjY5QT.js';
 import styled from 'styled-components';
 import 'react-cookie';
 import 'contensis-delivery-api';
 import 'query-string';
-import './store-2ff73952.js';
+import './store-BX4iG2-k.js';
 import 'redux';
 import 'redux-thunk';
 import 'redux-saga';
 import 'redux-injectors';
 import 'immer';
-import './CookieHelper.class-67f65459.js';
+import './CookieHelper.class-DqJ_o1jL.js';
 
 /**
  *
@@ -159,6 +160,8 @@ const stringifyStrings = obj => {
 };
 var stringifyStrings_1 = stringifyStrings;
 
+var stringifyStrings$1 = /*@__PURE__*/getDefaultExportFromCjs(stringifyStrings_1);
+
 const context = typeof window != 'undefined' ? window : global;
 const isDev = process.env.NODE_ENV === 'development';
 const pj = () => isDev ? PACKAGE_JSON /* global PACKAGE_JSON */ : context.PACKAGE_JSON || {
@@ -187,7 +190,6 @@ const versionInfoProps = {
   },
   zenPackageVersions: () => [...(Object.entries(pj().devDependencies || {}).filter(([pkg]) => pkg.includes('zengenti') || pkg.includes('contensis')) || []), ...(Object.entries(pj().dependencies || {}).filter(([pkg]) => pkg.includes('zengenti') || pkg.includes('contensis')) || [])],
   deliveryApi: () => JSON.parse(JSON.stringify(DELIVERY_API_CONFIG /* global DELIVERY_API_CONFIG */)),
-
   devEnv: () => typeof DEV_ENV !== 'undefined' /* global DEV_ENV */ ? DEV_ENV : null,
   disableSsrRedux: () => isDev ? DISABLE_SSR_REDUX /* global DISABLE_SSR_REDUX*/ : context.DISABLE_SSR_REDUX || false,
   nodeEnv: () => process.env.NODE_ENV || 'production',
@@ -293,5 +295,5 @@ const VersionInfo = ({
 };
 var VersionInfo$1 = connect(mapStateToVersionInfo)(VersionInfo);
 
-export { VersionInfo$1 as VersionInfo, entryMapper, mapComposer, mapEntries, stringifyStrings_1 as stringifyStrings, useComposerMapper, useEntriesMapper, useEntryMapper, useMapper };
+export { VersionInfo$1 as VersionInfo, entryMapper, mapComposer, mapEntries, stringifyStrings$1 as stringifyStrings, useComposerMapper, useEntriesMapper, useEntryMapper, useMapper };
 //# sourceMappingURL=util.js.map

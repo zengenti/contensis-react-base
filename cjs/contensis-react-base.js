@@ -2,7 +2,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var SSRContext = require('./SSRContext-79344de2.js');
+var SSRContext = require('./SSRContext-BPOCHuNE.js');
 var contensisDeliveryApi = require('contensis-delivery-api');
 var React = require('react');
 var reactRedux = require('react-redux');
@@ -10,11 +10,11 @@ var mapJson = require('jsonpath-mapper');
 require('reselect');
 require('deepmerge');
 require('query-string');
-var sagas = require('./sagas-497c6e94.js');
+var sagas = require('./sagas-B5gohSpf.js');
 require('immer');
 require('deep-equal');
 var contensisCoreApi = require('contensis-core-api');
-var urls = require('./urls-6fcaf4c6.js');
+var urls = require('./urls-DVIwGZmd.js');
 require('isomorphic-fetch');
 var express = require('express');
 var http = require('http');
@@ -31,15 +31,15 @@ var serialize = require('serialize-javascript');
 var minifyCssString = require('minify-css-string');
 var server$1 = require('@loadable/server');
 var lodash = require('lodash');
-var _commonjsHelpers = require('./_commonjsHelpers-b3309d7b.js');
+var _commonjsHelpers = require('./_commonjsHelpers-BJu3ubxk.js');
 var lodashClean = require('lodash-clean');
 var reactCookie = require('react-cookie');
-var CookieHelper_class = require('./CookieHelper.class-e0908573.js');
+var CookieHelper_class = require('./CookieHelper.class-CNL3lC5D.js');
 var cookiesMiddleware = require('universal-cookie-express');
-var store = require('./store-0ef9b570.js');
-var App = require('./App-b96f8a00.js');
-var version = require('./version-8072b62e.js');
-var selectors = require('./selectors-d5cd6b19.js');
+var store = require('./store-C7cLStZQ.js');
+var App = require('./App-BwHcW7lS.js');
+var version = require('./version-KnbUFM-2.js');
+var selectors = require('./selectors-VGpE6wyV.js');
 var chalk = require('chalk');
 require('loglevel');
 require('@redux-saga/core/effects');
@@ -49,25 +49,25 @@ require('redux-saga');
 require('redux-injectors');
 require('history');
 require('await-to-js');
-require('./version-0cb648de.js');
-require('./ChangePassword.container-fe39e44a.js');
-require('./ToJs-8fd54c8e.js');
+require('./version-CY850L7T.js');
+require('./ChangePassword.container-CUqTfb6O.js');
+require('./ToJs-BAvKFEAO.js');
 require('react-hot-loader');
-require('./RouteLoader-4ac8153a.js');
+require('./RouteLoader-BgEFZDUj.js');
 
-function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+function _interopDefault (e) { return e && e.__esModule ? e : { default: e }; }
 
-var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
-var mapJson__default = /*#__PURE__*/_interopDefaultLegacy(mapJson);
-var express__default = /*#__PURE__*/_interopDefaultLegacy(express);
-var http__default = /*#__PURE__*/_interopDefaultLegacy(http);
-var httpProxy__default = /*#__PURE__*/_interopDefaultLegacy(httpProxy);
-var fs__default = /*#__PURE__*/_interopDefaultLegacy(fs);
-var path__default = /*#__PURE__*/_interopDefaultLegacy(path);
-var serialize__default = /*#__PURE__*/_interopDefaultLegacy(serialize);
-var minifyCssString__default = /*#__PURE__*/_interopDefaultLegacy(minifyCssString);
-var cookiesMiddleware__default = /*#__PURE__*/_interopDefaultLegacy(cookiesMiddleware);
-var chalk__default = /*#__PURE__*/_interopDefaultLegacy(chalk);
+var React__default = /*#__PURE__*/_interopDefault(React);
+var mapJson__default = /*#__PURE__*/_interopDefault(mapJson);
+var express__default = /*#__PURE__*/_interopDefault(express);
+var http__default = /*#__PURE__*/_interopDefault(http);
+var httpProxy__default = /*#__PURE__*/_interopDefault(httpProxy);
+var fs__default = /*#__PURE__*/_interopDefault(fs);
+var path__default = /*#__PURE__*/_interopDefault(path);
+var serialize__default = /*#__PURE__*/_interopDefault(serialize);
+var minifyCssString__default = /*#__PURE__*/_interopDefault(minifyCssString);
+var cookiesMiddleware__default = /*#__PURE__*/_interopDefault(cookiesMiddleware);
+var chalk__default = /*#__PURE__*/_interopDefault(chalk);
 
 /**
  * Util class holds our search results helper boilerplate methods
@@ -246,6 +246,7 @@ const resolveParentEntries = async (parentContentTypeIds, replaceContentTypeIds,
 };
 
 /* eslint-disable no-console */
+
 class QueryLevelResults {
   constructor({
     level: _level,
@@ -259,21 +260,9 @@ class QueryLevelResults {
     parent: _parent,
     debug = false
   }) {
-    this.level = void 0;
-    this.contentTypeIds = void 0;
-    this.linkFieldIds = void 0;
-    this.linkFields = void 0;
-    this.filters = void 0;
-    this.sharedFilters = void 0;
-    this.returnEntries = void 0;
-    this.resolveFirstParent = void 0;
     this.validatedLinks = [];
-    this.parent = void 0;
     this.children = [];
-    this.runFirstQuery = void 0;
-    this.runFinalQuery = void 0;
     this.params = {};
-    this.debug = void 0;
     this.firstQuery = new contensisDeliveryApi.Query();
     this.firstResults = {};
     this.finalQuery = new contensisDeliveryApi.Query();
@@ -333,7 +322,6 @@ class QueryLevelResults {
         query.pageIndex = params.pageIndex;
         // query.orderBy = params.orderBy;
       }
-
       if (runFinalQuery) {
         if (this.debug) console.log(`\nLevel ${this.level} - Final query: \n${JSON.stringify(query.toJSON()).substring(0, 1000)}`);
         this.finalResults = await SSRContext.cachedSearch.searchUsingPost(query, Number(params.linkDepth) || 0, params.projectId);
@@ -413,13 +401,6 @@ class LinkDepthSearchService {
     params: _params,
     debug = false
   }) {
-    this.contentTypeIds = void 0;
-    this.filters = void 0;
-    this.sharedFilters = void 0;
-    this.linkFields = void 0;
-    this.params = void 0;
-    this.debug = void 0;
-    this.queryLevels = void 0;
     this.DoSearch = async () => {
       // Run queries "top-down" through each level of `linkField`
       for (const queryLevel of this.queryLevels) {
@@ -651,8 +632,8 @@ const servers$1 = SERVERS; /* global SERVERS */
 const project = PROJECT; /* global PROJECT */
 const alias$1 = ALIAS; /* global ALIAS */
 const deliveryApiHostname = urls.url(alias$1, project).api;
-const assetProxy = httpProxy__default["default"].createProxyServer();
-const deliveryProxy = httpProxy__default["default"].createProxyServer();
+const assetProxy = httpProxy__default.default.createProxyServer();
+const deliveryProxy = httpProxy__default.default.createProxyServer();
 const reverseProxies = (app, reverseProxyPaths = []) => {
   deliveryApiProxy(deliveryProxy, app);
   app.all(reverseProxyPaths, (req, res) => {
@@ -668,7 +649,6 @@ const reverseProxies = (app, reverseProxyPaths = []) => {
     });
   });
 };
-
 const deliveryApiProxy = (apiProxy, app) => {
   // This is just here to stop cors requests on localhost. In Production this is mapped using varnish.
   app.all(['/api/delivery/*', '/api/forms/*', '/api/image/*', '/authenticate/*'], (req, res) => {
@@ -693,7 +673,6 @@ const CacheDuration = {
   // Believe it or not these two max ages are the same in runtime
   expressStatic: '31557600h' // Believe it or not these two max ages are the same in runtime
 };
-
 const getCacheDuration = (status = 200) => {
   if (status >= 400) return CacheDuration[404];
   return CacheDuration[200];
@@ -710,13 +689,13 @@ const bundleManipulationMiddleware = ({
   staticFolderPath,
   staticRoutePath
 }) => (req, res, next) => {
-  const filename = path__default["default"].basename(req.path);
+  const filename = path__default.default.basename(req.path);
   const modernBundle = filename.endsWith('.mjs');
   const legacyBundle = filename.endsWith('.js');
   if ((legacyBundle || modernBundle) && filename.startsWith('runtime.')) {
-    const jsRuntimeLocation = path__default["default"].resolve(appRootPath, `dist/${staticFolderPath}/${modernBundle ? 'modern/js' : 'legacy/js'}/${filename}`);
+    const jsRuntimeLocation = path__default.default.resolve(appRootPath, `dist/${staticFolderPath}/${modernBundle ? 'modern/js' : 'legacy/js'}/${filename}`);
     try {
-      const jsRuntimeBundle = fs__default["default"].readFileSync(jsRuntimeLocation, 'utf8');
+      const jsRuntimeBundle = fs__default.default.readFileSync(jsRuntimeLocation, 'utf8');
       const modifiedBundle = replaceStaticPath(jsRuntimeBundle, staticRoutePath);
       if (maxage) res.set('Cache-Control', `public, max-age=${maxage}`);
       res.type('.js').send(modifiedBundle);
@@ -750,13 +729,13 @@ const resolveStartupMiddleware = ({
       let startupFilePath = '';
       startupFilePaths.forEach(async testPath => {
         try {
-          fs__default["default"].accessSync(testPath);
+          fs__default.default.accessSync(testPath);
           startupFilePath = testPath;
         } catch (ex) {
           // Do nothing
         }
       });
-      startupFileLocation = path__default["default"].resolve(appRootPath, startupFilePath);
+      startupFileLocation = path__default.default.resolve(appRootPath, startupFilePath);
       if (maxage) res.set('Cache-Control', `public, max-age=${maxage}`);
       res.sendFile(startupFileLocation);
     } catch (sendFileError) {
@@ -792,7 +771,7 @@ const staticAssets = (app, {
     staticFolderPath
   }),
   // eslint-disable-next-line import/no-named-as-default-member
-  express__default["default"].static(`dist/${staticFolderPath}`, {
+  express__default.default.static(`dist/${staticFolderPath}`, {
     // these maxage values are different in config but the same in runtime,
     // this one is somehow converted and should end up being the same as CacheDuration.static
     maxAge: CacheDuration.expressStatic
@@ -2108,46 +2087,50 @@ function stubFalse() {
 
 var stubFalse_1 = stubFalse;
 
+isBuffer$2.exports;
+
 (function (module, exports) {
-var root = _root,
-    stubFalse = stubFalse_1;
+	var root = _root,
+	    stubFalse = stubFalse_1;
 
-/** Detect free variable `exports`. */
-var freeExports = exports && !exports.nodeType && exports;
+	/** Detect free variable `exports`. */
+	var freeExports = exports && !exports.nodeType && exports;
 
-/** Detect free variable `module`. */
-var freeModule = freeExports && 'object' == 'object' && module && !module.nodeType && module;
+	/** Detect free variable `module`. */
+	var freeModule = freeExports && 'object' == 'object' && module && !module.nodeType && module;
 
-/** Detect the popular CommonJS extension `module.exports`. */
-var moduleExports = freeModule && freeModule.exports === freeExports;
+	/** Detect the popular CommonJS extension `module.exports`. */
+	var moduleExports = freeModule && freeModule.exports === freeExports;
 
-/** Built-in value references. */
-var Buffer = moduleExports ? root.Buffer : undefined;
+	/** Built-in value references. */
+	var Buffer = moduleExports ? root.Buffer : undefined;
 
-/* Built-in method references for those with the same name as other `lodash` methods. */
-var nativeIsBuffer = Buffer ? Buffer.isBuffer : undefined;
+	/* Built-in method references for those with the same name as other `lodash` methods. */
+	var nativeIsBuffer = Buffer ? Buffer.isBuffer : undefined;
 
-/**
- * Checks if `value` is a buffer.
- *
- * @static
- * @memberOf _
- * @since 4.3.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is a buffer, else `false`.
- * @example
- *
- * _.isBuffer(new Buffer(2));
- * // => true
- *
- * _.isBuffer(new Uint8Array(2));
- * // => false
- */
-var isBuffer = nativeIsBuffer || stubFalse;
+	/**
+	 * Checks if `value` is a buffer.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.3.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a buffer, else `false`.
+	 * @example
+	 *
+	 * _.isBuffer(new Buffer(2));
+	 * // => true
+	 *
+	 * _.isBuffer(new Uint8Array(2));
+	 * // => false
+	 */
+	var isBuffer = nativeIsBuffer || stubFalse;
 
-module.exports = isBuffer;
-}(isBuffer$2, isBuffer$2.exports));
+	module.exports = isBuffer; 
+} (isBuffer$2, isBuffer$2.exports));
+
+var isBufferExports = isBuffer$2.exports;
 
 /** Used as references for various `Number` constants. */
 
@@ -2292,42 +2275,46 @@ var _baseUnary = baseUnary$3;
 
 var _nodeUtil = {exports: {}};
 
+_nodeUtil.exports;
+
 (function (module, exports) {
-var freeGlobal = _freeGlobal;
+	var freeGlobal = _freeGlobal;
 
-/** Detect free variable `exports`. */
-var freeExports = exports && !exports.nodeType && exports;
+	/** Detect free variable `exports`. */
+	var freeExports = exports && !exports.nodeType && exports;
 
-/** Detect free variable `module`. */
-var freeModule = freeExports && 'object' == 'object' && module && !module.nodeType && module;
+	/** Detect free variable `module`. */
+	var freeModule = freeExports && 'object' == 'object' && module && !module.nodeType && module;
 
-/** Detect the popular CommonJS extension `module.exports`. */
-var moduleExports = freeModule && freeModule.exports === freeExports;
+	/** Detect the popular CommonJS extension `module.exports`. */
+	var moduleExports = freeModule && freeModule.exports === freeExports;
 
-/** Detect free variable `process` from Node.js. */
-var freeProcess = moduleExports && freeGlobal.process;
+	/** Detect free variable `process` from Node.js. */
+	var freeProcess = moduleExports && freeGlobal.process;
 
-/** Used to access faster Node.js helpers. */
-var nodeUtil = (function() {
-  try {
-    // Use `util.types` for Node.js 10+.
-    var types = freeModule && freeModule.require && freeModule.require('util').types;
+	/** Used to access faster Node.js helpers. */
+	var nodeUtil = (function() {
+	  try {
+	    // Use `util.types` for Node.js 10+.
+	    var types = freeModule && freeModule.require && freeModule.require('util').types;
 
-    if (types) {
-      return types;
-    }
+	    if (types) {
+	      return types;
+	    }
 
-    // Legacy `process.binding('util')` for Node.js < 10.
-    return freeProcess && freeProcess.binding && freeProcess.binding('util');
-  } catch (e) {}
-}());
+	    // Legacy `process.binding('util')` for Node.js < 10.
+	    return freeProcess && freeProcess.binding && freeProcess.binding('util');
+	  } catch (e) {}
+	}());
 
-module.exports = nodeUtil;
-}(_nodeUtil, _nodeUtil.exports));
+	module.exports = nodeUtil; 
+} (_nodeUtil, _nodeUtil.exports));
+
+var _nodeUtilExports = _nodeUtil.exports;
 
 var baseIsTypedArray = _baseIsTypedArray,
     baseUnary$2 = _baseUnary,
-    nodeUtil$2 = _nodeUtil.exports;
+    nodeUtil$2 = _nodeUtilExports;
 
 /* Node.js helper references. */
 var nodeIsTypedArray = nodeUtil$2 && nodeUtil$2.isTypedArray;
@@ -2356,7 +2343,7 @@ var isTypedArray_1 = isTypedArray$1;
 var baseTimes = _baseTimes,
     isArguments = isArguments_1,
     isArray$2 = isArray_1,
-    isBuffer$1 = isBuffer$2.exports,
+    isBuffer$1 = isBufferExports,
     isIndex = _isIndex,
     isTypedArray = isTypedArray_1;
 
@@ -2677,43 +2664,47 @@ var _baseAssignIn = baseAssignIn$1;
 
 var _cloneBuffer = {exports: {}};
 
+_cloneBuffer.exports;
+
 (function (module, exports) {
-var root = _root;
+	var root = _root;
 
-/** Detect free variable `exports`. */
-var freeExports = exports && !exports.nodeType && exports;
+	/** Detect free variable `exports`. */
+	var freeExports = exports && !exports.nodeType && exports;
 
-/** Detect free variable `module`. */
-var freeModule = freeExports && 'object' == 'object' && module && !module.nodeType && module;
+	/** Detect free variable `module`. */
+	var freeModule = freeExports && 'object' == 'object' && module && !module.nodeType && module;
 
-/** Detect the popular CommonJS extension `module.exports`. */
-var moduleExports = freeModule && freeModule.exports === freeExports;
+	/** Detect the popular CommonJS extension `module.exports`. */
+	var moduleExports = freeModule && freeModule.exports === freeExports;
 
-/** Built-in value references. */
-var Buffer = moduleExports ? root.Buffer : undefined,
-    allocUnsafe = Buffer ? Buffer.allocUnsafe : undefined;
+	/** Built-in value references. */
+	var Buffer = moduleExports ? root.Buffer : undefined,
+	    allocUnsafe = Buffer ? Buffer.allocUnsafe : undefined;
 
-/**
- * Creates a clone of  `buffer`.
- *
- * @private
- * @param {Buffer} buffer The buffer to clone.
- * @param {boolean} [isDeep] Specify a deep clone.
- * @returns {Buffer} Returns the cloned buffer.
- */
-function cloneBuffer(buffer, isDeep) {
-  if (isDeep) {
-    return buffer.slice();
-  }
-  var length = buffer.length,
-      result = allocUnsafe ? allocUnsafe(length) : new buffer.constructor(length);
+	/**
+	 * Creates a clone of  `buffer`.
+	 *
+	 * @private
+	 * @param {Buffer} buffer The buffer to clone.
+	 * @param {boolean} [isDeep] Specify a deep clone.
+	 * @returns {Buffer} Returns the cloned buffer.
+	 */
+	function cloneBuffer(buffer, isDeep) {
+	  if (isDeep) {
+	    return buffer.slice();
+	  }
+	  var length = buffer.length,
+	      result = allocUnsafe ? allocUnsafe(length) : new buffer.constructor(length);
 
-  buffer.copy(result);
-  return result;
-}
+	  buffer.copy(result);
+	  return result;
+	}
 
-module.exports = cloneBuffer;
-}(_cloneBuffer, _cloneBuffer.exports));
+	module.exports = cloneBuffer; 
+} (_cloneBuffer, _cloneBuffer.exports));
+
+var _cloneBufferExports = _cloneBuffer.exports;
 
 /**
  * Copies the values of `source` to `array`.
@@ -3329,7 +3320,7 @@ var _baseIsMap = baseIsMap$1;
 
 var baseIsMap = _baseIsMap,
     baseUnary$1 = _baseUnary,
-    nodeUtil$1 = _nodeUtil.exports;
+    nodeUtil$1 = _nodeUtilExports;
 
 /* Node.js helper references. */
 var nodeIsMap = nodeUtil$1 && nodeUtil$1.isMap;
@@ -3376,7 +3367,7 @@ var _baseIsSet = baseIsSet$1;
 
 var baseIsSet = _baseIsSet,
     baseUnary = _baseUnary,
-    nodeUtil = _nodeUtil.exports;
+    nodeUtil = _nodeUtilExports;
 
 /* Node.js helper references. */
 var nodeIsSet = nodeUtil && nodeUtil.isSet;
@@ -3407,7 +3398,7 @@ var Stack = _Stack,
     assignValue = _assignValue,
     baseAssign = _baseAssign,
     baseAssignIn = _baseAssignIn,
-    cloneBuffer = _cloneBuffer.exports,
+    cloneBuffer = _cloneBufferExports,
     copyArray = _copyArray,
     copySymbols = _copySymbols,
     copySymbolsIn = _copySymbolsIn,
@@ -3418,7 +3409,7 @@ var Stack = _Stack,
     initCloneByTag = _initCloneByTag,
     initCloneObject = _initCloneObject,
     isArray = isArray_1,
-    isBuffer = isBuffer$2.exports,
+    isBuffer = isBufferExports,
     isMap = isMap_1,
     isObject = isObject_1,
     isSet = isSet_1,
@@ -3599,7 +3590,9 @@ function cloneDeep(value) {
 
 var cloneDeep_1 = cloneDeep;
 
-var stringifyAttributes = ((attributes = {}) => Object.entries(attributes).map(([key, value], idx) => `${idx !== 0 ? ' ' : ''}${key}${value ? `="${value}"` : ''}`).join(' '));
+var cloneDeep$1 = /*@__PURE__*/_commonjsHelpers.getDefaultExportFromCjs(cloneDeep_1);
+
+var stringifyAttributes = (attributes = {}) => Object.entries(attributes).map(([key, value], idx) => `${idx !== 0 ? ' ' : ''}${key}${value ? `="${value}"` : ''}`).join(' ');
 
 /* eslint-disable no-console */
 
@@ -3616,7 +3609,7 @@ const handleResponse = (request, response, content, send = 'send') => {
   response[send](content);
 };
 
-const readFileSync = path => fs__default["default"].readFileSync(path, 'utf8');
+const readFileSync = path => fs__default.default.readFileSync(path, 'utf8');
 const loadableBundleData = ({
   stats,
   templates
@@ -3651,7 +3644,7 @@ const loadableChunkExtractors = () => {
       modern = new server$1.ChunkExtractor({
         entrypoints: ['app'],
         namespace: 'modern',
-        statsFile: path__default["default"].resolve('dist/modern/loadable-stats.json')
+        statsFile: path__default.default.resolve('dist/modern/loadable-stats.json')
       });
     } catch (e) {
       console.info('@loadable/server modern ChunkExtractor not available');
@@ -3660,7 +3653,7 @@ const loadableChunkExtractors = () => {
       legacy = new server$1.ChunkExtractor({
         entrypoints: ['app'],
         namespace: 'legacy',
-        statsFile: path__default["default"].resolve('dist/legacy/loadable-stats.json')
+        statsFile: path__default.default.resolve('dist/legacy/loadable-stats.json')
       });
     } catch (e) {
       console.info('@loadable/server legacy ChunkExtractor not available');
@@ -3788,7 +3781,7 @@ const addVarnishAuthenticationHeaders = (state, response, groups = {}) => {
 
 const getVersionInfo = staticFolderPath => {
   try {
-    const versionData = fs__default["default"].readFileSync(`dist/${staticFolderPath}/version.json`, 'utf8');
+    const versionData = fs__default.default.readFileSync(`dist/${staticFolderPath}/version.json`, 'utf8');
     const versionInfo = JSON.parse(versionData);
     return versionInfo;
   } catch (ex) {
@@ -3807,8 +3800,8 @@ const unhandledExceptionHandler = (handleExceptions = handleDefaultEvents) => {
     process.on(type, err => {
       if (err && err instanceof Error) {
         // Print a message to inform admins and developers the error should not be ignored
-        console.log(`${`[contensis-react-base] ❌ ${chalk__default["default"].red.bold(`${type} - ${err.message}`)}`}`);
-        console.log(chalk__default["default"].gray` - you are seeing this because we have tried to prevent the app from completely crashing - you should not ignore this problem`);
+        console.log(`${`[contensis-react-base] ❌ ${chalk__default.default.red.bold(`${type} - ${err.message}`)}`}`);
+        console.log(chalk__default.default.gray` - you are seeing this because we have tried to prevent the app from completely crashing - you should not ignore this problem`);
         // Log the error to server console
         console.error(err);
       }
@@ -3842,7 +3835,7 @@ const webApp = (app, ReactApp, config) => {
   if (handleExceptions !== false) unhandledExceptionHandler(handleExceptions); // Create `process.on` event handlers for unhandled exceptions (Node v15+)
 
   const versionInfo = getVersionInfo(staticFolderPath);
-  app.get('/*', cookiesMiddleware__default["default"](), async (request, response) => {
+  app.get('/*', cookiesMiddleware__default.default(), async (request, response) => {
     const {
       url
     } = request;
@@ -3856,7 +3849,7 @@ const webApp = (app, ReactApp, config) => {
     const normaliseQs = q => q && q.toLowerCase() === 'true' ? true : false;
 
     // Determine functional params from QueryString and set access methods
-    const accessMethod = mapJson__default["default"](request.query, {
+    const accessMethod = mapJson__default.default(request.query, {
       DYNAMIC: ({
         dynamic
       }) => normaliseQs(dynamic) || onlyDynamic,
@@ -3898,19 +3891,19 @@ const webApp = (app, ReactApp, config) => {
     request.universalCookies :
     // this is a stub cookie collection so cookie methods can be used in code
     new CookieHelper_class.Cookies();
-    const jsx = /*#__PURE__*/React__default["default"].createElement(server$1.ChunkExtractorManager, {
+    const jsx = /*#__PURE__*/React__default.default.createElement(server$1.ChunkExtractorManager, {
       extractor: loadableExtractor.commonLoadableExtractor
-    }, /*#__PURE__*/React__default["default"].createElement(reactCookie.CookiesProvider, {
+    }, /*#__PURE__*/React__default.default.createElement(reactCookie.CookiesProvider, {
       cookies: ssrCookies
-    }, /*#__PURE__*/React__default["default"].createElement(reactRedux.Provider, {
+    }, /*#__PURE__*/React__default.default.createElement(reactRedux.Provider, {
       store: store$1
-    }, /*#__PURE__*/React__default["default"].createElement(reactRouterDom.StaticRouter, {
+    }, /*#__PURE__*/React__default.default.createElement(reactRouterDom.StaticRouter, {
       context: context,
       location: url
-    }, /*#__PURE__*/React__default["default"].createElement(SSRContext.SSRContextProvider, {
+    }, /*#__PURE__*/React__default.default.createElement(SSRContext.SSRContextProvider, {
       request: request,
       response: response
-    }, /*#__PURE__*/React__default["default"].createElement(ReactApp, {
+    }, /*#__PURE__*/React__default.default.createElement(ReactApp, {
       routes: routes,
       withEvents: withEvents
     }))))));
@@ -3965,7 +3958,7 @@ const webApp = (app, ReactApp, config) => {
           isPlainObject: lodash.identity,
           isString: lodash.identity,
           isUndefined: lodash.noop
-        })(cloneDeep_1(reduxState));
+        })(cloneDeep$1(reduxState));
         // These keys are used for preparing server-side response headers only
         // and are not required in the client at all except for debugging ssr
         if (!((_selectCurrentSearch = selectors.selectCurrentSearch(reduxState)) !== null && _selectCurrentSearch !== void 0 && _selectCurrentSearch.includes('includeApiCalls'))) {
@@ -3978,7 +3971,7 @@ const webApp = (app, ReactApp, config) => {
         if (stateType === 'immutable') {
           clonedState = clonedState.delete('user');
         } else delete clonedState.user;
-        let serialisedReduxData = serialize__default["default"](clonedState);
+        let serialisedReduxData = serialize__default.default(clonedState);
         if (context.statusCode !== 404) {
           // For a request that returns a redux state object as a response
           if (accessMethod.REDUX) {
@@ -4006,17 +3999,17 @@ const webApp = (app, ReactApp, config) => {
 
         // Static page served as a fragment
         if (accessMethod.FRAGMENT && accessMethod.STATIC) {
-          responseHTML = minifyCssString__default["default"](styleTags) + html;
+          responseHTML = minifyCssString__default.default(styleTags) + html;
         }
 
         // Page fragment served with client scripts and redux data that hydrate the app client side
         if (accessMethod.FRAGMENT && !accessMethod.STATIC) {
-          responseHTML = templateHTMLFragment.replace('{{TITLE}}', title).replace('{{SEO_CRITICAL_METADATA}}', metadata).replace('{{CRITICAL_CSS}}', minifyCssString__default["default"](styleTags)).replace('{{APP}}', html).replace('{{LOADABLE_CHUNKS}}', bundleTags).replace('{{REDUX_DATA}}', serialisedReduxData);
+          responseHTML = templateHTMLFragment.replace('{{TITLE}}', title).replace('{{SEO_CRITICAL_METADATA}}', metadata).replace('{{CRITICAL_CSS}}', minifyCssString__default.default(styleTags)).replace('{{APP}}', html).replace('{{LOADABLE_CHUNKS}}', bundleTags).replace('{{REDUX_DATA}}', serialisedReduxData);
         }
 
         // Full HTML page served statically
         if (!accessMethod.FRAGMENT && accessMethod.STATIC) {
-          responseHTML = templateHTMLStatic.replace('{{TITLE}}', title).replace('{{SEO_CRITICAL_METADATA}}', metadata).replace('{{CRITICAL_CSS}}', minifyCssString__default["default"](styleTags)).replace('{{APP}}', html).replace('{{LOADABLE_CHUNKS}}', '');
+          responseHTML = templateHTMLStatic.replace('{{TITLE}}', title).replace('{{SEO_CRITICAL_METADATA}}', metadata).replace('{{CRITICAL_CSS}}', minifyCssString__default.default(styleTags)).replace('{{APP}}', html).replace('{{LOADABLE_CHUNKS}}', '');
         }
 
         // Full HTML page served with client scripts and redux data that hydrate the app client side
@@ -4054,8 +4047,8 @@ const webApp = (app, ReactApp, config) => {
   });
 };
 
-const app = express__default["default"]();
-const server = http__default["default"].createServer(app);
+const app = express__default.default();
+const server = http__default.default.createServer(app);
 const start = (ReactApp, config, ServerFeatures) => {
   global.PACKAGE_JSON = config.packagejson;
   global.DISABLE_SSR_REDUX = config.disableSsrRedux;
@@ -4093,6 +4086,6 @@ var internalServer = {
 };
 
 exports.ReactApp = App.AppRoot;
-exports["default"] = internalServer;
+exports.default = internalServer;
 exports.linkDepthApi = makeLinkDepthApi;
 //# sourceMappingURL=contensis-react-base.js.map

@@ -11,22 +11,22 @@ var reactRouterDom = require('react-router-dom');
 var component = require('@loadable/component');
 var queryString = require('query-string');
 var reactCookie = require('react-cookie');
-var version = require('./version-0cb648de.js');
-var version$1 = require('./version-8072b62e.js');
-var App = require('./App-b96f8a00.js');
-var store = require('./store-0ef9b570.js');
-var selectors = require('./selectors-d5cd6b19.js');
-var SSRContext = require('./SSRContext-79344de2.js');
+var version = require('./version-CY850L7T.js');
+var version$1 = require('./version-KnbUFM-2.js');
+var App = require('./App-BwHcW7lS.js');
+var store = require('./store-C7cLStZQ.js');
+var selectors = require('./selectors-VGpE6wyV.js');
+var SSRContext = require('./SSRContext-BPOCHuNE.js');
 require('@redux-saga/core/effects');
 require('history');
 require('loglevel');
 require('await-to-js');
-require('./ChangePassword.container-fe39e44a.js');
-require('./ToJs-8fd54c8e.js');
+require('./ChangePassword.container-CUqTfb6O.js');
+require('./ToJs-BAvKFEAO.js');
 require('jsonpath-mapper');
-require('./CookieHelper.class-e0908573.js');
+require('./CookieHelper.class-CNL3lC5D.js');
 require('contensis-delivery-api');
-require('./RouteLoader-4ac8153a.js');
+require('./RouteLoader-BgEFZDUj.js');
 require('react-router-config');
 require('reselect');
 require('redux');
@@ -35,9 +35,9 @@ require('redux-saga');
 require('redux-injectors');
 require('immer');
 
-function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+function _interopDefault (e) { return e && e.__esModule ? e : { default: e }; }
 
-var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
+var React__default = /*#__PURE__*/_interopDefault(React);
 
 // Fix TS2769 error No overload matches this call
 const Container = reactHotLoader.AppContainer; // as typeof AppContainer;
@@ -53,11 +53,11 @@ class ClientApp {
       withEvents
     } = config;
     const GetClientJSX = store => {
-      const ClientJsx = /*#__PURE__*/React__default["default"].createElement(Container, null, /*#__PURE__*/React__default["default"].createElement(reactCookie.CookiesProvider, null, /*#__PURE__*/React__default["default"].createElement(reactRedux.Provider, {
+      const ClientJsx = /*#__PURE__*/React__default.default.createElement(Container, null, /*#__PURE__*/React__default.default.createElement(reactCookie.CookiesProvider, null, /*#__PURE__*/React__default.default.createElement(reactRedux.Provider, {
         store: store
-      }, /*#__PURE__*/React__default["default"].createElement(reactRouterDom.Router, {
+      }, /*#__PURE__*/React__default.default.createElement(reactRouterDom.Router, {
         history: App.browserHistory
-      }, /*#__PURE__*/React__default["default"].createElement(SSRContext.SSRContextProvider, null, /*#__PURE__*/React__default["default"].createElement(ReactApp, {
+      }, /*#__PURE__*/React__default.default.createElement(SSRContext.SSRContextProvider, null, /*#__PURE__*/React__default.default.createElement(ReactApp, {
         routes: routes,
         withEvents: withEvents
       }))))));
@@ -117,5 +117,5 @@ class ClientApp {
 }
 
 exports.ReactApp = App.AppRoot;
-exports["default"] = ClientApp;
+exports.default = ClientApp;
 //# sourceMappingURL=client.js.map

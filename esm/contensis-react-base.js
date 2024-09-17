@@ -1,4 +1,4 @@
-import { c as cachedSearch, d as deliveryApi, S as SSRContextProvider } from './SSRContext-0177db9c.js';
+import { c as cachedSearch, d as deliveryApi, S as SSRContextProvider } from './SSRContext-aOrFy6DJ.js';
 import { Query as Query$1 } from 'contensis-delivery-api';
 import React from 'react';
 import { Provider } from 'react-redux';
@@ -6,11 +6,11 @@ import mapJson from 'jsonpath-mapper';
 import 'reselect';
 import 'deepmerge';
 import 'query-string';
-import { d as defaultExpressions, c as contentTypeIdExpression, f as filterExpressions, t as termExpressions, o as orderByExpression, a as customWhereExpressions } from './sagas-b654d1a6.js';
+import { a8 as defaultExpressions, a9 as contentTypeIdExpression, aa as filterExpressions, ab as termExpressions, ac as orderByExpression, ad as customWhereExpressions } from './sagas-COFJLvDA.js';
 import 'immer';
 import 'deep-equal';
 import { Op, Query } from 'contensis-core-api';
-import { s as setCachingHeaders, u as url } from './urls-eac9a747.js';
+import { s as setCachingHeaders, u as url } from './urls-DfCisos-.js';
 import 'isomorphic-fetch';
 import express from 'express';
 import http from 'http';
@@ -27,16 +27,16 @@ import serialize from 'serialize-javascript';
 import minifyCssString from 'minify-css-string';
 import { ChunkExtractor, ChunkExtractorManager } from '@loadable/server';
 import { identity, noop } from 'lodash';
-import { c as commonjsGlobal } from './_commonjsHelpers-1789f0cf.js';
+import { c as commonjsGlobal, g as getDefaultExportFromCjs } from './_commonjsHelpers-BFTU3MAI.js';
 import { buildCleaner } from 'lodash-clean';
 import { CookiesProvider } from 'react-cookie';
-import { C as Cookies } from './CookieHelper.class-67f65459.js';
+import { a as Cookies } from './CookieHelper.class-DqJ_o1jL.js';
 import cookiesMiddleware from 'universal-cookie-express';
-import { c as createStore } from './store-2ff73952.js';
-import { h as history, p as pickProject, r as rootSaga } from './App-71b8475e.js';
-export { A as ReactApp } from './App-71b8475e.js';
-import { s as setVersionStatus, a as setVersion } from './version-49ad9e9d.js';
-import { s as selectSurrogateKeys, a as selectSsrApiCalls, b as selectRouteEntry, c as selectCurrentProject, g as getImmutableOrJS, d as setCurrentProject, e as selectCurrentSearch } from './selectors-bb117d1b.js';
+import { c as createStore } from './store-BX4iG2-k.js';
+import { h as history, p as pickProject, r as rootSaga } from './App-BpGG43cE.js';
+export { A as ReactApp } from './App-BpGG43cE.js';
+import { s as setVersionStatus, d as setVersion } from './version-cetMyLmp.js';
+import { a3 as selectSurrogateKeys, a4 as selectSsrApiCalls, e as selectRouteEntry, l as selectCurrentProject, g as getImmutableOrJS, s as setCurrentProject, K as selectCurrentSearch } from './selectors-CAjGfIyu.js';
 import chalk from 'chalk';
 import 'loglevel';
 import '@redux-saga/core/effects';
@@ -46,11 +46,11 @@ import 'redux-saga';
 import 'redux-injectors';
 import 'history';
 import 'await-to-js';
-import './version-df7f7154.js';
-import './ChangePassword.container-572653e2.js';
-import './ToJs-0ed7c7db.js';
+import './version-DtJjY5QT.js';
+import './ChangePassword.container-6SpIHof-.js';
+import './ToJs-8AwNF3Q4.js';
 import 'react-hot-loader';
-import './RouteLoader-11833209.js';
+import './RouteLoader-CYib224B.js';
 
 /**
  * Util class holds our search results helper boilerplate methods
@@ -229,6 +229,7 @@ const resolveParentEntries = async (parentContentTypeIds, replaceContentTypeIds,
 };
 
 /* eslint-disable no-console */
+
 class QueryLevelResults {
   constructor({
     level: _level,
@@ -242,21 +243,9 @@ class QueryLevelResults {
     parent: _parent,
     debug = false
   }) {
-    this.level = void 0;
-    this.contentTypeIds = void 0;
-    this.linkFieldIds = void 0;
-    this.linkFields = void 0;
-    this.filters = void 0;
-    this.sharedFilters = void 0;
-    this.returnEntries = void 0;
-    this.resolveFirstParent = void 0;
     this.validatedLinks = [];
-    this.parent = void 0;
     this.children = [];
-    this.runFirstQuery = void 0;
-    this.runFinalQuery = void 0;
     this.params = {};
-    this.debug = void 0;
     this.firstQuery = new Query$1();
     this.firstResults = {};
     this.finalQuery = new Query$1();
@@ -316,7 +305,6 @@ class QueryLevelResults {
         query.pageIndex = params.pageIndex;
         // query.orderBy = params.orderBy;
       }
-
       if (runFinalQuery) {
         if (this.debug) console.log(`\nLevel ${this.level} - Final query: \n${JSON.stringify(query.toJSON()).substring(0, 1000)}`);
         this.finalResults = await cachedSearch.searchUsingPost(query, Number(params.linkDepth) || 0, params.projectId);
@@ -396,13 +384,6 @@ class LinkDepthSearchService {
     params: _params,
     debug = false
   }) {
-    this.contentTypeIds = void 0;
-    this.filters = void 0;
-    this.sharedFilters = void 0;
-    this.linkFields = void 0;
-    this.params = void 0;
-    this.debug = void 0;
-    this.queryLevels = void 0;
     this.DoSearch = async () => {
       // Run queries "top-down" through each level of `linkField`
       for (const queryLevel of this.queryLevels) {
@@ -651,7 +632,6 @@ const reverseProxies = (app, reverseProxyPaths = []) => {
     });
   });
 };
-
 const deliveryApiProxy = (apiProxy, app) => {
   // This is just here to stop cors requests on localhost. In Production this is mapped using varnish.
   app.all(['/api/delivery/*', '/api/forms/*', '/api/image/*', '/authenticate/*'], (req, res) => {
@@ -676,7 +656,6 @@ const CacheDuration = {
   // Believe it or not these two max ages are the same in runtime
   expressStatic: '31557600h' // Believe it or not these two max ages are the same in runtime
 };
-
 const getCacheDuration = (status = 200) => {
   if (status >= 400) return CacheDuration[404];
   return CacheDuration[200];
@@ -2091,46 +2070,50 @@ function stubFalse() {
 
 var stubFalse_1 = stubFalse;
 
+isBuffer$2.exports;
+
 (function (module, exports) {
-var root = _root,
-    stubFalse = stubFalse_1;
+	var root = _root,
+	    stubFalse = stubFalse_1;
 
-/** Detect free variable `exports`. */
-var freeExports = exports && !exports.nodeType && exports;
+	/** Detect free variable `exports`. */
+	var freeExports = exports && !exports.nodeType && exports;
 
-/** Detect free variable `module`. */
-var freeModule = freeExports && 'object' == 'object' && module && !module.nodeType && module;
+	/** Detect free variable `module`. */
+	var freeModule = freeExports && 'object' == 'object' && module && !module.nodeType && module;
 
-/** Detect the popular CommonJS extension `module.exports`. */
-var moduleExports = freeModule && freeModule.exports === freeExports;
+	/** Detect the popular CommonJS extension `module.exports`. */
+	var moduleExports = freeModule && freeModule.exports === freeExports;
 
-/** Built-in value references. */
-var Buffer = moduleExports ? root.Buffer : undefined;
+	/** Built-in value references. */
+	var Buffer = moduleExports ? root.Buffer : undefined;
 
-/* Built-in method references for those with the same name as other `lodash` methods. */
-var nativeIsBuffer = Buffer ? Buffer.isBuffer : undefined;
+	/* Built-in method references for those with the same name as other `lodash` methods. */
+	var nativeIsBuffer = Buffer ? Buffer.isBuffer : undefined;
 
-/**
- * Checks if `value` is a buffer.
- *
- * @static
- * @memberOf _
- * @since 4.3.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is a buffer, else `false`.
- * @example
- *
- * _.isBuffer(new Buffer(2));
- * // => true
- *
- * _.isBuffer(new Uint8Array(2));
- * // => false
- */
-var isBuffer = nativeIsBuffer || stubFalse;
+	/**
+	 * Checks if `value` is a buffer.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.3.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a buffer, else `false`.
+	 * @example
+	 *
+	 * _.isBuffer(new Buffer(2));
+	 * // => true
+	 *
+	 * _.isBuffer(new Uint8Array(2));
+	 * // => false
+	 */
+	var isBuffer = nativeIsBuffer || stubFalse;
 
-module.exports = isBuffer;
-}(isBuffer$2, isBuffer$2.exports));
+	module.exports = isBuffer; 
+} (isBuffer$2, isBuffer$2.exports));
+
+var isBufferExports = isBuffer$2.exports;
 
 /** Used as references for various `Number` constants. */
 
@@ -2275,42 +2258,46 @@ var _baseUnary = baseUnary$3;
 
 var _nodeUtil = {exports: {}};
 
+_nodeUtil.exports;
+
 (function (module, exports) {
-var freeGlobal = _freeGlobal;
+	var freeGlobal = _freeGlobal;
 
-/** Detect free variable `exports`. */
-var freeExports = exports && !exports.nodeType && exports;
+	/** Detect free variable `exports`. */
+	var freeExports = exports && !exports.nodeType && exports;
 
-/** Detect free variable `module`. */
-var freeModule = freeExports && 'object' == 'object' && module && !module.nodeType && module;
+	/** Detect free variable `module`. */
+	var freeModule = freeExports && 'object' == 'object' && module && !module.nodeType && module;
 
-/** Detect the popular CommonJS extension `module.exports`. */
-var moduleExports = freeModule && freeModule.exports === freeExports;
+	/** Detect the popular CommonJS extension `module.exports`. */
+	var moduleExports = freeModule && freeModule.exports === freeExports;
 
-/** Detect free variable `process` from Node.js. */
-var freeProcess = moduleExports && freeGlobal.process;
+	/** Detect free variable `process` from Node.js. */
+	var freeProcess = moduleExports && freeGlobal.process;
 
-/** Used to access faster Node.js helpers. */
-var nodeUtil = (function() {
-  try {
-    // Use `util.types` for Node.js 10+.
-    var types = freeModule && freeModule.require && freeModule.require('util').types;
+	/** Used to access faster Node.js helpers. */
+	var nodeUtil = (function() {
+	  try {
+	    // Use `util.types` for Node.js 10+.
+	    var types = freeModule && freeModule.require && freeModule.require('util').types;
 
-    if (types) {
-      return types;
-    }
+	    if (types) {
+	      return types;
+	    }
 
-    // Legacy `process.binding('util')` for Node.js < 10.
-    return freeProcess && freeProcess.binding && freeProcess.binding('util');
-  } catch (e) {}
-}());
+	    // Legacy `process.binding('util')` for Node.js < 10.
+	    return freeProcess && freeProcess.binding && freeProcess.binding('util');
+	  } catch (e) {}
+	}());
 
-module.exports = nodeUtil;
-}(_nodeUtil, _nodeUtil.exports));
+	module.exports = nodeUtil; 
+} (_nodeUtil, _nodeUtil.exports));
+
+var _nodeUtilExports = _nodeUtil.exports;
 
 var baseIsTypedArray = _baseIsTypedArray,
     baseUnary$2 = _baseUnary,
-    nodeUtil$2 = _nodeUtil.exports;
+    nodeUtil$2 = _nodeUtilExports;
 
 /* Node.js helper references. */
 var nodeIsTypedArray = nodeUtil$2 && nodeUtil$2.isTypedArray;
@@ -2339,7 +2326,7 @@ var isTypedArray_1 = isTypedArray$1;
 var baseTimes = _baseTimes,
     isArguments = isArguments_1,
     isArray$2 = isArray_1,
-    isBuffer$1 = isBuffer$2.exports,
+    isBuffer$1 = isBufferExports,
     isIndex = _isIndex,
     isTypedArray = isTypedArray_1;
 
@@ -2660,43 +2647,47 @@ var _baseAssignIn = baseAssignIn$1;
 
 var _cloneBuffer = {exports: {}};
 
+_cloneBuffer.exports;
+
 (function (module, exports) {
-var root = _root;
+	var root = _root;
 
-/** Detect free variable `exports`. */
-var freeExports = exports && !exports.nodeType && exports;
+	/** Detect free variable `exports`. */
+	var freeExports = exports && !exports.nodeType && exports;
 
-/** Detect free variable `module`. */
-var freeModule = freeExports && 'object' == 'object' && module && !module.nodeType && module;
+	/** Detect free variable `module`. */
+	var freeModule = freeExports && 'object' == 'object' && module && !module.nodeType && module;
 
-/** Detect the popular CommonJS extension `module.exports`. */
-var moduleExports = freeModule && freeModule.exports === freeExports;
+	/** Detect the popular CommonJS extension `module.exports`. */
+	var moduleExports = freeModule && freeModule.exports === freeExports;
 
-/** Built-in value references. */
-var Buffer = moduleExports ? root.Buffer : undefined,
-    allocUnsafe = Buffer ? Buffer.allocUnsafe : undefined;
+	/** Built-in value references. */
+	var Buffer = moduleExports ? root.Buffer : undefined,
+	    allocUnsafe = Buffer ? Buffer.allocUnsafe : undefined;
 
-/**
- * Creates a clone of  `buffer`.
- *
- * @private
- * @param {Buffer} buffer The buffer to clone.
- * @param {boolean} [isDeep] Specify a deep clone.
- * @returns {Buffer} Returns the cloned buffer.
- */
-function cloneBuffer(buffer, isDeep) {
-  if (isDeep) {
-    return buffer.slice();
-  }
-  var length = buffer.length,
-      result = allocUnsafe ? allocUnsafe(length) : new buffer.constructor(length);
+	/**
+	 * Creates a clone of  `buffer`.
+	 *
+	 * @private
+	 * @param {Buffer} buffer The buffer to clone.
+	 * @param {boolean} [isDeep] Specify a deep clone.
+	 * @returns {Buffer} Returns the cloned buffer.
+	 */
+	function cloneBuffer(buffer, isDeep) {
+	  if (isDeep) {
+	    return buffer.slice();
+	  }
+	  var length = buffer.length,
+	      result = allocUnsafe ? allocUnsafe(length) : new buffer.constructor(length);
 
-  buffer.copy(result);
-  return result;
-}
+	  buffer.copy(result);
+	  return result;
+	}
 
-module.exports = cloneBuffer;
-}(_cloneBuffer, _cloneBuffer.exports));
+	module.exports = cloneBuffer; 
+} (_cloneBuffer, _cloneBuffer.exports));
+
+var _cloneBufferExports = _cloneBuffer.exports;
 
 /**
  * Copies the values of `source` to `array`.
@@ -3312,7 +3303,7 @@ var _baseIsMap = baseIsMap$1;
 
 var baseIsMap = _baseIsMap,
     baseUnary$1 = _baseUnary,
-    nodeUtil$1 = _nodeUtil.exports;
+    nodeUtil$1 = _nodeUtilExports;
 
 /* Node.js helper references. */
 var nodeIsMap = nodeUtil$1 && nodeUtil$1.isMap;
@@ -3359,7 +3350,7 @@ var _baseIsSet = baseIsSet$1;
 
 var baseIsSet = _baseIsSet,
     baseUnary = _baseUnary,
-    nodeUtil = _nodeUtil.exports;
+    nodeUtil = _nodeUtilExports;
 
 /* Node.js helper references. */
 var nodeIsSet = nodeUtil && nodeUtil.isSet;
@@ -3390,7 +3381,7 @@ var Stack = _Stack,
     assignValue = _assignValue,
     baseAssign = _baseAssign,
     baseAssignIn = _baseAssignIn,
-    cloneBuffer = _cloneBuffer.exports,
+    cloneBuffer = _cloneBufferExports,
     copyArray = _copyArray,
     copySymbols = _copySymbols,
     copySymbolsIn = _copySymbolsIn,
@@ -3401,7 +3392,7 @@ var Stack = _Stack,
     initCloneByTag = _initCloneByTag,
     initCloneObject = _initCloneObject,
     isArray = isArray_1,
-    isBuffer = isBuffer$2.exports,
+    isBuffer = isBufferExports,
     isMap = isMap_1,
     isObject = isObject_1,
     isSet = isSet_1,
@@ -3582,7 +3573,9 @@ function cloneDeep(value) {
 
 var cloneDeep_1 = cloneDeep;
 
-var stringifyAttributes = ((attributes = {}) => Object.entries(attributes).map(([key, value], idx) => `${idx !== 0 ? ' ' : ''}${key}${value ? `="${value}"` : ''}`).join(' '));
+var cloneDeep$1 = /*@__PURE__*/getDefaultExportFromCjs(cloneDeep_1);
+
+var stringifyAttributes = (attributes = {}) => Object.entries(attributes).map(([key, value], idx) => `${idx !== 0 ? ' ' : ''}${key}${value ? `="${value}"` : ''}`).join(' ');
 
 /* eslint-disable no-console */
 
@@ -3948,7 +3941,7 @@ const webApp = (app, ReactApp, config) => {
           isPlainObject: identity,
           isString: identity,
           isUndefined: noop
-        })(cloneDeep_1(reduxState));
+        })(cloneDeep$1(reduxState));
         // These keys are used for preparing server-side response headers only
         // and are not required in the client at all except for debugging ssr
         if (!((_selectCurrentSearch = selectCurrentSearch(reduxState)) !== null && _selectCurrentSearch !== void 0 && _selectCurrentSearch.includes('includeApiCalls'))) {

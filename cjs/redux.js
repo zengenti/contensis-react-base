@@ -1,11 +1,9 @@
 'use strict';
 
-Object.defineProperty(exports, '__esModule', { value: true });
-
-var store = require('./store-0ef9b570.js');
-var selectors$1 = require('./selectors-d5cd6b19.js');
-var version$1 = require('./version-8072b62e.js');
-var version$2 = require('./version-0cb648de.js');
+var store = require('./store-C7cLStZQ.js');
+var selectors$1 = require('./selectors-VGpE6wyV.js');
+var version$1 = require('./version-KnbUFM-2.js');
+var version$2 = require('./version-CY850L7T.js');
 require('redux');
 require('redux-thunk');
 require('redux-saga');
@@ -60,7 +58,7 @@ const version = {
   selectors: selectors.version
 };
 
-Object.defineProperty(exports, 'store', {
+Object.defineProperty(exports, "store", {
   enumerable: true,
   get: function () { return store.reduxStore; }
 });

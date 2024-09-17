@@ -1,23 +1,21 @@
 'use strict';
 
-Object.defineProperty(exports, '__esModule', { value: true });
-
-var ChangePassword_container = require('./ChangePassword.container-fe39e44a.js');
+var ChangePassword_container = require('./ChangePassword.container-CUqTfb6O.js');
 var React = require('react');
 var reactCookie = require('react-cookie');
 var reactRedux = require('react-redux');
-var ToJs = require('./ToJs-8fd54c8e.js');
-var CookieHelper_class = require('./CookieHelper.class-e0908573.js');
-var selectors = require('./selectors-d5cd6b19.js');
+var ToJs = require('./ToJs-BAvKFEAO.js');
+var CookieHelper_class = require('./CookieHelper.class-CNL3lC5D.js');
+var selectors = require('./selectors-VGpE6wyV.js');
 require('@redux-saga/core/effects');
 require('jsonpath-mapper');
 require('await-to-js');
 require('immer');
 require('query-string');
 
-function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+function _interopDefault (e) { return e && e.__esModule ? e : { default: e }; }
 
-var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
+var React__default = /*#__PURE__*/_interopDefault(React);
 
 const getDisplayName$1 = WrappedComponent => {
   return WrappedComponent.displayName || WrappedComponent.name || 'Component';
@@ -44,7 +42,7 @@ const withLogin = WrappedComponent => {
       logoutUser: redirectPath => ChangePassword_container.logoutUser(redirectPath, cookies)
     };
     const FinalComponent = reactRedux.connect(mapStateToProps, mapDispatchToProps)(ToJs.toJS(WrappedComponent));
-    return /*#__PURE__*/React__default["default"].createElement(FinalComponent, null);
+    return /*#__PURE__*/React__default.default.createElement(FinalComponent, null);
   };
   ConnectedComponent.displayName = `${getDisplayName$1(WrappedComponent)}`;
   ConnectedComponent.WrappedComponent = WrappedComponent;
