@@ -4,12 +4,10 @@ import alias from '@rollup/plugin-alias';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
-// import postcss from 'rollup-plugin-postcss';
 import submoduleResolvePlugin from './submodule-resolve-plugin';
 
 import path from 'path';
 
-const babelConfig = require('../babel.config.js');
 const packagejson = require('../package.json');
 const formsPackageJson = require('zengenti-forms-package/package.json');
 const searchPackageJson = require('zengenti-search-package/package.json');
@@ -34,6 +32,7 @@ export default {
       format: 'cjs',
       sourcemap: true,
       exports: 'named',
+      interop: 'auto',
     },
     {
       // file: packageJson.module,
@@ -41,8 +40,10 @@ export default {
       format: 'esm',
       sourcemap: true,
       exports: 'named',
+      interop: 'auto',
     },
   ],
+  strictDeprecations: true,
   external: [
     ...Object.keys(packagejson.dependencies),
     ...Object.keys(formsPackageJson.dependencies),
@@ -98,8 +99,49 @@ export default {
         '../../node_modules/zengenti-search-package/**',
       ],
       extensions: ['.js', '.jsx', '.ts', '.tsx'],
-      presets: babelConfig.env.modern.presets,
-      plugins: babelConfig.env.modern.plugins,
+      presets: [
+        [
+          '@babel/preset-env',
+          {
+            corejs: '3',
+            loose: true,
+            targets: ['chrome 78', 'firefox 70'],
+            useBuiltIns: 'entry',
+          },
+        ],
+        ['@babel/preset-react', { loose: true }],
+        '@babel/preset-typescript',
+      ],
+      plugins: [
+        [
+          'module-resolver',
+          {
+            root: './src',
+            alias: {
+              '~': path.resolve(
+                projectRootDir,
+                'node_modules/zengenti-forms-package/src/app'
+              ),
+              // eslint-disable-next-line no-dupe-keys
+              '~': './src',
+              '-': './',
+            },
+            cwd: 'packagejson',
+          },
+        ],
+        [
+          'babel-plugin-styled-components',
+          {
+            displayName: true,
+            ssr: true,
+          },
+        ],
+        'react-hot-loader/babel',
+        '@loadable/babel-plugin',
+        '@babel/plugin-syntax-dynamic-import',
+        '@babel/plugin-proposal-optional-chaining',
+        '@babel/plugin-proposal-export-namespace-from',
+      ],
     }),
     json(),
     commonjs(),

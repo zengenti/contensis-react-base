@@ -41,27 +41,6 @@
         "webpack:///src/*": "${workspaceFolder}/*", // Example: "webpack:///src/app.js" -> "/Users/me/project/app.js"
         "meteor://💻app/*": "${workspaceFolder}/*" // Example: "meteor://💻app/main.ts" -> "/Users/me/project/main.ts"
       }
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "Run server - debug",
-      "program": "${workspaceFolder}/src/server/server.js",
-      "runtimeExecutable": "nodemon",
-      "runtimeArgs": [
-        "--exec",
-        "${workspaceRoot}/node_modules/.bin/babel-node"
-      ],
-      "smartStep": true,
-      "internalConsoleOptions": "neverOpen",
-      "restart": true,
-      "cwd": "${workspaceRoot}",
-      "console": "internalConsole",
-      "outFiles": [],
-      "env": {
-        "NODE_ENV": "test"
-      },
-      "sourceMaps": true
     }
   ]
 }
