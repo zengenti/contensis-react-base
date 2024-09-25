@@ -3,11 +3,11 @@
   "bootstrap-sha": "b8b958a0c5df80f463af2d312651085e4b5215c0",
   "draft": false,
   "include-v-in-tag": true,
+  "include-component-in-tag": false,
   "packages": {
     ".": {
       "component": "contensis-react-base",
       "package-name": "@zengenti/contensis-react-base",
-      "release-as": "3.2.2",
       "release-type": "node"
     }
   },
