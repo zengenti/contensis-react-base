@@ -7,6 +7,7 @@
   "packages": {
     ".": {
       "package-name": "@zengenti/contensis-react-base",
+      "release-as": "3.2.2",
       "release-type": "node"
     }
   },
