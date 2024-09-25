@@ -5,6 +5,11 @@
   "include-v-in-tag": true,
   "include-component-in-tag": false,
   "release-type": "node",
+  "packages": {
+    ".": {
+      "component": "contensis-react-base"
+    }
+  },
   "pull-request-header": ":robot: Merge this PR to release a new version",
   "pull-request-title-pattern": "chore: release v${version}"
 }
