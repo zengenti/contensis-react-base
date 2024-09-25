@@ -1,0 +1,10 @@
+{
+  "$schema": "https://github.com/googleapis/release-please/raw/main/schemas/config.json",
+  "bootstrap-sha": "b8b958a0c5df80f463af2d312651085e4b5215c0",
+  "draft": false,
+  "include-v-in-tag": true,
+  "include-component-in-tag": false,
+  "release-type": "node",
+  "pull-request-header": ":robot: Merge this PR to release a new version",
+  "pull-request-title-pattern": "chore: release v${version}"
+}

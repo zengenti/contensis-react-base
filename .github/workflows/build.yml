@@ -5,6 +5,10 @@ on:
     branches:
       - master
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -16,30 +20,52 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20.x'
+
       - name: Install project dependencies
         run: |
           npm ci --legacy-peer-deps
-      - name: Setup GIT
-        run: |
-          git config user.email "github@zengenti.com"
-          git config user.name "$GITHUB_ACTOR"
-      - name: Build package and increment version
+
+      - name: Build package
         run: |
           npm run build
+
+      - uses: googleapis/release-please-action@v4
+        id: release
+        with:
+          token: ${{secrets.RELEASE_PLEASE_GITHUB_TOKEN}}
+          target-branch: main
+
+      - name: Check release output
+        id: check
+        run: |
+          echo "releases_created=${{ steps.release.outputs.releases_created  }}" >> $GITHUB_OUTPUT
+          echo "paths_released=${{ steps.release.outputs.paths_released  }}" >> $GITHUB_OUTPUT
+          echo "release_tag=${{ steps.release.outputs.contensis-cli--release_created  }}" >> $GITHUB_OUTPUT
+          echo "npm_tag=${{ steps.release.outputs.releases_created != 'true' && 'prerelease' || 'latest' }}" >> $GITHUB_OUTPUT
+
+      - name: Increment prerelease package version
+        if: steps.release.outputs.releases_created != 'true' && !contains(github.event.head_commit.message, '[nobuild]') && !contains(github.event.head_commit.message, '[nopublish]')
+        run: |
           npm version prerelease --preid=beta --no-git-tag-version
           APP_VERSION=$(node --eval="process.stdout.write(require('./package.json').version)")
           echo "APP_VERSION=$APP_VERSION" >> $GITHUB_ENV
-      - name: Push version increment to GIT
+
+      - name: Push prerelease version increment to GIT
+        if: steps.release.outputs.releases_created != 'true' && !contains(github.event.head_commit.message, '[nobuild]') && !contains(github.event.head_commit.message, '[nopublish]')
         run: |
+          git config user.email "github@zengenti.com"
+          git config user.name "$GITHUB_ACTOR"
           git add -A
           git commit -m "ci: bumps version to ${{ env.APP_VERSION }} [skip ci]"
           git push
         env:
           # The secret is passed automatically. Nothing to configure.
           github-token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Publish prerelease package
+
+      - name: Publish prerelease with ${{ steps.check.outputs.npm_tag }} tag
+        if: steps.release.outputs.releases_created != 'true' && !contains(github.event.head_commit.message, '[nobuild]') && !contains(github.event.head_commit.message, '[nopublish]')
         run: |
           npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
-          npm publish --tag prerelease --ignore-scripts
+          npm publish --tag ${{ steps.check.outputs.npm_tag }} --ignore-scripts
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

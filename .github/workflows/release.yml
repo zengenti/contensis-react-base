@@ -1,12 +1,18 @@
-name: Release version to NPM (manual trigger)
+name: Release version to NPM
 
 on:
+  workflow_call:
+    inputs:
+      tag:
+        required: true
+        type: string
+    outputs:
+      version:
+        description: 'The latest app version in `package.json`'
+        value: ${{ jobs.release.outputs.version }}
+
   workflow_dispatch:
     inputs:
-      version:
-        description: 'Release version (e.g. patch, minor, or a specific version like "v0.0.0-alpha.0")'
-        required: true
-        default: 'patch'
       tag:
         description: 'The NPM version tag to use, "latest" will become the default package version, or "prerelease"'
         required: true
@@ -15,33 +21,32 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
-    # runs-on: self-hosted
+    outputs:
+      version: ${{ steps.app_version.outputs.version }}
 
     steps:
       - uses: actions/checkout@v4
+
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20.x'
-      - name: Install npm dependencies (for pre/post npm publish scripts)
+
+      - id: build
+        name: Install dependencies, and build
         run: |
           npm i --legacy-peer-deps
-      - name: Setup GIT
+          npm run build
+
+      - id: app_version
+        name: Set APP_VERSION output variable
         run: |
-          git config user.email "github@zengenti.com"
-          git config user.name "$GITHUB_ACTOR"
-      - name: Increment version (if prerelease)
-        if: contains(github.event.inputs.version, 'prerelease')
-        run: npm version prerelease --preid=beta
-      - name: Increment version (if other release)
-        if: contains(github.event.inputs.version, 'prerelease') == false
-        run: npm version ${{ github.event.inputs.version }}
-      - name: Push version increment to GIT
-        run: git push --follow-tags
-        env:
-          # The secret is passed automatically. Nothing to configure.
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Publish release package "${{ github.event.inputs.version }}" with tag "${{ github.event.inputs.tag }}"
+          APP_VERSION=$(node --eval="process.stdout.write(require('./package.json').version)")
+          echo "version=$APP_VERSION"
+          echo "version=$APP_VERSION" >> $GITHUB_OUTPUT
+
+      - id: publish
+        name: Publish release package v${{ steps.app_version.outputs.version }} with tag "${{ inputs.tag }}"
         run: |
           npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
           npm publish --tag ${{ github.event.inputs.tag }}
