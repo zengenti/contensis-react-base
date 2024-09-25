@@ -4,11 +4,10 @@
   "draft": false,
   "include-v-in-tag": true,
   "include-component-in-tag": false,
+  "release-as": "3.2.2",
+  "release-type": "node",
   "packages": {
-    ".": {
-      "release-as": "3.2.2",
-      "release-type": "node"
-    }
+    ".": {}
   },
   "pull-request-header": ":robot: Merge this PR to release a new version",
   "pull-request-title-pattern": "chore: release v${version}"
