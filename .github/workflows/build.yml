@@ -33,6 +33,9 @@ jobs:
         id: release
         with:
           token: ${{secrets.RELEASE_PLEASE_GITHUB_TOKEN}}
+          release-type: node
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
           target-branch: main
 
       - name: Check release output
