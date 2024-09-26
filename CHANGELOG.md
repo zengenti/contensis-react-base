@@ -1,3 +1,23 @@
+# Changelog
+
+## [3.2.2](https://github.com/zengenti/contensis-react-base/compare/v3.2.1...v3.2.2) (2024-09-25)
+
+
+### Bug Fixes
+
+* `mappedEntry` is retained in state when changing to a route that does not have an `entryMapper` causing `entry` prop to become truncated after navigating inside the next page ([943609b](https://github.com/zengenti/contensis-react-base/commit/943609b26e55de1495e5ca41803d4edf13bef4dd))
+* `referer` header in api calls during ssr is not accurate in high concurrent load scenarios ([3bad28e](https://github.com/zengenti/contensis-react-base/commit/3bad28e97188af71c589713081db295590352ac3))
+* ensure SSR request and response objects are available in api SSRContext when the api is used from SSRContext ([abe1a2c](https://github.com/zengenti/contensis-react-base/commit/abe1a2c2ee88dcc3f53b7ce07c68c3815e5af0de))
+* handle authenticate api in localhost reverse proxy when proxying secured forms via the new forms api ([9d3c8b1](https://github.com/zengenti/contensis-react-base/commit/9d3c8b1cc5f2bd4c89b0c03a26f1b72d79fe31fc))
+* handle new forms api in localhost reverse proxy when proxying delivery api requests ([edd7932](https://github.com/zengenti/contensis-react-base/commit/edd793216842ceeb018f462b876d626de5dedb93))
+* server-side memory leak by updating cookies packages to latest ([5394cef](https://github.com/zengenti/contensis-react-base/commit/5394cef415a842e893a0ba93559f15bad38f0aa5))
+* TypeScript error in StaticRoutes files when used with Loadable components ([8f0840f](https://github.com/zengenti/contensis-react-base/commit/8f0840f010527c8500c46b52ceedb7896601f427))
+
+
+### Performance Improvements
+
+* add `contentTypeId` to query when resolving any route entry by id to improve response time ([7527262](https://github.com/zengenti/contensis-react-base/commit/7527262f445e01ad0381d5e5edcd1b3680bb07ae))
+
 #### 3.2.1 (2024-06-24)
 
 ##### Bug Fixes
