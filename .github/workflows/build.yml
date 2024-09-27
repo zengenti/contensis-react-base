@@ -12,10 +12,13 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-    # runs-on: self-hosted
+    outputs:
+      releases_created: ${{ steps.release.outputs.releases_created == 'true' }}
+      paths_released: ${{ steps.release.outputs.paths_released }}
 
     steps:
       - uses: actions/checkout@v4
+
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
@@ -44,14 +47,14 @@ jobs:
           echo "npm_tag=${{ steps.release.outputs.releases_created != 'true' && 'prerelease' || 'latest' }}" >> $GITHUB_OUTPUT
 
       - name: Increment prerelease package version
-        if: steps.release.outputs.releases_created != 'true' && !contains(github.event.head_commit.message, '[nobuild]') && !contains(github.event.head_commit.message, '[nopublish]')
+        if: steps.release.outputs.releases_created != 'true' && !contains(github.event.head_commit.message, '[nopublish]')
         run: |
           npm version prerelease --preid=beta --no-git-tag-version
           APP_VERSION=$(node --eval="process.stdout.write(require('./package.json').version)")
           echo "APP_VERSION=$APP_VERSION" >> $GITHUB_ENV
 
       - name: Push prerelease version increment to GIT
-        if: steps.release.outputs.releases_created != 'true' && !contains(github.event.head_commit.message, '[nobuild]') && !contains(github.event.head_commit.message, '[nopublish]')
+        if: steps.release.outputs.releases_created != 'true' && !contains(github.event.head_commit.message, '[nopublish]')
         run: |
           git config user.email "github@zengenti.com"
           git config user.name "$GITHUB_ACTOR"
@@ -63,7 +66,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish prerelease with ${{ steps.check.outputs.npm_tag }} tag
-        if: steps.release.outputs.releases_created != 'true' && !contains(github.event.head_commit.message, '[nobuild]') && !contains(github.event.head_commit.message, '[nopublish]')
+        if: steps.release.outputs.releases_created != 'true' && !contains(github.event.head_commit.message, '[nopublish]')
         run: |
           npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
           npm publish --tag ${{ steps.check.outputs.npm_tag }} --ignore-scripts
