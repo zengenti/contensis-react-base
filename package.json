@@ -16,11 +16,8 @@
     "roll:watch": "cross-env NODE_ENV=production rollup --bundleConfigAsCjs -c rollup/rollup.config.lib.js --watch",
     "clean:lib": "rimraf ./models && rimraf ./esm && rimraf ./cjs",
     "copymodels": "copyfiles --up 3 --follow \"./node_modules/zengenti-search-package/models/**/*\" models/search --verbose",
-    "changelog": "generate-changelog -x ci,chore --tag v3.2.0...",
     "lint": "eslint ./src",
-    "lint:fix": "eslint --fix ./src",
-    "test": "jest  -c ./config/jest.config.js --detectOpenHandles --forceExit",
-    "publish:test": "npm pack && tar -xvzf *.tgz && rm -rf package *.tgz"
+    "lint:fix": "eslint --fix ./src"
   },
   "keywords": [],
   "author": "http://Zengenti.com",
@@ -70,7 +67,6 @@
     "eslint-plugin-react": "^7.29.4",
     "eslint-plugin-react-hooks": "^4.4.0",
     "fs-extra": "^10.1.0",
-    "generate-changelog": "^1.8.0",
     "prettier": "^2.6.2",
     "rimraf": "^3.0.2",
     "rollup": "^4.21.3",
