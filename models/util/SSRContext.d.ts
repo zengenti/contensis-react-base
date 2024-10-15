@@ -21,10 +21,10 @@ export declare const useDeliveryApi: () => {
     searchUsingPost(query: import("contensis-core-api").Query, linkDepth?: number, project?: string): any;
     get(id: string, linkDepth?: number, versionStatus?: import("contensis-core-api").VersionStatus, project?: string | undefined, fields?: string[] | undefined): Promise<import("contensis-delivery-api").Entry>;
     getContentType(id: string, project?: string | undefined): Promise<import("contensis-core-api").ContentType>;
-    getRootNode(options: import("contensis-delivery-api").NodeGetRootOptions, versionStatus?: import("contensis-core-api").VersionStatus, project?: string | undefined): Promise<import("contensis-delivery-api").Node>;
-    getNode(options: string | import("contensis-delivery-api").NodeGetByIdOptions | import("contensis-delivery-api").NodeGetByPathOptions, project?: string | undefined): Promise<import("contensis-delivery-api").Node>;
-    getAncestors(options: string | import("contensis-delivery-api").Node | import("contensis-delivery-api").NodeGetAncestorsOptions, project?: string | undefined): Promise<import("contensis-delivery-api").Node[]>;
-    getChildren(options: string | import("contensis-delivery-api").Node | import("contensis-delivery-api").NodeGetChildrenOptions, project?: string | undefined): Promise<import("contensis-delivery-api").Node[]>;
-    getSiblings(options: string | import("contensis-delivery-api").Node | import("contensis-delivery-api").NodeGetSiblingOptions, project?: string | undefined): Promise<import("contensis-delivery-api").Node[]>;
+    getRootNode(options: import("contensis-delivery-api").NodeGetRootOptions, versionStatus?: import("contensis-core-api").VersionStatus, project?: string | undefined): Promise<import("contensis-delivery-api").Node<import("contensis-delivery-api").Entry>>;
+    getNode(options: string | import("contensis-delivery-api").NodeGetByIdOptions | import("contensis-delivery-api").NodeGetByPathOptions, project?: string | undefined): Promise<import("contensis-delivery-api").Node<import("contensis-delivery-api").Entry>>;
+    getAncestors(options: string | import("contensis-delivery-api").Node<import("contensis-delivery-api").Entry> | import("contensis-delivery-api").NodeGetAncestorsOptions, project?: string | undefined): Promise<import("contensis-delivery-api").Node<import("contensis-delivery-api").Entry>[]>;
+    getChildren(options: string | import("contensis-delivery-api").Node<import("contensis-delivery-api").Entry> | import("contensis-delivery-api").NodeGetChildrenOptions, project?: string | undefined): Promise<import("contensis-delivery-api").Node<import("contensis-delivery-api").Entry>[]>;
+    getSiblings(options: string | import("contensis-delivery-api").Node<import("contensis-delivery-api").Entry> | import("contensis-delivery-api").NodeGetSiblingOptions, project?: string | undefined): Promise<import("contensis-delivery-api").Node<import("contensis-delivery-api").Entry>[]>;
     request<T extends () => Promise<any>>(key: string, execute: T): ReturnType<T>;
 };
