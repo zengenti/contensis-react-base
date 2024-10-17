@@ -82,20 +82,26 @@ function* getRouteSaga(action) {
       appsays = yield withEvents.onRouteLoad(action);
     }
 
-    const staticRouteLinkDepth = staticRoute?.route?.params?.linkDepth;
-    const staticRouteFields = staticRoute?.route?.params?.fields;
-    const staticRouteFieldLinkDepths =
-      staticRoute?.route?.params?.fieldLinkDepths;
+    // We could improve this further with a reusable mapper
+    // function to return these params given a static route
+    // or matching a content type mapping we could call at various points
+    // enabling us to mix and match and prioritise inputs if there are multiple
+    let linkDepth = staticRoute?.route?.fetchNode?.linkDepth;
+    let fields = staticRoute?.route?.fetchNode?.fields;
+    let fieldLinkDepths = staticRoute?.route?.fetchNode?.fieldLinkDepths;
+    let entryMapper = staticRoute?.route?.fetchNode?.entryMapper;
+
     const entryLinkDepth =
       appsays && appsays.entryLinkDepth !== undefined
         ? appsays.entryLinkDepth
         : 2;
     const entryFieldLinkDepths = appsays?.entryFieldLinkDepths;
-    const setContentTypeLimits =
-      (typeof staticRouteLinkDepth === 'undefined' || !staticRouteFields) &&
-      !!ContentTypeMappings.find(
-        ct => ct.fields || ct.linkDepth || ct.nodeOptions || ct.fieldLinkDepths
-      );
+
+    const setStaticRouteLimits =
+      typeof linkDepth !== 'undefined' || fields || fieldLinkDepths;
+    const setContentTypeLimits = !!ContentTypeMappings.find(
+      ct => ct.fields || ct.linkDepth || ct.nodeOptions || ct.fieldLinkDepths
+    );
 
     const state = yield select();
     const routeEntry = selectRouteEntry(state, 'js');
@@ -172,21 +178,27 @@ function* getRouteSaga(action) {
       } else {
         // Handle all other routes
         let nodeError = undefined;
+        // Resolve a stub of route node if we are setting limits in content type mappings
+        // Resolve the complete entry with the node if we are setting limits in a static route
         [nodeError, pathNode] = yield to(
           api.getNode(
             {
               depth: 0,
               path: currentPath,
-              entryFields:
-                staticRouteFields ||
-                (setContentTypeLimits ? ['sys.contentTypeId', 'sys.id'] : '*'),
+              entryFields: setStaticRouteLimits
+                ? fields
+                : setContentTypeLimits
+                ? ['sys.contentTypeId', 'sys.id']
+                : '*',
               entryLinkDepth:
-                typeof staticRouteLinkDepth !== 'undefined'
-                  ? staticRouteLinkDepth
+                setStaticRouteLimits && typeof linkDepth !== 'undefined'
+                  ? linkDepth
                   : entryLinkDepth || 0,
-              entryFieldLinkDepths:
-                staticRouteFieldLinkDepths ||
-                (!setContentTypeLimits ? entryFieldLinkDepths : undefined),
+              entryFieldLinkDepths: setStaticRouteLimits
+                ? fieldLinkDepths
+                : setContentTypeLimits
+                ? undefined
+                : entryFieldLinkDepths,
               language: defaultLang,
               versionStatus: deliveryApiStatus,
             },
@@ -217,15 +229,31 @@ function* getRouteSaga(action) {
           } else throw nodeError;
         } else ({ entry } = pathNode || {});
 
-        if (setContentTypeLimits && pathNode?.entry?.sys?.id) {
+        // Try resolve a content type mapping
+        if (pathNode?.entry?.sys?.id && pathNode.entry.sys.contentTypeId) {
           // Get fields[] and linkDepth from ContentTypeMapping to get the entry data
           // and current node's ordinates at a specified depth with specified fields
-          contentTypeMapping =
-            findContentTypeMapping(
-              ContentTypeMappings,
-              pathNode.entry.sys.contentTypeId
-            ) || {};
-          const { fieldLinkDepths, fields, linkDepth } = contentTypeMapping;
+          contentTypeMapping = findContentTypeMapping(
+            ContentTypeMappings,
+            pathNode.entry.sys.contentTypeId
+          );
+        }
+
+        // Run a second search query if we aren't setting limits from a static route
+        // but we are setting limits from a content type mapping, now we have a handle
+        // on a contentTypeId from the resolve node, we can apply the right limits when
+        // fetching the entry
+        if (
+          !setStaticRouteLimits &&
+          setContentTypeLimits &&
+          pathNode?.entry?.sys?.id
+        ) {
+          // Now we have a handle on a content type mapping we can
+          // reassign the query limiting variables if we haven't
+          // already set them in a static route
+          if (!setStaticRouteLimits)
+            ({ fieldLinkDepths, fields, linkDepth } = contentTypeMapping || {});
+
           const query = routeEntryByFieldsQuery(
             pathNode.entry.sys.id,
             pathNode.entry.sys.language,
@@ -252,7 +280,8 @@ function* getRouteSaga(action) {
         {
           api,
           appsays,
-          contentTypeMapping,
+          contentTypeMapping:
+            contentTypeMapping || staticRoute?.route?.fetchNode || {},
           language: defaultLang,
           path: currentPath,
           pathNode,
@@ -305,8 +334,7 @@ function* getRouteSaga(action) {
         pathNode,
         ancestors,
         siblings,
-        staticRoute?.route?.fetchNode?.entryMapper ||
-          resolvedContentTypeMapping.entryMapper,
+        entryMapper || resolvedContentTypeMapping.entryMapper,
         false,
         appsays?.refetchNode
       );
