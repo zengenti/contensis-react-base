@@ -186,7 +186,7 @@ function* getRouteSaga(action) {
               depth: 0,
               path: currentPath,
               entryFields: setStaticRouteLimits
-                ? fields
+                ? fields || '*'
                 : setContentTypeLimits
                 ? ['sys.contentTypeId', 'sys.id']
                 : '*',
