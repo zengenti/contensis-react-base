@@ -1,5 +1,17 @@
 # Changelog
 
+## [3.2.3](https://github.com/zengenti/contensis-react-base/compare/v3.2.2...v3.2.3) (2024-10-17)
+
+
+### Bug Fixes
+
+* fetch all entry fields in routing call when no fields array is supplied in static route ([139c379](https://github.com/zengenti/contensis-react-base/commit/139c3791168de6c131ba10bd0650d19148df76e9))
+
+
+### Performance Improvements
+
+* entry fetch options not applied from `fetchNode` object in a matched static route ([a44a200](https://github.com/zengenti/contensis-react-base/commit/a44a200d7984541bc67e3b6347945dd26611876f))
+
 ## [3.2.2](https://github.com/zengenti/contensis-react-base/compare/v3.2.1...v3.2.2) (2024-09-25)
 
 
