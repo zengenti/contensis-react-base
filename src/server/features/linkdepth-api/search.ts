@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import {
   expressions as exp,
   FieldOperators,
@@ -126,16 +125,16 @@ export const finalQuery = (
 
         ...(sharedFilters?.length
           ? [
-              Op.or(
-                ...exp.filterExpressions(sharedFilters || [])
-                // Op.and(
-                //   ...sharedFilters.map(sf =>
-                //     Op.not(exp.fieldExpression(sf.key, true, 'exists')[0])
-                //   ),
-                //   ...exp.filterExpressions(idFilters)
-                // )
-              ),
-            ]
+            Op.or(
+              ...exp.filterExpressions(sharedFilters || [])
+              // Op.and(
+              //   ...sharedFilters.map(sf =>
+              //     Op.not(exp.fieldExpression(sf.key, true, 'exists')[0])
+              //   ),
+              //   ...exp.filterExpressions(idFilters)
+              // )
+            ),
+          ]
           : [])
       ),
       ...children.map(child =>
