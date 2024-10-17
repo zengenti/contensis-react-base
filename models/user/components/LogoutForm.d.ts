@@ -5,8 +5,8 @@ declare function LogoutForm({ logoutUser, user }: {
 }): JSX.Element;
 declare namespace LogoutForm {
     namespace propTypes {
-        const logoutUser: PropTypes.Requireable<(...args: any[]) => any>;
-        const user: PropTypes.Requireable<object>;
+        let logoutUser: PropTypes.Requireable<(...args: any[]) => any>;
+        let user: PropTypes.Requireable<object>;
     }
 }
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';

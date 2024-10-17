@@ -120,7 +120,6 @@ const mergeResults = (results, parentResults, replaceContentTypeIds, linkFieldId
   return r;
 }).filter(r => r);
 
-/* eslint-disable no-console */
 /**
  * Builds our complete Delivery API Query object from a set of provided arguments
  * @param queryParams

@@ -1,15 +1,14 @@
-/// <reference types="qs" />
 import { Request, Response } from 'express';
-import React, { PropsWithChildren } from 'react';
+import { PropsWithChildren } from 'react';
 import { SSRContext as SSRContextType } from "../models";
 /** SSRContextProvider allows us to hold and access request-scoped references
  *  throughout the component tree
  *
  *  adding this in client side allows consumers to write universal code and use
  *  the same helpers and refs as in SSR */
-export declare const SSRContextProvider: ({ children, request, response, }: React.PropsWithChildren<{
-    request?: Request<import("express-serve-static-core").ParamsDictionary, any, any, import("qs").ParsedQs, Record<string, any>> | undefined;
-    response?: Response<any, Record<string, any>> | undefined;
+export declare const SSRContextProvider: ({ children, request, response, }: PropsWithChildren<{
+    request?: Request;
+    response?: Response;
 }>) => JSX.Element;
 export declare const useSSRContext: () => SSRContextType;
 export declare const useDeliveryApi: () => {

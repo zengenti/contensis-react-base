@@ -1,4 +1,5 @@
 /// <reference types="qs" />
+/// <reference types="node" />
 import { VersionStatus } from 'contensis-core-api';
 import { Client, Query } from 'contensis-delivery-api';
 import { Config } from 'contensis-delivery-api/lib/models';

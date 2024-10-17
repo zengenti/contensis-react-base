@@ -42,9 +42,9 @@ export declare const useEntryMapper: <S, T extends Mappers<S>>(entry: S, mappers
  * a default mapper template, returns an empty object if no mapper template
  * couild be applied.
  */
-export declare const mapEntries: <S, Mappers_1 extends {
+export declare const mapEntries: <S, Mappers extends {
     [contentTypeId: string]: MappingTemplate<S>;
-}>(entries: S[], mappers: Mappers_1, field?: string) => unknown[];
+}>(entries: S[], mappers: Mappers, field?: string) => unknown[];
 /**
  * mapComposer mapping function to take a composer field from Delivery API along
  * with mappers for each Composer Item "type" and return an array of mapped components

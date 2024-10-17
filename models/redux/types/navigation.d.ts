@@ -1,3 +1,3 @@
-export const GET_NODE_TREE: string;
-export const SET_NODE_TREE: string;
-export const GET_NODE_TREE_ERROR: string;
+export const GET_NODE_TREE: "@NAVIGATION/_GET_NODE_TREE";
+export const SET_NODE_TREE: "@NAVIGATION/_SET_NODE_TREE";
+export const GET_NODE_TREE_ERROR: "@NAVIGATION/_GET_NODE_TREE_ERROR";
