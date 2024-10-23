@@ -266,8 +266,8 @@ const webApp = (
             if (!selectCurrentSearch(reduxState)?.includes('includeApiCalls')) {
               if (stateType === 'immutable')
                 clonedState = clonedState
-                  .deleteIn(['routing'], 'apiCalls')
-                  .deleteIn(['routing'], 'surrogateKeys');
+                  .deleteIn(['routing', 'apiCalls'])
+                  .deleteIn(['routing', 'surrogateKeys']);
               else {
                 delete clonedState.routing.apiCalls;
                 delete clonedState.routing.surrogateKeys;
