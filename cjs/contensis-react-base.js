@@ -3961,7 +3961,7 @@ const webApp = (app, ReactApp, config) => {
         // These keys are used for preparing server-side response headers only
         // and are not required in the client at all except for debugging ssr
         if (!((_selectCurrentSearch = selectors.selectCurrentSearch(reduxState)) !== null && _selectCurrentSearch !== void 0 && _selectCurrentSearch.includes('includeApiCalls'))) {
-          if (stateType === 'immutable') clonedState = clonedState.deleteIn(['routing'], 'apiCalls').deleteIn(['routing'], 'surrogateKeys');else {
+          if (stateType === 'immutable') clonedState = clonedState.deleteIn(['routing', 'apiCalls']).deleteIn(['routing', 'surrogateKeys']);else {
             delete clonedState.routing.apiCalls;
             delete clonedState.routing.surrogateKeys;
           }
