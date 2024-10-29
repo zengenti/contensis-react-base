@@ -94,7 +94,7 @@ const webApp = (
       },
       response: Response
     ) => {
-      const { url } = request;
+      const url = encodeURI(request.url);
 
       const matchedStaticRoute = () =>
         matchRoutes(routes.StaticRoutes, request.path);

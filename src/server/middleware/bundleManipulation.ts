@@ -16,7 +16,7 @@ export const bundleManipulationMiddleware =
     staticRoutePath: string;
   }): RequestHandler =>
   (req, res, next) => {
-    const filename = path.basename(req.path);
+    const filename = path.basename(encodeURI(req.path));
     const modernBundle = filename.endsWith('.mjs');
     const legacyBundle = filename.endsWith('.js');
     if ((legacyBundle || modernBundle) && filename.startsWith('runtime.')) {
@@ -36,7 +36,6 @@ export const bundleManipulationMiddleware =
         res.type('.js').send(modifiedBundle);
         return;
       } catch (readError) {
-        // eslint-disable-next-line no-console
         console.log(
           `Unable to find js runtime bundle at '${jsRuntimeLocation}'`,
           readError
