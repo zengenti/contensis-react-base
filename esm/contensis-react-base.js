@@ -671,7 +671,7 @@ const bundleManipulationMiddleware = ({
   staticFolderPath,
   staticRoutePath
 }) => (req, res, next) => {
-  const filename = path.basename(req.path);
+  const filename = path.basename(encodeURI(req.path));
   const modernBundle = filename.endsWith('.mjs');
   const legacyBundle = filename.endsWith('.js');
   if ((legacyBundle || modernBundle) && filename.startsWith('runtime.')) {
@@ -683,7 +683,6 @@ const bundleManipulationMiddleware = ({
       res.type('.js').send(modifiedBundle);
       return;
     } catch (readError) {
-      // eslint-disable-next-line no-console
       console.log(`Unable to find js runtime bundle at '${jsRuntimeLocation}'`, readError);
       next();
     }
@@ -3818,9 +3817,7 @@ const webApp = (app, ReactApp, config) => {
 
   const versionInfo = getVersionInfo(staticFolderPath);
   app.get('/*', cookiesMiddleware(), async (request, response) => {
-    const {
-      url
-    } = request;
+    const url = encodeURI(request.url);
     const matchedStaticRoute = () => matchRoutes(routes.StaticRoutes, request.path);
     const isStaticRoute = () => matchedStaticRoute().length > 0;
     const staticRoute = isStaticRoute() && matchedStaticRoute()[0];
