@@ -5,5 +5,6 @@ declare const _default: (wrappedComponentProps: {
     user: any;
     loginUser: any;
     logoutUser: any;
-}) => JSX.Element;
+}) => React.JSX.Element;
 export default _default;
+import React from 'react';

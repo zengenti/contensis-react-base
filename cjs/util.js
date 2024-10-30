@@ -1,7 +1,7 @@
 'use strict';
 
 var urls = require('./urls-DVIwGZmd.js');
-var SSRContext = require('./SSRContext-CmXDzwPL.js');
+var SSRContext = require('./SSRContext-Dg0xKkCm.js');
 var _commonjsHelpers = require('./_commonjsHelpers-BJu3ubxk.js');
 var mapJson = require('jsonpath-mapper');
 var React = require('react');
@@ -12,7 +12,7 @@ var styled = require('styled-components');
 require('react-cookie');
 require('contensis-delivery-api');
 require('query-string');
-require('./store-D8dJBaFw.js');
+require('./store-BihH67lI.js');
 require('redux');
 require('redux-thunk');
 require('redux-saga');
@@ -148,26 +148,35 @@ const entryMapper = mapping => (node, state) => mapJson__default.default({
   state
 }, mapping);
 
-const stringifyStrings = obj => {
-  const returnObj = Array.isArray(obj) ? [] : {};
-  Object.entries(obj).forEach(([key, value]) => {
-    switch (typeof value) {
-      case 'string':
-        returnObj[key] = JSON.stringify(value);
-        break;
-      case 'object':
-        returnObj[key] = stringifyStrings(value);
-        break;
-      default:
-        returnObj[key] = value;
-        break;
-    }
-  });
-  return returnObj;
-};
-var stringifyStrings_1 = stringifyStrings;
+var stringifyStrings_1;
+var hasRequiredStringifyStrings;
 
-var stringifyStrings$1 = /*@__PURE__*/_commonjsHelpers.getDefaultExportFromCjs(stringifyStrings_1);
+function requireStringifyStrings () {
+	if (hasRequiredStringifyStrings) return stringifyStrings_1;
+	hasRequiredStringifyStrings = 1;
+	const stringifyStrings = obj => {
+	  const returnObj = Array.isArray(obj) ? [] : {};
+	  Object.entries(obj).forEach(([key, value]) => {
+	    switch (typeof value) {
+	      case 'string':
+	        returnObj[key] = JSON.stringify(value);
+	        break;
+	      case 'object':
+	        returnObj[key] = stringifyStrings(value);
+	        break;
+	      default:
+	        returnObj[key] = value;
+	        break;
+	    }
+	  });
+	  return returnObj;
+	};
+	stringifyStrings_1 = stringifyStrings;
+	return stringifyStrings_1;
+}
+
+var stringifyStringsExports = requireStringifyStrings();
+var stringifyStrings = /*@__PURE__*/_commonjsHelpers.getDefaultExportFromCjs(stringifyStringsExports);
 
 const context = typeof window != 'undefined' ? window : global;
 const isDev = process.env.NODE_ENV === 'development';
@@ -324,7 +333,7 @@ exports.VersionInfo = VersionInfo$1;
 exports.entryMapper = entryMapper;
 exports.mapComposer = mapComposer;
 exports.mapEntries = mapEntries;
-exports.stringifyStrings = stringifyStrings$1;
+exports.stringifyStrings = stringifyStrings;
 exports.useComposerMapper = useComposerMapper;
 exports.useEntriesMapper = useEntriesMapper;
 exports.useEntryMapper = useEntryMapper;

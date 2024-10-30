@@ -1,4 +1,4 @@
-import { PropsWithChildren } from 'react';
+import React, { PropsWithChildren } from 'react';
 export declare const Status: ({ code, children, }: PropsWithChildren<{
     code: number;
-}>) => JSX.Element;
+}>) => React.JSX.Element;

@@ -1,6 +1,6 @@
 import { Entry } from 'contensis-delivery-api/lib/models';
 import mapJson from 'jsonpath-mapper';
-import MappingTemplate, { PureJsFunction } from 'jsonpath-mapper/dist/models/Template';
+import { MappingTemplate, PureJsFunction } from 'jsonpath-mapper';
 import { AppState, EntryMapper, RouteNode } from "../models";
 export { default as mapJson, jpath } from 'jsonpath-mapper';
 type Mappers<S> = {

@@ -1,5 +1,5 @@
 export { s as setCachingHeaders, u as urls } from './urls-DfCisos-.js';
-export { S as SSRContextProvider, c as cachedSearch, a as cachedSearchWithCookies, d as deliveryApi, b as deliveryApiWithCookies, g as getClientConfig, e as useDeliveryApi, u as useSSRContext } from './SSRContext-BoisoiyV.js';
+export { S as SSRContextProvider, c as cachedSearch, a as cachedSearchWithCookies, d as deliveryApi, b as deliveryApiWithCookies, g as getClientConfig, e as useDeliveryApi, u as useSSRContext } from './SSRContext-BAO3RdL9.js';
 import { g as getDefaultExportFromCjs } from './_commonjsHelpers-BFTU3MAI.js';
 import mapJson, { jpath } from 'jsonpath-mapper';
 export { jpath, default as mapJson } from 'jsonpath-mapper';
@@ -11,7 +11,7 @@ import styled from 'styled-components';
 import 'react-cookie';
 import 'contensis-delivery-api';
 import 'query-string';
-import './store-Cr0lmZNr.js';
+import './store-f0WxNWUu.js';
 import 'redux';
 import 'redux-thunk';
 import 'redux-saga';
@@ -141,26 +141,35 @@ const entryMapper = mapping => (node, state) => mapJson({
   state
 }, mapping);
 
-const stringifyStrings = obj => {
-  const returnObj = Array.isArray(obj) ? [] : {};
-  Object.entries(obj).forEach(([key, value]) => {
-    switch (typeof value) {
-      case 'string':
-        returnObj[key] = JSON.stringify(value);
-        break;
-      case 'object':
-        returnObj[key] = stringifyStrings(value);
-        break;
-      default:
-        returnObj[key] = value;
-        break;
-    }
-  });
-  return returnObj;
-};
-var stringifyStrings_1 = stringifyStrings;
+var stringifyStrings_1;
+var hasRequiredStringifyStrings;
 
-var stringifyStrings$1 = /*@__PURE__*/getDefaultExportFromCjs(stringifyStrings_1);
+function requireStringifyStrings () {
+	if (hasRequiredStringifyStrings) return stringifyStrings_1;
+	hasRequiredStringifyStrings = 1;
+	const stringifyStrings = obj => {
+	  const returnObj = Array.isArray(obj) ? [] : {};
+	  Object.entries(obj).forEach(([key, value]) => {
+	    switch (typeof value) {
+	      case 'string':
+	        returnObj[key] = JSON.stringify(value);
+	        break;
+	      case 'object':
+	        returnObj[key] = stringifyStrings(value);
+	        break;
+	      default:
+	        returnObj[key] = value;
+	        break;
+	    }
+	  });
+	  return returnObj;
+	};
+	stringifyStrings_1 = stringifyStrings;
+	return stringifyStrings_1;
+}
+
+var stringifyStringsExports = requireStringifyStrings();
+var stringifyStrings = /*@__PURE__*/getDefaultExportFromCjs(stringifyStringsExports);
 
 const context = typeof window != 'undefined' ? window : global;
 const isDev = process.env.NODE_ENV === 'development';
@@ -295,5 +304,5 @@ const VersionInfo = ({
 };
 var VersionInfo$1 = connect(mapStateToVersionInfo)(VersionInfo);
 
-export { VersionInfo$1 as VersionInfo, entryMapper, mapComposer, mapEntries, stringifyStrings$1 as stringifyStrings, useComposerMapper, useEntriesMapper, useEntryMapper, useMapper };
+export { VersionInfo$1 as VersionInfo, entryMapper, mapComposer, mapEntries, stringifyStrings, useComposerMapper, useEntriesMapper, useEntryMapper, useMapper };
 //# sourceMappingURL=util.js.map

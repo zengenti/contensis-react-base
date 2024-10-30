@@ -1,4 +1,4 @@
-/// <reference types="react" />
+import React from 'react';
 export interface IVersionInfoProps {
     deliveryApi: {
         rootUrl: string;
@@ -36,5 +36,5 @@ export interface IVersionInfoProps {
     };
     zenPackageVersions: string[];
 }
-declare const _default: import("react-redux").ConnectedComponent<({ deliveryApi, devEnv, disableSsrRedux, nodeEnv, packageDetail, project, projects, proxyDeliveryApi, publicUri, reverseProxyPaths, servers, uris, version, zenPackageVersions, }: IVersionInfoProps) => JSX.Element, import("react-redux").Omit<IVersionInfoProps, "version" | "packageDetail" | "uris" | "zenPackageVersions" | "deliveryApi" | "devEnv" | "disableSsrRedux" | "nodeEnv" | "projects" | "proxyDeliveryApi" | "publicUri" | "project" | "reverseProxyPaths" | "servers">>;
+declare const _default: import("react-redux").ConnectedComponent<({ deliveryApi, devEnv, disableSsrRedux, nodeEnv, packageDetail, project, projects, proxyDeliveryApi, publicUri, reverseProxyPaths, servers, uris, version, zenPackageVersions, }: IVersionInfoProps) => React.JSX.Element, import("react-redux").Omit<IVersionInfoProps, "version" | "packageDetail" | "uris" | "zenPackageVersions" | "deliveryApi" | "devEnv" | "disableSsrRedux" | "nodeEnv" | "projects" | "proxyDeliveryApi" | "publicUri" | "project" | "reverseProxyPaths" | "servers">>;
 export default _default;

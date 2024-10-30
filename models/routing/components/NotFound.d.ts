@@ -1,6 +1,6 @@
-/// <reference types="react" />
+import React from 'react';
 declare const NotFound: ({ statusCode, statusText, }: {
     statusCode: number;
     statusText: string;
-}) => JSX.Element;
+}) => React.JSX.Element;
 export default NotFound;

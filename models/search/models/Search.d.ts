@@ -1,6 +1,6 @@
 import { FieldLinkDepths } from 'contensis-core-api';
 import { Entry } from 'contensis-delivery-api/lib/models';
-import MappingTemplate from 'jsonpath-mapper/dist/models/Template';
+import { MappingTemplate } from 'jsonpath-mapper';
 import { Context } from './Enums';
 import { FieldOperators, LogicOperators } from './Queries';
 import { AppState } from './SearchState';

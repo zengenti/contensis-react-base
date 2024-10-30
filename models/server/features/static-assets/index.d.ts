@@ -1,5 +1,5 @@
 declare const staticAssets: (app: any, { appRootPath, scripts, startupScriptFilename, staticFolderPath, staticRoutePath, staticRoutePaths, }: {
-    appRootPath?: any;
+    appRootPath?: string | undefined;
     scripts?: {
         attributes?: {
             [key: string]: string;

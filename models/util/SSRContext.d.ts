@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { PropsWithChildren } from 'react';
+import React, { PropsWithChildren } from 'react';
 import { SSRContext as SSRContextType } from "../models";
 /** SSRContextProvider allows us to hold and access request-scoped references
  *  throughout the component tree
@@ -9,7 +9,7 @@ import { SSRContext as SSRContextType } from "../models";
 export declare const SSRContextProvider: ({ children, request, response, }: PropsWithChildren<{
     request?: Request;
     response?: Response;
-}>) => JSX.Element;
+}>) => React.JSX.Element;
 export declare const useSSRContext: () => SSRContextType;
 export declare const useDeliveryApi: () => {
     cache: import("./LruCache").LruCache;
