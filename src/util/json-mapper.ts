@@ -1,8 +1,9 @@
 import { Entry } from 'contensis-delivery-api/lib/models';
 import mapJson, { jpath } from 'jsonpath-mapper';
-import MappingTemplate, {
+import {
+  MappingTemplate,
   PureJsFunction,
-} from 'jsonpath-mapper/dist/models/Template';
+} from 'jsonpath-mapper';
 import { AppState, EntryMapper, RouteNode } from '~/models';
 
 export { default as mapJson, jpath } from 'jsonpath-mapper';
@@ -97,42 +98,42 @@ export const mapComposer = <
 ) =>
   Array.isArray(composer)
     ? composer.map((composerItem, index) => {
-        const itemValue = composerItem.value;
-        const mapper = mappers[composerItem.type] || mappers.default;
-        if (mapper) {
-          // Add some fields into the composer item mapper and return object
-          const addedFields = {
-            _type: composerItem.type,
-            _index: index,
-          };
+      const itemValue = composerItem.value;
+      const mapper = mappers[composerItem.type] || mappers.default;
+      if (mapper) {
+        // Add some fields into the composer item mapper and return object
+        const addedFields = {
+          _type: composerItem.type,
+          _index: index,
+        };
 
-          // Add fields and $root item into the composer item source object
-          // for use inside each item mapping, for arrays we inject the added fields
-          // into the first array item. This is useful if we require any of
-          // composerItem.type, composerItem index/position and composer $root
-          // in scope to influence any composer item's mapping logic
-          const sourceObject =
-            itemValue && Array.isArray(itemValue)
-              ? itemValue.map((iv, idx) =>
-                  idx !== 0
-                    ? iv
-                    : typeof iv === 'object'
-                    ? { ...addedFields, ...iv, $root: composer }
-                    : iv
-                )
-              : typeof itemValue === 'object'
+        // Add fields and $root item into the composer item source object
+        // for use inside each item mapping, for arrays we inject the added fields
+        // into the first array item. This is useful if we require any of
+        // composerItem.type, composerItem index/position and composer $root
+        // in scope to influence any composer item's mapping logic
+        const sourceObject =
+          itemValue && Array.isArray(itemValue)
+            ? itemValue.map((iv, idx) =>
+              idx !== 0
+                ? iv
+                : typeof iv === 'object'
+                  ? { ...addedFields, ...iv, $root: composer }
+                  : iv
+            )
+            : typeof itemValue === 'object'
               ? { ...addedFields, ...itemValue, $root: composer }
               : itemValue || {};
 
-          // Apply the composer item mapping
-          const mappedFields = mapJson(sourceObject, mapper) as any;
+        // Apply the composer item mapping
+        const mappedFields = mapJson(sourceObject, mapper) as any;
 
-          // Add the extra fields in with the return object
-          return mappedFields && typeof mappedFields === 'object'
-            ? { ...mappedFields, ...addedFields }
-            : mappedFields;
-        } else return {};
-      })
+        // Add the extra fields in with the return object
+        return mappedFields && typeof mappedFields === 'object'
+          ? { ...mappedFields, ...addedFields }
+          : mappedFields;
+      } else return {};
+    })
     : composer || [];
 
 /**
@@ -165,7 +166,7 @@ export const entryMapper =
       | MappingTemplate<RouteNode & Entry & { state?: AppState }>
       | PureJsFunction<RouteNode & Entry & { state?: AppState }>
   ): EntryMapper =>
-  (node, state) =>
-    mapJson({ ...node, ...(node.entry || ({} as Entry)), state }, mapping);
+    (node, state) =>
+      mapJson({ ...node, ...(node.entry || ({} as Entry)), state }, mapping);
 
 export default mapJson;
