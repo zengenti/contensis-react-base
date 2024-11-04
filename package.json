@@ -98,6 +98,7 @@
     "lodash-clean": "^2.2.3",
     "loglevel": "^1.9.2",
     "minify-css-string": "^1.0.0",
+    "minimist": "^1.2.8",
     "oidc-client": "^1.11.5",
     "query-string": "^5.1.1",
     "react": "^17.0.2",
