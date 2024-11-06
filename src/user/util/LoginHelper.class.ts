@@ -7,7 +7,11 @@ import {
 
 import mapClientCredentials from '../transformations/mapClientCredentials';
 import { createUserManager, userManagerConfig } from './OidcUserManager';
-import { LOGIN_COOKIE, REFRESH_TOKEN_COOKIE } from './CookieConstants';
+import {
+  BEARER_TOKEN_COOKIE,
+  LOGIN_COOKIE,
+  REFRESH_TOKEN_COOKIE,
+} from './CookieConstants';
 import { AuthenticationState, UserWithGroups } from '../state';
 import { Client } from 'contensis-management-api';
 import { CookieHelper } from './CookieHelper.class';
@@ -54,7 +58,7 @@ export class LoginHelper {
         (user as UserWithGroups).groups = groupsResult.items;
 
       // If groups call fails then log the error but allow the user to login still
-      // eslint-disable-next-line no-console
+
       if (groupsError) console.log(groupsError);
     }
     return [userError, user as UserWithGroups];
@@ -212,19 +216,11 @@ export class LoginHelper {
   // }
 
   SetLoginCookies({
+    bearerToken,
     contensisClassicToken,
     refreshToken,
-  }: {
-    contensisClassicToken?: string;
-    refreshToken?: string;
-  }) {
-    console.info(
-      'SetLoginCookies:',
-      LOGIN_COOKIE,
-      contensisClassicToken,
-      REFRESH_TOKEN_COOKIE,
-      refreshToken
-    );
+  }: ManagementApiClientCredentials) {
+    if (bearerToken) this.cookies.SetCookie(BEARER_TOKEN_COOKIE, bearerToken);
 
     if (contensisClassicToken)
       this.cookies.SetCookie(LOGIN_COOKIE, contensisClassicToken);
@@ -247,6 +243,7 @@ export class LoginHelper {
   ClearCachedCredentials() {
     this.cookies.DeleteCookie(LOGIN_COOKIE);
     this.cookies.DeleteCookie(REFRESH_TOKEN_COOKIE);
+    this.cookies.DeleteCookie(BEARER_TOKEN_COOKIE); // additional cookie used by @contensis/forms package
 
     if (LoginHelper.WSFED_LOGIN && typeof window !== 'undefined') {
       // remove any oidc keys left over in localStorage
