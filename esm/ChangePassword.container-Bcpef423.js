@@ -3,7 +3,7 @@ import { $ as LOGIN_USER, a0 as LOGOUT_USER, a1 as VALIDATE_USER, a2 as SET_AUTH
 import { a as selectUserIsAuthenticated, k as selectUserGroups, m as matchUserGroup, l as selectClientCredentials, s as selectUserErrorMessage, b as selectUserIsAuthenticationError, c as selectUserIsError, d as selectUserIsLoading, e as selectUser, t as toJS, f as selectUserRegistrationError, g as selectUserRegistrationIsLoading, h as selectUserRegistrationIsSuccess, i as selectUserRegistration, n as selectPasswordResetRequestSending, o as selectPasswordResetRequestSent, p as selectPasswordResetRequestError, q as selectResetPasswordSending, r as selectResetPasswordSent, u as selectResetPasswordError, v as selectChangePasswordSending, w as selectChangePasswordSent, x as selectUserGuid, y as selectChangePasswordError } from './ToJs-B4MH53fx.js';
 import mapJson from 'jsonpath-mapper';
 import { to } from 'await-to-js';
-import { C as CookieHelper, L as LOGIN_COOKIE, R as REFRESH_TOKEN_COOKIE } from './CookieHelper.class-DqJ_o1jL.js';
+import { C as CookieHelper, B as BEARER_TOKEN_COOKIE, L as LOGIN_COOKIE, R as REFRESH_TOKEN_COOKIE } from './CookieHelper.class-W_NNNJKT.js';
 import { useCookies } from 'react-cookie';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -234,10 +234,11 @@ class LoginHelper {
   // }
 
   SetLoginCookies({
+    bearerToken,
     contensisClassicToken,
     refreshToken
   }) {
-    console.info('SetLoginCookies:', LOGIN_COOKIE, contensisClassicToken, REFRESH_TOKEN_COOKIE, refreshToken);
+    if (bearerToken) this.cookies.SetCookie(BEARER_TOKEN_COOKIE, bearerToken);
     if (contensisClassicToken) this.cookies.SetCookie(LOGIN_COOKIE, contensisClassicToken);
     if (refreshToken) this.cookies.SetCookie(REFRESH_TOKEN_COOKIE, refreshToken);
   }
@@ -254,6 +255,8 @@ class LoginHelper {
   ClearCachedCredentials() {
     this.cookies.DeleteCookie(LOGIN_COOKIE);
     this.cookies.DeleteCookie(REFRESH_TOKEN_COOKIE);
+    this.cookies.DeleteCookie(BEARER_TOKEN_COOKIE); // additional cookie used by @contensis/forms package
+
     if (LoginHelper.WSFED_LOGIN && typeof window !== 'undefined') {
       // remove any oidc keys left over in localStorage
       const {
@@ -381,7 +384,7 @@ LoginHelper.GetUserDetails = async client => {
     if (groupsResult && groupsResult.items) user.groups = groupsResult.items;
 
     // If groups call fails then log the error but allow the user to login still
-    // eslint-disable-next-line no-console
+
     if (groupsError) console.log(groupsError);
   }
   return [userError, user];
@@ -719,4 +722,4 @@ ChangePasswordContainer.propTypes = {};
 var ChangePassword_container = toJS(ChangePasswordContainer);
 
 export { ChangePassword_container as C, ForgotPassword_container as F, LoginHelper as L, Registration_container as R, logoutUser as a, actions as b, Login_container as c, useRegistration as d, useForgotPassword as e, useChangePassword as f, refreshSecurityToken as g, handleRequiresLoginSaga as h, findContentTypeMapping as i, getManagementApiClient as j, loginSagas as k, loginUser as l, registerUser as r, useLogin as u };
-//# sourceMappingURL=ChangePassword.container-6fQXhkzW.js.map
+//# sourceMappingURL=ChangePassword.container-Bcpef423.js.map

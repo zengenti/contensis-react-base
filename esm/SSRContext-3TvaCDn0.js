@@ -5,7 +5,7 @@ import { Client } from 'contensis-delivery-api';
 import { parse } from 'query-string';
 import { q as setSurrogateKeys } from './selectors-BRzliwbK.js';
 import { r as reduxStore } from './store-f0WxNWUu.js';
-import { f as findLoginCookies, C as CookieHelper } from './CookieHelper.class-DqJ_o1jL.js';
+import { f as findLoginCookies, C as CookieHelper } from './CookieHelper.class-W_NNNJKT.js';
 
 class CacheNode {
   constructor(key, value) {
@@ -349,4 +349,4 @@ const useDeliveryApi = () => {
 };
 
 export { SSRContextProvider as S, cachedSearchWithCookies as a, deliveryApiWithCookies as b, cachedSearch as c, deliveryApi as d, useDeliveryApi as e, getClientConfig as g, useSSRContext as u };
-//# sourceMappingURL=SSRContext-BAO3RdL9.js.map
+//# sourceMappingURL=SSRContext-3TvaCDn0.js.map

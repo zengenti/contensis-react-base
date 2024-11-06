@@ -20,10 +20,7 @@ export declare class LoginHelper {
     static RemoveSecurityTokenQuery(): void;
     static WsFedLogout(redirectPath?: string): Promise<void>;
     static GetCredentialsForSecurityToken(securityToken: string): Promise<any[]>;
-    SetLoginCookies({ contensisClassicToken, refreshToken, }: {
-        contensisClassicToken?: string;
-        refreshToken?: string;
-    }): void;
+    SetLoginCookies({ bearerToken, contensisClassicToken, refreshToken, }: ManagementApiClientCredentials): void;
     GetCachedCredentials(): {
         bearerToken: null;
         bearerTokenExpiryDate: null;

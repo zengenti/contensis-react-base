@@ -5,7 +5,7 @@ var selectors = require('./selectors-wCs5fHD4.js');
 var ToJs = require('./ToJs-C9jwV7YB.js');
 var mapJson = require('jsonpath-mapper');
 var to = require('await-to-js');
-var CookieHelper_class = require('./CookieHelper.class-CNL3lC5D.js');
+var CookieHelper_class = require('./CookieHelper.class-CxeVo9EP.js');
 var reactCookie = require('react-cookie');
 var reactRedux = require('react-redux');
 
@@ -240,10 +240,11 @@ class LoginHelper {
   // }
 
   SetLoginCookies({
+    bearerToken,
     contensisClassicToken,
     refreshToken
   }) {
-    console.info('SetLoginCookies:', CookieHelper_class.LOGIN_COOKIE, contensisClassicToken, CookieHelper_class.REFRESH_TOKEN_COOKIE, refreshToken);
+    if (bearerToken) this.cookies.SetCookie(CookieHelper_class.BEARER_TOKEN_COOKIE, bearerToken);
     if (contensisClassicToken) this.cookies.SetCookie(CookieHelper_class.LOGIN_COOKIE, contensisClassicToken);
     if (refreshToken) this.cookies.SetCookie(CookieHelper_class.REFRESH_TOKEN_COOKIE, refreshToken);
   }
@@ -260,6 +261,8 @@ class LoginHelper {
   ClearCachedCredentials() {
     this.cookies.DeleteCookie(CookieHelper_class.LOGIN_COOKIE);
     this.cookies.DeleteCookie(CookieHelper_class.REFRESH_TOKEN_COOKIE);
+    this.cookies.DeleteCookie(CookieHelper_class.BEARER_TOKEN_COOKIE); // additional cookie used by @contensis/forms package
+
     if (LoginHelper.WSFED_LOGIN && typeof window !== 'undefined') {
       // remove any oidc keys left over in localStorage
       const {
@@ -387,7 +390,7 @@ LoginHelper.GetUserDetails = async client => {
     if (groupsResult && groupsResult.items) user.groups = groupsResult.items;
 
     // If groups call fails then log the error but allow the user to login still
-    // eslint-disable-next-line no-console
+
     if (groupsError) console.log(groupsError);
   }
   return [userError, user];
@@ -742,4 +745,4 @@ exports.useChangePassword = useChangePassword;
 exports.useForgotPassword = useForgotPassword;
 exports.useLogin = useLogin;
 exports.useRegistration = useRegistration;
-//# sourceMappingURL=ChangePassword.container-DrO8p-7S.js.map
+//# sourceMappingURL=ChangePassword.container-Dup9_na7.js.map

@@ -7,7 +7,7 @@ var contensisDeliveryApi = require('contensis-delivery-api');
 var queryString = require('query-string');
 var selectors = require('./selectors-wCs5fHD4.js');
 var store = require('./store-BihH67lI.js');
-var CookieHelper_class = require('./CookieHelper.class-CNL3lC5D.js');
+var CookieHelper_class = require('./CookieHelper.class-CxeVo9EP.js');
 
 function _interopDefault (e) { return e && e.__esModule ? e : { default: e }; }
 
@@ -362,4 +362,4 @@ exports.deliveryApiWithCookies = deliveryApiWithCookies;
 exports.getClientConfig = getClientConfig;
 exports.useDeliveryApi = useDeliveryApi;
 exports.useSSRContext = useSSRContext;
-//# sourceMappingURL=SSRContext-Dg0xKkCm.js.map
+//# sourceMappingURL=SSRContext-DpnwQ2te.js.map
