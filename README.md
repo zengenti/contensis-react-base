@@ -66,7 +66,7 @@ All TypeScript models are exported from here and should be imported in your app 
 
 Default export `ClientApp` which is a class when instantiated with `new ClientApp` accepts two constructor arguments similar to `ZengentiAppServer.start()` except for use when loading the application via the client-side entrypoint
 
-### /forms
+### /forms (deprecated)
 
 For use when using the newer Content Types and Entries based forms module
 
