@@ -1,5 +1,25 @@
 # Changelog
 
+## [3.3.0](https://github.com/zengenti/contensis-react-base/compare/v3.2.2...v3.3.0) (2024-12-16)
+
+
+### Features
+
+* Update Styled components to v6 ([95c36ce](https://github.com/zengenti/contensis-react-base/commit/95c36ce02cb41babcd3e5311a6540c01534c1292))
+
+
+### Bug Fixes
+
+* content flash after ssr in projects using legacy `immutable` state format ([c3d070a](https://github.com/zengenti/contensis-react-base/commit/c3d070a005280ec7b9fc93ca19a88193b02a1864))
+* fetch all entry fields in routing call when no fields array is supplied in static route ([139c379](https://github.com/zengenti/contensis-react-base/commit/139c3791168de6c131ba10bd0650d19148df76e9))
+* protected forms render after logging out, set and unset additional login cookie used by `@contensis/forms` package ([721cbe0](https://github.com/zengenti/contensis-react-base/commit/721cbe0e6b2568224ad17f9c6aaed409cfb2c4a1))
+* sanitise server-side usage of uri parts from request addressing vulnerability `CWE-96: Improper Neutralization of Directives in Statically Saved Code` and `CWE-79: Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')` ([927b61b](https://github.com/zengenti/contensis-react-base/commit/927b61b7bdc6af870f8c782b9c3d647a0820b2cb))
+
+
+### Performance Improvements
+
+* entry fetch options not applied from `fetchNode` object in a matched static route ([a44a200](https://github.com/zengenti/contensis-react-base/commit/a44a200d7984541bc67e3b6347945dd26611876f))
+
 ## [3.2.2](https://github.com/zengenti/contensis-react-base/compare/v3.2.1...v3.2.2) (2024-09-25)
 
 
