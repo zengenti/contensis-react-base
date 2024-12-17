@@ -6,6 +6,18 @@ Handles web app routing with Contensis Site View and component rendering based o
 
 ## Upgrade notes (older projects)
 
+### Styled Components 6 (v3.3+)
+
+Some projects may see console warnings in the web app like the example below after upgrading to v3.3+ which updates Styled Components from version 5 to 6
+
+```
+styled-components: it looks like an unknown prop "maxWidth" is being sent through to the DOM, which will likely trigger a React console error. If you would like automatic filtering of unknown props, you can opt-into that behavior via `<StyleSheetManager shouldForwardProp={...}>` (connect an API like `@emotion/is-prop-valid`) or consider using transient props (`$` prefix for automatic filtering.)
+
+React does not recognize the `maxWidth` prop on a DOM element. If you intentionally want it to appear in the DOM as a custom attribute, spell it as lowercase `maxwidth` instead. If you accidentally passed it from a parent component, remove it from the DOM element.
+```
+
+To fix these warnings we can opt-in to certain behaviours from Styled Components v5 by wrapping the top-level components in `App` in a `StyleSheetManager` component and handlers for suppressing the necessary warnings. [Further reading](https://styled-components.com/docs/faqs#shouldforwardprop-is-no-longer-provided-by-default)
+
 ### React 17 (v3.0+)
 
 This version introduces React v17. React is very sensitive to having multiple versions installed at the same time.
