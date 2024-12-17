@@ -53,6 +53,6 @@ jobs:
         name: Publish release package v${{ steps.app_version.outputs.version }} with tag "${{ inputs.tag }}"
         run: |
           npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
-          npm publish --tag ${{ github.event.inputs.tag }}
+          npm publish --tag ${{ github.event.inputs.tag || 'latest' }}
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
