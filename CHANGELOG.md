@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.3.1](https://github.com/zengenti/contensis-react-base/compare/v3.3.0...v3.3.1) (2025-01-23)
+
+
+### Bug Fixes
+
+* error `Failed to execute 'fetch' on 'Window': Illegal invocation` from `contensis-core-api` package after caret update of `cross-fetch` dependency to 3.2.0 ([2cbc5d8](https://github.com/zengenti/contensis-react-base/commit/2cbc5d8c6ae1c42d9195401c2b17d8bc11766e7d))
+
 ## [3.3.0](https://github.com/zengenti/contensis-react-base/compare/v3.2.2...v3.3.0) (2024-12-16)
 
 
