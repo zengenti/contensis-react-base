@@ -188,8 +188,8 @@ function* getRouteSaga(action) {
               entryFields: setStaticRouteLimits
                 ? fields || '*'
                 : setContentTypeLimits
-                ? ['sys.contentTypeId', 'sys.id']
-                : '*',
+                  ? ['sys.contentTypeId', 'sys.id']
+                  : '*',
               entryLinkDepth:
                 setStaticRouteLimits && typeof linkDepth !== 'undefined'
                   ? linkDepth
@@ -197,8 +197,8 @@ function* getRouteSaga(action) {
               entryFieldLinkDepths: setStaticRouteLimits
                 ? fieldLinkDepths
                 : setContentTypeLimits
-                ? undefined
-                : entryFieldLinkDepths,
+                  ? undefined
+                  : entryFieldLinkDepths,
               language: defaultLang,
               versionStatus: deliveryApiStatus,
             },
@@ -434,8 +434,8 @@ function* resolveCurrentNodeOrdinates(action) {
                 typeof childrenOptions.linkDepth !== 'undefined'
                   ? childrenOptions.linkDepth
                   : typeof linkDepth !== 'undefined'
-                  ? linkDepth
-                  : entryLinkDepth,
+                    ? linkDepth
+                    : entryLinkDepth,
               language,
               versionStatus,
             },
@@ -464,8 +464,8 @@ function* resolveCurrentNodeOrdinates(action) {
                 typeof nodeOptions?.siblings?.linkDepth !== 'undefined'
                   ? nodeOptions.siblings.linkDepth
                   : typeof linkDepth !== 'undefined'
-                  ? linkDepth
-                  : entryLinkDepth,
+                    ? linkDepth
+                    : entryLinkDepth,
               includeInMenu: true,
               language,
               versionStatus,
@@ -532,15 +532,15 @@ function* setRouteEntry(
   const mappedEntry = !entryMapper
     ? null
     : currentEntryId === entrySys.id &&
-      currentEntryLang === entrySys.language &&
-      remapEntry === false
-    ? (yield select(selectMappedEntry, 'js')) || {}
-    : yield mapRouteEntry(entryMapper, {
-        ...node,
-        entry,
-        ancestors,
-        siblings,
-      });
+        currentEntryLang === entrySys.language &&
+        remapEntry === false
+      ? (yield select(selectMappedEntry, 'js')) || {}
+      : yield mapRouteEntry(entryMapper, {
+          ...node,
+          entry,
+          ancestors,
+          siblings,
+        });
 
   yield all([
     put({
@@ -574,6 +574,7 @@ function* mapRouteEntry(entryMapper, node) {
     }
   } catch (e) {
     log.error(...['Error running entryMapper:', e, e.stack]);
+    throw e;
   }
   return;
 }
