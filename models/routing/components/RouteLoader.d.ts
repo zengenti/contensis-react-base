@@ -1,4 +1,4 @@
-/// <reference types="react" />
+import React from 'react';
 import { AppRootProps, RouteLoaderProps } from "../../models";
-declare const _default: (props: AppRootProps & RouteLoaderProps) => JSX.Element;
+declare const _default: (props: AppRootProps & RouteLoaderProps) => React.JSX.Element;
 export default _default;

@@ -1,5 +1,5 @@
 export { a as actions, b as selectors, r as types } from './selectors-BRzliwbK.js';
-export { R as RouteLoader } from './RouteLoader-De1Q8gFr.js';
+export { R as RouteLoader } from './RouteLoader-CipkGOgr.js';
 import 'immer';
 import 'jsonpath-mapper';
 import 'query-string';
