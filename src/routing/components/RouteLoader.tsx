@@ -290,4 +290,5 @@ const mapDispatchToProps = {
 
 export default hot(module)(
   connect(mapStateToPropsMemoized, mapDispatchToProps)(toJS(RouteLoader as any))
-) as unknown as (props: AppRootProps & RouteLoaderProps) => JSX.Element;
+  // eslint-disable-next-line no-unused-vars
+) as unknown as (props: AppRootProps & RouteLoaderProps) => React.JSX.Element;
