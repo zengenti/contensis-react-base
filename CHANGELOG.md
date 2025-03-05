@@ -1,5 +1,14 @@
 # Changelog
 
+## [3.3.1](https://github.com/zengenti/contensis-react-base/compare/v3.3.0...v3.3.1) (2025-03-05)
+
+
+### Bug Fixes
+
+* error `Failed to execute 'fetch' on 'Window': Illegal invocation` from `contensis-core-api` package after caret update of `cross-fetch` dependency to 3.2.0 ([2cbc5d8](https://github.com/zengenti/contensis-react-base/commit/2cbc5d8c6ae1c42d9195401c2b17d8bc11766e7d))
+* missing props typing for `notFoundComponent` ([ec9e1fd](https://github.com/zengenti/contensis-react-base/commit/ec9e1fdb13c2e40641d412028978ca662e5c4d07))
+* rethrow errors when mapping route entries to bubble error up to handle in routing saga ([a70133e](https://github.com/zengenti/contensis-react-base/commit/a70133e1c9dc928fa0d0757bbae1c4a7e9c108a3))
+
 ## [3.3.0](https://github.com/zengenti/contensis-react-base/compare/v3.2.2...v3.3.0) (2024-12-16)
 
 
