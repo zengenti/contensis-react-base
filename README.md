@@ -135,3 +135,11 @@ We have switched to using `@loadable/components` for our code splitting and to g
 Conventional commit messages are expected.
 
 https://www.conventionalcommits.org/en/v1.0.0/#summary
+
+## License
+
+This project is licensed under the [ISC License](https://opensource.org/licenses/ISC).
+
+### Attribution
+
+This project indirectly utilizes data from [`caniuse-lite`](https://github.com/browserslist/caniuse-lite) as part of its build tooling. The data, sourced from [caniuse.com](https://caniuse.com), is made available under the **Creative Commons Attribution 4.0 International [(CC BY 4.0)](http://creativecommons.org/licenses/by/4.0/)** license. For more information about this data or its use, please refer to [the author's repository](https://github.com/browserslist/caniuse-lite?tab=readme-ov-file#license).
