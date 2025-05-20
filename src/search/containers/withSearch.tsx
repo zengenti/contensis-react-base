@@ -43,7 +43,7 @@ const withSearch =
   <Props extends Record<string, any>>(
     SearchComponent: React.ComponentType<Props>
   ) => {
-    const Wrapper: React.FC<Props & SearchProps<any>> = props => {
+    const Wrapper = (props: Props & SearchProps<any>) => {
       return <SearchComponent {...props} />;
     };
 

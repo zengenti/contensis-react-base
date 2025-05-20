@@ -19,7 +19,7 @@ import { ListingProps } from '../models/SearchProps';
 const withListing =
   (mappers: Mappers) =>
   <Props extends Record<string, any>>(ListingComponent: React.FC<Props>) => {
-    const Wrapper: React.FC<Props & ListingProps<any>> = props => {
+    const Wrapper = (props: Props & ListingProps<any>) => {
       return <ListingComponent {...props} />;
     };
 
