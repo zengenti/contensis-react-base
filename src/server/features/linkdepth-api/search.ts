@@ -18,6 +18,7 @@ type SearchQueryArgs = WithOptional<
     idFilters?: SearchQueryOptions['filters'];
     sharedFilters?: SearchQueryOptions['filters'];
   },
+  | 'aggregations'
   | 'assetTypes'
   | 'customWhere'
   | 'dynamicOrderBy'

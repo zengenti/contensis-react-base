@@ -35,6 +35,7 @@ export const filterQuery: FilterQuery = (
 
 export const searchQuery: SearchQuery = (
   {
+    aggregations,
     assetTypes,
     contentTypeIds,
     customWhere,
@@ -93,6 +94,8 @@ export const searchQuery: SearchQuery = (
   if (Object.keys(fieldLinkDepths || {}).length && !isFeatured)
     query.fieldLinkDepths = fieldLinkDepths;
   if (fields?.length && !isFeatured) query.fields = fields;
+  if (Object.keys(aggregations || {}).length && !isFeatured)
+    query.aggregations = aggregations;
 
   query.pageIndex = isFeatured ? 0 : pageIndex;
   query.pageSize =

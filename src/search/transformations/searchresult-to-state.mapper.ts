@@ -44,6 +44,7 @@ export const facetTemplate = {
   facet: 'action.facet',
   mappers: 'action.mappers',
   nextFacet: {
+    aggregations: 'result.payload.aggregations',
     entries: {
       isLoading: () => false,
       isError: () => false,

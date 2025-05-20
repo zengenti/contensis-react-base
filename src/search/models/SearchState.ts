@@ -1,3 +1,4 @@
+import { PagedSearchList } from 'contensis-core-api';
 import { Context } from './Enums';
 import { CustomWhereClause } from './Search';
 
@@ -15,9 +16,12 @@ export type SearchState = {
   config: Record<string, boolean>;
 };
 
+export type Aggregations = Required<PagedSearchList<unknown>>['aggregations'];
+
 export type Facets = { [key: string]: Facet };
 
 export type Facet = {
+  aggregations?: Aggregations;
   entries: {
     isLoading: boolean;
     isError: boolean;
@@ -80,6 +84,7 @@ export type FilterItem = {
   key: string;
   path?: string;
   isSelected: boolean;
+  aggregate?: number;
 };
 
 export type SelectedFilters = {

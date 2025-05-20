@@ -1,4 +1,7 @@
-import { FieldLinkDepths } from 'contensis-core-api';
+import {
+  ContensisQueryAggregations,
+  FieldLinkDepths,
+} from 'contensis-core-api';
 import { Entry } from 'contensis-delivery-api/lib/models';
 import { MappingTemplate } from 'jsonpath-mapper';
 import { Context } from './Enums';
@@ -106,6 +109,8 @@ export type SearchQueryParams = {
   assetTypes?: string[];
   /** An array of contentTypeIds to search over (sys.dataFormat == 'entry'); Prefix an entry with a "!" to exclude that content type from the search */
   contentTypeIds: string[];
+  /** Any additional field aggregations to add to the search query */
+  customAggregations?: ContensisQueryAggregations;
   /** An array of CustomWhereClause to include in the search query */
   customWhere?: CustomWhereClause;
   /** Add parameters to drive an additional set of featured results */

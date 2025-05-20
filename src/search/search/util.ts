@@ -56,7 +56,7 @@ export const timedSearch = async (
   )) as PagedList<Entry>;
   const end = now();
 
-  duration = end - start;
+  duration = Number((end - start).toFixed(2));
 
   return { duration, payload };
 };
@@ -154,8 +154,8 @@ export const toArray = (obj: string | null, seperator = ',') =>
   typeof obj === 'undefined' || obj === null
     ? obj
     : Array.isArray(obj)
-    ? (obj as string[])
-    : obj.split(seperator);
+      ? (obj as string[])
+      : obj.split(seperator);
 
 // assumes array elements are primitive types
 export const areArraysEqualSets = (a1: any[], a2: any[]) => {

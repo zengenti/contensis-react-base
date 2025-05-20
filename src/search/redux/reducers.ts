@@ -374,6 +374,24 @@ export default (config: SearchConfig) => {
         case SET_SEARCH_ENTRIES: {
           const thisContext = action.context || context;
           const currentFacet = state[thisContext][action.facet];
+
+          for (const [filterKey, filter] of Object.entries(
+            currentFacet.filters
+          )) {
+            const aggregation = (action.nextFacet as Partial<Facet>)
+              .aggregations?.[filterKey];
+
+            for (const filterItem of filter.items || []) {
+              if (!aggregation) delete filterItem.aggregate;
+              else {
+                const aggregate = aggregation[filterItem.key.toLowerCase()];
+                if (typeof aggregate === 'number')
+                  filterItem.aggregate = aggregate;
+                else delete filterItem.aggregate;
+              }
+            }
+          }
+
           state[thisContext][action.facet] = merge(
             currentFacet,
             action.nextFacet,

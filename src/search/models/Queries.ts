@@ -1,4 +1,5 @@
 import {
+  ContensisQueryAggregations,
   FieldLinkDepths,
   Operators,
   Query,
@@ -21,6 +22,7 @@ export type FilterExpression = {
 };
 
 export type SearchQueryOptions = {
+  aggregations: ContensisQueryAggregations;
   assetTypes: string[];
   contentTypeIds: string[];
   customWhere: any;
@@ -57,6 +59,7 @@ export type QueryParams = SearchQueryOptions & {
 
 export type SearchQuery = (
   {
+    aggregations,
     contentTypeIds,
     customWhere,
     dynamicOrderBy,
