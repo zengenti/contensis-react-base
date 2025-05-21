@@ -237,7 +237,7 @@ function* loadFilter(action: LoadFilterAction) {
     mapper,
   } = action;
   const { contentTypeId, customWhere, path } = filter as Filter;
-  const createStateFrom: LoadFiltersSearchResults = {
+  const createStateFrom = {
     type: LOAD_FILTERS_COMPLETE,
     context,
     error: undefined,
@@ -246,7 +246,7 @@ function* loadFilter(action: LoadFilterAction) {
     payload: {} as TaxonomyNode | PagedList<Entry>,
     selectedKeys,
     mapper,
-  };
+  } as LoadFiltersSearchResults;
 
   try {
     if (contentTypeId) {
@@ -285,6 +285,12 @@ function* loadFilter(action: LoadFilterAction) {
     createStateFrom.type = LOAD_FILTERS_ERROR;
     createStateFrom.error = error;
   }
+  createStateFrom.facet = (yield select(
+    getFacet,
+    facetKey,
+    context,
+    'js'
+  )) as Facet;
 
   const nextAction = mapSearchResultToState<
     LoadFiltersSearchResults,
@@ -318,7 +324,6 @@ function* ensureSearch(action: EnsureSearchAction) {
       } as ExecuteSearchAction);
     }
   } catch (error: any) {
-    // eslint-disable-next-line import/namespace
     log.error(...['Error running search saga:', error, error.stack]);
   }
 }
@@ -353,7 +358,7 @@ function* executeSearch(action: ExecuteSearchAction) {
           queryParams.projectId,
           queryParams.env
         )) as TimedSearchResponse;
-        // eslint-disable-next-line require-atomic-updates
+
         queryParams.excludeIds = getItemsFromResult(featuredResult)
           .map(fi => fi?.sys?.id)
           .filter(fi => typeof fi === 'string') as string[];
@@ -376,7 +381,7 @@ function* executeSearch(action: ExecuteSearchAction) {
         queryParams.pageIndex,
       prevResults: getResults(state, facet, action.context, 'js'),
       result,
-      state,
+      state: (yield select()) as AppState,
     };
 
     const nextAction = mapSearchResultToState<
@@ -385,7 +390,6 @@ function* executeSearch(action: ExecuteSearchAction) {
     >(createStateFrom, facetTemplate);
     yield put(nextAction);
   } catch (error: any) {
-    // eslint-disable-next-line import/namespace
     log.error(...['Error running search saga:', error, error.stack]);
   }
 }

@@ -2,6 +2,8 @@ import {
   default as mapSearchResultToState,
   MappingTemplate,
 } from 'jsonpath-mapper';
+import cloneDeep from 'lodash/cloneDeep';
+
 import { Context } from '../models/Enums';
 import { QueryParams } from '../models/Queries';
 import { Mappers } from '../models/Search';
@@ -10,12 +12,13 @@ import {
   SearchResults,
 } from '../models/SearchActions';
 import { AppState } from '../models/SearchState';
+import { getFilters } from '../redux/selectors';
 import {
   SET_SEARCH_ENTRIES,
   LOAD_FILTERS_COMPLETE,
   LOAD_FILTERS_ERROR,
 } from '../redux/types';
-import { getItemsFromResult } from '../search/util';
+import { convertKeyForAggregation, getItemsFromResult } from '../search/util';
 
 const mapEntriesToSearchResults = (
   {
@@ -59,6 +62,32 @@ export const facetTemplate = {
         getItemsFromResult(featuredResult),
         state
       ),
+    filters: ({ result, state, action }: SearchResults) => {
+      const aggregations =
+        'aggregations' in result.payload
+          ? result.payload.aggregations
+          : undefined;
+      if (!aggregations) return {};
+
+      // Handle aggregations client-side where the filter items have loaded before the results containing the aggregations
+      const filters = cloneDeep(
+        getFilters(state, action.facet, action.context, 'js')
+      );
+      for (const [filterKey, filter] of Object.entries(filters)) {
+        const aggregation = aggregations[convertKeyForAggregation(filterKey)];
+
+        for (const filterItem of filter.items || []) {
+          if (!aggregation) delete filterItem.aggregate;
+          else {
+            const aggregate = aggregation[filterItem.key.toLowerCase()];
+            if (typeof aggregate === 'number') filterItem.aggregate = aggregate;
+            else delete filterItem.aggregate;
+          }
+        }
+      }
+
+      return filters;
+    },
     queryDuration: 'result.duration',
     pagingInfo: {
       isLoading: () => false,
@@ -143,13 +172,34 @@ export const filterTemplate = {
   nextFilter: {
     isLoading: () => false,
     isError: ({ type }) => type === LOAD_FILTERS_ERROR,
-    items: ({ payload, selectedKeys, mapper }) => {
-      if (payload && (payload.items || payload.children)) {
-        const items = (payload.items || payload.children).map((item: any) => {
-          item.isSelected = selectedKeys?.includes(item?.sys?.id || item.key);
+    items: ({
+      payload,
+      selectedKeys,
+      mapper,
+      facet,
+      filterKey,
+    }: LoadFiltersSearchResults) => {
+      // Handle taxonomy filter items
+      if (payload && 'children' in payload) {
+        const items = payload.children?.map((item: any) => {
+          item.isSelected = selectedKeys?.includes(item.key);
           return item;
         });
-        return mapper(items);
+        return mapper?.(items || []) || [];
+      }
+
+      // Handle entries-based filter items
+      if (payload && 'items' in payload) {
+        // Handle aggregations from SSR where the results containing the aggregations have loaded before the filter items
+        const aggregation =
+          facet.aggregations?.[convertKeyForAggregation(filterKey)];
+        const items = payload.items.map((item: any) => {
+          item.isSelected = selectedKeys?.includes(item?.sys?.id);
+          const aggregate = aggregation?.[item?.sys?.id.toLowerCase()];
+          if (typeof aggregate === 'number') item.aggregate = aggregate;
+          return item;
+        });
+        return mapper?.(items);
       }
       return [];
     },

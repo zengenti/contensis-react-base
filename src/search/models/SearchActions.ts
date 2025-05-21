@@ -61,6 +61,7 @@ export type LoadFiltersSearchResults = Action & {
   selectedKeys: string[];
   context: Context;
   mapper: Mappers['filterItems'];
+  facet: Facet;
 };
 
 export type SearchResults = {

@@ -13,6 +13,7 @@ const base = {
   key: 'sys.id',
   path: 'sys.slug',
   isSelected: 'isSelected',
+  aggregate: 'aggregate',
 };
 
 const mapEntriesToFilterItems: FilterItemsMapper = entries => {

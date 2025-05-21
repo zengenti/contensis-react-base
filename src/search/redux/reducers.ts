@@ -275,17 +275,17 @@ export default (config: SearchConfig) => {
         case LOAD_FILTERS_ERROR:
         case LOAD_FILTERS_COMPLETE: {
           const { facetKey, filterKey, nextFilter } = action;
-          const filter = state[action.context][facetKey].filters[
+          const stateFilter = state[action.context][facetKey].filters[
             filterKey
           ] as Filter;
 
           if (
-            !(nextFilter.items && nextFilter.items.length > 0) &&
-            (filter.items || []).length >= nextFilter.items.length
+            !nextFilter.items?.length &&
+            (stateFilter.items || []).length >= nextFilter.items.length
           ) {
             // Preserve items already in state
             state[action.context][facetKey].filters[filterKey] = {
-              ...filter,
+              ...stateFilter,
               isLoading: false,
               isError: nextFilter.isError,
             };
@@ -293,7 +293,7 @@ export default (config: SearchConfig) => {
           }
 
           state[action.context][facetKey].filters[filterKey] = merge(
-            filter,
+            stateFilter,
             nextFilter,
             {
               arrayMerge: (source, inbound) => inbound,
@@ -375,22 +375,23 @@ export default (config: SearchConfig) => {
           const thisContext = action.context || context;
           const currentFacet = state[thisContext][action.facet];
 
-          for (const [filterKey, filter] of Object.entries(
-            currentFacet.filters
-          )) {
-            const aggregation = (action.nextFacet as Partial<Facet>)
-              .aggregations?.[filterKey];
+          // // Handle aggregations client-side where the filter items have loaded before the results containing the aggregations
+          // for (const [filterKey, filter] of Object.entries(
+          //   currentFacet.filters
+          // )) {
+          //   const aggregation = (action.nextFacet as Partial<Facet>)
+          //     .aggregations?.[convertKeyForAggregation(filterKey)];
 
-            for (const filterItem of filter.items || []) {
-              if (!aggregation) delete filterItem.aggregate;
-              else {
-                const aggregate = aggregation[filterItem.key.toLowerCase()];
-                if (typeof aggregate === 'number')
-                  filterItem.aggregate = aggregate;
-                else delete filterItem.aggregate;
-              }
-            }
-          }
+          //   for (const filterItem of filter.items || []) {
+          //     if (!aggregation) delete filterItem.aggregate;
+          //     else {
+          //       const aggregate = aggregation[filterItem.key.toLowerCase()];
+          //       if (typeof aggregate === 'number')
+          //         filterItem.aggregate = aggregate;
+          //       else delete filterItem.aggregate;
+          //     }
+          //   }
+          // }
 
           state[thisContext][action.facet] = merge(
             currentFacet,
