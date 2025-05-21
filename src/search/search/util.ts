@@ -36,6 +36,23 @@ export function fixFreeTextForElastic(s: string): string {
 
   return s;
 }
+/** `convertKeyForAggregation` and `parseKeyForAggregation` exists to prevent an
+ *  auto-generated aggregation using a reserved keyword because Elasticsearch has a list of
+ *  reserved keywords when it parses the response:
+ *  `'location' is one of the reserved aggregation keywords we use a heuristics based
+ *  response parser and using these reserved keywords could throw its heuristics off
+ *  course. We are working on a solution in Elasticsearch itself to make the response
+ *  parseable. For now these are all the reserved keywords: after_key, _as_string,
+ *  bg_count, bottom_right, bounds, buckets, count, doc_count, doc_count_error_upper_bound,
+ *  fields, from, top, type, from_as_string, hits, key, key_as_string, keys, location,
+ *  max_score, meta, min, min_length, score, sum_other_doc_count, to, to_as_string, top_left,
+ *  total, value, value_as_string, values, geometry, properties`
+ */
+export const convertKeyForAggregation = (key: string) => `sf_${key}`;
+export const parseKeyForAggregation = (key: string) =>
+  key.startsWith(`sf_`) ? key.slice(3) : key;
+export const convertFieldIdForAggregation = (fieldId: string) =>
+  fieldId.replaceAll('[]', '');
 
 export const timedSearch = async (
   query: Query,
