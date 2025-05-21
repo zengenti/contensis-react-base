@@ -66,7 +66,7 @@ export type Filter = {
   contentTypeId?: string;
   customWhere?: CustomWhereClause;
   defaultValue?: string;
-  fieldId?: string;
+  fieldId?: string | string[];
   isGrouped?: boolean;
   isSingleSelect?: boolean;
   isLoading: boolean;
