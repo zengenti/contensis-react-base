@@ -1,3 +1,4 @@
+import { QueryAggregations } from 'contensis-core-api';
 import mapJson from 'jsonpath-mapper';
 
 import {
@@ -24,7 +25,6 @@ import {
   SetSearchEntriesAction,
 } from '../models/SearchActions';
 import { WeightedSearchField } from '../models/Search';
-import { ContensisQueryAggregations } from 'contensis-core-api';
 import { convertFieldIdForAggregation, convertKeyForAggregation } from '../search/util';
 
 type QueryParamsMapperParams = {
@@ -38,7 +38,7 @@ const queryParamsTemplate = {
   aggregations: (root: QueryParamsMapperParams) => {
     const { context, facet, state } = root;
     const stateFilters = getFilters(state, facet, context, 'js');
-    const aggregations: ContensisQueryAggregations = {};
+    const aggregations: QueryAggregations = {};
     for (const [filterKey, filter] of Object.entries(stateFilters)) {
       if (filter.fieldId && !Array.isArray(filter.fieldId)) {
         aggregations[convertKeyForAggregation(filterKey)] = {

@@ -1,8 +1,8 @@
 import {
-  ContensisQueryAggregations,
   FieldLinkDepths,
   Operators,
   Query,
+  QueryAggregations,
   VersionStatus,
 } from 'contensis-core-api';
 import {
@@ -22,7 +22,7 @@ export type FilterExpression = {
 };
 
 export type SearchQueryOptions = {
-  aggregations: ContensisQueryAggregations;
+  aggregations: QueryAggregations;
   assetTypes: string[];
   contentTypeIds: string[];
   customWhere: any;
