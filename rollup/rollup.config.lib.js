@@ -10,7 +10,6 @@ import path from 'path';
 
 const packagejson = require('../package.json');
 const formsPackageJson = require('zengenti-forms-package/package.json');
-const searchPackageJson = require('zengenti-search-package/package.json');
 
 const projectRootDir = require('app-root-path').path;
 
@@ -47,7 +46,6 @@ export default {
   external: [
     ...Object.keys(packagejson.dependencies),
     ...Object.keys(formsPackageJson.dependencies),
-    ...Object.keys(searchPackageJson.dependencies),
     /^@babel*/,
     '@babel',
     'history',
@@ -95,8 +93,6 @@ export default {
         'src/**',
         'node_modules/zengenti-forms-package/**',
         '../../node_modules/zengenti-forms-package/**',
-        'node_modules/zengenti-search-package/**',
-        '../../node_modules/zengenti-search-package/**',
       ],
       extensions: ['.js', '.jsx', '.ts', '.tsx'],
       presets: [

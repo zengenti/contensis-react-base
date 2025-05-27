@@ -175,7 +175,7 @@ const webApp = (
             </ReduxProvider>
           </CookiesProvider>
         </ChunkExtractorManager>
-      );
+      ) as React.ReactElement;
 
       const {
         templateHTML = '',
@@ -222,7 +222,7 @@ const webApp = (
           .then(() => {
             const sheet = new ServerStyleSheet();
 
-            const html = renderToString(sheet.collectStyles(jsx));
+            const html = renderToString(sheet.collectStyles(jsx) as React.ReactElement);
 
             const helmet = Helmet.renderStatic();
             Helmet.rewind();

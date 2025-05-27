@@ -28,6 +28,6 @@
       { "transform": "typescript-transform-paths", "afterDeclarations": true }
     ]
   },
-  "include": ["./src/**/*", "./node_modules/zengenti-search-package/src/**/*"],
+  "include": ["./src/**/*"],
   "exclude": ["./node_modules/**/*"]
 }
