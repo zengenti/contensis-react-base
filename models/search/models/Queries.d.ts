@@ -1,4 +1,4 @@
-import { FieldLinkDepths, Operators, Query, VersionStatus } from 'contensis-core-api';
+import { FieldLinkDepths, Operators, Query, QueryAggregations, VersionStatus } from 'contensis-core-api';
 import { CustomWhereClause, FeaturedResults, WeightedSearchField } from './Search';
 export type FieldOperators = Exclude<keyof Operators, 'and' | 'or' | 'not'>;
 export type LogicOperators = 'and' | 'or' | 'not';
@@ -9,6 +9,7 @@ export type FilterExpression = {
     logicOperator: LogicOperators;
 };
 export type SearchQueryOptions = {
+    aggregations: QueryAggregations;
     assetTypes: string[];
     contentTypeIds: string[];
     customWhere: any;
@@ -43,5 +44,5 @@ export type QueryParams = SearchQueryOptions & {
         [key: string]: string;
     };
 };
-export type SearchQuery = ({ contentTypeIds, customWhere, dynamicOrderBy, excludeIds, featuredResults, fields, filters, fuzzySearch, languages, pageSize, pageIndex, omitDefaultSearchFields, orderBy, searchTerm, versionStatus, webpageTemplates, weightedSearchFields, }: SearchQueryOptions, isFeatured?: boolean) => Query;
+export type SearchQuery = ({ aggregations, contentTypeIds, customWhere, dynamicOrderBy, excludeIds, featuredResults, fields, filters, fuzzySearch, languages, pageSize, pageIndex, omitDefaultSearchFields, orderBy, searchTerm, versionStatus, webpageTemplates, weightedSearchFields, }: SearchQueryOptions, isFeatured?: boolean) => Query;
 export type FilterQuery = (contentTypeIds: string[], versionStatus: VersionStatus, customWhere?: CustomWhereClause) => Query;

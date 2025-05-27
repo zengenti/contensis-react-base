@@ -6,9 +6,9 @@ export declare const contentTypeIdExpression: (contentTypeIds: string[], webpage
 export declare const filterExpressions: (filters: FilterExpression[], isOptional?: boolean) => IExpression[];
 export declare const dataFormatExpression: (contentTypeIds: string[], dataFormat?: string) => ILogicalExpression[];
 export declare const featuredResultsExpression: ({ contentTypeId, fieldId, fieldValue, }?: {
-    contentTypeId?: string | string[] | undefined;
-    fieldId?: string | string[] | undefined;
-    fieldValue?: boolean | undefined;
+    contentTypeId?: string | string[];
+    fieldId?: string | string[];
+    fieldValue?: boolean;
 }) => IExpression[];
 export declare const languagesExpression: (languages: string[]) => IExpression[];
 export declare const includeInSearchExpressions: (webpageTemplates: string[], includeInSearchFields: string[]) => IExpression[];

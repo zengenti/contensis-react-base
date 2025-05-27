@@ -10,7 +10,7 @@ declare class CachedSearch {
     ssr?: SSRContext;
     constructor(ssr?: SSRContext);
     getClient(...args: Parameters<DeliveryApi['getClient']>): Client;
-    search(query: Query, linkDepth?: number, project?: string): Promise<import("contensis-core-api").PagedList<import("contensis-delivery-api").Entry>>;
+    search(query: Query, linkDepth?: number, project?: string): Promise<import("contensis-core-api").PagedSearchList<import("contensis-delivery-api").Entry>>;
     searchUsingPost(query: Query, linkDepth?: number, project?: string): any;
     get(id: string, linkDepth?: number, versionStatus?: VersionStatus, project?: string, fields?: string[]): Promise<import("contensis-delivery-api").Entry>;
     getContentType(id: string, project?: string): Promise<import("contensis-core-api").ContentType>;

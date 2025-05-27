@@ -1,21 +1,20 @@
 import React, { useMemo, useEffect } from 'react';
 import { connect, useDispatch, useSelector } from 'react-redux';
-import 'jsonpath-mapper';
+import { g as getCurrentFacet, a as getPageIndex$2, b as getCurrentTab$1, c as getFacet$1, d as getTabFacets$1, e as getFacetsTotalCount$1, f as getFacetTitles$1, h as getFeaturedResults$2, i as getRenderableFilters$2, j as getIsLoading$2, k as getPaging, l as getPageIsLoading$2, m as getResults, n as getSearchTerm$2, o as getSearchTotalCount$1, p as getSelectedFilters, q as getQueryParameter$2, r as getTabsAndFacets$1, s as getTotalCount$1, w as withMappers, t as clearFilters, u as updateCurrentFacet, v as updateCurrentTab, x as updatePageIndex, y as updatePageSize, z as updateSearchTerm, A as updateSelectedFilters, B as updateSortOrder, C as selectListing, D as mapStateToSearchUri, E as Context$1, F as selectFacets, G as triggerSearch, H as getFilters, U as UPDATE_SORT_ORDER, I as toArray, J as UPDATE_SELECTED_FILTERS, K as UPDATE_SEARCH_TERM, L as UPDATE_PAGE_SIZE, M as UPDATE_PAGE_INDEX, S as SET_SEARCH_FILTERS, N as SET_SEARCH_ENTRIES, O as SET_ROUTE_FILTERS, P as LOAD_FILTERS_COMPLETE, Q as LOAD_FILTERS_ERROR, R as LOAD_FILTERS, T as EXECUTE_SEARCH_ERROR, V as EXECUTE_SEARCH, W as CLEAR_FILTERS, X as APPLY_CONFIG } from './sagas-DHsYghyI.js';
+export { Y as actions, a1 as doSearch, $ as expressions, a0 as queries, a7 as routeParams, a3 as sagas, Z as selectors, a2 as setRouteFilters, a4 as triggerListingSsr, a5 as triggerMinilistSsr, a6 as triggerSearchSsr, _ as types } from './sagas-DHsYghyI.js';
 import { createSelector } from 'reselect';
-import merge from 'deepmerge';
-import 'query-string';
-import 'contensis-delivery-api';
-import { g as getCurrentFacet, a as getPageIndex$2, b as getCurrentTab$1, c as getFacet$1, d as getTabFacets$1, e as getFacetsTotalCount$1, f as getFacetTitles$1, h as getFeaturedResults$2, i as getRenderableFilters$2, j as getIsLoading$2, k as getPaging, l as getPageIsLoading$2, m as getResults, n as getSearchTerm$2, o as getSearchTotalCount$1, p as getSelectedFilters, q as getQueryParameter$2, r as getTabsAndFacets$1, s as getTotalCount$1, w as withMappers, t as clearFilters, u as updateCurrentFacet, v as updateCurrentTab, x as updatePageIndex, y as updatePageSize, z as updateSearchTerm, A as updateSelectedFilters, B as updateSortOrder, C as selectListing, D as mapStateToSearchUri, E as Context$1, F as selectFacets, G as triggerSearch, H as getFilters, U as UPDATE_SORT_ORDER, I as toArray, J as UPDATE_SELECTED_FILTERS, K as UPDATE_SEARCH_TERM, L as UPDATE_PAGE_SIZE, M as UPDATE_PAGE_INDEX, S as SET_SEARCH_FILTERS, N as SET_SEARCH_ENTRIES, O as SET_ROUTE_FILTERS, P as LOAD_FILTERS_COMPLETE, Q as LOAD_FILTERS_ERROR, R as LOAD_FILTERS, T as EXECUTE_SEARCH_ERROR, V as EXECUTE_SEARCH, W as CLEAR_FILTERS, X as APPLY_CONFIG } from './sagas-waBQR0Ek.js';
-export { Y as actions, a1 as doSearch, $ as expressions, a0 as queries, a7 as routeParams, a3 as sagas, Z as selectors, a2 as setRouteFilters, a4 as triggerListingSsr, a5 as triggerMinilistSsr, a6 as triggerSearchSsr, _ as types } from './sagas-waBQR0Ek.js';
 import { produce } from 'immer';
 import equals from 'deep-equal';
-import 'contensis-core-api';
+import merge from 'deepmerge';
 import 'loglevel';
 import '@redux-saga/core/effects';
+import 'contensis-delivery-api';
+import 'query-string';
+import 'jsonpath-mapper';
+import 'contensis-core-api';
+import './_commonjsHelpers-BFTU3MAI.js';
 
-/* eslint-disable import/default */
 /* eslint-disable react/display-name */
-/* eslint-disable @typescript-eslint/naming-convention */
 const toJS = WrappedComponent => wrappedComponentProps => {
   const KEY = 0;
   const VALUE = 1;
@@ -28,7 +27,6 @@ const toJS = WrappedComponent => wrappedComponentProps => {
   return /*#__PURE__*/React.createElement(WrappedComponent, propsJS);
 };
 
-// eslint-disable-next-line import/default
 const withSearch = mappers => SearchComponent => {
   const Wrapper = props => {
     return /*#__PURE__*/React.createElement(SearchComponent, props);
@@ -74,8 +72,6 @@ const withSearch = mappers => SearchComponent => {
   return connector(toJS(Wrapper));
 };
 
-/* eslint-disable @typescript-eslint/naming-convention */
-// eslint-disable-next-line import/default
 const withListing = mappers => ListingComponent => {
   const Wrapper = props => {
     return /*#__PURE__*/React.createElement(ListingComponent, props);
@@ -654,22 +650,23 @@ var reducers = config => {
       case LOAD_FILTERS_ERROR:
       case LOAD_FILTERS_COMPLETE:
         {
+          var _nextFilter$items;
           const {
             facetKey,
             filterKey,
             nextFilter
           } = action;
-          const filter = state[action.context][facetKey].filters[filterKey];
-          if (!(nextFilter.items && nextFilter.items.length > 0) && (filter.items || []).length >= nextFilter.items.length) {
+          const stateFilter = state[action.context][facetKey].filters[filterKey];
+          if (!((_nextFilter$items = nextFilter.items) !== null && _nextFilter$items !== void 0 && _nextFilter$items.length) && (stateFilter.items || []).length >= nextFilter.items.length) {
             // Preserve items already in state
             state[action.context][facetKey].filters[filterKey] = {
-              ...filter,
+              ...stateFilter,
               isLoading: false,
               isError: nextFilter.isError
             };
             return;
           }
-          state[action.context][facetKey].filters[filterKey] = merge(filter, nextFilter, {
+          state[action.context][facetKey].filters[filterKey] = merge(stateFilter, nextFilter, {
             arrayMerge: (source, inbound) => inbound
           });
           return;
@@ -732,6 +729,25 @@ var reducers = config => {
         {
           const thisContext = action.context || context;
           const currentFacet = state[thisContext][action.facet];
+
+          // // Handle aggregations client-side where the filter items have loaded before the results containing the aggregations
+          // for (const [filterKey, filter] of Object.entries(
+          //   currentFacet.filters
+          // )) {
+          //   const aggregation = (action.nextFacet as Partial<Facet>)
+          //     .aggregations?.[convertKeyForAggregation(filterKey)];
+
+          //   for (const filterItem of filter.items || []) {
+          //     if (!aggregation) delete filterItem.aggregate;
+          //     else {
+          //       const aggregate = aggregation[filterItem.key.toLowerCase()];
+          //       if (typeof aggregate === 'number')
+          //         filterItem.aggregate = aggregate;
+          //       else delete filterItem.aggregate;
+          //     }
+          //   }
+          // }
+
           state[thisContext][action.facet] = merge(currentFacet, action.nextFacet, {
             arrayMerge: (source, inbound) => inbound
           });

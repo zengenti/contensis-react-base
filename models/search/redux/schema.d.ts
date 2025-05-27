@@ -49,7 +49,7 @@ export declare const searchTab: {
     label: undefined;
     totalCount: string;
 };
-export declare const filtering: Omit<Filter, "customWhere" | "items"> & {
+export declare const filtering: Omit<Filter, "items" | "customWhere"> & {
     customWhere?: CustomWhereClause[] | undefined;
     items?: FilterItem[] | undefined;
 };

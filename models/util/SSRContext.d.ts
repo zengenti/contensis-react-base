@@ -16,7 +16,7 @@ export declare const useDeliveryApi: () => {
     cookies?: import("../user/util/CookieConstants").CookieObject | undefined;
     ssr?: import("./ContensisDeliveryApi").SSRContext | undefined;
     getClient(versionStatus?: import("contensis-core-api").VersionStatus | undefined, project?: string | undefined): import("contensis-delivery-api").Client;
-    search(query: import("contensis-core-api").Query, linkDepth?: number, project?: string | undefined): Promise<import("contensis-core-api").PagedList<import("contensis-delivery-api").Entry>>;
+    search(query: import("contensis-core-api").Query, linkDepth?: number, project?: string | undefined): Promise<import("contensis-core-api").PagedSearchList<import("contensis-delivery-api").Entry>>;
     searchUsingPost(query: import("contensis-core-api").Query, linkDepth?: number, project?: string): any;
     get(id: string, linkDepth?: number, versionStatus?: import("contensis-core-api").VersionStatus, project?: string | undefined, fields?: string[] | undefined): Promise<import("contensis-delivery-api").Entry>;
     getContentType(id: string, project?: string | undefined): Promise<import("contensis-core-api").ContentType>;

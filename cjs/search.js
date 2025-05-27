@@ -2,27 +2,26 @@
 
 var React = require('react');
 var reactRedux = require('react-redux');
-require('jsonpath-mapper');
+var sagas = require('./sagas-Cw3Nu9eE.js');
 var reselect = require('reselect');
-var merge = require('deepmerge');
-require('query-string');
-require('contensis-delivery-api');
-var sagas = require('./sagas-DFdRjqSX.js');
 var immer = require('immer');
 var equals = require('deep-equal');
-require('contensis-core-api');
+var merge = require('deepmerge');
 require('loglevel');
 require('@redux-saga/core/effects');
+require('contensis-delivery-api');
+require('query-string');
+require('jsonpath-mapper');
+require('contensis-core-api');
+require('./_commonjsHelpers-BJu3ubxk.js');
 
 function _interopDefault (e) { return e && e.__esModule ? e : { default: e }; }
 
 var React__default = /*#__PURE__*/_interopDefault(React);
-var merge__default = /*#__PURE__*/_interopDefault(merge);
 var equals__default = /*#__PURE__*/_interopDefault(equals);
+var merge__default = /*#__PURE__*/_interopDefault(merge);
 
-/* eslint-disable import/default */
 /* eslint-disable react/display-name */
-/* eslint-disable @typescript-eslint/naming-convention */
 const toJS = WrappedComponent => wrappedComponentProps => {
   const KEY = 0;
   const VALUE = 1;
@@ -35,7 +34,6 @@ const toJS = WrappedComponent => wrappedComponentProps => {
   return /*#__PURE__*/React__default.default.createElement(WrappedComponent, propsJS);
 };
 
-// eslint-disable-next-line import/default
 const withSearch = mappers => SearchComponent => {
   const Wrapper = props => {
     return /*#__PURE__*/React__default.default.createElement(SearchComponent, props);
@@ -81,8 +79,6 @@ const withSearch = mappers => SearchComponent => {
   return connector(toJS(Wrapper));
 };
 
-/* eslint-disable @typescript-eslint/naming-convention */
-// eslint-disable-next-line import/default
 const withListing = mappers => ListingComponent => {
   const Wrapper = props => {
     return /*#__PURE__*/React__default.default.createElement(ListingComponent, props);
@@ -661,22 +657,23 @@ var reducers = config => {
       case sagas.LOAD_FILTERS_ERROR:
       case sagas.LOAD_FILTERS_COMPLETE:
         {
+          var _nextFilter$items;
           const {
             facetKey,
             filterKey,
             nextFilter
           } = action;
-          const filter = state[action.context][facetKey].filters[filterKey];
-          if (!(nextFilter.items && nextFilter.items.length > 0) && (filter.items || []).length >= nextFilter.items.length) {
+          const stateFilter = state[action.context][facetKey].filters[filterKey];
+          if (!((_nextFilter$items = nextFilter.items) !== null && _nextFilter$items !== void 0 && _nextFilter$items.length) && (stateFilter.items || []).length >= nextFilter.items.length) {
             // Preserve items already in state
             state[action.context][facetKey].filters[filterKey] = {
-              ...filter,
+              ...stateFilter,
               isLoading: false,
               isError: nextFilter.isError
             };
             return;
           }
-          state[action.context][facetKey].filters[filterKey] = merge__default.default(filter, nextFilter, {
+          state[action.context][facetKey].filters[filterKey] = merge__default.default(stateFilter, nextFilter, {
             arrayMerge: (source, inbound) => inbound
           });
           return;
@@ -739,6 +736,25 @@ var reducers = config => {
         {
           const thisContext = action.context || context;
           const currentFacet = state[thisContext][action.facet];
+
+          // // Handle aggregations client-side where the filter items have loaded before the results containing the aggregations
+          // for (const [filterKey, filter] of Object.entries(
+          //   currentFacet.filters
+          // )) {
+          //   const aggregation = (action.nextFacet as Partial<Facet>)
+          //     .aggregations?.[convertKeyForAggregation(filterKey)];
+
+          //   for (const filterItem of filter.items || []) {
+          //     if (!aggregation) delete filterItem.aggregate;
+          //     else {
+          //       const aggregate = aggregation[filterItem.key.toLowerCase()];
+          //       if (typeof aggregate === 'number')
+          //         filterItem.aggregate = aggregate;
+          //       else delete filterItem.aggregate;
+          //     }
+          //   }
+          // }
+
           state[thisContext][action.facet] = merge__default.default(currentFacet, action.nextFacet, {
             arrayMerge: (source, inbound) => inbound
           });

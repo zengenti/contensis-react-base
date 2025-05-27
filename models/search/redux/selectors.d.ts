@@ -40,10 +40,10 @@ export declare const getTotalCount: (state: AppState, current?: string, context?
 export declare const getSearchTerm: (state: AppState) => string;
 export declare const getSearchTabs: (state: AppState, returnType?: StateType) => Tab[];
 export declare const getQueryParams: (state: AppState, current?: string, context?: Context) => Record<string, any>;
-export declare const getQueryParameter: <K extends keyof SearchQueryParams, K2 extends "internalPaging" | "linkDepth" | "loadMorePaging" | keyof import("../models/Queries").SearchQueryOptions | "env" | "internalPageIndex" | "pagesLoaded" | "prevPageIndex" | "projectId" | "selectedFilters">({ state, facet, context, }: {
+export declare const getQueryParameter: <K extends keyof SearchQueryParams, K2 extends "projectId" | "linkDepth" | "internalPaging" | "loadMorePaging" | keyof import("../models/Queries").SearchQueryOptions | "env" | "internalPageIndex" | "pagesLoaded" | "prevPageIndex" | "selectedFilters">({ state, facet, context, }: {
     state: AppState;
-    facet?: string | undefined;
-    context?: Context | undefined;
+    facet?: string;
+    context?: Context;
 }, key: K | K2, ifnull?: any) => SearchQueryParams[K] | QueryParams2[K2];
 export declare const getCustomApi: (state: AppState, current: string, context?: Context, returnType?: StateType) => CustomApi;
 export declare const getCustomEnv: (state: AppState, current: string, context?: Context) => any;
@@ -76,7 +76,7 @@ export declare const selectFacets: {
     getQueryParams: (state: AppState, facet: string) => Record<string, any>;
     getQueryParameter: ({ state, facet }: {
         state: AppState;
-        facet?: string | undefined;
+        facet?: string;
     }, key: keyof SearchQueryParams | keyof QueryParams2, ifnull: any) => any;
     getRenderableFilters: (state: AppState, facet?: string, context?: Context) => Filters;
     getResults: (state: AppState, current?: string, context?: Context, returnType?: StateType) => any[];
@@ -105,7 +105,7 @@ export declare const selectListing: {
     getQueryParams: (state: AppState, listing?: string) => Record<string, any>;
     getQueryParameter: ({ state, facet }: {
         state: AppState;
-        facet?: string | undefined;
+        facet?: string;
     }, key: keyof SearchQueryParams | keyof QueryParams2, ifnull: any) => any;
     getRenderableFilters: (state: AppState, listing?: string) => Filters;
     getResults: (state: AppState, listing?: string) => any[];
