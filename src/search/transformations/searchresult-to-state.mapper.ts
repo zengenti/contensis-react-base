@@ -11,7 +11,7 @@ import {
   LoadFiltersSearchResults,
   SearchResults,
 } from '../models/SearchActions';
-import { AppState } from '../models/SearchState';
+import { AppState, Filters } from '../models/SearchState';
 import { getFilters } from '../redux/selectors';
 import {
   SET_SEARCH_ENTRIES,
@@ -72,7 +72,7 @@ export const facetTemplate = {
       // Handle aggregations client-side where the filter items have loaded before the results containing the aggregations
       const filters = cloneDeep(
         getFilters(state, action.facet, action.context, 'js')
-      );
+      ) as Filters;
       for (const [filterKey, filter] of Object.entries(filters)) {
         const aggregation = aggregations[convertKeyForAggregation(filterKey)];
 
