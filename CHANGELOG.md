@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.4.0](https://github.com/zengenti/contensis-react-base/compare/v3.3.1...v3.4.0) (2025-05-30)
+
+
+### Features
+
+* Allow manual overriding of versionStatus via queryParams in search config, regardless of live/preview environment ([f64f59e](https://github.com/zengenti/contensis-react-base/commit/f64f59e8971930c677c5eb58acce0c4411390316))
+* leverage search aggregations in Contensis 17, providing a new `aggregate` attribute next to each filter item and support for `customAggregations` in search config ([#19](https://github.com/zengenti/contensis-react-base/issues/19)) ([ec3cb28](https://github.com/zengenti/contensis-react-base/commit/ec3cb28767f049ac9266f3402fc79d3947677065))
+
 ## [3.3.1](https://github.com/zengenti/contensis-react-base/compare/v3.3.0...v3.3.1) (2025-03-05)
 
 
