@@ -2,7 +2,7 @@
 
 var React = require('react');
 var reactRedux = require('react-redux');
-var sagas = require('./sagas-Cw3Nu9eE.js');
+var sagas = require('./sagas-Ekfrk7xA.js');
 var reselect = require('reselect');
 var immer = require('immer');
 var equals = require('deep-equal');
