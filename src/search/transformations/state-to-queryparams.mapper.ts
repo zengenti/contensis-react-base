@@ -25,7 +25,10 @@ import {
   SetSearchEntriesAction,
 } from '../models/SearchActions';
 import { WeightedSearchField } from '../models/Search';
-import { convertFieldIdForAggregation, convertKeyForAggregation } from '../search/util';
+import {
+  convertFieldIdForAggregation,
+  convertKeyForAggregation,
+} from '../search/util';
 
 type QueryParamsMapperParams = {
   context: Context;
@@ -142,8 +145,10 @@ const queryParamsTemplate = {
         ([key, f]) => [key, f?.join(',')]
       )
     ),
-  versionStatus: ({ state }: QueryParamsMapperParams) =>
-    selectVersionStatus(state),
+  versionStatus: (root: QueryParamsMapperParams) => {
+    const versionStatusOverride = getQueryParameter(root, 'versionStatus');
+    return versionStatusOverride || selectVersionStatus(root.state);
+  },
   weightedSearchFields: (root: QueryParamsMapperParams) => {
     const wsf = getQueryParameter(
       root,

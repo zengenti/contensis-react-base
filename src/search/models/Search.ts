@@ -1,7 +1,4 @@
-import {
-  FieldLinkDepths,
-  QueryAggregations,
-} from 'contensis-core-api';
+import { FieldLinkDepths, QueryAggregations } from 'contensis-core-api';
 import { Entry } from 'contensis-delivery-api/lib/models';
 import { MappingTemplate } from 'jsonpath-mapper';
 import { Context } from './Enums';
@@ -137,6 +134,8 @@ export type SearchQueryParams = {
   pageSize?: number;
   /** Allow a configured minilist to read the search.term set in state (defaults to false) */
   useSearchTerm?: boolean;
+  /** Allow overriding of versionStatus, irrespective of environment */
+  versionStatus?: 'latest' | 'published';
   /** An array of webpageTemplates to search over (sys.dataFormat == 'webpage'); Prefix an entry with a "!" to exclude that webpage template from the search */
   webpageTemplates?: string[];
   /** An array of WeightedSearchField to include in the search query */
