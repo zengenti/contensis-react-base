@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { a as loginUser, b as logoutUser, r as registerUser } from './ChangePassword.container-76fd5e9b.js';
 export { C as ChangePassword, F as ForgotPasswordContainer, d as LoginContainer, L as LoginHelper, R as RegistrationContainer, c as actions, h as handleRequiresLoginSaga, k as refreshSecurityToken, j as useChangePassword, i as useForgotPassword, u as useLogin, e as useRegistration } from './ChangePassword.container-76fd5e9b.js';
 import React from 'react';
@@ -8,11 +9,22 @@ export { y as selectors } from './ToJs-df57f31d.js';
 export { o as initialUserState, U as reducer, t as types } from './reducers-aa8cef1e.js';
 import '@redux-saga/core/effects';
 import './selectors-691caf02.js';
+=======
+import { l as loginUser, a as logoutUser, r as registerUser } from './ChangePassword.container-Bcpef423.js';
+export { C as ChangePassword, F as ForgotPasswordContainer, c as LoginContainer, L as LoginHelper, R as RegistrationContainer, b as actions, h as handleRequiresLoginSaga, g as refreshSecurityToken, f as useChangePassword, e as useForgotPassword, u as useLogin, d as useRegistration } from './ChangePassword.container-Bcpef423.js';
+import React from 'react';
+import { useCookies } from 'react-cookie';
+import { connect } from 'react-redux';
+import { t as toJS, s as selectUserErrorMessage, a as selectUserIsAuthenticated, b as selectUserIsAuthenticationError, c as selectUserIsError, d as selectUserIsLoading, e as selectUser, f as selectUserRegistrationError, g as selectUserRegistrationIsLoading, h as selectUserRegistrationIsSuccess, i as selectUserRegistration } from './ToJs-B4MH53fx.js';
+export { j as selectors } from './ToJs-B4MH53fx.js';
+import { C as CookieHelper } from './CookieHelper.class-W_NNNJKT.js';
+export { i as initialUserState, U as reducer, t as types } from './selectors-BRzliwbK.js';
+import '@redux-saga/core/effects';
+>>>>>>> master
 import 'jsonpath-mapper';
-import 'query-string';
 import 'await-to-js';
-import './CookieConstants-3d3b6531.js';
 import 'immer';
+import 'query-string';
 
 const getDisplayName$1 = WrappedComponent => {
   return WrappedComponent.displayName || WrappedComponent.name || 'Component';

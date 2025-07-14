@@ -4,14 +4,13 @@ import { Config } from 'contensis-delivery-api/lib/models';
 import { parse } from 'query-string';
 import { setSurrogateKeys } from '~/routing/redux/actions';
 import { reduxStore } from '~/redux/store/store';
-import {
-  selectCurrentHostname,
-  selectCurrentPath,
-  selectCurrentSearch,
-} from '~/routing/redux/selectors';
+
 import { CookieObject, findLoginCookies } from '~/user/util/CookieConstants';
 import { Request } from 'express';
 import { IncomingHttpHeaders } from 'http';
+import { SSRContext as SSRContextType } from '~/models';
+
+export type SSRContext = Omit<SSRContextType, 'api'>;
 
 const mapCookieHeader = (cookies: CookieObject | string) =>
   typeof cookies === 'object'
@@ -20,41 +19,69 @@ const mapCookieHeader = (cookies: CookieObject | string) =>
         .join('; ')
     : cookies;
 
-const getSsrReferer = () => {
-  if (typeof window === 'undefined') {
-    const state = reduxStore.getState();
-    const referer = `${selectCurrentHostname(state)}${selectCurrentPath(
-      state
-    )}${selectCurrentSearch(state)}`;
+const getSsrReferer = ({ request }: SSRContext) => {
+  if (request) {
+    try {
+      const url = new URL(
+        request.url,
+        `${request.protocol || `http`}://${request.headers.host}`
+      );
+      return url.href;
+    } catch (ex) {
+      console.error(
+        `getSsrReferer cannot parse url ${request.url} and host ${request.headers.host}`
+      );
 
-    return referer;
+      return request.url;
+    }
   }
+
+  // if (typeof window === 'undefined') {
+  //   const state = reduxStore.getState();
+  //   const referer = `${selectCurrentHostname(state)}${selectCurrentPath(
+  //     state
+  //   )}${selectCurrentSearch(state)}`;
+
+  //   return referer;
+  // }
   return '';
 };
 
-const storeSurrogateKeys = (response: any) => {
-  const keys = response.headers.get
-    ? response.headers.get('surrogate-key')
-    : response.headers.map['surrogate-key'];
-  if (keys) reduxStore?.dispatch(setSurrogateKeys(keys, response.url));
+/**
+ * Store the surrogate-key header contents in redux state to output in SSR response
+ */
+const storeSurrogateKeys = (ssr?: SSRContext) => (response: any) => {
+  let keys = '';
+  if (response.status === 200) {
+    keys = response.headers.get
+      ? response.headers.get('surrogate-key')
+      : response.headers.map['surrogate-key'];
+    if (!keys) console.info(`[storeSurrogateKeys] No keys in ${response.url}`);
+  }
+  // Using imported reduxStore in SSR is unreliable during high
+  // concurrent loads and exists here as a best effort fallback
+  // in case the SSRContext is not provided
+  const put = ssr?.dispatch || reduxStore?.dispatch;
+  put?.(setSurrogateKeys(keys, response.url, response.status));
 };
 
-export const getClientConfig = (project?: string, cookies?: CookieObject) => {
-  const config: Config = DELIVERY_API_CONFIG; /* global DELIVERY_API_CONFIG */
-  config.responseHandler = {};
+/**
+ * Create a new Config object to create a DeliveryAPI Client
+ */
+const deliveryApiConfig = (ssr?: SSRContext) => {
+  const config: Config = {
+    ...DELIVERY_API_CONFIG /* global DELIVERY_API_CONFIG */,
+  };
 
-  if (project) {
-    config.projectId = project;
-  }
-
-  // we only want the surrogate key header in a server context
+  // Add SSR headers and handlers
   if (typeof window === 'undefined') {
-    config.defaultHeaders = Object.assign(config.defaultHeaders || {}, {
-      referer: getSsrReferer(),
-      'x-require-surrogate-key': true,
-      'x-crb-ssr': true, // add this for support tracing
-    });
-    config.responseHandler[200] = storeSurrogateKeys;
+    config.defaultHeaders = {
+      'x-require-surrogate-key': 'true', // request surrogate-key response header
+      'x-crb-ssr': 'true', // add this for support tracing
+    };
+    if (ssr) config.defaultHeaders.referer = getSsrReferer(ssr); // add this for support tracing
+
+    config.responseHandler = { [200]: storeSurrogateKeys(ssr) }; // for handling page cache invalidation
   }
 
   if (
@@ -63,11 +90,20 @@ export const getClientConfig = (project?: string, cookies?: CookieObject) => {
   ) {
     // ensure a relative url is used to bypass the need for CORS (separate OPTIONS calls)
     config.rootUrl = '';
-    config.responseHandler[404] = () => null;
+    config.responseHandler = { [404]: () => null };
+  }
+  return config;
+};
+
+export const getClientConfig = (project?: string, ssr?: SSRContext) => {
+  const config = deliveryApiConfig(ssr);
+
+  if (project) {
+    config.projectId = project;
   }
 
-  if (cookies) {
-    const cookieHeader = mapCookieHeader(findLoginCookies(cookies));
+  if (ssr?.cookies) {
+    const cookieHeader = mapCookieHeader(findLoginCookies(ssr.cookies));
     if (cookieHeader) {
       config.defaultHeaders = Object.assign(config.defaultHeaders || {}, {
         Cookie: cookieHeader,
@@ -87,9 +123,11 @@ declare let window: Window &
 
 export class DeliveryApi {
   cookies?: CookieObject;
+  ssr?: SSRContext;
 
-  constructor(cookies?: CookieObject) {
-    this.cookies = cookies;
+  constructor(ssr?: SSRContext) {
+    this.ssr = ssr;
+    this.cookies = ssr?.cookies.raw;
   }
 
   getClientSideVersionStatus = () => {
@@ -141,18 +179,18 @@ export class DeliveryApi {
   };
 
   search = (query: Query, linkDepth = 0, project?: string) => {
-    const client = Client.create(getClientConfig(project, this.cookies));
+    const client = Client.create(getClientConfig(project, this.ssr));
     return client.entries.search(
       query,
       typeof linkDepth !== 'undefined' ? linkDepth : 1
     );
   };
 
-  getClient = (versionStatus: VersionStatus = 'published', project) => {
-    const baseConfig = getClientConfig(project, this.cookies);
-    baseConfig.versionStatus = versionStatus;
-    return Client.create(baseConfig);
-  };
+  getClient = (versionStatus: VersionStatus = 'published', project?: string) =>
+    Client.create({
+      ...getClientConfig(project, this.ssr),
+      versionStatus,
+    });
 
   getEntry = (
     id: string,
@@ -160,17 +198,17 @@ export class DeliveryApi {
     versionStatus: VersionStatus = 'published',
     project?: string
   ) => {
-    const baseConfig = getClientConfig(project, this.cookies);
-    baseConfig.versionStatus = versionStatus;
-    const client = Client.create(baseConfig);
-    // return client.entries.get(id, linkDepth);
+    const client = Client.create({
+      ...getClientConfig(project, this.ssr),
+      versionStatus,
+    });
     return client.entries.get({ id, linkDepth });
   };
 }
 
 export const deliveryApi = new DeliveryApi();
 
-export const deliveryApiWithCookies = (cookies?: CookieObject) =>
-  new DeliveryApi(cookies);
+export const deliveryApiWithCookies = (ssr?: SSRContext) =>
+  new DeliveryApi(ssr);
 
 export * from './CachedDeliveryApi';

@@ -6,6 +6,7 @@ import { unstable_HistoryRouter } from 'react-router-dom';
 import { loadableReady } from '@loadable/component';
 import { parse } from 'query-string';
 import { CookiesProvider } from 'react-cookie';
+<<<<<<< HEAD
 import { c as createStore, s as selectVersionStatus } from './version-3d9911e2.js';
 import { s as setVersionStatus } from './version-9f29becb.js';
 import { b as browserHistory, r as rootSaga, p as pickProject } from './App-83107d7e.js';
@@ -18,17 +19,41 @@ import 'redux-saga';
 import 'redux-injectors';
 import 'immer';
 import './reducers-aa8cef1e.js';
+=======
+import { s as selectVersionStatus } from './version-78jjDnHU.js';
+import { s as setVersionStatus } from './version-BnnERhzW.js';
+import { b as browserHistory, r as rootSaga, p as pickProject } from './App-BPsH6nHc.js';
+export { A as ReactApp } from './App-BPsH6nHc.js';
+import { c as createStore } from './store-f0WxNWUu.js';
+import { s as setCurrentProject } from './selectors-BRzliwbK.js';
+import { d as deliveryApi, S as SSRContextProvider } from './SSRContext-3TvaCDn0.js';
+>>>>>>> master
 import '@redux-saga/core/effects';
 import 'history';
 import 'loglevel';
 import 'await-to-js';
+<<<<<<< HEAD
 import './ChangePassword.container-76fd5e9b.js';
 import './ToJs-df57f31d.js';
+=======
+import './ChangePassword.container-Bcpef423.js';
+import './ToJs-B4MH53fx.js';
+>>>>>>> master
 import 'jsonpath-mapper';
-import './CookieConstants-3d3b6531.js';
+import './CookieHelper.class-W_NNNJKT.js';
 import 'contensis-delivery-api';
+<<<<<<< HEAD
 import './RouteLoader-29fd689a.js';
+=======
+import './RouteLoader-CipkGOgr.js';
+import 'react-router-config';
+>>>>>>> master
 import 'reselect';
+import 'redux';
+import 'redux-thunk';
+import 'redux-saga';
+import 'redux-injectors';
+import 'immer';
 
 var hydrateRoot;
 var createRoot;
@@ -73,10 +98,14 @@ class ClientApp {
         store: store
       }, /*#__PURE__*/React.createElement(unstable_HistoryRouter, {
         history: browserHistory
-      }, /*#__PURE__*/React.createElement(ReactApp, {
+      }, /*#__PURE__*/React.createElement(SSRContextProvider, null, /*#__PURE__*/React.createElement(ReactApp, {
         routes: routes,
         withEvents: withEvents
+<<<<<<< HEAD
       }))));
+=======
+      }))))));
+>>>>>>> master
       return ClientJsx;
     };
 

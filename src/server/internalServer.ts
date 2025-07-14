@@ -10,7 +10,7 @@ import ServeStaticAssets from './features/static-assets';
 import DisplayStartupConfiguration from './util/displayStartupConfiguration';
 import ConfigureWebApp from './webApp';
 
-import { ServerConfig } from '~/config';
+import { ServerConfig } from '~/models';
 
 declare let global: typeof globalThis & {
   DISABLE_SSR_REDUX: boolean | undefined;

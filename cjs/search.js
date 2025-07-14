@@ -1,28 +1,35 @@
 'use strict';
 
-Object.defineProperty(exports, '__esModule', { value: true });
-
 var React = require('react');
 var reactRedux = require('react-redux');
+<<<<<<< HEAD
 var sagas = require('./sagas-570f23ba.js');
 require('jsonpath-mapper');
 var reselect = require('reselect');
 var merge = require('deepmerge');
 require('query-string');
+=======
+var sagas = require('./sagas-Ekfrk7xA.js');
+var reselect = require('reselect');
+>>>>>>> master
 var immer = require('immer');
 var equals = require('deep-equal');
-require('contensis-core-api');
+var merge = require('deepmerge');
 require('loglevel');
 require('@redux-saga/core/effects');
 require('contensis-delivery-api');
+require('query-string');
+require('jsonpath-mapper');
+require('contensis-core-api');
+require('./_commonjsHelpers-BJu3ubxk.js');
 
-function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+function _interopDefault (e) { return e && e.__esModule ? e : { default: e }; }
 
-var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
-var merge__default = /*#__PURE__*/_interopDefaultLegacy(merge);
-var equals__default = /*#__PURE__*/_interopDefaultLegacy(equals);
+var React__default = /*#__PURE__*/_interopDefault(React);
+var equals__default = /*#__PURE__*/_interopDefault(equals);
+var merge__default = /*#__PURE__*/_interopDefault(merge);
 
-/* eslint-disable import/default */
+/* eslint-disable react/display-name */
 const toJS = WrappedComponent => wrappedComponentProps => {
   const KEY = 0;
   const VALUE = 1;
@@ -32,14 +39,17 @@ const toJS = WrappedComponent => wrappedComponentProps => {
     newProps[propKey] = propValue && typeof propValue === 'object' && 'toJS' in propValue ? propValue.toJS() : propValue;
     return newProps;
   }, {});
-  return /*#__PURE__*/React__default["default"].createElement(WrappedComponent, propsJS);
+  return /*#__PURE__*/React__default.default.createElement(WrappedComponent, propsJS);
 };
 
+<<<<<<< HEAD
 // eslint-disable-next-line import/default
 
+=======
+>>>>>>> master
 const withSearch = mappers => SearchComponent => {
   const Wrapper = props => {
-    return /*#__PURE__*/React__default["default"].createElement(SearchComponent, props);
+    return /*#__PURE__*/React__default.default.createElement(SearchComponent, props);
   };
 
   Wrapper.displayName = `withSearch(${SearchComponent.displayName || SearchComponent.name})`;
@@ -85,11 +95,14 @@ const withSearch = mappers => SearchComponent => {
   return connector(toJS(Wrapper));
 };
 
+<<<<<<< HEAD
 /* eslint-disable @typescript-eslint/naming-convention */
 
+=======
+>>>>>>> master
 const withListing = mappers => ListingComponent => {
   const Wrapper = props => {
-    return /*#__PURE__*/React__default["default"].createElement(ListingComponent, props);
+    return /*#__PURE__*/React__default.default.createElement(ListingComponent, props);
   };
 
   Wrapper.displayName = `withListing(${ListingComponent.displayName || ListingComponent.name})`;
@@ -474,12 +487,12 @@ const initialState = searchState;
 var schema = /*#__PURE__*/Object.freeze({
   __proto__: null,
   entries: entries,
+  filterItem: filterItem,
+  filtering: filtering,
+  initialState: initialState,
   pagingInfo: pagingInfo,
   searchFacet: searchFacet,
-  searchTab: searchTab,
-  filtering: filtering,
-  filterItem: filterItem,
-  initialState: initialState
+  searchTab: searchTab
 });
 
 const addConfigToState = (state, action) => {
@@ -511,7 +524,7 @@ const generateSearchFacets = (context, config) => {
 
     if (Object.keys(thisConfig).length > 0) {
       Object.entries(thisConfig).map(([facetName, facet]) => {
-        const newFacet = merge__default["default"](searchFacet, facet);
+        const newFacet = merge__default.default(searchFacet, facet);
         if (!('isDisabled' in facet) || facet.isDisabled !== true) facets[facetName] = newFacet;
       });
     }
@@ -598,8 +611,12 @@ const resetFacet = facet => {
   facet.queryDuration = 0;
   return facet;
 };
+<<<<<<< HEAD
 
 var reducers = (config => {
+=======
+var reducers = config => {
+>>>>>>> master
   // Add facets from SearchConfig to initialState
   const initState = { ...initialState,
     tabs: config.tabs,
@@ -678,23 +695,36 @@ var reducers = (config => {
       case sagas.LOAD_FILTERS_ERROR:
       case sagas.LOAD_FILTERS_COMPLETE:
         {
+          var _nextFilter$items;
           const {
             facetKey,
             filterKey,
             nextFilter
           } = action;
+<<<<<<< HEAD
           const filter = state[action.context][facetKey].filters[filterKey];
 
           if (!(nextFilter.items && nextFilter.items.length > 0) && (filter.items || []).length >= nextFilter.items.length) {
             // Preserve items already in state
             state[action.context][facetKey].filters[filterKey] = { ...filter,
+=======
+          const stateFilter = state[action.context][facetKey].filters[filterKey];
+          if (!((_nextFilter$items = nextFilter.items) !== null && _nextFilter$items !== void 0 && _nextFilter$items.length) && (stateFilter.items || []).length >= nextFilter.items.length) {
+            // Preserve items already in state
+            state[action.context][facetKey].filters[filterKey] = {
+              ...stateFilter,
+>>>>>>> master
               isLoading: false,
               isError: nextFilter.isError
             };
             return;
           }
+<<<<<<< HEAD
 
           state[action.context][facetKey].filters[filterKey] = merge__default["default"](filter, nextFilter, {
+=======
+          state[action.context][facetKey].filters[filterKey] = merge__default.default(stateFilter, nextFilter, {
+>>>>>>> master
             arrayMerge: (source, inbound) => inbound
           });
           return;
@@ -732,7 +762,7 @@ var reducers = (config => {
               context,
               isCurrentFacet
             }, state);
-            resetCurrentFacet = state.config.isLoaded === true && !equals__default["default"](nextFilters, stateFacet.filters);
+            resetCurrentFacet = state.config.isLoaded === true && !equals__default.default(nextFilters, stateFacet.filters);
             stateFacet = resetCurrentFacet ? resetFacet(stateFacet) : stateFacet;
             stateFacet.filters = nextFilters;
             stateFacet.queryParams.dynamicOrderBy = sagas.toArray(orderBy) || [];
@@ -757,7 +787,26 @@ var reducers = (config => {
         {
           const thisContext = action.context || context;
           const currentFacet = state[thisContext][action.facet];
-          state[thisContext][action.facet] = merge__default["default"](currentFacet, action.nextFacet, {
+
+          // // Handle aggregations client-side where the filter items have loaded before the results containing the aggregations
+          // for (const [filterKey, filter] of Object.entries(
+          //   currentFacet.filters
+          // )) {
+          //   const aggregation = (action.nextFacet as Partial<Facet>)
+          //     .aggregations?.[convertKeyForAggregation(filterKey)];
+
+          //   for (const filterItem of filter.items || []) {
+          //     if (!aggregation) delete filterItem.aggregate;
+          //     else {
+          //       const aggregate = aggregation[filterItem.key.toLowerCase()];
+          //       if (typeof aggregate === 'number')
+          //         filterItem.aggregate = aggregate;
+          //       else delete filterItem.aggregate;
+          //     }
+          //   }
+          // }
+
+          state[thisContext][action.facet] = merge__default.default(currentFacet, action.nextFacet, {
             arrayMerge: (source, inbound) => inbound
           });
           return;
@@ -775,7 +824,7 @@ var reducers = (config => {
           const filters = generateFiltersState({ ...action,
             isCurrentFacet: true
           }, state);
-          const term = action === null || action === void 0 ? void 0 : (_action$params = action.params) === null || _action$params === void 0 ? void 0 : _action$params.term;
+          const term = action === null || action === void 0 || (_action$params = action.params) === null || _action$params === void 0 ? void 0 : _action$params.term;
           const useSearchTerm = state[action.context || sagas.Context.minilist][action.facet].queryParams.useSearchTerm || false;
           state[action.context || sagas.Context.minilist][action.facet].filters = filters;
           state[action.context || sagas.Context.minilist][action.facet].queryParams.excludeIds = action.excludeIds;
@@ -832,7 +881,7 @@ var reducers = (config => {
           state[context][current] = resetFacet(state[context][current]);
 
           if (isUnknownItem && (currentItems === null || currentItems === void 0 ? void 0 : currentItems.findIndex(item => (item === null || item === void 0 ? void 0 : item.key) === key)) === -1) {
-            currentItems === null || currentItems === void 0 ? void 0 : currentItems.push({
+            currentItems === null || currentItems === void 0 || currentItems.push({
               key,
               isSelected: false
             });
@@ -869,7 +918,7 @@ var reducers = (config => {
         return;
     }
   }, initState);
-});
+};
 
 const Context = {
   facets: 'facets',

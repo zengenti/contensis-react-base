@@ -17,12 +17,13 @@ import { setCurrentProject } from '~/routing/redux/actions';
 
 import { deliveryApi } from '~/util/ContensisDeliveryApi';
 import pickProject from '~/util/pickProject';
+import { SSRContextProvider } from '~/util/SSRContext';
 
-import { AppConfig } from '~/config';
+import { AppConfig, AppState } from '~/models';
 
 declare let window: typeof globalThis & {
-  isDynamic;
-  REDUX_DATA;
+  isDynamic: boolean;
+  REDUX_DATA: AppState;
 };
 
 type ReactAppProps = { routes: any; withEvents: any };
@@ -41,13 +42,15 @@ class ClientApp {
 
     const GetClientJSX = store => {
       const ClientJsx = (
-        <CookiesProvider>
-          <ReduxProvider store={store}>
-            <HistoryRouter history={history as any}>
-              <ReactApp routes={routes} withEvents={withEvents} />
-            </HistoryRouter>
-          </ReduxProvider>
-        </CookiesProvider>
+          <CookiesProvider>
+            <ReduxProvider store={store}>
+              <HistoryRouter history={history as any}>
+                <SSRContextProvider>
+                  <ReactApp routes={routes} withEvents={withEvents} />
+                </SSRContextProvider>
+              </HistoryRouter>
+            </ReduxProvider>
+          </CookiesProvider>
       );
       return ClientJsx;
     };
@@ -105,7 +108,7 @@ class ClientApp {
             )
           );
 
-          delete window.REDUX_DATA;
+          delete (window as any).REDUX_DATA;
           HMRRenderer(GetClientJSX(store));
 
           hmr(store);

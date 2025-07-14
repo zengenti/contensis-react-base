@@ -1,5 +1,6 @@
+import { FieldLinkDepths, QueryAggregations } from 'contensis-core-api';
 import { Entry } from 'contensis-delivery-api/lib/models';
-import MappingTemplate from 'jsonpath-mapper/dist/models/Template';
+import { MappingTemplate } from 'jsonpath-mapper';
 import { Context } from './Enums';
 import { FieldOperators, LogicOperators } from './Queries';
 import { AppState } from './SearchState';
@@ -96,10 +97,14 @@ export type SearchQueryParams = {
     assetTypes?: string[];
     /** An array of contentTypeIds to search over (sys.dataFormat == 'entry'); Prefix an entry with a "!" to exclude that content type from the search */
     contentTypeIds: string[];
+    /** Any additional field aggregations to add to the search query */
+    customAggregations?: QueryAggregations;
     /** An array of CustomWhereClause to include in the search query */
     customWhere?: CustomWhereClause;
     /** Add parameters to drive an additional set of featured results */
     featuredResults?: FeaturedResults;
+    /** An array of fields to return for each entry in the items[] */
+    fieldLinkDepths?: FieldLinkDepths;
     /** An array of fields to return for each entry in the items[] */
     fields?: string[];
     /** Allows a “fuzzy” search (defaults to `false`) */
@@ -120,6 +125,8 @@ export type SearchQueryParams = {
     pageSize?: number;
     /** Allow a configured minilist to read the search.term set in state (defaults to false) */
     useSearchTerm?: boolean;
+    /** Allow overriding of versionStatus, irrespective of environment */
+    versionStatus?: 'latest' | 'published';
     /** An array of webpageTemplates to search over (sys.dataFormat == 'webpage'); Prefix an entry with a "!" to exclude that webpage template from the search */
     webpageTemplates?: string[];
     /** An array of WeightedSearchField to include in the search query */

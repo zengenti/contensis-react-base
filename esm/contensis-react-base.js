@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { c as cachedSearch, d as deliveryApi } from './ContensisDeliveryApi-fe57a037.js';
+=======
+import { c as cachedSearch, d as deliveryApi, S as SSRContextProvider } from './SSRContext-3TvaCDn0.js';
+>>>>>>> master
 import { Query as Query$1 } from 'contensis-delivery-api';
 import React$1 from 'react';
 import { Provider } from 'react-redux';
@@ -7,10 +11,14 @@ import mapJson from 'jsonpath-mapper';
 import 'reselect';
 import 'deepmerge';
 import 'query-string';
+<<<<<<< HEAD
+=======
+import { a8 as defaultExpressions, a9 as contentTypeIdExpression, aa as filterExpressions, ab as termExpressions, ac as orderByExpression, ad as customWhereExpressions, ae as cloneDeep } from './sagas-Cd05ZBBH.js';
+>>>>>>> master
 import 'immer';
 import 'deep-equal';
 import { Op, Query } from 'contensis-core-api';
-import { s as setCachingHeaders, u as url } from './urls-eac9a747.js';
+import { s as setCachingHeaders, u as url } from './urls-DfCisos-.js';
 import 'isomorphic-fetch';
 import express from 'express';
 import http from 'http';
@@ -27,28 +35,46 @@ import serialize from 'serialize-javascript';
 import minifyCssString from 'minify-css-string';
 import { ChunkExtractor, ChunkExtractorManager } from '@loadable/server';
 import { identity, noop } from 'lodash';
-import { c as commonjsGlobal } from './_commonjsHelpers-1789f0cf.js';
 import { buildCleaner } from 'lodash-clean';
 import { CookiesProvider } from 'react-cookie';
+import { a as Cookies } from './CookieHelper.class-W_NNNJKT.js';
 import cookiesMiddleware from 'universal-cookie-express';
+<<<<<<< HEAD
 import { c as createStore } from './version-3d9911e2.js';
 import { h as history$1, p as pickProject, r as rootSaga } from './App-83107d7e.js';
 export { A as ReactApp } from './App-83107d7e.js';
 import { s as setVersionStatus, a as setVersion } from './version-9f29becb.js';
 import { m as mergeStaticRoutes, H as HttpContext } from './RouteLoader-29fd689a.js';
 import { s as selectSurrogateKeys, a as selectRouteEntry, b as selectCurrentProject, g as getImmutableOrJS, c as setCurrentProject } from './selectors-691caf02.js';
+=======
+import { c as createStore } from './store-f0WxNWUu.js';
+import { h as history, p as pickProject, r as rootSaga } from './App-BPsH6nHc.js';
+export { A as ReactApp } from './App-BPsH6nHc.js';
+import { s as setVersionStatus, d as setVersion } from './version-BnnERhzW.js';
+import { a3 as selectSurrogateKeys, a4 as selectSsrApiCalls, e as selectRouteEntry, l as selectCurrentProject, g as getImmutableOrJS, s as setCurrentProject, K as selectCurrentSearch } from './selectors-BRzliwbK.js';
+>>>>>>> master
 import chalk from 'chalk';
-import './CookieConstants-3d3b6531.js';
 import 'loglevel';
 import '@redux-saga/core/effects';
+import './_commonjsHelpers-BFTU3MAI.js';
 import 'redux';
 import 'redux-thunk';
 import 'redux-saga';
 import 'redux-injectors';
+<<<<<<< HEAD
 import './reducers-aa8cef1e.js';
 import 'await-to-js';
 import './ChangePassword.container-76fd5e9b.js';
 import './ToJs-df57f31d.js';
+=======
+import 'history';
+import 'await-to-js';
+import './version-78jjDnHU.js';
+import './ChangePassword.container-Bcpef423.js';
+import './ToJs-B4MH53fx.js';
+import 'react-hot-loader';
+import './RouteLoader-CipkGOgr.js';
+>>>>>>> master
 
 /**
  * Util class holds our search results helper boilerplate methods
@@ -57,6 +83,7 @@ class Util {
   static GetIds(entries, fieldId) {
     if (fieldId) {
       return entries === null || entries === void 0 ? void 0 : entries.map(e => {
+<<<<<<< HEAD
         var _e$fieldId, _e$fieldId2, _e$fieldId2$sys;
 
         return Array.isArray(e === null || e === void 0 ? void 0 : e[fieldId]) ? e === null || e === void 0 ? void 0 : (_e$fieldId = e[fieldId]) === null || _e$fieldId === void 0 ? void 0 : _e$fieldId.map(f => {
@@ -64,13 +91,24 @@ class Util {
 
           return f === null || f === void 0 ? void 0 : (_f$sys = f.sys) === null || _f$sys === void 0 ? void 0 : _f$sys.id;
         }) : (e === null || e === void 0 ? void 0 : (_e$fieldId2 = e[fieldId]) === null || _e$fieldId2 === void 0 ? void 0 : (_e$fieldId2$sys = _e$fieldId2.sys) === null || _e$fieldId2$sys === void 0 ? void 0 : _e$fieldId2$sys.id) || '';
+=======
+        var _e$fieldId, _e$fieldId2;
+        return Array.isArray(e === null || e === void 0 ? void 0 : e[fieldId]) ? e === null || e === void 0 || (_e$fieldId = e[fieldId]) === null || _e$fieldId === void 0 ? void 0 : _e$fieldId.map(f => {
+          var _f$sys;
+          return f === null || f === void 0 || (_f$sys = f.sys) === null || _f$sys === void 0 ? void 0 : _f$sys.id;
+        }) : (e === null || e === void 0 || (_e$fieldId2 = e[fieldId]) === null || _e$fieldId2 === void 0 || (_e$fieldId2 = _e$fieldId2.sys) === null || _e$fieldId2 === void 0 ? void 0 : _e$fieldId2.id) || '';
+>>>>>>> master
       }).flat();
     }
 
     return entries === null || entries === void 0 ? void 0 : entries.map(e => {
       var _e$sys;
+<<<<<<< HEAD
 
       return (e === null || e === void 0 ? void 0 : (_e$sys = e.sys) === null || _e$sys === void 0 ? void 0 : _e$sys.id) || '';
+=======
+      return (e === null || e === void 0 || (_e$sys = e.sys) === null || _e$sys === void 0 ? void 0 : _e$sys.id) || '';
+>>>>>>> master
     });
   }
 
@@ -110,8 +148,11 @@ const mergeResults = (results, parentResults, replaceContentTypeIds, linkFieldId
   return r;
 }).filter(r => r);
 
+<<<<<<< HEAD
 /* eslint-disable no-console */
 
+=======
+>>>>>>> master
 /**
  * Builds our complete Delivery API Query object from a set of provided arguments
  * @param queryParams
@@ -255,21 +296,9 @@ class QueryLevelResults {
     parent: _parent,
     debug = false
   }) {
-    this.level = void 0;
-    this.contentTypeIds = void 0;
-    this.linkFieldIds = void 0;
-    this.linkFields = void 0;
-    this.filters = void 0;
-    this.sharedFilters = void 0;
-    this.returnEntries = void 0;
-    this.resolveFirstParent = void 0;
     this.validatedLinks = [];
-    this.parent = void 0;
     this.children = [];
-    this.runFirstQuery = void 0;
-    this.runFinalQuery = void 0;
     this.params = {};
-    this.debug = void 0;
     this.firstQuery = new Query$1();
     this.firstResults = {};
     this.finalQuery = new Query$1();
@@ -334,7 +363,6 @@ class QueryLevelResults {
         query.pageSize = params.pageSize;
         query.pageIndex = params.pageIndex; // query.orderBy = params.orderBy;
       }
-
       if (runFinalQuery) {
         if (this.debug) console.log(`\nLevel ${this.level} - Final query: \n${JSON.stringify(query.toJSON()).substring(0, 1000)}`);
         this.finalResults = await cachedSearch.searchUsingPost(query, Number(params.linkDepth) || 0, params.projectId);
@@ -420,6 +448,7 @@ class LinkDepthSearchService {
     params: _params,
     debug = false
   }) {
+<<<<<<< HEAD
     this.contentTypeIds = void 0;
     this.filters = void 0;
     this.sharedFilters = void 0;
@@ -428,6 +457,8 @@ class LinkDepthSearchService {
     this.debug = void 0;
     this.queryLevels = void 0;
 
+=======
+>>>>>>> master
     this.DoSearch = async () => {
       // Run queries "top-down" through each level of `linkField`
       for (const queryLevel of this.queryLevels) {
@@ -692,10 +723,9 @@ const reverseProxies = (app, reverseProxyPaths = []) => {
     });
   });
 };
-
 const deliveryApiProxy = (apiProxy, app) => {
   // This is just here to stop cors requests on localhost. In Production this is mapped using varnish.
-  app.all(['/api/delivery/*', '/api/image/*'], (req, res) => {
+  app.all(['/api/delivery/*', '/api/forms/*', '/api/image/*', '/authenticate/*'], (req, res) => {
     /* eslint-disable no-console */
     console.log(`Proxying api request to ${servers$1.alias}`);
     apiProxy.web(req, res, {
@@ -716,12 +746,18 @@ const CacheDuration = {
   static: '31536000',
   // Believe it or not these two max ages are the same in runtime
   expressStatic: '31557600h' // Believe it or not these two max ages are the same in runtime
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
 };
 const getCacheDuration = (status = 200) => {
-  if (status > 400) return CacheDuration[404];
+  if (status >= 400) return CacheDuration[404];
   return CacheDuration[200];
 };
+const alias = ALIAS; /* global ALIAS */
+
+const anyUpdateHeader = `${alias}_any-update`;
 
 const replaceStaticPath = (str, staticFolderPath = 'static') => str.replace(/static\//g, `${staticFolderPath}/`);
 
@@ -731,7 +767,7 @@ const bundleManipulationMiddleware = ({
   staticFolderPath,
   staticRoutePath
 }) => (req, res, next) => {
-  const filename = path.basename(req.path);
+  const filename = path.basename(encodeURI(req.path));
   const modernBundle = filename.endsWith('.mjs');
   const legacyBundle = filename.endsWith('.js');
 
@@ -745,7 +781,6 @@ const bundleManipulationMiddleware = ({
       res.type('.js').send(modifiedBundle);
       return;
     } catch (readError) {
-      // eslint-disable-next-line no-console
       console.log(`Unable to find js runtime bundle at '${jsRuntimeLocation}'`, readError);
       next();
     }
@@ -843,6 +878,7 @@ const DisplayStartupConfiguration = config => {
   /* eslint-enable no-console */
 };
 
+<<<<<<< HEAD
 var server$1 = {};
 
 Object.defineProperty(server$1, '__esModule', { value: true });
@@ -922,126 +958,258 @@ function listCacheClear$1() {
   this.__data__ = [];
   this.size = 0;
 }
+=======
+var stringifyAttributes = (attributes = {}) => Object.entries(attributes).map(([key, value], idx) => `${idx !== 0 ? ' ' : ''}${key}${value ? `="${value}"` : ''}`).join(' ');
+>>>>>>> master
 
-var _listCacheClear = listCacheClear$1;
-
-/**
- * Performs a
- * [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
- * comparison between two values to determine if they are equivalent.
- *
- * @static
- * @memberOf _
- * @since 4.0.0
- * @category Lang
- * @param {*} value The value to compare.
- * @param {*} other The other value to compare.
- * @returns {boolean} Returns `true` if the values are equivalent, else `false`.
- * @example
- *
- * var object = { 'a': 1 };
- * var other = { 'a': 1 };
- *
- * _.eq(object, object);
- * // => true
- *
- * _.eq(object, other);
- * // => false
- *
- * _.eq('a', 'a');
- * // => true
- *
- * _.eq('a', Object('a'));
- * // => false
- *
- * _.eq(NaN, NaN);
- * // => true
- */
-
-function eq$2(value, other) {
-  return value === other || (value !== value && other !== other);
-}
-
-var eq_1 = eq$2;
-
-var eq$1 = eq_1;
+/* eslint-disable no-console */
 
 /**
- * Gets the index at which the `key` is found in `array` of key-value pairs.
- *
- * @private
- * @param {Array} array The array to inspect.
- * @param {*} key The key to search for.
- * @returns {number} Returns the index of the matched value, else `-1`.
+ * Web Application Response handler, sends a prepared express js response
+ * with the supplied content sending in the specified manner
+ * @param {response} request express js request object
+ * @param {response} response express js response object
+ * @param {string | object} content the content to send in the response body
+ * @param {"send" | "json" | "end"} send the response function to call e.g res.send() res.json() res.end()
  */
-function assocIndexOf$4(array, key) {
-  var length = array.length;
-  while (length--) {
-    if (eq$1(array[length][0], key)) {
-      return length;
+const handleResponse = (request, response, content, send = 'send') => {
+  // console.log('---', response.statusCode, '---');
+  response[send](content);
+};
+
+const readFileSync = path => fs.readFileSync(path, 'utf8');
+const loadableBundleData = ({
+  stats,
+  templates
+}, staticRoutePath, build) => {
+  const bundle = {};
+  try {
+    bundle.stats = stats ? JSON.parse(readFileSync(stats.replace('/target', build ? `/${build}` : ''))) : null;
+  } catch (ex) {
+    // console.info(ex);
+    bundle.stats = null;
+  }
+  try {
+    bundle.templates = {
+      templateHTML: replaceStaticPath(readFileSync(templates.html.replace('/target', build ? `/${build}` : '')), staticRoutePath),
+      templateHTMLStatic: replaceStaticPath(readFileSync(templates.static.replace('/target', build ? `/${build}` : '')), staticRoutePath),
+      templateHTMLFragment: replaceStaticPath(readFileSync(templates.fragment.replace('/target', build ? `/${build}` : '')), staticRoutePath)
+    };
+  } catch (ex) {
+    // console.info(ex);
+    bundle.templates = null;
+  }
+  return bundle;
+};
+const loadableChunkExtractors = () => {
+  const commonLoadableExtractor = new ChunkExtractor({
+    stats: {}
+  });
+  try {
+    let modern;
+    let legacy;
+    try {
+      modern = new ChunkExtractor({
+        entrypoints: ['app'],
+        namespace: 'modern',
+        statsFile: path.resolve('dist/modern/loadable-stats.json')
+      });
+    } catch (e) {
+      console.info('@loadable/server modern ChunkExtractor not available');
+    }
+    try {
+      legacy = new ChunkExtractor({
+        entrypoints: ['app'],
+        namespace: 'legacy',
+        statsFile: path.resolve('dist/legacy/loadable-stats.json')
+      });
+    } catch (e) {
+      console.info('@loadable/server legacy ChunkExtractor not available');
+    }
+    commonLoadableExtractor.addChunk = chunk => {
+      var _modern, _legacy, _legacy2;
+      (_modern = modern) === null || _modern === void 0 || _modern.addChunk(chunk);
+      if (typeof ((_legacy = legacy) === null || _legacy === void 0 ? void 0 : _legacy.stats.assetsByChunkName[chunk]) !== 'undefined') (_legacy2 = legacy) === null || _legacy2 === void 0 || _legacy2.addChunk(chunk);
+    };
+    return {
+      commonLoadableExtractor,
+      modern,
+      legacy
+    };
+  } catch (e) {
+    console.info('@loadable/server no ChunkExtractor available');
+    return {
+      commonLoadableExtractor
+    };
+  }
+};
+const getBundleData = (config, staticRoutePath) => {
+  const bundleData = {
+    default: loadableBundleData(config, staticRoutePath),
+    legacy: loadableBundleData(config, staticRoutePath, 'legacy'),
+    modern: loadableBundleData(config, staticRoutePath, 'modern')
+  };
+  if (!bundleData.default || Object.keys(bundleData.default || {}).length === 0) bundleData.default = bundleData.legacy || bundleData.modern;
+  return bundleData;
+};
+
+// export const buildBundleTags = (
+//   bundles,
+//   differentialBundles = false,
+//   staticRoutePath = 'static',
+//   attributes = ''
+// ) => {
+//   // Take the bundles returned from Loadable.Capture
+//   const bundleTags = bundles
+//     .filter(b => b)
+//     .map(bundle => {
+//       if (bundle.publicPath.includes('/modern/'))
+//         return differentialBundles
+//           ? `<script ${attributes} type="module" src="${replaceStaticPath(
+//               bundle.publicPath,
+//               staticRoutePath
+//             )}"></script>`
+//           : null;
+//       return `<script ${attributes}${
+//         differentialBundles ? ' nomodule' : ''
+//       } src="${replaceStaticPath(
+//         bundle.publicPath,
+//         staticRoutePath
+//       )}"></script>`;
+//     })
+//     .filter(f => f);
+
+//   return bundleTags;
+// };
+
+const getBundleTags = (loadableExtractor, scripts, staticRoutePath = 'static') => {
+  let startupTag = '';
+  // Add the static startup script to the bundleTags
+  if (scripts !== null && scripts !== void 0 && scripts.startup) startupTag = `<script ${stringifyAttributes(scripts.attributes)} src="/${staticRoutePath}/${scripts.startup}"></script>`;
+
+  // Get the script tags from their respective extractor instances
+  if (loadableExtractor) {
+    var _loadableExtractor$le, _loadableExtractor$mo;
+    const legacyScriptTags = (_loadableExtractor$le = loadableExtractor.legacy) === null || _loadableExtractor$le === void 0 ? void 0 : _loadableExtractor$le.getScriptTags({
+      nomodule: 'nomodule'
+    });
+    const modernScriptTags = (_loadableExtractor$mo = loadableExtractor.modern) === null || _loadableExtractor$mo === void 0 ? void 0 : _loadableExtractor$mo.getScriptTags({
+      type: 'module'
+    });
+    const scriptTags = `${startupTag}${legacyScriptTags || ''}${modernScriptTags || ''}`.replace(/"\/static\//g, `"/${staticRoutePath}/`);
+    return scriptTags;
+  }
+  return startupTag;
+};
+
+const addStandardHeaders = (state, response, packagejson, groups) => {
+  if (state) {
+    try {
+      const routingSurrogateKeys = selectSurrogateKeys(state);
+      const apiCalls = selectSsrApiCalls(state);
+      const anyApiError = !!apiCalls.find(([status]) => status >= 400);
+
+      // Check length of surrogate keys and prevent potential header overflow errors in prod
+      // Check for any error set in the page response
+      // And check if we have seen any error in any of the Delivery API calls
+      // - add `any-update` header that will indiscriminately
+      //   invalidate the SSR page cache when any content is updated
+      const addAnyUpdateHeader = routingSurrogateKeys.length >= 2000 || response.statusCode >= 400 || anyApiError;
+      console.info(`[addStandardHeaders] ${addAnyUpdateHeader ? anyUpdateHeader : routingSurrogateKeys.length} surrogate keys for ${response.req.url}`);
+      const surrogateKeys = addAnyUpdateHeader ? anyUpdateHeader : routingSurrogateKeys.join(' ');
+      const surrogateKeyHeader = `${packagejson.name}-app ${surrogateKeys}`;
+      response.setHeader('surrogate-key', surrogateKeyHeader);
+      addVarnishAuthenticationHeaders(state, response, groups);
+      response.setHeader('surrogate-control', `max-age=${getCacheDuration(response.statusCode)}`);
+    } catch (e) {
+      console.info('[addStandardHeaders] Error adding headers', e.message);
     }
   }
-  return -1;
-}
-
-var _assocIndexOf = assocIndexOf$4;
-
-var assocIndexOf$3 = _assocIndexOf;
-
-/** Used for built-in method references. */
-var arrayProto = Array.prototype;
-
-/** Built-in value references. */
-var splice = arrayProto.splice;
-
-/**
- * Removes `key` and its value from the list cache.
- *
- * @private
- * @name delete
- * @memberOf ListCache
- * @param {string} key The key of the value to remove.
- * @returns {boolean} Returns `true` if the entry was removed, else `false`.
- */
-function listCacheDelete$1(key) {
-  var data = this.__data__,
-      index = assocIndexOf$3(data, key);
-
-  if (index < 0) {
-    return false;
+};
+const addVarnishAuthenticationHeaders = (state, response, groups = {}) => {
+  if (state) {
+    try {
+      const stateEntry = selectRouteEntry(state);
+      const project = selectCurrentProject(state);
+      const {
+        globalGroups,
+        allowedGroups
+      } = groups;
+      // console.info(globalGroups, allowedGroups);
+      let allGroups = Array.from(globalGroups && globalGroups[project] || {});
+      if (stateEntry && getImmutableOrJS(stateEntry, ['authentication', 'isLoginRequired']) && allowedGroups && allowedGroups[project]) {
+        allGroups = [...allGroups, ...allowedGroups[project]];
+      }
+      response.header('x-contensis-viewer-groups', allGroups.join('|'));
+    } catch (e) {
+      console.info('Error adding authentication header', e);
+    }
   }
-  var lastIndex = data.length - 1;
-  if (index == lastIndex) {
-    data.pop();
-  } else {
-    splice.call(data, index, 1);
+};
+
+const getVersionInfo = staticFolderPath => {
+  try {
+    const versionData = fs.readFileSync(`dist/${staticFolderPath}/version.json`, 'utf8');
+    const versionInfo = JSON.parse(versionData);
+    return versionInfo;
+  } catch (ex) {
+    console.error(`Unable to read from "version.json"`, ex);
+    return {};
   }
-  --this.size;
-  return true;
-}
+};
 
-var _listCacheDelete = listCacheDelete$1;
+/* eslint-disable no-console */
 
-var assocIndexOf$2 = _assocIndexOf;
+// Default exception types to add event listeners for
+const handleDefaultEvents = ['uncaughtException', 'unhandledRejection'];
+const unhandledExceptionHandler = (handleExceptions = handleDefaultEvents) => {
+  const exceptionTypes = Array.isArray(handleExceptions) ? handleExceptions : handleExceptions === false ? [] : handleDefaultEvents;
+  for (const type of exceptionTypes) {
+    process.on(type, err => {
+      if (err && err instanceof Error) {
+        // Print a message to inform admins and developers the error should not be ignored
+        console.log(`${`[contensis-react-base] ❌ ${chalk.red.bold(`${type} - ${err.message}`)}`}`);
+        console.log(chalk.gray` - you are seeing this because we have tried to prevent the app from completely crashing - you should not ignore this problem`);
+        // Log the error to server console
+        console.error(err);
+      }
+    });
+  }
+};
 
-/**
- * Gets the list cache value for `key`.
- *
- * @private
- * @name get
- * @memberOf ListCache
- * @param {string} key The key of the value to get.
- * @returns {*} Returns the entry value.
- */
-function listCacheGet$1(key) {
-  var data = this.__data__,
-      index = assocIndexOf$2(data, key);
+const webApp = (app, ReactApp, config) => {
+  const {
+    stateType = 'immutable',
+    routes,
+    withReducers,
+    withSagas,
+    withEvents,
+    packagejson,
+    scripts = {},
+    staticFolderPath = 'static',
+    startupScriptFilename,
+    allowedGroups,
+    globalGroups,
+    disableSsrRedux,
+    enableSsrCookies,
+    handleResponses,
+    handleExceptions = true
+  } = config;
+  const staticRoutePath = config.staticRoutePath || staticFolderPath;
+  const bundleData = getBundleData(config, staticRoutePath);
+  const attributes = stringifyAttributes(scripts.attributes);
+  scripts.startup = scripts.startup || startupScriptFilename;
+  const responseHandler = typeof handleResponses === 'function' ? handleResponses : handleResponse;
+  if (handleExceptions !== false) unhandledExceptionHandler(handleExceptions); // Create `process.on` event handlers for unhandled exceptions (Node v15+)
 
-  return index < 0 ? undefined : data[index][1];
-}
+  const versionInfo = getVersionInfo(staticFolderPath);
+  app.get('/*', cookiesMiddleware(), async (request, response) => {
+    const url = encodeURI(request.url);
+    const matchedStaticRoute = () => matchRoutes(routes.StaticRoutes, request.path);
+    const isStaticRoute = () => matchedStaticRoute().length > 0;
+    const staticRoute = isStaticRoute() && matchedStaticRoute()[0];
 
-var _listCacheGet = listCacheGet$1;
-
+<<<<<<< HEAD
 var assocIndexOf$1 = _assocIndexOf;
 
 /**
@@ -3956,6 +4124,12 @@ const webApp = (app, ReactApp, config) => {
 
     const onlyDynamic = staticRoute && staticRoute.route.ssr === false;
     const onlySSR = staticRoute && staticRoute.route.ssrOnly === true;
+=======
+    // Allow certain routes to avoid SSR
+    const onlyDynamic = staticRoute && staticRoute.route.ssr === false;
+    const onlySSR = staticRoute && staticRoute.route.ssrOnly === true;
+    const normaliseQs = q => q && q.toLowerCase() === 'true' ? true : false;
+>>>>>>> master
 
     const normaliseQs = q => q && q.toLowerCase() === 'true' ? true : false; // Determine functional params from QueryString and set access methods
 
@@ -3995,6 +4169,7 @@ const webApp = (app, ReactApp, config) => {
     const groups = allowedGroups && allowedGroups[project];
     store.dispatch(setCurrentProject(project, groups, hostname));
     const loadableExtractor = loadableChunkExtractors();
+<<<<<<< HEAD
     // Recast ChunkExtractorManager to avoid TS error `Property 'children' does not exist on type...`
     const ChunkExtractor = ChunkExtractorManager;
     const jsx = /*#__PURE__*/React$1.createElement(ChunkExtractor, {
@@ -4002,12 +4177,32 @@ const webApp = (app, ReactApp, config) => {
     }, /*#__PURE__*/React$1.createElement(CookiesProvider, {
       cookies: request.universalCookies
     }, /*#__PURE__*/React$1.createElement(Provider, {
+=======
+    const ssrCookies = enableSsrCookies ?
+    // these cookies are managed by the cookiesMiddleware and contain listeners
+    // when cookies are read or written in ssr can be added to the `set-cookie` response header
+    request.universalCookies :
+    // this is a stub cookie collection so cookie methods can be used in code
+    new Cookies();
+    const jsx = /*#__PURE__*/React.createElement(ChunkExtractorManager, {
+      extractor: loadableExtractor.commonLoadableExtractor
+    }, /*#__PURE__*/React.createElement(CookiesProvider, {
+      cookies: ssrCookies
+    }, /*#__PURE__*/React.createElement(Provider, {
+>>>>>>> master
       store: store
     }, /*#__PURE__*/React$1.createElement(HttpContext.Provider, {
       value: context
     }, /*#__PURE__*/React$1.createElement(StaticRouter_1, {
       location: url
+<<<<<<< HEAD
     }, /*#__PURE__*/React$1.createElement(ReactApp, {
+=======
+    }, /*#__PURE__*/React.createElement(SSRContextProvider, {
+      request: request,
+      response: response
+    }, /*#__PURE__*/React.createElement(ReactApp, {
+>>>>>>> master
       routes: routes,
       withEvents: withEvents
     }))))));
@@ -4034,6 +4229,7 @@ const webApp = (app, ReactApp, config) => {
 
     if (!accessMethod.DYNAMIC) {
       store.runSaga(rootSaga(withSagas)).toPromise().then(() => {
+        var _selectCurrentSearch;
         const sheet = new ServerStyleSheet();
         const html = renderToString(sheet.collectStyles(jsx));
         const helmet = Helmet.renderStatic();
@@ -4051,7 +4247,7 @@ const webApp = (app, ReactApp, config) => {
         // code-split bundles for any page components as well as core app bundles
 
         const bundleTags = getBundleTags(loadableExtractor, scripts, staticRoutePath);
-        let serialisedReduxData = serialize(buildCleaner({
+        let clonedState = buildCleaner({
           isArray: identity,
           isBoolean: identity,
           isDate: identity,
@@ -4060,8 +4256,25 @@ const webApp = (app, ReactApp, config) => {
           isPlainObject: identity,
           isString: identity,
           isUndefined: noop
+<<<<<<< HEAD
         })(cloneDeep_1(reduxState)));
 
+=======
+        })(cloneDeep(reduxState));
+        // These keys are used for preparing server-side response headers only
+        // and are not required in the client at all except for debugging ssr
+        if (!((_selectCurrentSearch = selectCurrentSearch(reduxState)) !== null && _selectCurrentSearch !== void 0 && _selectCurrentSearch.includes('includeApiCalls'))) {
+          if (stateType === 'immutable') clonedState = clonedState.deleteIn(['routing', 'apiCalls']).deleteIn(['routing', 'surrogateKeys']);else {
+            delete clonedState.routing.apiCalls;
+            delete clonedState.routing.surrogateKeys;
+          }
+        }
+        // Reset user state to prevent user details from being cached in SSR
+        if (stateType === 'immutable') {
+          clonedState = clonedState.delete('user');
+        } else delete clonedState.user;
+        let serialisedReduxData = serialize(clonedState);
+>>>>>>> master
         if (context.statusCode !== 404) {
           // For a request that returns a redux state object as a response
           if (accessMethod.REDUX) {

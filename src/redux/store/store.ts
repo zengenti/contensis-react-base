@@ -17,17 +17,23 @@ import RoutingReducer from '~/routing/redux/reducers';
 import UserReducer from '~/user/redux/reducers';
 import VersionReducer from '../reducers/version';
 import routerMiddleware from './routerMiddleware';
-import { AppState } from '../appstate';
+import { AppState, StateType } from '~/models';
 import { History, MemoryHistory } from 'history';
-import { StateType } from '~/config';
-
-export let reduxStore;
 
 /* eslint-disable no-underscore-dangle */
 declare let window: Window &
   typeof globalThis & {
     __REDUX_DEVTOOLS_EXTENSION__: any;
   };
+
+type ReduxAppStore = Store<AppState, Action<any>>;
+
+type ReduxSagaAppStore = ReduxAppStore & {
+  runSaga: ReturnType<typeof createSagaMiddleware>['run'];
+  close: () => void;
+};
+
+export let reduxStore: ReduxSagaAppStore;
 
 export default async (
   featureReducers: any,
@@ -56,7 +62,7 @@ export default async (
   // Reassign the combiner and fromJS functions when
   // stateType is 'immutable' with dynamic imports
   let combiner = combineReducers;
-  let fromJS: any = (obj: any) => obj;
+  let fromJS = <T = any>(obj: T) => obj;
   globalThis.STATE_TYPE = stateType;
 
   if (stateType === 'immutable') {
@@ -86,12 +92,10 @@ export default async (
   const store = (initialState: AppState) => {
     const runSaga = sagaMiddleware.run;
 
-    const middleware: StoreEnhancer<
-      {
-        dispatch: unknown;
-      },
-      unknown
-    > = compose(
+    const middleware: StoreEnhancer<{
+      runSaga: ReturnType<typeof createSagaMiddleware>['run'];
+      close: () => void;
+    }> = compose(
       applyMiddleware(
         thunkMiddleware,
         sagaMiddleware,
@@ -104,18 +108,10 @@ export default async (
       reduxDevToolsMiddleware
     );
 
-    const store: Store<AppState, Action<any>> & {
-      runSaga?: typeof runSaga;
-      close?: () => void;
-    } = createStore<AppState, Action<any>, unknown, unknown>(
-      createReducer(),
-      initialState,
-      middleware
-    );
+    const store = createStore(createReducer(), initialState, middleware);
 
     store.runSaga = runSaga;
     store.close = () => store.dispatch(END);
-
     return store;
   };
 

@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { ChunkExtractor } from '@loadable/server';
 import { replaceStaticPath } from './staticPaths';
-import { ServerConfig } from '~/config';
+import { ServerConfig } from '~/models';
 import stringifyAttributes from './stringifyAttributes';
 
 const readFileSync = (path: string) => fs.readFileSync(path, 'utf8');

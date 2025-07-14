@@ -2,7 +2,11 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
+<<<<<<< HEAD
 var ContensisDeliveryApi = require('./ContensisDeliveryApi-4fcf049d.js');
+=======
+var SSRContext = require('./SSRContext-DpnwQ2te.js');
+>>>>>>> master
 var contensisDeliveryApi = require('contensis-delivery-api');
 var React$1 = require('react');
 var reactRedux = require('react-redux');
@@ -11,10 +15,14 @@ var mapJson = require('jsonpath-mapper');
 require('reselect');
 require('deepmerge');
 require('query-string');
+<<<<<<< HEAD
+=======
+var sagas = require('./sagas-Ekfrk7xA.js');
+>>>>>>> master
 require('immer');
 require('deep-equal');
 var contensisCoreApi = require('contensis-core-api');
-var urls = require('./urls-6fcaf4c6.js');
+var urls = require('./urls-DVIwGZmd.js');
 require('isomorphic-fetch');
 var express = require('express');
 var http = require('http');
@@ -31,23 +39,31 @@ var serialize = require('serialize-javascript');
 var minifyCssString = require('minify-css-string');
 var server$2 = require('@loadable/server');
 var lodash = require('lodash');
-var _commonjsHelpers = require('./_commonjsHelpers-b3309d7b.js');
 var lodashClean = require('lodash-clean');
 var reactCookie = require('react-cookie');
+var CookieHelper_class = require('./CookieHelper.class-CxeVo9EP.js');
 var cookiesMiddleware = require('universal-cookie-express');
+<<<<<<< HEAD
 var version = require('./version-34d91f68.js');
 var App = require('./App-b56aca04.js');
 var version$1 = require('./version-a410c88e.js');
 var RouteLoader = require('./RouteLoader-c06dccd5.js');
 var selectors = require('./selectors-14caa813.js');
+=======
+var store = require('./store-BihH67lI.js');
+var App = require('./App-B2ohFzUt.js');
+var version = require('./version-Cg79mdPg.js');
+var selectors = require('./selectors-wCs5fHD4.js');
+>>>>>>> master
 var chalk = require('chalk');
-require('./CookieConstants-000427db.js');
 require('loglevel');
 require('@redux-saga/core/effects');
+require('./_commonjsHelpers-BJu3ubxk.js');
 require('redux');
 require('redux-thunk');
 require('redux-saga');
 require('redux-injectors');
+<<<<<<< HEAD
 require('./reducers-73a03ef4.js');
 require('await-to-js');
 require('./ChangePassword.container-ae35785e.js');
@@ -68,6 +84,29 @@ var serialize__default = /*#__PURE__*/_interopDefaultLegacy(serialize);
 var minifyCssString__default = /*#__PURE__*/_interopDefaultLegacy(minifyCssString);
 var cookiesMiddleware__default = /*#__PURE__*/_interopDefaultLegacy(cookiesMiddleware);
 var chalk__default = /*#__PURE__*/_interopDefaultLegacy(chalk);
+=======
+require('history');
+require('await-to-js');
+require('./version-CM-bJ62L.js');
+require('./ChangePassword.container-Dup9_na7.js');
+require('./ToJs-C9jwV7YB.js');
+require('react-hot-loader');
+require('./RouteLoader-De-dhkg-.js');
+
+function _interopDefault (e) { return e && e.__esModule ? e : { default: e }; }
+
+var React__default = /*#__PURE__*/_interopDefault(React);
+var mapJson__default = /*#__PURE__*/_interopDefault(mapJson);
+var express__default = /*#__PURE__*/_interopDefault(express);
+var http__default = /*#__PURE__*/_interopDefault(http);
+var httpProxy__default = /*#__PURE__*/_interopDefault(httpProxy);
+var fs__default = /*#__PURE__*/_interopDefault(fs);
+var path__default = /*#__PURE__*/_interopDefault(path);
+var serialize__default = /*#__PURE__*/_interopDefault(serialize);
+var minifyCssString__default = /*#__PURE__*/_interopDefault(minifyCssString);
+var cookiesMiddleware__default = /*#__PURE__*/_interopDefault(cookiesMiddleware);
+var chalk__default = /*#__PURE__*/_interopDefault(chalk);
+>>>>>>> master
 
 /**
  * Util class holds our search results helper boilerplate methods
@@ -76,6 +115,7 @@ class Util {
   static GetIds(entries, fieldId) {
     if (fieldId) {
       return entries === null || entries === void 0 ? void 0 : entries.map(e => {
+<<<<<<< HEAD
         var _e$fieldId, _e$fieldId2, _e$fieldId2$sys;
 
         return Array.isArray(e === null || e === void 0 ? void 0 : e[fieldId]) ? e === null || e === void 0 ? void 0 : (_e$fieldId = e[fieldId]) === null || _e$fieldId === void 0 ? void 0 : _e$fieldId.map(f => {
@@ -83,13 +123,24 @@ class Util {
 
           return f === null || f === void 0 ? void 0 : (_f$sys = f.sys) === null || _f$sys === void 0 ? void 0 : _f$sys.id;
         }) : (e === null || e === void 0 ? void 0 : (_e$fieldId2 = e[fieldId]) === null || _e$fieldId2 === void 0 ? void 0 : (_e$fieldId2$sys = _e$fieldId2.sys) === null || _e$fieldId2$sys === void 0 ? void 0 : _e$fieldId2$sys.id) || '';
+=======
+        var _e$fieldId, _e$fieldId2;
+        return Array.isArray(e === null || e === void 0 ? void 0 : e[fieldId]) ? e === null || e === void 0 || (_e$fieldId = e[fieldId]) === null || _e$fieldId === void 0 ? void 0 : _e$fieldId.map(f => {
+          var _f$sys;
+          return f === null || f === void 0 || (_f$sys = f.sys) === null || _f$sys === void 0 ? void 0 : _f$sys.id;
+        }) : (e === null || e === void 0 || (_e$fieldId2 = e[fieldId]) === null || _e$fieldId2 === void 0 || (_e$fieldId2 = _e$fieldId2.sys) === null || _e$fieldId2 === void 0 ? void 0 : _e$fieldId2.id) || '';
+>>>>>>> master
       }).flat();
     }
 
     return entries === null || entries === void 0 ? void 0 : entries.map(e => {
       var _e$sys;
+<<<<<<< HEAD
 
       return (e === null || e === void 0 ? void 0 : (_e$sys = e.sys) === null || _e$sys === void 0 ? void 0 : _e$sys.id) || '';
+=======
+      return (e === null || e === void 0 || (_e$sys = e.sys) === null || _e$sys === void 0 ? void 0 : _e$sys.id) || '';
+>>>>>>> master
     });
   }
 
@@ -129,8 +180,11 @@ const mergeResults = (results, parentResults, replaceContentTypeIds, linkFieldId
   return r;
 }).filter(r => r);
 
+<<<<<<< HEAD
 /* eslint-disable no-console */
 
+=======
+>>>>>>> master
 /**
  * Builds our complete Delivery API Query object from a set of provided arguments
  * @param queryParams
@@ -255,7 +309,7 @@ const resolveParentEntries = async (parentContentTypeIds, replaceContentTypeIds,
   });
   query.fields = params.fields ? [...JSON.parse(params.fields), parentFieldId] : [];
   if (debug) console.log(`\nResolve parent entries query: \n${JSON.stringify(query.toJSON()).substring(0, 1000)}`);
-  const parentResults = await ContensisDeliveryApi.cachedSearch.searchUsingPost(query, Number(params.linkDepth || 0), params.projectId);
+  const parentResults = await SSRContext.cachedSearch.searchUsingPost(query, Number(params.linkDepth || 0), params.projectId);
   return mergeResults(results, Util.GetItems(parentResults), replaceContentTypeIds, parentFieldId);
 };
 
@@ -274,21 +328,9 @@ class QueryLevelResults {
     parent: _parent,
     debug = false
   }) {
-    this.level = void 0;
-    this.contentTypeIds = void 0;
-    this.linkFieldIds = void 0;
-    this.linkFields = void 0;
-    this.filters = void 0;
-    this.sharedFilters = void 0;
-    this.returnEntries = void 0;
-    this.resolveFirstParent = void 0;
     this.validatedLinks = [];
-    this.parent = void 0;
     this.children = [];
-    this.runFirstQuery = void 0;
-    this.runFinalQuery = void 0;
     this.params = {};
-    this.debug = void 0;
     this.firstQuery = new contensisDeliveryApi.Query();
     this.firstResults = {};
     this.finalQuery = new contensisDeliveryApi.Query();
@@ -317,7 +359,11 @@ class QueryLevelResults {
 
       if (runFirstQuery) {
         if (this.debug) console.log(`\nLevel ${this.level} - First query: \n${JSON.stringify(query.toJSON()).substring(0, 1000)}`);
+<<<<<<< HEAD
         this.firstResults = await ContensisDeliveryApi.cachedSearch.searchUsingPost(query, 0, params.projectId); // mapResultsToValidatedLinks
+=======
+        this.firstResults = await SSRContext.cachedSearch.searchUsingPost(query, 0, params.projectId);
+>>>>>>> master
 
         for (const linkFieldId of this.linkFieldIds) {
           this.validatedLinks.push({
@@ -353,11 +399,15 @@ class QueryLevelResults {
         query.pageSize = params.pageSize;
         query.pageIndex = params.pageIndex; // query.orderBy = params.orderBy;
       }
-
       if (runFinalQuery) {
         if (this.debug) console.log(`\nLevel ${this.level} - Final query: \n${JSON.stringify(query.toJSON()).substring(0, 1000)}`);
+<<<<<<< HEAD
         this.finalResults = await ContensisDeliveryApi.cachedSearch.searchUsingPost(query, Number(params.linkDepth) || 0, params.projectId);
         if (this.parent) this.parent.runFinalQuery = true; // mapResultsToValidatedLinks
+=======
+        this.finalResults = await SSRContext.cachedSearch.searchUsingPost(query, Number(params.linkDepth) || 0, params.projectId);
+        if (this.parent) this.parent.runFinalQuery = true;
+>>>>>>> master
 
         for (const linkFieldId of ((_this$parent = this.parent) === null || _this$parent === void 0 ? void 0 : _this$parent.linkFieldIds) || []) {
           var _this$parent, _this$parent2;
@@ -439,6 +489,7 @@ class LinkDepthSearchService {
     params: _params,
     debug = false
   }) {
+<<<<<<< HEAD
     this.contentTypeIds = void 0;
     this.filters = void 0;
     this.sharedFilters = void 0;
@@ -447,6 +498,8 @@ class LinkDepthSearchService {
     this.debug = void 0;
     this.queryLevels = void 0;
 
+=======
+>>>>>>> master
     this.DoSearch = async () => {
       // Run queries "top-down" through each level of `linkField`
       for (const queryLevel of this.queryLevels) {
@@ -514,7 +567,13 @@ class LinkDepthSearchService {
           };
         })) || []);
         if (this.debug) console.log(`\nFinal query: ${derivedIds.reduce((accumulator, object) => accumulator + object.entryIds.length, 0)} derived ids \n${JSON.stringify(query.toJSON()).substring(0, 1000)}`);
+<<<<<<< HEAD
         const finalQueryResult = await ContensisDeliveryApi.cachedSearch.searchUsingPost(query, Number(params.linkDepth) || 0, params.projectId); // Resolve any parent entries
+=======
+        const finalQueryResult = await SSRContext.cachedSearch.searchUsingPost(query, Number(params.linkDepth) || 0, params.projectId);
+
+        // Resolve any parent entries
+>>>>>>> master
 
         const resolveParentLevels = finalQueryLevels.filter(ql => ql.resolveFirstParent);
         let entries = finalQueryResult.items;
@@ -693,9 +752,14 @@ const alias$1 = ALIAS;
 /* global ALIAS */
 
 const deliveryApiHostname = urls.url(alias$1, project).api;
+<<<<<<< HEAD
 const assetProxy = httpProxy__default["default"].createProxyServer();
 const deliveryProxy = httpProxy__default["default"].createProxyServer();
 
+=======
+const assetProxy = httpProxy__default.default.createProxyServer();
+const deliveryProxy = httpProxy__default.default.createProxyServer();
+>>>>>>> master
 const reverseProxies = (app, reverseProxyPaths = []) => {
   deliveryApiProxy(deliveryProxy, app);
   app.all(reverseProxyPaths, (req, res) => {
@@ -711,10 +775,9 @@ const reverseProxies = (app, reverseProxyPaths = []) => {
     });
   });
 };
-
 const deliveryApiProxy = (apiProxy, app) => {
   // This is just here to stop cors requests on localhost. In Production this is mapped using varnish.
-  app.all(['/api/delivery/*', '/api/image/*'], (req, res) => {
+  app.all(['/api/delivery/*', '/api/forms/*', '/api/image/*', '/authenticate/*'], (req, res) => {
     /* eslint-disable no-console */
     console.log(`Proxying api request to ${servers$1.alias}`);
     apiProxy.web(req, res, {
@@ -735,12 +798,18 @@ const CacheDuration = {
   static: '31536000',
   // Believe it or not these two max ages are the same in runtime
   expressStatic: '31557600h' // Believe it or not these two max ages are the same in runtime
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
 };
 const getCacheDuration = (status = 200) => {
-  if (status > 400) return CacheDuration[404];
+  if (status >= 400) return CacheDuration[404];
   return CacheDuration[200];
 };
+const alias = ALIAS; /* global ALIAS */
+
+const anyUpdateHeader = `${alias}_any-update`;
 
 const replaceStaticPath = (str, staticFolderPath = 'static') => str.replace(/static\//g, `${staticFolderPath}/`);
 
@@ -750,21 +819,24 @@ const bundleManipulationMiddleware = ({
   staticFolderPath,
   staticRoutePath
 }) => (req, res, next) => {
-  const filename = path__default["default"].basename(req.path);
+  const filename = path__default.default.basename(encodeURI(req.path));
   const modernBundle = filename.endsWith('.mjs');
   const legacyBundle = filename.endsWith('.js');
 
   if ((legacyBundle || modernBundle) && filename.startsWith('runtime.')) {
+<<<<<<< HEAD
     const jsRuntimeLocation = path__default["default"].resolve(appRootPath, `dist/${staticFolderPath}/${modernBundle ? 'modern/js' : 'legacy/js'}/${filename}`);
 
+=======
+    const jsRuntimeLocation = path__default.default.resolve(appRootPath, `dist/${staticFolderPath}/${modernBundle ? 'modern/js' : 'legacy/js'}/${filename}`);
+>>>>>>> master
     try {
-      const jsRuntimeBundle = fs__default["default"].readFileSync(jsRuntimeLocation, 'utf8');
+      const jsRuntimeBundle = fs__default.default.readFileSync(jsRuntimeLocation, 'utf8');
       const modifiedBundle = replaceStaticPath(jsRuntimeBundle, staticRoutePath);
       if (maxage) res.set('Cache-Control', `public, max-age=${maxage}`);
       res.type('.js').send(modifiedBundle);
       return;
     } catch (readError) {
-      // eslint-disable-next-line no-console
       console.log(`Unable to find js runtime bundle at '${jsRuntimeLocation}'`, readError);
       next();
     }
@@ -794,12 +866,12 @@ const resolveStartupMiddleware = ({
       let startupFilePath = '';
       startupFilePaths.forEach(async testPath => {
         try {
-          fs__default["default"].accessSync(testPath);
+          fs__default.default.accessSync(testPath);
           startupFilePath = testPath;
         } catch (ex) {// Do nothing
         }
       });
-      startupFileLocation = path__default["default"].resolve(appRootPath, startupFilePath);
+      startupFileLocation = path__default.default.resolve(appRootPath, startupFilePath);
       if (maxage) res.set('Cache-Control', `public, max-age=${maxage}`);
       res.sendFile(startupFileLocation);
     } catch (sendFileError) {
@@ -833,8 +905,14 @@ const staticAssets = (app, {
     maxage: CacheDuration.static,
     startupScriptFilename: scripts.startup || startupScriptFilename,
     staticFolderPath
+<<<<<<< HEAD
   }), // eslint-disable-next-line import/no-named-as-default-member
   express__default["default"].static(`dist/${staticFolderPath}`, {
+=======
+  }),
+  // eslint-disable-next-line import/no-named-as-default-member
+  express__default.default.static(`dist/${staticFolderPath}`, {
+>>>>>>> master
     // these maxage values are different in config but the same in runtime,
     // this one is somehow converted and should end up being the same as CacheDuration.static
     maxAge: CacheDuration.expressStatic
@@ -862,6 +940,7 @@ const DisplayStartupConfiguration = config => {
   /* eslint-enable no-console */
 };
 
+<<<<<<< HEAD
 var server$1 = {};
 
 Object.defineProperty(server$1, '__esModule', { value: true });
@@ -941,143 +1020,258 @@ function listCacheClear$1() {
   this.__data__ = [];
   this.size = 0;
 }
+=======
+var stringifyAttributes = (attributes = {}) => Object.entries(attributes).map(([key, value], idx) => `${idx !== 0 ? ' ' : ''}${key}${value ? `="${value}"` : ''}`).join(' ');
+>>>>>>> master
 
-var _listCacheClear = listCacheClear$1;
-
-/**
- * Performs a
- * [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
- * comparison between two values to determine if they are equivalent.
- *
- * @static
- * @memberOf _
- * @since 4.0.0
- * @category Lang
- * @param {*} value The value to compare.
- * @param {*} other The other value to compare.
- * @returns {boolean} Returns `true` if the values are equivalent, else `false`.
- * @example
- *
- * var object = { 'a': 1 };
- * var other = { 'a': 1 };
- *
- * _.eq(object, object);
- * // => true
- *
- * _.eq(object, other);
- * // => false
- *
- * _.eq('a', 'a');
- * // => true
- *
- * _.eq('a', Object('a'));
- * // => false
- *
- * _.eq(NaN, NaN);
- * // => true
- */
-
-function eq$2(value, other) {
-  return value === other || (value !== value && other !== other);
-}
-
-var eq_1 = eq$2;
-
-var eq$1 = eq_1;
+/* eslint-disable no-console */
 
 /**
- * Gets the index at which the `key` is found in `array` of key-value pairs.
- *
- * @private
- * @param {Array} array The array to inspect.
- * @param {*} key The key to search for.
- * @returns {number} Returns the index of the matched value, else `-1`.
+ * Web Application Response handler, sends a prepared express js response
+ * with the supplied content sending in the specified manner
+ * @param {response} request express js request object
+ * @param {response} response express js response object
+ * @param {string | object} content the content to send in the response body
+ * @param {"send" | "json" | "end"} send the response function to call e.g res.send() res.json() res.end()
  */
-function assocIndexOf$4(array, key) {
-  var length = array.length;
-  while (length--) {
-    if (eq$1(array[length][0], key)) {
-      return length;
+const handleResponse = (request, response, content, send = 'send') => {
+  // console.log('---', response.statusCode, '---');
+  response[send](content);
+};
+
+const readFileSync = path => fs__default.default.readFileSync(path, 'utf8');
+const loadableBundleData = ({
+  stats,
+  templates
+}, staticRoutePath, build) => {
+  const bundle = {};
+  try {
+    bundle.stats = stats ? JSON.parse(readFileSync(stats.replace('/target', build ? `/${build}` : ''))) : null;
+  } catch (ex) {
+    // console.info(ex);
+    bundle.stats = null;
+  }
+  try {
+    bundle.templates = {
+      templateHTML: replaceStaticPath(readFileSync(templates.html.replace('/target', build ? `/${build}` : '')), staticRoutePath),
+      templateHTMLStatic: replaceStaticPath(readFileSync(templates.static.replace('/target', build ? `/${build}` : '')), staticRoutePath),
+      templateHTMLFragment: replaceStaticPath(readFileSync(templates.fragment.replace('/target', build ? `/${build}` : '')), staticRoutePath)
+    };
+  } catch (ex) {
+    // console.info(ex);
+    bundle.templates = null;
+  }
+  return bundle;
+};
+const loadableChunkExtractors = () => {
+  const commonLoadableExtractor = new server$1.ChunkExtractor({
+    stats: {}
+  });
+  try {
+    let modern;
+    let legacy;
+    try {
+      modern = new server$1.ChunkExtractor({
+        entrypoints: ['app'],
+        namespace: 'modern',
+        statsFile: path__default.default.resolve('dist/modern/loadable-stats.json')
+      });
+    } catch (e) {
+      console.info('@loadable/server modern ChunkExtractor not available');
+    }
+    try {
+      legacy = new server$1.ChunkExtractor({
+        entrypoints: ['app'],
+        namespace: 'legacy',
+        statsFile: path__default.default.resolve('dist/legacy/loadable-stats.json')
+      });
+    } catch (e) {
+      console.info('@loadable/server legacy ChunkExtractor not available');
+    }
+    commonLoadableExtractor.addChunk = chunk => {
+      var _modern, _legacy, _legacy2;
+      (_modern = modern) === null || _modern === void 0 || _modern.addChunk(chunk);
+      if (typeof ((_legacy = legacy) === null || _legacy === void 0 ? void 0 : _legacy.stats.assetsByChunkName[chunk]) !== 'undefined') (_legacy2 = legacy) === null || _legacy2 === void 0 || _legacy2.addChunk(chunk);
+    };
+    return {
+      commonLoadableExtractor,
+      modern,
+      legacy
+    };
+  } catch (e) {
+    console.info('@loadable/server no ChunkExtractor available');
+    return {
+      commonLoadableExtractor
+    };
+  }
+};
+const getBundleData = (config, staticRoutePath) => {
+  const bundleData = {
+    default: loadableBundleData(config, staticRoutePath),
+    legacy: loadableBundleData(config, staticRoutePath, 'legacy'),
+    modern: loadableBundleData(config, staticRoutePath, 'modern')
+  };
+  if (!bundleData.default || Object.keys(bundleData.default || {}).length === 0) bundleData.default = bundleData.legacy || bundleData.modern;
+  return bundleData;
+};
+
+// export const buildBundleTags = (
+//   bundles,
+//   differentialBundles = false,
+//   staticRoutePath = 'static',
+//   attributes = ''
+// ) => {
+//   // Take the bundles returned from Loadable.Capture
+//   const bundleTags = bundles
+//     .filter(b => b)
+//     .map(bundle => {
+//       if (bundle.publicPath.includes('/modern/'))
+//         return differentialBundles
+//           ? `<script ${attributes} type="module" src="${replaceStaticPath(
+//               bundle.publicPath,
+//               staticRoutePath
+//             )}"></script>`
+//           : null;
+//       return `<script ${attributes}${
+//         differentialBundles ? ' nomodule' : ''
+//       } src="${replaceStaticPath(
+//         bundle.publicPath,
+//         staticRoutePath
+//       )}"></script>`;
+//     })
+//     .filter(f => f);
+
+//   return bundleTags;
+// };
+
+const getBundleTags = (loadableExtractor, scripts, staticRoutePath = 'static') => {
+  let startupTag = '';
+  // Add the static startup script to the bundleTags
+  if (scripts !== null && scripts !== void 0 && scripts.startup) startupTag = `<script ${stringifyAttributes(scripts.attributes)} src="/${staticRoutePath}/${scripts.startup}"></script>`;
+
+  // Get the script tags from their respective extractor instances
+  if (loadableExtractor) {
+    var _loadableExtractor$le, _loadableExtractor$mo;
+    const legacyScriptTags = (_loadableExtractor$le = loadableExtractor.legacy) === null || _loadableExtractor$le === void 0 ? void 0 : _loadableExtractor$le.getScriptTags({
+      nomodule: 'nomodule'
+    });
+    const modernScriptTags = (_loadableExtractor$mo = loadableExtractor.modern) === null || _loadableExtractor$mo === void 0 ? void 0 : _loadableExtractor$mo.getScriptTags({
+      type: 'module'
+    });
+    const scriptTags = `${startupTag}${legacyScriptTags || ''}${modernScriptTags || ''}`.replace(/"\/static\//g, `"/${staticRoutePath}/`);
+    return scriptTags;
+  }
+  return startupTag;
+};
+
+const addStandardHeaders = (state, response, packagejson, groups) => {
+  if (state) {
+    try {
+      const routingSurrogateKeys = selectors.selectSurrogateKeys(state);
+      const apiCalls = selectors.selectSsrApiCalls(state);
+      const anyApiError = !!apiCalls.find(([status]) => status >= 400);
+
+      // Check length of surrogate keys and prevent potential header overflow errors in prod
+      // Check for any error set in the page response
+      // And check if we have seen any error in any of the Delivery API calls
+      // - add `any-update` header that will indiscriminately
+      //   invalidate the SSR page cache when any content is updated
+      const addAnyUpdateHeader = routingSurrogateKeys.length >= 2000 || response.statusCode >= 400 || anyApiError;
+      console.info(`[addStandardHeaders] ${addAnyUpdateHeader ? anyUpdateHeader : routingSurrogateKeys.length} surrogate keys for ${response.req.url}`);
+      const surrogateKeys = addAnyUpdateHeader ? anyUpdateHeader : routingSurrogateKeys.join(' ');
+      const surrogateKeyHeader = `${packagejson.name}-app ${surrogateKeys}`;
+      response.setHeader('surrogate-key', surrogateKeyHeader);
+      addVarnishAuthenticationHeaders(state, response, groups);
+      response.setHeader('surrogate-control', `max-age=${getCacheDuration(response.statusCode)}`);
+    } catch (e) {
+      console.info('[addStandardHeaders] Error adding headers', e.message);
     }
   }
-  return -1;
-}
-
-var _assocIndexOf = assocIndexOf$4;
-
-var assocIndexOf$3 = _assocIndexOf;
-
-/** Used for built-in method references. */
-var arrayProto = Array.prototype;
-
-/** Built-in value references. */
-var splice = arrayProto.splice;
-
-/**
- * Removes `key` and its value from the list cache.
- *
- * @private
- * @name delete
- * @memberOf ListCache
- * @param {string} key The key of the value to remove.
- * @returns {boolean} Returns `true` if the entry was removed, else `false`.
- */
-function listCacheDelete$1(key) {
-  var data = this.__data__,
-      index = assocIndexOf$3(data, key);
-
-  if (index < 0) {
-    return false;
+};
+const addVarnishAuthenticationHeaders = (state, response, groups = {}) => {
+  if (state) {
+    try {
+      const stateEntry = selectors.selectRouteEntry(state);
+      const project = selectors.selectCurrentProject(state);
+      const {
+        globalGroups,
+        allowedGroups
+      } = groups;
+      // console.info(globalGroups, allowedGroups);
+      let allGroups = Array.from(globalGroups && globalGroups[project] || {});
+      if (stateEntry && selectors.getImmutableOrJS(stateEntry, ['authentication', 'isLoginRequired']) && allowedGroups && allowedGroups[project]) {
+        allGroups = [...allGroups, ...allowedGroups[project]];
+      }
+      response.header('x-contensis-viewer-groups', allGroups.join('|'));
+    } catch (e) {
+      console.info('Error adding authentication header', e);
+    }
   }
-  var lastIndex = data.length - 1;
-  if (index == lastIndex) {
-    data.pop();
-  } else {
-    splice.call(data, index, 1);
+};
+
+const getVersionInfo = staticFolderPath => {
+  try {
+    const versionData = fs__default.default.readFileSync(`dist/${staticFolderPath}/version.json`, 'utf8');
+    const versionInfo = JSON.parse(versionData);
+    return versionInfo;
+  } catch (ex) {
+    console.error(`Unable to read from "version.json"`, ex);
+    return {};
   }
-  --this.size;
-  return true;
-}
+};
 
-var _listCacheDelete = listCacheDelete$1;
+/* eslint-disable no-console */
 
-var assocIndexOf$2 = _assocIndexOf;
+// Default exception types to add event listeners for
+const handleDefaultEvents = ['uncaughtException', 'unhandledRejection'];
+const unhandledExceptionHandler = (handleExceptions = handleDefaultEvents) => {
+  const exceptionTypes = Array.isArray(handleExceptions) ? handleExceptions : handleExceptions === false ? [] : handleDefaultEvents;
+  for (const type of exceptionTypes) {
+    process.on(type, err => {
+      if (err && err instanceof Error) {
+        // Print a message to inform admins and developers the error should not be ignored
+        console.log(`${`[contensis-react-base] ❌ ${chalk__default.default.red.bold(`${type} - ${err.message}`)}`}`);
+        console.log(chalk__default.default.gray` - you are seeing this because we have tried to prevent the app from completely crashing - you should not ignore this problem`);
+        // Log the error to server console
+        console.error(err);
+      }
+    });
+  }
+};
 
-/**
- * Gets the list cache value for `key`.
- *
- * @private
- * @name get
- * @memberOf ListCache
- * @param {string} key The key of the value to get.
- * @returns {*} Returns the entry value.
- */
-function listCacheGet$1(key) {
-  var data = this.__data__,
-      index = assocIndexOf$2(data, key);
+const webApp = (app, ReactApp, config) => {
+  const {
+    stateType = 'immutable',
+    routes,
+    withReducers,
+    withSagas,
+    withEvents,
+    packagejson,
+    scripts = {},
+    staticFolderPath = 'static',
+    startupScriptFilename,
+    allowedGroups,
+    globalGroups,
+    disableSsrRedux,
+    enableSsrCookies,
+    handleResponses,
+    handleExceptions = true
+  } = config;
+  const staticRoutePath = config.staticRoutePath || staticFolderPath;
+  const bundleData = getBundleData(config, staticRoutePath);
+  const attributes = stringifyAttributes(scripts.attributes);
+  scripts.startup = scripts.startup || startupScriptFilename;
+  const responseHandler = typeof handleResponses === 'function' ? handleResponses : handleResponse;
+  if (handleExceptions !== false) unhandledExceptionHandler(handleExceptions); // Create `process.on` event handlers for unhandled exceptions (Node v15+)
 
-  return index < 0 ? undefined : data[index][1];
-}
+  const versionInfo = getVersionInfo(staticFolderPath);
+  app.get('/*', cookiesMiddleware__default.default(), async (request, response) => {
+    const url = encodeURI(request.url);
+    const matchedStaticRoute = () => reactRouterConfig.matchRoutes(routes.StaticRoutes, request.path);
+    const isStaticRoute = () => matchedStaticRoute().length > 0;
+    const staticRoute = isStaticRoute() && matchedStaticRoute()[0];
 
-var _listCacheGet = listCacheGet$1;
-
-var assocIndexOf$1 = _assocIndexOf;
-
-/**
- * Checks if a list cache value for `key` exists.
- *
- * @private
- * @name has
- * @memberOf ListCache
- * @param {string} key The key of the entry to check.
- * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
- */
-function listCacheHas$1(key) {
-  return assocIndexOf$1(this.__data__, key) > -1;
-}
-
-var _listCacheHas = listCacheHas$1;
-
+<<<<<<< HEAD
 var assocIndexOf = _assocIndexOf;
 
 /**
@@ -3980,6 +4174,15 @@ const webApp = (app, ReactApp, config) => {
 
 
     const accessMethod = mapJson__default["default"](request.query, {
+=======
+    // Allow certain routes to avoid SSR
+    const onlyDynamic = staticRoute && staticRoute.route.ssr === false;
+    const onlySSR = staticRoute && staticRoute.route.ssrOnly === true;
+    const normaliseQs = q => q && q.toLowerCase() === 'true' ? true : false;
+
+    // Determine functional params from QueryString and set access methods
+    const accessMethod = mapJson__default.default(request.query, {
+>>>>>>> master
       DYNAMIC: ({
         dynamic
       }) => normaliseQs(dynamic) || onlyDynamic,
@@ -3999,21 +4202,34 @@ const webApp = (app, ReactApp, config) => {
 
     response.status(200); // Create a store (with a memory history) from our current url
 
+<<<<<<< HEAD
     const store = await version.createStore(withReducers, {}, App.history({
+=======
+    // Create a store (with a memory history) from our current url
+    const store$1 = await store.createStore(withReducers, {}, App.history({
+>>>>>>> master
       initialEntries: [url]
     }), stateType); // dispatch any global and non-saga related actions before calling our JSX
 
+<<<<<<< HEAD
     const versionStatus = ContensisDeliveryApi.deliveryApi.getServerSideVersionStatus(request); // In server-side blocks world, the hostname requested by the client resides in the x-orig-host header
+=======
+    // dispatch any global and non-saga related actions before calling our JSX
+    const versionStatus = SSRContext.deliveryApi.getServerSideVersionStatus(request);
+
+    // In server-side blocks world, the hostname requested by the client resides in the x-orig-host header
+>>>>>>> master
     // Because of this, we prioritize x-orig-host when setting our hostname
 
     const hostname = request.headers['x-orig-host'] || request.hostname;
     console.info(`Request for ${request.path} hostname: ${hostname} versionStatus: ${versionStatus}`);
-    store.dispatch(version$1.setVersionStatus(versionStatus));
-    store.dispatch(version$1.setVersion(versionInfo.commitRef, versionInfo.buildNo));
+    store$1.dispatch(version.setVersionStatus(versionStatus));
+    store$1.dispatch(version.setVersion(versionInfo.commitRef, versionInfo.buildNo));
     const project = App.pickProject(hostname, request.query);
     const groups = allowedGroups && allowedGroups[project];
-    store.dispatch(selectors.setCurrentProject(project, groups, hostname));
+    store$1.dispatch(selectors.setCurrentProject(project, groups, hostname));
     const loadableExtractor = loadableChunkExtractors();
+<<<<<<< HEAD
     // Recast ChunkExtractorManager to avoid TS error `Property 'children' does not exist on type...`
     const ChunkExtractor = server$2.ChunkExtractorManager;
     const jsx = /*#__PURE__*/React__default["default"].createElement(ChunkExtractor, {
@@ -4025,8 +4241,27 @@ const webApp = (app, ReactApp, config) => {
     }, /*#__PURE__*/React__default["default"].createElement(RouteLoader.HttpContext.Provider, {
       value: context
     }, /*#__PURE__*/React__default["default"].createElement(StaticRouter_1, {
+=======
+    const ssrCookies = enableSsrCookies ?
+    // these cookies are managed by the cookiesMiddleware and contain listeners
+    // when cookies are read or written in ssr can be added to the `set-cookie` response header
+    request.universalCookies :
+    // this is a stub cookie collection so cookie methods can be used in code
+    new CookieHelper_class.Cookies();
+    const jsx = /*#__PURE__*/React__default.default.createElement(server$1.ChunkExtractorManager, {
+      extractor: loadableExtractor.commonLoadableExtractor
+    }, /*#__PURE__*/React__default.default.createElement(reactCookie.CookiesProvider, {
+      cookies: ssrCookies
+    }, /*#__PURE__*/React__default.default.createElement(reactRedux.Provider, {
+      store: store$1
+    }, /*#__PURE__*/React__default.default.createElement(reactRouterDom.StaticRouter, {
+      context: context,
+>>>>>>> master
       location: url
-    }, /*#__PURE__*/React__default["default"].createElement(ReactApp, {
+    }, /*#__PURE__*/React__default.default.createElement(SSRContext.SSRContextProvider, {
+      request: request,
+      response: response
+    }, /*#__PURE__*/React__default.default.createElement(ReactApp, {
       routes: routes,
       withEvents: withEvents
     }))))));
@@ -4052,7 +4287,8 @@ const webApp = (app, ReactApp, config) => {
 
 
     if (!accessMethod.DYNAMIC) {
-      store.runSaga(App.rootSaga(withSagas)).toPromise().then(() => {
+      store$1.runSaga(App.rootSaga(withSagas)).toPromise().then(() => {
+        var _selectCurrentSearch;
         const sheet = new styled.ServerStyleSheet();
         const html = server$3.renderToString(sheet.collectStyles(jsx));
         const helmet = reactHelmet.Helmet.renderStatic();
@@ -4064,13 +4300,18 @@ const webApp = (app, ReactApp, config) => {
         if (context.url) {
           return response.redirect(context.statusCode || 302, context.url);
         }
+<<<<<<< HEAD
+=======
+        const reduxState = store$1.getState();
+        const styleTags = sheet.getStyleTags();
+>>>>>>> master
 
         const reduxState = store.getState();
         const styleTags = sheet.getStyleTags(); // After running rootSaga there should be an additional react-loadable
         // code-split bundles for any page components as well as core app bundles
 
         const bundleTags = getBundleTags(loadableExtractor, scripts, staticRoutePath);
-        let serialisedReduxData = serialize__default["default"](lodashClean.buildCleaner({
+        let clonedState = lodashClean.buildCleaner({
           isArray: lodash.identity,
           isBoolean: lodash.identity,
           isDate: lodash.identity,
@@ -4079,8 +4320,25 @@ const webApp = (app, ReactApp, config) => {
           isPlainObject: lodash.identity,
           isString: lodash.identity,
           isUndefined: lodash.noop
+<<<<<<< HEAD
         })(cloneDeep_1(reduxState)));
 
+=======
+        })(sagas.cloneDeep(reduxState));
+        // These keys are used for preparing server-side response headers only
+        // and are not required in the client at all except for debugging ssr
+        if (!((_selectCurrentSearch = selectors.selectCurrentSearch(reduxState)) !== null && _selectCurrentSearch !== void 0 && _selectCurrentSearch.includes('includeApiCalls'))) {
+          if (stateType === 'immutable') clonedState = clonedState.deleteIn(['routing', 'apiCalls']).deleteIn(['routing', 'surrogateKeys']);else {
+            delete clonedState.routing.apiCalls;
+            delete clonedState.routing.surrogateKeys;
+          }
+        }
+        // Reset user state to prevent user details from being cached in SSR
+        if (stateType === 'immutable') {
+          clonedState = clonedState.delete('user');
+        } else delete clonedState.user;
+        let serialisedReduxData = serialize__default.default(clonedState);
+>>>>>>> master
         if (context.statusCode !== 404) {
           // For a request that returns a redux state object as a response
           if (accessMethod.REDUX) {
@@ -4109,19 +4367,34 @@ const webApp = (app, ReactApp, config) => {
         if (context.statusCode === 404) title = '<title>404 page not found</title>'; // Static page served as a fragment
 
         if (accessMethod.FRAGMENT && accessMethod.STATIC) {
+<<<<<<< HEAD
           responseHTML = minifyCssString__default["default"](styleTags) + html;
         } // Page fragment served with client scripts and redux data that hydrate the app client side
 
+=======
+          responseHTML = minifyCssString__default.default(styleTags) + html;
+        }
+>>>>>>> master
 
         if (accessMethod.FRAGMENT && !accessMethod.STATIC) {
+<<<<<<< HEAD
           responseHTML = templateHTMLFragment.replace('{{TITLE}}', title).replace('{{SEO_CRITICAL_METADATA}}', metadata).replace('{{CRITICAL_CSS}}', minifyCssString__default["default"](styleTags)).replace('{{APP}}', html).replace('{{LOADABLE_CHUNKS}}', bundleTags).replace('{{REDUX_DATA}}', serialisedReduxData);
         } // Full HTML page served statically
 
+=======
+          responseHTML = templateHTMLFragment.replace('{{TITLE}}', title).replace('{{SEO_CRITICAL_METADATA}}', metadata).replace('{{CRITICAL_CSS}}', minifyCssString__default.default(styleTags)).replace('{{APP}}', html).replace('{{LOADABLE_CHUNKS}}', bundleTags).replace('{{REDUX_DATA}}', serialisedReduxData);
+        }
+>>>>>>> master
 
         if (!accessMethod.FRAGMENT && accessMethod.STATIC) {
+<<<<<<< HEAD
           responseHTML = templateHTMLStatic.replace('{{TITLE}}', title).replace('{{SEO_CRITICAL_METADATA}}', metadata).replace('{{CRITICAL_CSS}}', minifyCssString__default["default"](styleTags)).replace('{{APP}}', html).replace('{{LOADABLE_CHUNKS}}', '');
         } // Full HTML page served with client scripts and redux data that hydrate the app client side
 
+=======
+          responseHTML = templateHTMLStatic.replace('{{TITLE}}', title).replace('{{SEO_CRITICAL_METADATA}}', metadata).replace('{{CRITICAL_CSS}}', minifyCssString__default.default(styleTags)).replace('{{APP}}', html).replace('{{LOADABLE_CHUNKS}}', '');
+        }
+>>>>>>> master
 
         if (!accessMethod.FRAGMENT && !accessMethod.STATIC) {
           responseHTML = templateHTML.replace('{{TITLE}}', title).replace('{{SEO_CRITICAL_METADATA}}', metadata).replace('{{CRITICAL_CSS}}', styleTags).replace('{{APP}}', html).replace('{{LOADABLE_CHUNKS}}', bundleTags).replace('{{REDUX_DATA}}', serialisedReduxData);
@@ -4153,15 +4426,25 @@ const webApp = (app, ReactApp, config) => {
         response.status(500);
         responseHandler(request, response, `Error occurred: <br />${err.stack} <br />${JSON.stringify(err)}`);
       });
+<<<<<<< HEAD
       server$3.renderToString(jsx);
       store.close();
+=======
+      server$2.renderToString(jsx);
+      store$1.close();
+>>>>>>> master
     }
   });
 };
 
+<<<<<<< HEAD
 const app = express__default["default"]();
 const server = http__default["default"].createServer(app);
 
+=======
+const app = express__default.default();
+const server = http__default.default.createServer(app);
+>>>>>>> master
 const start = (ReactApp, config, ServerFeatures) => {
   global.PACKAGE_JSON = config.packagejson;
   global.DISABLE_SSR_REDUX = config.disableSsrRedux;
@@ -4200,6 +4483,6 @@ var internalServer = {
 };
 
 exports.ReactApp = App.AppRoot;
-exports["default"] = internalServer;
+exports.default = internalServer;
 exports.linkDepthApi = makeLinkDepthApi;
 //# sourceMappingURL=contensis-react-base.js.map

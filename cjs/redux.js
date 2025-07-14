@@ -1,27 +1,37 @@
 'use strict';
 
+<<<<<<< HEAD
 Object.defineProperty(exports, '__esModule', { value: true });
 
 var version$1 = require('./version-34d91f68.js');
 var selectors$1 = require('./selectors-14caa813.js');
 var version$2 = require('./version-a410c88e.js');
+=======
+var store = require('./store-BihH67lI.js');
+var selectors$1 = require('./selectors-wCs5fHD4.js');
+var version$1 = require('./version-Cg79mdPg.js');
+var version$2 = require('./version-CM-bJ62L.js');
+>>>>>>> master
 require('redux');
 require('redux-thunk');
 require('redux-saga');
 require('redux-injectors');
 require('immer');
+<<<<<<< HEAD
 require('./reducers-73a03ef4.js');
+=======
+>>>>>>> master
 require('jsonpath-mapper');
 require('query-string');
 require('@redux-saga/core/effects');
 
 var types = {
-  navigation: version$1.navigation,
+  navigation: store.navigation,
   routing: selectors$1.routing,
-  version: version$1.version
+  version: store.version
 };
 
-const loadNavigationTree = () => selectors$1.action(version$1.GET_NODE_TREE);
+const loadNavigationTree = () => selectors$1.action(store.GET_NODE_TREE);
 
 var navigation$1 = /*#__PURE__*/Object.freeze({
   __proto__: null,
@@ -31,13 +41,13 @@ var navigation$1 = /*#__PURE__*/Object.freeze({
 var actions = {
   navigation: navigation$1,
   routing: selectors$1.routing$1,
-  version: version$2.version
+  version: version$1.version
 };
 
 var selectors = {
-  navigation: version$2.navigation,
+  navigation: version$1.navigation,
   routing: selectors$1.routing$2,
-  version: version$1.version$1
+  version: version$2.version
 };
 
 // e.g. { routing: { types, actions }, navigation: { types, actions } }
@@ -59,18 +69,18 @@ const version = {
   selectors: selectors.version
 };
 
-Object.defineProperty(exports, 'store', {
+Object.defineProperty(exports, "store", {
   enumerable: true,
-  get: function () { return version$1.reduxStore; }
+  get: function () { return store.reduxStore; }
 });
 exports.action = selectors$1.action;
 exports.getIn = selectors$1.getImmutableOrJS;
 exports.getJS = selectors$1.getJS;
-exports.convertSagaArray = version$2.convertSagaArray;
-exports.injectReducer = version$2.injectReducer;
-exports.injectRedux = version$2.injectRedux;
-exports.injectSaga = version$2.injectSaga;
-exports.useInjectRedux = version$2.useInjectRedux;
+exports.convertSagaArray = version$1.convertSagaArray;
+exports.injectReducer = version$1.injectReducer;
+exports.injectRedux = version$1.injectRedux;
+exports.injectSaga = version$1.injectSaga;
+exports.useInjectRedux = version$1.useInjectRedux;
 exports.navigation = navigation;
 exports.routing = routing;
 exports.version = version;

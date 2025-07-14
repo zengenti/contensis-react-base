@@ -1,15 +1,28 @@
+<<<<<<< HEAD
 import { n as navigation$2, v as version$1, G as GET_NODE_TREE, e as version$3 } from './version-3d9911e2.js';
 export { r as store } from './version-3d9911e2.js';
 import { F as routing$1, E as action, G as routing$2, H as routing$3 } from './selectors-691caf02.js';
 export { E as action, g as getIn, I as getJS } from './selectors-691caf02.js';
 import { v as version$2, n as navigation$3 } from './version-9f29becb.js';
 export { c as convertSagaArray, b as injectReducer, i as injectRedux, d as injectSaga, u as useInjectRedux } from './version-9f29becb.js';
+=======
+import { n as navigation$2, v as version$1, G as GET_NODE_TREE } from './store-f0WxNWUu.js';
+export { r as store } from './store-f0WxNWUu.js';
+import { r as routing$1, c as action, a as routing$2, b as routing$3 } from './selectors-BRzliwbK.js';
+export { g as getIn, u as getJS } from './selectors-BRzliwbK.js';
+import { v as version$2, n as navigation$3 } from './version-BnnERhzW.js';
+export { c as convertSagaArray, a as injectReducer, i as injectRedux, b as injectSaga, u as useInjectRedux } from './version-BnnERhzW.js';
+import { v as version$3 } from './version-78jjDnHU.js';
+>>>>>>> master
 import 'redux';
 import 'redux-thunk';
 import 'redux-saga';
 import 'redux-injectors';
 import 'immer';
+<<<<<<< HEAD
 import './reducers-aa8cef1e.js';
+=======
+>>>>>>> master
 import 'jsonpath-mapper';
 import 'query-string';
 import '@redux-saga/core/effects';
@@ -58,5 +71,5 @@ const version = {
   selectors: selectors.version
 };
 
-export { navigation, routing, version };
+export { action, navigation, routing, version };
 //# sourceMappingURL=redux.js.map

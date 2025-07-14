@@ -6,6 +6,10 @@ export const CacheDuration = {
 };
 
 export const getCacheDuration = (status = 200) => {
-  if (status > 400) return CacheDuration[404];
+  if (status >= 400) return CacheDuration[404];
   return CacheDuration[200];
 };
+
+const alias = ALIAS; /* global ALIAS */
+
+export const anyUpdateHeader = `${alias}_any-update`;

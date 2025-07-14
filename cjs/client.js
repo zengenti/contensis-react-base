@@ -10,6 +10,7 @@ var require$$2 = require('react-router-dom');
 var component = require('@loadable/component');
 var queryString = require('query-string');
 var reactCookie = require('react-cookie');
+<<<<<<< HEAD
 var version = require('./version-34d91f68.js');
 var version$1 = require('./version-a410c88e.js');
 var App = require('./App-b56aca04.js');
@@ -21,22 +22,49 @@ require('redux-saga');
 require('redux-injectors');
 require('immer');
 require('./reducers-73a03ef4.js');
+=======
+var version = require('./version-CM-bJ62L.js');
+var version$1 = require('./version-Cg79mdPg.js');
+var App = require('./App-B2ohFzUt.js');
+var store = require('./store-BihH67lI.js');
+var selectors = require('./selectors-wCs5fHD4.js');
+var SSRContext = require('./SSRContext-DpnwQ2te.js');
+>>>>>>> master
 require('@redux-saga/core/effects');
 require('history');
 require('loglevel');
 require('await-to-js');
+<<<<<<< HEAD
 require('./ChangePassword.container-ae35785e.js');
 require('./ToJs-a8d8f3f0.js');
+=======
+require('./ChangePassword.container-Dup9_na7.js');
+require('./ToJs-C9jwV7YB.js');
+>>>>>>> master
 require('jsonpath-mapper');
-require('./CookieConstants-000427db.js');
+require('./CookieHelper.class-CxeVo9EP.js');
 require('contensis-delivery-api');
+<<<<<<< HEAD
 require('./RouteLoader-c06dccd5.js');
+=======
+require('./RouteLoader-De-dhkg-.js');
+require('react-router-config');
+>>>>>>> master
 require('reselect');
+require('redux');
+require('redux-thunk');
+require('redux-saga');
+require('redux-injectors');
+require('immer');
 
-function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+function _interopDefault (e) { return e && e.__esModule ? e : { default: e }; }
 
+<<<<<<< HEAD
 var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
 var require$$0__default = /*#__PURE__*/_interopDefaultLegacy(require$$0);
+=======
+var React__default = /*#__PURE__*/_interopDefault(React);
+>>>>>>> master
 
 var hydrateRoot;
 var createRoot;
@@ -77,14 +105,24 @@ class ClientApp {
     } = config;
 
     const GetClientJSX = store => {
+<<<<<<< HEAD
       const ClientJsx = /*#__PURE__*/React__default["default"].createElement(reactCookie.CookiesProvider, null, /*#__PURE__*/React__default["default"].createElement(reactRedux.Provider, {
         store: store
       }, /*#__PURE__*/React__default["default"].createElement(require$$2.unstable_HistoryRouter, {
+=======
+      const ClientJsx = /*#__PURE__*/React__default.default.createElement(Container, null, /*#__PURE__*/React__default.default.createElement(reactCookie.CookiesProvider, null, /*#__PURE__*/React__default.default.createElement(reactRedux.Provider, {
+        store: store
+      }, /*#__PURE__*/React__default.default.createElement(reactRouterDom.Router, {
+>>>>>>> master
         history: App.browserHistory
-      }, /*#__PURE__*/React__default["default"].createElement(ReactApp, {
+      }, /*#__PURE__*/React__default.default.createElement(SSRContext.SSRContextProvider, null, /*#__PURE__*/React__default.default.createElement(ReactApp, {
         routes: routes,
         withEvents: withEvents
+<<<<<<< HEAD
       }))));
+=======
+      }))))));
+>>>>>>> master
       return ClientJsx;
     };
 
@@ -112,10 +150,14 @@ class ClientApp {
     };
 
     const qs = queryString.parse(window.location.search);
+<<<<<<< HEAD
     const versionStatus = ContensisDeliveryApi.deliveryApi.getClientSideVersionStatus();
 
+=======
+    const versionStatus = SSRContext.deliveryApi.getClientSideVersionStatus();
+>>>>>>> master
     if (window.isDynamic || window.REDUX_DATA || process.env.NODE_ENV !== 'production') {
-      version.createStore(withReducers, window.REDUX_DATA, App.browserHistory, stateType).then(store => {
+      store.createStore(withReducers, window.REDUX_DATA, App.browserHistory, stateType).then(store => {
         const state = store.getState();
         const ssrVersionStatus = version.selectVersionStatus(state);
         if (!ssrVersionStatus) store.dispatch(version$1.setVersionStatus(versionStatus));
@@ -133,7 +175,7 @@ class ClientApp {
     } else {
       fetch(`${window.location.pathname}?redux=true`).then(response => response.json()).then(data => {
         const ssRedux = JSON.parse(data);
-        version.createStore(withReducers, ssRedux, App.browserHistory, stateType).then(store => {
+        store.createStore(withReducers, ssRedux, App.browserHistory, stateType).then(store => {
           store.dispatch(version$1.setVersionStatus(versionStatus));
           store.runSaga(App.rootSaga(withSagas));
           store.dispatch(selectors.setCurrentProject(App.pickProject(window.location.hostname, qs), [], window.location.hostname));
@@ -147,5 +189,5 @@ class ClientApp {
 }
 
 exports.ReactApp = App.AppRoot;
-exports["default"] = ClientApp;
+exports.default = ClientApp;
 //# sourceMappingURL=client.js.map

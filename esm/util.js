@@ -1,21 +1,37 @@
+<<<<<<< HEAD
 export { s as setCachingHeaders, u as urls } from './urls-eac9a747.js';
 export { c as cachedSearch, a as cachedSearchWithCookies, d as deliveryApi, b as deliveryApiWithCookies, g as getClientConfig } from './ContensisDeliveryApi-fe57a037.js';
+=======
+export { s as setCachingHeaders, u as urls } from './urls-DfCisos-.js';
+export { S as SSRContextProvider, c as cachedSearch, a as cachedSearchWithCookies, d as deliveryApi, b as deliveryApiWithCookies, g as getClientConfig, e as useDeliveryApi, u as useSSRContext } from './SSRContext-3TvaCDn0.js';
+import { g as getDefaultExportFromCjs } from './_commonjsHelpers-BFTU3MAI.js';
+>>>>>>> master
 import mapJson, { jpath } from 'jsonpath-mapper';
 export { jpath, default as mapJson } from 'jsonpath-mapper';
 import React from 'react';
 import { connect } from 'react-redux';
+<<<<<<< HEAD
 import { b as selectCurrentProject } from './selectors-691caf02.js';
 import { f as selectCommitRef, g as selectBuildNumber, s as selectVersionStatus } from './version-3d9911e2.js';
+=======
+import { l as selectCurrentProject } from './selectors-BRzliwbK.js';
+import { a as selectCommitRef, b as selectBuildNumber, s as selectVersionStatus } from './version-78jjDnHU.js';
+>>>>>>> master
 import styled from 'styled-components';
+import 'react-cookie';
 import 'contensis-delivery-api';
 import 'query-string';
-import './CookieConstants-3d3b6531.js';
+import './store-f0WxNWUu.js';
 import 'redux';
 import 'redux-thunk';
 import 'redux-saga';
 import 'redux-injectors';
 import 'immer';
+<<<<<<< HEAD
 import './reducers-aa8cef1e.js';
+=======
+import './CookieHelper.class-W_NNNJKT.js';
+>>>>>>> master
 
 /**
  *
@@ -135,6 +151,7 @@ const entryMapper = mapping => (node, state) => mapJson({ ...node,
   state
 }, mapping);
 
+<<<<<<< HEAD
 const stringifyStrings = obj => {
   const returnObj = Array.isArray(obj) ? [] : {};
   Object.entries(obj).forEach(([key, value]) => {
@@ -156,6 +173,37 @@ const stringifyStrings = obj => {
 };
 
 var stringifyStrings_1 = stringifyStrings;
+=======
+var stringifyStrings_1;
+var hasRequiredStringifyStrings;
+
+function requireStringifyStrings () {
+	if (hasRequiredStringifyStrings) return stringifyStrings_1;
+	hasRequiredStringifyStrings = 1;
+	const stringifyStrings = obj => {
+	  const returnObj = Array.isArray(obj) ? [] : {};
+	  Object.entries(obj).forEach(([key, value]) => {
+	    switch (typeof value) {
+	      case 'string':
+	        returnObj[key] = JSON.stringify(value);
+	        break;
+	      case 'object':
+	        returnObj[key] = stringifyStrings(value);
+	        break;
+	      default:
+	        returnObj[key] = value;
+	        break;
+	    }
+	  });
+	  return returnObj;
+	};
+	stringifyStrings_1 = stringifyStrings;
+	return stringifyStrings_1;
+}
+
+var stringifyStringsExports = requireStringifyStrings();
+var stringifyStrings = /*@__PURE__*/getDefaultExportFromCjs(stringifyStringsExports);
+>>>>>>> master
 
 const context = typeof window != 'undefined' ? window : global;
 const isDev = process.env.NODE_ENV === 'development';
@@ -188,6 +236,7 @@ const versionInfoProps = {
     }
   },
   zenPackageVersions: () => [...(Object.entries(pj().devDependencies || {}).filter(([pkg]) => pkg.includes('zengenti') || pkg.includes('contensis')) || []), ...(Object.entries(pj().dependencies || {}).filter(([pkg]) => pkg.includes('zengenti') || pkg.includes('contensis')) || [])],
+<<<<<<< HEAD
   deliveryApi: () => JSON.parse(JSON.stringify(DELIVERY_API_CONFIG
   /* global DELIVERY_API_CONFIG */
   )),
@@ -197,6 +246,11 @@ const versionInfoProps = {
   disableSsrRedux: () => isDev ? DISABLE_SSR_REDUX
   /* global DISABLE_SSR_REDUX*/
   : context.DISABLE_SSR_REDUX || false,
+=======
+  deliveryApi: () => JSON.parse(JSON.stringify(DELIVERY_API_CONFIG /* global DELIVERY_API_CONFIG */)),
+  devEnv: () => typeof DEV_ENV !== 'undefined' /* global DEV_ENV */ ? DEV_ENV : null,
+  disableSsrRedux: () => isDev ? DISABLE_SSR_REDUX /* global DISABLE_SSR_REDUX*/ : context.DISABLE_SSR_REDUX || false,
+>>>>>>> master
   nodeEnv: () => process.env.NODE_ENV || 'production',
   packagejson: () => pj() || {},
   projects: () => isDev ? PROJECTS
@@ -312,5 +366,5 @@ const VersionInfo = ({
 
 var VersionInfo$1 = connect(mapStateToVersionInfo)(VersionInfo);
 
-export { VersionInfo$1 as VersionInfo, entryMapper, mapComposer, mapEntries, stringifyStrings_1 as stringifyStrings, useComposerMapper, useEntriesMapper, useEntryMapper, useMapper };
+export { VersionInfo$1 as VersionInfo, entryMapper, mapComposer, mapEntries, stringifyStrings, useComposerMapper, useEntriesMapper, useEntryMapper, useMapper };
 //# sourceMappingURL=util.js.map

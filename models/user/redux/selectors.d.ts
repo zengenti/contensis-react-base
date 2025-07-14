@@ -1,5 +1,4 @@
-import { StateType } from "../../config";
-import { AppState } from "../../redux/appstate";
+import { AppState, StateType } from "../../models";
 export declare const selectUserIsLoading: (state: AppState) => any;
 export declare const selectUserIsAuthenticated: (state: AppState) => any;
 export declare const selectUserIsAuthenticationError: (state: AppState) => any;

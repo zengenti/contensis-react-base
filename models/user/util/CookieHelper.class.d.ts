@@ -1,14 +1,18 @@
+import FallbackCookies from 'universal-cookie';
 type Cookies = {
     [k: string]: string;
 };
 export declare class CookieHelper {
     private cookies;
-    private setCookie;
-    private removeCookie;
+    private set?;
+    private remove?;
+    private update?;
+    private fallback;
     get raw(): Cookies;
-    constructor(cookies: {
+    get cookie(): FallbackCookies;
+    constructor(cookies?: {
         [k: string]: string;
-    }, setCookie: CookieHelper['setCookie'], removeCookie: CookieHelper['removeCookie']);
+    }, setCookie?: CookieHelper['set'], removeCookie?: CookieHelper['remove'], updateCookies?: CookieHelper['update']);
     GetCookie(name: string): string | null;
     SetCookie(name: string, value: string, maxAgeDays?: number): void;
     DeleteCookie(name: string): void;

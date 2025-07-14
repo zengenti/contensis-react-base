@@ -9,8 +9,7 @@ import {
 } from './types';
 
 import { Entry } from 'contensis-delivery-api/lib/models';
-import { AppRoutes, MatchedRoute, StaticRoute, WithEvents } from '../routes';
-import { CookieHelper } from '~/user/util/CookieHelper.class';
+import { AppRoutes, SSRContext, WithEvents, MatchedRoute, StaticRoute } from '~/models';
 
 export const setNavigationPath = (
   path: string,
@@ -19,7 +18,7 @@ export const setNavigationPath = (
   withEvents: WithEvents,
   statePath: string,
   routes: AppRoutes,
-  cookies: CookieHelper
+  ssr: SSRContext
 ) =>
   action(SET_NAVIGATION_PATH, {
     path,
@@ -28,7 +27,7 @@ export const setNavigationPath = (
     withEvents,
     statePath,
     routes,
-    cookies,
+    ssr,
   });
 
 export const setCurrentProject = (
@@ -42,5 +41,5 @@ export const setRoute = (path: string, state?: any) =>
 
 export const setRouteEntry = (entry: Entry) => action(SET_ENTRY, { entry });
 
-export const setSurrogateKeys = (keys: string, url: string) =>
-  action(SET_SURROGATE_KEYS, { keys, url });
+export const setSurrogateKeys = (keys: string, url: string, status: number) =>
+  action(SET_SURROGATE_KEYS, { keys, url, status });
