@@ -132,7 +132,6 @@ export default {
             ssr: true,
           },
         ],
-        'react-hot-loader/babel',
         '@loadable/babel-plugin',
         '@babel/plugin-syntax-dynamic-import',
         '@babel/plugin-transform-optional-chaining',

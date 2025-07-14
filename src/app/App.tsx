@@ -1,6 +1,6 @@
 import React from 'react';
-import { AppRootProps } from '../routing/routes';
 import { RouteLoader } from '../routing';
+import { AppRootProps } from '~/models';
 
 const AppRoot = (props: AppRootProps) => {
   return <RouteLoader {...props} />;
