@@ -1,6 +1,6 @@
 import React from 'react';
 import { RouteObject, useRoutes } from 'react-router-dom';
-import type { StaticRoute } from '../routes';
+import type { StaticRoute } from '~/models';
 
 export interface StaticRouteLoaderProps {
   staticRoutes: StaticRoute[];

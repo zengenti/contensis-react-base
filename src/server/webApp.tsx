@@ -27,13 +27,13 @@ import rootSaga from '~/redux/sagas';
 import { setVersion, setVersionStatus } from '~/redux/actions/version';
 import { HttpContext } from '~/routing/httpContext';
 import { setCurrentProject } from '~/routing/redux/actions';
+import { selectCurrentSearch } from '~/routing/redux/selectors';
 
 import { deliveryApi } from '~/util/ContensisDeliveryApi';
 import { mergeStaticRoutes } from '~/util/mergeStaticRoutes';
 import pickProject from '~/util/pickProject';
 import stringifyAttributes from './util/stringifyAttributes';
 
-import { MatchedRoute, StaticRoute } from '../';
 import { getCacheDuration } from './features/caching/cacheDuration.schema';
 import handleResponse from './features/response-handler';
 
@@ -44,10 +44,10 @@ import {
 } from './util/bundles';
 import { addStandardHeaders } from './util/headers';
 
-import { ServerConfig } from '~/config';
-import { AppState } from '~/redux/appstate';
+import { AppState, ServerConfig, MatchedRoute, StaticRoute } from '~/models';
 import { getVersionInfo } from './util/getVersionInfo';
 import { unhandledExceptionHandler } from './util/handleExceptions';
+import { SSRContextProvider } from '~/util/SSRContext';
 
 const webApp = (
   app: Express,
@@ -71,6 +71,7 @@ const webApp = (
     allowedGroups,
     globalGroups,
     disableSsrRedux,
+    enableSsrCookies,
     handleResponses,
     handleExceptions = true,
   } = config;
@@ -97,7 +98,7 @@ const webApp = (
       },
       response: Response
     ) => {
-      const { url } = request;
+      const url = encodeURI(request.url);
 
       const matchedStaticRoute = matchRoutes(
         routes.StaticRoutes as RouteObject[],
@@ -178,19 +179,28 @@ const webApp = (
         ComponentClass<ChunkExtractorManagerPropsForReact18>
       >;
 
+      const ssrCookies = enableSsrCookies
+        ? // these cookies are managed by the cookiesMiddleware and contain listeners
+          // when cookies are read or written in ssr can be added to the `set-cookie` response header
+          request.universalCookies
+        : // this is a stub cookie collection so cookie methods can be used in code
+          new Cookies();
+
       const jsx = (
         <ChunkExtractor extractor={loadableExtractor.commonLoadableExtractor}>
-          <CookiesProvider cookies={request.universalCookies}>
+          <CookiesProvider cookies={ssrCookies}>
             <ReduxProvider store={store}>
               <HttpContext.Provider value={context}>
                 <StaticRouter location={url}>
-                  <ReactApp routes={routes} withEvents={withEvents} />
+                  <SSRContextProvider request={request} response={response}>
+                    <ReactApp routes={routes} withEvents={withEvents} />
+                  </SSRContextProvider>
                 </StaticRouter>
               </HttpContext.Provider>
             </ReduxProvider>
           </CookiesProvider>
         </ChunkExtractor>
-      );
+      ) as React.ReactElement;
 
       const {
         templateHTML = '',
@@ -237,7 +247,9 @@ const webApp = (
           .then(() => {
             const sheet = new ServerStyleSheet();
 
-            const html = renderToString(sheet.collectStyles(jsx));
+            const html = renderToString(
+              sheet.collectStyles(jsx) as React.ReactElement
+            );
 
             const helmet = Helmet.renderStatic();
             Helmet.rewind();
@@ -266,18 +278,34 @@ const webApp = (
               staticRoutePath
             );
 
-            let serialisedReduxData = serialize(
-              buildCleaner({
-                isArray: identity,
-                isBoolean: identity,
-                isDate: identity,
-                isFunction: noop,
-                isNull: identity,
-                isPlainObject: identity,
-                isString: identity,
-                isUndefined: noop,
-              })(cloneDeep(reduxState))
-            );
+            let clonedState = buildCleaner({
+              isArray: identity,
+              isBoolean: identity,
+              isDate: identity,
+              isFunction: noop,
+              isNull: identity,
+              isPlainObject: identity,
+              isString: identity,
+              isUndefined: noop,
+            })(cloneDeep(reduxState));
+            // These keys are used for preparing server-side response headers only
+            // and are not required in the client at all except for debugging ssr
+            if (!selectCurrentSearch(reduxState)?.includes('includeApiCalls')) {
+              if (stateType === 'immutable')
+                clonedState = clonedState
+                  .deleteIn(['routing', 'apiCalls'])
+                  .deleteIn(['routing', 'surrogateKeys']);
+              else {
+                delete clonedState.routing.apiCalls;
+                delete clonedState.routing.surrogateKeys;
+              }
+            }
+            // Reset user state to prevent user details from being cached in SSR
+            if (stateType === 'immutable') {
+              clonedState = clonedState.delete('user');
+            } else delete clonedState.user;
+
+            let serialisedReduxData = serialize(clonedState);
             if (context.statusCode !== 404) {
               // For a request that returns a redux state object as a response
               if (accessMethod.REDUX) {

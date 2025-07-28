@@ -1,5 +1,4 @@
-import { StateType } from '~/config';
-import { AppState } from '~/redux/appstate';
+import { AppState, StateType } from '~/models';
 import { getImmutableOrJS as getIn } from '~/redux/util';
 
 export const selectUserIsLoading = (state: AppState) =>

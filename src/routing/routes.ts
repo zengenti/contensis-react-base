@@ -1,7 +1,10 @@
+// TODO: readded after merge from master
+// TODO: this file has been refactored
+
 import type { RouteObject, RouteMatch } from 'react-router';
 import { Entry, Node } from 'contensis-delivery-api/lib/models';
 import React from 'react';
-import { AppState } from '~/redux/appstate';
+import { AppState } from '~/models';
 import { CookieHelper } from '~/user/util/CookieHelper.class';
 
 type RouteComponent<Props> = React.ComponentType<Props>;
@@ -10,7 +13,7 @@ export type RouteNode = Node & { ancestors: Node[]; children: Node[] };
 
 export type MatchedRoute<
   ParamKey extends string = string,
-  TRouteObject extends RouteObject = RouteObject
+  TRouteObject extends RouteObject = RouteObject,
 > = Omit<RouteMatch<ParamKey>, 'route'> & {
   route: TRouteObject;
 };

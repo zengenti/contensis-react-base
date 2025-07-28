@@ -1,3 +1,95 @@
+# Changelog
+
+## [3.3.1](https://github.com/zengenti/contensis-react-base/compare/v3.3.0...v3.3.1) (2025-03-05)
+
+
+### Bug Fixes
+
+* error `Failed to execute 'fetch' on 'Window': Illegal invocation` from `contensis-core-api` package after caret update of `cross-fetch` dependency to 3.2.0 ([2cbc5d8](https://github.com/zengenti/contensis-react-base/commit/2cbc5d8c6ae1c42d9195401c2b17d8bc11766e7d))
+* missing props typing for `notFoundComponent` ([ec9e1fd](https://github.com/zengenti/contensis-react-base/commit/ec9e1fdb13c2e40641d412028978ca662e5c4d07))
+* rethrow errors when mapping route entries to bubble error up to handle in routing saga ([a70133e](https://github.com/zengenti/contensis-react-base/commit/a70133e1c9dc928fa0d0757bbae1c4a7e9c108a3))
+
+## [3.3.0](https://github.com/zengenti/contensis-react-base/compare/v3.2.2...v3.3.0) (2024-12-16)
+
+
+### Features
+
+* Update Styled components to v6 ([95c36ce](https://github.com/zengenti/contensis-react-base/commit/95c36ce02cb41babcd3e5311a6540c01534c1292))
+
+
+### Bug Fixes
+
+* content flash after ssr in projects using legacy `immutable` state format ([c3d070a](https://github.com/zengenti/contensis-react-base/commit/c3d070a005280ec7b9fc93ca19a88193b02a1864))
+* fetch all entry fields in routing call when no fields array is supplied in static route ([139c379](https://github.com/zengenti/contensis-react-base/commit/139c3791168de6c131ba10bd0650d19148df76e9))
+* protected forms render after logging out, set and unset additional login cookie used by `@contensis/forms` package ([721cbe0](https://github.com/zengenti/contensis-react-base/commit/721cbe0e6b2568224ad17f9c6aaed409cfb2c4a1))
+* sanitise server-side usage of uri parts from request addressing vulnerability `CWE-96: Improper Neutralization of Directives in Statically Saved Code` and `CWE-79: Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')` ([927b61b](https://github.com/zengenti/contensis-react-base/commit/927b61b7bdc6af870f8c782b9c3d647a0820b2cb))
+
+
+### Performance Improvements
+
+* entry fetch options not applied from `fetchNode` object in a matched static route ([a44a200](https://github.com/zengenti/contensis-react-base/commit/a44a200d7984541bc67e3b6347945dd26611876f))
+
+## [3.2.2](https://github.com/zengenti/contensis-react-base/compare/v3.2.1...v3.2.2) (2024-09-25)
+
+
+### Bug Fixes
+
+* `mappedEntry` is retained in state when changing to a route that does not have an `entryMapper` causing `entry` prop to become truncated after navigating inside the next page ([943609b](https://github.com/zengenti/contensis-react-base/commit/943609b26e55de1495e5ca41803d4edf13bef4dd))
+* `referer` header in api calls during ssr is not accurate in high concurrent load scenarios ([3bad28e](https://github.com/zengenti/contensis-react-base/commit/3bad28e97188af71c589713081db295590352ac3))
+* ensure SSR request and response objects are available in api SSRContext when the api is used from SSRContext ([abe1a2c](https://github.com/zengenti/contensis-react-base/commit/abe1a2c2ee88dcc3f53b7ce07c68c3815e5af0de))
+* handle authenticate api in localhost reverse proxy when proxying secured forms via the new forms api ([9d3c8b1](https://github.com/zengenti/contensis-react-base/commit/9d3c8b1cc5f2bd4c89b0c03a26f1b72d79fe31fc))
+* handle new forms api in localhost reverse proxy when proxying delivery api requests ([edd7932](https://github.com/zengenti/contensis-react-base/commit/edd793216842ceeb018f462b876d626de5dedb93))
+* server-side memory leak by updating cookies packages to latest ([5394cef](https://github.com/zengenti/contensis-react-base/commit/5394cef415a842e893a0ba93559f15bad38f0aa5))
+* TypeScript error in StaticRoutes files when used with Loadable components ([8f0840f](https://github.com/zengenti/contensis-react-base/commit/8f0840f010527c8500c46b52ceedb7896601f427))
+
+
+### Performance Improvements
+
+* add `contentTypeId` to query when resolving any route entry by id to improve response time ([7527262](https://github.com/zengenti/contensis-react-base/commit/7527262f445e01ad0381d5e5edcd1b3680bb07ae))
+
+#### 3.2.1 (2024-06-24)
+
+##### Bug Fixes
+
+*  use `cms` uri in user-based operations for DR scenario (135ccb54)
+*  update CachedDeliveryAPI to access the 'fields' query param (#11) (1110bf43)
+
+#### 3.2.0 (2024-04-26)
+
+##### New Features
+
+*  add support for new delivery api search parameter `fieldLinkDepths` (3f6d1def)
+*  introduce `SSRContext` allowing us to hold and access request-scope references throughout the component tree and use these refs in backing code reliably scoped to the current request (915e9f97)
+
+##### Bug Fixes
+
+*  cache invalidation - surrogate key count inconsistencies in high concurrent load scenario (915e9f97)
+*  Routing sagas - childrenOptions object undefined if nodeOptions.children not specified, meaning children saga would error with global children customNavigation setting (55b389b5)
+*  restore delivery api response handler to handle 200 responses only due to inconsistent behaviour in non-ok fetch responses (5f69d2db)
+*  add `any_update` header in SSR for any page request with any delivery api errors (3d404e4f)
+*  correct syntax for last immutable fix (f415a487)
+*  add server startup option `enableSsrCookies` as processing cookies in ssr can cause authentication information to become cached (67b0d011)
+*  undefined error in ssr when using immutable state type (afd2f147)
+*  undefined error on Redux in server features (e1e4842a)
+*  need to provide path attribute when using `universal-cookie` package (95fe9f12)
+*  Reset user state to prevent user details from being cached in SSR response (f8fb5bfe)
+*  allow CookieHelper  fallback to browser cookies when cookies args not provided (457c4f56)
+*  prevent mutation of DELIVERY_API_CONFIG when building client config (cafbe5e1)
+
+##### Performance Improvements
+
+*  remove surrogateKeys routing key from serialised redux state in ssr (749782bc)
+
+##### Refactors
+
+*  remove redundant types files (dac4cf52)
+*  consolidate typescript types in models folder (de959949)
+*  convert user login JS code to TypeScript (75ef4e0c)
+
+##### Code Style Changes
+
+*  fix return types in store creation (f611e88c)
+
 #### 3.1.0 (2024-01-18)
 
 ##### New Features

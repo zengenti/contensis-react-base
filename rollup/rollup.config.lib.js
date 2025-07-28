@@ -4,15 +4,11 @@ import alias from '@rollup/plugin-alias';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
-// import postcss from 'rollup-plugin-postcss';
 import submoduleResolvePlugin from './submodule-resolve-plugin';
 
 import path from 'path';
 
-const babelConfig = require('../babel.config.js');
 const packagejson = require('../package.json');
-const formsPackageJson = require('zengenti-forms-package/package.json');
-const searchPackageJson = require('zengenti-search-package/package.json');
 
 const projectRootDir = require('app-root-path').path;
 
@@ -20,7 +16,6 @@ export default {
   input: {
     'contensis-react-base': './src',
     client: './src/client',
-    forms: './src/forms',
     redux: './src/redux',
     routing: './src/routing',
     search: './src/search',
@@ -34,6 +29,7 @@ export default {
       format: 'cjs',
       sourcemap: true,
       exports: 'named',
+      interop: 'auto',
     },
     {
       // file: packageJson.module,
@@ -41,18 +37,19 @@ export default {
       format: 'esm',
       sourcemap: true,
       exports: 'named',
+      interop: 'auto',
     },
   ],
+  strictDeprecations: true,
   external: [
     ...Object.keys(packagejson.dependencies),
-    ...Object.keys(formsPackageJson.dependencies),
-    ...Object.keys(searchPackageJson.dependencies),
     /^@babel*/,
     '@babel',
     'history',
     /^@redux-saga*/,
     'react-dom/server',
     'react-loadable/webpack',
+    'react-router-dom/server',
     'prop-types',
     /^contensis-delivery-api*/,
     /^contensis-core-api*/,
@@ -70,13 +67,6 @@ export default {
     alias({
       entries: [
         {
-          find: 'zengenti-forms-package',
-          replacement: path.resolve(
-            projectRootDir,
-            'node_modules/zengenti-forms-package/src/app/zengenti-forms-package'
-          ),
-        },
-        {
           find: '~',
           replacement: path.resolve(projectRootDir, 'src/app'),
         },
@@ -92,14 +82,45 @@ export default {
     babel({
       include: [
         'src/**',
-        'node_modules/zengenti-forms-package/**',
-        '../../node_modules/zengenti-forms-package/**',
-        'node_modules/zengenti-search-package/**',
-        '../../node_modules/zengenti-search-package/**',
       ],
       extensions: ['.js', '.jsx', '.ts', '.tsx'],
-      presets: babelConfig.env.modern.presets,
-      plugins: babelConfig.env.modern.plugins,
+      presets: [
+        [
+          '@babel/preset-env',
+          {
+            corejs: '3',
+            loose: true,
+            targets: ['chrome 78', 'firefox 70'],
+            useBuiltIns: 'entry',
+          },
+        ],
+        ['@babel/preset-react', { loose: true }],
+        '@babel/preset-typescript',
+      ],
+      plugins: [
+        [
+          'module-resolver',
+          {
+            root: './src',
+            alias: {
+              '~': './src',
+              '-': './',
+            },
+            cwd: 'packagejson',
+          },
+        ],
+        [
+          'babel-plugin-styled-components',
+          {
+            displayName: true,
+            ssr: true,
+          },
+        ],
+        '@loadable/babel-plugin',
+        '@babel/plugin-syntax-dynamic-import',
+        '@babel/plugin-transform-optional-chaining',
+        '@babel/plugin-transform-export-namespace-from',
+      ],
     }),
     json(),
     commonjs(),
@@ -111,7 +132,6 @@ export default {
       'cjs/*',
       'esm/*',
       'client/*',
-      'forms/*',
       'redux/*',
       'routing/*',
       'search/*',

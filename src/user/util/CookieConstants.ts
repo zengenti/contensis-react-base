@@ -1,3 +1,4 @@
+export const BEARER_TOKEN_COOKIE = 'ContensisSecurityBearerToken';
 export const LOGIN_COOKIE = 'ContensisCMSUserName';
 export const REFRESH_TOKEN_COOKIE = 'RefreshToken';
 

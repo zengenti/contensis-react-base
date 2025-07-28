@@ -1,5 +1,5 @@
 import { Group } from 'contensis-management-api/lib/models';
-import { RequireLogin } from '~/routing/routes';
+import { RequireLogin } from '~/models';
 
 export const matchUserGroup = (
   userGroups: Group[] = [],

@@ -1,5 +1,4 @@
-export * from '~/config';
-export * from '~/routing/routes';
+export * from '~/models';
 
 export { default as linkDepthApi } from '~/server/features/linkdepth-api/api';
 import internalServer from '~/server/internalServer';
