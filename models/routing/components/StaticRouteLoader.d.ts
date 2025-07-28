@@ -1,5 +1,5 @@
 import React from 'react';
-import type { StaticRoute } from '../routes';
+import type { StaticRoute } from "../../models";
 export interface StaticRouteLoaderProps {
     staticRoutes: StaticRoute[];
 }

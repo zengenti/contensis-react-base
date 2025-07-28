@@ -1,29 +1,25 @@
 'use strict';
 
-Object.defineProperty(exports, '__esModule', { value: true });
-
-var ChangePassword_container = require('./ChangePassword.container-ae35785e.js');
+var ChangePassword_container = require('./ChangePassword.container-642SYfpS.js');
 var React = require('react');
 var reactCookie = require('react-cookie');
 var reactRedux = require('react-redux');
-var ToJs = require('./ToJs-a8d8f3f0.js');
-var reducers = require('./reducers-73a03ef4.js');
+var ToJs = require('./ToJs-C9jwV7YB.js');
+var CookieHelper_class = require('./CookieHelper.class-BoY5TrIi.js');
+var selectors = require('./selectors-wCs5fHD4.js');
 require('@redux-saga/core/effects');
-require('./selectors-14caa813.js');
 require('jsonpath-mapper');
-require('query-string');
 require('await-to-js');
-require('./CookieConstants-000427db.js');
 require('immer');
+require('query-string');
 
-function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+function _interopDefault (e) { return e && e.__esModule ? e : { default: e }; }
 
-var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
+var React__default = /*#__PURE__*/_interopDefault(React);
 
 const getDisplayName$1 = WrappedComponent => {
   return WrappedComponent.displayName || WrappedComponent.name || 'Component';
 };
-
 const withLogin = WrappedComponent => {
   const mapStateToProps = state => {
     return {
@@ -39,17 +35,15 @@ const withLogin = WrappedComponent => {
       error: ToJs.selectUserIsError(state)
     };
   };
-
   const ConnectedComponent = () => {
-    const cookies = new ToJs.CookieHelper(...reactCookie.useCookies());
+    const cookies = new CookieHelper_class.CookieHelper(...reactCookie.useCookies());
     const mapDispatchToProps = {
       loginUser: (username, password) => ChangePassword_container.loginUser(username, password, cookies),
       logoutUser: redirectPath => ChangePassword_container.logoutUser(redirectPath, cookies)
     };
     const FinalComponent = reactRedux.connect(mapStateToProps, mapDispatchToProps)(ToJs.toJS(WrappedComponent));
-    return /*#__PURE__*/React__default["default"].createElement(FinalComponent, null);
+    return /*#__PURE__*/React__default.default.createElement(FinalComponent, null);
   };
-
   ConnectedComponent.displayName = `${getDisplayName$1(WrappedComponent)}`;
   ConnectedComponent.WrappedComponent = WrappedComponent;
   return ConnectedComponent;
@@ -58,7 +52,6 @@ const withLogin = WrappedComponent => {
 const getDisplayName = WrappedComponent => {
   return WrappedComponent.displayName || WrappedComponent.name || 'Component';
 };
-
 const withRegistration = WrappedComponent => {
   const mapStateToProps = state => {
     return {
@@ -68,7 +61,6 @@ const withRegistration = WrappedComponent => {
       user: ToJs.selectUserRegistration(state)
     };
   };
-
   const mapDispatchToProps = {
     registerUser: ChangePassword_container.registerUser
   };
@@ -90,9 +82,9 @@ exports.useForgotPassword = ChangePassword_container.useForgotPassword;
 exports.useLogin = ChangePassword_container.useLogin;
 exports.useRegistration = ChangePassword_container.useRegistration;
 exports.selectors = ToJs.selectors;
-exports.initialUserState = reducers.initialUserState;
-exports.reducer = reducers.UserReducer;
-exports.types = reducers.types;
+exports.initialUserState = selectors.initialUserState;
+exports.reducer = selectors.UserReducer;
+exports.types = selectors.types;
 exports.withLogin = withLogin;
 exports.withRegistration = withRegistration;
 //# sourceMappingURL=user.js.map

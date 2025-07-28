@@ -7,4 +7,4 @@ declare const _default: (wrappedComponentProps: {
     logoutUser: any;
 }) => React.JSX.Element;
 export default _default;
-import React from "react";
+import React from 'react';

@@ -4,6 +4,6 @@ declare namespace _default {
     export { version };
 }
 export default _default;
-import * as navigation from "./navigation";
+import * as navigation from './navigation';
 import * as routing from "../../routing/redux/selectors";
-import * as version from "./version";
+import * as version from './version';

@@ -5,3 +5,4 @@ export declare const CacheDuration: {
     expressStatic: string;
 };
 export declare const getCacheDuration: (status?: number) => string;
+export declare const anyUpdateHeader: string;

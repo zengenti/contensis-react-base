@@ -1,4 +1,4 @@
 import React from 'react';
-import { AppRootProps } from '../routing/routes';
+import { AppRootProps } from "../models";
 declare const AppRoot: (props: AppRootProps) => React.JSX.Element;
 export default AppRoot;

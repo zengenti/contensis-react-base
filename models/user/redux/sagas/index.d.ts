@@ -1,1 +1,1 @@
-export const userSagas: import("redux-saga/effects").ForkEffect<never>[];
+export declare const userSagas: import("redux-saga/effects").ForkEffect<never>[];

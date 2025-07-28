@@ -1,9 +1,10 @@
-export function getManagementApiClient({ bearerToken, bearerTokenExpiryDate, refreshToken, refreshTokenExpiryDate, contensisClassicToken, username, password, }: {
-    bearerToken: any;
-    bearerTokenExpiryDate: any;
-    refreshToken: any;
-    refreshTokenExpiryDate: any;
-    contensisClassicToken: any;
-    username: any;
-    password: any;
-}): Promise<import("contensis-management-api").Client>;
+export type ManagementApiClientCredentials = {
+    bearerToken?: string;
+    bearerTokenExpiryDate?: Date;
+    refreshToken?: string;
+    refreshTokenExpiryDate?: Date;
+    contensisClassicToken?: string;
+    username?: string;
+    password?: string;
+};
+export declare const getManagementApiClient: ({ bearerToken, bearerTokenExpiryDate, refreshToken, refreshTokenExpiryDate, contensisClassicToken, username, password, }: ManagementApiClientCredentials) => Promise<import("contensis-management-api").Client>;

@@ -16,4 +16,4 @@ export declare const userManagerConfig: {
     scope?: undefined;
     filterProtocolClaims?: undefined;
 };
-export declare const createUserManager: (config: UserManagerSettings) => Promise<{} | undefined>;
+export declare const createUserManager: (config: UserManagerSettings) => Promise<import("oidc-client").UserManager | undefined>;

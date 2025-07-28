@@ -6,56 +6,65 @@ import { unstable_HistoryRouter } from 'react-router-dom';
 import { loadableReady } from '@loadable/component';
 import { parse } from 'query-string';
 import { CookiesProvider } from 'react-cookie';
-import { c as createStore, s as selectVersionStatus } from './version-3d9911e2.js';
-import { s as setVersionStatus } from './version-9f29becb.js';
-import { b as browserHistory, r as rootSaga, p as pickProject } from './App-83107d7e.js';
-export { A as ReactApp } from './App-83107d7e.js';
-import { c as setCurrentProject } from './selectors-691caf02.js';
-import { d as deliveryApi } from './ContensisDeliveryApi-fe57a037.js';
+import { s as selectVersionStatus } from './version-D773TD9j.js';
+import { s as setVersionStatus } from './version-B9nPx4IF.js';
+import { b as browserHistory, r as rootSaga, p as pickProject } from './App-CfIZbvU9.js';
+export { A as ReactApp } from './App-CfIZbvU9.js';
+import { c as createStore } from './store-uQZKjfA8.js';
+import { d as setCurrentProject } from './selectors-CBdCY0u3.js';
+import { d as deliveryApi, S as SSRContextProvider } from './SSRContext-C743Oeli.js';
+import '@redux-saga/core/effects';
+import 'history';
+import 'loglevel';
+import 'await-to-js';
+import './ChangePassword.container-Q7bElOVz.js';
+import './ToJs-CpPNdcXS.js';
+import 'jsonpath-mapper';
+import './CookieHelper.class-DzleKOOc.js';
+import 'contensis-delivery-api';
+import './RouteLoader-qJA3UqTM.js';
+import 'reselect';
 import 'redux';
 import 'redux-thunk';
 import 'redux-saga';
 import 'redux-injectors';
 import 'immer';
-import './reducers-aa8cef1e.js';
-import '@redux-saga/core/effects';
-import 'history';
-import 'loglevel';
-import 'await-to-js';
-import './ChangePassword.container-76fd5e9b.js';
-import './ToJs-df57f31d.js';
-import 'jsonpath-mapper';
-import './CookieConstants-3d3b6531.js';
-import 'contensis-delivery-api';
-import './RouteLoader-29fd689a.js';
-import 'reselect';
 
-var hydrateRoot;
-var createRoot;
+var client = {};
 
-var m = require$$0;
-if (process.env.NODE_ENV === 'production') {
-  createRoot = m.createRoot;
-  hydrateRoot = m.hydrateRoot;
-} else {
-  var i = m.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
-  createRoot = function(c, o) {
-    i.usingClientEntryPoint = true;
-    try {
-      return m.createRoot(c, o);
-    } finally {
-      i.usingClientEntryPoint = false;
-    }
-  };
-  hydrateRoot = function(c, h, o) {
-    i.usingClientEntryPoint = true;
-    try {
-      return m.hydrateRoot(c, h, o);
-    } finally {
-      i.usingClientEntryPoint = false;
-    }
-  };
+var hasRequiredClient;
+
+function requireClient () {
+	if (hasRequiredClient) return client;
+	hasRequiredClient = 1;
+
+	var m = require$$0;
+	if (process.env.NODE_ENV === 'production') {
+	  client.createRoot = m.createRoot;
+	  client.hydrateRoot = m.hydrateRoot;
+	} else {
+	  var i = m.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
+	  client.createRoot = function(c, o) {
+	    i.usingClientEntryPoint = true;
+	    try {
+	      return m.createRoot(c, o);
+	    } finally {
+	      i.usingClientEntryPoint = false;
+	    }
+	  };
+	  client.hydrateRoot = function(c, h, o) {
+	    i.usingClientEntryPoint = true;
+	    try {
+	      return m.hydrateRoot(c, h, o);
+	    } finally {
+	      i.usingClientEntryPoint = false;
+	    }
+	  };
+	}
+	return client;
 }
+
+var clientExports = requireClient();
 
 class ClientApp {
   constructor(ReactApp, config) {
@@ -67,32 +76,29 @@ class ClientApp {
       withSagas,
       withEvents
     } = config;
-
     const GetClientJSX = store => {
       const ClientJsx = /*#__PURE__*/React.createElement(CookiesProvider, null, /*#__PURE__*/React.createElement(Provider, {
         store: store
       }, /*#__PURE__*/React.createElement(unstable_HistoryRouter, {
         history: browserHistory
-      }, /*#__PURE__*/React.createElement(ReactApp, {
+      }, /*#__PURE__*/React.createElement(SSRContextProvider, null, /*#__PURE__*/React.createElement(ReactApp, {
         routes: routes,
         withEvents: withEvents
-      }))));
+      })))));
       return ClientJsx;
     };
-
     const isProduction = !(process.env.NODE_ENV !== 'production');
+
     /**
      * Webpack HMR Setup.
      */
-
     const HMRRenderer = Component => {
       if (isProduction) loadableReady(() => {
-        hydrateRoot(documentRoot, Component);
+        clientExports.hydrateRoot(documentRoot, Component);
       }, {
         namespace: 'modern'
-      });else createRoot(documentRoot).render(Component);
+      });else clientExports.createRoot(documentRoot).render(Component);
     };
-
     const hmr = store => {
       // webpack Hot Module Replacement API
       if (module.hot) {
@@ -102,20 +108,17 @@ class ClientApp {
         });
       }
     };
-
     const qs = parse(window.location.search);
     const versionStatus = deliveryApi.getClientSideVersionStatus();
-
     if (window.isDynamic || window.REDUX_DATA || process.env.NODE_ENV !== 'production') {
       createStore(withReducers, window.REDUX_DATA, browserHistory, stateType).then(store => {
         const state = store.getState();
         const ssrVersionStatus = selectVersionStatus(state);
         if (!ssrVersionStatus) store.dispatch(setVersionStatus(versionStatus));
-        /* eslint-disable no-console */
 
+        /* eslint-disable no-console */
         console.log('Hydrating from inline Redux');
         /* eslint-enable no-console */
-
         store.runSaga(rootSaga(withSagas));
         store.dispatch(setCurrentProject(pickProject(window.location.hostname, qs), [], window.location.hostname));
         delete window.REDUX_DATA;
@@ -135,7 +138,6 @@ class ClientApp {
       });
     }
   }
-
 }
 
 export { ClientApp as default };

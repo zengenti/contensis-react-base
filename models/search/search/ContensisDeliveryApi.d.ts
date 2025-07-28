@@ -4,9 +4,9 @@ export function GetDeliveryApiStatusFromHostname(currentHostname: any): "publish
 export const deliveryApi: DeliveryApi;
 export const cachedSearch: CachedSearch;
 declare class DeliveryApi {
-    search(query: any, linkDepth: any, project: any, env: any): Promise<import("contensis-core-api").PagedList<import("contensis-delivery-api/lib/models").Entry>>;
+    search(query: any, linkDepth: any, project: any, env: any): Promise<import("contensis-core-api").PagedList<import("contensis-delivery-api").Entry>>;
     getClient(deliveryApiStatus: string | undefined, project: any, env: any): Client;
-    getEntry(id: any, linkDepth: number | undefined, deliveryApiStatus: string | undefined, project: any, env: any): Promise<import("contensis-delivery-api/lib/models").Entry>;
+    getEntry(id: any, linkDepth: number | undefined, deliveryApiStatus: string | undefined, project: any, env: any): Promise<import("contensis-delivery-api").Entry>;
 }
 declare class CachedSearch {
     cache: LruCache;

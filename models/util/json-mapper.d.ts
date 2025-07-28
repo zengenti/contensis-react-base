@@ -1,8 +1,7 @@
 import { Entry } from 'contensis-delivery-api/lib/models';
 import mapJson from 'jsonpath-mapper';
-import MappingTemplate, { PureJsFunction } from 'jsonpath-mapper/dist/models/Template';
-import { AppState } from "../redux/appstate";
-import { EntryMapper, RouteNode } from "../routing/routes";
+import { MappingTemplate, PureJsFunction } from 'jsonpath-mapper';
+import { AppState, EntryMapper, RouteNode } from "../models";
 export { default as mapJson, jpath } from 'jsonpath-mapper';
 type Mappers<S> = {
     [contentTypeId: string]: MappingTemplate<S>;
@@ -43,9 +42,9 @@ export declare const useEntryMapper: <S, T extends Mappers<S>>(entry: S, mappers
  * a default mapper template, returns an empty object if no mapper template
  * couild be applied.
  */
-export declare const mapEntries: <S, Mappers_1 extends {
+export declare const mapEntries: <S, Mappers extends {
     [contentTypeId: string]: MappingTemplate<S>;
-}>(entries: S[], mappers: Mappers_1, field?: string) => unknown[];
+}>(entries: S[], mappers: Mappers, field?: string) => unknown[];
 /**
  * mapComposer mapping function to take a composer field from Delivery API along
  * with mappers for each Composer Item "type" and return an array of mapped components

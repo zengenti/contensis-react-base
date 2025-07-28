@@ -1,21 +1,23 @@
-export { s as setCachingHeaders, u as urls } from './urls-eac9a747.js';
-export { c as cachedSearch, a as cachedSearchWithCookies, d as deliveryApi, b as deliveryApiWithCookies, g as getClientConfig } from './ContensisDeliveryApi-fe57a037.js';
+export { s as setCachingHeaders, u as urls } from './urls-DfCisos-.js';
+export { S as SSRContextProvider, c as cachedSearch, a as cachedSearchWithCookies, d as deliveryApi, b as deliveryApiWithCookies, g as getClientConfig, u as useDeliveryApi, e as useSSRContext } from './SSRContext-C743Oeli.js';
+import { g as getDefaultExportFromCjs } from './_commonjsHelpers-BFTU3MAI.js';
 import mapJson, { jpath } from 'jsonpath-mapper';
 export { jpath, default as mapJson } from 'jsonpath-mapper';
 import React from 'react';
 import { connect } from 'react-redux';
-import { b as selectCurrentProject } from './selectors-691caf02.js';
-import { f as selectCommitRef, g as selectBuildNumber, s as selectVersionStatus } from './version-3d9911e2.js';
+import { f as selectCurrentProject } from './selectors-CBdCY0u3.js';
+import { s as selectVersionStatus, a as selectCommitRef, b as selectBuildNumber } from './version-D773TD9j.js';
 import styled from 'styled-components';
+import 'react-cookie';
 import 'contensis-delivery-api';
 import 'query-string';
-import './CookieConstants-3d3b6531.js';
+import './store-uQZKjfA8.js';
 import 'redux';
 import 'redux-thunk';
 import 'redux-saga';
 import 'redux-injectors';
 import 'immer';
-import './reducers-aa8cef1e.js';
+import './CookieHelper.class-DzleKOOc.js';
 
 /**
  *
@@ -26,11 +28,11 @@ import './reducers-aa8cef1e.js';
 const useMapper = (json, template) => {
   return template ? mapJson(json || {}, template) : json;
 };
-
 const chooseMapperByFieldValue = (entry, mappers, field = 'sys.contentTypeId') => {
   const fieldValue = jpath(field, entry || {});
   return mappers[fieldValue] || mappers.default || {};
 };
+
 /**
  * useEntriesMapper hook to take a list of entries from Delivery API along
  * with mappers for each contentTypeId and return an array of mapped objects
@@ -43,17 +45,16 @@ const chooseMapperByFieldValue = (entry, mappers, field = 'sys.contentTypeId') =
  * a default mapper template, returns an empty object if no mapper template
  * couild be applied.
  */
-
-
 const useEntriesMapper = (entry, mappers, field = 'sys.contentTypeId') => {
   const mapper = chooseMapperByFieldValue(entry, mappers, field);
   return useMapper(entry, mapper);
 };
+
 /**
  * Deprecated: due to misleading name, use the hook useEntriesMapper instead
  */
-
 const useEntryMapper = useEntriesMapper;
+
 /**
  * mapEntries mapping function to take a list of entries from Delivery API along
  * with mappers for each contentTypeId and return an array of mapped objects
@@ -66,11 +67,11 @@ const useEntryMapper = useEntriesMapper;
  * a default mapper template, returns an empty object if no mapper template
  * couild be applied.
  */
-
 const mapEntries = (entries, mappers, field = 'sys.contentTypeId') => entries.map(entry => {
   const mapper = chooseMapperByFieldValue(entry, mappers, field);
   return mapper ? mapJson(entry || {}, mapper) : entry;
 });
+
 /**
  * mapComposer mapping function to take a composer field from Delivery API along
  * with mappers for each Composer Item "type" and return an array of mapped components
@@ -80,37 +81,42 @@ const mapEntries = (entries, mappers, field = 'sys.contentTypeId') => entries.ma
  * or null. Injects a "_type" property into each transformed object in the array to indicate
  * where the mapping originated and for what component the mapped object is representing
  */
-
 const mapComposer = (composer, mappers) => Array.isArray(composer) ? composer.map((composerItem, index) => {
   const itemValue = composerItem.value;
   const mapper = mappers[composerItem.type] || mappers.default;
-
   if (mapper) {
     // Add some fields into the composer item mapper and return object
     const addedFields = {
       _type: composerItem.type,
       _index: index
-    }; // Add fields and $root item into the composer item source object
+    };
+
+    // Add fields and $root item into the composer item source object
     // for use inside each item mapping, for arrays we inject the added fields
     // into the first array item. This is useful if we require any of
     // composerItem.type, composerItem index/position and composer $root
     // in scope to influence any composer item's mapping logic
-
-    const sourceObject = itemValue && Array.isArray(itemValue) ? itemValue.map((iv, idx) => idx !== 0 ? iv : typeof iv === 'object' ? { ...addedFields,
+    const sourceObject = itemValue && Array.isArray(itemValue) ? itemValue.map((iv, idx) => idx !== 0 ? iv : typeof iv === 'object' ? {
+      ...addedFields,
       ...iv,
       $root: composer
-    } : iv) : typeof itemValue === 'object' ? { ...addedFields,
+    } : iv) : typeof itemValue === 'object' ? {
+      ...addedFields,
       ...itemValue,
       $root: composer
-    } : itemValue || {}; // Apply the composer item mapping
+    } : itemValue || {};
 
-    const mappedFields = mapJson(sourceObject, mapper); // Add the extra fields in with the return object
+    // Apply the composer item mapping
+    const mappedFields = mapJson(sourceObject, mapper);
 
-    return mappedFields && typeof mappedFields === 'object' ? { ...mappedFields,
+    // Add the extra fields in with the return object
+    return mappedFields && typeof mappedFields === 'object' ? {
+      ...mappedFields,
       ...addedFields
     } : mappedFields;
   } else return {};
 }) : composer || [];
+
 /**
  * useComposerMapper hook to take a composer field from Delivery API along
  * with mappers for each Composer Item "type" and return an array of mapped components
@@ -120,8 +126,8 @@ const mapComposer = (composer, mappers) => Array.isArray(composer) ? composer.ma
  * or null. Injects a "_type" property into each transformed object in the array to indicate
  * where the mapping originated and for what component the mapped object is representing
  */
-
 const useComposerMapper = (composer = [], mappers) => mapComposer(composer, mappers);
+
 /**
  * entryMapper will return a function to satisfy an entryMapper when defining app route
  * this is essentially a shorthand function to prevent boilerplate repetition inside your routes file
@@ -129,44 +135,48 @@ const useComposerMapper = (composer = [], mappers) => mapComposer(composer, mapp
  * @param mapping the jsonpath-mapper mapping template to apply when the route is resolved
  * @returns {mappedEntry}
  */
-
-const entryMapper = mapping => (node, state) => mapJson({ ...node,
+const entryMapper = mapping => (node, state) => mapJson({
+  ...node,
   ...(node.entry || {}),
   state
 }, mapping);
 
-const stringifyStrings = obj => {
-  const returnObj = Array.isArray(obj) ? [] : {};
-  Object.entries(obj).forEach(([key, value]) => {
-    switch (typeof value) {
-      case 'string':
-        returnObj[key] = JSON.stringify(value);
-        break;
+var stringifyStrings_1;
+var hasRequiredStringifyStrings;
 
-      case 'object':
-        returnObj[key] = stringifyStrings(value);
-        break;
+function requireStringifyStrings () {
+	if (hasRequiredStringifyStrings) return stringifyStrings_1;
+	hasRequiredStringifyStrings = 1;
+	const stringifyStrings = obj => {
+	  const returnObj = Array.isArray(obj) ? [] : {};
+	  Object.entries(obj).forEach(([key, value]) => {
+	    switch (typeof value) {
+	      case 'string':
+	        returnObj[key] = JSON.stringify(value);
+	        break;
+	      case 'object':
+	        returnObj[key] = stringifyStrings(value);
+	        break;
+	      default:
+	        returnObj[key] = value;
+	        break;
+	    }
+	  });
+	  return returnObj;
+	};
+	stringifyStrings_1 = stringifyStrings;
+	return stringifyStrings_1;
+}
 
-      default:
-        returnObj[key] = value;
-        break;
-    }
-  });
-  return returnObj;
-};
-
-var stringifyStrings_1 = stringifyStrings;
+var stringifyStringsExports = requireStringifyStrings();
+var stringifyStrings = /*@__PURE__*/getDefaultExportFromCjs(stringifyStringsExports);
 
 const context = typeof window != 'undefined' ? window : global;
 const isDev = process.env.NODE_ENV === 'development';
-
-const pj = () => isDev ? PACKAGE_JSON
-/* global PACKAGE_JSON */
-: context.PACKAGE_JSON || {
+const pj = () => isDev ? PACKAGE_JSON /* global PACKAGE_JSON */ : context.PACKAGE_JSON || {
   name: 'packagejson not found',
   repository: ''
 };
-
 const versionInfoProps = {
   packageDetail: () => {
     const pkg = pj();
@@ -188,40 +198,23 @@ const versionInfoProps = {
     }
   },
   zenPackageVersions: () => [...(Object.entries(pj().devDependencies || {}).filter(([pkg]) => pkg.includes('zengenti') || pkg.includes('contensis')) || []), ...(Object.entries(pj().dependencies || {}).filter(([pkg]) => pkg.includes('zengenti') || pkg.includes('contensis')) || [])],
-  deliveryApi: () => JSON.parse(JSON.stringify(DELIVERY_API_CONFIG
-  /* global DELIVERY_API_CONFIG */
-  )),
-  devEnv: () => typeof DEV_ENV !== 'undefined'
-  /* global DEV_ENV */
-  ? DEV_ENV : null,
-  disableSsrRedux: () => isDev ? DISABLE_SSR_REDUX
-  /* global DISABLE_SSR_REDUX*/
-  : context.DISABLE_SSR_REDUX || false,
+  deliveryApi: () => JSON.parse(JSON.stringify(DELIVERY_API_CONFIG /* global DELIVERY_API_CONFIG */)),
+  devEnv: () => typeof DEV_ENV !== 'undefined' /* global DEV_ENV */ ? DEV_ENV : null,
+  disableSsrRedux: () => isDev ? DISABLE_SSR_REDUX /* global DISABLE_SSR_REDUX*/ : context.DISABLE_SSR_REDUX || false,
   nodeEnv: () => process.env.NODE_ENV || 'production',
   packagejson: () => pj() || {},
-  projects: () => isDev ? PROJECTS
-  /* global PROJECTS */
-  : context.PROJECTS,
-  proxyDeliveryApi: () => isDev ? PROXY_DELIVERY_API
-  /* global PROXY_DELIVERY_API */
-  : context.PROXY_DELIVERY_API || false,
-  publicUri: () => isDev ? PUBLIC_URI
-  /* global PUBLIC_URI */
-  : context.PUBLIC_URI || null,
+  projects: () => isDev ? PROJECTS /* global PROJECTS */ : context.PROJECTS,
+  proxyDeliveryApi: () => isDev ? PROXY_DELIVERY_API /* global PROXY_DELIVERY_API */ : context.PROXY_DELIVERY_API || false,
+  publicUri: () => isDev ? PUBLIC_URI /* global PUBLIC_URI */ : context.PUBLIC_URI || null,
   project: state => selectCurrentProject(state),
-  reverseProxyPaths: () => isDev ? REVERSE_PROXY_PATHS
-  /* global REVERSE_PROXY_PATHS */
-  : context.REVERSE_PROXY_PATHS || {},
-  servers: () => isDev ? SERVERS
-  /* global SERVERS */
-  : context.SERVERS,
+  reverseProxyPaths: () => isDev ? REVERSE_PROXY_PATHS /* global REVERSE_PROXY_PATHS */ : context.REVERSE_PROXY_PATHS || {},
+  servers: () => isDev ? SERVERS /* global SERVERS */ : context.SERVERS,
   version: {
     buildNumber: state => selectBuildNumber(state),
     commitRef: state => selectCommitRef(state),
     contensisVersionStatus: state => selectVersionStatus(state)
   }
 };
-
 const mapStateToVersionInfo = state => {
   const mappedProps = mapJson(state, versionInfoProps);
   return mappedProps;
@@ -309,8 +302,7 @@ const VersionInfo = ({
     key: key
   }, "[ ", k, ": ", v, " ]"))))));
 };
-
 var VersionInfo$1 = connect(mapStateToVersionInfo)(VersionInfo);
 
-export { VersionInfo$1 as VersionInfo, entryMapper, mapComposer, mapEntries, stringifyStrings_1 as stringifyStrings, useComposerMapper, useEntriesMapper, useEntryMapper, useMapper };
+export { VersionInfo$1 as VersionInfo, entryMapper, mapComposer, mapEntries, stringifyStrings, useComposerMapper, useEntriesMapper, useEntryMapper, useMapper };
 //# sourceMappingURL=util.js.map

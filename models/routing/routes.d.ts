@@ -1,7 +1,7 @@
 import type { RouteObject, RouteMatch } from 'react-router';
 import { Entry, Node } from 'contensis-delivery-api/lib/models';
 import React from 'react';
-import { AppState } from "../redux/appstate";
+import { AppState } from "../models";
 import { CookieHelper } from "../user/util/CookieHelper.class";
 type RouteComponent<Props> = React.ComponentType<Props>;
 export type RouteNode = Node & {

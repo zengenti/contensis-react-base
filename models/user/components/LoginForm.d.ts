@@ -6,11 +6,11 @@ declare function LoginForm({ authenticationError, loading, loginUser }: {
 }): React.JSX.Element;
 declare namespace LoginForm {
     namespace propTypes {
-        const loginException: PropTypes.Requireable<boolean>;
-        const authenticationError: PropTypes.Requireable<boolean>;
-        const loading: PropTypes.Requireable<boolean>;
-        const loginUser: PropTypes.Requireable<(...args: any[]) => any>;
+        let loginException: PropTypes.Requireable<boolean>;
+        let authenticationError: PropTypes.Requireable<boolean>;
+        let loading: PropTypes.Requireable<boolean>;
+        let loginUser: PropTypes.Requireable<(...args: any[]) => any>;
     }
 }
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';

@@ -1,7 +1,6 @@
-export default useLogin;
-declare function useLogin(): {
-    loginUser: (username: any, password: any) => any;
-    logoutUser: (redirectPath: any) => any;
+declare const useLogin: () => {
+    loginUser: (username: string, password: string) => any;
+    logoutUser: (redirectPath?: string) => any;
     errorMessage: any;
     isAuthenticated: any;
     isAuthenticationError: any;
@@ -12,3 +11,4 @@ declare function useLogin(): {
     authenticationErrorMessage: any;
     error: any;
 };
+export default useLogin;

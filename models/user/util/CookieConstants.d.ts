@@ -1,3 +1,4 @@
+export declare const BEARER_TOKEN_COOKIE = "ContensisSecurityBearerToken";
 export declare const LOGIN_COOKIE = "ContensisCMSUserName";
 export declare const REFRESH_TOKEN_COOKIE = "RefreshToken";
 export type CookieObject = {
