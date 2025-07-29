@@ -7,9 +7,9 @@ import {
   Store,
   StoreEnhancer,
 } from 'redux';
-import thunkMiddleware from 'redux-thunk';
+import { thunk as thunkMiddleware } from 'redux-thunk';
 import createSagaMiddleware, { END } from 'redux-saga';
-import { createInjectorsEnhancer } from 'redux-injectors';
+import { createInjectorsEnhancer } from 'redux-injectors-19';
 
 // Core reducers
 import NavigationReducer from '../reducers/navigation';
@@ -20,13 +20,12 @@ import routerMiddleware from './routerMiddleware';
 import { AppState, StateType } from '~/models';
 import { History, MemoryHistory } from 'history';
 
-/* eslint-disable no-underscore-dangle */
 declare let window: Window &
   typeof globalThis & {
     __REDUX_DEVTOOLS_EXTENSION__: any;
   };
 
-type ReduxAppStore = Store<AppState, Action<any>>;
+type ReduxAppStore = Store<AppState, Action>;
 
 type ReduxSagaAppStore = ReduxAppStore & {
   runSaga: ReturnType<typeof createSagaMiddleware>['run'];
@@ -115,6 +114,6 @@ export default async (
     return store;
   };
 
-  reduxStore = store(fromJS(initialState));
+  reduxStore = store(fromJS(initialState)) as ReduxSagaAppStore;
   return reduxStore;
 };

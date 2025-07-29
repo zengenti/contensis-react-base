@@ -4,12 +4,15 @@ import { RouteComponentProps } from './RouteComponentProps';
 import { EntryMapper } from './EntryMapper';
 import { ReduxInjector } from './ReduxInjector';
 import { RequireLogin } from './RequireLogin';
-import type { RouteObject, RouteMatch } from 'react-router';
+import type { RouteObject } from 'react-router';
 
 // type RouteComponent<Props> = React.ComponentType<Props>;
 
 export type StaticRoute = Omit<RouteObject, 'children'> & {
   index?: false | undefined; // TS2344: Type 'StaticRoute' is not assignable to type 'NonIndexRouteObject'. Type 'boolean | undefined' is not assignable to type 'false | undefined'.
+  children?: StaticRoute[]; // new in react-router@6
+  /** Stores the full matched path for child routes */
+  fullPath?: string; // new in react-router@6
   /**
    * The React component that should be rendered for this route.
    */
@@ -17,7 +20,6 @@ export type StaticRoute = Omit<RouteObject, 'children'> & {
   /**
    * Options for configuring how Site View Node data is handled.
    */
-  children?: StaticRoute[];
   fetchNode?:
     | boolean
     | {
@@ -61,5 +63,4 @@ export type StaticRoute = Omit<RouteObject, 'children'> & {
   requireLogin?: RequireLogin;
   ssr?: boolean;
   ssrOnly?: boolean;
-  fullPath?: string;
 };

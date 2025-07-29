@@ -1,6 +1,6 @@
 import type { Location } from 'history';
 import type { RouteObject } from 'react-router';
-import { MatchedRoute, StaticRoute } from './routing/routes';
+import { MatchedRoute, StaticRoute } from '~/models';
 
 declare module 'react-router' {
   export function matchRoutes(
