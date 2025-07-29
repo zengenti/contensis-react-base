@@ -1,13 +1,13 @@
 'use strict';
 
-var store = require('./store-CADDS7cV.js');
+var store = require('./store-D07FOXvM.js');
 var selectors$1 = require('./selectors-wCs5fHD4.js');
-var version$1 = require('./version-ASZx0NDG.js');
+var version$1 = require('./version-B7XFkBhY.js');
 var version$2 = require('./version-CM-bJ62L.js');
 require('redux');
 require('redux-thunk');
 require('redux-saga');
-require('redux-injectors');
+require('redux-injectors-19');
 require('immer');
 require('jsonpath-mapper');
 require('query-string');

@@ -38,5 +38,8 @@ export interface IVersionInfoProps {
     };
     zenPackageVersions: string[];
 }
-declare const _default: import("react-redux").ConnectedComponent<({ deliveryApi, devEnv, disableSsrRedux, nodeEnv, packageDetail, project, projects, proxyDeliveryApi, publicUri, reverseProxyPaths, servers, uris, version, zenPackageVersions, }: IVersionInfoProps) => React.JSX.Element, import("react-redux").Omit<IVersionInfoProps, "version" | "packageDetail" | "uris" | "zenPackageVersions" | "deliveryApi" | "devEnv" | "disableSsrRedux" | "nodeEnv" | "projects" | "proxyDeliveryApi" | "publicUri" | "project" | "reverseProxyPaths" | "servers">>;
+declare const _default: import("react-redux").ConnectedComponent<({ deliveryApi, devEnv, disableSsrRedux, nodeEnv, packageDetail, project, projects, proxyDeliveryApi, publicUri, reverseProxyPaths, servers, uris, version, zenPackageVersions, }: IVersionInfoProps) => React.JSX.Element, {
+    context?: React.Context<import("react-redux").ReactReduxContextValue<any, import("../../../../../node_modules/redux").UnknownAction> | null> | undefined;
+    store?: import("../../../../../node_modules/redux").Store<any, import("../../../../../node_modules/redux").UnknownAction, unknown> | undefined;
+}>;
 export default _default;

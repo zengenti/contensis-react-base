@@ -1,7 +1,7 @@
 import { compose, applyMiddleware, createStore as createStore$1, combineReducers } from 'redux';
-import thunkMiddleware from 'redux-thunk';
+import { thunk } from 'redux-thunk';
 import createSagaMiddleware, { END } from 'redux-saga';
-import { createInjectorsEnhancer } from 'redux-injectors';
+import { createInjectorsEnhancer } from 'redux-injectors-19';
 import { produce, original } from 'immer';
 import { S as SET_TARGET_PROJECT, v as SET_SURROGATE_KEYS, w as SET_SIBLINGS, x as SET_ROUTE, y as SET_NAVIGATION_PATH, z as UPDATE_LOADING_STATE, A as SET_ENTRY, B as SET_ANCESTORS, U as UserReducer } from './selectors-CBdCY0u3.js';
 
@@ -256,8 +256,6 @@ const routerMiddleware = history => store => next => action => {
   history[method](...args);
 };
 
-/* eslint-disable no-underscore-dangle */
-
 let reduxStore;
 var createStore = async (featureReducers, initialState, history, stateType) => {
   let reduxDevToolsMiddleware = f => f;
@@ -293,7 +291,7 @@ var createStore = async (featureReducers, initialState, history, stateType) => {
   };
   const store = initialState => {
     const runSaga = sagaMiddleware.run;
-    const middleware = compose(applyMiddleware(thunkMiddleware, sagaMiddleware, routerMiddleware(history)), createInjectorsEnhancer({
+    const middleware = compose(applyMiddleware(thunk, sagaMiddleware, routerMiddleware(history)), createInjectorsEnhancer({
       createReducer,
       runSaga
     }), reduxDevToolsMiddleware);
@@ -307,4 +305,4 @@ var createStore = async (featureReducers, initialState, history, stateType) => {
 };
 
 export { GET_NODE_TREE as G, SET_VERSION as S, SET_VERSION_STATUS as a, SET_NODE_TREE as b, createStore as c, GET_NODE_TREE_ERROR as d, navigation as n, reduxStore as r, version as v };
-//# sourceMappingURL=store-uQZKjfA8.js.map
+//# sourceMappingURL=store-v2gyr6u2.js.map

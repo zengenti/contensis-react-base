@@ -7,6 +7,9 @@ import { RequireLogin } from './RequireLogin';
 import type { RouteObject } from 'react-router';
 export type StaticRoute = Omit<RouteObject, 'children'> & {
     index?: false | undefined;
+    children?: StaticRoute[];
+    /** Stores the full matched path for child routes */
+    fullPath?: string;
     /**
      * The React component that should be rendered for this route.
      */
@@ -14,7 +17,6 @@ export type StaticRoute = Omit<RouteObject, 'children'> & {
     /**
      * Options for configuring how Site View Node data is handled.
      */
-    children?: StaticRoute[];
     fetchNode?: boolean | {
         /**
          * Params[] allows you pass parameters into the site view query on your static node fetch
@@ -56,5 +58,4 @@ export type StaticRoute = Omit<RouteObject, 'children'> & {
     requireLogin?: RequireLogin;
     ssr?: boolean;
     ssrOnly?: boolean;
-    fullPath?: string;
 };

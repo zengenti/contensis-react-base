@@ -1,7 +1,7 @@
 import { VersionStatus } from 'contensis-core-api';
-import { Entry, Node } from 'contensis-delivery-api/lib/models';
-import { Group, User } from 'contensis-management-api/lib/models';
-import { StaticRoute, MatchedRoute } from "../routing/routes";
+import { Entry, Node } from 'contensis-delivery-api';
+import { Group, User } from 'contensis-management-api';
+import { StaticRoute, MatchedRoute } from "./";
 export type AppState = {
     navigation: {
         root: Node | null;

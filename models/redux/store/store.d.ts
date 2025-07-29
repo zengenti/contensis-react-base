@@ -2,7 +2,7 @@ import { Action, Store } from "../../../node_modules/redux";
 import createSagaMiddleware from 'redux-saga';
 import { AppState, StateType } from "../../models";
 import { History, MemoryHistory } from 'history';
-type ReduxAppStore = Store<AppState, Action<any>>;
+type ReduxAppStore = Store<AppState, Action>;
 type ReduxSagaAppStore = ReduxAppStore & {
     runSaga: ReturnType<typeof createSagaMiddleware>['run'];
     close: () => void;

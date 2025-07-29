@@ -2,7 +2,7 @@
 
 var selectors = require('./selectors-wCs5fHD4.js');
 var effects = require('@redux-saga/core/effects');
-var store = require('./store-CADDS7cV.js');
+var store = require('./store-D07FOXvM.js');
 
 const hasNavigationTree = state => selectors.getImmutableOrJS(state, ['navigation', 'isReady']);
 const selectNavigationRoot = state => selectors.getImmutableOrJS(state, ['navigation', 'root']);
@@ -95,4 +95,4 @@ exports.setVersion = setVersion;
 exports.setVersionStatus = setVersionStatus;
 exports.useInjectRedux = useInjectRedux;
 exports.version = version;
-//# sourceMappingURL=version-ASZx0NDG.js.map
+//# sourceMappingURL=version-B7XFkBhY.js.map

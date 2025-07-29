@@ -1,15 +1,14 @@
 'use strict';
 
 var redux = require('redux');
-var thunkMiddleware = require('redux-thunk');
+var reduxThunk = require('redux-thunk');
 var createSagaMiddleware = require('redux-saga');
-var reduxInjectors = require('redux-injectors');
+var reduxInjectors19 = require('redux-injectors-19');
 var immer = require('immer');
 var selectors = require('./selectors-wCs5fHD4.js');
 
 function _interopDefault (e) { return e && e.__esModule ? e : { default: e }; }
 
-var thunkMiddleware__default = /*#__PURE__*/_interopDefault(thunkMiddleware);
 var createSagaMiddleware__default = /*#__PURE__*/_interopDefault(createSagaMiddleware);
 
 const ACTION_PREFIX = '@NAVIGATION/';
@@ -263,8 +262,6 @@ const routerMiddleware = history => store => next => action => {
   history[method](...args);
 };
 
-/* eslint-disable no-underscore-dangle */
-
 exports.reduxStore = void 0;
 var createStore = async (featureReducers, initialState, history, stateType) => {
   let reduxDevToolsMiddleware = f => f;
@@ -300,7 +297,7 @@ var createStore = async (featureReducers, initialState, history, stateType) => {
   };
   const store = initialState => {
     const runSaga = sagaMiddleware.run;
-    const middleware = redux.compose(redux.applyMiddleware(thunkMiddleware__default.default, sagaMiddleware, routerMiddleware(history)), reduxInjectors.createInjectorsEnhancer({
+    const middleware = redux.compose(redux.applyMiddleware(reduxThunk.thunk, sagaMiddleware, routerMiddleware(history)), reduxInjectors19.createInjectorsEnhancer({
       createReducer,
       runSaga
     }), reduxDevToolsMiddleware);
@@ -321,4 +318,4 @@ exports.SET_VERSION_STATUS = SET_VERSION_STATUS;
 exports.createStore = createStore;
 exports.navigation = navigation;
 exports.version = version;
-//# sourceMappingURL=store-CADDS7cV.js.map
+//# sourceMappingURL=store-D07FOXvM.js.map

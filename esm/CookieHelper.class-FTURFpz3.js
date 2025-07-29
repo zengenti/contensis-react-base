@@ -3,37 +3,16 @@ const LOGIN_COOKIE = 'ContensisCMSUserName';
 const REFRESH_TOKEN_COOKIE = 'RefreshToken';
 const findLoginCookies = cookies => typeof cookies === 'object' ? Object.fromEntries(Object.entries(cookies).filter(([name]) => [LOGIN_COOKIE, REFRESH_TOKEN_COOKIE].includes(name))) : cookies;
 
-var cookie = {};
+var dist = {};
 
-/*!
- * cookie
- * Copyright(c) 2012-2014 Roman Shtylman
- * Copyright(c) 2015 Douglas Christopher Wilson
- * MIT Licensed
- */
+var hasRequiredDist;
 
-var hasRequiredCookie;
-
-function requireCookie () {
-	if (hasRequiredCookie) return cookie;
-	hasRequiredCookie = 1;
-
-	/**
-	 * Module exports.
-	 * @public
-	 */
-
-	cookie.parse = parse;
-	cookie.serialize = serialize;
-
-	/**
-	 * Module variables.
-	 * @private
-	 */
-
-	var __toString = Object.prototype.toString;
-	var __hasOwnProperty = Object.prototype.hasOwnProperty;
-
+function requireDist () {
+	if (hasRequiredDist) return dist;
+	hasRequiredDist = 1;
+	Object.defineProperty(dist, "__esModule", { value: true });
+	dist.parse = parse;
+	dist.serialize = serialize;
 	/**
 	 * RegExp to match cookie-name in RFC 6265 sec 4.1.1
 	 * This refers out to the obsoleted definition of token in RFC 2616 sec 2.2
@@ -44,10 +23,11 @@ function requireCookie () {
 	 * tchar             = "!" / "#" / "$" / "%" / "&" / "'" /
 	 *                     "*" / "+" / "-" / "." / "^" / "_" /
 	 *                     "`" / "|" / "~" / DIGIT / ALPHA
+	 *
+	 * Note: Allowing more characters - https://github.com/jshttp/cookie/issues/191
+	 * Allow same range as cookie value, except `=`, which delimits end of name.
 	 */
-
-	var cookieNameRegExp = /^[!#$%&'*+\-.^_`|~0-9A-Za-z]+$/;
-
+	const cookieNameRegExp = /^[\u0021-\u003A\u003C\u003E-\u007E]+$/;
 	/**
 	 * RegExp to match cookie-value in RFC 6265 sec 4.1.1
 	 *
@@ -56,10 +36,11 @@ function requireCookie () {
 	 *                     ; US-ASCII characters excluding CTLs,
 	 *                     ; whitespace DQUOTE, comma, semicolon,
 	 *                     ; and backslash
+	 *
+	 * Allowing more characters: https://github.com/jshttp/cookie/issues/191
+	 * Comma, backslash, and DQUOTE are not part of the parsing algorithm.
 	 */
-
-	var cookieValueRegExp = /^("?)[\u0021\u0023-\u002B\u002D-\u003A\u003C-\u005B\u005D-\u007E]*\1$/;
-
+	const cookieValueRegExp = /^[\u0021-\u003A\u003C-\u007E]*$/;
 	/**
 	 * RegExp to match domain-value in RFC 6265 sec 4.1.1
 	 *
@@ -83,9 +64,7 @@ function requireCookie () {
 	 * character is not permitted, but a trailing %x2E ("."), if present, will
 	 * cause the user agent to ignore the attribute.)
 	 */
-
-	var domainValueRegExp = /^([.]?[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?)([.][a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?)*$/i;
-
+	const domainValueRegExp = /^([.]?[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?)([.][a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?)*$/i;
 	/**
 	 * RegExp to match path-value in RFC 6265 sec 4.1.1
 	 *
@@ -93,90 +72,68 @@ function requireCookie () {
 	 * CHAR              = %x01-7F
 	 *                     ; defined in RFC 5234 appendix B.1
 	 */
-
-	var pathValueRegExp = /^[\u0020-\u003A\u003D-\u007E]*$/;
-
+	const pathValueRegExp = /^[\u0020-\u003A\u003D-\u007E]*$/;
+	const __toString = Object.prototype.toString;
+	const NullObject = /* @__PURE__ */ (() => {
+	    const C = function () { };
+	    C.prototype = Object.create(null);
+	    return C;
+	})();
 	/**
 	 * Parse a cookie header.
 	 *
 	 * Parse the given cookie header string into an object
 	 * The object has the various cookies as keys(names) => values
-	 *
-	 * @param {string} str
-	 * @param {object} [opt]
-	 * @return {object}
-	 * @public
 	 */
-
-	function parse(str, opt) {
-	  if (typeof str !== 'string') {
-	    throw new TypeError('argument str must be a string');
-	  }
-
-	  var obj = {};
-	  var len = str.length;
-	  // RFC 6265 sec 4.1.1, RFC 2616 2.2 defines a cookie name consists of one char minimum, plus '='.
-	  if (len < 2) return obj;
-
-	  var dec = (opt && opt.decode) || decode;
-	  var index = 0;
-	  var eqIdx = 0;
-	  var endIdx = 0;
-
-	  do {
-	    eqIdx = str.indexOf('=', index);
-	    if (eqIdx === -1) break; // No more cookie pairs.
-
-	    endIdx = str.indexOf(';', index);
-
-	    if (endIdx === -1) {
-	      endIdx = len;
-	    } else if (eqIdx > endIdx) {
-	      // backtrack on prior semicolon
-	      index = str.lastIndexOf(';', eqIdx - 1) + 1;
-	      continue;
-	    }
-
-	    var keyStartIdx = startIndex(str, index, eqIdx);
-	    var keyEndIdx = endIndex(str, eqIdx, keyStartIdx);
-	    var key = str.slice(keyStartIdx, keyEndIdx);
-
-	    // only assign once
-	    if (!__hasOwnProperty.call(obj, key)) {
-	      var valStartIdx = startIndex(str, eqIdx + 1, endIdx);
-	      var valEndIdx = endIndex(str, endIdx, valStartIdx);
-
-	      if (str.charCodeAt(valStartIdx) === 0x22 /* " */ && str.charCodeAt(valEndIdx - 1) === 0x22 /* " */) {
-	        valStartIdx++;
-	        valEndIdx--;
-	      }
-
-	      var val = str.slice(valStartIdx, valEndIdx);
-	      obj[key] = tryDecode(val, dec);
-	    }
-
-	    index = endIdx + 1;
-	  } while (index < len);
-
-	  return obj;
+	function parse(str, options) {
+	    const obj = new NullObject();
+	    const len = str.length;
+	    // RFC 6265 sec 4.1.1, RFC 2616 2.2 defines a cookie name consists of one char minimum, plus '='.
+	    if (len < 2)
+	        return obj;
+	    const dec = options?.decode || decode;
+	    let index = 0;
+	    do {
+	        const eqIdx = str.indexOf("=", index);
+	        if (eqIdx === -1)
+	            break; // No more cookie pairs.
+	        const colonIdx = str.indexOf(";", index);
+	        const endIdx = colonIdx === -1 ? len : colonIdx;
+	        if (eqIdx > endIdx) {
+	            // backtrack on prior semicolon
+	            index = str.lastIndexOf(";", eqIdx - 1) + 1;
+	            continue;
+	        }
+	        const keyStartIdx = startIndex(str, index, eqIdx);
+	        const keyEndIdx = endIndex(str, eqIdx, keyStartIdx);
+	        const key = str.slice(keyStartIdx, keyEndIdx);
+	        // only assign once
+	        if (obj[key] === undefined) {
+	            let valStartIdx = startIndex(str, eqIdx + 1, endIdx);
+	            let valEndIdx = endIndex(str, endIdx, valStartIdx);
+	            const value = dec(str.slice(valStartIdx, valEndIdx));
+	            obj[key] = value;
+	        }
+	        index = endIdx + 1;
+	    } while (index < len);
+	    return obj;
 	}
-
 	function startIndex(str, index, max) {
-	  do {
-	    var code = str.charCodeAt(index);
-	    if (code !== 0x20 /*   */ && code !== 0x09 /* \t */) return index;
-	  } while (++index < max);
-	  return max;
+	    do {
+	        const code = str.charCodeAt(index);
+	        if (code !== 0x20 /*   */ && code !== 0x09 /* \t */)
+	            return index;
+	    } while (++index < max);
+	    return max;
 	}
-
 	function endIndex(str, index, min) {
-	  while (index > min) {
-	    var code = str.charCodeAt(--index);
-	    if (code !== 0x20 /*   */ && code !== 0x09 /* \t */) return index + 1;
-	  }
-	  return min;
+	    while (index > min) {
+	        const code = str.charCodeAt(--index);
+	        if (code !== 0x20 /*   */ && code !== 0x09 /* \t */)
+	            return index + 1;
+	    }
+	    return min;
 	}
-
 	/**
 	 * Serialize data into a cookie header.
 	 *
@@ -185,169 +142,116 @@ function requireCookie () {
 	 *
 	 * serialize('foo', 'bar', { httpOnly: true })
 	 *   => "foo=bar; httpOnly"
-	 *
-	 * @param {string} name
-	 * @param {string} val
-	 * @param {object} [opt]
-	 * @return {string}
-	 * @public
 	 */
-
-	function serialize(name, val, opt) {
-	  var enc = (opt && opt.encode) || encodeURIComponent;
-
-	  if (typeof enc !== 'function') {
-	    throw new TypeError('option encode is invalid');
-	  }
-
-	  if (!cookieNameRegExp.test(name)) {
-	    throw new TypeError('argument name is invalid');
-	  }
-
-	  var value = enc(val);
-
-	  if (!cookieValueRegExp.test(value)) {
-	    throw new TypeError('argument val is invalid');
-	  }
-
-	  var str = name + '=' + value;
-	  if (!opt) return str;
-
-	  if (null != opt.maxAge) {
-	    var maxAge = Math.floor(opt.maxAge);
-
-	    if (!isFinite(maxAge)) {
-	      throw new TypeError('option maxAge is invalid')
+	function serialize(name, val, options) {
+	    const enc = options?.encode || encodeURIComponent;
+	    if (!cookieNameRegExp.test(name)) {
+	        throw new TypeError(`argument name is invalid: ${name}`);
 	    }
-
-	    str += '; Max-Age=' + maxAge;
-	  }
-
-	  if (opt.domain) {
-	    if (!domainValueRegExp.test(opt.domain)) {
-	      throw new TypeError('option domain is invalid');
+	    const value = enc(val);
+	    if (!cookieValueRegExp.test(value)) {
+	        throw new TypeError(`argument val is invalid: ${val}`);
 	    }
-
-	    str += '; Domain=' + opt.domain;
-	  }
-
-	  if (opt.path) {
-	    if (!pathValueRegExp.test(opt.path)) {
-	      throw new TypeError('option path is invalid');
+	    let str = name + "=" + value;
+	    if (!options)
+	        return str;
+	    if (options.maxAge !== undefined) {
+	        if (!Number.isInteger(options.maxAge)) {
+	            throw new TypeError(`option maxAge is invalid: ${options.maxAge}`);
+	        }
+	        str += "; Max-Age=" + options.maxAge;
 	    }
-
-	    str += '; Path=' + opt.path;
-	  }
-
-	  if (opt.expires) {
-	    var expires = opt.expires;
-
-	    if (!isDate(expires) || isNaN(expires.valueOf())) {
-	      throw new TypeError('option expires is invalid');
+	    if (options.domain) {
+	        if (!domainValueRegExp.test(options.domain)) {
+	            throw new TypeError(`option domain is invalid: ${options.domain}`);
+	        }
+	        str += "; Domain=" + options.domain;
 	    }
-
-	    str += '; Expires=' + expires.toUTCString();
-	  }
-
-	  if (opt.httpOnly) {
-	    str += '; HttpOnly';
-	  }
-
-	  if (opt.secure) {
-	    str += '; Secure';
-	  }
-
-	  if (opt.partitioned) {
-	    str += '; Partitioned';
-	  }
-
-	  if (opt.priority) {
-	    var priority = typeof opt.priority === 'string'
-	      ? opt.priority.toLowerCase() : opt.priority;
-
-	    switch (priority) {
-	      case 'low':
-	        str += '; Priority=Low';
-	        break
-	      case 'medium':
-	        str += '; Priority=Medium';
-	        break
-	      case 'high':
-	        str += '; Priority=High';
-	        break
-	      default:
-	        throw new TypeError('option priority is invalid')
+	    if (options.path) {
+	        if (!pathValueRegExp.test(options.path)) {
+	            throw new TypeError(`option path is invalid: ${options.path}`);
+	        }
+	        str += "; Path=" + options.path;
 	    }
-	  }
-
-	  if (opt.sameSite) {
-	    var sameSite = typeof opt.sameSite === 'string'
-	      ? opt.sameSite.toLowerCase() : opt.sameSite;
-
-	    switch (sameSite) {
-	      case true:
-	        str += '; SameSite=Strict';
-	        break;
-	      case 'lax':
-	        str += '; SameSite=Lax';
-	        break;
-	      case 'strict':
-	        str += '; SameSite=Strict';
-	        break;
-	      case 'none':
-	        str += '; SameSite=None';
-	        break;
-	      default:
-	        throw new TypeError('option sameSite is invalid');
+	    if (options.expires) {
+	        if (!isDate(options.expires) ||
+	            !Number.isFinite(options.expires.valueOf())) {
+	            throw new TypeError(`option expires is invalid: ${options.expires}`);
+	        }
+	        str += "; Expires=" + options.expires.toUTCString();
 	    }
-	  }
-
-	  return str;
+	    if (options.httpOnly) {
+	        str += "; HttpOnly";
+	    }
+	    if (options.secure) {
+	        str += "; Secure";
+	    }
+	    if (options.partitioned) {
+	        str += "; Partitioned";
+	    }
+	    if (options.priority) {
+	        const priority = typeof options.priority === "string"
+	            ? options.priority.toLowerCase()
+	            : undefined;
+	        switch (priority) {
+	            case "low":
+	                str += "; Priority=Low";
+	                break;
+	            case "medium":
+	                str += "; Priority=Medium";
+	                break;
+	            case "high":
+	                str += "; Priority=High";
+	                break;
+	            default:
+	                throw new TypeError(`option priority is invalid: ${options.priority}`);
+	        }
+	    }
+	    if (options.sameSite) {
+	        const sameSite = typeof options.sameSite === "string"
+	            ? options.sameSite.toLowerCase()
+	            : options.sameSite;
+	        switch (sameSite) {
+	            case true:
+	            case "strict":
+	                str += "; SameSite=Strict";
+	                break;
+	            case "lax":
+	                str += "; SameSite=Lax";
+	                break;
+	            case "none":
+	                str += "; SameSite=None";
+	                break;
+	            default:
+	                throw new TypeError(`option sameSite is invalid: ${options.sameSite}`);
+	        }
+	    }
+	    return str;
 	}
-
 	/**
 	 * URL-decode string value. Optimized to skip native call when no %.
-	 *
-	 * @param {string} str
-	 * @returns {string}
 	 */
-
-	function decode (str) {
-	  return str.indexOf('%') !== -1
-	    ? decodeURIComponent(str)
-	    : str
+	function decode(str) {
+	    if (str.indexOf("%") === -1)
+	        return str;
+	    try {
+	        return decodeURIComponent(str);
+	    }
+	    catch (e) {
+	        return str;
+	    }
 	}
-
 	/**
 	 * Determine if value is a Date.
-	 *
-	 * @param {*} val
-	 * @private
 	 */
-
-	function isDate (val) {
-	  return __toString.call(val) === '[object Date]';
+	function isDate(val) {
+	    return __toString.call(val) === "[object Date]";
 	}
-
-	/**
-	 * Try decoding a string using a decoding function.
-	 *
-	 * @param {string} str
-	 * @param {function} decode
-	 * @private
-	 */
-
-	function tryDecode(str, decode) {
-	  try {
-	    return decode(str);
-	  } catch (e) {
-	    return str;
-	  }
-	}
-	return cookie;
+	
+	return dist;
 }
 
-var cookieExports = requireCookie();
+var distExports = requireDist();
 
 function hasDocumentCookie() {
     const testingValue = typeof global === 'undefined'
@@ -361,7 +265,7 @@ function hasDocumentCookie() {
 }
 function parseCookies(cookies) {
     if (typeof cookies === 'string') {
-        return cookieExports.parse(cookies);
+        return distExports.parse(cookies);
     }
     else if (typeof cookies === 'object' && cookies !== null) {
         return cookies;
@@ -401,7 +305,7 @@ class Cookies {
                 return;
             }
             const previousCookies = this.cookies;
-            this.cookies = cookieExports.parse(document.cookie);
+            this.cookies = distExports.parse(document.cookie);
             this._checkChanges(previousCookies);
         };
         const domCookies = typeof document === 'undefined' ? '' : document.cookie;
@@ -459,7 +363,7 @@ class Cookies {
         const stringValue = typeof value === 'string' ? value : JSON.stringify(value);
         this.cookies = Object.assign(Object.assign({}, this.cookies), { [name]: stringValue });
         if (this.HAS_DOCUMENT_COOKIE) {
-            document.cookie = cookieExports.serialize(name, stringValue, options);
+            document.cookie = distExports.serialize(name, stringValue, options);
         }
         this._emitChange({ name, value, options });
     }
@@ -468,7 +372,7 @@ class Cookies {
         this.cookies = Object.assign({}, this.cookies);
         delete this.cookies[name];
         if (this.HAS_DOCUMENT_COOKIE) {
-            document.cookie = cookieExports.serialize(name, '', finalOptions);
+            document.cookie = distExports.serialize(name, '', finalOptions);
         }
         this._emitChange({ name, value: undefined, options });
     }
@@ -495,6 +399,11 @@ class Cookies {
             else {
                 this._stopPolling();
             }
+        }
+    }
+    removeAllChangeListeners() {
+        while (this.changeListeners.length > 0) {
+            this.removeChangeListener(this.changeListeners[0]);
         }
     }
 }
@@ -552,4 +461,4 @@ const addDays = (date = new Date(), days) => {
 };
 
 export { BEARER_TOKEN_COOKIE as B, CookieHelper as C, LOGIN_COOKIE as L, REFRESH_TOKEN_COOKIE as R, Cookies as a, findLoginCookies as f };
-//# sourceMappingURL=CookieHelper.class-DzleKOOc.js.map
+//# sourceMappingURL=CookieHelper.class-FTURFpz3.js.map

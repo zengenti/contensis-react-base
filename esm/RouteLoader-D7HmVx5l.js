@@ -4,7 +4,7 @@ import { Navigate, useRoutes, useLocation, matchRoutes } from 'react-router-dom'
 import { createSelector } from 'reselect';
 import { h as selectRouteEntryContentTypeId, j as selectRouteEntry, k as selectRouteIsError, l as selectIsNotFound, m as selectRouteLoading, n as selectMappedEntry, f as selectCurrentProject, o as selectCurrentPath, p as selectRouteStatusCode, q as selectRouteErrorMessage, u as setNavigationPath } from './selectors-CBdCY0u3.js';
 import { d as selectUserIsAuthenticated, k as selectUserGroups, t as toJS, m as matchUserGroup } from './ToJs-CpPNdcXS.js';
-import { e as useSSRContext } from './SSRContext-C743Oeli.js';
+import { e as useSSRContext } from './SSRContext-CkiWIvde.js';
 
 const HttpContext = /*#__PURE__*/createContext({});
 const useHttpContext = () => {
@@ -294,4 +294,4 @@ const mapDispatchToProps = {
 var RouteLoader$1 = connect(mapStateToPropsMemoized, mapDispatchToProps)(toJS(RouteLoader));
 
 export { HttpContext as H, Redirect as R, Status as S, RouteLoader$1 as a, mergeStaticRoutes as m, useHttpContext as u };
-//# sourceMappingURL=RouteLoader-qJA3UqTM.js.map
+//# sourceMappingURL=RouteLoader-D7HmVx5l.js.map
