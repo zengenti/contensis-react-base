@@ -33,7 +33,8 @@ class ClientApp {
     const documentRoot = document.getElementById('root') as HTMLElement;
 
     const {
-      stateType = 'immutable',
+      // stateType = 'immutable', // changed default in v4
+      stateType = 'js',
       routes,
       withReducers,
       withSagas,
