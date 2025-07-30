@@ -1,5 +1,11 @@
 import minifyCssString from 'minify-css-string';
 
+/**
+ * Add assets to templateHTML in the positions represented
+ * by replacing specific keys wrapped in handlebars depending
+ * on the accessMethod(s) that have been set (or updated)
+ * while processing the request
+ */
 export const replaceHtml = (
   {
     bundleTags = '',

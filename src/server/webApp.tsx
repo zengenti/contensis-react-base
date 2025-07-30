@@ -35,23 +35,23 @@ import stringifyAttributes from './util/stringifyAttributes';
 
 import { getCacheDuration } from './features/caching/cacheDuration.schema';
 import handleResponse from './features/response-handler';
+import {
+  renderStream,
+  styledComponentsStream,
+} from './features/response-handler/render-stream';
 
 import {
   getBundleData,
   getBundleTags,
   loadableChunkExtractors,
 } from './util/bundles';
-import { addStandardHeaders } from './util/headers';
-
-import { AppState, ServerConfig, MatchedRoute, StaticRoute } from '~/models';
 import { getVersionInfo } from './util/getVersionInfo';
 import { unhandledExceptionHandler } from './util/handleExceptions';
-import { SSRContextProvider } from '~/util/SSRContext';
-import {
-  renderStream,
-  styledComponentsStream,
-} from './features/response-handler/render-stream';
+import { addStandardHeaders } from './util/headers';
 import { replaceHtml } from './util/html';
+
+import { AppState, ServerConfig, MatchedRoute, StaticRoute } from '~/models';
+import { SSRContextProvider } from '~/util/SSRContext';
 
 const webApp = (
   app: Express,
@@ -313,8 +313,6 @@ const webApp = (
               .concat(helmet.script.toString())
               .concat(helmet.noscript.toString());
 
-            let responseHTML = '';
-
             addStandardHeaders(reduxState, response, packagejson, {
               allowedGroups,
               globalGroups,
@@ -333,6 +331,15 @@ const webApp = (
             let styleTags = sheet.getStyleTags();
 
             try {
+              /**
+               * Loads all page assets into the provided templateHTML
+               *
+               * Is callable after the JSX has been rendered, as
+               * JSX components may update the context via the
+               * HttpContext.Provider which can influence whether
+               * we render the page as STATIC or render nothing
+               * if the context has requested a redirect
+               * */
               const getContextHtml = (renderedJsx?: string) => {
                 if (context.url) {
                   response.redirect(context.statusCode || 302, context.url);
@@ -371,7 +378,7 @@ const webApp = (
               if (isRenderingJsxToString) {
                 const html = renderToString(styledJsx);
                 styleTags = sheet.getStyleTags();
-                responseHTML = getContextHtml(html);
+                const responseHTML = getContextHtml(html);
                 responseHandler(request, response, responseHTML);
               } else {
                 renderStream(
