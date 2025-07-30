@@ -1,4 +1,4 @@
-import { c as cachedSearch, d as deliveryApi, S as SSRContextProvider } from './SSRContext-CkiWIvde.js';
+import { c as cachedSearch, S as SSRContextProvider, d as deliveryApi } from './SSRContext-BE8ElZ3X.js';
 import { Query as Query$1 } from 'contensis-delivery-api';
 import React from 'react';
 import { Provider } from 'react-redux';
@@ -10,7 +10,7 @@ import 'deep-equal';
 import 'deepmerge';
 import 'query-string';
 import { Op, Query } from 'contensis-core-api';
-import { s as setCachingHeaders, u as url } from './urls-DfCisos-.js';
+import { s as setCachingHeaders, u as url } from './VersionInfo-Cno7K0OA.js';
 import 'isomorphic-fetch';
 import express from 'express';
 import http from 'http';
@@ -19,38 +19,38 @@ import fs from 'fs';
 import path from 'path';
 import { path as path$1 } from 'app-root-path';
 import { renderToPipeableStream, renderToString } from 'react-dom/server';
-import { StaticRouter } from 'react-router-dom/server';
 import { matchRoutes } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { ServerStyleSheet } from 'styled-components';
 import serialize from 'serialize-javascript';
-import { ChunkExtractor, ChunkExtractorManager } from '@loadable/server';
 import { noop, identity } from 'lodash';
 import { buildCleaner } from 'lodash-clean';
-import { CookiesProvider } from 'react-cookie';
 import { a as Cookies } from './CookieHelper.class-FTURFpz3.js';
 import cookiesMiddleware from 'universal-cookie-express';
-import { c as createStore } from './store-v2gyr6u2.js';
-import { h as history, p as pickProject, r as rootSaga } from './App-CIlf4cl4.js';
-export { A as ReactApp } from './App-CIlf4cl4.js';
-import { s as setVersionStatus, d as setVersion } from './version-DvjTUbcA.js';
-import { m as mergeStaticRoutes, H as HttpContext } from './RouteLoader-D7HmVx5l.js';
-import { a3 as selectSurrogateKeys, a4 as selectSsrApiCalls, j as selectRouteEntry, f as selectCurrentProject, g as getImmutableOrJS, d as setCurrentProject, K as selectCurrentSearch } from './selectors-CBdCY0u3.js';
-import chalk from 'chalk';
+import { c as createStore } from './store-3u0RzHZ0.js';
+import { h as history, p as pickProject, r as rootSaga } from './App-DLZweVSp.js';
+export { A as ReactApp } from './App-DLZweVSp.js';
+import { s as setVersionStatus, d as setVersion } from './version-BlsI7hX2.js';
+import { a3 as selectSurrogateKeys, a4 as selectSsrApiCalls, h as selectRouteEntry, n as selectCurrentProject, g as getImmutableOrJS, d as setCurrentProject, K as selectCurrentSearch } from './selectors-DO2ocdOp.js';
+import { H as HttpContext, m as mergeStaticRoutes } from './RouteLoader-xeQBXywk.js';
 import { Transform } from 'stream';
+import { ChunkExtractor, ChunkExtractorManager } from '@loadable/server';
+import chalk from 'chalk';
 import minifyCssString from 'minify-css-string';
+import { CookiesProvider } from 'react-cookie';
+import { StaticRouter } from 'react-router-dom/server';
 import 'loglevel';
 import '@redux-saga/core/effects';
 import './_commonjsHelpers-BFTU3MAI.js';
+import './version-wnf-TITV.js';
 import 'redux';
 import 'redux-thunk';
 import 'redux-saga';
 import 'redux-injectors-19';
 import 'history';
 import 'await-to-js';
-import './version-D773TD9j.js';
-import './ChangePassword.container-C0tFq0Tf.js';
-import './ToJs-CpPNdcXS.js';
+import './ChangePassword.container-BgzIy8dA.js';
+import './ToJs-CNzfvyxJ.js';
 
 /**
  * Util class holds our search results helper boilerplate methods
@@ -794,6 +794,95 @@ const handleResponse = (request, response, content, send = 'send') => {
   response[send](content);
 };
 
+/**
+ * Render React JSX (and surrounding HTML document) via React's
+ * renderToPipeableStream method
+ * @param getContextHtml a function to produce the correct HTML template that surrounds the JSX "App" with all available document assets injected
+ * @param jsx the JSX to render via a streamed response
+ * @param response the express Response object
+ * @param stream all chunks are piped to this stream to add additional style elements to each streamed chunk
+ */
+const renderStream = (getContextHtml, jsx, response, stream) => {
+  let header = '';
+  let footer = '';
+  const {
+    abort,
+    pipe
+  } = renderToPipeableStream(jsx, {
+    onShellReady() {
+      const html = getContextHtml();
+      if (!html) {
+        // this means we have finished with the response already
+        abort();
+      } else {
+        [header, footer] = html.split('{{APP}}');
+        response.setHeader('content-type', 'text/html; charset=utf-8');
+        stream.write(header);
+        pipe(stream);
+      }
+    },
+    onAllReady() {
+      stream.write(footer);
+    },
+    onShellError(error) {
+      response.statusCode = 500;
+      response.setHeader('content-type', 'text/html; charset=utf-8');
+      response.send('<h1>Something went wrong</h1>');
+      console.error(`[renderToPipeableStream:onShellError]`, error);
+    },
+    onError(error) {
+      console.error(`[renderToPipeableStream:onError]`, error);
+    }
+  });
+
+  // Abandon and switch to client rendering if enough time passes.
+  // Try lowering this to see the client recover.
+  setTimeout(() => abort(), 30 * 1000);
+  stream === null || stream === void 0 || stream.pipe(response);
+};
+
+/**
+ * Generate and add styled-components CSS to the streamed
+ * chunks of rendered HTML via renderToPipeableStream
+ *
+ * Workaround for Styled Components issue: React 18 Streaming SSR #3658
+ * https://github.com/styled-components/styled-components/issues/3658#issuecomment-2480721193
+ * credit: https://github.com/rurquia/styled-components-ssr-3658/blob/main/server/render.js
+ * @param sheet styled-components ServerStyleSheet
+ * @returns Transform Stream
+ */
+const styledComponentsStream = sheet => {
+  const readerWriter = new Transform({
+    objectMode: true,
+    transform(chunk, /* encoding */
+    _, callback) {
+      // Get the chunk and retrieve the sheet's CSS as an HTML chunk,
+      // then reset its rules so we get only new ones for the next chunk
+      const renderedHtml = typeof chunk === 'string' ? chunk : new TextDecoder().decode(chunk);
+      const styledCSS = sheet._emitSheetCSS();
+      const CLOSING_TAG_R = /<\/[a-z]*>/i;
+      sheet.instance.clearTag();
+
+      // prepend style html to chunk, unless the start of the chunk is a
+      // closing tag in which case append right after that
+      if (/<\/head>/.test(renderedHtml)) {
+        const replacedHtml = renderedHtml.replace('</head>', `${styledCSS}</head>`);
+        this.push(replacedHtml);
+      } else if (CLOSING_TAG_R.test(renderedHtml)) {
+        const execResult = CLOSING_TAG_R.exec(renderedHtml);
+        const endOfClosingTag = execResult.index + execResult.flat().length - 1;
+        const before = renderedHtml.slice(0, endOfClosingTag);
+        const after = renderedHtml.slice(endOfClosingTag);
+        this.push(before + styledCSS + after);
+      } else {
+        this.push(styledCSS + renderedHtml);
+      }
+      callback();
+    }
+  });
+  return readerWriter;
+};
+
 const readFileSync = path => fs.readFileSync(path, 'utf8');
 const loadableBundleData = ({
   stats,
@@ -919,6 +1008,36 @@ const getBundleTags = (loadableExtractor, scripts, staticRoutePath = 'static') =
   return startupTag;
 };
 
+const getVersionInfo = staticFolderPath => {
+  try {
+    const versionData = fs.readFileSync(`dist/${staticFolderPath}/version.json`, 'utf8');
+    const versionInfo = JSON.parse(versionData);
+    return versionInfo;
+  } catch (ex) {
+    console.error(`Unable to read from "version.json"`, ex);
+    return {};
+  }
+};
+
+/* eslint-disable no-console */
+
+// Default exception types to add event listeners for
+const handleDefaultEvents = ['uncaughtException', 'unhandledRejection'];
+const unhandledExceptionHandler = (handleExceptions = handleDefaultEvents) => {
+  const exceptionTypes = Array.isArray(handleExceptions) ? handleExceptions : handleExceptions === false ? [] : handleDefaultEvents;
+  for (const type of exceptionTypes) {
+    process.on(type, err => {
+      if (err && err instanceof Error) {
+        // Print a message to inform admins and developers the error should not be ignored
+        console.log(`${`[contensis-react-base] ❌ ${chalk.red.bold(`${type} - ${err.message}`)}`}`);
+        console.log(chalk.gray` - you are seeing this because we have tried to prevent the app from completely crashing - you should not ignore this problem`);
+        // Log the error to server console
+        console.error(err);
+      }
+    });
+  }
+};
+
 const addStandardHeaders = (state, response, packagejson, groups) => {
   if (state) {
     try {
@@ -964,108 +1083,12 @@ const addVarnishAuthenticationHeaders = (state, response, groups = {}) => {
   }
 };
 
-const getVersionInfo = staticFolderPath => {
-  try {
-    const versionData = fs.readFileSync(`dist/${staticFolderPath}/version.json`, 'utf8');
-    const versionInfo = JSON.parse(versionData);
-    return versionInfo;
-  } catch (ex) {
-    console.error(`Unable to read from "version.json"`, ex);
-    return {};
-  }
-};
-
-/* eslint-disable no-console */
-
-// Default exception types to add event listeners for
-const handleDefaultEvents = ['uncaughtException', 'unhandledRejection'];
-const unhandledExceptionHandler = (handleExceptions = handleDefaultEvents) => {
-  const exceptionTypes = Array.isArray(handleExceptions) ? handleExceptions : handleExceptions === false ? [] : handleDefaultEvents;
-  for (const type of exceptionTypes) {
-    process.on(type, err => {
-      if (err && err instanceof Error) {
-        // Print a message to inform admins and developers the error should not be ignored
-        console.log(`${`[contensis-react-base] ❌ ${chalk.red.bold(`${type} - ${err.message}`)}`}`);
-        console.log(chalk.gray` - you are seeing this because we have tried to prevent the app from completely crashing - you should not ignore this problem`);
-        // Log the error to server console
-        console.error(err);
-      }
-    });
-  }
-};
-
-const renderStream = (getContextHtml, jsx, response, stream) => {
-  let header = '';
-  let footer = '';
-  const {
-    abort,
-    pipe
-  } = renderToPipeableStream(jsx, {
-    onShellReady() {
-      const html = getContextHtml();
-      if (!html) {
-        // this means we have finished with the response already
-        abort();
-      } else {
-        [header, footer] = html.split('{{APP}}');
-        stream.write(header);
-        pipe(stream);
-      }
-    },
-    onAllReady() {
-      stream.write(footer);
-    },
-    onShellError(error) {
-      response.statusCode = 500;
-      response.send('<h1>Something went wrong</h1>');
-      console.error(`[renderToPipeableStream:onShellError]`, error);
-    },
-    onError(error) {
-      console.error(`[renderToPipeableStream:onError]`, error);
-    }
-  });
-
-  // Abandon and switch to client rendering if enough time passes.
-  // Try lowering this to see the client recover.
-  setTimeout(() => abort(), 30 * 1000);
-  stream === null || stream === void 0 || stream.pipe(response);
-};
-
-// Workaround for Styled Components issue: React 18 Streaming SSR #3658
-// https://github.com/styled-components/styled-components/issues/3658#issuecomment-2480721193
-// credit: https://github.com/rurquia/styled-components-ssr-3658/blob/main/server/render.js
-const styledComponentsStream = sheet => {
-  const readerWriter = new Transform({
-    objectMode: true,
-    transform(chunk, /* encoding */
-    _, callback) {
-      // Get the chunk and retrieve the sheet's CSS as an HTML chunk,
-      // then reset its rules so we get only new ones for the next chunk
-      const renderedHtml = typeof chunk === 'string' ? chunk : new TextDecoder().decode(chunk);
-      const styledCSS = sheet._emitSheetCSS();
-      const CLOSING_TAG_R = /<\/[a-z]*>/i;
-      sheet.instance.clearTag();
-
-      // prepend style html to chunk, unless the start of the chunk is a
-      // closing tag in which case append right after that
-      if (/<\/head>/.test(renderedHtml)) {
-        const replacedHtml = renderedHtml.replace('</head>', `${styledCSS}</head>`);
-        this.push(replacedHtml);
-      } else if (CLOSING_TAG_R.test(renderedHtml)) {
-        const execResult = CLOSING_TAG_R.exec(renderedHtml);
-        const endOfClosingTag = execResult.index + execResult.flat().length - 1;
-        const before = renderedHtml.slice(0, endOfClosingTag);
-        const after = renderedHtml.slice(endOfClosingTag);
-        this.push(before + styledCSS + after);
-      } else {
-        this.push(styledCSS + renderedHtml);
-      }
-      callback();
-    }
-  });
-  return readerWriter;
-};
-
+/**
+ * Add assets to templateHTML in the positions represented
+ * by replacing specific keys wrapped in handlebars depending
+ * on the accessMethod(s) that have been set (or updated)
+ * while processing the request
+ */
 const replaceHtml = ({
   bundleTags = '',
   html = '',
@@ -1079,22 +1102,27 @@ const replaceHtml = ({
   templateHTMLStatic = ''
 }, accessMethod) => {
   let responseHTML = '';
+  // Serve a blank HTML page with client scripts to load the app in the browser
+  if (accessMethod.DYNAMIC) {
+    responseHTML = templateHTML.replace('{{TITLE}}', '').replace('{{SEO_CRITICAL_METADATA}}', '').replace('{{CRITICAL_CSS}}', '').replace('{{APP}}', '').replace('{{LOADABLE_CHUNKS}}', bundleTags).replace('{{REDUX_DATA}}', state);
+  }
+
   // Page fragment served with client scripts and redux data that hydrate the app client side
-  if (accessMethod.FRAGMENT && !accessMethod.STATIC) {
+  else if (accessMethod.FRAGMENT && !accessMethod.STATIC) {
     responseHTML = templateHTMLFragment.replace('{{TITLE}}', title).replace('{{SEO_CRITICAL_METADATA}}', metadata).replace('{{CRITICAL_CSS}}', minifyCssString(styleTags))
     //.replace('{{APP}}', html)
     .replace('{{LOADABLE_CHUNKS}}', bundleTags).replace('{{REDUX_DATA}}', state);
   }
 
   // Full HTML page served statically
-  if (!accessMethod.FRAGMENT && accessMethod.STATIC) {
+  else if (!accessMethod.FRAGMENT && accessMethod.STATIC) {
     responseHTML = templateHTMLStatic.replace('{{TITLE}}', title).replace('{{SEO_CRITICAL_METADATA}}', metadata).replace('{{CRITICAL_CSS}}', minifyCssString(styleTags))
     //.replace('{{APP}}', html)
     .replace('{{LOADABLE_CHUNKS}}', '');
   }
 
   // Full HTML page served with client scripts and redux data that hydrate the app client side
-  if (!accessMethod.FRAGMENT && !accessMethod.STATIC) {
+  else if (!accessMethod.FRAGMENT && !accessMethod.STATIC) {
     responseHTML = templateHTML.replace('{{TITLE}}', title).replace('{{SEO_CRITICAL_METADATA}}', metadata).replace('{{CRITICAL_CSS}}', styleTags)
     //.replace('{{APP}}', html)
     .replace('{{LOADABLE_CHUNKS}}', bundleTags).replace('{{REDUX_DATA}}', state);
@@ -1107,6 +1135,45 @@ const replaceHtml = ({
     responseHTML = responseHTML.replace(/<html?.+?>/, `<html ${htmlAttributes}>`);
   }
   return html ? responseHTML.replace('{{APP}}', html) : responseHTML;
+};
+
+/**
+ * Produce the JSX wrapped in the necessary Providers
+ * to render the app in SSR
+ * @param ReactApp the JSX to render
+ * @param { providers, props, ssrAssets }
+ * @returns the final JSX to render decorated with all Provider and App props
+ */
+const ssrJsxProducer = (ReactApp, {
+  providers,
+  props,
+  ssrAssets
+}) => {
+  var _providers$styledComp;
+  // Recast ChunkExtractorManager to avoid TS error `Property 'children' does not exist on type...`
+  const ChunkExtractor = ChunkExtractorManager;
+  const jsx = /*#__PURE__*/React.createElement(ChunkExtractor, {
+    extractor: providers.loadable.extractor
+  }, /*#__PURE__*/React.createElement(CookiesProvider, {
+    cookies: providers.cookies
+  }, /*#__PURE__*/React.createElement(Provider, {
+    store: providers.redux
+  }, /*#__PURE__*/React.createElement(HttpContext.Provider, {
+    value: providers.httpContext
+  }, /*#__PURE__*/React.createElement(StaticRouter, {
+    location: providers.router.url
+  }, /*#__PURE__*/React.createElement(SSRContextProvider, {
+    accessMethod: providers.ssrContext.accessMethod,
+    request: providers.ssrContext.request,
+    response: providers.ssrContext.response,
+    ssrAssets: ssrAssets
+  }, /*#__PURE__*/React.createElement(ReactApp, {
+    routes: props.routes,
+    withEvents: props.withEvents
+  })))))));
+
+  // Wrap the JSX in a StyleSheetManager if a ServerStyleSheet is provided
+  return !((_providers$styledComp = providers.styledComponents) !== null && _providers$styledComp !== void 0 && _providers$styledComp.sheet) ? jsx : providers.styledComponents.sheet.collectStyles(jsx);
 };
 
 const webApp = (app, ReactApp, config) => {
@@ -1188,34 +1255,56 @@ const webApp = (app, ReactApp, config) => {
     const groups = allowedGroups && allowedGroups[project];
     store.dispatch(setCurrentProject(project, groups, hostname));
     const loadableExtractor = loadableChunkExtractors();
-    // Recast ChunkExtractorManager to avoid TS error `Property 'children' does not exist on type...`
-    const ChunkExtractor = ChunkExtractorManager;
+
+    // type ChunkExtractorManagerPropsForReact18 = ChunkExtractorManagerProps & {
+    //   children?: React.ReactNode;
+    // };
+
+    // // Recast ChunkExtractorManager to avoid TS error `Property 'children' does not exist on type...`
+    // const ChunkExtractor = ChunkExtractorManager as ClassType<
+    //   ChunkExtractorManagerPropsForReact18,
+    //   Component<ChunkExtractorManagerPropsForReact18>,
+    //   ComponentClass<ChunkExtractorManagerPropsForReact18>
+    // >;
+
     const ssrCookies = enableSsrCookies ?
     // these cookies are managed by the cookiesMiddleware and contain listeners
     // when cookies are read or written in ssr can be added to the `set-cookie` response header
     request.universalCookies :
     // this is a stub cookie collection so cookie methods can be used in code
     new Cookies();
-    const context = {};
+
     // Track the current statusCode via the response object
     response.status(200);
-    const jsx = /*#__PURE__*/React.createElement(ChunkExtractor, {
-      extractor: loadableExtractor.commonLoadableExtractor
-    }, /*#__PURE__*/React.createElement(CookiesProvider, {
-      cookies: ssrCookies
-    }, /*#__PURE__*/React.createElement(Provider, {
-      store: store
-    }, /*#__PURE__*/React.createElement(HttpContext.Provider, {
-      value: context
-    }, /*#__PURE__*/React.createElement(StaticRouter, {
-      location: url
-    }, /*#__PURE__*/React.createElement(SSRContextProvider, {
-      request: request,
-      response: response
-    }, /*#__PURE__*/React.createElement(ReactApp, {
-      routes: routes,
-      withEvents: withEvents
-    })))))));
+
+    // Create the context we will pass to JSX HttpContext.Provider
+    // and read back any context props set by the ReactApp
+    const context = {};
+
+    // Amalgamate all props for the various Providers we wrap the ReactApp with
+    const jsxProviderProps = {
+      loadable: {
+        extractor: loadableExtractor.commonLoadableExtractor
+      },
+      cookies: ssrCookies,
+      redux: store,
+      httpContext: context,
+      router: {
+        url
+      },
+      ssrContext: {
+        accessMethod,
+        request,
+        response
+      }
+    };
+    // These are the props we will pass to the ReactApp itself
+    const jsxReactAppProps = {
+      routes,
+      withEvents
+    };
+
+    // Get the configured HTML templates provided by the consumer
     const {
       templateHTML = '',
       templateHTMLFragment = '',
@@ -1225,14 +1314,28 @@ const webApp = (app, ReactApp, config) => {
     // Serve a blank HTML page with client scripts to load the app in the browser
     if (accessMethod.DYNAMIC) {
       // Dynamic doesn't need sagas
+      // or styles, or any split component bundles
       // nor are we streaming responses
+      const isDynamicHints = `<script ${attributes}>window.versionStatus = "${versionStatus}"; window.isDynamic = true;</script>`;
+      const jsx = ssrJsxProducer(ReactApp, {
+        providers: jsxProviderProps,
+        props: jsxReactAppProps,
+        ssrAssets: {
+          serializedState: isDynamicHints
+        }
+      });
       renderToString(jsx);
 
       // Dynamic page render has only the necessary bundles to start up the app
       // and does not include any react-loadable code-split bundles
       const bundleTags = getBundleTags(loadableExtractor, scripts, staticRoutePath);
-      const isDynamicHints = `<script ${attributes}>window.versionStatus = "${versionStatus}"; window.isDynamic = true;</script>`;
-      const responseHtmlDynamic = templateHTML.replace('{{TITLE}}', '').replace('{{SEO_CRITICAL_METADATA}}', '').replace('{{CRITICAL_CSS}}', '').replace('{{APP}}', '').replace('{{LOADABLE_CHUNKS}}', bundleTags).replace('{{REDUX_DATA}}', isDynamicHints);
+      const responseHtmlDynamic = replaceHtml({
+        bundleTags,
+        state: isDynamicHints,
+        templateHTML,
+        templateHTMLFragment
+      }, accessMethod);
+
       // Dynamic pages always return a 200 so we can run
       // the app and serve up all errors inside the client
       response.setHeader('Surrogate-Control', `max-age=${getCacheDuration(200)}`);
@@ -1292,7 +1395,6 @@ const webApp = (app, ReactApp, config) => {
         const htmlAttributes = helmet.htmlAttributes.toString();
         let title = helmet.title.toString();
         const metadata = helmet.meta.toString().concat(helmet.base.toString()).concat(helmet.link.toString()).concat(helmet.script.toString()).concat(helmet.noscript.toString());
-        let responseHTML = '';
         addStandardHeaders(reduxState, response, packagejson, {
           allowedGroups,
           globalGroups
@@ -1302,9 +1404,42 @@ const webApp = (app, ReactApp, config) => {
         // code-split bundles for any page components as well as core app bundles
         const bundleTags = getBundleTags(loadableExtractor, scripts, staticRoutePath);
         const sheet = new ServerStyleSheet();
-        const styledJsx = sheet.collectStyles(jsx);
+        // Produce the ssr jsx one time so we can get any style tags to pass back in
+        ssrJsxProducer(ReactApp, {
+          providers: {
+            ...jsxProviderProps,
+            styledComponents: {
+              sheet
+            }
+          },
+          props: jsxReactAppProps
+        });
         let styleTags = sheet.getStyleTags();
+        const styledJsx = ssrJsxProducer(ReactApp, {
+          providers: {
+            ...jsxProviderProps,
+            styledComponents: {
+              sheet
+            }
+          },
+          props: jsxReactAppProps,
+          ssrAssets: {
+            bundleTags,
+            htmlAttributes,
+            metadata,
+            title
+          }
+        });
         try {
+          /**
+           * Loads all page assets into the provided templateHTML
+           *
+           * Is callable after the JSX has been rendered, as
+           * JSX components may update the context via the
+           * HttpContext.Provider which can influence whether
+           * we render the page as STATIC or render nothing
+           * if the context has requested a redirect
+           * */
           const getContextHtml = renderedJsx => {
             if (context.url) {
               response.redirect(context.statusCode || 302, context.url);
@@ -1336,7 +1471,7 @@ const webApp = (app, ReactApp, config) => {
           if (isRenderingJsxToString) {
             const html = renderToString(styledJsx);
             styleTags = sheet.getStyleTags();
-            responseHTML = getContextHtml(html);
+            const responseHTML = getContextHtml(html);
             responseHandler(request, response, responseHTML);
           } else {
             renderStream(getContextHtml, styledJsx, response, styledComponentsStream(sheet));
@@ -1351,7 +1486,13 @@ const webApp = (app, ReactApp, config) => {
         response.status(500);
         responseHandler(request, response, `Error occurred: <br />${err.stack} <br />${JSON.stringify(err)}`);
       });
-      renderToString(jsx);
+
+      // If this is removed we don't get the redux state populated
+      // with the result of the actions RouteLoader component has dispatched
+      renderToString(ssrJsxProducer(ReactApp, {
+        providers: jsxProviderProps,
+        props: jsxReactAppProps
+      }));
       store.close();
     }
   });

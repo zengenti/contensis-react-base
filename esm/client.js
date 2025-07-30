@@ -6,23 +6,23 @@ import { unstable_HistoryRouter } from 'react-router-dom';
 import { loadableReady } from '@loadable/component';
 import { parse } from 'query-string';
 import { CookiesProvider } from 'react-cookie';
-import { s as selectVersionStatus } from './version-D773TD9j.js';
-import { s as setVersionStatus } from './version-DvjTUbcA.js';
-import { b as browserHistory, r as rootSaga, p as pickProject } from './App-CIlf4cl4.js';
-export { A as ReactApp } from './App-CIlf4cl4.js';
-import { c as createStore } from './store-v2gyr6u2.js';
-import { d as setCurrentProject } from './selectors-CBdCY0u3.js';
-import { d as deliveryApi, S as SSRContextProvider } from './SSRContext-CkiWIvde.js';
+import { s as selectVersionStatus } from './version-wnf-TITV.js';
+import { s as setVersionStatus } from './version-BlsI7hX2.js';
+import { b as browserHistory, r as rootSaga, p as pickProject } from './App-DLZweVSp.js';
+export { A as ReactApp } from './App-DLZweVSp.js';
+import { c as createStore } from './store-3u0RzHZ0.js';
+import { d as setCurrentProject } from './selectors-DO2ocdOp.js';
+import { d as deliveryApi, S as SSRContextProvider } from './SSRContext-BE8ElZ3X.js';
 import '@redux-saga/core/effects';
 import 'history';
 import 'loglevel';
 import 'await-to-js';
-import './ChangePassword.container-C0tFq0Tf.js';
-import './ToJs-CpPNdcXS.js';
+import './ChangePassword.container-BgzIy8dA.js';
+import './ToJs-CNzfvyxJ.js';
 import 'jsonpath-mapper';
 import './CookieHelper.class-FTURFpz3.js';
 import 'contensis-delivery-api';
-import './RouteLoader-D7HmVx5l.js';
+import './RouteLoader-xeQBXywk.js';
 import 'reselect';
 import 'redux';
 import 'redux-thunk';
@@ -70,7 +70,8 @@ class ClientApp {
   constructor(ReactApp, config) {
     const documentRoot = document.getElementById('root');
     const {
-      stateType = 'immutable',
+      // stateType = 'immutable', // changed default in v4
+      stateType = 'js',
       routes,
       withReducers,
       withSagas,
@@ -93,7 +94,7 @@ class ClientApp {
      * Webpack HMR Setup.
      */
     const HMRRenderer = Component => {
-      if (isProduction) loadableReady(() => {
+      if (isProduction && !window.isDynamic) loadableReady(() => {
         clientExports.hydrateRoot(documentRoot, Component);
       }, {
         namespace: 'modern'

@@ -1,6 +1,6 @@
-import { g as getImmutableOrJS, c as action } from './selectors-CBdCY0u3.js';
+import { g as getImmutableOrJS, c as action } from './selectors-DO2ocdOp.js';
 import { all } from '@redux-saga/core/effects';
-import { r as reduxStore, S as SET_VERSION, a as SET_VERSION_STATUS } from './store-v2gyr6u2.js';
+import { r as reduxStore, S as SET_VERSION, a as SET_VERSION_STATUS } from './store-3u0RzHZ0.js';
 
 const hasNavigationTree = state => getImmutableOrJS(state, ['navigation', 'isReady']);
 const selectNavigationRoot = state => getImmutableOrJS(state, ['navigation', 'root']);
@@ -84,4 +84,4 @@ var version = /*#__PURE__*/Object.freeze({
 });
 
 export { injectReducer as a, injectSaga as b, convertSagaArray as c, setVersion as d, hasNavigationTree as h, injectRedux as i, navigation as n, setVersionStatus as s, useInjectRedux as u, version as v };
-//# sourceMappingURL=version-DvjTUbcA.js.map
+//# sourceMappingURL=version-BlsI7hX2.js.map

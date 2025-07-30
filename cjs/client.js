@@ -12,10 +12,10 @@ var queryString = require('query-string');
 var reactCookie = require('react-cookie');
 var version = require('./version-CM-bJ62L.js');
 var version$1 = require('./version-B7XFkBhY.js');
-var App = require('./App-DXro6av4.js');
+var App = require('./App-vZrUfVgQ.js');
 var store = require('./store-D07FOXvM.js');
 var selectors = require('./selectors-wCs5fHD4.js');
-var SSRContext = require('./SSRContext-CFeZxG9H.js');
+var SSRContext = require('./SSRContext-DVj_QAC1.js');
 require('@redux-saga/core/effects');
 require('history');
 require('loglevel');
@@ -25,7 +25,7 @@ require('./ToJs-C9jwV7YB.js');
 require('jsonpath-mapper');
 require('./CookieHelper.class-C3Eqoze9.js');
 require('contensis-delivery-api');
-require('./RouteLoader-BFc-Wl6M.js');
+require('./RouteLoader-D5Yg7EB5.js');
 require('reselect');
 require('redux');
 require('redux-thunk');
@@ -78,7 +78,8 @@ class ClientApp {
   constructor(ReactApp, config) {
     const documentRoot = document.getElementById('root');
     const {
-      stateType = 'immutable',
+      // stateType = 'immutable', // changed default in v4
+      stateType = 'js',
       routes,
       withReducers,
       withSagas,
@@ -101,7 +102,7 @@ class ClientApp {
      * Webpack HMR Setup.
      */
     const HMRRenderer = Component => {
-      if (isProduction) component.loadableReady(() => {
+      if (isProduction && !window.isDynamic) component.loadableReady(() => {
         clientExports.hydrateRoot(documentRoot, Component);
       }, {
         namespace: 'modern'

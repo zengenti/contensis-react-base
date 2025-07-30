@@ -17,7 +17,7 @@ var contensisDeliveryApi = require('contensis-delivery-api');
 var ToJs = require('./ToJs-C9jwV7YB.js');
 require('query-string');
 require('react-router-dom');
-var RouteLoader = require('./RouteLoader-BFc-Wl6M.js');
+var RouteLoader = require('./RouteLoader-D5Yg7EB5.js');
 
 function _interopDefault (e) { return e && e.__esModule ? e : { default: e }; }
 
@@ -863,4 +863,4 @@ exports.browserHistory = browserHistory;
 exports.history = history;
 exports.pickProject = pickProject;
 exports.rootSaga = rootSaga;
-//# sourceMappingURL=App-DXro6av4.js.map
+//# sourceMappingURL=App-vZrUfVgQ.js.map

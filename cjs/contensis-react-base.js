@@ -2,7 +2,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var SSRContext = require('./SSRContext-CFeZxG9H.js');
+var SSRContext = require('./SSRContext-DVj_QAC1.js');
 var contensisDeliveryApi = require('contensis-delivery-api');
 var React = require('react');
 var reactRedux = require('react-redux');
@@ -14,7 +14,7 @@ require('deep-equal');
 require('deepmerge');
 require('query-string');
 var contensisCoreApi = require('contensis-core-api');
-var urls = require('./urls-DVIwGZmd.js');
+var VersionInfo = require('./VersionInfo-B_dKCubg.js');
 require('isomorphic-fetch');
 var express = require('express');
 var http = require('http');
@@ -22,36 +22,36 @@ var httpProxy = require('http-proxy');
 var fs = require('fs');
 var path = require('path');
 var appRootPath = require('app-root-path');
-var server$2 = require('react-dom/server');
-var server$3 = require('react-router-dom/server');
+var server$1 = require('react-dom/server');
 var reactRouterDom = require('react-router-dom');
 var reactHelmet = require('react-helmet');
 var styled = require('styled-components');
 var serialize = require('serialize-javascript');
-var server$1 = require('@loadable/server');
 var lodash = require('lodash');
 var lodashClean = require('lodash-clean');
-var reactCookie = require('react-cookie');
 var CookieHelper_class = require('./CookieHelper.class-C3Eqoze9.js');
 var cookiesMiddleware = require('universal-cookie-express');
 var store = require('./store-D07FOXvM.js');
-var App = require('./App-DXro6av4.js');
+var App = require('./App-vZrUfVgQ.js');
 var version = require('./version-B7XFkBhY.js');
-var RouteLoader = require('./RouteLoader-BFc-Wl6M.js');
 var selectors = require('./selectors-wCs5fHD4.js');
-var chalk = require('chalk');
+var RouteLoader = require('./RouteLoader-D5Yg7EB5.js');
 var stream = require('stream');
+var server$2 = require('@loadable/server');
+var chalk = require('chalk');
 var minifyCssString = require('minify-css-string');
+var reactCookie = require('react-cookie');
+var server$3 = require('react-router-dom/server');
 require('loglevel');
 require('@redux-saga/core/effects');
 require('./_commonjsHelpers-BJu3ubxk.js');
+require('./version-CM-bJ62L.js');
 require('redux');
 require('redux-thunk');
 require('redux-saga');
 require('redux-injectors-19');
 require('history');
 require('await-to-js');
-require('./version-CM-bJ62L.js');
 require('./ChangePassword.container-ECjEXixF.js');
 require('./ToJs-C9jwV7YB.js');
 
@@ -591,7 +591,7 @@ const makeLinkDepthMiddleware = ({
     const linkDepthMiddleware = async (req, res) => {
       try {
         // Short cache duration copied from canterbury project
-        urls.setCachingHeaders(res, {
+        VersionInfo.setCachingHeaders(res, {
           cacheControl: 'private',
           surrogateControl: '10'
         });
@@ -630,7 +630,7 @@ const makeLinkDepthMiddleware = ({
 const servers$1 = SERVERS; /* global SERVERS */
 const project = PROJECT; /* global PROJECT */
 const alias$1 = ALIAS; /* global ALIAS */
-const deliveryApiHostname = urls.url(alias$1, project).api;
+const deliveryApiHostname = VersionInfo.url(alias$1, project).api;
 const assetProxy = httpProxy__default.default.createProxyServer();
 const deliveryProxy = httpProxy__default.default.createProxyServer();
 const reverseProxies = (app, reverseProxyPaths = []) => {
@@ -811,6 +811,95 @@ const handleResponse = (request, response, content, send = 'send') => {
   response[send](content);
 };
 
+/**
+ * Render React JSX (and surrounding HTML document) via React's
+ * renderToPipeableStream method
+ * @param getContextHtml a function to produce the correct HTML template that surrounds the JSX "App" with all available document assets injected
+ * @param jsx the JSX to render via a streamed response
+ * @param response the express Response object
+ * @param stream all chunks are piped to this stream to add additional style elements to each streamed chunk
+ */
+const renderStream = (getContextHtml, jsx, response, stream) => {
+  let header = '';
+  let footer = '';
+  const {
+    abort,
+    pipe
+  } = server$1.renderToPipeableStream(jsx, {
+    onShellReady() {
+      const html = getContextHtml();
+      if (!html) {
+        // this means we have finished with the response already
+        abort();
+      } else {
+        [header, footer] = html.split('{{APP}}');
+        response.setHeader('content-type', 'text/html; charset=utf-8');
+        stream.write(header);
+        pipe(stream);
+      }
+    },
+    onAllReady() {
+      stream.write(footer);
+    },
+    onShellError(error) {
+      response.statusCode = 500;
+      response.setHeader('content-type', 'text/html; charset=utf-8');
+      response.send('<h1>Something went wrong</h1>');
+      console.error(`[renderToPipeableStream:onShellError]`, error);
+    },
+    onError(error) {
+      console.error(`[renderToPipeableStream:onError]`, error);
+    }
+  });
+
+  // Abandon and switch to client rendering if enough time passes.
+  // Try lowering this to see the client recover.
+  setTimeout(() => abort(), 30 * 1000);
+  stream === null || stream === void 0 || stream.pipe(response);
+};
+
+/**
+ * Generate and add styled-components CSS to the streamed
+ * chunks of rendered HTML via renderToPipeableStream
+ *
+ * Workaround for Styled Components issue: React 18 Streaming SSR #3658
+ * https://github.com/styled-components/styled-components/issues/3658#issuecomment-2480721193
+ * credit: https://github.com/rurquia/styled-components-ssr-3658/blob/main/server/render.js
+ * @param sheet styled-components ServerStyleSheet
+ * @returns Transform Stream
+ */
+const styledComponentsStream = sheet => {
+  const readerWriter = new stream.Transform({
+    objectMode: true,
+    transform(chunk, /* encoding */
+    _, callback) {
+      // Get the chunk and retrieve the sheet's CSS as an HTML chunk,
+      // then reset its rules so we get only new ones for the next chunk
+      const renderedHtml = typeof chunk === 'string' ? chunk : new TextDecoder().decode(chunk);
+      const styledCSS = sheet._emitSheetCSS();
+      const CLOSING_TAG_R = /<\/[a-z]*>/i;
+      sheet.instance.clearTag();
+
+      // prepend style html to chunk, unless the start of the chunk is a
+      // closing tag in which case append right after that
+      if (/<\/head>/.test(renderedHtml)) {
+        const replacedHtml = renderedHtml.replace('</head>', `${styledCSS}</head>`);
+        this.push(replacedHtml);
+      } else if (CLOSING_TAG_R.test(renderedHtml)) {
+        const execResult = CLOSING_TAG_R.exec(renderedHtml);
+        const endOfClosingTag = execResult.index + execResult.flat().length - 1;
+        const before = renderedHtml.slice(0, endOfClosingTag);
+        const after = renderedHtml.slice(endOfClosingTag);
+        this.push(before + styledCSS + after);
+      } else {
+        this.push(styledCSS + renderedHtml);
+      }
+      callback();
+    }
+  });
+  return readerWriter;
+};
+
 const readFileSync = path => fs__default.default.readFileSync(path, 'utf8');
 const loadableBundleData = ({
   stats,
@@ -836,14 +925,14 @@ const loadableBundleData = ({
   return bundle;
 };
 const loadableChunkExtractors = () => {
-  const commonLoadableExtractor = new server$1.ChunkExtractor({
+  const commonLoadableExtractor = new server$2.ChunkExtractor({
     stats: {}
   });
   try {
     let modern;
     let legacy;
     try {
-      modern = new server$1.ChunkExtractor({
+      modern = new server$2.ChunkExtractor({
         entrypoints: ['app'],
         namespace: 'modern',
         statsFile: path__default.default.resolve('dist/modern/loadable-stats.json')
@@ -852,7 +941,7 @@ const loadableChunkExtractors = () => {
       console.info('@loadable/server modern ChunkExtractor not available');
     }
     try {
-      legacy = new server$1.ChunkExtractor({
+      legacy = new server$2.ChunkExtractor({
         entrypoints: ['app'],
         namespace: 'legacy',
         statsFile: path__default.default.resolve('dist/legacy/loadable-stats.json')
@@ -936,6 +1025,36 @@ const getBundleTags = (loadableExtractor, scripts, staticRoutePath = 'static') =
   return startupTag;
 };
 
+const getVersionInfo = staticFolderPath => {
+  try {
+    const versionData = fs__default.default.readFileSync(`dist/${staticFolderPath}/version.json`, 'utf8');
+    const versionInfo = JSON.parse(versionData);
+    return versionInfo;
+  } catch (ex) {
+    console.error(`Unable to read from "version.json"`, ex);
+    return {};
+  }
+};
+
+/* eslint-disable no-console */
+
+// Default exception types to add event listeners for
+const handleDefaultEvents = ['uncaughtException', 'unhandledRejection'];
+const unhandledExceptionHandler = (handleExceptions = handleDefaultEvents) => {
+  const exceptionTypes = Array.isArray(handleExceptions) ? handleExceptions : handleExceptions === false ? [] : handleDefaultEvents;
+  for (const type of exceptionTypes) {
+    process.on(type, err => {
+      if (err && err instanceof Error) {
+        // Print a message to inform admins and developers the error should not be ignored
+        console.log(`${`[contensis-react-base] ❌ ${chalk__default.default.red.bold(`${type} - ${err.message}`)}`}`);
+        console.log(chalk__default.default.gray` - you are seeing this because we have tried to prevent the app from completely crashing - you should not ignore this problem`);
+        // Log the error to server console
+        console.error(err);
+      }
+    });
+  }
+};
+
 const addStandardHeaders = (state, response, packagejson, groups) => {
   if (state) {
     try {
@@ -981,108 +1100,12 @@ const addVarnishAuthenticationHeaders = (state, response, groups = {}) => {
   }
 };
 
-const getVersionInfo = staticFolderPath => {
-  try {
-    const versionData = fs__default.default.readFileSync(`dist/${staticFolderPath}/version.json`, 'utf8');
-    const versionInfo = JSON.parse(versionData);
-    return versionInfo;
-  } catch (ex) {
-    console.error(`Unable to read from "version.json"`, ex);
-    return {};
-  }
-};
-
-/* eslint-disable no-console */
-
-// Default exception types to add event listeners for
-const handleDefaultEvents = ['uncaughtException', 'unhandledRejection'];
-const unhandledExceptionHandler = (handleExceptions = handleDefaultEvents) => {
-  const exceptionTypes = Array.isArray(handleExceptions) ? handleExceptions : handleExceptions === false ? [] : handleDefaultEvents;
-  for (const type of exceptionTypes) {
-    process.on(type, err => {
-      if (err && err instanceof Error) {
-        // Print a message to inform admins and developers the error should not be ignored
-        console.log(`${`[contensis-react-base] ❌ ${chalk__default.default.red.bold(`${type} - ${err.message}`)}`}`);
-        console.log(chalk__default.default.gray` - you are seeing this because we have tried to prevent the app from completely crashing - you should not ignore this problem`);
-        // Log the error to server console
-        console.error(err);
-      }
-    });
-  }
-};
-
-const renderStream = (getContextHtml, jsx, response, stream) => {
-  let header = '';
-  let footer = '';
-  const {
-    abort,
-    pipe
-  } = server$2.renderToPipeableStream(jsx, {
-    onShellReady() {
-      const html = getContextHtml();
-      if (!html) {
-        // this means we have finished with the response already
-        abort();
-      } else {
-        [header, footer] = html.split('{{APP}}');
-        stream.write(header);
-        pipe(stream);
-      }
-    },
-    onAllReady() {
-      stream.write(footer);
-    },
-    onShellError(error) {
-      response.statusCode = 500;
-      response.send('<h1>Something went wrong</h1>');
-      console.error(`[renderToPipeableStream:onShellError]`, error);
-    },
-    onError(error) {
-      console.error(`[renderToPipeableStream:onError]`, error);
-    }
-  });
-
-  // Abandon and switch to client rendering if enough time passes.
-  // Try lowering this to see the client recover.
-  setTimeout(() => abort(), 30 * 1000);
-  stream === null || stream === void 0 || stream.pipe(response);
-};
-
-// Workaround for Styled Components issue: React 18 Streaming SSR #3658
-// https://github.com/styled-components/styled-components/issues/3658#issuecomment-2480721193
-// credit: https://github.com/rurquia/styled-components-ssr-3658/blob/main/server/render.js
-const styledComponentsStream = sheet => {
-  const readerWriter = new stream.Transform({
-    objectMode: true,
-    transform(chunk, /* encoding */
-    _, callback) {
-      // Get the chunk and retrieve the sheet's CSS as an HTML chunk,
-      // then reset its rules so we get only new ones for the next chunk
-      const renderedHtml = typeof chunk === 'string' ? chunk : new TextDecoder().decode(chunk);
-      const styledCSS = sheet._emitSheetCSS();
-      const CLOSING_TAG_R = /<\/[a-z]*>/i;
-      sheet.instance.clearTag();
-
-      // prepend style html to chunk, unless the start of the chunk is a
-      // closing tag in which case append right after that
-      if (/<\/head>/.test(renderedHtml)) {
-        const replacedHtml = renderedHtml.replace('</head>', `${styledCSS}</head>`);
-        this.push(replacedHtml);
-      } else if (CLOSING_TAG_R.test(renderedHtml)) {
-        const execResult = CLOSING_TAG_R.exec(renderedHtml);
-        const endOfClosingTag = execResult.index + execResult.flat().length - 1;
-        const before = renderedHtml.slice(0, endOfClosingTag);
-        const after = renderedHtml.slice(endOfClosingTag);
-        this.push(before + styledCSS + after);
-      } else {
-        this.push(styledCSS + renderedHtml);
-      }
-      callback();
-    }
-  });
-  return readerWriter;
-};
-
+/**
+ * Add assets to templateHTML in the positions represented
+ * by replacing specific keys wrapped in handlebars depending
+ * on the accessMethod(s) that have been set (or updated)
+ * while processing the request
+ */
 const replaceHtml = ({
   bundleTags = '',
   html = '',
@@ -1096,22 +1119,27 @@ const replaceHtml = ({
   templateHTMLStatic = ''
 }, accessMethod) => {
   let responseHTML = '';
+  // Serve a blank HTML page with client scripts to load the app in the browser
+  if (accessMethod.DYNAMIC) {
+    responseHTML = templateHTML.replace('{{TITLE}}', '').replace('{{SEO_CRITICAL_METADATA}}', '').replace('{{CRITICAL_CSS}}', '').replace('{{APP}}', '').replace('{{LOADABLE_CHUNKS}}', bundleTags).replace('{{REDUX_DATA}}', state);
+  }
+
   // Page fragment served with client scripts and redux data that hydrate the app client side
-  if (accessMethod.FRAGMENT && !accessMethod.STATIC) {
+  else if (accessMethod.FRAGMENT && !accessMethod.STATIC) {
     responseHTML = templateHTMLFragment.replace('{{TITLE}}', title).replace('{{SEO_CRITICAL_METADATA}}', metadata).replace('{{CRITICAL_CSS}}', minifyCssString__default.default(styleTags))
     //.replace('{{APP}}', html)
     .replace('{{LOADABLE_CHUNKS}}', bundleTags).replace('{{REDUX_DATA}}', state);
   }
 
   // Full HTML page served statically
-  if (!accessMethod.FRAGMENT && accessMethod.STATIC) {
+  else if (!accessMethod.FRAGMENT && accessMethod.STATIC) {
     responseHTML = templateHTMLStatic.replace('{{TITLE}}', title).replace('{{SEO_CRITICAL_METADATA}}', metadata).replace('{{CRITICAL_CSS}}', minifyCssString__default.default(styleTags))
     //.replace('{{APP}}', html)
     .replace('{{LOADABLE_CHUNKS}}', '');
   }
 
   // Full HTML page served with client scripts and redux data that hydrate the app client side
-  if (!accessMethod.FRAGMENT && !accessMethod.STATIC) {
+  else if (!accessMethod.FRAGMENT && !accessMethod.STATIC) {
     responseHTML = templateHTML.replace('{{TITLE}}', title).replace('{{SEO_CRITICAL_METADATA}}', metadata).replace('{{CRITICAL_CSS}}', styleTags)
     //.replace('{{APP}}', html)
     .replace('{{LOADABLE_CHUNKS}}', bundleTags).replace('{{REDUX_DATA}}', state);
@@ -1124,6 +1152,45 @@ const replaceHtml = ({
     responseHTML = responseHTML.replace(/<html?.+?>/, `<html ${htmlAttributes}>`);
   }
   return html ? responseHTML.replace('{{APP}}', html) : responseHTML;
+};
+
+/**
+ * Produce the JSX wrapped in the necessary Providers
+ * to render the app in SSR
+ * @param ReactApp the JSX to render
+ * @param { providers, props, ssrAssets }
+ * @returns the final JSX to render decorated with all Provider and App props
+ */
+const ssrJsxProducer = (ReactApp, {
+  providers,
+  props,
+  ssrAssets
+}) => {
+  var _providers$styledComp;
+  // Recast ChunkExtractorManager to avoid TS error `Property 'children' does not exist on type...`
+  const ChunkExtractor = server$2.ChunkExtractorManager;
+  const jsx = /*#__PURE__*/React__default.default.createElement(ChunkExtractor, {
+    extractor: providers.loadable.extractor
+  }, /*#__PURE__*/React__default.default.createElement(reactCookie.CookiesProvider, {
+    cookies: providers.cookies
+  }, /*#__PURE__*/React__default.default.createElement(reactRedux.Provider, {
+    store: providers.redux
+  }, /*#__PURE__*/React__default.default.createElement(RouteLoader.HttpContext.Provider, {
+    value: providers.httpContext
+  }, /*#__PURE__*/React__default.default.createElement(server$3.StaticRouter, {
+    location: providers.router.url
+  }, /*#__PURE__*/React__default.default.createElement(SSRContext.SSRContextProvider, {
+    accessMethod: providers.ssrContext.accessMethod,
+    request: providers.ssrContext.request,
+    response: providers.ssrContext.response,
+    ssrAssets: ssrAssets
+  }, /*#__PURE__*/React__default.default.createElement(ReactApp, {
+    routes: props.routes,
+    withEvents: props.withEvents
+  })))))));
+
+  // Wrap the JSX in a StyleSheetManager if a ServerStyleSheet is provided
+  return !((_providers$styledComp = providers.styledComponents) !== null && _providers$styledComp !== void 0 && _providers$styledComp.sheet) ? jsx : providers.styledComponents.sheet.collectStyles(jsx);
 };
 
 const webApp = (app, ReactApp, config) => {
@@ -1205,34 +1272,56 @@ const webApp = (app, ReactApp, config) => {
     const groups = allowedGroups && allowedGroups[project];
     store$1.dispatch(selectors.setCurrentProject(project, groups, hostname));
     const loadableExtractor = loadableChunkExtractors();
-    // Recast ChunkExtractorManager to avoid TS error `Property 'children' does not exist on type...`
-    const ChunkExtractor = server$1.ChunkExtractorManager;
+
+    // type ChunkExtractorManagerPropsForReact18 = ChunkExtractorManagerProps & {
+    //   children?: React.ReactNode;
+    // };
+
+    // // Recast ChunkExtractorManager to avoid TS error `Property 'children' does not exist on type...`
+    // const ChunkExtractor = ChunkExtractorManager as ClassType<
+    //   ChunkExtractorManagerPropsForReact18,
+    //   Component<ChunkExtractorManagerPropsForReact18>,
+    //   ComponentClass<ChunkExtractorManagerPropsForReact18>
+    // >;
+
     const ssrCookies = enableSsrCookies ?
     // these cookies are managed by the cookiesMiddleware and contain listeners
     // when cookies are read or written in ssr can be added to the `set-cookie` response header
     request.universalCookies :
     // this is a stub cookie collection so cookie methods can be used in code
     new CookieHelper_class.Cookies();
-    const context = {};
+
     // Track the current statusCode via the response object
     response.status(200);
-    const jsx = /*#__PURE__*/React__default.default.createElement(ChunkExtractor, {
-      extractor: loadableExtractor.commonLoadableExtractor
-    }, /*#__PURE__*/React__default.default.createElement(reactCookie.CookiesProvider, {
-      cookies: ssrCookies
-    }, /*#__PURE__*/React__default.default.createElement(reactRedux.Provider, {
-      store: store$1
-    }, /*#__PURE__*/React__default.default.createElement(RouteLoader.HttpContext.Provider, {
-      value: context
-    }, /*#__PURE__*/React__default.default.createElement(server$3.StaticRouter, {
-      location: url
-    }, /*#__PURE__*/React__default.default.createElement(SSRContext.SSRContextProvider, {
-      request: request,
-      response: response
-    }, /*#__PURE__*/React__default.default.createElement(ReactApp, {
-      routes: routes,
-      withEvents: withEvents
-    })))))));
+
+    // Create the context we will pass to JSX HttpContext.Provider
+    // and read back any context props set by the ReactApp
+    const context = {};
+
+    // Amalgamate all props for the various Providers we wrap the ReactApp with
+    const jsxProviderProps = {
+      loadable: {
+        extractor: loadableExtractor.commonLoadableExtractor
+      },
+      cookies: ssrCookies,
+      redux: store$1,
+      httpContext: context,
+      router: {
+        url
+      },
+      ssrContext: {
+        accessMethod,
+        request,
+        response
+      }
+    };
+    // These are the props we will pass to the ReactApp itself
+    const jsxReactAppProps = {
+      routes,
+      withEvents
+    };
+
+    // Get the configured HTML templates provided by the consumer
     const {
       templateHTML = '',
       templateHTMLFragment = '',
@@ -1242,14 +1331,28 @@ const webApp = (app, ReactApp, config) => {
     // Serve a blank HTML page with client scripts to load the app in the browser
     if (accessMethod.DYNAMIC) {
       // Dynamic doesn't need sagas
+      // or styles, or any split component bundles
       // nor are we streaming responses
-      server$2.renderToString(jsx);
+      const isDynamicHints = `<script ${attributes}>window.versionStatus = "${versionStatus}"; window.isDynamic = true;</script>`;
+      const jsx = ssrJsxProducer(ReactApp, {
+        providers: jsxProviderProps,
+        props: jsxReactAppProps,
+        ssrAssets: {
+          serializedState: isDynamicHints
+        }
+      });
+      server$1.renderToString(jsx);
 
       // Dynamic page render has only the necessary bundles to start up the app
       // and does not include any react-loadable code-split bundles
       const bundleTags = getBundleTags(loadableExtractor, scripts, staticRoutePath);
-      const isDynamicHints = `<script ${attributes}>window.versionStatus = "${versionStatus}"; window.isDynamic = true;</script>`;
-      const responseHtmlDynamic = templateHTML.replace('{{TITLE}}', '').replace('{{SEO_CRITICAL_METADATA}}', '').replace('{{CRITICAL_CSS}}', '').replace('{{APP}}', '').replace('{{LOADABLE_CHUNKS}}', bundleTags).replace('{{REDUX_DATA}}', isDynamicHints);
+      const responseHtmlDynamic = replaceHtml({
+        bundleTags,
+        state: isDynamicHints,
+        templateHTML,
+        templateHTMLFragment
+      }, accessMethod);
+
       // Dynamic pages always return a 200 so we can run
       // the app and serve up all errors inside the client
       response.setHeader('Surrogate-Control', `max-age=${getCacheDuration(200)}`);
@@ -1309,7 +1412,6 @@ const webApp = (app, ReactApp, config) => {
         const htmlAttributes = helmet.htmlAttributes.toString();
         let title = helmet.title.toString();
         const metadata = helmet.meta.toString().concat(helmet.base.toString()).concat(helmet.link.toString()).concat(helmet.script.toString()).concat(helmet.noscript.toString());
-        let responseHTML = '';
         addStandardHeaders(reduxState, response, packagejson, {
           allowedGroups,
           globalGroups
@@ -1319,9 +1421,42 @@ const webApp = (app, ReactApp, config) => {
         // code-split bundles for any page components as well as core app bundles
         const bundleTags = getBundleTags(loadableExtractor, scripts, staticRoutePath);
         const sheet = new styled.ServerStyleSheet();
-        const styledJsx = sheet.collectStyles(jsx);
+        // Produce the ssr jsx one time so we can get any style tags to pass back in
+        ssrJsxProducer(ReactApp, {
+          providers: {
+            ...jsxProviderProps,
+            styledComponents: {
+              sheet
+            }
+          },
+          props: jsxReactAppProps
+        });
         let styleTags = sheet.getStyleTags();
+        const styledJsx = ssrJsxProducer(ReactApp, {
+          providers: {
+            ...jsxProviderProps,
+            styledComponents: {
+              sheet
+            }
+          },
+          props: jsxReactAppProps,
+          ssrAssets: {
+            bundleTags,
+            htmlAttributes,
+            metadata,
+            title
+          }
+        });
         try {
+          /**
+           * Loads all page assets into the provided templateHTML
+           *
+           * Is callable after the JSX has been rendered, as
+           * JSX components may update the context via the
+           * HttpContext.Provider which can influence whether
+           * we render the page as STATIC or render nothing
+           * if the context has requested a redirect
+           * */
           const getContextHtml = renderedJsx => {
             if (context.url) {
               response.redirect(context.statusCode || 302, context.url);
@@ -1351,9 +1486,9 @@ const webApp = (app, ReactApp, config) => {
             return html;
           };
           if (isRenderingJsxToString) {
-            const html = server$2.renderToString(styledJsx);
+            const html = server$1.renderToString(styledJsx);
             styleTags = sheet.getStyleTags();
-            responseHTML = getContextHtml(html);
+            const responseHTML = getContextHtml(html);
             responseHandler(request, response, responseHTML);
           } else {
             renderStream(getContextHtml, styledJsx, response, styledComponentsStream(sheet));
@@ -1368,7 +1503,13 @@ const webApp = (app, ReactApp, config) => {
         response.status(500);
         responseHandler(request, response, `Error occurred: <br />${err.stack} <br />${JSON.stringify(err)}`);
       });
-      server$2.renderToString(jsx);
+
+      // If this is removed we don't get the redux state populated
+      // with the result of the actions RouteLoader component has dispatched
+      server$1.renderToString(ssrJsxProducer(ReactApp, {
+        providers: jsxProviderProps,
+        props: jsxReactAppProps
+      }));
       store$1.close();
     }
   });

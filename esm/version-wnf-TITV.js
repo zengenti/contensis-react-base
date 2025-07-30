@@ -1,4 +1,4 @@
-import { g as getImmutableOrJS } from './selectors-CBdCY0u3.js';
+import { g as getImmutableOrJS } from './selectors-DO2ocdOp.js';
 
 const selectCommitRef = state => getImmutableOrJS(state, ['version', 'commitRef']);
 const selectBuildNumber = state => getImmutableOrJS(state, ['version', 'buildNo']);
@@ -12,4 +12,4 @@ var version = /*#__PURE__*/Object.freeze({
 });
 
 export { selectCommitRef as a, selectBuildNumber as b, selectVersionStatus as s, version as v };
-//# sourceMappingURL=version-D773TD9j.js.map
+//# sourceMappingURL=version-wnf-TITV.js.map
