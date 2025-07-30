@@ -13,21 +13,19 @@ import { ServerStyleSheet } from 'styled-components';
  * @param stream all chunks are piped to this stream to add additional style elements to each streamed chunk
  */
 export const renderStream = (
-  getContextHtml: () => string,
+  getContextHtml: (isFinal?: boolean) => string,
   jsx: ReactNode,
   response: Response,
   stream: Writable
 ) => {
-  let header = '';
-  let footer = '';
   const { abort, pipe } = renderToPipeableStream(jsx, {
     onShellReady() {
-      const html = getContextHtml();
+      const html = getContextHtml(false);
       if (!html) {
         // this means we have finished with the response already
         abort();
       } else {
-        [header, footer] = html.split('{{APP}}');
+        const header = html.split('{{APP}}')[0];
 
         response.setHeader('content-type', 'text/html; charset=utf-8');
         stream.write(header);
@@ -35,6 +33,7 @@ export const renderStream = (
       }
     },
     onAllReady() {
+      const footer = getContextHtml(true).split('{{APP}}')[1];
       stream.write(footer);
     },
     onShellError(error: unknown) {

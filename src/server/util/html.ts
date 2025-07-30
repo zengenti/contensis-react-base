@@ -34,7 +34,7 @@ export const replaceHtml = (
       .replace('{{SEO_CRITICAL_METADATA}}', '')
       .replace('{{CRITICAL_CSS}}', '')
       .replace('{{APP}}', '')
-      .replace('{{LOADABLE_CHUNKS}}', bundleTags)
+      // .replace('{{LOADABLE_CHUNKS}}', bundleTags)
       .replace('{{REDUX_DATA}}', state);
   }
 
@@ -45,7 +45,7 @@ export const replaceHtml = (
       .replace('{{SEO_CRITICAL_METADATA}}', metadata)
       .replace('{{CRITICAL_CSS}}', minifyCssString(styleTags))
       //.replace('{{APP}}', html)
-      .replace('{{LOADABLE_CHUNKS}}', bundleTags)
+      // .replace('{{LOADABLE_CHUNKS}}', bundleTags)
       .replace('{{REDUX_DATA}}', state);
   }
 
@@ -66,7 +66,7 @@ export const replaceHtml = (
       .replace('{{SEO_CRITICAL_METADATA}}', metadata)
       .replace('{{CRITICAL_CSS}}', styleTags)
       //.replace('{{APP}}', html)
-      .replace('{{LOADABLE_CHUNKS}}', bundleTags)
+      // .replace('{{LOADABLE_CHUNKS}}', bundleTags)
       .replace('{{REDUX_DATA}}', state);
   }
 
@@ -79,5 +79,12 @@ export const replaceHtml = (
       `<html ${htmlAttributes}>`
     );
   }
-  return html ? responseHTML.replace('{{APP}}', html) : responseHTML;
+  responseHTML = html ? responseHTML.replace('{{APP}}', html) : responseHTML;
+
+  // Only replace bundle tags at the very end when we have rendered and are
+  // streaming out the HTML "footer"
+  if (bundleTags)
+    responseHTML = responseHTML.replace('{{LOADABLE_CHUNKS}}', bundleTags);
+
+  return responseHTML;
 };

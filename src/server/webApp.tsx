@@ -304,47 +304,46 @@ const webApp = (
             }
 
             // Responses
-
-            const helmet = Helmet.renderStatic();
-            Helmet.rewind();
-            const htmlAttributes = helmet.htmlAttributes.toString();
-            let title = helmet.title.toString();
-            const metadata = helmet.meta
-              .toString()
-              .concat(helmet.base.toString())
-              .concat(helmet.link.toString())
-              .concat(helmet.script.toString())
-              .concat(helmet.noscript.toString());
-
             addStandardHeaders(reduxState, response, packagejson, {
               allowedGroups,
               globalGroups,
             });
 
-            // After running rootSaga there should be an additional react-loadable
-            // code-split bundles for any page components as well as core app bundles
-            const bundleTags = getBundleTags(
-              loadableExtractor,
-              scripts,
-              staticRoutePath
-            );
-
             const sheet = new ServerStyleSheet();
-            // Produce the ssr jsx one time so we can get any style tags to pass back in
-            ssrJsxProducer(ReactApp, {
-              providers: { ...jsxProviderProps, styledComponents: { sheet } },
-              props: jsxReactAppProps,
-            });
-            let styleTags = sheet.getStyleTags();
+            const helmet = Helmet.renderStatic();
+            Helmet.rewind();
+            // const htmlAttributes = helmet.htmlAttributes.toString();
+            // let title = helmet.title.toString();
+            // const metadata = helmet.meta
+            //   .toString()
+            //   .concat(helmet.base.toString())
+            //   .concat(helmet.link.toString())
+            //   .concat(helmet.script.toString())
+            //   .concat(helmet.noscript.toString());
+
+            // // Produce the ssr jsx one time so we can get any style tags to pass back in
+            // ssrJsxProducer(ReactApp, {
+            //   providers: { ...jsxProviderProps, styledComponents: { sheet } },
+            //   props: jsxReactAppProps,
+            // });
+
+            // // After running rootSaga (and rendering subsquent children)
+            // // there should be additional react-loadable
+            // // code-split bundles for any page components as well as core app bundles
+            // const bundleTags = getBundleTags(
+            //   loadableExtractor,
+            //   scripts,
+            //   staticRoutePath
+            // );
 
             const styledJsx = ssrJsxProducer(ReactApp, {
               providers: { ...jsxProviderProps, styledComponents: { sheet } },
               props: jsxReactAppProps,
               ssrAssets: {
-                bundleTags,
-                htmlAttributes,
-                metadata,
-                title,
+                // bundleTags,
+                // htmlAttributes,
+                // metadata,
+                // title,
               },
             });
             try {
@@ -357,7 +356,11 @@ const webApp = (
                * we render the page as STATIC or render nothing
                * if the context has requested a redirect
                * */
-              const getContextHtml = (renderedJsx?: string) => {
+              const getContextHtml = (
+                isFinal = false,
+                styleTags?: string,
+                renderedJsxMarkup?: string
+              ) => {
                 if (context.url) {
                   response.redirect(context.statusCode || 302, context.url);
                   return '';
@@ -367,6 +370,17 @@ const webApp = (
                 if ((context.statusCode || 200) >= 404) {
                   accessMethod.STATIC = true;
                 }
+
+                // Title and metadata can be blank
+                const htmlAttributes = helmet.htmlAttributes.toString();
+                let title = helmet.title.toString();
+                const metadata = helmet.meta
+                  .toString()
+                  .concat(helmet.base.toString())
+                  .concat(helmet.link.toString())
+                  .concat(helmet.script.toString())
+                  .concat(helmet.noscript.toString());
+
                 if (context.statusCode === 404)
                   title = '<title>404 page not found</title>';
 
@@ -374,10 +388,14 @@ const webApp = (
                 if (typeof context.statusCode === 'number')
                   response.status(context.statusCode);
 
+                const bundleTags = isFinal
+                  ? getBundleTags(loadableExtractor, scripts, staticRoutePath)
+                  : '';
+
                 const html = replaceHtml(
                   {
                     bundleTags,
-                    html: renderedJsx,
+                    html: renderedJsxMarkup,
                     htmlAttributes,
                     metadata,
                     state: serialisedReduxData,
@@ -394,8 +412,8 @@ const webApp = (
 
               if (isRenderingJsxToString) {
                 const html = renderToString(styledJsx);
-                styleTags = sheet.getStyleTags();
-                const responseHTML = getContextHtml(html);
+                const styleTags = sheet.getStyleTags();
+                const responseHTML = getContextHtml(true, styleTags, html);
                 responseHandler(request, response, responseHTML);
               } else {
                 renderStream(
