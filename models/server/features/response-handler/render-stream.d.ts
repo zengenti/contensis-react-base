@@ -11,7 +11,7 @@ import { ServerStyleSheet } from 'styled-components';
  * @param response the express Response object
  * @param stream all chunks are piped to this stream to add additional style elements to each streamed chunk
  */
-export declare const renderStream: (getContextHtml: () => string, jsx: ReactNode, response: Response, stream: Writable) => void;
+export declare const renderStream: (getContextHtml: (isFinal?: boolean) => string, jsx: ReactNode, response: Response, stream: Writable) => void;
 /**
  * Generate and add styled-components CSS to the streamed
  * chunks of rendered HTML via renderToPipeableStream

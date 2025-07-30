@@ -803,25 +803,24 @@ const handleResponse = (request, response, content, send = 'send') => {
  * @param stream all chunks are piped to this stream to add additional style elements to each streamed chunk
  */
 const renderStream = (getContextHtml, jsx, response, stream) => {
-  let header = '';
-  let footer = '';
   const {
     abort,
     pipe
   } = renderToPipeableStream(jsx, {
     onShellReady() {
-      const html = getContextHtml();
+      const html = getContextHtml(false);
       if (!html) {
         // this means we have finished with the response already
         abort();
       } else {
-        [header, footer] = html.split('{{APP}}');
+        const header = html.split('{{APP}}')[0];
         response.setHeader('content-type', 'text/html; charset=utf-8');
         stream.write(header);
         pipe(stream);
       }
     },
     onAllReady() {
+      const footer = getContextHtml(true).split('{{APP}}')[1];
       stream.write(footer);
     },
     onShellError(error) {
@@ -930,7 +929,8 @@ const loadableChunkExtractors = () => {
         statsFile: path.resolve('dist/legacy/loadable-stats.json')
       });
     } catch (e) {
-      console.info('@loadable/server legacy ChunkExtractor not available');
+      // legacy bundling deprecated in v4
+      // console.info('@loadable/server legacy ChunkExtractor not available');
     }
     commonLoadableExtractor.addChunk = chunk => {
       var _modern, _legacy, _legacy2;
@@ -1104,14 +1104,17 @@ const replaceHtml = ({
   let responseHTML = '';
   // Serve a blank HTML page with client scripts to load the app in the browser
   if (accessMethod.DYNAMIC) {
-    responseHTML = templateHTML.replace('{{TITLE}}', '').replace('{{SEO_CRITICAL_METADATA}}', '').replace('{{CRITICAL_CSS}}', '').replace('{{APP}}', '').replace('{{LOADABLE_CHUNKS}}', bundleTags).replace('{{REDUX_DATA}}', state);
+    responseHTML = templateHTML.replace('{{TITLE}}', '').replace('{{SEO_CRITICAL_METADATA}}', '').replace('{{CRITICAL_CSS}}', '').replace('{{APP}}', '')
+    // .replace('{{LOADABLE_CHUNKS}}', bundleTags)
+    .replace('{{REDUX_DATA}}', state);
   }
 
   // Page fragment served with client scripts and redux data that hydrate the app client side
   else if (accessMethod.FRAGMENT && !accessMethod.STATIC) {
     responseHTML = templateHTMLFragment.replace('{{TITLE}}', title).replace('{{SEO_CRITICAL_METADATA}}', metadata).replace('{{CRITICAL_CSS}}', minifyCssString(styleTags))
     //.replace('{{APP}}', html)
-    .replace('{{LOADABLE_CHUNKS}}', bundleTags).replace('{{REDUX_DATA}}', state);
+    // .replace('{{LOADABLE_CHUNKS}}', bundleTags)
+    .replace('{{REDUX_DATA}}', state);
   }
 
   // Full HTML page served statically
@@ -1125,7 +1128,8 @@ const replaceHtml = ({
   else if (!accessMethod.FRAGMENT && !accessMethod.STATIC) {
     responseHTML = templateHTML.replace('{{TITLE}}', title).replace('{{SEO_CRITICAL_METADATA}}', metadata).replace('{{CRITICAL_CSS}}', styleTags)
     //.replace('{{APP}}', html)
-    .replace('{{LOADABLE_CHUNKS}}', bundleTags).replace('{{REDUX_DATA}}', state);
+    // .replace('{{LOADABLE_CHUNKS}}', bundleTags)
+    .replace('{{REDUX_DATA}}', state);
   }
 
   // If react-helmet htmlAttributes are being used,
@@ -1134,7 +1138,12 @@ const replaceHtml = ({
   if (htmlAttributes) {
     responseHTML = responseHTML.replace(/<html?.+?>/, `<html ${htmlAttributes}>`);
   }
-  return html ? responseHTML.replace('{{APP}}', html) : responseHTML;
+  responseHTML = html ? responseHTML.replace('{{APP}}', html) : responseHTML;
+
+  // Only replace bundle tags at the very end when we have rendered and are
+  // streaming out the HTML "footer"
+  if (bundleTags) responseHTML = responseHTML.replace('{{LOADABLE_CHUNKS}}', bundleTags);
+  return responseHTML;
 };
 
 /**
@@ -1389,32 +1398,37 @@ const webApp = (app, ReactApp, config) => {
         }
 
         // Responses
-
-        const helmet = Helmet.renderStatic();
-        Helmet.rewind();
-        const htmlAttributes = helmet.htmlAttributes.toString();
-        let title = helmet.title.toString();
-        const metadata = helmet.meta.toString().concat(helmet.base.toString()).concat(helmet.link.toString()).concat(helmet.script.toString()).concat(helmet.noscript.toString());
         addStandardHeaders(reduxState, response, packagejson, {
           allowedGroups,
           globalGroups
         });
-
-        // After running rootSaga there should be an additional react-loadable
-        // code-split bundles for any page components as well as core app bundles
-        const bundleTags = getBundleTags(loadableExtractor, scripts, staticRoutePath);
         const sheet = new ServerStyleSheet();
-        // Produce the ssr jsx one time so we can get any style tags to pass back in
-        ssrJsxProducer(ReactApp, {
-          providers: {
-            ...jsxProviderProps,
-            styledComponents: {
-              sheet
-            }
-          },
-          props: jsxReactAppProps
-        });
-        let styleTags = sheet.getStyleTags();
+        const helmet = Helmet.renderStatic();
+        Helmet.rewind();
+        // const htmlAttributes = helmet.htmlAttributes.toString();
+        // let title = helmet.title.toString();
+        // const metadata = helmet.meta
+        //   .toString()
+        //   .concat(helmet.base.toString())
+        //   .concat(helmet.link.toString())
+        //   .concat(helmet.script.toString())
+        //   .concat(helmet.noscript.toString());
+
+        // // Produce the ssr jsx one time so we can get any style tags to pass back in
+        // ssrJsxProducer(ReactApp, {
+        //   providers: { ...jsxProviderProps, styledComponents: { sheet } },
+        //   props: jsxReactAppProps,
+        // });
+
+        // // After running rootSaga (and rendering subsquent children)
+        // // there should be additional react-loadable
+        // // code-split bundles for any page components as well as core app bundles
+        // const bundleTags = getBundleTags(
+        //   loadableExtractor,
+        //   scripts,
+        //   staticRoutePath
+        // );
+
         const styledJsx = ssrJsxProducer(ReactApp, {
           providers: {
             ...jsxProviderProps,
@@ -1424,10 +1438,10 @@ const webApp = (app, ReactApp, config) => {
           },
           props: jsxReactAppProps,
           ssrAssets: {
-            bundleTags,
-            htmlAttributes,
-            metadata,
-            title
+            // bundleTags,
+            // htmlAttributes,
+            // metadata,
+            // title,
           }
         });
         try {
@@ -1440,7 +1454,7 @@ const webApp = (app, ReactApp, config) => {
            * we render the page as STATIC or render nothing
            * if the context has requested a redirect
            * */
-          const getContextHtml = renderedJsx => {
+          const getContextHtml = (isFinal = false, styleTags, renderedJsxMarkup) => {
             if (context.url) {
               response.redirect(context.statusCode || 302, context.url);
               return '';
@@ -1450,13 +1464,19 @@ const webApp = (app, ReactApp, config) => {
             if ((context.statusCode || 200) >= 404) {
               accessMethod.STATIC = true;
             }
+
+            // Title and metadata can be blank
+            const htmlAttributes = helmet.htmlAttributes.toString();
+            let title = helmet.title.toString();
+            const metadata = helmet.meta.toString().concat(helmet.base.toString()).concat(helmet.link.toString()).concat(helmet.script.toString()).concat(helmet.noscript.toString());
             if (context.statusCode === 404) title = '<title>404 page not found</title>';
 
             // Set response.status from React StaticRouter
             if (typeof context.statusCode === 'number') response.status(context.statusCode);
+            const bundleTags = isFinal ? getBundleTags(loadableExtractor, scripts, staticRoutePath) : '';
             const html = replaceHtml({
               bundleTags,
-              html: renderedJsx,
+              html: renderedJsxMarkup,
               htmlAttributes,
               metadata,
               state: serialisedReduxData,
@@ -1470,8 +1490,8 @@ const webApp = (app, ReactApp, config) => {
           };
           if (isRenderingJsxToString) {
             const html = renderToString(styledJsx);
-            styleTags = sheet.getStyleTags();
-            const responseHTML = getContextHtml(html);
+            const styleTags = sheet.getStyleTags();
+            const responseHTML = getContextHtml(true, styleTags, html);
             responseHandler(request, response, responseHTML);
           } else {
             renderStream(getContextHtml, styledJsx, response, styledComponentsStream(sheet));
