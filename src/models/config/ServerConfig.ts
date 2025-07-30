@@ -10,6 +10,7 @@ export type ServerConfig = AppConfig & {
   reverseProxyPaths?: string[];
   packagejson: any;
   proxyDeliveryApi?: boolean;
+  renderToString?: boolean;
   scripts?: {
     attributes?: {
       [key: string]: string;

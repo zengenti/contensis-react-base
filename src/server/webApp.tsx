@@ -6,7 +6,6 @@ import { matchRoutes, RouteObject } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { ServerStyleSheet } from 'styled-components';
 import serialize from 'serialize-javascript';
-import minifyCssString from 'minify-css-string';
 import mapJson from 'jsonpath-mapper';
 import { Express, Request, Response } from 'express';
 import {
@@ -25,7 +24,7 @@ import { history } from '~/redux/store/history';
 import rootSaga from '~/redux/sagas';
 
 import { setVersion, setVersionStatus } from '~/redux/actions/version';
-import { HttpContext } from '~/routing/httpContext';
+import { HttpContext, HttpContextValues } from '~/routing/httpContext';
 import { setCurrentProject } from '~/routing/redux/actions';
 import { selectCurrentSearch } from '~/routing/redux/selectors';
 
@@ -48,6 +47,11 @@ import { AppState, ServerConfig, MatchedRoute, StaticRoute } from '~/models';
 import { getVersionInfo } from './util/getVersionInfo';
 import { unhandledExceptionHandler } from './util/handleExceptions';
 import { SSRContextProvider } from '~/util/SSRContext';
+import {
+  renderStream,
+  styledComponentsStream,
+} from './features/response-handler/render-stream';
+import { replaceHtml } from './util/html';
 
 const webApp = (
   app: Express,
@@ -77,13 +81,18 @@ const webApp = (
   } = config;
   const staticRoutePath = config.staticRoutePath || staticFolderPath;
 
+  let isRenderingJsxToString = config.renderToString || false;
+
   const bundleData = getBundleData(config, staticRoutePath);
 
   const attributes = stringifyAttributes(scripts.attributes);
   scripts.startup = scripts.startup || startupScriptFilename;
 
-  const responseHandler =
-    typeof handleResponses === 'function' ? handleResponses : handleResponse;
+  let responseHandler = handleResponse;
+  if (typeof handleResponses === 'function') {
+    responseHandler = handleResponses;
+    isRenderingJsxToString = true;
+  }
 
   if (handleExceptions !== false) unhandledExceptionHandler(handleExceptions); // Create `process.on` event handlers for unhandled exceptions (Node v15+)
 
@@ -129,12 +138,6 @@ const webApp = (
         FRAGMENT: ({ fragment }) => normaliseQs(fragment),
         STATIC: ({ static: value }) => normaliseQs(value) || onlySSR,
       });
-
-      const context: any = {
-        location: '',
-      };
-      // Track the current statusCode via the response object
-      response.status(200);
 
       // Create a store (with a memory history) from our current url
       const store = await createStore(
@@ -186,6 +189,10 @@ const webApp = (
         : // this is a stub cookie collection so cookie methods can be used in code
           new Cookies();
 
+      const context: HttpContextValues = {};
+      // Track the current statusCode via the response object
+      response.status(200);
+
       const jsx = (
         <ChunkExtractor extractor={loadableExtractor.commonLoadableExtractor}>
           <CookiesProvider cookies={ssrCookies}>
@@ -211,6 +218,7 @@ const webApp = (
       // Serve a blank HTML page with client scripts to load the app in the browser
       if (accessMethod.DYNAMIC) {
         // Dynamic doesn't need sagas
+        // nor are we streaming responses
         renderToString(jsx);
 
         // Dynamic page render has only the necessary bundles to start up the app
@@ -245,39 +253,7 @@ const webApp = (
           .runSaga(rootSaga(withSagas))
           .toPromise()
           .then(() => {
-            const sheet = new ServerStyleSheet();
-
-            const html = renderToString(
-              sheet.collectStyles(jsx) as React.ReactElement
-            );
-
-            const helmet = Helmet.renderStatic();
-            Helmet.rewind();
-            const htmlAttributes = helmet.htmlAttributes.toString();
-            let title = helmet.title.toString();
-            const metadata = helmet.meta
-              .toString()
-              .concat(helmet.base.toString())
-              .concat(helmet.link.toString())
-              .concat(helmet.script.toString())
-              .concat(helmet.noscript.toString());
-
-            if (context.url) {
-              return response.redirect(context.statusCode || 302, context.url);
-            }
-
             const reduxState = store.getState();
-
-            const styleTags = sheet.getStyleTags();
-
-            // After running rootSaga there should be an additional react-loadable
-            // code-split bundles for any page components as well as core app bundles
-            const bundleTags = getBundleTags(
-              loadableExtractor,
-              scripts,
-              staticRoutePath
-            );
-
             let clonedState = buildCleaner({
               isArray: identity,
               isBoolean: identity,
@@ -323,72 +299,88 @@ const webApp = (
                 serialisedReduxData = `<script ${attributes}>window.versionStatus = "${versionStatus}"; window.REDUX_DATA = ${serialisedReduxData}</script>`;
               }
             }
-            if ((context.statusCode || 200) >= 404) {
-              accessMethod.STATIC = true;
-            }
 
             // Responses
+
+            const helmet = Helmet.renderStatic();
+            Helmet.rewind();
+            const htmlAttributes = helmet.htmlAttributes.toString();
+            let title = helmet.title.toString();
+            const metadata = helmet.meta
+              .toString()
+              .concat(helmet.base.toString())
+              .concat(helmet.link.toString())
+              .concat(helmet.script.toString())
+              .concat(helmet.noscript.toString());
+
             let responseHTML = '';
-
-            if (context.statusCode === 404)
-              title = '<title>404 page not found</title>';
-
-            // Static page served as a fragment
-            if (accessMethod.FRAGMENT && accessMethod.STATIC) {
-              responseHTML = minifyCssString(styleTags) + html;
-            }
-
-            // Page fragment served with client scripts and redux data that hydrate the app client side
-            if (accessMethod.FRAGMENT && !accessMethod.STATIC) {
-              responseHTML = templateHTMLFragment
-                .replace('{{TITLE}}', title)
-                .replace('{{SEO_CRITICAL_METADATA}}', metadata)
-                .replace('{{CRITICAL_CSS}}', minifyCssString(styleTags))
-                .replace('{{APP}}', html)
-                .replace('{{LOADABLE_CHUNKS}}', bundleTags)
-                .replace('{{REDUX_DATA}}', serialisedReduxData);
-            }
-
-            // Full HTML page served statically
-            if (!accessMethod.FRAGMENT && accessMethod.STATIC) {
-              responseHTML = templateHTMLStatic
-                .replace('{{TITLE}}', title)
-                .replace('{{SEO_CRITICAL_METADATA}}', metadata)
-                .replace('{{CRITICAL_CSS}}', minifyCssString(styleTags))
-                .replace('{{APP}}', html)
-                .replace('{{LOADABLE_CHUNKS}}', '');
-            }
-
-            // Full HTML page served with client scripts and redux data that hydrate the app client side
-            if (!accessMethod.FRAGMENT && !accessMethod.STATIC) {
-              responseHTML = templateHTML
-                .replace('{{TITLE}}', title)
-                .replace('{{SEO_CRITICAL_METADATA}}', metadata)
-                .replace('{{CRITICAL_CSS}}', styleTags)
-                .replace('{{APP}}', html)
-                .replace('{{LOADABLE_CHUNKS}}', bundleTags)
-                .replace('{{REDUX_DATA}}', serialisedReduxData);
-            }
-
-            // Set response.status from React StaticRouter
-            if (typeof context.statusCode === 'number')
-              response.status(context.statusCode);
 
             addStandardHeaders(reduxState, response, packagejson, {
               allowedGroups,
               globalGroups,
             });
+
+            // After running rootSaga there should be an additional react-loadable
+            // code-split bundles for any page components as well as core app bundles
+            const bundleTags = getBundleTags(
+              loadableExtractor,
+              scripts,
+              staticRoutePath
+            );
+
+            const sheet = new ServerStyleSheet();
+            const styledJsx = sheet.collectStyles(jsx) as React.ReactElement;
+            let styleTags = sheet.getStyleTags();
+
             try {
-              // If react-helmet htmlAttributes are being used,
-              // replace the html tag with those attributes sepcified
-              // e.g. (lang, dir etc.)
-              if (htmlAttributes) {
-                responseHTML = responseHTML.replace(
-                  /<html?.+?>/,
-                  `<html ${htmlAttributes}>`
+              const getContextHtml = (renderedJsx?: string) => {
+                if (context.url) {
+                  response.redirect(context.statusCode || 302, context.url);
+                  return '';
+                }
+
+                // Make the page render statically if there is an error status code
+                if ((context.statusCode || 200) >= 404) {
+                  accessMethod.STATIC = true;
+                }
+                if (context.statusCode === 404)
+                  title = '<title>404 page not found</title>';
+
+                // Set response.status from React StaticRouter
+                if (typeof context.statusCode === 'number')
+                  response.status(context.statusCode);
+
+                const html = replaceHtml(
+                  {
+                    bundleTags,
+                    html: renderedJsx,
+                    htmlAttributes,
+                    metadata,
+                    state: serialisedReduxData,
+                    styleTags,
+                    title,
+                    templateHTML,
+                    templateHTMLFragment,
+                    templateHTMLStatic,
+                  },
+                  accessMethod
+                );
+                return html;
+              };
+
+              if (isRenderingJsxToString) {
+                const html = renderToString(styledJsx);
+                styleTags = sheet.getStyleTags();
+                responseHTML = getContextHtml(html);
+                responseHandler(request, response, responseHTML);
+              } else {
+                renderStream(
+                  getContextHtml,
+                  styledJsx,
+                  response,
+                  styledComponentsStream(sheet)
                 );
               }
-              responseHandler(request, response, responseHTML);
             } catch (err: any) {
               console.info(err.message);
             }
