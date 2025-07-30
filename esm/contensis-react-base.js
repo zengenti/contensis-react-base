@@ -1187,7 +1187,7 @@ const ssrJsxProducer = (ReactApp, {
 
 const webApp = (app, ReactApp, config) => {
   const {
-    stateType = 'immutable',
+    stateType = 'js',
     routes,
     withReducers,
     withSagas,
