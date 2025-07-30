@@ -27,8 +27,19 @@ export const replaceHtml = (
   }
 ) => {
   let responseHTML = '';
+  // Serve a blank HTML page with client scripts to load the app in the browser
+  if (accessMethod.DYNAMIC) {
+    responseHTML = templateHTML
+      .replace('{{TITLE}}', '')
+      .replace('{{SEO_CRITICAL_METADATA}}', '')
+      .replace('{{CRITICAL_CSS}}', '')
+      .replace('{{APP}}', '')
+      .replace('{{LOADABLE_CHUNKS}}', bundleTags)
+      .replace('{{REDUX_DATA}}', state);
+  }
+
   // Page fragment served with client scripts and redux data that hydrate the app client side
-  if (accessMethod.FRAGMENT && !accessMethod.STATIC) {
+  else if (accessMethod.FRAGMENT && !accessMethod.STATIC) {
     responseHTML = templateHTMLFragment
       .replace('{{TITLE}}', title)
       .replace('{{SEO_CRITICAL_METADATA}}', metadata)
@@ -39,7 +50,7 @@ export const replaceHtml = (
   }
 
   // Full HTML page served statically
-  if (!accessMethod.FRAGMENT && accessMethod.STATIC) {
+  else if (!accessMethod.FRAGMENT && accessMethod.STATIC) {
     responseHTML = templateHTMLStatic
       .replace('{{TITLE}}', title)
       .replace('{{SEO_CRITICAL_METADATA}}', metadata)
@@ -49,7 +60,7 @@ export const replaceHtml = (
   }
 
   // Full HTML page served with client scripts and redux data that hydrate the app client side
-  if (!accessMethod.FRAGMENT && !accessMethod.STATIC) {
+  else if (!accessMethod.FRAGMENT && !accessMethod.STATIC) {
     responseHTML = templateHTML
       .replace('{{TITLE}}', title)
       .replace('{{SEO_CRITICAL_METADATA}}', metadata)

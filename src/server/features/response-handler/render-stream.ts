@@ -29,6 +29,7 @@ export const renderStream = (
       } else {
         [header, footer] = html.split('{{APP}}');
 
+        response.setHeader('content-type', 'text/html; charset=utf-8');
         stream.write(header);
         pipe(stream);
       }
@@ -38,6 +39,7 @@ export const renderStream = (
     },
     onShellError(error: unknown) {
       response.statusCode = 500;
+      response.setHeader('content-type', 'text/html; charset=utf-8');
       response.send('<h1>Something went wrong</h1>');
       console.error(`[renderToPipeableStream:onShellError]`, error);
     },

@@ -7,22 +7,35 @@ import React, {
 } from 'react';
 import { useCookies } from 'react-cookie';
 import { useDispatch } from 'react-redux';
-import { SSRContext as SSRContextType } from '~/models';
+import {
+  SSRAccessMethod,
+  SSRAssets,
+  SSRContext as SSRContextType,
+} from '~/models';
 import { cachedSearchWithCookies } from '~/util/CachedDeliveryApi';
 import { CookieHelper } from '~/user/util/CookieHelper.class';
 
 const SSRContext = createContext<SSRContextType | null>(null);
 
-/** SSRContextProvider allows us to hold and access request-scoped references
- *  throughout the component tree
+/**
+ * SSRContextProvider allows us to hold and access request-scoped references
+ * throughout the component tree
  *
- *  adding this in client side allows consumers to write universal code and use
- *  the same helpers and refs as in SSR */
+ * adding this in client side allows consumers to write universal code and use
+ * the same helpers and request-scoped refs for api, cookies and redux dispatcher
+ * as in SSR */
 export const SSRContextProvider = ({
+  accessMethod,
   children,
   request,
   response,
-}: PropsWithChildren<{ request?: Request; response?: Response }>) => {
+  ssrAssets,
+}: PropsWithChildren<{
+  accessMethod?: SSRAccessMethod;
+  request?: Request;
+  response?: Response;
+  ssrAssets?: SSRAssets;
+}>) => {
   // In SSR pass references to things in backing sagas
   // we cannot access in a global scope
   const dispatch = useDispatch();
@@ -30,11 +43,13 @@ export const SSRContextProvider = ({
   const api = cachedSearchWithCookies({ cookies, dispatch, request, response });
 
   const [context] = useState<SSRContextType>({
+    accessMethod,
     api,
     cookies,
     dispatch,
     request,
     response,
+    ssrAssets,
   });
 
   return (
@@ -42,6 +57,13 @@ export const SSRContextProvider = ({
   );
 };
 
+/**
+ * Server side usage provides access to request-scoped references throughout the component tree
+ *
+ * Client side usage allows consumers to write universal code, using the same
+ * helpers and request-scoped refs for api, cookies and redux dispatcher as in SSR
+ * @returns SSRContextType
+ */
 export const useSSRContext = () => useContext(SSRContext) as SSRContextType;
 
 export const useDeliveryApi = () => {

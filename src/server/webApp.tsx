@@ -1,21 +1,14 @@
-import React, { ClassType, Component, ComponentClass } from 'react';
+import React from 'react';
 import { renderToString } from 'react-dom/server';
-import { StaticRouter } from 'react-router-dom/server';
-import { Provider as ReduxProvider } from 'react-redux';
 import { matchRoutes, RouteObject } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { ServerStyleSheet } from 'styled-components';
 import serialize from 'serialize-javascript';
 import mapJson from 'jsonpath-mapper';
 import { Express, Request, Response } from 'express';
-import {
-  ChunkExtractorManager,
-  ChunkExtractorManagerProps,
-} from '@loadable/server';
 import { identity, noop } from 'lodash';
 import cloneDeep from 'lodash/cloneDeep';
 import { buildCleaner } from 'lodash-clean';
-import { CookiesProvider } from 'react-cookie';
 import Cookies from 'universal-cookie';
 import cookiesMiddleware from 'universal-cookie-express';
 
@@ -24,7 +17,7 @@ import { history } from '~/redux/store/history';
 import rootSaga from '~/redux/sagas';
 
 import { setVersion, setVersionStatus } from '~/redux/actions/version';
-import { HttpContext, HttpContextValues } from '~/routing/httpContext';
+import { HttpContextValues } from '~/routing/httpContext';
 import { setCurrentProject } from '~/routing/redux/actions';
 import { selectCurrentSearch } from '~/routing/redux/selectors';
 
@@ -51,7 +44,7 @@ import { addStandardHeaders } from './util/headers';
 import { replaceHtml } from './util/html';
 
 import { AppState, ServerConfig, MatchedRoute, StaticRoute } from '~/models';
-import { SSRContextProvider } from '~/util/SSRContext';
+import { ssrJsxProducer } from './util/jsx';
 
 const webApp = (
   app: Express,
@@ -171,16 +164,16 @@ const webApp = (
 
       const loadableExtractor = loadableChunkExtractors();
 
-      type ChunkExtractorManagerPropsForReact18 = ChunkExtractorManagerProps & {
-        children?: React.ReactNode;
-      };
+      // type ChunkExtractorManagerPropsForReact18 = ChunkExtractorManagerProps & {
+      //   children?: React.ReactNode;
+      // };
 
-      // Recast ChunkExtractorManager to avoid TS error `Property 'children' does not exist on type...`
-      const ChunkExtractor = ChunkExtractorManager as ClassType<
-        ChunkExtractorManagerPropsForReact18,
-        Component<ChunkExtractorManagerPropsForReact18>,
-        ComponentClass<ChunkExtractorManagerPropsForReact18>
-      >;
+      // // Recast ChunkExtractorManager to avoid TS error `Property 'children' does not exist on type...`
+      // const ChunkExtractor = ChunkExtractorManager as ClassType<
+      //   ChunkExtractorManagerPropsForReact18,
+      //   Component<ChunkExtractorManagerPropsForReact18>,
+      //   ComponentClass<ChunkExtractorManagerPropsForReact18>
+      // >;
 
       const ssrCookies = enableSsrCookies
         ? // these cookies are managed by the cookiesMiddleware and contain listeners
@@ -189,26 +182,26 @@ const webApp = (
         : // this is a stub cookie collection so cookie methods can be used in code
           new Cookies();
 
-      const context: HttpContextValues = {};
       // Track the current statusCode via the response object
       response.status(200);
 
-      const jsx = (
-        <ChunkExtractor extractor={loadableExtractor.commonLoadableExtractor}>
-          <CookiesProvider cookies={ssrCookies}>
-            <ReduxProvider store={store}>
-              <HttpContext.Provider value={context}>
-                <StaticRouter location={url}>
-                  <SSRContextProvider request={request} response={response}>
-                    <ReactApp routes={routes} withEvents={withEvents} />
-                  </SSRContextProvider>
-                </StaticRouter>
-              </HttpContext.Provider>
-            </ReduxProvider>
-          </CookiesProvider>
-        </ChunkExtractor>
-      ) as React.ReactElement;
+      // Create the context we will pass to JSX HttpContext.Provider
+      // and read back any context props set by the ReactApp
+      const context: HttpContextValues = {};
 
+      // Amalgamate all props for the various Providers we wrap the ReactApp with
+      const jsxProviderProps = {
+        loadable: { extractor: loadableExtractor.commonLoadableExtractor },
+        cookies: ssrCookies,
+        redux: store,
+        httpContext: context,
+        router: { url },
+        ssrContext: { accessMethod, request, response },
+      };
+      // These are the props we will pass to the ReactApp itself
+      const jsxReactAppProps = { routes, withEvents };
+
+      // Get the configured HTML templates provided by the consumer
       const {
         templateHTML = '',
         templateHTMLFragment = '',
@@ -218,7 +211,17 @@ const webApp = (
       // Serve a blank HTML page with client scripts to load the app in the browser
       if (accessMethod.DYNAMIC) {
         // Dynamic doesn't need sagas
+        // or styles, or any split component bundles
         // nor are we streaming responses
+        const isDynamicHints = `<script ${attributes}>window.versionStatus = "${versionStatus}"; window.isDynamic = true;</script>`;
+
+        const jsx = ssrJsxProducer(ReactApp, {
+          providers: jsxProviderProps,
+          props: jsxReactAppProps,
+          ssrAssets: {
+            serializedState: isDynamicHints,
+          },
+        });
         renderToString(jsx);
 
         // Dynamic page render has only the necessary bundles to start up the app
@@ -228,16 +231,16 @@ const webApp = (
           scripts,
           staticRoutePath
         );
+        const responseHtmlDynamic = replaceHtml(
+          {
+            bundleTags,
+            state: isDynamicHints,
+            templateHTML,
+            templateHTMLFragment,
+          },
+          accessMethod
+        );
 
-        const isDynamicHints = `<script ${attributes}>window.versionStatus = "${versionStatus}"; window.isDynamic = true;</script>`;
-
-        const responseHtmlDynamic = templateHTML
-          .replace('{{TITLE}}', '')
-          .replace('{{SEO_CRITICAL_METADATA}}', '')
-          .replace('{{CRITICAL_CSS}}', '')
-          .replace('{{APP}}', '')
-          .replace('{{LOADABLE_CHUNKS}}', bundleTags)
-          .replace('{{REDUX_DATA}}', isDynamicHints);
         // Dynamic pages always return a 200 so we can run
         // the app and serve up all errors inside the client
         response.setHeader(
@@ -327,9 +330,23 @@ const webApp = (
             );
 
             const sheet = new ServerStyleSheet();
-            const styledJsx = sheet.collectStyles(jsx) as React.ReactElement;
+            // Produce the ssr jsx one time so we can get any style tags to pass back in
+            ssrJsxProducer(ReactApp, {
+              providers: { ...jsxProviderProps, styledComponents: { sheet } },
+              props: jsxReactAppProps,
+            });
             let styleTags = sheet.getStyleTags();
 
+            const styledJsx = ssrJsxProducer(ReactApp, {
+              providers: { ...jsxProviderProps, styledComponents: { sheet } },
+              props: jsxReactAppProps,
+              ssrAssets: {
+                bundleTags,
+                htmlAttributes,
+                metadata,
+                title,
+              },
+            });
             try {
               /**
                * Loads all page assets into the provided templateHTML
@@ -403,7 +420,15 @@ const webApp = (
               `Error occurred: <br />${err.stack} <br />${JSON.stringify(err)}`
             );
           });
-        renderToString(jsx);
+
+        // If this is removed we don't get the redux state populated
+        // with the result of the actions RouteLoader component has dispatched
+        renderToString(
+          ssrJsxProducer(ReactApp, {
+            providers: jsxProviderProps,
+            props: jsxReactAppProps,
+          })
+        );
 
         store.close();
       }
