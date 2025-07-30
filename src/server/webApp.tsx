@@ -56,7 +56,7 @@ const webApp = (
   }
 ) => {
   const {
-    stateType = 'immutable',
+    stateType = 'js',
     routes,
     withReducers,
     withSagas,
