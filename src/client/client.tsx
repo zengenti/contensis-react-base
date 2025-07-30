@@ -62,7 +62,7 @@ class ClientApp {
      * Webpack HMR Setup.
      */
     const HMRRenderer = Component => {
-      if (isProduction)
+      if (isProduction && !window.isDynamic)
         loadableReady(
           () => {
             hydrateRoot(documentRoot, Component);
