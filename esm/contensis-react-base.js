@@ -18,13 +18,12 @@ import httpProxy from 'http-proxy';
 import fs from 'fs';
 import path from 'path';
 import { path as path$1 } from 'app-root-path';
-import { renderToString } from 'react-dom/server';
+import { renderToPipeableStream, renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom/server';
 import { matchRoutes } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { ServerStyleSheet } from 'styled-components';
 import serialize from 'serialize-javascript';
-import minifyCssString from 'minify-css-string';
 import { ChunkExtractor, ChunkExtractorManager } from '@loadable/server';
 import { noop, identity } from 'lodash';
 import { buildCleaner } from 'lodash-clean';
@@ -38,6 +37,8 @@ import { s as setVersionStatus, d as setVersion } from './version-DvjTUbcA.js';
 import { m as mergeStaticRoutes, H as HttpContext } from './RouteLoader-D7HmVx5l.js';
 import { a3 as selectSurrogateKeys, a4 as selectSsrApiCalls, j as selectRouteEntry, f as selectCurrentProject, g as getImmutableOrJS, d as setCurrentProject, K as selectCurrentSearch } from './selectors-CBdCY0u3.js';
 import chalk from 'chalk';
+import { Transform } from 'stream';
+import minifyCssString from 'minify-css-string';
 import 'loglevel';
 import '@redux-saga/core/effects';
 import './_commonjsHelpers-BFTU3MAI.js';
@@ -993,6 +994,121 @@ const unhandledExceptionHandler = (handleExceptions = handleDefaultEvents) => {
   }
 };
 
+const renderStream = (getContextHtml, jsx, response, stream) => {
+  let header = '';
+  let footer = '';
+  const {
+    abort,
+    pipe
+  } = renderToPipeableStream(jsx, {
+    onShellReady() {
+      const html = getContextHtml();
+      if (!html) {
+        // this means we have finished with the response already
+        abort();
+      } else {
+        [header, footer] = html.split('{{APP}}');
+        stream.write(header);
+        pipe(stream);
+      }
+    },
+    onAllReady() {
+      stream.write(footer);
+    },
+    onShellError(error) {
+      response.statusCode = 500;
+      response.send('<h1>Something went wrong</h1>');
+      console.error(`[renderToPipeableStream:onShellError]`, error);
+    },
+    onError(error) {
+      console.error(`[renderToPipeableStream:onError]`, error);
+    }
+  });
+
+  // Abandon and switch to client rendering if enough time passes.
+  // Try lowering this to see the client recover.
+  setTimeout(() => abort(), 30 * 1000);
+  stream === null || stream === void 0 || stream.pipe(response);
+};
+
+// Workaround for Styled Components issue: React 18 Streaming SSR #3658
+// https://github.com/styled-components/styled-components/issues/3658#issuecomment-2480721193
+// credit: https://github.com/rurquia/styled-components-ssr-3658/blob/main/server/render.js
+const styledComponentsStream = sheet => {
+  const readerWriter = new Transform({
+    objectMode: true,
+    transform(chunk, /* encoding */
+    _, callback) {
+      // Get the chunk and retrieve the sheet's CSS as an HTML chunk,
+      // then reset its rules so we get only new ones for the next chunk
+      const renderedHtml = typeof chunk === 'string' ? chunk : new TextDecoder().decode(chunk);
+      const styledCSS = sheet._emitSheetCSS();
+      const CLOSING_TAG_R = /<\/[a-z]*>/i;
+      sheet.instance.clearTag();
+
+      // prepend style html to chunk, unless the start of the chunk is a
+      // closing tag in which case append right after that
+      if (/<\/head>/.test(renderedHtml)) {
+        const replacedHtml = renderedHtml.replace('</head>', `${styledCSS}</head>`);
+        this.push(replacedHtml);
+      } else if (CLOSING_TAG_R.test(renderedHtml)) {
+        const execResult = CLOSING_TAG_R.exec(renderedHtml);
+        const endOfClosingTag = execResult.index + execResult.flat().length - 1;
+        const before = renderedHtml.slice(0, endOfClosingTag);
+        const after = renderedHtml.slice(endOfClosingTag);
+        this.push(before + styledCSS + after);
+      } else {
+        this.push(styledCSS + renderedHtml);
+      }
+      callback();
+    }
+  });
+  return readerWriter;
+};
+
+const replaceHtml = ({
+  bundleTags = '',
+  html = '',
+  htmlAttributes = '',
+  metadata = '',
+  state = '',
+  styleTags = '',
+  title = '',
+  templateHTML = '',
+  templateHTMLFragment = '',
+  templateHTMLStatic = ''
+}, accessMethod) => {
+  let responseHTML = '';
+  // Page fragment served with client scripts and redux data that hydrate the app client side
+  if (accessMethod.FRAGMENT && !accessMethod.STATIC) {
+    responseHTML = templateHTMLFragment.replace('{{TITLE}}', title).replace('{{SEO_CRITICAL_METADATA}}', metadata).replace('{{CRITICAL_CSS}}', minifyCssString(styleTags))
+    //.replace('{{APP}}', html)
+    .replace('{{LOADABLE_CHUNKS}}', bundleTags).replace('{{REDUX_DATA}}', state);
+  }
+
+  // Full HTML page served statically
+  if (!accessMethod.FRAGMENT && accessMethod.STATIC) {
+    responseHTML = templateHTMLStatic.replace('{{TITLE}}', title).replace('{{SEO_CRITICAL_METADATA}}', metadata).replace('{{CRITICAL_CSS}}', minifyCssString(styleTags))
+    //.replace('{{APP}}', html)
+    .replace('{{LOADABLE_CHUNKS}}', '');
+  }
+
+  // Full HTML page served with client scripts and redux data that hydrate the app client side
+  if (!accessMethod.FRAGMENT && !accessMethod.STATIC) {
+    responseHTML = templateHTML.replace('{{TITLE}}', title).replace('{{SEO_CRITICAL_METADATA}}', metadata).replace('{{CRITICAL_CSS}}', styleTags)
+    //.replace('{{APP}}', html)
+    .replace('{{LOADABLE_CHUNKS}}', bundleTags).replace('{{REDUX_DATA}}', state);
+  }
+
+  // If react-helmet htmlAttributes are being used,
+  // replace the html tag with those attributes sepcified
+  // e.g. (lang, dir etc.)
+  if (htmlAttributes) {
+    responseHTML = responseHTML.replace(/<html?.+?>/, `<html ${htmlAttributes}>`);
+  }
+  return html ? responseHTML.replace('{{APP}}', html) : responseHTML;
+};
+
 const webApp = (app, ReactApp, config) => {
   const {
     stateType = 'immutable',
@@ -1012,10 +1128,15 @@ const webApp = (app, ReactApp, config) => {
     handleExceptions = true
   } = config;
   const staticRoutePath = config.staticRoutePath || staticFolderPath;
+  let isRenderingJsxToString = config.renderToString || false;
   const bundleData = getBundleData(config, staticRoutePath);
   const attributes = stringifyAttributes(scripts.attributes);
   scripts.startup = scripts.startup || startupScriptFilename;
-  const responseHandler = typeof handleResponses === 'function' ? handleResponses : handleResponse;
+  let responseHandler = handleResponse;
+  if (typeof handleResponses === 'function') {
+    responseHandler = handleResponses;
+    isRenderingJsxToString = true;
+  }
   if (handleExceptions !== false) unhandledExceptionHandler(handleExceptions); // Create `process.on` event handlers for unhandled exceptions (Node v15+)
 
   const versionInfo = getVersionInfo(staticFolderPath);
@@ -1048,11 +1169,6 @@ const webApp = (app, ReactApp, config) => {
         static: value
       }) => normaliseQs(value) || onlySSR
     });
-    const context = {
-      location: ''
-    };
-    // Track the current statusCode via the response object
-    response.status(200);
 
     // Create a store (with a memory history) from our current url
     const store = await createStore(withReducers, {}, history({
@@ -1080,6 +1196,9 @@ const webApp = (app, ReactApp, config) => {
     request.universalCookies :
     // this is a stub cookie collection so cookie methods can be used in code
     new Cookies();
+    const context = {};
+    // Track the current statusCode via the response object
+    response.status(200);
     const jsx = /*#__PURE__*/React.createElement(ChunkExtractor, {
       extractor: loadableExtractor.commonLoadableExtractor
     }, /*#__PURE__*/React.createElement(CookiesProvider, {
@@ -1106,6 +1225,7 @@ const webApp = (app, ReactApp, config) => {
     // Serve a blank HTML page with client scripts to load the app in the browser
     if (accessMethod.DYNAMIC) {
       // Dynamic doesn't need sagas
+      // nor are we streaming responses
       renderToString(jsx);
 
       // Dynamic page render has only the necessary bundles to start up the app
@@ -1123,22 +1243,7 @@ const webApp = (app, ReactApp, config) => {
     if (!accessMethod.DYNAMIC) {
       store.runSaga(rootSaga(withSagas)).toPromise().then(() => {
         var _selectCurrentSearch;
-        const sheet = new ServerStyleSheet();
-        const html = renderToString(sheet.collectStyles(jsx));
-        const helmet = Helmet.renderStatic();
-        Helmet.rewind();
-        const htmlAttributes = helmet.htmlAttributes.toString();
-        let title = helmet.title.toString();
-        const metadata = helmet.meta.toString().concat(helmet.base.toString()).concat(helmet.link.toString()).concat(helmet.script.toString()).concat(helmet.noscript.toString());
-        if (context.url) {
-          return response.redirect(context.statusCode || 302, context.url);
-        }
         const reduxState = store.getState();
-        const styleTags = sheet.getStyleTags();
-
-        // After running rootSaga there should be an additional react-loadable
-        // code-split bundles for any page components as well as core app bundles
-        const bundleTags = getBundleTags(loadableExtractor, scripts, staticRoutePath);
         let clonedState = buildCleaner({
           isArray: identity,
           isBoolean: identity,
@@ -1179,48 +1284,63 @@ const webApp = (app, ReactApp, config) => {
             serialisedReduxData = `<script ${attributes}>window.versionStatus = "${versionStatus}"; window.REDUX_DATA = ${serialisedReduxData}</script>`;
           }
         }
-        if ((context.statusCode || 200) >= 404) {
-          accessMethod.STATIC = true;
-        }
 
         // Responses
+
+        const helmet = Helmet.renderStatic();
+        Helmet.rewind();
+        const htmlAttributes = helmet.htmlAttributes.toString();
+        let title = helmet.title.toString();
+        const metadata = helmet.meta.toString().concat(helmet.base.toString()).concat(helmet.link.toString()).concat(helmet.script.toString()).concat(helmet.noscript.toString());
         let responseHTML = '';
-        if (context.statusCode === 404) title = '<title>404 page not found</title>';
-
-        // Static page served as a fragment
-        if (accessMethod.FRAGMENT && accessMethod.STATIC) {
-          responseHTML = minifyCssString(styleTags) + html;
-        }
-
-        // Page fragment served with client scripts and redux data that hydrate the app client side
-        if (accessMethod.FRAGMENT && !accessMethod.STATIC) {
-          responseHTML = templateHTMLFragment.replace('{{TITLE}}', title).replace('{{SEO_CRITICAL_METADATA}}', metadata).replace('{{CRITICAL_CSS}}', minifyCssString(styleTags)).replace('{{APP}}', html).replace('{{LOADABLE_CHUNKS}}', bundleTags).replace('{{REDUX_DATA}}', serialisedReduxData);
-        }
-
-        // Full HTML page served statically
-        if (!accessMethod.FRAGMENT && accessMethod.STATIC) {
-          responseHTML = templateHTMLStatic.replace('{{TITLE}}', title).replace('{{SEO_CRITICAL_METADATA}}', metadata).replace('{{CRITICAL_CSS}}', minifyCssString(styleTags)).replace('{{APP}}', html).replace('{{LOADABLE_CHUNKS}}', '');
-        }
-
-        // Full HTML page served with client scripts and redux data that hydrate the app client side
-        if (!accessMethod.FRAGMENT && !accessMethod.STATIC) {
-          responseHTML = templateHTML.replace('{{TITLE}}', title).replace('{{SEO_CRITICAL_METADATA}}', metadata).replace('{{CRITICAL_CSS}}', styleTags).replace('{{APP}}', html).replace('{{LOADABLE_CHUNKS}}', bundleTags).replace('{{REDUX_DATA}}', serialisedReduxData);
-        }
-
-        // Set response.status from React StaticRouter
-        if (typeof context.statusCode === 'number') response.status(context.statusCode);
         addStandardHeaders(reduxState, response, packagejson, {
           allowedGroups,
           globalGroups
         });
+
+        // After running rootSaga there should be an additional react-loadable
+        // code-split bundles for any page components as well as core app bundles
+        const bundleTags = getBundleTags(loadableExtractor, scripts, staticRoutePath);
+        const sheet = new ServerStyleSheet();
+        const styledJsx = sheet.collectStyles(jsx);
+        let styleTags = sheet.getStyleTags();
         try {
-          // If react-helmet htmlAttributes are being used,
-          // replace the html tag with those attributes sepcified
-          // e.g. (lang, dir etc.)
-          if (htmlAttributes) {
-            responseHTML = responseHTML.replace(/<html?.+?>/, `<html ${htmlAttributes}>`);
+          const getContextHtml = renderedJsx => {
+            if (context.url) {
+              response.redirect(context.statusCode || 302, context.url);
+              return '';
+            }
+
+            // Make the page render statically if there is an error status code
+            if ((context.statusCode || 200) >= 404) {
+              accessMethod.STATIC = true;
+            }
+            if (context.statusCode === 404) title = '<title>404 page not found</title>';
+
+            // Set response.status from React StaticRouter
+            if (typeof context.statusCode === 'number') response.status(context.statusCode);
+            const html = replaceHtml({
+              bundleTags,
+              html: renderedJsx,
+              htmlAttributes,
+              metadata,
+              state: serialisedReduxData,
+              styleTags,
+              title,
+              templateHTML,
+              templateHTMLFragment,
+              templateHTMLStatic
+            }, accessMethod);
+            return html;
+          };
+          if (isRenderingJsxToString) {
+            const html = renderToString(styledJsx);
+            styleTags = sheet.getStyleTags();
+            responseHTML = getContextHtml(html);
+            responseHandler(request, response, responseHTML);
+          } else {
+            renderStream(getContextHtml, styledJsx, response, styledComponentsStream(sheet));
           }
-          responseHandler(request, response, responseHTML);
         } catch (err) {
           console.info(err.message);
         }
