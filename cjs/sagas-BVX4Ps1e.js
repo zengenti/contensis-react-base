@@ -5565,6 +5565,11 @@ function* setRouteFilters(action) {
     currentFacet = listingType;
   }
 
+  // Patch any url encoded params which can cause a flash in SSR
+  if (params) for (const param of Object.keys(params)) {
+    params[param] = params[param].replaceAll('%2C', ',');
+  }
+
   // Pick the default facet from initialState
   if (!currentFacet) {
     var _Object$keys;
@@ -6007,4 +6012,4 @@ exports.updateSortOrder = updateSortOrder$1;
 exports.useFacets = useFacets;
 exports.useListing = useListing;
 exports.withMappers = withMappers;
-//# sourceMappingURL=sagas-CbZhaRNd.js.map
+//# sourceMappingURL=sagas-BVX4Ps1e.js.map

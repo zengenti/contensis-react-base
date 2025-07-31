@@ -5539,6 +5539,11 @@ function* setRouteFilters(action) {
     currentFacet = listingType;
   }
 
+  // Patch any url encoded params which can cause a flash in SSR
+  if (params) for (const param of Object.keys(params)) {
+    params[param] = params[param].replaceAll('%2C', ',');
+  }
+
   // Pick the default facet from initialState
   if (!currentFacet) {
     var _Object$keys;
@@ -5913,4 +5918,4 @@ function* triggerSearchSsr(options) {
 }
 
 export { useFacets as $, updateCurrentFacet$1 as A, clearFilters$1 as B, selectListing as C, triggerSearch as D, Context as E, getFilters as F, toArray as G, UPDATE_SELECTED_FILTERS as H, UPDATE_SEARCH_TERM as I, UPDATE_PAGE_SIZE as J, UPDATE_PAGE_INDEX as K, SET_SEARCH_ENTRIES as L, SET_ROUTE_FILTERS as M, LOAD_FILTERS_COMPLETE as N, LOAD_FILTERS_ERROR as O, LOAD_FILTERS as P, EXECUTE_SEARCH_ERROR as Q, EXECUTE_SEARCH as R, SET_SEARCH_FILTERS as S, CLEAR_FILTERS as T, UPDATE_SORT_ORDER as U, APPLY_CONFIG as V, actions as W, selectors as X, types as Y, expressions as Z, queries as _, getTabsAndFacets$1 as a, useListing as a0, doSearch as a1, setRouteFilters as a2, searchSagas as a3, triggerListingSsr as a4, triggerMinilistSsr as a5, triggerSearchSsr as a6, routeParams as a7, defaultExpressions as a8, termExpressions as a9, contentTypeIdExpression as aa, filterExpressions as ab, orderByExpression as ac, customWhereExpressions as ad, cloneDeep as ae, getQueryParameter$2 as b, getSelectedFilters as c, getSearchTotalCount$1 as d, getSearchTerm$2 as e, getResults as f, getTotalCount$1 as g, getPageIsLoading$2 as h, getPaging as i, getIsLoading$2 as j, getRenderableFilters$2 as k, getFeaturedResults$2 as l, getFacetTitles$1 as m, getFacetsTotalCount$1 as n, getTabFacets$1 as o, getFacet$1 as p, getCurrentTab$1 as q, getPageIndex$2 as r, getCurrentFacet as s, updateSelectedFilters as t, updateSortOrder$1 as u, updateSearchTerm$1 as v, withMappers as w, updatePageSize$1 as x, updatePageIndex$1 as y, updateCurrentTab$1 as z };
-//# sourceMappingURL=sagas-xJU-zOpn.js.map
+//# sourceMappingURL=sagas-JI51CS37.js.map

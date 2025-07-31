@@ -7,7 +7,7 @@ var contensisDeliveryApi = require('contensis-delivery-api');
 var React = require('react');
 var reactRedux = require('react-redux');
 var mapJson = require('jsonpath-mapper');
-var sagas = require('./sagas-CbZhaRNd.js');
+var sagas = require('./sagas-BVX4Ps1e.js');
 require('reselect');
 require('immer');
 require('deep-equal');
@@ -1419,17 +1419,6 @@ const webApp = (app, ReactApp, config) => {
           allowedGroups,
           globalGroups
         });
-        const sheet = new styled.ServerStyleSheet();
-        const helmet = reactHelmet.Helmet.renderStatic();
-        reactHelmet.Helmet.rewind();
-        // const htmlAttributes = helmet.htmlAttributes.toString();
-        // let title = helmet.title.toString();
-        // const metadata = helmet.meta
-        //   .toString()
-        //   .concat(helmet.base.toString())
-        //   .concat(helmet.link.toString())
-        //   .concat(helmet.script.toString())
-        //   .concat(helmet.noscript.toString());
 
         // // Produce the ssr jsx one time so we can get any style tags to pass back in
         // ssrJsxProducer(ReactApp, {
@@ -1446,6 +1435,7 @@ const webApp = (app, ReactApp, config) => {
         //   staticRoutePath
         // );
 
+        const sheet = new styled.ServerStyleSheet();
         const styledJsx = ssrJsxProducer(ReactApp, {
           providers: {
             ...jsxProviderProps,
@@ -1461,6 +1451,21 @@ const webApp = (app, ReactApp, config) => {
             // title,
           }
         });
+
+        // We have to call renderToString() in order for all components to have
+        // had chance to set the helmet metadata
+        const html = server$1.renderToString(styledJsx);
+        // Helmet.renderStatic() has to be called synchronously immediately after calling renderToString()
+        // as it is not thread-safe (or specifically scoped to only this request)
+        const helmet = reactHelmet.Helmet.renderStatic();
+
+        // Because we have had to call renderToString() here to reliably gather all helmet metadata
+        // We could potentially call sheet.getStyleTags() here too and avoid piping a react-rendered
+        // stream to a second stream to inject styled-components CSS
+
+        const htmlAttributes = helmet.htmlAttributes.toString();
+        let title = helmet.title.toString();
+        const metadata = helmet.meta.toString().concat(helmet.base.toString()).concat(helmet.link.toString()).concat(helmet.script.toString()).concat(helmet.noscript.toString());
         try {
           /**
            * Loads all page assets into the provided templateHTML
@@ -1481,11 +1486,6 @@ const webApp = (app, ReactApp, config) => {
             if ((context.statusCode || 200) >= 404) {
               accessMethod.STATIC = true;
             }
-
-            // Title and metadata can be blank
-            const htmlAttributes = helmet.htmlAttributes.toString();
-            let title = helmet.title.toString();
-            const metadata = helmet.meta.toString().concat(helmet.base.toString()).concat(helmet.link.toString()).concat(helmet.script.toString()).concat(helmet.noscript.toString());
             if (context.statusCode === 404) title = '<title>404 page not found</title>';
 
             // Set response.status from React StaticRouter
@@ -1506,7 +1506,9 @@ const webApp = (app, ReactApp, config) => {
             return html;
           };
           if (isRenderingJsxToString) {
-            const html = server$1.renderToString(styledJsx);
+            // We have already (begrudgingly) rendered the JSX to a string above
+            // so we can get all of the Helmet metadata out from any rendered component
+            // const html = renderToString(styledJsx);
             const styleTags = sheet.getStyleTags();
             const responseHTML = getContextHtml(true, styleTags, html);
             responseHandler(request, response, responseHTML);
