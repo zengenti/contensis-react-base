@@ -92,7 +92,7 @@ const webApp = (
   const versionInfo = getVersionInfo(staticFolderPath);
 
   app.get(
-    '/*',
+    '/{*splat}',
     cookiesMiddleware(),
     async (
       request: Request & {
@@ -163,17 +163,6 @@ const webApp = (
       store.dispatch(setCurrentProject(project, groups, hostname));
 
       const loadableExtractor = loadableChunkExtractors();
-
-      // type ChunkExtractorManagerPropsForReact18 = ChunkExtractorManagerProps & {
-      //   children?: React.ReactNode;
-      // };
-
-      // // Recast ChunkExtractorManager to avoid TS error `Property 'children' does not exist on type...`
-      // const ChunkExtractor = ChunkExtractorManager as ClassType<
-      //   ChunkExtractorManagerPropsForReact18,
-      //   Component<ChunkExtractorManagerPropsForReact18>,
-      //   ComponentClass<ChunkExtractorManagerPropsForReact18>
-      // >;
 
       const ssrCookies = enableSsrCookies
         ? // these cookies are managed by the cookiesMiddleware and contain listeners

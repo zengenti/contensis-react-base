@@ -13,6 +13,7 @@ import { ServerStyleSheet } from 'styled-components';
  * @param stream all chunks are piped to this stream to add additional style elements to each streamed chunk
  */
 export const renderStream = (
+  // eslint-disable-next-line no-unused-vars
   getContextHtml: (isFinal?: boolean) => string,
   jsx: ReactNode,
   response: Response,
