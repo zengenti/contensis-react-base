@@ -309,18 +309,6 @@ const webApp = (
               globalGroups,
             });
 
-            const sheet = new ServerStyleSheet();
-            const helmet = Helmet.renderStatic();
-            Helmet.rewind();
-            // const htmlAttributes = helmet.htmlAttributes.toString();
-            // let title = helmet.title.toString();
-            // const metadata = helmet.meta
-            //   .toString()
-            //   .concat(helmet.base.toString())
-            //   .concat(helmet.link.toString())
-            //   .concat(helmet.script.toString())
-            //   .concat(helmet.noscript.toString());
-
             // // Produce the ssr jsx one time so we can get any style tags to pass back in
             // ssrJsxProducer(ReactApp, {
             //   providers: { ...jsxProviderProps, styledComponents: { sheet } },
@@ -336,6 +324,7 @@ const webApp = (
             //   staticRoutePath
             // );
 
+            const sheet = new ServerStyleSheet();
             const styledJsx = ssrJsxProducer(ReactApp, {
               providers: { ...jsxProviderProps, styledComponents: { sheet } },
               props: jsxReactAppProps,
@@ -346,6 +335,27 @@ const webApp = (
                 // title,
               },
             });
+
+            // We have to call renderToString() in order for all components to have
+            // had chance to set the helmet metadata
+            const html = renderToString(styledJsx);
+            // Helmet.renderStatic() has to be called synchronously immediately after calling renderToString()
+            // as it is not thread-safe (or specifically scoped to only this request)
+            const helmet = Helmet.renderStatic();
+
+            // Because we have had to call renderToString() here to reliably gather all helmet metadata
+            // We could potentially call sheet.getStyleTags() here too and avoid piping a react-rendered
+            // stream to a second stream to inject styled-components CSS
+
+            const htmlAttributes = helmet.htmlAttributes.toString();
+            let title = helmet.title.toString();
+            const metadata = helmet.meta
+              .toString()
+              .concat(helmet.base.toString())
+              .concat(helmet.link.toString())
+              .concat(helmet.script.toString())
+              .concat(helmet.noscript.toString());
+
             try {
               /**
                * Loads all page assets into the provided templateHTML
@@ -370,16 +380,6 @@ const webApp = (
                 if ((context.statusCode || 200) >= 404) {
                   accessMethod.STATIC = true;
                 }
-
-                // Title and metadata can be blank
-                const htmlAttributes = helmet.htmlAttributes.toString();
-                let title = helmet.title.toString();
-                const metadata = helmet.meta
-                  .toString()
-                  .concat(helmet.base.toString())
-                  .concat(helmet.link.toString())
-                  .concat(helmet.script.toString())
-                  .concat(helmet.noscript.toString());
 
                 if (context.statusCode === 404)
                   title = '<title>404 page not found</title>';
@@ -411,7 +411,9 @@ const webApp = (
               };
 
               if (isRenderingJsxToString) {
-                const html = renderToString(styledJsx);
+                // We have already (begrudgingly) rendered the JSX to a string above
+                // so we can get all of the Helmet metadata out from any rendered component
+                // const html = renderToString(styledJsx);
                 const styleTags = sheet.getStyleTags();
                 const responseHTML = getContextHtml(true, styleTags, html);
                 responseHandler(request, response, responseHTML);
