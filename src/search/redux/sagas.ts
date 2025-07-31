@@ -113,6 +113,12 @@ export function* setRouteFilters(
     currentFacet = listingType;
   }
 
+  // Patch any url encoded params which can cause a flash in SSR
+  if (params)
+    for (const param of Object.keys(params)) {
+      params[param] = params[param].replaceAll('%2C', ',');
+    }
+
   // Pick the default facet from initialState
   if (!currentFacet) {
     const tabs = getSearchTabs(state, 'js');
