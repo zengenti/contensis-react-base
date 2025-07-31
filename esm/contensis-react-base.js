@@ -618,32 +618,29 @@ const assetProxy = httpProxy.createProxyServer();
 const deliveryProxy = httpProxy.createProxyServer();
 const reverseProxies = (app, reverseProxyPaths = []) => {
   deliveryApiProxy(deliveryProxy, app);
-  app.all(reverseProxyPaths, (req, res) => {
+  app.all(reverseProxyPaths.map(proxyPath =>
+  // Patch to update paths for express v5
+  proxyPath.endsWith('/*') ? `${proxyPath.slice(0, -2)}/{*splat}` : proxyPath), (req, res) => {
     const target = req.hostname.indexOf('preview-') || req.hostname.indexOf('preview.') || req.hostname === 'localhost' ? servers$1.previewIis || servers$1.iis : servers$1.iis;
     assetProxy.web(req, res, {
       target,
       changeOrigin: true
     });
     assetProxy.on('error', e => {
-      /* eslint-disable no-console */
       console.log(`Proxy Request for ${req.path} HostName:${req.hostname} failed with ${e}`);
-      /* eslint-enable no-console */
     });
   });
 };
 const deliveryApiProxy = (apiProxy, app) => {
   // This is just here to stop cors requests on localhost. In Production this is mapped using varnish.
-  app.all(['/api/delivery/*', '/api/forms/*', '/api/image/*', '/authenticate/*'], (req, res) => {
-    /* eslint-disable no-console */
+  app.all(['/api/delivery/{*splat}', '/api/forms/{*splat}', '/api/image/{*splat}', '/authenticate/{*splat}'], (req, res) => {
     console.log(`Proxying api request to ${servers$1.alias}`);
     apiProxy.web(req, res, {
       target: deliveryApiHostname,
       changeOrigin: true
     });
     apiProxy.on('error', e => {
-      /* eslint-disable no-console */
       console.log(`Proxy request for ${req.path} HostName:${req.hostname} failed with ${e}`);
-      /* eslint-enable no-console */
     });
   });
 };
@@ -1216,7 +1213,7 @@ const webApp = (app, ReactApp, config) => {
   if (handleExceptions !== false) unhandledExceptionHandler(handleExceptions); // Create `process.on` event handlers for unhandled exceptions (Node v15+)
 
   const versionInfo = getVersionInfo(staticFolderPath);
-  app.get('/*', cookiesMiddleware(), async (request, response) => {
+  app.get('/{*splat}', cookiesMiddleware(), async (request, response) => {
     const url = encodeURI(request.url);
     const matchedStaticRoute = matchRoutes(routes.StaticRoutes, request.path);
     const isStaticRoute = matchedStaticRoute && matchedStaticRoute.length > 0;
@@ -1264,18 +1261,6 @@ const webApp = (app, ReactApp, config) => {
     const groups = allowedGroups && allowedGroups[project];
     store.dispatch(setCurrentProject(project, groups, hostname));
     const loadableExtractor = loadableChunkExtractors();
-
-    // type ChunkExtractorManagerPropsForReact18 = ChunkExtractorManagerProps & {
-    //   children?: React.ReactNode;
-    // };
-
-    // // Recast ChunkExtractorManager to avoid TS error `Property 'children' does not exist on type...`
-    // const ChunkExtractor = ChunkExtractorManager as ClassType<
-    //   ChunkExtractorManagerPropsForReact18,
-    //   Component<ChunkExtractorManagerPropsForReact18>,
-    //   ComponentClass<ChunkExtractorManagerPropsForReact18>
-    // >;
-
     const ssrCookies = enableSsrCookies ?
     // these cookies are managed by the cookiesMiddleware and contain listeners
     // when cookies are read or written in ssr can be added to the `set-cookie` response header
