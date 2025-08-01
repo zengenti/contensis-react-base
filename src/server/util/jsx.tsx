@@ -80,7 +80,13 @@ export const ssrJsxProducer = (
       <CookiesProvider cookies={providers.cookies}>
         <ReduxProvider store={providers.redux}>
           <HttpContext.Provider value={providers.httpContext}>
-            <StaticRouter location={providers.router.url}>
+            <StaticRouter
+              location={providers.router.url}
+              future={{
+                v7_startTransition: true,
+                v7_relativeSplatPath: true,
+              }}
+            >
               <SSRContextProvider
                 accessMethod={providers.ssrContext.accessMethod}
                 request={providers.ssrContext.request}

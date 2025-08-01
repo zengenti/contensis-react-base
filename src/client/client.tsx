@@ -45,7 +45,13 @@ class ClientApp {
       const ClientJsx = (
         <CookiesProvider>
           <ReduxProvider store={store}>
-            <HistoryRouter history={history as any}>
+            <HistoryRouter
+              history={history as any}
+              future={{
+                v7_relativeSplatPath: true,
+                v7_startTransition: true,
+              }}
+            >
               <SSRContextProvider>
                 <ReactApp routes={routes} withEvents={withEvents} />
               </SSRContextProvider>
@@ -97,9 +103,8 @@ class ClientApp {
           if (!ssrVersionStatus)
             store.dispatch(setVersionStatus(versionStatus));
 
-          /* eslint-disable no-console */
           console.log('Hydrating from inline Redux');
-          /* eslint-enable no-console */
+
           store.runSaga(rootSaga(withSagas));
           store.dispatch(
             setCurrentProject(
