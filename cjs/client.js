@@ -89,7 +89,11 @@ class ClientApp {
       const ClientJsx = /*#__PURE__*/React__default.default.createElement(reactCookie.CookiesProvider, null, /*#__PURE__*/React__default.default.createElement(reactRedux.Provider, {
         store: store
       }, /*#__PURE__*/React__default.default.createElement(reactRouterDom.unstable_HistoryRouter, {
-        history: App.browserHistory
+        history: App.browserHistory,
+        future: {
+          v7_relativeSplatPath: true,
+          v7_startTransition: true
+        }
       }, /*#__PURE__*/React__default.default.createElement(SSRContext.SSRContextProvider, null, /*#__PURE__*/React__default.default.createElement(ReactApp, {
         routes: routes,
         withEvents: withEvents
@@ -124,10 +128,7 @@ class ClientApp {
         const state = store.getState();
         const ssrVersionStatus = version.selectVersionStatus(state);
         if (!ssrVersionStatus) store.dispatch(version$1.setVersionStatus(versionStatus));
-
-        /* eslint-disable no-console */
         console.log('Hydrating from inline Redux');
-        /* eslint-enable no-console */
         store.runSaga(App.rootSaga(withSagas));
         store.dispatch(selectors.setCurrentProject(App.pickProject(window.location.hostname, qs), [], window.location.hostname));
         delete window.REDUX_DATA;

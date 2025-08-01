@@ -1167,7 +1167,11 @@ const ssrJsxProducer = (ReactApp, {
   }, /*#__PURE__*/React.createElement(HttpContext.Provider, {
     value: providers.httpContext
   }, /*#__PURE__*/React.createElement(StaticRouter, {
-    location: providers.router.url
+    location: providers.router.url,
+    future: {
+      v7_startTransition: true,
+      v7_relativeSplatPath: true
+    }
   }, /*#__PURE__*/React.createElement(SSRContextProvider, {
     accessMethod: providers.ssrContext.accessMethod,
     request: providers.ssrContext.request,
