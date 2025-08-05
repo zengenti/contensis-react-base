@@ -2,7 +2,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var SSRContext = require('./SSRContext-DVj_QAC1.js');
+var SSRContext = require('./SSRContext-CWFBN3dJ.js');
 var contensisDeliveryApi = require('contensis-delivery-api');
 var React = require('react');
 var reactRedux = require('react-redux');
@@ -14,7 +14,7 @@ require('deep-equal');
 require('deepmerge');
 require('query-string');
 var contensisCoreApi = require('contensis-core-api');
-var VersionInfo = require('./VersionInfo-B_dKCubg.js');
+var VersionInfo = require('./VersionInfo-D0mF1vkY.js');
 require('isomorphic-fetch');
 var express = require('express');
 var http = require('http');
@@ -31,11 +31,11 @@ var lodash = require('lodash');
 var lodashClean = require('lodash-clean');
 var CookieHelper_class = require('./CookieHelper.class-C3Eqoze9.js');
 var cookiesMiddleware = require('universal-cookie-express');
-var store = require('./store-D07FOXvM.js');
-var App = require('./App-vZrUfVgQ.js');
-var version = require('./version-B7XFkBhY.js');
-var selectors = require('./selectors-wCs5fHD4.js');
-var RouteLoader = require('./RouteLoader-D5Yg7EB5.js');
+var store = require('./store-CO5xslDu.js');
+var App = require('./App-DVS2q_Pq.js');
+var version = require('./version-DabwEeLw.js');
+var selectors = require('./selectors-Bp_TrwG5.js');
+var RouteLoader = require('./RouteLoader-TsLMOQxl.js');
 var stream = require('stream');
 var server$2 = require('@loadable/server');
 var chalk = require('chalk');
@@ -45,15 +45,15 @@ var server$3 = require('react-router-dom/server');
 require('loglevel');
 require('@redux-saga/core/effects');
 require('./_commonjsHelpers-BJu3ubxk.js');
-require('./version-CM-bJ62L.js');
+require('./version-BolvQdgT.js');
 require('redux');
 require('redux-thunk');
 require('redux-saga');
 require('redux-injectors-19');
 require('history');
 require('await-to-js');
-require('./ChangePassword.container-ECjEXixF.js');
-require('./ToJs-C9jwV7YB.js');
+require('./ChangePassword.container-D0wZ05E-.js');
+require('./ToJs-CAVkiz9f.js');
 
 function _interopDefault (e) { return e && e.__esModule ? e : { default: e }; }
 
@@ -1169,8 +1169,8 @@ const replaceHtml = ({
  */
 const ssrJsxProducer = (ReactApp, {
   providers,
-  props,
-  ssrAssets
+  props
+  // ssrAssets,
 }) => {
   var _providers$styledComp;
   // Recast ChunkExtractorManager to avoid TS error `Property 'children' does not exist on type...`
@@ -1192,8 +1192,8 @@ const ssrJsxProducer = (ReactApp, {
   }, /*#__PURE__*/React__default.default.createElement(SSRContext.SSRContextProvider, {
     accessMethod: providers.ssrContext.accessMethod,
     request: providers.ssrContext.request,
-    response: providers.ssrContext.response,
-    ssrAssets: ssrAssets
+    response: providers.ssrContext.response
+    // ssrAssets={ssrAssets}
   }, /*#__PURE__*/React__default.default.createElement(ReactApp, {
     routes: props.routes,
     withEvents: props.withEvents
@@ -1334,10 +1334,7 @@ const webApp = (app, ReactApp, config) => {
       const isDynamicHints = `<script ${attributes}>window.versionStatus = "${versionStatus}"; window.isDynamic = true;</script>`;
       const jsx = ssrJsxProducer(ReactApp, {
         providers: jsxProviderProps,
-        props: jsxReactAppProps,
-        ssrAssets: {
-          serializedState: isDynamicHints
-        }
+        props: jsxReactAppProps
       });
       server$1.renderToString(jsx);
 
@@ -1399,7 +1396,7 @@ const webApp = (app, ReactApp, config) => {
             // window.versionStatus is not strictly required here and is added to support cases
             // where a consumer may not be using the contensisVersionStatus in redux and calling
             // the `getClientSideVersionStatus()` method directly
-            serialisedReduxData = `<script ${attributes}>window.versionStatus = "${versionStatus}"; window.REDUX_DATA = ${serialisedReduxData}</script>`;
+            serialisedReduxData = `<script ${attributes}>window.__USE_HYDRATE__ = true; window.versionStatus = "${versionStatus}"; window.REDUX_DATA = ${serialisedReduxData}</script>`;
           }
         }
 
@@ -1408,22 +1405,6 @@ const webApp = (app, ReactApp, config) => {
           allowedGroups,
           globalGroups
         });
-
-        // // Produce the ssr jsx one time so we can get any style tags to pass back in
-        // ssrJsxProducer(ReactApp, {
-        //   providers: { ...jsxProviderProps, styledComponents: { sheet } },
-        //   props: jsxReactAppProps,
-        // });
-
-        // // After running rootSaga (and rendering subsquent children)
-        // // there should be additional react-loadable
-        // // code-split bundles for any page components as well as core app bundles
-        // const bundleTags = getBundleTags(
-        //   loadableExtractor,
-        //   scripts,
-        //   staticRoutePath
-        // );
-
         const sheet = new styled.ServerStyleSheet();
         const styledJsx = ssrJsxProducer(ReactApp, {
           providers: {
@@ -1432,13 +1413,7 @@ const webApp = (app, ReactApp, config) => {
               sheet
             }
           },
-          props: jsxReactAppProps,
-          ssrAssets: {
-            // bundleTags,
-            // htmlAttributes,
-            // metadata,
-            // title,
-          }
+          props: jsxReactAppProps
         });
 
         // We have to call renderToString() in order for all components to have

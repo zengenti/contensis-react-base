@@ -6,23 +6,23 @@ import { unstable_HistoryRouter } from 'react-router-dom';
 import { loadableReady } from '@loadable/component';
 import { parse } from 'query-string';
 import { CookiesProvider } from 'react-cookie';
-import { s as selectVersionStatus } from './version-wnf-TITV.js';
-import { s as setVersionStatus } from './version-BlsI7hX2.js';
-import { b as browserHistory, r as rootSaga, p as pickProject } from './App-DLZweVSp.js';
-export { A as ReactApp } from './App-DLZweVSp.js';
-import { c as createStore } from './store-3u0RzHZ0.js';
-import { d as setCurrentProject } from './selectors-DO2ocdOp.js';
-import { d as deliveryApi, S as SSRContextProvider } from './SSRContext-BE8ElZ3X.js';
+import { s as selectVersionStatus } from './version-C7hR7DBF.js';
+import { s as setVersionStatus } from './version-Br9VZIOE.js';
+import { b as browserHistory, r as rootSaga, p as pickProject } from './App-C0TyMTUa.js';
+export { A as ReactApp } from './App-C0TyMTUa.js';
+import { c as createStore } from './store-BitMCsz9.js';
+import { d as setCurrentProject } from './selectors-gcTuM3x_.js';
+import { d as deliveryApi, S as SSRContextProvider } from './SSRContext-D2x7c2T6.js';
 import '@redux-saga/core/effects';
 import 'history';
 import 'loglevel';
 import 'await-to-js';
-import './ChangePassword.container-BgzIy8dA.js';
-import './ToJs-CNzfvyxJ.js';
+import './ChangePassword.container-DnIIAUHr.js';
+import './ToJs-BrCfQvqi.js';
 import 'jsonpath-mapper';
 import './CookieHelper.class-FTURFpz3.js';
 import 'contensis-delivery-api';
-import './RouteLoader-xeQBXywk.js';
+import './RouteLoader-CBiZR2pp.js';
 import 'reselect';
 import 'redux';
 import 'redux-thunk';
@@ -92,14 +92,20 @@ class ClientApp {
       })))));
       return ClientJsx;
     };
-    const isProduction = !(process.env.NODE_ENV !== 'production');
+    const isDev = process.env.NODE_ENV !== 'production';
+    // const isProduction = !isDev;
+    const shouldHydrate = window.__USE_HYDRATE__ && !window.isDynamic;
 
     /**
      * Webpack HMR Setup.
      */
     const HMRRenderer = Component => {
-      if (isProduction && !window.isDynamic) loadableReady(() => {
-        clientExports.hydrateRoot(documentRoot, Component);
+      if (shouldHydrate) loadableReady(() => {
+        clientExports.hydrateRoot(documentRoot, Component, {
+          onRecoverableError(error) {
+            console.warn('Hydration warning:', error);
+          }
+        });
       }, {
         namespace: 'modern'
       });else clientExports.createRoot(documentRoot).render(Component);
@@ -115,7 +121,7 @@ class ClientApp {
     };
     const qs = parse(window.location.search);
     const versionStatus = deliveryApi.getClientSideVersionStatus();
-    if (window.isDynamic || window.REDUX_DATA || process.env.NODE_ENV !== 'production') {
+    if (isDev || window.isDynamic || window.REDUX_DATA) {
       createStore(withReducers, window.REDUX_DATA, browserHistory, stateType).then(store => {
         const state = store.getState();
         const ssrVersionStatus = selectVersionStatus(state);

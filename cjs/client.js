@@ -10,22 +10,22 @@ var reactRouterDom = require('react-router-dom');
 var component = require('@loadable/component');
 var queryString = require('query-string');
 var reactCookie = require('react-cookie');
-var version = require('./version-CM-bJ62L.js');
-var version$1 = require('./version-B7XFkBhY.js');
-var App = require('./App-vZrUfVgQ.js');
-var store = require('./store-D07FOXvM.js');
-var selectors = require('./selectors-wCs5fHD4.js');
-var SSRContext = require('./SSRContext-DVj_QAC1.js');
+var version = require('./version-BolvQdgT.js');
+var version$1 = require('./version-DabwEeLw.js');
+var App = require('./App-DVS2q_Pq.js');
+var store = require('./store-CO5xslDu.js');
+var selectors = require('./selectors-Bp_TrwG5.js');
+var SSRContext = require('./SSRContext-CWFBN3dJ.js');
 require('@redux-saga/core/effects');
 require('history');
 require('loglevel');
 require('await-to-js');
-require('./ChangePassword.container-ECjEXixF.js');
-require('./ToJs-C9jwV7YB.js');
+require('./ChangePassword.container-D0wZ05E-.js');
+require('./ToJs-CAVkiz9f.js');
 require('jsonpath-mapper');
 require('./CookieHelper.class-C3Eqoze9.js');
 require('contensis-delivery-api');
-require('./RouteLoader-D5Yg7EB5.js');
+require('./RouteLoader-TsLMOQxl.js');
 require('reselect');
 require('redux');
 require('redux-thunk');
@@ -100,14 +100,20 @@ class ClientApp {
       })))));
       return ClientJsx;
     };
-    const isProduction = !(process.env.NODE_ENV !== 'production');
+    const isDev = process.env.NODE_ENV !== 'production';
+    // const isProduction = !isDev;
+    const shouldHydrate = window.__USE_HYDRATE__ && !window.isDynamic;
 
     /**
      * Webpack HMR Setup.
      */
     const HMRRenderer = Component => {
-      if (isProduction && !window.isDynamic) component.loadableReady(() => {
-        clientExports.hydrateRoot(documentRoot, Component);
+      if (shouldHydrate) component.loadableReady(() => {
+        clientExports.hydrateRoot(documentRoot, Component, {
+          onRecoverableError(error) {
+            console.warn('Hydration warning:', error);
+          }
+        });
       }, {
         namespace: 'modern'
       });else clientExports.createRoot(documentRoot).render(Component);
@@ -123,7 +129,7 @@ class ClientApp {
     };
     const qs = queryString.parse(window.location.search);
     const versionStatus = SSRContext.deliveryApi.getClientSideVersionStatus();
-    if (window.isDynamic || window.REDUX_DATA || process.env.NODE_ENV !== 'production') {
+    if (isDev || window.isDynamic || window.REDUX_DATA) {
       store.createStore(withReducers, window.REDUX_DATA, App.browserHistory, stateType).then(store => {
         const state = store.getState();
         const ssrVersionStatus = version.selectVersionStatus(state);

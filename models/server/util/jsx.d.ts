@@ -13,7 +13,7 @@ import { HttpContextValues } from "../../routing/httpContext";
  * @param { providers, props, ssrAssets }
  * @returns the final JSX to render decorated with all Provider and App props
  */
-export declare const ssrJsxProducer: (ReactApp: React.ComponentType<any>, { providers, props, ssrAssets, }: {
+export declare const ssrJsxProducer: (ReactApp: React.ComponentType<any>, { providers, props, }: {
     /** Providers enrich the JSX */
     providers: {
         loadable: {
@@ -38,18 +38,5 @@ export declare const ssrJsxProducer: (ReactApp: React.ComponentType<any>, { prov
     props: {
         routes: AppRoutes;
         withEvents: WithEvents;
-    };
-    /**
-     * SSR Assets are passed in here when they become available
-     * allowing the ReactApp to control the render for the
-     * entire HTML document
-     */
-    ssrAssets?: {
-        bundleTags?: string;
-        htmlAttributes?: string;
-        metadata?: string;
-        serializedState?: string;
-        styleTags?: string;
-        title?: string;
     };
 }) => React.JSX.Element;

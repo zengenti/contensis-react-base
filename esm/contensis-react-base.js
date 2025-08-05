@@ -1,4 +1,4 @@
-import { c as cachedSearch, S as SSRContextProvider, d as deliveryApi } from './SSRContext-BE8ElZ3X.js';
+import { c as cachedSearch, S as SSRContextProvider, d as deliveryApi } from './SSRContext-D2x7c2T6.js';
 import { Query as Query$1 } from 'contensis-delivery-api';
 import React from 'react';
 import { Provider } from 'react-redux';
@@ -10,7 +10,7 @@ import 'deep-equal';
 import 'deepmerge';
 import 'query-string';
 import { Op, Query } from 'contensis-core-api';
-import { s as setCachingHeaders, u as url } from './VersionInfo-Cno7K0OA.js';
+import { s as setCachingHeaders, u as url } from './VersionInfo-DtF6rRcN.js';
 import 'isomorphic-fetch';
 import express from 'express';
 import http from 'http';
@@ -27,12 +27,12 @@ import { noop, identity } from 'lodash';
 import { buildCleaner } from 'lodash-clean';
 import { a as Cookies } from './CookieHelper.class-FTURFpz3.js';
 import cookiesMiddleware from 'universal-cookie-express';
-import { c as createStore } from './store-3u0RzHZ0.js';
-import { h as history, p as pickProject, r as rootSaga } from './App-DLZweVSp.js';
-export { A as ReactApp } from './App-DLZweVSp.js';
-import { s as setVersionStatus, d as setVersion } from './version-BlsI7hX2.js';
-import { a3 as selectSurrogateKeys, a4 as selectSsrApiCalls, h as selectRouteEntry, n as selectCurrentProject, g as getImmutableOrJS, d as setCurrentProject, K as selectCurrentSearch } from './selectors-DO2ocdOp.js';
-import { H as HttpContext, m as mergeStaticRoutes } from './RouteLoader-xeQBXywk.js';
+import { c as createStore } from './store-BitMCsz9.js';
+import { h as history, p as pickProject, r as rootSaga } from './App-C0TyMTUa.js';
+export { A as ReactApp } from './App-C0TyMTUa.js';
+import { s as setVersionStatus, d as setVersion } from './version-Br9VZIOE.js';
+import { a3 as selectSurrogateKeys, a4 as selectSsrApiCalls, h as selectRouteEntry, n as selectCurrentProject, g as getImmutableOrJS, d as setCurrentProject, K as selectCurrentSearch } from './selectors-gcTuM3x_.js';
+import { H as HttpContext, m as mergeStaticRoutes } from './RouteLoader-CBiZR2pp.js';
 import { Transform } from 'stream';
 import { ChunkExtractor, ChunkExtractorManager } from '@loadable/server';
 import chalk from 'chalk';
@@ -42,15 +42,15 @@ import { StaticRouter } from 'react-router-dom/server';
 import 'loglevel';
 import '@redux-saga/core/effects';
 import './_commonjsHelpers-BFTU3MAI.js';
-import './version-wnf-TITV.js';
+import './version-C7hR7DBF.js';
 import 'redux';
 import 'redux-thunk';
 import 'redux-saga';
 import 'redux-injectors-19';
 import 'history';
 import 'await-to-js';
-import './ChangePassword.container-BgzIy8dA.js';
-import './ToJs-CNzfvyxJ.js';
+import './ChangePassword.container-DnIIAUHr.js';
+import './ToJs-BrCfQvqi.js';
 
 /**
  * Util class holds our search results helper boilerplate methods
@@ -1152,8 +1152,8 @@ const replaceHtml = ({
  */
 const ssrJsxProducer = (ReactApp, {
   providers,
-  props,
-  ssrAssets
+  props
+  // ssrAssets,
 }) => {
   var _providers$styledComp;
   // Recast ChunkExtractorManager to avoid TS error `Property 'children' does not exist on type...`
@@ -1175,8 +1175,8 @@ const ssrJsxProducer = (ReactApp, {
   }, /*#__PURE__*/React.createElement(SSRContextProvider, {
     accessMethod: providers.ssrContext.accessMethod,
     request: providers.ssrContext.request,
-    response: providers.ssrContext.response,
-    ssrAssets: ssrAssets
+    response: providers.ssrContext.response
+    // ssrAssets={ssrAssets}
   }, /*#__PURE__*/React.createElement(ReactApp, {
     routes: props.routes,
     withEvents: props.withEvents
@@ -1317,10 +1317,7 @@ const webApp = (app, ReactApp, config) => {
       const isDynamicHints = `<script ${attributes}>window.versionStatus = "${versionStatus}"; window.isDynamic = true;</script>`;
       const jsx = ssrJsxProducer(ReactApp, {
         providers: jsxProviderProps,
-        props: jsxReactAppProps,
-        ssrAssets: {
-          serializedState: isDynamicHints
-        }
+        props: jsxReactAppProps
       });
       renderToString(jsx);
 
@@ -1382,7 +1379,7 @@ const webApp = (app, ReactApp, config) => {
             // window.versionStatus is not strictly required here and is added to support cases
             // where a consumer may not be using the contensisVersionStatus in redux and calling
             // the `getClientSideVersionStatus()` method directly
-            serialisedReduxData = `<script ${attributes}>window.versionStatus = "${versionStatus}"; window.REDUX_DATA = ${serialisedReduxData}</script>`;
+            serialisedReduxData = `<script ${attributes}>window.__USE_HYDRATE__ = true; window.versionStatus = "${versionStatus}"; window.REDUX_DATA = ${serialisedReduxData}</script>`;
           }
         }
 
@@ -1391,22 +1388,6 @@ const webApp = (app, ReactApp, config) => {
           allowedGroups,
           globalGroups
         });
-
-        // // Produce the ssr jsx one time so we can get any style tags to pass back in
-        // ssrJsxProducer(ReactApp, {
-        //   providers: { ...jsxProviderProps, styledComponents: { sheet } },
-        //   props: jsxReactAppProps,
-        // });
-
-        // // After running rootSaga (and rendering subsquent children)
-        // // there should be additional react-loadable
-        // // code-split bundles for any page components as well as core app bundles
-        // const bundleTags = getBundleTags(
-        //   loadableExtractor,
-        //   scripts,
-        //   staticRoutePath
-        // );
-
         const sheet = new ServerStyleSheet();
         const styledJsx = ssrJsxProducer(ReactApp, {
           providers: {
@@ -1415,13 +1396,7 @@ const webApp = (app, ReactApp, config) => {
               sheet
             }
           },
-          props: jsxReactAppProps,
-          ssrAssets: {
-            // bundleTags,
-            // htmlAttributes,
-            // metadata,
-            // title,
-          }
+          props: jsxReactAppProps
         });
 
         // We have to call renderToString() in order for all components to have

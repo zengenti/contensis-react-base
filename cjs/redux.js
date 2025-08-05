@@ -1,14 +1,15 @@
 'use strict';
 
-var store = require('./store-D07FOXvM.js');
-var selectors$1 = require('./selectors-wCs5fHD4.js');
-var version$1 = require('./version-B7XFkBhY.js');
-var version$2 = require('./version-CM-bJ62L.js');
+var store = require('./store-CO5xslDu.js');
+var selectors$1 = require('./selectors-Bp_TrwG5.js');
+var version$1 = require('./version-DabwEeLw.js');
+var version$2 = require('./version-BolvQdgT.js');
 require('redux');
 require('redux-thunk');
 require('redux-saga');
 require('redux-injectors-19');
 require('immer');
+require('reselect');
 require('jsonpath-mapper');
 require('query-string');
 require('@redux-saga/core/effects');

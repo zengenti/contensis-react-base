@@ -1,16 +1,17 @@
 'use strict';
 
-var ChangePassword_container = require('./ChangePassword.container-ECjEXixF.js');
+var ChangePassword_container = require('./ChangePassword.container-D0wZ05E-.js');
 var React = require('react');
 var reactCookie = require('react-cookie');
 var reactRedux = require('react-redux');
-var ToJs = require('./ToJs-C9jwV7YB.js');
+var ToJs = require('./ToJs-CAVkiz9f.js');
 var CookieHelper_class = require('./CookieHelper.class-C3Eqoze9.js');
-var selectors = require('./selectors-wCs5fHD4.js');
+var selectors = require('./selectors-Bp_TrwG5.js');
 require('@redux-saga/core/effects');
 require('jsonpath-mapper');
 require('await-to-js');
 require('immer');
+require('reselect');
 require('query-string');
 
 function _interopDefault (e) { return e && e.__esModule ? e : { default: e }; }
