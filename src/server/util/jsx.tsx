@@ -27,7 +27,7 @@ export const ssrJsxProducer = (
   {
     providers,
     props,
-    ssrAssets,
+    // ssrAssets,
   }: {
     /** Providers enrich the JSX */
     providers: {
@@ -50,19 +50,19 @@ export const ssrJsxProducer = (
       routes: AppRoutes;
       withEvents: WithEvents;
     };
-    /**
-     * SSR Assets are passed in here when they become available
-     * allowing the ReactApp to control the render for the
-     * entire HTML document
-     */
-    ssrAssets?: {
-      bundleTags?: string;
-      htmlAttributes?: string;
-      metadata?: string;
-      serializedState?: string;
-      styleTags?: string;
-      title?: string;
-    };
+    // /**
+    //  * SSR Assets are passed in here when they become available
+    //  * allowing the ReactApp to control the render for the
+    //  * entire HTML document
+    //  */
+    // ssrAssets?: {
+    //   bundleTags?: string;
+    //   htmlAttributes?: string;
+    //   metadata?: string;
+    //   serializedState?: string;
+    //   styleTags?: string;
+    //   title?: string;
+    // };
   }
 ) => {
   type ChunkExtractorManagerPropsForReact18 = ChunkExtractorManagerProps & {
@@ -91,7 +91,7 @@ export const ssrJsxProducer = (
                 accessMethod={providers.ssrContext.accessMethod}
                 request={providers.ssrContext.request}
                 response={providers.ssrContext.response}
-                ssrAssets={ssrAssets}
+                // ssrAssets={ssrAssets}
               >
                 <ReactApp routes={props.routes} withEvents={props.withEvents} />
               </SSRContextProvider>

@@ -207,9 +207,6 @@ const webApp = (
         const jsx = ssrJsxProducer(ReactApp, {
           providers: jsxProviderProps,
           props: jsxReactAppProps,
-          ssrAssets: {
-            serializedState: isDynamicHints,
-          },
         });
         renderToString(jsx);
 
@@ -298,31 +295,10 @@ const webApp = (
               globalGroups,
             });
 
-            // // Produce the ssr jsx one time so we can get any style tags to pass back in
-            // ssrJsxProducer(ReactApp, {
-            //   providers: { ...jsxProviderProps, styledComponents: { sheet } },
-            //   props: jsxReactAppProps,
-            // });
-
-            // // After running rootSaga (and rendering subsquent children)
-            // // there should be additional react-loadable
-            // // code-split bundles for any page components as well as core app bundles
-            // const bundleTags = getBundleTags(
-            //   loadableExtractor,
-            //   scripts,
-            //   staticRoutePath
-            // );
-
             const sheet = new ServerStyleSheet();
             const styledJsx = ssrJsxProducer(ReactApp, {
               providers: { ...jsxProviderProps, styledComponents: { sheet } },
               props: jsxReactAppProps,
-              ssrAssets: {
-                // bundleTags,
-                // htmlAttributes,
-                // metadata,
-                // title,
-              },
             });
 
             // We have to call renderToString() in order for all components to have
