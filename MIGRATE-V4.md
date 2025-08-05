@@ -10,8 +10,6 @@ This document covers the **breaking changes**, **major upgrades**, and **migrati
 
 - [⚙️ Before You Start](#️-before-you-start)
 - [🚀 What’s New in v4](#-whats-new-in-v4)
-  - [🔄 New SSR React Utilities](#-new-ssr-react-utilities)
-  - [🧭 New Router Helpers](#-new-router-helpers)
 - [🚨 Breaking Changes Overview](#-breaking-changes-overview)
 - [🔧 Step-by-Step Migration](#-step-by-step-migration)
 - [🧠 Known Issues & Debug Tips](#-known-issues--debug-tips)
@@ -56,10 +54,10 @@ Import from `@zengenti/contensis-react-base/util`
 
 ### React Router: v5 → v6
 
-- Replace `useHistory` hook with `useNavigate`
+- Removed `useHistory` hook, replace with `useNavigate`
 - Changed `staticRoute` object structure
-- Replace `staticContext` – use new `useHttpContext()` hook instead
-- Remove `exact` prop in static routes (v6 handles this automatically)
+- Removed `staticContext`, replace with `useHttpContext` hook
+- Removed `exact` prop in static routes (v6 handles this automatically)
 - Future flags included for smoother upgrade to v7
 
 📖 [React Router v6 Migration Guide](https://reactrouter.com/docs/en/v6/upgrading/v5)
@@ -154,7 +152,7 @@ npm uninstall @hot-loader/react-dom
 ```js
   alias: {
     // ... other import aliases,
-    'react-dom': '@hot-loader/react-dom', // ❌ delete this line
+    'react-dom': '@hot-loader/react-dom', // ❌ delete this alias
   }
 ```
 
@@ -165,7 +163,7 @@ npm uninstall @hot-loader/react-dom
 ```tsx
 import { hot } from 'react-hot-loader'; // ❌ delete this import
 
-export default hot(module)(AppRoot); // ❌ delete this
+export default hot(module)(AppRoot); // ❌ delete this reference
 
 export default AppRoot; // ✅ replace default export
 ```
@@ -202,11 +200,11 @@ npm uninstall @types/react-router @types/react-router-dom @types/react-router-co
 2. Search your project for `useHistory` and replace with with `useNavigate`:
 
 ```tsx
-// ❌ Old
+// ❌ old
 const history = useHistory();
 history.push('/search');
 
-// ✅ New
+// ✅ new
 const navigate = useNavigate();
 navigate('/search');
 ```
@@ -214,23 +212,23 @@ navigate('/search');
 **Example:** A typical usage of `useHistory` inside a React component with user input updating the state and a submit action that navigates to a new location
 
 ```tsx
-import { useHistory } from 'react-router-dom'; // ❌ Old
-import { useNavigate } from 'react-router-dom'; // ✅ New
+import { useHistory } from 'react-router-dom'; // ❌ old
+import { useNavigate } from 'react-router-dom'; // ✅ new
 
 ...
 
 const [term, setTerm] = useState('');
-const history = useHistory(); // ❌ Old
-const navigate = useNavigate(); // ✅ New
+const history = useHistory(); // ❌ old
+const navigate = useNavigate(); // ✅ new
 
 const submitForm = (event) => {
   event.preventDefault();
   if (!term) {
-    history.push('/search'); // ❌ Old
-    navigate('/search'); // ✅ New
+    history.push('/search'); // ❌ old
+    navigate('/search'); // ✅ new
   } else {
-    history.push('/search?term=' + term); // ❌ Old
-    navigate('/search?term=' + term); // ✅ New
+    history.push('/search?term=' + term); // ❌ old
+    navigate('/search?term=' + term); // ✅ new
   }
 };
 ```
@@ -281,13 +279,13 @@ The `navigate` function accepts options that provide equivalent functionality to
 }
 ```
 
-> ℹ️ Instead of refactoring old boilerplate code, try out our `routeParams` helper from `@zengenti/contensis-react-base/routing`
+> ℹ️ Instead of refactoring old boilerplate, try our `routeParams` helper from `@zengenti/contensis-react-base/routing`
 
 ---
 
 4. Search your project for `staticContext` and replace with `useHttpContext()`
 
-> ℹ️ It is recommended to delete old boilerplate code and replace with the new `<StatusCode />` or `<Redirect />` components in `@zengenti/contensis-react-base/routing` instead of refactoring
+> ℹ️ Delete old boilerplate and replace with the new `<StatusCode />` or `<Redirect />` components in `@zengenti/contensis-react-base/routing`
 
 **Example:** a router component that references `staticContext` prop
 
@@ -468,12 +466,21 @@ const CLIENT_PROD_CONFIG = {
 };
 ```
 
+- Some hydration error examples:
+
+  - Error: Hydration failed because the initial UI does not match what was rendered on the server.
+  - Error: There was an error while hydrating. Because the error happened outside of a Suspense boundary, the entire root will switch to client rendering.
+  - Warning: Expected server HTML to contain a matching `<h1>` in `<div>`
+  - Warning: `<some-content>` did not match. Server: "carousel-1e16efd402a4f" Client: "carousel-a4cb44040522e8"
+  - Warning: An error occurred during hydration. The server HTML was replaced with client content in `<div>`
+
 - Simplify the component by commenting out sections and reintroduce code gradually to pinpoint issues that are difficult to trace
   - If all else fails comment out the entire component
   - Simply `return <p>Hello world</p>;` instead
 
 - Avoid dynamic or lazy-loaded components where hydration fails
-  - Change `component` in your `StaticRoute` or `ContentTypeMapping` to **not** use a `loadable()` import
+  - Change `component` in your `StaticRoute` or `ContentTypeMapping` 
+  - Do **not** use a `loadable()` import
   - Import the actual component into the route configuration directly
 
 - Ensure `@loadable/babel-plugin` is applied in **both client and server** builds.
@@ -506,25 +513,24 @@ const CLIENT_PROD_CONFIG = {
 
 > ⚠️ Avoid conditional code in components like `if (typeof window !== 'undefined') return null;`
 
-> ℹ️ `useIsClient` hook provides a React 18+ hydration-safe approach to defer component rendering or wrap components with `<NoSSR />`
+> ℹ️ `useIsClient` hook provides a hydration-safe approach to defer component renders
+
+> ℹ️ Wrap components with `<NoSSR />` to achieve the same defer behaviour
 
 > ℹ️ `loadable()` lazy loaded components accept an option to avoid SSR
 
-If you have run your build after changing the webpack `mode` to `development` (see above) these errors will be presented differently:
 
-- Error: Hydration failed because the initial UI does not match what was rendered on the server.
-- Error: There was an error while hydrating. Because the error happened outside of a Suspense boundary, the entire root will switch to client rendering.
-- Warning: Expected server HTML to contain a matching `<h1>` in `<div>`
-- Warning: `<some-content>` did not match. Server: "carousel-1e16efd402a4f" Client: "carousel-a4cb44040522e8"
-- Warning: An error occurred during hydration. The server HTML was replaced with client content in `<div>`
+There are many articles online that explain hydration errors and offer suggestions as to what we might be doing wrong to cause a mismatch between the server rendered HTML and the client rendered HTML
 
-There are many articles online that explain this error and offer suggestions as to what we might be doing wrong to cause a hydration mismatch. In some cases the solution (and the problem) could be deferring the render of the component to the client only.
+In some cases the solution (and the problem) could be deferring the render of the component to the client only
 
-With previous React releases, we might have written conditional code like `if (typeof window !== 'undefined')` however in React 18, if we are intentionally rendering different content on the server and the browser, or deferring rendering to client-side only we must tread carefully in order to avoid the dreaded Minifed React Errors...
+With previous React releases, we might have written conditional code like `if (typeof window !== 'undefined')`.
 
-A React 18+ hydration-safe approach to defer component rendering would be to use a hook that relies on `useEffect` being an api that is called only when the component has mounted in the browser.
+With new hydration checks in React 18, if we are intentionally rendering different content on the server and the browser, or deferring rendering to client-side only we must tread carefully in order to avoid the dreaded Minifed React Errors...
 
-**Example:** `useIsClient` hook to prevent rendering in SSR
+A hydration-safe approach to defer component rendering would be to use a hook that relies on `useEffect` being an api that is called only when the component has mounted in the browser
+
+**Example:** `useIsClient` hook that can be used to prevent rendering in SSR
 
 ```tsx
 export const useIsClient = () => {
