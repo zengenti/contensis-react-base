@@ -8,6 +8,7 @@ export {
   getClientConfig,
 } from './ContensisDeliveryApi';
 
+
 export {
   SSRContextProvider,
   useDeliveryApi,
@@ -16,6 +17,10 @@ export {
 
 export { default as stringifyStrings } from './stringifyStrings';
 export { default as urls } from './urls';
+
+// Hydration-safe approaches to defer rendering to browser
+export { useIsClient } from './useIsClient';
+export { NoSSR } from './NoSSR';
 
 // JSON mapping functions
 export * from './json-mapper';
