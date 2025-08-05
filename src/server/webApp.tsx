@@ -288,7 +288,7 @@ const webApp = (
                 // window.versionStatus is not strictly required here and is added to support cases
                 // where a consumer may not be using the contensisVersionStatus in redux and calling
                 // the `getClientSideVersionStatus()` method directly
-                serialisedReduxData = `<script ${attributes}>window.versionStatus = "${versionStatus}"; window.REDUX_DATA = ${serialisedReduxData}</script>`;
+                serialisedReduxData = `<script ${attributes}>window.__USE_HYDRATE__ = true; window.versionStatus = "${versionStatus}"; window.REDUX_DATA = ${serialisedReduxData}</script>`;
               }
             }
 

@@ -24,6 +24,7 @@ import { AppConfig, AppState } from '~/models';
 declare let window: typeof globalThis & {
   isDynamic: boolean;
   REDUX_DATA: AppState;
+  __USE_HYDRATE__: boolean;
 };
 
 type ReactAppProps = { routes: any; withEvents: any };
@@ -62,16 +63,22 @@ class ClientApp {
       return ClientJsx;
     };
 
-    const isProduction = !(process.env.NODE_ENV !== 'production');
+    const isDev = process.env.NODE_ENV !== 'production';
+    // const isProduction = !isDev;
+    const shouldHydrate = window.__USE_HYDRATE__ && !window.isDynamic;
 
     /**
      * Webpack HMR Setup.
      */
     const HMRRenderer = Component => {
-      if (isProduction && !window.isDynamic)
+      if (shouldHydrate)
         loadableReady(
           () => {
-            hydrateRoot(documentRoot, Component);
+            hydrateRoot(documentRoot, Component, {
+              onRecoverableError(error) {
+                console.warn('Hydration warning:', error);
+              },
+            });
           },
           { namespace: 'modern' }
         );
@@ -91,11 +98,7 @@ class ClientApp {
     const qs = parse(window.location.search);
     const versionStatus = deliveryApi.getClientSideVersionStatus();
 
-    if (
-      window.isDynamic ||
-      window.REDUX_DATA ||
-      process.env.NODE_ENV !== 'production'
-    ) {
+    if (isDev || window.isDynamic || window.REDUX_DATA) {
       createStore(withReducers, window.REDUX_DATA, history, stateType).then(
         store => {
           const state = store.getState();
