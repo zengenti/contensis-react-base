@@ -2,18 +2,19 @@
 
 var React = require('react');
 var reactRedux = require('react-redux');
-var sagas = require('./sagas-BVX4Ps1e.js');
+var sagas = require('./sagas-BtPnqKAF.js');
 var reselect = require('reselect');
 var immer = require('immer');
 var equals = require('deep-equal');
 var merge = require('deepmerge');
+var util = require('./util-Cl8blSX5.js');
 require('loglevel');
 require('@redux-saga/core/effects');
-require('contensis-delivery-api');
-require('query-string');
 require('jsonpath-mapper');
 require('contensis-core-api');
+require('query-string');
 require('./_commonjsHelpers-BJu3ubxk.js');
+require('contensis-delivery-api');
 
 function _interopDefault (e) { return e && e.__esModule ? e : { default: e }; }
 
@@ -523,7 +524,7 @@ var reducers = config => {
             resetCurrentFacet = state.config.isLoaded === true && !equals__default.default(nextFilters, stateFacet.filters);
             stateFacet = resetCurrentFacet ? resetFacet(stateFacet) : stateFacet;
             stateFacet.filters = nextFilters;
-            stateFacet.queryParams.dynamicOrderBy = sagas.toArray(orderBy) || [];
+            stateFacet.queryParams.dynamicOrderBy = util.toArray(orderBy) || [];
             return [facetName, stateFacet];
           }));
           state.context = context;
@@ -662,7 +663,7 @@ var reducers = config => {
           } = action;
           state[context] = resetFacets(state, context);
           const currentFacet = facet || current;
-          state[context][currentFacet].queryParams.dynamicOrderBy = orderBy ? sagas.toArray(orderBy) || [] : [];
+          state[context][currentFacet].queryParams.dynamicOrderBy = orderBy ? util.toArray(orderBy) || [] : [];
           return;
         }
       default:
@@ -681,7 +682,6 @@ exports.actions = sagas.actions;
 exports.doSearch = sagas.doSearch;
 exports.expressions = sagas.expressions;
 exports.queries = sagas.queries;
-exports.routeParams = sagas.routeParams;
 exports.sagas = sagas.searchSagas;
 exports.selectors = sagas.selectors;
 exports.setRouteFilters = sagas.setRouteFilters;
@@ -691,6 +691,7 @@ exports.triggerSearchSsr = sagas.triggerSearchSsr;
 exports.types = sagas.types;
 exports.useFacets = sagas.useFacets;
 exports.useListing = sagas.useListing;
+exports.routeParams = util.routeParams;
 exports.Context = Context;
 exports.reducer = reducers;
 exports.schema = schema;

@@ -3,5 +3,7 @@ export { cachedSearch, cachedSearchWithCookies, deliveryApi, deliveryApiWithCook
 export { SSRContextProvider, useDeliveryApi, useSSRContext, } from './SSRContext';
 export { default as stringifyStrings } from './stringifyStrings';
 export { default as urls } from './urls';
+export { useIsClient } from './useIsClient';
+export { NoSSR } from './NoSSR';
 export * from './json-mapper';
 export { default as VersionInfo } from "../app/pages/VersionInfo";

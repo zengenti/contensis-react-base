@@ -2,9 +2,9 @@
 
 var VersionInfo = require('./VersionInfo-D0mF1vkY.js');
 var SSRContext = require('./SSRContext-CWFBN3dJ.js');
+var React = require('react');
 var mapJson = require('jsonpath-mapper');
 require('./_commonjsHelpers-BJu3ubxk.js');
-require('react');
 require('react-redux');
 require('./selectors-Bp_TrwG5.js');
 require('immer');
@@ -23,6 +23,7 @@ require('./CookieHelper.class-C3Eqoze9.js');
 
 function _interopDefault (e) { return e && e.__esModule ? e : { default: e }; }
 
+var React__default = /*#__PURE__*/_interopDefault(React);
 var mapJson__default = /*#__PURE__*/_interopDefault(mapJson);
 
 /**
@@ -147,6 +148,30 @@ const entryMapper = mapping => (node, state) => mapJson__default.default({
   state
 }, mapping);
 
+// hooks/useIsClient.ts
+/**
+ * A hook that returns true only when the component has mounted in the browser client
+ * Used to prevent SSR render and defer rendering to client-side to safely refernce
+ * browser-only apis or avoid React Hydration errors
+ */
+const useIsClient = () => {
+  const [isClient, setIsClient] = React.useState(false);
+  React.useEffect(() => setIsClient(true), []);
+  return isClient;
+};
+
+/**
+ * NoSSR component to prevent children from rendering on the server.
+ * Renders children only after component has mounted in the browser.
+ */
+const NoSSR = ({
+  children
+}) => {
+  const isClient = useIsClient();
+  if (!isClient) return null;
+  return /*#__PURE__*/React__default.default.createElement(React__default.default.Fragment, null, children);
+};
+
 exports.VersionInfo = VersionInfo.VersionInfo;
 exports.setCachingHeaders = VersionInfo.setCachingHeaders;
 exports.stringifyStrings = VersionInfo.stringifyStrings;
@@ -167,11 +192,13 @@ Object.defineProperty(exports, "mapJson", {
   enumerable: true,
   get: function () { return mapJson__default.default; }
 });
+exports.NoSSR = NoSSR;
 exports.entryMapper = entryMapper;
 exports.mapComposer = mapComposer;
 exports.mapEntries = mapEntries;
 exports.useComposerMapper = useComposerMapper;
 exports.useEntriesMapper = useEntriesMapper;
 exports.useEntryMapper = useEntryMapper;
+exports.useIsClient = useIsClient;
 exports.useMapper = useMapper;
 //# sourceMappingURL=util.js.map

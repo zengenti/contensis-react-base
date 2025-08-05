@@ -15,6 +15,7 @@ import { Op, Query } from 'contensis-delivery-api';
 import { l as selectClientCredentials } from './ToJs-BrCfQvqi.js';
 import 'react-router-dom';
 import { a as RouteLoader } from './RouteLoader-CBiZR2pp.js';
+import 'query-string';
 
 // Create a history depending on the environment
 const selectedHistory = typeof window !== 'undefined' ? createBrowserHistory : createMemoryHistory;
@@ -832,4 +833,4 @@ const AppRoot = props => {
 };
 
 export { AppRoot as A, browserHistory as b, history as h, pickProject as p, rootSaga as r };
-//# sourceMappingURL=App-C0TyMTUa.js.map
+//# sourceMappingURL=App-mNJ7mlmI.js.map

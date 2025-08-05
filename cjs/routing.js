@@ -2,6 +2,7 @@
 
 var selectors = require('./selectors-Bp_TrwG5.js');
 var RouteLoader = require('./RouteLoader-TsLMOQxl.js');
+var util = require('./util-Cl8blSX5.js');
 require('immer');
 require('reselect');
 require('jsonpath-mapper');
@@ -29,4 +30,5 @@ exports.Redirect = RouteLoader.Redirect;
 exports.RouteLoader = RouteLoader.RouteLoader;
 exports.Status = RouteLoader.Status;
 exports.useHttpContext = RouteLoader.useHttpContext;
+exports.routeParams = util.routeParams;
 //# sourceMappingURL=routing.js.map

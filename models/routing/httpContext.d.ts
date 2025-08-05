@@ -1,4 +1,3 @@
-/// <reference types="react" />
 export type HttpContextValues = {
     statusCode?: number;
     url?: string;

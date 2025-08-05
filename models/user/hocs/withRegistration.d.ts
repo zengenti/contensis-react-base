@@ -5,5 +5,5 @@ declare function withRegistration(WrappedComponent: any): import("react-redux").
     [x: string]: any;
     [x: number]: any;
     context?: import("react").Context<import("react-redux").ReactReduxContextValue<any, import("../../../node_modules/redux").UnknownAction> | null> | undefined;
-    store?: import("../../../node_modules/redux").Store<any, import("../../../node_modules/redux").UnknownAction, unknown> | undefined;
+    store?: import("../../../node_modules/redux").Store | undefined;
 }>;

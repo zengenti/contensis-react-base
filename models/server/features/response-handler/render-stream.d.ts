@@ -1,4 +1,3 @@
-/// <reference types="node" />
 import { Response } from 'express';
 import { ReactNode } from 'react';
 import { Transform, Writable } from 'stream';

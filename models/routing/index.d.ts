@@ -5,3 +5,4 @@ export { useHttpContext } from './httpContext';
 export { Redirect } from './components/Redirect';
 export { Status } from './components/Status';
 export { default as RouteLoader } from './components/RouteLoader';
+export { routeParams } from '../search/search/util';

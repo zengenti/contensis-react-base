@@ -1,5 +1,6 @@
 export { a as actions, b as selectors, r as types } from './selectors-gcTuM3x_.js';
 export { R as Redirect, a as RouteLoader, S as Status, u as useHttpContext } from './RouteLoader-CBiZR2pp.js';
+export { r as routeParams } from './util-DjfOQeJe.js';
 import 'immer';
 import 'reselect';
 import 'jsonpath-mapper';

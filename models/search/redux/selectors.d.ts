@@ -40,7 +40,7 @@ export declare const getTotalCount: (state: AppState, current?: string, context?
 export declare const getSearchTerm: (state: AppState) => string;
 export declare const getSearchTabs: (state: AppState, returnType?: StateType) => Tab[];
 export declare const getQueryParams: (state: AppState, current?: string, context?: Context) => Record<string, any>;
-export declare const getQueryParameter: <K extends keyof SearchQueryParams, K2 extends "projectId" | "linkDepth" | "internalPaging" | "loadMorePaging" | keyof import("../models/Queries").SearchQueryOptions | "env" | "internalPageIndex" | "pagesLoaded" | "prevPageIndex" | "selectedFilters">({ state, facet, context, }: {
+export declare const getQueryParameter: <K extends keyof SearchQueryParams, K2 extends keyof QueryParams2>({ state, facet, context, }: {
     state: AppState;
     facet?: string;
     context?: Context;

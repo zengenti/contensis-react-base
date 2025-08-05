@@ -3,8 +3,8 @@ declare const staticAssets: (app: any, { appRootPath, scripts, startupScriptFile
     scripts?: {
         attributes?: {
             [key: string]: string;
-        } | undefined;
-        startup?: string | undefined;
+        };
+        startup?: string;
     } | undefined;
     startupScriptFilename?: string | undefined;
     staticFolderPath?: string | undefined;

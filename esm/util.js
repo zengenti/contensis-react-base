@@ -1,9 +1,9 @@
 export { V as VersionInfo, s as setCachingHeaders, a as stringifyStrings, u as urls } from './VersionInfo-DtF6rRcN.js';
 export { S as SSRContextProvider, c as cachedSearch, a as cachedSearchWithCookies, d as deliveryApi, b as deliveryApiWithCookies, g as getClientConfig, u as useDeliveryApi, e as useSSRContext } from './SSRContext-D2x7c2T6.js';
+import React, { useState, useEffect } from 'react';
 import mapJson, { jpath } from 'jsonpath-mapper';
 export { jpath, default as mapJson } from 'jsonpath-mapper';
 import './_commonjsHelpers-BFTU3MAI.js';
-import 'react';
 import 'react-redux';
 import './selectors-gcTuM3x_.js';
 import 'immer';
@@ -142,5 +142,29 @@ const entryMapper = mapping => (node, state) => mapJson({
   state
 }, mapping);
 
-export { entryMapper, mapComposer, mapEntries, useComposerMapper, useEntriesMapper, useEntryMapper, useMapper };
+// hooks/useIsClient.ts
+/**
+ * A hook that returns true only when the component has mounted in the browser client
+ * Used to prevent SSR render and defer rendering to client-side to safely refernce
+ * browser-only apis or avoid React Hydration errors
+ */
+const useIsClient = () => {
+  const [isClient, setIsClient] = useState(false);
+  useEffect(() => setIsClient(true), []);
+  return isClient;
+};
+
+/**
+ * NoSSR component to prevent children from rendering on the server.
+ * Renders children only after component has mounted in the browser.
+ */
+const NoSSR = ({
+  children
+}) => {
+  const isClient = useIsClient();
+  if (!isClient) return null;
+  return /*#__PURE__*/React.createElement(React.Fragment, null, children);
+};
+
+export { NoSSR, entryMapper, mapComposer, mapEntries, useComposerMapper, useEntriesMapper, useEntryMapper, useIsClient, useMapper };
 //# sourceMappingURL=util.js.map
