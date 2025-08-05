@@ -67,7 +67,7 @@ type Exporting = {
   start: (
     ReactApp: React.ComponentType<any>,
     config: ServerConfig,
-    ServerFeatures: (app: Express) => void
+    ServerFeatures: (app: Express) => void | null | undefined
   ) => void;
 };
 
