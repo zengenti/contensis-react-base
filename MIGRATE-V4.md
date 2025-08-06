@@ -356,7 +356,8 @@ app.get('/example/{*splat}', handler);
 app.get('{*splat}.aspx', handler);
 ```
 
-Upgrade any `@types` package in your `package.json` to the latest for v5 
+Upgrade any `@types` package in your `package.json` to the latest for v5
+
 ```sh
 npm install --save-dev @types/express@latest
 ```
@@ -437,13 +438,19 @@ When starting your project for the first time, if you encounter errors:
 Module not found: Can't resolve '<package-name>'
 ```
 
-> ℹ️ Key dependencies like `react-redux`, or `styled-components` may not be installed in the project root. Each project is slightly different in their implementation so the actual package name(s) will be revealed when you start the project.
+> ℹ️ Key dependencies like `react-redux`, or `styled-components` may not be installed to the project root, instead nested into another package's `node_modules`. Each project is slightly different in their implementation so the actual package name(s) will be revealed when you start the project.
+
+> ℹ️ **Tip:** Searching your project for this string: `node_modules/<package-name>"` should show result(s) in `package-lock.json` and reveal where the "missing" dependency is installed
 
 Try:
 
 ```sh
 npm install <package-name>
+# install will add the dependency to your `package.json`
+# and should "hoist" the package to the root `./node_modules`
 npm uninstall <package-name>
+# uninstall will remove the dependency that was added to your `package.json`
+# but the package should remain installed in the root `./node_modules`
 ```
 
 Confirm the dependency remains installed within the root `./node_modules`
@@ -467,7 +474,6 @@ const CLIENT_PROD_CONFIG = {
 ```
 
 - Some hydration error examples:
-
   - Error: Hydration failed because the initial UI does not match what was rendered on the server.
   - Error: There was an error while hydrating. Because the error happened outside of a Suspense boundary, the entire root will switch to client rendering.
   - Warning: Expected server HTML to contain a matching `<h1>` in `<div>`
@@ -479,7 +485,7 @@ const CLIENT_PROD_CONFIG = {
   - Simply `return <p>Hello world</p>;` instead
 
 - Avoid dynamic or lazy-loaded components where hydration fails
-  - Change `component` in your `StaticRoute` or `ContentTypeMapping` 
+  - Change `component` in your `StaticRoute` or `ContentTypeMapping`
   - Do **not** use a `loadable()` import
   - Import the actual component into the route configuration directly
 
@@ -518,7 +524,6 @@ const CLIENT_PROD_CONFIG = {
 > ℹ️ Wrap components with `<NoSSR />` to achieve the same defer behaviour
 
 > ℹ️ `loadable()` lazy loaded components accept an option to avoid SSR
-
 
 There are many articles online that explain hydration errors and offer suggestions as to what we might be doing wrong to cause a mismatch between the server rendered HTML and the client rendered HTML
 
@@ -587,5 +592,24 @@ export const Content = loadable<any>(
   { ssr: false } // ✅ add this option
 );
 ```
+
+---
+
+### 5. Try out React 19
+
+Add `overrides` to your `package.json` to force your project to install React v19
+
+```json
+  "overrides": {
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
+  },
+```
+> ⚠️ Ensure **only one** version of both `react` and `react-dom` packages are installed in the project
+> <br>  **Tip:** _Searching your project for this string:_ `node_modules/react"` _should find one result in `package-lock.json`_
+
+> ℹ️ Verify the `rendered by` react-dom version in React Developer Tools → Components view
+
+📖 [React 19 Upgrade Guide](https://react.dev/blog/2024/04/25/react-19-upgrade-guide)
 
 ---
