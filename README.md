@@ -6,6 +6,12 @@ Handles web app routing with Contensis Site View and component rendering based o
 
 ## Upgrade notes (older projects)
 
+### React 18 (v4.0+)
+
+This version introduces major updates to React, React Router and Express
+
+We have prepared a [Migration Guide: v3 → v4](https://github.com/zengenti/contensis-react-base/blob/feat/react18/MIGRATE-V4.md) with detailed steps to follow to ensure your upgrade goes smoothly
+
 ### Styled Components 6 (v3.3+)
 
 Some projects may see console warnings in the web app like the example below after upgrading to v3.3+ which updates Styled Components from version 5 to 6
