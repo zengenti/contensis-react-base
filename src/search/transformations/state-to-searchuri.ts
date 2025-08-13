@@ -47,7 +47,7 @@ const searchUriTemplate: SearchUriMapping = {
       ? {}
       : Object.fromEntries(
           Object.entries(
-            getRenderableSelectedFilters(state, facet, searchContext, 'js')
+            getRenderableSelectedFilters(state, facet, searchContext)
           ).map(([k, f]: [string, any]) => [k, f?.join(',')])
         );
 
