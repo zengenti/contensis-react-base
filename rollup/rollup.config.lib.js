@@ -47,6 +47,7 @@ export default {
     '@babel',
     'history',
     /^@redux-saga*/,
+    'react-dom/client',
     'react-dom/server',
     'react-loadable/webpack',
     'react-router-dom/server',
