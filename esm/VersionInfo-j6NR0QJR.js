@@ -2,8 +2,8 @@ import { g as getDefaultExportFromCjs } from './_commonjsHelpers-BFTU3MAI.js';
 import React from 'react';
 import { connect } from 'react-redux';
 import mapJson from 'jsonpath-mapper';
-import { n as selectCurrentProject } from './selectors-gcTuM3x_.js';
-import { s as selectVersionStatus, a as selectCommitRef, b as selectBuildNumber } from './version-C7hR7DBF.js';
+import { n as selectCurrentProject } from './selectors-CNC7sDxg.js';
+import { s as selectVersionStatus, a as selectCommitRef, b as selectBuildNumber } from './version-CaL4czqJ.js';
 import styled from 'styled-components';
 
 const setCachingHeaders = (response, {
@@ -190,4 +190,4 @@ const VersionInfo = ({
 var VersionInfo$1 = connect(mapStateToVersionInfo)(VersionInfo);
 
 export { VersionInfo$1 as V, stringifyStrings as a, setCachingHeaders as s, url as u };
-//# sourceMappingURL=VersionInfo-DtF6rRcN.js.map
+//# sourceMappingURL=VersionInfo-j6NR0QJR.js.map

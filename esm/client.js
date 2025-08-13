@@ -1,70 +1,34 @@
 import 'isomorphic-fetch';
 import React from 'react';
-import require$$0 from 'react-dom';
+import { hydrateRoot, createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { unstable_HistoryRouter } from 'react-router-dom';
 import { loadableReady } from '@loadable/component';
 import { parse } from 'query-string';
 import { CookiesProvider } from 'react-cookie';
-import { s as selectVersionStatus } from './version-C7hR7DBF.js';
-import { s as setVersionStatus } from './version-Br9VZIOE.js';
-import { b as browserHistory, r as rootSaga, p as pickProject } from './App-mNJ7mlmI.js';
-export { A as ReactApp } from './App-mNJ7mlmI.js';
-import { c as createStore } from './store-BitMCsz9.js';
-import { d as setCurrentProject } from './selectors-gcTuM3x_.js';
-import { d as deliveryApi, S as SSRContextProvider } from './SSRContext-D2x7c2T6.js';
+import { s as selectVersionStatus } from './version-CaL4czqJ.js';
+import { s as setVersionStatus } from './version-CfABeHJA.js';
+import { b as browserHistory, r as rootSaga, p as pickProject } from './App-7G05PsXJ.js';
+export { A as ReactApp } from './App-7G05PsXJ.js';
+import { c as createStore } from './store-CtDx5MLq.js';
+import { s as setCurrentProject } from './selectors-CNC7sDxg.js';
+import { d as deliveryApi, S as SSRContextProvider } from './SSRContext-CiOkP_gR.js';
 import '@redux-saga/core/effects';
 import 'history';
 import 'loglevel';
 import 'await-to-js';
-import './ChangePassword.container-DnIIAUHr.js';
-import './ToJs-BrCfQvqi.js';
+import './ChangePassword.container-DARIxI4T.js';
+import './ToJs-Cs7Dqcpx.js';
 import 'jsonpath-mapper';
 import './CookieHelper.class-FTURFpz3.js';
 import 'contensis-delivery-api';
-import './RouteLoader-CBiZR2pp.js';
+import './RouteLoader-DVGpaVNA.js';
 import 'reselect';
 import 'redux';
 import 'redux-thunk';
 import 'redux-saga';
 import 'redux-injectors-19';
 import 'immer';
-
-var client = {};
-
-var hasRequiredClient;
-
-function requireClient () {
-	if (hasRequiredClient) return client;
-	hasRequiredClient = 1;
-
-	var m = require$$0;
-	if (process.env.NODE_ENV === 'production') {
-	  client.createRoot = m.createRoot;
-	  client.hydrateRoot = m.hydrateRoot;
-	} else {
-	  var i = m.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
-	  client.createRoot = function(c, o) {
-	    i.usingClientEntryPoint = true;
-	    try {
-	      return m.createRoot(c, o);
-	    } finally {
-	      i.usingClientEntryPoint = false;
-	    }
-	  };
-	  client.hydrateRoot = function(c, h, o) {
-	    i.usingClientEntryPoint = true;
-	    try {
-	      return m.hydrateRoot(c, h, o);
-	    } finally {
-	      i.usingClientEntryPoint = false;
-	    }
-	  };
-	}
-	return client;
-}
-
-var clientExports = requireClient();
 
 class ClientApp {
   constructor(ReactApp, config) {
@@ -101,14 +65,14 @@ class ClientApp {
      */
     const HMRRenderer = Component => {
       if (shouldHydrate) loadableReady(() => {
-        clientExports.hydrateRoot(documentRoot, Component, {
+        hydrateRoot(documentRoot, Component, {
           onRecoverableError(error) {
             console.warn('Hydration warning:', error);
           }
         });
       }, {
         namespace: 'modern'
-      });else clientExports.createRoot(documentRoot).render(Component);
+      });else createRoot(documentRoot).render(Component);
     };
     const hmr = store => {
       // webpack Hot Module Replacement API

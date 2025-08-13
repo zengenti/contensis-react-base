@@ -4,7 +4,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 require('isomorphic-fetch');
 var React = require('react');
-var require$$0 = require('react-dom');
+var client = require('react-dom/client');
 var reactRedux = require('react-redux');
 var reactRouterDom = require('react-router-dom');
 var component = require('@loadable/component');
@@ -36,43 +36,6 @@ require('immer');
 function _interopDefault (e) { return e && e.__esModule ? e : { default: e }; }
 
 var React__default = /*#__PURE__*/_interopDefault(React);
-var require$$0__default = /*#__PURE__*/_interopDefault(require$$0);
-
-var client = {};
-
-var hasRequiredClient;
-
-function requireClient () {
-	if (hasRequiredClient) return client;
-	hasRequiredClient = 1;
-
-	var m = require$$0__default.default;
-	if (process.env.NODE_ENV === 'production') {
-	  client.createRoot = m.createRoot;
-	  client.hydrateRoot = m.hydrateRoot;
-	} else {
-	  var i = m.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
-	  client.createRoot = function(c, o) {
-	    i.usingClientEntryPoint = true;
-	    try {
-	      return m.createRoot(c, o);
-	    } finally {
-	      i.usingClientEntryPoint = false;
-	    }
-	  };
-	  client.hydrateRoot = function(c, h, o) {
-	    i.usingClientEntryPoint = true;
-	    try {
-	      return m.hydrateRoot(c, h, o);
-	    } finally {
-	      i.usingClientEntryPoint = false;
-	    }
-	  };
-	}
-	return client;
-}
-
-var clientExports = requireClient();
 
 class ClientApp {
   constructor(ReactApp, config) {
@@ -109,14 +72,14 @@ class ClientApp {
      */
     const HMRRenderer = Component => {
       if (shouldHydrate) component.loadableReady(() => {
-        clientExports.hydrateRoot(documentRoot, Component, {
+        client.hydrateRoot(documentRoot, Component, {
           onRecoverableError(error) {
             console.warn('Hydration warning:', error);
           }
         });
       }, {
         namespace: 'modern'
-      });else clientExports.createRoot(documentRoot).render(Component);
+      });else client.createRoot(documentRoot).render(Component);
     };
     const hmr = store => {
       // webpack Hot Module Replacement API
