@@ -20,10 +20,15 @@ export declare const getFacetTitles: (state: AppState) => {
 }[];
 export declare const getFacet: (state: AppState, facetName?: string, context?: Context | string, returnType?: StateType) => Facet;
 export declare const getListing: (state: AppState, listing?: string) => Facet;
+/** Return filter state for the current (or provided) facet */
 export declare const getFilters: (state: AppState, facet: string, context?: Context, returnType?: StateType) => Filters;
+/** Return filter state for the current (or provided) facet, excluding filters configured as `renderable: false` */
 export declare const getRenderableFilters: (state: AppState, facet?: string, context?: Context) => Filters;
 export declare const getFiltersToLoad: (state: AppState, facet: string, context?: Context, returnType?: StateType) => string[];
+/** Return keyed object for all filters in the current facet with all selected values for each filter */
 export declare const getSelectedFilters: (state: AppState, facet?: string, context?: Context, returnType?: StateType) => SelectedFilters;
+/** Return keyed object for all _renderable_ filters in the current facet with all selected values for each filter */
+export declare const getRenderableSelectedFilters: (state: AppState, facet?: string, context?: Context) => SelectedFilters;
 export declare const getResults: (state: AppState, current?: string, context?: Context, returnType?: StateType) => any[];
 export declare const getIsInternalPaging: (state: AppState, current: string, context?: Context) => boolean;
 export declare const getIsLoaded: (state: AppState, context?: Context, facet?: string) => boolean;

@@ -4,6 +4,7 @@ var VersionInfo = require('./VersionInfo-D0mF1vkY.js');
 var SSRContext = require('./SSRContext-CWFBN3dJ.js');
 var React = require('react');
 var mapJson = require('jsonpath-mapper');
+var reactRouterDom = require('react-router-dom');
 require('./_commonjsHelpers-BJu3ubxk.js');
 require('react-redux');
 require('./selectors-Bp_TrwG5.js');
@@ -172,6 +173,17 @@ const NoSSR = ({
   return /*#__PURE__*/React__default.default.createElement(React__default.default.Fragment, null, children);
 };
 
+/** @deprecated ponyfill for useHistory hook in react-router v5 removed in v6 */
+const useHistory = () => {
+  const navigate = reactRouterDom.useNavigate();
+  const location = reactRouterDom.useLocation();
+  return {
+    push: navigate,
+    replace: navigate,
+    location
+  };
+};
+
 exports.VersionInfo = VersionInfo.VersionInfo;
 exports.setCachingHeaders = VersionInfo.setCachingHeaders;
 exports.stringifyStrings = VersionInfo.stringifyStrings;
@@ -199,6 +211,7 @@ exports.mapEntries = mapEntries;
 exports.useComposerMapper = useComposerMapper;
 exports.useEntriesMapper = useEntriesMapper;
 exports.useEntryMapper = useEntryMapper;
+exports.useHistory = useHistory;
 exports.useIsClient = useIsClient;
 exports.useMapper = useMapper;
 //# sourceMappingURL=util.js.map

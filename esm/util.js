@@ -3,6 +3,7 @@ export { S as SSRContextProvider, c as cachedSearch, a as cachedSearchWithCookie
 import React, { useState, useEffect } from 'react';
 import mapJson, { jpath } from 'jsonpath-mapper';
 export { jpath, default as mapJson } from 'jsonpath-mapper';
+import { useNavigate, useLocation } from 'react-router-dom';
 import './_commonjsHelpers-BFTU3MAI.js';
 import 'react-redux';
 import './selectors-gcTuM3x_.js';
@@ -166,5 +167,16 @@ const NoSSR = ({
   return /*#__PURE__*/React.createElement(React.Fragment, null, children);
 };
 
-export { NoSSR, entryMapper, mapComposer, mapEntries, useComposerMapper, useEntriesMapper, useEntryMapper, useIsClient, useMapper };
+/** @deprecated ponyfill for useHistory hook in react-router v5 removed in v6 */
+const useHistory = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  return {
+    push: navigate,
+    replace: navigate,
+    location
+  };
+};
+
+export { NoSSR, entryMapper, mapComposer, mapEntries, useComposerMapper, useEntriesMapper, useEntryMapper, useHistory, useIsClient, useMapper };
 //# sourceMappingURL=util.js.map

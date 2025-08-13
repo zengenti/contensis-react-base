@@ -67,7 +67,11 @@ export type SearchFilter = {
     isSingleSelect?: boolean;
     /** Supply an empty array or a hardcoded list of FilterItem depending on the type of filter we require */
     items: FilterItem[];
-    /** Set to false to not include this filter in filters prop */
+    /** Setting `false` will change the filter behaviour:
+     *
+     * a) to be excluded from the `filters` prop
+     *
+     * b) to not include selected items in the querystring on next navigate */
     renderable?: boolean;
     /** The title to render next to the filter */
     title: string;

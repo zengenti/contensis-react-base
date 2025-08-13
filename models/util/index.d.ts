@@ -7,3 +7,4 @@ export { useIsClient } from './useIsClient';
 export { NoSSR } from './NoSSR';
 export * from './json-mapper';
 export { default as VersionInfo } from "../app/pages/VersionInfo";
+export { useHistory } from './donotuse_useHistory';
