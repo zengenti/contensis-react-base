@@ -8,7 +8,6 @@ export {
   getClientConfig,
 } from './ContensisDeliveryApi';
 
-
 export {
   SSRContextProvider,
   useDeliveryApi,
@@ -26,3 +25,6 @@ export { NoSSR } from './NoSSR';
 export * from './json-mapper';
 
 export { default as VersionInfo } from '~/app/pages/VersionInfo';
+
+// Ponyfill
+export { useHistory } from './donotuse_useHistory';
