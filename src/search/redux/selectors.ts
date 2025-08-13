@@ -75,6 +75,7 @@ export const getListing = (state: AppState, listing = '') => {
   ) as Facet;
 };
 
+/** Return filter state for the current (or provided) facet */
 export const getFilters = (
   state: AppState,
   facet: string,
@@ -89,6 +90,7 @@ export const getFilters = (
   );
 };
 
+/** Return filter state for the current (or provided) facet, excluding filters configured as `renderable: false` */
 export const getRenderableFilters = (
   state: AppState,
   facet = '',
@@ -119,15 +121,8 @@ export const getFiltersToLoad = (
     .filter(f => !!f) as string[];
 };
 
-// We lowercase the filter key unless it's an ISO date string where the T must be uppercase
-export const getSelectedFilters = (
-  state: AppState,
-  facet = '',
-  context = Context.facets,
-  returnType?: StateType
-): SelectedFilters => {
-  const filters = getFilters(state, facet, context, 'js');
-
+/** Reduce filters state to a simple object containing all filter keys and the selected values */
+const reduceSelectedFilters = (filters: Filters) => {
   const selectedFilters = Object.fromEntries(
     Object.entries(filters).map(([key, filter = {}]) => [
       key,
@@ -139,8 +134,33 @@ export const getSelectedFilters = (
         }),
     ])
   );
+  return selectedFilters;
+};
+
+/** Return keyed object for all filters in the current facet with all selected values for each filter */
+export const getSelectedFilters = (
+  state: AppState,
+  facet = '',
+  context = Context.facets,
+  returnType?: StateType
+): SelectedFilters => {
+  const filters = getFilters(state, facet, context, 'js');
+
+  const selectedFilters = reduceSelectedFilters(filters);
   const fromJS = makeFromJS(returnType);
   return fromJS(selectedFilters);
+};
+
+/** Return keyed object for all _renderable_ filters in the current facet with all selected values for each filter */
+export const getRenderableSelectedFilters = (
+  state: AppState,
+  facet = '',
+  context = Context.facets
+): SelectedFilters => {
+  const filters = getRenderableFilters(state, facet, context);
+
+  // new in CRB4: intended no support for immutable state type
+  return reduceSelectedFilters(filters);
 };
 
 export const getResults = (

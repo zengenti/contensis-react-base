@@ -9,6 +9,7 @@ import {
   getCurrentFacet,
   getSearchContext,
   selectCurrentPath,
+  getRenderableSelectedFilters,
 } from '../redux/selectors';
 import { removeEmptyAttributes } from '../search/util';
 
@@ -46,7 +47,7 @@ const searchUriTemplate: SearchUriMapping = {
       ? {}
       : Object.fromEntries(
           Object.entries(
-            getSelectedFilters(state, facet, searchContext, 'js')
+            getRenderableSelectedFilters(state, facet, searchContext, 'js')
           ).map(([k, f]: [string, any]) => [k, f?.join(',')])
         );
 
