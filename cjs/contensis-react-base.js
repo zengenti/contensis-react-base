@@ -765,9 +765,7 @@ const staticAssets = (app, {
     maxage: CacheDuration.static,
     startupScriptFilename: scripts.startup || startupScriptFilename,
     staticFolderPath
-  }),
-  // eslint-disable-next-line import/no-named-as-default-member
-  express__default.default.static(`dist/${staticFolderPath}`, {
+  }), express__default.default.static(`dist/${staticFolderPath}`, {
     // these maxage values are different in config but the same in runtime,
     // this one is somehow converted and should end up being the same as CacheDuration.static
     maxAge: CacheDuration.expressStatic
