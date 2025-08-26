@@ -8,11 +8,11 @@ This document covers the **breaking changes**, **major upgrades**, and **migrati
 
 ## 📝 In This Guide
 
-- [⚙️ Before You Start](#️-before-you-start)
-- [🚀 What’s New in v4](#-whats-new-in-v4)
-- [🚨 Breaking Changes Overview](#-breaking-changes-overview)
-- [🔧 Step-by-Step Migration](#-step-by-step-migration)
-- [🧠 Known Issues & Debug Tips](#-known-issues--debug-tips)
+- ⚙️ [Before You Start](#️-before-you-start)
+- 🚀 [What’s New in v4](#-whats-new-in-v4)
+- 🚨 [Breaking Changes Overview](#-breaking-changes-overview)
+- 🔧 [Step-by-Step Migration](#-step-by-step-migration)
+- 🧠 [Known Issues & Debug Tips](#-known-issues--debug-tips)
 
 ## ⚙️ Before You Start
 
@@ -56,6 +56,7 @@ Import from `@zengenti/contensis-react-base/util`
 
 - Removed `useHistory` hook, replace with `useNavigate`
 - Changed `staticRoute` object structure
+- Removed `Redirect` component, replace with `Redirect` from `@zengenti/contensis-react-base/routing`
 - Removed `staticContext`, replace with `useHttpContext` hook
 - Removed `exact` prop in static routes (v6 handles this automatically)
 - Future flags included for smoother upgrade to v7
@@ -89,6 +90,7 @@ Import from `@zengenti/contensis-react-base/routing`
 | React            | React Hot Loader removed; React Fast Refresh now required                                                                 |
 | Router           | `useHistory()` hook replaced with `useNavigate()`                                                                         |
 | Router           | `staticRoute` structure changed                                                                                           |
+| Router           | `Redirect` component removed, replace with `Redirect` routing helper                                                      |
 | Router           | `staticContext` removed, use `useHttpContext()`                                                                           |
 | Express          | Route matching syntax changed                                                                                             |
 | Express          | Removed deprecated method signatures                                                                                      |
@@ -320,7 +322,20 @@ export const Status = ({ code, children }) => {
 
 ---
 
-5. Remove `exact` prop from static routes
+5. Search your project for `Redirect` component usage and update imports
+
+**Change:** any component that renders a `Redirect` component
+
+```tsx
+import { Redirect } from 'react-router-dom'; // ❌ Delete this (React Router v5)
+import { Redirect } from '@zengenti/contensis-react-base/routing'; // ✅ New
+```
+
+---
+
+6. Remove `exact` prop from static routes
+
+**Example:** `StaticRoutes.ts|js` file
 
 ```tsx
 const staticRoutes: StaticRoute[] = [
@@ -331,6 +346,37 @@ const staticRoutes: StaticRoute[] = [
   },
 ];
 ```
+
+---
+
+7. Search your project for `withRouter` and remove any references, replace any usage of props provided by `withRouter` HOC with hooks.
+
+[Legacy `withRouter` documentation](https://v5.reactrouter.com/web/api/withRouter)
+
+**Example:** remove `withRouter` higher-order-component and refactor usage of the previously provided props
+
+```tsx
+import { withRouter } from 'react-router-dom'; // ❌ Delete this (React Router v5)
+import { useParams, useLocation, useNavigate } from 'react-router-dom'; // ✅ New (if required)
+
+const Search = ({
+  match, // ❌ Delete prop
+  location, // ❌ Delete prop
+  history, // ❌ Delete prop
+  ...otherProps
+}) => {
+  const { id } = match.params; // ❌ Old
+
+  const { id } = useParams(); // ✅ Replaces match.params prop
+  const location = useLocation(); // ✅ Replaces location prop
+  const navigate = useNavigate(); // ✅ Replaces history prop
+};
+
+export default withRouter(Search); // ❌ Old export
+export default Search; // ✅ New export
+```
+
+> ℹ️ If your component does not use any of the `match`, `location`, or `history` props you only need to remove the references to `withRouter`
 
 ---
 
@@ -605,8 +651,9 @@ Add `overrides` to your `package.json` to force your project to install React v1
     "react-dom": "^19.1.1"
   },
 ```
+
 > ⚠️ Ensure **only one** version of both `react` and `react-dom` packages are installed in the project
-> <br>  **Tip:** _Searching your project for this string:_ `node_modules/react"` _should find one result in `package-lock.json`_
+> <br> **Tip:** _Searching your project for this string:_ `node_modules/react"` _should find one result in `package-lock.json`_
 
 > ℹ️ Verify the `rendered by` react-dom version in React Developer Tools → Components view
 
