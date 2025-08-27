@@ -14,6 +14,7 @@ import { QueryParams, SearchQueryOptions } from '../models/Queries';
 import { AppState } from '../models/SearchState';
 import {
   EnsureSearchAction,
+  SearchParams,
   SetSearchEntriesAction,
 } from '../models/SearchActions';
 
@@ -99,6 +100,22 @@ export const runSearch = (
 
   return willRun;
 };
+
+/**
+ * Patch mutates original params argument to decode certain
+ * url encoded params which can creep into urls and cause a
+ * flash of different content when hydrating from SSR
+ * @param params SearchParams
+ * @returns SearchParams
+ */
+export const sanitiseParams = (params?: SearchParams) => {
+    if (params && typeof params === 'object')
+      for (const param of Object.keys(params)) {
+        if (typeof params[param] === 'string')
+          params[param] = params[param].replaceAll('%2C', ',');
+    }
+  return params;
+}
 
 /**
  * This will tell us if filter parameters have been

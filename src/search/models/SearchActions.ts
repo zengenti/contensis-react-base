@@ -6,6 +6,14 @@ import { AppState, Facet } from './SearchState';
 import { QueryParams } from './Queries';
 import { TimedSearchResponse } from './SearchUtil';
 
+/**
+ * Parameters for the current search
+ * usually provided by route, path or query parameters or
+ * can be overridden manually to manipulate the search to
+ * drive certain conditions when required
+ */
+export type SearchParams = { [key: string]: string };
+
 type Action = {
   type: string;
 };
@@ -24,7 +32,7 @@ export type TriggerSearchParams = {
   facet: string;
   mapper?: Mappers['results'];
   mappers?: Mappers;
-  params?: { [key: string]: string };
+  params?: SearchParams;
 };
 
 export type TriggerSearchAction = Action & TriggerSearchParams;
@@ -41,7 +49,7 @@ type InitListingParams = {
   listingType?: string;
   mapper?: Mappers['results'];
   mappers?: Mappers;
-  params: { [key: string]: string };
+  params: SearchParams;
   preload?: boolean;
 };
 
@@ -98,7 +106,7 @@ export type SetSearchEntriesParams = {
   preload: boolean;
   ogState: AppState;
   debug: DebugFlags;
-  params: { [key: string]: string };
+  params: SearchParams;
 };
 
 export type SetSearchEntriesAction = Action & SetSearchEntriesParams;

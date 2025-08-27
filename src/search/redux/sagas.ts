@@ -50,7 +50,7 @@ import mapSearchResultToState, {
   facetTemplate,
   filterTemplate,
 } from '../transformations/searchresult-to-state.mapper';
-import { generateQueryParams, debugExecuteSearch, scrollTo } from './util';
+import { generateQueryParams, debugExecuteSearch, scrollTo, sanitiseParams } from './util';
 import mapEntriesToFilterItems from '../transformations/entry-to-filteritem.mapper';
 import { AppState, Facet, Filter } from '../models/SearchState';
 import {
@@ -61,6 +61,7 @@ import {
   InitListingAction,
   LoadFiltersCompleteAction,
   LoadFiltersSearchResults,
+  SearchParams,
   SearchResults,
   SetRouteFiltersOptions,
   SetSearchEntriesAction,
@@ -104,6 +105,7 @@ export function* setRouteFilters(
   const context = listingType ? Context.listings : Context.facets;
   const state: AppState = toJS(yield select());
   const ssr = getIsSsr(state);
+  sanitiseParams(params);
 
   // Get current facet from params or state
   let currentFacet = (params && params.facet) || listingType;
@@ -112,20 +114,14 @@ export function* setRouteFilters(
   if (context === Context.listings) {
     currentFacet = listingType;
   }
-
-  // Patch any url encoded params which can cause a flash in SSR
-  if (params)
-    for (const param of Object.keys(params)) {
-      params[param] = params[param].replaceAll('%2C', ',');
-    }
-
+  
   // Pick the default facet from initialState
   if (!currentFacet) {
     const tabs = getSearchTabs(state, 'js');
     currentFacet =
-      tabs?.[0].defaultFacet || Object.keys(getFacets(state, 'js'))?.[0] || '';
+    tabs?.[0].defaultFacet || Object.keys(getFacets(state, 'js'))?.[0] || '';
   }
-
+  
   const nextAction = {
     type: SET_ROUTE_FILTERS,
     context,
@@ -348,7 +344,7 @@ function* executeSearch(action: ExecuteSearchAction) {
         (typeof mappers === 'object' &&
           typeof mappers.customApi === 'function' &&
           mappers.customApi(queryParams)) ||
-        (mapQueryParamsToCustomApi(queryParams) as { [key: string]: string });
+        (mapQueryParamsToCustomApi(queryParams) as SearchParams);
 
       result.payload = (yield callCustomApi<any>(
         customApi,
