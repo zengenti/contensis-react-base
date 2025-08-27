@@ -6,6 +6,7 @@ import { Entry } from 'contensis-delivery-api/lib/models';
 import { PagedList, Query } from 'contensis-core-api';
 import { CustomApi } from '../models/Search';
 import { TimedSearchResponse } from '../models/SearchUtil';
+import { SearchParams } from '../models/SearchActions';
 
 export function fixFreeTextForElastic(s: string): string {
   const illegalChars = [
@@ -101,10 +102,7 @@ export const extractQuotedPhrases = (searchTerm: string): string[] => {
   );
 };
 
-export const buildUrl = (
-  route: string,
-  params: { [key: string]: string }
-): string => {
+export const buildUrl = (route: string, params: SearchParams): string => {
   const qs = stringify(params) as string;
   const path = qs ? `${route}${route.includes('?') ? '&' : '?'}${qs}` : route;
   return path;
@@ -143,7 +141,7 @@ export const routeParams = (
 
 export const callCustomApi = async <T>(
   customApi: CustomApi,
-  filters: { [key: string]: string }
+  filters: SearchParams
 ): Promise<T> => {
   const apiUri = customApi.uri || '';
   let uri = buildUrl(apiUri, filters);

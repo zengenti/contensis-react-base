@@ -10,7 +10,7 @@ import {
 } from '../redux/actions';
 
 import { SearchFacet, Mappers } from '../models/Search';
-import { DebugFlags } from '../models/SearchActions';
+import { DebugFlags, SearchParams } from '../models/SearchActions';
 import {
   Facet as StateFacet,
   Facets,
@@ -99,7 +99,7 @@ export interface UseFacetsProps {
   mappers?: Mappers;
   /** Reserved for future use */
   id?: string;
-  params?: { [key: string]: string };
+  params?: SearchParams;
   // config?: SearchFacet;
 }
 export interface UseListingProps {
@@ -108,7 +108,7 @@ export interface UseListingProps {
   mappers?: Mappers;
   /** Reserved for future use */
   id?: string;
-  params?: { [key: string]: string };
+  params?: SearchParams;
   // config?: SearchFacet;
 }
 
@@ -120,5 +120,5 @@ export interface UseMinilistProps {
   excludeIds?: string[];
   mapper?: Mappers['results'];
   mappers?: Mappers;
-  params?: { [key: string]: string };
+  params?: SearchParams;
 }

@@ -27,13 +27,14 @@ import {
   UPDATE_PAGE_SIZE,
 } from './types';
 import { toArray } from '../search/util';
+import { Context } from '../models/Enums';
 import {
   ConfigTypes,
   SearchFacet,
   Listing,
   SearchConfig,
 } from '../models/Search';
-import { Context } from '../models/Enums';
+import { SearchParams } from '../models/SearchActions';
 import {
   Facet,
   Facets,
@@ -200,7 +201,7 @@ export default (config: SearchConfig) => {
         [key: string]: any;
         context: keyof typeof Context;
         facet: string;
-        params: { [key: string]: string };
+        params: SearchParams;
       }
     ) => {
       const context = state.context as keyof typeof Context;

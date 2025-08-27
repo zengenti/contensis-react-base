@@ -10,6 +10,7 @@ import {
   FeaturedResults,
   WeightedSearchField,
 } from './Search';
+import { SearchParams } from './SearchActions';
 
 export type FieldOperators = Exclude<keyof Operators, 'and' | 'or' | 'not'>;
 export type LogicOperators = 'and' | 'or' | 'not';
@@ -54,7 +55,7 @@ export type QueryParams = SearchQueryOptions & {
   pagesLoaded: number[];
   prevPageIndex: number;
   projectId: string;
-  selectedFilters: { [key: string]: string };
+  selectedFilters: SearchParams;
 };
 
 export type SearchQuery = (

@@ -1,7 +1,7 @@
 import * as log from 'loglevel';
 import { takeEvery, put, select, call, all } from 'redux-saga/effects';
-import { PagedList, Query, VersionStatus } from 'contensis-core-api/lib/models';
-import { Entry, TaxonomyNode } from 'contensis-delivery-api/lib/models';
+import { PagedList, Query, VersionStatus } from 'contensis-core-api';
+import { Entry, TaxonomyNode } from 'contensis-delivery-api';
 
 import { cachedSearch } from '../search/ContensisDeliveryApi';
 import { callCustomApi, timedSearch, getItemsFromResult } from '../search/util';
