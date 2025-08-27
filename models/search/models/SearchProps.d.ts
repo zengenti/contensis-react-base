@@ -1,6 +1,6 @@
 import { clearFilters, updateCurrentFacet, updateCurrentTab, updatePageIndex, updatePageSize, updateSearchTerm, updateSelectedFilters, updateSortOrder } from '../redux/actions';
 import { SearchFacet, Mappers } from '../models/Search';
-import { DebugFlags } from '../models/SearchActions';
+import { DebugFlags, SearchParams } from '../models/SearchActions';
 import { Facet as StateFacet, Facets, Filters, Paging, SelectedFilters, TabAndFacets } from '../models/SearchState';
 export interface MinilistProps<SearchResults = any> {
     filters: Filters;
@@ -79,9 +79,7 @@ export interface UseFacetsProps {
     mappers?: Mappers;
     /** Reserved for future use */
     id?: string;
-    params?: {
-        [key: string]: string;
-    };
+    params?: SearchParams;
 }
 export interface UseListingProps {
     debug?: DebugFlags;
@@ -89,9 +87,7 @@ export interface UseListingProps {
     mappers?: Mappers;
     /** Reserved for future use */
     id?: string;
-    params?: {
-        [key: string]: string;
-    };
+    params?: SearchParams;
 }
 export interface UseMinilistProps {
     id: string;
@@ -101,7 +97,5 @@ export interface UseMinilistProps {
     excludeIds?: string[];
     mapper?: Mappers['results'];
     mappers?: Mappers;
-    params?: {
-        [key: string]: string;
-    };
+    params?: SearchParams;
 }

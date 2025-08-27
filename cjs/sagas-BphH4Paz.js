@@ -5215,6 +5215,20 @@ const runSearch = (action, state, queryParams) => {
 };
 
 /**
+ * Patch mutates original params argument to decode certain
+ * url encoded params which can creep into urls and cause a
+ * flash of different content when hydrating from SSR
+ * @param params SearchParams
+ * @returns SearchParams
+ */
+const sanitiseParams = params => {
+  if (params && typeof params === 'object') for (const param of Object.keys(params)) {
+    if (typeof params[param] === 'string') params[param] = params[param].replaceAll('%2C', ',');
+  }
+  return params;
+};
+
+/**
  * This will tell us if filter parameters have been
  * changed by some external event such as a route change
  * @param action
@@ -5323,6 +5337,7 @@ function* setRouteFilters(action) {
   const context = listingType ? Context.listings : Context.facets;
   const state = toJS(yield effects.select());
   const ssr = getIsSsr(state);
+  sanitiseParams(params);
 
   // Get current facet from params or state
   let currentFacet = params && params.facet || listingType;
@@ -5330,11 +5345,6 @@ function* setRouteFilters(action) {
   // If Listing use listing type (ignore params.facet)
   if (context === Context.listings) {
     currentFacet = listingType;
-  }
-
-  // Patch any url encoded params which can cause a flash in SSR
-  if (params) for (const param of Object.keys(params)) {
-    params[param] = params[param].replaceAll('%2C', ',');
   }
 
   // Pick the default facet from initialState
@@ -5777,4 +5787,4 @@ exports.updateSortOrder = updateSortOrder$1;
 exports.useFacets = useFacets;
 exports.useListing = useListing;
 exports.withMappers = withMappers;
-//# sourceMappingURL=sagas-C0t6j-SQ.js.map
+//# sourceMappingURL=sagas-BphH4Paz.js.map

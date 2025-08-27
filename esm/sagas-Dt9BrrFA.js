@@ -5189,6 +5189,20 @@ const runSearch = (action, state, queryParams) => {
 };
 
 /**
+ * Patch mutates original params argument to decode certain
+ * url encoded params which can creep into urls and cause a
+ * flash of different content when hydrating from SSR
+ * @param params SearchParams
+ * @returns SearchParams
+ */
+const sanitiseParams = params => {
+  if (params && typeof params === 'object') for (const param of Object.keys(params)) {
+    if (typeof params[param] === 'string') params[param] = params[param].replaceAll('%2C', ',');
+  }
+  return params;
+};
+
+/**
  * This will tell us if filter parameters have been
  * changed by some external event such as a route change
  * @param action
@@ -5297,6 +5311,7 @@ function* setRouteFilters(action) {
   const context = listingType ? Context.listings : Context.facets;
   const state = toJS(yield select());
   const ssr = getIsSsr(state);
+  sanitiseParams(params);
 
   // Get current facet from params or state
   let currentFacet = params && params.facet || listingType;
@@ -5304,11 +5319,6 @@ function* setRouteFilters(action) {
   // If Listing use listing type (ignore params.facet)
   if (context === Context.listings) {
     currentFacet = listingType;
-  }
-
-  // Patch any url encoded params which can cause a flash in SSR
-  if (params) for (const param of Object.keys(params)) {
-    params[param] = params[param].replaceAll('%2C', ',');
   }
 
   // Pick the default facet from initialState
@@ -5685,4 +5695,4 @@ function* triggerSearchSsr(options) {
 }
 
 export { useListing as $, updateCurrentFacet$1 as A, clearFilters$1 as B, selectListing as C, triggerSearch as D, Context as E, getFilters as F, UPDATE_SELECTED_FILTERS as G, UPDATE_SEARCH_TERM as H, UPDATE_PAGE_SIZE as I, UPDATE_PAGE_INDEX as J, SET_SEARCH_ENTRIES as K, SET_ROUTE_FILTERS as L, LOAD_FILTERS_COMPLETE as M, LOAD_FILTERS_ERROR as N, LOAD_FILTERS as O, EXECUTE_SEARCH_ERROR as P, EXECUTE_SEARCH as Q, CLEAR_FILTERS as R, SET_SEARCH_FILTERS as S, APPLY_CONFIG as T, UPDATE_SORT_ORDER as U, actions as V, selectors as W, types as X, expressions as Y, queries as Z, useFacets as _, getTabsAndFacets$1 as a, doSearch as a0, setRouteFilters as a1, searchSagas as a2, triggerListingSsr as a3, triggerMinilistSsr as a4, triggerSearchSsr as a5, defaultExpressions as a6, termExpressions as a7, contentTypeIdExpression as a8, filterExpressions as a9, orderByExpression as aa, customWhereExpressions as ab, cloneDeep as ac, getQueryParameter$2 as b, getSelectedFilters as c, getSearchTotalCount$1 as d, getSearchTerm$2 as e, getResults as f, getTotalCount$1 as g, getPageIsLoading$2 as h, getPaging as i, getIsLoading$2 as j, getRenderableFilters$2 as k, getFeaturedResults$2 as l, getFacetTitles$1 as m, getFacetsTotalCount$1 as n, getTabFacets$1 as o, getFacet$1 as p, getCurrentTab$1 as q, getPageIndex$2 as r, getCurrentFacet as s, updateSelectedFilters as t, updateSortOrder$1 as u, updateSearchTerm$1 as v, withMappers as w, updatePageSize$1 as x, updatePageIndex$1 as y, updateCurrentTab$1 as z };
-//# sourceMappingURL=sagas-D2ECe61q.js.map
+//# sourceMappingURL=sagas-Dt9BrrFA.js.map

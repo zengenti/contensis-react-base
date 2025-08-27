@@ -1,4 +1,4 @@
-import { InitListingAction, SetRouteFiltersOptions, TriggerSearchAction, TriggerSearchParams } from '../models/SearchActions';
+import { InitListingAction, SearchParams, SetRouteFiltersOptions, TriggerSearchAction, TriggerSearchParams } from '../models/SearchActions';
 import { Mappers } from '../models/Search';
 import { Context } from '../models/Enums';
 export declare const searchSagas: import("redux-saga/effects").ForkEffect<never>[];
@@ -13,9 +13,7 @@ export declare function doSearch(action: TriggerSearchAction): Generator<import(
     facet: string;
     mapper?: Mappers["results"];
     mappers?: Mappers;
-    params?: {
-        [key: string]: string;
-    };
+    params?: SearchParams;
 }>, void, any>;
 export declare function triggerMinilistSsr(options: TriggerSearchParams): Generator<import("redux-saga/effects").CallEffect<void>, void, unknown>;
 export declare function triggerListingSsr(options: SetRouteFiltersOptions & {

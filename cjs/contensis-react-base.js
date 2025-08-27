@@ -7,7 +7,7 @@ var contensisDeliveryApi = require('contensis-delivery-api');
 var React = require('react');
 var reactRedux = require('react-redux');
 var mapJson = require('jsonpath-mapper');
-var sagas = require('./sagas-C0t6j-SQ.js');
+var sagas = require('./sagas-BphH4Paz.js');
 require('reselect');
 require('immer');
 require('deep-equal');
