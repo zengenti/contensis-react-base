@@ -12,20 +12,23 @@ var queryString = require('query-string');
 var reactCookie = require('react-cookie');
 var version = require('./version-BolvQdgT.js');
 var version$1 = require('./version-DabwEeLw.js');
-var App = require('./App-DOqBUMKI.js');
+var App = require('./App-C_1U2j24.js');
 var store = require('./store-CO5xslDu.js');
 var selectors = require('./selectors-Bp_TrwG5.js');
-var SSRContext = require('./SSRContext-CWFBN3dJ.js');
+var ContensisDeliveryApi = require('./ContensisDeliveryApi-lcZ45Kxx.js');
+var SSRContext = require('./SSRContext-ciyKagks.js');
 require('@redux-saga/core/effects');
 require('history');
 require('loglevel');
 require('await-to-js');
-require('./ChangePassword.container-D0wZ05E-.js');
-require('./ToJs-CAVkiz9f.js');
+require('./ChangePassword.container-H4i1yRi6.js');
+require('./matchGroups-CNt2aNoC.js');
 require('jsonpath-mapper');
-require('./CookieHelper.class-C3Eqoze9.js');
+require('./CookieConstants-DfPiWCRZ.js');
+require('./CookieHelper.class-Det3qfdU.js');
+require('./ToJs-BsWqWjdm.js');
 require('contensis-delivery-api');
-require('./RouteLoader-TsLMOQxl.js');
+require('./RouteLoader-CAkG-Y5y.js');
 require('reselect');
 require('redux');
 require('redux-thunk');
@@ -91,7 +94,7 @@ class ClientApp {
       }
     };
     const qs = queryString.parse(window.location.search);
-    const versionStatus = SSRContext.deliveryApi.getClientSideVersionStatus();
+    const versionStatus = ContensisDeliveryApi.deliveryApi.getClientSideVersionStatus();
     if (isDev || window.isDynamic || window.REDUX_DATA) {
       store.createStore(withReducers, window.REDUX_DATA, App.browserHistory, stateType).then(store => {
         const state = store.getState();

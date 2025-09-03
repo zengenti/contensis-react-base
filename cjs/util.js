@@ -1,7 +1,8 @@
 'use strict';
 
 var VersionInfo = require('./VersionInfo-D0mF1vkY.js');
-var SSRContext = require('./SSRContext-CWFBN3dJ.js');
+var ContensisDeliveryApi = require('./ContensisDeliveryApi-lcZ45Kxx.js');
+var SSRContext = require('./SSRContext-ciyKagks.js');
 var React = require('react');
 var mapJson = require('jsonpath-mapper');
 var reactRouterDom = require('react-router-dom');
@@ -13,14 +14,15 @@ require('reselect');
 require('query-string');
 require('./version-BolvQdgT.js');
 require('styled-components');
-require('react-cookie');
 require('contensis-delivery-api');
 require('./store-CO5xslDu.js');
 require('redux');
 require('redux-thunk');
 require('redux-saga');
 require('redux-injectors-19');
-require('./CookieHelper.class-C3Eqoze9.js');
+require('./CookieConstants-DfPiWCRZ.js');
+require('react-cookie');
+require('./CookieHelper.class-Det3qfdU.js');
 
 function _interopDefault (e) { return e && e.__esModule ? e : { default: e }; }
 
@@ -188,12 +190,13 @@ exports.VersionInfo = VersionInfo.VersionInfo;
 exports.setCachingHeaders = VersionInfo.setCachingHeaders;
 exports.stringifyStrings = VersionInfo.stringifyStrings;
 exports.urls = VersionInfo.url;
+exports.cachedSearch = ContensisDeliveryApi.cachedSearch;
+exports.cachedSearchWithContext = ContensisDeliveryApi.cachedSearchWithContext;
+exports.cachedSearchWithCookies = ContensisDeliveryApi.cachedSearchWithCookies;
+exports.deliveryApi = ContensisDeliveryApi.deliveryApi;
+exports.deliveryApiWithCookies = ContensisDeliveryApi.deliveryApiWithCookies;
+exports.getClientConfig = ContensisDeliveryApi.getClientConfig;
 exports.SSRContextProvider = SSRContext.SSRContextProvider;
-exports.cachedSearch = SSRContext.cachedSearch;
-exports.cachedSearchWithCookies = SSRContext.cachedSearchWithCookies;
-exports.deliveryApi = SSRContext.deliveryApi;
-exports.deliveryApiWithCookies = SSRContext.deliveryApiWithCookies;
-exports.getClientConfig = SSRContext.getClientConfig;
 exports.useDeliveryApi = SSRContext.useDeliveryApi;
 exports.useSSRContext = SSRContext.useSSRContext;
 Object.defineProperty(exports, "jpath", {

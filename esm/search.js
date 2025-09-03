@@ -1,33 +1,30 @@
 import React, { useMemo, useEffect } from 'react';
 import { connect, useDispatch, useSelector } from 'react-redux';
-import { w as withMappers, g as getTotalCount, a as getTabsAndFacets, b as getQueryParameter, c as getSelectedFilters, d as getSearchTotalCount, e as getSearchTerm, f as getResults, h as getPageIsLoading, i as getPaging, j as getIsLoading, k as getRenderableFilters, l as getFeaturedResults, m as getFacetTitles, n as getFacetsTotalCount, o as getTabFacets, p as getFacet, q as getCurrentTab, r as getPageIndex, s as getCurrentFacet, u as updateSortOrder, t as updateSelectedFilters, v as updateSearchTerm, x as updatePageSize, y as updatePageIndex, z as updateCurrentTab, A as updateCurrentFacet, B as clearFilters, C as selectListing, D as triggerSearch, E as Context$1, F as getFilters, U as UPDATE_SORT_ORDER, G as UPDATE_SELECTED_FILTERS, H as UPDATE_SEARCH_TERM, I as UPDATE_PAGE_SIZE, J as UPDATE_PAGE_INDEX, S as SET_SEARCH_FILTERS, K as SET_SEARCH_ENTRIES, L as SET_ROUTE_FILTERS, M as LOAD_FILTERS_COMPLETE, N as LOAD_FILTERS_ERROR, O as LOAD_FILTERS, P as EXECUTE_SEARCH_ERROR, Q as EXECUTE_SEARCH, R as CLEAR_FILTERS, T as APPLY_CONFIG } from './sagas-Dt9BrrFA.js';
-export { V as actions, a0 as doSearch, Y as expressions, Z as queries, a2 as sagas, W as selectors, a1 as setRouteFilters, a3 as triggerListingSsr, a4 as triggerMinilistSsr, a5 as triggerSearchSsr, X as types, _ as useFacets, $ as useListing } from './sagas-Dt9BrrFA.js';
+import { t as toJS } from './ToJs-BnRRHk6f.js';
+import { w as withMappers, g as getTotalCount, a as getTabsAndFacets, b as getQueryParameter, c as getSelectedFilters, d as getSearchTotalCount, e as getSearchTerm, f as getResults, h as getPageIsLoading, i as getPaging, j as getIsLoading, k as getRenderableFilters, l as getFeaturedResults, m as getFacetTitles, n as getFacetsTotalCount, o as getTabFacets, p as getFacet, q as getCurrentTab, r as getPageIndex, s as getCurrentFacet, u as updateSortOrder, t as updateSelectedFilters, v as updateSearchTerm, x as updatePageSize, y as updatePageIndex, z as updateCurrentTab, A as updateCurrentFacet, B as clearFilters, C as selectListing, D as triggerSearch, E as Context$1, F as getFilters, U as UPDATE_SORT_ORDER, G as UPDATE_SELECTED_FILTERS, H as UPDATE_SEARCH_TERM, I as UPDATE_PAGE_SIZE, J as UPDATE_PAGE_INDEX, S as SET_SEARCH_FILTERS, K as SET_SEARCH_ENTRIES, L as SET_ROUTE_FILTERS, M as LOAD_FILTERS_COMPLETE, N as LOAD_FILTERS_ERROR, O as LOAD_FILTERS, P as EXECUTE_SEARCH_ERROR, Q as EXECUTE_SEARCH, R as CLEAR_FILTERS, T as APPLY_CONFIG } from './sagas-BFQ4tBq_.js';
+export { V as actions, a0 as doSearch, Y as expressions, Z as queries, a2 as sagas, W as selectors, a1 as setRouteFilters, a3 as triggerListingSsr, a4 as triggerMinilistSsr, a5 as triggerSearchSsr, X as types, _ as useFacets, $ as useListing } from './sagas-BFQ4tBq_.js';
 import { createSelector } from 'reselect';
 import { produce } from 'immer';
 import equals from 'deep-equal';
 import merge from 'deepmerge';
-import { t as toArray } from './util-DjfOQeJe.js';
-export { r as routeParams } from './util-DjfOQeJe.js';
+import { t as toArray } from './util-BC8LWRKL.js';
+export { r as routeParams } from './util-BC8LWRKL.js';
 import 'loglevel';
 import '@redux-saga/core/effects';
+import './version-CaL4czqJ.js';
+import './selectors-CNC7sDxg.js';
 import 'jsonpath-mapper';
-import 'contensis-core-api';
 import 'query-string';
-import './_commonjsHelpers-BFTU3MAI.js';
+import './ContensisDeliveryApi-BgfEEyIk.js';
 import 'contensis-delivery-api';
-
-/* eslint-disable react/display-name */
-const toJS = WrappedComponent => wrappedComponentProps => {
-  const KEY = 0;
-  const VALUE = 1;
-  const propsJS = Object.entries(wrappedComponentProps).reduce((newProps, wrappedComponentProp) => {
-    const propKey = wrappedComponentProp[KEY];
-    const propValue = wrappedComponentProp[VALUE];
-    newProps[propKey] = propValue && typeof propValue === 'object' && 'toJS' in propValue ? propValue.toJS() : propValue;
-    return newProps;
-  }, {});
-  return /*#__PURE__*/React.createElement(WrappedComponent, propsJS);
-};
+import './store-CtDx5MLq.js';
+import 'redux';
+import 'redux-thunk';
+import 'redux-saga';
+import 'redux-injectors-19';
+import './CookieConstants-DEmbwzYr.js';
+import 'contensis-core-api';
+import './_commonjsHelpers-BFTU3MAI.js';
 
 const withSearch = mappers => SearchComponent => {
   const Wrapper = props => {

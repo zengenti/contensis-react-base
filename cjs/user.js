@@ -1,15 +1,17 @@
 'use strict';
 
-var ChangePassword_container = require('./ChangePassword.container-D0wZ05E-.js');
+var ChangePassword_container = require('./ChangePassword.container-H4i1yRi6.js');
 var React = require('react');
 var reactCookie = require('react-cookie');
 var reactRedux = require('react-redux');
-var ToJs = require('./ToJs-CAVkiz9f.js');
-var CookieHelper_class = require('./CookieHelper.class-C3Eqoze9.js');
+var matchGroups = require('./matchGroups-CNt2aNoC.js');
+var CookieHelper_class = require('./CookieHelper.class-Det3qfdU.js');
+var ToJs = require('./ToJs-BsWqWjdm.js');
 var selectors = require('./selectors-Bp_TrwG5.js');
 require('@redux-saga/core/effects');
 require('jsonpath-mapper');
 require('await-to-js');
+require('./CookieConstants-DfPiWCRZ.js');
 require('immer');
 require('reselect');
 require('query-string');
@@ -24,16 +26,16 @@ const getDisplayName$1 = WrappedComponent => {
 const withLogin = WrappedComponent => {
   const mapStateToProps = state => {
     return {
-      errorMessage: ToJs.selectUserErrorMessage(state),
-      isAuthenticated: ToJs.selectUserIsAuthenticated(state),
-      isAuthenticationError: ToJs.selectUserIsAuthenticationError(state),
-      isError: ToJs.selectUserIsError(state),
-      isLoading: ToJs.selectUserIsLoading(state),
-      user: ToJs.selectUser(state),
+      errorMessage: matchGroups.selectUserErrorMessage(state),
+      isAuthenticated: matchGroups.selectUserIsAuthenticated(state),
+      isAuthenticationError: matchGroups.selectUserIsAuthenticationError(state),
+      isError: matchGroups.selectUserIsError(state),
+      isLoading: matchGroups.selectUserIsLoading(state),
+      user: matchGroups.selectUser(state),
       // DEPRECATED: authenticationError is deprecated use isAuthenticationError instead
-      authenticationError: ToJs.selectUserIsAuthenticationError(state),
+      authenticationError: matchGroups.selectUserIsAuthenticationError(state),
       // DEPRECATED: error is deprecated use isError instead
-      error: ToJs.selectUserIsError(state)
+      error: matchGroups.selectUserIsError(state)
     };
   };
   const ConnectedComponent = () => {
@@ -56,10 +58,10 @@ const getDisplayName = WrappedComponent => {
 const withRegistration = WrappedComponent => {
   const mapStateToProps = state => {
     return {
-      error: ToJs.selectUserRegistrationError(state),
-      isLoading: ToJs.selectUserRegistrationIsLoading(state),
-      isSuccess: ToJs.selectUserRegistrationIsSuccess(state),
-      user: ToJs.selectUserRegistration(state)
+      error: matchGroups.selectUserRegistrationError(state),
+      isLoading: matchGroups.selectUserRegistrationIsLoading(state),
+      isSuccess: matchGroups.selectUserRegistrationIsSuccess(state),
+      user: matchGroups.selectUserRegistration(state)
     };
   };
   const mapDispatchToProps = {
@@ -82,7 +84,7 @@ exports.useChangePassword = ChangePassword_container.useChangePassword;
 exports.useForgotPassword = ChangePassword_container.useForgotPassword;
 exports.useLogin = ChangePassword_container.useLogin;
 exports.useRegistration = ChangePassword_container.useRegistration;
-exports.selectors = ToJs.selectors;
+exports.selectors = matchGroups.selectors;
 exports.initialUserState = selectors.initialUserState;
 exports.reducer = selectors.UserReducer;
 exports.types = selectors.types;

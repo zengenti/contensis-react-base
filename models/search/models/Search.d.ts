@@ -24,8 +24,6 @@ export type Listing = {
     /** Experimental: use a custom API to retrieve search results */
     customApi?: CustomApi;
 } | {
-    /** Experimental: override the rootUrl of the Delivery API client  */
-    env?: string;
     /** An object with a key for each filter that is required in this facet */
     filters?: SearchFilters;
     /** Use this to target the search to a project other than the default configured */

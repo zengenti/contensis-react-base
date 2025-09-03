@@ -14,6 +14,7 @@ export declare function doSearch(action: TriggerSearchAction): Generator<import(
     mapper?: Mappers["results"];
     mappers?: Mappers;
     params?: SearchParams;
+    ssr?: import("../..").SSRContext;
 }>, void, any>;
 export declare function triggerMinilistSsr(options: TriggerSearchParams): Generator<import("redux-saga/effects").CallEffect<void>, void, unknown>;
 export declare function triggerListingSsr(options: SetRouteFiltersOptions & {

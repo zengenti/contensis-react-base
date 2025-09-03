@@ -33,7 +33,6 @@ export type SearchQueryOptions = {
     weightedSearchFields: WeightedSearchField[];
 };
 export type QueryParams = SearchQueryOptions & {
-    env: string;
     internalPageIndex: number;
     internalPaging: boolean;
     linkDepth: number;

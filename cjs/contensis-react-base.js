@@ -2,12 +2,12 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var SSRContext = require('./SSRContext-CWFBN3dJ.js');
+var ContensisDeliveryApi = require('./ContensisDeliveryApi-lcZ45Kxx.js');
 var contensisDeliveryApi = require('contensis-delivery-api');
 var React = require('react');
 var reactRedux = require('react-redux');
 var mapJson = require('jsonpath-mapper');
-var sagas = require('./sagas-BphH4Paz.js');
+var sagas = require('./sagas-CMBI1syl.js');
 require('reselect');
 require('immer');
 require('deep-equal');
@@ -29,32 +29,35 @@ var styled = require('styled-components');
 var serialize = require('serialize-javascript');
 var lodash = require('lodash');
 var lodashClean = require('lodash-clean');
-var CookieHelper_class = require('./CookieHelper.class-C3Eqoze9.js');
+var CookieHelper_class = require('./CookieHelper.class-Det3qfdU.js');
 var cookiesMiddleware = require('universal-cookie-express');
 var store = require('./store-CO5xslDu.js');
-var App = require('./App-DOqBUMKI.js');
+var App = require('./App-C_1U2j24.js');
 var version = require('./version-DabwEeLw.js');
 var selectors = require('./selectors-Bp_TrwG5.js');
-var RouteLoader = require('./RouteLoader-TsLMOQxl.js');
+var RouteLoader = require('./RouteLoader-CAkG-Y5y.js');
 var stream = require('stream');
 var server$2 = require('@loadable/server');
 var chalk = require('chalk');
 var minifyCssString = require('minify-css-string');
 var reactCookie = require('react-cookie');
 var server$3 = require('react-router-dom/server');
+var SSRContext = require('./SSRContext-ciyKagks.js');
+require('./CookieConstants-DfPiWCRZ.js');
 require('loglevel');
 require('@redux-saga/core/effects');
-require('./util-Cl8blSX5.js');
-require('./_commonjsHelpers-BJu3ubxk.js');
 require('./version-BolvQdgT.js');
+require('./util-CTvFvplw.js');
+require('./_commonjsHelpers-BJu3ubxk.js');
 require('redux');
 require('redux-thunk');
 require('redux-saga');
 require('redux-injectors-19');
 require('history');
 require('await-to-js');
-require('./ChangePassword.container-D0wZ05E-.js');
-require('./ToJs-CAVkiz9f.js');
+require('./ChangePassword.container-H4i1yRi6.js');
+require('./matchGroups-CNt2aNoC.js');
+require('./ToJs-BsWqWjdm.js');
 
 function _interopDefault (e) { return e && e.__esModule ? e : { default: e }; }
 
@@ -241,7 +244,7 @@ const resolveParentEntries = async (parentContentTypeIds, replaceContentTypeIds,
   });
   query.fields = params.fields ? [...JSON.parse(params.fields), parentFieldId] : [];
   if (debug) console.log(`\nResolve parent entries query: \n${JSON.stringify(query.toJSON()).substring(0, 1000)}`);
-  const parentResults = await SSRContext.cachedSearch.searchUsingPost(query, Number(params.linkDepth || 0), params.projectId);
+  const parentResults = await ContensisDeliveryApi.cachedSearch.searchUsingPost(query, Number(params.linkDepth || 0), params.projectId);
   return mergeResults(results, Util.GetItems(parentResults), replaceContentTypeIds, parentFieldId);
 };
 
@@ -287,7 +290,7 @@ class QueryLevelResults {
       }
       if (runFirstQuery) {
         if (this.debug) console.log(`\nLevel ${this.level} - First query: \n${JSON.stringify(query.toJSON()).substring(0, 1000)}`);
-        this.firstResults = await SSRContext.cachedSearch.searchUsingPost(query, 0, params.projectId);
+        this.firstResults = await ContensisDeliveryApi.cachedSearch.searchUsingPost(query, 0, params.projectId);
 
         // mapResultsToValidatedLinks
         for (const linkFieldId of this.linkFieldIds) {
@@ -324,7 +327,7 @@ class QueryLevelResults {
       }
       if (runFinalQuery) {
         if (this.debug) console.log(`\nLevel ${this.level} - Final query: \n${JSON.stringify(query.toJSON()).substring(0, 1000)}`);
-        this.finalResults = await SSRContext.cachedSearch.searchUsingPost(query, Number(params.linkDepth) || 0, params.projectId);
+        this.finalResults = await ContensisDeliveryApi.cachedSearch.searchUsingPost(query, Number(params.linkDepth) || 0, params.projectId);
         if (this.parent) this.parent.runFinalQuery = true;
 
         // mapResultsToValidatedLinks
@@ -465,7 +468,7 @@ class LinkDepthSearchService {
           };
         })) || []);
         if (this.debug) console.log(`\nFinal query: ${derivedIds.reduce((accumulator, object) => accumulator + object.entryIds.length, 0)} derived ids \n${JSON.stringify(query.toJSON()).substring(0, 1000)}`);
-        const finalQueryResult = await SSRContext.cachedSearch.searchUsingPost(query, Number(params.linkDepth) || 0, params.projectId);
+        const finalQueryResult = await ContensisDeliveryApi.cachedSearch.searchUsingPost(query, Number(params.linkDepth) || 0, params.projectId);
 
         // Resolve any parent entries
 
@@ -1269,7 +1272,7 @@ const webApp = (app, ReactApp, config) => {
     }), stateType);
 
     // dispatch any global and non-saga related actions before calling our JSX
-    const versionStatus = SSRContext.deliveryApi.getServerSideVersionStatus(request);
+    const versionStatus = ContensisDeliveryApi.deliveryApi.getServerSideVersionStatus(request);
 
     // In server-side blocks world, the hostname requested by the client resides in the x-orig-host header
     // Because of this, we prioritize x-orig-host when setting our hostname

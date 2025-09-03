@@ -1,5 +1,5 @@
 export { default as setCachingHeaders } from "../server/features/caching/setCachingHeaders";
-export { cachedSearch, cachedSearchWithCookies, deliveryApi, deliveryApiWithCookies, getClientConfig, } from './ContensisDeliveryApi';
+export { cachedSearch, cachedSearchWithContext, cachedSearchWithCookies, deliveryApi, deliveryApiWithCookies, getClientConfig, } from './ContensisDeliveryApi';
 export { SSRContextProvider, useDeliveryApi, useSSRContext, } from './SSRContext';
 export { default as stringifyStrings } from './stringifyStrings';
 export { default as urls } from './urls';

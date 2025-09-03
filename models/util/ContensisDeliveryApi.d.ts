@@ -1,6 +1,5 @@
 import { VersionStatus } from 'contensis-core-api';
-import { Client, Query } from 'contensis-delivery-api';
-import { Config } from 'contensis-delivery-api/lib/models';
+import { Client, Config, Query } from 'contensis-delivery-api';
 import { CookieObject } from "../user/util/CookieConstants";
 import { Request } from 'express';
 import { IncomingHttpHeaders } from 'http';

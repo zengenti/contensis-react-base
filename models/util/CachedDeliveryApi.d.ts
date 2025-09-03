@@ -4,7 +4,7 @@ import { INodeOperations, NodeGetRootOptions } from 'contensis-delivery-api/lib/
 import { DeliveryApi, SSRContext } from './ContensisDeliveryApi';
 import { LruCache } from './LruCache';
 import { CookieObject } from "../user/util/CookieConstants";
-declare class CachedSearch {
+export declare class CachedSearch {
     cache: LruCache;
     cookies?: CookieObject;
     ssr?: SSRContext;
@@ -20,7 +20,13 @@ declare class CachedSearch {
     getChildren(options: Parameters<INodeOperations['getChildren']>[0], project?: string): Promise<import("contensis-delivery-api").Node<import("contensis-delivery-api").Entry>[]>;
     getSiblings(options: Parameters<INodeOperations['getSiblings']>[0], project?: string): Promise<import("contensis-delivery-api").Node<import("contensis-delivery-api").Entry>[]>;
     request<T extends () => Promise<any>>(key: string, execute: T): ReturnType<T>;
+    /** Use the cached API for fetch requests */
+    fetch(uri: RequestInfo, opts?: RequestInit): Promise<Response>;
 }
 export declare const cachedSearch: CachedSearch;
+/** Create a cached search instance attached to the current environment
+ * SSR context and connected to your environment via global variable
+ * `DELIVERY_API_CONFIG`  */
+export declare const cachedSearchWithContext: (ssr?: SSRContext) => CachedSearch;
+/** @deprecated Use cachedSearchWithContext instead */
 export declare const cachedSearchWithCookies: (ssr?: SSRContext) => CachedSearch;
-export {};

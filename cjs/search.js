@@ -2,38 +2,35 @@
 
 var React = require('react');
 var reactRedux = require('react-redux');
-var sagas = require('./sagas-BphH4Paz.js');
+var ToJs = require('./ToJs-BsWqWjdm.js');
+var sagas = require('./sagas-CMBI1syl.js');
 var reselect = require('reselect');
 var immer = require('immer');
 var equals = require('deep-equal');
 var merge = require('deepmerge');
-var util = require('./util-Cl8blSX5.js');
+var util = require('./util-CTvFvplw.js');
 require('loglevel');
 require('@redux-saga/core/effects');
+require('./version-BolvQdgT.js');
+require('./selectors-Bp_TrwG5.js');
 require('jsonpath-mapper');
-require('contensis-core-api');
 require('query-string');
-require('./_commonjsHelpers-BJu3ubxk.js');
+require('./ContensisDeliveryApi-lcZ45Kxx.js');
 require('contensis-delivery-api');
+require('./store-CO5xslDu.js');
+require('redux');
+require('redux-thunk');
+require('redux-saga');
+require('redux-injectors-19');
+require('./CookieConstants-DfPiWCRZ.js');
+require('contensis-core-api');
+require('./_commonjsHelpers-BJu3ubxk.js');
 
 function _interopDefault (e) { return e && e.__esModule ? e : { default: e }; }
 
 var React__default = /*#__PURE__*/_interopDefault(React);
 var equals__default = /*#__PURE__*/_interopDefault(equals);
 var merge__default = /*#__PURE__*/_interopDefault(merge);
-
-/* eslint-disable react/display-name */
-const toJS = WrappedComponent => wrappedComponentProps => {
-  const KEY = 0;
-  const VALUE = 1;
-  const propsJS = Object.entries(wrappedComponentProps).reduce((newProps, wrappedComponentProp) => {
-    const propKey = wrappedComponentProp[KEY];
-    const propValue = wrappedComponentProp[VALUE];
-    newProps[propKey] = propValue && typeof propValue === 'object' && 'toJS' in propValue ? propValue.toJS() : propValue;
-    return newProps;
-  }, {});
-  return /*#__PURE__*/React__default.default.createElement(WrappedComponent, propsJS);
-};
 
 const withSearch = mappers => SearchComponent => {
   const Wrapper = props => {
@@ -77,7 +74,7 @@ const withSearch = mappers => SearchComponent => {
     updateSortOrder: orderBy => sagas.withMappers(sagas.updateSortOrder(orderBy), mappers)
   };
   const connector = reactRedux.connect(mapStateToProps, mapDispatchToProps);
-  return connector(toJS(Wrapper));
+  return connector(ToJs.toJS(Wrapper));
 };
 
 const withListing = mappers => ListingComponent => {
@@ -125,7 +122,7 @@ const withListing = mappers => ListingComponent => {
     updateSelectedFilters: (filter, key, isUnknownItem = false, scrollToElement) => sagas.withMappers(sagas.updateSelectedFilters(filter, key, isUnknownItem, scrollToElement), mappers),
     updateSortOrder: orderBy => sagas.withMappers(sagas.updateSortOrder(orderBy), mappers)
   };
-  return reactRedux.connect(mapStateToProps, mapDispatchToProps)(toJS(Wrapper));
+  return reactRedux.connect(mapStateToProps, mapDispatchToProps)(ToJs.toJS(Wrapper));
 };
 
 const makeSelectMinilistProps = () => reselect.createSelector(state => state, (_, id) => id, (state, id) => id ? {

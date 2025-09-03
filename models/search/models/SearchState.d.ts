@@ -1,7 +1,9 @@
 import { PagedSearchList } from 'contensis-core-api';
 import { Context } from './Enums';
 import { CustomWhereClause } from './Search';
-export type AppState = Record<'search', SearchState> & Record<string, any>;
+import { AppState as ReduxState } from "../../models";
+export type AppSearchState = Record<'search', SearchState>;
+export type AppState = AppSearchState & ReduxState;
 export type SearchState = {
     context: keyof typeof Context;
     currentFacet: string;

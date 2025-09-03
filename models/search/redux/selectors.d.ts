@@ -51,7 +51,6 @@ export declare const getQueryParameter: <K extends keyof SearchQueryParams, K2 e
     context?: Context;
 }, key: K | K2, ifnull?: any) => SearchQueryParams[K] | QueryParams2[K2];
 export declare const getCustomApi: (state: AppState, current: string, context?: Context, returnType?: StateType) => CustomApi;
-export declare const getCustomEnv: (state: AppState, current: string, context?: Context) => any;
 export declare const getTabsAndFacets: (state: AppState, returnType?: StateType) => any;
 export declare const getSearchTotalCount: (state: AppState) => number;
 export declare const getFacetsTotalCount: (state: AppState) => number;
@@ -59,7 +58,6 @@ export declare const selectFacets: {
     getCurrent: (state: AppState) => string;
     getCurrentTab: (state: AppState) => number;
     getCustomApi: (state: AppState, current: string, context?: Context, returnType?: StateType) => CustomApi;
-    getCustomEnv: (state: AppState, current: string, context?: Context) => any;
     getFacet: (state: AppState, facetName?: string, context?: Context | string, returnType?: StateType) => Facet;
     getFacetTitles: (state: AppState) => {
         isSelected: boolean;
@@ -118,7 +116,4 @@ export declare const selectListing: {
     getTotalCount: (state: AppState, listing?: string) => number;
     getSelectedFilters: (state: AppState, listing?: string) => SelectedFilters;
 };
-export declare const selectCurrentPath: (state: AppState) => any;
-export declare const selectCurrentProject: (state: AppState) => any;
-export declare const selectVersionStatus: (state: AppState) => any;
 export {};
