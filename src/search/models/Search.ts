@@ -29,8 +29,6 @@ export type Listing =
       customApi?: CustomApi;
     }
   | {
-      /** Experimental: override the rootUrl of the Delivery API client  */
-      env?: string;
       /** An object with a key for each filter that is required in this facet */
       filters?: SearchFilters;
       /** Use this to target the search to a project other than the default configured */

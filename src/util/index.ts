@@ -2,6 +2,7 @@
 export { default as setCachingHeaders } from '~/server/features/caching/setCachingHeaders';
 export {
   cachedSearch,
+  cachedSearchWithContext,
   cachedSearchWithCookies,
   deliveryApi,
   deliveryApiWithCookies,

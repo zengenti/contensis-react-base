@@ -2,9 +2,10 @@ import { PagedList } from 'contensis-core-api';
 import { Entry, TaxonomyNode } from 'contensis-delivery-api/lib/models';
 import { Context } from '../models/Enums';
 import { SearchFacet, Listing, Mappers } from '../models/Search';
-import { AppState, Facet } from './SearchState';
+import { AppState, Facet, Filter } from './SearchState';
 import { QueryParams } from './Queries';
 import { TimedSearchResponse } from './SearchUtil';
+import { SSRContext } from '~/models';
 
 /**
  * Parameters for the current search
@@ -33,6 +34,7 @@ export type TriggerSearchParams = {
   mapper?: Mappers['results'];
   mappers?: Mappers;
   params?: SearchParams;
+  ssr?: SSRContext;
 };
 
 export type TriggerSearchAction = Action & TriggerSearchParams;
@@ -51,9 +53,10 @@ type InitListingParams = {
   mappers?: Mappers;
   params: SearchParams;
   preload?: boolean;
+  ssr?: SSRContext;
 };
 
-export type InitListingAction = Action & InitListingParams & { ssr?: boolean };
+export type InitListingAction = Action & InitListingParams & { isSSR?: boolean };
 
 export type SetRouteFiltersOptions = Partial<InitListingAction>;
 
@@ -79,6 +82,17 @@ export type SearchResults = {
   prevResults: any[];
   result: TimedSearchResponse;
   state: AppState;
+};
+
+export type LoadFilterAction = {
+  facetKey: string;
+  filterKey: string;
+  filter: Filter;
+  projectId: string;
+  selectedKeys: string[];
+  context: Context;
+  mapper: Mappers['filterItems'];
+  ssr?: SSRContext;
 };
 
 export type LoadFiltersCompleteAction = Action & {

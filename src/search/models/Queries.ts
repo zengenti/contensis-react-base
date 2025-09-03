@@ -47,7 +47,6 @@ export type SearchQueryOptions = {
 };
 
 export type QueryParams = SearchQueryOptions & {
-  env: string;
   internalPageIndex: number;
   internalPaging: boolean;
   linkDepth: number;

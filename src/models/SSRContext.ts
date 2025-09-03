@@ -1,13 +1,13 @@
 import { Request, Response } from 'express';
 import { Dispatch } from 'redux';
 import { CookieHelper } from '~/user/util/CookieHelper.class';
-import { cachedSearchWithCookies } from '~/util';
+import { CachedSearch } from '~/util/CachedDeliveryApi';
 
 export type SSRContext = {
   /** SSR only */
   accessMethod?: SSRAccessMethod;
   /** Available in both SSR and client side */
-  api: ReturnType<typeof cachedSearchWithCookies>;
+  api: CachedSearch;
   /** Available in both SSR and client side */
   cookies: CookieHelper;
   /** Available in both SSR and client side */
@@ -16,8 +16,6 @@ export type SSRContext = {
   request?: Request;
   /** SSR only */
   response?: Response;
-  /** SSR only */
-  ssrAssets?: SSRAssets;
 };
 
 export type SSRAccessMethod = {

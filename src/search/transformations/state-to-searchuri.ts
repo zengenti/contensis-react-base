@@ -1,6 +1,7 @@
 import merge from 'deepmerge';
 import { parse, stringify } from 'query-string';
 import mapJson from 'jsonpath-mapper';
+import { selectCurrentPath } from '~/routing/redux/selectors';
 
 import getIn from '../redux/getIn';
 import {
@@ -8,7 +9,6 @@ import {
   getSearchTerm,
   getCurrentFacet,
   getSearchContext,
-  selectCurrentPath,
   getRenderableSelectedFilters,
 } from '../redux/selectors';
 import { removeEmptyAttributes } from '../search/util';

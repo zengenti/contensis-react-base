@@ -1,6 +1,8 @@
 import { QueryAggregations } from 'contensis-core-api';
 import mapJson from 'jsonpath-mapper';
 
+import { selectCurrentProject } from '~/routing/redux/selectors';
+import { selectVersionStatus } from '~/redux/selectors/version';
 import {
   getFacet,
   getSelectedFilters,
@@ -8,11 +10,8 @@ import {
   getSearchTerm,
   getPageIndex,
   getFilters,
-  getCustomEnv,
   getPrevPageIndex,
   getPagesLoaded,
-  selectCurrentProject,
-  selectVersionStatus,
   getPageSize,
 } from '../redux/selectors';
 import { mapFiltersToFilterExpression } from './filters-to-filterexpressions.mapper';
@@ -64,8 +63,6 @@ const queryParamsTemplate = {
     getQueryParameter(root, 'customWhere', []),
   dynamicOrderBy: (root: QueryParamsMapperParams) =>
     getQueryParameter(root, 'dynamicOrderBy', []),
-  env: ({ state, facet, context }: QueryParamsMapperParams) =>
-    getCustomEnv(state, facet, context),
   excludeIds: ({
     action: { excludeIds },
   }: {

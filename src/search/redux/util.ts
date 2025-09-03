@@ -58,7 +58,7 @@ export const runSearch = (
     facet,
     ogState = state,
     preload,
-    ssr,
+    isSSR,
   } = action as EnsureSearchAction & SetSearchEntriesAction;
 
   let willRun = false;
@@ -74,7 +74,7 @@ export const runSearch = (
   stateParams.pageSize = getPageSize(ogState, facet, context);
 
   if (
-    (context === Context.facets && ssr) ||
+    (context === Context.facets && isSSR) ||
     // context === Context.minilist ||
     preload ||
     !facetIsLoaded ||

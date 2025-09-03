@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { toJS } from '../search/ToJs';
+import { toJS } from '~/util/ToJs';
 import {
   clearFilters,
   updateCurrentFacet,

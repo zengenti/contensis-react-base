@@ -347,4 +347,4 @@ export default connect(
   mapDispatchToProps
 )(toJS(RouteLoader as any)) as unknown as (
   props: AppRootProps & RouteLoaderProps
-) => JSX.Element;
+) => React.JSX.Element;

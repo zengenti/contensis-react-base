@@ -9,10 +9,9 @@ import { useCookies } from 'react-cookie';
 import { useDispatch } from 'react-redux';
 import {
   SSRAccessMethod,
-  SSRAssets,
   SSRContext as SSRContextType,
 } from '~/models';
-import { cachedSearchWithCookies } from '~/util/CachedDeliveryApi';
+import { cachedSearchWithContext } from '~/util/CachedDeliveryApi';
 import { CookieHelper } from '~/user/util/CookieHelper.class';
 
 const SSRContext = createContext<SSRContextType | null>(null);
@@ -29,18 +28,16 @@ export const SSRContextProvider = ({
   children,
   request,
   response,
-  ssrAssets,
 }: PropsWithChildren<{
   accessMethod?: SSRAccessMethod;
   request?: Request;
   response?: Response;
-  ssrAssets?: SSRAssets;
 }>) => {
   // In SSR pass references to things in backing sagas
   // we cannot access in a global scope
   const dispatch = useDispatch();
   const cookies = new CookieHelper(...useCookies());
-  const api = cachedSearchWithCookies({ cookies, dispatch, request, response });
+  const api = cachedSearchWithContext({ cookies, dispatch, request, response });
 
   const [context] = useState<SSRContextType>({
     accessMethod,
@@ -49,7 +46,6 @@ export const SSRContextProvider = ({
     dispatch,
     request,
     response,
-    ssrAssets,
   });
 
   return (

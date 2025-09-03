@@ -1,6 +1,5 @@
 import { VersionStatus } from 'contensis-core-api';
-import { Client, Query } from 'contensis-delivery-api';
-import { Config } from 'contensis-delivery-api/lib/models';
+import { Client, Config, Query } from 'contensis-delivery-api';
 import { parse } from 'query-string';
 import { setSurrogateKeys } from '~/routing/redux/actions';
 import { reduxStore } from '~/redux/store/store';
@@ -27,7 +26,7 @@ const getSsrReferer = ({ request }: SSRContext) => {
         `${request.protocol || `http`}://${request.headers.host}`
       );
       return url.href;
-    } catch (ex) {
+    } catch (ex: unknown) {
       console.error(
         `getSsrReferer cannot parse url ${request.url} and host ${request.headers.host}`
       );

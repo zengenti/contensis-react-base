@@ -397,19 +397,6 @@ export const getCustomApi = (
   );
 };
 
-export const getCustomEnv = (
-  state: AppState,
-  current: string,
-  context = Context.facets
-) => {
-  return getIn(state, [
-    'search',
-    context,
-    current || getCurrent(state, context),
-    'env',
-  ]);
-};
-
 export const getTabsAndFacets = (state: AppState, returnType?: StateType) => {
   const tabs = getSearchTabs(state, 'js');
   const facets = getFacets(state, 'js');
@@ -464,7 +451,6 @@ export const selectFacets = {
   getCurrent: getCurrentFacet,
   getCurrentTab,
   getCustomApi,
-  getCustomEnv,
   getFacet,
   getFacetTitles,
   getFacets,
@@ -535,12 +521,3 @@ export const selectListing = {
   getSelectedFilters: (state: AppState, listing = '') =>
     getSelectedFilters(state, listing, Context.listings, 'js'),
 };
-
-export const selectCurrentPath = (state: AppState) =>
-  getIn(state, ['routing', 'currentPath']);
-
-export const selectCurrentProject = (state: AppState) =>
-  getIn(state, ['routing', 'currentProject']);
-
-export const selectVersionStatus = (state: AppState) =>
-  getIn(state, ['version', 'contensisVersionStatus']);
