@@ -308,7 +308,7 @@ export default (config: SearchConfig) => {
           const { term = '', pageIndex, pageSize, orderBy } = params;
 
           const stateTerm = state.term;
-          const tabId = state[context][facet].tabId || 0;
+          const tabId = state[context][facet]?.tabId || 0;
 
           // Reset the facet if the search term has changed, or if the any of
           // the filters have changed
