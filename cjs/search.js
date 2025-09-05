@@ -3,21 +3,21 @@
 var React = require('react');
 var reactRedux = require('react-redux');
 var ToJs = require('./ToJs-BsWqWjdm.js');
-var sagas = require('./sagas-CMBI1syl.js');
+var sagas = require('./sagas-BWkDYQ9q.js');
 var reselect = require('reselect');
 var immer = require('immer');
 var equals = require('deep-equal');
 var merge = require('deepmerge');
-var util = require('./util-CTvFvplw.js');
+var util = require('./util-D7wEN6qG.js');
 require('loglevel');
 require('@redux-saga/core/effects');
 require('./version-BolvQdgT.js');
 require('./selectors-Bp_TrwG5.js');
 require('jsonpath-mapper');
 require('query-string');
-require('./ContensisDeliveryApi-lcZ45Kxx.js');
+require('./ContensisDeliveryApi-Dy-9cnnr.js');
 require('contensis-delivery-api');
-require('./store-CO5xslDu.js');
+require('./store-BDHWQrfe.js');
 require('redux');
 require('redux-thunk');
 require('redux-saga');
@@ -487,7 +487,7 @@ var reducers = config => {
         }
       case sagas.SET_ROUTE_FILTERS:
         {
-          var _state$context$facet$;
+          var _state$context$facet, _state$context$facet$;
           const {
             facet,
             params,
@@ -500,7 +500,7 @@ var reducers = config => {
             orderBy
           } = params;
           const stateTerm = state.term;
-          const tabId = state[context][facet].tabId || 0;
+          const tabId = ((_state$context$facet = state[context][facet]) === null || _state$context$facet === void 0 ? void 0 : _state$context$facet.tabId) || 0;
 
           // Reset the facet if the search term has changed, or if the any of
           // the filters have changed

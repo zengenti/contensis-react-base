@@ -5,6 +5,7 @@ import { EntryMapper } from './EntryMapper';
 import { ReduxInjector } from './ReduxInjector';
 import { RequireLogin } from './RequireLogin';
 import type { RouteObject } from 'react-router';
+import { SearchRouteOptions } from "../search/models/SearchActions";
 export type StaticRoute = Omit<RouteObject, 'children'> & {
     index?: false | undefined;
     children?: StaticRoute[];
@@ -56,6 +57,10 @@ export type StaticRoute = Omit<RouteObject, 'children'> & {
      * Specifies whether login is required to access the content for this type.
      */
     requireLogin?: RequireLogin;
+    /**
+     * Triggers the loading of the relevant search assets
+     */
+    searchOptions?: SearchRouteOptions;
     ssr?: boolean;
     ssrOnly?: boolean;
 };

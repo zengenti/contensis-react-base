@@ -1,8 +1,8 @@
 'use strict';
 
 var VersionInfo = require('./VersionInfo-D0mF1vkY.js');
-var ContensisDeliveryApi = require('./ContensisDeliveryApi-lcZ45Kxx.js');
-var SSRContext = require('./SSRContext-ciyKagks.js');
+var ContensisDeliveryApi = require('./ContensisDeliveryApi-Dy-9cnnr.js');
+var SSRContext = require('./SSRContext-t1bfEwbB.js');
 var React = require('react');
 var mapJson = require('jsonpath-mapper');
 var reactRouterDom = require('react-router-dom');
@@ -15,7 +15,7 @@ require('query-string');
 require('./version-BolvQdgT.js');
 require('styled-components');
 require('contensis-delivery-api');
-require('./store-CO5xslDu.js');
+require('./store-BDHWQrfe.js');
 require('redux');
 require('redux-thunk');
 require('redux-saga');

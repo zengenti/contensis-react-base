@@ -19,11 +19,6 @@ export type CustomApi = {
     uri: string;
 };
 export type Listing = {
-    /** Display title */
-    title?: string;
-    /** Experimental: use a custom API to retrieve search results */
-    customApi?: CustomApi;
-} | {
     /** An object with a key for each filter that is required in this facet */
     filters?: SearchFilters;
     /** Use this to target the search to a project other than the default configured */
@@ -32,6 +27,8 @@ export type Listing = {
     queryParams: SearchQueryParams;
     /** Display title */
     title?: string;
+    /** Experimental: use a custom API to retrieve search results */
+    customApi?: CustomApi;
 };
 export type SearchFacet = {
     /** The first facet to be shown if no facet is supplied via a route parameter [default false] */

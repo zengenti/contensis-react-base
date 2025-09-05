@@ -1,10 +1,14 @@
 import { FieldLinkDepths } from 'contensis-core-api';
 import { Entry } from 'contensis-delivery-api';
+import { ContentTypeMapping } from './ContentTypeMapping';
 import { GetRouteActionArgs } from './GetRouteActionArgs';
 import { RequireLogin } from './RequireLogin';
+import { SearchParams, SearchRouteOptions } from "../search/models/SearchActions";
 export type OnRouteLoadArgs = Omit<GetRouteActionArgs, 'withEvents'>;
 export type OnRouteLoadedArgs = OnRouteLoadArgs & {
+    contentTypeRoute?: ContentTypeMapping;
     entry?: Entry | any;
+    params: SearchParams;
 };
 /**
  * Configuration options to customize the app state during route changes.
@@ -50,6 +54,9 @@ export type RouteLoadOptions = {
     refetchNode?: true;
 };
 export type RouteLoadedOptions = {
+    searchOptions?: SearchRouteOptions & {
+        onPaths?: string[];
+    };
     requireLogin?: RequireLogin;
 };
 export type WithEvents = {

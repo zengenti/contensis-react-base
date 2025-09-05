@@ -4,6 +4,7 @@ import { ReduxInjector } from './ReduxInjector';
 import { RouteComponent } from './RouteComponent';
 import { RouteComponentProps } from './RouteComponentProps';
 import { RequireLogin } from './RequireLogin';
+import { SearchRouteOptions } from "../search/models/SearchActions";
 export type ContentTypeMapping = {
     /** The unique identifier for the content type to map. */
     contentTypeID: string;
@@ -86,4 +87,8 @@ export type ContentTypeMapping = {
      * Specifies whether login is required to access the content for this type.
      */
     requireLogin?: RequireLogin;
+    /**
+     * Triggers the loading of relevant search assets
+     */
+    searchOptions?: SearchRouteOptions;
 };
