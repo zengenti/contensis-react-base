@@ -82,6 +82,24 @@ Import from `@zengenti/contensis-react-base/routing`
 
 📖 [Express 5 Migration Guide](https://expressjs.com/en/guide/migrating-5.html)
 
+---
+
+### 🔗 Search package tighter-coupling
+
+- Support for setting `searchOptions` in route configurations
+- Return `searchOptions` from the `onRouteLoaded` routing hook
+- A cleaner boilerplate-free approach
+  - no additional imports
+  - no feature reducers and sagas
+  - no redux injection
+  - no saga calls are needed
+  - `params` provided by default
+- Trigger search by setting `facet` or `listingType` in `searchOptions`
+- Support remains for all existing overrides
+- Existing implementations continue to work without changes
+  - However, we recommend removing old boilerplate to simplify your codebase
+
+
 ## 🚨 Breaking Changes Overview
 
 | Area             | Change                                                                                                                    |
@@ -281,13 +299,13 @@ The `navigate` function accepts options that provide equivalent functionality to
 }
 ```
 
-> ℹ️ Instead of refactoring old boilerplate, try our `routeParams` helper from `@zengenti/contensis-react-base/routing`
+> ℹ️ Instead of refactoring old boilerplate, try our `routeParams` helper from `@zengenti/contensis-react-base/routing`, or for search implementations, refactor to use our new boilerplate-free approach with `invokeSearch` return value in the `onRouteLoaded` routing hook
 
 ---
 
 4. Search your project for `staticContext` and replace with `useHttpContext()`
 
-> ℹ️ Delete old boilerplate and replace with the new `<StatusCode />` or `<Redirect />` components in `@zengenti/contensis-react-base/routing`
+> ℹ️ Delete any old boilerplate found and replace with the new `<StatusCode />` or `<Redirect />` components in `@zengenti/contensis-react-base/routing`
 
 **Example:** a router component that references `staticContext` prop
 
@@ -337,7 +355,7 @@ import { Redirect } from '@zengenti/contensis-react-base/routing'; // ✅ New
 
 **Example:** `StaticRoutes.ts|js` file
 
-```tsx
+```typescript
 const staticRoutes: StaticRoute[] = [
   {
     path: '/search/:facet?',
@@ -454,6 +472,121 @@ const config: AppConfig = {
 };
 
 new ClientApp(ReactApp, config);
+```
+
+### 7. Refactor search implementation
+
+Although these changes strictly aren't required for the upgrade, we recommend removing old boilerplate to simplify your codebase and expand your search or listings using these simpler approaches.
+
+**Example:** `withEvents.ts`
+
+> Your version of this file will contain all elements from this example but your exact implementation could be different. We should delete any code-blocks that resemble those in this example - those are unneccesary boilerplate, and carefully examine deleted code to retain any intentionally customised aspects.
+
+```typescript
+onRouteLoaded: function* onRouteLoaded({ 
+  params // ℹ️ params are now provided automatically
+}) {
+  // ❌ delete this as we can set this in `searchOptions` in our route configurations
+  const listingType =
+    staticRoute?.route?.listingType || contentTypeListings[contentTypeId]; 
+
+  // ❌ delete this entire `if` block
+  if (path.startsWith('/search') || listingType) {
+    // ℹ️ search assets are now injected automatically
+    const { routeParams, setRouteFilters, mappers } =
+      (yield injectSearchAssets()) as InjectSearchAssets;
+
+    
+    const params = routeParams(staticRoute, location); // ❌ delete this
+
+    // 🚨 if you are overriding params you will need to retain this logic
+    params.override = "myvalue";
+
+    // ℹ️ no more saga calls, remember to clean up any unused imports and arguments...
+    yield call(setRouteFilters, {
+      listingType,
+      mappers,
+      params,
+      ssr,
+    });
+  }
+
+  // ✅ `searchOptions` replaces everything we have deleted
+  // ℹ️ `searchOptions` in route configurations will complement the options set here
+  return yield {
+    searchOptions: {
+      // Optional: provide search config here to dynamically inject the search reducer
+      config,
+      // supply your mappers here, or in your route configuration
+      mappers,
+      // Optional: set paths here if you like or update your route configurations to use search when the route is matched
+      onPaths: ['/search'],
+      // Optional: add params if you are doing any overrides above
+      params,
+    },
+  };
+}
+```
+
+> ℹ️ Supply `config` and `mappers` here to have them automatically applied any time search is invoked
+
+> 💡 Search is not invoked until a `facet` or a `listingType` is present in the matched route's configuration, or we have set one of those values here ourselves
+
+If you have provided a `config` option to a `searchOptions` object, we no longer need to inject or add the search reducer and sagas to the route configuration
+
+**Change:** `staticRoutes.ts` **also update any `contentTypeMappings.ts` or `contentTypeRoutes.ts`**
+```typescript
+const staticRoutes: StaticRoute[] = [
+  {
+    path: '/search/:facet?',
+    component: SearchPage,
+    injectRedux: injectSearch, // ❌ delete this
+    searchOptions: {
+      facet: 'all' // ✅ `facet` in `searchOptions` will invoke the relevant search config
+    }
+  },
+  {
+    path: '/news',
+    component: NewsPage,
+    injectRedux: injectSearch, // ❌ delete this
+    listingType: 'news', // ❌ this worked before as we were plumbing everything in ourselves 
+    searchOptions: {
+      listingType: 'news' // ✅ `listingType` in `searchOptions` will invoke the relevant search config
+    }
+  },
+];
+```
+
+**Change:** `reducers.ts`
+
+```typescript
+import { reducer as SearchReducer } from '@zengenti/contensis-react-base/search'; // ❌ delete this
+import { config } from '~/components/search'; // 🚨 delete this
+import SiteConfigReducer from '~/core/redux/siteConfig/reducers';
+
+const featureReducers = {
+  search: SearchReducer(config), // ❌ delete this
+  siteConfig: SiteConfigReducer,
+};
+
+export default featureReducers;
+```
+
+> 🚨 When deleting your search config, ensure you have provided this `config` in `searchOptions` somewhere else
+
+**Change:** `sagas.ts`
+
+```typescript
+// Import feature sagas to be included with application startup
+import { sagas as searchSagas } from '@zengenti/contensis-react-base/search'; // ❌ delete this
+import { SiteConfigSagas } from './siteConfig/sagas';
+
+const featureSagas = [
+  ...searchSagas, // ❌ delete this
+  ...SiteConfigSagas,
+];
+
+export default featureSagas;
 ```
 
 ## 🧠 Known Issues & Debug Tips
