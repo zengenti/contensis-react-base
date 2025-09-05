@@ -25,11 +25,13 @@ import { hasNavigationTree } from '~/redux/selectors/navigation';
 import { selectVersionStatus } from '~/redux/selectors/version';
 import { handleRequiresLoginSaga } from '~/user/redux/sagas/login';
 import { ensureNodeTreeSaga } from '~/redux/sagas/navigation';
-import { injectRedux as reduxInjector } from '~/redux/store/injectors';
 
 import { LoginHelper } from '~/user';
-import { findContentTypeMapping } from '../util/find-contenttype-mapping';
+import { findContentTypeMapping, getSearchOptions } from '../util/find-contenttype-mapping';
 import { routeEntryByFieldsQuery } from '../util/queries';
+import { handleSearchSaga } from './invokeSearch';
+import { reduxInjectorSaga } from '~/redux/sagas/injector';
+import { routeParams } from '~/search';
 
 export const routingSagas = [
   takeEvery(SET_NAVIGATION_PATH, getRouteSaga),
@@ -76,7 +78,8 @@ function* getRouteSaga(action) {
     // These variables are the return values from
     // calls to withEvents.onRouteLoad and onRouteLoaded
     let appsays,
-      requireLogin = false;
+      requireLogin = false,
+      searchOptions = false;
 
     if (withEvents && withEvents.onRouteLoad) {
       appsays = yield withEvents.onRouteLoad(action);
@@ -128,13 +131,6 @@ function* getRouteSaga(action) {
       if (routeEntry && (!staticRoute || staticRoute?.route?.fetchNode)) {
         pathNode = { ...routeNode, entry: null };
         pathNode.entry = entry = routeEntry;
-        //Do nothing, the entry is allready the right one.
-        // yield put({
-        //   type: SET_ENTRY,
-        //   entry,
-        //   node: routeNode,
-        //   isLoading: false,
-        // });
         yield put({
           type: UPDATE_LOADING_STATE,
           isLoading: false,
@@ -162,7 +158,6 @@ function* getRouteSaga(action) {
           // for previewing entries as it gives a response of []
           // -- apparently it is not correct to request latest content
           // with Node API
-
           let previewEntry = yield api
             .getClient(deliveryApiStatus, project)
             .entries.get({
@@ -293,31 +288,39 @@ function* getRouteSaga(action) {
       if (children) pathNode.children = children;
     }
 
-    const resolvedContentTypeMapping =
+    const contentTypeRoute =
       findContentTypeMapping(
         ContentTypeMappings,
         pathNode?.entry?.sys?.contentTypeId
-      ) || {};
+      );
 
     // Inject redux { key, reducer, saga } provided by ContentTypeMapping
-    if (resolvedContentTypeMapping.injectRedux)
-      yield call(reduxInjectorSaga, resolvedContentTypeMapping.injectRedux);
+    if (contentTypeRoute?.injectRedux)
+      yield call(reduxInjectorSaga, contentTypeRoute.injectRedux);
+
+    // Have we defined search options in the route configuration (for triggering search)
+    const routeSearchOptions = getSearchOptions(staticRoute, contentTypeRoute);
+    const params = routeParams(staticRoute, location);
 
     if (withEvents && withEvents.onRouteLoaded) {
+
       // Check if the app has provided a requireLogin boolean flag or groups array
       // in addition to checking if requireLogin is set in the route definition
-      ({ requireLogin } =
-        (yield withEvents.onRouteLoaded({ ...action, entry })) || {});
+      // The app can provide an object to invoke the search saga
+      ({ requireLogin, searchOptions } =
+        (yield withEvents.onRouteLoaded({
+          ...action, contentTypeRoute, entry, params, searchOptions: routeSearchOptions
+        })) || {});
     }
 
     if (requireLogin !== false) {
       // Do not call the login feature saga if requireLogin is false
-      yield call(handleRequiresLoginSaga, {
-        ...action,
-        entry,
-        requireLogin,
-      });
+      yield call(handleRequiresLoginSaga, { ...action, entry, requireLogin });
     }
+
+    if (searchOptions || routeSearchOptions) yield call(
+      handleSearchSaga, { ...action, params, routeSearchOptions, searchOptions }
+    );
 
     if (!appsays || !appsays.preventScrollTop) {
       // Scroll into View
@@ -334,7 +337,7 @@ function* getRouteSaga(action) {
         pathNode,
         ancestors,
         siblings,
-        entryMapper || resolvedContentTypeMapping.entryMapper,
+        entryMapper || contentTypeRoute?.entryMapper,
         false,
         appsays?.refetchNode
       );
@@ -485,8 +488,8 @@ function* resolveCurrentNodeOrdinates(action) {
     apiCall[3] = function* getNodeTree() {
       const treeDepth =
         doNavigation === true ||
-        !doNavigation.tree ||
-        doNavigation.tree === true
+          !doNavigation.tree ||
+          doNavigation.tree === true
           ? 2
           : doNavigation.tree;
 
@@ -532,15 +535,15 @@ function* setRouteEntry(
   const mappedEntry = !entryMapper
     ? null
     : currentEntryId === entrySys.id &&
-        currentEntryLang === entrySys.language &&
-        remapEntry === false
+      currentEntryLang === entrySys.language &&
+      remapEntry === false
       ? (yield select(selectMappedEntry, 'js')) || {}
       : yield mapRouteEntry(entryMapper, {
-          ...node,
-          entry,
-          ancestors,
-          siblings,
-        });
+        ...node,
+        entry,
+        ancestors,
+        siblings,
+      });
 
   yield all([
     put({
@@ -553,15 +556,15 @@ function* setRouteEntry(
       notFound,
     }),
     ancestors &&
-      put({
-        type: SET_ANCESTORS,
-        ancestors,
-      }),
+    put({
+      type: SET_ANCESTORS,
+      ancestors,
+    }),
     siblings &&
-      put({
-        type: SET_SIBLINGS,
-        siblings,
-      }),
+    put({
+      type: SET_SIBLINGS,
+      siblings,
+    }),
   ]);
 }
 
@@ -610,11 +613,4 @@ function* do500(error) {
     error,
     statusCode: error && error.status ? error.status : 500,
   });
-}
-
-function* reduxInjectorSaga(injectorFn) {
-  if (typeof injectorFn === 'function') {
-    const { key, reducer, saga } = yield injectorFn();
-    reduxInjector({ key, reducer, saga });
-  }
 }

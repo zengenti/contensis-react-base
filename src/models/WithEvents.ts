@@ -1,14 +1,21 @@
 import { FieldLinkDepths } from 'contensis-core-api';
 import { Entry } from 'contensis-delivery-api';
+import { ContentTypeMapping } from './ContentTypeMapping';
 import { GetRouteActionArgs } from './GetRouteActionArgs';
 import { RequireLogin } from './RequireLogin';
+import {
+  SearchParams,
+  SearchRouteOptions,
+} from '~/search/models/SearchActions';
 
 // These args are passed through from the GetRouteSaga action arg
 export type OnRouteLoadArgs = Omit<GetRouteActionArgs, 'withEvents'>;
 
 // These args are as above and any resolved entry is also provided
 export type OnRouteLoadedArgs = OnRouteLoadArgs & {
+  contentTypeRoute?: ContentTypeMapping;
   entry?: Entry | any;
+  params: SearchParams;
 };
 
 /**
@@ -57,7 +64,12 @@ export type RouteLoadOptions = {
   refetchNode?: true;
 };
 
-export type RouteLoadedOptions = { requireLogin?: RequireLogin };
+export type RouteLoadedOptions = {
+  searchOptions?: SearchRouteOptions & {
+    onPaths?: string[];
+  };
+  requireLogin?: RequireLogin;
+};
 
 export type WithEvents = {
   onRouteLoad: (args: OnRouteLoadArgs) => Generator<void | RouteLoadOptions>;

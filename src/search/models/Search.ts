@@ -21,23 +21,18 @@ export type CustomApi = {
   uri: string;
 };
 
-export type Listing =
-  | {
-      /** Display title */
-      title?: string;
-      /** Experimental: use a custom API to retrieve search results */
-      customApi?: CustomApi;
-    }
-  | {
-      /** An object with a key for each filter that is required in this facet */
-      filters?: SearchFilters;
-      /** Use this to target the search to a project other than the default configured */
-      projectId?: string;
-      /** Query params object to drive the search for this facet */
-      queryParams: SearchQueryParams;
-      /** Display title */
-      title?: string;
-    };
+export type Listing = {
+  /** An object with a key for each filter that is required in this facet */
+  filters?: SearchFilters;
+  /** Use this to target the search to a project other than the default configured */
+  projectId?: string;
+  /** Query params object to drive the search for this facet */
+  queryParams: SearchQueryParams;
+  /** Display title */
+  title?: string;
+  /** Experimental: use a custom API to retrieve search results */
+  customApi?: CustomApi;
+};
 
 export type SearchFacet = {
   /** The first facet to be shown if no facet is supplied via a route parameter [default false] */
@@ -72,9 +67,9 @@ export type SearchFilter = {
   /** Supply an empty array or a hardcoded list of FilterItem depending on the type of filter we require */
   items: FilterItem[];
   /** Setting `false` will change the filter behaviour:
-   * 
+   *
    * a) to be excluded from the `filters` prop
-   * 
+   *
    * b) to not include selected items in the querystring on next navigate */
   renderable?: boolean;
   /** The title to render next to the filter */
@@ -148,7 +143,7 @@ export type WhereClause = {
   /** The field we wish to query */
   field: string;
   /** The value we want to evaluate with the chosen operator */
-  // eslint-disable-next-line @typescript-eslint/member-ordering
+
   [key: string]: any;
 };
 

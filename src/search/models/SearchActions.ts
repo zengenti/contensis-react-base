@@ -1,7 +1,7 @@
 import { PagedList } from 'contensis-core-api';
 import { Entry, TaxonomyNode } from 'contensis-delivery-api/lib/models';
 import { Context } from '../models/Enums';
-import { SearchFacet, Listing, Mappers } from '../models/Search';
+import { SearchFacet, Listing, Mappers, SearchConfig } from '../models/Search';
 import { AppState, Facet, Filter } from './SearchState';
 import { QueryParams } from './Queries';
 import { TimedSearchResponse } from './SearchUtil';
@@ -47,7 +47,13 @@ type InitListingParams = {
   context: Context;
   debug?: DebugFlags;
   defaultLang?: string;
+  /**
+   * Triggers the loading of the search config facet
+   */
   facet: string;
+  /**
+   * Triggers the loading of the search config listing
+   */
   listingType?: string;
   mapper?: Mappers['results'];
   mappers?: Mappers;
@@ -56,9 +62,20 @@ type InitListingParams = {
   ssr?: SSRContext;
 };
 
-export type InitListingAction = Action & InitListingParams & { isSSR?: boolean };
+export type InitListingAction = Action &
+  InitListingParams & { isSSR?: boolean };
 
-export type SetRouteFiltersOptions = Partial<InitListingAction>;
+export type SetRouteFiltersOptions = Omit<Partial<InitListingAction>, 'type'>;
+
+export type SearchRouteOptions = Omit<
+  SetRouteFiltersOptions & {
+    /**
+     * The search configuration to use for the search
+     */
+    config?: SearchConfig;
+  },
+  'ssr' | 'isSSR'
+>;
 
 export type InitListingActionCreator = (
   p: InitListingParams
