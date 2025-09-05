@@ -32,6 +32,10 @@ type ReduxSagaAppStore = ReduxAppStore & {
   close: () => void;
 };
 
+/** A no-op reducer to serve for server-rendered reducers
+ * that are re-injected client-side */
+export const stubReducer = (state = null) => state;
+
 export let reduxStore: ReduxSagaAppStore;
 
 export default async (
@@ -91,6 +95,13 @@ export default async (
   const store = (initialState: AppState) => {
     const runSaga = sagaMiddleware.run;
 
+    // Assign stub reducers for any missing reducers that have been
+    // injected server-side and will be re-injected client-side
+    const injectReducers = {};
+    for (const key of Object.keys(initialState)) {
+      if (!(key in reducers)) injectReducers[key] = stubReducer;
+    }
+
     const middleware: StoreEnhancer<{
       runSaga: ReturnType<typeof createSagaMiddleware>['run'];
       close: () => void;
@@ -107,7 +118,11 @@ export default async (
       reduxDevToolsMiddleware
     );
 
-    const store = createStore(createReducer(), initialState, middleware);
+    const store = createStore(
+      createReducer(injectReducers),
+      initialState,
+      middleware
+    );
 
     store.runSaga = runSaga;
     store.close = () => store.dispatch(END);
