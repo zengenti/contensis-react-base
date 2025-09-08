@@ -43,7 +43,8 @@ const injectSaga = ({
       hasSaga = false;
     }
   }
-  console.info('injectSaga, key: ', key, 'hasSaga: ', hasSaga);
+  // console.info('injectSaga, key: ', key, 'hasSaga: ', hasSaga);
+
   if (!hasSaga) {
     store.injectedSagas[key] = {
       key,
@@ -57,7 +58,7 @@ const injectRedux = ({
   reducer,
   saga
 }, store = reduxStore) => {
-  console.info('injectRedux, key: ', key);
+  // console.info('injectRedux, key: ', key);
   if (reducer) injectReducer({
     key,
     reducer
@@ -84,4 +85,4 @@ var version = /*#__PURE__*/Object.freeze({
 });
 
 export { injectReducer as a, injectSaga as b, convertSagaArray as c, setVersion as d, hasNavigationTree as h, injectRedux as i, navigation as n, setVersionStatus as s, useInjectRedux as u, version as v };
-//# sourceMappingURL=version-B4ETtJXY.js.map
+//# sourceMappingURL=version-CBZWG4_w.js.map

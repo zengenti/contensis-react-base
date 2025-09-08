@@ -32,8 +32,8 @@ var lodashClean = require('lodash-clean');
 var CookieHelper_class = require('./CookieHelper.class-Det3qfdU.js');
 var cookiesMiddleware = require('universal-cookie-express');
 var store = require('./store-Bm0URUih.js');
-var App = require('./App-BmmYMSa6.js');
-var version = require('./version-0QGmI7ST.js');
+var App = require('./App-BP3-vOpD.js');
+var version = require('./version-V6MVKCeD.js');
 var selectors = require('./selectors-Bp_TrwG5.js');
 var RouteLoader = require('./RouteLoader-Nl1cKazU.js');
 var stream = require('stream');
@@ -55,7 +55,7 @@ require('redux-saga');
 require('redux-injectors-19');
 require('history');
 require('await-to-js');
-require('./ChangePassword.container-CSNWNhfe.js');
+require('./ChangePassword.container-Bg9VCs8H.js');
 require('./matchGroups-CNt2aNoC.js');
 require('./ToJs-BsWqWjdm.js');
 
@@ -1087,7 +1087,6 @@ const addVarnishAuthenticationHeaders = (state, response, groups = {}) => {
         globalGroups,
         allowedGroups
       } = groups;
-      // console.info(globalGroups, allowedGroups);
       let allGroups = Array.from(globalGroups && globalGroups[project] || {});
       if (stateEntry && selectors.getImmutableOrJS(stateEntry, ['authentication', 'isLoginRequired']) && allowedGroups && allowedGroups[project]) {
         allGroups = [...allGroups, ...allowedGroups[project]];

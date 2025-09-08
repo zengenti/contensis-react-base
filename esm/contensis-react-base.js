@@ -28,9 +28,9 @@ import { buildCleaner } from 'lodash-clean';
 import { a as Cookies } from './CookieHelper.class-C6rTRl_1.js';
 import cookiesMiddleware from 'universal-cookie-express';
 import { c as createStore } from './store-BMDimGSw.js';
-import { h as history, p as pickProject, r as rootSaga } from './App-DzlBVMl2.js';
-export { A as ReactApp } from './App-DzlBVMl2.js';
-import { s as setVersionStatus, d as setVersion } from './version-B4ETtJXY.js';
+import { h as history, p as pickProject, r as rootSaga } from './App-DoUtFf7e.js';
+export { A as ReactApp } from './App-DoUtFf7e.js';
+import { s as setVersionStatus, d as setVersion } from './version-CBZWG4_w.js';
 import { a3 as selectSurrogateKeys, a4 as selectSsrApiCalls, h as selectRouteEntry, n as selectCurrentProject, g as getImmutableOrJS, s as setCurrentProject, K as selectCurrentSearch } from './selectors-CNC7sDxg.js';
 import { H as HttpContext, m as mergeStaticRoutes } from './RouteLoader-CHaE-Ptt.js';
 import { Transform } from 'stream';
@@ -52,7 +52,7 @@ import 'redux-saga';
 import 'redux-injectors-19';
 import 'history';
 import 'await-to-js';
-import './ChangePassword.container-TATNBcn5.js';
+import './ChangePassword.container-CVV9xgZ0.js';
 import './matchGroups-Bq8QnqFx.js';
 import './ToJs-BnRRHk6f.js';
 
@@ -1070,7 +1070,6 @@ const addVarnishAuthenticationHeaders = (state, response, groups = {}) => {
         globalGroups,
         allowedGroups
       } = groups;
-      // console.info(globalGroups, allowedGroups);
       let allGroups = Array.from(globalGroups && globalGroups[project] || {});
       if (stateEntry && getImmutableOrJS(stateEntry, ['authentication', 'isLoginRequired']) && allowedGroups && allowedGroups[project]) {
         allGroups = [...allGroups, ...allowedGroups[project]];
