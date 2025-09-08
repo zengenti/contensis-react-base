@@ -71,7 +71,6 @@ Import from `@zengenti/contensis-react-base/routing`
 
 - `<Redirect />` and `<Status />` JSX components
 - `useHttpContext()` hook (replaces `staticContext`)
-- `routeParams` helper for parsing route/query parameters
 
 ---
 
@@ -298,7 +297,7 @@ The `navigate` function accepts options that provide equivalent functionality to
 }
 ```
 
-> ℹ️ Instead of refactoring old boilerplate, try our `routeParams` helper from `@zengenti/contensis-react-base/routing`, or for search implementations, refactor to use our new boilerplate-free approach with `invokeSearch` return value in the `onRouteLoaded` routing hook
+> 💡 Instead of handing old boilerplate for search implementations, refactor to use our new boilerplate-free approach with `searchOptions` (in this doc)
 
 ---
 
@@ -429,13 +428,13 @@ A complete list of the changes introduced in Express v5 can be found in the offi
 
 ### 6. Update `stateType`
 
-Since v3 we can set a `stateType` to be `immutable` (default) or `js`, so we could optionally use **Immer** to manage the immutability of our Redux state.
+Since v3 we can set a `stateType` to be `immutable` (default) or `js`, so we could optionally use **Immer** to manage the immutability of our Redux state with plain `js` objects.
 
 In v4, `immutable` is no longer the default `stateType` and the option has also been marked as deprecated. We will be removing this support for Immutable.js in a future release.
 
-> We recommend migrating to **Redux Toolkit** or **Immer** for future compatibility
+> 💡 We recommend migrating to **Redux Toolkit** or **Immer** for future compatibility
 
-#### Using Immutable
+#### Projects using Immutable state
 
 **Change:** `client-entrypoint.ts` **and make the same change in `server.ts`**
 
@@ -454,7 +453,7 @@ const config: AppConfig = {
 new ClientApp(ReactApp, config);
 ```
 
-#### Using Immer / plain JS
+#### Projects using Immer / plain JS state
 
 **Change:** `client-entrypoint.ts` **and make the same change in `server.ts`**
 
@@ -479,7 +478,9 @@ Although these changes strictly aren't required for the upgrade, we recommend re
 
 **Example:** `withEvents.ts`
 
-> Your version of this file will contain all elements from this example but your exact implementation could be different. We should delete any code-blocks that resemble those in this example - those are unneccesary boilerplate, and carefully examine deleted code to retain any intentionally customised aspects.
+> Your version of this file will contain all elements from this example but your exact implementation could be different. We should delete any code-blocks that resemble those in this example - they are the excess boilerplate.
+
+> ⚠️ Carefully examine deleted code and retain any intentionally customised aspects.
 
 ```typescript
 onRouteLoaded: function* onRouteLoaded({
@@ -510,7 +511,7 @@ onRouteLoaded: function* onRouteLoaded({
   }
 
   // ✅ `searchOptions` replaces everything we have deleted
-  // ℹ️ `searchOptions` in route configurations will complement the options set here
+  // 💡 `searchOptions` in route configurations will complement the options set here
   return yield {
     searchOptions: {
       // Optional: provide search config here to dynamically inject the search reducer
@@ -518,7 +519,7 @@ onRouteLoaded: function* onRouteLoaded({
       // supply your mappers here, or in your route configuration
       mappers,
       // Optional: set paths here if you like or update your route configurations to use search when the route is matched
-      onPaths: ['/search'],
+      onPaths: ['/en-gb/search'],
       // Optional: add params if you are doing any overrides above
       params,
     },
@@ -563,7 +564,7 @@ const staticRoutes: StaticRoute[] = [
 
 **Change:** `reducers.ts`
 
-> ℹ️ If you are using search minilists throughout your project this would be a good place to load your search config so it is available in any route
+> 💡 If you are using search minilists throughout your project these would be the best places to load your search config and sagas so it is available in any route
 
 ```typescript
 import { reducer as SearchReducer } from '@zengenti/contensis-react-base/search'; // ❌ delete this
@@ -583,7 +584,6 @@ export default featureReducers;
 **Change:** `sagas.ts`
 
 ```typescript
-// Import feature sagas to be included with application startup
 import { sagas as searchSagas } from '@zengenti/contensis-react-base/search'; // ❌ delete this
 import { SiteConfigSagas } from './siteConfig/sagas';
 
@@ -708,7 +708,7 @@ const CLIENT_PROD_CONFIG = {
 
 > ℹ️ Wrap components with `<NoSSR />` to achieve the same defer behaviour
 
-> ℹ️ `loadable()` lazy loaded components accept an option to avoid SSR
+> ℹ️ `loadable()` lazy loaded components accept an option to avoid SSR, as well as options available in the route configurations
 
 There are many articles online that explain hydration errors and offer suggestions as to what we might be doing wrong to cause a mismatch between the server rendered HTML and the client rendered HTML
 
