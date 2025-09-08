@@ -3,7 +3,7 @@ import { AppState } from '../models/SearchState';
 import { Context } from '../models/Enums';
 import { EnsureSearchAction, SetSearchEntriesAction } from '../models/SearchActions';
 type QueryParamsMapperParams = {
-    context: Context;
+    context: keyof typeof Context | Context;
     facet: string;
     action: EnsureSearchAction | SetSearchEntriesAction;
     state: AppState;

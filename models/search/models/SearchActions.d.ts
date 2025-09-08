@@ -40,7 +40,7 @@ export type TriggerSearchParams = {
 export type TriggerSearchAction = Action & TriggerSearchParams;
 export type TriggerSearchActionCreator = (p: TriggerSearchParams) => TriggerSearchAction;
 type InitListingParams = {
-    context: Context;
+    context: keyof typeof Context;
     debug?: DebugFlags;
     defaultLang?: string;
     /**

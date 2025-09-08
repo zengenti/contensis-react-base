@@ -1,8 +1,8 @@
 'use strict';
 
-var store = require('./store-BDHWQrfe.js');
+var store = require('./store-Bm0URUih.js');
 var selectors$1 = require('./selectors-Bp_TrwG5.js');
-var version$1 = require('./version-BO49VzHY.js');
+var version$1 = require('./version-0QGmI7ST.js');
 var version$2 = require('./version-BolvQdgT.js');
 require('redux');
 require('redux-thunk');

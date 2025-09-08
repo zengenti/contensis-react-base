@@ -182,7 +182,7 @@ export type ConfigTypes = {
 /**
  * Type your mapper for mapping API responses (entries) into usable props for your components to render
  */
-export type SearchResultsMapper<Target = any, Source = Entry> = (entries: Source[], facet?: string, context?: Context, state?: AppState) => Target[];
+export type SearchResultsMapper<Target = any, Source = Entry> = (entries: Source[], facet?: string, context?: keyof typeof Context, state?: AppState) => Target[];
 /**
  * Type your custom filter item mapping function with this to ensure correctly typed FilterItems are returned to work with search functions
  */
