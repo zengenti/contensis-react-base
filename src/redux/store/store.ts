@@ -98,7 +98,7 @@ export default async (
     // Assign stub reducers for any missing reducers that have been
     // injected server-side and will be re-injected client-side
     const injectReducers = {};
-    for (const key of Object.keys(initialState)) {
+    for (const key of Object.keys(initialState || {})) {
       if (!(key in reducers)) injectReducers[key] = stubReducer;
     }
 
