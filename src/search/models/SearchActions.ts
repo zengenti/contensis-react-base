@@ -44,7 +44,7 @@ export type TriggerSearchActionCreator = (
 ) => TriggerSearchAction;
 
 type InitListingParams = {
-  context: Context;
+  context: keyof typeof Context;
   debug?: DebugFlags;
   defaultLang?: string;
   /**
