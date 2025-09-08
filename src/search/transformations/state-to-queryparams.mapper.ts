@@ -30,7 +30,7 @@ import {
 } from '../search/util';
 
 type QueryParamsMapperParams = {
-  context: Context;
+  context: keyof typeof Context | Context;
   facet: string;
   action: EnsureSearchAction | SetSearchEntriesAction;
   state: AppState;
