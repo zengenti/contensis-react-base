@@ -99,7 +99,6 @@ Import from `@zengenti/contensis-react-base/routing`
 - Existing implementations continue to work without changes
   - However, we recommend removing old boilerplate to simplify your codebase
 
-
 ## 🚨 Breaking Changes Overview
 
 | Area             | Change                                                                                                                    |
@@ -483,12 +482,12 @@ Although these changes strictly aren't required for the upgrade, we recommend re
 > Your version of this file will contain all elements from this example but your exact implementation could be different. We should delete any code-blocks that resemble those in this example - those are unneccesary boilerplate, and carefully examine deleted code to retain any intentionally customised aspects.
 
 ```typescript
-onRouteLoaded: function* onRouteLoaded({ 
-  params // ℹ️ params are now provided automatically
+onRouteLoaded: function* onRouteLoaded({
+  params, // ℹ️ params are now provided automatically
 }) {
   // ❌ delete this as we can set this in `searchOptions` in our route configurations
   const listingType =
-    staticRoute?.route?.listingType || contentTypeListings[contentTypeId]; 
+    staticRoute?.route?.listingType || contentTypeListings[contentTypeId];
 
   // ❌ delete this entire `if` block
   if (path.startsWith('/search') || listingType) {
@@ -496,11 +495,10 @@ onRouteLoaded: function* onRouteLoaded({
     const { routeParams, setRouteFilters, mappers } =
       (yield injectSearchAssets()) as InjectSearchAssets;
 
-    
     const params = routeParams(staticRoute, location); // ❌ delete this
 
     // 🚨 if you are overriding params you will need to retain this logic
-    params.override = "myvalue";
+    params.override = 'myvalue';
 
     // ℹ️ no more saga calls, remember to clean up any unused imports and arguments...
     yield call(setRouteFilters, {
@@ -535,6 +533,7 @@ onRouteLoaded: function* onRouteLoaded({
 If you have provided a `config` option to a `searchOptions` object, we no longer need to inject or add the search reducer and sagas to the route configuration
 
 **Change:** `staticRoutes.ts` **also update any `contentTypeMappings.ts` or `contentTypeRoutes.ts`**
+
 ```typescript
 const staticRoutes: StaticRoute[] = [
   {
@@ -542,22 +541,29 @@ const staticRoutes: StaticRoute[] = [
     component: SearchPage,
     injectRedux: injectSearch, // ❌ delete this
     searchOptions: {
-      facet: 'all' // ✅ `facet` in `searchOptions` will invoke the relevant search config
-    }
+      facet: 'all', // ✅ `facet` in `searchOptions` will invoke the relevant search config
+    },
   },
   {
     path: '/news',
     component: NewsPage,
     injectRedux: injectSearch, // ❌ delete this
-    listingType: 'news', // ❌ this worked before as we were plumbing everything in ourselves 
+    listingType: 'news', // ❌ this worked previously as we were plumbing everything in ourselves
     searchOptions: {
-      listingType: 'news' // ✅ `listingType` in `searchOptions` will invoke the relevant search config
-    }
+      listingType: 'news', // ✅ `listingType` in `searchOptions` will invoke the relevant search config
+    },
+  },
+  {
+    path: '/course/:subject',
+    component: CoursePage,
+    searchOptions: {}, // ℹ️ `searchOptions` will ensure search config is available when using minilists
   },
 ];
 ```
 
 **Change:** `reducers.ts`
+
+> ℹ️ If you are using search minilists throughout your project this would be a good place to load your search config so it is available in any route
 
 ```typescript
 import { reducer as SearchReducer } from '@zengenti/contensis-react-base/search'; // ❌ delete this
