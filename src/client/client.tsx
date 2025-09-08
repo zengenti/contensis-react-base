@@ -106,7 +106,8 @@ class ClientApp {
           if (!ssrVersionStatus)
             store.dispatch(setVersionStatus(versionStatus));
 
-          console.log('Hydrating from inline Redux');
+          if (isDev && window.REDUX_DATA)
+            console.log('Hydrating from inline Redux');
 
           store.runSaga(rootSaga(withSagas));
           store.dispatch(

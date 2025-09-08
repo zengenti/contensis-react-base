@@ -71,7 +71,6 @@ export const addVarnishAuthenticationHeaders = (
       const stateEntry = selectRouteEntry(state);
       const project = selectCurrentProject(state);
       const { globalGroups, allowedGroups } = groups;
-      // console.info(globalGroups, allowedGroups);
       let allGroups = Array.from((globalGroups && globalGroups[project]) || {});
       if (
         stateEntry &&

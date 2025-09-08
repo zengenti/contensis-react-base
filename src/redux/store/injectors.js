@@ -32,7 +32,7 @@ export const injectSaga = ({ key, saga }, store = DefaultStore) => {
       hasSaga = false;
     }
   }
-  console.info('injectSaga, key: ', key, 'hasSaga: ', hasSaga);
+  // console.info('injectSaga, key: ', key, 'hasSaga: ', hasSaga);
 
   if (!hasSaga) {
     store.injectedSagas[key] = {
@@ -44,7 +44,7 @@ export const injectSaga = ({ key, saga }, store = DefaultStore) => {
 };
 
 export const injectRedux = ({ key, reducer, saga }, store = DefaultStore) => {
-  console.info('injectRedux, key: ', key);
+  // console.info('injectRedux, key: ', key);
   if (reducer) injectReducer({ key, reducer }, store);
   if (saga) injectSaga({ key, saga }, store);
 };

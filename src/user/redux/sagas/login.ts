@@ -64,13 +64,13 @@ export function* handleRequiresLoginSaga(action: any) {
     // If cookies or securityToken are found on any route change
     // always validate and login the user
     if (routeRequiresLogin) {
-      console.info(`Route requires login: ${path}`);
+      // console.info(`Route requires login: ${path}`);
       // If routeRequiresLogin do a blocking call that returns userLoggedIn
       userLoggedIn = yield call(validateUserSaga, {
         cookies,
         securityToken,
       });
-      console.info(`User logged in: ${userLoggedIn}`);
+      // console.info(`User logged in: ${userLoggedIn}`);
     }
     // otherwise do a non blocking put to handle validation in the background
     else yield put({ type: VALIDATE_USER, cookies, securityToken });
@@ -146,9 +146,9 @@ function* validateUserSaga({ cookies, securityToken }: any) {
 
     // Log the user in if a refreshToken is found
     if (clientCredentials.refreshToken) {
-      console.info(
-        `Login user with refreshToken ${clientCredentials.refreshToken}`
-      );
+      // console.info(
+      //   `Login user with refreshToken ${clientCredentials.refreshToken}`
+      // );
       yield call(loginUserSaga, {
         clientCredentials,
         cookies: login.cookies,
@@ -183,11 +183,7 @@ function* loginUserSaga(action: any = {}) {
 }
 
 const removeHostnamePart = path => {
-  // eslint-disable-next-line no-console
-  console.log(path);
   const relativePath = '/' + path.split('/').splice(3).join('/');
-  // eslint-disable-next-line no-console
-  console.log(relativePath);
   return relativePath;
 };
 

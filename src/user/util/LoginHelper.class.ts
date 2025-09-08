@@ -168,7 +168,7 @@ export class LoginHelper {
 
       const { LogonResult, ApplicationData = [] } = body;
       if (LogonResult !== 0) {
-        console.info(`Security token is invalid - LogonResult: ${LogonResult}`);
+        // console.info(`Security token is invalid - LogonResult: ${LogonResult}`);
         return [
           { message: 'Security token is invalid', data: ApplicationData },
         ];
