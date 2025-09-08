@@ -200,7 +200,7 @@ export type ConfigTypes =
 export type SearchResultsMapper<Target = any, Source = Entry> = (
   entries: Source[],
   facet?: string,
-  context?: Context,
+  context?: keyof typeof Context,
   state?: AppState
 ) => Target[];
 

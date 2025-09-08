@@ -132,7 +132,7 @@ export const filterParamsChanged = (
     facet,
     params,
     ogState = state,
-  } = action as EnsureSearchAction & SetSearchEntriesAction;
+  } = action;
   const selectedFilters = getSelectedFilters(
     ogState as AppState,
     facet,

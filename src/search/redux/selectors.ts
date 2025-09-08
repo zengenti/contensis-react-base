@@ -15,10 +15,12 @@ import getIn, { makeFromJS } from './getIn';
 
 type StateType = 'immutable' | 'js';
 
-export const getSearchContext = (state: AppState): Context =>
+type ContextType = keyof typeof Context;
+
+export const getSearchContext = (state: AppState): ContextType =>
   getIn(state, ['search', 'context'], Context.facets);
 
-export const getCurrent = (state: AppState, context = Context.facets) =>
+export const getCurrent = (state: AppState, context: ContextType = Context.facets) =>
   context === Context.facets
     ? getCurrentFacet(state)
     : getCurrentListing(state);
@@ -79,7 +81,7 @@ export const getListing = (state: AppState, listing = '') => {
 export const getFilters = (
   state: AppState,
   facet: string,
-  context = Context.facets,
+  context: ContextType = Context.facets,
   returnType?: StateType
 ): Filters => {
   return getIn(
@@ -94,7 +96,7 @@ export const getFilters = (
 export const getRenderableFilters = (
   state: AppState,
   facet = '',
-  context = Context.facets
+  context: ContextType = Context.facets
 ): Filters =>
   Object.fromEntries(
     Object.entries(getFilters(state, facet, context, 'js')).filter(
@@ -105,7 +107,7 @@ export const getRenderableFilters = (
 export const getFiltersToLoad = (
   state: AppState,
   facet: string,
-  context = Context.facets,
+  context: ContextType = Context.facets,
   returnType?: StateType
 ) => {
   const filters = getFilters(state, facet, context, returnType);
@@ -141,7 +143,7 @@ const reduceSelectedFilters = (filters: Filters) => {
 export const getSelectedFilters = (
   state: AppState,
   facet = '',
-  context = Context.facets,
+  context: ContextType = Context.facets,
   returnType?: StateType
 ): SelectedFilters => {
   const filters = getFilters(state, facet, context, 'js');
@@ -155,7 +157,7 @@ export const getSelectedFilters = (
 export const getRenderableSelectedFilters = (
   state: AppState,
   facet = '',
-  context = Context.facets
+  context: ContextType = Context.facets
 ): SelectedFilters => {
   const filters = getRenderableFilters(state, facet, context);
 
@@ -166,7 +168,7 @@ export const getRenderableSelectedFilters = (
 export const getResults = (
   state: AppState,
   current = '',
-  context = Context.facets,
+  context: ContextType = Context.facets,
   returnType?: StateType
 ) => {
   return getIn(
@@ -180,7 +182,7 @@ export const getResults = (
 export const getIsInternalPaging = (
   state: AppState,
   current: string,
-  context = Context.facets
+  context: ContextType = Context.facets
 ): boolean => {
   return getIn(
     state,
@@ -197,7 +199,7 @@ export const getIsInternalPaging = (
 
 export const getIsLoaded = (
   state: AppState,
-  context = Context.facets,
+  context: ContextType = Context.facets,
   facet?: string
 ) => {
   return !!getIn(
@@ -209,7 +211,7 @@ export const getIsLoaded = (
 
 export const getIsLoading = (
   state: AppState,
-  context = Context.facets,
+  context: ContextType = Context.facets,
   facet?: string
 ): boolean => {
   return getIn(state, [
@@ -227,7 +229,7 @@ export const getIsSsr = (state: AppState): boolean =>
 export const getFeaturedResults = (
   state: AppState,
   current = '',
-  context = Context.facets,
+  context: ContextType = Context.facets,
   returnType?: StateType
 ) => {
   return getIn(
@@ -246,7 +248,7 @@ export const getFeaturedResults = (
 export const getPaging = (
   state: AppState,
   current = '',
-  context = Context.facets,
+  context: ContextType = Context.facets,
   returnType?: StateType
 ): Paging => {
   return getIn(
@@ -260,7 +262,7 @@ export const getPaging = (
 export const getPageIndex = (
   state: AppState,
   current = '',
-  context = Context.facets
+  context: ContextType = Context.facets
 ): number => {
   return getIn(state, [
     'search',
@@ -274,7 +276,7 @@ export const getPageIndex = (
 export const getPageSize = (
   state: AppState,
   current = '',
-  context = Context.facets
+  context: ContextType = Context.facets
 ): number => {
   return getIn(
     state,
@@ -292,7 +294,7 @@ export const getPageSize = (
 export const getPrevPageIndex = (
   state: AppState,
   current = '',
-  context = Context.facets
+  context: ContextType = Context.facets
 ): number => {
   return getIn(state, [
     'search',
@@ -305,7 +307,7 @@ export const getPrevPageIndex = (
 export const getPageIsLoading = (
   state: AppState,
   current = '',
-  context = Context.facets
+  context: ContextType = Context.facets
 ): boolean => {
   return getIn(state, [
     'search',
@@ -319,7 +321,7 @@ export const getPageIsLoading = (
 export const getPagesLoaded = (
   state: AppState,
   current = '',
-  context = Context.facets
+  context: ContextType = Context.facets
 ): number[] => {
   return getIn(
     state,
@@ -338,7 +340,7 @@ export const getPagesLoaded = (
 export const getTotalCount = (
   state: AppState,
   current = '',
-  context = Context.facets
+  context: ContextType = Context.facets
 ): number => {
   return getIn(state, [
     'search',
@@ -358,7 +360,7 @@ export const getSearchTabs = (state: AppState, returnType?: StateType): Tab[] =>
 export const getQueryParams = (
   state: AppState,
   current = '',
-  context = Context.facets
+  context: ContextType = Context.facets
 ) => {
   return getIn(
     state,
@@ -376,7 +378,7 @@ export const getQueryParameter = <
     state,
     facet,
     context = Context.facets,
-  }: { state: AppState; facet?: string; context?: Context },
+  }: { state: AppState; facet?: string; context?: ContextType },
   key: K | K2,
   ifnull: any = null
 ): SearchQueryParams[K] | QueryParams2[K2] => {
@@ -386,7 +388,7 @@ export const getQueryParameter = <
 export const getCustomApi = (
   state: AppState,
   current: string,
-  context = Context.facets,
+  context: ContextType = Context.facets,
   returnType?: StateType
 ): CustomApi => {
   return getIn(

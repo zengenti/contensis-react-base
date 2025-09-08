@@ -29,7 +29,7 @@ const mapEntriesToSearchResults = (
   }: {
     mappers?: Mappers;
     mapper?: Mappers['results'];
-    context: Context;
+    context: keyof typeof Context;
     facet: string;
   },
   items: any[],

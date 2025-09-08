@@ -108,14 +108,14 @@ const toJS = (obj: any) =>
 export function* setRouteFilters(
   action: InitListingAction | SetRouteFiltersOptions
 ) {
-  const { mappers, params, listingType, defaultLang, debug, ssr } = action;
+  const { mappers, params, listingType, facet, defaultLang, debug, ssr } = action;
   const context = listingType ? Context.listings : Context.facets;
   const state: AppState = toJS(yield select());
   const isSSR = getIsSsr(state);
   sanitiseParams(params);
 
   // Get current facet from params or state
-  let currentFacet = (params && params.facet) || listingType;
+  let currentFacet = (params && params.facet) || listingType || facet;
 
   // If Listing use listing type (ignore params.facet)
   if (context === Context.listings) {
@@ -126,7 +126,7 @@ export function* setRouteFilters(
   if (!currentFacet) {
     const tabs = getSearchTabs(state, 'js');
     currentFacet =
-      tabs?.[0].defaultFacet || Object.keys(getFacets(state, 'js'))?.[0] || '';
+      tabs?.[0]?.defaultFacet || Object.keys(getFacets(state, 'js'))?.[0] || '';
   }
 
   const nextAction = {
@@ -185,7 +185,7 @@ function* loadFilters(action: InitListingAction) {
   const filtersToLoad = (yield select(
     getFiltersToLoad,
     facetKey,
-    context as Context,
+    context,
     'js'
   )) as string[];
   if (filtersToLoad.length > 0) {
@@ -198,7 +198,7 @@ function* loadFilters(action: InitListingAction) {
     const selectedKeys = (yield select(
       getSelectedFilters,
       facetKey,
-      context as Context,
+      context,
       'js'
     )) as {
       [k: string]: string[];
@@ -339,7 +339,7 @@ function* executeSearch(action: ExecuteSearchAction) {
     let result = {} as TimedSearchResponse;
     let featuredResult: TimedSearchResponse | undefined;
     let featuredQuery: Query;
-    const customApi = getCustomApi(state, facet, context as Context, 'js');
+    const customApi = getCustomApi(state, facet, context, 'js');
 
     if (customApi) {
       const apiParams =
@@ -384,7 +384,7 @@ function* executeSearch(action: ExecuteSearchAction) {
       pageIndex:
         (queryParams.internalPaging && queryParams.internalPageIndex) ||
         queryParams.pageIndex,
-      prevResults: getResults(state, facet, action.context as Context, 'js'),
+      prevResults: getResults(state, facet, action.context, 'js'),
       result,
       state: (yield select()) as AppState,
     };
