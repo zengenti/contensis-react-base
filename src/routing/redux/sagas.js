@@ -300,7 +300,7 @@ function* getRouteSaga(action) {
 
     // Have we defined search options in the route configuration (for triggering search)
     const routeSearchOptions = getSearchOptions(staticRoute, contentTypeRoute);
-    const params = routeParams(staticRoute, location);
+    const params = routeParams(staticRoute, action.location);
 
     if (withEvents && withEvents.onRouteLoaded) {
 
