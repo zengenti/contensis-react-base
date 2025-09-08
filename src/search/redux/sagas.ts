@@ -185,7 +185,7 @@ function* loadFilters(action: InitListingAction) {
   const filtersToLoad = (yield select(
     getFiltersToLoad,
     facetKey,
-    context,
+    context as Context,
     'js'
   )) as string[];
   if (filtersToLoad.length > 0) {
@@ -198,7 +198,7 @@ function* loadFilters(action: InitListingAction) {
     const selectedKeys = (yield select(
       getSelectedFilters,
       facetKey,
-      context,
+      context as Context,
       'js'
     )) as {
       [k: string]: string[];
@@ -339,7 +339,7 @@ function* executeSearch(action: ExecuteSearchAction) {
     let result = {} as TimedSearchResponse;
     let featuredResult: TimedSearchResponse | undefined;
     let featuredQuery: Query;
-    const customApi = getCustomApi(state, facet, context, 'js');
+    const customApi = getCustomApi(state, facet, context as Context, 'js');
 
     if (customApi) {
       const apiParams =
@@ -384,7 +384,7 @@ function* executeSearch(action: ExecuteSearchAction) {
       pageIndex:
         (queryParams.internalPaging && queryParams.internalPageIndex) ||
         queryParams.pageIndex,
-      prevResults: getResults(state, facet, action.context, 'js'),
+      prevResults: getResults(state, facet, action.context as Context, 'js'),
       result,
       state: (yield select()) as AppState,
     };

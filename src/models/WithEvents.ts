@@ -16,6 +16,7 @@ export type OnRouteLoadedArgs = OnRouteLoadArgs & {
   contentTypeRoute?: ContentTypeMapping;
   entry?: Entry | any;
   params: SearchParams;
+  searchOptions?: SearchRouteOptions;
 };
 
 /**
