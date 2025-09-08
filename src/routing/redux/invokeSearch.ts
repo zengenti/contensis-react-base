@@ -33,11 +33,15 @@ export function* handleSearchSaga({
   };
 
   // Check do we meet conditions to run the search saga
-  if (
+  const invokeSearch =
     onPaths.find(p => location.pathname.startsWith(p)) ||
     searchOpts.facet ||
-    searchOpts.listingType
-  ) {
+    searchOpts.listingType;
+
+  // An empty routeSearchOptions object can be used to import assets and load config for a minilist
+  const importAssets = routeSearchOptions;
+
+  if (importAssets || invokeSearch) {
     // Async load search assets
     const { reducer, sagas, setRouteFilters } =
       (yield importSearchAssets()) as Awaited<
@@ -51,10 +55,11 @@ export function* handleSearchSaga({
       saga: sagas,
     }));
 
-    yield call(setRouteFilters, {
-      params,
-      ssr,
-      ...searchOpts,
-    });
+    if (invokeSearch)
+      yield call(setRouteFilters, {
+        params,
+        ssr,
+        ...searchOpts,
+      });
   }
 }
