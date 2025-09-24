@@ -144,10 +144,23 @@ export class DeliveryApi {
     return null;
   };
 
-  getServerSideVersionStatus = (request: Request) =>
-    request.query.versionStatus ||
-    deliveryApi.getVersionStatusFromHeaders(request.headers) ||
-    deliveryApi.getVersionStatusFromHostname(request.hostname);
+  getServerSideVersionStatus = (request: Request) => {
+    const rawStatus =
+      request.query.versionStatus ??
+      deliveryApi.getVersionStatusFromHeaders(request.headers) ??
+      deliveryApi.getVersionStatusFromHostname(request.hostname);
+
+    const status =
+      typeof rawStatus === 'string' ? rawStatus.trim().toLowerCase() : '';
+
+    // Validate the status to only allow known values and ignore any others
+    // to prevent malicious injection
+    if (['latest', 'published'].includes(status)) {
+      return status as 'latest' | 'published';
+    }
+
+    return undefined;
+  };
 
   getVersionStatusFromHeaders = (headers: IncomingHttpHeaders) => {
     const versionStatusHeader = headers['x-entry-versionstatus'];

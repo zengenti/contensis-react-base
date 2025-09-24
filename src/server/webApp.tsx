@@ -202,7 +202,7 @@ const webApp = (
         // Dynamic doesn't need sagas
         // or styles, or any split component bundles
         // nor are we streaming responses
-        const isDynamicHints = `<script ${attributes}>window.versionStatus = "${versionStatus}"; window.isDynamic = true;</script>`;
+        const isDynamicHints = `<script ${attributes}>window.isDynamic = true;</script>`;
 
         const jsx = ssrJsxProducer(ReactApp, {
           providers: jsxProviderProps,
@@ -282,10 +282,7 @@ const webApp = (
                 return true;
               }
               if (!disableSsrRedux) {
-                // window.versionStatus is not strictly required here and is added to support cases
-                // where a consumer may not be using the contensisVersionStatus in redux and calling
-                // the `getClientSideVersionStatus()` method directly
-                serialisedReduxData = `<script ${attributes}>window.__USE_HYDRATE__ = true; window.versionStatus = "${versionStatus}"; window.REDUX_DATA = ${serialisedReduxData}</script>`;
+                serialisedReduxData = `<script ${attributes}>window.__USE_HYDRATE__ = true; window.REDUX_DATA = ${serialisedReduxData}</script>`;
               }
             }
 
