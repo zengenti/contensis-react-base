@@ -564,31 +564,33 @@ const staticRoutes: StaticRoute[] = [
 
 **Change:** `reducers.ts`
 
-> 💡 If you are using search minilists throughout your project these would be the best places to load your search config and sagas so it is available in any route
+> ⚠️ **Important:** Global Minilist users - **Don't blindly delete!**
+>
+> These deletions assume you've moved and no longer need the search config, reducers and sagas available in every route.
+> 
+> If your project uses **search minilists** in many or all of your routes, these are still the recommended locations to register them. **Review your implementation before proceeding.**
 
 ```typescript
-import { reducer as SearchReducer } from '@zengenti/contensis-react-base/search'; // ❌ delete this
-import { config } from '~/components/search'; // 🚨 delete this
+import { reducer as SearchReducer } from '@zengenti/contensis-react-base/search'; // ❌ Delete if not required on every route
+import { config } from '~/components/search'; // 🚨 Delete if search feature is not needed everywhere
 import SiteConfigReducer from '~/core/redux/siteConfig/reducers';
 
 const featureReducers = {
-  search: SearchReducer(config), // ❌ delete this
+  search: SearchReducer(config), // ❌ Delete if not required on every route
   siteConfig: SiteConfigReducer,
 };
 
 export default featureReducers;
 ```
 
-> 🚨 When deleting your search config, ensure you have provided this `config` in `searchOptions` somewhere else
-
 **Change:** `sagas.ts`
 
 ```typescript
-import { sagas as searchSagas } from '@zengenti/contensis-react-base/search'; // ❌ delete this
+import { sagas as searchSagas } from '@zengenti/contensis-react-base/search'; // ❌ Delete if not required on every route
 import { SiteConfigSagas } from './siteConfig/sagas';
 
 const featureSagas = [
-  ...searchSagas, // ❌ delete this
+  ...searchSagas, // ❌ Delete if not required on every route
   ...SiteConfigSagas,
 ];
 
@@ -708,7 +710,7 @@ const CLIENT_PROD_CONFIG = {
 
 > ℹ️ Wrap components with `<NoSSR />` to achieve the same defer behaviour
 
-> ℹ️ `loadable()` lazy loaded components accept an option to avoid SSR, as well as options available in the route configurations
+> 💡 `loadable()` lazy loaded components accept an option to avoid SSR, as well as options available in the route component mappings
 
 There are many articles online that explain hydration errors and offer suggestions as to what we might be doing wrong to cause a mismatch between the server rendered HTML and the client rendered HTML
 
