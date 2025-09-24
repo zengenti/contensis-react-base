@@ -265,7 +265,18 @@ class DeliveryApi {
       }
       return null;
     };
-    this.getServerSideVersionStatus = request => request.query.versionStatus || deliveryApi.getVersionStatusFromHeaders(request.headers) || deliveryApi.getVersionStatusFromHostname(request.hostname);
+    this.getServerSideVersionStatus = request => {
+      var _ref, _request$query$versio;
+      const rawStatus = (_ref = (_request$query$versio = request.query.versionStatus) != null ? _request$query$versio : deliveryApi.getVersionStatusFromHeaders(request.headers)) != null ? _ref : deliveryApi.getVersionStatusFromHostname(request.hostname);
+      const status = typeof rawStatus === 'string' ? rawStatus.trim().toLowerCase() : '';
+
+      // Validate the status to only allow known values and ignore any others
+      // to prevent malicious injection
+      if (['latest', 'published'].includes(status)) {
+        return status;
+      }
+      return undefined;
+    };
     this.getVersionStatusFromHeaders = headers => {
       const versionStatusHeader = headers['x-entry-versionstatus'];
       if (typeof versionStatusHeader !== 'undefined') return versionStatusHeader;
@@ -315,4 +326,4 @@ const deliveryApi = new DeliveryApi();
 const deliveryApiWithCookies = ssr => new DeliveryApi(ssr);
 
 export { LruCache as L, cachedSearch as a, cachedSearchWithCookies as b, cachedSearchWithContext as c, deliveryApi as d, deliveryApiWithCookies as e, getClientConfig as g };
-//# sourceMappingURL=ContensisDeliveryApi-ChtL3p_T.js.map
+//# sourceMappingURL=ContensisDeliveryApi-n2YHcRbB.js.map

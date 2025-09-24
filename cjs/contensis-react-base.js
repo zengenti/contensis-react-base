@@ -2,12 +2,12 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var ContensisDeliveryApi = require('./ContensisDeliveryApi-CvT9MxKb.js');
+var ContensisDeliveryApi = require('./ContensisDeliveryApi-DmwFulAI.js');
 var contensisDeliveryApi = require('contensis-delivery-api');
 var React = require('react');
 var reactRedux = require('react-redux');
 var mapJson = require('jsonpath-mapper');
-var sagas = require('./sagas-C7IjEAVx.js');
+var sagas = require('./sagas-Bzc_kZoN.js');
 require('reselect');
 require('immer');
 require('deep-equal');
@@ -32,22 +32,22 @@ var lodashClean = require('lodash-clean');
 var CookieHelper_class = require('./CookieHelper.class-Det3qfdU.js');
 var cookiesMiddleware = require('universal-cookie-express');
 var store = require('./store-Bm0URUih.js');
-var App = require('./App-CUcIpQy8.js');
+var App = require('./App-8caq5ze4.js');
 var version = require('./version-V6MVKCeD.js');
 var selectors = require('./selectors-Bp_TrwG5.js');
-var RouteLoader = require('./RouteLoader-Nl1cKazU.js');
+var RouteLoader = require('./RouteLoader-BiwyvbQ8.js');
 var stream = require('stream');
 var server$2 = require('@loadable/server');
 var chalk = require('chalk');
 var minifyCssString = require('minify-css-string');
 var reactCookie = require('react-cookie');
 var server$3 = require('react-router-dom/server');
-var SSRContext = require('./SSRContext-Nqc9Re-h.js');
+var SSRContext = require('./SSRContext-Bs4y-Prq.js');
 require('./CookieConstants-DfPiWCRZ.js');
 require('loglevel');
 require('@redux-saga/core/effects');
 require('./version-BolvQdgT.js');
-require('./util-B88a6CU7.js');
+require('./util-r0CzJGhK.js');
 require('./_commonjsHelpers-BJu3ubxk.js');
 require('redux');
 require('redux-thunk');
@@ -1332,7 +1332,7 @@ const webApp = (app, ReactApp, config) => {
       // Dynamic doesn't need sagas
       // or styles, or any split component bundles
       // nor are we streaming responses
-      const isDynamicHints = `<script ${attributes}>window.versionStatus = "${versionStatus}"; window.isDynamic = true;</script>`;
+      const isDynamicHints = `<script ${attributes}>window.isDynamic = true;</script>`;
       const jsx = ssrJsxProducer(ReactApp, {
         providers: jsxProviderProps,
         props: jsxReactAppProps
@@ -1394,10 +1394,7 @@ const webApp = (app, ReactApp, config) => {
             return true;
           }
           if (!disableSsrRedux) {
-            // window.versionStatus is not strictly required here and is added to support cases
-            // where a consumer may not be using the contensisVersionStatus in redux and calling
-            // the `getClientSideVersionStatus()` method directly
-            serialisedReduxData = `<script ${attributes}>window.__USE_HYDRATE__ = true; window.versionStatus = "${versionStatus}"; window.REDUX_DATA = ${serialisedReduxData}</script>`;
+            serialisedReduxData = `<script ${attributes}>window.__USE_HYDRATE__ = true; window.REDUX_DATA = ${serialisedReduxData}</script>`;
           }
         }
 

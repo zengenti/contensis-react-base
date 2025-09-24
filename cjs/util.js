@@ -1,8 +1,8 @@
 'use strict';
 
 var VersionInfo = require('./VersionInfo-D0mF1vkY.js');
-var ContensisDeliveryApi = require('./ContensisDeliveryApi-CvT9MxKb.js');
-var SSRContext = require('./SSRContext-Nqc9Re-h.js');
+var ContensisDeliveryApi = require('./ContensisDeliveryApi-DmwFulAI.js');
+var SSRContext = require('./SSRContext-Bs4y-Prq.js');
 var React = require('react');
 var mapJson = require('jsonpath-mapper');
 var reactRouterDom = require('react-router-dom');

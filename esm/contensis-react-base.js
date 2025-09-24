@@ -1,9 +1,9 @@
-import { a as cachedSearch, d as deliveryApi } from './ContensisDeliveryApi-ChtL3p_T.js';
+import { a as cachedSearch, d as deliveryApi } from './ContensisDeliveryApi-n2YHcRbB.js';
 import { Query as Query$1 } from 'contensis-delivery-api';
 import React from 'react';
 import { Provider } from 'react-redux';
 import mapJson from 'jsonpath-mapper';
-import { a6 as defaultExpressions, a7 as termExpressions, a8 as contentTypeIdExpression, a9 as filterExpressions, aa as orderByExpression, ab as customWhereExpressions, ac as cloneDeep } from './sagas-Dah2cQes.js';
+import { a6 as defaultExpressions, a7 as termExpressions, a8 as contentTypeIdExpression, a9 as filterExpressions, aa as orderByExpression, ab as customWhereExpressions, ac as cloneDeep } from './sagas-7mRhxP2k.js';
 import 'reselect';
 import 'immer';
 import 'deep-equal';
@@ -28,23 +28,23 @@ import { buildCleaner } from 'lodash-clean';
 import { a as Cookies } from './CookieHelper.class-C6rTRl_1.js';
 import cookiesMiddleware from 'universal-cookie-express';
 import { c as createStore } from './store-BMDimGSw.js';
-import { h as history, p as pickProject, r as rootSaga } from './App-CkaM8nMV.js';
-export { A as ReactApp } from './App-CkaM8nMV.js';
+import { h as history, p as pickProject, r as rootSaga } from './App-CKt5I9OJ.js';
+export { A as ReactApp } from './App-CKt5I9OJ.js';
 import { s as setVersionStatus, d as setVersion } from './version-CBZWG4_w.js';
 import { a3 as selectSurrogateKeys, a4 as selectSsrApiCalls, h as selectRouteEntry, n as selectCurrentProject, g as getImmutableOrJS, s as setCurrentProject, K as selectCurrentSearch } from './selectors-CNC7sDxg.js';
-import { H as HttpContext, m as mergeStaticRoutes } from './RouteLoader-CHaE-Ptt.js';
+import { H as HttpContext, m as mergeStaticRoutes } from './RouteLoader-7H4RnO8Z.js';
 import { Transform } from 'stream';
 import { ChunkExtractor, ChunkExtractorManager } from '@loadable/server';
 import chalk from 'chalk';
 import minifyCssString from 'minify-css-string';
 import { CookiesProvider } from 'react-cookie';
 import { StaticRouter } from 'react-router-dom/server';
-import { S as SSRContextProvider } from './SSRContext-45VSVBoC.js';
+import { S as SSRContextProvider } from './SSRContext-Bo1HZpIj.js';
 import './CookieConstants-DEmbwzYr.js';
 import 'loglevel';
 import '@redux-saga/core/effects';
 import './version-CaL4czqJ.js';
-import './util-COjCGX-7.js';
+import './util-VgzxVSl5.js';
 import './_commonjsHelpers-BFTU3MAI.js';
 import 'redux';
 import 'redux-thunk';
@@ -1315,7 +1315,7 @@ const webApp = (app, ReactApp, config) => {
       // Dynamic doesn't need sagas
       // or styles, or any split component bundles
       // nor are we streaming responses
-      const isDynamicHints = `<script ${attributes}>window.versionStatus = "${versionStatus}"; window.isDynamic = true;</script>`;
+      const isDynamicHints = `<script ${attributes}>window.isDynamic = true;</script>`;
       const jsx = ssrJsxProducer(ReactApp, {
         providers: jsxProviderProps,
         props: jsxReactAppProps
@@ -1377,10 +1377,7 @@ const webApp = (app, ReactApp, config) => {
             return true;
           }
           if (!disableSsrRedux) {
-            // window.versionStatus is not strictly required here and is added to support cases
-            // where a consumer may not be using the contensisVersionStatus in redux and calling
-            // the `getClientSideVersionStatus()` method directly
-            serialisedReduxData = `<script ${attributes}>window.__USE_HYDRATE__ = true; window.versionStatus = "${versionStatus}"; window.REDUX_DATA = ${serialisedReduxData}</script>`;
+            serialisedReduxData = `<script ${attributes}>window.__USE_HYDRATE__ = true; window.REDUX_DATA = ${serialisedReduxData}</script>`;
           }
         }
 
