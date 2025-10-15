@@ -13,17 +13,27 @@ import { ServerStyleSheet } from 'styled-components';
  * @param stream all chunks are piped to this stream to add additional style elements to each streamed chunk
  */
 export const renderStream = (
-  // eslint-disable-next-line no-unused-vars
   getContextHtml: (isFinal?: boolean) => string,
   jsx: ReactNode,
   response: Response,
   stream: Writable
 ) => {
+  // Store timeout reference for cleanup
+  let timeoutId: ReturnType<typeof setTimeout> | null = null;
+
+  const disposeTimeout = () => {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+      timeoutId = null;
+    }
+  };
+
   const { abort, pipe } = renderToPipeableStream(jsx, {
     onShellReady() {
       const html = getContextHtml(false);
       if (!html) {
         // this means we have finished with the response already
+        disposeTimeout();
         abort();
       } else {
         const header = html.split('{{APP}}')[0];
@@ -36,8 +46,10 @@ export const renderStream = (
     onAllReady() {
       const footer = getContextHtml(true).split('{{APP}}')[1];
       stream.write(footer);
+      disposeTimeout(); // Clean up timeout when stream completes
     },
     onShellError(error: unknown) {
+      disposeTimeout(); // Clean up timeout on error
       response.statusCode = 500;
       response.setHeader('content-type', 'text/html; charset=utf-8');
       response.send('<h1>Something went wrong</h1>');
@@ -48,9 +60,12 @@ export const renderStream = (
     },
   });
 
-  // Abandon and switch to client rendering if enough time passes.
+  // Abandon and switch to client rendering after 30s.
   // Try lowering this to see the client recover.
-  setTimeout(() => abort(), 30 * 1000);
+  timeoutId = setTimeout(() => {
+    timeoutId = null; // Clear reference when timeout executes
+    abort();
+  }, 30 * 1000);
 
   stream?.pipe(response);
 };
