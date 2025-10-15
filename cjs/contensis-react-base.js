@@ -819,6 +819,14 @@ const handleResponse = (request, response, content, send = 'send') => {
  * @param stream all chunks are piped to this stream to add additional style elements to each streamed chunk
  */
 const renderStream = (getContextHtml, jsx, response, stream) => {
+  // Store timeout reference for cleanup
+  let timeoutId = null;
+  const disposeTimeout = () => {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+      timeoutId = null;
+    }
+  };
   const {
     abort,
     pipe
@@ -827,6 +835,7 @@ const renderStream = (getContextHtml, jsx, response, stream) => {
       const html = getContextHtml(false);
       if (!html) {
         // this means we have finished with the response already
+        disposeTimeout();
         abort();
       } else {
         const header = html.split('{{APP}}')[0];
@@ -838,8 +847,10 @@ const renderStream = (getContextHtml, jsx, response, stream) => {
     onAllReady() {
       const footer = getContextHtml(true).split('{{APP}}')[1];
       stream.write(footer);
+      disposeTimeout(); // Clean up timeout when stream completes
     },
     onShellError(error) {
+      disposeTimeout(); // Clean up timeout on error
       response.statusCode = 500;
       response.setHeader('content-type', 'text/html; charset=utf-8');
       response.send('<h1>Something went wrong</h1>');
@@ -850,9 +861,12 @@ const renderStream = (getContextHtml, jsx, response, stream) => {
     }
   });
 
-  // Abandon and switch to client rendering if enough time passes.
+  // Abandon and switch to client rendering after 30s.
   // Try lowering this to see the client recover.
-  setTimeout(() => abort(), 30 * 1000);
+  timeoutId = setTimeout(() => {
+    timeoutId = null; // Clear reference when timeout executes
+    abort();
+  }, 30 * 1000);
   stream === null || stream === void 0 || stream.pipe(response);
 };
 
