@@ -62,6 +62,7 @@ export type Filters = {
     [key: string]: Filter;
 };
 export type Filter = {
+    aggregations?: boolean | string | string[];
     contentTypeId?: string;
     customWhere?: CustomWhereClause;
     defaultValue?: string;
