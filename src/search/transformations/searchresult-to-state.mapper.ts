@@ -1,3 +1,5 @@
+import { Aggregation } from 'contensis-core-api';
+import merge from 'deepmerge';
 import {
   default as mapSearchResultToState,
   MappingTemplate,
@@ -11,7 +13,7 @@ import {
   LoadFiltersSearchResults,
   SearchResults,
 } from '../models/SearchActions';
-import { AppState, Filters } from '../models/SearchState';
+import { AppState, FilterItem, Filters } from '../models/SearchState';
 import { getFilters } from '../redux/selectors';
 import {
   SET_SEARCH_ENTRIES,
@@ -69,13 +71,72 @@ export const facetTemplate = {
           : undefined;
       if (!aggregations) return {};
 
-      // Handle aggregations client-side where the filter items have loaded before the results containing the aggregations
+      // Handle aggregations client-side where the filter items have loaded
+      // before the results containing the aggregations
       const filters = cloneDeep(
         getFilters(state, action.facet, action.context, 'js')
       ) as Filters;
-      for (const [filterKey, filter] of Object.entries(filters)) {
-        const aggregation = aggregations[convertKeyForAggregation(filterKey)];
+      for (const filter of Object.values(filters)) {
+        let aggregation: Aggregation = {};
+        if (typeof filter.fieldId === 'string') {
+          aggregation =
+            aggregations[convertKeyForAggregation(filter.fieldId)] || {};
+        } else if (Array.isArray(filter.fieldId)) {
+          for (const fieldId of filter.fieldId) {
+            aggregation = merge(
+              aggregation,
+              aggregations[convertKeyForAggregation(fieldId)] || {}
+            );
+          }
+        }
+        // Populate filter items from aggregations for example tag fields
+        if (filter.aggregations) {
+          // Use supplied aggregations instead of field aggregations
+          if (typeof filter.aggregations === 'string') {
+            aggregation =
+              aggregations[convertKeyForAggregation(filter.aggregations)] || {};
+          } else if (Array.isArray(filter.aggregations)) {
+            aggregation = {};
+            for (const fieldId of filter.aggregations) {
+              aggregation = merge(
+                aggregation,
+                aggregations[convertKeyForAggregation(fieldId)] || {}
+              );
+            }
+          }
+          // Start with existing items that are not in the aggregation
+          const existingItemsNotInAggregation = (filter.items || [])
+            .filter(item => !(item.key in (aggregation || {})))
+            .map(item => {
+              delete item.aggregate;
+              return item;
+            });
 
+          // Map aggregation entries to filter items
+          const aggregationItems = Object.entries(aggregation || {}).map(
+            ([key, aggregate]) => {
+              const existing =
+                filter.items?.find(item => item.key === key) ||
+                ({} as FilterItem);
+              return {
+                key,
+                title:
+                  existing?.title || `${key[0].toUpperCase()}${key.slice(1)}`,
+                isSelected: !!existing?.isSelected,
+                aggregate,
+              };
+            }
+          );
+
+          // Combine existing items not in aggregation with aggregation items
+          filter.items = [
+            ...existingItemsNotInAggregation,
+            ...aggregationItems,
+          ].sort((a, b) => (a.title || a.key).localeCompare(b.title || b.key));
+          continue;
+        }
+
+        // Update aggregation counts on existing filter items
         for (const filterItem of filter.items || []) {
           if (!aggregation) delete filterItem.aggregate;
           else {

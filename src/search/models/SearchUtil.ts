@@ -1,7 +1,7 @@
-import { Entry } from 'contensis-delivery-api/lib/models';
-import { PagedList } from 'contensis-core-api';
+import { Entry } from 'contensis-delivery-api';
+import { PagedSearchList } from 'contensis-core-api';
 
 export type TimedSearchResponse = {
   duration: number;
-  payload: PagedList<Entry> | any[];
+  payload: PagedSearchList<Entry> | any[];
 };

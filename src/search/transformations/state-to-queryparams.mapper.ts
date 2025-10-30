@@ -41,9 +41,19 @@ const queryParamsTemplate = {
     const { context, facet, state } = root;
     const stateFilters = getFilters(state, facet, context, 'js');
     const aggregations: QueryAggregations = {};
-    for (const [filterKey, filter] of Object.entries(stateFilters)) {
-      if (filter.fieldId && !Array.isArray(filter.fieldId)) {
-        aggregations[convertKeyForAggregation(filterKey)] = {
+    for (const filter of Object.values(stateFilters)) {
+      if (Array.isArray(filter.fieldId)) {
+        for (const fieldId of filter.fieldId) {
+          const aggregationKey = convertKeyForAggregation(fieldId);
+          if (!aggregations[aggregationKey]) {
+            aggregations[aggregationKey] = {
+              field: convertFieldIdForAggregation(fieldId),
+              size: 100,
+            };
+          }
+        }
+      } else if (filter.fieldId) {
+        aggregations[convertKeyForAggregation(filter.fieldId)] = {
           field: convertFieldIdForAggregation(filter.fieldId),
           size: 100,
         };

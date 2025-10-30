@@ -46,13 +46,15 @@ export type SearchFacet = {
 export type SearchFilters = { [key: string]: SearchFilter };
 
 export type SearchFilter = {
+  /** Populate items using aggregations, `true` will enable or supply name(s) of other field aggregations to populate the items with */
+  aggregations?: boolean | string | string[];
   /** The content type id we will dynamically load entries from and load into state under the items[] */
   contentTypeId?: string | string[];
   /** An array of CustomWhereClause to include in the search query when dynamically loading entries via the contentTypeId key */
   customWhere?: CustomWhereClause;
   /** Use this to set a specific value to render for the initial / unselected option in this filter */
   defaultValue?: string;
-  /** The content type field we will apply the filter key to, to filter the list of returned results. */
+  /** The content type field id(s) we will apply selected filter keys to, so we can filter the list of returned results. */
   fieldId: string | string[];
   /** The Delivery API search operator we will use to filter the list of returned results. */
   fieldOperator?: FieldOperators;
