@@ -25,7 +25,7 @@ import {
 } from '../models/SearchActions';
 import { WeightedSearchField } from '../models/Search';
 import {
-  convertFieldIdForAggregation,
+  cleanseFieldIdForAggregation,
   convertKeyForAggregation,
 } from '../search/util';
 
@@ -43,20 +43,16 @@ const queryParamsTemplate = {
     const aggregations: QueryAggregations = {};
     for (const filter of Object.values(stateFilters)) {
       if (Array.isArray(filter.fieldId)) {
-        for (const fieldId of filter.fieldId) {
-          const aggregationKey = convertKeyForAggregation(fieldId);
+        for (const id of filter.fieldId) {
+          const field = cleanseFieldIdForAggregation(id);
+          const aggregationKey = convertKeyForAggregation(field);
           if (!aggregations[aggregationKey]) {
-            aggregations[aggregationKey] = {
-              field: convertFieldIdForAggregation(fieldId),
-              size: 100,
-            };
+            aggregations[aggregationKey] = { field, size: 100 };
           }
         }
       } else if (filter.fieldId) {
-        aggregations[convertKeyForAggregation(filter.fieldId)] = {
-          field: convertFieldIdForAggregation(filter.fieldId),
-          size: 100,
-        };
+        const field = cleanseFieldIdForAggregation(filter.fieldId);
+        aggregations[convertKeyForAggregation(field)] = { field, size: 100 };
       }
     }
 

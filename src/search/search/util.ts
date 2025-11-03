@@ -52,7 +52,7 @@ export function fixFreeTextForElastic(s: string): string {
 export const convertKeyForAggregation = (key: string) => `sf_${key}`;
 export const parseKeyForAggregation = (key: string) =>
   key.startsWith(`sf_`) ? key.slice(3) : key;
-export const convertFieldIdForAggregation = (fieldId: string) =>
+export const cleanseFieldIdForAggregation = (fieldId: string) =>
   fieldId.replaceAll('[]', '');
 
 export const timedSearch = async (
@@ -71,7 +71,7 @@ export const timedSearch = async (
   const payload = (await ssr.api.search(
     query,
     linkDepth,
-    projectId,
+    projectId
   )) as PagedList<Entry>;
   const end = now();
 
