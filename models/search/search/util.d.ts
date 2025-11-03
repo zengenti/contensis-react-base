@@ -19,7 +19,7 @@ export declare function fixFreeTextForElastic(s: string): string;
  */
 export declare const convertKeyForAggregation: (key: string) => string;
 export declare const parseKeyForAggregation: (key: string) => string;
-export declare const convertFieldIdForAggregation: (fieldId: string) => string;
+export declare const cleanseFieldIdForAggregation: (fieldId: string) => string;
 export declare const timedSearch: (query: Query, linkDepth?: number, projectId?: string, ssr?: {
     api: CachedSearch;
 }) => Promise<null | TimedSearchResponse>;

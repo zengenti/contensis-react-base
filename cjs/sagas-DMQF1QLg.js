@@ -8,7 +8,7 @@ var effects = require('@redux-saga/core/effects');
 var version = require('./version-BolvQdgT.js');
 var ContensisDeliveryApi = require('./ContensisDeliveryApi-DmwFulAI.js');
 var contensisDeliveryApi = require('contensis-delivery-api');
-var util = require('./util-r0CzJGhK.js');
+var util = require('./util-Dt7DhVjf.js');
 var mapJson = require('jsonpath-mapper');
 var contensisCoreApi = require('contensis-core-api');
 var merge = require('deepmerge');
@@ -5118,18 +5118,20 @@ const queryParamsTemplate = {
     const aggregations = {};
     for (const filter of Object.values(stateFilters)) {
       if (Array.isArray(filter.fieldId)) {
-        for (const fieldId of filter.fieldId) {
-          const aggregationKey = util.convertKeyForAggregation(fieldId);
+        for (const id of filter.fieldId) {
+          const field = util.cleanseFieldIdForAggregation(id);
+          const aggregationKey = util.convertKeyForAggregation(field);
           if (!aggregations[aggregationKey]) {
             aggregations[aggregationKey] = {
-              field: util.convertFieldIdForAggregation(fieldId),
+              field,
               size: 100
             };
           }
         }
       } else if (filter.fieldId) {
-        aggregations[util.convertKeyForAggregation(filter.fieldId)] = {
-          field: util.convertFieldIdForAggregation(filter.fieldId),
+        const field = util.cleanseFieldIdForAggregation(filter.fieldId);
+        aggregations[util.convertKeyForAggregation(field)] = {
+          field,
           size: 100
         };
       }
@@ -5886,4 +5888,4 @@ exports.updateSortOrder = updateSortOrder$1;
 exports.useFacets = useFacets;
 exports.useListing = useListing;
 exports.withMappers = withMappers;
-//# sourceMappingURL=sagas-BR5Vo-sn.js.map
+//# sourceMappingURL=sagas-DMQF1QLg.js.map
