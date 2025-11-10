@@ -100,7 +100,15 @@ const webApp = (
       },
       response: Response
     ) => {
-      const url = encodeURI(request.url);
+      /*
+       * Do not inject url directly into HTML as it can lead to XSS attacks
+       * CWE-79: Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')
+       * CWE-96: Improper Neutralization of Script-Related HTML Tags in a Web Page (Basic XSS)
+       * Removed URL encoding as it causes inconsistencies when routes contain encoded characters in SSR
+       * e.g. /search?category=sport%20and%20wellbeing becomes /search?category=sport%2520and%2520wellbeing
+       * // const url = encodeURI(request.url);
+       */
+      const url = request.url;
 
       const matchedStaticRoute = matchRoutes(
         routes.StaticRoutes as RouteObject[],
