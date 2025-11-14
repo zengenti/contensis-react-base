@@ -3,6 +3,7 @@ import { QueryParams as QueryParams2 } from '../models/Queries';
 import { CustomApi, SearchQueryParams } from '../models/Search';
 import {
   AppState,
+  Composition,
   Facet,
   Facets,
   Filters,
@@ -20,7 +21,10 @@ type ContextType = keyof typeof Context;
 export const getSearchContext = (state: AppState): ContextType =>
   getIn(state, ['search', 'context'], Context.facets);
 
-export const getCurrent = (state: AppState, context: ContextType = Context.facets) =>
+export const getCurrent = (
+  state: AppState,
+  context: ContextType = getSearchContext(state)
+) =>
   context === Context.facets
     ? getCurrentFacet(state)
     : getCurrentListing(state);
@@ -34,6 +38,9 @@ export const getCurrentListing = (state: AppState): string =>
 export const getCurrentTab = (state: AppState): number =>
   getIn(state, ['search', Context.facets, getCurrentFacet(state), 'tabId'], 0);
 
+export const getCurrentComposition = (state: AppState): string =>
+  getIn(state, ['search', 'currentComposition']);
+
 export const getFacets = (state: AppState, returnType?: StateType): Facets =>
   getIn(state, ['search', Context.facets], {}, returnType);
 
@@ -44,6 +51,21 @@ export const getTabFacets = (state: AppState) =>
         getIn(getFacets(state), [key, 'tabId'], 0) === getCurrentTab(state)
     )
   );
+
+export const getCompositionFacets = (state: AppState, composition?: string) => {
+  const currentComposition = composition || getCurrentComposition(state);
+  if (!currentComposition) return {};
+
+  const compositionConfig = getSearchCompositions(state)[currentComposition];
+  const context = getSearchContext(state);
+  if (!compositionConfig[context]) return {};
+
+  const facets: Facets = {};
+  for (const facet of compositionConfig[context]) {
+    facets[facet] = getFacet(state, facet, context);
+  }
+  return facets;
+};
 
 export const getFacetTitles = (state: AppState) =>
   Object.entries(getFacets(state, 'js')).map(([key, facet = {}]) => ({
@@ -75,6 +97,18 @@ export const getListing = (state: AppState, listing = '') => {
     ['search', Context.listings, currentListing],
     {}
   ) as Facet;
+};
+
+export const getComposition = (state: AppState, composition = '') => {
+  const currentComposition = composition || getCurrentComposition(state);
+  const context = getSearchContext(state);
+  const compositionConfig = getSearchCompositions(state)[currentComposition];
+  if (!compositionConfig) return {};
+  const facets = getCompositionFacets(state, currentComposition);
+  return {
+    ...compositionConfig,
+    [context]: facets,
+  } as Composition & { listings?: Facets; facets?: Facets };
 };
 
 /** Return filter state for the current (or provided) facet */
@@ -356,6 +390,9 @@ export const getSearchTerm = (state: AppState): string =>
 
 export const getSearchTabs = (state: AppState, returnType?: StateType): Tab[] =>
   getIn(state, ['search', 'tabs'], [], returnType);
+
+export const getSearchCompositions = (state: AppState): Composition[] =>
+  getIn(state, ['search', 'compositions'], {}, 'js');
 
 export const getQueryParams = (
   state: AppState,

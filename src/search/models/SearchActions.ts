@@ -55,6 +55,10 @@ type InitListingParams = {
    * Triggers the loading of the search config listing
    */
   listingType?: string;
+  /**
+   * Triggers the loading of the search config composition
+   */
+  composition?: string;
   mapper?: Mappers['results'];
   mappers?: Mappers;
   params: SearchParams;
@@ -153,9 +157,16 @@ export type ApplySearchFilterActionCreator = (
   key: string
 ) => ApplySearchFilterAction;
 
-export type ClearFiltersAction = Action;
+export type ClearFiltersAction = Action & {
+  clear?: { term?: boolean; keys?: boolean | string[] };
+};
 export type ClearFiltersActionCreator = (
-  filterKey?: string
+  clear?:
+    | string
+    | {
+        term?: boolean;
+        keys?: boolean | string[];
+      }
 ) => ClearFiltersAction;
 
 export type UpdateCurrentFacetAction = Action & { facet: string };

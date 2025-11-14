@@ -189,6 +189,7 @@ export default (config: SearchConfig) => {
   const initState: SearchState = {
     ...initialState,
     tabs: config.tabs as any,
+    compositions: config.compositions || {},
     facets: generateSearchFacets(Context.facets, config),
     listings: generateSearchFacets(Context.listings, config),
     minilist: generateSearchFacets(Context.minilist, config),
@@ -353,8 +354,9 @@ export default (config: SearchConfig) => {
               ? 'currentFacet'
               : 'currentListing'
           ] = facet;
+          state.currentComposition = action.composition;
           state.term = term;
-          state.tabs[tabId].currentFacet = facet;
+          if (state.tabs?.[tabId]) state.tabs[tabId].currentFacet = facet;
           state[context][facet].pagingInfo = {
             ...(state[context][facet].pagingInfo || pagingInfo),
             pageIndex:

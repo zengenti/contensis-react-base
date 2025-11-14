@@ -35,6 +35,7 @@ export function* handleSearchSaga({
   // Check do we meet conditions to run the search saga
   const invokeSearch =
     onPaths.find(p => location.pathname.startsWith(p)) ||
+    searchOpts.composition ||
     searchOpts.facet ||
     searchOpts.listingType;
 

@@ -16,6 +16,8 @@ import { Context } from '../models/Enums';
 import { ListingProps, UseListingProps } from '../models/SearchProps';
 import { AppState } from '../models/SearchState';
 import {
+  getComposition,
+  getCurrentComposition,
   getPaging,
   getResults,
   getSelectedFilters,
@@ -39,6 +41,8 @@ const makeSelectListingProps = () =>
     (state: AppState) => state,
     (_: any, mappers: Mappers) => mappers,
     (state: AppState, mappers: Mappers) => ({
+      composition: getComposition(state),
+      currentComposition: getCurrentComposition(state),
       currentListing: getCurrent(state),
       currentPageIndex: getPageIndex(state),
       listing: getListing(state),
@@ -97,6 +101,8 @@ const useListing = <SearchResults extends Record<string, any>>(
   };
 
   const {
+    composition,
+    currentComposition,
     currentListing,
     currentPageIndex,
     featured,
@@ -113,6 +119,8 @@ const useListing = <SearchResults extends Record<string, any>>(
   } = useSelector((state: AppState) => selectListingProps(state, m));
 
   return {
+    composition,
+    currentComposition,
     currentListing,
     currentPageIndex,
     featured,

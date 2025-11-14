@@ -5,11 +5,11 @@ import { selectCurrentPath } from '~/routing/redux/selectors';
 
 import getIn from '../redux/getIn';
 import {
-  getSelectedFilters,
-  getSearchTerm,
-  getCurrentFacet,
-  getSearchContext,
+  getCurrent,
   getRenderableSelectedFilters,
+  getSearchContext,
+  getSearchTerm,
+  getSelectedFilters,
 } from '../redux/selectors';
 import { removeEmptyAttributes } from '../search/util';
 
@@ -20,24 +20,24 @@ const searchUriTemplate: SearchUriMapping = {
     const context = getSearchContext(state);
     const currentPath = selectCurrentPath(state) || '/search';
 
-    if (context !== 'listings') {
-      const currentFacet = facet || getCurrentFacet(state);
+    // if (context !== 'listings') {
+    const currentFacet = facet || getCurrent(state);
 
-      const filters = getSelectedFilters(state, facet, context);
-      const currentFilter = filters.contentTypeId;
+    const filters = getSelectedFilters(state, facet, context);
+    const currentFilter = filters.contentTypeId;
 
-      // Check if we have a filter first
-      const newPath =
-        currentFilter?.length > 0 && currentFacet
-          ? `${currentPath}/${currentFacet}/${currentFilter}`
-          : currentFacet
-            ? `${currentPath}/${currentFacet}`
-            : currentPath;
+    // Check if we have a filter first
+    const newPath =
+      currentFilter?.length > 0 && currentFacet
+        ? `${currentPath}/${currentFacet}/${currentFilter}`
+        : currentFacet
+          ? `${currentPath}/${currentFacet}`
+          : currentPath;
 
-      return newPath;
-    } else {
-      return currentPath;
-    }
+    return newPath;
+    // } else {
+    //   return currentPath;
+    // }
   },
   search: ({ state, facet, orderBy, term, pageIndex, pageSize }) => {
     const searchContext = getSearchContext(state);

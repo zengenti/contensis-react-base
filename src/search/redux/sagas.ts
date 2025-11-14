@@ -34,16 +34,19 @@ import {
   withMappers,
 } from './actions';
 import {
-  getCurrentFacet,
-  getPageIndex,
-  getFacets,
-  getSearchTabs,
+  getCompositionFacets,
+  getCurrent,
+  getCurrentComposition,
   getCustomApi,
-  getSelectedFilters,
   getFacet,
-  getIsSsr,
+  getFacets,
   getFiltersToLoad,
+  getIsSsr,
+  getPageIndex,
   getResults,
+  getSearchCompositions,
+  getSearchTabs,
+  getSelectedFilters,
 } from './selectors';
 import { searchQuery, filterQuery } from '../search/queries';
 import mapStateToSearchUri from '../transformations/state-to-searchuri';
@@ -108,14 +111,39 @@ const toJS = (obj: any) =>
 export function* setRouteFilters(
   action: InitListingAction | SetRouteFiltersOptions
 ) {
-  const { mappers, params, listingType, facet, defaultLang, debug, ssr } = action;
-  const context = listingType ? Context.listings : Context.facets;
+  const { mappers, params, composition, defaultLang, debug, ssr } = action;
+
   const state: AppState = toJS(yield select());
   const isSSR = getIsSsr(state);
   sanitiseParams(params);
 
   // Get current facet from params or state
-  let currentFacet = (params && params.facet) || listingType || facet;
+  const facet = params?.facet || action.facet;
+  const listingType = params?.listingType || action.listingType;
+  let context = listingType ? Context.listings : Context.facets;
+  let currentFacet = listingType || facet;
+
+  if (composition) {
+    const compositions = getSearchCompositions(state);
+    const compositionConfig = compositions[composition];
+    if (compositionConfig) {
+      if ('facets' in compositionConfig) {
+        const compFacets = compositionConfig.facets;
+        if (!facet) {
+          const firstFacetKey = Object.keys(compFacets)[0];
+          context = Context.facets;
+          currentFacet = firstFacetKey;
+        }
+      } else if ('listings' in compositionConfig) {
+        const compListings = compositionConfig.listings;
+        if (!listingType) {
+          const firstListingKey = Object.keys(compListings)[0];
+          context = Context.listings;
+          currentFacet = firstListingKey;
+        }
+      }
+    }
+  }
 
   // If Listing use listing type (ignore params.facet)
   if (context === Context.listings) {
@@ -132,6 +160,7 @@ export function* setRouteFilters(
   const nextAction = {
     type: SET_ROUTE_FILTERS,
     context,
+    composition,
     facet: currentFacet,
     mappers,
     params,
@@ -279,8 +308,7 @@ function* loadFilter(action: LoadFilterAction) {
         projectId
       )) as TaxonomyNode;
 
-      if (!payload)
-        throw new Error(`Nothing returned for taxonomy: '${path}'`);
+      if (!payload) throw new Error(`Nothing returned for taxonomy: '${path}'`);
       if ((payload as any).type === 'error') throw payload;
 
       createStateFrom.payload = payload;
@@ -402,10 +430,17 @@ function* executeSearch(action: ExecuteSearchAction) {
 function* preloadOtherFacets(action: SetSearchEntriesAction) {
   const { preload, context, facet, debug } = action;
   const state = (yield select()) as AppState;
-  const currentFacet = getCurrentFacet(state);
+  const currentFacet = getCurrent(state, context);
+  const currentComposition = getCurrentComposition(state);
 
-  if (!preload && facet === currentFacet && context !== Context.listings) {
-    const allFacets = getFacets(state, 'js');
+  if (
+    !preload &&
+    facet === currentFacet &&
+    (context !== Context.listings || currentComposition)
+  ) {
+    const allFacets = currentComposition
+      ? getCompositionFacets(state, currentComposition)
+      : getFacets(state, 'js');
     const otherFacets = Object.keys(allFacets).filter(f => f !== currentFacet);
 
     yield all(

@@ -19,6 +19,7 @@ import {
   SelectedFilters,
   TabAndFacets,
 } from '../models/SearchState';
+import { getComposition } from '../redux/selectors';
 
 // TODO: some of these props are not implemented yet
 export interface MinilistProps<SearchResults = any> {
@@ -37,6 +38,8 @@ export interface MinilistProps<SearchResults = any> {
 }
 export interface ListingProps<SearchResults = any> {
   clearFilters: typeof clearFilters;
+  composition?: Omit<ReturnType<typeof getComposition>, 'facets'>;
+  currentComposition?: string;
   currentListing: string;
   currentPageIndex: number;
   featured: SearchResults[];
@@ -61,6 +64,8 @@ export interface ListingProps<SearchResults = any> {
 
 export interface SearchProps<SearchResults = any> {
   clearFilters: typeof clearFilters;
+  composition?: Omit<ReturnType<typeof getComposition>, 'listings'>;
+  currentComposition?: string;
   currentFacet: string;
   currentPageIndex: number;
   currentTabIndex: number;

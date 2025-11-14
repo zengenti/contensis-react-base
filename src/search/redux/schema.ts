@@ -66,9 +66,11 @@ const config = {
 };
 
 const searchState: SearchState = {
+  compositions: {},
   context: 'facets',
   currentFacet: '',
   currentListing: '',
+  currentComposition: '',
   facets: {},
   listings: {},
   minilist: {},
