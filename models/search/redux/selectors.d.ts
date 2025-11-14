@@ -1,7 +1,7 @@
 import { Context } from '../models/Enums';
 import { QueryParams as QueryParams2 } from '../models/Queries';
 import { CustomApi, SearchQueryParams } from '../models/Search';
-import { AppState, Facet, Facets, Filters, Paging, SelectedFilters, Tab } from '../models/SearchState';
+import { AppState, Composition, Facet, Facets, Filters, Paging, SelectedFilters, Tab } from '../models/SearchState';
 type StateType = 'immutable' | 'js';
 type ContextType = keyof typeof Context;
 export declare const getSearchContext: (state: AppState) => ContextType;
@@ -9,10 +9,12 @@ export declare const getCurrent: (state: AppState, context?: ContextType) => str
 export declare const getCurrentFacet: (state: AppState) => string;
 export declare const getCurrentListing: (state: AppState) => string;
 export declare const getCurrentTab: (state: AppState) => number;
+export declare const getCurrentComposition: (state: AppState) => string;
 export declare const getFacets: (state: AppState, returnType?: StateType) => Facets;
 export declare const getTabFacets: (state: AppState) => {
     [k: string]: Facet;
 };
+export declare const getCompositionFacets: (state: AppState, composition?: string) => Facets;
 export declare const getFacetTitles: (state: AppState) => {
     isSelected: boolean;
     key: string;
@@ -21,6 +23,10 @@ export declare const getFacetTitles: (state: AppState) => {
 }[];
 export declare const getFacet: (state: AppState, facetName?: string, context?: Context | string, returnType?: StateType) => Facet;
 export declare const getListing: (state: AppState, listing?: string) => Facet;
+export declare const getComposition: (state: AppState, composition?: string) => Composition & {
+    listings?: Facets;
+    facets?: Facets;
+};
 /** Return filter state for the current (or provided) facet */
 export declare const getFilters: (state: AppState, facet: string, context?: ContextType, returnType?: StateType) => Filters;
 /** Return filter state for the current (or provided) facet, excluding filters configured as `renderable: false` */
@@ -45,6 +51,7 @@ export declare const getPagesLoaded: (state: AppState, current?: string, context
 export declare const getTotalCount: (state: AppState, current?: string, context?: ContextType) => number;
 export declare const getSearchTerm: (state: AppState) => string;
 export declare const getSearchTabs: (state: AppState, returnType?: StateType) => Tab[];
+export declare const getSearchCompositions: (state: AppState) => Composition[];
 export declare const getQueryParams: (state: AppState, current?: string, context?: ContextType) => Record<string, any>;
 export declare const getQueryParameter: <K extends keyof SearchQueryParams, K2 extends keyof QueryParams2>({ state, facet, context, }: {
     state: AppState;

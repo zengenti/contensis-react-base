@@ -1,1 +1,3 @@
-export default function _default(featureSagas?: any[]): () => Generator<import("redux-saga/effects").AllEffect<any>, void, unknown>;
+import { Effect } from 'redux-saga/effects';
+declare const _default: (featureSagas?: Effect[]) => Effect<any, any>[];
+export default _default;

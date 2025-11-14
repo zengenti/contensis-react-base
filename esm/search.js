@@ -1,23 +1,23 @@
 import React, { useMemo, useEffect } from 'react';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { t as toJS } from './ToJs-BnRRHk6f.js';
-import { w as withMappers, g as getTotalCount, a as getTabsAndFacets, b as getQueryParameter, c as getSelectedFilters, d as getSearchTotalCount, e as getSearchTerm, f as getResults, h as getPageIsLoading, i as getPaging, j as getIsLoading, k as getRenderableFilters, l as getFeaturedResults, m as getFacetTitles, n as getFacetsTotalCount, o as getTabFacets, p as getFacet, q as getCurrentTab, r as getPageIndex, s as getCurrentFacet, u as updateSortOrder, t as updateSelectedFilters, v as updateSearchTerm, x as updatePageSize, y as updatePageIndex, z as updateCurrentTab, A as updateCurrentFacet, B as clearFilters, C as selectListing, D as triggerSearch, E as Context$1, F as getFilters, U as UPDATE_SORT_ORDER, G as UPDATE_SELECTED_FILTERS, H as UPDATE_SEARCH_TERM, I as UPDATE_PAGE_SIZE, J as UPDATE_PAGE_INDEX, S as SET_SEARCH_FILTERS, K as SET_SEARCH_ENTRIES, L as SET_ROUTE_FILTERS, M as LOAD_FILTERS_COMPLETE, N as LOAD_FILTERS_ERROR, O as LOAD_FILTERS, P as EXECUTE_SEARCH_ERROR, Q as EXECUTE_SEARCH, R as CLEAR_FILTERS, T as APPLY_CONFIG } from './sagas-XV768RiF.js';
-export { V as actions, a0 as doSearch, Y as expressions, Z as queries, a2 as sagas, W as selectors, a1 as setRouteFilters, a3 as triggerListingSsr, a4 as triggerMinilistSsr, a5 as triggerSearchSsr, X as types, _ as useFacets, $ as useListing } from './sagas-XV768RiF.js';
+import { w as withMappers, g as getTotalCount, a as getTabsAndFacets, b as getQueryParameter, c as getSelectedFilters, d as getSearchTotalCount, e as getSearchTerm, f as getResults, h as getPageIsLoading, i as getPaging, j as getIsLoading, k as getRenderableFilters, l as getFeaturedResults, m as getFacetTitles, n as getFacetsTotalCount, o as getTabFacets, p as getFacet, q as getCurrentTab, r as getPageIndex, s as getCurrentFacet, u as updateSortOrder, t as updateSelectedFilters, v as updateSearchTerm, x as updatePageSize, y as updatePageIndex, z as updateCurrentTab, A as updateCurrentFacet, B as clearFilters, C as selectListing, D as triggerSearch, E as Context$1, F as getFilters, U as UPDATE_SORT_ORDER, G as UPDATE_SELECTED_FILTERS, H as UPDATE_SEARCH_TERM, I as UPDATE_PAGE_SIZE, J as UPDATE_PAGE_INDEX, S as SET_SEARCH_FILTERS, K as SET_SEARCH_ENTRIES, L as SET_ROUTE_FILTERS, M as LOAD_FILTERS_COMPLETE, N as LOAD_FILTERS_ERROR, O as LOAD_FILTERS, P as EXECUTE_SEARCH_ERROR, Q as EXECUTE_SEARCH, R as CLEAR_FILTERS, T as APPLY_CONFIG } from './sagas-B0tMngp3.js';
+export { V as actions, a0 as doSearch, Y as expressions, Z as queries, a2 as sagas, W as selectors, a1 as setRouteFilters, a3 as triggerListingSsr, a4 as triggerMinilistSsr, a5 as triggerSearchSsr, X as types, _ as useFacets, $ as useListing } from './sagas-B0tMngp3.js';
 import { createSelector } from 'reselect';
 import { produce } from 'immer';
 import equals from 'deep-equal';
 import merge from 'deepmerge';
-import { t as toArray } from './util-DNeSxrGJ.js';
-export { r as routeParams } from './util-DNeSxrGJ.js';
+import { t as toArray } from './util-CZ8gbStU.js';
+export { r as routeParams } from './util-CZ8gbStU.js';
 import 'loglevel';
 import '@redux-saga/core/effects';
-import './version-CaL4czqJ.js';
-import './selectors-CNC7sDxg.js';
+import './version-SLs9uL01.js';
+import './selectors-ohWE9ExW.js';
 import 'jsonpath-mapper';
 import 'query-string';
-import './ContensisDeliveryApi-n2YHcRbB.js';
+import './ContensisDeliveryApi-DliMi9VR.js';
 import 'contensis-delivery-api';
-import './store-BMDimGSw.js';
+import './store-lNrCacYk.js';
 import 'redux';
 import 'redux-thunk';
 import 'redux-saga';
@@ -245,9 +245,11 @@ const config = {
   isError: false
 };
 const searchState = {
+  compositions: {},
   context: 'facets',
   currentFacet: '',
   currentListing: '',
+  currentComposition: '',
   facets: {},
   listings: {},
   minilist: {},
@@ -385,6 +387,7 @@ var reducers = config => {
   const initState = {
     ...initialState,
     tabs: config.tabs,
+    compositions: config.compositions || {},
     facets: generateSearchFacets(Context$1.facets, config),
     listings: generateSearchFacets(Context$1.listings, config),
     minilist: generateSearchFacets(Context$1.minilist, config)
@@ -400,9 +403,11 @@ var reducers = config => {
         }
       case CLEAR_FILTERS:
         {
+          var _action$clear, _action$clear2;
           const currentFilters = state[context][current].filters;
+          const filterKeys = ((_action$clear = action.clear) === null || _action$clear === void 0 ? void 0 : _action$clear.keys) || [];
           state[context][current].filters = Object.fromEntries(Object.entries(currentFilters).map(([filterKey, filter]) => {
-            if (typeof action.filterKey === 'undefined' || action.filterKey === filterKey) {
+            if (filterKeys.length === 0 || filterKeys.includes(filterKey)) {
               const filterItems = filter.items || [];
               filter.items = filterItems.map(item => ({
                 ...item,
@@ -413,6 +418,12 @@ var reducers = config => {
           }));
           state[context][current].queryDuration = 0;
           state[context][current].pagingInfo.pagesLoaded = [];
+
+          // also clone UPDATE_SEARCH_TERM behavior if clearing term also
+          if (((_action$clear2 = action.clear) === null || _action$clear2 === void 0 ? void 0 : _action$clear2.term) === true) {
+            state.term = '';
+            state[context] = resetFacets(state, context);
+          }
           return;
         }
       case EXECUTE_SEARCH:
@@ -481,7 +492,7 @@ var reducers = config => {
         }
       case SET_ROUTE_FILTERS:
         {
-          var _state$context$facet, _state$context$facet$;
+          var _state$context$facet, _state$tabs, _state$context$facet$;
           const {
             facet,
             params,
@@ -521,8 +532,9 @@ var reducers = config => {
           state.context = context;
           state[context] = nextFacets;
           state[action.context === Context$1.facets ? 'currentFacet' : 'currentListing'] = facet;
+          state.currentComposition = action.composition;
           state.term = term;
-          state.tabs[tabId].currentFacet = facet;
+          if ((_state$tabs = state.tabs) !== null && _state$tabs !== void 0 && _state$tabs[tabId]) state.tabs[tabId].currentFacet = facet;
           state[context][facet].pagingInfo = {
             ...(state[context][facet].pagingInfo || pagingInfo),
             pageIndex: Number(pageIndex) - 1 || (state[context][facet].queryParams.loadMorePaging ? ((_state$context$facet$ = state[context][facet].pagingInfo) === null || _state$context$facet$ === void 0 ? void 0 : _state$context$facet$.pageIndex) || 0 : 0),

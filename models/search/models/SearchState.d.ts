@@ -8,11 +8,15 @@ export type SearchState = {
     context: keyof typeof Context;
     currentFacet: string;
     currentListing: string;
+    currentComposition: string;
     term: string;
     facets: Facets;
     listings: Facets;
     minilist: Facets;
     tabs: Tab[];
+    compositions: {
+        [key: string]: Composition;
+    };
     config: Record<string, boolean>;
 };
 export type Aggregations = Required<PagedSearchList<unknown>>['aggregations'];
@@ -108,4 +112,9 @@ export type TabAndFacets = Tab & {
     facets: {
         [key: string]: Facet;
     };
+};
+export type Composition = {
+    title?: string;
+    listings?: string[];
+    facets?: string[];
 };

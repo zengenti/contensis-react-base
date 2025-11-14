@@ -2,6 +2,7 @@ import { clearFilters, updateCurrentFacet, updateCurrentTab, updatePageIndex, up
 import { SearchFacet, Mappers } from '../models/Search';
 import { DebugFlags, SearchParams } from '../models/SearchActions';
 import { Facet as StateFacet, Facets, Filters, Paging, SelectedFilters, TabAndFacets } from '../models/SearchState';
+import { getComposition } from '../redux/selectors';
 export interface MinilistProps<SearchResults = any> {
     filters: Filters;
     isLoading: boolean;
@@ -18,6 +19,8 @@ export interface MinilistProps<SearchResults = any> {
 }
 export interface ListingProps<SearchResults = any> {
     clearFilters: typeof clearFilters;
+    composition?: Omit<ReturnType<typeof getComposition>, 'facets'>;
+    currentComposition?: string;
     currentListing: string;
     currentPageIndex: number;
     featured: SearchResults[];
@@ -41,6 +44,8 @@ export interface ListingProps<SearchResults = any> {
 }
 export interface SearchProps<SearchResults = any> {
     clearFilters: typeof clearFilters;
+    composition?: Omit<ReturnType<typeof getComposition>, 'listings'>;
+    currentComposition?: string;
     currentFacet: string;
     currentPageIndex: number;
     currentTabIndex: number;

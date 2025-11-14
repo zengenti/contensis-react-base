@@ -1,8 +1,8 @@
 'use strict';
 
 var VersionInfo = require('./VersionInfo-D0mF1vkY.js');
-var ContensisDeliveryApi = require('./ContensisDeliveryApi-DmwFulAI.js');
-var SSRContext = require('./SSRContext-Bs4y-Prq.js');
+var ContensisDeliveryApi = require('./ContensisDeliveryApi-DPHdyc2q.js');
+var SSRContext = require('./SSRContext-DDiMegCa.js');
 var React = require('react');
 var mapJson = require('jsonpath-mapper');
 var reactRouterDom = require('react-router-dom');
@@ -15,11 +15,12 @@ require('query-string');
 require('./version-BolvQdgT.js');
 require('styled-components');
 require('contensis-delivery-api');
-require('./store-Bm0URUih.js');
+require('./store-BurDnsi9.js');
 require('redux');
 require('redux-thunk');
 require('redux-saga');
 require('redux-injectors-19');
+require('@redux-saga/core/effects');
 require('./CookieConstants-DfPiWCRZ.js');
 require('react-cookie');
 require('./CookieHelper.class-Det3qfdU.js');

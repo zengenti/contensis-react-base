@@ -3,21 +3,21 @@
 var React = require('react');
 var reactRedux = require('react-redux');
 var ToJs = require('./ToJs-BsWqWjdm.js');
-var sagas = require('./sagas-DMQF1QLg.js');
+var sagas = require('./sagas-D-V0Nu3g.js');
 var reselect = require('reselect');
 var immer = require('immer');
 var equals = require('deep-equal');
 var merge = require('deepmerge');
-var util = require('./util-Dt7DhVjf.js');
+var util = require('./util-DTjf-YQk.js');
 require('loglevel');
 require('@redux-saga/core/effects');
 require('./version-BolvQdgT.js');
 require('./selectors-Bp_TrwG5.js');
 require('jsonpath-mapper');
 require('query-string');
-require('./ContensisDeliveryApi-DmwFulAI.js');
+require('./ContensisDeliveryApi-DPHdyc2q.js');
 require('contensis-delivery-api');
-require('./store-Bm0URUih.js');
+require('./store-BurDnsi9.js');
 require('redux');
 require('redux-thunk');
 require('redux-saga');
@@ -251,9 +251,11 @@ const config = {
   isError: false
 };
 const searchState = {
+  compositions: {},
   context: 'facets',
   currentFacet: '',
   currentListing: '',
+  currentComposition: '',
   facets: {},
   listings: {},
   minilist: {},
@@ -391,6 +393,7 @@ var reducers = config => {
   const initState = {
     ...initialState,
     tabs: config.tabs,
+    compositions: config.compositions || {},
     facets: generateSearchFacets(sagas.Context.facets, config),
     listings: generateSearchFacets(sagas.Context.listings, config),
     minilist: generateSearchFacets(sagas.Context.minilist, config)
@@ -406,9 +409,11 @@ var reducers = config => {
         }
       case sagas.CLEAR_FILTERS:
         {
+          var _action$clear, _action$clear2;
           const currentFilters = state[context][current].filters;
+          const filterKeys = ((_action$clear = action.clear) === null || _action$clear === void 0 ? void 0 : _action$clear.keys) || [];
           state[context][current].filters = Object.fromEntries(Object.entries(currentFilters).map(([filterKey, filter]) => {
-            if (typeof action.filterKey === 'undefined' || action.filterKey === filterKey) {
+            if (filterKeys.length === 0 || filterKeys.includes(filterKey)) {
               const filterItems = filter.items || [];
               filter.items = filterItems.map(item => ({
                 ...item,
@@ -419,6 +424,12 @@ var reducers = config => {
           }));
           state[context][current].queryDuration = 0;
           state[context][current].pagingInfo.pagesLoaded = [];
+
+          // also clone UPDATE_SEARCH_TERM behavior if clearing term also
+          if (((_action$clear2 = action.clear) === null || _action$clear2 === void 0 ? void 0 : _action$clear2.term) === true) {
+            state.term = '';
+            state[context] = resetFacets(state, context);
+          }
           return;
         }
       case sagas.EXECUTE_SEARCH:
@@ -487,7 +498,7 @@ var reducers = config => {
         }
       case sagas.SET_ROUTE_FILTERS:
         {
-          var _state$context$facet, _state$context$facet$;
+          var _state$context$facet, _state$tabs, _state$context$facet$;
           const {
             facet,
             params,
@@ -527,8 +538,9 @@ var reducers = config => {
           state.context = context;
           state[context] = nextFacets;
           state[action.context === sagas.Context.facets ? 'currentFacet' : 'currentListing'] = facet;
+          state.currentComposition = action.composition;
           state.term = term;
-          state.tabs[tabId].currentFacet = facet;
+          if ((_state$tabs = state.tabs) !== null && _state$tabs !== void 0 && _state$tabs[tabId]) state.tabs[tabId].currentFacet = facet;
           state[context][facet].pagingInfo = {
             ...(state[context][facet].pagingInfo || pagingInfo),
             pageIndex: Number(pageIndex) - 1 || (state[context][facet].queryParams.loadMorePaging ? ((_state$context$facet$ = state[context][facet].pagingInfo) === null || _state$context$facet$ === void 0 ? void 0 : _state$context$facet$.pageIndex) || 0 : 0),

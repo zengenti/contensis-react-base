@@ -4,6 +4,19 @@ import { MappingTemplate } from 'jsonpath-mapper';
 import { Context } from './Enums';
 import { FieldOperators, LogicOperators } from './Queries';
 import { AppState } from './SearchState';
+export type FacetComposition = {
+    /** Display title */
+    title?: string;
+    /** An array of facet keys to include in this composition */
+    facets?: string[];
+};
+export type ListingComposition = {
+    /** Display title */
+    title?: string;
+    /** An array of listing keys to include in this composition */
+    listings?: string[];
+};
+export type Composition = FacetComposition | ListingComposition;
 export type Tab = {
     /** The facet to render as default */
     defaultFacet?: string;
@@ -162,7 +175,7 @@ export type WeightedSearchField = {
  */
 export type SearchConfig = {
     /** An object with a key for each facet that is required for the search */
-    facets: {
+    facets?: {
         [key: string]: SearchFacet;
     };
     /** An object with a key for each independent listing that is required for the site */
@@ -173,8 +186,12 @@ export type SearchConfig = {
     minilist?: {
         [key: string]: Listing;
     };
-    /** An Array of Tabs */
-    tabs: Tab[];
+    /** An Array of Tabs to partition search facets */
+    tabs?: Tab[];
+    /** An object with a key for each composition that is required for the site */
+    compositions?: {
+        [key: string]: Composition;
+    };
 };
 export type ConfigTypes = {
     [key: string]: SearchFacet;
