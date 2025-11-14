@@ -216,13 +216,10 @@ export default (config: SearchConfig) => {
         }
         case CLEAR_FILTERS: {
           const currentFilters = state[context][current].filters as Filters;
-
+          const filterKeys = action.clear?.keys || [];
           state[context][current].filters = Object.fromEntries(
             Object.entries(currentFilters).map(([filterKey, filter]) => {
-              if (
-                typeof action.filterKey === 'undefined' ||
-                action.filterKey === filterKey
-              ) {
+              if (filterKeys.length === 0 || filterKeys.includes(filterKey)) {
                 const filterItems = (filter.items || []) as FilterItem[];
 
                 filter.items = filterItems.map(item => ({
@@ -237,6 +234,11 @@ export default (config: SearchConfig) => {
           state[context][current].queryDuration = 0;
           state[context][current].pagingInfo.pagesLoaded = [];
 
+          // also clone UPDATE_SEARCH_TERM behavior if clearing term also
+          if (action.clear?.term === true) {
+            state.term = '';
+            state[context] = resetFacets(state, context);
+          }
           return;
         }
         case EXECUTE_SEARCH: {

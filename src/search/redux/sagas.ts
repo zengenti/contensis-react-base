@@ -494,8 +494,9 @@ function* updateCurrentTab(action: WithMappers<UpdateCurrentTabAction>) {
 }
 
 function* clearFilters(action: WithMappers<ClearFiltersAction>) {
-  const { mappers } = action;
-  const uri = (yield buildUri({}, mappers)) as string;
+  const { clear, mappers } = action;
+  const term = clear?.term ? '' : undefined;
+  const uri = (yield buildUri({ term }, mappers)) as string;
   yield put(navigate(uri));
 }
 
