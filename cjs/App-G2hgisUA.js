@@ -14,7 +14,7 @@ require('react-cookie');
 require('react-redux');
 require('jsonpath-mapper');
 var contensisDeliveryApi = require('contensis-delivery-api');
-require('./sagas-9vVORtqD.js');
+require('./sagas-CDb0n4mt.js');
 require('reselect');
 require('immer');
 require('deep-equal');
@@ -934,4 +934,4 @@ exports.browserHistory = browserHistory;
 exports.history = history;
 exports.pickProject = pickProject;
 exports.rootSaga = rootSaga;
-//# sourceMappingURL=App-CoX0VJx4.js.map
+//# sourceMappingURL=App-G2hgisUA.js.map
