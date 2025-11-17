@@ -1,4 +1,4 @@
-import { Draft, produce } from 'immer';
+import { Draft, current as currentDraft, produce } from 'immer';
 import equals from 'deep-equal';
 import merge from 'deepmerge';
 
@@ -405,6 +405,20 @@ export default (config: SearchConfig) => {
               arrayMerge: (source, inbound) => inbound,
             }
           );
+
+          if (
+            action.mappers?.resultsInfo &&
+            typeof action.mappers.resultsInfo === 'function'
+          ) {
+            // Likely an anti-pattern but we need to provide the whole state
+            // to the resultsInfo mapper, including the latest search state
+            // which is not yet committed outside of this produce() call
+            state[thisContext][action.facet].resultsInfo =
+              action.mappers.resultsInfo({
+                ...action.state,
+                search: currentDraft(state),
+              });
+          }
           return;
         }
         case SET_SEARCH_FILTERS: {

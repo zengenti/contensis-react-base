@@ -21,6 +21,7 @@ import {
   getCurrentComposition,
   getPaging,
   getResults,
+  getResultsInfo,
   getSelectedFilters,
   selectFacets,
 } from '../redux/selectors';
@@ -65,9 +66,9 @@ const makeSelectFacetsProps = () =>
       paging: getPaging(state, '', Context.facets, 'js'),
       results: getResults(state, '', Context.facets, 'js'),
       resultsInfo:
-        mappers &&
-        typeof mappers.resultsInfo === 'function' &&
-        mappers.resultsInfo(state),
+        (typeof mappers?.resultsInfo === 'function' &&
+          mappers.resultsInfo(state)) ||
+        getResultsInfo(state),
       searchTerm: getSearchTerm(state),
       searchTotalCount: getSearchTotalCount(state),
       selectedFilters: getSelectedFilters(state, '', Context.facets, 'js'),

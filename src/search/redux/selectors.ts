@@ -213,6 +213,19 @@ export const getResults = (
   ) as any[];
 };
 
+export const getResultsInfo = (
+  state: AppState,
+  current = '',
+  context: ContextType = getSearchContext(state)
+) => {
+  return getIn(
+    state,
+    ['search', context, current || getCurrent(state, context), 'resultsInfo'],
+    {},
+    'js'
+  ) as any;
+};
+
 export const getIsInternalPaging = (
   state: AppState,
   current: string,

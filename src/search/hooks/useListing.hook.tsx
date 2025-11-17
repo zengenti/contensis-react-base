@@ -20,6 +20,7 @@ import {
   getCurrentComposition,
   getPaging,
   getResults,
+  getResultsInfo,
   getSelectedFilters,
   selectListing,
 } from '../redux/selectors';
@@ -53,9 +54,9 @@ const makeSelectListingProps = () =>
       paging: getPaging(state, '', Context.listings, 'js'),
       results: getResults(state, '', Context.listings, 'js'),
       resultsInfo:
-        mappers &&
-        typeof mappers.resultsInfo === 'function' &&
-        mappers.resultsInfo(state),
+        (typeof mappers.resultsInfo === 'function' &&
+          mappers.resultsInfo(state)) ||
+        getResultsInfo(state),
       searchTerm: getSearchTerm(state),
       selectedFilters: getSelectedFilters(state, '', Context.listings, 'js'),
       sortOrder: getQueryParameter({ state }, 'dynamicOrderBy', []),

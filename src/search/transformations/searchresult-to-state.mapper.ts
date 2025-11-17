@@ -222,6 +222,7 @@ export const facetTemplate = {
   },
   preload: 'action.preload',
   ogState: 'action.ogState',
+  state: 'state',
   debug: 'action.debug',
 } as any;
 
