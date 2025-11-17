@@ -74,7 +74,7 @@ export const runSearch = (
   stateParams.pageSize = getPageSize(ogState, facet, context);
 
   if (
-    (context === Context.facets && isSSR) ||
+    isSSR || // (context === Context.facets && isSSR) ||
     // context === Context.minilist ||
     preload ||
     !facetIsLoaded ||
@@ -109,13 +109,13 @@ export const runSearch = (
  * @returns SearchParams
  */
 export const sanitiseParams = (params?: SearchParams) => {
-    if (params && typeof params === 'object')
-      for (const param of Object.keys(params)) {
-        if (typeof params[param] === 'string')
-          params[param] = params[param].replaceAll('%2C', ',');
+  if (params && typeof params === 'object')
+    for (const param of Object.keys(params)) {
+      if (typeof params[param] === 'string')
+        params[param] = params[param].replaceAll('%2C', ',');
     }
   return params;
-}
+};
 
 /**
  * This will tell us if filter parameters have been
@@ -127,12 +127,7 @@ export const filterParamsChanged = (
   action: EnsureSearchAction | SetSearchEntriesAction,
   state?: AppState
 ) => {
-  const {
-    context,
-    facet,
-    params,
-    ogState = state,
-  } = action;
+  const { context, facet, params, ogState = state } = action;
   const selectedFilters = getSelectedFilters(
     ogState as AppState,
     facet,
@@ -152,7 +147,6 @@ export const filterParamsChanged = (
   return paramsChanged.filter(f => f === true).length > 0;
 };
 
-/* eslint-disable no-console */
 export const debugExecuteSearch = (
   action: EnsureSearchAction | SetSearchEntriesAction,
   state: AppState
