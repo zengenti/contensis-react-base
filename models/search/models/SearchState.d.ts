@@ -59,6 +59,7 @@ export type Facet = {
         useSearchTerm: boolean;
     };
     results: any[];
+    resultsInfo?: any;
     tabId: number;
     title: string;
 };

@@ -3,7 +3,7 @@
 var React = require('react');
 var reactRedux = require('react-redux');
 var ToJs = require('./ToJs-BsWqWjdm.js');
-var sagas = require('./sagas-D-V0Nu3g.js');
+var sagas = require('./sagas-9vVORtqD.js');
 var reselect = require('reselect');
 var immer = require('immer');
 var equals = require('deep-equal');
@@ -52,7 +52,7 @@ const withSearch = mappers => SearchComponent => {
       paging: sagas.getPaging(state),
       pageIsLoading: sagas.getPageIsLoading(state),
       results: sagas.getResults(state),
-      resultsInfo: (mappers === null || mappers === void 0 ? void 0 : mappers.resultsInfo) && mappers.resultsInfo(state),
+      resultsInfo: (mappers === null || mappers === void 0 ? void 0 : mappers.resultsInfo) && mappers.resultsInfo(state) || sagas.getResultsInfo(state),
       searchTerm: sagas.getSearchTerm(state),
       searchTotalCount: sagas.getSearchTotalCount(state),
       selectedFilters: sagas.getSelectedFilters(state),
@@ -105,7 +105,7 @@ const withListing = mappers => ListingComponent => {
       isLoading: getIsLoading(state),
       paging: getPaging(state),
       results: getResults(state),
-      resultsInfo: mappers && typeof mappers.resultsInfo === 'function' && mappers.resultsInfo(state),
+      resultsInfo: typeof (mappers === null || mappers === void 0 ? void 0 : mappers.resultsInfo) === 'function' && mappers.resultsInfo(state) || sagas.getResultsInfo(state),
       searchTerm: getSearchTerm(state),
       selectedFilters: getSelectedFilters(state),
       sortOrder: getQueryParameter({
@@ -553,6 +553,7 @@ var reducers = config => {
         }
       case sagas.SET_SEARCH_ENTRIES:
         {
+          var _action$mappers;
           const thisContext = action.context || context;
           const currentFacet = state[thisContext][action.facet];
 
@@ -577,6 +578,15 @@ var reducers = config => {
           state[thisContext][action.facet] = merge__default.default(currentFacet, action.nextFacet, {
             arrayMerge: (source, inbound) => inbound
           });
+          if ((_action$mappers = action.mappers) !== null && _action$mappers !== void 0 && _action$mappers.resultsInfo && typeof action.mappers.resultsInfo === 'function') {
+            // Likely an anti-pattern but we need to provide the whole state
+            // to the resultsInfo mapper, including the latest search state
+            // which is not yet committed outside of this produce() call
+            state[thisContext][action.facet].resultsInfo = action.mappers.resultsInfo({
+              ...action.state,
+              search: immer.current(state)
+            });
+          }
           return;
         }
       case sagas.SET_SEARCH_FILTERS:

@@ -336,6 +336,9 @@ const getRenderableSelectedFilters = (state, facet = '', context = Context.facet
 const getResults = (state, current = '', context = Context.facets, returnType) => {
   return getImmutableOrJS(state, ['search', context, current || getCurrent$2(state, context), 'results'], [], returnType);
 };
+const getResultsInfo = (state, current = '', context = getSearchContext(state)) => {
+  return getImmutableOrJS(state, ['search', context, current || getCurrent$2(state, context), 'resultsInfo'], {}, 'js');
+};
 const getIsInternalPaging = (state, current, context = Context.facets) => {
   return getImmutableOrJS(state, ['search', context, current || getCurrent$2(state, context), 'queryParams', 'internalPaging'], false);
 };
@@ -522,6 +525,7 @@ var selectors = /*#__PURE__*/Object.freeze({
   getRenderableFilters: getRenderableFilters$2,
   getRenderableSelectedFilters: getRenderableSelectedFilters,
   getResults: getResults,
+  getResultsInfo: getResultsInfo,
   getSearchCompositions: getSearchCompositions,
   getSearchContext: getSearchContext,
   getSearchTabs: getSearchTabs,
@@ -635,7 +639,7 @@ const makeSelectFacetsProps = () => reselect.createSelector(state => state, (_, 
   pageIsLoading: getPageIsLoading$1(state),
   paging: getPaging(state, '', Context.facets, 'js'),
   results: getResults(state, '', Context.facets, 'js'),
-  resultsInfo: mappers && typeof mappers.resultsInfo === 'function' && mappers.resultsInfo(state),
+  resultsInfo: typeof (mappers === null || mappers === void 0 ? void 0 : mappers.resultsInfo) === 'function' && mappers.resultsInfo(state) || getResultsInfo(state),
   searchTerm: getSearchTerm$1(state),
   searchTotalCount: getSearchTotalCount(state),
   selectedFilters: getSelectedFilters(state, '', Context.facets, 'js'),
@@ -737,7 +741,7 @@ const makeSelectListingProps = () => reselect.createSelector(state => state, (_,
   pageIsLoading: getPageIsLoading(state),
   paging: getPaging(state, '', Context.listings, 'js'),
   results: getResults(state, '', Context.listings, 'js'),
-  resultsInfo: mappers && typeof mappers.resultsInfo === 'function' && mappers.resultsInfo(state),
+  resultsInfo: typeof mappers.resultsInfo === 'function' && mappers.resultsInfo(state) || getResultsInfo(state),
   searchTerm: getSearchTerm(state),
   selectedFilters: getSelectedFilters(state, '', Context.listings, 'js'),
   sortOrder: getQueryParameter({
@@ -5060,6 +5064,7 @@ const facetTemplate = {
   },
   preload: 'action.preload',
   ogState: 'action.ogState',
+  state: 'state',
   debug: 'action.debug'
 };
 const filterTemplate = {
@@ -5932,6 +5937,7 @@ exports.getPaging = getPaging;
 exports.getQueryParameter = getQueryParameter$2;
 exports.getRenderableFilters = getRenderableFilters$2;
 exports.getResults = getResults;
+exports.getResultsInfo = getResultsInfo;
 exports.getSearchTerm = getSearchTerm$2;
 exports.getSearchTotalCount = getSearchTotalCount$1;
 exports.getSelectedFilters = getSelectedFilters;
@@ -5960,4 +5966,4 @@ exports.updateSortOrder = updateSortOrder$1;
 exports.useFacets = useFacets;
 exports.useListing = useListing;
 exports.withMappers = withMappers;
-//# sourceMappingURL=sagas-D-V0Nu3g.js.map
+//# sourceMappingURL=sagas-9vVORtqD.js.map

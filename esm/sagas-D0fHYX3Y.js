@@ -310,6 +310,9 @@ const getRenderableSelectedFilters = (state, facet = '', context = Context.facet
 const getResults = (state, current = '', context = Context.facets, returnType) => {
   return getImmutableOrJS(state, ['search', context, current || getCurrent$2(state, context), 'results'], [], returnType);
 };
+const getResultsInfo = (state, current = '', context = getSearchContext(state)) => {
+  return getImmutableOrJS(state, ['search', context, current || getCurrent$2(state, context), 'resultsInfo'], {}, 'js');
+};
 const getIsInternalPaging = (state, current, context = Context.facets) => {
   return getImmutableOrJS(state, ['search', context, current || getCurrent$2(state, context), 'queryParams', 'internalPaging'], false);
 };
@@ -496,6 +499,7 @@ var selectors = /*#__PURE__*/Object.freeze({
   getRenderableFilters: getRenderableFilters$2,
   getRenderableSelectedFilters: getRenderableSelectedFilters,
   getResults: getResults,
+  getResultsInfo: getResultsInfo,
   getSearchCompositions: getSearchCompositions,
   getSearchContext: getSearchContext,
   getSearchTabs: getSearchTabs,
@@ -609,7 +613,7 @@ const makeSelectFacetsProps = () => createSelector(state => state, (_, mappers) 
   pageIsLoading: getPageIsLoading$1(state),
   paging: getPaging(state, '', Context.facets, 'js'),
   results: getResults(state, '', Context.facets, 'js'),
-  resultsInfo: mappers && typeof mappers.resultsInfo === 'function' && mappers.resultsInfo(state),
+  resultsInfo: typeof (mappers === null || mappers === void 0 ? void 0 : mappers.resultsInfo) === 'function' && mappers.resultsInfo(state) || getResultsInfo(state),
   searchTerm: getSearchTerm$1(state),
   searchTotalCount: getSearchTotalCount(state),
   selectedFilters: getSelectedFilters(state, '', Context.facets, 'js'),
@@ -711,7 +715,7 @@ const makeSelectListingProps = () => createSelector(state => state, (_, mappers)
   pageIsLoading: getPageIsLoading(state),
   paging: getPaging(state, '', Context.listings, 'js'),
   results: getResults(state, '', Context.listings, 'js'),
-  resultsInfo: mappers && typeof mappers.resultsInfo === 'function' && mappers.resultsInfo(state),
+  resultsInfo: typeof mappers.resultsInfo === 'function' && mappers.resultsInfo(state) || getResultsInfo(state),
   searchTerm: getSearchTerm(state),
   selectedFilters: getSelectedFilters(state, '', Context.listings, 'js'),
   sortOrder: getQueryParameter({
@@ -5034,6 +5038,7 @@ const facetTemplate = {
   },
   preload: 'action.preload',
   ogState: 'action.ogState',
+  state: 'state',
   debug: 'action.debug'
 };
 const filterTemplate = {
@@ -5867,5 +5872,5 @@ function* triggerSearchSsr(options) {
   yield call(setRouteFilters, options);
 }
 
-export { useListing as $, updateCurrentFacet$1 as A, clearFilters$1 as B, selectListing as C, triggerSearch as D, Context as E, getFilters as F, UPDATE_SELECTED_FILTERS as G, UPDATE_SEARCH_TERM as H, UPDATE_PAGE_SIZE as I, UPDATE_PAGE_INDEX as J, SET_SEARCH_ENTRIES as K, SET_ROUTE_FILTERS as L, LOAD_FILTERS_COMPLETE as M, LOAD_FILTERS_ERROR as N, LOAD_FILTERS as O, EXECUTE_SEARCH_ERROR as P, EXECUTE_SEARCH as Q, CLEAR_FILTERS as R, SET_SEARCH_FILTERS as S, APPLY_CONFIG as T, UPDATE_SORT_ORDER as U, actions as V, selectors as W, types as X, expressions as Y, queries as Z, useFacets as _, getTabsAndFacets$1 as a, doSearch as a0, setRouteFilters as a1, searchSagas as a2, triggerListingSsr as a3, triggerMinilistSsr as a4, triggerSearchSsr as a5, defaultExpressions as a6, termExpressions as a7, contentTypeIdExpression as a8, filterExpressions as a9, orderByExpression as aa, customWhereExpressions as ab, cloneDeep as ac, getQueryParameter$2 as b, getSelectedFilters as c, getSearchTotalCount$1 as d, getSearchTerm$2 as e, getResults as f, getTotalCount$1 as g, getPageIsLoading$2 as h, getPaging as i, getIsLoading$2 as j, getRenderableFilters$2 as k, getFeaturedResults$2 as l, getFacetTitles$1 as m, getFacetsTotalCount$1 as n, getTabFacets$1 as o, getFacet$1 as p, getCurrentTab$1 as q, getPageIndex$2 as r, getCurrentFacet as s, updateSelectedFilters as t, updateSortOrder$1 as u, updateSearchTerm$1 as v, withMappers as w, updatePageSize$1 as x, updatePageIndex$1 as y, updateCurrentTab$1 as z };
-//# sourceMappingURL=sagas-B0tMngp3.js.map
+export { useFacets as $, updateCurrentTab$1 as A, updateCurrentFacet$1 as B, clearFilters$1 as C, selectListing as D, triggerSearch as E, Context as F, getFilters as G, UPDATE_SELECTED_FILTERS as H, UPDATE_SEARCH_TERM as I, UPDATE_PAGE_SIZE as J, UPDATE_PAGE_INDEX as K, SET_SEARCH_ENTRIES as L, SET_ROUTE_FILTERS as M, LOAD_FILTERS_COMPLETE as N, LOAD_FILTERS_ERROR as O, LOAD_FILTERS as P, EXECUTE_SEARCH_ERROR as Q, EXECUTE_SEARCH as R, SET_SEARCH_FILTERS as S, CLEAR_FILTERS as T, UPDATE_SORT_ORDER as U, APPLY_CONFIG as V, actions as W, selectors as X, types as Y, expressions as Z, queries as _, getTabsAndFacets$1 as a, useListing as a0, doSearch as a1, setRouteFilters as a2, searchSagas as a3, triggerListingSsr as a4, triggerMinilistSsr as a5, triggerSearchSsr as a6, defaultExpressions as a7, termExpressions as a8, contentTypeIdExpression as a9, filterExpressions as aa, orderByExpression as ab, customWhereExpressions as ac, cloneDeep as ad, getQueryParameter$2 as b, getSelectedFilters as c, getSearchTotalCount$1 as d, getSearchTerm$2 as e, getResultsInfo as f, getTotalCount$1 as g, getResults as h, getPageIsLoading$2 as i, getPaging as j, getIsLoading$2 as k, getRenderableFilters$2 as l, getFeaturedResults$2 as m, getFacetTitles$1 as n, getFacetsTotalCount$1 as o, getTabFacets$1 as p, getFacet$1 as q, getCurrentTab$1 as r, getPageIndex$2 as s, getCurrentFacet as t, updateSortOrder$1 as u, updateSelectedFilters as v, withMappers as w, updateSearchTerm$1 as x, updatePageSize$1 as y, updatePageIndex$1 as z };
+//# sourceMappingURL=sagas-D0fHYX3Y.js.map

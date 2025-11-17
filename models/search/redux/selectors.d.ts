@@ -37,6 +37,7 @@ export declare const getSelectedFilters: (state: AppState, facet?: string, conte
 /** Return keyed object for all _renderable_ filters in the current facet with all selected values for each filter */
 export declare const getRenderableSelectedFilters: (state: AppState, facet?: string, context?: ContextType) => SelectedFilters;
 export declare const getResults: (state: AppState, current?: string, context?: ContextType, returnType?: StateType) => any[];
+export declare const getResultsInfo: (state: AppState, current?: string, context?: ContextType) => any;
 export declare const getIsInternalPaging: (state: AppState, current: string, context?: ContextType) => boolean;
 export declare const getIsLoaded: (state: AppState, context?: ContextType, facet?: string) => boolean;
 export declare const getIsLoading: (state: AppState, context?: ContextType, facet?: string) => boolean;

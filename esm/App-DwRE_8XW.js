@@ -12,7 +12,7 @@ import 'react-cookie';
 import 'react-redux';
 import 'jsonpath-mapper';
 import { Op, Query } from 'contensis-delivery-api';
-import './sagas-B0tMngp3.js';
+import './sagas-D0fHYX3Y.js';
 import 'reselect';
 import 'immer';
 import 'deep-equal';
@@ -904,4 +904,4 @@ const AppRoot = props => {
 };
 
 export { AppRoot as A, browserHistory as b, history as h, pickProject as p, rootSaga as r };
-//# sourceMappingURL=App-B150LOvj.js.map
+//# sourceMappingURL=App-DwRE_8XW.js.map
