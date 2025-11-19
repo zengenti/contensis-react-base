@@ -823,10 +823,7 @@ class CachedTaxonomyLookup {
 const cachedTaxonomyLookup = new CachedTaxonomyLookup();
 
 const DataFormats = {
-  asset: 'asset',
-  entry: 'entry',
-  webpage: 'webpage'
-};
+  entry: 'entry'};
 const FilterExpressionTypes = {
   contentType: 'contentType',
   field: 'field'
@@ -861,16 +858,20 @@ const fieldExpression = (field, value, operator = 'equalTo', weight, fuzzySearch
 const contentTypeIdExpression = (contentTypeIds, webpageTemplates, assetTypes) => {
   const expressions = [];
   if (!contentTypeIds && !webpageTemplates && !assetTypes) return expressions;
-  if (contentTypeIds && contentTypeIds.length > 0) {
-    expressions.push(...dataFormatExpression(contentTypeIds, DataFormats.entry));
+  const ids = [...new Set([...(contentTypeIds || []), ...(webpageTemplates || []), ...(assetTypes || [])])];
+
+  /**
+   * We have an array of contentTypeIds some may be prefixed with a "!"
+   * to indicate this is a "not" expression
+   */
+  const withContentTypeIds = ids.filter(c => !c.startsWith('!'));
+  const notContentTypeIds = ids.filter(c => c.startsWith('!')).map(id => id.substring(1));
+  if (withContentTypeIds.length > 0) {
+    expressions.push(...fieldExpression(Fields.sys.contentTypeId, withContentTypeIds));
   }
-  if (webpageTemplates && webpageTemplates.length > 0) {
-    expressions.push(...dataFormatExpression(webpageTemplates, DataFormats.webpage));
+  if (notContentTypeIds.length > 0) {
+    expressions.push(Op.not(fieldExpression(Fields.sys.contentTypeId, notContentTypeIds)[0]));
   }
-  if (assetTypes && assetTypes.length > 0) {
-    expressions.push(...dataFormatExpression(assetTypes, DataFormats.asset));
-  }
-  if (expressions.length > 1) return [Op.or(...expressions)];
   return expressions;
 };
 const filterExpressions = (filters, isOptional = false) => {
@@ -893,6 +894,9 @@ const filterExpressions = (filters, isOptional = false) => {
   });
   return expressions;
 };
+
+/** @deprecated since v4 - contentTypeIdExpression produces a simpler more efficient query
+ * now and negates the need for supplying `sys.dataFormat` with `sys.contentTypeId` */
 const dataFormatExpression = (contentTypeIds, dataFormat = DataFormats.entry) => {
   if (contentTypeIds && contentTypeIds.length > 0) {
     /**
@@ -1003,7 +1007,6 @@ const between = (field, value) => {
       const [minimum, maximum] = valArr;
       return Op.between(field, minimum, maximum);
     } else {
-      // eslint-disable-next-line no-console
       console.log(`[search] You have supplied only one value to a "between" operator which must have two values. Your supplied value "${valArr.length && valArr[0]}" has been discarded.`);
       return false;
     }
@@ -1020,7 +1023,6 @@ const distanceWithin = (field, value) => {
       const [lat, lon] = valArr;
       return Op.distanceWithin(field, Number(lat), Number(lon), (valArr === null || valArr === void 0 ? void 0 : valArr[2]) || '10mi');
     } else {
-      // eslint-disable-next-line no-console
       console.log(`[search] You have supplied only one value to a "distanceWithin" operator which must be made up of "lat,lon,distance". Your supplied value "${valArr.length && valArr[0]}" has been discarded.`);
       return false;
     }
@@ -5872,4 +5874,4 @@ function* triggerSearchSsr(options) {
 }
 
 export { useFacets as $, updateCurrentTab$1 as A, updateCurrentFacet$1 as B, clearFilters$1 as C, selectListing as D, triggerSearch as E, Context as F, getFilters as G, UPDATE_SELECTED_FILTERS as H, UPDATE_SEARCH_TERM as I, UPDATE_PAGE_SIZE as J, UPDATE_PAGE_INDEX as K, SET_SEARCH_ENTRIES as L, SET_ROUTE_FILTERS as M, LOAD_FILTERS_COMPLETE as N, LOAD_FILTERS_ERROR as O, LOAD_FILTERS as P, EXECUTE_SEARCH_ERROR as Q, EXECUTE_SEARCH as R, SET_SEARCH_FILTERS as S, CLEAR_FILTERS as T, UPDATE_SORT_ORDER as U, APPLY_CONFIG as V, actions as W, selectors as X, types as Y, expressions as Z, queries as _, getTabsAndFacets$1 as a, useListing as a0, doSearch as a1, setRouteFilters as a2, searchSagas as a3, triggerListingSsr as a4, triggerMinilistSsr as a5, triggerSearchSsr as a6, defaultExpressions as a7, termExpressions as a8, contentTypeIdExpression as a9, filterExpressions as aa, orderByExpression as ab, customWhereExpressions as ac, cloneDeep as ad, getQueryParameter$2 as b, getSelectedFilters as c, getSearchTotalCount$1 as d, getSearchTerm$2 as e, getResultsInfo as f, getTotalCount$1 as g, getResults as h, getPageIsLoading$2 as i, getPaging as j, getIsLoading$2 as k, getRenderableFilters$2 as l, getFeaturedResults$2 as m, getFacetTitles$1 as n, getFacetsTotalCount$1 as o, getTabFacets$1 as p, getFacet$1 as q, getCurrentTab$1 as r, getPageIndex$2 as s, getCurrentFacet as t, updateSortOrder$1 as u, updateSelectedFilters as v, withMappers as w, updateSearchTerm$1 as x, updatePageSize$1 as y, updatePageIndex$1 as z };
-//# sourceMappingURL=sagas-IuMRFVv6.js.map
+//# sourceMappingURL=sagas-DMt8GLFP.js.map

@@ -849,10 +849,7 @@ class CachedTaxonomyLookup {
 const cachedTaxonomyLookup = new CachedTaxonomyLookup();
 
 const DataFormats = {
-  asset: 'asset',
-  entry: 'entry',
-  webpage: 'webpage'
-};
+  entry: 'entry'};
 const FilterExpressionTypes = {
   contentType: 'contentType',
   field: 'field'
@@ -887,16 +884,20 @@ const fieldExpression = (field, value, operator = 'equalTo', weight, fuzzySearch
 const contentTypeIdExpression = (contentTypeIds, webpageTemplates, assetTypes) => {
   const expressions = [];
   if (!contentTypeIds && !webpageTemplates && !assetTypes) return expressions;
-  if (contentTypeIds && contentTypeIds.length > 0) {
-    expressions.push(...dataFormatExpression(contentTypeIds, DataFormats.entry));
+  const ids = [...new Set([...(contentTypeIds || []), ...(webpageTemplates || []), ...(assetTypes || [])])];
+
+  /**
+   * We have an array of contentTypeIds some may be prefixed with a "!"
+   * to indicate this is a "not" expression
+   */
+  const withContentTypeIds = ids.filter(c => !c.startsWith('!'));
+  const notContentTypeIds = ids.filter(c => c.startsWith('!')).map(id => id.substring(1));
+  if (withContentTypeIds.length > 0) {
+    expressions.push(...fieldExpression(Fields.sys.contentTypeId, withContentTypeIds));
   }
-  if (webpageTemplates && webpageTemplates.length > 0) {
-    expressions.push(...dataFormatExpression(webpageTemplates, DataFormats.webpage));
+  if (notContentTypeIds.length > 0) {
+    expressions.push(contensisCoreApi.Op.not(fieldExpression(Fields.sys.contentTypeId, notContentTypeIds)[0]));
   }
-  if (assetTypes && assetTypes.length > 0) {
-    expressions.push(...dataFormatExpression(assetTypes, DataFormats.asset));
-  }
-  if (expressions.length > 1) return [contensisCoreApi.Op.or(...expressions)];
   return expressions;
 };
 const filterExpressions = (filters, isOptional = false) => {
@@ -919,6 +920,9 @@ const filterExpressions = (filters, isOptional = false) => {
   });
   return expressions;
 };
+
+/** @deprecated since v4 - contentTypeIdExpression produces a simpler more efficient query
+ * now and negates the need for supplying `sys.dataFormat` with `sys.contentTypeId` */
 const dataFormatExpression = (contentTypeIds, dataFormat = DataFormats.entry) => {
   if (contentTypeIds && contentTypeIds.length > 0) {
     /**
@@ -1029,7 +1033,6 @@ const between = (field, value) => {
       const [minimum, maximum] = valArr;
       return contensisCoreApi.Op.between(field, minimum, maximum);
     } else {
-      // eslint-disable-next-line no-console
       console.log(`[search] You have supplied only one value to a "between" operator which must have two values. Your supplied value "${valArr.length && valArr[0]}" has been discarded.`);
       return false;
     }
@@ -1046,7 +1049,6 @@ const distanceWithin = (field, value) => {
       const [lat, lon] = valArr;
       return contensisCoreApi.Op.distanceWithin(field, Number(lat), Number(lon), (valArr === null || valArr === void 0 ? void 0 : valArr[2]) || '10mi');
     } else {
-      // eslint-disable-next-line no-console
       console.log(`[search] You have supplied only one value to a "distanceWithin" operator which must be made up of "lat,lon,distance". Your supplied value "${valArr.length && valArr[0]}" has been discarded.`);
       return false;
     }
@@ -5965,4 +5967,4 @@ exports.updateSortOrder = updateSortOrder$1;
 exports.useFacets = useFacets;
 exports.useListing = useListing;
 exports.withMappers = withMappers;
-//# sourceMappingURL=sagas-CDb0n4mt.js.map
+//# sourceMappingURL=sagas-Cm6SuHl9.js.map

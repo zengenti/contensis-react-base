@@ -2,8 +2,10 @@ import { ContensisQueryOrderBy, IExpression, ILogicalExpression, VersionStatus }
 import { CustomWhereClause, WeightedSearchField } from '../models/Search';
 import { FieldOperators, FilterExpression } from '../models/Queries';
 export declare const fieldExpression: (field: string | string[], value: any, operator?: FieldOperators, weight?: number, fuzzySearch?: boolean) => IExpression[];
-export declare const contentTypeIdExpression: (contentTypeIds: string[], webpageTemplates?: string[], assetTypes?: string[]) => ILogicalExpression[];
+export declare const contentTypeIdExpression: (contentTypeIds: string[], webpageTemplates?: string[], assetTypes?: string[]) => IExpression[];
 export declare const filterExpressions: (filters: FilterExpression[], isOptional?: boolean) => IExpression[];
+/** @deprecated since v4 - contentTypeIdExpression produces a simpler more efficient query
+ * now and negates the need for supplying `sys.dataFormat` with `sys.contentTypeId` */
 export declare const dataFormatExpression: (contentTypeIds: string[], dataFormat?: string) => ILogicalExpression[];
 export declare const featuredResultsExpression: ({ contentTypeId, fieldId, fieldValue, }?: {
     contentTypeId?: string | string[];
