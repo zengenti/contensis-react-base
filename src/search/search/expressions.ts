@@ -47,26 +47,37 @@ export const contentTypeIdExpression = (
   webpageTemplates?: string[],
   assetTypes?: string[]
 ) => {
-  const expressions: ILogicalExpression[] = [];
+  const expressions: IExpression[] = [];
   if (!contentTypeIds && !webpageTemplates && !assetTypes) return expressions;
 
-  if (contentTypeIds && contentTypeIds.length > 0) {
+  const ids = [
+    ...new Set<string>([
+      ...(contentTypeIds || []),
+      ...(webpageTemplates || []),
+      ...(assetTypes || []),
+    ]),
+  ];
+
+  /**
+   * We have an array of contentTypeIds some may be prefixed with a "!"
+   * to indicate this is a "not" expression
+   */
+  const withContentTypeIds = ids.filter(c => !c.startsWith('!'));
+  const notContentTypeIds = ids
+    .filter(c => c.startsWith('!'))
+    .map(id => id.substring(1));
+
+  if (withContentTypeIds.length > 0) {
     expressions.push(
-      ...dataFormatExpression(contentTypeIds, DataFormats.entry)
+      ...fieldExpression(Fields.sys.contentTypeId, withContentTypeIds)
     );
   }
 
-  if (webpageTemplates && webpageTemplates.length > 0) {
+  if (notContentTypeIds.length > 0) {
     expressions.push(
-      ...dataFormatExpression(webpageTemplates, DataFormats.webpage)
+      Op.not(fieldExpression(Fields.sys.contentTypeId, notContentTypeIds)[0])
     );
   }
-
-  if (assetTypes && assetTypes.length > 0) {
-    expressions.push(...dataFormatExpression(assetTypes, DataFormats.asset));
-  }
-
-  if (expressions.length > 1) return [Op.or(...expressions)];
 
   return expressions;
 };
@@ -120,6 +131,8 @@ export const filterExpressions = (
   return expressions;
 };
 
+/** @deprecated since v4 - contentTypeIdExpression produces a simpler more efficient query
+ * now and negates the need for supplying `sys.dataFormat` with `sys.contentTypeId` */
 export const dataFormatExpression = (
   contentTypeIds: string[],
   dataFormat = DataFormats.entry
@@ -301,7 +314,6 @@ const between = (field: string, value: string | string[]) => {
       const [minimum, maximum] = valArr;
       return Op.between(field, minimum, maximum);
     } else {
-      // eslint-disable-next-line no-console
       console.log(
         `[search] You have supplied only one value to a "between" operator which must have two values. Your supplied value "${
           valArr.length && valArr[0]
@@ -333,7 +345,6 @@ const distanceWithin = (field: string, value: string | string[]) => {
         valArr?.[2] || '10mi'
       );
     } else {
-      // eslint-disable-next-line no-console
       console.log(
         `[search] You have supplied only one value to a "distanceWithin" operator which must be made up of "lat,lon,distance". Your supplied value "${
           valArr.length && valArr[0]
@@ -431,14 +442,14 @@ const makeJsExpression = (
   operator === 'freeText' || operator === 'contains'
     ? Op[operator](field, value)
     : operator === 'in'
-    ? Op[operator](field, ...value)
-    : operator === 'exists'
-    ? Op[operator](field, value)
-    : operator === 'between'
-    ? Op[operator](field, value[0], value[1])
-    : operator === 'distanceWithin'
-    ? Op[operator](field, value?.lat, value?.lon, value?.distance)
-    : Op[operator](field, value);
+      ? Op[operator](field, ...value)
+      : operator === 'exists'
+        ? Op[operator](field, value)
+        : operator === 'between'
+          ? Op[operator](field, value[0], value[1])
+          : operator === 'distanceWithin'
+            ? Op[operator](field, value?.lat, value?.lon, value?.distance)
+            : Op[operator](field, value);
 
 export const termExpressions = (
   searchTerm: string,
