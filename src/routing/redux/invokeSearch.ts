@@ -1,6 +1,7 @@
 import { call } from 'redux-saga/effects';
 import { OnRouteLoadedArgs, RouteLoadedOptions } from '~/models';
 import { reduxInjectorSaga } from '~/redux/sagas/injector';
+import { SearchTransformations } from '~/search/models/Search';
 import { SearchRouteOptions } from '~/search/models/SearchActions';
 
 type Awaited<T> = T extends PromiseLike<infer U> ? Awaited<U> : T;
@@ -27,6 +28,14 @@ export function* handleSearchSaga({
   ssr,
 }: OnRouteLoadedArgs &
   RouteLoadedOptions & { routeSearchOptions: SearchRouteOptions }) {
+  // Merge supplied mappers with route-supplied mappers taking precedence
+  const mappers: SearchTransformations = {
+    results: e => e,
+    ...(searchOptions?.mappers || {}),
+    ...(routeSearchOptions?.mappers || {}),
+  };
+
+  // Merge all other search options with route-supplied options taking precedence
   const { onPaths = ['/search'], ...searchOpts } = {
     ...(routeSearchOptions || {}),
     ...(searchOptions || {}),
@@ -61,6 +70,7 @@ export function* handleSearchSaga({
         params,
         ssr,
         ...searchOpts,
+        mappers,
       });
   }
 }
