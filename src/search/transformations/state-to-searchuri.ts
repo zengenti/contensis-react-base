@@ -1,7 +1,10 @@
 import merge from 'deepmerge';
 import { parse, stringify } from 'query-string';
 import mapJson from 'jsonpath-mapper';
-import { selectCurrentPath } from '~/routing/redux/selectors';
+import {
+  selectCurrentPath,
+  selectStaticRoute,
+} from '~/routing/redux/selectors';
 
 import getIn from '../redux/getIn';
 import {
@@ -19,25 +22,34 @@ const searchUriTemplate: SearchUriMapping = {
   path: ({ state, facet }) => {
     const context = getSearchContext(state);
     const currentPath = selectCurrentPath(state) || '/search';
+    const staticRoute = selectStaticRoute(state);
+    const hasFacetRouteParam = staticRoute?.route?.path?.includes(
+      `/:${context === 'facets' ? 'facet' : 'listingType'}`
+    );
 
     // if (context !== 'listings') {
-    const currentFacet = facet || getCurrent(state);
+    if (hasFacetRouteParam) {
+      const currentFacet = facet || getCurrent(state);
 
-    const filters = getSelectedFilters(state, facet, context);
-    const currentFilter = filters.contentTypeId;
+      const filters = getSelectedFilters(state, facet, context);
+      // TODO: This only looking for a filter called contentTypeId
+      // feels a bit useless and only really serves as an example.
+      // We could expand this in future to be configured with the filter or the route
+      // e.g. look for a route param matching the filter key in the static route
+      const currentFilter = filters.contentTypeId;
 
-    // Check if we have a filter first
-    const newPath =
-      currentFilter?.length > 0 && currentFacet
-        ? `${currentPath}/${currentFacet}/${currentFilter}`
-        : currentFacet
-          ? `${currentPath}/${currentFacet}`
-          : currentPath;
+      // Check if we have a filter first
+      const newPath =
+        currentFilter?.length > 0 && currentFacet
+          ? `${currentPath}/${currentFacet}/${currentFilter}`
+          : currentFacet
+            ? `${currentPath}/${currentFacet}`
+            : currentPath;
 
-    return newPath;
-    // } else {
-    //   return currentPath;
-    // }
+      return newPath;
+    } else {
+      return currentPath;
+    }
   },
   search: ({ state, facet, orderBy, term, pageIndex, pageSize }) => {
     const searchContext = getSearchContext(state);
