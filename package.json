@@ -72,6 +72,7 @@
   "dependencies": {
     "@loadable/component": "^5.16.7",
     "@loadable/server": "^5.16.7",
+    "@reduxjs/toolkit": "^2.11.0",
     "app-root-path": "^3.1.0",
     "await-to-js": "^3.0.0",
     "chalk": "^4.1.2",
