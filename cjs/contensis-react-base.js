@@ -2,19 +2,20 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var ContensisDeliveryApi = require('./ContensisDeliveryApi-7w7wrnZp.js');
+var ContensisDeliveryApi = require('./ContensisDeliveryApi-StchaSC-.js');
 var contensisDeliveryApi = require('contensis-delivery-api');
 var React = require('react');
 var reactRedux = require('react-redux');
+var slice = require('./slice-DzItS3J5.js');
 var mapJson = require('jsonpath-mapper');
-var sagas = require('./sagas-CqBzeM62.js');
+var sagas = require('./sagas-BLyC5pxW.js');
 require('reselect');
 require('immer');
 require('deep-equal');
 require('deepmerge');
 require('query-string');
 var contensisCoreApi = require('contensis-core-api');
-var VersionInfo = require('./VersionInfo-QL2LcLgA.js');
+var urls = require('./urls-DVIwGZmd.js');
 require('isomorphic-fetch');
 var express = require('express');
 var http = require('http');
@@ -31,33 +32,36 @@ var lodash = require('lodash');
 var lodashClean = require('lodash-clean');
 var CookieHelper_class = require('./CookieHelper.class-Det3qfdU.js');
 var cookiesMiddleware = require('universal-cookie-express');
-var store = require('./store-CeULTOdT.js');
-var App = require('./App-H7KpdxLz.js');
-var version = require('./version-DVD3doEu.js');
-var selectors = require('./selectors-0R_tv3G5.js');
-var RouteLoader = require('./RouteLoader-ClVi1WkT.js');
+var App = require('./App-C8XjopaN.js');
+var store = require('./store-Thi-k3pU.js');
+var version = require('./version-oqn7qotZ.js');
+var selectors = require('./selectors-C1CqEUmL.js');
+var RouteLoader = require('./RouteLoader-C3b4eo2z.js');
 var stream = require('stream');
 var server$2 = require('@loadable/server');
 var chalk = require('chalk');
 var minifyCssString = require('minify-css-string');
 var reactCookie = require('react-cookie');
 var server$3 = require('react-router-dom/server');
-var SSRContext = require('./SSRContext-CEtLz6yn.js');
+var SSRContext = require('./SSRContext-Op85CUQt.js');
+require('./VersionInfo-CTPtw_Xd.js');
 require('./CookieConstants-DfPiWCRZ.js');
+require('@reduxjs/toolkit');
 require('loglevel');
 require('@redux-saga/core/effects');
-require('./version-D1lOxNWn.js');
-require('./util-D4MTMutv.js');
+require('./version-CukCz8zL.js');
+require('./util-D65Zmo5R.js');
+require('./selectors-DAQR0uZa.js');
 require('./_commonjsHelpers-BJu3ubxk.js');
+require('history');
+require('await-to-js');
+require('./ChangePassword.container-BWh4R32r.js');
+require('./matchGroups-CxRa9Ej9.js');
+require('./ToJs-BsWqWjdm.js');
 require('redux');
 require('redux-thunk');
 require('redux-saga');
 require('redux-injectors-19');
-require('history');
-require('await-to-js');
-require('./ChangePassword.container-CfGka6U0.js');
-require('./matchGroups-D_GPfYqB.js');
-require('./ToJs-BsWqWjdm.js');
 
 function _interopDefault (e) { return e && e.__esModule ? e : { default: e }; }
 
@@ -595,7 +599,7 @@ const makeLinkDepthMiddleware = ({
     const linkDepthMiddleware = async (req, res) => {
       try {
         // Short cache duration copied from canterbury project
-        VersionInfo.setCachingHeaders(res, {
+        urls.setCachingHeaders(res, {
           cacheControl: 'private',
           surrogateControl: '10'
         });
@@ -634,7 +638,7 @@ const makeLinkDepthMiddleware = ({
 const servers$1 = SERVERS; /* global SERVERS */
 const project = PROJECT; /* global PROJECT */
 const alias$1 = ALIAS; /* global ALIAS */
-const deliveryApiHostname = VersionInfo.url(alias$1, project).api;
+const deliveryApiHostname = urls.url(alias$1, project).api;
 const assetProxy = httpProxy__default.default.createProxyServer();
 const deliveryProxy = httpProxy__default.default.createProxyServer();
 const reverseProxies = (app, reverseProxyPaths = []) => {
@@ -1234,8 +1238,12 @@ const webApp = (app, ReactApp, config) => {
     disableSsrRedux,
     enableSsrCookies,
     handleResponses,
-    handleExceptions = true
+    handleExceptions = true,
+    i18n
   } = config;
+
+  // process locales in static routes for i18n
+  const localeRoutes = App.createLocaleRoutes(routes);
   const staticRoutePath = config.staticRoutePath || staticFolderPath;
   let isRenderingJsxToString = config.renderToString || false;
   const bundleData = getBundleData(config, staticRoutePath);
@@ -1304,6 +1312,17 @@ const webApp = (app, ReactApp, config) => {
     const project = App.pickProject(hostname, request.query);
     const groups = allowedGroups && allowedGroups[project];
     store$1.dispatch(selectors.setCurrentProject(project, groups, hostname));
+    if (i18n) {
+      store$1.dispatch(slice.actions.INIT_LOCALES({
+        locales: {},
+        ...i18n
+      }));
+    }
+    if (Object.keys(localeRoutes).length > 0) {
+      store$1.dispatch(slice.actions.SET_LOCALE_ROUTES({
+        routes: localeRoutes
+      }));
+    }
     const loadableExtractor = loadableChunkExtractors();
     const ssrCookies = enableSsrCookies ?
     // these cookies are managed by the cookiesMiddleware and contain listeners

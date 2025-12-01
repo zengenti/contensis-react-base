@@ -1,29 +1,32 @@
 'use strict';
 
-var VersionInfo = require('./VersionInfo-QL2LcLgA.js');
-var ContensisDeliveryApi = require('./ContensisDeliveryApi-7w7wrnZp.js');
-var SSRContext = require('./SSRContext-CEtLz6yn.js');
+var urls = require('./urls-DVIwGZmd.js');
+var ContensisDeliveryApi = require('./ContensisDeliveryApi-StchaSC-.js');
+var SSRContext = require('./SSRContext-Op85CUQt.js');
+var VersionInfo = require('./VersionInfo-CTPtw_Xd.js');
 var React = require('react');
 var mapJson = require('jsonpath-mapper');
 var reactRouterDom = require('react-router-dom');
-require('./_commonjsHelpers-BJu3ubxk.js');
-require('react-redux');
-require('./selectors-0R_tv3G5.js');
+require('contensis-delivery-api');
+require('query-string');
+require('./selectors-C1CqEUmL.js');
 require('immer');
 require('reselect');
-require('query-string');
-require('./version-D1lOxNWn.js');
-require('styled-components');
-require('contensis-delivery-api');
-require('./store-CeULTOdT.js');
+require('./store-Thi-k3pU.js');
 require('redux');
 require('redux-thunk');
 require('redux-saga');
 require('redux-injectors-19');
+require('./slice-DzItS3J5.js');
+require('@reduxjs/toolkit');
 require('@redux-saga/core/effects');
 require('./CookieConstants-DfPiWCRZ.js');
 require('react-cookie');
+require('react-redux');
 require('./CookieHelper.class-Det3qfdU.js');
+require('./_commonjsHelpers-BJu3ubxk.js');
+require('./version-CukCz8zL.js');
+require('styled-components');
 
 function _interopDefault (e) { return e && e.__esModule ? e : { default: e }; }
 
@@ -187,10 +190,8 @@ const useHistory = () => {
   };
 };
 
-exports.VersionInfo = VersionInfo.VersionInfo;
-exports.setCachingHeaders = VersionInfo.setCachingHeaders;
-exports.stringifyStrings = VersionInfo.stringifyStrings;
-exports.urls = VersionInfo.url;
+exports.setCachingHeaders = urls.setCachingHeaders;
+exports.urls = urls.url;
 exports.cachedSearch = ContensisDeliveryApi.cachedSearch;
 exports.cachedSearchWithContext = ContensisDeliveryApi.cachedSearchWithContext;
 exports.cachedSearchWithCookies = ContensisDeliveryApi.cachedSearchWithCookies;
@@ -200,6 +201,8 @@ exports.getClientConfig = ContensisDeliveryApi.getClientConfig;
 exports.SSRContextProvider = SSRContext.SSRContextProvider;
 exports.useDeliveryApi = SSRContext.useDeliveryApi;
 exports.useSSRContext = SSRContext.useSSRContext;
+exports.VersionInfo = VersionInfo.VersionInfo;
+exports.stringifyStrings = VersionInfo.stringifyStrings;
 Object.defineProperty(exports, "jpath", {
   enumerable: true,
   get: function () { return mapJson.jpath; }

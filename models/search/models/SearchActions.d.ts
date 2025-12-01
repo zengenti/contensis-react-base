@@ -43,6 +43,7 @@ type InitListingParams = {
     context: keyof typeof Context;
     debug?: DebugFlags;
     defaultLang?: string;
+    languages?: string[];
     /**
      * Triggers the loading of the search config facet
      */
@@ -91,13 +92,14 @@ export type SearchResults = {
     state: AppState;
 };
 export type LoadFilterAction = {
+    context: Context;
     facetKey: string;
-    filterKey: string;
     filter: Filter;
+    filterKey: string;
+    languages: string[];
+    mapper: Mappers['filterItems'];
     projectId: string;
     selectedKeys: string[];
-    context: Context;
-    mapper: Mappers['filterItems'];
     ssr?: SSRContext;
 };
 export type LoadFiltersCompleteAction = Action & {
@@ -119,7 +121,7 @@ export type ExecuteSearchAction = EnsureSearchAction & {
 export type SetSearchEntriesParams = {
     type: string;
     context: Context;
-    defaultLang: string;
+    languages: string[];
     facet: string;
     mappers: Mappers;
     nextFacet: Facet;

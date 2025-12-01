@@ -10,6 +10,13 @@ export declare const getCurrentFacet: (state: AppState) => string;
 export declare const getCurrentListing: (state: AppState) => string;
 export declare const getCurrentTab: (state: AppState) => number;
 export declare const getCurrentComposition: (state: AppState) => string;
+/** A localised version of `getCurrent` selector */
+export declare const getLocalisedCurrent: (state: AppState, language?: string, context?: ContextType) => string;
+export declare const getLocalisedFacetKey: (state: AppState, facet?: string, language?: string, context?: ContextType) => string | undefined;
+export declare const getCurrentFromLocalised: (state: AppState, alias: string, language?: string, context?: ContextType) => {
+    facet: string;
+    language: string;
+} | null;
 export declare const getFacets: (state: AppState, returnType?: StateType) => Facets;
 export declare const getTabFacets: (state: AppState) => {
     [k: string]: Facet;
@@ -29,6 +36,8 @@ export declare const getComposition: (state: AppState, composition?: string) => 
 };
 /** Return filter state for the current (or provided) facet */
 export declare const getFilters: (state: AppState, facet: string, context?: ContextType, returnType?: StateType) => Filters;
+export declare const getLocalisedFilterKey: (state: AppState, key: string, language: string | undefined, facet: string, context?: ContextType) => string;
+export declare const getFilterKeyFromLocalised: (state: AppState, key: string, language: string | undefined, facet: string, context?: ContextType) => string;
 /** Return filter state for the current (or provided) facet, excluding filters configured as `renderable: false` */
 export declare const getRenderableFilters: (state: AppState, facet?: string, context?: ContextType) => Filters;
 export declare const getFiltersToLoad: (state: AppState, facet: string, context?: ContextType, returnType?: StateType) => string[];
@@ -36,6 +45,8 @@ export declare const getFiltersToLoad: (state: AppState, facet: string, context?
 export declare const getSelectedFilters: (state: AppState, facet?: string, context?: ContextType, returnType?: StateType) => SelectedFilters;
 /** Return keyed object for all _renderable_ filters in the current facet with all selected values for each filter */
 export declare const getRenderableSelectedFilters: (state: AppState, facet?: string, context?: ContextType) => SelectedFilters;
+/** A localised version of `getRenderableSelectedFilters` selector */
+export declare const getLocalisedRenderableSelectedFilters: (state: AppState, facet?: string, context?: ContextType) => SelectedFilters;
 export declare const getResults: (state: AppState, current?: string, context?: ContextType, returnType?: StateType) => any[];
 export declare const getResultsInfo: (state: AppState, current?: string, context?: ContextType) => any;
 export declare const getIsInternalPaging: (state: AppState, current: string, context?: ContextType) => boolean;

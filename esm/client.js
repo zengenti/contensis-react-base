@@ -6,34 +6,39 @@ import { unstable_HistoryRouter } from 'react-router-dom';
 import { loadableReady } from '@loadable/component';
 import { parse } from 'query-string';
 import { CookiesProvider } from 'react-cookie';
-import { s as selectVersionStatus } from './version-d166gh4O.js';
-import { s as setVersionStatus } from './version-B7fE1xWN.js';
-import { b as browserHistory, r as rootSaga, p as pickProject } from './App-2IdnSPfh.js';
-export { A as ReactApp } from './App-2IdnSPfh.js';
-import { c as createStore } from './store-CXrRt0Bl.js';
-import { s as setCurrentProject } from './selectors-BOhtM2ku.js';
-import { d as deliveryApi } from './ContensisDeliveryApi-DLsKPhov.js';
-import { S as SSRContextProvider } from './SSRContext-Bthf0c-Y.js';
+import { c as createLocaleRoutes, b as browserHistory, r as rootSaga, p as pickProject } from './App-D8L4sT6e.js';
+export { A as ReactApp } from './App-D8L4sT6e.js';
+import { a as actions } from './slice-BO-KB30v.js';
+import { s as selectVersionStatus } from './version-CsMa2_lY.js';
+import { s as setVersionStatus } from './version-Cin2m8K5.js';
+import { c as createStore } from './store-KUjdLK3-.js';
+import { s as setCurrentProject } from './selectors-C2gX5tLA.js';
+import { d as deliveryApi } from './ContensisDeliveryApi-DHZ52vNg.js';
+import { S as SSRContextProvider } from './SSRContext-CXYTpsVV.js';
 import 'history';
 import '@redux-saga/core/effects';
 import 'loglevel';
 import 'await-to-js';
-import './ChangePassword.container-Dh2wsBUZ.js';
-import './matchGroups-DYJlK7bU.js';
+import './ChangePassword.container-BS_ruqX8.js';
+import './matchGroups-BkB1ERVS.js';
 import 'jsonpath-mapper';
 import './CookieConstants-DEmbwzYr.js';
 import './CookieHelper.class-C6rTRl_1.js';
 import './ToJs-BnRRHk6f.js';
 import 'contensis-delivery-api';
-import './sagas-B9iN0XsQ.js';
+import './sagas-AyubwCW8.js';
 import 'reselect';
-import './util-CeFU8JKT.js';
+import './util-CnXqe4uK.js';
+import './selectors-lvyF1LmZ.js';
 import 'contensis-core-api';
 import 'deepmerge';
 import './_commonjsHelpers-BFTU3MAI.js';
 import 'immer';
 import 'deep-equal';
-import './RouteLoader-DCuV1bar.js';
+import './VersionInfo-fBaJIe2X.js';
+import 'styled-components';
+import './RouteLoader-D4a8D5FU.js';
+import '@reduxjs/toolkit';
 import 'redux';
 import 'redux-thunk';
 import 'redux-saga';
@@ -43,6 +48,7 @@ class ClientApp {
   constructor(ReactApp, config) {
     const documentRoot = document.getElementById('root');
     const {
+      i18n,
       // stateType = 'immutable', // changed default in v4
       stateType = 'js',
       routes,
@@ -50,6 +56,9 @@ class ClientApp {
       withSagas,
       withEvents
     } = config;
+
+    // process locales in static routes for i18n
+    const localeRoutes = createLocaleRoutes(routes);
     const GetClientJSX = store => {
       const ClientJsx = /*#__PURE__*/React.createElement(CookiesProvider, null, /*#__PURE__*/React.createElement(Provider, {
         store: store
@@ -102,6 +111,19 @@ class ClientApp {
         if (isDev && window.REDUX_DATA) console.log('Hydrating from inline Redux');
         store.runSaga(rootSaga(withSagas));
         store.dispatch(setCurrentProject(pickProject(window.location.hostname, qs), [], window.location.hostname));
+        if (i18n) {
+          store.dispatch(actions.INIT_LOCALES({
+            locales: {},
+            ...i18n
+          }));
+        }
+        if (Object.keys(localeRoutes).length > 0) {
+          // Keep a record of the locale routes in Redux
+          // so we can navigate between them when switching language
+          store.dispatch(actions.SET_LOCALE_ROUTES({
+            routes: localeRoutes
+          }));
+        }
         delete window.REDUX_DATA;
         HMRRenderer(GetClientJSX(store));
         hmr(store);

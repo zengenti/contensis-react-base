@@ -1,28 +1,31 @@
 import React, { useMemo, useEffect } from 'react';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { t as toJS } from './ToJs-BnRRHk6f.js';
-import { w as withMappers, g as getTotalCount, a as getTabsAndFacets, b as getQueryParameter, c as getSelectedFilters, d as getSearchTotalCount, e as getSearchTerm, f as getResultsInfo, h as getResults, i as getPageIsLoading, j as getPaging, k as getIsLoading, l as getRenderableFilters, m as getFeaturedResults, n as getFacetTitles, o as getFacetsTotalCount, p as getTabFacets, q as getFacet, r as getCurrentTab, s as getPageIndex, t as getCurrentFacet, u as updateSortOrder, v as updateSelectedFilters, x as updateSearchTerm, y as updatePageSize, z as updatePageIndex, A as updateCurrentTab, B as updateCurrentFacet, C as clearFilters, D as selectListing, E as triggerSearch, F as Context$1, G as getFilters, U as UPDATE_SORT_ORDER, H as UPDATE_SELECTED_FILTERS, I as UPDATE_SEARCH_TERM, J as UPDATE_PAGE_SIZE, K as UPDATE_PAGE_INDEX, S as SET_SEARCH_FILTERS, L as SET_SEARCH_ENTRIES, M as SET_ROUTE_FILTERS, N as LOAD_FILTERS_COMPLETE, O as LOAD_FILTERS_ERROR, P as LOAD_FILTERS, Q as EXECUTE_SEARCH_ERROR, R as EXECUTE_SEARCH, T as CLEAR_FILTERS, V as APPLY_CONFIG } from './sagas-B9iN0XsQ.js';
-export { W as actions, a1 as doSearch, Z as expressions, _ as queries, a3 as sagas, X as selectors, a2 as setRouteFilters, a4 as triggerListingSsr, a5 as triggerMinilistSsr, a6 as triggerSearchSsr, Y as types, $ as useFacets, a0 as useListing } from './sagas-B9iN0XsQ.js';
+import { w as withMappers, g as getTotalCount, a as getTabsAndFacets, b as getQueryParameter, c as getSelectedFilters, d as getSearchTotalCount, e as getSearchTerm, f as getResultsInfo, h as getResults, i as getPageIsLoading, j as getPaging, k as getIsLoading, l as getRenderableFilters, m as getFeaturedResults, n as getFacetTitles, o as getFacetsTotalCount, p as getTabFacets, q as getFacet, r as getCurrentTab, s as getPageIndex, t as getCurrentFacet, u as updateSortOrder, v as updateSelectedFilters, x as updateSearchTerm, y as updatePageSize, z as updatePageIndex, A as updateCurrentTab, B as updateCurrentFacet, C as clearFilters, D as selectListing, E as triggerSearch, F as Context$1, G as getFilters, U as UPDATE_SORT_ORDER, H as UPDATE_SELECTED_FILTERS, I as UPDATE_SEARCH_TERM, J as UPDATE_PAGE_SIZE, K as UPDATE_PAGE_INDEX, S as SET_SEARCH_FILTERS, L as SET_SEARCH_ENTRIES, M as SET_ROUTE_FILTERS, N as LOAD_FILTERS_COMPLETE, O as LOAD_FILTERS_ERROR, P as LOAD_FILTERS, Q as EXECUTE_SEARCH_ERROR, R as EXECUTE_SEARCH, T as CLEAR_FILTERS, V as APPLY_CONFIG } from './sagas-AyubwCW8.js';
+export { W as actions, a1 as doSearch, Z as expressions, _ as queries, a3 as sagas, X as selectors, a2 as setRouteFilters, a4 as triggerListingSsr, a5 as triggerMinilistSsr, a6 as triggerSearchSsr, Y as types, $ as useFacets, a0 as useListing } from './sagas-AyubwCW8.js';
 import { createSelector } from 'reselect';
 import { produce, current } from 'immer';
 import equals from 'deep-equal';
 import merge from 'deepmerge';
-import { t as toArray } from './util-CeFU8JKT.js';
-export { r as routeParams } from './util-CeFU8JKT.js';
+import { t as toArray } from './util-CnXqe4uK.js';
+export { r as routeParams } from './util-CnXqe4uK.js';
 import 'loglevel';
 import '@redux-saga/core/effects';
-import './version-d166gh4O.js';
-import './selectors-BOhtM2ku.js';
+import './version-CsMa2_lY.js';
+import './selectors-C2gX5tLA.js';
 import 'jsonpath-mapper';
 import 'query-string';
-import './ContensisDeliveryApi-DLsKPhov.js';
+import './ContensisDeliveryApi-DHZ52vNg.js';
 import 'contensis-delivery-api';
-import './store-CXrRt0Bl.js';
+import './store-KUjdLK3-.js';
 import 'redux';
 import 'redux-thunk';
 import 'redux-saga';
 import 'redux-injectors-19';
+import './slice-BO-KB30v.js';
+import '@reduxjs/toolkit';
 import './CookieConstants-DEmbwzYr.js';
+import './selectors-lvyF1LmZ.js';
 import 'contensis-core-api';
 import './_commonjsHelpers-BFTU3MAI.js';
 
@@ -496,7 +499,8 @@ var reducers = config => {
           const {
             facet,
             params,
-            context
+            context,
+            languages
           } = action;
           const {
             term = '',
@@ -527,6 +531,7 @@ var reducers = config => {
             stateFacet = resetCurrentFacet ? resetFacet(stateFacet) : stateFacet;
             stateFacet.filters = nextFilters;
             stateFacet.queryParams.dynamicOrderBy = toArray(orderBy) || [];
+            stateFacet.queryParams.languages = languages;
             return [facetName, stateFacet];
           }));
           state.context = context;
@@ -535,7 +540,7 @@ var reducers = config => {
           state.currentComposition = action.composition;
           state.term = term;
           if ((_state$tabs = state.tabs) !== null && _state$tabs !== void 0 && _state$tabs[tabId]) state.tabs[tabId].currentFacet = facet;
-          state[context][facet].pagingInfo = {
+          if (state[context][facet]) state[context][facet].pagingInfo = {
             ...(state[context][facet].pagingInfo || pagingInfo),
             pageIndex: Number(pageIndex) - 1 || (state[context][facet].queryParams.loadMorePaging ? ((_state$context$facet$ = state[context][facet].pagingInfo) === null || _state$context$facet$ === void 0 ? void 0 : _state$context$facet$.pageIndex) || 0 : 0),
             pageSize: Number(pageSize) || state[context][facet].queryParams.pageSize

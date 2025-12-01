@@ -63,4 +63,10 @@ export type StaticRoute = Omit<RouteObject, 'children'> & {
     searchOptions?: SearchRouteOptions;
     ssr?: boolean;
     ssrOnly?: boolean;
+    /** Specify localised paths for different language codes, e.g. { 'en-GB': '/path', 'fr-FR': '/chemin' } */
+    i18n?: {
+        [languageCode: string]: string;
+    };
+    /** The language code for this route, e.g. 'en-GB' */
+    language?: string;
 };

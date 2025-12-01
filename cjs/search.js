@@ -3,26 +3,29 @@
 var React = require('react');
 var reactRedux = require('react-redux');
 var ToJs = require('./ToJs-BsWqWjdm.js');
-var sagas = require('./sagas-CqBzeM62.js');
+var sagas = require('./sagas-BLyC5pxW.js');
 var reselect = require('reselect');
 var immer = require('immer');
 var equals = require('deep-equal');
 var merge = require('deepmerge');
-var util = require('./util-D4MTMutv.js');
+var util = require('./util-D65Zmo5R.js');
 require('loglevel');
 require('@redux-saga/core/effects');
-require('./version-D1lOxNWn.js');
-require('./selectors-0R_tv3G5.js');
+require('./version-CukCz8zL.js');
+require('./selectors-C1CqEUmL.js');
 require('jsonpath-mapper');
 require('query-string');
-require('./ContensisDeliveryApi-7w7wrnZp.js');
+require('./ContensisDeliveryApi-StchaSC-.js');
 require('contensis-delivery-api');
-require('./store-CeULTOdT.js');
+require('./store-Thi-k3pU.js');
 require('redux');
 require('redux-thunk');
 require('redux-saga');
 require('redux-injectors-19');
+require('./slice-DzItS3J5.js');
+require('@reduxjs/toolkit');
 require('./CookieConstants-DfPiWCRZ.js');
+require('./selectors-DAQR0uZa.js');
 require('contensis-core-api');
 require('./_commonjsHelpers-BJu3ubxk.js');
 
@@ -502,7 +505,8 @@ var reducers = config => {
           const {
             facet,
             params,
-            context
+            context,
+            languages
           } = action;
           const {
             term = '',
@@ -533,6 +537,7 @@ var reducers = config => {
             stateFacet = resetCurrentFacet ? resetFacet(stateFacet) : stateFacet;
             stateFacet.filters = nextFilters;
             stateFacet.queryParams.dynamicOrderBy = util.toArray(orderBy) || [];
+            stateFacet.queryParams.languages = languages;
             return [facetName, stateFacet];
           }));
           state.context = context;
@@ -541,7 +546,7 @@ var reducers = config => {
           state.currentComposition = action.composition;
           state.term = term;
           if ((_state$tabs = state.tabs) !== null && _state$tabs !== void 0 && _state$tabs[tabId]) state.tabs[tabId].currentFacet = facet;
-          state[context][facet].pagingInfo = {
+          if (state[context][facet]) state[context][facet].pagingInfo = {
             ...(state[context][facet].pagingInfo || pagingInfo),
             pageIndex: Number(pageIndex) - 1 || (state[context][facet].queryParams.loadMorePaging ? ((_state$context$facet$ = state[context][facet].pagingInfo) === null || _state$context$facet$ === void 0 ? void 0 : _state$context$facet$.pageIndex) || 0 : 0),
             pageSize: Number(pageSize) || state[context][facet].queryParams.pageSize

@@ -1,16 +1,17 @@
-import { a as cachedSearch, d as deliveryApi } from './ContensisDeliveryApi-DLsKPhov.js';
+import { a as cachedSearch, d as deliveryApi } from './ContensisDeliveryApi-DHZ52vNg.js';
 import { Query as Query$1 } from 'contensis-delivery-api';
 import React from 'react';
 import { Provider } from 'react-redux';
+import { a as actions } from './slice-BO-KB30v.js';
 import mapJson from 'jsonpath-mapper';
-import { a7 as defaultExpressions, a8 as termExpressions, a9 as contentTypeIdExpression, aa as filterExpressions, ab as orderByExpression, ac as customWhereExpressions, ad as cloneDeep } from './sagas-B9iN0XsQ.js';
+import { a7 as defaultExpressions, a8 as termExpressions, a9 as contentTypeIdExpression, aa as filterExpressions, ab as orderByExpression, ac as customWhereExpressions, ad as cloneDeep } from './sagas-AyubwCW8.js';
 import 'reselect';
 import 'immer';
 import 'deep-equal';
 import 'deepmerge';
 import 'query-string';
 import { Op, Query } from 'contensis-core-api';
-import { s as setCachingHeaders, u as url } from './VersionInfo-Dob5j7AG.js';
+import { s as setCachingHeaders, u as url } from './urls-DfCisos-.js';
 import 'isomorphic-fetch';
 import express from 'express';
 import http from 'http';
@@ -27,34 +28,37 @@ import { noop, identity } from 'lodash';
 import { buildCleaner } from 'lodash-clean';
 import { a as Cookies } from './CookieHelper.class-C6rTRl_1.js';
 import cookiesMiddleware from 'universal-cookie-express';
-import { c as createStore } from './store-CXrRt0Bl.js';
-import { h as history, p as pickProject, r as rootSaga } from './App-2IdnSPfh.js';
-export { A as ReactApp } from './App-2IdnSPfh.js';
-import { s as setVersionStatus, c as setVersion } from './version-B7fE1xWN.js';
-import { a3 as selectSurrogateKeys, a4 as selectSsrApiCalls, h as selectRouteEntry, n as selectCurrentProject, g as getImmutableOrJS, s as setCurrentProject, K as selectCurrentSearch } from './selectors-BOhtM2ku.js';
-import { H as HttpContext, m as mergeStaticRoutes } from './RouteLoader-DCuV1bar.js';
+import { c as createLocaleRoutes, h as history, p as pickProject, r as rootSaga } from './App-D8L4sT6e.js';
+export { A as ReactApp } from './App-D8L4sT6e.js';
+import { c as createStore } from './store-KUjdLK3-.js';
+import { s as setVersionStatus, c as setVersion } from './version-Cin2m8K5.js';
+import { a6 as selectSurrogateKeys, a7 as selectSsrApiCalls, j as selectRouteEntry, f as selectCurrentProject, g as getImmutableOrJS, s as setCurrentProject, F as selectCurrentSearch } from './selectors-C2gX5tLA.js';
+import { H as HttpContext, m as mergeStaticRoutes } from './RouteLoader-D4a8D5FU.js';
 import { Transform } from 'stream';
 import { ChunkExtractor, ChunkExtractorManager } from '@loadable/server';
 import chalk from 'chalk';
 import minifyCssString from 'minify-css-string';
 import { CookiesProvider } from 'react-cookie';
 import { StaticRouter } from 'react-router-dom/server';
-import { S as SSRContextProvider } from './SSRContext-Bthf0c-Y.js';
+import { S as SSRContextProvider } from './SSRContext-CXYTpsVV.js';
+import './VersionInfo-fBaJIe2X.js';
 import './CookieConstants-DEmbwzYr.js';
+import '@reduxjs/toolkit';
 import 'loglevel';
 import '@redux-saga/core/effects';
-import './version-d166gh4O.js';
-import './util-CeFU8JKT.js';
+import './version-CsMa2_lY.js';
+import './util-CnXqe4uK.js';
+import './selectors-lvyF1LmZ.js';
 import './_commonjsHelpers-BFTU3MAI.js';
+import 'history';
+import 'await-to-js';
+import './ChangePassword.container-BS_ruqX8.js';
+import './matchGroups-BkB1ERVS.js';
+import './ToJs-BnRRHk6f.js';
 import 'redux';
 import 'redux-thunk';
 import 'redux-saga';
 import 'redux-injectors-19';
-import 'history';
-import 'await-to-js';
-import './ChangePassword.container-Dh2wsBUZ.js';
-import './matchGroups-DYJlK7bU.js';
-import './ToJs-BnRRHk6f.js';
 
 /**
  * Util class holds our search results helper boilerplate methods
@@ -1217,8 +1221,12 @@ const webApp = (app, ReactApp, config) => {
     disableSsrRedux,
     enableSsrCookies,
     handleResponses,
-    handleExceptions = true
+    handleExceptions = true,
+    i18n
   } = config;
+
+  // process locales in static routes for i18n
+  const localeRoutes = createLocaleRoutes(routes);
   const staticRoutePath = config.staticRoutePath || staticFolderPath;
   let isRenderingJsxToString = config.renderToString || false;
   const bundleData = getBundleData(config, staticRoutePath);
@@ -1287,6 +1295,17 @@ const webApp = (app, ReactApp, config) => {
     const project = pickProject(hostname, request.query);
     const groups = allowedGroups && allowedGroups[project];
     store.dispatch(setCurrentProject(project, groups, hostname));
+    if (i18n) {
+      store.dispatch(actions.INIT_LOCALES({
+        locales: {},
+        ...i18n
+      }));
+    }
+    if (Object.keys(localeRoutes).length > 0) {
+      store.dispatch(actions.SET_LOCALE_ROUTES({
+        routes: localeRoutes
+      }));
+    }
     const loadableExtractor = loadableChunkExtractors();
     const ssrCookies = enableSsrCookies ?
     // these cookies are managed by the cookiesMiddleware and contain listeners

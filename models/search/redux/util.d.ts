@@ -30,5 +30,6 @@ export declare const sanitiseParams: (params?: SearchParams) => SearchParams | u
  * @returns true or false
  */
 export declare const filterParamsChanged: (action: EnsureSearchAction | SetSearchEntriesAction, state?: AppState) => boolean;
+export declare const languageChanged: (action: EnsureSearchAction | SetSearchEntriesAction) => boolean;
 export declare const debugExecuteSearch: (action: EnsureSearchAction | SetSearchEntriesAction, state: AppState) => void;
 export declare const scrollTo: (scrollToElement: string) => void;

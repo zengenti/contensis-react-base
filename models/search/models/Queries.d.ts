@@ -43,4 +43,4 @@ export type QueryParams = SearchQueryOptions & {
     selectedFilters: SearchParams;
 };
 export type SearchQuery = ({ aggregations, contentTypeIds, customWhere, dynamicOrderBy, excludeIds, featuredResults, fields, filters, fuzzySearch, languages, pageSize, pageIndex, omitDefaultSearchFields, orderBy, searchTerm, versionStatus, webpageTemplates, weightedSearchFields, }: SearchQueryOptions, isFeatured?: boolean) => Query;
-export type FilterQuery = (contentTypeIds: string[], versionStatus: VersionStatus, customWhere?: CustomWhereClause) => Query;
+export type FilterQuery = (contentTypeIds: string[], languages: string[], versionStatus: VersionStatus, customWhere?: CustomWhereClause) => Query;
