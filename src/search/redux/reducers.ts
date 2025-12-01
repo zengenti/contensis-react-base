@@ -307,7 +307,7 @@ export default (config: SearchConfig) => {
           return;
         }
         case SET_ROUTE_FILTERS: {
-          const { facet, params, context } = action;
+          const { facet, params, context, languages } = action;
           const { term = '', pageIndex, pageSize, orderBy } = params;
 
           const stateTerm = state.term;
@@ -344,6 +344,7 @@ export default (config: SearchConfig) => {
                   : stateFacet;
                 stateFacet.filters = nextFilters;
                 stateFacet.queryParams.dynamicOrderBy = toArray(orderBy) || [];
+                stateFacet.queryParams.languages = languages;
                 return [facetName, stateFacet];
               }
             )
@@ -359,16 +360,17 @@ export default (config: SearchConfig) => {
           state.currentComposition = action.composition;
           state.term = term;
           if (state.tabs?.[tabId]) state.tabs[tabId].currentFacet = facet;
-          state[context][facet].pagingInfo = {
-            ...(state[context][facet].pagingInfo || pagingInfo),
-            pageIndex:
-              Number(pageIndex) - 1 ||
-              (state[context][facet].queryParams.loadMorePaging
-                ? state[context][facet].pagingInfo?.pageIndex || 0
-                : 0),
-            pageSize:
-              Number(pageSize) || state[context][facet].queryParams.pageSize,
-          };
+          if (state[context][facet])
+            state[context][facet].pagingInfo = {
+              ...(state[context][facet].pagingInfo || pagingInfo),
+              pageIndex:
+                Number(pageIndex) - 1 ||
+                (state[context][facet].queryParams.loadMorePaging
+                  ? state[context][facet].pagingInfo?.pageIndex || 0
+                  : 0),
+              pageSize:
+                Number(pageSize) || state[context][facet].queryParams.pageSize,
+            };
           state.config.isLoaded = true;
           state.config.ssr = typeof window === 'undefined';
 

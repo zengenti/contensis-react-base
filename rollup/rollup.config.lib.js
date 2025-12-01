@@ -16,6 +16,7 @@ export default {
   input: {
     'contensis-react-base': './src',
     client: './src/client',
+    i18n: './src/i18n',
     redux: './src/redux',
     routing: './src/routing',
     search: './src/search',

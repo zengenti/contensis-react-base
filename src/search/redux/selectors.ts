@@ -1,3 +1,4 @@
+import { selectCurrentLanguage } from '~/i18n';
 import { Context } from '../models/Enums';
 import { QueryParams as QueryParams2 } from '../models/Queries';
 import { CustomApi, SearchQueryParams } from '../models/Search';
@@ -40,6 +41,53 @@ export const getCurrentTab = (state: AppState): number =>
 
 export const getCurrentComposition = (state: AppState): string =>
   getIn(state, ['search', 'currentComposition']);
+
+/** A localised version of `getCurrent` selector */
+export const getLocalisedCurrent = (
+  state: AppState,
+  language = selectCurrentLanguage(state),
+  context: ContextType = getSearchContext(state)
+) => {
+  const currentFacet = getCurrent(state, context);
+  const facet = getFacet(state, currentFacet, context, 'js');
+  const i18n = facet.i18n?.[language];
+  return i18n || currentFacet;
+};
+
+export const getLocalisedFacetKey = (
+  state: AppState,
+  facet = getCurrent(state),
+  language = selectCurrentLanguage(state),
+  context: ContextType = getSearchContext(state)
+) => getFacet(state, facet, context, 'js')?.i18n?.[language];
+
+export const getCurrentFromLocalised = (
+  state: AppState,
+  alias: string,
+  language?: string,
+  context: ContextType = getSearchContext(state)
+) => {
+  const facets = state.search?.[context] || {};
+
+  for (const [facetKey, facet] of Object.entries(facets)) {
+    if (language) {
+      const languageAlias = facet.i18n?.[language];
+      if (languageAlias === alias) {
+        return { facet: facetKey, language };
+      }
+    } else {
+      // Fallback to check for any language
+      for (const lang in facet.i18n) {
+        if (facet.i18n[lang] === alias) {
+          return { facet: facetKey, language: lang };
+        }
+      }
+    }
+  }
+  return null;
+  // // Default to returning the inputs
+  // return { facet: alias, language };
+};
 
 export const getFacets = (state: AppState, returnType?: StateType): Facets =>
   getIn(state, ['search', Context.facets], {}, returnType);
@@ -126,6 +174,36 @@ export const getFilters = (
   );
 };
 
+export const getLocalisedFilterKey = (
+  state: AppState,
+  key: string,
+  language = selectCurrentLanguage(state),
+  facet: string,
+  context: ContextType = getSearchContext(state)
+) => {
+  const filter = getFilters(state, facet, context, 'js')[key];
+  if (filter?.i18n?.[language]) {
+    return filter.i18n[language];
+  }
+  return key;
+};
+
+export const getFilterKeyFromLocalised = (
+  state: AppState,
+  key: string,
+  language = selectCurrentLanguage(state),
+  facet: string,
+  context: ContextType = getSearchContext(state)
+) => {
+  const filters = getFilters(state, facet, context, 'js');
+  for (const [filterKey, filter] of Object.entries(filters)) {
+    if (filter.i18n?.[language] === key) {
+      return filterKey;
+    }
+  }
+  return key;
+};
+
 /** Return filter state for the current (or provided) facet, excluding filters configured as `renderable: false` */
 export const getRenderableFilters = (
   state: AppState,
@@ -155,6 +233,31 @@ export const getFiltersToLoad = (
   return loadedFilters
     .map(([filterKey, isLoaded]) => (!isLoaded ? filterKey : null))
     .filter(f => !!f) as string[];
+};
+
+/** Iterate the selected filters and update their keys to their localized equivalents */
+const localiseSelectedFilterKeys = (
+  selectedFilters: SelectedFilters,
+  state: AppState
+) => {
+  const language = selectCurrentLanguage(state);
+  const filters = getFilters(
+    state,
+    getCurrentFacet(state),
+    getSearchContext(state),
+    'js'
+  );
+  const localisedSelectedFilters: SelectedFilters = {};
+  for (const [filterKey, selectedValues] of Object.entries(selectedFilters)) {
+    const filter = filters[filterKey];
+    if (filter?.i18n?.[language]) {
+      const localisedKey = filter.i18n[language];
+      localisedSelectedFilters[localisedKey] = selectedValues;
+    } else {
+      localisedSelectedFilters[filterKey] = selectedValues;
+    }
+  }
+  return localisedSelectedFilters;
 };
 
 /** Reduce filters state to a simple object containing all filter keys and the selected values */
@@ -196,7 +299,19 @@ export const getRenderableSelectedFilters = (
   const filters = getRenderableFilters(state, facet, context);
 
   // new in CRB4: intended no support for immutable state type
-  return reduceSelectedFilters(filters);
+  const selectedFilters = reduceSelectedFilters(filters);
+  return selectedFilters;
+};
+
+/** A localised version of `getRenderableSelectedFilters` selector */
+export const getLocalisedRenderableSelectedFilters = (
+  state: AppState,
+  facet = '',
+  context: ContextType = Context.facets
+): SelectedFilters => {
+  const filters = getRenderableSelectedFilters(state, facet, context);
+  const localisedFilters = localiseSelectedFilterKeys(filters, state);
+  return localisedFilters;
 };
 
 export const getResults = (

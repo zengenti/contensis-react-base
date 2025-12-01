@@ -105,8 +105,8 @@ const queryParamsTemplate = {
     getPageIndex(state, '', action.context),
   internalPaging: (root: QueryParamsMapperParams) =>
     getQueryParameter(root, 'internalPaging', false),
-  languages: ({ action }: QueryParamsMapperParams) =>
-    action.defaultLang ? [action.defaultLang] : [],
+  languages: (root: QueryParamsMapperParams) =>
+    getQueryParameter(root, 'languages', []),
   linkDepth: (root: QueryParamsMapperParams) =>
     getQueryParameter(root, 'linkDepth', 0),
   loadMorePaging: (root: QueryParamsMapperParams) =>

@@ -7,6 +7,8 @@ import { loadableReady } from '@loadable/component';
 import { parse } from 'query-string';
 import { CookiesProvider } from 'react-cookie';
 
+import { createLocaleRoutes } from '~/i18n/routes';
+import { actions } from '~/i18n/redux/slice';
 import { selectVersionStatus } from '~/redux/selectors/version';
 import { setVersionStatus } from '~/redux/actions/version';
 import rootSaga from '~/redux/sagas';
@@ -34,6 +36,7 @@ class ClientApp {
     const documentRoot = document.getElementById('root') as HTMLElement;
 
     const {
+      i18n,
       // stateType = 'immutable', // changed default in v4
       stateType = 'js',
       routes,
@@ -41,6 +44,9 @@ class ClientApp {
       withSagas,
       withEvents,
     } = config;
+
+    // process locales in static routes for i18n
+    const localeRoutes = createLocaleRoutes(routes);
 
     const GetClientJSX = store => {
       const ClientJsx = (
@@ -117,6 +123,19 @@ class ClientApp {
               window.location.hostname
             )
           );
+          if (i18n) {
+            store.dispatch(
+              actions.INIT_LOCALES({
+                locales: {},
+                ...i18n,
+              })
+            );
+          }
+          if (Object.keys(localeRoutes).length > 0) {
+            // Keep a record of the locale routes in Redux
+            // so we can navigate between them when switching language
+            store.dispatch(actions.SET_LOCALE_ROUTES({ routes: localeRoutes }));
+          }
 
           delete (window as any).REDUX_DATA;
           HMRRenderer(GetClientJSX(store));

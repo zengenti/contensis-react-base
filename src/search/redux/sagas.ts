@@ -37,9 +37,11 @@ import {
   getCompositionFacets,
   getCurrent,
   getCurrentComposition,
+  getCurrentFromLocalised,
   getCustomApi,
   getFacet,
   getFacets,
+  getFilterKeyFromLocalised,
   getFiltersToLoad,
   getIsSsr,
   getPageIndex,
@@ -90,6 +92,7 @@ import { Mappers } from '../models/Search';
 import { Context } from '../models/Enums';
 import { TimedSearchResponse } from '../models/SearchUtil';
 import mapQueryParamsToCustomApi from '../transformations/queryParams-to-customapi.mapper';
+import { selectCurrentLanguage } from '~/i18n';
 
 export const searchSagas = [
   takeEvery(CLEAR_FILTERS, clearFilters),
@@ -111,7 +114,8 @@ const toJS = (obj: any) =>
 export function* setRouteFilters(
   action: InitListingAction | SetRouteFiltersOptions
 ) {
-  const { mappers, params, composition, defaultLang, debug, ssr } = action;
+  const { mappers, params, composition, debug, ssr } = action;
+  let { defaultLang } = action;
 
   const state: AppState = toJS(yield select());
   const isSSR = getIsSsr(state);
@@ -120,9 +124,31 @@ export function* setRouteFilters(
   // Get current facet from params or state
   const facet = params?.facet || action.facet;
   const listingType = params?.listingType || action.listingType;
+
+  // Determine facets or listings context
   let context = listingType ? Context.listings : Context.facets;
+
   let currentFacet = listingType || facet;
 
+  // Instead of just taking the facet/listing from params,
+  // we need to check all aliases to determine the correct facet/listing
+  const currentLanguage = yield select(selectCurrentLanguage);
+  if (currentFacet) {
+    const currentLocalised: ReturnType<typeof getCurrentFromLocalised> =
+      yield select(
+        getCurrentFromLocalised,
+        currentFacet,
+        currentLanguage,
+        context
+      );
+    if (currentLocalised) {
+      currentFacet = currentLocalised.facet;
+      defaultLang = currentLocalised.language;
+    }
+  }
+
+  // If composition is set, and no facet/listingType in params,
+  // pick the first facet/listing from the composition
   if (composition) {
     const compositions = getSearchCompositions(state);
     const compositionConfig = compositions[composition];
@@ -157,6 +183,30 @@ export function* setRouteFilters(
       tabs?.[0]?.defaultFacet || Object.keys(getFacets(state, 'js'))?.[0] || '';
   }
 
+  // Ensure we have a language set
+  if (!defaultLang) 
+    defaultLang = currentLanguage;
+  
+
+  // When we have a currentFacet, check the defaultLang
+  // and translate any filter params from the localised aliases
+  // to the actual filter keys
+  if (currentFacet && defaultLang) {
+    for (const paramKey of Object.keys(params || {})) {
+      const filterKey = yield select(
+        getFilterKeyFromLocalised,
+        paramKey,
+        defaultLang,
+        currentFacet,
+        context
+      );
+      if (filterKey && filterKey !== paramKey) {
+        params![filterKey] = params![paramKey];
+        delete params![paramKey];
+      }
+    }
+  }
+
   const nextAction = {
     type: SET_ROUTE_FILTERS,
     context,
@@ -165,6 +215,7 @@ export function* setRouteFilters(
     mappers,
     params,
     defaultLang,
+    languages: defaultLang ? [defaultLang] : [],
     isSSR,
     ssr,
     debug,
@@ -210,7 +261,13 @@ export function* doSearch(action: TriggerSearchAction) {
 }
 
 function* loadFilters(action: InitListingAction) {
-  const { facet: facetKey, context, mappers = {} as Mappers, ssr } = action;
+  const {
+    facet: facetKey,
+    context,
+    mappers = {} as Mappers,
+    languages,
+    ssr,
+  } = action;
   const filtersToLoad = (yield select(
     getFiltersToLoad,
     facetKey,
@@ -223,6 +280,7 @@ function* loadFilters(action: InitListingAction) {
       filtersToLoad,
       facetKey,
       context,
+      languages,
     });
     const selectedKeys = (yield select(
       getSelectedFilters,
@@ -244,6 +302,7 @@ function* loadFilters(action: InitListingAction) {
           filterKey,
           filter: filters[filterKey],
           projectId,
+          languages,
           selectedKeys: selectedKeys[filterKey],
           context,
           mapper:
@@ -258,13 +317,14 @@ function* loadFilters(action: InitListingAction) {
 
 function* loadFilter(action: LoadFilterAction) {
   const {
+    context,
     facetKey,
-    filterKey,
     filter,
+    filterKey,
+    languages,
+    mapper,
     projectId,
     selectedKeys,
-    context,
-    mapper,
     // get api instance from SSR context that is connected to the current request in SSR,
     // fall back to the imported cachedSearch api that is not connected to the current SSR context
     ssr: { api } = { api: cachedSearch },
@@ -288,6 +348,7 @@ function* loadFilter(action: LoadFilterAction) {
       )) as VersionStatus;
       const query = filterQuery(
         Array.isArray(contentTypeId) ? contentTypeId : [contentTypeId],
+        languages,
         versionStatus,
         customWhere
       );

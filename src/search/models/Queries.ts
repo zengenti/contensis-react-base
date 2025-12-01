@@ -83,6 +83,7 @@ export type SearchQuery = (
 
 export type FilterQuery = (
   contentTypeIds: string[],
+  languages: string[],
   versionStatus: VersionStatus,
   customWhere?: CustomWhereClause
 ) => Query;

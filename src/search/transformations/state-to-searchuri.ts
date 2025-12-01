@@ -8,8 +8,9 @@ import {
 
 import getIn from '../redux/getIn';
 import {
-  getCurrent,
-  getRenderableSelectedFilters,
+  getLocalisedCurrent,
+  getLocalisedFacetKey,
+  getLocalisedRenderableSelectedFilters,
   getSearchContext,
   getSearchTerm,
   getSelectedFilters,
@@ -29,7 +30,7 @@ const searchUriTemplate: SearchUriMapping = {
 
     // if (context !== 'listings') {
     if (hasFacetRouteParam) {
-      const currentFacet = facet || getCurrent(state);
+      const currentFacet = getLocalisedFacetKey(state, facet) || facet || getLocalisedCurrent(state);
 
       const filters = getSelectedFilters(state, facet, context);
       // TODO: This only looking for a filter called contentTypeId
@@ -59,7 +60,7 @@ const searchUriTemplate: SearchUriMapping = {
       ? {}
       : Object.fromEntries(
           Object.entries(
-            getRenderableSelectedFilters(state, facet, searchContext)
+            getLocalisedRenderableSelectedFilters(state, facet, searchContext)
           ).map(([k, f]: [string, any]) => [k, f?.join(',')])
         );
 

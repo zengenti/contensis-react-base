@@ -15,6 +15,7 @@ import { Effect } from 'redux-saga/effects';
 import { createInjectorsEnhancer } from 'redux-injectors-19';
 
 // Core reducers
+import i18nSlice from '~/i18n/redux/slice';
 import NavigationReducer from '../reducers/navigation';
 import RoutingReducer from '~/routing/redux/reducers';
 import UserReducer from '~/user/redux/reducers';
@@ -65,6 +66,7 @@ export default async (
   const sagaMiddleware = createSagaMiddleware();
 
   const reducers = {
+    i18n: i18nSlice.reducer,
     navigation: NavigationReducer,
     routing: RoutingReducer,
     user: UserReducer,

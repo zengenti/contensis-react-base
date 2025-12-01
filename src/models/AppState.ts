@@ -1,9 +1,11 @@
 import { VersionStatus } from 'contensis-core-api';
 import { Entry, Node } from 'contensis-delivery-api';
 import { Group, User } from 'contensis-management-api';
+import { getInitialState } from '~/i18n/redux/slice';
 import { StaticRoute, MatchedRoute } from '~/models';
 
 export type AppState = {
+  i18n: ReturnType<typeof getInitialState>;
   navigation: {
     root: Node | null;
     isError: boolean;

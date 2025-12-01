@@ -17,12 +17,14 @@ import { FilterQuery, SearchQuery } from '../models/Queries';
 
 export const filterQuery: FilterQuery = (
   contentTypeIds,
+  languages,
   versionStatus,
   customWhere
 ) => {
   const query = new Query(
     ...[
       ...contentTypeIdExpression(contentTypeIds),
+      ...languagesExpression(languages),
       ...defaultExpressions(versionStatus),
       ...customWhereExpressions(customWhere),
     ]

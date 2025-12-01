@@ -1,7 +1,6 @@
 import {
   ContensisQueryOrderBy,
   IExpression,
-  ILogicalExpression,
   Op,
   OrderBy,
   VersionStatus,

@@ -12,6 +12,9 @@ import { buildCleaner } from 'lodash-clean';
 import Cookies from 'universal-cookie';
 import cookiesMiddleware from 'universal-cookie-express';
 
+import { createLocaleRoutes } from '~/i18n/routes';
+import { actions } from '~/i18n';
+
 import createStore from '~/redux/store/store';
 import { history } from '~/redux/store/history';
 import rootSaga from '~/redux/sagas';
@@ -71,7 +74,12 @@ const webApp = (
     enableSsrCookies,
     handleResponses,
     handleExceptions = true,
+    i18n,
   } = config;
+
+  // process locales in static routes for i18n
+  const localeRoutes = createLocaleRoutes(routes);
+
   const staticRoutePath = config.staticRoutePath || staticFolderPath;
 
   let isRenderingJsxToString = config.renderToString || false;
@@ -169,6 +177,18 @@ const webApp = (
 
       const groups = allowedGroups && allowedGroups[project];
       store.dispatch(setCurrentProject(project, groups, hostname));
+
+      if (i18n) {
+        store.dispatch(
+          actions.INIT_LOCALES({
+            locales: {},
+            ...i18n,
+          })
+        );
+      }
+      if (Object.keys(localeRoutes).length > 0) {
+        store.dispatch(actions.SET_LOCALE_ROUTES({ routes: localeRoutes }));
+      }
 
       const loadableExtractor = loadableChunkExtractors();
 

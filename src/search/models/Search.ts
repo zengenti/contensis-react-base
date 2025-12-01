@@ -48,6 +48,8 @@ export type Listing = {
   title?: string;
   /** Experimental: use a custom API to retrieve search results */
   customApi?: CustomApi;
+  /** Internationalisation config */
+  i18n?: { [language: string]: string };
 };
 
 export type SearchFacet = {
@@ -92,6 +94,8 @@ export type SearchFilter = {
   renderable?: boolean;
   /** The title to render next to the filter */
   title: string;
+  /** Internationalisation config */
+  i18n?: { [language: string]: string };
 };
 
 export type FilterItem = {
@@ -137,6 +141,8 @@ export type SearchQueryParams = {
   includeInSearch?: string[];
   /** Whether or not to load all results with the first page and handle all pagination yourself */
   internalPaging?: boolean;
+  /** Search within specific languages */
+  languages?: string[];
   /** The linkDepth to apply to the facet search (defaults to 0) */
   linkDepth?: number;
   /** Alters the pagination style to retain previously loaded pages of results after loading next pages */

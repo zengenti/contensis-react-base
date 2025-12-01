@@ -38,6 +38,7 @@ export type Facet = {
   };
   featuredResults: any[];
   filters: Filters;
+  i18n?: { [language: string]: string };
   pagingInfo: {
     isLoading: boolean;
     pageCount: number;
@@ -53,10 +54,11 @@ export type Facet = {
   queryParams: {
     contentTypeIds: string[];
     dynamicOrderBy: string[];
-    pageSize: number;
     excludeIds: string[];
     internalPaging: boolean;
+    languages: string[];
     loadMorePaging: boolean;
+    pageSize: number;
     useSearchTerm: boolean;
   };
   results: any[];
@@ -73,6 +75,7 @@ export type Filter = {
   customWhere?: CustomWhereClause;
   defaultValue?: string;
   fieldId?: string | string[];
+  i18n?: { [language: string]: string };
   isGrouped?: boolean;
   isSingleSelect?: boolean;
   isLoading: boolean;

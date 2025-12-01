@@ -1,14 +1,14 @@
 import { areArraysEqualSets } from '../search/util';
 import {
-  getSelectedFilters,
-  getIsLoaded,
-  getQueryParams,
-  getPageIndex,
   getIsInternalPaging,
-  getSearchTerm,
+  getIsLoaded,
+  getPageIndex,
   getPageSize,
+  getQueryParameter,
+  getQueryParams,
+  getSearchTerm,
+  getSelectedFilters,
 } from './selectors';
-import { Context } from '../models/Enums';
 import mapStateToQueryParams from '../transformations/state-to-queryparams.mapper';
 import { QueryParams, SearchQueryOptions } from '../models/Queries';
 import { AppState } from '../models/SearchState';
@@ -54,7 +54,7 @@ export const runSearch = (
 ) => {
   const {
     context,
-    defaultLang,
+    // defaultLang,
     facet,
     ogState = state,
     preload,
@@ -63,9 +63,10 @@ export const runSearch = (
 
   let willRun = false;
 
-  const facetIsLoaded = defaultLang
-    ? false
-    : getIsLoaded(state, context, facet);
+  // const facetIsLoaded = defaultLang
+  //   ? false
+  //   : getIsLoaded(state, context, facet);
+  const facetIsLoaded = getIsLoaded(state, context, facet);
   const stateParams = {
     ...getQueryParams(ogState, facet, context),
   } as QueryParams;
@@ -78,8 +79,8 @@ export const runSearch = (
     // context === Context.minilist ||
     preload ||
     !facetIsLoaded ||
-    filterParamsChanged(action) ||
-    defaultLang
+    filterParamsChanged(action) || // || defaultLang
+    languageChanged(action)
   ) {
     willRun = true;
   } else {
@@ -145,6 +146,17 @@ export const filterParamsChanged = (
   );
 
   return paramsChanged.filter(f => f === true).length > 0;
+};
+
+export const languageChanged = (
+  action: EnsureSearchAction | SetSearchEntriesAction
+) => {
+  const stateLanguages = getQueryParameter(
+    { ...action, state: action.ogState },
+    'languages',
+    []
+  ) as string[];
+  return !areArraysEqualSets(action.languages || [], stateLanguages);
 };
 
 export const debugExecuteSearch = (

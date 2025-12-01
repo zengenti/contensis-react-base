@@ -36,6 +36,13 @@ export const selectRouteEntryLanguage = (state: AppState) => {
   return getIn(entry, ['sys', 'language'], null);
 };
 
+export const selectRouteEntryAvailableLanguages = (
+  state: AppState
+): string[] => {
+  const entry = selectRouteEntry(state);
+  return getIn(entry, ['sys', 'availableLanguages'], []);
+};
+
 export const selectRouteEntrySlug = (state: AppState) => {
   const entry = selectRouteEntry(state);
   return getIn(entry, ['sys', 'slug'], null);
@@ -76,6 +83,8 @@ export const selectCurrentSiblings = (state: AppState) =>
   getIn(state, ['routing', 'currentNodeSiblings'], []);
 export const selectCurrentNode = (state: AppState, returnType?: StateType) =>
   getIn(state, ['routing', 'currentNode'], null, returnType);
+export const selectCurrentNodeLanguage = (state: AppState) =>
+  getIn(state, ['routing', 'currentNode', 'language'], null);
 export const selectCurrentChildren = state =>
   getIn(state, ['routing', 'currentNode', 'children'], []);
 
