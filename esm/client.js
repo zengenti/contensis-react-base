@@ -6,38 +6,38 @@ import { unstable_HistoryRouter } from 'react-router-dom';
 import { loadableReady } from '@loadable/component';
 import { parse } from 'query-string';
 import { CookiesProvider } from 'react-cookie';
-import { c as createLocaleRoutes, b as browserHistory, r as rootSaga, p as pickProject } from './App-BKXS66FL.js';
-export { A as ReactApp } from './App-BKXS66FL.js';
-import { a as actions } from './slice-BO-KB30v.js';
-import { s as selectVersionStatus } from './version-CsMa2_lY.js';
-import { s as setVersionStatus } from './version-Cin2m8K5.js';
-import { c as createStore } from './store-KUjdLK3-.js';
-import { s as setCurrentProject } from './selectors-C2gX5tLA.js';
-import { d as deliveryApi } from './ContensisDeliveryApi-DHZ52vNg.js';
-import { S as SSRContextProvider } from './SSRContext-CXYTpsVV.js';
+import { c as createLocaleRoutes, b as browserHistory, r as rootSaga, p as pickProject } from './App-BENe9naB.js';
+export { A as ReactApp } from './App-BENe9naB.js';
+import { a as actions } from './slice-TYc5KMRz.js';
+import { s as selectVersionStatus } from './version-DlaBPQ7d.js';
+import { s as setVersionStatus } from './version-ffmUWUXX.js';
+import { c as createStore } from './store-B-i8GHBX.js';
+import { s as setCurrentProject } from './selectors-PJo8AWy0.js';
+import { d as deliveryApi } from './ContensisDeliveryApi-oy2cByTy.js';
+import { S as SSRContextProvider } from './SSRContext-BI9VbHMQ.js';
 import 'history';
 import '@redux-saga/core/effects';
 import 'loglevel';
 import 'await-to-js';
-import './ChangePassword.container-BS_ruqX8.js';
-import './matchGroups-BkB1ERVS.js';
+import 'contensis-delivery-api';
+import './VersionInfo-BMAAda1K.js';
+import './_commonjsHelpers-BFTU3MAI.js';
 import 'jsonpath-mapper';
+import 'styled-components';
+import './selectors-DcmvOeX2.js';
+import './ChangePassword.container-giznBLAf.js';
+import './matchGroups-DT-RunAc.js';
 import './CookieConstants-DEmbwzYr.js';
 import './CookieHelper.class-C6rTRl_1.js';
 import './ToJs-BnRRHk6f.js';
-import 'contensis-delivery-api';
-import './sagas-AyubwCW8.js';
+import './sagas-C-yDQMGy.js';
 import 'reselect';
-import './util-CnXqe4uK.js';
-import './selectors-lvyF1LmZ.js';
+import './util-C59CejNT.js';
 import 'contensis-core-api';
 import 'deepmerge';
-import './_commonjsHelpers-BFTU3MAI.js';
 import 'immer';
 import 'deep-equal';
-import './VersionInfo-fBaJIe2X.js';
-import 'styled-components';
-import './RouteLoader-D4a8D5FU.js';
+import './RouteLoader-3vl5WOjR.js';
 import '@reduxjs/toolkit';
 import 'redux';
 import 'redux-thunk';
@@ -114,14 +114,10 @@ class ClientApp {
         if (i18n) {
           store.dispatch(actions.INIT_LOCALES({
             locales: {},
+            // Keep a record of the locale routes in Redux
+            // so we can navigate between them when switching language
+            routes: localeRoutes,
             ...i18n
-          }));
-        }
-        if (Object.keys(localeRoutes).length > 0) {
-          // Keep a record of the locale routes in Redux
-          // so we can navigate between them when switching language
-          store.dispatch(actions.SET_LOCALE_ROUTES({
-            routes: localeRoutes
           }));
         }
         delete window.REDUX_DATA;

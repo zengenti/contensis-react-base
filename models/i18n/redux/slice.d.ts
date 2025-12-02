@@ -43,6 +43,7 @@ declare const i18nSlice: import("@reduxjs/toolkit").Slice<{
         error: Error | undefined;
     }>, { payload, }: PayloadAction<{
         locales: Locales;
+        routes: LocaleRoutes;
     } & I18nAppConfig>): void;
     SET_LANGUAGE(draft: import("@reduxjs/toolkit").WritableDraft<{
         currentLanguage: string;
@@ -59,20 +60,6 @@ declare const i18nSlice: import("@reduxjs/toolkit").Slice<{
         language: string;
         dictionary: LocaleDictionary;
     }>): void;
-    SET_LOCALE_ROUTES(draft: import("@reduxjs/toolkit").WritableDraft<{
-        currentLanguage: string;
-        dictionary: LocaleDictionary;
-        locales: {
-            [language: string]: any;
-        };
-        routes: LocaleRoutes;
-        primaryLanguage: string;
-        supportedLanguages: string[];
-        resolver: ((language: string) => Promise<LocaleDictionary> | LocaleDictionary) | undefined;
-        error: Error | undefined;
-    }>, { payload, }: PayloadAction<{
-        routes: LocaleRoutes;
-    }>): void;
     SET_LOCALES(draft: import("@reduxjs/toolkit").WritableDraft<{
         currentLanguage: string;
         dictionary: LocaleDictionary;
@@ -87,6 +74,7 @@ declare const i18nSlice: import("@reduxjs/toolkit").Slice<{
     }>, { payload, }: PayloadAction<{
         locales: Locales;
     } & I18nAppConfig>): void;
+    /** UPDATE_LANGUAGE action triggers updateLanguage saga and ends with SET_LANGUAGE */
     UPDATE_LANGUAGE(_draft: import("@reduxjs/toolkit").WritableDraft<{
         currentLanguage: string;
         dictionary: LocaleDictionary;
@@ -137,6 +125,7 @@ export declare const actions: import("@reduxjs/toolkit").CaseReducerActions<{
         error: Error | undefined;
     }>, { payload, }: PayloadAction<{
         locales: Locales;
+        routes: LocaleRoutes;
     } & I18nAppConfig>): void;
     SET_LANGUAGE(draft: import("@reduxjs/toolkit").WritableDraft<{
         currentLanguage: string;
@@ -153,20 +142,6 @@ export declare const actions: import("@reduxjs/toolkit").CaseReducerActions<{
         language: string;
         dictionary: LocaleDictionary;
     }>): void;
-    SET_LOCALE_ROUTES(draft: import("@reduxjs/toolkit").WritableDraft<{
-        currentLanguage: string;
-        dictionary: LocaleDictionary;
-        locales: {
-            [language: string]: any;
-        };
-        routes: LocaleRoutes;
-        primaryLanguage: string;
-        supportedLanguages: string[];
-        resolver: ((language: string) => Promise<LocaleDictionary> | LocaleDictionary) | undefined;
-        error: Error | undefined;
-    }>, { payload, }: PayloadAction<{
-        routes: LocaleRoutes;
-    }>): void;
     SET_LOCALES(draft: import("@reduxjs/toolkit").WritableDraft<{
         currentLanguage: string;
         dictionary: LocaleDictionary;
@@ -181,6 +156,7 @@ export declare const actions: import("@reduxjs/toolkit").CaseReducerActions<{
     }>, { payload, }: PayloadAction<{
         locales: Locales;
     } & I18nAppConfig>): void;
+    /** UPDATE_LANGUAGE action triggers updateLanguage saga and ends with SET_LANGUAGE */
     UPDATE_LANGUAGE(_draft: import("@reduxjs/toolkit").WritableDraft<{
         currentLanguage: string;
         dictionary: LocaleDictionary;
@@ -216,4 +192,5 @@ export declare const actions: import("@reduxjs/toolkit").CaseReducerActions<{
     resolver: ((language: string) => Promise<LocaleDictionary> | LocaleDictionary) | undefined;
     error: Error | undefined;
 };
+export declare const updateLanguage: import("@reduxjs/toolkit").ActionCreatorWithPayload<UpdateLanguageActionPayload, "i18n/UPDATE_LANGUAGE">;
 export default i18nSlice;

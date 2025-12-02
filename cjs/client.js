@@ -10,37 +10,37 @@ var reactRouterDom = require('react-router-dom');
 var component = require('@loadable/component');
 var queryString = require('query-string');
 var reactCookie = require('react-cookie');
-var App = require('./App-xvpzpnJC.js');
-var slice = require('./slice-DzItS3J5.js');
+var App = require('./App-DIks7cRe.js');
+var slice = require('./slice-Q_VcvbKA.js');
 var version = require('./version-CukCz8zL.js');
-var version$1 = require('./version-oqn7qotZ.js');
-var store = require('./store-Thi-k3pU.js');
+var version$1 = require('./version-D5a_ApvZ.js');
+var store = require('./store-C2CTORM5.js');
 var selectors = require('./selectors-C1CqEUmL.js');
-var ContensisDeliveryApi = require('./ContensisDeliveryApi-StchaSC-.js');
-var SSRContext = require('./SSRContext-Op85CUQt.js');
+var ContensisDeliveryApi = require('./ContensisDeliveryApi-DVWMsCyk.js');
+var SSRContext = require('./SSRContext-BjS2_F0M.js');
 require('history');
 require('@redux-saga/core/effects');
 require('loglevel');
 require('await-to-js');
+require('contensis-delivery-api');
+require('./VersionInfo-CTPtw_Xd.js');
+require('./_commonjsHelpers-BJu3ubxk.js');
+require('jsonpath-mapper');
+require('styled-components');
+require('./selectors-DAQR0uZa.js');
 require('./ChangePassword.container-BWh4R32r.js');
 require('./matchGroups-CxRa9Ej9.js');
-require('jsonpath-mapper');
 require('./CookieConstants-DfPiWCRZ.js');
 require('./CookieHelper.class-Det3qfdU.js');
 require('./ToJs-BsWqWjdm.js');
-require('contensis-delivery-api');
-require('./sagas-BLyC5pxW.js');
+require('./sagas-gLdoj-sa.js');
 require('reselect');
-require('./util-D65Zmo5R.js');
-require('./selectors-DAQR0uZa.js');
+require('./util-O9_pi6m4.js');
 require('contensis-core-api');
 require('deepmerge');
-require('./_commonjsHelpers-BJu3ubxk.js');
 require('immer');
 require('deep-equal');
-require('./VersionInfo-CTPtw_Xd.js');
-require('styled-components');
-require('./RouteLoader-C3b4eo2z.js');
+require('./RouteLoader-DtJz9Sss.js');
 require('@reduxjs/toolkit');
 require('redux');
 require('redux-thunk');
@@ -121,14 +121,10 @@ class ClientApp {
         if (i18n) {
           store.dispatch(slice.actions.INIT_LOCALES({
             locales: {},
+            // Keep a record of the locale routes in Redux
+            // so we can navigate between them when switching language
+            routes: localeRoutes,
             ...i18n
-          }));
-        }
-        if (Object.keys(localeRoutes).length > 0) {
-          // Keep a record of the locale routes in Redux
-          // so we can navigate between them when switching language
-          store.dispatch(slice.actions.SET_LOCALE_ROUTES({
-            routes: localeRoutes
           }));
         }
         delete window.REDUX_DATA;

@@ -2,13 +2,13 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var ContensisDeliveryApi = require('./ContensisDeliveryApi-StchaSC-.js');
+var ContensisDeliveryApi = require('./ContensisDeliveryApi-DVWMsCyk.js');
 var contensisDeliveryApi = require('contensis-delivery-api');
 var React = require('react');
 var reactRedux = require('react-redux');
-var slice = require('./slice-DzItS3J5.js');
+var slice = require('./slice-Q_VcvbKA.js');
 var mapJson = require('jsonpath-mapper');
-var sagas = require('./sagas-BLyC5pxW.js');
+var sagas = require('./sagas-gLdoj-sa.js');
 require('reselect');
 require('immer');
 require('deep-equal');
@@ -32,25 +32,25 @@ var lodash = require('lodash');
 var lodashClean = require('lodash-clean');
 var CookieHelper_class = require('./CookieHelper.class-Det3qfdU.js');
 var cookiesMiddleware = require('universal-cookie-express');
-var App = require('./App-xvpzpnJC.js');
-var store = require('./store-Thi-k3pU.js');
-var version = require('./version-oqn7qotZ.js');
+var App = require('./App-DIks7cRe.js');
+var store = require('./store-C2CTORM5.js');
+var version = require('./version-D5a_ApvZ.js');
 var selectors = require('./selectors-C1CqEUmL.js');
-var RouteLoader = require('./RouteLoader-C3b4eo2z.js');
+var RouteLoader = require('./RouteLoader-DtJz9Sss.js');
 var stream = require('stream');
 var server$2 = require('@loadable/server');
 var chalk = require('chalk');
 var minifyCssString = require('minify-css-string');
 var reactCookie = require('react-cookie');
 var server$3 = require('react-router-dom/server');
-var SSRContext = require('./SSRContext-Op85CUQt.js');
+var SSRContext = require('./SSRContext-BjS2_F0M.js');
 require('./VersionInfo-CTPtw_Xd.js');
 require('./CookieConstants-DfPiWCRZ.js');
 require('@reduxjs/toolkit');
 require('loglevel');
 require('@redux-saga/core/effects');
 require('./version-CukCz8zL.js');
-require('./util-D65Zmo5R.js');
+require('./util-O9_pi6m4.js');
 require('./selectors-DAQR0uZa.js');
 require('./_commonjsHelpers-BJu3ubxk.js');
 require('history');
@@ -1315,12 +1315,8 @@ const webApp = (app, ReactApp, config) => {
     if (i18n) {
       store$1.dispatch(slice.actions.INIT_LOCALES({
         locales: {},
+        routes: localeRoutes,
         ...i18n
-      }));
-    }
-    if (Object.keys(localeRoutes).length > 0) {
-      store$1.dispatch(slice.actions.SET_LOCALE_ROUTES({
-        routes: localeRoutes
       }));
     }
     const loadableExtractor = loadableChunkExtractors();
