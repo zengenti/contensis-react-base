@@ -1,3 +1,4 @@
+import to from 'await-to-js';
 import { Op, Query } from 'contensis-delivery-api';
 import { call, put, select, takeEvery } from 'redux-saga/effects';
 import { actions, UpdateLanguageActionPayload } from './slice';
@@ -185,7 +186,8 @@ function* getProjectLanguages({ payload }: PayloadAction<I18nAppConfig>) {
     // Locales already set in state, no need to fetch again
     return;
   const locales: Locales = {};
-  const supportedLanguages: string[] = payload.supportedLanguages || [];
+  let primaryLanguage = payload.primaryLanguage;
+  const supportedLanguages: string[] = [...(payload.supportedLanguages || [])];
   if (supportedLanguages?.length) {
     // If supported languages are provided in config, use these
     for (const supportedLanguage of supportedLanguages) {
@@ -193,11 +195,18 @@ function* getProjectLanguages({ payload }: PayloadAction<I18nAppConfig>) {
     }
   } else {
     // Fallback to getting languages from the project
-    const project: Project = yield cachedSearch.getClient().project.get();
-
-    for (const supportedLanguage of project.supportedLanguages) {
-      locales[supportedLanguage] = {};
-      supportedLanguages.push(supportedLanguage);
+    const [error, project]: [Error | undefined, Project | null] = yield to(
+      cachedSearch.getClient().project.get()
+    );
+    if (error) {
+      console.error('Problem fetching project languages:', error);
+    } else if (project) {
+      for (const supportedLanguage of project.supportedLanguages || []) {
+        locales[supportedLanguage] = {};
+        supportedLanguages.push(supportedLanguage);
+      }
+      // Set primary language from project if we have it
+      primaryLanguage = project.primaryLanguage ?? primaryLanguage;
     }
   }
   if (Object.keys(locales).length === 0) {
@@ -211,6 +220,8 @@ function* getProjectLanguages({ payload }: PayloadAction<I18nAppConfig>) {
     yield put(
       actions.SET_LOCALES({
         ...payload,
+        primaryLanguage,
+        supportedLanguages,
         locales,
       })
     );

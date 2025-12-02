@@ -65,9 +65,17 @@ const i18nSlice = createSlice({
         } & I18nAppConfig
       >
     ) {
-      draft.locales = payload.locales;
+      // Sort locales object by keys alphabetically
+      const sortedLocales = Object.keys(payload.locales || {})
+        .sort()
+        .reduce((sorted, key) => {
+          sorted[key] = payload.locales[key];
+          return sorted;
+        }, {});
+
+      draft.locales = sortedLocales;
       draft.primaryLanguage = payload.primaryLanguage;
-      draft.supportedLanguages = payload.supportedLanguages;
+      draft.supportedLanguages = payload.supportedLanguages.sort();
       if (payload.resolver) draft.resolver = payload.resolver;
     },
     /** UPDATE_LANGUAGE action triggers updateLanguage saga and ends with SET_LANGUAGE */
