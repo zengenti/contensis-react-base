@@ -127,14 +127,12 @@ class ClientApp {
             store.dispatch(
               actions.INIT_LOCALES({
                 locales: {},
+                // Keep a record of the locale routes in Redux
+                // so we can navigate between them when switching language
+                routes: localeRoutes,
                 ...i18n,
               })
             );
-          }
-          if (Object.keys(localeRoutes).length > 0) {
-            // Keep a record of the locale routes in Redux
-            // so we can navigate between them when switching language
-            store.dispatch(actions.SET_LOCALE_ROUTES({ routes: localeRoutes }));
           }
 
           delete (window as any).REDUX_DATA;

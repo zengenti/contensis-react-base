@@ -182,12 +182,10 @@ const webApp = (
         store.dispatch(
           actions.INIT_LOCALES({
             locales: {},
+            routes: localeRoutes,
             ...i18n,
           })
         );
-      }
-      if (Object.keys(localeRoutes).length > 0) {
-        store.dispatch(actions.SET_LOCALE_ROUTES({ routes: localeRoutes }));
       }
 
       const loadableExtractor = loadableChunkExtractors();

@@ -10,7 +10,6 @@ import {
   selectCurrentPath,
   selectRouteEntryAvailableLanguages,
   selectRouteEntryID,
-  selectRouteEntryLanguage,
   selectStaticRoute,
 } from '~/routing/redux/selectors';
 import { selectVersionStatus } from '~/redux/selectors/version';
@@ -33,19 +32,13 @@ export const i18nSagas = [
     actions.INIT_LOCALES.type,
     getProjectLanguages
   ),
-  takeEvery<
-    Action<typeof SET_ENTRY> & {
-      entry: Entry | null;
-      node: Node | null;
-    }
-  >(SET_ENTRY, resolveCurrentRouteLanguage),
   takeEvery<PayloadAction<UpdateLanguageActionPayload>>(
     actions.UPDATE_LANGUAGE.type,
     updateLanguage
   ),
 ];
 
-function* resolveCurrentRouteLanguage({
+export function* resolveCurrentRouteLanguage({
   entry,
   node,
 }: Action<typeof SET_ENTRY> & {

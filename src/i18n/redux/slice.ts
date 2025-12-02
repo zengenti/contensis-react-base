@@ -33,10 +33,15 @@ const i18nSlice = createSlice({
       }: PayloadAction<
         {
           locales: Locales;
+          routes: LocaleRoutes;
         } & I18nAppConfig
       >
     ) {
-      if (payload.locales) draft.locales = payload.locales;
+      draft.locales = payload.locales;
+      draft.routes = payload.routes;
+      draft.primaryLanguage = payload.primaryLanguage;
+      draft.supportedLanguages = payload.supportedLanguages;
+      if (payload.resolver) draft.resolver = payload.resolver;
     },
     SET_LANGUAGE(
       draft,
@@ -50,16 +55,6 @@ const i18nSlice = createSlice({
       draft.currentLanguage = payload.language;
       draft.dictionary = payload.dictionary;
     },
-    SET_LOCALE_ROUTES(
-      draft,
-      {
-        payload,
-      }: PayloadAction<{
-        routes: LocaleRoutes;
-      }>
-    ) {
-      draft.routes = payload.routes;
-    },
     SET_LOCALES(
       draft,
       {
@@ -70,17 +65,19 @@ const i18nSlice = createSlice({
         } & I18nAppConfig
       >
     ) {
-      const { locales, ...config } = payload;
-      draft.locales = locales;
-      draft.primaryLanguage = config.primaryLanguage;
-      draft.supportedLanguages = config.supportedLanguages;
-      if (config.resolver) draft.resolver = config.resolver;
+      draft.locales = payload.locales;
+      draft.primaryLanguage = payload.primaryLanguage;
+      draft.supportedLanguages = payload.supportedLanguages;
+      if (payload.resolver) draft.resolver = payload.resolver;
     },
-    UPDATE_LANGUAGE(_draft, _: PayloadAction<UpdateLanguageActionPayload>) {
-      // draft.currentLanguage = payload.language;
-    },
+    /** UPDATE_LANGUAGE action triggers updateLanguage saga and ends with SET_LANGUAGE */
+    UPDATE_LANGUAGE(_draft, _: PayloadAction<UpdateLanguageActionPayload>) {},
   },
 });
 
 export const { actions, reducer, getInitialState } = i18nSlice;
+
+// Alias some nicer named exports for the actions
+export const updateLanguage = actions.UPDATE_LANGUAGE;
+
 export default i18nSlice;

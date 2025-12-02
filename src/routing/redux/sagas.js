@@ -2,6 +2,7 @@ import to from 'await-to-js';
 import * as log from 'loglevel';
 import { takeEvery, put, select, call, all } from 'redux-saga/effects';
 
+import { resolveCurrentRouteLanguage } from '~/i18n/redux/sagas';
 import {
   SET_ENTRY,
   SET_ANCESTORS,
@@ -287,6 +288,11 @@ function* getRouteSaga(action) {
 
       if (children) pathNode.children = children;
     }
+
+    // We initially listened for SET_ENTRY to complete before
+    // resolving the current route language, but this meant
+    // that the language change was not captured in time for the SSR response
+    yield call(resolveCurrentRouteLanguage, { entry: pathNode?.entry, node: pathNode });
 
     const contentTypeRoute =
       findContentTypeMapping(
