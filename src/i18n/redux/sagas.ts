@@ -192,9 +192,10 @@ function* getProjectLanguages({ payload }: PayloadAction<I18nAppConfig>) {
     // Locales already set in state, no need to fetch again
     return;
   const locales: Locales = {};
-  if (payload.supportedLanguages?.length) {
+  const supportedLanguages: string[] = payload.supportedLanguages || [];
+  if (supportedLanguages?.length) {
     // If supported languages are provided in config, use these
-    for (const supportedLanguage of payload.supportedLanguages) {
+    for (const supportedLanguage of supportedLanguages) {
       locales[supportedLanguage] = {};
     }
   } else {
@@ -203,11 +204,13 @@ function* getProjectLanguages({ payload }: PayloadAction<I18nAppConfig>) {
 
     for (const supportedLanguage of project.supportedLanguages) {
       locales[supportedLanguage] = {};
+      supportedLanguages.push(supportedLanguage);
     }
   }
   if (Object.keys(locales).length === 0) {
     // Ensure at least the primary language is included
     locales[payload.primaryLanguage] = {};
+    supportedLanguages.push(payload.primaryLanguage);
   }
 
   // Only commit if we have locales to set or we will end up in an infinite loop
