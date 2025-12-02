@@ -6,6 +6,7 @@
 !package-lock.json
 !client/*
 !forms/*
+!i18n/*
 !redux/*
 !routing/*
 !search/*
