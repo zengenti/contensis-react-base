@@ -12,6 +12,8 @@ This version introduces major updates to React, React Router and Express
 
 We have prepared a [Migration Guide: v3 → v4](https://github.com/zengenti/contensis-react-base/blob/feat/react18/MIGRATE-V4.md) with detailed steps to follow to ensure your upgrade goes smoothly
 
+Also new is the native support for internationalization / localisation / translations / i18n, check out the [documentation](https://github.com/zengenti/contensis-react-base/blob/feat/react18/I18N.md).
+
 ### Styled Components 6 (v3.3+)
 
 Some projects may see console warnings in the web app like the example below after upgrading to v3.3+ which updates Styled Components from version 5 to 6
@@ -65,7 +67,8 @@ You will have imports available from the following packages:
 
 - @zengenti/contensis-react-base
   - /client
-  - /forms
+  - /forms (deprecated)
+  - /i18n
   - /redux
   - /routing
   - /search
@@ -87,6 +90,10 @@ Default export `ClientApp` which is a class when instantiated with `new ClientAp
 ### /forms (deprecated)
 
 For use when using the newer Content Types and Entries based forms module
+
+### /i18n
+
+Contains components and types to support localisation / internationalization
 
 ### /redux
 

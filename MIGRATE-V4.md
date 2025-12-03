@@ -98,6 +98,18 @@ Import from `@zengenti/contensis-react-base/routing`
 - Existing implementations continue to work without changes
   - However, we recommend removing old boilerplate to simplify your codebase
 
+---
+
+### 🌍 i18n
+
+- Localisation / translation / internationalization native support
+- Specify and switch between locales
+- Translate static elements
+- Resolve and navigate to translated versions of content
+
+📖 [i18n documentation](I18N.md)
+
+
 ## 🚨 Breaking Changes Overview
 
 | Area             | Change                                                                                                                    |
