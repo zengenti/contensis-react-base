@@ -75,7 +75,7 @@ const i18nSlice = createSlice({
 
       draft.locales = sortedLocales;
       draft.primaryLanguage = payload.primaryLanguage;
-      draft.supportedLanguages = payload.supportedLanguages.sort();
+      draft.supportedLanguages = [...(payload.supportedLanguages || [])].sort();
       if (payload.resolver) draft.resolver = payload.resolver;
     },
     /** UPDATE_LANGUAGE action triggers updateLanguage saga and ends with SET_LANGUAGE */
