@@ -628,7 +628,7 @@ const reverseProxies = (app, reverseProxyPaths = []) => {
   deliveryApiProxy(deliveryProxy, app);
   app.all(reverseProxyPaths.map(proxyPath =>
   // Patch to update paths for express v5
-  proxyPath.endsWith('/*') ? `${proxyPath.slice(0, -2)}/{*splat}` : proxyPath), (req, res) => {
+  proxyPath.endsWith('/*') ? `${proxyPath.slice(0, -2)}/{*splat}` : proxyPath.endsWith('/**') ? `${proxyPath.slice(0, -3)}/{*splat}` : proxyPath), (req, res) => {
     const target = req.hostname.indexOf('preview-') || req.hostname.indexOf('preview.') || req.hostname === 'localhost' ? servers$1.previewIis || servers$1.iis : servers$1.iis;
     assetProxy.web(req, res, {
       target,
