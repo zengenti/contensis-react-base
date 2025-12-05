@@ -18,7 +18,9 @@ const reverseProxies = (app: Express, reverseProxyPaths: string[] = []) => {
       // Patch to update paths for express v5
       proxyPath.endsWith('/*')
         ? `${proxyPath.slice(0, -2)}/{*splat}`
-        : proxyPath
+        : proxyPath.endsWith('/**')
+          ? `${proxyPath.slice(0, -3)}/{*splat}`
+          : proxyPath
     ),
     (req, res) => {
       const target =
