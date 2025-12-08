@@ -649,7 +649,10 @@ const searchUriTemplate = {
     const stateFilters = term ? {} : Object.fromEntries(Object.entries(getLocalisedRenderableSelectedFilters(state, facet, searchContext)).map(([k, f]) => [k, f === null || f === void 0 ? void 0 : f.join(',')]));
     const currentSearch = !term && getImmutableOrJS(state, ['routing', 'location', 'search']);
     const currentQs = removeEmptyAttributes(parse(currentSearch));
-    if (orderBy) currentQs.orderBy = orderBy;
+
+    // An argument is provided with the updated value
+    // when the relevant action has been triggered
+    if (typeof orderBy !== 'undefined') currentQs.orderBy = orderBy;
     const searchTerm = getSearchTerm$2(state);
     // Use Immutable's merge to merge the stateFilters with any current Qs
     // to build the new Qs.
@@ -6026,4 +6029,4 @@ function* triggerSearchSsr(options) {
 }
 
 export { useFacets as $, updateCurrentTab$1 as A, updateCurrentFacet$1 as B, clearFilters$1 as C, selectListing as D, triggerSearch as E, Context as F, getFilters as G, UPDATE_SELECTED_FILTERS as H, UPDATE_SEARCH_TERM as I, UPDATE_PAGE_SIZE as J, UPDATE_PAGE_INDEX as K, SET_SEARCH_ENTRIES as L, SET_ROUTE_FILTERS as M, LOAD_FILTERS_COMPLETE as N, LOAD_FILTERS_ERROR as O, LOAD_FILTERS as P, EXECUTE_SEARCH_ERROR as Q, EXECUTE_SEARCH as R, SET_SEARCH_FILTERS as S, CLEAR_FILTERS as T, UPDATE_SORT_ORDER as U, APPLY_CONFIG as V, actions as W, selectors as X, types as Y, expressions as Z, queries as _, getTabsAndFacets$1 as a, useListing as a0, doSearch as a1, setRouteFilters as a2, searchSagas as a3, triggerListingSsr as a4, triggerMinilistSsr as a5, triggerSearchSsr as a6, defaultExpressions as a7, termExpressions as a8, contentTypeIdExpression as a9, filterExpressions as aa, orderByExpression as ab, customWhereExpressions as ac, cloneDeep as ad, getQueryParameter$2 as b, getSelectedFilters as c, getSearchTotalCount$1 as d, getSearchTerm$2 as e, getResultsInfo as f, getTotalCount$1 as g, getResults as h, getPageIsLoading$2 as i, getPaging as j, getIsLoading$2 as k, getRenderableFilters$2 as l, getFeaturedResults$2 as m, getFacetTitles$1 as n, getFacetsTotalCount$1 as o, getTabFacets$1 as p, getFacet$1 as q, getCurrentTab$1 as r, getPageIndex$2 as s, getCurrentFacet as t, updateSortOrder$1 as u, updateSelectedFilters as v, withMappers as w, updateSearchTerm$1 as x, updatePageSize$1 as y, updatePageIndex$1 as z };
-//# sourceMappingURL=sagas-CA3-6jkI.js.map
+//# sourceMappingURL=sagas-Dtb-9WiJ.js.map

@@ -675,7 +675,10 @@ const searchUriTemplate = {
     const stateFilters = term ? {} : Object.fromEntries(Object.entries(getLocalisedRenderableSelectedFilters(state, facet, searchContext)).map(([k, f]) => [k, f === null || f === void 0 ? void 0 : f.join(',')]));
     const currentSearch = !term && getImmutableOrJS(state, ['routing', 'location', 'search']);
     const currentQs = util.removeEmptyAttributes(queryString.parse(currentSearch));
-    if (orderBy) currentQs.orderBy = orderBy;
+
+    // An argument is provided with the updated value
+    // when the relevant action has been triggered
+    if (typeof orderBy !== 'undefined') currentQs.orderBy = orderBy;
     const searchTerm = getSearchTerm$2(state);
     // Use Immutable's merge to merge the stateFilters with any current Qs
     // to build the new Qs.
@@ -6119,4 +6122,4 @@ exports.updateSortOrder = updateSortOrder$1;
 exports.useFacets = useFacets;
 exports.useListing = useListing;
 exports.withMappers = withMappers;
-//# sourceMappingURL=sagas-BvZGkzNl.js.map
+//# sourceMappingURL=sagas-6qmwgG-_.js.map
