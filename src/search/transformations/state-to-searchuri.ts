@@ -69,7 +69,9 @@ const searchUriTemplate: SearchUriMapping = {
 
     const currentQs = removeEmptyAttributes(parse(currentSearch));
 
-    if (orderBy) currentQs.orderBy = orderBy;
+    // An argument is provided with the updated value
+    // when the relevant action has been triggered
+    if (typeof orderBy !== 'undefined') currentQs.orderBy = orderBy;
 
     const searchTerm = getSearchTerm(state);
     // Use Immutable's merge to merge the stateFilters with any current Qs
