@@ -27,6 +27,7 @@ export interface ListingProps<SearchResults = any> {
     filters: Filters;
     isLoading: boolean;
     listing: StateFacet;
+    localisedCurrent: string;
     pageIsLoading: boolean;
     paging: Paging;
     results: SearchResults[];
@@ -60,6 +61,7 @@ export interface SearchProps<SearchResults = any> {
     featured: SearchResults[];
     filters: Filters;
     isLoading: boolean;
+    localisedCurrent: string;
     pageIsLoading: boolean;
     paging: Paging;
     results: SearchResults[];

@@ -92,6 +92,7 @@ export declare const selectFacets: {
     getFiltersToLoad: (state: AppState, facet: string, context?: ContextType, returnType?: StateType) => string[];
     getIsLoaded: (state: AppState, context?: ContextType, facet?: string) => boolean;
     getIsLoading: (state: AppState, context?: ContextType, facet?: string) => boolean;
+    getLocalisedCurrent: (state: AppState) => string;
     getPageIndex: (state: AppState, current?: string, context?: ContextType) => number;
     getPageIsLoading: (state: AppState, current?: string, context?: ContextType) => boolean;
     getPagesLoaded: (state: AppState, current?: string, context?: ContextType) => number[];
@@ -119,6 +120,7 @@ export declare const selectListing: {
     getFilters: (state: AppState, listing?: string) => Filters;
     getFiltersToLoad: (state: AppState, listing?: string) => string[];
     getListing: (state: AppState, listing?: string) => Facet;
+    getLocalisedCurrent: (state: AppState) => string;
     getIsLoaded: (state: AppState) => boolean;
     getIsLoading: (state: AppState) => boolean;
     getPageIndex: (state: AppState, listing?: string) => number;
