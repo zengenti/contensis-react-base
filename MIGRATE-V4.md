@@ -104,7 +104,7 @@ Import from `@zengenti/contensis-react-base/routing`
 ### 🌍 i18n
 
 - Localisation / translation / internationalization native support
-- Specify and switch between locales
+- Configure and switch between locales
 - Translate static elements
 - Resolve and navigate to translated versions of content
 
