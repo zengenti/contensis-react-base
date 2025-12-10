@@ -627,6 +627,9 @@ export const selectFacets = {
   getFiltersToLoad,
   getIsLoaded,
   getIsLoading,
+  /* Localised version of getCurrent */
+  getLocalisedCurrent: (state: AppState) =>
+    getLocalisedCurrent(state, undefined, Context.facets),
   getPageIndex,
   getPageIsLoading,
   getPagesLoaded,
@@ -660,6 +663,9 @@ export const selectListing = {
   getFiltersToLoad: (state: AppState, listing = '') =>
     getFiltersToLoad(state, listing, Context.listings),
   getListing,
+  /* Localised version of getCurrent */
+  getLocalisedCurrent: (state: AppState) =>
+    getLocalisedCurrent(state, undefined, Context.listings),
   getIsLoaded: (state: AppState) => getIsLoaded(state, Context.listings),
   getIsLoading: (state: AppState) => getIsLoading(state, Context.listings),
   getPageIndex: (state: AppState, listing = '') =>

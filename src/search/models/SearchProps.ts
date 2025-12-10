@@ -46,6 +46,8 @@ export interface ListingProps<SearchResults = any> {
   filters: Filters;
   isLoading: boolean;
   listing: StateFacet;
+  /* Localised version of `currentListing` */
+  localisedCurrent: string;
   pageIsLoading: boolean;
   paging: Paging;
   results: SearchResults[];
@@ -80,6 +82,8 @@ export interface SearchProps<SearchResults = any> {
   featured: SearchResults[];
   filters: Filters;
   isLoading: boolean;
+  /* Localised version of `currentFacet` */
+  localisedCurrent: string;
   pageIsLoading: boolean;
   paging: Paging;
   results: SearchResults[];
