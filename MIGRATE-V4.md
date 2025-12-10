@@ -97,6 +97,7 @@ Import from `@zengenti/contensis-react-base/routing`
 - Support remains for all existing overrides
 - Existing implementations continue to work without changes
   - However, we recommend removing old boilerplate to simplify your codebase
+- New `i18n` configuration enables navigation with localised facet and filter keys
 
 ---
 
