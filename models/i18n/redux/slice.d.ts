@@ -59,6 +59,7 @@ declare const i18nSlice: import("@reduxjs/toolkit").Slice<{
     }>, { payload, }: PayloadAction<{
         language: string;
         dictionary: LocaleDictionary;
+        redirect?: string;
     }>): void;
     SET_LOCALES(draft: import("@reduxjs/toolkit").WritableDraft<{
         currentLanguage: string;
@@ -141,6 +142,7 @@ export declare const actions: import("@reduxjs/toolkit").CaseReducerActions<{
     }>, { payload, }: PayloadAction<{
         language: string;
         dictionary: LocaleDictionary;
+        redirect?: string;
     }>): void;
     SET_LOCALES(draft: import("@reduxjs/toolkit").WritableDraft<{
         currentLanguage: string;

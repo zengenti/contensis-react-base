@@ -1,7 +1,7 @@
 import { s as selectCurrentLanguage, a as selectDictionary, b as selectLocales, c as selectLocaleRoutes } from './selectors-DcmvOeX2.js';
 export { f as selectDictionaryResolver, d as selectPrimaryLanguage, e as selectSupportedLanguages } from './selectors-DcmvOeX2.js';
-import { u as updateLanguage } from './slice-B3B4zFaZ.js';
-export { a as actions, g as getInitialState, r as reducer } from './slice-B3B4zFaZ.js';
+import { u as updateLanguage } from './slice-C6JLQik8.js';
+export { a as actions, g as getInitialState, r as reducer } from './slice-C6JLQik8.js';
 import { useDispatch, useSelector } from 'react-redux';
 import { jpath } from 'jsonpath-mapper';
 import '@reduxjs/toolkit';

@@ -1,7 +1,7 @@
 'use strict';
 
 var selectors = require('./selectors-DAQR0uZa.js');
-var slice = require('./slice-tGDfyOLB.js');
+var slice = require('./slice-5xJMH24n.js');
 var reactRedux = require('react-redux');
 var mapJson = require('jsonpath-mapper');
 require('@reduxjs/toolkit');

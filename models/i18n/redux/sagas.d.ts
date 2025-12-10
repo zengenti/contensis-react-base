@@ -9,6 +9,7 @@ export declare function resolveCurrentRouteLanguage({ entry, node, }: Action<typ
     payload: {
         language: string;
         dictionary: import("../../models/Locales").LocaleDictionary;
+        redirect?: string;
     };
     type: "i18n/SET_LANGUAGE";
 }>, void, any>;
