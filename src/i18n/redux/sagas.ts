@@ -37,6 +37,7 @@ export const i18nSagas = [
     actions.UPDATE_LANGUAGE.type,
     updateLanguage
   ),
+  takeEvery(actions.SET_LANGUAGE.type, setLanguageRoute),
 ];
 
 export function* resolveCurrentRouteLanguage({
@@ -53,6 +54,7 @@ export function* resolveCurrentRouteLanguage({
   else if (node?.language) nextLanguage = node.language;
   else if (staticRoute?.route?.language)
     nextLanguage = staticRoute.route.language;
+  // We could also attempt to infer language from the path before falling back to primary language
   else nextLanguage = yield select(selectPrimaryLanguage);
 
   if (nextLanguage && nextLanguage !== currentLanguage) {
@@ -101,28 +103,35 @@ function* updateLanguage({
         ? yield call(resolveDictionaryForLanguage, language)
         : yield select(selectDictionary);
 
-    const uri = yield call(navigateToLanguageRoute, {
+    const uri = yield call(resolveNextLanguageRoute, {
       language,
       redirect,
       fallbackPath,
     });
-    const currentPath = yield select(selectCurrentPath);
-    if (uri === currentPath || redirect === false) {
-      // already on the correct path, no need to redirect
-      if (dictionary)
-        yield put(
-          actions.SET_LANGUAGE({
-            language,
-            dictionary,
-          })
-        );
-      return;
-    }
-    yield put(setRoute(uri));
+    yield put(
+      actions.SET_LANGUAGE({
+        language,
+        dictionary: dictionary ?? undefined,
+        redirect: redirect !== false ? uri : undefined,
+      })
+    );
   }
 }
 
-function* navigateToLanguageRoute({
+function* setLanguageRoute({
+  payload,
+}: PayloadAction<{ language: string; redirect?: boolean | string }>) {
+  if (payload?.redirect) {
+    const currentPath = yield select(selectCurrentPath);
+    if (payload.redirect === currentPath) {
+      // already on the correct path, no need to redirect
+      return;
+    }
+    yield put(setRoute(payload.redirect as string + 'null'));
+  }
+}
+
+function* resolveNextLanguageRoute({
   language,
   redirect,
   fallbackPath,

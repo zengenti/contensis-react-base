@@ -3,6 +3,7 @@ import * as log from 'loglevel';
 import { takeEvery, put, select, call, all } from 'redux-saga/effects';
 
 import { resolveCurrentRouteLanguage } from '~/i18n/redux/sagas';
+import { selectCurrentLanguage } from '~/i18n/redux/selectors';
 import {
   SET_ENTRY,
   SET_ANCESTORS,
@@ -115,7 +116,8 @@ function* getRouteSaga(action) {
     const project = selectCurrentProject(state);
     // const isHome = currentPath === '/';
     const isPreview = currentPath && currentPath.startsWith('/preview/');
-    const defaultLang = (appsays && appsays.defaultLang) || 'en-GB';
+    const currentLanguage = selectCurrentLanguage(state);
+    const defaultLang = (appsays && appsays.defaultLang) || currentLanguage || 'en-GB';
 
     if (
       !isPreview &&
@@ -195,7 +197,9 @@ function* getRouteSaga(action) {
                 : setContentTypeLimits
                   ? undefined
                   : entryFieldLinkDepths,
-              language: defaultLang,
+              // language parameter is not used when resolving a node by path
+              // https://www.contensis.com/help-and-docs/apis/delivery-http/navigation/nodes/get-a-node-by-path
+              // language: defaultLang,
               versionStatus: deliveryApiStatus,
             },
             project

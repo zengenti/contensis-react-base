@@ -50,10 +50,11 @@ const i18nSlice = createSlice({
       }: PayloadAction<{
         language: string;
         dictionary: LocaleDictionary;
+        redirect?: string;
       }>
     ) {
       draft.currentLanguage = payload.language;
-      draft.dictionary = payload.dictionary;
+      if (payload.dictionary) draft.dictionary = payload.dictionary;
     },
     SET_LOCALES(
       draft,
