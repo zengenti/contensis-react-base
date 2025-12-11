@@ -54,8 +54,26 @@ export function* resolveCurrentRouteLanguage({
   else if (node?.language) nextLanguage = node.language;
   else if (staticRoute?.route?.language)
     nextLanguage = staticRoute.route.language;
-  // We could also attempt to infer language from the path before falling back to primary language
-  else nextLanguage = yield select(selectPrimaryLanguage);
+  else {
+    // attempt to infer language from the path
+    const currentPath: string = yield select(selectCurrentPath);
+
+    // path is normally lowercase
+    const firstPathSegment = currentPath
+      .split('/')
+      .find(segment => segment.length)
+      ?.toLowerCase();
+
+    const locales: Locales = yield select(selectLocales);
+    const matchedLanguage = Object.keys(locales).find(
+      lang => lang.toLowerCase() === firstPathSegment
+    );
+    // matched a supported language in the path
+    if (matchedLanguage) nextLanguage = matchedLanguage;
+    else
+      // falling back to primary language
+      nextLanguage = yield select(selectPrimaryLanguage);
+  }
 
   if (nextLanguage && nextLanguage !== currentLanguage) {
     const dictionary = yield call(resolveDictionaryForLanguage, nextLanguage);
@@ -127,7 +145,7 @@ function* setLanguageRoute({
       // already on the correct path, no need to redirect
       return;
     }
-    yield put(setRoute(payload.redirect as string + 'null'));
+    yield put(setRoute(payload.redirect as string));
   }
 }
 
