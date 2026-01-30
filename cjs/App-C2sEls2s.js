@@ -19,7 +19,7 @@ require('jsonpath-mapper');
 require('react-router-dom');
 var selectors = require('./selectors-DAQR0uZa.js');
 var ChangePassword_container = require('./ChangePassword.container-BWh4R32r.js');
-require('./sagas-C8M9wNH1.js');
+require('./sagas-CmOxzqvB.js');
 require('reselect');
 require('immer');
 require('deep-equal');
@@ -135,6 +135,11 @@ function* ensureNodeTreeSaga(action) {
 }
 
 const i18nSagas = [effects.takeEvery(slice.actions.INIT_LOCALES.type, getProjectLanguages), effects.takeEvery(slice.actions.UPDATE_LANGUAGE.type, updateLanguage), effects.takeEvery(slice.actions.SET_LANGUAGE.type, setLanguageRoute)];
+
+/**
+ * Resolve the current route language based on the entry, node, static route or path
+ * Is called directly from the routing saga as soon as an entry or node has been fetched
+ */
 function* resolveCurrentRouteLanguage({
   entry,
   node
@@ -165,6 +170,12 @@ function* resolveCurrentRouteLanguage({
     }));
   }
 }
+
+/**
+ * Resolve the current dictionary for route language either using a supplied resolver
+ * function or directly derive from the locales stored in state
+ * Is called directly any time the language is changed
+ */
 function* resolveDictionaryForLanguage(language) {
   let dictionary = yield effects.select(selectors.selectDictionary);
   // try and resolve a dictionary for this language
@@ -186,6 +197,12 @@ function* resolveDictionaryForLanguage(language) {
   }
   return dictionary;
 }
+
+/**
+ * Side effects triggered from updating the language via dispatched action
+ * in language switching components, including resolving the next route,
+ * update the dictionary and subsequently redirect if needed
+ */
 function* updateLanguage({
   payload: {
     language,
@@ -211,6 +228,8 @@ function* updateLanguage({
     }));
   }
 }
+
+/** Handle any route redirection after we have set the language */
 function* setLanguageRoute({
   payload
 }) {
@@ -223,6 +242,8 @@ function* setLanguageRoute({
     yield effects.put(selectors$1.setRoute(payload.redirect));
   }
 }
+
+/** Determine the correct route uri when the language changes */
 function* resolveNextLanguageRoute({
   language,
   redirect,
@@ -275,6 +296,11 @@ function* getStaticRouteUri({
     return routeUri;
   }
 }
+
+/**
+ * Run when the app initiates locales, populating supported languages from the config
+ * or fetching from the project if not provided
+ */
 function* getProjectLanguages({
   payload
 }) {
@@ -320,7 +346,9 @@ function* getProjectLanguages({
   }));
 }
 
-/** Run a Delivery API query to get all language variations for this entryId */
+/**
+ * Run a Delivery API query to get the uri for the chosen language variation of this entryId
+ * */
 function* getEntryUriForLanguage({
   entryId,
   language
@@ -1201,4 +1229,4 @@ exports.createLocaleRoutes = createLocaleRoutes;
 exports.history = history;
 exports.pickProject = pickProject;
 exports.rootSaga = rootSaga;
-//# sourceMappingURL=App-DR9tR-pe.js.map
+//# sourceMappingURL=App-C2sEls2s.js.map

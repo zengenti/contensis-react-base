@@ -1,46 +1,20 @@
-'use strict';
-
-var React = require('react');
-var reactRedux = require('react-redux');
-var reselect = require('reselect');
-var log = require('loglevel');
-var effects = require('@redux-saga/core/effects');
-var version = require('./version-CukCz8zL.js');
-var ContensisDeliveryApi = require('./ContensisDeliveryApi-DBaziPG9.js');
-var contensisDeliveryApi = require('contensis-delivery-api');
-var util = require('./util-CFAjDCA0.js');
-var selectors$1 = require('./selectors-DAQR0uZa.js');
-require('./slice-5xJMH24n.js');
-var mapJson = require('jsonpath-mapper');
-var contensisCoreApi = require('contensis-core-api');
-var merge = require('deepmerge');
-var queryString = require('query-string');
-var selectors$2 = require('./selectors-C1CqEUmL.js');
-var _commonjsHelpers = require('./_commonjsHelpers-BJu3ubxk.js');
-
-function _interopDefault (e) { return e && e.__esModule ? e : { default: e }; }
-
-function _interopNamespace(e) {
-  if (e && e.__esModule) return e;
-  var n = Object.create(null);
-  if (e) {
-    Object.keys(e).forEach(function (k) {
-      if (k !== 'default') {
-        var d = Object.getOwnPropertyDescriptor(e, k);
-        Object.defineProperty(n, k, d.get ? d : {
-          enumerable: true,
-          get: function () { return e[k]; }
-        });
-      }
-    });
-  }
-  n.default = e;
-  return Object.freeze(n);
-}
-
-var log__namespace = /*#__PURE__*/_interopNamespace(log);
-var mapJson__default = /*#__PURE__*/_interopDefault(mapJson);
-var merge__default = /*#__PURE__*/_interopDefault(merge);
+import { useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { createSelector } from 'reselect';
+import * as log from 'loglevel';
+import { takeEvery, select, put, call, all } from '@redux-saga/core/effects';
+import { s as selectVersionStatus } from './version-DlaBPQ7d.js';
+import { L as LruCache, g as getClientConfig, a as cachedSearch } from './ContensisDeliveryApi-CqPcnP_R.js';
+import { Client } from 'contensis-delivery-api';
+import { a as removeEmptyAttributes, e as extractQuotedPhrases, f as fixFreeTextForElastic, c as convertKeyForAggregation, g as getItemsFromResult, b as cleanseFieldIdForAggregation, d as areArraysEqualSets, h as callCustomApi, i as timedSearch } from './util-BuAZdfcq.js';
+import { s as selectCurrentLanguage } from './selectors-DcmvOeX2.js';
+import './slice-C6JLQik8.js';
+import mapJson, { jpath } from 'jsonpath-mapper';
+import { Op, OrderBy, Query } from 'contensis-core-api';
+import merge from 'deepmerge';
+import { parse, stringify } from 'query-string';
+import { o as selectCurrentPath, N as selectStaticRoute, f as selectCurrentProject } from './selectors-PJo8AWy0.js';
+import { c as commonjsGlobal, g as getDefaultExportFromCjs } from './_commonjsHelpers-BFTU3MAI.js';
 
 const ACTION_PREFIX = '@SEARCH/';
 const APPLY_CONFIG = `${ACTION_PREFIX}APPLY_CONFIG`;
@@ -237,7 +211,7 @@ const getImmutableOrJS = (state, stateKey, fallbackValue, returnType = globalThi
     return fromJS(state.get(stateKey, fallbackValue));
   }
   if (Array.isArray(stateKey) && state && typeof state === 'object') {
-    const result = mapJson.jpath(stateKey.join('.'), state);
+    const result = jpath(stateKey.join('.'), state);
     if (typeof result === 'undefined') return fallbackValue;
     return result;
   }
@@ -254,14 +228,14 @@ const getCurrentTab$1 = state => getImmutableOrJS(state, ['search', Context.face
 const getCurrentComposition = state => getImmutableOrJS(state, ['search', 'currentComposition']);
 
 /** A localised version of `getCurrent` selector */
-const getLocalisedCurrent$2 = (state, language = selectors$1.selectCurrentLanguage(state), context = getSearchContext(state)) => {
+const getLocalisedCurrent$2 = (state, language = selectCurrentLanguage(state), context = getSearchContext(state)) => {
   var _facet$i18n;
   const currentFacet = getCurrent$2(state, context);
   const facet = getFacet$1(state, currentFacet, context, 'js');
   const i18n = (_facet$i18n = facet.i18n) === null || _facet$i18n === void 0 ? void 0 : _facet$i18n[language];
   return i18n || currentFacet;
 };
-const getLocalisedFacetKey = (state, facet = getCurrent$2(state), language = selectors$1.selectCurrentLanguage(state), context = getSearchContext(state)) => {
+const getLocalisedFacetKey = (state, facet = getCurrent$2(state), language = selectCurrentLanguage(state), context = getSearchContext(state)) => {
   var _getFacet;
   return (_getFacet = getFacet$1(state, facet, context, 'js')) === null || _getFacet === void 0 || (_getFacet = _getFacet.i18n) === null || _getFacet === void 0 ? void 0 : _getFacet[language];
 };
@@ -341,7 +315,7 @@ const getComposition = (state, composition = '') => {
 const getFilters = (state, facet, context = Context.facets, returnType) => {
   return getImmutableOrJS(state, ['search', context, facet || getCurrent$2(state, context), 'filters'], {}, returnType);
 };
-const getLocalisedFilterKey = (state, key, language = selectors$1.selectCurrentLanguage(state), facet, context = getSearchContext(state)) => {
+const getLocalisedFilterKey = (state, key, language = selectCurrentLanguage(state), facet, context = getSearchContext(state)) => {
   var _filter$i18n;
   const filter = getFilters(state, facet, context, 'js')[key];
   if (filter !== null && filter !== void 0 && (_filter$i18n = filter.i18n) !== null && _filter$i18n !== void 0 && _filter$i18n[language]) {
@@ -349,7 +323,7 @@ const getLocalisedFilterKey = (state, key, language = selectors$1.selectCurrentL
   }
   return key;
 };
-const getFilterKeyFromLocalised = (state, key, language = selectors$1.selectCurrentLanguage(state), facet, context = getSearchContext(state)) => {
+const getFilterKeyFromLocalised = (state, key, language = selectCurrentLanguage(state), facet, context = getSearchContext(state)) => {
   const filters = getFilters(state, facet, context, 'js');
   for (const [filterKey, filter] of Object.entries(filters)) {
     var _filter$i18n2;
@@ -373,7 +347,7 @@ const getFiltersToLoad = (state, facet, context = Context.facets, returnType) =>
 
 /** Iterate the selected filters and update their keys to their localized equivalents */
 const localiseSelectedFilterKeys = (selectedFilters, state) => {
-  const language = selectors$1.selectCurrentLanguage(state);
+  const language = selectCurrentLanguage(state);
   const filters = getFilters(state, getCurrentFacet(state), getSearchContext(state), 'js');
   const localisedSelectedFilters = {};
   for (const [filterKey, selectedValues] of Object.entries(selectedFilters)) {
@@ -644,8 +618,8 @@ const searchUriTemplate = {
   }) => {
     var _staticRoute$route;
     const context = getSearchContext(state);
-    const currentPath = selectors$2.selectCurrentPath(state) || '/search';
-    const staticRoute = selectors$2.selectStaticRoute(state);
+    const currentPath = selectCurrentPath(state) || '/search';
+    const staticRoute = selectStaticRoute(state);
     const hasFacetRouteParam = staticRoute === null || staticRoute === void 0 || (_staticRoute$route = staticRoute.route) === null || _staticRoute$route === void 0 || (_staticRoute$route = _staticRoute$route.path) === null || _staticRoute$route === void 0 ? void 0 : _staticRoute$route.includes(`/:${context === 'facets' ? 'facet' : 'listingType'}`);
 
     // if (context !== 'listings') {
@@ -678,7 +652,7 @@ const searchUriTemplate = {
     // term is passed via an argument
     const stateFilters = term ? {} : Object.fromEntries(Object.entries(getLocalisedRenderableSelectedFilters(state, facet, searchContext)).map(([k, f]) => [k, f === null || f === void 0 ? void 0 : f.join(',')]));
     const currentSearch = !term && getImmutableOrJS(state, ['routing', 'location', 'search']);
-    const currentQs = util.removeEmptyAttributes(queryString.parse(currentSearch));
+    const currentQs = removeEmptyAttributes(parse(currentSearch));
 
     // An argument is provided with the updated value
     // when the relevant action has been triggered
@@ -686,7 +660,7 @@ const searchUriTemplate = {
     const searchTerm = getSearchTerm$2(state);
     // Use Immutable's merge to merge the stateFilters with any current Qs
     // to build the new Qs.
-    const mergedSearch = util.removeEmptyAttributes(merge__default.default(currentQs, stateFilters));
+    const mergedSearch = removeEmptyAttributes(merge(currentQs, stateFilters));
 
     // We must handle term === '' separately, because this means the user has cleared the search term
     // If this is true, we don't want to fall back to the existing search term. We only want to do that if the
@@ -701,13 +675,13 @@ const searchUriTemplate = {
     if (pageSize) mergedSearch.pageSize = pageSize;
 
     // We don't want these as search params in the url, we just need the search package to see them
-    return queryString.stringify(mergedSearch);
+    return stringify(mergedSearch);
   },
   hash: ({
     state
   }) => getImmutableOrJS(state, ['routing', 'location', 'hash'], '').replace('#', '')
 };
-const mapStateToSearchUri = state => mapJson__default.default(state, searchUriTemplate);
+const mapStateToSearchUri = state => mapJson(state, searchUriTemplate);
 
 var defaultMappers = {
   results: entries => entries,
@@ -733,7 +707,7 @@ const {
   getTabsAndFacets,
   getTotalCount
 } = selectFacets;
-const makeSelectFacetsProps = () => reselect.createSelector(state => state, (_, mappers) => mappers, (state, mappers) => ({
+const makeSelectFacetsProps = () => createSelector(state => state, (_, mappers) => mappers, (state, mappers) => ({
   composition: getComposition(state),
   currentComposition: getCurrentComposition(state),
   currentFacet: getCurrent$1(state),
@@ -765,9 +739,9 @@ const useFacets = ({
 } = {
   id: ''
 }) => {
-  const dispatch = reactRedux.useDispatch();
+  const dispatch = useDispatch();
   const m = mappers || defaultMappers;
-  const selectListingProps = React.useMemo(makeSelectFacetsProps, [m]);
+  const selectListingProps = useMemo(makeSelectFacetsProps, [m]);
   const dispatchProps = {
     clearFilters: filterKey => dispatch(withMappers(clearFilters$1(filterKey), m)),
     updateCurrentFacet: facet => dispatch(withMappers(updateCurrentFacet$1(facet), m)),
@@ -802,7 +776,7 @@ const useFacets = ({
     sortOrder,
     tabsAndFacets,
     totalCount
-  } = reactRedux.useSelector(state => selectListingProps(state, m));
+  } = useSelector(state => selectListingProps(state, m));
   return {
     composition,
     currentComposition,
@@ -843,7 +817,7 @@ const {
   getRenderableFilters,
   getSearchTerm
 } = selectListing;
-const makeSelectListingProps = () => reselect.createSelector(state => state, (_, mappers) => mappers, (state, mappers) => ({
+const makeSelectListingProps = () => createSelector(state => state, (_, mappers) => mappers, (state, mappers) => ({
   composition: getComposition(state),
   currentComposition: getCurrentComposition(state),
   currentListing: getCurrent(state),
@@ -868,9 +842,9 @@ const useListing = ({
 } = {
   id: ''
 }) => {
-  const dispatch = reactRedux.useDispatch();
+  const dispatch = useDispatch();
   const m = mappers || defaultMappers;
-  const selectListingProps = React.useMemo(makeSelectListingProps, [m]);
+  const selectListingProps = useMemo(makeSelectListingProps, [m]);
   const dispatchProps = {
     clearFilters: filterKey => dispatch(withMappers(clearFilters$1(filterKey), m)),
     updateCurrentFacet: facet => dispatch(withMappers(updateCurrentFacet$1(facet), m)),
@@ -897,7 +871,7 @@ const useListing = ({
     searchTerm,
     selectedFilters,
     sortOrder
-  } = reactRedux.useSelector(state => selectListingProps(state, m));
+  } = useSelector(state => selectListingProps(state, m));
   return {
     composition,
     currentComposition,
@@ -922,11 +896,11 @@ const useListing = ({
 
 class CachedTaxonomyLookup {
   constructor() {
-    this.cache = new ContensisDeliveryApi.LruCache();
+    this.cache = new LruCache();
     this.taxonomyLookup = {};
   }
   getTaxonomyNodeByPath(path, project, env) {
-    const client = contensisDeliveryApi.Client.create(ContensisDeliveryApi.getClientConfig(project, env));
+    const client = Client.create(getClientConfig(project, env));
     return this.request(`[TAXONOMY] ${path}`, () => client.taxonomy.getNodeByPath({
       path: path,
       order: 'defined',
@@ -994,7 +968,7 @@ const fieldExpression = (field, value, operator = 'equalTo', weight, fuzzySearch
   if (Array.isArray(field))
     // If an array of fieldIds have been provided, call self for each fieldId
     // to generate expressions that are combined with an 'or' operator
-    return [contensisCoreApi.Op.or(...field.map(fieldId => fieldExpression(fieldId, value, operator, weight, fuzzySearch)).flat())];
+    return [Op.or(...field.map(fieldId => fieldExpression(fieldId, value, operator, weight, fuzzySearch)).flat())];
   if (operator === 'between') return between(field, value);
   if (Array.isArray(value)) return equalToOrIn(field, value, operator, fuzzySearch);else return !weight ? equalToOrIn(field, value, operator, fuzzySearch) : [equalToOrIn(field, value, operator, fuzzySearch)[0].weight(weight)];
 };
@@ -1013,7 +987,7 @@ const contentTypeIdExpression = (contentTypeIds, webpageTemplates, assetTypes) =
     expressions.push(...fieldExpression(Fields.sys.contentTypeId, withContentTypeIds));
   }
   if (notContentTypeIds.length > 0) {
-    expressions.push(contensisCoreApi.Op.not(fieldExpression(Fields.sys.contentTypeId, notContentTypeIds)[0]));
+    expressions.push(Op.not(fieldExpression(Fields.sys.contentTypeId, notContentTypeIds)[0]));
   }
   return expressions;
 };
@@ -1027,13 +1001,13 @@ const filterExpressions = (filters, isOptional = false) => {
       selectedFilter.values.forEach(value => expressions.push(...fieldExpression(selectedFilter.key, value, selectedFilter.fieldOperator || 'equalTo')));else if (selectedFilter.logicOperator === 'not') {
       const fieldExpressions = fieldExpression(selectedFilter.key, selectedFilter.values, selectedFilter.fieldOperator || 'in');
       fieldExpressions.forEach(expr => {
-        expressions.push(contensisCoreApi.Op.not(expr));
+        expressions.push(Op.not(expr));
       });
     }
     // using 'or' logic operator we loop over each filter
     // and simply add the array of values to an expression with an 'in' operator
     else expressions.push(...fieldExpression(selectedFilter.key, selectedFilter.values, selectedFilter.fieldOperator || 'in'));
-    if (isOptional) expressions.push(contensisCoreApi.Op.not(fieldExpression(selectedFilter.key, true, 'exists')[0]));
+    if (isOptional) expressions.push(Op.not(fieldExpression(selectedFilter.key, true, 'exists')[0]));
   });
   return expressions;
 };
@@ -1048,10 +1022,10 @@ const dataFormatExpression = (contentTypeIds, dataFormat = DataFormats.entry) =>
      */
     const withContentTypeIds = contentTypeIds.filter(c => !c.startsWith('!'));
     const notContentTypeIds = contentTypeIds.filter(c => c.startsWith('!')).map(id => id.substring(1));
-    const andExpr = contensisCoreApi.Op.and();
+    const andExpr = Op.and();
     const dataFormatExpr = fieldExpression(Fields.sys.dataFormat, dataFormat)[0];
     const withExpr = fieldExpression(Fields.sys.contentTypeId, withContentTypeIds)[0];
-    const notExpr = contensisCoreApi.Op.not(fieldExpression(Fields.sys.contentTypeId, notContentTypeIds)[0]);
+    const notExpr = Op.not(fieldExpression(Fields.sys.contentTypeId, notContentTypeIds)[0]);
     andExpr.add(dataFormatExpr);
     if (withContentTypeIds.length > 0 && withExpr) andExpr.add(withExpr);
     if (notContentTypeIds.length > 0 && notExpr) andExpr.add(notExpr);
@@ -1077,15 +1051,15 @@ const languagesExpression = languages => fieldExpression(Fields.sys.language, la
 const includeInSearchExpressions = (webpageTemplates, includeInSearchFields) => {
   const expressions = [];
   // Or include this expression if we have explicity specified non-default includeInSearch fields
-  if (Array.isArray(includeInSearchFields)) expressions.push(...includeInSearchFields.map(includeInSearchField => contensisCoreApi.Op.or(contensisCoreApi.Op.and(contensisCoreApi.Op.exists(includeInSearchField, true), contensisCoreApi.Op.equalTo(includeInSearchField, true)), contensisCoreApi.Op.exists(includeInSearchField, false))));
+  if (Array.isArray(includeInSearchFields)) expressions.push(...includeInSearchFields.map(includeInSearchField => Op.or(Op.and(Op.exists(includeInSearchField, true), Op.equalTo(includeInSearchField, true)), Op.exists(includeInSearchField, false))));
 
   // If webpageTemplates have been specified, include this expression
   // with the default includeInSearch field from classic Contensis.
-  if (Array.isArray(webpageTemplates) && webpageTemplates.length > 0) expressions.push(contensisCoreApi.Op.or(contensisCoreApi.Op.and(contensisCoreApi.Op.exists(Fields.sys.includeInSearch, true), contensisCoreApi.Op.equalTo(Fields.sys.includeInSearch, true)), contensisCoreApi.Op.exists(Fields.sys.includeInSearch, false)));
+  if (Array.isArray(webpageTemplates) && webpageTemplates.length > 0) expressions.push(Op.or(Op.and(Op.exists(Fields.sys.includeInSearch, true), Op.equalTo(Fields.sys.includeInSearch, true)), Op.exists(Fields.sys.includeInSearch, false)));
   return expressions;
 };
 const defaultExpressions = versionStatus => {
-  return [contensisCoreApi.Op.equalTo(Fields.sys.versionStatus, versionStatus)];
+  return [Op.equalTo(Fields.sys.versionStatus, versionStatus)];
 };
 const includeIdsExpression = includeIds => {
   if (Array.isArray(includeIds) && includeIds.length > 0) {
@@ -1095,13 +1069,13 @@ const includeIdsExpression = includeIds => {
 const excludeIdsExpression = excludeIds => {
   if (Array.isArray(excludeIds) && excludeIds.length > 0) {
     const [expr] = fieldExpression(Fields.sys.id, excludeIds);
-    return [contensisCoreApi.Op.not(expr)];
+    return [Op.not(expr)];
   } else return [];
 };
 const orderByExpression = orderBy => {
   let expression;
   if (orderBy && orderBy.length > 0) {
-    expression = contensisCoreApi.OrderBy;
+    expression = OrderBy;
     for (const ob of orderBy) {
       var _expression, _expression2;
       expression = ob.startsWith('-') ? (_expression = expression) === null || _expression === void 0 ? void 0 : _expression.desc(ob.substring(1)) : (_expression2 = expression) === null || _expression2 === void 0 ? void 0 : _expression2.asc(ob);
@@ -1112,7 +1086,7 @@ const orderByExpression = orderBy => {
 const equalToOrIn = (field, value, operator = 'equalTo', fuzzySearch = false) => {
   if (value.length === 0) return [];
   if (Array.isArray(value)) {
-    if (operator === 'equalTo' || operator === 'in') return [contensisCoreApi.Op.in(field, ...value)];
+    if (operator === 'equalTo' || operator === 'in') return [Op.in(field, ...value)];
     const expressions = value.map(innerValue => {
       var _between, _distanceWithin;
       switch (operator) {
@@ -1121,15 +1095,15 @@ const equalToOrIn = (field, value, operator = 'equalTo', fuzzySearch = false) =>
         case 'distanceWithin':
           return (_distanceWithin = distanceWithin(field, innerValue)) === null || _distanceWithin === void 0 ? void 0 : _distanceWithin[0];
         case 'exists':
-          return contensisCoreApi.Op.exists(field, innerValue);
+          return Op.exists(field, innerValue);
         case 'freeText':
           // TODO: Potentially needs further implementation of new options
-          return contensisCoreApi.Op[operator](field, innerValue, fuzzySearch, undefined);
+          return Op[operator](field, innerValue, fuzzySearch, undefined);
         default:
-          return contensisCoreApi.Op[operator](field, innerValue);
+          return Op[operator](field, innerValue);
       }
     });
-    return (expressions === null || expressions === void 0 ? void 0 : expressions.length) > 1 ? [contensisCoreApi.Op.or(...expressions)] : expressions || [];
+    return (expressions === null || expressions === void 0 ? void 0 : expressions.length) > 1 ? [Op.or(...expressions)] : expressions || [];
   }
   switch (operator) {
     case 'between':
@@ -1138,9 +1112,9 @@ const equalToOrIn = (field, value, operator = 'equalTo', fuzzySearch = false) =>
       return distanceWithin(field, value);
     case 'freeText':
       // TODO: Potentially needs further implementation of new options
-      return [contensisCoreApi.Op.freeText(field, value, fuzzySearch, undefined)];
+      return [Op.freeText(field, value, fuzzySearch, undefined)];
     default:
-      return [contensisCoreApi.Op[operator](field, value)];
+      return [Op[operator](field, value)];
   }
 };
 const between = (field, value) => {
@@ -1148,14 +1122,14 @@ const between = (field, value) => {
     const valArr = betweenValue.split('--');
     if (valArr.length > 1) {
       const [minimum, maximum] = valArr;
-      return contensisCoreApi.Op.between(field, minimum, maximum);
+      return Op.between(field, minimum, maximum);
     } else {
       console.log(`[search] You have supplied only one value to a "between" operator which must have two values. Your supplied value "${valArr.length && valArr[0]}" has been discarded.`);
       return false;
     }
   };
   if (value.length === 0) return [];
-  if (Array.isArray(value)) return [contensisCoreApi.Op.or(...value.map(handle).filter(bc => bc !== false))];
+  if (Array.isArray(value)) return [Op.or(...value.map(handle).filter(bc => bc !== false))];
   const op = handle(value);
   return op ? [op] : [];
 };
@@ -1164,14 +1138,14 @@ const distanceWithin = (field, value) => {
     const valArr = distanceValue.split(' ');
     if (valArr.length > 1) {
       const [lat, lon] = valArr;
-      return contensisCoreApi.Op.distanceWithin(field, Number(lat), Number(lon), (valArr === null || valArr === void 0 ? void 0 : valArr[2]) || '10mi');
+      return Op.distanceWithin(field, Number(lat), Number(lon), (valArr === null || valArr === void 0 ? void 0 : valArr[2]) || '10mi');
     } else {
       console.log(`[search] You have supplied only one value to a "distanceWithin" operator which must be made up of "lat,lon,distance". Your supplied value "${valArr.length && valArr[0]}" has been discarded.`);
       return false;
     }
   };
   if (value.length === 0) return [];
-  if (Array.isArray(value)) return [contensisCoreApi.Op.or(...value.map(handle).filter(bc => bc !== false))];
+  if (Array.isArray(value)) return [Op.or(...value.map(handle).filter(bc => bc !== false))];
   const op = handle(value);
   return op ? [op] : [];
 };
@@ -1203,7 +1177,7 @@ const customWhereExpressions = where => {
           // These are array expressions so we can call ourself recursively
           // to map these inner values to expressions
           const recurseExpr = customWhereExpressions(clause[operator]);
-          expression = contensisCoreApi.Op[operator](...recurseExpr);
+          expression = Op[operator](...recurseExpr);
         }
         if (['not'].includes(operator)) {
           // A 'not' expression is an object with only one inner field and inner operator
@@ -1213,7 +1187,7 @@ const customWhereExpressions = where => {
             const innerField = value.field;
             // Map the expression when we've looped and scoped to
             // the second property inside the clause
-            if (notIdx === 1) expression = contensisCoreApi.Op.not(makeJsExpression(innerOperator, innerField, innerValue));
+            if (notIdx === 1) expression = Op.not(makeJsExpression(innerOperator, innerField, innerValue));
           });
         }
       }
@@ -1228,11 +1202,11 @@ const customWhereExpressions = where => {
     return expression;
   });
 };
-const makeJsExpression = (operator, field, value) => operator === 'freeText' || operator === 'contains' ? contensisCoreApi.Op[operator](field, value) : operator === 'in' ? contensisCoreApi.Op[operator](field, ...value) : operator === 'exists' ? contensisCoreApi.Op[operator](field, value) : operator === 'between' ? contensisCoreApi.Op[operator](field, value[0], value[1]) : operator === 'distanceWithin' ? contensisCoreApi.Op[operator](field, value === null || value === void 0 ? void 0 : value.lat, value === null || value === void 0 ? void 0 : value.lon, value === null || value === void 0 ? void 0 : value.distance) : contensisCoreApi.Op[operator](field, value);
+const makeJsExpression = (operator, field, value) => operator === 'freeText' || operator === 'contains' ? Op[operator](field, value) : operator === 'in' ? Op[operator](field, ...value) : operator === 'exists' ? Op[operator](field, value) : operator === 'between' ? Op[operator](field, value[0], value[1]) : operator === 'distanceWithin' ? Op[operator](field, value === null || value === void 0 ? void 0 : value.lat, value === null || value === void 0 ? void 0 : value.lon, value === null || value === void 0 ? void 0 : value.distance) : Op[operator](field, value);
 const termExpressions = (searchTerm, weightedSearchFields, fuzzySearch, omitSearchFields = []) => {
   if (searchTerm && weightedSearchFields && weightedSearchFields.length > 0) {
     // Extract any phrases in quotes to array
-    const quotedPhrases = util.extractQuotedPhrases(searchTerm);
+    const quotedPhrases = extractQuotedPhrases(searchTerm);
 
     // Modify the search term to remove any quoted phrases to leave any remaining terms
     let modifiedSearchTerm = searchTerm;
@@ -1242,8 +1216,8 @@ const termExpressions = (searchTerm, weightedSearchFields, fuzzySearch, omitSear
     const operators = [];
 
     // Helper functions to generate Op expressions
-    const containsOp = (f, term) => fieldExpression(f.fieldId, util.fixFreeTextForElastic(term), 'contains', f.weight);
-    const freeTextOp = (f, term) => fieldExpression(f.fieldId, util.fixFreeTextForElastic(term), 'freeText', f.weight, fuzzySearch);
+    const containsOp = (f, term) => fieldExpression(f.fieldId, fixFreeTextForElastic(term), 'contains', f.weight);
+    const freeTextOp = (f, term) => fieldExpression(f.fieldId, fixFreeTextForElastic(term), 'freeText', f.weight, fuzzySearch);
 
     // For each weighted search field
     weightedSearchFields.forEach(wsf => {
@@ -1256,7 +1230,7 @@ const termExpressions = (searchTerm, weightedSearchFields, fuzzySearch, omitSear
           fieldOperators.push(...containsOp(wsf, modifiedSearchTerm));
         } else {
           if ([Fields.entryTitle].includes(wsf.fieldId)) {
-            fieldOperators.push(contensisCoreApi.Op.or(...containsOp(wsf, modifiedSearchTerm), ...freeTextOp(wsf, modifiedSearchTerm)));
+            fieldOperators.push(Op.or(...containsOp(wsf, modifiedSearchTerm), ...freeTextOp(wsf, modifiedSearchTerm)));
           } else {
             fieldOperators.push(...freeTextOp(wsf, modifiedSearchTerm));
           }
@@ -1270,32 +1244,32 @@ const termExpressions = (searchTerm, weightedSearchFields, fuzzySearch, omitSear
       // wrap each field inside an And operator so we will match
       // all terms/phrases rather than any terms/phrases
       if (fieldOperators.length > 1) {
-        operators.push(contensisCoreApi.Op.and(...fieldOperators));
+        operators.push(Op.and(...fieldOperators));
       } else {
         operators.push(...fieldOperators);
       }
     });
 
     // Wrap operators in an Or operator
-    const expressions = contensisCoreApi.Op.or().addRange(operators);
+    const expressions = Op.or().addRange(operators);
     if (!omitSearchFields.find(sf => sf === Fields.searchContent))
       // include "searchContent" field by default unless omitted
-      return [expressions.add(contensisCoreApi.Op.freeText(Fields.searchContent, searchTerm, fuzzySearch))];else return [expressions];
+      return [expressions.add(Op.freeText(Fields.searchContent, searchTerm, fuzzySearch))];else return [expressions];
   } else if (searchTerm) {
     // Searching without weightedSearchFields defined will fall back
     // to a default set of search fields with arbritary weights set.
 
     const exp = [];
     if (!omitSearchFields.find(sf => sf === Fields.entryTitle)) {
-      exp.push(contensisCoreApi.Op.equalTo(Fields.entryTitle, searchTerm).weight(10));
-      exp.push(contensisCoreApi.Op.freeText(Fields.entryTitle, searchTerm, fuzzySearch).weight(2));
+      exp.push(Op.equalTo(Fields.entryTitle, searchTerm).weight(10));
+      exp.push(Op.freeText(Fields.entryTitle, searchTerm, fuzzySearch).weight(2));
     }
-    if (!omitSearchFields.find(sf => sf === Fields.entryDescription)) exp.push(contensisCoreApi.Op.freeText(Fields.entryDescription, searchTerm, fuzzySearch).weight(2));
-    if (!omitSearchFields.find(sf => sf === Fields.keywords)) exp.push(contensisCoreApi.Op.contains(Fields.keywords, searchTerm).weight(2));
-    if (!omitSearchFields.find(sf => sf === Fields.sys.uri)) exp.push(contensisCoreApi.Op.contains(Fields.sys.uri, searchTerm).weight(2));
-    if (!omitSearchFields.find(sf => sf === Fields.sys.allUris)) exp.push(contensisCoreApi.Op.contains(Fields.sys.allUris, searchTerm));
-    if (!omitSearchFields.find(sf => sf === Fields.searchContent)) exp.push(contensisCoreApi.Op.freeText(Fields.searchContent, searchTerm, fuzzySearch));
-    return [contensisCoreApi.Op.or(...exp)];
+    if (!omitSearchFields.find(sf => sf === Fields.entryDescription)) exp.push(Op.freeText(Fields.entryDescription, searchTerm, fuzzySearch).weight(2));
+    if (!omitSearchFields.find(sf => sf === Fields.keywords)) exp.push(Op.contains(Fields.keywords, searchTerm).weight(2));
+    if (!omitSearchFields.find(sf => sf === Fields.sys.uri)) exp.push(Op.contains(Fields.sys.uri, searchTerm).weight(2));
+    if (!omitSearchFields.find(sf => sf === Fields.sys.allUris)) exp.push(Op.contains(Fields.sys.allUris, searchTerm));
+    if (!omitSearchFields.find(sf => sf === Fields.searchContent)) exp.push(Op.freeText(Fields.searchContent, searchTerm, fuzzySearch));
+    return [Op.or(...exp)];
   } else {
     return [];
   }
@@ -1319,8 +1293,8 @@ var expressions = /*#__PURE__*/Object.freeze({
 });
 
 const filterQuery = (contentTypeIds, languages, versionStatus, customWhere) => {
-  const query = new contensisCoreApi.Query(...[...contentTypeIdExpression(contentTypeIds), ...languagesExpression(languages), ...defaultExpressions(versionStatus), ...customWhereExpressions(customWhere)]);
-  query.orderBy = contensisCoreApi.OrderBy.asc(Fields.entryTitle);
+  const query = new Query(...[...contentTypeIdExpression(contentTypeIds), ...languagesExpression(languages), ...defaultExpressions(versionStatus), ...customWhereExpressions(customWhere)]);
+  query.orderBy = OrderBy.asc(Fields.entryTitle);
   query.pageSize = 100;
   return query;
 };
@@ -1350,7 +1324,7 @@ const searchQuery = ({
   let expressions = [...termExpressions(searchTerm, weightedSearchFields, fuzzySearch, omitDefaultSearchFields), ...defaultExpressions(versionStatus), ...includeInSearchExpressions(webpageTemplates, includeInSearchFields), ...languagesExpression(languages), ...customWhereExpressions(customWhere), ...excludeIdsExpression(excludeIds)];
   if (isFeatured) expressions = [...expressions, ...featuredResultsExpression(featuredResults)];
   if (!isFeatured || featuredResults && !featuredResults.contentTypeId) expressions = [...expressions, ...filterExpressions(filters), ...contentTypeIdExpression(contentTypeIds, webpageTemplates, assetTypes)];
-  const query = new contensisCoreApi.Query(...expressions);
+  const query = new Query(...expressions);
   if (!searchTerm) query.orderBy = orderByExpression(orderBy);
   if (dynamicOrderBy && dynamicOrderBy.length) query.orderBy = orderByExpression(dynamicOrderBy);
   if (Object.keys(fieldLinkDepths || {}).length && !isFeatured) query.fieldLinkDepths = fieldLinkDepths;
@@ -1748,7 +1722,7 @@ var hasRequired_freeGlobal;
 function require_freeGlobal () {
 	if (hasRequired_freeGlobal) return _freeGlobal;
 	hasRequired_freeGlobal = 1;
-	var freeGlobal = typeof _commonjsHelpers.commonjsGlobal == 'object' && _commonjsHelpers.commonjsGlobal && _commonjsHelpers.commonjsGlobal.Object === Object && _commonjsHelpers.commonjsGlobal;
+	var freeGlobal = typeof commonjsGlobal == 'object' && commonjsGlobal && commonjsGlobal.Object === Object && commonjsGlobal;
 
 	_freeGlobal = freeGlobal;
 	return _freeGlobal;
@@ -5017,7 +4991,7 @@ function requireCloneDeep () {
 }
 
 var cloneDeepExports = requireCloneDeep();
-var cloneDeep = /*@__PURE__*/_commonjsHelpers.getDefaultExportFromCjs(cloneDeepExports);
+var cloneDeep = /*@__PURE__*/getDefaultExportFromCjs(cloneDeepExports);
 
 const mapEntriesToSearchResults = ({
   mappers,
@@ -5047,7 +5021,7 @@ const facetTemplate = {
       action,
       featuredResult,
       state
-    }) => mapEntriesToSearchResults(action, util.getItemsFromResult(featuredResult), state),
+    }) => mapEntriesToSearchResults(action, getItemsFromResult(featuredResult), state),
     filters: ({
       result,
       state,
@@ -5062,21 +5036,21 @@ const facetTemplate = {
       for (const filter of Object.values(filters)) {
         let aggregation = {};
         if (typeof filter.fieldId === 'string') {
-          aggregation = aggregations[util.convertKeyForAggregation(filter.fieldId)] || {};
+          aggregation = aggregations[convertKeyForAggregation(filter.fieldId)] || {};
         } else if (Array.isArray(filter.fieldId)) {
           for (const fieldId of filter.fieldId) {
-            aggregation = merge__default.default(aggregation, aggregations[util.convertKeyForAggregation(fieldId)] || {});
+            aggregation = merge(aggregation, aggregations[convertKeyForAggregation(fieldId)] || {});
           }
         }
         // Populate filter items from aggregations for example tag fields
         if (filter.aggregations) {
           // Use supplied aggregations instead of field aggregations
           if (typeof filter.aggregations === 'string') {
-            aggregation = aggregations[util.convertKeyForAggregation(filter.aggregations)] || {};
+            aggregation = aggregations[convertKeyForAggregation(filter.aggregations)] || {};
           } else if (Array.isArray(filter.aggregations)) {
             aggregation = {};
             for (const fieldId of filter.aggregations) {
-              aggregation = merge__default.default(aggregation, aggregations[util.convertKeyForAggregation(fieldId)] || {});
+              aggregation = merge(aggregation, aggregations[convertKeyForAggregation(fieldId)] || {});
             }
           }
           // Start with existing items that are not in the aggregation
@@ -5159,7 +5133,7 @@ const facetTemplate = {
         pagesLoaded,
         prevPageIndex
       } = action.queryParams;
-      const results = mapEntriesToSearchResults(action, util.getItemsFromResult(result), state);
+      const results = mapEntriesToSearchResults(action, getItemsFromResult(result), state);
       if (!loadMorePaging) return results;
 
       // add a _pageIndex property to the returned results to help us later
@@ -5219,7 +5193,7 @@ const filterTemplate = {
       if (payload && 'items' in payload) {
         var _facet$aggregations;
         // Handle aggregations from SSR where the results containing the aggregations have loaded before the filter items
-        const aggregation = (_facet$aggregations = facet.aggregations) === null || _facet$aggregations === void 0 ? void 0 : _facet$aggregations[util.convertKeyForAggregation(filterKey)];
+        const aggregation = (_facet$aggregations = facet.aggregations) === null || _facet$aggregations === void 0 ? void 0 : _facet$aggregations[convertKeyForAggregation(filterKey)];
         const items = payload.items.map(item => {
           var _item$sys, _item$sys2;
           item.isSelected = selectedKeys === null || selectedKeys === void 0 ? void 0 : selectedKeys.includes(item === null || item === void 0 || (_item$sys = item.sys) === null || _item$sys === void 0 ? void 0 : _item$sys.id);
@@ -5251,7 +5225,7 @@ const filterExpressionMapper = {
   fieldOperator: 'fieldOperator',
   logicOperator: 'logicOperator'
 };
-const mapFilterToFilterExpression = filter => mapJson__default.default(filter, filterExpressionMapper);
+const mapFilterToFilterExpression = filter => mapJson(filter, filterExpressionMapper);
 
 const mapFiltersToFilterExpression = (filters, selectedFilters) => {
   if (!selectedFilters || Object.keys(selectedFilters).length === 0) return [];
@@ -5287,8 +5261,8 @@ const queryParamsTemplate = {
     for (const filter of Object.values(stateFilters)) {
       if (Array.isArray(filter.fieldId)) {
         for (const id of filter.fieldId) {
-          const field = util.cleanseFieldIdForAggregation(id);
-          const aggregationKey = util.convertKeyForAggregation(field);
+          const field = cleanseFieldIdForAggregation(id);
+          const aggregationKey = convertKeyForAggregation(field);
           if (!aggregations[aggregationKey]) {
             aggregations[aggregationKey] = {
               field,
@@ -5297,8 +5271,8 @@ const queryParamsTemplate = {
           }
         }
       } else if (filter.fieldId) {
-        const field = util.cleanseFieldIdForAggregation(filter.fieldId);
-        aggregations[util.convertKeyForAggregation(field)] = {
+        const field = cleanseFieldIdForAggregation(filter.fieldId);
+        aggregations[convertKeyForAggregation(field)] = {
           field,
           size: 100
         };
@@ -5380,7 +5354,7 @@ const queryParamsTemplate = {
     context
   }) => {
     var _getFacet;
-    return ((_getFacet = getFacet$1(state, facet, context, 'js')) === null || _getFacet === void 0 ? void 0 : _getFacet.projectId) || selectors$2.selectCurrentProject(state);
+    return ((_getFacet = getFacet$1(state, facet, context, 'js')) === null || _getFacet === void 0 ? void 0 : _getFacet.projectId) || selectCurrentProject(state);
   },
   searchTerm: root => root.context !== Context.minilist || getQueryParameter$2(root, 'useSearchTerm', false) ? getSearchTerm$2(root.state) : '',
   selectedFilters: ({
@@ -5390,7 +5364,7 @@ const queryParamsTemplate = {
   }) => Object.fromEntries(Object.entries(getSelectedFilters(state, facet, context, 'js')).map(([key, f]) => [key, f === null || f === void 0 ? void 0 : f.join(',')])),
   versionStatus: root => {
     const versionStatusOverride = getQueryParameter$2(root, 'versionStatus');
-    return versionStatusOverride || version.selectVersionStatus(root.state);
+    return versionStatusOverride || selectVersionStatus(root.state);
   },
   weightedSearchFields: root => {
     const wsf = getQueryParameter$2(root, 'weightedSearchFields', []);
@@ -5400,7 +5374,7 @@ const queryParamsTemplate = {
   },
   webpageTemplates: root => getQueryParameter$2(root, 'webpageTemplates', [])
 };
-const mapStateToQueryParams = sourceJson => mapJson__default.default(sourceJson, queryParamsTemplate);
+const mapStateToQueryParams = sourceJson => mapJson(sourceJson, queryParamsTemplate);
 
 /**
  * 1, Generates all the parameters required to run the search query.
@@ -5505,7 +5479,7 @@ const filterParamsChanged = (action, state) => {
   const selectedFilters = getSelectedFilters(ogState, facet, context, 'js');
   const paramsChanged = Object.entries(selectedFilters).map(([filterKey, selectedValues]) => {
     const inboundValues = params && params[filterKey] && params[filterKey].split(',') || [];
-    if (!util.areArraysEqualSets(selectedValues, inboundValues)) return true;
+    if (!areArraysEqualSets(selectedValues, inboundValues)) return true;
   });
   return paramsChanged.filter(f => f === true).length > 0;
 };
@@ -5514,7 +5488,7 @@ const languageChanged = action => {
     ...action,
     state: action.ogState
   }, 'languages', []);
-  return !util.areArraysEqualSets(action.languages || [], stateLanguages);
+  return !areArraysEqualSets(action.languages || [], stateLanguages);
 };
 const debugExecuteSearch = (action, state) => {
   const [queryParams, runSearch] = generateQueryParams(action, state);
@@ -5557,7 +5531,7 @@ const mapEntriesToFilterItems = entries => {
   return entries.map(entry => {
     const template = base;
     if (template) {
-      return mapJson__default.default(entry, template);
+      return mapJson(entry, template);
     }
     return entry;
   });
@@ -5587,10 +5561,10 @@ const mapQueryParamsToCustomApi = queryParams => {
       $disable: f => !f
     };
   });
-  return mapJson__default.default(queryParams, customApiMapping);
+  return mapJson(queryParams, customApiMapping);
 };
 
-const searchSagas = [effects.takeEvery(CLEAR_FILTERS, clearFilters), effects.takeEvery(DO_SEARCH, doSearch), effects.takeEvery(SET_ROUTE_FILTERS, loadFilters), effects.takeEvery(SET_SEARCH_ENTRIES, preloadOtherFacets), effects.takeEvery(UPDATE_CURRENT_FACET, updateCurrentFacet), effects.takeEvery(UPDATE_CURRENT_TAB, updateCurrentTab), effects.takeEvery(UPDATE_PAGE_INDEX, updatePageIndex), effects.takeEvery(UPDATE_PAGE_SIZE, updatePageSize), effects.takeEvery(UPDATE_SEARCH_TERM, updateSearchTerm), effects.takeEvery(UPDATE_SORT_ORDER, updateSortOrder), effects.takeEvery(UPDATE_SELECTED_FILTERS, applySearchFilter)];
+const searchSagas = [takeEvery(CLEAR_FILTERS, clearFilters), takeEvery(DO_SEARCH, doSearch), takeEvery(SET_ROUTE_FILTERS, loadFilters), takeEvery(SET_SEARCH_ENTRIES, preloadOtherFacets), takeEvery(UPDATE_CURRENT_FACET, updateCurrentFacet), takeEvery(UPDATE_CURRENT_TAB, updateCurrentTab), takeEvery(UPDATE_PAGE_INDEX, updatePageIndex), takeEvery(UPDATE_PAGE_SIZE, updatePageSize), takeEvery(UPDATE_SEARCH_TERM, updateSearchTerm), takeEvery(UPDATE_SORT_ORDER, updateSortOrder), takeEvery(UPDATE_SELECTED_FILTERS, applySearchFilter)];
 const toJS = obj => obj && 'toJS' in obj && typeof obj.toJS === 'function' ? obj.toJS() : obj;
 function* setRouteFilters(action) {
   const {
@@ -5603,7 +5577,7 @@ function* setRouteFilters(action) {
   let {
     defaultLang
   } = action;
-  const state = toJS(yield effects.select());
+  const state = toJS(yield select());
   const isSSR = getIsSsr(state);
   sanitiseParams(params);
 
@@ -5617,9 +5591,9 @@ function* setRouteFilters(action) {
 
   // Instead of just taking the facet/listing from params,
   // we need to check all aliases to determine the correct facet/listing
-  const currentLanguage = yield effects.select(selectors$1.selectCurrentLanguage);
+  const currentLanguage = yield select(selectCurrentLanguage);
   if (currentFacet) {
-    const currentLocalised = yield effects.select(getCurrentFromLocalised, currentFacet, currentLanguage, context);
+    const currentLocalised = yield select(getCurrentFromLocalised, currentFacet, currentLanguage, context);
     if (currentLocalised) {
       currentFacet = currentLocalised.facet;
       defaultLang = currentLocalised.language;
@@ -5633,16 +5607,16 @@ function* setRouteFilters(action) {
     const compositionConfig = compositions[composition];
     if (compositionConfig) {
       if ('facets' in compositionConfig) {
-        const compFacets = compositionConfig.facets;
         if (!facet) {
-          const firstFacetKey = Object.keys(compFacets)[0];
+          var _compositionConfig$fa;
+          const firstFacetKey = (_compositionConfig$fa = compositionConfig.facets) === null || _compositionConfig$fa === void 0 ? void 0 : _compositionConfig$fa[0];
           context = Context.facets;
           currentFacet = firstFacetKey;
         }
       } else if ('listings' in compositionConfig) {
-        const compListings = compositionConfig.listings;
         if (!listingType) {
-          const firstListingKey = Object.keys(compListings)[0];
+          var _compositionConfig$li;
+          const firstListingKey = (_compositionConfig$li = compositionConfig.listings) === null || _compositionConfig$li === void 0 ? void 0 : _compositionConfig$li[0];
           context = Context.listings;
           currentFacet = firstListingKey;
         }
@@ -5651,7 +5625,7 @@ function* setRouteFilters(action) {
   }
 
   // If Listing use listing type (ignore params.facet)
-  if (context === Context.listings) {
+  if (context === Context.listings && listingType) {
     currentFacet = listingType;
   }
 
@@ -5670,7 +5644,7 @@ function* setRouteFilters(action) {
   // to the actual filter keys
   if (currentFacet && defaultLang) {
     for (const paramKey of Object.keys(params || {})) {
-      const filterKey = yield effects.select(getFilterKeyFromLocalised, paramKey, defaultLang, currentFacet, context);
+      const filterKey = yield select(getFilterKeyFromLocalised, paramKey, defaultLang, currentFacet, context);
       if (filterKey && filterKey !== paramKey) {
         params[filterKey] = params[paramKey];
         delete params[paramKey];
@@ -5690,7 +5664,7 @@ function* setRouteFilters(action) {
     ssr,
     debug
   };
-  yield effects.put(nextAction);
+  yield put(nextAction);
 
   // keep track of this state ref for comparing changes to params later
   const ogState = {
@@ -5699,18 +5673,18 @@ function* setRouteFilters(action) {
 
   // Using call instead of triggering from the put
   // to allow this exported saga to continue during SSR
-  yield effects.call(ensureSearch, {
+  yield call(ensureSearch, {
     ...nextAction,
     ogState
   });
 }
 function* doSearch(action) {
   var _action$params;
-  const state = toJS(yield effects.select());
+  const state = toJS(yield select());
   if (action.config) {
     // If the action contains a config object, we can add this to the
     // state at runtime
-    yield effects.put({
+    yield put({
       ...action,
       type: APPLY_CONFIG
     });
@@ -5722,13 +5696,13 @@ function* doSearch(action) {
     facet: action.facet || ((_action$params = action.params) === null || _action$params === void 0 ? void 0 : _action$params.facet)
   };
   if (nextAction.facet && (action.config || Object.keys(getFacet$1(state, nextAction.facet, action.context, 'js')).length > 0)) {
-    yield effects.put(nextAction);
+    yield put(nextAction);
 
     // keep track of this state ref for comparing changes to params later
     const ogState = {
       search: state.search
     };
-    yield effects.call(ensureSearch, {
+    yield call(ensureSearch, {
       ...nextAction,
       ogState
     });
@@ -5742,21 +5716,21 @@ function* loadFilters(action) {
     languages,
     ssr
   } = action;
-  const filtersToLoad = yield effects.select(getFiltersToLoad, facetKey, context, 'js');
+  const filtersToLoad = yield select(getFiltersToLoad, facetKey, context, 'js');
   if (filtersToLoad.length > 0) {
-    yield effects.put({
+    yield put({
       type: LOAD_FILTERS,
       filtersToLoad,
       facetKey,
       context,
       languages
     });
-    const selectedKeys = yield effects.select(getSelectedFilters, facetKey, context, 'js');
-    const facet = yield effects.select(getFacet$1, facetKey, context, 'js');
+    const selectedKeys = yield select(getSelectedFilters, facetKey, context, 'js');
+    const facet = yield select(getFacet$1, facetKey, context, 'js');
     const filters = facet.filters || {};
     const projectId = facet.projectId;
     const filtersToLoadSagas = filters && filtersToLoad.map((filterKey = '') => {
-      return effects.call(loadFilter, {
+      return call(loadFilter, {
         facetKey,
         filterKey,
         filter: filters[filterKey],
@@ -5768,7 +5742,7 @@ function* loadFilters(action) {
         ssr
       });
     });
-    if (filtersToLoadSagas) yield effects.all(filtersToLoadSagas);
+    if (filtersToLoadSagas) yield all(filtersToLoadSagas);
   }
 }
 function* loadFilter(action) {
@@ -5786,7 +5760,7 @@ function* loadFilter(action) {
     ssr: {
       api
     } = {
-      api: ContensisDeliveryApi.cachedSearch
+      api: cachedSearch
     }
   } = action;
   const {
@@ -5806,7 +5780,7 @@ function* loadFilter(action) {
   };
   try {
     if (contentTypeId) {
-      const versionStatus = yield effects.select(version.selectVersionStatus);
+      const versionStatus = yield select(selectVersionStatus);
       const query = filterQuery(Array.isArray(contentTypeId) ? contentTypeId : [contentTypeId], languages, versionStatus, customWhere);
       const payload = yield api.search(query, 0, projectId);
       if (!payload) throw new Error('No payload returned by search');
@@ -5823,9 +5797,9 @@ function* loadFilter(action) {
     createStateFrom.type = LOAD_FILTERS_ERROR;
     createStateFrom.error = error;
   }
-  createStateFrom.facet = yield effects.select(getFacet$1, facetKey, context, 'js');
-  const nextAction = mapJson__default.default(createStateFrom, filterTemplate);
-  yield effects.put(nextAction);
+  createStateFrom.facet = yield select(getFacet$1, facetKey, context, 'js');
+  const nextAction = mapJson(createStateFrom, filterTemplate);
+  yield put(nextAction);
 }
 function* ensureSearch(action) {
   const {
@@ -5834,7 +5808,7 @@ function* ensureSearch(action) {
     debug
   } = action;
   try {
-    const state = yield effects.select();
+    const state = yield select();
     const nextAction = {
       ...action,
       ogState: action.ogState || {
@@ -5844,12 +5818,12 @@ function* ensureSearch(action) {
     const [queryParams, runSearch] = generateQueryParams(nextAction, state);
     if (debug && (debug === true || debug.executeSearch)) debugExecuteSearch(nextAction, state);
     if (runSearch) {
-      yield effects.put({
+      yield put({
         type: EXECUTE_SEARCH,
         facet,
         context
       });
-      yield effects.call(executeSearch, {
+      yield call(executeSearch, {
         ...nextAction,
         context,
         facet,
@@ -5858,7 +5832,7 @@ function* ensureSearch(action) {
       });
     }
   } catch (error) {
-    log__namespace.error('Error running ensureSearch:', error, error.stack);
+    log.error('Error running ensureSearch:', error, error.stack);
   }
 }
 function* executeSearch(action) {
@@ -5870,26 +5844,26 @@ function* executeSearch(action) {
     ssr
   } = action;
   try {
-    const state = yield effects.select();
+    const state = yield select();
     let result = {};
     let featuredResult;
     let featuredQuery;
     const customApi = getCustomApi(state, facet, context, 'js');
     if (customApi) {
       const apiParams = typeof mappers === 'object' && typeof mappers.customApi === 'function' && mappers.customApi(queryParams) || mapQueryParamsToCustomApi(queryParams);
-      result.payload = yield util.callCustomApi(customApi, apiParams, ssr);
+      result.payload = yield callCustomApi(customApi, apiParams, ssr);
       result.duration = 1;
     } else {
       if (queryParams.featuredResults) {
         featuredQuery = searchQuery(queryParams, true);
-        featuredResult = yield util.timedSearch(featuredQuery, queryParams.linkDepth, queryParams.projectId, ssr);
-        queryParams.excludeIds = util.getItemsFromResult(featuredResult).map(fi => {
+        featuredResult = yield timedSearch(featuredQuery, queryParams.linkDepth, queryParams.projectId, ssr);
+        queryParams.excludeIds = getItemsFromResult(featuredResult).map(fi => {
           var _fi$sys;
           return fi === null || fi === void 0 || (_fi$sys = fi.sys) === null || _fi$sys === void 0 ? void 0 : _fi$sys.id;
         }).filter(fi => typeof fi === 'string');
       }
       const query = searchQuery(queryParams);
-      result = yield util.timedSearch(query, queryParams.linkDepth, queryParams.projectId, ssr);
+      result = yield timedSearch(query, queryParams.linkDepth, queryParams.projectId, ssr);
     }
     const createStateFrom = {
       action,
@@ -5897,12 +5871,12 @@ function* executeSearch(action) {
       pageIndex: queryParams.internalPaging && queryParams.internalPageIndex || queryParams.pageIndex,
       prevResults: getResults(state, facet, action.context, 'js'),
       result,
-      state: yield effects.select()
+      state: yield select()
     };
-    const nextAction = mapJson__default.default(createStateFrom, facetTemplate);
-    yield effects.put(nextAction);
+    const nextAction = mapJson(createStateFrom, facetTemplate);
+    yield put(nextAction);
   } catch (error) {
-    log__namespace.error('Error running executeSearch:', error, error.stack);
+    log.error('Error running executeSearch:', error, error.stack);
   }
 }
 function* preloadOtherFacets(action) {
@@ -5912,13 +5886,13 @@ function* preloadOtherFacets(action) {
     facet,
     debug
   } = action;
-  const state = yield effects.select();
+  const state = yield select();
   const currentFacet = getCurrent$2(state, context);
   const currentComposition = getCurrentComposition(state);
   if (!preload && facet === currentFacet && (context !== Context.listings || currentComposition)) {
     const allFacets = currentComposition ? getCompositionFacets(state, currentComposition) : getFacets(state, 'js');
     const otherFacets = Object.keys(allFacets).filter(f => f !== currentFacet);
-    yield effects.all(otherFacets.map((preloadFacet = '') => {
+    yield all(otherFacets.map((preloadFacet = '') => {
       const preloadAction = {
         ...action,
         facet: preloadFacet,
@@ -5926,7 +5900,7 @@ function* preloadOtherFacets(action) {
       };
       const [queryParams, runSearch] = generateQueryParams(preloadAction, state);
       if (debug && (debug === true || debug.preloadOtherFacets)) debugExecuteSearch(preloadAction, state);
-      return runSearch && effects.call(executeSearch, {
+      return runSearch && call(executeSearch, {
         ...action,
         type: EXECUTE_SEARCH_PRELOAD,
         preload: true,
@@ -5941,7 +5915,7 @@ function* updateCurrentTab(action) {
     id,
     mappers
   } = action;
-  const state = yield effects.select();
+  const state = yield select();
   const facets = getFacets(state, 'js');
   const tabs = getSearchTabs(state, 'js');
   let nextFacet = tabs === null || tabs === void 0 ? void 0 : tabs[id].currentFacet;
@@ -5953,7 +5927,7 @@ function* updateCurrentTab(action) {
   // If the next Tab does not have a defaultFacet,
   // take the first facet for that tab
   if (!nextFacet) nextFacet = Object.entries(facets).filter(([, f]) => f.tabId === id)[0][0];
-  yield effects.put(withMappers(updateCurrentFacet$1(nextFacet), mappers));
+  yield put(withMappers(updateCurrentFacet$1(nextFacet), mappers));
 }
 function* clearFilters(action) {
   const {
@@ -5964,19 +5938,19 @@ function* clearFilters(action) {
   const uri = yield buildUri({
     term
   }, mappers);
-  yield effects.put(navigate(uri));
+  yield put(navigate(uri));
 }
 function* updateCurrentFacet(action) {
   const {
     facet,
     mappers
   } = action;
-  const pageIndex = yield effects.select(getPageIndex$2, facet);
+  const pageIndex = yield select(getPageIndex$2, facet);
   const uri = yield buildUri({
     facet,
     pageIndex
   }, mappers);
-  yield effects.put(navigate(uri));
+  yield put(navigate(uri));
 }
 function* updateSearchTerm(action) {
   const {
@@ -5986,7 +5960,7 @@ function* updateSearchTerm(action) {
   const uri = yield buildUri({
     term
   }, mappers);
-  yield effects.put(navigate(uri));
+  yield put(navigate(uri));
 }
 function* updateSortOrder(action) {
   const {
@@ -5998,7 +5972,7 @@ function* updateSortOrder(action) {
     orderBy,
     facet
   }, mappers);
-  yield effects.put(navigate(uri));
+  yield put(navigate(uri));
 }
 function* updatePageIndex(action) {
   const {
@@ -6009,7 +5983,7 @@ function* updatePageIndex(action) {
   const uri = yield buildUri({
     pageIndex
   }, mappers);
-  yield effects.put(navigate(uri));
+  yield put(navigate(uri));
   if (typeof scrollToElement !== 'undefined') scrollTo(scrollToElement);
 }
 function* updatePageSize(action) {
@@ -6021,7 +5995,7 @@ function* updatePageSize(action) {
   const uri = yield buildUri({
     pageSize
   }, mappers);
-  yield effects.put(navigate(uri));
+  yield put(navigate(uri));
   if (typeof scrollToElement !== 'undefined') scrollTo(scrollToElement);
 }
 function* applySearchFilter(action) {
@@ -6030,7 +6004,7 @@ function* applySearchFilter(action) {
     scrollToElement
   } = action;
   const uri = yield buildUri({}, mappers);
-  yield effects.put(navigate(uri));
+  yield put(navigate(uri));
   if (typeof scrollToElement !== 'undefined') scrollTo(scrollToElement);
 }
 function* buildUri({
@@ -6040,7 +6014,7 @@ function* buildUri({
   pageSize,
   term
 }, mappers) {
-  const state = yield effects.select();
+  const state = yield select();
   const mapUri = (mappers === null || mappers === void 0 ? void 0 : mappers.navigate) || mapStateToSearchUri;
   const uri = mapUri({
     state,
@@ -6054,84 +6028,17 @@ function* buildUri({
   return `${uri.path}${uri.search && `?${uri.search}` || ''}${uri.hash && `#${uri.hash}` || ''}`;
 }
 function* triggerMinilistSsr(options) {
-  yield effects.call(doSearch, {
+  yield call(doSearch, {
     type: DO_SEARCH,
     ...options
   });
 }
 function* triggerListingSsr(options) {
-  yield effects.call(setRouteFilters, options);
+  yield call(setRouteFilters, options);
 }
 function* triggerSearchSsr(options) {
-  yield effects.call(setRouteFilters, options);
+  yield call(setRouteFilters, options);
 }
 
-exports.APPLY_CONFIG = APPLY_CONFIG;
-exports.CLEAR_FILTERS = CLEAR_FILTERS;
-exports.Context = Context;
-exports.EXECUTE_SEARCH = EXECUTE_SEARCH;
-exports.EXECUTE_SEARCH_ERROR = EXECUTE_SEARCH_ERROR;
-exports.LOAD_FILTERS = LOAD_FILTERS;
-exports.LOAD_FILTERS_COMPLETE = LOAD_FILTERS_COMPLETE;
-exports.LOAD_FILTERS_ERROR = LOAD_FILTERS_ERROR;
-exports.SET_ROUTE_FILTERS = SET_ROUTE_FILTERS;
-exports.SET_SEARCH_ENTRIES = SET_SEARCH_ENTRIES;
-exports.SET_SEARCH_FILTERS = SET_SEARCH_FILTERS;
-exports.UPDATE_PAGE_INDEX = UPDATE_PAGE_INDEX;
-exports.UPDATE_PAGE_SIZE = UPDATE_PAGE_SIZE;
-exports.UPDATE_SEARCH_TERM = UPDATE_SEARCH_TERM;
-exports.UPDATE_SELECTED_FILTERS = UPDATE_SELECTED_FILTERS;
-exports.UPDATE_SORT_ORDER = UPDATE_SORT_ORDER;
-exports.actions = actions;
-exports.clearFilters = clearFilters$1;
-exports.cloneDeep = cloneDeep;
-exports.contentTypeIdExpression = contentTypeIdExpression;
-exports.customWhereExpressions = customWhereExpressions;
-exports.defaultExpressions = defaultExpressions;
-exports.doSearch = doSearch;
-exports.expressions = expressions;
-exports.filterExpressions = filterExpressions;
-exports.getCurrentFacet = getCurrentFacet;
-exports.getCurrentTab = getCurrentTab$1;
-exports.getFacet = getFacet$1;
-exports.getFacetTitles = getFacetTitles$1;
-exports.getFacetsTotalCount = getFacetsTotalCount$1;
-exports.getFeaturedResults = getFeaturedResults$2;
-exports.getFilters = getFilters;
-exports.getIsLoading = getIsLoading$2;
-exports.getPageIndex = getPageIndex$2;
-exports.getPageIsLoading = getPageIsLoading$2;
-exports.getPaging = getPaging;
-exports.getQueryParameter = getQueryParameter$2;
-exports.getRenderableFilters = getRenderableFilters$2;
-exports.getResults = getResults;
-exports.getResultsInfo = getResultsInfo;
-exports.getSearchTerm = getSearchTerm$2;
-exports.getSearchTotalCount = getSearchTotalCount$1;
-exports.getSelectedFilters = getSelectedFilters;
-exports.getTabFacets = getTabFacets$1;
-exports.getTabsAndFacets = getTabsAndFacets$1;
-exports.getTotalCount = getTotalCount$1;
-exports.orderByExpression = orderByExpression;
-exports.queries = queries;
-exports.searchSagas = searchSagas;
-exports.selectListing = selectListing;
-exports.selectors = selectors;
-exports.setRouteFilters = setRouteFilters;
-exports.termExpressions = termExpressions;
-exports.triggerListingSsr = triggerListingSsr;
-exports.triggerMinilistSsr = triggerMinilistSsr;
-exports.triggerSearch = triggerSearch;
-exports.triggerSearchSsr = triggerSearchSsr;
-exports.types = types;
-exports.updateCurrentFacet = updateCurrentFacet$1;
-exports.updateCurrentTab = updateCurrentTab$1;
-exports.updatePageIndex = updatePageIndex$1;
-exports.updatePageSize = updatePageSize$1;
-exports.updateSearchTerm = updateSearchTerm$1;
-exports.updateSelectedFilters = updateSelectedFilters;
-exports.updateSortOrder = updateSortOrder$1;
-exports.useFacets = useFacets;
-exports.useListing = useListing;
-exports.withMappers = withMappers;
-//# sourceMappingURL=sagas-C8M9wNH1.js.map
+export { useFacets as $, updateCurrentTab$1 as A, updateCurrentFacet$1 as B, clearFilters$1 as C, selectListing as D, triggerSearch as E, Context as F, getFilters as G, UPDATE_SELECTED_FILTERS as H, UPDATE_SEARCH_TERM as I, UPDATE_PAGE_SIZE as J, UPDATE_PAGE_INDEX as K, SET_SEARCH_ENTRIES as L, SET_ROUTE_FILTERS as M, LOAD_FILTERS_COMPLETE as N, LOAD_FILTERS_ERROR as O, LOAD_FILTERS as P, EXECUTE_SEARCH_ERROR as Q, EXECUTE_SEARCH as R, SET_SEARCH_FILTERS as S, CLEAR_FILTERS as T, UPDATE_SORT_ORDER as U, APPLY_CONFIG as V, actions as W, selectors as X, types as Y, expressions as Z, queries as _, getTabsAndFacets$1 as a, useListing as a0, doSearch as a1, setRouteFilters as a2, searchSagas as a3, triggerListingSsr as a4, triggerMinilistSsr as a5, triggerSearchSsr as a6, defaultExpressions as a7, termExpressions as a8, contentTypeIdExpression as a9, filterExpressions as aa, orderByExpression as ab, customWhereExpressions as ac, cloneDeep as ad, getQueryParameter$2 as b, getSelectedFilters as c, getSearchTotalCount$1 as d, getSearchTerm$2 as e, getResultsInfo as f, getTotalCount$1 as g, getResults as h, getPageIsLoading$2 as i, getPaging as j, getIsLoading$2 as k, getRenderableFilters$2 as l, getFeaturedResults$2 as m, getFacetTitles$1 as n, getFacetsTotalCount$1 as o, getTabFacets$1 as p, getFacet$1 as q, getCurrentTab$1 as r, getPageIndex$2 as s, getCurrentFacet as t, updateSortOrder$1 as u, updateSelectedFilters as v, withMappers as w, updateSearchTerm$1 as x, updatePageSize$1 as y, updatePageIndex$1 as z };
+//# sourceMappingURL=sagas-CFEhiMQT.js.map

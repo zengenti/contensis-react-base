@@ -1,7 +1,7 @@
 import { Context } from '../models/Enums';
 import { QueryParams as QueryParams2 } from '../models/Queries';
 import { CustomApi, SearchQueryParams } from '../models/Search';
-import { AppState, Composition, Facet, Facets, Filters, Paging, SelectedFilters, Tab } from '../models/SearchState';
+import { AppState, Composition, Facet, Facets, Filters, Paging, SearchState, SelectedFilters, Tab } from '../models/SearchState';
 type StateType = 'immutable' | 'js';
 type ContextType = keyof typeof Context;
 export declare const getSearchContext: (state: AppState) => ContextType;
@@ -63,7 +63,7 @@ export declare const getPagesLoaded: (state: AppState, current?: string, context
 export declare const getTotalCount: (state: AppState, current?: string, context?: ContextType) => number;
 export declare const getSearchTerm: (state: AppState) => string;
 export declare const getSearchTabs: (state: AppState, returnType?: StateType) => Tab[];
-export declare const getSearchCompositions: (state: AppState) => Composition[];
+export declare const getSearchCompositions: (state: AppState) => SearchState["compositions"];
 export declare const getQueryParams: (state: AppState, current?: string, context?: ContextType) => Record<string, any>;
 export declare const getQueryParameter: <K extends keyof SearchQueryParams, K2 extends keyof QueryParams2>({ state, facet, context, }: {
     state: AppState;
