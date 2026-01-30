@@ -40,6 +40,10 @@ export const i18nSagas = [
   takeEvery(actions.SET_LANGUAGE.type, setLanguageRoute),
 ];
 
+/**
+ * Resolve the current route language based on the entry, node, static route or path
+ * Is called directly from the routing saga as soon as an entry or node has been fetched
+ */
 export function* resolveCurrentRouteLanguage({
   entry,
   node,
@@ -86,6 +90,11 @@ export function* resolveCurrentRouteLanguage({
   }
 }
 
+/**
+ * Resolve the current dictionary for route language either using a supplied resolver
+ * function or directly derive from the locales stored in state
+ * Is called directly any time the language is changed
+ */
 function* resolveDictionaryForLanguage(language: string) {
   let dictionary = yield select(selectDictionary);
   // try and resolve a dictionary for this language
@@ -108,6 +117,11 @@ function* resolveDictionaryForLanguage(language: string) {
   return dictionary;
 }
 
+/**
+ * Side effects triggered from updating the language via dispatched action
+ * in language switching components, including resolving the next route,
+ * update the dictionary and subsequently redirect if needed
+ */
 function* updateLanguage({
   payload: { language, redirect, fallbackPath },
 }: PayloadAction<UpdateLanguageActionPayload>) {
@@ -136,6 +150,7 @@ function* updateLanguage({
   }
 }
 
+/** Handle any route redirection after we have set the language */
 function* setLanguageRoute({
   payload,
 }: PayloadAction<{ language: string; redirect?: boolean | string }>) {
@@ -149,6 +164,7 @@ function* setLanguageRoute({
   }
 }
 
+/** Determine the correct route uri when the language changes */
 function* resolveNextLanguageRoute({
   language,
   redirect,
@@ -207,6 +223,10 @@ function* getStaticRouteUri({ language }: { language: string }) {
   }
 }
 
+/**
+ * Run when the app initiates locales, populating supported languages from the config
+ * or fetching from the project if not provided
+ */
 function* getProjectLanguages({ payload }: PayloadAction<I18nAppConfig>) {
   const stateLocales = yield select(selectLocales);
   if (stateLocales && Object.keys(stateLocales).length > 0)
@@ -254,7 +274,9 @@ function* getProjectLanguages({ payload }: PayloadAction<I18nAppConfig>) {
     );
 }
 
-/** Run a Delivery API query to get all language variations for this entryId */
+/**
+ * Run a Delivery API query to get the uri for the chosen language variation of this entryId
+ * */
 function* getEntryUriForLanguage({
   entryId,
   language,
