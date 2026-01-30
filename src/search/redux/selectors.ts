@@ -9,6 +9,7 @@ import {
   Facets,
   Filters,
   Paging,
+  SearchState,
   SelectedFilters,
   Tab,
   TabAndFacets,
@@ -519,7 +520,9 @@ export const getSearchTerm = (state: AppState): string =>
 export const getSearchTabs = (state: AppState, returnType?: StateType): Tab[] =>
   getIn(state, ['search', 'tabs'], [], returnType);
 
-export const getSearchCompositions = (state: AppState): Composition[] =>
+export const getSearchCompositions = (
+  state: AppState
+): SearchState['compositions'] =>
   getIn(state, ['search', 'compositions'], {}, 'js');
 
 export const getQueryParams = (

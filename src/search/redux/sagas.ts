@@ -154,16 +154,14 @@ export function* setRouteFilters(
     const compositionConfig = compositions[composition];
     if (compositionConfig) {
       if ('facets' in compositionConfig) {
-        const compFacets = compositionConfig.facets;
         if (!facet) {
-          const firstFacetKey = Object.keys(compFacets)[0];
+          const firstFacetKey = compositionConfig.facets?.[0];
           context = Context.facets;
           currentFacet = firstFacetKey;
         }
       } else if ('listings' in compositionConfig) {
-        const compListings = compositionConfig.listings;
         if (!listingType) {
-          const firstListingKey = Object.keys(compListings)[0];
+          const firstListingKey = compositionConfig.listings?.[0];
           context = Context.listings;
           currentFacet = firstListingKey;
         }
@@ -172,7 +170,7 @@ export function* setRouteFilters(
   }
 
   // If Listing use listing type (ignore params.facet)
-  if (context === Context.listings) {
+  if (context === Context.listings && listingType) {
     currentFacet = listingType;
   }
 
@@ -184,9 +182,7 @@ export function* setRouteFilters(
   }
 
   // Ensure we have a language set
-  if (!defaultLang) 
-    defaultLang = currentLanguage;
-  
+  if (!defaultLang) defaultLang = currentLanguage;
 
   // When we have a currentFacet, check the defaultLang
   // and translate any filter params from the localised aliases
