@@ -673,10 +673,20 @@ const searchUriTemplate = {
     pageIndex,
     pageSize
   }) => {
-    const searchContext = getSearchContext(state);
+    var _staticRoute$route2;
+    const context = getSearchContext(state);
+    const staticRoute = selectors$2.selectStaticRoute(state);
+    // Some listing routes may not have the listingType or facet as a route param
+    // include it as a query param to ensure the correct listing/facet is set or updated
+    const hasFacetRouteParam = staticRoute === null || staticRoute === void 0 || (_staticRoute$route2 = staticRoute.route) === null || _staticRoute$route2 === void 0 || (_staticRoute$route2 = _staticRoute$route2.path) === null || _staticRoute$route2 === void 0 ? void 0 : _staticRoute$route2.includes(`/:${context === 'facets' ? 'facet' : 'listingType'}`);
+    const currentFacet = getLocalisedFacetKey(state, facet) || facet || getLocalisedCurrent$2(state);
+    const facetQuery = !hasFacetRouteParam && currentFacet ? {
+      [context === 'listings' ? 'listingType' : 'facet']: currentFacet
+    } : {};
+
     // Lose stateFilters and currentSearch if a new
     // term is passed via an argument
-    const stateFilters = term ? {} : Object.fromEntries(Object.entries(getLocalisedRenderableSelectedFilters(state, facet, searchContext)).map(([k, f]) => [k, f === null || f === void 0 ? void 0 : f.join(',')]));
+    const stateFilters = term ? {} : Object.fromEntries(Object.entries(getLocalisedRenderableSelectedFilters(state, facet, context)).map(([k, f]) => [k, f === null || f === void 0 ? void 0 : f.join(',')]));
     const currentSearch = !term && getImmutableOrJS(state, ['routing', 'location', 'search']);
     const currentQs = util.removeEmptyAttributes(queryString.parse(currentSearch));
 
@@ -686,7 +696,10 @@ const searchUriTemplate = {
     const searchTerm = getSearchTerm$2(state);
     // Use Immutable's merge to merge the stateFilters with any current Qs
     // to build the new Qs.
-    const mergedSearch = util.removeEmptyAttributes(merge__default.default(currentQs, stateFilters));
+    const mergedSearch = util.removeEmptyAttributes(merge__default.default(currentQs, {
+      ...facetQuery,
+      ...stateFilters
+    }));
 
     // We must handle term === '' separately, because this means the user has cleared the search term
     // If this is true, we don't want to fall back to the existing search term. We only want to do that if the
@@ -6134,4 +6147,4 @@ exports.updateSortOrder = updateSortOrder$1;
 exports.useFacets = useFacets;
 exports.useListing = useListing;
 exports.withMappers = withMappers;
-//# sourceMappingURL=sagas-CmOxzqvB.js.map
+//# sourceMappingURL=sagas-DetYc0Sb.js.map

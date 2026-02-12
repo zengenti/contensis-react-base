@@ -1,4 +1,4 @@
-import { AppState, StateType } from "../../models";
+import { AppState, MatchedRoute, StateType, StaticRoute } from "../../models";
 export declare const selectRouteEntry: (state: AppState, returnType?: StateType) => any;
 export declare const selectMappedEntry: (state: AppState, returnType?: StateType) => any;
 export declare const selectSurrogateKeys: (state: AppState) => any;
@@ -69,4 +69,4 @@ export declare const selectRouteErrorMessage: (state: AppState) => any;
 export declare const selectRouteIsError: (state: AppState) => any;
 export declare const selectRouteLoading: (state: AppState) => any;
 export declare const selectRouteStatusCode: (state: AppState) => any;
-export declare const selectStaticRoute: (state: AppState) => any;
+export declare const selectStaticRoute: (state: AppState) => MatchedRoute<string, StaticRoute>;
