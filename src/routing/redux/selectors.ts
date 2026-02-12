@@ -1,6 +1,6 @@
 import { Entry } from 'contensis-delivery-api';
 import { createSelector } from 'reselect';
-import { AppState, StateType } from '~/models';
+import { AppState, MatchedRoute, StateType, StaticRoute } from '~/models';
 import { getImmutableOrJS as getIn } from '~/redux/util';
 import { queryParams } from '~/util/navigation';
 
@@ -107,5 +107,7 @@ export const selectRouteLoading = (state: AppState) =>
   getIn(state, ['routing', 'isLoading']);
 export const selectRouteStatusCode = (state: AppState) =>
   getIn(state, ['routing', 'statusCode']);
-export const selectStaticRoute = (state: AppState) =>
+export const selectStaticRoute = (
+  state: AppState
+): MatchedRoute<string, StaticRoute> =>
   getIn(state, ['routing', 'staticRoute']);
