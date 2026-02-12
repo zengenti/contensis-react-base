@@ -64,5 +64,8 @@
     "**/tmp": true,
     "**/cjs": true,
     "**/esm": true
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   }
 }

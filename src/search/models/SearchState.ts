@@ -81,6 +81,7 @@ export type Filter = {
   isLoading: boolean;
   isError: boolean;
   items?: FilterItem[];
+  pageSize?: number;
   path?: string;
   renderable?: boolean;
   title?: string;

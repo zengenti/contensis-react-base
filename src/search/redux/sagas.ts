@@ -325,7 +325,7 @@ function* loadFilter(action: LoadFilterAction) {
     // fall back to the imported cachedSearch api that is not connected to the current SSR context
     ssr: { api } = { api: cachedSearch },
   } = action;
-  const { contentTypeId, customWhere, path } = filter as Filter;
+  const { contentTypeId, customWhere, pageSize, path } = filter as Filter;
   const createStateFrom = {
     type: LOAD_FILTERS_COMPLETE,
     context,
@@ -346,7 +346,8 @@ function* loadFilter(action: LoadFilterAction) {
         Array.isArray(contentTypeId) ? contentTypeId : [contentTypeId],
         languages,
         versionStatus,
-        customWhere
+        customWhere,
+        pageSize
       );
       const payload = (yield api.search(
         query,

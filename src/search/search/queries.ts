@@ -19,7 +19,8 @@ export const filterQuery: FilterQuery = (
   contentTypeIds,
   languages,
   versionStatus,
-  customWhere
+  customWhere,
+  pageSize = 100
 ) => {
   const query = new Query(
     ...[
@@ -30,7 +31,7 @@ export const filterQuery: FilterQuery = (
     ]
   );
   query.orderBy = OrderBy.asc(Fields.entryTitle);
-  query.pageSize = 100;
+  query.pageSize = pageSize;
 
   return query;
 };
