@@ -1318,10 +1318,10 @@ var expressions = /*#__PURE__*/Object.freeze({
   termExpressions: termExpressions
 });
 
-const filterQuery = (contentTypeIds, languages, versionStatus, customWhere, pageSize = 100) => {
+const filterQuery = (contentTypeIds, languages, versionStatus, customWhere) => {
   const query = new contensisCoreApi.Query(...[...contentTypeIdExpression(contentTypeIds), ...languagesExpression(languages), ...defaultExpressions(versionStatus), ...customWhereExpressions(customWhere)]);
   query.orderBy = contensisCoreApi.OrderBy.asc(Fields.entryTitle);
-  query.pageSize = pageSize;
+  query.pageSize = 100;
   return query;
 };
 const searchQuery = ({
@@ -5792,7 +5792,6 @@ function* loadFilter(action) {
   const {
     contentTypeId,
     customWhere,
-    pageSize,
     path
   } = filter;
   const createStateFrom = {
@@ -5808,7 +5807,7 @@ function* loadFilter(action) {
   try {
     if (contentTypeId) {
       const versionStatus = yield effects.select(version.selectVersionStatus);
-      const query = filterQuery(Array.isArray(contentTypeId) ? contentTypeId : [contentTypeId], languages, versionStatus, customWhere, pageSize);
+      const query = filterQuery(Array.isArray(contentTypeId) ? contentTypeId : [contentTypeId], languages, versionStatus, customWhere);
       const payload = yield api.search(query, 0, projectId);
       if (!payload) throw new Error('No payload returned by search');
       if (payload.type === 'error') throw payload;
@@ -6135,4 +6134,4 @@ exports.updateSortOrder = updateSortOrder$1;
 exports.useFacets = useFacets;
 exports.useListing = useListing;
 exports.withMappers = withMappers;
-//# sourceMappingURL=sagas-C6YSqau4.js.map
+//# sourceMappingURL=sagas-CmOxzqvB.js.map
