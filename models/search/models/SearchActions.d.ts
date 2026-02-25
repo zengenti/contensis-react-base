@@ -76,6 +76,7 @@ export type InitListingActionCreator = (p: InitListingParams) => InitListingActi
 export type LoadFiltersSearchResults = Action & {
     error: any;
     facetKey: string;
+    filter: Filter;
     filterKey: string;
     payload: TaxonomyNode | PagedList<Entry>;
     selectedKeys: string[];

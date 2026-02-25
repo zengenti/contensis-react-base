@@ -5116,6 +5116,9 @@ const facetTemplate = {
         }
 
         // Update aggregation counts on existing filter items
+        // In the context of a pre-loaded facet, the filter items will
+        // not have been loaded yet, so we need to check again when
+        // the filter items load and populate the aggregate counts then as well
         for (const filterItem of filter.items || []) {
           if (!aggregation) delete filterItem.aggregate;else {
             const aggregate = aggregation[filterItem.key.toLowerCase()];
@@ -5216,7 +5219,7 @@ const filterTemplate = {
       selectedKeys,
       mapper,
       facet,
-      filterKey
+      filter
     }) => {
       // Handle taxonomy filter items
       if (payload && 'children' in payload) {
@@ -5229,10 +5232,18 @@ const filterTemplate = {
       }
 
       // Handle entries-based filter items
-      if (payload && 'items' in payload) {
-        var _facet$aggregations;
+      if (payload && 'items' in payload && filter.fieldId) {
+        var _facet$aggregations2;
         // Handle aggregations from SSR where the results containing the aggregations have loaded before the filter items
-        const aggregation = (_facet$aggregations = facet.aggregations) === null || _facet$aggregations === void 0 ? void 0 : _facet$aggregations[util.convertKeyForAggregation(filterKey)];
+        const aggregation = Array.isArray(filter.fieldId) ? filter.fieldId.reduce((agg, fieldId) => {
+          var _facet$aggregations;
+          const fieldAggregations = ((_facet$aggregations = facet.aggregations) === null || _facet$aggregations === void 0 ? void 0 : _facet$aggregations[util.convertKeyForAggregation(fieldId)]) || {};
+          // Accumulate numeric values for matching keys from previous counted fields
+          for (const [key, value] of Object.entries(fieldAggregations)) {
+            agg[key] = (agg[key] || 0) + value;
+          }
+          return agg;
+        }, {}) : (_facet$aggregations2 = facet.aggregations) === null || _facet$aggregations2 === void 0 ? void 0 : _facet$aggregations2[util.convertKeyForAggregation(filter.fieldId)];
         const items = payload.items.map(item => {
           var _item$sys, _item$sys2;
           item.isSelected = selectedKeys === null || selectedKeys === void 0 ? void 0 : selectedKeys.includes(item === null || item === void 0 || (_item$sys = item.sys) === null || _item$sys === void 0 ? void 0 : _item$sys.id);
@@ -5240,7 +5251,7 @@ const filterTemplate = {
           if (typeof aggregate === 'number') item.aggregate = aggregate;
           return item;
         });
-        return mapper === null || mapper === void 0 ? void 0 : mapper(items);
+        return (mapper === null || mapper === void 0 ? void 0 : mapper(items)) || [];
       }
       return [];
     }
@@ -5812,6 +5823,7 @@ function* loadFilter(action) {
     context,
     error: undefined,
     facetKey,
+    filter,
     filterKey,
     payload: {},
     selectedKeys,
@@ -6147,4 +6159,4 @@ exports.updateSortOrder = updateSortOrder$1;
 exports.useFacets = useFacets;
 exports.useListing = useListing;
 exports.withMappers = withMappers;
-//# sourceMappingURL=sagas-DetYc0Sb.js.map
+//# sourceMappingURL=sagas-D07lHYaB.js.map

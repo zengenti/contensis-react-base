@@ -5090,6 +5090,9 @@ const facetTemplate = {
         }
 
         // Update aggregation counts on existing filter items
+        // In the context of a pre-loaded facet, the filter items will
+        // not have been loaded yet, so we need to check again when
+        // the filter items load and populate the aggregate counts then as well
         for (const filterItem of filter.items || []) {
           if (!aggregation) delete filterItem.aggregate;else {
             const aggregate = aggregation[filterItem.key.toLowerCase()];
@@ -5190,7 +5193,7 @@ const filterTemplate = {
       selectedKeys,
       mapper,
       facet,
-      filterKey
+      filter
     }) => {
       // Handle taxonomy filter items
       if (payload && 'children' in payload) {
@@ -5203,10 +5206,18 @@ const filterTemplate = {
       }
 
       // Handle entries-based filter items
-      if (payload && 'items' in payload) {
-        var _facet$aggregations;
+      if (payload && 'items' in payload && filter.fieldId) {
+        var _facet$aggregations2;
         // Handle aggregations from SSR where the results containing the aggregations have loaded before the filter items
-        const aggregation = (_facet$aggregations = facet.aggregations) === null || _facet$aggregations === void 0 ? void 0 : _facet$aggregations[convertKeyForAggregation(filterKey)];
+        const aggregation = Array.isArray(filter.fieldId) ? filter.fieldId.reduce((agg, fieldId) => {
+          var _facet$aggregations;
+          const fieldAggregations = ((_facet$aggregations = facet.aggregations) === null || _facet$aggregations === void 0 ? void 0 : _facet$aggregations[convertKeyForAggregation(fieldId)]) || {};
+          // Accumulate numeric values for matching keys from previous counted fields
+          for (const [key, value] of Object.entries(fieldAggregations)) {
+            agg[key] = (agg[key] || 0) + value;
+          }
+          return agg;
+        }, {}) : (_facet$aggregations2 = facet.aggregations) === null || _facet$aggregations2 === void 0 ? void 0 : _facet$aggregations2[convertKeyForAggregation(filter.fieldId)];
         const items = payload.items.map(item => {
           var _item$sys, _item$sys2;
           item.isSelected = selectedKeys === null || selectedKeys === void 0 ? void 0 : selectedKeys.includes(item === null || item === void 0 || (_item$sys = item.sys) === null || _item$sys === void 0 ? void 0 : _item$sys.id);
@@ -5214,7 +5225,7 @@ const filterTemplate = {
           if (typeof aggregate === 'number') item.aggregate = aggregate;
           return item;
         });
-        return mapper === null || mapper === void 0 ? void 0 : mapper(items);
+        return (mapper === null || mapper === void 0 ? void 0 : mapper(items)) || [];
       }
       return [];
     }
@@ -5786,6 +5797,7 @@ function* loadFilter(action) {
     context,
     error: undefined,
     facetKey,
+    filter,
     filterKey,
     payload: {},
     selectedKeys,
@@ -6054,4 +6066,4 @@ function* triggerSearchSsr(options) {
 }
 
 export { useFacets as $, updateCurrentTab$1 as A, updateCurrentFacet$1 as B, clearFilters$1 as C, selectListing as D, triggerSearch as E, Context as F, getFilters as G, UPDATE_SELECTED_FILTERS as H, UPDATE_SEARCH_TERM as I, UPDATE_PAGE_SIZE as J, UPDATE_PAGE_INDEX as K, SET_SEARCH_ENTRIES as L, SET_ROUTE_FILTERS as M, LOAD_FILTERS_COMPLETE as N, LOAD_FILTERS_ERROR as O, LOAD_FILTERS as P, EXECUTE_SEARCH_ERROR as Q, EXECUTE_SEARCH as R, SET_SEARCH_FILTERS as S, CLEAR_FILTERS as T, UPDATE_SORT_ORDER as U, APPLY_CONFIG as V, actions as W, selectors as X, types as Y, expressions as Z, queries as _, getTabsAndFacets$1 as a, useListing as a0, doSearch as a1, setRouteFilters as a2, searchSagas as a3, triggerListingSsr as a4, triggerMinilistSsr as a5, triggerSearchSsr as a6, defaultExpressions as a7, termExpressions as a8, contentTypeIdExpression as a9, filterExpressions as aa, orderByExpression as ab, customWhereExpressions as ac, cloneDeep as ad, getQueryParameter$2 as b, getSelectedFilters as c, getSearchTotalCount$1 as d, getSearchTerm$2 as e, getResultsInfo as f, getTotalCount$1 as g, getResults as h, getPageIsLoading$2 as i, getPaging as j, getIsLoading$2 as k, getRenderableFilters$2 as l, getFeaturedResults$2 as m, getFacetTitles$1 as n, getFacetsTotalCount$1 as o, getTabFacets$1 as p, getFacet$1 as q, getCurrentTab$1 as r, getPageIndex$2 as s, getCurrentFacet as t, updateSortOrder$1 as u, updateSelectedFilters as v, withMappers as w, updateSearchTerm$1 as x, updatePageSize$1 as y, updatePageIndex$1 as z };
-//# sourceMappingURL=sagas-tSMLm-l5.js.map
+//# sourceMappingURL=sagas-BZXCxsop.js.map
