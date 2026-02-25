@@ -331,6 +331,7 @@ function* loadFilter(action: LoadFilterAction) {
     context,
     error: undefined,
     facetKey,
+    filter,
     filterKey,
     payload: {} as TaxonomyNode | PagedList<Entry>,
     selectedKeys,

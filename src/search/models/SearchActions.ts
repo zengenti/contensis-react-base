@@ -89,6 +89,7 @@ export type InitListingActionCreator = (
 export type LoadFiltersSearchResults = Action & {
   error: any;
   facetKey: string;
+  filter: Filter;
   filterKey: string;
   payload: TaxonomyNode | PagedList<Entry>;
   selectedKeys: string[];

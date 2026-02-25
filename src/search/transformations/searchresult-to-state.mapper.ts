@@ -137,6 +137,9 @@ export const facetTemplate = {
         }
 
         // Update aggregation counts on existing filter items
+        // In the context of a pre-loaded facet, the filter items will
+        // not have been loaded yet, so we need to check again when
+        // the filter items load and populate the aggregate counts then as well
         for (const filterItem of filter.items || []) {
           if (!aggregation) delete filterItem.aggregate;
           else {
@@ -239,7 +242,7 @@ export const filterTemplate = {
       selectedKeys,
       mapper,
       facet,
-      filterKey,
+      filter,
     }: LoadFiltersSearchResults) => {
       // Handle taxonomy filter items
       if (payload && 'children' in payload) {
@@ -251,17 +254,26 @@ export const filterTemplate = {
       }
 
       // Handle entries-based filter items
-      if (payload && 'items' in payload) {
+      if (payload && 'items' in payload && filter.fieldId) {
         // Handle aggregations from SSR where the results containing the aggregations have loaded before the filter items
-        const aggregation =
-          facet.aggregations?.[convertKeyForAggregation(filterKey)];
+        const aggregation = Array.isArray(filter.fieldId)
+          ? filter.fieldId.reduce((agg, fieldId) => {
+              const fieldAggregations =
+                facet.aggregations?.[convertKeyForAggregation(fieldId)] || {};
+              // Accumulate numeric values for matching keys from previous counted fields
+              for (const [key, value] of Object.entries(fieldAggregations)) {
+                agg[key] = (agg[key] || 0) + (value as number);
+              }
+              return agg;
+            }, {} as Aggregation)
+          : facet.aggregations?.[convertKeyForAggregation(filter.fieldId)];
         const items = payload.items.map((item: any) => {
           item.isSelected = selectedKeys?.includes(item?.sys?.id);
           const aggregate = aggregation?.[item?.sys?.id.toLowerCase()];
           if (typeof aggregate === 'number') item.aggregate = aggregate;
           return item;
         });
-        return mapper?.(items);
+        return mapper?.(items) || [];
       }
       return [];
     },
