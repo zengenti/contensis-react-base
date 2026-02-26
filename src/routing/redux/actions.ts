@@ -19,7 +19,9 @@ export const setNavigationPath = (
   withEvents: WithEvents,
   statePath: string,
   routes: AppRoutes,
-  ssr: SSRContext
+  ssr: SSRContext,
+  serverPath?: string,
+  subsitePath?: string
 ) =>
   action(SET_NAVIGATION_PATH, {
     path,
@@ -29,6 +31,8 @@ export const setNavigationPath = (
     statePath,
     routes,
     ssr,
+    serverPath,
+    subsitePath,
   });
 
 export const setCurrentProject = (

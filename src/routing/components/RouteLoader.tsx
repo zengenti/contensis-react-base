@@ -29,6 +29,11 @@ import {
 import { matchUserGroup } from '~/user/util/matchGroups';
 import { toJS } from '~/util/ToJs';
 import { useSSRContext } from '~/util/SSRContext';
+import {
+  applySubsitePath,
+  normalizeSubsitePath,
+  stripSubsitePath,
+} from '~/util/subsitePath';
 
 import { Entry } from 'contensis-delivery-api/lib/models';
 import { AppRootProps, RouteComponentProps, RouteLoaderProps } from '~/models';
@@ -150,14 +155,29 @@ const RouteLoader = ({
       }
     }
 
-    setNavigationPath(
+    const subsitePath = normalizeSubsitePath(
+      typeof window === 'undefined'
+        ? (ssrContext?.request?.headers?.['subsite_path'] as
+            | string
+            | undefined)
+        : (window as any).subsitePath
+    );
+    const clientPath = stripSubsitePath(trimmedPath, subsitePath);
+    const resolvedServerPath = applySubsitePath(
       serverPath || trimmedPath,
+      subsitePath
+    );
+
+    setNavigationPath(
+      clientPath,
       location,
       staticRoute,
       withEvents,
       statePath,
       routes,
-      ssrContext
+      ssrContext,
+      resolvedServerPath,
+      subsitePath
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [

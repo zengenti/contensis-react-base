@@ -44,6 +44,7 @@ import { AppState, ServerConfig } from '~/models';
 import { getVersionInfo } from './util/getVersionInfo';
 import { unhandledExceptionHandler } from './util/handleExceptions';
 import { SSRContextProvider } from '~/util/SSRContext';
+import { normalizeSubsitePath } from '~/util/subsitePath';
 
 const webApp = (
   app: Express,
@@ -139,6 +140,12 @@ const webApp = (
       // Because of this, we prioritize x-orig-host when setting our hostname
       const hostname = (request.headers['x-orig-host'] ||
         request.hostname) as string;
+      const subsitePath = normalizeSubsitePath(
+        request.headers['subsite_path'] as string | undefined
+      );
+      const subsitePathScript = `window.subsitePath = ${serialize(
+        subsitePath
+      )};`;
 
       console.info(
         `Request for ${request.path} hostname: ${hostname} versionStatus: ${versionStatus}`
@@ -196,7 +203,7 @@ const webApp = (
           staticRoutePath
         );
 
-        const isDynamicHints = `<script ${attributes}>window.versionStatus = "${versionStatus}"; window.isDynamic = true;</script>`;
+        const isDynamicHints = `<script ${attributes}>window.versionStatus = "${versionStatus}"; window.isDynamic = true; ${subsitePathScript}</script>`;
 
         const responseHtmlDynamic = templateHTML
           .replace('{{TITLE}}', '')
@@ -279,6 +286,7 @@ const webApp = (
             } else delete clonedState.user;
 
             let serialisedReduxData = serialize(clonedState);
+            const subsitePathInline = `<script ${attributes}>${subsitePathScript}</script>`;
             if (context.statusCode !== 404) {
               // For a request that returns a redux state object as a response
               if (accessMethod.REDUX) {
@@ -293,8 +301,13 @@ const webApp = (
                 // window.versionStatus is not strictly required here and is added to support cases
                 // where a consumer may not be using the contensisVersionStatus in redux and calling
                 // the `getClientSideVersionStatus()` method directly
-                serialisedReduxData = `<script ${attributes}>window.versionStatus = "${versionStatus}"; window.REDUX_DATA = ${serialisedReduxData}</script>`;
+                serialisedReduxData = `<script ${attributes}>window.versionStatus = "${versionStatus}"; ${subsitePathScript} window.REDUX_DATA = ${serialisedReduxData}</script>`;
               }
+            } else if (disableSsrRedux) {
+              serialisedReduxData = subsitePathInline;
+            }
+            if (disableSsrRedux && !serialisedReduxData.includes('window.subsitePath')) {
+              serialisedReduxData = subsitePathInline;
             }
             if ((context.statusCode || 200) >= 404) {
               accessMethod.STATIC = true;

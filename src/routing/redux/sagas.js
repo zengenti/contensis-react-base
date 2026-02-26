@@ -30,6 +30,7 @@ import { injectRedux as reduxInjector } from '~/redux/store/injectors';
 import { LoginHelper } from '~/user';
 import { findContentTypeMapping } from '../util/find-contenttype-mapping';
 import { routeEntryByFieldsQuery } from '../util/queries';
+import { normalizePath, stripSubsitePath } from '~/util/subsitePath';
 
 export const routingSagas = [
   takeEvery(SET_NAVIGATION_PATH, getRouteSaga),
@@ -57,6 +58,8 @@ function* getRouteSaga(action) {
       withEvents,
       routes: { ContentTypeMappings = {} } = {},
       staticRoute,
+      serverPath,
+      subsitePath,
       // get api instance from ssr context that is connected to the specific request in ssr
       ssr: { api },
     } = action;
@@ -107,6 +110,7 @@ function* getRouteSaga(action) {
     const routeEntry = selectRouteEntry(state, 'js');
     const routeNode = selectCurrentNode(state, 'js');
     const currentPath = action.path; //selectCurrentPath(state);
+    const apiPath = serverPath || currentPath;
     const deliveryApiStatus = selectVersionStatus(state);
     const project = selectCurrentProject(state);
     // const isHome = currentPath === '/';
@@ -146,7 +150,11 @@ function* getRouteSaga(action) {
           routeEntry,
           yield select(selectCurrentNode),
           yield select(selectCurrentAncestors),
-          yield select(selectCurrentSiblings)
+          yield select(selectCurrentSiblings),
+          undefined,
+          false,
+          false,
+          subsitePath
         );
     } else {
       // Handle preview routes
@@ -184,7 +192,7 @@ function* getRouteSaga(action) {
           api.getNode(
             {
               depth: 0,
-              path: currentPath,
+              path: apiPath,
               entryFields: setStaticRouteLimits
                 ? fields || '*'
                 : setContentTypeLimits
@@ -283,7 +291,7 @@ function* getRouteSaga(action) {
           contentTypeMapping:
             contentTypeMapping || staticRoute?.route?.fetchNode || {},
           language: defaultLang,
-          path: currentPath,
+          path: apiPath,
           pathNode,
           project,
           versionStatus: deliveryApiStatus,
@@ -336,7 +344,8 @@ function* getRouteSaga(action) {
         siblings,
         entryMapper || resolvedContentTypeMapping.entryMapper,
         false,
-        appsays?.refetchNode
+        appsays?.refetchNode,
+        subsitePath
       );
     } else {
       if (staticRoute)
@@ -346,7 +355,11 @@ function* getRouteSaga(action) {
           null,
           pathNode,
           ancestors,
-          siblings
+          siblings,
+          undefined,
+          false,
+          false,
+          subsitePath
         );
       else yield call(do404);
     }
@@ -519,9 +532,16 @@ function* setRouteEntry(
   siblings,
   entryMapper,
   notFound = false,
-  remapEntry = false
+  remapEntry = false,
+  subsitePath
 ) {
   const entrySys = (entry && entry.sys) || {};
+  const entryUri = normalizePath(entrySys.uri);
+  const canonicalPath = entry
+    ? subsitePath
+      ? stripSubsitePath(entryUri || currentPath, subsitePath)
+      : entryUri || currentPath
+    : currentPath;
 
   // Update a window global to provide the preview toolbar
   // an updated entry id in client-side navigation
@@ -547,6 +567,7 @@ function* setRouteEntry(
       type: SET_ENTRY,
       id: entrySys.id,
       currentPath,
+      canonicalPath,
       entry,
       mappedEntry,
       node,

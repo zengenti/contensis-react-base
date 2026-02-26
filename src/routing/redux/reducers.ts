@@ -49,6 +49,7 @@ export default produce((state: Draft<any>, action) => {
         notFound = false,
         statusCode,
         currentPath,
+        canonicalPath,
       } = action;
 
       let defaultStatus = 200;
@@ -64,7 +65,7 @@ export default produce((state: Draft<any>, action) => {
         state.isLoading = isLoading;
         state.notFound = notFound;
         state.statusCode = statusCode || defaultStatus;
-        state.canonicalPath = currentPath;
+        state.canonicalPath = canonicalPath || currentPath;
       } else {
         state.entryID = action.id;
         state.entry = entry;
@@ -73,7 +74,7 @@ export default produce((state: Draft<any>, action) => {
         state.isLoading = isLoading;
         state.notFound = notFound;
         state.statusCode = statusCode || defaultStatus;
-        state.canonicalPath = entry.sys.uri || currentPath;
+        state.canonicalPath = canonicalPath || entry.sys.uri || currentPath;
 
         if (mappedEntry && Object.keys(mappedEntry).length > 0) {
           state.mappedEntry = mappedEntry;
