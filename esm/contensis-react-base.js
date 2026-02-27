@@ -4,7 +4,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { a as actions } from './slice-C6JLQik8.js';
 import mapJson from 'jsonpath-mapper';
-import { a7 as defaultExpressions, a8 as termExpressions, a9 as contentTypeIdExpression, aa as filterExpressions, ab as orderByExpression, ac as customWhereExpressions, ad as cloneDeep } from './sagas-Dl7xqU8K.js';
+import { a7 as defaultExpressions, a8 as termExpressions, a9 as contentTypeIdExpression, aa as filterExpressions, ab as orderByExpression, ac as customWhereExpressions, ad as cloneDeep } from './sagas-BroWtJz8.js';
 import 'reselect';
 import 'immer';
 import 'deep-equal';
@@ -28,8 +28,8 @@ import { noop, identity } from 'lodash';
 import { buildCleaner } from 'lodash-clean';
 import { a as Cookies } from './CookieHelper.class-C6rTRl_1.js';
 import cookiesMiddleware from 'universal-cookie-express';
-import { c as createLocaleRoutes, h as history, p as pickProject, r as rootSaga } from './App-DBr80OSz.js';
-export { A as ReactApp } from './App-DBr80OSz.js';
+import { c as createLocaleRoutes, h as history, p as pickProject, r as rootSaga } from './App-BdJAKTT9.js';
+export { A as ReactApp } from './App-BdJAKTT9.js';
 import { c as createStore } from './store-BvW6_C0H.js';
 import { s as setVersionStatus, c as setVersion } from './version-DIHIOZQD.js';
 import { a6 as selectSurrogateKeys, a7 as selectSsrApiCalls, j as selectRouteEntry, f as selectCurrentProject, g as getImmutableOrJS, s as setCurrentProject, F as selectCurrentSearch } from './selectors-PJo8AWy0.js';
@@ -725,9 +725,8 @@ const resolveStartupMiddleware = ({
       if (maxage) res.set('Cache-Control', `public, max-age=${maxage}`);
       res.sendFile(startupFileLocation);
     } catch (sendFileError) {
-      // eslint-disable-next-line no-console
       console.log(`Unable to send file startup.js at '${startupFileLocation}'`, sendFileError);
-      next();
+      res.status(404).send();
     }
   } else {
     next();

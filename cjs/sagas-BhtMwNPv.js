@@ -5066,7 +5066,7 @@ const facetTemplate = {
       state,
       action
     }) => {
-      const aggregations = 'aggregations' in result.payload ? result.payload.aggregations : undefined;
+      const aggregations = result.payload && 'aggregations' in result.payload ? result.payload.aggregations : undefined;
       if (!aggregations) return {};
 
       // Handle aggregations client-side where the filter items have loaded
@@ -6160,4 +6160,4 @@ exports.updateSortOrder = updateSortOrder$1;
 exports.useFacets = useFacets;
 exports.useListing = useListing;
 exports.withMappers = withMappers;
-//# sourceMappingURL=sagas-CYcqkymm.js.map
+//# sourceMappingURL=sagas-BhtMwNPv.js.map

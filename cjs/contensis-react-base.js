@@ -8,7 +8,7 @@ var React = require('react');
 var reactRedux = require('react-redux');
 var slice = require('./slice-5xJMH24n.js');
 var mapJson = require('jsonpath-mapper');
-var sagas = require('./sagas-CYcqkymm.js');
+var sagas = require('./sagas-BhtMwNPv.js');
 require('reselect');
 require('immer');
 require('deep-equal');
@@ -32,7 +32,7 @@ var lodash = require('lodash');
 var lodashClean = require('lodash-clean');
 var CookieHelper_class = require('./CookieHelper.class-Det3qfdU.js');
 var cookiesMiddleware = require('universal-cookie-express');
-var App = require('./App-C5GI_YFh.js');
+var App = require('./App-QnCN3CvZ.js');
 var store = require('./store-DxuhGQ7p.js');
 var version = require('./version-B9moFk8k.js');
 var selectors = require('./selectors-C1CqEUmL.js');
@@ -742,9 +742,8 @@ const resolveStartupMiddleware = ({
       if (maxage) res.set('Cache-Control', `public, max-age=${maxage}`);
       res.sendFile(startupFileLocation);
     } catch (sendFileError) {
-      // eslint-disable-next-line no-console
       console.log(`Unable to send file startup.js at '${startupFileLocation}'`, sendFileError);
-      next();
+      res.status(404).send();
     }
   } else {
     next();
