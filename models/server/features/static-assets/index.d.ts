@@ -1,4 +1,5 @@
-declare const staticAssets: (app: any, { appRootPath, scripts, startupScriptFilename, staticFolderPath, staticRoutePath, staticRoutePaths, }: {
+import express from 'express';
+declare const staticAssets: (app: express.Express, { appRootPath, scripts, startupScriptFilename, staticFolderPath, staticRoutePath, staticRoutePaths, }: {
     appRootPath?: string | undefined;
     scripts?: {
         attributes?: {

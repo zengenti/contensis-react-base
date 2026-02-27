@@ -1,18 +1,18 @@
 'use strict';
 
 var urls = require('./urls-DVIwGZmd.js');
-var ContensisDeliveryApi = require('./ContensisDeliveryApi-DBaziPG9.js');
-var SSRContext = require('./SSRContext-Cayonmg4.js');
-var VersionInfo = require('./VersionInfo-CTPtw_Xd.js');
+var ContensisDeliveryApi = require('./ContensisDeliveryApi-gN3_MHEl.js');
+var SSRContext = require('./SSRContext-DotLlTQc.js');
+var VersionInfo = require('./VersionInfo-zFPsvS8q.js');
 var React = require('react');
 var mapJson = require('jsonpath-mapper');
 var reactRouterDom = require('react-router-dom');
 require('contensis-delivery-api');
 require('query-string');
-require('./selectors-C1CqEUmL.js');
+require('./selectors-BrxJ8-F8.js');
 require('immer');
 require('reselect');
-require('./store-DxuhGQ7p.js');
+require('./store-Dn7vP6G0.js');
 require('redux');
 require('redux-thunk');
 require('redux-saga');
@@ -25,7 +25,7 @@ require('react-cookie');
 require('react-redux');
 require('./CookieHelper.class-Det3qfdU.js');
 require('./_commonjsHelpers-BJu3ubxk.js');
-require('./version-CukCz8zL.js');
+require('./version-rFG9Y6_B.js');
 require('styled-components');
 
 function _interopDefault (e) { return e && e.__esModule ? e : { default: e }; }
@@ -199,6 +199,7 @@ exports.deliveryApi = ContensisDeliveryApi.deliveryApi;
 exports.deliveryApiWithCookies = ContensisDeliveryApi.deliveryApiWithCookies;
 exports.getClientConfig = ContensisDeliveryApi.getClientConfig;
 exports.SSRContextProvider = SSRContext.SSRContextProvider;
+exports.getSubsitePath = SSRContext.getSubsitePath;
 exports.useDeliveryApi = SSRContext.useDeliveryApi;
 exports.useSSRContext = SSRContext.useSSRContext;
 exports.VersionInfo = VersionInfo.VersionInfo;

@@ -17,7 +17,10 @@ export type ServerConfig = AppConfig & {
         startup?: string;
     };
     staticFolderPath?: string;
+    /** The default static route path */
     staticRoutePath?: string;
+    /** Additional static route paths */
+    staticRoutePaths?: string[];
     stats?: string;
     templates: {
         html: string;

@@ -15,6 +15,8 @@ export type SSRContext = {
     request?: Request;
     /** SSR only */
     response?: Response;
+    /** Available in both SSR and client side */
+    subsitePath?: string;
 };
 export type SSRAccessMethod = {
     DYNAMIC: boolean;

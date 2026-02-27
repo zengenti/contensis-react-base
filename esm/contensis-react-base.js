@@ -1,10 +1,10 @@
-import { a as cachedSearch, d as deliveryApi } from './ContensisDeliveryApi-CqPcnP_R.js';
+import { c as cachedSearch, d as deliveryApi } from './ContensisDeliveryApi-CvEoOLCl.js';
 import { Query as Query$1 } from 'contensis-delivery-api';
 import React from 'react';
 import { Provider } from 'react-redux';
 import { a as actions } from './slice-C6JLQik8.js';
 import mapJson from 'jsonpath-mapper';
-import { a7 as defaultExpressions, a8 as termExpressions, a9 as contentTypeIdExpression, aa as filterExpressions, ab as orderByExpression, ac as customWhereExpressions, ad as cloneDeep } from './sagas-BroWtJz8.js';
+import { a7 as defaultExpressions, a8 as termExpressions, a9 as contentTypeIdExpression, aa as filterExpressions, ab as orderByExpression, ac as customWhereExpressions, ad as cloneDeep } from './sagas-BZWjx5by.js';
 import 'reselect';
 import 'immer';
 import 'deep-equal';
@@ -18,7 +18,7 @@ import http from 'http';
 import httpProxy from 'http-proxy';
 import fs from 'fs';
 import path from 'path';
-import { path as path$1 } from 'app-root-path';
+import appRootPath from 'app-root-path';
 import { renderToPipeableStream, renderToString } from 'react-dom/server';
 import { matchRoutes } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
@@ -28,32 +28,32 @@ import { noop, identity } from 'lodash';
 import { buildCleaner } from 'lodash-clean';
 import { a as Cookies } from './CookieHelper.class-C6rTRl_1.js';
 import cookiesMiddleware from 'universal-cookie-express';
-import { c as createLocaleRoutes, h as history, p as pickProject, r as rootSaga } from './App-BdJAKTT9.js';
-export { A as ReactApp } from './App-BdJAKTT9.js';
-import { c as createStore } from './store-BvW6_C0H.js';
-import { s as setVersionStatus, c as setVersion } from './version-DIHIOZQD.js';
-import { a6 as selectSurrogateKeys, a7 as selectSsrApiCalls, j as selectRouteEntry, f as selectCurrentProject, g as getImmutableOrJS, s as setCurrentProject, F as selectCurrentSearch } from './selectors-PJo8AWy0.js';
-import { H as HttpContext, m as mergeStaticRoutes } from './RouteLoader-yDf3uwGr.js';
+import { c as createLocaleRoutes, h as history, p as pickProject, r as rootSaga } from './App-BVdAv4vL.js';
+export { A as ReactApp } from './App-BVdAv4vL.js';
+import { c as createStore } from './store-DSjRYsM2.js';
+import { s as setVersionStatus, c as setVersion } from './version-B75wA6Te.js';
+import { a6 as selectSurrogateKeys, a7 as selectSsrApiCalls, j as selectRouteEntry, f as selectCurrentProject, g as getImmutableOrJS, s as setCurrentProject, F as selectCurrentSearch } from './selectors-8ROQrTd7.js';
+import { H as HttpContext, m as mergeStaticRoutes } from './RouteLoader-BpHhiAlL.js';
 import { Transform } from 'stream';
 import { ChunkExtractor, ChunkExtractorManager } from '@loadable/server';
 import chalk from 'chalk';
 import minifyCssString from 'minify-css-string';
 import { CookiesProvider } from 'react-cookie';
 import { StaticRouter } from 'react-router-dom/server';
-import { S as SSRContextProvider } from './SSRContext-BIlCBNCQ.js';
-import './VersionInfo-BMAAda1K.js';
+import { S as SSRContextProvider, g as getSubsitePath } from './SSRContext-CYxBWky3.js';
+import './VersionInfo-By2ZCZOh.js';
 import './CookieConstants-DEmbwzYr.js';
 import '@reduxjs/toolkit';
 import 'loglevel';
 import '@redux-saga/core/effects';
-import './version-DlaBPQ7d.js';
-import './util-BuAZdfcq.js';
+import './version-BQAL8sQO.js';
+import './util-BafFLYzn.js';
 import './selectors-DcmvOeX2.js';
 import './_commonjsHelpers-BFTU3MAI.js';
 import 'history';
 import 'await-to-js';
-import './ChangePassword.container-giznBLAf.js';
-import './matchGroups-DT-RunAc.js';
+import './ChangePassword.container-CUBtn82K.js';
+import './matchGroups-_w8BwzCC.js';
 import './ToJs-BnRRHk6f.js';
 import 'redux';
 import 'redux-thunk';
@@ -618,6 +618,28 @@ const makeLinkDepthMiddleware = ({
   }
 };
 
+/**
+ * Development proxy for Subsite PoC
+ * Catch all routes before they hit CRB handlers
+ * and rewrite them to include the subsite base path,
+ * this allows us to run the subsite in a subfolder in development
+ * In production we will handle this with a path rewrite in the Cloud Dashboard site configuration,
+ * @param subsitePath the content base path we will rewrite to
+ * @param exceptions an array of path prefixes to ignore when rewriting, useful for ignoring assets that do not live in the subsite base path
+ */
+const subsiteDebugMiddleware = (subsitePath, exceptions = []) => (req, res, next) => {
+  if (!subsitePath || req.hostname !== 'localhost' || req.path.startsWith('/api/') || exceptions.some(exception => req.path.startsWith(exception))) return next();
+  if (!req.path.startsWith(`${subsitePath}/`)) {
+    console.warn(`[subsite-debug-middleware] Rewriting (${subsitePath})${req.url}`);
+    if (req.path === '/' || req.path === subsitePath) req.url = subsitePath;else req.url = `${subsitePath}${req.url}`;
+    res.setHeader('x-crb-subsite-content-path', req.url);
+
+    // Important to set the subsite_path header as this drives the subsite-scoped routing logic
+    req.headers['subsite_path'] = subsitePath;
+  }
+  next();
+};
+
 const servers$1 = SERVERS; /* global SERVERS */
 const project = PROJECT; /* global PROJECT */
 const alias$1 = ALIAS; /* global ALIAS */
@@ -734,8 +756,11 @@ const resolveStartupMiddleware = ({
 };
 
 // Serving static assets
+const {
+  path: appPath
+} = appRootPath;
 const staticAssets = (app, {
-  appRootPath = path$1,
+  appRootPath = appPath,
   scripts = {},
   startupScriptFilename = 'startup.js',
   staticFolderPath = 'static',
@@ -1288,6 +1313,8 @@ const webApp = (app, ReactApp, config) => {
     // In server-side blocks world, the hostname requested by the client resides in the x-orig-host header
     // Because of this, we prioritize x-orig-host when setting our hostname
     const hostname = request.headers['x-orig-host'] || request.hostname;
+    const subsitePath = getSubsitePath(request);
+    const subsitePathScript = subsitePath ? `window.subsitePath = ${serialize(subsitePath)};` : '';
     console.info(`Request for ${request.path} hostname: ${hostname} versionStatus: ${versionStatus}`);
     store.dispatch(setVersionStatus(versionStatus));
     store.dispatch(setVersion(versionInfo.commitRef, versionInfo.buildNo));
@@ -1351,7 +1378,7 @@ const webApp = (app, ReactApp, config) => {
       // Dynamic doesn't need sagas
       // or styles, or any split component bundles
       // nor are we streaming responses
-      const isDynamicHints = `<script ${attributes}>window.isDynamic = true;</script>`;
+      const isDynamicHints = `<script ${attributes}>window.isDynamic = true; ${subsitePathScript}</script>`;
       const jsx = ssrJsxProducer(ReactApp, {
         providers: jsxProviderProps,
         props: jsxReactAppProps
@@ -1413,7 +1440,7 @@ const webApp = (app, ReactApp, config) => {
             return true;
           }
           if (!disableSsrRedux) {
-            serialisedReduxData = `<script ${attributes}>window.__USE_HYDRATE__ = true; window.REDUX_DATA = ${serialisedReduxData}</script>`;
+            serialisedReduxData = `<script ${attributes}>${subsitePathScript} window.__USE_HYDRATE__ = true; window.REDUX_DATA = ${serialisedReduxData}</script>`;
           }
         }
 
@@ -1475,7 +1502,7 @@ const webApp = (app, ReactApp, config) => {
             const bundleTags = isFinal ? getBundleTags(loadableExtractor, scripts, staticRoutePath) : '';
 
             // Getting style tags generated by "CSS Modules" because they will be
-            // available to loadable stats if we have built parts of the app with CSS 
+            // available to loadable stats if we have built parts of the app with CSS
             // plugins that are not within styled-components
             const styles = loadableExtractor === null || loadableExtractor === void 0 || (_loadableExtractor$mo = loadableExtractor.modern) === null || _loadableExtractor$mo === void 0 ? void 0 : _loadableExtractor$mo.getStyleTags();
             const html = replaceHtml({
@@ -1562,5 +1589,5 @@ var internalServer = {
   start
 };
 
-export { internalServer as default, makeLinkDepthApi as linkDepthApi };
+export { subsiteDebugMiddleware as DO_NOT_COMMIT_subsiteDebugMiddleware, internalServer as default, makeLinkDepthApi as linkDepthApi };
 //# sourceMappingURL=contensis-react-base.js.map

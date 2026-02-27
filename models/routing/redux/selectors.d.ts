@@ -4,6 +4,7 @@ export declare const selectMappedEntry: (state: AppState, returnType?: StateType
 export declare const selectSurrogateKeys: (state: AppState) => any;
 export declare const selectSsrApiCalls: (state: AppState) => any;
 export declare const selectCurrentHostname: (state: AppState) => any;
+export declare const selectSsrHostname: (state: AppState) => any;
 export declare const selectCurrentTreeID: (state: AppState) => any;
 export declare const selectRouteEntryEntryId: (state: AppState) => any;
 export declare const selectRouteEntryContentTypeId: (state: AppState) => any;

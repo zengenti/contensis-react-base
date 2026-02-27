@@ -2,13 +2,13 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var ContensisDeliveryApi = require('./ContensisDeliveryApi-DBaziPG9.js');
+var ContensisDeliveryApi = require('./ContensisDeliveryApi-gN3_MHEl.js');
 var contensisDeliveryApi = require('contensis-delivery-api');
 var React = require('react');
 var reactRedux = require('react-redux');
 var slice = require('./slice-5xJMH24n.js');
 var mapJson = require('jsonpath-mapper');
-var sagas = require('./sagas-BhtMwNPv.js');
+var sagas = require('./sagas-OfBUtx74.js');
 require('reselect');
 require('immer');
 require('deep-equal');
@@ -32,31 +32,31 @@ var lodash = require('lodash');
 var lodashClean = require('lodash-clean');
 var CookieHelper_class = require('./CookieHelper.class-Det3qfdU.js');
 var cookiesMiddleware = require('universal-cookie-express');
-var App = require('./App-QnCN3CvZ.js');
-var store = require('./store-DxuhGQ7p.js');
-var version = require('./version-B9moFk8k.js');
-var selectors = require('./selectors-C1CqEUmL.js');
-var RouteLoader = require('./RouteLoader-B-sjh6ha.js');
+var App = require('./App-C5hfqiyz.js');
+var store = require('./store-Dn7vP6G0.js');
+var version = require('./version-2FamXHhj.js');
+var selectors = require('./selectors-BrxJ8-F8.js');
+var RouteLoader = require('./RouteLoader-Bbt-nG3v.js');
 var stream = require('stream');
 var server$2 = require('@loadable/server');
 var chalk = require('chalk');
 var minifyCssString = require('minify-css-string');
 var reactCookie = require('react-cookie');
 var server$3 = require('react-router-dom/server');
-var SSRContext = require('./SSRContext-Cayonmg4.js');
-require('./VersionInfo-CTPtw_Xd.js');
+var SSRContext = require('./SSRContext-DotLlTQc.js');
+require('./VersionInfo-zFPsvS8q.js');
 require('./CookieConstants-DfPiWCRZ.js');
 require('@reduxjs/toolkit');
 require('loglevel');
 require('@redux-saga/core/effects');
-require('./version-CukCz8zL.js');
-require('./util-CFAjDCA0.js');
+require('./version-rFG9Y6_B.js');
+require('./util-wQwG9vit.js');
 require('./selectors-DAQR0uZa.js');
 require('./_commonjsHelpers-BJu3ubxk.js');
 require('history');
 require('await-to-js');
-require('./ChangePassword.container-BWh4R32r.js');
-require('./matchGroups-CxRa9Ej9.js');
+require('./ChangePassword.container-C4Du3Wb1.js');
+require('./matchGroups-dqONU-vY.js');
 require('./ToJs-BsWqWjdm.js');
 require('redux');
 require('redux-thunk');
@@ -72,6 +72,7 @@ var http__default = /*#__PURE__*/_interopDefault(http);
 var httpProxy__default = /*#__PURE__*/_interopDefault(httpProxy);
 var fs__default = /*#__PURE__*/_interopDefault(fs);
 var path__default = /*#__PURE__*/_interopDefault(path);
+var appRootPath__default = /*#__PURE__*/_interopDefault(appRootPath);
 var serialize__default = /*#__PURE__*/_interopDefault(serialize);
 var cookiesMiddleware__default = /*#__PURE__*/_interopDefault(cookiesMiddleware);
 var chalk__default = /*#__PURE__*/_interopDefault(chalk);
@@ -635,6 +636,28 @@ const makeLinkDepthMiddleware = ({
   }
 };
 
+/**
+ * Development proxy for Subsite PoC
+ * Catch all routes before they hit CRB handlers
+ * and rewrite them to include the subsite base path,
+ * this allows us to run the subsite in a subfolder in development
+ * In production we will handle this with a path rewrite in the Cloud Dashboard site configuration,
+ * @param subsitePath the content base path we will rewrite to
+ * @param exceptions an array of path prefixes to ignore when rewriting, useful for ignoring assets that do not live in the subsite base path
+ */
+const subsiteDebugMiddleware = (subsitePath, exceptions = []) => (req, res, next) => {
+  if (!subsitePath || req.hostname !== 'localhost' || req.path.startsWith('/api/') || exceptions.some(exception => req.path.startsWith(exception))) return next();
+  if (!req.path.startsWith(`${subsitePath}/`)) {
+    console.warn(`[subsite-debug-middleware] Rewriting (${subsitePath})${req.url}`);
+    if (req.path === '/' || req.path === subsitePath) req.url = subsitePath;else req.url = `${subsitePath}${req.url}`;
+    res.setHeader('x-crb-subsite-content-path', req.url);
+
+    // Important to set the subsite_path header as this drives the subsite-scoped routing logic
+    req.headers['subsite_path'] = subsitePath;
+  }
+  next();
+};
+
 const servers$1 = SERVERS; /* global SERVERS */
 const project = PROJECT; /* global PROJECT */
 const alias$1 = ALIAS; /* global ALIAS */
@@ -751,8 +774,11 @@ const resolveStartupMiddleware = ({
 };
 
 // Serving static assets
+const {
+  path: appPath
+} = appRootPath__default.default;
 const staticAssets = (app, {
-  appRootPath: appRootPath$1 = appRootPath.path,
+  appRootPath = appPath,
   scripts = {},
   startupScriptFilename = 'startup.js',
   staticFolderPath = 'static',
@@ -760,14 +786,14 @@ const staticAssets = (app, {
   staticRoutePaths = []
 }) => {
   app.use([`/${staticRoutePath}`, ...staticRoutePaths.map(p => `/${p}`), `/${staticFolderPath}`], bundleManipulationMiddleware({
-    appRootPath: appRootPath$1,
+    appRootPath,
     // these maxage values are different in config but the same in runtime,
     // this one is the true value in seconds
     maxage: CacheDuration.static,
     staticFolderPath,
     staticRoutePath
   }), resolveStartupMiddleware({
-    appRootPath: appRootPath$1,
+    appRootPath,
     maxage: CacheDuration.static,
     startupScriptFilename: scripts.startup || startupScriptFilename,
     staticFolderPath
@@ -1305,6 +1331,8 @@ const webApp = (app, ReactApp, config) => {
     // In server-side blocks world, the hostname requested by the client resides in the x-orig-host header
     // Because of this, we prioritize x-orig-host when setting our hostname
     const hostname = request.headers['x-orig-host'] || request.hostname;
+    const subsitePath = SSRContext.getSubsitePath(request);
+    const subsitePathScript = subsitePath ? `window.subsitePath = ${serialize__default.default(subsitePath)};` : '';
     console.info(`Request for ${request.path} hostname: ${hostname} versionStatus: ${versionStatus}`);
     store$1.dispatch(version.setVersionStatus(versionStatus));
     store$1.dispatch(version.setVersion(versionInfo.commitRef, versionInfo.buildNo));
@@ -1368,7 +1396,7 @@ const webApp = (app, ReactApp, config) => {
       // Dynamic doesn't need sagas
       // or styles, or any split component bundles
       // nor are we streaming responses
-      const isDynamicHints = `<script ${attributes}>window.isDynamic = true;</script>`;
+      const isDynamicHints = `<script ${attributes}>window.isDynamic = true; ${subsitePathScript}</script>`;
       const jsx = ssrJsxProducer(ReactApp, {
         providers: jsxProviderProps,
         props: jsxReactAppProps
@@ -1430,7 +1458,7 @@ const webApp = (app, ReactApp, config) => {
             return true;
           }
           if (!disableSsrRedux) {
-            serialisedReduxData = `<script ${attributes}>window.__USE_HYDRATE__ = true; window.REDUX_DATA = ${serialisedReduxData}</script>`;
+            serialisedReduxData = `<script ${attributes}>${subsitePathScript} window.__USE_HYDRATE__ = true; window.REDUX_DATA = ${serialisedReduxData}</script>`;
           }
         }
 
@@ -1492,7 +1520,7 @@ const webApp = (app, ReactApp, config) => {
             const bundleTags = isFinal ? getBundleTags(loadableExtractor, scripts, staticRoutePath) : '';
 
             // Getting style tags generated by "CSS Modules" because they will be
-            // available to loadable stats if we have built parts of the app with CSS 
+            // available to loadable stats if we have built parts of the app with CSS
             // plugins that are not within styled-components
             const styles = loadableExtractor === null || loadableExtractor === void 0 || (_loadableExtractor$mo = loadableExtractor.modern) === null || _loadableExtractor$mo === void 0 ? void 0 : _loadableExtractor$mo.getStyleTags();
             const html = replaceHtml({
@@ -1580,6 +1608,7 @@ var internalServer = {
 };
 
 exports.ReactApp = App.AppRoot;
+exports.DO_NOT_COMMIT_subsiteDebugMiddleware = subsiteDebugMiddleware;
 exports.default = internalServer;
 exports.linkDepthApi = makeLinkDepthApi;
 //# sourceMappingURL=contensis-react-base.js.map
