@@ -41,7 +41,6 @@ export const ssrJsxProducer = (
       styledComponents?: { sheet: ServerStyleSheet };
       ssrContext: {
         accessMethod: SSRAccessMethod;
-        microsites?: ServerConfig['microsites'];
         request: Request;
         response: Response;
       };
@@ -90,7 +89,6 @@ export const ssrJsxProducer = (
             >
               <SSRContextProvider
                 accessMethod={providers.ssrContext.accessMethod}
-                microsites={providers.ssrContext.microsites}
                 request={providers.ssrContext.request}
                 response={providers.ssrContext.response}
                 // ssrAssets={ssrAssets}

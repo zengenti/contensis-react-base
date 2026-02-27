@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 import { Dispatch } from 'redux';
 import { CookieHelper } from '~/user/util/CookieHelper.class';
 import { CachedSearch } from '~/util/CachedDeliveryApi';
-import { ServerConfig } from './config';
 
 export type SSRContext = {
   /** SSR only */
@@ -13,8 +12,6 @@ export type SSRContext = {
   cookies: CookieHelper;
   /** Available in both SSR and client side */
   dispatch: Dispatch<any>;
-  /** SSR only */
-  microsites?: ServerConfig['microsites'];
   /** SSR only */
   request?: Request;
   /** SSR only */

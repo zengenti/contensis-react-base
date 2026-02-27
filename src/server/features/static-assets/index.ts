@@ -12,7 +12,6 @@ const staticAssets = (
   app: express.Express,
   {
     appRootPath = appPath,
-    microsites = [] as NonNullable<ServerConfig['microsites']>,
     scripts = {} as NonNullable<ServerConfig['scripts']>,
     startupScriptFilename = 'startup.js',
     staticFolderPath = 'static',
@@ -20,14 +19,12 @@ const staticAssets = (
     staticRoutePaths = [] as string[],
   }
 ) => {
-  const paths = [
-    `/${staticRoutePath}`,
-    ...microsites.map(m => `${m.basePath}/${staticRoutePath}`),
-    ...staticRoutePaths.map(p => `/${p}`),
-    `/${staticFolderPath}`,
-  ]; 
   app.use(
-    paths,
+    [
+      `/${staticRoutePath}`,
+      ...staticRoutePaths.map(p => `/${p}`),
+      `/${staticFolderPath}`,
+    ],
     bundleManipulationMiddleware({
       appRootPath,
       // these maxage values are different in config but the same in runtime,

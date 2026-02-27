@@ -6,7 +6,7 @@ import { ServerStyleSheet } from 'styled-components';
 import serialize from 'serialize-javascript';
 import mapJson from 'jsonpath-mapper';
 import { Express, Request, Response } from 'express';
-import { identity, noop } from 'lodash';
+import { get, identity, noop } from 'lodash';
 import cloneDeep from 'lodash/cloneDeep';
 import { buildCleaner } from 'lodash-clean';
 import Cookies from 'universal-cookie';
@@ -48,6 +48,7 @@ import { replaceHtml } from './util/html';
 
 import { AppState, ServerConfig, MatchedRoute, StaticRoute } from '~/models';
 import { ssrJsxProducer } from './util/jsx';
+import { getSubsitePath } from '~/util/subsite';
 
 const webApp = (
   app: Express,
@@ -75,7 +76,6 @@ const webApp = (
     handleResponses,
     handleExceptions = true,
     i18n,
-    microsites,
   } = config;
 
   // process locales in static routes for i18n
@@ -166,6 +166,10 @@ const webApp = (
       // Because of this, we prioritize x-orig-host when setting our hostname
       const hostname = (request.headers['x-orig-host'] ||
         request.hostname) as string;
+      const subsitePath = getSubsitePath(request);
+      const subsitePathScript = subsitePath ? `window.subsitePath = ${serialize(
+        subsitePath
+      )};` : '';
 
       console.info(
         `Request for ${request.path} hostname: ${hostname} versionStatus: ${versionStatus}`
@@ -212,7 +216,7 @@ const webApp = (
         redux: store,
         httpContext: context,
         router: { url },
-        ssrContext: { accessMethod, microsites, request, response },
+        ssrContext: { accessMethod, request, response },
       };
       // These are the props we will pass to the ReactApp itself
       const jsxReactAppProps = { routes, withEvents };
@@ -229,7 +233,7 @@ const webApp = (
         // Dynamic doesn't need sagas
         // or styles, or any split component bundles
         // nor are we streaming responses
-        const isDynamicHints = `<script ${attributes}>window.isDynamic = true;</script>`;
+        const isDynamicHints = `<script ${attributes}>window.isDynamic = true; ${subsitePathScript}</script>`;
 
         const jsx = ssrJsxProducer(ReactApp, {
           providers: jsxProviderProps,
@@ -309,7 +313,7 @@ const webApp = (
                 return true;
               }
               if (!disableSsrRedux) {
-                serialisedReduxData = `<script ${attributes}>window.__USE_HYDRATE__ = true; window.REDUX_DATA = ${serialisedReduxData}</script>`;
+                serialisedReduxData = `<script ${attributes}>${subsitePathScript} window.__USE_HYDRATE__ = true; window.REDUX_DATA = ${serialisedReduxData}</script>`;
               }
             }
 

@@ -7,11 +7,7 @@ import React, {
 } from 'react';
 import { useCookies } from 'react-cookie';
 import { useDispatch } from 'react-redux';
-import {
-  ServerConfig,
-  SSRAccessMethod,
-  SSRContext as SSRContextType,
-} from '~/models';
+import { SSRAccessMethod, SSRContext as SSRContextType } from '~/models';
 import { cachedSearchWithContext } from '~/util/CachedDeliveryApi';
 import { CookieHelper } from '~/user/util/CookieHelper.class';
 
@@ -27,12 +23,10 @@ const SSRContext = createContext<SSRContextType | null>(null);
 export const SSRContextProvider = ({
   accessMethod,
   children,
-  microsites,
   request,
   response,
 }: PropsWithChildren<{
   accessMethod?: SSRAccessMethod;
-  microsites?: ServerConfig['microsites'];
   request?: Request;
   response?: Response;
 }>) => {
@@ -46,7 +40,6 @@ export const SSRContextProvider = ({
     accessMethod,
     api,
     cookies,
-    microsites,
     dispatch,
     request,
     response,
