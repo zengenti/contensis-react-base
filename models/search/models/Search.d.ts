@@ -65,6 +65,8 @@ export type SearchFilter = {
     contentTypeId?: string | string[];
     /** An array of CustomWhereClause to include in the search query when dynamically loading entries via the contentTypeId key */
     customWhere?: CustomWhereClause;
+    /** Max number of items returned when providing `contentTypeId`, default is 100  */
+    pageSize?: number;
     /** Use this to set a specific value to render for the initial / unselected option in this filter */
     defaultValue?: string;
     /** The content type field id(s) we will apply selected filter keys to, so we can filter the list of returned results. */

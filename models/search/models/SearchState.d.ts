@@ -74,6 +74,7 @@ export type Filter = {
     aggregations?: boolean | string | string[];
     contentTypeId?: string;
     customWhere?: CustomWhereClause;
+    pageSize?: number;
     defaultValue?: string;
     fieldId?: string | string[];
     i18n?: {

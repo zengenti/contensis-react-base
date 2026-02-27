@@ -85,5 +85,7 @@ export type FilterQuery = (
   contentTypeIds: string[],
   languages: string[],
   versionStatus: VersionStatus,
-  customWhere?: CustomWhereClause
+  customWhere?: CustomWhereClause,
+  pageSize?: number
 ) => Query;
+ 
