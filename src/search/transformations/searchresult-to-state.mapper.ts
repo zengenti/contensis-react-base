@@ -66,7 +66,7 @@ export const facetTemplate = {
       ),
     filters: ({ result, state, action }: SearchResults) => {
       const aggregations =
-        'aggregations' in result.payload
+        result.payload && 'aggregations' in result.payload
           ? result.payload.aggregations
           : undefined;
       if (!aggregations) return {};
