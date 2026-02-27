@@ -6,7 +6,7 @@ import { ServerStyleSheet } from 'styled-components';
 import serialize from 'serialize-javascript';
 import mapJson from 'jsonpath-mapper';
 import { Express, Request, Response } from 'express';
-import { get, identity, noop } from 'lodash';
+import { identity, noop } from 'lodash';
 import cloneDeep from 'lodash/cloneDeep';
 import { buildCleaner } from 'lodash-clean';
 import Cookies from 'universal-cookie';

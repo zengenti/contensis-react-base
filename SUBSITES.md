@@ -20,8 +20,6 @@ When developing locally, you may want to test subsite routing without deploying 
 
 ```typescript
 // src/server/features/configure.ts
-
-import { subsites } from '~/../subsites';
 import { DO_NOT_COMMIT_subsiteDebugMiddleware } from '@zengenti/contensis-react-base';
 
 app.all(
@@ -43,10 +41,7 @@ This middleware rewrites URLs to include the subsite base path when visiting fro
 To ensure links in your app behave correctly for subsite visitors, we have used a hook to determine if the current visitor is scoped to a subsite and amends content links accordingly.
 
 ```typescript
-import {
-  getSubsitePath,
-  useSSRContext,
-} from '@zengenti/contensis-react-base/util';
+import { useSSRContext } from '@zengenti/contensis-react-base/util';
 
 /**
  * Remove the subsitePath from the uri when rendered in a subsite scope
@@ -56,16 +51,12 @@ import {
  * @returns the subsite-scoped content uri or the original href if we are not visiting from a subsite
  */
 export const useFixSubsitePath = <T extends string | undefined>(href: T): T => {
-  const ssrContext = useSSRContext();
-  if (href?.length) {
-    const subsitePath = getSubsitePath(ssrContext.request);
-
-    if (subsitePath) {
-      if (href.startsWith(subsitePath)) {
-        return (href.substring(subsitePath.length) || '/') as T;
-      }
-      if (href.startsWith('/')) return `https://www.contensis.com${href}` as T;
+  const { subsitePath } = useSSRContext();
+  if (href?.length && subsitePath) {
+    if (href.startsWith(subsitePath)) {
+      return (href.substring(subsitePath.length) || '/') as T;
     }
+    if (href.startsWith('/')) return `https://www.contensis.com${href}` as T;
   }
 
   return href as T;
