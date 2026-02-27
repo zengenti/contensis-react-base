@@ -46,12 +46,11 @@ export const resolveStartupMiddleware =
 
         res.sendFile(startupFileLocation);
       } catch (sendFileError) {
-        // eslint-disable-next-line no-console
         console.log(
           `Unable to send file startup.js at '${startupFileLocation}'`,
           sendFileError
         );
-        next();
+        res.status(404).send();
       }
     } else {
       next();
