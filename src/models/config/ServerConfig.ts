@@ -7,6 +7,15 @@ export type ServerConfig = AppConfig & {
   enableSsrCookies?: boolean;
   handleResponses?: typeof handleResponse;
   handleExceptions?: boolean | string[];
+  /**
+   * Microsites will resolve content from the basePath
+   * when the site is visited from the provided domains.
+   * Also adds configuration for static assets to be served from the basePath
+   */
+  microsites?: {
+    basePath: string;
+    domains: string[];
+  }[];
   reverseProxyPaths?: string[];
   packagejson: any;
   proxyDeliveryApi?: boolean;
@@ -18,7 +27,10 @@ export type ServerConfig = AppConfig & {
     startup?: string;
   };
   staticFolderPath?: string;
+  /** The default static route path */
   staticRoutePath?: string;
+  /** Additional static route paths */
+  staticRoutePaths?: string[];
   stats?: string;
   templates: {
     html: string;

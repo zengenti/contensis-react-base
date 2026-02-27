@@ -112,6 +112,7 @@ function* getRouteSaga(action) {
     const routeEntry = selectRouteEntry(state, 'js');
     const routeNode = selectCurrentNode(state, 'js');
     const currentPath = action.path; //selectCurrentPath(state);
+    const contentPath = action.contentPath; 
     const deliveryApiStatus = selectVersionStatus(state);
     const project = selectCurrentProject(state);
     // const isHome = currentPath === '/';
@@ -182,7 +183,7 @@ function* getRouteSaga(action) {
           api.getNode(
             {
               depth: 0,
-              path: currentPath,
+              path: contentPath,
               entryFields: setStaticRouteLimits
                 ? fields || '*'
                 : setContentTypeLimits
@@ -283,7 +284,7 @@ function* getRouteSaga(action) {
           contentTypeMapping:
             contentTypeMapping || staticRoute?.route?.fetchNode || {},
           language: defaultLang,
-          path: currentPath,
+          path: contentPath,
           pathNode,
           project,
           versionStatus: deliveryApiStatus,

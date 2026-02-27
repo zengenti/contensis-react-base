@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback, cloneElement } from 'react';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { useLocation, matchRoutes, RouteObject } from 'react-router-dom';
 
 import { createSelector } from 'reselect';
@@ -18,6 +18,7 @@ import {
   selectRouteIsError,
   selectRouteLoading,
   selectRouteStatusCode,
+  selectSsrHostname,
 } from '../redux/selectors';
 import { setNavigationPath } from '../redux/actions';
 
@@ -31,7 +32,12 @@ import { useSSRContext } from '~/util/SSRContext';
 
 import { mergeStaticRoutes } from '~/util/mergeStaticRoutes';
 import { Entry } from 'contensis-delivery-api/lib/models';
-import { AppRootProps, MatchedRoute, RouteComponentProps, RouteLoaderProps, StaticRoute } from '~/models';
+import {
+  AppRootProps,
+  MatchedRoute,
+  RouteLoaderProps,
+  StaticRoute,
+} from '~/models';
 import { StaticRouteLoader } from './StaticRouteLoader';
 import { Redirect } from './Redirect';
 
@@ -133,6 +139,7 @@ const RouteLoader = ({
   // In SSR pass references to things in backing sagas
   // we cannot access in a global scope
   const ssrContext = useSSRContext();
+  const ssrHostname = useSelector(selectSsrHostname);
 
   // Always ensure paths are trimmed of trailing slashes so urls are always unique
   const trimmedPath = getTrimmedPath(location.pathname);
@@ -211,9 +218,18 @@ const RouteLoader = ({
           .join('/');
       }
     }
+    const contentPath = serverPath || trimmedPath;
+    let clientPath = contentPath;
+    for (const microsite of ssrContext.microsites || []) {
+      if (microsite.domains.includes(ssrHostname)) {
+        clientPath = contentPath.replace(`${microsite.basePath}`, '') || '/';
+        break;
+      }
+    }
 
     setNavigationPath(
-      serverPath || trimmedPath,
+      clientPath,
+      contentPath,
       location,
       staticRoute,
       withEvents,

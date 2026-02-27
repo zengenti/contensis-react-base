@@ -3,13 +3,16 @@ import { CacheDuration } from '~/server/features/caching/cacheDuration.schema';
 import { bundleManipulationMiddleware } from '~/server/middleware/bundleManipulation';
 import { resolveStartupMiddleware } from '~/server/middleware/resolveStartup';
 
-import { path as appPath } from 'app-root-path';
+import appRootPath from 'app-root-path';
 import { ServerConfig } from '~/models';
+
 // Serving static assets
+const { path: appPath } = appRootPath;
 const staticAssets = (
-  app,
+  app: express.Express,
   {
     appRootPath = appPath,
+    microsites = [] as NonNullable<ServerConfig['microsites']>,
     scripts = {} as NonNullable<ServerConfig['scripts']>,
     startupScriptFilename = 'startup.js',
     staticFolderPath = 'static',
@@ -17,12 +20,14 @@ const staticAssets = (
     staticRoutePaths = [] as string[],
   }
 ) => {
+  const paths = [
+    `/${staticRoutePath}`,
+    ...microsites.map(m => `${m.basePath}/${staticRoutePath}`),
+    ...staticRoutePaths.map(p => `/${p}`),
+    `/${staticFolderPath}`,
+  ]; 
   app.use(
-    [
-      `/${staticRoutePath}`,
-      ...staticRoutePaths.map(p => `/${p}`),
-      `/${staticFolderPath}`,
-    ],
+    paths,
     bundleManipulationMiddleware({
       appRootPath,
       // these maxage values are different in config but the same in runtime,

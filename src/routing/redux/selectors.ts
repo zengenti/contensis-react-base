@@ -20,6 +20,9 @@ export const selectSsrApiCalls = (state: AppState) => {
 export const selectCurrentHostname = (state: AppState) =>
   getIn(state, ['routing', 'currentHostname']);
 
+export const selectSsrHostname = (state: AppState) =>
+  getIn(state, ['routing', 'ssrHostname']);
+
 export const selectCurrentTreeID = (state: AppState) =>
   getIn(state, ['routing', 'currentHostname']);
 

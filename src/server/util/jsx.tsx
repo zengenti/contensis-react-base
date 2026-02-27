@@ -10,7 +10,7 @@ import { Provider as ReduxProvider } from 'react-redux';
 import { StaticRouter } from 'react-router-dom/server';
 import { ServerStyleSheet } from 'styled-components';
 import Cookies from 'universal-cookie';
-import { AppRoutes, SSRAccessMethod, WithEvents } from '~/models';
+import { AppRoutes, ServerConfig, SSRAccessMethod, WithEvents } from '~/models';
 import { reduxStore } from '~/redux/store/store';
 import { HttpContext, HttpContextValues } from '~/routing/httpContext';
 import { SSRContextProvider } from '~/util';
@@ -41,6 +41,7 @@ export const ssrJsxProducer = (
       styledComponents?: { sheet: ServerStyleSheet };
       ssrContext: {
         accessMethod: SSRAccessMethod;
+        microsites?: ServerConfig['microsites'];
         request: Request;
         response: Response;
       };
@@ -89,6 +90,7 @@ export const ssrJsxProducer = (
             >
               <SSRContextProvider
                 accessMethod={providers.ssrContext.accessMethod}
+                microsites={providers.ssrContext.microsites}
                 request={providers.ssrContext.request}
                 response={providers.ssrContext.response}
                 // ssrAssets={ssrAssets}
