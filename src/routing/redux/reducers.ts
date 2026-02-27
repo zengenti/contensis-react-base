@@ -26,6 +26,7 @@ const initialState = {
   location: {},
   mappedEntry: null,
   notFound: false,
+  ssrHostname: null,
   staticRoute: null,
   statusCode: 200,
   surrogateKeys: [],
@@ -153,6 +154,7 @@ export default produce((state: Draft<any>, action) => {
     case SET_TARGET_PROJECT: {
       state.currentProject = action.project;
       state.allowedGroups = action.allowedGroups;
+      state.ssrHostname = state.currentHostname || action.hostname;
       state.currentHostname = action.hostname;
       return;
     }

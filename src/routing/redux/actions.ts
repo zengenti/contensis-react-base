@@ -13,6 +13,7 @@ import { AppRoutes, MatchedRoute, StaticRoute, SSRContext, WithEvents } from '~/
 
 export const setNavigationPath = (
   path: string,
+  contentPath: string,
   location: ReturnType<typeof useLocation>,
   staticRoute: MatchedRoute<string, StaticRoute> | undefined,
   withEvents: WithEvents,
@@ -22,6 +23,7 @@ export const setNavigationPath = (
 ) =>
   action(SET_NAVIGATION_PATH, {
     path,
+    contentPath,
     location,
     staticRoute,
     withEvents,

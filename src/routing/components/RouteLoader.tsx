@@ -5,6 +5,8 @@ import { useLocation, matchRoutes, RouteObject } from 'react-router-dom';
 import { createSelector } from 'reselect';
 
 import NotFound from './NotFound';
+import { Redirect } from './Redirect';
+import { StaticRouteLoader } from './StaticRouteLoader';
 import { Status } from './Status';
 
 import {
@@ -26,14 +28,18 @@ import {
   selectUserIsAuthenticated,
 } from '~/user/redux/selectors';
 import { matchUserGroup } from '~/user/util/matchGroups';
-import { toJS } from '~/util/ToJs';
-import { useSSRContext } from '~/util/SSRContext';
-
 import { mergeStaticRoutes } from '~/util/mergeStaticRoutes';
-import { Entry } from 'contensis-delivery-api/lib/models';
-import { AppRootProps, MatchedRoute, RouteComponentProps, RouteLoaderProps, StaticRoute } from '~/models';
-import { StaticRouteLoader } from './StaticRouteLoader';
-import { Redirect } from './Redirect';
+import { useSSRContext } from '~/util/SSRContext';
+import { transformPathForSubsite } from '~/util/subsite';
+import { toJS } from '~/util/ToJs';
+
+import type { Entry } from 'contensis-delivery-api/lib/models';
+import type {
+  AppRootProps,
+  MatchedRoute,
+  RouteLoaderProps,
+  StaticRoute,
+} from '~/models';
 
 const replaceDoubleSlashRecursive = (path: string) => {
   const nextPath = path.replace(/\/\//, '/');
@@ -212,8 +218,14 @@ const RouteLoader = ({
       }
     }
 
-    setNavigationPath(
+    const { clientPath, contentPath } = transformPathForSubsite(
       serverPath || trimmedPath,
+      ssrContext.request
+    );
+
+    setNavigationPath(
+      clientPath,
+      contentPath,
       location,
       staticRoute,
       withEvents,

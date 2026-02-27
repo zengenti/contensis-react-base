@@ -7,12 +7,10 @@ import React, {
 } from 'react';
 import { useCookies } from 'react-cookie';
 import { useDispatch } from 'react-redux';
-import {
-  SSRAccessMethod,
-  SSRContext as SSRContextType,
-} from '~/models';
+import { SSRAccessMethod, SSRContext as SSRContextType } from '~/models';
 import { cachedSearchWithContext } from '~/util/CachedDeliveryApi';
 import { CookieHelper } from '~/user/util/CookieHelper.class';
+import { getSubsitePath } from './subsite';
 
 const SSRContext = createContext<SSRContextType | null>(null);
 
@@ -38,6 +36,7 @@ export const SSRContextProvider = ({
   const dispatch = useDispatch();
   const cookies = new CookieHelper(...useCookies());
   const api = cachedSearchWithContext({ cookies, dispatch, request, response });
+  const subsitePath = getSubsitePath(request);
 
   const [context] = useState<SSRContextType>({
     accessMethod,
@@ -46,6 +45,7 @@ export const SSRContextProvider = ({
     dispatch,
     request,
     response,
+    subsitePath,
   });
 
   return (

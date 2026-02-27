@@ -62,7 +62,7 @@ function* getRouteSaga(action) {
       routes: { ContentTypeMappings = {} } = {},
       staticRoute,
       // get api instance from ssr context that is connected to the specific request in ssr
-      ssr: { api },
+      ssr: { api, subsitePath },
     } = action;
 
     // Inject redux { key, reducer, saga } provided by staticRoute
@@ -112,6 +112,7 @@ function* getRouteSaga(action) {
     const routeEntry = selectRouteEntry(state, 'js');
     const routeNode = selectCurrentNode(state, 'js');
     const currentPath = action.path; //selectCurrentPath(state);
+    const contentPath = action.contentPath;
     const deliveryApiStatus = selectVersionStatus(state);
     const project = selectCurrentProject(state);
     // const isHome = currentPath === '/';
@@ -182,7 +183,7 @@ function* getRouteSaga(action) {
           api.getNode(
             {
               depth: 0,
-              path: currentPath,
+              path: contentPath,
               entryFields: setStaticRouteLimits
                 ? fields || '*'
                 : setContentTypeLimits
@@ -283,9 +284,10 @@ function* getRouteSaga(action) {
           contentTypeMapping:
             contentTypeMapping || staticRoute?.route?.fetchNode || {},
           language: defaultLang,
-          path: currentPath,
+          path: contentPath,
           pathNode,
           project,
+          subsitePath,
           versionStatus: deliveryApiStatus,
         }
       );
@@ -378,6 +380,7 @@ function* resolveCurrentNodeOrdinates(action) {
     path,
     pathNode,
     project,
+    subsitePath,
     versionStatus,
   } = action;
   const apiCall = [() => null, () => null, () => null, () => null];
@@ -408,6 +411,7 @@ function* resolveCurrentNodeOrdinates(action) {
               id: pathNode.id,
               language,
               versionStatus,
+              startLevel: (subsitePath || '').split('/').length,
             },
             project
           );

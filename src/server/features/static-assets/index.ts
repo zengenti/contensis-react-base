@@ -3,11 +3,13 @@ import { CacheDuration } from '~/server/features/caching/cacheDuration.schema';
 import { bundleManipulationMiddleware } from '~/server/middleware/bundleManipulation';
 import { resolveStartupMiddleware } from '~/server/middleware/resolveStartup';
 
-import { path as appPath } from 'app-root-path';
+import appRootPath from 'app-root-path';
 import { ServerConfig } from '~/models';
+
 // Serving static assets
+const { path: appPath } = appRootPath;
 const staticAssets = (
-  app,
+  app: express.Express,
   {
     appRootPath = appPath,
     scripts = {} as NonNullable<ServerConfig['scripts']>,

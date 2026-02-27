@@ -11,18 +11,24 @@ import { hasNavigationTree } from '~/redux/selectors/navigation';
 export const navigationSagas = [takeEvery(GET_NODE_TREE, ensureNodeTreeSaga)];
 
 export function* ensureNodeTreeSaga(action) {
-  const { api, language, project, versionStatus, treeDepth } = action;
+  const { api, language, project, versionStatus, subsitePath, treeDepth } = action;
   const state = yield select();
   try {
     if (!hasNavigationTree(state)) {
-      const nodes = yield api.getRootNode(
-        {
+      const nodes = subsitePath
+        ? yield api.getNode({
+          path: subsitePath,
           depth: treeDepth || 0,
           language,
-        },
-        versionStatus,
-        project
-      );
+        }, project)
+        : yield api.getRootNode(
+          {
+            depth: treeDepth || 0,
+            language,
+          },
+          versionStatus,
+          project
+        );
       if (nodes) {
         yield put({ type: SET_NODE_TREE, nodes });
       } else {
