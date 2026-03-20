@@ -6,6 +6,7 @@ const servers = SERVERS; /* global SERVERS */
 const project = PROJECT; /* global PROJECT */
 const alias = ALIAS; /* global ALIAS */
 const deliveryApiHostname = url(alias, project).api;
+
 const proxyTimeoutMs = 45_000;
 
 export const assetProxy = httpProxy.createProxyServer();
