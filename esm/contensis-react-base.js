@@ -644,6 +644,7 @@ const servers$1 = SERVERS; /* global SERVERS */
 const project = PROJECT; /* global PROJECT */
 const alias$1 = ALIAS; /* global ALIAS */
 const deliveryApiHostname = url(alias$1, project).api;
+const proxyTimeoutMs = 45_000;
 const assetProxy = httpProxy.createProxyServer();
 const deliveryProxy = httpProxy.createProxyServer();
 const reverseProxies = (app, reverseProxyPaths = []) => {
@@ -651,14 +652,16 @@ const reverseProxies = (app, reverseProxyPaths = []) => {
   app.all(reverseProxyPaths.map(proxyPath =>
   // Patch to update paths for express v5
   proxyPath.endsWith('/*') ? `${proxyPath.slice(0, -2)}/{*splat}` : proxyPath.endsWith('/**') ? `${proxyPath.slice(0, -3)}/{*splat}` : proxyPath), (req, res) => {
-    const target = req.hostname.indexOf('preview-') || req.hostname.indexOf('preview.') || req.hostname === 'localhost' ? servers$1.previewIis || servers$1.iis : servers$1.iis;
+    const target = req.hostname.includes('preview-') || req.hostname.includes('preview.') || req.hostname === 'localhost' ? servers$1.previewIis || servers$1.iis : servers$1.iis;
     assetProxy.web(req, res, {
       target,
-      changeOrigin: true
+      changeOrigin: true,
+      proxyTimeout: proxyTimeoutMs,
+      timeout: proxyTimeoutMs
     });
-    assetProxy.on('error', e => {
-      console.log(`Proxy Request for ${req.path} HostName:${req.hostname} failed with ${e}`);
-    });
+  });
+  assetProxy.on('error', (e, req) => {
+    console.log(`Proxy request for ${req.url} HostName:${req.headers.host} failed with ${e}`);
   });
 };
 const deliveryApiProxy = (apiProxy, app) => {
@@ -667,11 +670,13 @@ const deliveryApiProxy = (apiProxy, app) => {
     console.log(`Proxying api request to ${servers$1.alias}`);
     apiProxy.web(req, res, {
       target: deliveryApiHostname,
-      changeOrigin: true
+      changeOrigin: true,
+      proxyTimeout: proxyTimeoutMs,
+      timeout: proxyTimeoutMs
     });
-    apiProxy.on('error', e => {
-      console.log(`Proxy request for ${req.path} HostName:${req.hostname} failed with ${e}`);
-    });
+  });
+  apiProxy.on('error', (e, req) => {
+    console.log(`Proxy request for ${req.url} HostName:${req.headers.host} failed with ${e}`);
   });
 };
 
