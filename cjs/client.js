@@ -10,7 +10,8 @@ var reactRouterDom = require('react-router-dom');
 var component = require('@loadable/component');
 var queryString = require('query-string');
 var reactCookie = require('react-cookie');
-var App = require('./App-C5hfqiyz.js');
+var reactHelmetAsync = require('react-helmet-async');
+var App = require('./App-Dr56ZsQj.js');
 var slice = require('./slice-5xJMH24n.js');
 var version = require('./version-rFG9Y6_B.js');
 var version$1 = require('./version-2FamXHhj.js');
@@ -67,7 +68,7 @@ class ClientApp {
     // process locales in static routes for i18n
     const localeRoutes = App.createLocaleRoutes(routes);
     const GetClientJSX = store => {
-      const ClientJsx = /*#__PURE__*/React__default.default.createElement(reactCookie.CookiesProvider, null, /*#__PURE__*/React__default.default.createElement(reactRedux.Provider, {
+      const ClientJsx = /*#__PURE__*/React__default.default.createElement(reactHelmetAsync.HelmetProvider, null, /*#__PURE__*/React__default.default.createElement(reactCookie.CookiesProvider, null, /*#__PURE__*/React__default.default.createElement(reactRedux.Provider, {
         store: store
       }, /*#__PURE__*/React__default.default.createElement(reactRouterDom.unstable_HistoryRouter, {
         history: App.browserHistory,
@@ -78,7 +79,7 @@ class ClientApp {
       }, /*#__PURE__*/React__default.default.createElement(SSRContext.SSRContextProvider, null, /*#__PURE__*/React__default.default.createElement(ReactApp, {
         routes: routes,
         withEvents: withEvents
-      })))));
+      }))))));
       return ClientJsx;
     };
     const isDev = process.env.NODE_ENV !== 'production';

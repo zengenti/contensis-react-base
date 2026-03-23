@@ -6,6 +6,7 @@ export { default as stringifyStrings } from './stringifyStrings';
 export { default as urls } from './urls';
 export { useIsClient } from './useIsClient';
 export { NoSSR } from './NoSSR';
+export { Helmet, HelmetProvider } from 'react-helmet-async';
 export * from './json-mapper';
 export { default as VersionInfo } from "../app/pages/VersionInfo";
 export { useHistory } from './donotuse_useHistory';

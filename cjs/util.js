@@ -5,6 +5,7 @@ var ContensisDeliveryApi = require('./ContensisDeliveryApi-gN3_MHEl.js');
 var SSRContext = require('./SSRContext-DotLlTQc.js');
 var VersionInfo = require('./VersionInfo-zFPsvS8q.js');
 var React = require('react');
+var reactHelmetAsync = require('react-helmet-async');
 var mapJson = require('jsonpath-mapper');
 var reactRouterDom = require('react-router-dom');
 require('contensis-delivery-api');
@@ -204,6 +205,14 @@ exports.useDeliveryApi = SSRContext.useDeliveryApi;
 exports.useSSRContext = SSRContext.useSSRContext;
 exports.VersionInfo = VersionInfo.VersionInfo;
 exports.stringifyStrings = VersionInfo.stringifyStrings;
+Object.defineProperty(exports, "Helmet", {
+  enumerable: true,
+  get: function () { return reactHelmetAsync.Helmet; }
+});
+Object.defineProperty(exports, "HelmetProvider", {
+  enumerable: true,
+  get: function () { return reactHelmetAsync.HelmetProvider; }
+});
 Object.defineProperty(exports, "jpath", {
   enumerable: true,
   get: function () { return mapJson.jpath; }

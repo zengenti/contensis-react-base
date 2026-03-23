@@ -20,6 +20,7 @@ export declare const ssrJsxProducer: (ReactApp: React.ComponentType<any>, { prov
             extractor: ChunkExtractor;
         };
         cookies?: Cookies;
+        helmet: Record<string, unknown>;
         redux: typeof reduxStore;
         httpContext: HttpContextValues;
         router: {

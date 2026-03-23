@@ -32,7 +32,7 @@ var lodash = require('lodash');
 var lodashClean = require('lodash-clean');
 var CookieHelper_class = require('./CookieHelper.class-Det3qfdU.js');
 var cookiesMiddleware = require('universal-cookie-express');
-var App = require('./App-C5hfqiyz.js');
+var App = require('./App-Dr56ZsQj.js');
 var store = require('./store-Dn7vP6G0.js');
 var version = require('./version-2FamXHhj.js');
 var selectors = require('./selectors-BrxJ8-F8.js');
@@ -42,6 +42,7 @@ var server$2 = require('@loadable/server');
 var chalk = require('chalk');
 var minifyCssString = require('minify-css-string');
 var reactCookie = require('react-cookie');
+var reactHelmetAsync = require('react-helmet-async');
 var server$3 = require('react-router-dom/server');
 var SSRContext = require('./SSRContext-DotLlTQc.js');
 require('./VersionInfo-zFPsvS8q.js');
@@ -1224,7 +1225,9 @@ const ssrJsxProducer = (ReactApp, {
   var _providers$styledComp;
   // Recast ChunkExtractorManager to avoid TS error `Property 'children' does not exist on type...`
   const ChunkExtractor = server$2.ChunkExtractorManager;
-  const jsx = /*#__PURE__*/React__default.default.createElement(ChunkExtractor, {
+  const jsx = /*#__PURE__*/React__default.default.createElement(reactHelmetAsync.HelmetProvider, {
+    context: providers.helmet
+  }, /*#__PURE__*/React__default.default.createElement(ChunkExtractor, {
     extractor: providers.loadable.extractor
   }, /*#__PURE__*/React__default.default.createElement(reactCookie.CookiesProvider, {
     cookies: providers.cookies
@@ -1246,7 +1249,7 @@ const ssrJsxProducer = (ReactApp, {
   }, /*#__PURE__*/React__default.default.createElement(ReactApp, {
     routes: props.routes,
     withEvents: props.withEvents
-  })))))));
+  }))))))));
 
   // Wrap the JSX in a StyleSheetManager if a ServerStyleSheet is provided
   return !((_providers$styledComp = providers.styledComponents) !== null && _providers$styledComp !== void 0 && _providers$styledComp.sheet) ? jsx : providers.styledComponents.sheet.collectStyles(jsx);
@@ -1366,12 +1369,17 @@ const webApp = (app, ReactApp, config) => {
     // and read back any context props set by the ReactApp
     const context = {};
 
+    // Per-request helmet context object — populated by HelmetProvider during renderToString
+    // Using a fresh object per request ensures thread safety under concurrent SSR requests
+    const helmetContext = {};
+
     // Amalgamate all props for the various Providers we wrap the ReactApp with
     const jsxProviderProps = {
       loadable: {
         extractor: loadableExtractor.commonLoadableExtractor
       },
       cookies: ssrCookies,
+      helmet: helmetContext,
       redux: store$1,
       httpContext: context,
       router: {
@@ -1488,15 +1496,23 @@ const webApp = (app, ReactApp, config) => {
         const html = server$1.renderToString(styledJsx);
         // Helmet.renderStatic() has to be called synchronously immediately after calling renderToString()
         // as it is not thread-safe (or specifically scoped to only this request)
+        // TODO: deprecate `react-helmet`
         const helmet = reactHelmet.Helmet.renderStatic();
+
+        // helmetContext is populated synchronously by HelmetProvider during renderToString()
+        // It is scoped per-request via the helmetContext object, making this thread-safe
+        // under concurrent SSR requests (unlike the previous Helmet.renderStatic() global singleton)
+        const {
+          helmet: helmetAsync
+        } = helmetContext;
 
         // Because we have had to call renderToString() here to reliably gather all helmet metadata
         // We could potentially call sheet.getStyleTags() here too and avoid piping a react-rendered
         // stream to a second stream to inject styled-components CSS
 
-        const htmlAttributes = helmet.htmlAttributes.toString();
-        let title = helmet.title.toString();
-        const metadata = helmet.meta.toString().concat(helmet.base.toString()).concat(helmet.link.toString()).concat(helmet.script.toString()).concat(helmet.noscript.toString());
+        const htmlAttributes = helmetAsync.htmlAttributes.toString() || helmet.htmlAttributes.toString();
+        let title = helmet.title.toString().includes('><') ? helmetAsync.title.toString() : helmet.title.toString();
+        const metadata = helmetAsync.meta.toString().concat(helmetAsync.base.toString()).concat(helmetAsync.priority.toString()).concat(helmetAsync.link.toString()).concat(helmetAsync.script.toString()).concat(helmetAsync.noscript.toString()).concat(helmet.meta.toString()).concat(helmet.base.toString()).concat(helmet.link.toString()).concat(helmet.script.toString()).concat(helmet.noscript.toString());
         try {
           /**
            * Loads all page assets into the provided templateHTML

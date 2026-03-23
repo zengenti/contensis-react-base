@@ -28,8 +28,8 @@ import { noop, identity } from 'lodash';
 import { buildCleaner } from 'lodash-clean';
 import { a as Cookies } from './CookieHelper.class-C6rTRl_1.js';
 import cookiesMiddleware from 'universal-cookie-express';
-import { c as createLocaleRoutes, h as history, p as pickProject, r as rootSaga } from './App-BVdAv4vL.js';
-export { A as ReactApp } from './App-BVdAv4vL.js';
+import { c as createLocaleRoutes, h as history, p as pickProject, r as rootSaga } from './App-CrCf7gso.js';
+export { A as ReactApp } from './App-CrCf7gso.js';
 import { c as createStore } from './store-DSjRYsM2.js';
 import { s as setVersionStatus, c as setVersion } from './version-B75wA6Te.js';
 import { a6 as selectSurrogateKeys, a7 as selectSsrApiCalls, j as selectRouteEntry, f as selectCurrentProject, g as getImmutableOrJS, s as setCurrentProject, F as selectCurrentSearch } from './selectors-8ROQrTd7.js';
@@ -39,6 +39,7 @@ import { ChunkExtractor, ChunkExtractorManager } from '@loadable/server';
 import chalk from 'chalk';
 import minifyCssString from 'minify-css-string';
 import { CookiesProvider } from 'react-cookie';
+import { HelmetProvider } from 'react-helmet-async';
 import { StaticRouter } from 'react-router-dom/server';
 import { S as SSRContextProvider, g as getSubsitePath } from './SSRContext-CYxBWky3.js';
 import './VersionInfo-By2ZCZOh.js';
@@ -1206,7 +1207,9 @@ const ssrJsxProducer = (ReactApp, {
   var _providers$styledComp;
   // Recast ChunkExtractorManager to avoid TS error `Property 'children' does not exist on type...`
   const ChunkExtractor = ChunkExtractorManager;
-  const jsx = /*#__PURE__*/React.createElement(ChunkExtractor, {
+  const jsx = /*#__PURE__*/React.createElement(HelmetProvider, {
+    context: providers.helmet
+  }, /*#__PURE__*/React.createElement(ChunkExtractor, {
     extractor: providers.loadable.extractor
   }, /*#__PURE__*/React.createElement(CookiesProvider, {
     cookies: providers.cookies
@@ -1228,7 +1231,7 @@ const ssrJsxProducer = (ReactApp, {
   }, /*#__PURE__*/React.createElement(ReactApp, {
     routes: props.routes,
     withEvents: props.withEvents
-  })))))));
+  }))))))));
 
   // Wrap the JSX in a StyleSheetManager if a ServerStyleSheet is provided
   return !((_providers$styledComp = providers.styledComponents) !== null && _providers$styledComp !== void 0 && _providers$styledComp.sheet) ? jsx : providers.styledComponents.sheet.collectStyles(jsx);
@@ -1348,12 +1351,17 @@ const webApp = (app, ReactApp, config) => {
     // and read back any context props set by the ReactApp
     const context = {};
 
+    // Per-request helmet context object — populated by HelmetProvider during renderToString
+    // Using a fresh object per request ensures thread safety under concurrent SSR requests
+    const helmetContext = {};
+
     // Amalgamate all props for the various Providers we wrap the ReactApp with
     const jsxProviderProps = {
       loadable: {
         extractor: loadableExtractor.commonLoadableExtractor
       },
       cookies: ssrCookies,
+      helmet: helmetContext,
       redux: store,
       httpContext: context,
       router: {
@@ -1470,15 +1478,23 @@ const webApp = (app, ReactApp, config) => {
         const html = renderToString(styledJsx);
         // Helmet.renderStatic() has to be called synchronously immediately after calling renderToString()
         // as it is not thread-safe (or specifically scoped to only this request)
+        // TODO: deprecate `react-helmet`
         const helmet = Helmet.renderStatic();
+
+        // helmetContext is populated synchronously by HelmetProvider during renderToString()
+        // It is scoped per-request via the helmetContext object, making this thread-safe
+        // under concurrent SSR requests (unlike the previous Helmet.renderStatic() global singleton)
+        const {
+          helmet: helmetAsync
+        } = helmetContext;
 
         // Because we have had to call renderToString() here to reliably gather all helmet metadata
         // We could potentially call sheet.getStyleTags() here too and avoid piping a react-rendered
         // stream to a second stream to inject styled-components CSS
 
-        const htmlAttributes = helmet.htmlAttributes.toString();
-        let title = helmet.title.toString();
-        const metadata = helmet.meta.toString().concat(helmet.base.toString()).concat(helmet.link.toString()).concat(helmet.script.toString()).concat(helmet.noscript.toString());
+        const htmlAttributes = helmetAsync.htmlAttributes.toString() || helmet.htmlAttributes.toString();
+        let title = helmet.title.toString().includes('><') ? helmetAsync.title.toString() : helmet.title.toString();
+        const metadata = helmetAsync.meta.toString().concat(helmetAsync.base.toString()).concat(helmetAsync.priority.toString()).concat(helmetAsync.link.toString()).concat(helmetAsync.script.toString()).concat(helmetAsync.noscript.toString()).concat(helmet.meta.toString()).concat(helmet.base.toString()).concat(helmet.link.toString()).concat(helmet.script.toString()).concat(helmet.noscript.toString());
         try {
           /**
            * Loads all page assets into the provided templateHTML

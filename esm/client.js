@@ -6,8 +6,9 @@ import { unstable_HistoryRouter } from 'react-router-dom';
 import { loadableReady } from '@loadable/component';
 import { parse } from 'query-string';
 import { CookiesProvider } from 'react-cookie';
-import { c as createLocaleRoutes, b as browserHistory, r as rootSaga, p as pickProject } from './App-BVdAv4vL.js';
-export { A as ReactApp } from './App-BVdAv4vL.js';
+import { HelmetProvider } from 'react-helmet-async';
+import { c as createLocaleRoutes, b as browserHistory, r as rootSaga, p as pickProject } from './App-CrCf7gso.js';
+export { A as ReactApp } from './App-CrCf7gso.js';
 import { a as actions } from './slice-C6JLQik8.js';
 import { s as selectVersionStatus } from './version-BQAL8sQO.js';
 import { s as setVersionStatus } from './version-B75wA6Te.js';
@@ -60,7 +61,7 @@ class ClientApp {
     // process locales in static routes for i18n
     const localeRoutes = createLocaleRoutes(routes);
     const GetClientJSX = store => {
-      const ClientJsx = /*#__PURE__*/React.createElement(CookiesProvider, null, /*#__PURE__*/React.createElement(Provider, {
+      const ClientJsx = /*#__PURE__*/React.createElement(HelmetProvider, null, /*#__PURE__*/React.createElement(CookiesProvider, null, /*#__PURE__*/React.createElement(Provider, {
         store: store
       }, /*#__PURE__*/React.createElement(unstable_HistoryRouter, {
         history: browserHistory,
@@ -71,7 +72,7 @@ class ClientApp {
       }, /*#__PURE__*/React.createElement(SSRContextProvider, null, /*#__PURE__*/React.createElement(ReactApp, {
         routes: routes,
         withEvents: withEvents
-      })))));
+      }))))));
       return ClientJsx;
     };
     const isDev = process.env.NODE_ENV !== 'production';
