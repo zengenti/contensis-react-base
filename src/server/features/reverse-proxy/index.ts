@@ -7,6 +7,8 @@ const project = PROJECT; /* global PROJECT */
 const alias = ALIAS; /* global ALIAS */
 const deliveryApiHostname = url(alias, project).api;
 
+const proxyTimeoutMs = 45_000;
+
 export const assetProxy = httpProxy.createProxyServer();
 export const deliveryProxy = httpProxy.createProxyServer();
 
@@ -24,20 +26,25 @@ const reverseProxies = (app: Express, reverseProxyPaths: string[] = []) => {
     ),
     (req, res) => {
       const target =
-        req.hostname.indexOf('preview-') ||
-        req.hostname.indexOf('preview.') ||
+        req.hostname.includes('preview-') ||
+        req.hostname.includes('preview.') ||
         req.hostname === 'localhost'
           ? servers.previewIis || servers.iis
           : servers.iis;
 
-      assetProxy.web(req, res, { target, changeOrigin: true });
-      assetProxy.on('error', e => {
-        console.log(
-          `Proxy Request for ${req.path} HostName:${req.hostname} failed with ${e}`
-        );
+      assetProxy.web(req, res, {
+        target,
+        changeOrigin: true,
+        proxyTimeout: proxyTimeoutMs,
+        timeout: proxyTimeoutMs,
       });
     }
   );
+  assetProxy.on('error', (e, req) => {
+    console.log(
+      `Proxy request for ${req.url} HostName:${req.headers.host} failed with ${e}`
+    );
+  });
 };
 
 const deliveryApiProxy = (apiProxy, app) => {
@@ -54,14 +61,16 @@ const deliveryApiProxy = (apiProxy, app) => {
       apiProxy.web(req, res, {
         target: deliveryApiHostname,
         changeOrigin: true,
-      });
-      apiProxy.on('error', e => {
-        console.log(
-          `Proxy request for ${req.path} HostName:${req.hostname} failed with ${e}`
-        );
+        proxyTimeout: proxyTimeoutMs,
+        timeout: proxyTimeoutMs,
       });
     }
   );
+  apiProxy.on('error', (e, req) => {
+    console.log(
+      `Proxy request for ${req.url} HostName:${req.headers.host} failed with ${e}`
+    );
+  });
 };
 
 export default reverseProxies;
