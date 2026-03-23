@@ -1,7 +1,7 @@
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { matchRoutes, RouteObject } from 'react-router-dom';
-import { Helmet } from 'react-helmet';
+import type { HelmetServerState } from 'react-helmet-async';
 import { ServerStyleSheet } from 'styled-components';
 import serialize from 'serialize-javascript';
 import mapJson from 'jsonpath-mapper';
@@ -209,11 +209,16 @@ const webApp = (
       // and read back any context props set by the ReactApp
       const context: HttpContextValues = {};
 
+      // Per-request helmet context object — populated by HelmetProvider during renderToString
+      // Using a fresh object per request ensures thread safety under concurrent SSR requests
+      const helmetContext: Record<string, unknown> = {};
+
       // Amalgamate all props for the various Providers we wrap the ReactApp with
       const jsxProviderProps = {
         loadable: { extractor: loadableExtractor.commonLoadableExtractor },
         cookies: ssrCookies,
         redux: store,
+        helmetContext,
         httpContext: context,
         router: { url },
         ssrContext: { accessMethod, request, response },
@@ -332,9 +337,10 @@ const webApp = (
             // We have to call renderToString() in order for all components to have
             // had chance to set the helmet metadata
             const html = renderToString(styledJsx);
-            // Helmet.renderStatic() has to be called synchronously immediately after calling renderToString()
-            // as it is not thread-safe (or specifically scoped to only this request)
-            const helmet = Helmet.renderStatic();
+            // helmetContext is populated synchronously by HelmetProvider during renderToString()
+            // It is scoped per-request via the helmetContext object, making this thread-safe
+            // under concurrent SSR requests (unlike the previous Helmet.renderStatic() global singleton)
+            const { helmet } = helmetContext as { helmet: HelmetServerState };
 
             // Because we have had to call renderToString() here to reliably gather all helmet metadata
             // We could potentially call sheet.getStyleTags() here too and avoid piping a react-rendered

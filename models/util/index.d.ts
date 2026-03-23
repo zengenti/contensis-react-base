@@ -4,6 +4,7 @@ export { SSRContextProvider, useDeliveryApi, useSSRContext, } from './SSRContext
 export { getSubsitePath } from './subsite';
 export { default as stringifyStrings } from './stringifyStrings';
 export { default as urls } from './urls';
+export { Helmet, HelmetProvider } from 'react-helmet-async';
 export { useIsClient } from './useIsClient';
 export { NoSSR } from './NoSSR';
 export * from './json-mapper';

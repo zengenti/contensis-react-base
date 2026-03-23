@@ -20,6 +20,10 @@ export { getSubsitePath } from './subsite';
 export { default as stringifyStrings } from './stringifyStrings';
 export { default as urls } from './urls';
 
+// Head/metadata management — re-exported so consumers can import Helmet
+// from a stable path without a direct dependency on react-helmet-async
+export { Helmet, HelmetProvider } from 'react-helmet-async';
+
 // Hydration-safe approaches to defer rendering to browser
 export { useIsClient } from './useIsClient';
 export { NoSSR } from './NoSSR';

@@ -110,7 +110,6 @@ Import from `@zengenti/contensis-react-base/routing`
 
 📖 [i18n documentation](I18N.md)
 
-
 ## 🚨 Breaking Changes Overview
 
 | Area             | Change                                                                                                                    |
@@ -485,7 +484,47 @@ const config: AppConfig = {
 new ClientApp(ReactApp, config);
 ```
 
-### 7. Refactor search implementation
+### 7. Update `<Helmet>` imports (react-helmet → react-helmet-async)
+
+`react-helmet` has been replaced with `react-helmet-async` to resolve a thread-safety issue in concurrent SSR — `react-helmet`'s global singleton was not request-scoped, meaning helmet metadata from one request could bleed into another's HTML response under load.
+
+#### Update your import
+
+Change all `<Helmet>` imports in your app from `react-helmet` to `react-helmet-async` (or use the re-export from this library):
+
+```diff
+- import { Helmet } from 'react-helmet';
++ import { Helmet } from 'react-helmet-async';
+// Alternatively, import from the library's stable re-export:
++ import { Helmet } from '@zengenti/contensis-react-base/util';
+```
+
+#### Remove `react-helmet` from your project
+
+```bash
+npm uninstall react-helmet
+```
+
+#### Do NOT add your own `<HelmetProvider>`
+
+The library now provides `<HelmetProvider>`. If your app or any wrapper component adds its own `<HelmetProvider>`, the inner provider will shadow the outer one and helmet metadata will not be collected for SSR.
+
+**Exception**: In isolated testing, such as Storybook, contexts (where the provider is absent), you do need to wrap components in `<HelmetProvider>`:
+
+```tsx
+import { HelmetProvider } from 'react-helmet-async';
+
+// In tests or Storybook stories:
+render(
+  <HelmetProvider>
+    <YourComponent />
+  </HelmetProvider>
+);
+```
+
+---
+
+### 8. Refactor search implementation
 
 Although these changes strictly aren't required for the upgrade, we recommend removing old boilerplate to simplify your codebase and expand your search or listings using these simpler approaches.
 
@@ -580,7 +619,7 @@ const staticRoutes: StaticRoute[] = [
 > ⚠️ **Important:** Global Minilist users - **Don't blindly delete!**
 >
 > These deletions assume you've moved and no longer need the search config, reducers and sagas available in every route.
-> 
+>
 > If your project uses **search minilists** in many or all of your routes, these are still the recommended locations to register them. **Review your implementation before proceeding.**
 
 ```typescript

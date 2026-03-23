@@ -6,6 +6,7 @@ import {
 import { Request, Response } from 'express';
 import React, { ClassType, Component, ComponentClass } from 'react';
 import { CookiesProvider } from 'react-cookie';
+import { HelmetProvider } from 'react-helmet-async';
 import { Provider as ReduxProvider } from 'react-redux';
 import { StaticRouter } from 'react-router-dom/server';
 import { ServerStyleSheet } from 'styled-components';
@@ -38,6 +39,7 @@ export const ssrJsxProducer = (
       router: {
         url: string;
       };
+      helmetContext?: Record<string, unknown>;
       styledComponents?: { sheet: ServerStyleSheet };
       ssrContext: {
         accessMethod: SSRAccessMethod;
@@ -76,30 +78,32 @@ export const ssrJsxProducer = (
   >;
 
   const jsx = (
-    <ChunkExtractor extractor={providers.loadable.extractor}>
-      <CookiesProvider cookies={providers.cookies}>
-        <ReduxProvider store={providers.redux}>
-          <HttpContext.Provider value={providers.httpContext}>
-            <StaticRouter
-              location={providers.router.url}
-              future={{
-                v7_startTransition: true,
-                v7_relativeSplatPath: true,
-              }}
-            >
-              <SSRContextProvider
-                accessMethod={providers.ssrContext.accessMethod}
-                request={providers.ssrContext.request}
-                response={providers.ssrContext.response}
-                // ssrAssets={ssrAssets}
+    <HelmetProvider context={providers.helmetContext}>
+      <ChunkExtractor extractor={providers.loadable.extractor}>
+        <CookiesProvider cookies={providers.cookies}>
+          <ReduxProvider store={providers.redux}>
+            <HttpContext.Provider value={providers.httpContext}>
+              <StaticRouter
+                location={providers.router.url}
+                future={{
+                  v7_startTransition: true,
+                  v7_relativeSplatPath: true,
+                }}
               >
-                <ReactApp routes={props.routes} withEvents={props.withEvents} />
-              </SSRContextProvider>
-            </StaticRouter>
-          </HttpContext.Provider>
-        </ReduxProvider>
-      </CookiesProvider>
-    </ChunkExtractor>
+                <SSRContextProvider
+                  accessMethod={providers.ssrContext.accessMethod}
+                  request={providers.ssrContext.request}
+                  response={providers.ssrContext.response}
+                  // ssrAssets={ssrAssets}
+                >
+                  <ReactApp routes={props.routes} withEvents={props.withEvents} />
+                </SSRContextProvider>
+              </StaticRouter>
+            </HttpContext.Provider>
+          </ReduxProvider>
+        </CookiesProvider>
+      </ChunkExtractor>
+    </HelmetProvider>
   );
 
   // Wrap the JSX in a StyleSheetManager if a ServerStyleSheet is provided
