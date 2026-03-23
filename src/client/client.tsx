@@ -6,6 +6,7 @@ import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
 import { loadableReady } from '@loadable/component';
 import { parse } from 'query-string';
 import { CookiesProvider } from 'react-cookie';
+import { HelmetProvider } from 'react-helmet-async';
 
 import { createLocaleRoutes } from '~/i18n/routes';
 import { actions } from '~/i18n/redux/slice';
@@ -50,21 +51,23 @@ class ClientApp {
 
     const GetClientJSX = store => {
       const ClientJsx = (
-        <CookiesProvider>
-          <ReduxProvider store={store}>
-            <HistoryRouter
-              history={history as any}
-              future={{
-                v7_relativeSplatPath: true,
-                v7_startTransition: true,
-              }}
-            >
-              <SSRContextProvider>
-                <ReactApp routes={routes} withEvents={withEvents} />
-              </SSRContextProvider>
-            </HistoryRouter>
-          </ReduxProvider>
-        </CookiesProvider>
+        <HelmetProvider>
+          <CookiesProvider>
+            <ReduxProvider store={store}>
+              <HistoryRouter
+                history={history as any}
+                future={{
+                  v7_relativeSplatPath: true,
+                  v7_startTransition: true,
+                }}
+              >
+                <SSRContextProvider>
+                  <ReactApp routes={routes} withEvents={withEvents} />
+                </SSRContextProvider>
+              </HistoryRouter>
+            </ReduxProvider>
+          </CookiesProvider>
+        </HelmetProvider>
       );
       return ClientJsx;
     };

@@ -49,6 +49,7 @@ Import from `@zengenti/contensis-react-base/util`
 
 - **`useIsClient()`** to use when we need to conditionally render in the browser only
 - **`<NoSSR />`** component can wrap other components to conditionally render in the browser only
+- **`<Helmet />`** component re-export of `react-helmet-async`, in case import paths change again in future
 
 ---
 
@@ -110,6 +111,16 @@ Import from `@zengenti/contensis-react-base/routing`
 
 📖 [i18n documentation](I18N.md)
 
+---
+
+### 🪖 React Helmet Async
+
+- Added support for migrating to `react-helmet-async`
+- `<HelmetProvider>` wrapper collects helmet context per request
+- Enables thread-safe SSR preventing potential cross-request metadata leakage
+- Existing implementations continue to work without changes
+
+---
 
 ## 🚨 Breaking Changes Overview
 
@@ -485,7 +496,53 @@ const config: AppConfig = {
 new ClientApp(ReactApp, config);
 ```
 
-### 7. Refactor search implementation
+### 7. Update to `react-helmet-async`
+
+Over recent years, the ecosystem has moved away from `react-helmet` and instead has been replaced with an almost direct replacement: `react-helmet-async`. This change paves the way for better React 19 support and more importantly resolves a potential thread-safety issue with very high concurrent requests in SSR. `react-helmet` uses a global singleton that is not request-scoped, meaning helmet metadata from one request has the potential to bleed into another's HTML response under load. [Read more](https://www.npmjs.com/package/react-helmet-async)
+
+> ℹ️ Projects currently using `react-helmet` are still supported, making this an optional but strongly recommended upgrade step.
+
+> ⚠️ Support for `react-helmet` will be dropped in the next major release.
+
+1. Remove references to `react-helmet` package:
+
+```sh
+npm uninstall react-helmet
+```
+
+2. Search your project for `'react-helmet'` or `<Helmet>`
+
+Update imports in any found components from `react-helmet` to `react-helmet-async` (or use the re-export from this library):
+
+```tsx
+import { Helmet } from 'react-helmet'; // ❌ old
+import { Helmet } from 'react-helmet-async'; // ✅ new
+// Or, if you'd prefer to import from our (stable) re-export:
+import { Helmet } from '@zengenti/contensis-react-base/util'; // ✅ alternative
+```
+
+#### Do NOT add your own `<HelmetProvider>`
+
+We are now wrapping your `<App />` JSX with a `<HelmetProvider>`, like we do with other core providers - such as Router, Redux and Cookies so we can collect the helmet data that was rendered in your JSX tree and add it to the SSR response.
+
+> ⚠️ This means you do not need to (and should not) add this yourself. Any "inner provider" added will shadow the outer one and helmet metadata will not be collected for SSR.
+
+**Exception**: In isolated testing, such as Storybook, contexts (where the provider is absent), you do need to wrap components in `<HelmetProvider>`:
+
+```tsx
+import { HelmetProvider } from 'react-helmet-async';
+
+// In tests or Storybook stories:
+render(
+  <HelmetProvider>
+    <YourComponent />
+  </HelmetProvider>
+);
+```
+
+---
+
+### 8. Refactor search implementation
 
 Although these changes strictly aren't required for the upgrade, we recommend removing old boilerplate to simplify your codebase and expand your search or listings using these simpler approaches.
 
@@ -580,7 +637,7 @@ const staticRoutes: StaticRoute[] = [
 > ⚠️ **Important:** Global Minilist users - **Don't blindly delete!**
 >
 > These deletions assume you've moved and no longer need the search config, reducers and sagas available in every route.
-> 
+>
 > If your project uses **search minilists** in many or all of your routes, these are still the recommended locations to register them. **Review your implementation before proceeding.**
 
 ```typescript

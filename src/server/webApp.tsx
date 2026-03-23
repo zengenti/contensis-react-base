@@ -2,6 +2,7 @@ import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { matchRoutes, RouteObject } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
+import type { HelmetServerState } from 'react-helmet-async';
 import { ServerStyleSheet } from 'styled-components';
 import serialize from 'serialize-javascript';
 import mapJson from 'jsonpath-mapper';
@@ -167,9 +168,9 @@ const webApp = (
       const hostname = (request.headers['x-orig-host'] ||
         request.hostname) as string;
       const subsitePath = getSubsitePath(request);
-      const subsitePathScript = subsitePath ? `window.subsitePath = ${serialize(
-        subsitePath
-      )};` : '';
+      const subsitePathScript = subsitePath
+        ? `window.subsitePath = ${serialize(subsitePath)};`
+        : '';
 
       console.info(
         `Request for ${request.path} hostname: ${hostname} versionStatus: ${versionStatus}`
@@ -209,10 +210,15 @@ const webApp = (
       // and read back any context props set by the ReactApp
       const context: HttpContextValues = {};
 
+      // Per-request helmet context object — populated by HelmetProvider during renderToString
+      // Using a fresh object per request ensures thread safety under concurrent SSR requests
+      const helmetContext = {} as Record<string, unknown>;
+
       // Amalgamate all props for the various Providers we wrap the ReactApp with
       const jsxProviderProps = {
         loadable: { extractor: loadableExtractor.commonLoadableExtractor },
         cookies: ssrCookies,
+        helmet: helmetContext,
         redux: store,
         httpContext: context,
         router: { url },
@@ -334,16 +340,34 @@ const webApp = (
             const html = renderToString(styledJsx);
             // Helmet.renderStatic() has to be called synchronously immediately after calling renderToString()
             // as it is not thread-safe (or specifically scoped to only this request)
+            // TODO: deprecate `react-helmet`
             const helmet = Helmet.renderStatic();
+
+            // helmetContext is populated synchronously by HelmetProvider during renderToString()
+            // It is scoped per-request via the helmetContext object, making this thread-safe
+            // under concurrent SSR requests (unlike the previous Helmet.renderStatic() global singleton)
+            const { helmet: helmetAsync } = helmetContext as {
+              helmet: HelmetServerState;
+            };
 
             // Because we have had to call renderToString() here to reliably gather all helmet metadata
             // We could potentially call sheet.getStyleTags() here too and avoid piping a react-rendered
             // stream to a second stream to inject styled-components CSS
 
-            const htmlAttributes = helmet.htmlAttributes.toString();
-            let title = helmet.title.toString();
-            const metadata = helmet.meta
+            const htmlAttributes =
+              helmetAsync.htmlAttributes.toString() ||
+              helmet.htmlAttributes.toString();
+            let title = helmet.title.toString().includes('><')
+              ? helmetAsync.title.toString()
+              : helmet.title.toString();
+            const metadata = helmetAsync.meta
               .toString()
+              .concat(helmetAsync.base.toString())
+              .concat(helmetAsync.priority.toString())
+              .concat(helmetAsync.link.toString())
+              .concat(helmetAsync.script.toString())
+              .concat(helmetAsync.noscript.toString())
+              .concat(helmet.meta.toString())
               .concat(helmet.base.toString())
               .concat(helmet.link.toString())
               .concat(helmet.script.toString())

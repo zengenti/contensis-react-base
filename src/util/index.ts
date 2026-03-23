@@ -24,6 +24,10 @@ export { default as urls } from './urls';
 export { useIsClient } from './useIsClient';
 export { NoSSR } from './NoSSR';
 
+// Head/metadata management — re-exported so consumers can import Helmet
+// from a stable path without a direct dependency on react-helmet-async
+export { Helmet, HelmetProvider } from 'react-helmet-async';
+
 // JSON mapping functions
 export * from './json-mapper';
 

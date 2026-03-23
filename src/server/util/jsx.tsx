@@ -6,11 +6,12 @@ import {
 import { Request, Response } from 'express';
 import React, { ClassType, Component, ComponentClass } from 'react';
 import { CookiesProvider } from 'react-cookie';
+import { HelmetProvider, HelmetServerState } from 'react-helmet-async';
 import { Provider as ReduxProvider } from 'react-redux';
 import { StaticRouter } from 'react-router-dom/server';
 import { ServerStyleSheet } from 'styled-components';
 import Cookies from 'universal-cookie';
-import { AppRoutes, ServerConfig, SSRAccessMethod, WithEvents } from '~/models';
+import { AppRoutes, SSRAccessMethod, WithEvents } from '~/models';
 import { reduxStore } from '~/redux/store/store';
 import { HttpContext, HttpContextValues } from '~/routing/httpContext';
 import { SSRContextProvider } from '~/util';
@@ -33,6 +34,7 @@ export const ssrJsxProducer = (
     providers: {
       loadable: { extractor: ChunkExtractor };
       cookies?: Cookies;
+      helmet: Record<string, unknown>;
       redux: typeof reduxStore;
       httpContext: HttpContextValues;
       router: {
@@ -76,30 +78,35 @@ export const ssrJsxProducer = (
   >;
 
   const jsx = (
-    <ChunkExtractor extractor={providers.loadable.extractor}>
-      <CookiesProvider cookies={providers.cookies}>
-        <ReduxProvider store={providers.redux}>
-          <HttpContext.Provider value={providers.httpContext}>
-            <StaticRouter
-              location={providers.router.url}
-              future={{
-                v7_startTransition: true,
-                v7_relativeSplatPath: true,
-              }}
-            >
-              <SSRContextProvider
-                accessMethod={providers.ssrContext.accessMethod}
-                request={providers.ssrContext.request}
-                response={providers.ssrContext.response}
-                // ssrAssets={ssrAssets}
+    <HelmetProvider context={providers.helmet}>
+      <ChunkExtractor extractor={providers.loadable.extractor}>
+        <CookiesProvider cookies={providers.cookies}>
+          <ReduxProvider store={providers.redux}>
+            <HttpContext.Provider value={providers.httpContext}>
+              <StaticRouter
+                location={providers.router.url}
+                future={{
+                  v7_startTransition: true,
+                  v7_relativeSplatPath: true,
+                }}
               >
-                <ReactApp routes={props.routes} withEvents={props.withEvents} />
-              </SSRContextProvider>
-            </StaticRouter>
-          </HttpContext.Provider>
-        </ReduxProvider>
-      </CookiesProvider>
-    </ChunkExtractor>
+                <SSRContextProvider
+                  accessMethod={providers.ssrContext.accessMethod}
+                  request={providers.ssrContext.request}
+                  response={providers.ssrContext.response}
+                  // ssrAssets={ssrAssets}
+                >
+                  <ReactApp
+                    routes={props.routes}
+                    withEvents={props.withEvents}
+                  />
+                </SSRContextProvider>
+              </StaticRouter>
+            </HttpContext.Provider>
+          </ReduxProvider>
+        </CookiesProvider>
+      </ChunkExtractor>
+    </HelmetProvider>
   );
 
   // Wrap the JSX in a StyleSheetManager if a ServerStyleSheet is provided
