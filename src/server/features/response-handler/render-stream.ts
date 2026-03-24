@@ -11,15 +11,17 @@ import { ServerStyleSheet } from 'styled-components';
  * @param jsx the JSX to render via a streamed response
  * @param response the express Response object
  * @param stream all chunks are piped to this stream to add additional style elements to each streamed chunk
+ * @param onFinish optional cleanup callback invoked once the stream is done (for sealing styled-components sheets, etc.)
  */
 export const renderStream = (
   getContextHtml: (isFinal?: boolean) => string,
   jsx: ReactNode,
   response: Response,
-  stream: Writable
+  stream: Writable,
+  onFinish?: () => void
 ) => {
-  // Store timeout reference for cleanup
   let timeoutId: ReturnType<typeof setTimeout> | null = null;
+  let cleaned = false;
 
   const disposeTimeout = () => {
     if (timeoutId) {
@@ -28,31 +30,48 @@ export const renderStream = (
     }
   };
 
+  const cleanup = () => {
+    if (cleaned) return;
+    cleaned = true;
+    disposeTimeout();
+    if (!stream.destroyed) stream.destroy();
+    onFinish?.();
+  };
+
+  // Ensure cleanup when the response closes
+  // (normal completion, client disconnect, etc.)
+  response.on('close', cleanup);
+
   const { abort, pipe } = renderToPipeableStream(jsx, {
     onShellReady() {
       const html = getContextHtml(false);
       if (!html) {
-        // this means we have finished with the response already
-        disposeTimeout();
+        // Response already handled (e.g. redirect)
         abort();
-      } else {
-        const header = html.split('{{APP}}')[0];
-
-        response.setHeader('content-type', 'text/html; charset=utf-8');
-        stream.write(header);
-        pipe(stream);
+        cleanup();
+        return;
       }
+      const header = html.split('{{APP}}')[0];
+
+      response.setHeader('content-type', 'text/html; charset=utf-8');
+      stream.write(header);
+      pipe(stream);
     },
     onAllReady() {
       const footer = getContextHtml(true).split('{{APP}}')[1];
       stream.write(footer);
-      disposeTimeout(); // Clean up timeout when stream completes
+      disposeTimeout();
+      // React's pipe will end the stream after all content is flushed,
+      // which triggers response 'close' → cleanup
     },
     onShellError(error: unknown) {
-      disposeTimeout(); // Clean up timeout on error
-      response.statusCode = 500;
-      response.setHeader('content-type', 'text/html; charset=utf-8');
-      response.send('<h1>Something went wrong</h1>');
+      abort();
+      cleanup();
+      if (!response.headersSent) {
+        response.statusCode = 500;
+        response.setHeader('content-type', 'text/html; charset=utf-8');
+        response.send('<h1>Something went wrong</h1>');
+      }
       console.error(`[renderToPipeableStream:onShellError]`, error);
     },
     onError(error) {
@@ -61,10 +80,10 @@ export const renderStream = (
   });
 
   // Abandon and switch to client rendering after 30s.
-  // Try lowering this to see the client recover.
   timeoutId = setTimeout(() => {
-    timeoutId = null; // Clear reference when timeout executes
+    timeoutId = null;
     abort();
+    cleanup();
   }, 30 * 1000);
 
   stream?.pipe(response);

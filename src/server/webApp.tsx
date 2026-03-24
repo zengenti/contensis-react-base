@@ -440,11 +440,26 @@ const webApp = (
                 const responseHTML = getContextHtml(true, styleTags, html);
                 responseHandler(request, response, responseHTML);
               } else {
+                // Seal the sheet used for the Helmet extraction render
+                // to release its internal style buffers immediately
+                sheet.seal();
+
+                // Create a fresh sheet for the streaming render to avoid
+                // reusing corrupted state from the Helmet extraction render
+                const streamSheet = new ServerStyleSheet();
+                const streamJsx = ssrJsxProducer(ReactApp, {
+                  providers: {
+                    ...jsxProviderProps,
+                    styledComponents: { sheet: streamSheet },
+                  },
+                  props: jsxReactAppProps,
+                });
                 renderStream(
                   getContextHtml,
-                  styledJsx,
+                  streamJsx,
                   response,
-                  styledComponentsStream(sheet)
+                  styledComponentsStream(streamSheet),
+                  () => streamSheet.seal()
                 );
               }
             } catch (err: any) {
