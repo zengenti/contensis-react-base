@@ -853,8 +853,8 @@ const handleResponse = (request, response, content, send = 'send') => {
  * @param response the express Response object
  * @param stream all chunks are piped to this stream to add additional style elements to each streamed chunk
  */
-const renderStream = (getContextHtml, jsx, response, stream) => {
-  // Store timeout reference for cleanup
+const renderStream = (getContextHtml, jsx, request, response, stream) => {
+  // Store timeout reference for cleanup on normal or abnormal termination
   let timeoutId = null;
   const disposeTimeout = () => {
     if (timeoutId) {
@@ -862,6 +862,22 @@ const renderStream = (getContextHtml, jsx, response, stream) => {
       timeoutId = null;
     }
   };
+
+  // Only used for abnormal termination
+  const abortCleanup = err => {
+    disposeTimeout();
+    stream.destroy(err instanceof Error ? err : undefined);
+    abort();
+  };
+
+  // Guard against client disconnect
+  request.on('close', () => abortCleanup());
+
+  // Guard against transform errors
+  stream.on('error', err => {
+    abortCleanup(err);
+    if (!response.headersSent) response.destroy(err);
+  });
   const {
     abort,
     pipe
@@ -870,8 +886,7 @@ const renderStream = (getContextHtml, jsx, response, stream) => {
       const html = getContextHtml(false);
       if (!html) {
         // this means we have finished with the response already
-        disposeTimeout();
-        abort();
+        abortCleanup();
       } else {
         const header = html.split('{{APP}}')[0];
         response.setHeader('content-type', 'text/html; charset=utf-8');
@@ -882,10 +897,10 @@ const renderStream = (getContextHtml, jsx, response, stream) => {
     onAllReady() {
       const footer = getContextHtml(true).split('{{APP}}')[1];
       stream.write(footer);
-      disposeTimeout(); // Clean up timeout when stream completes
+      disposeTimeout(); // Clear the timeout, let stream end naturally
     },
     onShellError(error) {
-      disposeTimeout(); // Clean up timeout on error
+      abortCleanup(error); // Abnormal - destroy everything
       response.statusCode = 500;
       response.setHeader('content-type', 'text/html; charset=utf-8');
       response.send('<h1>Something went wrong</h1>');
@@ -899,10 +914,10 @@ const renderStream = (getContextHtml, jsx, response, stream) => {
   // Abandon and switch to client rendering after 30s.
   // Try lowering this to see the client recover.
   timeoutId = setTimeout(() => {
-    timeoutId = null; // Clear reference when timeout executes
-    abort();
-  }, 30 * 1000);
-  stream === null || stream === void 0 || stream.pipe(response);
+    timeoutId = null;
+    abortCleanup();
+  }, 30_000);
+  stream.pipe(response);
 };
 
 /**
@@ -942,6 +957,23 @@ const styledComponentsStream = sheet => {
         this.push(styledCSS + renderedHtml);
       }
       callback();
+    },
+    destroy(err, callback) {
+      // Called on both stream.destroy() and natural end
+      // Stops the sheet intercepting styles & releases its references
+
+      // try/catch is required if sheet.seal() throws for any reason,
+      // callback(err) must still be called, as Node.js stream internals depend
+      // on it to complete teardown. Omitting it causes the stream to hang.
+      try {
+        sheet.seal();
+      } catch (sealErr) {
+        // Catch any errors from sealing the sheet, we MUST always call the
+        // callback to prevent hanging the stream
+
+        console.error('[styledComponentsStream] sheet.seal() failed - styles may leak:', sealErr);
+      }
+      callback(err);
     }
   });
   return readerWriter;
@@ -1566,7 +1598,7 @@ const webApp = (app, ReactApp, config) => {
             const responseHTML = getContextHtml(true, styleTags, html);
             responseHandler(request, response, responseHTML);
           } else {
-            renderStream(getContextHtml, styledJsx, response, styledComponentsStream(sheet));
+            renderStream(getContextHtml, styledJsx, request, response, styledComponentsStream(sheet));
           }
         } catch (err) {
           console.info(err.message);
