@@ -1,4 +1,4 @@
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { ReactNode } from 'react';
 import { renderToPipeableStream } from 'react-dom/server';
 import { Transform, Writable } from 'stream';
@@ -15,10 +15,11 @@ import { ServerStyleSheet } from 'styled-components';
 export const renderStream = (
   getContextHtml: (isFinal?: boolean) => string,
   jsx: ReactNode,
+  request: Request,
   response: Response,
   stream: Writable
 ) => {
-  // Store timeout reference for cleanup
+  // Store timeout reference for cleanup on normal or abnormal termination
   let timeoutId: ReturnType<typeof setTimeout> | null = null;
 
   const disposeTimeout = () => {
@@ -28,16 +29,30 @@ export const renderStream = (
     }
   };
 
+  // Only used for abnormal termination
+  const abortCleanup = (err?: unknown) => {
+    disposeTimeout();
+    stream.destroy(err instanceof Error ? err : undefined);
+    abort();
+  };
+
+  // Guard against client disconnect
+  request.on('close', () => abortCleanup());
+
+  // Guard against transform errors
+  stream.on('error', err => {
+    abortCleanup(err);
+    if (!response.headersSent) response.destroy(err);
+  });
+
   const { abort, pipe } = renderToPipeableStream(jsx, {
     onShellReady() {
       const html = getContextHtml(false);
       if (!html) {
         // this means we have finished with the response already
-        disposeTimeout();
-        abort();
+        abortCleanup();
       } else {
         const header = html.split('{{APP}}')[0];
-
         response.setHeader('content-type', 'text/html; charset=utf-8');
         stream.write(header);
         pipe(stream);
@@ -46,10 +61,10 @@ export const renderStream = (
     onAllReady() {
       const footer = getContextHtml(true).split('{{APP}}')[1];
       stream.write(footer);
-      disposeTimeout(); // Clean up timeout when stream completes
+      disposeTimeout(); // Clear the timeout, let stream end naturally
     },
     onShellError(error: unknown) {
-      disposeTimeout(); // Clean up timeout on error
+      abortCleanup(error); // Abnormal - destroy everything
       response.statusCode = 500;
       response.setHeader('content-type', 'text/html; charset=utf-8');
       response.send('<h1>Something went wrong</h1>');
@@ -63,11 +78,11 @@ export const renderStream = (
   // Abandon and switch to client rendering after 30s.
   // Try lowering this to see the client recover.
   timeoutId = setTimeout(() => {
-    timeoutId = null; // Clear reference when timeout executes
-    abort();
-  }, 30 * 1000);
+    timeoutId = null;
+    abortCleanup();
+  }, 30_000);
 
-  stream?.pipe(response);
+  stream.pipe(response);
 };
 
 /**
@@ -117,7 +132,26 @@ export const styledComponentsStream = (sheet: ServerStyleSheet) => {
       }
       callback();
     },
+    destroy(err, callback) {
+      // Called on both stream.destroy() and natural end
+      // Stops the sheet intercepting styles & releases its references
+
+      // try/catch is required if sheet.seal() throws for any reason,
+      // callback(err) must still be called, as Node.js stream internals depend
+      // on it to complete teardown. Omitting it causes the stream to hang.
+      try {
+        sheet.seal();
+      } catch (sealErr) {
+        // Catch any errors from sealing the sheet, we MUST always call the
+        // callback to prevent hanging the stream
+
+        console.error(
+          '[styledComponentsStream] sheet.seal() failed - styles may leak:',
+          sealErr
+        );
+      }
+      callback(err);
+    },
   });
   return readerWriter;
 };
-export const renderToString = () => {};

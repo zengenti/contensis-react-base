@@ -443,6 +443,7 @@ const webApp = (
                 renderStream(
                   getContextHtml,
                   styledJsx,
+                  request,
                   response,
                   styledComponentsStream(sheet)
                 );
