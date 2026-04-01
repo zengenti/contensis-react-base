@@ -1,11 +1,17 @@
-import React, { useContext, createContext, useCallback, useEffect, cloneElement } from 'react';
-import { connect } from 'react-redux';
-import { Navigate, useRoutes, useLocation, matchRoutes } from 'react-router-dom';
-import { createSelector } from 'reselect';
-import { h as selectRouteEntryContentTypeId, j as selectRouteEntry, k as selectRouteIsError, l as selectIsNotFound, m as selectRouteLoading, n as selectMappedEntry, f as selectCurrentProject, o as selectCurrentPath, p as selectRouteStatusCode, q as selectRouteErrorMessage, u as setNavigationPath } from './selectors-8ROQrTd7.js';
-import { d as selectUserIsAuthenticated, k as selectUserGroups, m as matchUserGroup } from './matchGroups-_w8BwzCC.js';
-import { a as useSSRContext, t as transformPathForSubsite } from './SSRContext-CYxBWky3.js';
-import { t as toJS } from './ToJs-BnRRHk6f.js';
+'use strict';
+
+var React = require('react');
+var reactRedux = require('react-redux');
+var reactRouterDom = require('react-router-dom');
+var reselect = require('reselect');
+var selectors = require('./selectors-BrxJ8-F8.js');
+var matchGroups = require('./matchGroups-dqONU-vY.js');
+var SSRContext = require('./SSRContext-DotLlTQc.js');
+var ToJs = require('./ToJs-BsWqWjdm.js');
+
+function _interopDefault (e) { return e && e.__esModule ? e : { default: e }; }
+
+var React__default = /*#__PURE__*/_interopDefault(React);
 
 const mergeStaticRoutes = matchedStaticRoute => {
   let finalRoute = {};
@@ -35,9 +41,9 @@ const mergeStaticRoutes = matchedStaticRoute => {
   }
 };
 
-const HttpContext = /*#__PURE__*/createContext({});
+const HttpContext = /*#__PURE__*/React.createContext({});
 const useHttpContext = () => {
-  return useContext(HttpContext);
+  return React.useContext(HttpContext);
 };
 
 const Redirect = ({
@@ -49,7 +55,7 @@ const Redirect = ({
     httpContext.statusCode = code;
     httpContext.url = to;
   }
-  return /*#__PURE__*/React.createElement(Navigate, {
+  return /*#__PURE__*/React__default.default.createElement(reactRouterDom.Navigate, {
     to: to
   });
 };
@@ -62,13 +68,13 @@ const Status = ({
   if (httpContext) {
     httpContext.statusCode = code;
   }
-  return /*#__PURE__*/React.createElement(React.Fragment, null, children);
+  return /*#__PURE__*/React__default.default.createElement(React__default.default.Fragment, null, children);
 };
 
 const NotFound = ({
   statusCode,
   statusText
-}) => /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("header", null, /*#__PURE__*/React.createElement("h1", null, statusCode || '404', " Page Not Found"), statusText && /*#__PURE__*/React.createElement("h2", {
+}) => /*#__PURE__*/React__default.default.createElement(React__default.default.Fragment, null, /*#__PURE__*/React__default.default.createElement("header", null, /*#__PURE__*/React__default.default.createElement("h1", null, statusCode || '404', " Page Not Found"), statusText && /*#__PURE__*/React__default.default.createElement("h2", {
   style: {
     background: '#eee',
     color: '#666',
@@ -80,8 +86,8 @@ const NotFound = ({
 const StaticRouteLoader = ({
   staticRoutes
 }) => {
-  const staticRouteElement = useRoutes(staticRoutes);
-  return /*#__PURE__*/React.createElement(React.Fragment, null, staticRouteElement);
+  const staticRouteElement = reactRouterDom.useRoutes(staticRoutes);
+  return /*#__PURE__*/React__default.default.createElement(React__default.default.Fragment, null, staticRouteElement);
 };
 
 const replaceDoubleSlashRecursive = path => {
@@ -114,7 +120,7 @@ const processStaticRoutes = (staticRoutes, componentProps) => {
       ...x
     };
     if (route.component) {
-      route.element = /*#__PURE__*/React.createElement(route.component, {
+      route.element = /*#__PURE__*/React__default.default.createElement(route.component, {
         projectId: projectId,
         contentTypeId: contentTypeId ? contentTypeId : undefined,
         entry: entry,
@@ -124,7 +130,7 @@ const processStaticRoutes = (staticRoutes, componentProps) => {
       delete route.component;
     }
     if (route.element) {
-      route.element = /*#__PURE__*/cloneElement(route.element, {
+      route.element = /*#__PURE__*/React.cloneElement(route.element, {
         projectId,
         contentTypeId,
         entry,
@@ -158,11 +164,11 @@ const RouteLoader = ({
   withEvents,
   trailingSlashRedirectCode = 302
 }) => {
-  const location = useLocation();
+  const location = reactRouterDom.useLocation();
 
   // In SSR pass references to things in backing sagas
   // we cannot access in a global scope
-  const ssrContext = useSSRContext();
+  const ssrContext = SSRContext.useSSRContext();
 
   // Always ensure paths are trimmed of trailing slashes so urls are always unique
   const trimmedPath = getTrimmedPath(location.pathname);
@@ -177,7 +183,7 @@ const RouteLoader = ({
   });
 
   // Match any Static Routes a developer has defined
-  const matchedStaticRoute = matchRoutes(staticRoutes, location);
+  const matchedStaticRoute = reactRouterDom.matchRoutes(staticRoutes, location);
   const isStaticRoute = matchedStaticRoute && matchedStaticRoute.length > 0;
 
   // Combine custom params for all static routes, with the furthest config taking precedence.
@@ -186,7 +192,7 @@ const RouteLoader = ({
   }
   const staticRoute = isStaticRoute ? matchedStaticRoute.pop() || undefined : undefined;
   const routeRequiresLogin = staticRoute ? staticRoute.route.requireLogin : undefined;
-  const setPath = useCallback(() => {
+  const setPath = React.useCallback(() => {
     // Use serverPath to control the path we send to siteview node api to resolve a route
     let serverPath = '';
     if (staticRoute && staticRoute.pathname === staticRoute.pathnameBase) {
@@ -219,7 +225,7 @@ const RouteLoader = ({
     const {
       clientPath,
       contentPath
-    } = transformPathForSubsite(serverPath || trimmedPath, ssrContext.request);
+    } = SSRContext.transformPathForSubsite(serverPath || trimmedPath, ssrContext.request);
     setNavigationPath(clientPath, contentPath, location, staticRoute, withEvents, statePath, routes, ssrContext);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setNavigationPath,
@@ -228,13 +234,13 @@ const RouteLoader = ({
   // statePath,
   trimmedPath]);
   if (typeof window == 'undefined') setPath();
-  useEffect(() => {
+  React.useEffect(() => {
     setPath();
   }, [location, setPath]);
 
   // Need to redirect when url endswith a /
   if (location.pathname.length > trimmedPath.length) {
-    return /*#__PURE__*/React.createElement(Redirect, {
+    return /*#__PURE__*/React__default.default.createElement(Redirect, {
       code: trailingSlashRedirectCode || 302,
       to: `${trimmedPath}${location.search}${location.hash}`
     });
@@ -242,7 +248,7 @@ const RouteLoader = ({
 
   // Render any Static Routes a developer has defined
   if (isStaticRoute && !(!isLoggedIn && routeRequiresLogin)) {
-    if (matchUserGroup(userGroups, routeRequiresLogin)) return /*#__PURE__*/React.createElement(StaticRouteLoader, {
+    if (matchGroups.matchUserGroup(userGroups, routeRequiresLogin)) return /*#__PURE__*/React__default.default.createElement(StaticRouteLoader, {
       staticRoutes: staticRoutes
     });
   }
@@ -251,14 +257,14 @@ const RouteLoader = ({
   // is not a static route and is in a loading state
   if (isLoading && !isNotFound && loadingComponent) {
     const LoadingComponent = loadingComponent;
-    return /*#__PURE__*/React.createElement(LoadingComponent, null);
+    return /*#__PURE__*/React__default.default.createElement(LoadingComponent, null);
   }
 
   // Match any defined Content Type Mappings
   if (contentTypeId && !(!isLoggedIn && routeRequiresLogin)) {
     const MatchedComponent = routes.ContentTypeMappings.find(item => item.contentTypeID === contentTypeId);
     if (MatchedComponent && !(MatchedComponent.requireLogin && !isLoggedIn)) {
-      if (matchUserGroup(userGroups, MatchedComponent.requireLogin)) return /*#__PURE__*/React.createElement(MatchedComponent.component, {
+      if (matchGroups.matchUserGroup(userGroups, MatchedComponent.requireLogin)) return /*#__PURE__*/React__default.default.createElement(MatchedComponent.component, {
         projectId: projectId,
         contentTypeId: contentTypeId,
         entry: entry,
@@ -269,17 +275,20 @@ const RouteLoader = ({
   }
   const NotFoundComponent = notFoundComponent ? notFoundComponent : NotFound;
   if (isNotFound || isError) {
-    console.info(`RouteLoader rendering NotFound component: statusCode ${statusCode}, isNotFound ${isNotFound}, isError ${isError}`);
-    return /*#__PURE__*/React.createElement(Status, {
+    // console.info(
+    //   `RouteLoader rendering NotFound component: statusCode ${statusCode}, isNotFound ${isNotFound}, isError ${isError}`
+    // );
+
+    return /*#__PURE__*/React__default.default.createElement(Status, {
       code: statusCode
-    }, /*#__PURE__*/React.createElement(NotFoundComponent, {
+    }, /*#__PURE__*/React__default.default.createElement(NotFoundComponent, {
       statusCode: statusCode,
       statusText: statusText
     }));
   }
   return null;
 };
-const mapStateToPropsMemoized = createSelector(selectRouteEntryContentTypeId, selectRouteEntry, selectRouteIsError, selectIsNotFound, selectRouteLoading, selectUserIsAuthenticated, selectMappedEntry, selectCurrentProject, selectCurrentPath, selectRouteStatusCode, selectRouteErrorMessage, selectUserGroups, (contentTypeId, entry, isError, isNotFound, isLoading, isLoggedIn, mappedEntry, projectId, statePath, statusCode, statusText, userGroups) => ({
+const mapStateToPropsMemoized = reselect.createSelector(selectors.selectRouteEntryContentTypeId, selectors.selectRouteEntry, selectors.selectRouteIsError, selectors.selectIsNotFound, selectors.selectRouteLoading, matchGroups.selectUserIsAuthenticated, selectors.selectMappedEntry, selectors.selectCurrentProject, selectors.selectCurrentPath, selectors.selectRouteStatusCode, selectors.selectRouteErrorMessage, matchGroups.selectUserGroups, (contentTypeId, entry, isError, isNotFound, isLoading, isLoggedIn, mappedEntry, projectId, statePath, statusCode, statusText, userGroups) => ({
   contentTypeId,
   entry,
   isError,
@@ -294,9 +303,14 @@ const mapStateToPropsMemoized = createSelector(selectRouteEntryContentTypeId, se
   userGroups
 }));
 const mapDispatchToProps = {
-  setNavigationPath
+  setNavigationPath: selectors.setNavigationPath
 };
-var RouteLoader$1 = connect(mapStateToPropsMemoized, mapDispatchToProps)(toJS(RouteLoader));
+var RouteLoader$1 = reactRedux.connect(mapStateToPropsMemoized, mapDispatchToProps)(ToJs.toJS(RouteLoader));
 
-export { HttpContext as H, Redirect as R, Status as S, RouteLoader$1 as a, mergeStaticRoutes as m, useHttpContext as u };
-//# sourceMappingURL=RouteLoader-BpHhiAlL.js.map
+exports.HttpContext = HttpContext;
+exports.Redirect = Redirect;
+exports.RouteLoader = RouteLoader$1;
+exports.Status = Status;
+exports.mergeStaticRoutes = mergeStaticRoutes;
+exports.useHttpContext = useHttpContext;
+//# sourceMappingURL=RouteLoader-BM8DyfcF.js.map

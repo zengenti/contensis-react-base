@@ -1,4 +1,4 @@
-export { s as setCachingHeaders, u as urls } from './urls-DfCisos-.js';
+export { s as setCachingHeaders, u as urls } from './urls-tLxo_skx.js';
 export { c as cachedSearch, a as cachedSearchWithContext, b as cachedSearchWithCookies, d as deliveryApi, e as deliveryApiWithCookies, g as getClientConfig } from './ContensisDeliveryApi-CvEoOLCl.js';
 export { S as SSRContextProvider, g as getSubsitePath, u as useDeliveryApi, a as useSSRContext } from './SSRContext-CYxBWky3.js';
 export { V as VersionInfo, s as stringifyStrings } from './VersionInfo-By2ZCZOh.js';

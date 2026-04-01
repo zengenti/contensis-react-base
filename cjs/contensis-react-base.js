@@ -15,11 +15,12 @@ require('deep-equal');
 require('deepmerge');
 require('query-string');
 var contensisCoreApi = require('contensis-core-api');
-var urls = require('./urls-DVIwGZmd.js');
+var urls = require('./urls-DGZlAs0y.js');
 require('isomorphic-fetch');
 var express = require('express');
 var http = require('http');
 var httpProxy = require('http-proxy');
+var App = require('./App-TTUKj85f.js');
 var fs = require('fs');
 var path = require('path');
 var appRootPath = require('app-root-path');
@@ -32,11 +33,10 @@ var lodash = require('lodash');
 var lodashClean = require('lodash-clean');
 var CookieHelper_class = require('./CookieHelper.class-Det3qfdU.js');
 var cookiesMiddleware = require('universal-cookie-express');
-var App = require('./App-Dr56ZsQj.js');
 var store = require('./store-Dn7vP6G0.js');
 var version = require('./version-2FamXHhj.js');
 var selectors = require('./selectors-BrxJ8-F8.js');
-var RouteLoader = require('./RouteLoader-Bbt-nG3v.js');
+var RouteLoader = require('./RouteLoader-BM8DyfcF.js');
 var stream = require('stream');
 var server$2 = require('@loadable/server');
 var chalk = require('chalk');
@@ -662,7 +662,7 @@ const subsiteDebugMiddleware = (subsitePath, exceptions = []) => (req, res, next
 const servers$1 = SERVERS; /* global SERVERS */
 const project = PROJECT; /* global PROJECT */
 const alias$1 = ALIAS; /* global ALIAS */
-const deliveryApiHostname = urls.url(alias$1, project).api;
+const deliveryApiHostname = urls.urls(alias$1, project).api;
 const proxyTimeoutMs = 45_000;
 const assetProxy = httpProxy__default.default.createProxyServer();
 const deliveryProxy = httpProxy__default.default.createProxyServer();
@@ -680,13 +680,13 @@ const reverseProxies = (app, reverseProxyPaths = []) => {
     });
   });
   assetProxy.on('error', (e, req) => {
-    console.log(`Proxy request for ${req.url} HostName:${req.headers.host} failed with ${e}`);
+    console.log(`[assetProxy] "${req.method} ${req.url}" host: ${req.headers.host} failed with ${e}`);
   });
 };
 const deliveryApiProxy = (apiProxy, app) => {
   // This is just here to stop cors requests on localhost. In Production this is mapped using varnish.
   app.all(['/api/delivery/{*splat}', '/api/forms/{*splat}', '/api/image/{*splat}', '/authenticate/{*splat}'], (req, res) => {
-    console.log(`Proxying api request to ${servers$1.alias}`);
+    console.log(`[apiProxy] "${req.method} ${App.shorten(req.url)}" target: ${servers$1.alias}`);
     apiProxy.web(req, res, {
       target: deliveryApiHostname,
       changeOrigin: true,
@@ -695,7 +695,7 @@ const deliveryApiProxy = (apiProxy, app) => {
     });
   });
   apiProxy.on('error', (e, req) => {
-    console.log(`Proxy request for ${req.url} HostName:${req.headers.host} failed with ${e}`);
+    console.log(`[apiProxy] "${req.method} ${req.url}" host: ${req.headers.host} failed with ${e}`);
   });
 };
 
@@ -901,9 +901,11 @@ const renderStream = (getContextHtml, jsx, request, response, stream) => {
     },
     onShellError(error) {
       abortCleanup(error); // Abnormal - destroy everything
-      response.statusCode = 500;
-      response.setHeader('content-type', 'text/html; charset=utf-8');
-      response.send('<h1>Something went wrong</h1>');
+      if (!response.headersSent) {
+        response.statusCode = 500;
+        response.setHeader('content-type', 'text/html; charset=utf-8');
+        response.send('<h1>Something went wrong</h1>');
+      }
       console.error(`[renderToPipeableStream:onShellError]`, error);
     },
     onError(error) {
@@ -1135,6 +1137,7 @@ const unhandledExceptionHandler = (handleExceptions = handleDefaultEvents) => {
   }
 };
 
+const logPrefix = '[addHeaders]';
 const addStandardHeaders = (state, response, packagejson, groups) => {
   if (state) {
     try {
@@ -1148,14 +1151,14 @@ const addStandardHeaders = (state, response, packagejson, groups) => {
       // - add `any-update` header that will indiscriminately
       //   invalidate the SSR page cache when any content is updated
       const addAnyUpdateHeader = routingSurrogateKeys.length >= 2000 || response.statusCode >= 400 || anyApiError;
-      console.info(`[addStandardHeaders] ${addAnyUpdateHeader ? anyUpdateHeader : routingSurrogateKeys.length} surrogate keys for ${response.req.url}`);
+      console.info(`${logPrefix} ${addAnyUpdateHeader ? anyUpdateHeader : routingSurrogateKeys.length} surrogate keys for ${response.req.url}`);
       const surrogateKeys = addAnyUpdateHeader ? anyUpdateHeader : routingSurrogateKeys.join(' ');
       const surrogateKeyHeader = `${packagejson.name}-app ${surrogateKeys}`;
       response.setHeader('surrogate-key', surrogateKeyHeader);
       addVarnishAuthenticationHeaders(state, response, groups);
       response.setHeader('surrogate-control', `max-age=${getCacheDuration(response.statusCode)}`);
     } catch (e) {
-      console.info('[addStandardHeaders] Error adding headers', e.message);
+      console.info(`${logPrefix} Error adding headers`, e.message);
     }
   }
 };
@@ -1174,7 +1177,7 @@ const addVarnishAuthenticationHeaders = (state, response, groups = {}) => {
       }
       response.header('x-contensis-viewer-groups', allGroups.join('|'));
     } catch (e) {
-      console.info('Error adding authentication header', e);
+      console.info(`${logPrefix} Error adding authentication header`, e);
     }
   }
 };
@@ -1373,7 +1376,7 @@ const webApp = (app, ReactApp, config) => {
     const hostname = request.headers['x-orig-host'] || request.hostname;
     const subsitePath = SSRContext.getSubsitePath(request);
     const subsitePathScript = subsitePath ? `window.subsitePath = ${serialize__default.default(subsitePath)};` : '';
-    console.info(`Request for ${request.path} hostname: ${hostname} versionStatus: ${versionStatus}`);
+    console.info(`[webApp] "${request.method} ${request.path}" hostname: ${hostname} versionStatus: ${versionStatus}`);
     store$1.dispatch(version.setVersionStatus(versionStatus));
     store$1.dispatch(version.setVersion(versionInfo.commitRef, versionInfo.buildNo));
     const project = App.pickProject(hostname, request.query);

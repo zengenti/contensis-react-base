@@ -11,11 +11,13 @@ import 'deep-equal';
 import 'deepmerge';
 import 'query-string';
 import { Op, Query } from 'contensis-core-api';
-import { s as setCachingHeaders, u as url } from './urls-DfCisos-.js';
+import { s as setCachingHeaders, u as urls } from './urls-tLxo_skx.js';
 import 'isomorphic-fetch';
 import express from 'express';
 import http from 'http';
 import httpProxy from 'http-proxy';
+import { s as shorten, c as createLocaleRoutes, h as history, p as pickProject, r as rootSaga } from './App-DaHtrw85.js';
+export { A as ReactApp } from './App-DaHtrw85.js';
 import fs from 'fs';
 import path from 'path';
 import appRootPath from 'app-root-path';
@@ -28,12 +30,10 @@ import { noop, identity } from 'lodash';
 import { buildCleaner } from 'lodash-clean';
 import { a as Cookies } from './CookieHelper.class-C6rTRl_1.js';
 import cookiesMiddleware from 'universal-cookie-express';
-import { c as createLocaleRoutes, h as history, p as pickProject, r as rootSaga } from './App-CrCf7gso.js';
-export { A as ReactApp } from './App-CrCf7gso.js';
 import { c as createStore } from './store-DSjRYsM2.js';
 import { s as setVersionStatus, c as setVersion } from './version-B75wA6Te.js';
 import { a6 as selectSurrogateKeys, a7 as selectSsrApiCalls, j as selectRouteEntry, f as selectCurrentProject, g as getImmutableOrJS, s as setCurrentProject, F as selectCurrentSearch } from './selectors-8ROQrTd7.js';
-import { H as HttpContext, m as mergeStaticRoutes } from './RouteLoader-BpHhiAlL.js';
+import { H as HttpContext, m as mergeStaticRoutes } from './RouteLoader-BwDPahRW.js';
 import { Transform } from 'stream';
 import { ChunkExtractor, ChunkExtractorManager } from '@loadable/server';
 import chalk from 'chalk';
@@ -644,7 +644,7 @@ const subsiteDebugMiddleware = (subsitePath, exceptions = []) => (req, res, next
 const servers$1 = SERVERS; /* global SERVERS */
 const project = PROJECT; /* global PROJECT */
 const alias$1 = ALIAS; /* global ALIAS */
-const deliveryApiHostname = url(alias$1, project).api;
+const deliveryApiHostname = urls(alias$1, project).api;
 const proxyTimeoutMs = 45_000;
 const assetProxy = httpProxy.createProxyServer();
 const deliveryProxy = httpProxy.createProxyServer();
@@ -662,13 +662,13 @@ const reverseProxies = (app, reverseProxyPaths = []) => {
     });
   });
   assetProxy.on('error', (e, req) => {
-    console.log(`Proxy request for ${req.url} HostName:${req.headers.host} failed with ${e}`);
+    console.log(`[assetProxy] "${req.method} ${req.url}" host: ${req.headers.host} failed with ${e}`);
   });
 };
 const deliveryApiProxy = (apiProxy, app) => {
   // This is just here to stop cors requests on localhost. In Production this is mapped using varnish.
   app.all(['/api/delivery/{*splat}', '/api/forms/{*splat}', '/api/image/{*splat}', '/authenticate/{*splat}'], (req, res) => {
-    console.log(`Proxying api request to ${servers$1.alias}`);
+    console.log(`[apiProxy] "${req.method} ${shorten(req.url)}" target: ${servers$1.alias}`);
     apiProxy.web(req, res, {
       target: deliveryApiHostname,
       changeOrigin: true,
@@ -677,7 +677,7 @@ const deliveryApiProxy = (apiProxy, app) => {
     });
   });
   apiProxy.on('error', (e, req) => {
-    console.log(`Proxy request for ${req.url} HostName:${req.headers.host} failed with ${e}`);
+    console.log(`[apiProxy] "${req.method} ${req.url}" host: ${req.headers.host} failed with ${e}`);
   });
 };
 
@@ -883,9 +883,11 @@ const renderStream = (getContextHtml, jsx, request, response, stream) => {
     },
     onShellError(error) {
       abortCleanup(error); // Abnormal - destroy everything
-      response.statusCode = 500;
-      response.setHeader('content-type', 'text/html; charset=utf-8');
-      response.send('<h1>Something went wrong</h1>');
+      if (!response.headersSent) {
+        response.statusCode = 500;
+        response.setHeader('content-type', 'text/html; charset=utf-8');
+        response.send('<h1>Something went wrong</h1>');
+      }
       console.error(`[renderToPipeableStream:onShellError]`, error);
     },
     onError(error) {
@@ -1117,6 +1119,7 @@ const unhandledExceptionHandler = (handleExceptions = handleDefaultEvents) => {
   }
 };
 
+const logPrefix = '[addHeaders]';
 const addStandardHeaders = (state, response, packagejson, groups) => {
   if (state) {
     try {
@@ -1130,14 +1133,14 @@ const addStandardHeaders = (state, response, packagejson, groups) => {
       // - add `any-update` header that will indiscriminately
       //   invalidate the SSR page cache when any content is updated
       const addAnyUpdateHeader = routingSurrogateKeys.length >= 2000 || response.statusCode >= 400 || anyApiError;
-      console.info(`[addStandardHeaders] ${addAnyUpdateHeader ? anyUpdateHeader : routingSurrogateKeys.length} surrogate keys for ${response.req.url}`);
+      console.info(`${logPrefix} ${addAnyUpdateHeader ? anyUpdateHeader : routingSurrogateKeys.length} surrogate keys for ${response.req.url}`);
       const surrogateKeys = addAnyUpdateHeader ? anyUpdateHeader : routingSurrogateKeys.join(' ');
       const surrogateKeyHeader = `${packagejson.name}-app ${surrogateKeys}`;
       response.setHeader('surrogate-key', surrogateKeyHeader);
       addVarnishAuthenticationHeaders(state, response, groups);
       response.setHeader('surrogate-control', `max-age=${getCacheDuration(response.statusCode)}`);
     } catch (e) {
-      console.info('[addStandardHeaders] Error adding headers', e.message);
+      console.info(`${logPrefix} Error adding headers`, e.message);
     }
   }
 };
@@ -1156,7 +1159,7 @@ const addVarnishAuthenticationHeaders = (state, response, groups = {}) => {
       }
       response.header('x-contensis-viewer-groups', allGroups.join('|'));
     } catch (e) {
-      console.info('Error adding authentication header', e);
+      console.info(`${logPrefix} Error adding authentication header`, e);
     }
   }
 };
@@ -1355,7 +1358,7 @@ const webApp = (app, ReactApp, config) => {
     const hostname = request.headers['x-orig-host'] || request.hostname;
     const subsitePath = getSubsitePath(request);
     const subsitePathScript = subsitePath ? `window.subsitePath = ${serialize(subsitePath)};` : '';
-    console.info(`Request for ${request.path} hostname: ${hostname} versionStatus: ${versionStatus}`);
+    console.info(`[webApp] "${request.method} ${request.path}" hostname: ${hostname} versionStatus: ${versionStatus}`);
     store.dispatch(setVersionStatus(versionStatus));
     store.dispatch(setVersion(versionInfo.commitRef, versionInfo.buildNo));
     const project = pickProject(hostname, request.query);

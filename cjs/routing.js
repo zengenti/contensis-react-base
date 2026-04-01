@@ -1,7 +1,7 @@
 'use strict';
 
 var selectors = require('./selectors-BrxJ8-F8.js');
-var RouteLoader = require('./RouteLoader-Bbt-nG3v.js');
+var RouteLoader = require('./RouteLoader-BM8DyfcF.js');
 var util = require('./util-wQwG9vit.js');
 require('immer');
 require('reselect');

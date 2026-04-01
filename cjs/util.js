@@ -1,6 +1,6 @@
 'use strict';
 
-var urls = require('./urls-DVIwGZmd.js');
+var urls = require('./urls-DGZlAs0y.js');
 var ContensisDeliveryApi = require('./ContensisDeliveryApi-gN3_MHEl.js');
 var SSRContext = require('./SSRContext-DotLlTQc.js');
 var VersionInfo = require('./VersionInfo-zFPsvS8q.js');
@@ -192,7 +192,7 @@ const useHistory = () => {
 };
 
 exports.setCachingHeaders = urls.setCachingHeaders;
-exports.urls = urls.url;
+exports.urls = urls.urls;
 exports.cachedSearch = ContensisDeliveryApi.cachedSearch;
 exports.cachedSearchWithContext = ContensisDeliveryApi.cachedSearchWithContext;
 exports.cachedSearchWithCookies = ContensisDeliveryApi.cachedSearchWithCookies;

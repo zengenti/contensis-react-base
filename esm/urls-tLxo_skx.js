@@ -6,7 +6,7 @@ const setCachingHeaders = (response, {
   if (surrogateControl) response[method]('Surrogate-Control', `max-age=${surrogateControl.toString()}`);
 };
 
-const url = (alias, project) => {
+const urls = (alias, project) => {
   const projectAndAlias = project && project.toLowerCase() !== 'website' ? `${project.toLowerCase()}-${alias}` : alias;
   return {
     api: `https://api-${alias}.cloud.contensis.com`,
@@ -18,5 +18,5 @@ const url = (alias, project) => {
   };
 };
 
-export { setCachingHeaders as s, url as u };
-//# sourceMappingURL=urls-DfCisos-.js.map
+export { setCachingHeaders as s, urls as u };
+//# sourceMappingURL=urls-tLxo_skx.js.map

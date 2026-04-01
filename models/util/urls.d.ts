@@ -1,4 +1,4 @@
-declare const url: (alias: string, project: string) => {
+export declare const urls: (alias: string, project: string) => {
     api: string;
     cms: string;
     liveWeb: string;
@@ -6,4 +6,3 @@ declare const url: (alias: string, project: string) => {
     iisWeb: string;
     iisPreviewWeb: string;
 };
-export default url;
