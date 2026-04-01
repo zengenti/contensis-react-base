@@ -1,5 +1,4 @@
 import to from 'await-to-js';
-import * as log from 'loglevel';
 import { takeEvery, put, select, call, all } from 'redux-saga/effects';
 
 import { resolveCurrentRouteLanguage } from '~/i18n/redux/sagas';
@@ -34,6 +33,9 @@ import { routeEntryByFieldsQuery } from '../util/queries';
 import { handleSearchSaga } from './invokeSearch';
 import { reduxInjectorSaga } from '~/redux/sagas/injector';
 import { routeParams } from '~/search';
+import { logError } from '~/util/errors';
+
+const error = (e, message) => logError(`[routeSaga]${message ? ` ${message}` : ''}`, e);
 
 export const routingSagas = [
   takeEvery(SET_NAVIGATION_PATH, getRouteSaga),
@@ -366,7 +368,7 @@ function* getRouteSaga(action) {
       else yield call(do404);
     }
   } catch (e) {
-    log.error(...['Error running route saga:', e, e.stack]);
+    error(e);
     yield call(do500, e);
   }
 }
@@ -416,7 +418,7 @@ function* resolveCurrentNodeOrdinates(action) {
             project
           );
         } catch (ex) {
-          log.info('Problem fetching ancestors', ex);
+          error(ex, 'Problem fetching ancestors');
           return [];
         }
       };
@@ -459,7 +461,7 @@ function* resolveCurrentNodeOrdinates(action) {
             project
           );
         } catch (ex) {
-          log.info('Problem fetching children', ex);
+          error(ex, 'Problem fetching children');
           return [];
         }
       };
@@ -490,7 +492,7 @@ function* resolveCurrentNodeOrdinates(action) {
             project
           );
         } catch (ex) {
-          log.info('Problem fetching siblings', ex);
+          error(ex, 'Problem fetching siblings');
           return [];
         }
       };
@@ -590,7 +592,7 @@ function* mapRouteEntry(entryMapper, node) {
       return mappedEntry;
     }
   } catch (e) {
-    log.error(...['Error running entryMapper:', e, e.stack]);
+    error(e, 'Error in entryMapper:');
     throw e;
   }
   return;

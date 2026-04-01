@@ -1,4 +1,4 @@
-const url = (alias: string, project: string) => {
+export const urls = (alias: string, project: string) => {
   const projectAndAlias =
     project && project.toLowerCase() !== 'website'
       ? `${project.toLowerCase()}-${alias}`
@@ -12,5 +12,3 @@ const url = (alias: string, project: string) => {
     iisPreviewWeb: `https://iis-preview-${projectAndAlias}.cloud.contensis.com`,
   };
 };
-
-export default url;

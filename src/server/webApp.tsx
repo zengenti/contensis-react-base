@@ -173,7 +173,7 @@ const webApp = (
         : '';
 
       console.info(
-        `Request for ${request.path} hostname: ${hostname} versionStatus: ${versionStatus}`
+        `[webApp] "${request.method} ${request.path}" hostname: ${hostname} versionStatus: ${versionStatus}`
       );
 
       store.dispatch(setVersionStatus(versionStatus));

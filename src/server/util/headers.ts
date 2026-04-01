@@ -13,6 +13,8 @@ import {
 } from '../features/caching/cacheDuration.schema';
 import { AppState } from '~/models';
 
+const logPrefix = '[addHeaders]';
+
 export const addStandardHeaders = (
   state: AppState,
   response: Response,
@@ -36,7 +38,7 @@ export const addStandardHeaders = (
         anyApiError;
 
       console.info(
-        `[addStandardHeaders] ${
+        `${logPrefix} ${
           addAnyUpdateHeader ? anyUpdateHeader : routingSurrogateKeys.length
         } surrogate keys for ${response.req.url}`
       );
@@ -56,7 +58,7 @@ export const addStandardHeaders = (
         `max-age=${getCacheDuration(response.statusCode)}`
       );
     } catch (e: any) {
-      console.info('[addStandardHeaders] Error adding headers', e.message);
+      console.info(`${logPrefix} Error adding headers`, e.message);
     }
   }
 };
@@ -82,7 +84,7 @@ export const addVarnishAuthenticationHeaders = (
       }
       response.header('x-contensis-viewer-groups', allGroups.join('|'));
     } catch (e) {
-      console.info('Error adding authentication header', e);
+      console.info(`${logPrefix} Error adding authentication header`, e);
     }
   }
 };

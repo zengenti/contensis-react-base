@@ -18,7 +18,7 @@ export {
 export { getSubsitePath } from './subsite';
 
 export { default as stringifyStrings } from './stringifyStrings';
-export { default as urls } from './urls';
+export { urls } from './urls';
 
 // Hydration-safe approaches to defer rendering to browser
 export { useIsClient } from './useIsClient';

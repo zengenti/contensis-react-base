@@ -295,9 +295,9 @@ const RouteLoader = ({
 
   const NotFoundComponent = notFoundComponent ? notFoundComponent : NotFound;
   if (isNotFound || isError) {
-    console.info(
-      `RouteLoader rendering NotFound component: statusCode ${statusCode}, isNotFound ${isNotFound}, isError ${isError}`
-    );
+    // console.info(
+    //   `RouteLoader rendering NotFound component: statusCode ${statusCode}, isNotFound ${isNotFound}, isError ${isError}`
+    // );
 
     return (
       <Status code={statusCode}>

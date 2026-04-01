@@ -1,11 +1,12 @@
 import { Express } from 'express';
 import httpProxy from 'http-proxy';
-import url from '~/util/urls';
+import { shorten } from '~/util/errors';
+import { urls } from '~/util/urls';
 
 const servers = SERVERS; /* global SERVERS */
 const project = PROJECT; /* global PROJECT */
 const alias = ALIAS; /* global ALIAS */
-const deliveryApiHostname = url(alias, project).api;
+const deliveryApiHostname = urls(alias, project).api;
 
 const proxyTimeoutMs = 45_000;
 
@@ -42,7 +43,7 @@ const reverseProxies = (app: Express, reverseProxyPaths: string[] = []) => {
   );
   assetProxy.on('error', (e, req) => {
     console.log(
-      `Proxy request for ${req.url} HostName:${req.headers.host} failed with ${e}`
+      `[assetProxy] "${req.method} ${req.url}" host: ${req.headers.host} failed with ${e}`
     );
   });
 };
@@ -57,7 +58,9 @@ const deliveryApiProxy = (apiProxy, app) => {
       '/authenticate/{*splat}',
     ],
     (req, res) => {
-      console.log(`Proxying api request to ${servers.alias}`);
+      console.log(
+        `[apiProxy] "${req.method} ${shorten(req.url)}" target: ${servers.alias}`
+      );
       apiProxy.web(req, res, {
         target: deliveryApiHostname,
         changeOrigin: true,
@@ -68,7 +71,7 @@ const deliveryApiProxy = (apiProxy, app) => {
   );
   apiProxy.on('error', (e, req) => {
     console.log(
-      `Proxy request for ${req.url} HostName:${req.headers.host} failed with ${e}`
+      `[apiProxy] "${req.method} ${req.url}" host: ${req.headers.host} failed with ${e}`
     );
   });
 };
