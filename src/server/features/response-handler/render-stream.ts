@@ -65,9 +65,11 @@ export const renderStream = (
     },
     onShellError(error: unknown) {
       abortCleanup(error); // Abnormal - destroy everything
-      response.statusCode = 500;
-      response.setHeader('content-type', 'text/html; charset=utf-8');
-      response.send('<h1>Something went wrong</h1>');
+      if (!response.headersSent) {
+        response.statusCode = 500;
+        response.setHeader('content-type', 'text/html; charset=utf-8');
+        response.send('<h1>Something went wrong</h1>');
+      }
       console.error(`[renderToPipeableStream:onShellError]`, error);
     },
     onError(error) {
