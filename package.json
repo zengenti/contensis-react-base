@@ -111,7 +111,7 @@
     "redux-thunk": "^3.1.0",
     "reselect": "^5.1.1",
     "serialize-javascript": "^6.0.2",
-    "styled-components": "^6.1.19",
+    "styled-components": "^6.4.0",
     "universal-cookie-express": "^8.0.1",
     "xxhashjs": "^0.2.2"
   }
