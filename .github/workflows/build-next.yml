@@ -19,7 +19,7 @@ jobs:
           node-version: '22.x'
       - name: Install project dependencies
         run: |
-          npm ci --legacy-peer-deps
+          npm ci
       - name: Setup GIT
         run: |
           git config user.email "github@zengenti.com"
