@@ -5,6 +5,10 @@ on:
     branches:
       - feat/react18
 
+permissions:
+  contents: write
+  id-token: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -12,11 +16,12 @@ jobs:
     env:
       NPM_TAG: next
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v6
       - name: Use Node.js
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v6
         with:
-          node-version: '22.x'
+          node-version: '24'
+          registry-url: 'https://registry.npmjs.org'
       - name: Install project dependencies
         run: |
           npm ci
@@ -37,8 +42,4 @@ jobs:
           # The secret is passed automatically. Nothing to configure.
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Publish prerelease package
-        run: |
-          npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
-          npm publish --tag ${{ env.NPM_TAG }} --ignore-scripts
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish --provenance --tag ${{ env.NPM_TAG }} --ignore-scripts
