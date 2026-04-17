@@ -45,7 +45,7 @@ export type StaticRoute = Omit<RouteObject, 'children'> & {
         /**
          * Optional entry mapper to transform entry data before passing it to the component.
          */
-        entryMapper?: EntryMapper;
+        entryMapper?: EntryMapper<any, any>;
     };
     /** The depth of descendants to include for the node. */
     fetchNodeLevel?: number;

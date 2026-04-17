@@ -1,3 +1,4 @@
+import { Entry } from 'contensis-delivery-api';
 import { AppState } from './AppState';
 import { RouteNode } from './RouteNode';
-export type EntryMapper = (<MappedProps>(node: RouteNode, state?: AppState) => MappedProps | unknown) | (<MappedProps>(node: RouteNode, state?: AppState) => Promise<MappedProps | unknown>);
+export type EntryMapper<MappedProps = any, RouteEntryType extends Entry = Entry> = (node: RouteNode<RouteEntryType>, state: AppState) => MappedProps | Promise<MappedProps>;

@@ -15,7 +15,7 @@ export type ContentTypeMapping = {
     /**
      * Optional entry mapper to transform entry data before passing it to the component.
      */
-    entryMapper?: EntryMapper;
+    entryMapper?: EntryMapper<any, any>;
     /**
      * An array of field IDs used to restrict the fields returned for an entry.
      */
