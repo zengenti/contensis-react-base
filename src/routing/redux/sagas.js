@@ -1,5 +1,6 @@
 import to from 'await-to-js';
-import { takeEvery, put, select, call, all } from 'redux-saga/effects';
+import { takeEvery, put, select, call, all, fork, cancel, cancelled, take } from 'redux-saga/effects';
+import { eventChannel } from 'redux-saga';
 
 import { resolveCurrentRouteLanguage } from '~/i18n/redux/sagas';
 import { selectCurrentLanguage } from '~/i18n/redux/selectors';
@@ -36,6 +37,8 @@ import { routeParams } from '~/search';
 import { logError } from '~/util/errors';
 
 const error = (e, message) => logError(`[routeSaga]${message ? ` ${message}` : ''}`, e);
+
+let livePreviewTask = null;
 
 export const routingSagas = [
   takeEvery(SET_NAVIGATION_PATH, getRouteSaga),
@@ -342,6 +345,13 @@ function* getRouteSaga(action) {
     }
 
     if (pathNode?.entry?.sys?.id) {
+      if (params.livePreview && typeof window !== 'undefined') {
+        if (livePreviewTask) yield cancel(livePreviewTask);
+        livePreviewTask = yield fork(watchLivePreviewSaga, {
+          ancestors, appsays, contentTypeRoute, currentPath, entry, entryMapper, pathNode, siblings,
+        });
+      }
+
       entry = pathNode.entry;
 
       yield call(
@@ -370,6 +380,41 @@ function* getRouteSaga(action) {
   } catch (e) {
     error(e);
     yield call(do500, e);
+  }
+}
+
+function createLivePreviewChannel() {
+  return eventChannel(emit => {
+    const handler = e => {
+      // console.log('Received message in live preview channel', e.data);
+      if (e.data?.type === 'LIVE_ENTRY_UPDATE') emit(e.data);
+    };
+    window.addEventListener('message', handler);
+    return () => window.removeEventListener('message', handler);
+  });
+}
+
+function* watchLivePreviewSaga(context) {
+  const channel = createLivePreviewChannel();
+  try {
+    while (true) {
+      const data = yield take(channel);
+      // console.log('Handling live preview update', data);
+      context.entry = { ...context.entry, ...data.payload };
+      yield call(
+        setRouteEntry,
+        context.currentPath,
+        context.entry,
+        context.pathNode,
+        null, // ancestors unchanged
+        null, // siblings unchanged
+        context.entryMapper || context.contentTypeRoute?.entryMapper,
+        false,
+        true // we need to remap the entry here
+      );
+    }
+  } finally {
+    if (yield cancelled()) channel.close();
   }
 }
 

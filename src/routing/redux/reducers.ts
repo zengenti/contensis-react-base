@@ -23,6 +23,7 @@ const initialState = {
   error: undefined,
   isError: false,
   isLoading: false,
+  isLivePreview: false,
   location: {},
   mappedEntry: null,
   notFound: false,
@@ -78,7 +79,11 @@ export default produce((state: Draft<any>, action) => {
 
         if (mappedEntry && Object.keys(mappedEntry).length > 0) {
           state.mappedEntry = mappedEntry;
-          state.entry = { sys: entry.sys };
+          // Don't truncate the raw entry data when in live preview mode,
+          // as we want to be able to update it with new "patch" data coming
+          // passed in via the live preview iframe.
+          // In regular routes, the full entry data is not needed after mapping.
+          if (!state.isLivePreview) state.entry = { sys: entry.sys };
         }
       }
 
@@ -121,6 +126,12 @@ export default produce((state: Draft<any>, action) => {
             route: { ...staticRoute.route, element: null },
           };
         }
+      }
+      // The default value is false, but if we've activated live preview for this route,
+      // we want it to persist for the life of the session so we don't reset it back to
+      // false on subsequent CSR navigation.
+      if (action.location.search.includes('livePreview=true')) {
+        state.isLivePreview = true;
       }
       return;
     }
