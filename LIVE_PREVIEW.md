@@ -9,7 +9,7 @@ Live Preview allows a Contensis entry to be updated in real time while the page 
 Live Preview is opt-in, activated by the presence of the `livePreview` query-string parameter on the page URL:
 
 ```
-https://example.com/my-page?livePreview
+https://example.com/my-page?livePreview=true
 ```
 
 The routing saga reads this via `routeParams`, which merges path params and `window.location.search` query params. Because it relies on `window`, Live Preview is **client-side only** and is never activated during SSR.
