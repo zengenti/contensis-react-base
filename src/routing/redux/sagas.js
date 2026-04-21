@@ -399,12 +399,12 @@ function* watchLivePreviewSaga(context) {
   try {
     while (true) {
       const data = yield take(channel);
-      // console.log('Handling live preview update', data);
-      context.entry = { ...context.entry, ...data.payload };
+      console.log('Handling live preview update', data);
+      const entry = yield select(selectRouteEntry);
       yield call(
         setRouteEntry,
         context.currentPath,
-        context.entry,
+        { ...entry, ...data.payload },
         context.pathNode,
         null, // ancestors unchanged
         null, // siblings unchanged
