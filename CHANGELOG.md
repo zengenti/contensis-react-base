@@ -7,9 +7,8 @@
 
 * Contensis React Base v4 ([#25](https://github.com/zengenti/contensis-react-base/issues/25))
 
-### Features
-
-* Contensis React Base v4 ([#25](https://github.com/zengenti/contensis-react-base/issues/25)) ([5b6aecc](https://github.com/zengenti/contensis-react-base/commit/5b6aecc4bbfa786187316c2ee3285edcf72aae2d))
+📖 [Release blog](https://www.contensis.com/community/blog/introducing-contensis-react-base-4)  
+🚀 [Migration guide v3 → v4](https://www.contensis.com/help-and-docs/developers/guides/contensis-react-base/upgrading-to-contensis-react-base-v4)
 
 ## [3.4.0](https://github.com/zengenti/contensis-react-base/compare/v3.3.1...v3.4.0) (2025-08-05)
 
