@@ -1,0 +1,304 @@
+import to from 'await-to-js';
+import { Op, Query } from 'contensis-delivery-api';
+import { call, put, select, takeEvery } from 'redux-saga/effects';
+import { actions, UpdateLanguageActionPayload } from './slice';
+
+import type { Action, PayloadAction } from '@reduxjs/toolkit';
+import type { PagedSearchList, Project } from 'contensis-core-api';
+import type { Entry, Node } from 'contensis-delivery-api';
+import { setRoute } from '~/routing/redux/actions';
+import {
+  selectCurrentPath,
+  selectRouteEntryAvailableLanguages,
+  selectRouteEntryID,
+  selectStaticRoute,
+} from '~/routing/redux/selectors';
+import { selectVersionStatus } from '~/redux/selectors/version';
+import { I18nAppConfig } from '~/models/config/I18n';
+import { cachedSearch } from '~/util';
+import {
+  selectCurrentLanguage,
+  selectDictionary,
+  selectDictionaryResolver,
+  selectLocaleRoutes,
+  selectLocales,
+  selectPrimaryLanguage,
+} from './selectors';
+import { LocaleRoutes, Locales } from '~/models/Locales';
+import { SET_ENTRY } from '~/routing/redux/types';
+import { deparameterise } from '../routes';
+
+export const i18nSagas = [
+  takeEvery<PayloadAction<I18nAppConfig>>(
+    actions.INIT_LOCALES.type,
+    getProjectLanguages
+  ),
+  takeEvery<PayloadAction<UpdateLanguageActionPayload>>(
+    actions.UPDATE_LANGUAGE.type,
+    updateLanguage
+  ),
+  takeEvery(actions.SET_LANGUAGE.type, setLanguageRoute),
+];
+
+/**
+ * Resolve the current route language based on the entry, node, static route or path
+ * Is called directly from the routing saga as soon as an entry or node has been fetched
+ */
+export function* resolveCurrentRouteLanguage({
+  entry,
+  node,
+}: Action<typeof SET_ENTRY> & {
+  entry: Entry | null;
+  node: Node | null;
+}) {
+  const currentLanguage = yield select(selectCurrentLanguage);
+  const staticRoute = yield select(selectStaticRoute);
+  let nextLanguage = currentLanguage;
+  if (entry?.sys?.language) nextLanguage = entry.sys.language;
+  else if (node?.language) nextLanguage = node.language;
+  else if (staticRoute?.route?.language)
+    nextLanguage = staticRoute.route.language;
+  else {
+    // attempt to infer language from the path
+    const currentPath: string = yield select(selectCurrentPath);
+
+    // path is normally lowercase
+    const firstPathSegment = currentPath
+      .split('/')
+      .find(segment => segment.length)
+      ?.toLowerCase();
+
+    const locales: Locales = yield select(selectLocales);
+    const matchedLanguage = Object.keys(locales).find(
+      lang => lang.toLowerCase() === firstPathSegment
+    );
+    // matched a supported language in the path
+    if (matchedLanguage) nextLanguage = matchedLanguage;
+    else
+      // falling back to primary language
+      nextLanguage = yield select(selectPrimaryLanguage);
+  }
+
+  if (nextLanguage && nextLanguage !== currentLanguage) {
+    const dictionary = yield call(resolveDictionaryForLanguage, nextLanguage);
+    yield put(
+      actions.SET_LANGUAGE({
+        language: nextLanguage,
+        dictionary,
+      })
+    );
+  }
+}
+
+/**
+ * Resolve the current dictionary for route language either using a supplied resolver
+ * function or directly derive from the locales stored in state
+ * Is called directly any time the language is changed
+ */
+function* resolveDictionaryForLanguage(language: string) {
+  let dictionary = yield select(selectDictionary);
+  // try and resolve a dictionary for this language
+  const resolver = yield select(selectDictionaryResolver);
+  if (typeof resolver === 'function') {
+    try {
+      // dynamic import of dictionary file
+      const loadedDictionary = yield call(resolver, language);
+      dictionary = loadedDictionary;
+    } catch (error) {
+      console.error(`No dictionary resolved for language ${language}`, error);
+    }
+  } else {
+    // Load dictionary from locales in state
+    const locales: Locales = yield select(selectLocales);
+    if (locales && locales[language]) {
+      dictionary = locales[language];
+    }
+  }
+  return dictionary;
+}
+
+/**
+ * Side effects triggered from updating the language via dispatched action
+ * in language switching components, including resolving the next route,
+ * update the dictionary and subsequently redirect if needed
+ */
+function* updateLanguage({
+  payload: { language, redirect, fallbackPath },
+}: PayloadAction<UpdateLanguageActionPayload>) {
+  const currentLanguage: string = yield select(selectCurrentLanguage);
+  if (language === currentLanguage) {
+    // no change needed
+    return;
+  } else {
+    const dictionary =
+      language !== currentLanguage
+        ? yield call(resolveDictionaryForLanguage, language)
+        : yield select(selectDictionary);
+
+    const uri = yield call(resolveNextLanguageRoute, {
+      language,
+      redirect,
+      fallbackPath,
+    });
+    yield put(
+      actions.SET_LANGUAGE({
+        language,
+        dictionary: dictionary ?? undefined,
+        redirect: redirect !== false ? uri : undefined,
+      })
+    );
+  }
+}
+
+/** Handle any route redirection after we have set the language */
+function* setLanguageRoute({
+  payload,
+}: PayloadAction<{ language: string; redirect?: boolean | string }>) {
+  if (payload?.redirect) {
+    const currentPath = yield select(selectCurrentPath);
+    if (payload.redirect === currentPath) {
+      // already on the correct path, no need to redirect
+      return;
+    }
+    yield put(setRoute(payload.redirect as string));
+  }
+}
+
+/** Determine the correct route uri when the language changes */
+function* resolveNextLanguageRoute({
+  language,
+  redirect,
+  fallbackPath,
+}: UpdateLanguageActionPayload) {
+  // have they supplied the route to go to?
+  if (typeof redirect === 'string') {
+    return redirect;
+  }
+
+  // is this an entry or a static route?
+  const availableLanguages: string[] = yield select(
+    selectRouteEntryAvailableLanguages
+  );
+
+  if (
+    availableLanguages.find(l => l.toLowerCase() === language.toLowerCase())
+  ) {
+    // if entry, get the uri for this language variation from the api
+    const entryUri: string | null = yield call(getEntryUriForLanguage, {
+      entryId: yield select(selectRouteEntryID),
+      language,
+    });
+    if (entryUri) {
+      return entryUri;
+    }
+  }
+
+  // if static route, get the uri from the routes config
+  const staticRouteUri: string | null = yield call(getStaticRouteUri, {
+    language,
+  });
+  if (staticRouteUri) {
+    return staticRouteUri;
+  }
+
+  // if all else fails, fallback to the supplied fallback path or homepage
+  return fallbackPath || `/${language.toLowerCase()}`;
+}
+
+/** Check any current static route for a language variation we have stored in i18n.routes */
+function* getStaticRouteUri({ language }: { language: string }) {
+  const staticRoute = yield select(selectStaticRoute);
+  if (staticRoute?.route.path) {
+    // Routes can have parameters such as `/:facet?` we need to deparameterise
+    // so we can check against our stored locale routes
+    const deparameterisedPath = deparameterise(staticRoute.route.path);
+    const localeRoutes: LocaleRoutes = yield select(selectLocaleRoutes);
+    const originalPath = Object.entries(localeRoutes || {}).find(
+      ([, locales]) => Object.values(locales).includes(deparameterisedPath)
+    )?.[0];
+    const routeLocales =
+      localeRoutes[deparameterisedPath] || localeRoutes[originalPath || ''];
+    const routeUri: string = routeLocales?.[language];
+    return routeUri;
+  }
+}
+
+/**
+ * Run when the app initiates locales, populating supported languages from the config
+ * or fetching from the project if not provided
+ */
+function* getProjectLanguages({ payload }: PayloadAction<I18nAppConfig>) {
+  const stateLocales = yield select(selectLocales);
+  if (stateLocales && Object.keys(stateLocales).length > 0)
+    // Locales already set in state, no need to fetch again
+    return;
+  const locales: Locales = {};
+  let primaryLanguage = payload.primaryLanguage;
+  const supportedLanguages: string[] = [...(payload.supportedLanguages || [])];
+  if (supportedLanguages?.length) {
+    // If supported languages are provided in config, use these
+    for (const supportedLanguage of supportedLanguages) {
+      locales[supportedLanguage] = {};
+    }
+  } else {
+    // Fallback to getting languages from the project
+    const [error, project]: [Error | undefined, Project | null] = yield to(
+      cachedSearch.getClient().project.get()
+    );
+    if (error) {
+      console.error('Problem fetching project languages:', error);
+    } else if (project) {
+      for (const supportedLanguage of project.supportedLanguages || []) {
+        locales[supportedLanguage] = {};
+        supportedLanguages.push(supportedLanguage);
+      }
+      // Set primary language from project if we have it
+      primaryLanguage = project.primaryLanguage ?? primaryLanguage;
+    }
+  }
+  if (Object.keys(locales).length === 0) {
+    // Ensure at least the primary language is included
+    locales[payload.primaryLanguage] = {};
+    supportedLanguages.push(payload.primaryLanguage);
+  }
+
+  // Only commit if we have locales to set or we will end up in an infinite loop
+  if (Object.keys(locales).length)
+    yield put(
+      actions.SET_LOCALES({
+        ...payload,
+        primaryLanguage,
+        supportedLanguages,
+        locales,
+      })
+    );
+}
+
+/**
+ * Run a Delivery API query to get the uri for the chosen language variation of this entryId
+ * */
+function* getEntryUriForLanguage({
+  entryId,
+  language,
+}: {
+  entryId: string;
+  language: string;
+}) {
+  try {
+    const versionStatus: string = yield select(selectVersionStatus);
+    const query = new Query(
+      Op.equalTo('sys.id', entryId),
+      Op.equalTo('sys.language', language),
+      Op.equalTo('sys.versionStatus', versionStatus)
+    );
+    query.fields = ['sys.uri'];
+    query.pageSize = 1;
+
+    const result: PagedSearchList<Entry> = yield cachedSearch.search(query);
+
+    return result.items.length ? result.items[0].sys.uri : null;
+  } catch (error) {
+    console.error('Error fetching language variations:', error);
+    yield put(actions.GET_ENTRY_URI_ERROR(error as Error));
+  }
+}

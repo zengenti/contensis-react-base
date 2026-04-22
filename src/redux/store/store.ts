@@ -1,3 +1,4 @@
+import { History, MemoryHistory } from 'history';
 import {
   applyMiddleware,
   combineReducers,
@@ -6,32 +7,45 @@ import {
   Action,
   Store,
   StoreEnhancer,
+  Reducer,
 } from 'redux';
-import thunkMiddleware from 'redux-thunk';
-import createSagaMiddleware, { END } from 'redux-saga';
-import { createInjectorsEnhancer } from 'redux-injectors';
+import { thunk as thunkMiddleware } from 'redux-thunk';
+import createSagaMiddleware, { END, Task } from 'redux-saga';
+import { Effect } from 'redux-saga/effects';
+import { createInjectorsEnhancer } from 'redux-injectors-19';
 
 // Core reducers
+import i18nSlice from '~/i18n/redux/slice';
 import NavigationReducer from '../reducers/navigation';
 import RoutingReducer from '~/routing/redux/reducers';
 import UserReducer from '~/user/redux/reducers';
 import VersionReducer from '../reducers/version';
-import routerMiddleware from './routerMiddleware';
-import { AppState, StateType } from '~/models';
-import { History, MemoryHistory } from 'history';
 
-/* eslint-disable no-underscore-dangle */
+import { wrapSagasInGenerator } from './injectors/util';
+import routerMiddleware from './routerMiddleware';
+
+import { AppState, StateType } from '~/models';
+
 declare let window: Window &
   typeof globalThis & {
     __REDUX_DEVTOOLS_EXTENSION__: any;
   };
 
-type ReduxAppStore = Store<AppState, Action<any>>;
+type ReduxAppStore = Store<AppState, Action>;
+type PatchedRunSaga = (sagas: Effect[] | (() => Generator)) => Task;
 
 type ReduxSagaAppStore = ReduxAppStore & {
-  runSaga: ReturnType<typeof createSagaMiddleware>['run'];
+  runSaga: PatchedRunSaga;
   close: () => void;
+  initialSagas: Set<any>; // Track initial sagas
+  injectedReducers: any;
+  injectedSagas: any;
+  createReducer: (injectedReducers?: any) => Reducer<AppState>;
 };
+
+/** A no-op reducer to serve for server-rendered reducers
+ * that are re-injected client-side */
+export const stubReducer = (state = null) => state;
 
 export let reduxStore: ReduxSagaAppStore;
 
@@ -52,6 +66,7 @@ export default async (
   const sagaMiddleware = createSagaMiddleware();
 
   const reducers = {
+    i18n: i18nSlice.reducer,
     navigation: NavigationReducer,
     routing: RoutingReducer,
     user: UserReducer,
@@ -92,9 +107,43 @@ export default async (
   const store = (initialState: AppState) => {
     const runSaga = sagaMiddleware.run;
 
+    // Track the initial set of sagas here
+    const initialSagas = new Set();
+
+    // Patch the runSaga function to capture and track the sagas
+    // passed as a raw array of effects
+    const patchedRunSaga = (sagas: Effect[] | (() => Generator)) => {
+      // Only track the saga the first time it is run
+      if (Array.isArray(sagas)) {
+        for (const saga of sagas)
+          if (!initialSagas.has(saga)) {
+            initialSagas.add(saga);
+          }
+      } else {
+        if (!initialSagas.has(sagas)) {
+          initialSagas.add(sagas);
+        }
+      }
+
+      const rootSaga = wrapSagasInGenerator(sagas);
+
+      // Run the saga as usual
+      return runSaga(rootSaga);
+    };
+
+    // Assign stub reducers for any missing reducers that have been
+    // injected server-side and will be re-injected client-side
+    const injectReducers = {};
+    for (const key of Object.keys(initialState || {})) {
+      if (!(key in reducers)) injectReducers[key] = stubReducer;
+    }
+
     const middleware: StoreEnhancer<{
-      runSaga: ReturnType<typeof createSagaMiddleware>['run'];
+      runSaga: PatchedRunSaga;
       close: () => void;
+      initialSagas: Set<any>;
+      injectedReducers: any;
+      injectedSagas: any;
     }> = compose(
       applyMiddleware(
         thunkMiddleware,
@@ -103,18 +152,25 @@ export default async (
       ),
       createInjectorsEnhancer({
         createReducer,
+        // Assign patched runSaga to store
         runSaga,
       }),
       reduxDevToolsMiddleware
     );
 
-    const store = createStore(createReducer(), initialState, middleware);
+    const store = createStore(
+      createReducer(injectReducers),
+      initialState,
+      middleware
+    );
 
-    store.runSaga = runSaga;
+    store.runSaga = patchedRunSaga; // Assign patched runSaga to the store
     store.close = () => store.dispatch(END);
+    store.initialSagas = initialSagas; // Store the initial sagas set
+
     return store;
   };
 
-  reduxStore = store(fromJS(initialState));
+  reduxStore = store(fromJS(initialState)) as ReduxSagaAppStore;
   return reduxStore;
 };

@@ -1,0 +1,76 @@
+import { call } from 'redux-saga/effects';
+import { OnRouteLoadedArgs, RouteLoadedOptions } from '~/models';
+import { reduxInjectorSaga } from '~/redux/sagas/injector';
+import { SearchTransformations } from '~/search/models/Search';
+import { SearchRouteOptions } from '~/search/models/SearchActions';
+
+type Awaited<T> = T extends PromiseLike<infer U> ? Awaited<U> : T;
+
+/**
+ * @description Asynchronously load and inject assets related to Search
+ */
+const importSearchAssets = () => import('~/search');
+
+/**
+ * Invokes the Search saga if:
+ * - `searchOptions` is present on `staticRoute` or `contentTypeRoute`
+ * - `searchOptions` is provided by the consumer app
+ *   - and path starts with one of `onPaths: ['/search']`
+ *   - or a `facet` or `listingType` is present in provided `searchOptions`
+ *
+ * A `config` is required if we want to inject the redux reducer here, sagas are injected automatically
+ */
+export function* handleSearchSaga({
+  location,
+  params,
+  routeSearchOptions,
+  searchOptions,
+  ssr,
+}: OnRouteLoadedArgs &
+  RouteLoadedOptions & { routeSearchOptions: SearchRouteOptions }) {
+  // Merge supplied mappers with route-supplied mappers taking precedence
+  const mappers: SearchTransformations = {
+    results: e => e,
+    ...(searchOptions?.mappers || {}),
+    ...(routeSearchOptions?.mappers || {}),
+  };
+
+  // Merge all other search options with route-supplied options taking precedence
+  const { onPaths = ['/search'], ...searchOpts } = {
+    ...(routeSearchOptions || {}),
+    ...(searchOptions || {}),
+  };
+
+  // Check do we meet conditions to run the search saga
+  const invokeSearch =
+    onPaths.find(p => location.pathname.startsWith(p)) ||
+    searchOpts.composition ||
+    searchOpts.facet ||
+    searchOpts.listingType;
+
+  // An empty routeSearchOptions object can be used to import assets and load config for a minilist
+  const importAssets = routeSearchOptions;
+
+  if (importAssets || invokeSearch) {
+    // Async load search assets
+    const { reducer, sagas, setRouteFilters } =
+      (yield importSearchAssets()) as Awaited<
+        ReturnType<typeof importSearchAssets>
+      >;
+
+    // Inject search reducer and sagas
+    yield call(reduxInjectorSaga, async () => ({
+      key: 'search',
+      reducer: searchOpts.config && reducer(searchOpts.config),
+      saga: sagas,
+    }));
+
+    if (invokeSearch)
+      yield call(setRouteFilters, {
+        params,
+        ssr,
+        ...searchOpts,
+        mappers,
+      });
+  }
+}

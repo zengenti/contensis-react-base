@@ -1,31 +1,33 @@
 import React, { useMemo, useEffect } from 'react';
 import { connect, useDispatch, useSelector } from 'react-redux';
-import { g as getCurrentFacet, a as getPageIndex$2, b as getCurrentTab$1, c as getFacet$1, d as getTabFacets$1, e as getFacetsTotalCount$1, f as getFacetTitles$1, h as getFeaturedResults$2, i as getRenderableFilters$2, j as getIsLoading$2, k as getPaging, l as getPageIsLoading$2, m as getResults, n as getSearchTerm$2, o as getSearchTotalCount$1, p as getSelectedFilters, q as getQueryParameter$2, r as getTabsAndFacets$1, s as getTotalCount$1, w as withMappers, t as clearFilters, u as updateCurrentFacet, v as updateCurrentTab, x as updatePageIndex, y as updatePageSize, z as updateSearchTerm, A as updateSelectedFilters, B as updateSortOrder, C as selectListing, D as mapStateToSearchUri, E as Context$1, F as selectFacets, G as triggerSearch, H as getFilters, U as UPDATE_SORT_ORDER, I as toArray, J as UPDATE_SELECTED_FILTERS, K as UPDATE_SEARCH_TERM, L as UPDATE_PAGE_SIZE, M as UPDATE_PAGE_INDEX, S as SET_SEARCH_FILTERS, N as SET_SEARCH_ENTRIES, O as SET_ROUTE_FILTERS, P as LOAD_FILTERS_COMPLETE, Q as LOAD_FILTERS_ERROR, R as LOAD_FILTERS, T as EXECUTE_SEARCH_ERROR, V as EXECUTE_SEARCH, W as CLEAR_FILTERS, X as APPLY_CONFIG } from './sagas-Cd05ZBBH.js';
-export { Y as actions, a1 as doSearch, $ as expressions, a0 as queries, a7 as routeParams, a3 as sagas, Z as selectors, a2 as setRouteFilters, a4 as triggerListingSsr, a5 as triggerMinilistSsr, a6 as triggerSearchSsr, _ as types } from './sagas-Cd05ZBBH.js';
+import { t as toJS } from './ToJs-BnRRHk6f.js';
+import { w as withMappers, g as getTotalCount, a as getTabsAndFacets, b as getQueryParameter, c as getSelectedFilters, d as getSearchTotalCount, e as getSearchTerm, f as getResultsInfo, h as getResults, i as getPageIsLoading, j as getPaging, k as getIsLoading, l as getRenderableFilters, m as getFeaturedResults, n as getFacetTitles, o as getFacetsTotalCount, p as getTabFacets, q as getFacet, r as getCurrentTab, s as getPageIndex, t as getCurrentFacet, u as updateSortOrder, v as updateSelectedFilters, x as updateSearchTerm, y as updatePageSize, z as updatePageIndex, A as updateCurrentTab, B as updateCurrentFacet, C as clearFilters, D as selectListing, E as triggerSearch, F as Context$1, G as getFilters, U as UPDATE_SORT_ORDER, H as UPDATE_SELECTED_FILTERS, I as UPDATE_SEARCH_TERM, J as UPDATE_PAGE_SIZE, K as UPDATE_PAGE_INDEX, S as SET_SEARCH_FILTERS, L as SET_SEARCH_ENTRIES, M as SET_ROUTE_FILTERS, N as LOAD_FILTERS_COMPLETE, O as LOAD_FILTERS_ERROR, P as LOAD_FILTERS, Q as EXECUTE_SEARCH_ERROR, R as EXECUTE_SEARCH, T as CLEAR_FILTERS, V as APPLY_CONFIG } from './sagas-Fr9yRduO.js';
+export { W as actions, a1 as doSearch, Z as expressions, _ as queries, a3 as sagas, X as selectors, a2 as setRouteFilters, a4 as triggerListingSsr, a5 as triggerMinilistSsr, a6 as triggerSearchSsr, Y as types, $ as useFacets, a0 as useListing } from './sagas-Fr9yRduO.js';
 import { createSelector } from 'reselect';
-import { produce } from 'immer';
+import { produce, current } from 'immer';
 import equals from 'deep-equal';
 import merge from 'deepmerge';
+import { t as toArray } from './util-Bl2u6LpY.js';
+export { r as routeParams } from './util-Bl2u6LpY.js';
 import 'loglevel';
 import '@redux-saga/core/effects';
-import 'contensis-delivery-api';
-import 'query-string';
+import './version-BQAL8sQO.js';
+import './selectors-8ROQrTd7.js';
 import 'jsonpath-mapper';
+import 'query-string';
+import './ContensisDeliveryApi-LWYXevZ1.js';
+import 'contensis-delivery-api';
+import './store-B4IrBYHm.js';
+import 'redux';
+import 'redux-thunk';
+import 'redux-saga';
+import 'redux-injectors-19';
+import './slice-C6JLQik8.js';
+import '@reduxjs/toolkit';
+import './CookieConstants-DEmbwzYr.js';
+import './selectors-DcmvOeX2.js';
 import 'contensis-core-api';
 import './_commonjsHelpers-BFTU3MAI.js';
-
-/* eslint-disable react/display-name */
-const toJS = WrappedComponent => wrappedComponentProps => {
-  const KEY = 0;
-  const VALUE = 1;
-  const propsJS = Object.entries(wrappedComponentProps).reduce((newProps, wrappedComponentProp) => {
-    const propKey = wrappedComponentProp[KEY];
-    const propValue = wrappedComponentProp[VALUE];
-    newProps[propKey] = propValue && typeof propValue === 'object' && 'toJS' in propValue ? propValue.toJS() : propValue;
-    return newProps;
-  }, {});
-  return /*#__PURE__*/React.createElement(WrappedComponent, propsJS);
-};
 
 const withSearch = mappers => SearchComponent => {
   const Wrapper = props => {
@@ -35,27 +37,27 @@ const withSearch = mappers => SearchComponent => {
   const mapStateToProps = state => {
     return {
       currentFacet: getCurrentFacet(state),
-      currentPageIndex: getPageIndex$2(state),
-      currentTabIndex: getCurrentTab$1(state),
-      facet: getFacet$1(state),
-      facets: getTabFacets$1(state),
-      facetsTotalCount: getFacetsTotalCount$1(state),
-      facetTitles: getFacetTitles$1(state),
-      featuredResults: getFeaturedResults$2(state),
-      filters: getRenderableFilters$2(state),
-      isLoading: getIsLoading$2(state),
+      currentPageIndex: getPageIndex(state),
+      currentTabIndex: getCurrentTab(state),
+      facet: getFacet(state),
+      facets: getTabFacets(state),
+      facetsTotalCount: getFacetsTotalCount(state),
+      facetTitles: getFacetTitles(state),
+      featuredResults: getFeaturedResults(state),
+      filters: getRenderableFilters(state),
+      isLoading: getIsLoading(state),
       paging: getPaging(state),
-      pageIsLoading: getPageIsLoading$2(state),
+      pageIsLoading: getPageIsLoading(state),
       results: getResults(state),
-      resultsInfo: (mappers === null || mappers === void 0 ? void 0 : mappers.resultsInfo) && mappers.resultsInfo(state),
-      searchTerm: getSearchTerm$2(state),
-      searchTotalCount: getSearchTotalCount$1(state),
+      resultsInfo: (mappers === null || mappers === void 0 ? void 0 : mappers.resultsInfo) && mappers.resultsInfo(state) || getResultsInfo(state),
+      searchTerm: getSearchTerm(state),
+      searchTotalCount: getSearchTotalCount(state),
       selectedFilters: getSelectedFilters(state),
-      sortOrder: getQueryParameter$2({
+      sortOrder: getQueryParameter({
         state
       }, 'dynamicOrderBy', []),
-      tabsAndFacets: getTabsAndFacets$1(state),
-      totalCount: getTotalCount$1(state)
+      tabsAndFacets: getTabsAndFacets(state),
+      totalCount: getTotalCount(state)
     };
   };
   const mapDispatchToProps = {
@@ -100,7 +102,7 @@ const withListing = mappers => ListingComponent => {
       isLoading: getIsLoading(state),
       paging: getPaging(state),
       results: getResults(state),
-      resultsInfo: mappers && typeof mappers.resultsInfo === 'function' && mappers.resultsInfo(state),
+      resultsInfo: typeof (mappers === null || mappers === void 0 ? void 0 : mappers.resultsInfo) === 'function' && mappers.resultsInfo(state) || getResultsInfo(state),
       searchTerm: getSearchTerm(state),
       selectedFilters: getSelectedFilters(state),
       sortOrder: getQueryParameter({
@@ -120,204 +122,13 @@ const withListing = mappers => ListingComponent => {
   return connect(mapStateToProps, mapDispatchToProps)(toJS(Wrapper));
 };
 
-var defaultMappers = {
-  results: entries => entries,
-  navigate: mapStateToSearchUri
-};
-
-const {
-  getCurrent: getCurrent$1,
-  getCurrentTab,
-  getFacet,
-  getFacetsTotalCount,
-  getFacetTitles,
-  getFeaturedResults: getFeaturedResults$1,
-  getIsLoading: getIsLoading$1,
-  getPageIndex: getPageIndex$1,
-  getPageIsLoading: getPageIsLoading$1,
-  getQueryParameter: getQueryParameter$1,
-  getRenderableFilters: getRenderableFilters$1,
-  getSearchTerm: getSearchTerm$1,
-  getSearchTotalCount,
-  getTabFacets,
-  getTabsAndFacets,
-  getTotalCount
-} = selectFacets;
-const makeSelectFacetsProps = () => createSelector(state => state, (_, mappers) => mappers, (state, mappers) => ({
-  currentFacet: getCurrent$1(state),
-  currentPageIndex: getPageIndex$1(state),
-  currentTabIndex: getCurrentTab(state),
-  facet: getFacet(state),
-  facetTitles: getFacetTitles(state),
-  facets: getTabFacets(state),
-  facetsTotalCount: getFacetsTotalCount(state),
-  featured: getFeaturedResults$1(state),
-  filters: getRenderableFilters$1(state),
-  isLoading: getIsLoading$1(state),
-  pageIsLoading: getPageIsLoading$1(state),
-  paging: getPaging(state, '', Context$1.facets, 'js'),
-  results: getResults(state, '', Context$1.facets, 'js'),
-  resultsInfo: mappers && typeof mappers.resultsInfo === 'function' && mappers.resultsInfo(state),
-  searchTerm: getSearchTerm$1(state),
-  searchTotalCount: getSearchTotalCount(state),
-  selectedFilters: getSelectedFilters(state, '', Context$1.facets, 'js'),
-  sortOrder: getQueryParameter$1({
-    state
-  }, 'dynamicOrderBy', []),
-  tabsAndFacets: getTabsAndFacets(state),
-  totalCount: getTotalCount(state)
-}));
-const useFacets = ({
-  mappers
-} = {
-  id: ''
-}) => {
-  const dispatch = useDispatch();
-  const m = mappers || defaultMappers;
-  const selectListingProps = useMemo(makeSelectFacetsProps, [m]);
-  const dispatchProps = {
-    clearFilters: filterKey => dispatch(withMappers(clearFilters(filterKey), m)),
-    updateCurrentFacet: facet => dispatch(withMappers(updateCurrentFacet(facet), m)),
-    updateCurrentTab: id => withMappers(updateCurrentTab(id), m),
-    updatePageIndex: (pageIndex, scrollToElement) => dispatch(withMappers(updatePageIndex(pageIndex, scrollToElement), m)),
-    updatePageSize: (pageSize, scrollToElement) => dispatch(withMappers(updatePageSize(pageSize, scrollToElement), m)),
-    updateSearchTerm: term => dispatch(withMappers(updateSearchTerm(term), m)),
-    updateSelectedFilters: (filter, key, isUnknownItem = false, scrollToElement) => dispatch(withMappers(updateSelectedFilters(filter, key, isUnknownItem, scrollToElement), m)),
-    updateSortOrder: orderBy => dispatch(withMappers(updateSortOrder(orderBy), m))
-  };
-  const {
-    currentFacet,
-    currentPageIndex,
-    currentTabIndex,
-    facet,
-    facets,
-    facetsTotalCount,
-    facetTitles,
-    featured,
-    filters,
-    isLoading,
-    paging,
-    pageIsLoading,
-    results,
-    resultsInfo,
-    searchTerm,
-    searchTotalCount,
-    selectedFilters,
-    sortOrder,
-    tabsAndFacets,
-    totalCount
-  } = useSelector(state => selectListingProps(state, m));
-  return {
-    currentFacet,
-    currentPageIndex,
-    currentTabIndex,
-    facet,
-    facets,
-    facetsTotalCount,
-    facetTitles,
-    featured,
-    filters,
-    isLoading,
-    paging,
-    pageIsLoading,
-    results,
-    resultsInfo,
-    searchTerm,
-    searchTotalCount,
-    selectedFilters,
-    sortOrder,
-    tabsAndFacets,
-    totalCount,
-    ...dispatchProps
-  };
-};
-
-const {
-  getCurrent,
-  getFeaturedResults,
-  getIsLoading,
-  getListing,
-  getPageIndex,
-  getPageIsLoading,
-  getQueryParameter,
-  getRenderableFilters,
-  getSearchTerm
-} = selectListing;
-const makeSelectListingProps = () => createSelector(state => state, (_, mappers) => mappers, (state, mappers) => ({
-  currentListing: getCurrent(state),
-  currentPageIndex: getPageIndex(state),
-  listing: getListing(state),
-  featured: getFeaturedResults(state),
-  filters: getRenderableFilters(state),
-  isLoading: getIsLoading(state),
-  pageIsLoading: getPageIsLoading(state),
-  paging: getPaging(state, '', Context$1.listings, 'js'),
-  results: getResults(state, '', Context$1.listings, 'js'),
-  resultsInfo: mappers && typeof mappers.resultsInfo === 'function' && mappers.resultsInfo(state),
-  searchTerm: getSearchTerm(state),
-  selectedFilters: getSelectedFilters(state, '', Context$1.listings, 'js'),
-  sortOrder: getQueryParameter({
-    state
-  }, 'dynamicOrderBy', [])
-}));
-const useListing = ({
-  mappers
-} = {
-  id: ''
-}) => {
-  const dispatch = useDispatch();
-  const m = mappers || defaultMappers;
-  const selectListingProps = useMemo(makeSelectListingProps, [m]);
-  const dispatchProps = {
-    clearFilters: filterKey => dispatch(withMappers(clearFilters(filterKey), m)),
-    updateCurrentFacet: facet => dispatch(withMappers(updateCurrentFacet(facet), m)),
-    updatePageIndex: (pageIndex, scrollToElement) => dispatch(withMappers(updatePageIndex(pageIndex, scrollToElement), m)),
-    updatePageSize: (pageSize, scrollToElement) => dispatch(withMappers(updatePageSize(pageSize, scrollToElement), m)),
-    updateSearchTerm: term => dispatch(withMappers(updateSearchTerm(term), m)),
-    updateSelectedFilters: (filter, key, isUnknownItem = false, scrollToElement) => dispatch(withMappers(updateSelectedFilters(filter, key, isUnknownItem, scrollToElement), m)),
-    updateSortOrder: orderBy => dispatch(withMappers(updateSortOrder(orderBy), m))
-  };
-  const {
-    currentListing,
-    currentPageIndex,
-    featured,
-    filters,
-    isLoading,
-    listing,
-    paging,
-    pageIsLoading,
-    results,
-    resultsInfo,
-    searchTerm,
-    selectedFilters,
-    sortOrder
-  } = useSelector(state => selectListingProps(state, m));
-  return {
-    currentListing,
-    currentPageIndex,
-    featured,
-    filters,
-    isLoading,
-    listing,
-    pageIsLoading,
-    paging,
-    results,
-    resultsInfo,
-    searchTerm,
-    selectedFilters,
-    sortOrder,
-    title: listing.title,
-    ...dispatchProps
-  };
-};
-
 const makeSelectMinilistProps = () => createSelector(state => state, (_, id) => id, (state, id) => id ? {
-  facet: getFacet$1(state, id, Context$1.minilist, 'js'),
+  facet: getFacet(state, id, Context$1.minilist, 'js'),
   filters: getFilters(state, id, Context$1.minilist, 'js'),
-  isLoading: getIsLoading$2(state, Context$1.minilist, id),
+  isLoading: getIsLoading(state, Context$1.minilist, id),
   pagingInfo: getPaging(state, id, Context$1.minilist, 'js'),
   results: getResults(state, id, Context$1.minilist, 'js'),
-  searchTerm: getSearchTerm$2(state)
+  searchTerm: getSearchTerm(state)
 } : null);
 const useMinilist = ({
   id,
@@ -437,9 +248,11 @@ const config = {
   isError: false
 };
 const searchState = {
+  compositions: {},
   context: 'facets',
   currentFacet: '',
   currentListing: '',
+  currentComposition: '',
   facets: {},
   listings: {},
   minilist: {},
@@ -577,13 +390,14 @@ var reducers = config => {
   const initState = {
     ...initialState,
     tabs: config.tabs,
+    compositions: config.compositions || {},
     facets: generateSearchFacets(Context$1.facets, config),
     listings: generateSearchFacets(Context$1.listings, config),
     minilist: generateSearchFacets(Context$1.minilist, config)
   };
   return produce((state = initState, action) => {
     const context = state.context;
-    const current = context !== 'listings' ? state.currentFacet : state.currentListing;
+    const current$1 = context !== 'listings' ? state.currentFacet : state.currentListing;
     switch (action.type) {
       case APPLY_CONFIG:
         {
@@ -592,9 +406,11 @@ var reducers = config => {
         }
       case CLEAR_FILTERS:
         {
-          const currentFilters = state[context][current].filters;
-          state[context][current].filters = Object.fromEntries(Object.entries(currentFilters).map(([filterKey, filter]) => {
-            if (typeof action.filterKey === 'undefined' || action.filterKey === filterKey) {
+          var _action$clear, _action$clear2;
+          const currentFilters = state[context][current$1].filters;
+          const filterKeys = ((_action$clear = action.clear) === null || _action$clear === void 0 ? void 0 : _action$clear.keys) || [];
+          state[context][current$1].filters = Object.fromEntries(Object.entries(currentFilters).map(([filterKey, filter]) => {
+            if (filterKeys.length === 0 || filterKeys.includes(filterKey)) {
               const filterItems = filter.items || [];
               filter.items = filterItems.map(item => ({
                 ...item,
@@ -603,8 +419,14 @@ var reducers = config => {
             }
             return [filterKey, filter];
           }));
-          state[context][current].queryDuration = 0;
-          state[context][current].pagingInfo.pagesLoaded = [];
+          state[context][current$1].queryDuration = 0;
+          state[context][current$1].pagingInfo.pagesLoaded = [];
+
+          // also clone UPDATE_SEARCH_TERM behavior if clearing term also
+          if (((_action$clear2 = action.clear) === null || _action$clear2 === void 0 ? void 0 : _action$clear2.term) === true) {
+            state.term = '';
+            state[context] = resetFacets(state, context);
+          }
           return;
         }
       case EXECUTE_SEARCH:
@@ -673,11 +495,12 @@ var reducers = config => {
         }
       case SET_ROUTE_FILTERS:
         {
-          var _state$context$facet$;
+          var _state$context$facet, _state$tabs, _state$context$facet$;
           const {
             facet,
             params,
-            context
+            context,
+            languages
           } = action;
           const {
             term = '',
@@ -686,7 +509,7 @@ var reducers = config => {
             orderBy
           } = params;
           const stateTerm = state.term;
-          const tabId = state[context][facet].tabId || 0;
+          const tabId = ((_state$context$facet = state[context][facet]) === null || _state$context$facet === void 0 ? void 0 : _state$context$facet.tabId) || 0;
 
           // Reset the facet if the search term has changed, or if the any of
           // the filters have changed
@@ -708,14 +531,16 @@ var reducers = config => {
             stateFacet = resetCurrentFacet ? resetFacet(stateFacet) : stateFacet;
             stateFacet.filters = nextFilters;
             stateFacet.queryParams.dynamicOrderBy = toArray(orderBy) || [];
+            stateFacet.queryParams.languages = languages;
             return [facetName, stateFacet];
           }));
           state.context = context;
           state[context] = nextFacets;
           state[action.context === Context$1.facets ? 'currentFacet' : 'currentListing'] = facet;
+          state.currentComposition = action.composition;
           state.term = term;
-          state.tabs[tabId].currentFacet = facet;
-          state[context][facet].pagingInfo = {
+          if ((_state$tabs = state.tabs) !== null && _state$tabs !== void 0 && _state$tabs[tabId]) state.tabs[tabId].currentFacet = facet;
+          if (state[context][facet]) state[context][facet].pagingInfo = {
             ...(state[context][facet].pagingInfo || pagingInfo),
             pageIndex: Number(pageIndex) - 1 || (state[context][facet].queryParams.loadMorePaging ? ((_state$context$facet$ = state[context][facet].pagingInfo) === null || _state$context$facet$ === void 0 ? void 0 : _state$context$facet$.pageIndex) || 0 : 0),
             pageSize: Number(pageSize) || state[context][facet].queryParams.pageSize
@@ -727,6 +552,7 @@ var reducers = config => {
         }
       case SET_SEARCH_ENTRIES:
         {
+          var _action$mappers;
           const thisContext = action.context || context;
           const currentFacet = state[thisContext][action.facet];
 
@@ -751,6 +577,15 @@ var reducers = config => {
           state[thisContext][action.facet] = merge(currentFacet, action.nextFacet, {
             arrayMerge: (source, inbound) => inbound
           });
+          if ((_action$mappers = action.mappers) !== null && _action$mappers !== void 0 && _action$mappers.resultsInfo && typeof action.mappers.resultsInfo === 'function') {
+            // Likely an anti-pattern but we need to provide the whole state
+            // to the resultsInfo mapper, including the latest search state
+            // which is not yet committed outside of this produce() call
+            state[thisContext][action.facet].resultsInfo = action.mappers.resultsInfo({
+              ...action.state,
+              search: current(state)
+            });
+          }
           return;
         }
       case SET_SEARCH_FILTERS:
@@ -779,13 +614,13 @@ var reducers = config => {
           const {
             pageIndex
           } = action;
-          const internalPaging = state[context][current].queryParams.internalPaging || false;
-          const currentPageIndex = state[context][current].pagingInfo.pageIndex || 0;
-          state[context][current].pagingInfo.pageIndex = Number(pageIndex) || 0;
-          state[context][current].pagingInfo.prevPageIndex = currentPageIndex;
-          state[context][current].pagingInfo.isLoading = true;
+          const internalPaging = state[context][current$1].queryParams.internalPaging || false;
+          const currentPageIndex = state[context][current$1].pagingInfo.pageIndex || 0;
+          state[context][current$1].pagingInfo.pageIndex = Number(pageIndex) || 0;
+          state[context][current$1].pagingInfo.prevPageIndex = currentPageIndex;
+          state[context][current$1].pagingInfo.isLoading = true;
           if (internalPaging) return;
-          state[context][current].queryDuration = 0;
+          state[context][current$1].queryDuration = 0;
           return;
         }
       case UPDATE_PAGE_SIZE:
@@ -793,10 +628,10 @@ var reducers = config => {
           const {
             pageSize
           } = action;
-          state[context][current].pagingInfo.pageSize = pageSize;
-          state[context][current].pagingInfo.pageIndex = 0;
-          state[context][current].pagingInfo.isLoading = true;
-          state[context][current].queryDuration = 0;
+          state[context][current$1].pagingInfo.pageSize = pageSize;
+          state[context][current$1].pagingInfo.pageIndex = 0;
+          state[context][current$1].pagingInfo.isLoading = true;
+          state[context][current$1].queryDuration = 0;
           return;
         }
       case UPDATE_SEARCH_TERM:
@@ -812,18 +647,18 @@ var reducers = config => {
             key,
             isUnknownItem
           } = action;
-          const isSingleSelect = state[context][current].filters[filter].isSingleSelect || false;
-          const isGrouped = state[context][current].filters[filter].isGrouped || false;
-          const currentItems = state[context][current].filters[filter].items;
+          const isSingleSelect = state[context][current$1].filters[filter].isSingleSelect || false;
+          const isGrouped = state[context][current$1].filters[filter].isGrouped || false;
+          const currentItems = state[context][current$1].filters[filter].items;
           if (isGrouped) state[context] = resetFacets(state, context);
-          state[context][current] = resetFacet(state[context][current]);
+          state[context][current$1] = resetFacet(state[context][current$1]);
           if (isUnknownItem && (currentItems === null || currentItems === void 0 ? void 0 : currentItems.findIndex(item => (item === null || item === void 0 ? void 0 : item.key) === key)) === -1) {
             currentItems === null || currentItems === void 0 || currentItems.push({
               key,
               isSelected: false
             });
           }
-          state[context][current].filters[filter].items = currentItems === null || currentItems === void 0 ? void 0 : currentItems.map(item => {
+          state[context][current$1].filters[filter].items = currentItems === null || currentItems === void 0 ? void 0 : currentItems.map(item => {
             if (item.key === key) {
               return {
                 ...item,
@@ -845,7 +680,7 @@ var reducers = config => {
             facet
           } = action;
           state[context] = resetFacets(state, context);
-          const currentFacet = facet || current;
+          const currentFacet = facet || current$1;
           state[context][currentFacet].queryParams.dynamicOrderBy = orderBy ? toArray(orderBy) || [] : [];
           return;
         }
@@ -861,5 +696,5 @@ const Context = {
   minilist: 'minilist'
 };
 
-export { Context, reducers as reducer, schema, useFacets, useListing, useMinilist, withListing, withSearch };
+export { Context, reducers as reducer, schema, useMinilist, withListing, withSearch };
 //# sourceMappingURL=search.js.map

@@ -1,15 +1,20 @@
 import { FieldLinkDepths } from 'contensis-core-api';
-import { RouteComponentProps } from 'react-router-dom';
 import { RouteComponent } from './RouteComponent';
+import { RouteComponentProps } from './RouteComponentProps';
 import { EntryMapper } from './EntryMapper';
 import { ReduxInjector } from './ReduxInjector';
 import { RequireLogin } from './RequireLogin';
-import { RouteConfig } from 'react-router-config';
-export type StaticRoute = Omit<RouteConfig, 'component'> & {
+import type { RouteObject } from 'react-router';
+import { SearchRouteOptions } from "../search/models/SearchActions";
+export type StaticRoute = Omit<RouteObject, 'children'> & {
+    index?: false | undefined;
+    children?: StaticRoute[];
+    /** Stores the full matched path for child routes */
+    fullPath?: string;
     /**
      * The React component that should be rendered for this route.
      */
-    component: RouteComponent<RouteComponentProps>;
+    component?: RouteComponent<RouteComponentProps>;
     /**
      * Options for configuring how Site View Node data is handled.
      */
@@ -40,7 +45,7 @@ export type StaticRoute = Omit<RouteConfig, 'component'> & {
         /**
          * Optional entry mapper to transform entry data before passing it to the component.
          */
-        entryMapper?: EntryMapper;
+        entryMapper?: EntryMapper<any, any>;
     };
     /** The depth of descendants to include for the node. */
     fetchNodeLevel?: number;
@@ -52,6 +57,16 @@ export type StaticRoute = Omit<RouteConfig, 'component'> & {
      * Specifies whether login is required to access the content for this type.
      */
     requireLogin?: RequireLogin;
+    /**
+     * Triggers the loading of the relevant search assets
+     */
+    searchOptions?: SearchRouteOptions;
     ssr?: boolean;
     ssrOnly?: boolean;
+    /** Specify localised paths for different language codes, e.g. { 'en-GB': '/path', 'fr-FR': '/chemin' } */
+    i18n?: {
+        [languageCode: string]: string;
+    };
+    /** The language code for this route, e.g. 'en-GB' */
+    language?: string;
 };

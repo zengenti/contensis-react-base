@@ -14,7 +14,7 @@ type SearchQueryArgs = WithOptional<SearchQueryOptions & {
  */
 export declare const searchQuery: ({ assetTypes, contentTypeIds, customWhere, fields, filters, idFilters, sharedFilters, pageSize, pageIndex, orderBy, searchTerm, versionStatus, webpageTemplates, weightedSearchFields, }: SearchQueryArgs) => Query;
 export declare const appendSearchQueryFilters: (query: Query, idFilters: FilterExpression[]) => void;
-export declare const finalQuery: ({ assetTypes, contentTypeIds, fields, filters, idFilters, sharedFilters, pageSize, pageIndex, orderBy, searchTerm, versionStatus, webpageTemplates, weightedSearchFields, }: SearchQueryArgs, children: Omit<SearchQueryArgs, 'pageSize' | 'pageIndex' | 'versionStatus'>[]) => Query;
+export declare const finalQuery: ({ assetTypes, contentTypeIds, fields, filters, idFilters, sharedFilters, pageSize, pageIndex, orderBy, searchTerm, versionStatus, webpageTemplates, weightedSearchFields, }: SearchQueryArgs, children: Omit<SearchQueryArgs, "pageSize" | "pageIndex" | "versionStatus">[]) => Query;
 /**
  * Create a filter expression from a provided filters configuration object
  * and populate them based on the presence of that key in params, filter

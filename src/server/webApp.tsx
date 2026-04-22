@@ -1,49 +1,55 @@
 import React from 'react';
 import { renderToString } from 'react-dom/server';
-import { StaticRouter } from 'react-router-dom';
-import { Provider as ReduxProvider } from 'react-redux';
-import { matchRoutes } from 'react-router-config';
+import { matchRoutes, RouteObject } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
+import type { HelmetServerState } from 'react-helmet-async';
 import { ServerStyleSheet } from 'styled-components';
 import serialize from 'serialize-javascript';
-import minifyCssString from 'minify-css-string';
 import mapJson from 'jsonpath-mapper';
 import { Express, Request, Response } from 'express';
-import { StaticRouterContext } from 'react-router';
-import { ChunkExtractorManager } from '@loadable/server';
 import { identity, noop } from 'lodash';
 import cloneDeep from 'lodash/cloneDeep';
 import { buildCleaner } from 'lodash-clean';
-import { CookiesProvider } from 'react-cookie';
 import Cookies from 'universal-cookie';
 import cookiesMiddleware from 'universal-cookie-express';
+
+import { createLocaleRoutes } from '~/i18n/routes';
+import { actions } from '~/i18n';
 
 import createStore from '~/redux/store/store';
 import { history } from '~/redux/store/history';
 import rootSaga from '~/redux/sagas';
 
 import { setVersion, setVersionStatus } from '~/redux/actions/version';
+import { HttpContextValues } from '~/routing/httpContext';
 import { setCurrentProject } from '~/routing/redux/actions';
 import { selectCurrentSearch } from '~/routing/redux/selectors';
 
 import { deliveryApi } from '~/util/ContensisDeliveryApi';
+import { mergeStaticRoutes } from '~/util/mergeStaticRoutes';
 import pickProject from '~/util/pickProject';
 import stringifyAttributes from './util/stringifyAttributes';
 
 import { getCacheDuration } from './features/caching/cacheDuration.schema';
 import handleResponse from './features/response-handler';
+import {
+  renderStream,
+  styledComponentsStream,
+} from './features/response-handler/render-stream';
 
 import {
   getBundleData,
   getBundleTags,
   loadableChunkExtractors,
 } from './util/bundles';
-import { addStandardHeaders } from './util/headers';
-
-import { AppState, ServerConfig } from '~/models';
 import { getVersionInfo } from './util/getVersionInfo';
 import { unhandledExceptionHandler } from './util/handleExceptions';
-import { SSRContextProvider } from '~/util/SSRContext';
+import { addStandardHeaders } from './util/headers';
+import { replaceHtml } from './util/html';
+
+import { AppState, ServerConfig, MatchedRoute, StaticRoute } from '~/models';
+import { ssrJsxProducer } from './util/jsx';
+import { getSubsitePath } from '~/util/subsite';
 
 const webApp = (
   app: Express,
@@ -55,7 +61,7 @@ const webApp = (
   }
 ) => {
   const {
-    stateType = 'immutable',
+    stateType = 'js',
     routes,
     withReducers,
     withSagas,
@@ -70,23 +76,33 @@ const webApp = (
     enableSsrCookies,
     handleResponses,
     handleExceptions = true,
+    i18n,
   } = config;
+
+  // process locales in static routes for i18n
+  const localeRoutes = createLocaleRoutes(routes);
+
   const staticRoutePath = config.staticRoutePath || staticFolderPath;
+
+  let isRenderingJsxToString = config.renderToString || false;
 
   const bundleData = getBundleData(config, staticRoutePath);
 
   const attributes = stringifyAttributes(scripts.attributes);
   scripts.startup = scripts.startup || startupScriptFilename;
 
-  const responseHandler =
-    typeof handleResponses === 'function' ? handleResponses : handleResponse;
+  let responseHandler = handleResponse;
+  if (typeof handleResponses === 'function') {
+    responseHandler = handleResponses;
+    isRenderingJsxToString = true;
+  }
 
   if (handleExceptions !== false) unhandledExceptionHandler(handleExceptions); // Create `process.on` event handlers for unhandled exceptions (Node v15+)
 
   const versionInfo = getVersionInfo(staticFolderPath);
 
   app.get(
-    '/*',
+    '/{*splat}',
     cookiesMiddleware(),
     async (
       request: Request & {
@@ -94,12 +110,28 @@ const webApp = (
       },
       response: Response
     ) => {
-      const url = encodeURI(request.url);
+      /*
+       * Do not inject url directly into HTML as it can lead to XSS attacks
+       * CWE-79: Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')
+       * CWE-96: Improper Neutralization of Script-Related HTML Tags in a Web Page (Basic XSS)
+       * Removed URL encoding as it causes inconsistencies when routes contain encoded characters in SSR
+       * e.g. /search?category=sport%20and%20wellbeing becomes /search?category=sport%2520and%2520wellbeing
+       * // const url = encodeURI(request.url);
+       */
+      const url = request.url;
 
-      const matchedStaticRoute = () =>
-        matchRoutes(routes.StaticRoutes, request.path);
-      const isStaticRoute = () => matchedStaticRoute().length > 0;
-      const staticRoute = isStaticRoute() && matchedStaticRoute()[0];
+      const matchedStaticRoute = matchRoutes(
+        routes.StaticRoutes as RouteObject[],
+        request.path
+      );
+      const isStaticRoute = matchedStaticRoute && matchedStaticRoute.length > 0;
+
+      if (isStaticRoute) {
+        mergeStaticRoutes(matchedStaticRoute);
+      }
+
+      const staticRoute: MatchedRoute<string, StaticRoute> | null =
+        isStaticRoute ? matchedStaticRoute.pop() || null : null;
 
       // Allow certain routes to avoid SSR
       const onlyDynamic = staticRoute && staticRoute.route.ssr === false;
@@ -118,10 +150,6 @@ const webApp = (
         STATIC: ({ static: value }) => normaliseQs(value) || onlySSR,
       });
 
-      const context: StaticRouterContext = {};
-      // Track the current statusCode via the response object
-      response.status(200);
-
       // Create a store (with a memory history) from our current url
       const store = await createStore(
         withReducers,
@@ -139,9 +167,13 @@ const webApp = (
       // Because of this, we prioritize x-orig-host when setting our hostname
       const hostname = (request.headers['x-orig-host'] ||
         request.hostname) as string;
+      const subsitePath = getSubsitePath(request);
+      const subsitePathScript = subsitePath
+        ? `window.subsitePath = ${serialize(subsitePath)};`
+        : '';
 
       console.info(
-        `Request for ${request.path} hostname: ${hostname} versionStatus: ${versionStatus}`
+        `[webApp] "${request.method} ${request.path}" hostname: ${hostname} versionStatus: ${versionStatus}`
       );
 
       store.dispatch(setVersionStatus(versionStatus));
@@ -152,6 +184,16 @@ const webApp = (
       const groups = allowedGroups && allowedGroups[project];
       store.dispatch(setCurrentProject(project, groups, hostname));
 
+      if (i18n) {
+        store.dispatch(
+          actions.INIT_LOCALES({
+            locales: {},
+            routes: localeRoutes,
+            ...i18n,
+          })
+        );
+      }
+
       const loadableExtractor = loadableChunkExtractors();
 
       const ssrCookies = enableSsrCookies
@@ -161,22 +203,31 @@ const webApp = (
         : // this is a stub cookie collection so cookie methods can be used in code
           new Cookies();
 
-      const jsx = (
-        <ChunkExtractorManager
-          extractor={loadableExtractor.commonLoadableExtractor}
-        >
-          <CookiesProvider cookies={ssrCookies}>
-            <ReduxProvider store={store}>
-              <StaticRouter context={context} location={url}>
-                <SSRContextProvider request={request} response={response}>
-                  <ReactApp routes={routes} withEvents={withEvents} />
-                </SSRContextProvider>
-              </StaticRouter>
-            </ReduxProvider>
-          </CookiesProvider>
-        </ChunkExtractorManager>
-      ) as React.ReactElement;
+      // Track the current statusCode via the response object
+      response.status(200);
 
+      // Create the context we will pass to JSX HttpContext.Provider
+      // and read back any context props set by the ReactApp
+      const context: HttpContextValues = {};
+
+      // Per-request helmet context object — populated by HelmetProvider during renderToString
+      // Using a fresh object per request ensures thread safety under concurrent SSR requests
+      const helmetContext = {} as Record<string, unknown>;
+
+      // Amalgamate all props for the various Providers we wrap the ReactApp with
+      const jsxProviderProps = {
+        loadable: { extractor: loadableExtractor.commonLoadableExtractor },
+        cookies: ssrCookies,
+        helmet: helmetContext,
+        redux: store,
+        httpContext: context,
+        router: { url },
+        ssrContext: { accessMethod, request, response },
+      };
+      // These are the props we will pass to the ReactApp itself
+      const jsxReactAppProps = { routes, withEvents };
+
+      // Get the configured HTML templates provided by the consumer
       const {
         templateHTML = '',
         templateHTMLFragment = '',
@@ -186,6 +237,14 @@ const webApp = (
       // Serve a blank HTML page with client scripts to load the app in the browser
       if (accessMethod.DYNAMIC) {
         // Dynamic doesn't need sagas
+        // or styles, or any split component bundles
+        // nor are we streaming responses
+        const isDynamicHints = `<script ${attributes}>window.isDynamic = true; ${subsitePathScript}</script>`;
+
+        const jsx = ssrJsxProducer(ReactApp, {
+          providers: jsxProviderProps,
+          props: jsxReactAppProps,
+        });
         renderToString(jsx);
 
         // Dynamic page render has only the necessary bundles to start up the app
@@ -195,16 +254,16 @@ const webApp = (
           scripts,
           staticRoutePath
         );
+        const responseHtmlDynamic = replaceHtml(
+          {
+            bundleTags,
+            state: isDynamicHints,
+            templateHTML,
+            templateHTMLFragment,
+          },
+          accessMethod
+        );
 
-        const isDynamicHints = `<script ${attributes}>window.versionStatus = "${versionStatus}"; window.isDynamic = true;</script>`;
-
-        const responseHtmlDynamic = templateHTML
-          .replace('{{TITLE}}', '')
-          .replace('{{SEO_CRITICAL_METADATA}}', '')
-          .replace('{{CRITICAL_CSS}}', '')
-          .replace('{{APP}}', '')
-          .replace('{{LOADABLE_CHUNKS}}', bundleTags)
-          .replace('{{REDUX_DATA}}', isDynamicHints);
         // Dynamic pages always return a 200 so we can run
         // the app and serve up all errors inside the client
         response.setHeader(
@@ -220,37 +279,7 @@ const webApp = (
           .runSaga(rootSaga(withSagas))
           .toPromise()
           .then(() => {
-            const sheet = new ServerStyleSheet();
-
-            const html = renderToString(sheet.collectStyles(jsx) as React.ReactElement);
-
-            const helmet = Helmet.renderStatic();
-            Helmet.rewind();
-            const htmlAttributes = helmet.htmlAttributes.toString();
-            let title = helmet.title.toString();
-            const metadata = helmet.meta
-              .toString()
-              .concat(helmet.base.toString())
-              .concat(helmet.link.toString())
-              .concat(helmet.script.toString())
-              .concat(helmet.noscript.toString());
-
-            if (context.url) {
-              return response.redirect(context.statusCode || 302, context.url);
-            }
-
             const reduxState = store.getState();
-
-            const styleTags = sheet.getStyleTags();
-
-            // After running rootSaga there should be an additional react-loadable
-            // code-split bundles for any page components as well as core app bundles
-            const bundleTags = getBundleTags(
-              loadableExtractor,
-              scripts,
-              staticRoutePath
-            );
-
             let clonedState = buildCleaner({
               isArray: identity,
               isBoolean: identity,
@@ -290,78 +319,135 @@ const webApp = (
                 return true;
               }
               if (!disableSsrRedux) {
-                // window.versionStatus is not strictly required here and is added to support cases
-                // where a consumer may not be using the contensisVersionStatus in redux and calling
-                // the `getClientSideVersionStatus()` method directly
-                serialisedReduxData = `<script ${attributes}>window.versionStatus = "${versionStatus}"; window.REDUX_DATA = ${serialisedReduxData}</script>`;
+                serialisedReduxData = `<script ${attributes}>${subsitePathScript} window.__USE_HYDRATE__ = true; window.REDUX_DATA = ${serialisedReduxData}</script>`;
               }
-            }
-            if ((context.statusCode || 200) >= 404) {
-              accessMethod.STATIC = true;
             }
 
             // Responses
-            let responseHTML = '';
-
-            if (context.statusCode === 404)
-              title = '<title>404 page not found</title>';
-
-            // Static page served as a fragment
-            if (accessMethod.FRAGMENT && accessMethod.STATIC) {
-              responseHTML = minifyCssString(styleTags) + html;
-            }
-
-            // Page fragment served with client scripts and redux data that hydrate the app client side
-            if (accessMethod.FRAGMENT && !accessMethod.STATIC) {
-              responseHTML = templateHTMLFragment
-                .replace('{{TITLE}}', title)
-                .replace('{{SEO_CRITICAL_METADATA}}', metadata)
-                .replace('{{CRITICAL_CSS}}', minifyCssString(styleTags))
-                .replace('{{APP}}', html)
-                .replace('{{LOADABLE_CHUNKS}}', bundleTags)
-                .replace('{{REDUX_DATA}}', serialisedReduxData);
-            }
-
-            // Full HTML page served statically
-            if (!accessMethod.FRAGMENT && accessMethod.STATIC) {
-              responseHTML = templateHTMLStatic
-                .replace('{{TITLE}}', title)
-                .replace('{{SEO_CRITICAL_METADATA}}', metadata)
-                .replace('{{CRITICAL_CSS}}', minifyCssString(styleTags))
-                .replace('{{APP}}', html)
-                .replace('{{LOADABLE_CHUNKS}}', '');
-            }
-
-            // Full HTML page served with client scripts and redux data that hydrate the app client side
-            if (!accessMethod.FRAGMENT && !accessMethod.STATIC) {
-              responseHTML = templateHTML
-                .replace('{{TITLE}}', title)
-                .replace('{{SEO_CRITICAL_METADATA}}', metadata)
-                .replace('{{CRITICAL_CSS}}', styleTags)
-                .replace('{{APP}}', html)
-                .replace('{{LOADABLE_CHUNKS}}', bundleTags)
-                .replace('{{REDUX_DATA}}', serialisedReduxData);
-            }
-
-            // Set response.status from React StaticRouter
-            if (typeof context.statusCode === 'number')
-              response.status(context.statusCode);
-
             addStandardHeaders(reduxState, response, packagejson, {
               allowedGroups,
               globalGroups,
             });
+
+            const sheet = new ServerStyleSheet();
+            const styledJsx = ssrJsxProducer(ReactApp, {
+              providers: { ...jsxProviderProps, styledComponents: { sheet } },
+              props: jsxReactAppProps,
+            });
+
+            // We have to call renderToString() in order for all components to have
+            // had chance to set the helmet metadata
+            const html = renderToString(styledJsx);
+            // Helmet.renderStatic() has to be called synchronously immediately after calling renderToString()
+            // as it is not thread-safe (or specifically scoped to only this request)
+            // TODO: deprecate `react-helmet`
+            const helmet = Helmet.renderStatic();
+
+            // helmetContext is populated synchronously by HelmetProvider during renderToString()
+            // It is scoped per-request via the helmetContext object, making this thread-safe
+            // under concurrent SSR requests (unlike the previous Helmet.renderStatic() global singleton)
+            const { helmet: helmetAsync } = helmetContext as {
+              helmet: HelmetServerState;
+            };
+
+            // Because we have had to call renderToString() here to reliably gather all helmet metadata
+            // We could potentially call sheet.getStyleTags() here too and avoid piping a react-rendered
+            // stream to a second stream to inject styled-components CSS
+
+            const htmlAttributes =
+              helmetAsync.htmlAttributes.toString() ||
+              helmet.htmlAttributes.toString();
+            let title = helmet.title.toString().includes('><')
+              ? helmetAsync.title.toString()
+              : helmet.title.toString();
+            const metadata = helmetAsync.meta
+              .toString()
+              .concat(helmetAsync.base.toString())
+              .concat(helmetAsync.priority.toString())
+              .concat(helmetAsync.link.toString())
+              .concat(helmetAsync.script.toString())
+              .concat(helmetAsync.noscript.toString())
+              .concat(helmet.meta.toString())
+              .concat(helmet.base.toString())
+              .concat(helmet.link.toString())
+              .concat(helmet.script.toString())
+              .concat(helmet.noscript.toString());
+
             try {
-              // If react-helmet htmlAttributes are being used,
-              // replace the html tag with those attributes sepcified
-              // e.g. (lang, dir etc.)
-              if (htmlAttributes) {
-                responseHTML = responseHTML.replace(
-                  /<html?.+?>/,
-                  `<html ${htmlAttributes}>`
+              /**
+               * Loads all page assets into the provided templateHTML
+               *
+               * Is callable after the JSX has been rendered, as
+               * JSX components may update the context via the
+               * HttpContext.Provider which can influence whether
+               * we render the page as STATIC or render nothing
+               * if the context has requested a redirect
+               * */
+              const getContextHtml = (
+                isFinal = false,
+                styleTags?: string,
+                renderedJsxMarkup?: string
+              ) => {
+                if (context.url) {
+                  response.redirect(context.statusCode || 302, context.url);
+                  return '';
+                }
+
+                // Make the page render statically if there is an error status code
+                if ((context.statusCode || 200) >= 404) {
+                  accessMethod.STATIC = true;
+                }
+
+                if (context.statusCode === 404)
+                  title = '<title>404 page not found</title>';
+
+                // Set response.status from React StaticRouter
+                if (typeof context.statusCode === 'number')
+                  response.status(context.statusCode);
+
+                const bundleTags = isFinal
+                  ? getBundleTags(loadableExtractor, scripts, staticRoutePath)
+                  : '';
+
+                // Getting style tags generated by "CSS Modules" because they will be
+                // available to loadable stats if we have built parts of the app with CSS
+                // plugins that are not within styled-components
+                const styles = loadableExtractor?.modern?.getStyleTags();
+
+                const html = replaceHtml(
+                  {
+                    bundleTags,
+                    html: renderedJsxMarkup,
+                    htmlAttributes,
+                    metadata,
+                    state: serialisedReduxData,
+                    styleTags: `${styleTags || ''}${styles || ''}`,
+                    title,
+                    templateHTML,
+                    templateHTMLFragment,
+                    templateHTMLStatic,
+                  },
+                  accessMethod
+                );
+                return html;
+              };
+
+              if (isRenderingJsxToString) {
+                // We have already (begrudgingly) rendered the JSX to a string above
+                // so we can get all of the Helmet metadata out from any rendered component
+                // const html = renderToString(styledJsx);
+                const styleTags = sheet.getStyleTags();
+                const responseHTML = getContextHtml(true, styleTags, html);
+                responseHandler(request, response, responseHTML);
+              } else {
+                renderStream(
+                  getContextHtml,
+                  styledJsx,
+                  request,
+                  response,
+                  styledComponentsStream(sheet)
                 );
               }
-              responseHandler(request, response, responseHTML);
             } catch (err: any) {
               console.info(err.message);
             }
@@ -377,7 +463,15 @@ const webApp = (
               `Error occurred: <br />${err.stack} <br />${JSON.stringify(err)}`
             );
           });
-        renderToString(jsx);
+
+        // If this is removed we don't get the redux state populated
+        // with the result of the actions RouteLoader component has dispatched
+        renderToString(
+          ssrJsxProducer(ReactApp, {
+            providers: jsxProviderProps,
+            props: jsxReactAppProps,
+          })
+        );
 
         store.close();
       }

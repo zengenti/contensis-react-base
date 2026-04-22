@@ -9,13 +9,13 @@ import {
 } from './types';
 
 import { Entry } from 'contensis-delivery-api/lib/models';
-import { MatchedRoute, RouteConfig } from 'react-router-config';
-import { AppRoutes, SSRContext, WithEvents } from '~/models';
+import { AppRoutes, MatchedRoute, StaticRoute, SSRContext, WithEvents } from '~/models';
 
 export const setNavigationPath = (
   path: string,
+  contentPath: string,
   location: ReturnType<typeof useLocation>,
-  staticRoute: MatchedRoute<any, RouteConfig> | undefined,
+  staticRoute: MatchedRoute<string, StaticRoute> | undefined,
   withEvents: WithEvents,
   statePath: string,
   routes: AppRoutes,
@@ -23,6 +23,7 @@ export const setNavigationPath = (
 ) =>
   action(SET_NAVIGATION_PATH, {
     path,
+    contentPath,
     location,
     staticRoute,
     withEvents,

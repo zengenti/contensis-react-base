@@ -8,6 +8,7 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  id-token: write
 
 jobs:
   build:
@@ -17,16 +18,17 @@ jobs:
       paths_released: ${{ steps.release.outputs.paths_released }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Use Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: '20.x'
+          node-version: '24'
+          registry-url: 'https://registry.npmjs.org'
 
       - name: Install project dependencies
         run: |
-          npm ci --legacy-peer-deps
+          npm ci
 
       - name: Build package
         run: |
@@ -65,10 +67,10 @@ jobs:
           # The secret is passed automatically. Nothing to configure.
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Publish prerelease with ${{ steps.check.outputs.npm_tag }} tag
+      - name: Publish prerelease package
         if: steps.release.outputs.releases_created != 'true' && !contains(github.event.head_commit.message, '[nopublish]')
-        run: |
-          npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
-          npm publish --tag ${{ steps.check.outputs.npm_tag }} --ignore-scripts
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish --provenance --tag prerelease --ignore-scripts
+
+      - name: Publish latest release package
+        if: steps.release.outputs.releases_created == 'true'
+        run: npm publish --provenance --tag latest --ignore-scripts

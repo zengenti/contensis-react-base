@@ -1,9 +1,11 @@
 import * as log from 'loglevel';
 import { takeEvery, put, select, call, all } from 'redux-saga/effects';
-import { PagedList, Query, VersionStatus } from 'contensis-core-api/lib/models';
-import { Entry, TaxonomyNode } from 'contensis-delivery-api/lib/models';
+import { PagedList, Query, VersionStatus } from 'contensis-core-api';
+import { Entry, TaxonomyNode } from 'contensis-delivery-api';
 
-import { cachedSearch } from '../search/ContensisDeliveryApi';
+import { selectVersionStatus } from '~/redux/selectors/version';
+import { cachedSearch } from '~/util/ContensisDeliveryApi';
+import { cachedTaxonomyLookup } from '../search/ContensisDeliveryApi';
 import { callCustomApi, timedSearch, getItemsFromResult } from '../search/util';
 
 import {
@@ -32,17 +34,21 @@ import {
   withMappers,
 } from './actions';
 import {
-  getCurrentFacet,
-  getPageIndex,
-  getFacets,
-  getSearchTabs,
+  getCompositionFacets,
+  getCurrent,
+  getCurrentComposition,
+  getCurrentFromLocalised,
   getCustomApi,
-  getSelectedFilters,
   getFacet,
-  getIsSsr,
+  getFacets,
+  getFilterKeyFromLocalised,
   getFiltersToLoad,
+  getIsSsr,
+  getPageIndex,
   getResults,
-  selectVersionStatus,
+  getSearchCompositions,
+  getSearchTabs,
+  getSelectedFilters,
 } from './selectors';
 import { searchQuery, filterQuery } from '../search/queries';
 import mapStateToSearchUri from '../transformations/state-to-searchuri';
@@ -50,7 +56,12 @@ import mapSearchResultToState, {
   facetTemplate,
   filterTemplate,
 } from '../transformations/searchresult-to-state.mapper';
-import { generateQueryParams, debugExecuteSearch, scrollTo } from './util';
+import {
+  generateQueryParams,
+  debugExecuteSearch,
+  scrollTo,
+  sanitiseParams,
+} from './util';
 import mapEntriesToFilterItems from '../transformations/entry-to-filteritem.mapper';
 import { AppState, Facet, Filter } from '../models/SearchState';
 import {
@@ -59,8 +70,10 @@ import {
   EnsureSearchAction,
   ExecuteSearchAction,
   InitListingAction,
+  LoadFilterAction,
   LoadFiltersCompleteAction,
   LoadFiltersSearchResults,
+  SearchParams,
   SearchResults,
   SetRouteFiltersOptions,
   SetSearchEntriesAction,
@@ -79,6 +92,7 @@ import { Mappers } from '../models/Search';
 import { Context } from '../models/Enums';
 import { TimedSearchResponse } from '../models/SearchUtil';
 import mapQueryParamsToCustomApi from '../transformations/queryParams-to-customapi.mapper';
+import { selectCurrentLanguage } from '~/i18n';
 
 export const searchSagas = [
   takeEvery(CLEAR_FILTERS, clearFilters),
@@ -100,16 +114,63 @@ const toJS = (obj: any) =>
 export function* setRouteFilters(
   action: InitListingAction | SetRouteFiltersOptions
 ) {
-  const { mappers, params, listingType, defaultLang, debug } = action;
-  const context = listingType ? Context.listings : Context.facets;
+  const { mappers, params, composition, debug, ssr } = action;
+  let { defaultLang } = action;
+
   const state: AppState = toJS(yield select());
-  const ssr = getIsSsr(state);
+  const isSSR = getIsSsr(state);
+  sanitiseParams(params);
 
   // Get current facet from params or state
-  let currentFacet = (params && params.facet) || listingType;
+  const facet = params?.facet || action.facet;
+  const listingType = params?.listingType || action.listingType;
+
+  // Determine facets or listings context
+  let context = listingType ? Context.listings : Context.facets;
+
+  let currentFacet = listingType || facet;
+
+  // Instead of just taking the facet/listing from params,
+  // we need to check all aliases to determine the correct facet/listing
+  const currentLanguage = yield select(selectCurrentLanguage);
+  if (currentFacet) {
+    const currentLocalised: ReturnType<typeof getCurrentFromLocalised> =
+      yield select(
+        getCurrentFromLocalised,
+        currentFacet,
+        currentLanguage,
+        context
+      );
+    if (currentLocalised) {
+      currentFacet = currentLocalised.facet;
+      defaultLang = currentLocalised.language;
+    }
+  }
+
+  // If composition is set, and no facet/listingType in params,
+  // pick the first facet/listing from the composition
+  if (composition) {
+    const compositions = getSearchCompositions(state);
+    const compositionConfig = compositions[composition];
+    if (compositionConfig) {
+      if ('facets' in compositionConfig) {
+        if (!facet) {
+          const firstFacetKey = compositionConfig.facets?.[0];
+          context = Context.facets;
+          currentFacet = firstFacetKey;
+        }
+      } else if ('listings' in compositionConfig) {
+        if (!listingType) {
+          const firstListingKey = compositionConfig.listings?.[0];
+          context = Context.listings;
+          currentFacet = firstListingKey;
+        }
+      }
+    }
+  }
 
   // If Listing use listing type (ignore params.facet)
-  if (context === Context.listings) {
+  if (context === Context.listings && listingType) {
     currentFacet = listingType;
   }
 
@@ -117,23 +178,48 @@ export function* setRouteFilters(
   if (!currentFacet) {
     const tabs = getSearchTabs(state, 'js');
     currentFacet =
-      tabs?.[0].defaultFacet || Object.keys(getFacets(state, 'js'))?.[0] || '';
+      tabs?.[0]?.defaultFacet || Object.keys(getFacets(state, 'js'))?.[0] || '';
+  }
+
+  // Ensure we have a language set
+  if (!defaultLang) defaultLang = currentLanguage;
+
+  // When we have a currentFacet, check the defaultLang
+  // and translate any filter params from the localised aliases
+  // to the actual filter keys
+  if (currentFacet && defaultLang) {
+    for (const paramKey of Object.keys(params || {})) {
+      const filterKey = yield select(
+        getFilterKeyFromLocalised,
+        paramKey,
+        defaultLang,
+        currentFacet,
+        context
+      );
+      if (filterKey && filterKey !== paramKey) {
+        params![filterKey] = params![paramKey];
+        delete params![paramKey];
+      }
+    }
   }
 
   const nextAction = {
     type: SET_ROUTE_FILTERS,
     context,
+    composition,
     facet: currentFacet,
     mappers,
     params,
     defaultLang,
+    languages: defaultLang ? [defaultLang] : [],
+    isSSR,
     ssr,
     debug,
   } as InitListingAction;
   yield put(nextAction);
 
   // keep track of this state ref for comparing changes to params later
-  const ogState = { search: state.search };
+  const ogState = { search: state.search } as AppState;
 
   // Using call instead of triggering from the put
   // to allow this exported saga to continue during SSR
@@ -151,7 +237,7 @@ export function* doSearch(action: TriggerSearchAction) {
   const nextAction = {
     ...action,
     type: SET_SEARCH_FILTERS,
-    ssr: getIsSsr(state),
+    isSSR: getIsSsr(state),
     facet: action.facet || action.params?.facet,
   } as InitListingAction;
 
@@ -164,14 +250,20 @@ export function* doSearch(action: TriggerSearchAction) {
     yield put(nextAction);
 
     // keep track of this state ref for comparing changes to params later
-    const ogState = { search: state.search };
+    const ogState = { search: state.search } as AppState;
 
     yield call(ensureSearch, { ...nextAction, ogState });
   }
 }
 
 function* loadFilters(action: InitListingAction) {
-  const { facet: facetKey, context, mappers = {} as Mappers } = action;
+  const {
+    facet: facetKey,
+    context,
+    mappers = {} as Mappers,
+    languages,
+    ssr,
+  } = action;
   const filtersToLoad = (yield select(
     getFiltersToLoad,
     facetKey,
@@ -184,6 +276,7 @@ function* loadFilters(action: InitListingAction) {
       filtersToLoad,
       facetKey,
       context,
+      languages,
     });
     const selectedKeys = (yield select(
       getSelectedFilters,
@@ -205,43 +298,40 @@ function* loadFilters(action: InitListingAction) {
           filterKey,
           filter: filters[filterKey],
           projectId,
+          languages,
           selectedKeys: selectedKeys[filterKey],
           context,
           mapper:
             ('filterItems' in mappers && mappers.filterItems) ||
             mapEntriesToFilterItems,
+          ssr,
         } as LoadFilterAction);
       });
     if (filtersToLoadSagas) yield all(filtersToLoadSagas);
   }
 }
 
-type LoadFilterAction = {
-  facetKey: string;
-  filterKey: string;
-  filter: Filter;
-  projectId: string;
-  selectedKeys: string[];
-  context: Context;
-  mapper: Mappers['filterItems'];
-};
-
 function* loadFilter(action: LoadFilterAction) {
   const {
+    context,
     facetKey,
-    filterKey,
     filter,
+    filterKey,
+    languages,
+    mapper,
     projectId,
     selectedKeys,
-    context,
-    mapper,
+    // get api instance from SSR context that is connected to the current request in SSR,
+    // fall back to the imported cachedSearch api that is not connected to the current SSR context
+    ssr: { api } = { api: cachedSearch },
   } = action;
-  const { contentTypeId, customWhere, path } = filter as Filter;
+  const { contentTypeId, customWhere, pageSize, path } = filter as Filter;
   const createStateFrom = {
     type: LOAD_FILTERS_COMPLETE,
     context,
     error: undefined,
     facetKey,
+    filter,
     filterKey,
     payload: {} as TaxonomyNode | PagedList<Entry>,
     selectedKeys,
@@ -255,10 +345,12 @@ function* loadFilter(action: LoadFilterAction) {
       )) as VersionStatus;
       const query = filterQuery(
         Array.isArray(contentTypeId) ? contentTypeId : [contentTypeId],
+        languages,
         versionStatus,
-        customWhere
+        customWhere,
+        pageSize
       );
-      const payload = (yield cachedSearch.search(
+      const payload = (yield api.search(
         query,
         0,
         projectId
@@ -270,13 +362,12 @@ function* loadFilter(action: LoadFilterAction) {
       createStateFrom.payload = payload;
     }
     if (path) {
-      const payload = (yield cachedSearch.getTaxonomyNodeByPath(
+      const payload = (yield cachedTaxonomyLookup.getTaxonomyNodeByPath(
         path,
         projectId
       )) as TaxonomyNode;
 
-      if (!payload)
-        throw new Error(`No payload returned for taxonomy path: '${path}'`);
+      if (!payload) throw new Error(`Nothing returned for taxonomy: '${path}'`);
       if ((payload as any).type === 'error') throw payload;
 
       createStateFrom.payload = payload;
@@ -324,12 +415,12 @@ function* ensureSearch(action: EnsureSearchAction) {
       } as ExecuteSearchAction);
     }
   } catch (error: any) {
-    log.error(...['Error running search saga:', error, error.stack]);
+    log.error('Error running ensureSearch:', error, error.stack);
   }
 }
 
 function* executeSearch(action: ExecuteSearchAction) {
-  const { context, facet, queryParams, mappers } = action;
+  const { context, facet, queryParams, mappers, ssr } = action;
   try {
     const state = (yield select()) as AppState;
     let result = {} as TimedSearchResponse;
@@ -342,11 +433,12 @@ function* executeSearch(action: ExecuteSearchAction) {
         (typeof mappers === 'object' &&
           typeof mappers.customApi === 'function' &&
           mappers.customApi(queryParams)) ||
-        (mapQueryParamsToCustomApi(queryParams) as { [key: string]: string });
+        (mapQueryParamsToCustomApi(queryParams) as SearchParams);
 
       result.payload = (yield callCustomApi<any>(
         customApi,
-        apiParams
+        apiParams,
+        ssr
       )) as any[];
       result.duration = 1;
     } else {
@@ -356,7 +448,7 @@ function* executeSearch(action: ExecuteSearchAction) {
           featuredQuery,
           queryParams.linkDepth,
           queryParams.projectId,
-          queryParams.env
+          ssr
         )) as TimedSearchResponse;
 
         queryParams.excludeIds = getItemsFromResult(featuredResult)
@@ -369,7 +461,7 @@ function* executeSearch(action: ExecuteSearchAction) {
         query,
         queryParams.linkDepth,
         queryParams.projectId,
-        queryParams.env
+        ssr
       );
     }
 
@@ -390,17 +482,24 @@ function* executeSearch(action: ExecuteSearchAction) {
     >(createStateFrom, facetTemplate);
     yield put(nextAction);
   } catch (error: any) {
-    log.error(...['Error running search saga:', error, error.stack]);
+    log.error('Error running executeSearch:', error, error.stack);
   }
 }
 
 function* preloadOtherFacets(action: SetSearchEntriesAction) {
   const { preload, context, facet, debug } = action;
   const state = (yield select()) as AppState;
-  const currentFacet = getCurrentFacet(state);
+  const currentFacet = getCurrent(state, context);
+  const currentComposition = getCurrentComposition(state);
 
-  if (!preload && facet === currentFacet && context !== Context.listings) {
-    const allFacets = getFacets(state, 'js');
+  if (
+    !preload &&
+    facet === currentFacet &&
+    (context !== Context.listings || currentComposition)
+  ) {
+    const allFacets = currentComposition
+      ? getCompositionFacets(state, currentComposition)
+      : getFacets(state, 'js');
     const otherFacets = Object.keys(allFacets).filter(f => f !== currentFacet);
 
     yield all(
@@ -454,8 +553,9 @@ function* updateCurrentTab(action: WithMappers<UpdateCurrentTabAction>) {
 }
 
 function* clearFilters(action: WithMappers<ClearFiltersAction>) {
-  const { mappers } = action;
-  const uri = (yield buildUri({}, mappers)) as string;
+  const { clear, mappers } = action;
+  const term = clear?.term ? '' : undefined;
+  const uri = (yield buildUri({ term }, mappers)) as string;
   yield put(navigate(uri));
 }
 

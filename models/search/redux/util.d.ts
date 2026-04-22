@@ -1,6 +1,6 @@
 import { SearchQueryOptions } from '../models/Queries';
 import { AppState } from '../models/SearchState';
-import { EnsureSearchAction, SetSearchEntriesAction } from '../models/SearchActions';
+import { EnsureSearchAction, SearchParams, SetSearchEntriesAction } from '../models/SearchActions';
 /**
  * 1, Generates all the parameters required to run the search query.
  * 2, Tells us if we should run the search.
@@ -16,11 +16,20 @@ export declare const generateQueryParams: (action: EnsureSearchAction | SetSearc
  */
 export declare const runSearch: (action: EnsureSearchAction | SetSearchEntriesAction, state: AppState, queryParams: SearchQueryOptions) => boolean;
 /**
+ * Patch mutates original params argument to decode certain
+ * url encoded params which can creep into urls and cause a
+ * flash of different content when hydrating from SSR
+ * @param params SearchParams
+ * @returns SearchParams
+ */
+export declare const sanitiseParams: (params?: SearchParams) => SearchParams | undefined;
+/**
  * This will tell us if filter parameters have been
  * changed by some external event such as a route change
  * @param action
  * @returns true or false
  */
 export declare const filterParamsChanged: (action: EnsureSearchAction | SetSearchEntriesAction, state?: AppState) => boolean;
+export declare const languageChanged: (action: EnsureSearchAction | SetSearchEntriesAction) => boolean;
 export declare const debugExecuteSearch: (action: EnsureSearchAction | SetSearchEntriesAction, state: AppState) => void;
 export declare const scrollTo: (scrollToElement: string) => void;

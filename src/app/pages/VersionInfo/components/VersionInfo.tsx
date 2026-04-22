@@ -12,7 +12,7 @@ export interface IVersionInfoProps {
     projectId: string;
     livePublishingRootUrl: string;
   };
-  devEnv: any;
+  devEnv: { [k: string]: string };
   disableSsrRedux: boolean;
   nodeEnv: string;
   packageDetail: any;

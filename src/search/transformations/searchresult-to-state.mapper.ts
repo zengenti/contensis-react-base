@@ -1,3 +1,5 @@
+import { Aggregation } from 'contensis-core-api';
+import merge from 'deepmerge';
 import {
   default as mapSearchResultToState,
   MappingTemplate,
@@ -11,7 +13,7 @@ import {
   LoadFiltersSearchResults,
   SearchResults,
 } from '../models/SearchActions';
-import { AppState, Filters } from '../models/SearchState';
+import { AppState, FilterItem, Filters } from '../models/SearchState';
 import { getFilters } from '../redux/selectors';
 import {
   SET_SEARCH_ENTRIES,
@@ -29,7 +31,7 @@ const mapEntriesToSearchResults = (
   }: {
     mappers?: Mappers;
     mapper?: Mappers['results'];
-    context: Context;
+    context: keyof typeof Context;
     facet: string;
   },
   items: any[],
@@ -64,18 +66,80 @@ export const facetTemplate = {
       ),
     filters: ({ result, state, action }: SearchResults) => {
       const aggregations =
-        'aggregations' in result.payload
+        result.payload && 'aggregations' in result.payload
           ? result.payload.aggregations
           : undefined;
       if (!aggregations) return {};
 
-      // Handle aggregations client-side where the filter items have loaded before the results containing the aggregations
+      // Handle aggregations client-side where the filter items have loaded
+      // before the results containing the aggregations
       const filters = cloneDeep(
         getFilters(state, action.facet, action.context, 'js')
       ) as Filters;
-      for (const [filterKey, filter] of Object.entries(filters)) {
-        const aggregation = aggregations[convertKeyForAggregation(filterKey)];
+      for (const filter of Object.values(filters)) {
+        let aggregation: Aggregation = {};
+        if (typeof filter.fieldId === 'string') {
+          aggregation =
+            aggregations[convertKeyForAggregation(filter.fieldId)] || {};
+        } else if (Array.isArray(filter.fieldId)) {
+          for (const fieldId of filter.fieldId) {
+            aggregation = merge(
+              aggregation,
+              aggregations[convertKeyForAggregation(fieldId)] || {}
+            );
+          }
+        }
+        // Populate filter items from aggregations for example tag fields
+        if (filter.aggregations) {
+          // Use supplied aggregations instead of field aggregations
+          if (typeof filter.aggregations === 'string') {
+            aggregation =
+              aggregations[convertKeyForAggregation(filter.aggregations)] || {};
+          } else if (Array.isArray(filter.aggregations)) {
+            aggregation = {};
+            for (const fieldId of filter.aggregations) {
+              aggregation = merge(
+                aggregation,
+                aggregations[convertKeyForAggregation(fieldId)] || {}
+              );
+            }
+          }
+          // Start with existing items that are not in the aggregation
+          const existingItemsNotInAggregation = (filter.items || [])
+            .filter(item => !(item.key in (aggregation || {})))
+            .map(item => {
+              delete item.aggregate;
+              return item;
+            });
 
+          // Map aggregation entries to filter items
+          const aggregationItems = Object.entries(aggregation || {}).map(
+            ([key, aggregate]) => {
+              const existing =
+                filter.items?.find(item => item.key === key) ||
+                ({} as FilterItem);
+              return {
+                key,
+                title:
+                  existing?.title || `${key[0].toUpperCase()}${key.slice(1)}`,
+                isSelected: !!existing?.isSelected,
+                aggregate,
+              };
+            }
+          );
+
+          // Combine existing items not in aggregation with aggregation items
+          filter.items = [
+            ...existingItemsNotInAggregation,
+            ...aggregationItems,
+          ].sort((a, b) => (a.title || a.key).localeCompare(b.title || b.key));
+          continue;
+        }
+
+        // Update aggregation counts on existing filter items
+        // In the context of a pre-loaded facet, the filter items will
+        // not have been loaded yet, so we need to check again when
+        // the filter items load and populate the aggregate counts then as well
         for (const filterItem of filter.items || []) {
           if (!aggregation) delete filterItem.aggregate;
           else {
@@ -161,6 +225,7 @@ export const facetTemplate = {
   },
   preload: 'action.preload',
   ogState: 'action.ogState',
+  state: 'state',
   debug: 'action.debug',
 } as any;
 
@@ -177,7 +242,7 @@ export const filterTemplate = {
       selectedKeys,
       mapper,
       facet,
-      filterKey,
+      filter,
     }: LoadFiltersSearchResults) => {
       // Handle taxonomy filter items
       if (payload && 'children' in payload) {
@@ -189,17 +254,26 @@ export const filterTemplate = {
       }
 
       // Handle entries-based filter items
-      if (payload && 'items' in payload) {
+      if (payload && 'items' in payload && filter.fieldId) {
         // Handle aggregations from SSR where the results containing the aggregations have loaded before the filter items
-        const aggregation =
-          facet.aggregations?.[convertKeyForAggregation(filterKey)];
+        const aggregation = Array.isArray(filter.fieldId)
+          ? filter.fieldId.reduce((agg, fieldId) => {
+              const fieldAggregations =
+                facet.aggregations?.[convertKeyForAggregation(fieldId)] || {};
+              // Accumulate numeric values for matching keys from previous counted fields
+              for (const [key, value] of Object.entries(fieldAggregations)) {
+                agg[key] = (agg[key] || 0) + (value as number);
+              }
+              return agg;
+            }, {} as Aggregation)
+          : facet.aggregations?.[convertKeyForAggregation(filter.fieldId)];
         const items = payload.items.map((item: any) => {
           item.isSelected = selectedKeys?.includes(item?.sys?.id);
           const aggregate = aggregation?.[item?.sys?.id.toLowerCase()];
           if (typeof aggregate === 'number') item.aggregate = aggregate;
           return item;
         });
-        return mapper?.(items);
+        return mapper?.(items) || [];
       }
       return [];
     },

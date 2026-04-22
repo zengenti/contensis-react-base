@@ -1,4 +1,3 @@
-/// <reference types="node" />
 import 'isomorphic-fetch';
 import { Express } from 'express';
 import http from 'http';
@@ -9,7 +8,7 @@ type Exporting = {
     app: Express;
     apiProxy: typeof deliveryProxy;
     server: http.Server;
-    start: (ReactApp: React.ComponentType<any>, config: ServerConfig, ServerFeatures: (app: Express) => void) => void;
+    start: (ReactApp: React.ComponentType<any>, config: ServerConfig, ServerFeatures: (app: Express) => void | null | undefined) => void;
 };
 declare const _default: Exporting;
 export default _default;

@@ -1,10 +1,20 @@
 import { PagedList } from 'contensis-core-api';
 import { Entry, TaxonomyNode } from 'contensis-delivery-api/lib/models';
 import { Context } from '../models/Enums';
-import { SearchFacet, Listing, Mappers } from '../models/Search';
-import { AppState, Facet } from './SearchState';
+import { SearchFacet, Listing, Mappers, SearchConfig } from '../models/Search';
+import { AppState, Facet, Filter } from './SearchState';
 import { QueryParams } from './Queries';
 import { TimedSearchResponse } from './SearchUtil';
+import { SSRContext } from "../../models";
+/**
+ * Parameters for the current search
+ * usually provided by route, path or query parameters or
+ * can be overridden manually to manipulate the search to
+ * drive certain conditions when required
+ */
+export type SearchParams = {
+    [key: string]: string;
+};
 type Action = {
     type: string;
 };
@@ -24,33 +34,49 @@ export type TriggerSearchParams = {
     facet: string;
     mapper?: Mappers['results'];
     mappers?: Mappers;
-    params?: {
-        [key: string]: string;
-    };
+    params?: SearchParams;
+    ssr?: SSRContext;
 };
 export type TriggerSearchAction = Action & TriggerSearchParams;
 export type TriggerSearchActionCreator = (p: TriggerSearchParams) => TriggerSearchAction;
 type InitListingParams = {
-    context: Context;
+    context: keyof typeof Context;
     debug?: DebugFlags;
     defaultLang?: string;
+    languages?: string[];
+    /**
+     * Triggers the loading of the search config facet
+     */
     facet: string;
+    /**
+     * Triggers the loading of the search config listing
+     */
     listingType?: string;
+    /**
+     * Triggers the loading of the search config composition
+     */
+    composition?: string;
     mapper?: Mappers['results'];
     mappers?: Mappers;
-    params: {
-        [key: string]: string;
-    };
+    params: SearchParams;
     preload?: boolean;
+    ssr?: SSRContext;
 };
 export type InitListingAction = Action & InitListingParams & {
-    ssr?: boolean;
+    isSSR?: boolean;
 };
-export type SetRouteFiltersOptions = Partial<InitListingAction>;
+export type SetRouteFiltersOptions = Omit<Partial<InitListingAction>, 'type'>;
+export type SearchRouteOptions = Omit<SetRouteFiltersOptions & {
+    /**
+     * The search configuration to use for the search
+     */
+    config?: SearchConfig;
+}, 'ssr' | 'isSSR'>;
 export type InitListingActionCreator = (p: InitListingParams) => InitListingAction;
 export type LoadFiltersSearchResults = Action & {
     error: any;
     facetKey: string;
+    filter: Filter;
     filterKey: string;
     payload: TaxonomyNode | PagedList<Entry>;
     selectedKeys: string[];
@@ -65,6 +91,17 @@ export type SearchResults = {
     prevResults: any[];
     result: TimedSearchResponse;
     state: AppState;
+};
+export type LoadFilterAction = {
+    context: Context;
+    facetKey: string;
+    filter: Filter;
+    filterKey: string;
+    languages: string[];
+    mapper: Mappers['filterItems'];
+    projectId: string;
+    selectedKeys: string[];
+    ssr?: SSRContext;
 };
 export type LoadFiltersCompleteAction = Action & {
     error: any;
@@ -85,16 +122,14 @@ export type ExecuteSearchAction = EnsureSearchAction & {
 export type SetSearchEntriesParams = {
     type: string;
     context: Context;
-    defaultLang: string;
+    languages: string[];
     facet: string;
     mappers: Mappers;
     nextFacet: Facet;
     preload: boolean;
     ogState: AppState;
     debug: DebugFlags;
-    params: {
-        [key: string]: string;
-    };
+    params: SearchParams;
 };
 export type SetSearchEntriesAction = Action & SetSearchEntriesParams;
 export type ApplySearchFilterAction = Action & {
@@ -104,8 +139,16 @@ export type ApplySearchFilterAction = Action & {
     scrollToElement?: string;
 };
 export type ApplySearchFilterActionCreator = (filter: string, key: string) => ApplySearchFilterAction;
-export type ClearFiltersAction = Action;
-export type ClearFiltersActionCreator = (filterKey?: string) => ClearFiltersAction;
+export type ClearFiltersAction = Action & {
+    clear?: {
+        term?: boolean;
+        keys?: boolean | string[];
+    };
+};
+export type ClearFiltersActionCreator = (clear?: string | {
+    term?: boolean;
+    keys?: boolean | string[];
+}) => ClearFiltersAction;
 export type UpdateCurrentFacetAction = Action & {
     facet: string;
 };

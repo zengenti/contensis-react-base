@@ -1,6 +1,8 @@
 import { QueryAggregations } from 'contensis-core-api';
 import mapJson from 'jsonpath-mapper';
 
+import { selectCurrentProject } from '~/routing/redux/selectors';
+import { selectVersionStatus } from '~/redux/selectors/version';
 import {
   getFacet,
   getSelectedFilters,
@@ -8,11 +10,8 @@ import {
   getSearchTerm,
   getPageIndex,
   getFilters,
-  getCustomEnv,
   getPrevPageIndex,
   getPagesLoaded,
-  selectCurrentProject,
-  selectVersionStatus,
   getPageSize,
 } from '../redux/selectors';
 import { mapFiltersToFilterExpression } from './filters-to-filterexpressions.mapper';
@@ -26,12 +25,12 @@ import {
 } from '../models/SearchActions';
 import { WeightedSearchField } from '../models/Search';
 import {
-  convertFieldIdForAggregation,
+  cleanseFieldIdForAggregation,
   convertKeyForAggregation,
 } from '../search/util';
 
 type QueryParamsMapperParams = {
-  context: Context;
+  context: keyof typeof Context | Context;
   facet: string;
   action: EnsureSearchAction | SetSearchEntriesAction;
   state: AppState;
@@ -42,12 +41,18 @@ const queryParamsTemplate = {
     const { context, facet, state } = root;
     const stateFilters = getFilters(state, facet, context, 'js');
     const aggregations: QueryAggregations = {};
-    for (const [filterKey, filter] of Object.entries(stateFilters)) {
-      if (filter.fieldId && !Array.isArray(filter.fieldId)) {
-        aggregations[convertKeyForAggregation(filterKey)] = {
-          field: convertFieldIdForAggregation(filter.fieldId),
-          size: 100,
-        };
+    for (const filter of Object.values(stateFilters)) {
+      if (Array.isArray(filter.fieldId)) {
+        for (const id of filter.fieldId) {
+          const field = cleanseFieldIdForAggregation(id);
+          const aggregationKey = convertKeyForAggregation(field);
+          if (!aggregations[aggregationKey]) {
+            aggregations[aggregationKey] = { field, size: 100 };
+          }
+        }
+      } else if (filter.fieldId) {
+        const field = cleanseFieldIdForAggregation(filter.fieldId);
+        aggregations[convertKeyForAggregation(field)] = { field, size: 100 };
       }
     }
 
@@ -64,8 +69,6 @@ const queryParamsTemplate = {
     getQueryParameter(root, 'customWhere', []),
   dynamicOrderBy: (root: QueryParamsMapperParams) =>
     getQueryParameter(root, 'dynamicOrderBy', []),
-  env: ({ state, facet, context }: QueryParamsMapperParams) =>
-    getCustomEnv(state, facet, context),
   excludeIds: ({
     action: { excludeIds },
   }: {
@@ -102,8 +105,8 @@ const queryParamsTemplate = {
     getPageIndex(state, '', action.context),
   internalPaging: (root: QueryParamsMapperParams) =>
     getQueryParameter(root, 'internalPaging', false),
-  languages: ({ action }: QueryParamsMapperParams) =>
-    action.defaultLang ? [action.defaultLang] : [],
+  languages: (root: QueryParamsMapperParams) =>
+    getQueryParameter(root, 'languages', []),
   linkDepth: (root: QueryParamsMapperParams) =>
     getQueryParameter(root, 'linkDepth', 0),
   loadMorePaging: (root: QueryParamsMapperParams) =>

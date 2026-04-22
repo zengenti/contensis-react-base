@@ -158,10 +158,6 @@ function* changePasswordSaga(action) {
       return;
     }
 
-    // // eslint-disable-next-line no-console
-    // console.log(changePasswordObject);
-    // // eslint-disable-next-line no-console
-    // console.log(userCredentialsObject);
     yield put({
       type: CHANGE_USER_PASSWORD_SUCCESS,
     });

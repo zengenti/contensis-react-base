@@ -1,16 +1,13 @@
 import React, { PropsWithChildren } from 'react';
-import { Route } from 'react-router-dom';
+import { useHttpContext } from '../httpContext';
 
 export const Status = ({
   code,
   children,
 }: PropsWithChildren<{ code: number }>) => {
-  return (
-    <Route
-      render={({ staticContext }) => {
-        if (staticContext) staticContext.statusCode = code;
-        return children;
-      }}
-    />
-  );
+  const httpContext = useHttpContext();
+  if (httpContext) {
+    httpContext.statusCode = code;
+  }
+  return <>{children}</>;
 };

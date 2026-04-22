@@ -1,5 +1,6 @@
 import { FieldLinkDepths, Operators, Query, QueryAggregations, VersionStatus } from 'contensis-core-api';
 import { CustomWhereClause, FeaturedResults, WeightedSearchField } from './Search';
+import { SearchParams } from './SearchActions';
 export type FieldOperators = Exclude<keyof Operators, 'and' | 'or' | 'not'>;
 export type LogicOperators = 'and' | 'or' | 'not';
 export type FilterExpression = {
@@ -32,7 +33,6 @@ export type SearchQueryOptions = {
     weightedSearchFields: WeightedSearchField[];
 };
 export type QueryParams = SearchQueryOptions & {
-    env: string;
     internalPageIndex: number;
     internalPaging: boolean;
     linkDepth: number;
@@ -40,9 +40,7 @@ export type QueryParams = SearchQueryOptions & {
     pagesLoaded: number[];
     prevPageIndex: number;
     projectId: string;
-    selectedFilters: {
-        [key: string]: string;
-    };
+    selectedFilters: SearchParams;
 };
 export type SearchQuery = ({ aggregations, contentTypeIds, customWhere, dynamicOrderBy, excludeIds, featuredResults, fields, filters, fuzzySearch, languages, pageSize, pageIndex, omitDefaultSearchFields, orderBy, searchTerm, versionStatus, webpageTemplates, weightedSearchFields, }: SearchQueryOptions, isFeatured?: boolean) => Query;
-export type FilterQuery = (contentTypeIds: string[], versionStatus: VersionStatus, customWhere?: CustomWhereClause) => Query;
+export type FilterQuery = (contentTypeIds: string[], languages: string[], versionStatus: VersionStatus, customWhere?: CustomWhereClause, pageSize?: number) => Query;

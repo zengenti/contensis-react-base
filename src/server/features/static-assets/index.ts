@@ -3,11 +3,13 @@ import { CacheDuration } from '~/server/features/caching/cacheDuration.schema';
 import { bundleManipulationMiddleware } from '~/server/middleware/bundleManipulation';
 import { resolveStartupMiddleware } from '~/server/middleware/resolveStartup';
 
-import { path as appPath } from 'app-root-path';
+import appRootPath from 'app-root-path';
 import { ServerConfig } from '~/models';
+
 // Serving static assets
+const { path: appPath } = appRootPath;
 const staticAssets = (
-  app,
+  app: express.Express,
   {
     appRootPath = appPath,
     scripts = {} as NonNullable<ServerConfig['scripts']>,
@@ -37,7 +39,6 @@ const staticAssets = (
       startupScriptFilename: scripts.startup || startupScriptFilename,
       staticFolderPath,
     }),
-    // eslint-disable-next-line import/no-named-as-default-member
     express.static(`dist/${staticFolderPath}`, {
       // these maxage values are different in config but the same in runtime,
       // this one is somehow converted and should end up being the same as CacheDuration.static

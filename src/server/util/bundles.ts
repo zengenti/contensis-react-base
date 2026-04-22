@@ -85,7 +85,8 @@ export const loadableChunkExtractors = () => {
         statsFile: path.resolve('dist/legacy/loadable-stats.json'),
       });
     } catch (e) {
-      console.info('@loadable/server legacy ChunkExtractor not available');
+      // legacy bundling deprecated in v4
+      // console.info('@loadable/server legacy ChunkExtractor not available');
     }
 
     (commonLoadableExtractor as any).addChunk = (chunk: any) => {

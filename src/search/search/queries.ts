@@ -17,18 +17,21 @@ import { FilterQuery, SearchQuery } from '../models/Queries';
 
 export const filterQuery: FilterQuery = (
   contentTypeIds,
+  languages,
   versionStatus,
-  customWhere
+  customWhere,
+  pageSize = 100
 ) => {
   const query = new Query(
     ...[
       ...contentTypeIdExpression(contentTypeIds),
+      ...languagesExpression(languages),
       ...defaultExpressions(versionStatus),
       ...customWhereExpressions(customWhere),
     ]
   );
   query.orderBy = OrderBy.asc(Fields.entryTitle);
-  query.pageSize = 100;
+  query.pageSize = pageSize;
 
   return query;
 };

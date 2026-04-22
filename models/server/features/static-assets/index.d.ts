@@ -1,10 +1,11 @@
-declare const staticAssets: (app: any, { appRootPath, scripts, startupScriptFilename, staticFolderPath, staticRoutePath, staticRoutePaths, }: {
+import express from 'express';
+declare const staticAssets: (app: express.Express, { appRootPath, scripts, startupScriptFilename, staticFolderPath, staticRoutePath, staticRoutePaths, }: {
     appRootPath?: string | undefined;
     scripts?: {
         attributes?: {
             [key: string]: string;
-        } | undefined;
-        startup?: string | undefined;
+        };
+        startup?: string;
     } | undefined;
     startupScriptFilename?: string | undefined;
     staticFolderPath?: string | undefined;

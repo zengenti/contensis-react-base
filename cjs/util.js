@@ -1,30 +1,38 @@
 'use strict';
 
-var urls = require('./urls-DVIwGZmd.js');
-var SSRContext = require('./SSRContext-DpnwQ2te.js');
-var _commonjsHelpers = require('./_commonjsHelpers-BJu3ubxk.js');
-var mapJson = require('jsonpath-mapper');
+var urls = require('./urls-DGZlAs0y.js');
+var ContensisDeliveryApi = require('./ContensisDeliveryApi-MfcvdfDR.js');
+var SSRContext = require('./SSRContext-tMufQDHY.js');
+var VersionInfo = require('./VersionInfo-zFPsvS8q.js');
 var React = require('react');
-var reactRedux = require('react-redux');
-var selectors = require('./selectors-wCs5fHD4.js');
-var version = require('./version-CM-bJ62L.js');
-var styled = require('styled-components');
-require('react-cookie');
+var reactHelmetAsync = require('react-helmet-async');
+var mapJson = require('jsonpath-mapper');
+var reactRouterDom = require('react-router-dom');
 require('contensis-delivery-api');
 require('query-string');
-require('./store-BihH67lI.js');
+require('./selectors-BrxJ8-F8.js');
+require('immer');
+require('reselect');
+require('./store-B7SJs5Hf.js');
 require('redux');
 require('redux-thunk');
 require('redux-saga');
-require('redux-injectors');
-require('immer');
-require('./CookieHelper.class-CxeVo9EP.js');
+require('redux-injectors-19');
+require('./slice-5xJMH24n.js');
+require('@reduxjs/toolkit');
+require('@redux-saga/core/effects');
+require('./CookieConstants-DfPiWCRZ.js');
+require('react-cookie');
+require('react-redux');
+require('./CookieHelper.class-Det3qfdU.js');
+require('./_commonjsHelpers-BJu3ubxk.js');
+require('./version-rFG9Y6_B.js');
+require('styled-components');
 
 function _interopDefault (e) { return e && e.__esModule ? e : { default: e }; }
 
-var mapJson__default = /*#__PURE__*/_interopDefault(mapJson);
 var React__default = /*#__PURE__*/_interopDefault(React);
-var styled__default = /*#__PURE__*/_interopDefault(styled);
+var mapJson__default = /*#__PURE__*/_interopDefault(mapJson);
 
 /**
  *
@@ -148,179 +156,63 @@ const entryMapper = mapping => (node, state) => mapJson__default.default({
   state
 }, mapping);
 
-var stringifyStrings_1;
-var hasRequiredStringifyStrings;
-
-function requireStringifyStrings () {
-	if (hasRequiredStringifyStrings) return stringifyStrings_1;
-	hasRequiredStringifyStrings = 1;
-	const stringifyStrings = obj => {
-	  const returnObj = Array.isArray(obj) ? [] : {};
-	  Object.entries(obj).forEach(([key, value]) => {
-	    switch (typeof value) {
-	      case 'string':
-	        returnObj[key] = JSON.stringify(value);
-	        break;
-	      case 'object':
-	        returnObj[key] = stringifyStrings(value);
-	        break;
-	      default:
-	        returnObj[key] = value;
-	        break;
-	    }
-	  });
-	  return returnObj;
-	};
-	stringifyStrings_1 = stringifyStrings;
-	return stringifyStrings_1;
-}
-
-var stringifyStringsExports = requireStringifyStrings();
-var stringifyStrings = /*@__PURE__*/_commonjsHelpers.getDefaultExportFromCjs(stringifyStringsExports);
-
-const context = typeof window != 'undefined' ? window : global;
-const isDev = process.env.NODE_ENV === 'development';
-const pj = () => isDev ? PACKAGE_JSON /* global PACKAGE_JSON */ : context.PACKAGE_JSON || {
-  name: 'packagejson not found',
-  repository: ''
-};
-const versionInfoProps = {
-  packageDetail: () => {
-    const pkg = pj();
-    return {
-      name: pkg.name,
-      version: pkg.version,
-      repository: pkg.repository
-    };
-  },
-  uris: {
-    gitRepo: () => pj().repository,
-    commit: state => {
-      const commitRef = version.selectCommitRef(state);
-      return `${pj().repository}/commit/${commitRef ? commitRef : ''}`;
-    },
-    pipeline: state => {
-      const buildNumber = version.selectBuildNumber(state);
-      return `${pj().repository}/${pj().repository.includes('github.com') ? 'actions/runs' : 'pipelines'}/${buildNumber ? buildNumber : ''}`;
-    }
-  },
-  zenPackageVersions: () => [...(Object.entries(pj().devDependencies || {}).filter(([pkg]) => pkg.includes('zengenti') || pkg.includes('contensis')) || []), ...(Object.entries(pj().dependencies || {}).filter(([pkg]) => pkg.includes('zengenti') || pkg.includes('contensis')) || [])],
-  deliveryApi: () => JSON.parse(JSON.stringify(DELIVERY_API_CONFIG /* global DELIVERY_API_CONFIG */)),
-  devEnv: () => typeof DEV_ENV !== 'undefined' /* global DEV_ENV */ ? DEV_ENV : null,
-  disableSsrRedux: () => isDev ? DISABLE_SSR_REDUX /* global DISABLE_SSR_REDUX*/ : context.DISABLE_SSR_REDUX || false,
-  nodeEnv: () => process.env.NODE_ENV || 'production',
-  packagejson: () => pj() || {},
-  projects: () => isDev ? PROJECTS /* global PROJECTS */ : context.PROJECTS,
-  proxyDeliveryApi: () => isDev ? PROXY_DELIVERY_API /* global PROXY_DELIVERY_API */ : context.PROXY_DELIVERY_API || false,
-  publicUri: () => isDev ? PUBLIC_URI /* global PUBLIC_URI */ : context.PUBLIC_URI || null,
-  project: state => selectors.selectCurrentProject(state),
-  reverseProxyPaths: () => isDev ? REVERSE_PROXY_PATHS /* global REVERSE_PROXY_PATHS */ : context.REVERSE_PROXY_PATHS || {},
-  servers: () => isDev ? SERVERS /* global SERVERS */ : context.SERVERS,
-  version: {
-    buildNumber: state => version.selectBuildNumber(state),
-    commitRef: state => version.selectCommitRef(state),
-    contensisVersionStatus: state => version.selectVersionStatus(state)
-  }
-};
-const mapStateToVersionInfo = state => {
-  const mappedProps = mapJson__default.default(state, versionInfoProps);
-  return mappedProps;
+// hooks/useIsClient.ts
+/**
+ * A hook that returns true only when the component has mounted in the browser client
+ * Used to prevent SSR render and defer rendering to client-side to safely refernce
+ * browser-only apis or avoid React Hydration errors
+ */
+const useIsClient = () => {
+  const [isClient, setIsClient] = React.useState(false);
+  React.useEffect(() => setIsClient(true), []);
+  return isClient;
 };
 
-const VersionInfoStyledTable = styled__default.default.table.withConfig({
-  displayName: "VersionInfostyled__VersionInfoStyledTable",
-  componentId: "sc-ogujr7-0"
-})(["font-family:'Source Sans Pro',Helvetica,Arial,sans-serif;font-size:1.6rem;line-height:1.5rem;border-bottom:4px solid #8892bf;border-collapse:separate;margin:0 auto;width:80%;th{text-align:left;background-color:#c4c9df;border-bottom:#8892bf 2px solid;border-bottom-color:#8892bf;border-top:20px solid #fff;}td{border-bottom:1px solid #eee;}td,th{padding:0.5rem 0.75rem;vertical-align:top;}.left{width:25%;}tr th{border-right:hidden;border-spacing:0 15px;}.green{background-color:#9c9;border-bottom:1px solid #696;}.red{background-color:#c99;border-bottom:1px solid #966;}.small{font-size:100%;line-height:2.4rem;}"]);
-
-const VersionInfo = ({
-  deliveryApi,
-  devEnv,
-  disableSsrRedux,
-  nodeEnv,
-  packageDetail,
-  project,
-  projects,
-  proxyDeliveryApi,
-  publicUri,
-  reverseProxyPaths,
-  servers,
-  uris,
-  version,
-  zenPackageVersions
+/**
+ * NoSSR component to prevent children from rendering on the server.
+ * Renders children only after component has mounted in the browser.
+ */
+const NoSSR = ({
+  children
 }) => {
-  return /*#__PURE__*/React__default.default.createElement(VersionInfoStyledTable, null, /*#__PURE__*/React__default.default.createElement("thead", null, /*#__PURE__*/React__default.default.createElement("tr", null, /*#__PURE__*/React__default.default.createElement("td", {
-    colSpan: 2
-  }, /*#__PURE__*/React__default.default.createElement("h1", null, /*#__PURE__*/React__default.default.createElement("a", {
-    href: "/"
-  }, "Version Information"))))), /*#__PURE__*/React__default.default.createElement("tbody", null, /*#__PURE__*/React__default.default.createElement("tr", null, /*#__PURE__*/React__default.default.createElement("th", {
-    colSpan: 2
-  }, "Package detail")), /*#__PURE__*/React__default.default.createElement("tr", null, /*#__PURE__*/React__default.default.createElement("td", {
-    className: "left"
-  }, "Name"), /*#__PURE__*/React__default.default.createElement("td", null, packageDetail.name)), /*#__PURE__*/React__default.default.createElement("tr", null, /*#__PURE__*/React__default.default.createElement("td", {
-    className: "left"
-  }, "Version"), /*#__PURE__*/React__default.default.createElement("td", null, packageDetail.version)), /*#__PURE__*/React__default.default.createElement("tr", null, /*#__PURE__*/React__default.default.createElement("th", {
-    colSpan: 2
-  }, "Version info (state)")), /*#__PURE__*/React__default.default.createElement("tr", null, /*#__PURE__*/React__default.default.createElement("td", null, "Git repo url: "), /*#__PURE__*/React__default.default.createElement("td", null, /*#__PURE__*/React__default.default.createElement("a", {
-    href: packageDetail.repository,
-    target: "_blank",
-    rel: "noopener noreferrer"
-  }, packageDetail.repository))), /*#__PURE__*/React__default.default.createElement("tr", null, /*#__PURE__*/React__default.default.createElement("td", null, "Pipeline: "), /*#__PURE__*/React__default.default.createElement("td", null, /*#__PURE__*/React__default.default.createElement("a", {
-    href: uris.pipeline,
-    target: "_blank",
-    rel: "noopener noreferrer"
-  }, version.buildNumber))), /*#__PURE__*/React__default.default.createElement("tr", null, /*#__PURE__*/React__default.default.createElement("td", null, "Commit: "), /*#__PURE__*/React__default.default.createElement("td", null, /*#__PURE__*/React__default.default.createElement("a", {
-    href: uris.commit,
-    target: "_blank",
-    rel: "noopener noreferrer"
-  }, version.commitRef))), /*#__PURE__*/React__default.default.createElement("tr", null, /*#__PURE__*/React__default.default.createElement("td", null, "Project"), /*#__PURE__*/React__default.default.createElement("td", {
-    className: project === 'unknown' ? 'red' : ''
-  }, project)), /*#__PURE__*/React__default.default.createElement("tr", null, /*#__PURE__*/React__default.default.createElement("td", null, "Contensis version status: "), /*#__PURE__*/React__default.default.createElement("td", {
-    className: version.contensisVersionStatus === 'published' ? 'green' : 'red'
-  }, version.contensisVersionStatus)), /*#__PURE__*/React__default.default.createElement("tr", null, /*#__PURE__*/React__default.default.createElement("th", {
-    colSpan: 2
-  }, "Build configuration")), /*#__PURE__*/React__default.default.createElement("tr", null, /*#__PURE__*/React__default.default.createElement("td", null, "Environment"), /*#__PURE__*/React__default.default.createElement("td", null, servers.alias)), /*#__PURE__*/React__default.default.createElement("tr", null, /*#__PURE__*/React__default.default.createElement("td", null, "Public uri"), /*#__PURE__*/React__default.default.createElement("td", null, publicUri)), /*#__PURE__*/React__default.default.createElement("tr", null, /*#__PURE__*/React__default.default.createElement("td", null, "Zengenti packages"), /*#__PURE__*/React__default.default.createElement("td", null, zenPackageVersions.map(([pkg, ver], idx) => /*#__PURE__*/React__default.default.createElement("div", {
-    key: idx
-  }, pkg, ": ", ver)))), /*#__PURE__*/React__default.default.createElement("tr", null, /*#__PURE__*/React__default.default.createElement("td", null, "Servers"), /*#__PURE__*/React__default.default.createElement("td", {
-    className: "small"
-  }, /*#__PURE__*/React__default.default.createElement("div", null, "web: ", servers.web), /*#__PURE__*/React__default.default.createElement("div", null, "preview: ", servers.previewWeb), /*#__PURE__*/React__default.default.createElement("div", null, "api: ", servers.api), /*#__PURE__*/React__default.default.createElement("div", null, "cms: ", servers.cms), /*#__PURE__*/React__default.default.createElement("div", null, "iis: ", servers.iis), /*#__PURE__*/React__default.default.createElement("div", null, "iis preview: ", servers.previewIis))), /*#__PURE__*/React__default.default.createElement("tr", null, /*#__PURE__*/React__default.default.createElement("td", null, "Reverse proxy paths"), /*#__PURE__*/React__default.default.createElement("td", null, Object.entries(reverseProxyPaths).map(([, path], key) => /*#__PURE__*/React__default.default.createElement("span", {
-    key: key
-  }, "[ ", path, " ] ")))), /*#__PURE__*/React__default.default.createElement("tr", null, /*#__PURE__*/React__default.default.createElement("td", null, "Projects"), /*#__PURE__*/React__default.default.createElement("td", null, Object.entries(projects).map(([, project], key) => /*#__PURE__*/React__default.default.createElement("div", {
-    key: key
-  }, "[ ", project.id, ": ", project.publicUri, " ]")))), /*#__PURE__*/React__default.default.createElement("tr", null, /*#__PURE__*/React__default.default.createElement("td", null, "Delivery API"), /*#__PURE__*/React__default.default.createElement("td", {
-    className: "small"
-  }, /*#__PURE__*/React__default.default.createElement("ul", {
-    style: {
-      margin: 0,
-      padding: 0
-    }
-  }, Object.entries(deliveryApi).map(([key, value], idx) => {
-    if (typeof value === 'object') return null;
-    return /*#__PURE__*/React__default.default.createElement("li", {
-      key: idx,
-      style: {
-        listStyleType: 'none'
-      }
-    }, key, ": ", /*#__PURE__*/React__default.default.createElement("span", null, value));
-  })))), /*#__PURE__*/React__default.default.createElement("tr", null, /*#__PURE__*/React__default.default.createElement("td", null, "Proxy Delivery API requests"), /*#__PURE__*/React__default.default.createElement("td", {
-    className: proxyDeliveryApi ? 'green' : 'red'
-  }, proxyDeliveryApi.toString())), /*#__PURE__*/React__default.default.createElement("tr", null, /*#__PURE__*/React__default.default.createElement("td", null, "Disable SSR inline-redux"), /*#__PURE__*/React__default.default.createElement("td", null, disableSsrRedux.toString())), /*#__PURE__*/React__default.default.createElement("tr", null, /*#__PURE__*/React__default.default.createElement("td", null, "NODE_ENV"), /*#__PURE__*/React__default.default.createElement("td", {
-    className: nodeEnv === 'production' ? 'green' : 'red'
-  }, nodeEnv.toString())), devEnv && /*#__PURE__*/React__default.default.createElement("tr", null, /*#__PURE__*/React__default.default.createElement("td", null, "process.env"), /*#__PURE__*/React__default.default.createElement("td", null, Object.entries(devEnv).map(([k, v], key) => /*#__PURE__*/React__default.default.createElement("div", {
-    key: key
-  }, "[ ", k, ": ", v, " ]"))))));
+  const isClient = useIsClient();
+  if (!isClient) return null;
+  return /*#__PURE__*/React__default.default.createElement(React__default.default.Fragment, null, children);
 };
-var VersionInfo$1 = reactRedux.connect(mapStateToVersionInfo)(VersionInfo);
+
+/** @deprecated ponyfill for useHistory hook in react-router v5 removed in v6 */
+const useHistory = () => {
+  const navigate = reactRouterDom.useNavigate();
+  const location = reactRouterDom.useLocation();
+  return {
+    push: navigate,
+    replace: navigate,
+    location
+  };
+};
 
 exports.setCachingHeaders = urls.setCachingHeaders;
-exports.urls = urls.url;
+exports.urls = urls.urls;
+exports.cachedSearch = ContensisDeliveryApi.cachedSearch;
+exports.cachedSearchWithContext = ContensisDeliveryApi.cachedSearchWithContext;
+exports.cachedSearchWithCookies = ContensisDeliveryApi.cachedSearchWithCookies;
+exports.deliveryApi = ContensisDeliveryApi.deliveryApi;
+exports.deliveryApiWithCookies = ContensisDeliveryApi.deliveryApiWithCookies;
+exports.getClientConfig = ContensisDeliveryApi.getClientConfig;
 exports.SSRContextProvider = SSRContext.SSRContextProvider;
-exports.cachedSearch = SSRContext.cachedSearch;
-exports.cachedSearchWithCookies = SSRContext.cachedSearchWithCookies;
-exports.deliveryApi = SSRContext.deliveryApi;
-exports.deliveryApiWithCookies = SSRContext.deliveryApiWithCookies;
-exports.getClientConfig = SSRContext.getClientConfig;
+exports.getSubsitePath = SSRContext.getSubsitePath;
 exports.useDeliveryApi = SSRContext.useDeliveryApi;
 exports.useSSRContext = SSRContext.useSSRContext;
+exports.VersionInfo = VersionInfo.VersionInfo;
+exports.stringifyStrings = VersionInfo.stringifyStrings;
+Object.defineProperty(exports, "Helmet", {
+  enumerable: true,
+  get: function () { return reactHelmetAsync.Helmet; }
+});
+Object.defineProperty(exports, "HelmetProvider", {
+  enumerable: true,
+  get: function () { return reactHelmetAsync.HelmetProvider; }
+});
 Object.defineProperty(exports, "jpath", {
   enumerable: true,
   get: function () { return mapJson.jpath; }
@@ -329,13 +221,14 @@ Object.defineProperty(exports, "mapJson", {
   enumerable: true,
   get: function () { return mapJson__default.default; }
 });
-exports.VersionInfo = VersionInfo$1;
+exports.NoSSR = NoSSR;
 exports.entryMapper = entryMapper;
 exports.mapComposer = mapComposer;
 exports.mapEntries = mapEntries;
-exports.stringifyStrings = stringifyStrings;
 exports.useComposerMapper = useComposerMapper;
 exports.useEntriesMapper = useEntriesMapper;
 exports.useEntryMapper = useEntryMapper;
+exports.useHistory = useHistory;
+exports.useIsClient = useIsClient;
 exports.useMapper = useMapper;
 //# sourceMappingURL=util.js.map

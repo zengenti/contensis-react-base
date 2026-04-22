@@ -1,16 +1,22 @@
 import { PagedSearchList } from 'contensis-core-api';
 import { Context } from './Enums';
 import { CustomWhereClause } from './Search';
-export type AppState = Record<'search', SearchState> & Record<string, any>;
+import { AppState as ReduxState } from "../../models";
+export type AppSearchState = Record<'search', SearchState>;
+export type AppState = AppSearchState & ReduxState;
 export type SearchState = {
     context: keyof typeof Context;
     currentFacet: string;
     currentListing: string;
+    currentComposition: string;
     term: string;
     facets: Facets;
     listings: Facets;
     minilist: Facets;
     tabs: Tab[];
+    compositions: {
+        [key: string]: Composition;
+    };
     config: Record<string, boolean>;
 };
 export type Aggregations = Required<PagedSearchList<unknown>>['aggregations'];
@@ -31,6 +37,9 @@ export type Facet = {
     };
     featuredResults: any[];
     filters: Filters;
+    i18n?: {
+        [language: string]: string;
+    };
     pagingInfo: {
         isLoading: boolean;
         pageCount: number;
@@ -46,13 +55,15 @@ export type Facet = {
     queryParams: {
         contentTypeIds: string[];
         dynamicOrderBy: string[];
-        pageSize: number;
         excludeIds: string[];
         internalPaging: boolean;
+        languages: string[];
         loadMorePaging: boolean;
+        pageSize: number;
         useSearchTerm: boolean;
     };
     results: any[];
+    resultsInfo?: any;
     tabId: number;
     title: string;
 };
@@ -60,15 +71,20 @@ export type Filters = {
     [key: string]: Filter;
 };
 export type Filter = {
+    aggregations?: boolean | string | string[];
     contentTypeId?: string;
     customWhere?: CustomWhereClause;
     defaultValue?: string;
     fieldId?: string | string[];
+    i18n?: {
+        [language: string]: string;
+    };
     isGrouped?: boolean;
     isSingleSelect?: boolean;
     isLoading: boolean;
     isError: boolean;
     items?: FilterItem[];
+    pageSize?: number;
     path?: string;
     renderable?: boolean;
     title?: string;
@@ -105,4 +121,9 @@ export type TabAndFacets = Tab & {
     facets: {
         [key: string]: Facet;
     };
+};
+export type Composition = {
+    title?: string;
+    listings?: string[];
+    facets?: string[];
 };

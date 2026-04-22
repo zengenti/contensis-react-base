@@ -1,17 +1,20 @@
 'use strict';
 
-var store = require('./store-BihH67lI.js');
-var selectors$1 = require('./selectors-wCs5fHD4.js');
-var version$1 = require('./version-Cg79mdPg.js');
-var version$2 = require('./version-CM-bJ62L.js');
+var store = require('./store-B7SJs5Hf.js');
+var selectors$1 = require('./selectors-BrxJ8-F8.js');
+var version$1 = require('./version-yjHMrfVz.js');
+var version$2 = require('./version-rFG9Y6_B.js');
 require('redux');
 require('redux-thunk');
 require('redux-saga');
-require('redux-injectors');
+require('redux-injectors-19');
+require('./slice-5xJMH24n.js');
+require('@reduxjs/toolkit');
 require('immer');
+require('@redux-saga/core/effects');
+require('reselect');
 require('jsonpath-mapper');
 require('query-string');
-require('@redux-saga/core/effects');
 
 var types = {
   navigation: store.navigation,
@@ -65,7 +68,6 @@ Object.defineProperty(exports, "store", {
 exports.action = selectors$1.action;
 exports.getIn = selectors$1.getImmutableOrJS;
 exports.getJS = selectors$1.getJS;
-exports.convertSagaArray = version$1.convertSagaArray;
 exports.injectReducer = version$1.injectReducer;
 exports.injectRedux = version$1.injectRedux;
 exports.injectSaga = version$1.injectSaga;

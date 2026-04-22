@@ -1,5 +1,6 @@
-import { Entry } from 'contensis-delivery-api/lib/models';
-import { AppState, StateType } from '~/models';
+import { Entry } from 'contensis-delivery-api';
+import { createSelector } from 'reselect';
+import { AppState, MatchedRoute, StateType, StaticRoute } from '~/models';
 import { getImmutableOrJS as getIn } from '~/redux/util';
 import { queryParams } from '~/util/navigation';
 
@@ -19,6 +20,9 @@ export const selectSsrApiCalls = (state: AppState) => {
 export const selectCurrentHostname = (state: AppState) =>
   getIn(state, ['routing', 'currentHostname']);
 
+export const selectSsrHostname = (state: AppState) =>
+  getIn(state, ['routing', 'ssrHostname']);
+
 export const selectCurrentTreeID = (state: AppState) =>
   getIn(state, ['routing', 'currentHostname']);
 
@@ -33,6 +37,13 @@ export const selectRouteEntryContentTypeId = (state: AppState) => {
 export const selectRouteEntryLanguage = (state: AppState) => {
   const entry = selectRouteEntry(state);
   return getIn(entry, ['sys', 'language'], null);
+};
+
+export const selectRouteEntryAvailableLanguages = (
+  state: AppState
+): string[] => {
+  const entry = selectRouteEntry(state);
+  return getIn(entry, ['sys', 'availableLanguages'], []);
 };
 
 export const selectRouteEntrySlug = (state: AppState) => {
@@ -56,8 +67,15 @@ export const selectCurrentSearch = (state: AppState) =>
   getIn(state, ['routing', 'location', 'search']);
 export const selectCurrentHash = (state: AppState) =>
   getIn(state, ['routing', 'location', 'hash']);
-export const selectQueryStringAsObject = (state: AppState) =>
-  queryParams(selectCurrentSearch(state));
+
+// export const selectQueryStringAsObject = (state: AppState) =>
+//   queryParams(selectCurrentSearch(state));
+
+export const selectQueryStringAsObject = createSelector(
+  [selectCurrentSearch],
+  currentSearch => queryParams(currentSearch)
+);
+
 export const selectCurrentProject = (state: AppState) =>
   getIn(state, ['routing', 'currentProject']);
 export const selectIsNotFound = (state: AppState) =>
@@ -68,12 +86,20 @@ export const selectCurrentSiblings = (state: AppState) =>
   getIn(state, ['routing', 'currentNodeSiblings'], []);
 export const selectCurrentNode = (state: AppState, returnType?: StateType) =>
   getIn(state, ['routing', 'currentNode'], null, returnType);
+export const selectCurrentNodeLanguage = (state: AppState) =>
+  getIn(state, ['routing', 'currentNode', 'language'], null);
 export const selectCurrentChildren = state =>
   getIn(state, ['routing', 'currentNode', 'children'], []);
 
-export const selectBreadcrumb = (state: AppState) => {
-  return [...selectCurrentAncestors(state), selectCurrentNode(state)];
-};
+// export const selectBreadcrumb = (state: AppState) => {
+//   return [...selectCurrentAncestors(state), selectCurrentNode(state)];
+// };
+
+export const selectBreadcrumb = createSelector(
+  [selectCurrentAncestors, selectCurrentNode],
+  (currentAncestors, currentNode) => [...currentAncestors, currentNode]
+);
+
 export const selectRouteErrorMessage = (state: AppState) => {
   const error = getIn(state, ['routing', 'error']);
   return getIn(error, ['data', 'message'], getIn(error, 'statusText'));
@@ -84,5 +110,7 @@ export const selectRouteLoading = (state: AppState) =>
   getIn(state, ['routing', 'isLoading']);
 export const selectRouteStatusCode = (state: AppState) =>
   getIn(state, ['routing', 'statusCode']);
-export const selectStaticRoute = (state: AppState) =>
+export const selectStaticRoute = (
+  state: AppState
+): MatchedRoute<string, StaticRoute> =>
   getIn(state, ['routing', 'staticRoute']);

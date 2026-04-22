@@ -17,8 +17,11 @@ import { Context } from '../models/Enums';
 import { SearchProps, UseFacetsProps } from '../models/SearchProps';
 import { AppState } from '../models/SearchState';
 import {
+  getComposition,
+  getCurrentComposition,
   getPaging,
   getResults,
+  getResultsInfo,
   getSelectedFilters,
   selectFacets,
 } from '../redux/selectors';
@@ -31,6 +34,7 @@ const {
   getFacetTitles,
   getFeaturedResults,
   getIsLoading,
+  getLocalisedCurrent,
   getPageIndex,
   getPageIsLoading,
   getQueryParameter,
@@ -47,6 +51,8 @@ const makeSelectFacetsProps = () =>
     (state: AppState) => state,
     (_: any, mappers: Mappers) => mappers,
     (state: AppState, mappers: Mappers) => ({
+      composition: getComposition(state),
+      currentComposition: getCurrentComposition(state),
       currentFacet: getCurrent(state),
       currentPageIndex: getPageIndex(state),
       currentTabIndex: getCurrentTab(state),
@@ -57,13 +63,14 @@ const makeSelectFacetsProps = () =>
       featured: getFeaturedResults(state),
       filters: getRenderableFilters(state),
       isLoading: getIsLoading(state),
+      localisedCurrent: getLocalisedCurrent(state),
       pageIsLoading: getPageIsLoading(state),
       paging: getPaging(state, '', Context.facets, 'js'),
       results: getResults(state, '', Context.facets, 'js'),
       resultsInfo:
-        mappers &&
-        typeof mappers.resultsInfo === 'function' &&
-        mappers.resultsInfo(state),
+        (typeof mappers?.resultsInfo === 'function' &&
+          mappers.resultsInfo(state)) ||
+        getResultsInfo(state),
       searchTerm: getSearchTerm(state),
       searchTotalCount: getSearchTotalCount(state),
       selectedFilters: getSelectedFilters(state, '', Context.facets, 'js'),
@@ -113,6 +120,8 @@ const useFacets = <SearchResults extends Record<string, any>>(
   };
 
   const {
+    composition,
+    currentComposition,
     currentFacet,
     currentPageIndex,
     currentTabIndex,
@@ -123,6 +132,7 @@ const useFacets = <SearchResults extends Record<string, any>>(
     featured,
     filters,
     isLoading,
+    localisedCurrent,
     paging,
     pageIsLoading,
     results,
@@ -136,6 +146,8 @@ const useFacets = <SearchResults extends Record<string, any>>(
   } = useSelector((state: AppState) => selectListingProps(state, m));
 
   return {
+    composition,
+    currentComposition,
     currentFacet,
     currentPageIndex,
     currentTabIndex,
@@ -146,6 +158,7 @@ const useFacets = <SearchResults extends Record<string, any>>(
     featured,
     filters,
     isLoading,
+    localisedCurrent,
     paging,
     pageIsLoading,
     results,

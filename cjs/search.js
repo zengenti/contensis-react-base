@@ -2,16 +2,30 @@
 
 var React = require('react');
 var reactRedux = require('react-redux');
-var sagas = require('./sagas-Ekfrk7xA.js');
+var ToJs = require('./ToJs-BsWqWjdm.js');
+var sagas = require('./sagas-BCy9u6zA.js');
 var reselect = require('reselect');
 var immer = require('immer');
 var equals = require('deep-equal');
 var merge = require('deepmerge');
+var util = require('./util-eOjxDjxF.js');
 require('loglevel');
 require('@redux-saga/core/effects');
-require('contensis-delivery-api');
-require('query-string');
+require('./version-rFG9Y6_B.js');
+require('./selectors-BrxJ8-F8.js');
 require('jsonpath-mapper');
+require('query-string');
+require('./ContensisDeliveryApi-MfcvdfDR.js');
+require('contensis-delivery-api');
+require('./store-B7SJs5Hf.js');
+require('redux');
+require('redux-thunk');
+require('redux-saga');
+require('redux-injectors-19');
+require('./slice-5xJMH24n.js');
+require('@reduxjs/toolkit');
+require('./CookieConstants-DfPiWCRZ.js');
+require('./selectors-DAQR0uZa.js');
 require('contensis-core-api');
 require('./_commonjsHelpers-BJu3ubxk.js');
 
@@ -20,19 +34,6 @@ function _interopDefault (e) { return e && e.__esModule ? e : { default: e }; }
 var React__default = /*#__PURE__*/_interopDefault(React);
 var equals__default = /*#__PURE__*/_interopDefault(equals);
 var merge__default = /*#__PURE__*/_interopDefault(merge);
-
-/* eslint-disable react/display-name */
-const toJS = WrappedComponent => wrappedComponentProps => {
-  const KEY = 0;
-  const VALUE = 1;
-  const propsJS = Object.entries(wrappedComponentProps).reduce((newProps, wrappedComponentProp) => {
-    const propKey = wrappedComponentProp[KEY];
-    const propValue = wrappedComponentProp[VALUE];
-    newProps[propKey] = propValue && typeof propValue === 'object' && 'toJS' in propValue ? propValue.toJS() : propValue;
-    return newProps;
-  }, {});
-  return /*#__PURE__*/React__default.default.createElement(WrappedComponent, propsJS);
-};
 
 const withSearch = mappers => SearchComponent => {
   const Wrapper = props => {
@@ -54,7 +55,7 @@ const withSearch = mappers => SearchComponent => {
       paging: sagas.getPaging(state),
       pageIsLoading: sagas.getPageIsLoading(state),
       results: sagas.getResults(state),
-      resultsInfo: (mappers === null || mappers === void 0 ? void 0 : mappers.resultsInfo) && mappers.resultsInfo(state),
+      resultsInfo: (mappers === null || mappers === void 0 ? void 0 : mappers.resultsInfo) && mappers.resultsInfo(state) || sagas.getResultsInfo(state),
       searchTerm: sagas.getSearchTerm(state),
       searchTotalCount: sagas.getSearchTotalCount(state),
       selectedFilters: sagas.getSelectedFilters(state),
@@ -76,7 +77,7 @@ const withSearch = mappers => SearchComponent => {
     updateSortOrder: orderBy => sagas.withMappers(sagas.updateSortOrder(orderBy), mappers)
   };
   const connector = reactRedux.connect(mapStateToProps, mapDispatchToProps);
-  return connector(toJS(Wrapper));
+  return connector(ToJs.toJS(Wrapper));
 };
 
 const withListing = mappers => ListingComponent => {
@@ -107,7 +108,7 @@ const withListing = mappers => ListingComponent => {
       isLoading: getIsLoading(state),
       paging: getPaging(state),
       results: getResults(state),
-      resultsInfo: mappers && typeof mappers.resultsInfo === 'function' && mappers.resultsInfo(state),
+      resultsInfo: typeof (mappers === null || mappers === void 0 ? void 0 : mappers.resultsInfo) === 'function' && mappers.resultsInfo(state) || sagas.getResultsInfo(state),
       searchTerm: getSearchTerm(state),
       selectedFilters: getSelectedFilters(state),
       sortOrder: getQueryParameter({
@@ -124,198 +125,7 @@ const withListing = mappers => ListingComponent => {
     updateSelectedFilters: (filter, key, isUnknownItem = false, scrollToElement) => sagas.withMappers(sagas.updateSelectedFilters(filter, key, isUnknownItem, scrollToElement), mappers),
     updateSortOrder: orderBy => sagas.withMappers(sagas.updateSortOrder(orderBy), mappers)
   };
-  return reactRedux.connect(mapStateToProps, mapDispatchToProps)(toJS(Wrapper));
-};
-
-var defaultMappers = {
-  results: entries => entries,
-  navigate: sagas.mapStateToSearchUri
-};
-
-const {
-  getCurrent: getCurrent$1,
-  getCurrentTab,
-  getFacet,
-  getFacetsTotalCount,
-  getFacetTitles,
-  getFeaturedResults: getFeaturedResults$1,
-  getIsLoading: getIsLoading$1,
-  getPageIndex: getPageIndex$1,
-  getPageIsLoading: getPageIsLoading$1,
-  getQueryParameter: getQueryParameter$1,
-  getRenderableFilters: getRenderableFilters$1,
-  getSearchTerm: getSearchTerm$1,
-  getSearchTotalCount,
-  getTabFacets,
-  getTabsAndFacets,
-  getTotalCount
-} = sagas.selectFacets;
-const makeSelectFacetsProps = () => reselect.createSelector(state => state, (_, mappers) => mappers, (state, mappers) => ({
-  currentFacet: getCurrent$1(state),
-  currentPageIndex: getPageIndex$1(state),
-  currentTabIndex: getCurrentTab(state),
-  facet: getFacet(state),
-  facetTitles: getFacetTitles(state),
-  facets: getTabFacets(state),
-  facetsTotalCount: getFacetsTotalCount(state),
-  featured: getFeaturedResults$1(state),
-  filters: getRenderableFilters$1(state),
-  isLoading: getIsLoading$1(state),
-  pageIsLoading: getPageIsLoading$1(state),
-  paging: sagas.getPaging(state, '', sagas.Context.facets, 'js'),
-  results: sagas.getResults(state, '', sagas.Context.facets, 'js'),
-  resultsInfo: mappers && typeof mappers.resultsInfo === 'function' && mappers.resultsInfo(state),
-  searchTerm: getSearchTerm$1(state),
-  searchTotalCount: getSearchTotalCount(state),
-  selectedFilters: sagas.getSelectedFilters(state, '', sagas.Context.facets, 'js'),
-  sortOrder: getQueryParameter$1({
-    state
-  }, 'dynamicOrderBy', []),
-  tabsAndFacets: getTabsAndFacets(state),
-  totalCount: getTotalCount(state)
-}));
-const useFacets = ({
-  mappers
-} = {
-  id: ''
-}) => {
-  const dispatch = reactRedux.useDispatch();
-  const m = mappers || defaultMappers;
-  const selectListingProps = React.useMemo(makeSelectFacetsProps, [m]);
-  const dispatchProps = {
-    clearFilters: filterKey => dispatch(sagas.withMappers(sagas.clearFilters(filterKey), m)),
-    updateCurrentFacet: facet => dispatch(sagas.withMappers(sagas.updateCurrentFacet(facet), m)),
-    updateCurrentTab: id => sagas.withMappers(sagas.updateCurrentTab(id), m),
-    updatePageIndex: (pageIndex, scrollToElement) => dispatch(sagas.withMappers(sagas.updatePageIndex(pageIndex, scrollToElement), m)),
-    updatePageSize: (pageSize, scrollToElement) => dispatch(sagas.withMappers(sagas.updatePageSize(pageSize, scrollToElement), m)),
-    updateSearchTerm: term => dispatch(sagas.withMappers(sagas.updateSearchTerm(term), m)),
-    updateSelectedFilters: (filter, key, isUnknownItem = false, scrollToElement) => dispatch(sagas.withMappers(sagas.updateSelectedFilters(filter, key, isUnknownItem, scrollToElement), m)),
-    updateSortOrder: orderBy => dispatch(sagas.withMappers(sagas.updateSortOrder(orderBy), m))
-  };
-  const {
-    currentFacet,
-    currentPageIndex,
-    currentTabIndex,
-    facet,
-    facets,
-    facetsTotalCount,
-    facetTitles,
-    featured,
-    filters,
-    isLoading,
-    paging,
-    pageIsLoading,
-    results,
-    resultsInfo,
-    searchTerm,
-    searchTotalCount,
-    selectedFilters,
-    sortOrder,
-    tabsAndFacets,
-    totalCount
-  } = reactRedux.useSelector(state => selectListingProps(state, m));
-  return {
-    currentFacet,
-    currentPageIndex,
-    currentTabIndex,
-    facet,
-    facets,
-    facetsTotalCount,
-    facetTitles,
-    featured,
-    filters,
-    isLoading,
-    paging,
-    pageIsLoading,
-    results,
-    resultsInfo,
-    searchTerm,
-    searchTotalCount,
-    selectedFilters,
-    sortOrder,
-    tabsAndFacets,
-    totalCount,
-    ...dispatchProps
-  };
-};
-
-const {
-  getCurrent,
-  getFeaturedResults,
-  getIsLoading,
-  getListing,
-  getPageIndex,
-  getPageIsLoading,
-  getQueryParameter,
-  getRenderableFilters,
-  getSearchTerm
-} = sagas.selectListing;
-const makeSelectListingProps = () => reselect.createSelector(state => state, (_, mappers) => mappers, (state, mappers) => ({
-  currentListing: getCurrent(state),
-  currentPageIndex: getPageIndex(state),
-  listing: getListing(state),
-  featured: getFeaturedResults(state),
-  filters: getRenderableFilters(state),
-  isLoading: getIsLoading(state),
-  pageIsLoading: getPageIsLoading(state),
-  paging: sagas.getPaging(state, '', sagas.Context.listings, 'js'),
-  results: sagas.getResults(state, '', sagas.Context.listings, 'js'),
-  resultsInfo: mappers && typeof mappers.resultsInfo === 'function' && mappers.resultsInfo(state),
-  searchTerm: getSearchTerm(state),
-  selectedFilters: sagas.getSelectedFilters(state, '', sagas.Context.listings, 'js'),
-  sortOrder: getQueryParameter({
-    state
-  }, 'dynamicOrderBy', [])
-}));
-const useListing = ({
-  mappers
-} = {
-  id: ''
-}) => {
-  const dispatch = reactRedux.useDispatch();
-  const m = mappers || defaultMappers;
-  const selectListingProps = React.useMemo(makeSelectListingProps, [m]);
-  const dispatchProps = {
-    clearFilters: filterKey => dispatch(sagas.withMappers(sagas.clearFilters(filterKey), m)),
-    updateCurrentFacet: facet => dispatch(sagas.withMappers(sagas.updateCurrentFacet(facet), m)),
-    updatePageIndex: (pageIndex, scrollToElement) => dispatch(sagas.withMappers(sagas.updatePageIndex(pageIndex, scrollToElement), m)),
-    updatePageSize: (pageSize, scrollToElement) => dispatch(sagas.withMappers(sagas.updatePageSize(pageSize, scrollToElement), m)),
-    updateSearchTerm: term => dispatch(sagas.withMappers(sagas.updateSearchTerm(term), m)),
-    updateSelectedFilters: (filter, key, isUnknownItem = false, scrollToElement) => dispatch(sagas.withMappers(sagas.updateSelectedFilters(filter, key, isUnknownItem, scrollToElement), m)),
-    updateSortOrder: orderBy => dispatch(sagas.withMappers(sagas.updateSortOrder(orderBy), m))
-  };
-  const {
-    currentListing,
-    currentPageIndex,
-    featured,
-    filters,
-    isLoading,
-    listing,
-    paging,
-    pageIsLoading,
-    results,
-    resultsInfo,
-    searchTerm,
-    selectedFilters,
-    sortOrder
-  } = reactRedux.useSelector(state => selectListingProps(state, m));
-  return {
-    currentListing,
-    currentPageIndex,
-    featured,
-    filters,
-    isLoading,
-    listing,
-    pageIsLoading,
-    paging,
-    results,
-    resultsInfo,
-    searchTerm,
-    selectedFilters,
-    sortOrder,
-    title: listing.title,
-    ...dispatchProps
-  };
+  return reactRedux.connect(mapStateToProps, mapDispatchToProps)(ToJs.toJS(Wrapper));
 };
 
 const makeSelectMinilistProps = () => reselect.createSelector(state => state, (_, id) => id, (state, id) => id ? {
@@ -444,9 +254,11 @@ const config = {
   isError: false
 };
 const searchState = {
+  compositions: {},
   context: 'facets',
   currentFacet: '',
   currentListing: '',
+  currentComposition: '',
   facets: {},
   listings: {},
   minilist: {},
@@ -584,6 +396,7 @@ var reducers = config => {
   const initState = {
     ...initialState,
     tabs: config.tabs,
+    compositions: config.compositions || {},
     facets: generateSearchFacets(sagas.Context.facets, config),
     listings: generateSearchFacets(sagas.Context.listings, config),
     minilist: generateSearchFacets(sagas.Context.minilist, config)
@@ -599,9 +412,11 @@ var reducers = config => {
         }
       case sagas.CLEAR_FILTERS:
         {
+          var _action$clear, _action$clear2;
           const currentFilters = state[context][current].filters;
+          const filterKeys = ((_action$clear = action.clear) === null || _action$clear === void 0 ? void 0 : _action$clear.keys) || [];
           state[context][current].filters = Object.fromEntries(Object.entries(currentFilters).map(([filterKey, filter]) => {
-            if (typeof action.filterKey === 'undefined' || action.filterKey === filterKey) {
+            if (filterKeys.length === 0 || filterKeys.includes(filterKey)) {
               const filterItems = filter.items || [];
               filter.items = filterItems.map(item => ({
                 ...item,
@@ -612,6 +427,12 @@ var reducers = config => {
           }));
           state[context][current].queryDuration = 0;
           state[context][current].pagingInfo.pagesLoaded = [];
+
+          // also clone UPDATE_SEARCH_TERM behavior if clearing term also
+          if (((_action$clear2 = action.clear) === null || _action$clear2 === void 0 ? void 0 : _action$clear2.term) === true) {
+            state.term = '';
+            state[context] = resetFacets(state, context);
+          }
           return;
         }
       case sagas.EXECUTE_SEARCH:
@@ -680,11 +501,12 @@ var reducers = config => {
         }
       case sagas.SET_ROUTE_FILTERS:
         {
-          var _state$context$facet$;
+          var _state$context$facet, _state$tabs, _state$context$facet$;
           const {
             facet,
             params,
-            context
+            context,
+            languages
           } = action;
           const {
             term = '',
@@ -693,7 +515,7 @@ var reducers = config => {
             orderBy
           } = params;
           const stateTerm = state.term;
-          const tabId = state[context][facet].tabId || 0;
+          const tabId = ((_state$context$facet = state[context][facet]) === null || _state$context$facet === void 0 ? void 0 : _state$context$facet.tabId) || 0;
 
           // Reset the facet if the search term has changed, or if the any of
           // the filters have changed
@@ -714,15 +536,17 @@ var reducers = config => {
             resetCurrentFacet = state.config.isLoaded === true && !equals__default.default(nextFilters, stateFacet.filters);
             stateFacet = resetCurrentFacet ? resetFacet(stateFacet) : stateFacet;
             stateFacet.filters = nextFilters;
-            stateFacet.queryParams.dynamicOrderBy = sagas.toArray(orderBy) || [];
+            stateFacet.queryParams.dynamicOrderBy = util.toArray(orderBy) || [];
+            stateFacet.queryParams.languages = languages;
             return [facetName, stateFacet];
           }));
           state.context = context;
           state[context] = nextFacets;
           state[action.context === sagas.Context.facets ? 'currentFacet' : 'currentListing'] = facet;
+          state.currentComposition = action.composition;
           state.term = term;
-          state.tabs[tabId].currentFacet = facet;
-          state[context][facet].pagingInfo = {
+          if ((_state$tabs = state.tabs) !== null && _state$tabs !== void 0 && _state$tabs[tabId]) state.tabs[tabId].currentFacet = facet;
+          if (state[context][facet]) state[context][facet].pagingInfo = {
             ...(state[context][facet].pagingInfo || pagingInfo),
             pageIndex: Number(pageIndex) - 1 || (state[context][facet].queryParams.loadMorePaging ? ((_state$context$facet$ = state[context][facet].pagingInfo) === null || _state$context$facet$ === void 0 ? void 0 : _state$context$facet$.pageIndex) || 0 : 0),
             pageSize: Number(pageSize) || state[context][facet].queryParams.pageSize
@@ -734,6 +558,7 @@ var reducers = config => {
         }
       case sagas.SET_SEARCH_ENTRIES:
         {
+          var _action$mappers;
           const thisContext = action.context || context;
           const currentFacet = state[thisContext][action.facet];
 
@@ -758,6 +583,15 @@ var reducers = config => {
           state[thisContext][action.facet] = merge__default.default(currentFacet, action.nextFacet, {
             arrayMerge: (source, inbound) => inbound
           });
+          if ((_action$mappers = action.mappers) !== null && _action$mappers !== void 0 && _action$mappers.resultsInfo && typeof action.mappers.resultsInfo === 'function') {
+            // Likely an anti-pattern but we need to provide the whole state
+            // to the resultsInfo mapper, including the latest search state
+            // which is not yet committed outside of this produce() call
+            state[thisContext][action.facet].resultsInfo = action.mappers.resultsInfo({
+              ...action.state,
+              search: immer.current(state)
+            });
+          }
           return;
         }
       case sagas.SET_SEARCH_FILTERS:
@@ -853,7 +687,7 @@ var reducers = config => {
           } = action;
           state[context] = resetFacets(state, context);
           const currentFacet = facet || current;
-          state[context][currentFacet].queryParams.dynamicOrderBy = orderBy ? sagas.toArray(orderBy) || [] : [];
+          state[context][currentFacet].queryParams.dynamicOrderBy = orderBy ? util.toArray(orderBy) || [] : [];
           return;
         }
       default:
@@ -872,7 +706,6 @@ exports.actions = sagas.actions;
 exports.doSearch = sagas.doSearch;
 exports.expressions = sagas.expressions;
 exports.queries = sagas.queries;
-exports.routeParams = sagas.routeParams;
 exports.sagas = sagas.searchSagas;
 exports.selectors = sagas.selectors;
 exports.setRouteFilters = sagas.setRouteFilters;
@@ -880,11 +713,12 @@ exports.triggerListingSsr = sagas.triggerListingSsr;
 exports.triggerMinilistSsr = sagas.triggerMinilistSsr;
 exports.triggerSearchSsr = sagas.triggerSearchSsr;
 exports.types = sagas.types;
+exports.useFacets = sagas.useFacets;
+exports.useListing = sagas.useListing;
+exports.routeParams = util.routeParams;
 exports.Context = Context;
 exports.reducer = reducers;
 exports.schema = schema;
-exports.useFacets = useFacets;
-exports.useListing = useListing;
 exports.useMinilist = useMinilist;
 exports.withListing = withListing;
 exports.withSearch = withSearch;

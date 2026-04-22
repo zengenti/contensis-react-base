@@ -1,12 +1,15 @@
+import { selectCurrentLanguage } from '~/i18n';
 import { Context } from '../models/Enums';
 import { QueryParams as QueryParams2 } from '../models/Queries';
 import { CustomApi, SearchQueryParams } from '../models/Search';
 import {
   AppState,
+  Composition,
   Facet,
   Facets,
   Filters,
   Paging,
+  SearchState,
   SelectedFilters,
   Tab,
   TabAndFacets,
@@ -15,10 +18,15 @@ import getIn, { makeFromJS } from './getIn';
 
 type StateType = 'immutable' | 'js';
 
-export const getSearchContext = (state: AppState): Context =>
+type ContextType = keyof typeof Context;
+
+export const getSearchContext = (state: AppState): ContextType =>
   getIn(state, ['search', 'context'], Context.facets);
 
-export const getCurrent = (state: AppState, context = Context.facets) =>
+export const getCurrent = (
+  state: AppState,
+  context: ContextType = getSearchContext(state)
+) =>
   context === Context.facets
     ? getCurrentFacet(state)
     : getCurrentListing(state);
@@ -32,6 +40,56 @@ export const getCurrentListing = (state: AppState): string =>
 export const getCurrentTab = (state: AppState): number =>
   getIn(state, ['search', Context.facets, getCurrentFacet(state), 'tabId'], 0);
 
+export const getCurrentComposition = (state: AppState): string =>
+  getIn(state, ['search', 'currentComposition']);
+
+/** A localised version of `getCurrent` selector */
+export const getLocalisedCurrent = (
+  state: AppState,
+  language = selectCurrentLanguage(state),
+  context: ContextType = getSearchContext(state)
+) => {
+  const currentFacet = getCurrent(state, context);
+  const facet = getFacet(state, currentFacet, context, 'js');
+  const i18n = facet.i18n?.[language];
+  return i18n || currentFacet;
+};
+
+export const getLocalisedFacetKey = (
+  state: AppState,
+  facet = getCurrent(state),
+  language = selectCurrentLanguage(state),
+  context: ContextType = getSearchContext(state)
+) => getFacet(state, facet, context, 'js')?.i18n?.[language];
+
+export const getCurrentFromLocalised = (
+  state: AppState,
+  alias: string,
+  language?: string,
+  context: ContextType = getSearchContext(state)
+) => {
+  const facets = state.search?.[context] || {};
+
+  for (const [facetKey, facet] of Object.entries(facets)) {
+    if (language) {
+      const languageAlias = facet.i18n?.[language];
+      if (languageAlias === alias) {
+        return { facet: facetKey, language };
+      }
+    } else {
+      // Fallback to check for any language
+      for (const lang in facet.i18n) {
+        if (facet.i18n[lang] === alias) {
+          return { facet: facetKey, language: lang };
+        }
+      }
+    }
+  }
+  return null;
+  // // Default to returning the inputs
+  // return { facet: alias, language };
+};
+
 export const getFacets = (state: AppState, returnType?: StateType): Facets =>
   getIn(state, ['search', Context.facets], {}, returnType);
 
@@ -42,6 +100,21 @@ export const getTabFacets = (state: AppState) =>
         getIn(getFacets(state), [key, 'tabId'], 0) === getCurrentTab(state)
     )
   );
+
+export const getCompositionFacets = (state: AppState, composition?: string) => {
+  const currentComposition = composition || getCurrentComposition(state);
+  if (!currentComposition) return {};
+
+  const compositionConfig = getSearchCompositions(state)[currentComposition];
+  const context = getSearchContext(state);
+  if (!compositionConfig[context]) return {};
+
+  const facets: Facets = {};
+  for (const facet of compositionConfig[context]) {
+    facets[facet] = getFacet(state, facet, context);
+  }
+  return facets;
+};
 
 export const getFacetTitles = (state: AppState) =>
   Object.entries(getFacets(state, 'js')).map(([key, facet = {}]) => ({
@@ -75,10 +148,23 @@ export const getListing = (state: AppState, listing = '') => {
   ) as Facet;
 };
 
+export const getComposition = (state: AppState, composition = '') => {
+  const currentComposition = composition || getCurrentComposition(state);
+  const context = getSearchContext(state);
+  const compositionConfig = getSearchCompositions(state)[currentComposition];
+  if (!compositionConfig) return {};
+  const facets = getCompositionFacets(state, currentComposition);
+  return {
+    ...compositionConfig,
+    [context]: facets,
+  } as Composition & { listings?: Facets; facets?: Facets };
+};
+
+/** Return filter state for the current (or provided) facet */
 export const getFilters = (
   state: AppState,
   facet: string,
-  context = Context.facets,
+  context: ContextType = Context.facets,
   returnType?: StateType
 ): Filters => {
   return getIn(
@@ -89,10 +175,41 @@ export const getFilters = (
   );
 };
 
+export const getLocalisedFilterKey = (
+  state: AppState,
+  key: string,
+  language = selectCurrentLanguage(state),
+  facet: string,
+  context: ContextType = getSearchContext(state)
+) => {
+  const filter = getFilters(state, facet, context, 'js')[key];
+  if (filter?.i18n?.[language]) {
+    return filter.i18n[language];
+  }
+  return key;
+};
+
+export const getFilterKeyFromLocalised = (
+  state: AppState,
+  key: string,
+  language = selectCurrentLanguage(state),
+  facet: string,
+  context: ContextType = getSearchContext(state)
+) => {
+  const filters = getFilters(state, facet, context, 'js');
+  for (const [filterKey, filter] of Object.entries(filters)) {
+    if (filter.i18n?.[language] === key) {
+      return filterKey;
+    }
+  }
+  return key;
+};
+
+/** Return filter state for the current (or provided) facet, excluding filters configured as `renderable: false` */
 export const getRenderableFilters = (
   state: AppState,
   facet = '',
-  context = Context.facets
+  context: ContextType = Context.facets
 ): Filters =>
   Object.fromEntries(
     Object.entries(getFilters(state, facet, context, 'js')).filter(
@@ -103,7 +220,7 @@ export const getRenderableFilters = (
 export const getFiltersToLoad = (
   state: AppState,
   facet: string,
-  context = Context.facets,
+  context: ContextType = Context.facets,
   returnType?: StateType
 ) => {
   const filters = getFilters(state, facet, context, returnType);
@@ -119,15 +236,33 @@ export const getFiltersToLoad = (
     .filter(f => !!f) as string[];
 };
 
-// We lowercase the filter key unless it's an ISO date string where the T must be uppercase
-export const getSelectedFilters = (
-  state: AppState,
-  facet = '',
-  context = Context.facets,
-  returnType?: StateType
-): SelectedFilters => {
-  const filters = getFilters(state, facet, context, 'js');
+/** Iterate the selected filters and update their keys to their localized equivalents */
+const localiseSelectedFilterKeys = (
+  selectedFilters: SelectedFilters,
+  state: AppState
+) => {
+  const language = selectCurrentLanguage(state);
+  const filters = getFilters(
+    state,
+    getCurrentFacet(state),
+    getSearchContext(state),
+    'js'
+  );
+  const localisedSelectedFilters: SelectedFilters = {};
+  for (const [filterKey, selectedValues] of Object.entries(selectedFilters)) {
+    const filter = filters[filterKey];
+    if (filter?.i18n?.[language]) {
+      const localisedKey = filter.i18n[language];
+      localisedSelectedFilters[localisedKey] = selectedValues;
+    } else {
+      localisedSelectedFilters[filterKey] = selectedValues;
+    }
+  }
+  return localisedSelectedFilters;
+};
 
+/** Reduce filters state to a simple object containing all filter keys and the selected values */
+const reduceSelectedFilters = (filters: Filters) => {
   const selectedFilters = Object.fromEntries(
     Object.entries(filters).map(([key, filter = {}]) => [
       key,
@@ -139,14 +274,51 @@ export const getSelectedFilters = (
         }),
     ])
   );
+  return selectedFilters;
+};
+
+/** Return keyed object for all filters in the current facet with all selected values for each filter */
+export const getSelectedFilters = (
+  state: AppState,
+  facet = '',
+  context: ContextType = Context.facets,
+  returnType?: StateType
+): SelectedFilters => {
+  const filters = getFilters(state, facet, context, 'js');
+
+  const selectedFilters = reduceSelectedFilters(filters);
   const fromJS = makeFromJS(returnType);
   return fromJS(selectedFilters);
+};
+
+/** Return keyed object for all _renderable_ filters in the current facet with all selected values for each filter */
+export const getRenderableSelectedFilters = (
+  state: AppState,
+  facet = '',
+  context: ContextType = Context.facets
+): SelectedFilters => {
+  const filters = getRenderableFilters(state, facet, context);
+
+  // new in CRB4: intended no support for immutable state type
+  const selectedFilters = reduceSelectedFilters(filters);
+  return selectedFilters;
+};
+
+/** A localised version of `getRenderableSelectedFilters` selector */
+export const getLocalisedRenderableSelectedFilters = (
+  state: AppState,
+  facet = '',
+  context: ContextType = Context.facets
+): SelectedFilters => {
+  const filters = getRenderableSelectedFilters(state, facet, context);
+  const localisedFilters = localiseSelectedFilterKeys(filters, state);
+  return localisedFilters;
 };
 
 export const getResults = (
   state: AppState,
   current = '',
-  context = Context.facets,
+  context: ContextType = Context.facets,
   returnType?: StateType
 ) => {
   return getIn(
@@ -157,10 +329,23 @@ export const getResults = (
   ) as any[];
 };
 
+export const getResultsInfo = (
+  state: AppState,
+  current = '',
+  context: ContextType = getSearchContext(state)
+) => {
+  return getIn(
+    state,
+    ['search', context, current || getCurrent(state, context), 'resultsInfo'],
+    {},
+    'js'
+  ) as any;
+};
+
 export const getIsInternalPaging = (
   state: AppState,
   current: string,
-  context = Context.facets
+  context: ContextType = Context.facets
 ): boolean => {
   return getIn(
     state,
@@ -177,7 +362,7 @@ export const getIsInternalPaging = (
 
 export const getIsLoaded = (
   state: AppState,
-  context = Context.facets,
+  context: ContextType = Context.facets,
   facet?: string
 ) => {
   return !!getIn(
@@ -189,7 +374,7 @@ export const getIsLoaded = (
 
 export const getIsLoading = (
   state: AppState,
-  context = Context.facets,
+  context: ContextType = Context.facets,
   facet?: string
 ): boolean => {
   return getIn(state, [
@@ -207,7 +392,7 @@ export const getIsSsr = (state: AppState): boolean =>
 export const getFeaturedResults = (
   state: AppState,
   current = '',
-  context = Context.facets,
+  context: ContextType = Context.facets,
   returnType?: StateType
 ) => {
   return getIn(
@@ -226,7 +411,7 @@ export const getFeaturedResults = (
 export const getPaging = (
   state: AppState,
   current = '',
-  context = Context.facets,
+  context: ContextType = Context.facets,
   returnType?: StateType
 ): Paging => {
   return getIn(
@@ -240,7 +425,7 @@ export const getPaging = (
 export const getPageIndex = (
   state: AppState,
   current = '',
-  context = Context.facets
+  context: ContextType = Context.facets
 ): number => {
   return getIn(state, [
     'search',
@@ -254,7 +439,7 @@ export const getPageIndex = (
 export const getPageSize = (
   state: AppState,
   current = '',
-  context = Context.facets
+  context: ContextType = Context.facets
 ): number => {
   return getIn(
     state,
@@ -272,7 +457,7 @@ export const getPageSize = (
 export const getPrevPageIndex = (
   state: AppState,
   current = '',
-  context = Context.facets
+  context: ContextType = Context.facets
 ): number => {
   return getIn(state, [
     'search',
@@ -285,7 +470,7 @@ export const getPrevPageIndex = (
 export const getPageIsLoading = (
   state: AppState,
   current = '',
-  context = Context.facets
+  context: ContextType = Context.facets
 ): boolean => {
   return getIn(state, [
     'search',
@@ -299,7 +484,7 @@ export const getPageIsLoading = (
 export const getPagesLoaded = (
   state: AppState,
   current = '',
-  context = Context.facets
+  context: ContextType = Context.facets
 ): number[] => {
   return getIn(
     state,
@@ -318,7 +503,7 @@ export const getPagesLoaded = (
 export const getTotalCount = (
   state: AppState,
   current = '',
-  context = Context.facets
+  context: ContextType = Context.facets
 ): number => {
   return getIn(state, [
     'search',
@@ -335,10 +520,15 @@ export const getSearchTerm = (state: AppState): string =>
 export const getSearchTabs = (state: AppState, returnType?: StateType): Tab[] =>
   getIn(state, ['search', 'tabs'], [], returnType);
 
+export const getSearchCompositions = (
+  state: AppState
+): SearchState['compositions'] =>
+  getIn(state, ['search', 'compositions'], {}, 'js');
+
 export const getQueryParams = (
   state: AppState,
   current = '',
-  context = Context.facets
+  context: ContextType = Context.facets
 ) => {
   return getIn(
     state,
@@ -356,7 +546,7 @@ export const getQueryParameter = <
     state,
     facet,
     context = Context.facets,
-  }: { state: AppState; facet?: string; context?: Context },
+  }: { state: AppState; facet?: string; context?: ContextType },
   key: K | K2,
   ifnull: any = null
 ): SearchQueryParams[K] | QueryParams2[K2] => {
@@ -366,7 +556,7 @@ export const getQueryParameter = <
 export const getCustomApi = (
   state: AppState,
   current: string,
-  context = Context.facets,
+  context: ContextType = Context.facets,
   returnType?: StateType
 ): CustomApi => {
   return getIn(
@@ -375,19 +565,6 @@ export const getCustomApi = (
     null,
     returnType
   );
-};
-
-export const getCustomEnv = (
-  state: AppState,
-  current: string,
-  context = Context.facets
-) => {
-  return getIn(state, [
-    'search',
-    context,
-    current || getCurrent(state, context),
-    'env',
-  ]);
 };
 
 export const getTabsAndFacets = (state: AppState, returnType?: StateType) => {
@@ -444,7 +621,6 @@ export const selectFacets = {
   getCurrent: getCurrentFacet,
   getCurrentTab,
   getCustomApi,
-  getCustomEnv,
   getFacet,
   getFacetTitles,
   getFacets,
@@ -454,6 +630,9 @@ export const selectFacets = {
   getFiltersToLoad,
   getIsLoaded,
   getIsLoading,
+  /* Localised version of getCurrent */
+  getLocalisedCurrent: (state: AppState) =>
+    getLocalisedCurrent(state, undefined, Context.facets),
   getPageIndex,
   getPageIsLoading,
   getPagesLoaded,
@@ -487,6 +666,9 @@ export const selectListing = {
   getFiltersToLoad: (state: AppState, listing = '') =>
     getFiltersToLoad(state, listing, Context.listings),
   getListing,
+  /* Localised version of getCurrent */
+  getLocalisedCurrent: (state: AppState) =>
+    getLocalisedCurrent(state, undefined, Context.listings),
   getIsLoaded: (state: AppState) => getIsLoaded(state, Context.listings),
   getIsLoading: (state: AppState) => getIsLoading(state, Context.listings),
   getPageIndex: (state: AppState, listing = '') =>
@@ -515,12 +697,3 @@ export const selectListing = {
   getSelectedFilters: (state: AppState, listing = '') =>
     getSelectedFilters(state, listing, Context.listings, 'js'),
 };
-
-export const selectCurrentPath = (state: AppState) =>
-  getIn(state, ['routing', 'currentPath']);
-
-export const selectCurrentProject = (state: AppState) =>
-  getIn(state, ['routing', 'currentProject']);
-
-export const selectVersionStatus = (state: AppState) =>
-  getIn(state, ['version', 'contensisVersionStatus']);

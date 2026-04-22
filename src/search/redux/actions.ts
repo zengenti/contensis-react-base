@@ -69,10 +69,10 @@ export const navigate = (path: string, state?: any) => {
   };
 };
 
-export const clearFilters: ClearFiltersActionCreator = filterKey => {
+export const clearFilters: ClearFiltersActionCreator = filterKeyOrOptions => {
   return {
     type: CLEAR_FILTERS,
-    filterKey,
+    clear: typeof filterKeyOrOptions === 'string' ? { keys: [filterKeyOrOptions] } : filterKeyOrOptions,
   };
 };
 

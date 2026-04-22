@@ -14,7 +14,7 @@ import { LruCache } from './LruCache';
 import { CookieObject } from '~/user/util/CookieConstants';
 
 // CachedSearch does not cache results in SSR by design
-class CachedSearch {
+export class CachedSearch {
   cache = new LruCache();
   cookies?: CookieObject;
   ssr?: SSRContext;
@@ -145,8 +145,22 @@ class CachedSearch {
     }
     return this.cache.get(key) as ReturnType<T>;
   }
+
+  /** Use the cached API for fetch requests */
+  fetch(uri: RequestInfo, opts: RequestInit = {}) {
+    return this.request(`[FETCH] ${uri} ${JSON.stringify(opts)}`, () =>
+      fetch(uri, opts)
+    );
+  }
 }
 
 export const cachedSearch = new CachedSearch();
-export const cachedSearchWithCookies = (ssr?: SSRContext) =>
+
+/** Create a cached search instance attached to the current environment
+ * SSR context and connected to your environment via global variable
+ * `DELIVERY_API_CONFIG`  */
+export const cachedSearchWithContext = (ssr?: SSRContext) =>
   new CachedSearch(ssr);
+
+/** @deprecated Use cachedSearchWithContext instead */
+export const cachedSearchWithCookies = cachedSearchWithContext;

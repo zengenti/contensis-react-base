@@ -1,10 +1,11 @@
 import { VersionStatus } from 'contensis-core-api';
-import { Entry, Node } from 'contensis-delivery-api/lib/models';
-import { Group, User } from 'contensis-management-api/lib/models';
-import { MatchedRoute } from 'react-router-config';
-import { StaticRoute } from './StaticRoute';
+import { Entry, Node } from 'contensis-delivery-api';
+import { Group, User } from 'contensis-management-api';
+import { getInitialState } from '~/i18n/redux/slice';
+import { StaticRoute, MatchedRoute } from '~/models';
 
 export type AppState = {
+  i18n: ReturnType<typeof getInitialState>;
   navigation: {
     root: Node | null;
     isError: boolean;
@@ -26,7 +27,7 @@ export type AppState = {
     location: { pathname: string; search: string; hash: string; key?: string };
     mappedEntry: Record<string, any> | null;
     notFound: boolean;
-    staticRoute: MatchedRoute<Record<string, any>, StaticRoute>;
+    staticRoute: MatchedRoute<string, StaticRoute>;
     statusCode: number;
   };
   user: {

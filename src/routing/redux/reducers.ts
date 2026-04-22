@@ -23,9 +23,11 @@ const initialState = {
   error: undefined,
   isError: false,
   isLoading: false,
+  isLivePreview: false,
   location: {},
   mappedEntry: null,
   notFound: false,
+  ssrHostname: null,
   staticRoute: null,
   statusCode: 200,
   surrogateKeys: [],
@@ -77,7 +79,11 @@ export default produce((state: Draft<any>, action) => {
 
         if (mappedEntry && Object.keys(mappedEntry).length > 0) {
           state.mappedEntry = mappedEntry;
-          state.entry = { sys: entry.sys };
+          // Don't truncate the raw entry data when in live preview mode,
+          // as we want to be able to update it with new "patch" data coming
+          // passed in via the live preview iframe.
+          // In regular routes, the full entry data is not needed after mapping.
+          if (!state.isLivePreview) state.entry = { sys: entry.sys };
         }
       }
 
@@ -110,16 +116,22 @@ export default produce((state: Draft<any>, action) => {
           state.location = action.location;
           state.staticRoute = {
             ...staticRoute,
-            route: { ...staticRoute.route, component: null },
+            route: { ...staticRoute.route, element: null },
           };
           state.isLoading = typeof window !== 'undefined';
         } else {
           state.location = action.location;
           state.staticRoute = {
             ...staticRoute,
-            route: { ...staticRoute.route, component: null },
+            route: { ...staticRoute.route, element: null },
           };
         }
+      }
+      // The default value is false, but if we've activated live preview for this route,
+      // we want it to persist for the life of the session so we don't reset it back to
+      // false on subsequent CSR navigation.
+      if (action.location.search.includes('livePreview=true')) {
+        state.isLivePreview = true;
       }
       return;
     }
@@ -153,6 +165,7 @@ export default produce((state: Draft<any>, action) => {
     case SET_TARGET_PROJECT: {
       state.currentProject = action.project;
       state.allowedGroups = action.allowedGroups;
+      state.ssrHostname = state.currentHostname || action.hostname;
       state.currentHostname = action.hostname;
       return;
     }

@@ -10,7 +10,7 @@ import {
 } from '../redux/actions';
 
 import { SearchFacet, Mappers } from '../models/Search';
-import { DebugFlags } from '../models/SearchActions';
+import { DebugFlags, SearchParams } from '../models/SearchActions';
 import {
   Facet as StateFacet,
   Facets,
@@ -19,6 +19,7 @@ import {
   SelectedFilters,
   TabAndFacets,
 } from '../models/SearchState';
+import { getComposition } from '../redux/selectors';
 
 // TODO: some of these props are not implemented yet
 export interface MinilistProps<SearchResults = any> {
@@ -37,12 +38,16 @@ export interface MinilistProps<SearchResults = any> {
 }
 export interface ListingProps<SearchResults = any> {
   clearFilters: typeof clearFilters;
+  composition?: Omit<ReturnType<typeof getComposition>, 'facets'>;
+  currentComposition?: string;
   currentListing: string;
   currentPageIndex: number;
   featured: SearchResults[];
   filters: Filters;
   isLoading: boolean;
   listing: StateFacet;
+  /* Localised version of `currentListing` */
+  localisedCurrent: string;
   pageIsLoading: boolean;
   paging: Paging;
   results: SearchResults[];
@@ -61,6 +66,8 @@ export interface ListingProps<SearchResults = any> {
 
 export interface SearchProps<SearchResults = any> {
   clearFilters: typeof clearFilters;
+  composition?: Omit<ReturnType<typeof getComposition>, 'listings'>;
+  currentComposition?: string;
   currentFacet: string;
   currentPageIndex: number;
   currentTabIndex: number;
@@ -75,6 +82,8 @@ export interface SearchProps<SearchResults = any> {
   featured: SearchResults[];
   filters: Filters;
   isLoading: boolean;
+  /* Localised version of `currentFacet` */
+  localisedCurrent: string;
   pageIsLoading: boolean;
   paging: Paging;
   results: SearchResults[];
@@ -99,7 +108,7 @@ export interface UseFacetsProps {
   mappers?: Mappers;
   /** Reserved for future use */
   id?: string;
-  params?: { [key: string]: string };
+  params?: SearchParams;
   // config?: SearchFacet;
 }
 export interface UseListingProps {
@@ -108,7 +117,7 @@ export interface UseListingProps {
   mappers?: Mappers;
   /** Reserved for future use */
   id?: string;
-  params?: { [key: string]: string };
+  params?: SearchParams;
   // config?: SearchFacet;
 }
 
@@ -120,5 +129,5 @@ export interface UseMinilistProps {
   excludeIds?: string[];
   mapper?: Mappers['results'];
   mappers?: Mappers;
-  params?: { [key: string]: string };
+  params?: SearchParams;
 }

@@ -9,7 +9,6 @@ import submoduleResolvePlugin from './submodule-resolve-plugin';
 import path from 'path';
 
 const packagejson = require('../package.json');
-const formsPackageJson = require('zengenti-forms-package/package.json');
 
 const projectRootDir = require('app-root-path').path;
 
@@ -17,7 +16,7 @@ export default {
   input: {
     'contensis-react-base': './src',
     client: './src/client',
-    forms: './src/forms',
+    i18n: './src/i18n',
     redux: './src/redux',
     routing: './src/routing',
     search: './src/search',
@@ -45,13 +44,14 @@ export default {
   strictDeprecations: true,
   external: [
     ...Object.keys(packagejson.dependencies),
-    ...Object.keys(formsPackageJson.dependencies),
     /^@babel*/,
     '@babel',
     'history',
     /^@redux-saga*/,
+    'react-dom/client',
     'react-dom/server',
     'react-loadable/webpack',
+    'react-router-dom/server',
     'prop-types',
     /^contensis-delivery-api*/,
     /^contensis-core-api*/,
@@ -69,13 +69,6 @@ export default {
     alias({
       entries: [
         {
-          find: 'zengenti-forms-package',
-          replacement: path.resolve(
-            projectRootDir,
-            'node_modules/zengenti-forms-package/src/app/zengenti-forms-package'
-          ),
-        },
-        {
           find: '~',
           replacement: path.resolve(projectRootDir, 'src/app'),
         },
@@ -91,8 +84,6 @@ export default {
     babel({
       include: [
         'src/**',
-        'node_modules/zengenti-forms-package/**',
-        '../../node_modules/zengenti-forms-package/**',
       ],
       extensions: ['.js', '.jsx', '.ts', '.tsx'],
       presets: [
@@ -114,11 +105,6 @@ export default {
           {
             root: './src',
             alias: {
-              '~': path.resolve(
-                projectRootDir,
-                'node_modules/zengenti-forms-package/src/app'
-              ),
-              // eslint-disable-next-line no-dupe-keys
               '~': './src',
               '-': './',
             },
@@ -132,7 +118,6 @@ export default {
             ssr: true,
           },
         ],
-        'react-hot-loader/babel',
         '@loadable/babel-plugin',
         '@babel/plugin-syntax-dynamic-import',
         '@babel/plugin-transform-optional-chaining',
@@ -149,7 +134,6 @@ export default {
       'cjs/*',
       'esm/*',
       'client/*',
-      'forms/*',
       'redux/*',
       'routing/*',
       'search/*',

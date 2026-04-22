@@ -1,0 +1,5 @@
+{
+  "main": "../cjs/i18n.js",
+  "module": "../esm/i18n.js",
+  "types": "../models/i18n/index.d.ts"
+}

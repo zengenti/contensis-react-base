@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { toJS } from '~/util/ToJs';
 
-import { toJS } from '../search/ToJs';
 import {
   clearFilters,
   updateCurrentFacet,
@@ -27,6 +27,7 @@ import {
   getQueryParameter,
   getRenderableFilters,
   getResults,
+  getResultsInfo,
   getSearchTerm,
   getSearchTotalCount,
   getSelectedFilters,
@@ -66,7 +67,9 @@ const withSearch =
         paging: getPaging(state),
         pageIsLoading: getPageIsLoading(state),
         results: getResults(state),
-        resultsInfo: mappers?.resultsInfo && mappers.resultsInfo(state),
+        resultsInfo:
+          (mappers?.resultsInfo && mappers.resultsInfo(state)) ||
+          getResultsInfo(state),
         searchTerm: getSearchTerm(state),
         searchTotalCount: getSearchTotalCount(state),
         selectedFilters: getSelectedFilters(state),

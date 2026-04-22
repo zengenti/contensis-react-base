@@ -6,13 +6,9 @@ export { action, getJS, getImmutableOrJS as getIn } from './util';
 
 export { reduxStore as store } from './store/store';
 
-export {
-  convertSagaArray,
-  injectRedux,
-  injectReducer,
-  injectSaga,
-  useInjectRedux,
-} from './store/injectors';
+export { injectReducer, injectSaga } from './store/injectors/inject';
+
+export { injectRedux, useInjectRedux } from './store/injectors/index';
 
 // Remap the objects so they are presented in "feature" hierarchy
 // e.g. { routing: { types, actions }, navigation: { types, actions } }

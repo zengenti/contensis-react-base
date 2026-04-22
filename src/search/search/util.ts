@@ -1,11 +1,12 @@
 import { parse, stringify } from 'query-string';
 import { now } from './performance';
-import { cachedSearch } from './ContensisDeliveryApi';
 
 import { Entry } from 'contensis-delivery-api/lib/models';
 import { PagedList, Query } from 'contensis-core-api';
 import { CustomApi } from '../models/Search';
 import { TimedSearchResponse } from '../models/SearchUtil';
+import { SearchParams } from '../models/SearchActions';
+import { CachedSearch, cachedSearch } from '~/util/ContensisDeliveryApi';
 
 export function fixFreeTextForElastic(s: string): string {
   const illegalChars = [
@@ -51,25 +52,26 @@ export function fixFreeTextForElastic(s: string): string {
 export const convertKeyForAggregation = (key: string) => `sf_${key}`;
 export const parseKeyForAggregation = (key: string) =>
   key.startsWith(`sf_`) ? key.slice(3) : key;
-export const convertFieldIdForAggregation = (fieldId: string) =>
+export const cleanseFieldIdForAggregation = (fieldId: string) =>
   fieldId.replaceAll('[]', '');
 
 export const timedSearch = async (
   query: Query,
   linkDepth = 0,
   projectId?: string,
-  env?: string
+  // get api instance from SSR context that is connected to the current request in SSR,
+  // fall back to the imported cachedSearch api that is not connected to the current SSR context
+  ssr: { api: CachedSearch } = { api: cachedSearch }
 ): Promise<null | TimedSearchResponse> => {
   if (!query) return null;
 
   let duration = 0;
 
   const start = now();
-  const payload = (await cachedSearch.search(
+  const payload = (await ssr.api.search(
     query,
     linkDepth,
-    projectId,
-    env
+    projectId
   )) as PagedList<Entry>;
   const end = now();
 
@@ -101,10 +103,7 @@ export const extractQuotedPhrases = (searchTerm: string): string[] => {
   );
 };
 
-export const buildUrl = (
-  route: string,
-  params: { [key: string]: string }
-): string => {
+export const buildUrl = (route: string, params: SearchParams): string => {
   const qs = stringify(params) as string;
   const path = qs ? `${route}${route.includes('?') ? '&' : '?'}${qs}` : route;
   return path;
@@ -143,7 +142,10 @@ export const routeParams = (
 
 export const callCustomApi = async <T>(
   customApi: CustomApi,
-  filters: { [key: string]: string }
+  filters: SearchParams,
+  // get api instance from SSR context that is connected to the current request in SSR,
+  // fall back to the imported cachedSearch api that is not connected to the current SSR context
+  ssr: { api: CachedSearch } = { api: cachedSearch }
 ): Promise<T> => {
   const apiUri = customApi.uri || '';
   let uri = buildUrl(apiUri, filters);
@@ -153,7 +155,7 @@ export const callCustomApi = async <T>(
     const response = await fetch(uri);
     return (await response.json()) as T;
   }
-  const response = await cachedSearch.fetch(uri);
+  const response = await ssr.api.fetch(uri);
   return (await response.clone().json()) as T;
 };
 

@@ -1,19 +1,20 @@
 import { areArraysEqualSets } from '../search/util';
 import {
-  getSelectedFilters,
-  getIsLoaded,
-  getQueryParams,
-  getPageIndex,
   getIsInternalPaging,
-  getSearchTerm,
+  getIsLoaded,
+  getPageIndex,
   getPageSize,
+  getQueryParameter,
+  getQueryParams,
+  getSearchTerm,
+  getSelectedFilters,
 } from './selectors';
-import { Context } from '../models/Enums';
 import mapStateToQueryParams from '../transformations/state-to-queryparams.mapper';
 import { QueryParams, SearchQueryOptions } from '../models/Queries';
 import { AppState } from '../models/SearchState';
 import {
   EnsureSearchAction,
+  SearchParams,
   SetSearchEntriesAction,
 } from '../models/SearchActions';
 
@@ -53,18 +54,19 @@ export const runSearch = (
 ) => {
   const {
     context,
-    defaultLang,
+    // defaultLang,
     facet,
     ogState = state,
     preload,
-    ssr,
+    isSSR,
   } = action as EnsureSearchAction & SetSearchEntriesAction;
 
   let willRun = false;
 
-  const facetIsLoaded = defaultLang
-    ? false
-    : getIsLoaded(state, context, facet);
+  // const facetIsLoaded = defaultLang
+  //   ? false
+  //   : getIsLoaded(state, context, facet);
+  const facetIsLoaded = getIsLoaded(state, context, facet);
   const stateParams = {
     ...getQueryParams(ogState, facet, context),
   } as QueryParams;
@@ -73,12 +75,12 @@ export const runSearch = (
   stateParams.pageSize = getPageSize(ogState, facet, context);
 
   if (
-    (context === Context.facets && ssr) ||
+    isSSR || // (context === Context.facets && isSSR) ||
     // context === Context.minilist ||
     preload ||
     !facetIsLoaded ||
-    filterParamsChanged(action) ||
-    defaultLang
+    filterParamsChanged(action) || // || defaultLang
+    languageChanged(action)
   ) {
     willRun = true;
   } else {
@@ -101,6 +103,22 @@ export const runSearch = (
 };
 
 /**
+ * Patch mutates original params argument to decode certain
+ * url encoded params which can creep into urls and cause a
+ * flash of different content when hydrating from SSR
+ * @param params SearchParams
+ * @returns SearchParams
+ */
+export const sanitiseParams = (params?: SearchParams) => {
+  if (params && typeof params === 'object')
+    for (const param of Object.keys(params)) {
+      if (typeof params[param] === 'string')
+        params[param] = params[param].replaceAll('%2C', ',');
+    }
+  return params;
+};
+
+/**
  * This will tell us if filter parameters have been
  * changed by some external event such as a route change
  * @param action
@@ -110,12 +128,7 @@ export const filterParamsChanged = (
   action: EnsureSearchAction | SetSearchEntriesAction,
   state?: AppState
 ) => {
-  const {
-    context,
-    facet,
-    params,
-    ogState = state,
-  } = action as EnsureSearchAction & SetSearchEntriesAction;
+  const { context, facet, params, ogState = state } = action;
   const selectedFilters = getSelectedFilters(
     ogState as AppState,
     facet,
@@ -135,7 +148,17 @@ export const filterParamsChanged = (
   return paramsChanged.filter(f => f === true).length > 0;
 };
 
-/* eslint-disable no-console */
+export const languageChanged = (
+  action: EnsureSearchAction | SetSearchEntriesAction
+) => {
+  const stateLanguages = getQueryParameter(
+    { ...action, state: action.ogState },
+    'languages',
+    []
+  ) as string[];
+  return !areArraysEqualSets(action.languages || [], stateLanguages);
+};
+
 export const debugExecuteSearch = (
   action: EnsureSearchAction | SetSearchEntriesAction,
   state: AppState

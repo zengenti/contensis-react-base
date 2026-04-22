@@ -4,6 +4,19 @@ import { MappingTemplate } from 'jsonpath-mapper';
 import { Context } from './Enums';
 import { FieldOperators, LogicOperators } from './Queries';
 import { AppState } from './SearchState';
+export type FacetComposition = {
+    /** Display title */
+    title?: string;
+    /** An array of facet keys to include in this composition */
+    facets?: string[];
+};
+export type ListingComposition = {
+    /** Display title */
+    title?: string;
+    /** An array of listing keys to include in this composition */
+    listings?: string[];
+};
+export type Composition = FacetComposition | ListingComposition;
 export type Tab = {
     /** The facet to render as default */
     defaultFacet?: string;
@@ -19,13 +32,6 @@ export type CustomApi = {
     uri: string;
 };
 export type Listing = {
-    /** Display title */
-    title?: string;
-    /** Experimental: use a custom API to retrieve search results */
-    customApi?: CustomApi;
-} | {
-    /** Experimental: override the rootUrl of the Delivery API client  */
-    env?: string;
     /** An object with a key for each filter that is required in this facet */
     filters?: SearchFilters;
     /** Use this to target the search to a project other than the default configured */
@@ -34,6 +40,12 @@ export type Listing = {
     queryParams: SearchQueryParams;
     /** Display title */
     title?: string;
+    /** Experimental: use a custom API to retrieve search results */
+    customApi?: CustomApi;
+    /** Internationalisation config */
+    i18n?: {
+        [language: string]: string;
+    };
 };
 export type SearchFacet = {
     /** The first facet to be shown if no facet is supplied via a route parameter [default false] */
@@ -47,13 +59,17 @@ export type SearchFilters = {
     [key: string]: SearchFilter;
 };
 export type SearchFilter = {
+    /** Populate items using aggregations, `true` will enable or supply name(s) of other field aggregations to populate the items with */
+    aggregations?: boolean | string | string[];
     /** The content type id we will dynamically load entries from and load into state under the items[] */
     contentTypeId?: string | string[];
     /** An array of CustomWhereClause to include in the search query when dynamically loading entries via the contentTypeId key */
     customWhere?: CustomWhereClause;
+    /** Max number of items returned when providing `contentTypeId`, default is 100  */
+    pageSize?: number;
     /** Use this to set a specific value to render for the initial / unselected option in this filter */
     defaultValue?: string;
-    /** The content type field we will apply the filter key to, to filter the list of returned results. */
+    /** The content type field id(s) we will apply selected filter keys to, so we can filter the list of returned results. */
     fieldId: string | string[];
     /** The Delivery API search operator we will use to filter the list of returned results. */
     fieldOperator?: FieldOperators;
@@ -67,10 +83,18 @@ export type SearchFilter = {
     isSingleSelect?: boolean;
     /** Supply an empty array or a hardcoded list of FilterItem depending on the type of filter we require */
     items: FilterItem[];
-    /** Set to false to not include this filter in filters prop */
+    /** Setting `false` will change the filter behaviour:
+     *
+     * a) to be excluded from the `filters` prop
+     *
+     * b) to not include selected items in the querystring on next navigate */
     renderable?: boolean;
     /** The title to render next to the filter */
     title: string;
+    /** Internationalisation config */
+    i18n?: {
+        [language: string]: string;
+    };
 };
 export type FilterItem = {
     /** Whether the filter is in a selected state */
@@ -113,6 +137,8 @@ export type SearchQueryParams = {
     includeInSearch?: string[];
     /** Whether or not to load all results with the first page and handle all pagination yourself */
     internalPaging?: boolean;
+    /** Search within specific languages */
+    languages?: string[];
     /** The linkDepth to apply to the facet search (defaults to 0) */
     linkDepth?: number;
     /** Alters the pagination style to retain previously loaded pages of results after loading next pages */
@@ -161,7 +187,7 @@ export type WeightedSearchField = {
  */
 export type SearchConfig = {
     /** An object with a key for each facet that is required for the search */
-    facets: {
+    facets?: {
         [key: string]: SearchFacet;
     };
     /** An object with a key for each independent listing that is required for the site */
@@ -172,8 +198,12 @@ export type SearchConfig = {
     minilist?: {
         [key: string]: Listing;
     };
-    /** An Array of Tabs */
-    tabs: Tab[];
+    /** An Array of Tabs to partition search facets */
+    tabs?: Tab[];
+    /** An object with a key for each composition that is required for the site */
+    compositions?: {
+        [key: string]: Composition;
+    };
 };
 export type ConfigTypes = {
     [key: string]: SearchFacet;
@@ -183,7 +213,7 @@ export type ConfigTypes = {
 /**
  * Type your mapper for mapping API responses (entries) into usable props for your components to render
  */
-export type SearchResultsMapper<Target = any, Source = Entry> = (entries: Source[], facet?: string, context?: Context, state?: AppState) => Target[];
+export type SearchResultsMapper<Target = any, Source = Entry> = (entries: Source[], facet?: string, context?: keyof typeof Context, state?: AppState) => Target[];
 /**
  * Type your custom filter item mapping function with this to ensure correctly typed FilterItems are returned to work with search functions
  */

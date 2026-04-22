@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { toJS } from '../search/ToJs';
+import { toJS } from '~/util/ToJs';
 import {
   clearFilters,
   updateCurrentFacet,
@@ -11,7 +11,7 @@ import {
   updateSortOrder,
   withMappers,
 } from '../redux/actions';
-import { selectListing } from '../redux/selectors';
+import { getResultsInfo, selectListing } from '../redux/selectors';
 import { Mappers } from '../models/Search';
 import { AppState } from '../models/SearchState';
 import { ListingProps } from '../models/SearchProps';
@@ -52,9 +52,9 @@ const withListing =
         paging: getPaging(state),
         results: getResults(state),
         resultsInfo:
-          mappers &&
-          typeof mappers.resultsInfo === 'function' &&
-          mappers.resultsInfo(state),
+          (typeof mappers?.resultsInfo === 'function' &&
+            mappers.resultsInfo(state)) ||
+          getResultsInfo(state),
         searchTerm: getSearchTerm(state),
         selectedFilters: getSelectedFilters(state),
         sortOrder: getQueryParameter({ state }, 'dynamicOrderBy', []),

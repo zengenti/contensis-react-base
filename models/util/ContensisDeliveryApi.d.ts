@@ -1,8 +1,5 @@
-/// <reference types="qs" />
-/// <reference types="node" />
 import { VersionStatus } from 'contensis-core-api';
-import { Client, Query } from 'contensis-delivery-api';
-import { Config } from 'contensis-delivery-api/lib/models';
+import { Client, Config, Query } from 'contensis-delivery-api';
 import { CookieObject } from "../user/util/CookieConstants";
 import { Request } from 'express';
 import { IncomingHttpHeaders } from 'http';
@@ -14,7 +11,7 @@ export declare class DeliveryApi {
     ssr?: SSRContext;
     constructor(ssr?: SSRContext);
     getClientSideVersionStatus: () => any;
-    getServerSideVersionStatus: (request: Request) => string | string[] | import("qs").ParsedQs | import("qs").ParsedQs[];
+    getServerSideVersionStatus: (request: Request) => "published" | "latest" | undefined;
     getVersionStatusFromHeaders: (headers: IncomingHttpHeaders) => string | string[] | null;
     getVersionStatusFromHostname: (currentHostname: string) => "published" | "latest";
     search: (query: Query, linkDepth?: number, project?: string) => Promise<import("contensis-core-api").PagedSearchList<import("contensis-delivery-api").Entry>>;

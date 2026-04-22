@@ -1,12 +1,12 @@
 import { ChunkExtractor } from '@loadable/server';
 import { ServerConfig } from "../../models";
 export declare const loadableBundleData: ({ stats, templates }: ServerConfig, staticRoutePath: string, build?: string) => {
-    stats?: string | null | undefined;
+    stats?: string | null;
     templates?: {
         templateHTML: string;
         templateHTMLStatic: string;
         templateHTMLFragment: string;
-    } | null | undefined;
+    } | null;
 };
 type LoadableChunkExtractors = {
     legacy?: ChunkExtractor;
@@ -16,29 +16,29 @@ type LoadableChunkExtractors = {
 export declare const loadableChunkExtractors: () => LoadableChunkExtractors;
 export declare const getBundleData: (config: ServerConfig, staticRoutePath: string) => {
     default: {
-        stats?: string | null | undefined;
+        stats?: string | null;
         templates?: {
             templateHTML: string;
             templateHTMLStatic: string;
             templateHTMLFragment: string;
-        } | null | undefined;
+        } | null;
     };
     legacy: {
-        stats?: string | null | undefined;
+        stats?: string | null;
         templates?: {
             templateHTML: string;
             templateHTMLStatic: string;
             templateHTMLFragment: string;
-        } | null | undefined;
+        } | null;
     };
     modern: {
-        stats?: string | null | undefined;
+        stats?: string | null;
         templates?: {
             templateHTML: string;
             templateHTMLStatic: string;
             templateHTMLFragment: string;
-        } | null | undefined;
+        } | null;
     };
 };
-export declare const getBundleTags: (loadableExtractor: LoadableChunkExtractors, scripts: ServerConfig['scripts'], staticRoutePath?: string) => string;
+export declare const getBundleTags: (loadableExtractor: LoadableChunkExtractors, scripts: ServerConfig["scripts"], staticRoutePath?: string) => string;
 export {};

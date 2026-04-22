@@ -1,7 +1,12 @@
 export { default as setCachingHeaders } from "../server/features/caching/setCachingHeaders";
-export { cachedSearch, cachedSearchWithCookies, deliveryApi, deliveryApiWithCookies, getClientConfig, } from './ContensisDeliveryApi';
+export { cachedSearch, cachedSearchWithContext, cachedSearchWithCookies, deliveryApi, deliveryApiWithCookies, getClientConfig, } from './ContensisDeliveryApi';
 export { SSRContextProvider, useDeliveryApi, useSSRContext, } from './SSRContext';
+export { getSubsitePath } from './subsite';
 export { default as stringifyStrings } from './stringifyStrings';
-export { default as urls } from './urls';
+export { urls } from './urls';
+export { useIsClient } from './useIsClient';
+export { NoSSR } from './NoSSR';
+export { Helmet, HelmetProvider } from 'react-helmet-async';
 export * from './json-mapper';
 export { default as VersionInfo } from "../app/pages/VersionInfo";
+export { useHistory } from './donotuse_useHistory';

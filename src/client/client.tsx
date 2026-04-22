@@ -1,13 +1,15 @@
 import 'isomorphic-fetch';
 import React from 'react';
-import { render, hydrate } from 'react-dom';
-import { AppContainer } from 'react-hot-loader';
+import { createRoot, hydrateRoot } from 'react-dom/client';
 import { Provider as ReduxProvider } from 'react-redux';
-import { Router } from 'react-router-dom';
+import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
 import { loadableReady } from '@loadable/component';
 import { parse } from 'query-string';
 import { CookiesProvider } from 'react-cookie';
+import { HelmetProvider } from 'react-helmet-async';
 
+import { createLocaleRoutes } from '~/i18n/routes';
+import { actions } from '~/i18n/redux/slice';
 import { selectVersionStatus } from '~/redux/selectors/version';
 import { setVersionStatus } from '~/redux/actions/version';
 import rootSaga from '~/redux/sagas';
@@ -25,56 +27,71 @@ import { AppConfig, AppState } from '~/models';
 declare let window: typeof globalThis & {
   isDynamic: boolean;
   REDUX_DATA: AppState;
+  __USE_HYDRATE__: boolean;
 };
 
 type ReactAppProps = { routes: any; withEvents: any };
 
-// Fix TS2769 error No overload matches this call
-const Container = AppContainer as any; // as typeof AppContainer;
-
 class ClientApp {
   constructor(ReactApp: React.ComponentType<ReactAppProps>, config: AppConfig) {
-    const documentRoot = document.getElementById('root');
+    const documentRoot = document.getElementById('root') as HTMLElement;
 
     const {
-      stateType = 'immutable',
+      i18n,
+      // stateType = 'immutable', // changed default in v4
+      stateType = 'js',
       routes,
       withReducers,
       withSagas,
       withEvents,
     } = config;
 
+    // process locales in static routes for i18n
+    const localeRoutes = createLocaleRoutes(routes);
+
     const GetClientJSX = store => {
       const ClientJsx = (
-        <Container>
+        <HelmetProvider>
           <CookiesProvider>
             <ReduxProvider store={store}>
-              <Router history={history}>
+              <HistoryRouter
+                history={history as any}
+                future={{
+                  v7_relativeSplatPath: true,
+                  v7_startTransition: true,
+                }}
+              >
                 <SSRContextProvider>
                   <ReactApp routes={routes} withEvents={withEvents} />
                 </SSRContextProvider>
-              </Router>
+              </HistoryRouter>
             </ReduxProvider>
           </CookiesProvider>
-        </Container>
+        </HelmetProvider>
       );
       return ClientJsx;
     };
 
-    const isProduction = !(process.env.NODE_ENV !== 'production');
+    const isDev = process.env.NODE_ENV !== 'production';
+    // const isProduction = !isDev;
+    const shouldHydrate = window.__USE_HYDRATE__ && !window.isDynamic;
 
     /**
      * Webpack HMR Setup.
      */
     const HMRRenderer = Component => {
-      if (isProduction)
+      if (shouldHydrate)
         loadableReady(
           () => {
-            hydrate(Component, documentRoot);
+            hydrateRoot(documentRoot, Component, {
+              onRecoverableError(error) {
+                console.warn('Hydration warning:', error);
+              },
+            });
           },
           { namespace: 'modern' }
         );
-      else render(Component, documentRoot);
+      else createRoot(documentRoot).render(Component);
     };
 
     const hmr = store => {
@@ -90,11 +107,7 @@ class ClientApp {
     const qs = parse(window.location.search);
     const versionStatus = deliveryApi.getClientSideVersionStatus();
 
-    if (
-      window.isDynamic ||
-      window.REDUX_DATA ||
-      process.env.NODE_ENV !== 'production'
-    ) {
+    if (isDev || window.isDynamic || window.REDUX_DATA) {
       createStore(withReducers, window.REDUX_DATA, history, stateType).then(
         store => {
           const state = store.getState();
@@ -102,9 +115,9 @@ class ClientApp {
           if (!ssrVersionStatus)
             store.dispatch(setVersionStatus(versionStatus));
 
-          /* eslint-disable no-console */
-          console.log('Hydrating from inline Redux');
-          /* eslint-enable no-console */
+          if (isDev && window.REDUX_DATA)
+            console.log('Hydrating from inline Redux');
+
           store.runSaga(rootSaga(withSagas));
           store.dispatch(
             setCurrentProject(
@@ -113,6 +126,17 @@ class ClientApp {
               window.location.hostname
             )
           );
+          if (i18n) {
+            store.dispatch(
+              actions.INIT_LOCALES({
+                locales: {},
+                // Keep a record of the locale routes in Redux
+                // so we can navigate between them when switching language
+                routes: localeRoutes,
+                ...i18n,
+              })
+            );
+          }
 
           delete (window as any).REDUX_DATA;
           HMRRenderer(GetClientJSX(store));

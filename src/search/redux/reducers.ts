@@ -1,4 +1,4 @@
-import { Draft, produce } from 'immer';
+import { Draft, current as currentDraft, produce } from 'immer';
 import equals from 'deep-equal';
 import merge from 'deepmerge';
 
@@ -27,13 +27,14 @@ import {
   UPDATE_PAGE_SIZE,
 } from './types';
 import { toArray } from '../search/util';
+import { Context } from '../models/Enums';
 import {
   ConfigTypes,
   SearchFacet,
   Listing,
   SearchConfig,
 } from '../models/Search';
-import { Context } from '../models/Enums';
+import { SearchParams } from '../models/SearchActions';
 import {
   Facet,
   Facets,
@@ -188,6 +189,7 @@ export default (config: SearchConfig) => {
   const initState: SearchState = {
     ...initialState,
     tabs: config.tabs as any,
+    compositions: config.compositions || {},
     facets: generateSearchFacets(Context.facets, config),
     listings: generateSearchFacets(Context.listings, config),
     minilist: generateSearchFacets(Context.minilist, config),
@@ -200,7 +202,7 @@ export default (config: SearchConfig) => {
         [key: string]: any;
         context: keyof typeof Context;
         facet: string;
-        params: { [key: string]: string };
+        params: SearchParams;
       }
     ) => {
       const context = state.context as keyof typeof Context;
@@ -214,13 +216,10 @@ export default (config: SearchConfig) => {
         }
         case CLEAR_FILTERS: {
           const currentFilters = state[context][current].filters as Filters;
-
+          const filterKeys = action.clear?.keys || [];
           state[context][current].filters = Object.fromEntries(
             Object.entries(currentFilters).map(([filterKey, filter]) => {
-              if (
-                typeof action.filterKey === 'undefined' ||
-                action.filterKey === filterKey
-              ) {
+              if (filterKeys.length === 0 || filterKeys.includes(filterKey)) {
                 const filterItems = (filter.items || []) as FilterItem[];
 
                 filter.items = filterItems.map(item => ({
@@ -235,6 +234,11 @@ export default (config: SearchConfig) => {
           state[context][current].queryDuration = 0;
           state[context][current].pagingInfo.pagesLoaded = [];
 
+          // also clone UPDATE_SEARCH_TERM behavior if clearing term also
+          if (action.clear?.term === true) {
+            state.term = '';
+            state[context] = resetFacets(state, context);
+          }
           return;
         }
         case EXECUTE_SEARCH: {
@@ -303,11 +307,11 @@ export default (config: SearchConfig) => {
           return;
         }
         case SET_ROUTE_FILTERS: {
-          const { facet, params, context } = action;
+          const { facet, params, context, languages } = action;
           const { term = '', pageIndex, pageSize, orderBy } = params;
 
           const stateTerm = state.term;
-          const tabId = state[context][facet].tabId || 0;
+          const tabId = state[context][facet]?.tabId || 0;
 
           // Reset the facet if the search term has changed, or if the any of
           // the filters have changed
@@ -340,6 +344,7 @@ export default (config: SearchConfig) => {
                   : stateFacet;
                 stateFacet.filters = nextFilters;
                 stateFacet.queryParams.dynamicOrderBy = toArray(orderBy) || [];
+                stateFacet.queryParams.languages = languages;
                 return [facetName, stateFacet];
               }
             )
@@ -352,18 +357,20 @@ export default (config: SearchConfig) => {
               ? 'currentFacet'
               : 'currentListing'
           ] = facet;
+          state.currentComposition = action.composition;
           state.term = term;
-          state.tabs[tabId].currentFacet = facet;
-          state[context][facet].pagingInfo = {
-            ...(state[context][facet].pagingInfo || pagingInfo),
-            pageIndex:
-              Number(pageIndex) - 1 ||
-              (state[context][facet].queryParams.loadMorePaging
-                ? state[context][facet].pagingInfo?.pageIndex || 0
-                : 0),
-            pageSize:
-              Number(pageSize) || state[context][facet].queryParams.pageSize,
-          };
+          if (state.tabs?.[tabId]) state.tabs[tabId].currentFacet = facet;
+          if (state[context][facet])
+            state[context][facet].pagingInfo = {
+              ...(state[context][facet].pagingInfo || pagingInfo),
+              pageIndex:
+                Number(pageIndex) - 1 ||
+                (state[context][facet].queryParams.loadMorePaging
+                  ? state[context][facet].pagingInfo?.pageIndex || 0
+                  : 0),
+              pageSize:
+                Number(pageSize) || state[context][facet].queryParams.pageSize,
+            };
           state.config.isLoaded = true;
           state.config.ssr = typeof window === 'undefined';
 
@@ -400,6 +407,20 @@ export default (config: SearchConfig) => {
               arrayMerge: (source, inbound) => inbound,
             }
           );
+
+          if (
+            action.mappers?.resultsInfo &&
+            typeof action.mappers.resultsInfo === 'function'
+          ) {
+            // Likely an anti-pattern but we need to provide the whole state
+            // to the resultsInfo mapper, including the latest search state
+            // which is not yet committed outside of this produce() call
+            state[thisContext][action.facet].resultsInfo =
+              action.mappers.resultsInfo({
+                ...action.state,
+                search: currentDraft(state),
+              });
+          }
           return;
         }
         case SET_SEARCH_FILTERS: {

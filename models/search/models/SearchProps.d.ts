@@ -1,7 +1,8 @@
 import { clearFilters, updateCurrentFacet, updateCurrentTab, updatePageIndex, updatePageSize, updateSearchTerm, updateSelectedFilters, updateSortOrder } from '../redux/actions';
 import { SearchFacet, Mappers } from '../models/Search';
-import { DebugFlags } from '../models/SearchActions';
+import { DebugFlags, SearchParams } from '../models/SearchActions';
 import { Facet as StateFacet, Facets, Filters, Paging, SelectedFilters, TabAndFacets } from '../models/SearchState';
+import { getComposition } from '../redux/selectors';
 export interface MinilistProps<SearchResults = any> {
     filters: Filters;
     isLoading: boolean;
@@ -18,12 +19,15 @@ export interface MinilistProps<SearchResults = any> {
 }
 export interface ListingProps<SearchResults = any> {
     clearFilters: typeof clearFilters;
+    composition?: Omit<ReturnType<typeof getComposition>, 'facets'>;
+    currentComposition?: string;
     currentListing: string;
     currentPageIndex: number;
     featured: SearchResults[];
     filters: Filters;
     isLoading: boolean;
     listing: StateFacet;
+    localisedCurrent: string;
     pageIsLoading: boolean;
     paging: Paging;
     results: SearchResults[];
@@ -41,6 +45,8 @@ export interface ListingProps<SearchResults = any> {
 }
 export interface SearchProps<SearchResults = any> {
     clearFilters: typeof clearFilters;
+    composition?: Omit<ReturnType<typeof getComposition>, 'listings'>;
+    currentComposition?: string;
     currentFacet: string;
     currentPageIndex: number;
     currentTabIndex: number;
@@ -55,6 +61,7 @@ export interface SearchProps<SearchResults = any> {
     featured: SearchResults[];
     filters: Filters;
     isLoading: boolean;
+    localisedCurrent: string;
     pageIsLoading: boolean;
     paging: Paging;
     results: SearchResults[];
@@ -79,9 +86,7 @@ export interface UseFacetsProps {
     mappers?: Mappers;
     /** Reserved for future use */
     id?: string;
-    params?: {
-        [key: string]: string;
-    };
+    params?: SearchParams;
 }
 export interface UseListingProps {
     debug?: DebugFlags;
@@ -89,9 +94,7 @@ export interface UseListingProps {
     mappers?: Mappers;
     /** Reserved for future use */
     id?: string;
-    params?: {
-        [key: string]: string;
-    };
+    params?: SearchParams;
 }
 export interface UseMinilistProps {
     id: string;
@@ -101,7 +104,5 @@ export interface UseMinilistProps {
     excludeIds?: string[];
     mapper?: Mappers['results'];
     mappers?: Mappers;
-    params?: {
-        [key: string]: string;
-    };
+    params?: SearchParams;
 }
