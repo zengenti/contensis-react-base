@@ -10,9 +10,9 @@ Handles web app routing with Contensis Site View and component rendering based o
 
 This version introduces major updates to React, React Router and Express
 
-We have prepared a [Migration Guide: v3 → v4](https://github.com/zengenti/contensis-react-base/blob/feat/react18/MIGRATE-V4.md) with detailed steps to follow to ensure your upgrade goes smoothly
+We have prepared a [Migration Guide: v3 → v4](https://github.com/zengenti/contensis-react-base/blob/master/MIGRATE-V4.md) with detailed steps to follow to ensure your upgrade goes smoothly
 
-Also new is the native support for internationalization / localisation / translations / i18n, check out the [documentation](https://github.com/zengenti/contensis-react-base/blob/feat/react18/I18N.md).
+Also new is the native support for internationalization / localisation / translations / i18n, check out the [documentation](https://github.com/zengenti/contensis-react-base/blob/master/I18N.md).
 
 ### Styled Components 6 (v3.3+)
 
