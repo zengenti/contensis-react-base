@@ -1,5 +1,15 @@
 # Changelog
 
+## [4.0.0](https://github.com/zengenti/contensis-react-base/compare/v3.4.0...v4.0.0) (2026-04-22)
+
+
+### ⚠ BREAKING CHANGES
+
+* Contensis React Base v4 ([#25](https://github.com/zengenti/contensis-react-base/issues/25))
+
+📖 [Release blog](https://www.contensis.com/community/blog/introducing-contensis-react-base-4)  
+🚀 [Migration guide v3 → v4](https://www.contensis.com/help-and-docs/developers/guides/contensis-react-base/upgrading-to-contensis-react-base-v4)
+
 ## [3.4.0](https://github.com/zengenti/contensis-react-base/compare/v3.3.1...v3.4.0) (2025-08-05)
 
 
