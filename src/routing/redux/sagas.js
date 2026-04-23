@@ -88,6 +88,10 @@ function* getRouteSaga(action) {
       requireLogin = false,
       searchOptions = false;
 
+    // Route parameters are used for driving search options and live preview functionality,
+    // and are passed to the consuming app via withEvents hooks
+    const params = routeParams(staticRoute, action.location);
+
     if (withEvents && withEvents.onRouteLoad) {
       appsays = yield withEvents.onRouteLoad(action);
     }
@@ -109,9 +113,36 @@ function* getRouteSaga(action) {
 
     const setStaticRouteLimits =
       typeof linkDepth !== 'undefined' || fields || fieldLinkDepths;
+
     const setContentTypeLimits = !!ContentTypeMappings.find(
       ct => ct.fields || ct.linkDepth || ct.nodeOptions || ct.fieldLinkDepths
     );
+
+    // Limits set in a static route take priority over limits in a content type mapping
+    // If we have limits set in:
+    //   - a matched static route - set them here to resolve everything with the initial node upfront
+    //   - any content type mapping - we set defaults for the initial node resolve then
+    //     - identify the contentTypeId and locate the content type mapping
+    //     - perform a second search query with the limits applied from the content type mapping
+    // If no limits are set in route configuration:
+    //   - fall back to entryLinkDepth and entryFieldLinkDepths provided by the app in `onRouteLoad` event
+    //   - or default to entryLinkDepth of 2 with all fields (default for legacy `/preview` endpoints)
+    fields = setStaticRouteLimits
+      ? fields || '*'
+      : setContentTypeLimits
+        ? ['sys.contentTypeId', 'sys.id']
+        : '*';
+    linkDepth =
+      setStaticRouteLimits && typeof linkDepth !== 'undefined'
+        ? linkDepth
+        : setContentTypeLimits
+          ? 0
+          : entryLinkDepth;
+    fieldLinkDepths = setStaticRouteLimits
+      ? fieldLinkDepths
+      : setContentTypeLimits
+        ? undefined
+        : entryFieldLinkDepths;
 
     const state = yield select();
     const routeEntry = selectRouteEntry(state, 'js');
@@ -140,10 +171,29 @@ function* getRouteSaga(action) {
       if (routeEntry && (!staticRoute || staticRoute?.route?.fetchNode)) {
         pathNode = { ...routeNode, entry: null };
         pathNode.entry = entry = routeEntry;
+
         yield put({
           type: UPDATE_LOADING_STATE,
           isLoading: false,
         });
+        if (params.livePreview && typeof window !== 'undefined') {
+          // Update the "limits" (fields, fieldLinkDepths and linkDepth)
+          // used in route resolution (likely SSR) based on the entry's content type mapping
+          // so that we can pass the correct limits to live preview parent
+          contentTypeMapping = findContentTypeMapping(
+            ContentTypeMappings,
+            entry.sys.contentTypeId
+          );
+          // Static route limits override content type mapping limits
+          fields = setStaticRouteLimits
+            ? fields || '*' : contentTypeMapping?.fields || fields;
+          linkDepth = setStaticRouteLimits
+            ? linkDepth || 0 : typeof contentTypeMapping?.linkDepth !== 'undefined'
+              ? contentTypeMapping.linkDepth : linkDepth;
+          fieldLinkDepths = setStaticRouteLimits
+            ? fieldLinkDepths
+            : contentTypeMapping?.fieldLinkDepths || fieldLinkDepths;
+        }
       } else
         yield call(
           setRouteEntry,
@@ -154,7 +204,7 @@ function* getRouteSaga(action) {
           yield select(selectCurrentSiblings)
         );
     } else {
-      // Handle preview routes
+      // Handle preview routes (legacy - can we remove?)
       if (isPreview) {
         let splitPath = currentPath.split('/');
         let entryGuid = splitPath[2];
@@ -189,20 +239,9 @@ function* getRouteSaga(action) {
             {
               depth: 0,
               path: contentPath,
-              entryFields: setStaticRouteLimits
-                ? fields || '*'
-                : setContentTypeLimits
-                  ? ['sys.contentTypeId', 'sys.id']
-                  : '*',
-              entryLinkDepth:
-                setStaticRouteLimits && typeof linkDepth !== 'undefined'
-                  ? linkDepth
-                  : entryLinkDepth || 0,
-              entryFieldLinkDepths: setStaticRouteLimits
-                ? fieldLinkDepths
-                : setContentTypeLimits
-                  ? undefined
-                  : entryFieldLinkDepths,
+              entryFields: fields,
+              entryLinkDepth: linkDepth,
+              entryFieldLinkDepths: fieldLinkDepths,
               // language parameter is not used when resolving a node by path
               // https://www.contensis.com/help-and-docs/apis/delivery-http/navigation/nodes/get-a-node-by-path
               // language: defaultLang,
@@ -258,7 +297,7 @@ function* getRouteSaga(action) {
           // reassign the query limiting variables if we haven't
           // already set them in a static route
           if (!setStaticRouteLimits)
-            ({ fieldLinkDepths, fields, linkDepth } = contentTypeMapping || {});
+            ({ fieldLinkDepths, fields, linkDepth = 0 } = contentTypeMapping || {});
 
           const query = routeEntryByFieldsQuery(
             pathNode.entry.sys.id,
@@ -270,7 +309,7 @@ function* getRouteSaga(action) {
           );
           const payload = yield api.search(
             query,
-            typeof linkDepth !== 'undefined' ? linkDepth : entryLinkDepth || 0,
+            linkDepth,
             project
           );
           if (payload?.items?.length > 0) {
@@ -317,7 +356,6 @@ function* getRouteSaga(action) {
 
     // Have we defined search options in the route configuration (for triggering search)
     const routeSearchOptions = getSearchOptions(staticRoute, contentTypeRoute);
-    const params = routeParams(staticRoute, action.location);
 
     if (withEvents && withEvents.onRouteLoaded) {
 
@@ -345,10 +383,13 @@ function* getRouteSaga(action) {
     }
 
     if (pathNode?.entry?.sys?.id) {
+      entryMapper = entryMapper || contentTypeRoute?.entryMapper;
+
       if (params.livePreview && typeof window !== 'undefined') {
         if (livePreviewTask) yield cancel(livePreviewTask);
         livePreviewTask = yield fork(watchLivePreviewSaga, {
-          ancestors, appsays, contentTypeRoute, currentPath, entry, entryMapper, pathNode, siblings,
+          currentPath, entry, entryMapper, pathNode,
+          limits: { fields, fieldLinkDepths, linkDepth }
         });
       }
 
@@ -361,7 +402,7 @@ function* getRouteSaga(action) {
         pathNode,
         ancestors,
         siblings,
-        entryMapper || contentTypeRoute?.entryMapper,
+        entryMapper,
         false,
         appsays?.refetchNode
       );
@@ -387,7 +428,7 @@ function createLivePreviewChannel() {
   return eventChannel(emit => {
     const handler = e => {
       // console.log('Received message in live preview channel', e.data);
-      if (e.data?.type === 'LIVE_ENTRY_UPDATE') emit(e.data);
+      if (e.data?.type?.startsWith('LIVE_ENTRY_')) emit(e.data);
     };
     window.addEventListener('message', handler);
     return () => window.removeEventListener('message', handler);
@@ -396,19 +437,32 @@ function createLivePreviewChannel() {
 
 function* watchLivePreviewSaga(context) {
   const channel = createLivePreviewChannel();
+  const routeLoadOptions = {
+    type: 'LIVE_ENTRY_ROUTE_LOAD_OPTIONS',
+    payload: context.limits,
+  };
+  if (routeParams().debug) routeLoadOptions.debug = context.pathNode;
+  parent?.postMessage(routeLoadOptions, '*');
+
   try {
     while (true) {
       const data = yield take(channel);
-      console.log('Handling live preview update', data);
-      const entry = yield select(selectRouteEntry);
+      let entry = yield select(selectRouteEntry);
+      if (data.type === 'LIVE_ENTRY_RESET') {
+        console.log('Resetting live preview entry to original route entry');
+        entry = context.entry;
+      } else if (data.type === 'LIVE_ENTRY_UPDATE') {
+        console.log('Handling live preview update', data);
+        entry = { ...entry, ...data.payload };
+      }
       yield call(
         setRouteEntry,
         context.currentPath,
-        { ...entry, ...data.payload },
+        entry,
         context.pathNode,
         null, // ancestors unchanged
         null, // siblings unchanged
-        context.entryMapper || context.contentTypeRoute?.entryMapper,
+        context.entryMapper,
         false,
         true // we need to remap the entry here
       );
