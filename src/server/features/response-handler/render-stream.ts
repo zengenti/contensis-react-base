@@ -11,13 +11,18 @@ import { ServerStyleSheet } from 'styled-components';
  * @param jsx the JSX to render via a streamed response
  * @param response the express Response object
  * @param stream all chunks are piped to this stream to add additional style elements to each streamed chunk
+ * @param onAllReadyAsync optional async hook invoked inside `onAllReady` before
+ *   `getContextHtml(true)` is called. Lets callers resolve promises (e.g. read
+ *   inlined chunk CSS from disk) once the full Suspense tree has settled,
+ *   without blocking the shell flush.
  */
 export const renderStream = (
   getContextHtml: (isFinal?: boolean) => string,
   jsx: ReactNode,
   request: Request,
   response: Response,
-  stream: Writable
+  stream: Writable,
+  onAllReadyAsync?: () => Promise<void>
 ) => {
   // Store timeout reference for cleanup on normal or abnormal termination
   let timeoutId: ReturnType<typeof setTimeout> | null = null;
@@ -58,7 +63,12 @@ export const renderStream = (
         pipe(stream);
       }
     },
-    onAllReady() {
+    async onAllReady() {
+      try {
+        if (onAllReadyAsync) await onAllReadyAsync();
+      } catch (err) {
+        console.error('[renderToPipeableStream:onAllReadyAsync]', err);
+      }
       const footer = getContextHtml(true).split('{{APP}}')[1];
       stream.write(footer);
       disposeTimeout(); // Clear the timeout, let stream end naturally

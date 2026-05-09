@@ -852,8 +852,12 @@ const handleResponse = (request, response, content, send = 'send') => {
  * @param jsx the JSX to render via a streamed response
  * @param response the express Response object
  * @param stream all chunks are piped to this stream to add additional style elements to each streamed chunk
+ * @param onAllReadyAsync optional async hook invoked inside `onAllReady` before
+ *   `getContextHtml(true)` is called. Lets callers resolve promises (e.g. read
+ *   inlined chunk CSS from disk) once the full Suspense tree has settled,
+ *   without blocking the shell flush.
  */
-const renderStream = (getContextHtml, jsx, request, response, stream) => {
+const renderStream = (getContextHtml, jsx, request, response, stream, onAllReadyAsync) => {
   // Store timeout reference for cleanup on normal or abnormal termination
   let timeoutId = null;
   const disposeTimeout = () => {
@@ -894,7 +898,12 @@ const renderStream = (getContextHtml, jsx, request, response, stream) => {
         pipe(stream);
       }
     },
-    onAllReady() {
+    async onAllReady() {
+      try {
+        if (onAllReadyAsync) await onAllReadyAsync();
+      } catch (err) {
+        console.error('[renderToPipeableStream:onAllReadyAsync]', err);
+      }
       const footer = getContextHtml(true).split('{{APP}}')[1];
       stream.write(footer);
       disposeTimeout(); // Clear the timeout, let stream end naturally
@@ -1004,6 +1013,32 @@ const loadableBundleData = ({
     bundle.templates = null;
   }
   return bundle;
+};
+// Single-slot module cache for inlined chunk CSS. Chunk CSS files are
+// immutable per build, so we key on the sorted main-asset filename list and
+// invalidate implicitly when a new build deploys with new content hashes.
+let _inlineStyleCache;
+const getCachedInlineStyleTags = async loadableExtractor => {
+  var _inlineStyleCache2;
+  const modern = loadableExtractor === null || loadableExtractor === void 0 ? void 0 : loadableExtractor.modern;
+  if (!modern) return '';
+  const assets = modern.getMainAssets('style') || [];
+  const key = assets.map(a => a.filename).sort().join('|');
+  if (((_inlineStyleCache2 = _inlineStyleCache) === null || _inlineStyleCache2 === void 0 ? void 0 : _inlineStyleCache2.key) === key) return _inlineStyleCache.html;
+  try {
+    const html = await modern.getInlineStyleTags();
+    _inlineStyleCache = {
+      key,
+      html
+    };
+    return html;
+  } catch (err) {
+    // Stale loadable-stats.json during rolling deploys, pruned *.css in
+    // serverless images, or EACCES will land here. Falling back to linked
+    // stylesheets is preferable to 500-ing every SSR request.
+    console.error('[ssr] getInlineStyleTags failed; falling back to getStyleTags()', err);
+    return modern.getStyleTags();
+  }
 };
 const loadableChunkExtractors = () => {
   const commonLoadableExtractor = new server$2.ChunkExtractor({
@@ -1469,7 +1504,7 @@ const webApp = (app, ReactApp, config) => {
 
     // Render the JSX server side and send response as per access method options
     if (!accessMethod.DYNAMIC) {
-      store$1.runSaga(App.rootSaga(withSagas)).toPromise().then(() => {
+      store$1.runSaga(App.rootSaga(withSagas)).toPromise().then(async () => {
         var _selectCurrentSearch;
         const reduxState = store$1.getState();
         let clonedState = lodashClean.buildCleaner({
@@ -1549,6 +1584,14 @@ const webApp = (app, ReactApp, config) => {
         let title = helmet.title.toString().includes('><') ? helmetAsync.title.toString() : helmet.title.toString();
         const metadata = helmetAsync.meta.toString().concat(helmetAsync.base.toString()).concat(helmetAsync.priority.toString()).concat(helmetAsync.link.toString()).concat(helmetAsync.script.toString()).concat(helmetAsync.noscript.toString()).concat(helmet.meta.toString()).concat(helmet.base.toString()).concat(helmet.link.toString()).concat(helmet.script.toString()).concat(helmet.noscript.toString());
         try {
+          // Inlined chunk CSS for the loadable extractor's modern bundle.
+          // Pre-resolved on the non-streaming path; deferred to onAllReady
+          // on the streaming path so we capture chunks added by Suspense
+          // boundaries that resolve mid-stream.
+          // Note: inlining is only applied to the modern extractor — the
+          // legacy (nomodule) bundle still emits <link> tags.
+          let loadableInlineStyles = '';
+
           /**
            * Loads all page assets into the provided templateHTML
            *
@@ -1559,7 +1602,6 @@ const webApp = (app, ReactApp, config) => {
            * if the context has requested a redirect
            * */
           const getContextHtml = (isFinal = false, styleTags, renderedJsxMarkup) => {
-            var _loadableExtractor$mo;
             if (context.url) {
               response.redirect(context.statusCode || 302, context.url);
               return '';
@@ -1575,10 +1617,11 @@ const webApp = (app, ReactApp, config) => {
             if (typeof context.statusCode === 'number') response.status(context.statusCode);
             const bundleTags = isFinal ? getBundleTags(loadableExtractor, scripts, staticRoutePath) : '';
 
-            // Getting style tags generated by "CSS Modules" because they will be
-            // available to loadable stats if we have built parts of the app with CSS
-            // plugins that are not within styled-components
-            const styles = loadableExtractor === null || loadableExtractor === void 0 || (_loadableExtractor$mo = loadableExtractor.modern) === null || _loadableExtractor$mo === void 0 ? void 0 : _loadableExtractor$mo.getStyleTags();
+            // Inlined chunk CSS for "CSS Modules" / loadable code-split
+            // bundles. Empty string on the streaming shell flush; resolved
+            // string on the final flush (see onAllReadyAsync below) and on
+            // the non-streaming render path.
+            const styles = loadableInlineStyles;
             const html = replaceHtml({
               bundleTags,
               html: renderedJsxMarkup,
@@ -1597,11 +1640,18 @@ const webApp = (app, ReactApp, config) => {
             // We have already (begrudgingly) rendered the JSX to a string above
             // so we can get all of the Helmet metadata out from any rendered component
             // const html = renderToString(styledJsx);
+            // The full chunk graph is known here because renderToString
+            // populated loadableExtractor synchronously above.
+            loadableInlineStyles = await getCachedInlineStyleTags(loadableExtractor);
             const styleTags = sheet.getStyleTags();
             const responseHTML = getContextHtml(true, styleTags, html);
             responseHandler(request, response, responseHTML);
           } else {
-            renderStream(getContextHtml, styledJsx, request, response, styledComponentsStream(sheet));
+            renderStream(getContextHtml, styledJsx, request, response, styledComponentsStream(sheet), async () => {
+              // Resolve inline styles after the full Suspense tree
+              // settles so late-streamed chunks are included.
+              loadableInlineStyles = await getCachedInlineStyleTags(loadableExtractor);
+            });
           }
         } catch (err) {
           console.info(err.message);

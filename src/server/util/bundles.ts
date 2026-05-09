@@ -64,6 +64,38 @@ type LoadableChunkExtractors = {
   commonLoadableExtractor: ChunkExtractor;
 };
 
+// Single-slot module cache for inlined chunk CSS. Chunk CSS files are
+// immutable per build, so we key on the sorted main-asset filename list and
+// invalidate implicitly when a new build deploys with new content hashes.
+let _inlineStyleCache: { key: string; html: string } | undefined;
+
+export const getCachedInlineStyleTags = async (
+  loadableExtractor: LoadableChunkExtractors
+): Promise<string> => {
+  const modern = loadableExtractor?.modern;
+  if (!modern) return '';
+  const assets = modern.getMainAssets('style') || [];
+  const key = assets
+    .map((a: { filename: string }) => a.filename)
+    .sort()
+    .join('|');
+  if (_inlineStyleCache?.key === key) return _inlineStyleCache.html;
+  try {
+    const html = await modern.getInlineStyleTags();
+    _inlineStyleCache = { key, html };
+    return html;
+  } catch (err) {
+    // Stale loadable-stats.json during rolling deploys, pruned *.css in
+    // serverless images, or EACCES will land here. Falling back to linked
+    // stylesheets is preferable to 500-ing every SSR request.
+    console.error(
+      '[ssr] getInlineStyleTags failed; falling back to getStyleTags()',
+      err
+    );
+    return modern.getStyleTags();
+  }
+};
+
 export const loadableChunkExtractors = () => {
   const commonLoadableExtractor = new ChunkExtractor({ stats: {} });
   try {

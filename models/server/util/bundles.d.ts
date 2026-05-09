@@ -13,6 +13,7 @@ type LoadableChunkExtractors = {
     modern?: ChunkExtractor;
     commonLoadableExtractor: ChunkExtractor;
 };
+export declare const getCachedInlineStyleTags: (loadableExtractor: LoadableChunkExtractors) => Promise<string>;
 export declare const loadableChunkExtractors: () => LoadableChunkExtractors;
 export declare const getBundleData: (config: ServerConfig, staticRoutePath: string) => {
     default: {
