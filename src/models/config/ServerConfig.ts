@@ -23,9 +23,14 @@ export type ServerConfig = AppConfig & {
    */
   renderToString?: boolean;
   scripts?: {
+    /** Custom attributes to include with rendered script tags */
     attributes?: {
       [key: string]: string;
     };
+    /** Serve the "startup.js" script from a versioned alias
+     *  - avoids caching issues when environment variables have changed
+     *  - Example: `startup-${packagejson.version}.js`
+     */
     startup?: string;
   };
   staticFolderPath?: string;
@@ -33,6 +38,10 @@ export type ServerConfig = AppConfig & {
   staticRoutePath?: string;
   /** Additional static route paths */
   staticRoutePaths?: string[];
+  styles?: {
+    /** Render inline style tags for CSS Modules in SSR (default: false) */
+    inline?: boolean;
+  };
   stats?: string;
   templates: {
     html: string;
