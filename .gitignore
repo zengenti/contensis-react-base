@@ -7,3 +7,4 @@
 __snapshots__
 .cache
 .DS_Store
+/todos
