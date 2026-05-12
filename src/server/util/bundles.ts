@@ -72,16 +72,19 @@ let _inlineStyleCache: { key: string; html: string } | undefined;
 export const getCachedInlineStyleTags = async (
   loadableExtractor: LoadableChunkExtractors
 ): Promise<string> => {
-  const modern = loadableExtractor?.modern;
-  if (!modern) return '';
-  const assets = modern.getMainAssets('style') || [];
+  // Prefer the modern extractor; fall back to legacy when only the nomodule
+  // build is present (e.g. legacy-only deploys, some test fixtures) so the
+  // streaming shell still ships chunk CSS rather than a bare <head>.
+  const extractor = loadableExtractor?.modern ?? loadableExtractor?.legacy;
+  if (!extractor) return '';
+  const assets = extractor.getMainAssets('style') || [];
   const key = assets
     .map((a: { filename: string }) => a.filename)
     .sort()
     .join('|');
   if (_inlineStyleCache?.key === key) return _inlineStyleCache.html;
   try {
-    const html = await modern.getInlineStyleTags();
+    const html = await extractor.getInlineStyleTags();
     _inlineStyleCache = { key, html };
     return html;
   } catch (err) {
@@ -92,7 +95,7 @@ export const getCachedInlineStyleTags = async (
       '[ssr] getInlineStyleTags failed; falling back to getStyleTags()',
       err
     );
-    return modern.getStyleTags();
+    return extractor.getStyleTags();
   }
 };
 

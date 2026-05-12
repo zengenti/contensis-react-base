@@ -376,12 +376,15 @@ const webApp = (
 
             try {
               // Inlined chunk CSS for the loadable extractor's modern bundle.
-              // Pre-resolved on the non-streaming path; deferred to onAllReady
-              // on the streaming path so we capture chunks added by Suspense
-              // boundaries that resolve mid-stream.
-              // Note: inlining is only applied to the modern extractor — the
-              // legacy (nomodule) bundle still emits <link> tags.
-              let loadableInlineStyles = '';
+              // Resolved before either render path runs because the streaming
+              // shell flush happens inside `onShellReady` and would otherwise
+              // emit an empty <head>. Captures chunks known after the
+              // synchronous `renderToString` above; Suspense-late chunks are
+              // not covered (matches the prior `getStyleTags()` behavior).
+              // Inlining is only applied to the modern extractor — the legacy
+              // (nomodule) bundle still emits <link> tags.
+              const loadableInlineStyles =
+                await getCachedInlineStyleTags(loadableExtractor);
 
               /**
                * Loads all page assets into the provided templateHTML
@@ -419,9 +422,9 @@ const webApp = (
                   : '';
 
                 // Inlined chunk CSS for "CSS Modules" / loadable code-split
-                // bundles. Empty string on the streaming shell flush; resolved
-                // string on the final flush (see onAllReadyAsync below) and on
-                // the non-streaming render path.
+                // bundles. Pre-resolved above so it is available at the
+                // streaming shell flush (`onShellReady`) where the <head>
+                // segment is written.
                 const styles = loadableInlineStyles;
 
                 const html = replaceHtml(
@@ -446,10 +449,6 @@ const webApp = (
                 // We have already (begrudgingly) rendered the JSX to a string above
                 // so we can get all of the Helmet metadata out from any rendered component
                 // const html = renderToString(styledJsx);
-                // The full chunk graph is known here because renderToString
-                // populated loadableExtractor synchronously above.
-                loadableInlineStyles =
-                  await getCachedInlineStyleTags(loadableExtractor);
                 const styleTags = sheet.getStyleTags();
                 const responseHTML = getContextHtml(true, styleTags, html);
                 responseHandler(request, response, responseHTML);
@@ -459,13 +458,7 @@ const webApp = (
                   styledJsx,
                   request,
                   response,
-                  styledComponentsStream(sheet),
-                  async () => {
-                    // Resolve inline styles after the full Suspense tree
-                    // settles so late-streamed chunks are included.
-                    loadableInlineStyles =
-                      await getCachedInlineStyleTags(loadableExtractor);
-                  }
+                  styledComponentsStream(sheet)
                 );
               }
             } catch (err: any) {
