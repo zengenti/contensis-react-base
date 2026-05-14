@@ -510,7 +510,7 @@ function* setRouteSaga(action) {
 function* getRouteSaga(action) {
   let entry = null;
   try {
-    var _staticRoute$route, _staticRoute$route2, _staticRoute$route3, _staticRoute$route4, _appsays, _appsays2, _appsays3, _pathNode3, _pathNode4, _pathNode5;
+    var _staticRoute$route, _staticRoute$route2, _staticRoute$route3, _staticRoute$route4, _appsays, _appsays2, _appsays3, _appsays4, _pathNode3, _pathNode4, _pathNode5;
     const {
       withEvents,
       routes: {
@@ -555,8 +555,12 @@ function* getRouteSaga(action) {
     let fields = staticRoute === null || staticRoute === void 0 || (_staticRoute$route2 = staticRoute.route) === null || _staticRoute$route2 === void 0 || (_staticRoute$route2 = _staticRoute$route2.fetchNode) === null || _staticRoute$route2 === void 0 ? void 0 : _staticRoute$route2.fields;
     let fieldLinkDepths = staticRoute === null || staticRoute === void 0 || (_staticRoute$route3 = staticRoute.route) === null || _staticRoute$route3 === void 0 || (_staticRoute$route3 = _staticRoute$route3.fetchNode) === null || _staticRoute$route3 === void 0 ? void 0 : _staticRoute$route3.fieldLinkDepths;
     let entryMapper = staticRoute === null || staticRoute === void 0 || (_staticRoute$route4 = staticRoute.route) === null || _staticRoute$route4 === void 0 || (_staticRoute$route4 = _staticRoute$route4.fetchNode) === null || _staticRoute$route4 === void 0 ? void 0 : _staticRoute$route4.entryMapper;
-    const entryLinkDepth = appsays && appsays.entryLinkDepth !== undefined ? appsays.entryLinkDepth : 2;
-    const entryFieldLinkDepths = (_appsays = appsays) === null || _appsays === void 0 ? void 0 : _appsays.entryFieldLinkDepths;
+
+    // TODO: drop this default fallback to 0 with CRBv5 as 2 is a legacy arbritary medium and encourages
+    // routing optimisation to be ignored resulting in excessive API calls going unnoticed
+    // Use of `linkDepth` should be avoided in favour of `fieldLinkDepths` with newer Contensis versions
+    const defaultLinkDepth = ((_appsays = appsays) === null || _appsays === void 0 ? void 0 : _appsays.entryLinkDepth) !== undefined ? appsays.entryLinkDepth : 2;
+    const defaultFieldLinkDepths = (_appsays2 = appsays) === null || _appsays2 === void 0 ? void 0 : _appsays2.entryFieldLinkDepths;
     const setStaticRouteLimits = typeof linkDepth !== 'undefined' || fields || fieldLinkDepths;
     const setContentTypeLimits = !!ContentTypeMappings.find(ct => ct.fields || ct.linkDepth || ct.nodeOptions || ct.fieldLinkDepths);
 
@@ -570,8 +574,8 @@ function* getRouteSaga(action) {
     //   - fall back to entryLinkDepth and entryFieldLinkDepths provided by the app in `onRouteLoad` event
     //   - or default to entryLinkDepth of 2 with all fields (default for legacy `/preview` endpoints)
     fields = setStaticRouteLimits ? fields || '*' : setContentTypeLimits ? ['sys.contentTypeId', 'sys.id'] : '*';
-    linkDepth = setStaticRouteLimits && typeof linkDepth !== 'undefined' ? linkDepth : setContentTypeLimits ? 0 : entryLinkDepth;
-    fieldLinkDepths = setStaticRouteLimits ? fieldLinkDepths : setContentTypeLimits ? undefined : entryFieldLinkDepths;
+    linkDepth = setStaticRouteLimits && typeof linkDepth !== 'undefined' ? linkDepth : setContentTypeLimits ? 0 : defaultLinkDepth;
+    fieldLinkDepths = setStaticRouteLimits ? fieldLinkDepths : setContentTypeLimits ? undefined : defaultFieldLinkDepths;
     const state = yield effects.select();
     const routeEntry = selectors$1.selectRouteEntry(state, 'js');
     const routeNode = selectors$1.selectCurrentNode(state, 'js');
@@ -583,7 +587,7 @@ function* getRouteSaga(action) {
     const isPreview = currentPath && currentPath.startsWith('/preview/');
     const currentLanguage = selectors.selectCurrentLanguage(state);
     const defaultLang = appsays && appsays.defaultLang || currentLanguage || 'en-GB';
-    if (!isPreview && ((_appsays2 = appsays) !== null && _appsays2 !== void 0 && _appsays2.customRouting || staticRoute && !staticRoute.route.fetchNode || routeEntry && action.statePath === action.path && ((_appsays3 = appsays) === null || _appsays3 === void 0 ? void 0 : _appsays3.refetchNode) !== true)) {
+    if (!isPreview && ((_appsays3 = appsays) !== null && _appsays3 !== void 0 && _appsays3.customRouting || staticRoute && !staticRoute.route.fetchNode || routeEntry && action.statePath === action.path && ((_appsays4 = appsays) === null || _appsays4 === void 0 ? void 0 : _appsays4.refetchNode) !== true)) {
       var _staticRoute$route5;
       // To prevent erroneous 404s and wasted network calls, this covers
       // - appsays customRouting and does SET_ENTRY etc. via the consuming app
@@ -629,7 +633,7 @@ function* getRouteSaga(action) {
           let previewEntry = yield api.getClient(deliveryApiStatus, project).entries.get({
             id: entryGuid,
             language,
-            linkDepth: entryLinkDepth
+            linkDepth: defaultLinkDepth
           });
           if (previewEntry) {
             pathNode = {
@@ -704,7 +708,7 @@ function* getRouteSaga(action) {
           if (!setStaticRouteLimits) ({
             fieldLinkDepths,
             fields,
-            linkDepth = 0
+            linkDepth = defaultLinkDepth
           } = contentTypeMapping || {});
           const query = routeEntryByFieldsQuery(pathNode.entry.sys.id, pathNode.entry.sys.language, pathNode.entry.sys.contentTypeId, fields, fieldLinkDepths, deliveryApiStatus);
           const payload = yield api.search(query, linkDepth, project);
@@ -778,7 +782,7 @@ function* getRouteSaga(action) {
       if (typeof window !== 'undefined') window.scrollTo(0, 0);
     }
     if ((_pathNode5 = pathNode) !== null && _pathNode5 !== void 0 && (_pathNode5 = _pathNode5.entry) !== null && _pathNode5 !== void 0 && (_pathNode5 = _pathNode5.sys) !== null && _pathNode5 !== void 0 && _pathNode5.id) {
-      var _appsays4;
+      var _appsays5;
       entryMapper = entryMapper || (contentTypeRoute === null || contentTypeRoute === void 0 ? void 0 : contentTypeRoute.entryMapper);
       if (params.livePreview && typeof window !== 'undefined') {
         if (livePreviewTask) yield effects.cancel(livePreviewTask);
@@ -795,7 +799,7 @@ function* getRouteSaga(action) {
         });
       }
       entry = pathNode.entry;
-      yield effects.call(setRouteEntry, currentPath, entry, pathNode, ancestors, siblings, entryMapper, false, (_appsays4 = appsays) === null || _appsays4 === void 0 ? void 0 : _appsays4.refetchNode);
+      yield effects.call(setRouteEntry, currentPath, entry, pathNode, ancestors, siblings, entryMapper, false, (_appsays5 = appsays) === null || _appsays5 === void 0 ? void 0 : _appsays5.refetchNode);
     } else {
       if (staticRoute) yield effects.call(setRouteEntry, currentPath, null, pathNode, ancestors, siblings);else yield effects.call(do404);
     }
@@ -1346,4 +1350,4 @@ exports.history = history;
 exports.pickProject = pickProject;
 exports.rootSaga = rootSaga;
 exports.shorten = shorten;
-//# sourceMappingURL=App-Bg1MzW4V.js.map
+//# sourceMappingURL=App-BPOOl6WT.js.map
