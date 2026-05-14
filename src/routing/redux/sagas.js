@@ -105,11 +105,11 @@ function* getRouteSaga(action) {
     let fieldLinkDepths = staticRoute?.route?.fetchNode?.fieldLinkDepths;
     let entryMapper = staticRoute?.route?.fetchNode?.entryMapper;
 
-    const entryLinkDepth =
-      appsays && appsays.entryLinkDepth !== undefined
-        ? appsays.entryLinkDepth
-        : 2;
-    const entryFieldLinkDepths = appsays?.entryFieldLinkDepths;
+    // TODO: drop this default fallback to 0 with CRBv5 as 2 is a legacy arbritary medium and encourages
+    // routing optimisation to be ignored resulting in excessive API calls going unnoticed
+    // Use of `linkDepth` should be avoided in favour of `fieldLinkDepths` with newer Contensis versions
+    const defaultLinkDepth = appsays?.entryLinkDepth !== undefined ? appsays.entryLinkDepth : 2;
+    const defaultFieldLinkDepths = appsays?.entryFieldLinkDepths;
 
     const setStaticRouteLimits =
       typeof linkDepth !== 'undefined' || fields || fieldLinkDepths;
@@ -137,12 +137,12 @@ function* getRouteSaga(action) {
         ? linkDepth
         : setContentTypeLimits
           ? 0
-          : entryLinkDepth;
+          : defaultLinkDepth;
     fieldLinkDepths = setStaticRouteLimits
       ? fieldLinkDepths
       : setContentTypeLimits
         ? undefined
-        : entryFieldLinkDepths;
+        : defaultFieldLinkDepths;
 
     const state = yield select();
     const routeEntry = selectRouteEntry(state, 'js');
@@ -222,7 +222,7 @@ function* getRouteSaga(action) {
             .entries.get({
               id: entryGuid,
               language,
-              linkDepth: entryLinkDepth,
+              linkDepth: defaultLinkDepth,
             });
           if (previewEntry) {
             pathNode = { entry: previewEntry };
@@ -297,7 +297,7 @@ function* getRouteSaga(action) {
           // reassign the query limiting variables if we haven't
           // already set them in a static route
           if (!setStaticRouteLimits)
-            ({ fieldLinkDepths, fields, linkDepth = 0 } = contentTypeMapping || {});
+            ({ fieldLinkDepths, fields, linkDepth = defaultLinkDepth } = contentTypeMapping || {});
 
           const query = routeEntryByFieldsQuery(
             pathNode.entry.sys.id,
