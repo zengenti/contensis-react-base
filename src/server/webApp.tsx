@@ -89,7 +89,12 @@ const webApp = (
   const bundleData = getBundleData(config, staticRoutePath);
 
   const attributes = stringifyAttributes(scripts.attributes);
-  scripts.startup = scripts.startup || startupScriptFilename;
+  scripts.startup =
+    // We don't need the startup script with SSR in development
+    // as globals are baked into the client-side development bundles
+    process.env.NODE_ENV === 'development'
+      ? undefined
+      : scripts.startup || startupScriptFilename;
 
   let responseHandler = handleResponse;
   if (typeof handleResponses === 'function') {
