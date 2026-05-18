@@ -1,5 +1,6 @@
 import { Express } from 'express';
-export declare const assetProxy: any;
-export declare const deliveryProxy: any;
+import httpProxy from 'http-proxy';
+export declare const assetProxy: httpProxy<import("http").IncomingMessage, import("http").ServerResponse<import("http").IncomingMessage>>;
+export declare const deliveryProxy: httpProxy<import("http").IncomingMessage, import("http").ServerResponse<import("http").IncomingMessage>>;
 declare const reverseProxies: (app: Express, reverseProxyPaths?: string[]) => void;
 export default reverseProxies;
