@@ -15,7 +15,9 @@ const projectRootDir = require('app-root-path').path;
 export default {
   input: {
     'contensis-react-base': './src',
+    build: './src/build/cli',
     client: './src/client',
+    'dev-server-globals': './src/build/dev-server-runtime-globals',
     i18n: './src/i18n',
     redux: './src/redux',
     routing: './src/routing',
@@ -55,6 +57,12 @@ export default {
     'prop-types',
     /^contensis-delivery-api*/,
     /^contensis-core-api*/,
+    // CLI runtime deps — resolved from consumer's node_modules
+    'cac',
+    'dotenv',
+    'nodemon',
+    'webpack',
+    'webpack-dev-server',
   ],
   // context: 'this',
   onwarn: function (warning) {
@@ -133,7 +141,10 @@ export default {
     exclude: [
       'cjs/*',
       'esm/*',
+      'build/*',
       'client/*',
+      'dev-server-globals/*',
+      'i18n/*',
       'redux/*',
       'routing/*',
       'search/*',

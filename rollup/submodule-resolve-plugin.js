@@ -1,8 +1,6 @@
 const fs = require('fs-extra');
 const path = require('path');
 
-/* eslint-disable no-console */
-
 const submoduleResolvePlugin = () => ({
   name: 'submodule-resolve-plugin',
   buildStart: options => {
@@ -12,7 +10,7 @@ const submoduleResolvePlugin = () => ({
       // for the first (main) bundle, produce a
       // {submodule}/package.json file and folder to direct
       // submodule imports to the correct bundle
-      if (idx !== 0) {
+      if (idx !== 0 && !['build', 'dev-server-globals'].includes(bundle)) {
         const packagejson = `{
   "main": "../cjs/${bundle}.js",
   "module": "../esm/${bundle}.js",
