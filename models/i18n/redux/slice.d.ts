@@ -18,76 +18,131 @@ declare const i18nSlice: import("@reduxjs/toolkit").Slice<{
     resolver: ((language: string) => Promise<LocaleDictionary> | LocaleDictionary) | undefined;
     error: Error | undefined;
 }, {
-    GET_ENTRY_URI_ERROR(draft: import("@reduxjs/toolkit").WritableDraft<{
+    GET_ENTRY_URI_ERROR(draft: {
         currentLanguage: string;
-        dictionary: LocaleDictionary;
-        locales: {
-            [language: string]: any;
+        dictionary: {
+            [x: string]: any;
         };
-        routes: LocaleRoutes;
+        locales: {
+            [x: string]: any;
+        };
+        routes: {
+            [x: string]: {
+                [x: string]: string;
+            };
+        };
         primaryLanguage: string;
         supportedLanguages: string[];
         resolver: ((language: string) => Promise<LocaleDictionary> | LocaleDictionary) | undefined;
-        error: Error | undefined;
-    }>, { payload }: PayloadAction<Error>): void;
-    INIT_LOCALES(draft: import("@reduxjs/toolkit").WritableDraft<{
+        error: {
+            name: string;
+            message: string;
+            stack?: string | undefined;
+            cause?: unknown;
+        } | undefined;
+    }, { payload }: PayloadAction<Error>): void;
+    INIT_LOCALES(draft: {
         currentLanguage: string;
-        dictionary: LocaleDictionary;
-        locales: {
-            [language: string]: any;
+        dictionary: {
+            [x: string]: any;
         };
-        routes: LocaleRoutes;
+        locales: {
+            [x: string]: any;
+        };
+        routes: {
+            [x: string]: {
+                [x: string]: string;
+            };
+        };
         primaryLanguage: string;
         supportedLanguages: string[];
         resolver: ((language: string) => Promise<LocaleDictionary> | LocaleDictionary) | undefined;
-        error: Error | undefined;
-    }>, { payload, }: PayloadAction<{
+        error: {
+            name: string;
+            message: string;
+            stack?: string | undefined;
+            cause?: unknown;
+        } | undefined;
+    }, { payload, }: PayloadAction<{
         locales: Locales;
         routes: LocaleRoutes;
     } & I18nAppConfig>): void;
-    SET_LANGUAGE(draft: import("@reduxjs/toolkit").WritableDraft<{
+    SET_LANGUAGE(draft: {
         currentLanguage: string;
-        dictionary: LocaleDictionary;
-        locales: {
-            [language: string]: any;
+        dictionary: {
+            [x: string]: any;
         };
-        routes: LocaleRoutes;
+        locales: {
+            [x: string]: any;
+        };
+        routes: {
+            [x: string]: {
+                [x: string]: string;
+            };
+        };
         primaryLanguage: string;
         supportedLanguages: string[];
         resolver: ((language: string) => Promise<LocaleDictionary> | LocaleDictionary) | undefined;
-        error: Error | undefined;
-    }>, { payload, }: PayloadAction<{
+        error: {
+            name: string;
+            message: string;
+            stack?: string | undefined;
+            cause?: unknown;
+        } | undefined;
+    }, { payload, }: PayloadAction<{
         language: string;
         dictionary: LocaleDictionary;
         redirect?: string;
     }>): void;
-    SET_LOCALES(draft: import("@reduxjs/toolkit").WritableDraft<{
+    SET_LOCALES(draft: {
         currentLanguage: string;
-        dictionary: LocaleDictionary;
-        locales: {
-            [language: string]: any;
+        dictionary: {
+            [x: string]: any;
         };
-        routes: LocaleRoutes;
+        locales: {
+            [x: string]: any;
+        };
+        routes: {
+            [x: string]: {
+                [x: string]: string;
+            };
+        };
         primaryLanguage: string;
         supportedLanguages: string[];
         resolver: ((language: string) => Promise<LocaleDictionary> | LocaleDictionary) | undefined;
-        error: Error | undefined;
-    }>, { payload, }: PayloadAction<{
+        error: {
+            name: string;
+            message: string;
+            stack?: string | undefined;
+            cause?: unknown;
+        } | undefined;
+    }, { payload, }: PayloadAction<{
         locales: Locales;
     } & I18nAppConfig>): void;
     /** UPDATE_LANGUAGE action triggers updateLanguage saga and ends with SET_LANGUAGE */
-    UPDATE_LANGUAGE(_draft: import("@reduxjs/toolkit").WritableDraft<{
+    UPDATE_LANGUAGE(_draft: {
         currentLanguage: string;
-        dictionary: LocaleDictionary;
-        locales: {
-            [language: string]: any;
+        dictionary: {
+            [x: string]: any;
         };
-        routes: LocaleRoutes;
+        locales: {
+            [x: string]: any;
+        };
+        routes: {
+            [x: string]: {
+                [x: string]: string;
+            };
+        };
         primaryLanguage: string;
         supportedLanguages: string[];
         resolver: ((language: string) => Promise<LocaleDictionary> | LocaleDictionary) | undefined;
-        error: Error | undefined;
-    }>, _: PayloadAction<UpdateLanguageActionPayload>): void;
+        error: {
+            name: string;
+            message: string;
+            stack?: string | undefined;
+            cause?: unknown;
+        } | undefined;
+    }, _: PayloadAction<UpdateLanguageActionPayload>): void;
 }, "i18n", "i18n", import("@reduxjs/toolkit").SliceSelectors<{
     currentLanguage: string;
     dictionary: LocaleDictionary;
@@ -101,76 +156,131 @@ declare const i18nSlice: import("@reduxjs/toolkit").Slice<{
     error: Error | undefined;
 }>>;
 export declare const actions: import("@reduxjs/toolkit").CaseReducerActions<{
-    GET_ENTRY_URI_ERROR(draft: import("@reduxjs/toolkit").WritableDraft<{
+    GET_ENTRY_URI_ERROR(draft: {
         currentLanguage: string;
-        dictionary: LocaleDictionary;
-        locales: {
-            [language: string]: any;
+        dictionary: {
+            [x: string]: any;
         };
-        routes: LocaleRoutes;
+        locales: {
+            [x: string]: any;
+        };
+        routes: {
+            [x: string]: {
+                [x: string]: string;
+            };
+        };
         primaryLanguage: string;
         supportedLanguages: string[];
         resolver: ((language: string) => Promise<LocaleDictionary> | LocaleDictionary) | undefined;
-        error: Error | undefined;
-    }>, { payload }: PayloadAction<Error>): void;
-    INIT_LOCALES(draft: import("@reduxjs/toolkit").WritableDraft<{
+        error: {
+            name: string;
+            message: string;
+            stack?: string | undefined;
+            cause?: unknown;
+        } | undefined;
+    }, { payload }: PayloadAction<Error>): void;
+    INIT_LOCALES(draft: {
         currentLanguage: string;
-        dictionary: LocaleDictionary;
-        locales: {
-            [language: string]: any;
+        dictionary: {
+            [x: string]: any;
         };
-        routes: LocaleRoutes;
+        locales: {
+            [x: string]: any;
+        };
+        routes: {
+            [x: string]: {
+                [x: string]: string;
+            };
+        };
         primaryLanguage: string;
         supportedLanguages: string[];
         resolver: ((language: string) => Promise<LocaleDictionary> | LocaleDictionary) | undefined;
-        error: Error | undefined;
-    }>, { payload, }: PayloadAction<{
+        error: {
+            name: string;
+            message: string;
+            stack?: string | undefined;
+            cause?: unknown;
+        } | undefined;
+    }, { payload, }: PayloadAction<{
         locales: Locales;
         routes: LocaleRoutes;
     } & I18nAppConfig>): void;
-    SET_LANGUAGE(draft: import("@reduxjs/toolkit").WritableDraft<{
+    SET_LANGUAGE(draft: {
         currentLanguage: string;
-        dictionary: LocaleDictionary;
-        locales: {
-            [language: string]: any;
+        dictionary: {
+            [x: string]: any;
         };
-        routes: LocaleRoutes;
+        locales: {
+            [x: string]: any;
+        };
+        routes: {
+            [x: string]: {
+                [x: string]: string;
+            };
+        };
         primaryLanguage: string;
         supportedLanguages: string[];
         resolver: ((language: string) => Promise<LocaleDictionary> | LocaleDictionary) | undefined;
-        error: Error | undefined;
-    }>, { payload, }: PayloadAction<{
+        error: {
+            name: string;
+            message: string;
+            stack?: string | undefined;
+            cause?: unknown;
+        } | undefined;
+    }, { payload, }: PayloadAction<{
         language: string;
         dictionary: LocaleDictionary;
         redirect?: string;
     }>): void;
-    SET_LOCALES(draft: import("@reduxjs/toolkit").WritableDraft<{
+    SET_LOCALES(draft: {
         currentLanguage: string;
-        dictionary: LocaleDictionary;
-        locales: {
-            [language: string]: any;
+        dictionary: {
+            [x: string]: any;
         };
-        routes: LocaleRoutes;
+        locales: {
+            [x: string]: any;
+        };
+        routes: {
+            [x: string]: {
+                [x: string]: string;
+            };
+        };
         primaryLanguage: string;
         supportedLanguages: string[];
         resolver: ((language: string) => Promise<LocaleDictionary> | LocaleDictionary) | undefined;
-        error: Error | undefined;
-    }>, { payload, }: PayloadAction<{
+        error: {
+            name: string;
+            message: string;
+            stack?: string | undefined;
+            cause?: unknown;
+        } | undefined;
+    }, { payload, }: PayloadAction<{
         locales: Locales;
     } & I18nAppConfig>): void;
     /** UPDATE_LANGUAGE action triggers updateLanguage saga and ends with SET_LANGUAGE */
-    UPDATE_LANGUAGE(_draft: import("@reduxjs/toolkit").WritableDraft<{
+    UPDATE_LANGUAGE(_draft: {
         currentLanguage: string;
-        dictionary: LocaleDictionary;
-        locales: {
-            [language: string]: any;
+        dictionary: {
+            [x: string]: any;
         };
-        routes: LocaleRoutes;
+        locales: {
+            [x: string]: any;
+        };
+        routes: {
+            [x: string]: {
+                [x: string]: string;
+            };
+        };
         primaryLanguage: string;
         supportedLanguages: string[];
         resolver: ((language: string) => Promise<LocaleDictionary> | LocaleDictionary) | undefined;
-        error: Error | undefined;
-    }>, _: PayloadAction<UpdateLanguageActionPayload>): void;
+        error: {
+            name: string;
+            message: string;
+            stack?: string | undefined;
+            cause?: unknown;
+        } | undefined;
+    }, _: PayloadAction<UpdateLanguageActionPayload>): void;
 }, "i18n">, reducer: import("../../../node_modules/redux").Reducer<{
     currentLanguage: string;
     dictionary: LocaleDictionary;

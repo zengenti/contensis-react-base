@@ -23,6 +23,6 @@ export declare function handleRequiresLoginSaga(action: any): Generator<import("
 }>>, any, [any, any]>> | import("redux-saga/effects").PutEffect<{
     type: string;
     cookies: any;
-    securityToken: any;
+    securityToken: string | (string | null)[] | null;
 }>, any, any>;
 export declare function refreshSecurityToken(): Generator<any, void, unknown>;

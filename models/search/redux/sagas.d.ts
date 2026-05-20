@@ -5,7 +5,7 @@ export declare const searchSagas: import("redux-saga/effects").ForkEffect<never>
 export declare function setRouteFilters(action: InitListingAction | SetRouteFiltersOptions): Generator<import("redux-saga/effects").SelectEffect | import("redux-saga/effects").PutEffect<InitListingAction> | import("redux-saga/effects").CallEffect<void>, void, any>;
 export declare function doSearch(action: TriggerSearchAction): Generator<import("redux-saga/effects").SelectEffect | import("redux-saga/effects").PutEffect<InitListingAction> | import("redux-saga/effects").CallEffect<void> | import("redux-saga/effects").PutEffect<{
     type: string;
-    config?: import("../models/Search").SearchFacet | import("../models/Search").Listing;
+    config?: import("..").SearchFacet | import("..").Listing;
     context: Context | string;
     debug?: import("../models/SearchActions").DebugFlags;
     defaultLang?: string;

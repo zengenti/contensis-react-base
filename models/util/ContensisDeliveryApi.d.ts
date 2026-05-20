@@ -10,7 +10,7 @@ export declare class DeliveryApi {
     cookies?: CookieObject;
     ssr?: SSRContext;
     constructor(ssr?: SSRContext);
-    getClientSideVersionStatus: () => any;
+    getClientSideVersionStatus: () => string | (string | null)[] | null;
     getServerSideVersionStatus: (request: Request) => "published" | "latest" | undefined;
     getVersionStatusFromHeaders: (headers: IncomingHttpHeaders) => string | string[] | null;
     getVersionStatusFromHostname: (currentHostname: string) => "published" | "latest";

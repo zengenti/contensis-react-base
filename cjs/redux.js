@@ -1,9 +1,9 @@
 'use strict';
 
-var store = require('./store-B7SJs5Hf.js');
-var selectors$1 = require('./selectors-BrxJ8-F8.js');
-var version$1 = require('./version-yjHMrfVz.js');
-var version$2 = require('./version-rFG9Y6_B.js');
+var store = require('./store-KMrEU1xg.js');
+var selectors$1 = require('./selectors-Q46vKF5x.js');
+var version$1 = require('./version-YZhB8Qpj.js');
+var version$2 = require('./version-CeiM6ens.js');
 require('redux');
 require('redux-thunk');
 require('redux-saga');
@@ -18,7 +18,7 @@ require('query-string');
 
 var types = {
   navigation: store.navigation,
-  routing: selectors$1.routing,
+  routing: selectors$1.routing$2,
   version: store.version
 };
 
@@ -31,13 +31,13 @@ var navigation$1 = /*#__PURE__*/Object.freeze({
 
 var actions = {
   navigation: navigation$1,
-  routing: selectors$1.routing$1,
+  routing: selectors$1.routing,
   version: version$1.version
 };
 
 var selectors = {
   navigation: version$1.navigation,
-  routing: selectors$1.routing$2,
+  routing: selectors$1.routing$1,
   version: version$2.version
 };
 

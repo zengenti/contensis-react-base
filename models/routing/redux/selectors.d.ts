@@ -17,18 +17,18 @@ export declare const selectCurrentPath: (state: AppState) => any;
 export declare const selectCurrentLocation: (state: AppState) => any;
 export declare const selectCurrentSearch: (state: AppState) => any;
 export declare const selectCurrentHash: (state: AppState) => any;
-export declare const selectQueryStringAsObject: ((state: AppState) => any) & {
+export declare const selectQueryStringAsObject: ((state: AppState) => import("query-string").ParsedQuery<string>) & {
     clearCache: () => void;
     resultsCount: () => number;
     resetResultsCount: () => void;
 } & {
-    resultFunc: (resultFuncArgs_0: any) => any;
-    memoizedResultFunc: ((resultFuncArgs_0: any) => any) & {
+    resultFunc: (resultFuncArgs_0: any) => import("query-string").ParsedQuery<string>;
+    memoizedResultFunc: ((resultFuncArgs_0: any) => import("query-string").ParsedQuery<string>) & {
         clearCache: () => void;
         resultsCount: () => number;
         resetResultsCount: () => void;
     };
-    lastResult: () => any;
+    lastResult: () => import("query-string").ParsedQuery<string>;
     dependencies: [(state: AppState) => any];
     recomputations: () => number;
     resetRecomputations: () => void;
