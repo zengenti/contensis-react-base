@@ -21,6 +21,9 @@
     "package-lock": "npm i --package-lock-only --workspaces false"
   },
   "keywords": [],
+  "engines": {
+    "node": ">=20.19.0"
+  },
   "author": "http://Zengenti.com",
   "devDependencies": {
     "@babel/core": "^7.28.0",
