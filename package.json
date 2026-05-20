@@ -27,6 +27,7 @@
   "author": "http://Zengenti.com",
   "overrides": {
     "flatted": ">=3.4.2",
+    "follow-redirects": ">=1.16.0",
     "path-to-regexp": ">=8.4.0"
   },
   "devDependencies": {
@@ -47,15 +48,16 @@
     "@types/babel__core": "^7.20.5",
     "@types/deep-equal": "^1.0.4",
     "@types/events": "^3.0.3",
-    "@types/express": "^5.0.3",
+    "@types/express": "^5.0.6",
+    "@types/http-proxy": "^1.17.17",
     "@types/isomorphic-fetch": "^0.0.39",
     "@types/loadable__component": "^5.13.10",
     "@types/loadable__server": "^5.12.11",
-    "@types/node": "^20.17.8",
+    "@types/node": "^20.19.41",
     "@types/react": "^18.3.29",
     "@types/react-dom": "^18.3.7",
-    "@types/webpack": "^5.28.0",
-    "@types/webpack-dev-server": "^4.7.0",
+    "@types/webpack": "^5.28.5",
+    "@types/webpack-dev-server": "^4.7.2",
     "@types/webpack-env": "^1.18.8",
     "babel-plugin-module-resolver": "^5.0.3",
     "babel-plugin-styled-components": "^2.1.4",
