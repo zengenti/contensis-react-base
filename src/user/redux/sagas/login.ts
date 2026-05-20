@@ -182,15 +182,20 @@ function* loginUserSaga(action: any = {}) {
   });
 }
 
-const removeHostnamePart = path => {
+const removeHostnamePart = (path: string) => {
   const relativePath = '/' + path.split('/').splice(3).join('/');
   return relativePath;
 };
 
 function* redirectAfterSuccessfulLoginSaga() {
   const isLoggedIn = yield select(selectUserIsAuthenticated);
-  const { redirect_uri: redirectPath, ReturnURL: assetRedirectPath } =
-    queryParams(yield select(selectCurrentSearch));
+  const { redirect_uri, ReturnURL } = queryParams(
+    yield select(selectCurrentSearch)
+  );
+  const redirectPath = Array.isArray(redirect_uri)
+    ? redirect_uri[0]
+    : redirect_uri;
+  const assetRedirectPath = Array.isArray(ReturnURL) ? ReturnURL[0] : ReturnURL;
 
   if (isLoggedIn && assetRedirectPath && typeof window != 'undefined') {
     const path = removeHostnamePart(assetRedirectPath);
@@ -199,7 +204,7 @@ function* redirectAfterSuccessfulLoginSaga() {
     window.location.href = path;
     // yield put(setRoute(path)); // does not work in this scenario
   } else if (isLoggedIn && redirectPath) {
-    yield put(setRoute(Array.isArray(redirectPath) ? redirectPath[0] : redirectPath));
+    yield put(setRoute(redirectPath));
   }
 }
 
