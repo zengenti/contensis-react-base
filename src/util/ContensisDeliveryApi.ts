@@ -1,5 +1,6 @@
 import { VersionStatus } from 'contensis-core-api';
 import { Client, Config, Query } from 'contensis-delivery-api';
+// [query-string v8+] When upgrading to v8+: ESM-only, no default export, requires Node >=20.19.0
 import { parse } from 'query-string';
 import { setSurrogateKeys } from '~/routing/redux/actions';
 import { reduxStore } from '~/redux/store/store';

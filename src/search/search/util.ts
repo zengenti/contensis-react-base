@@ -1,3 +1,4 @@
+// [query-string v8+] When upgrading to v8+: ESM-only, no default export, requires Node >=20.19.0
 import { parse, stringify } from 'query-string';
 import { now } from './performance';
 
@@ -104,6 +105,8 @@ export const extractQuotedPhrases = (searchTerm: string): string[] => {
 };
 
 export const buildUrl = (route: string, params: SearchParams): string => {
+  // [query-string v6+] BEHAVIOUR CHANGE: sort defaults to true — output key order is now alphabetical.
+  // Pass { sort: false } if URL key order matters for cache keys or string comparison downstream.
   const qs = stringify(params) as string;
   const path = qs ? `${route}${route.includes('?') ? '&' : '?'}${qs}` : route;
   return path;

@@ -1,5 +1,8 @@
-const fs = require('fs-extra');
-const path = require('path');
+import fs from 'fs-extra';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const submoduleResolvePlugin = () => ({
   name: 'submodule-resolve-plugin',
@@ -24,7 +27,6 @@ const submoduleResolvePlugin = () => ({
         );
 
         console.log(`submodule-resolve-plugin wrote ./${bundle}/package.json`);
-        //console.log(packagejson);
       }
     });
   },

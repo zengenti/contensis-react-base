@@ -199,7 +199,7 @@ function* redirectAfterSuccessfulLoginSaga() {
     window.location.href = path;
     // yield put(setRoute(path)); // does not work in this scenario
   } else if (isLoggedIn && redirectPath) {
-    yield put(setRoute(redirectPath));
+    yield put(setRoute(Array.isArray(redirectPath) ? redirectPath[0] : redirectPath));
   }
 }
 

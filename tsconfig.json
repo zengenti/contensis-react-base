@@ -2,9 +2,10 @@
   "compilerOptions": {
     "skipLibCheck": true,
     "outDir": "./models/", // path to output directory
+    "rootDir": "src",
     "sourceMap": true, // allow sourcemap support
     "strictNullChecks": true, // enable strict null checks as a best practice
-    "module": "ESNext", // specifiy module code generation
+    "module": "ESNext", // specify module code generation
     "jsx": "react", // use typescript to transpile jsx to js
     "target": "ESNext", // specify ECMAScript target version
     "strict": true /* Enable all strict type-checking options. */,
@@ -16,14 +17,13 @@
     // Ensure that .d.ts files are created by tsc, but not .js files
     "emitDeclarationOnly": true,
     "noImplicitAny": false, // disallow implicit any type
-    "moduleResolution": "node",
+    "moduleResolution": "Bundler",
     "types": ["node", "webpack-env"],
     "lib": ["esnext", "es2019", "es2017", "es7", "es6", "dom", "dom.iterable"],
-    "baseUrl": ".",
     "paths": {
       "~/*": ["./src/*"],
       "-/*": ["./*"],
-      "redux": ["node_modules/redux"]
+      "redux": ["./node_modules/redux"]
     },
     "plugins": [
       // Transform paths in output .d.ts files (Include this line if you output declarations files)

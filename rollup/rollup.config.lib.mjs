@@ -4,10 +4,12 @@ import alias from '@rollup/plugin-alias';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
-import submoduleResolvePlugin from './submodule-resolve-plugin';
+import submoduleResolvePlugin from './submodule-resolve-plugin.mjs';
 
 import path from 'path';
+import { createRequire } from 'module';
 
+const require = createRequire(import.meta.url);
 const packagejson = require('../package.json');
 
 const projectRootDir = require('app-root-path').path;

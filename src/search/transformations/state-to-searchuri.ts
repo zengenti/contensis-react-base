@@ -1,4 +1,5 @@
 import merge from 'deepmerge';
+// [query-string v8+] When upgrading to v8+: ESM-only, no default export, requires Node >=20.19.0
 import { parse, stringify } from 'query-string';
 import mapJson from 'jsonpath-mapper';
 import {
@@ -84,7 +85,7 @@ const searchUriTemplate: SearchUriMapping = {
     const currentSearch =
       !term && getIn(state, ['routing', 'location', 'search']);
 
-    const currentQs = removeEmptyAttributes(parse(currentSearch));
+    const currentQs = removeEmptyAttributes(parse(currentSearch || ''));
 
     // An argument is provided with the updated value
     // when the relevant action has been triggered
@@ -112,6 +113,8 @@ const searchUriTemplate: SearchUriMapping = {
     if (pageSize) mergedSearch.pageSize = pageSize;
 
     // We don't want these as search params in the url, we just need the search package to see them
+    // [query-string v6+] BEHAVIOUR CHANGE: sort defaults to true — output key order is now alphabetical.
+    // Pass { sort: false } if URL key order matters for cache keys or string comparison downstream.
     return stringify(mergedSearch);
   },
   hash: ({ state }) =>
