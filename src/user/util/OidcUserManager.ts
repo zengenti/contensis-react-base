@@ -1,4 +1,4 @@
-import { UserManagerSettings } from 'oidc-client';
+import type { UserManagerSettings } from 'oidc-client';
 
 const context = (
   typeof window != 'undefined' ? window : global
@@ -13,7 +13,7 @@ const requireOidc =
 
 const servers = SERVERS; /* global SERVERS */
 
-export const userManagerConfig =
+export const userManagerConfig: UserManagerSettings =
   typeof window !== 'undefined'
     ? {
         authority: `${servers.cms}/authenticate/`,
@@ -24,7 +24,7 @@ export const userManagerConfig =
         scope: 'openid',
         filterProtocolClaims: false,
       }
-    : {};
+    : ({} as UserManagerSettings);
 
 export const createUserManager = async (config: UserManagerSettings) => {
   if (typeof window !== 'undefined' && requireOidc) {
