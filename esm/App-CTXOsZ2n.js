@@ -28,7 +28,7 @@ import 'deepmerge';
 import { h as routeParams } from './util-C6G2Ax0o.js';
 import 'contensis-core-api';
 import { c as selectClientCredentials } from './matchGroups-DOA5huT8.js';
-import { a as RouteLoader } from './RouteLoader-DUIGFY9l.js';
+import { a as RouteLoader } from './RouteLoader-CuaQ3Djf.js';
 import 'query-string';
 
 const isApiError = e => !!e && typeof e === 'object' && 'status' in e && 'statusText' in e;
@@ -1319,4 +1319,4 @@ const AppRoot = props => {
 };
 
 export { AppRoot as A, browserHistory as b, createLocaleRoutes as c, history as h, pickProject as p, rootSaga as r, shorten as s };
-//# sourceMappingURL=App-B4DZvIeM.js.map
+//# sourceMappingURL=App-CTXOsZ2n.js.map
