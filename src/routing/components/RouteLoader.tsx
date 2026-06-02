@@ -51,12 +51,16 @@ const replaceDoubleSlashRecursive = (path: string) => {
   return nextPath;
 };
 
-const getTrimmedPath = path => {
+const getTrimmedPath = (path: string) => {
   if (path !== '/') {
-    const nextPath = replaceDoubleSlashRecursive(path);
-    const lastChar = nextPath[nextPath.length - 1];
+    const cleanedPath = replaceDoubleSlashRecursive(path);
+    const lastChar = cleanedPath[cleanedPath.length - 1];
     if (lastChar === '/') {
-      return nextPath.substring(0, nextPath.length - 1);
+      // Trim trailing slash from path to ensure urls are always unique
+      return cleanedPath.substring(0, cleanedPath.length - 1);
+    } else {
+      // Return path with any double slashes removed
+      return cleanedPath;
     }
   }
   return path;
