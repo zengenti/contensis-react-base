@@ -25,7 +25,9 @@ export const addStandardHeaders = (
     try {
       const routingSurrogateKeys = selectSurrogateKeys(state);
       const apiCalls = selectSsrApiCalls(state);
-      const anyApiError = !!apiCalls.find(([status]) => status >= 400);
+      const anyApiError = !!apiCalls.find(
+        (call: { statusCode: number }) => call.statusCode >= 400
+      );
 
       // Check length of surrogate keys and prevent potential header overflow errors in prod
       // Check for any error set in the page response

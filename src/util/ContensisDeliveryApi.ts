@@ -2,8 +2,9 @@ import { VersionStatus } from 'contensis-core-api';
 import { Client, Config, Query } from 'contensis-delivery-api';
 // [query-string v8+] When upgrading to v8+: ESM-only, no default export, requires Node >=20.19.0
 import { parse } from 'query-string';
-import { setSurrogateKeys } from '~/routing/redux/actions';
+import { ApiMetrics, setApiMetrics } from '~/routing/redux/actions';
 import { reduxStore } from '~/redux/store/store';
+import { isSSR } from './env';
 
 import { CookieObject, findLoginCookies } from '~/user/util/CookieConstants';
 import { Request } from 'express';
@@ -48,22 +49,58 @@ const getSsrReferer = ({ request }: SSRContext) => {
 };
 
 /**
- * Store the surrogate-key header contents in redux state to output in SSR response
+ * Record API call metrics in Redux state.
+ * Metrics are collected on both SSR and client-side.
+ * Surrogate keys are only included during SSR.
  */
-const storeSurrogateKeys = (ssr?: SSRContext) => (response: any) => {
-  let keys = '';
-  if (response.status === 200) {
-    keys = response.headers.get
-      ? response.headers.get('surrogate-key')
-      : response.headers.map['surrogate-key'];
-    if (!keys) console.info(`[storeSurrogateKeys] No keys in ${response.url}`);
-  }
-  // Using imported reduxStore in SSR is unreliable during high
-  // concurrent loads and exists here as a best effort fallback
-  // in case the SSRContext is not provided
-  const put = ssr?.dispatch || reduxStore?.dispatch;
-  put?.(setSurrogateKeys(keys, response.url, response.status));
-};
+const recordApiResponse =
+  (ssr?: SSRContext, startTime = Date.now()) =>
+  (response: any) => {
+    // Duration: Performance API client-side, closure timestamp best-effort fallback for SSR
+    const duration = Math.round(
+      performance.getEntriesByName(response.url, 'resource')?.[0]?.duration ||
+        Date.now() - startTime
+    );
+    const contentLength = Number(response.headers.get('Content-Length'));
+
+    if (contentLength > 100_000)
+      // > 100 KB
+      console.warn(
+        `[crb] 🚛 Large response (${contentLength} bytes) from ${response.url}`
+      );
+    if (duration > 5_000_000)
+      // > 5 seconds
+      console.warn(
+        `[crb] 🐌 Slow response (${duration} ms) from ${response.url}`
+      );
+
+    const metrics: ApiMetrics = {
+      context: isSSR ? 'ssr' : 'client',
+      statusCode: response.status,
+      contentLength,
+      duration,
+      url: response.url,
+    };
+
+    // Surrogate keys are only meaningful during SSR
+    if (isSSR) {
+      const surrogateKeyHeader = response.headers.get('surrogate-key');
+
+      if (surrogateKeyHeader) {
+        metrics.surrogateKeys = surrogateKeyHeader.split(' ').filter(Boolean);
+      } else if (response.status === 200) {
+        console.info(
+          `[recordApiResponse] No surrogate-key header in ${response.url}`
+        );
+      }
+    }
+
+    // Using imported reduxStore in SSR is unreliable during high
+    // concurrent loads and exists here as a best effort fallback
+    // in case the SSRContext is not provided
+    const put = ssr?.dispatch || reduxStore?.dispatch;
+    put?.(setApiMetrics(metrics));
+  };
 
 /**
  * Create a new Config object to create a DeliveryAPI Client
@@ -73,25 +110,25 @@ const deliveryApiConfig = (ssr?: SSRContext) => {
     ...DELIVERY_API_CONFIG /* global DELIVERY_API_CONFIG */,
   };
 
+  config.responseHandler = {
+    // Record metrics on both SSR and client-side;
+    // surrogate keys are only captured during SSR.
+    [200]: recordApiResponse(ssr),
+  };
+
   // Add SSR headers and handlers
-  if (typeof window === 'undefined') {
+  if (isSSR) {
     config.defaultHeaders = {
       'x-require-surrogate-key': 'true', // request surrogate-key response header
       'x-crb-ssr': 'true', // add this for support tracing
     };
     if (ssr) config.defaultHeaders.referer = getSsrReferer(ssr); // add this for support tracing
-
-    config.responseHandler = { [200]: storeSurrogateKeys(ssr) }; // for handling page cache invalidation
-  }
-
-  if (
-    typeof window !== 'undefined' &&
-    PROXY_DELIVERY_API /* global PROXY_DELIVERY_API */
-  ) {
-    // ensure a relative url is used to bypass the need for CORS (separate OPTIONS calls)
+  } else if (PROXY_DELIVERY_API /* global PROXY_DELIVERY_API */) {
+    // ensure a relative url is used client-side to bypass the need for CORS (separate OPTIONS calls)
     config.rootUrl = '';
-    config.responseHandler = { [404]: () => null };
+    config.responseHandler[404] = () => null;
   }
+
   return config;
 };
 

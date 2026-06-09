@@ -1,15 +1,21 @@
 import { useLocation } from 'react-router-dom';
 import { action } from '~/redux/util';
 import {
+  SET_API_METRICS,
   SET_ENTRY,
   SET_NAVIGATION_PATH,
   SET_TARGET_PROJECT,
   SET_ROUTE,
-  SET_SURROGATE_KEYS,
 } from './types';
 
 import { Entry } from 'contensis-delivery-api/lib/models';
-import { AppRoutes, MatchedRoute, StaticRoute, SSRContext, WithEvents } from '~/models';
+import {
+  AppRoutes,
+  MatchedRoute,
+  StaticRoute,
+  SSRContext,
+  WithEvents,
+} from '~/models';
 
 export const setNavigationPath = (
   path: string,
@@ -43,5 +49,22 @@ export const setRoute = (path: string, state?: any) =>
 
 export const setRouteEntry = (entry: Entry) => action(SET_ENTRY, { entry });
 
-export const setSurrogateKeys = (keys: string, url: string, status: number) =>
-  action(SET_SURROGATE_KEYS, { keys, url, status });
+/**
+ * Represents a single API call record stored in Redux state.
+ * Used for SSR surrogate key tracking and performance metrics.
+ */
+export interface ApiMetrics {
+  context: 'ssr' | 'client';
+  statusCode: number;
+  contentLength?: number;
+  duration?: number;
+  url: string;
+  /** Only populated during SSR — meaningless client-side. */
+  surrogateKeys?: string[];
+}
+
+/**
+ * Record API call metrics. Surrogate keys are only included during SSR.
+ */
+export const setApiMetrics = (metrics: ApiMetrics) =>
+  action(SET_API_METRICS, metrics);

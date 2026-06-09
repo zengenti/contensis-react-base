@@ -1,13 +1,13 @@
-import { Draft, original, produce } from 'immer';
+import { Draft, produce } from 'immer';
 
 import {
+  SET_API_METRICS,
   SET_ENTRY,
   SET_NAVIGATION_PATH,
   SET_ANCESTORS,
   SET_TARGET_PROJECT,
   SET_ROUTE,
   SET_SIBLINGS,
-  SET_SURROGATE_KEYS,
   UPDATE_LOADING_STATE,
 } from './types';
 
@@ -150,16 +150,16 @@ export default produce((state: Draft<any>, action) => {
       state.currentNodeSiblingsParent = currentNodeSiblingParent;
       return;
     }
-    case SET_SURROGATE_KEYS: {
-      const newKeys = (action.keys || '').split(' ');
-      const allKeys = [...original(state.surrogateKeys), ...newKeys];
-      const uniqueKeys = [...new Set(allKeys)];
-      state.surrogateKeys = uniqueKeys;
+    case SET_API_METRICS: {
+      const { surrogateKeys, type: _type, ...call } = action;
 
-      state.apiCalls = [
-        ...original(state.apiCalls),
-        [action.status, newKeys.length, action.url],
-      ];
+      if (call.context === 'ssr' && surrogateKeys?.length > 0) {
+        const allKeys = [...(state.surrogateKeys || []), ...surrogateKeys];
+        state.surrogateKeys = [...new Set(allKeys)];
+        call.surrogateKeys = surrogateKeys;
+      }
+
+      state.apiCalls = [...(state.apiCalls || []), call];
       return;
     }
     case SET_TARGET_PROJECT: {
