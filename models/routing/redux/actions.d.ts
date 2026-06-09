@@ -5,4 +5,20 @@ export declare const setNavigationPath: (path: string, contentPath: string, loca
 export declare const setCurrentProject: (project: string, allowedGroups: any, hostname: string) => any;
 export declare const setRoute: (path: string, state?: any) => any;
 export declare const setRouteEntry: (entry: Entry) => any;
-export declare const setSurrogateKeys: (keys: string, url: string, status: number) => any;
+/**
+ * Represents a single API call record stored in Redux state.
+ * Used for SSR surrogate key tracking and performance metrics.
+ */
+export interface ApiMetrics {
+    context: 'ssr' | 'client';
+    statusCode: number;
+    contentLength?: number;
+    duration?: number;
+    url: string;
+    /** Only populated during SSR — meaningless client-side. */
+    surrogateKeys?: string[];
+}
+/**
+ * Record API call metrics. Surrogate keys are only included during SSR.
+ */
+export declare const setApiMetrics: (metrics: ApiMetrics) => any;

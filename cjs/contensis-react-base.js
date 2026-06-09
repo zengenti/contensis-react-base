@@ -2,13 +2,13 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var ContensisDeliveryApi = require('./ContensisDeliveryApi-DK6h38qF.js');
+var ContensisDeliveryApi = require('./ContensisDeliveryApi-vsHVQ_Ci.js');
 var contensisDeliveryApi = require('contensis-delivery-api');
 var React = require('react');
 var reactRedux = require('react-redux');
 var slice = require('./slice-5xJMH24n.js');
 var mapJson = require('jsonpath-mapper');
-var sagas = require('./sagas-QxP64pWP.js');
+var sagas = require('./sagas-BG31QdkC.js');
 require('reselect');
 require('immer');
 require('deep-equal');
@@ -20,7 +20,7 @@ require('isomorphic-fetch');
 var express = require('express');
 var http = require('http');
 var httpProxy = require('http-proxy');
-var App = require('./App-Dlg6NI7U.js');
+var App = require('./App-95IjaQXT.js');
 var fs = require('fs');
 var path = require('path');
 var appRootPath = require('app-root-path');
@@ -33,10 +33,10 @@ var lodash = require('lodash');
 var lodashClean = require('lodash-clean');
 var CookieHelper_class = require('./CookieHelper.class-Det3qfdU.js');
 var cookiesMiddleware = require('universal-cookie-express');
-var store = require('./store-KMrEU1xg.js');
-var version = require('./version-YZhB8Qpj.js');
-var selectors = require('./selectors-Q46vKF5x.js');
-var RouteLoader = require('./RouteLoader-ogar4dc2.js');
+var store = require('./store-Ccwrx5Do.js');
+var version = require('./version-AE19NqSo.js');
+var selectors = require('./selectors-BnaBk5xL.js');
+var RouteLoader = require('./RouteLoader-NjuQ0VMn.js');
 var stream = require('stream');
 var server$2 = require('@loadable/server');
 var chalk = require('chalk');
@@ -44,21 +44,21 @@ var minifyCssString = require('minify-css-string');
 var reactCookie = require('react-cookie');
 var reactHelmetAsync = require('react-helmet-async');
 var server$3 = require('react-router-dom/server');
-var SSRContext = require('./SSRContext-CLXEw_2_.js');
-require('./VersionInfo-CpP1IGb1.js');
+var SSRContext = require('./SSRContext-WPN0QwEg.js');
+require('./VersionInfo-BygZuA9D.js');
 require('./CookieConstants-DfPiWCRZ.js');
 require('@reduxjs/toolkit');
 require('loglevel');
 require('@redux-saga/core/effects');
-require('./version-CeiM6ens.js');
-require('./util-DN9QA3ad.js');
+require('./version-CaRCM9vq.js');
+require('./util-LE7KTRCU.js');
 require('./selectors-DAQR0uZa.js');
 require('./_commonjsHelpers-BJu3ubxk.js');
 require('history');
 require('await-to-js');
 require('redux-saga');
-require('./ChangePassword.container-BoqpDiwG.js');
-require('./matchGroups-DLmGn1r9.js');
+require('./ChangePassword.container-CVwXfQjB.js');
+require('./matchGroups-D8QZEd1p.js');
 require('./ToJs-BsWqWjdm.js');
 require('redux');
 require('redux-thunk');
@@ -1143,7 +1143,7 @@ const addStandardHeaders = (state, response, packagejson, groups) => {
     try {
       const routingSurrogateKeys = selectors.selectSurrogateKeys(state);
       const apiCalls = selectors.selectSsrApiCalls(state);
-      const anyApiError = !!apiCalls.find(([status]) => status >= 400);
+      const anyApiError = !!apiCalls.find(call => call.statusCode >= 400);
 
       // Check length of surrogate keys and prevent potential header overflow errors in prod
       // Check for any error set in the page response
