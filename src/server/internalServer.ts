@@ -1,5 +1,6 @@
 import 'isomorphic-fetch';
 import express, { Express } from 'express';
+import type { EventEmitter } from 'events';
 import http from 'http';
 import React from 'react';
 
@@ -44,14 +45,14 @@ const start = (
   ServeStaticAssets(app, config);
   ConfigureWebApp(app, ReactApp, config);
 
-  app.on('ready', async () => {
+  (app as EventEmitter).on('ready', async () => {
     server.listen(3001, () => {
       console.info(`HTTP server is listening @ port 3001`);
       setTimeout(function () {
         app.emit('app_started');
       }, 500);
     });
-    app.on('stop', () => {
+    (app as EventEmitter).on('stop', () => {
       server.close(function () {
         console.info('GoodBye :(');
         process.exit();
