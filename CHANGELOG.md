@@ -1,5 +1,19 @@
 # Changelog
 
+## [4.0.1](https://github.com/zengenti/contensis-react-base/compare/v4.0.0...v4.0.1) (2026-06-17)
+
+
+### Bug Fixes
+
+* paths containing any double-slash pattern will redirect to the trimmed path ([39f57ca](https://github.com/zengenti/contensis-react-base/commit/39f57ca9175529f7058aa0a71332dc5ee2b7b11b))
+* reduce log noise when a `version.json` file is not available ([8797565](https://github.com/zengenti/contensis-react-base/commit/8797565e3b759b232c1782fcc17a709b5dc03c17))
+* suppress output of `startup.js` script when running SSR in development ([c409d50](https://github.com/zengenti/contensis-react-base/commit/c409d50ccdcf73eccd0879d47c7c856e91c8bf57))
+
+
+### Performance Improvements
+
+* log warnings for slow or large delivery api requests made via CRB api wrapper, extend/refactor surrogate key implementation to cover other api metrics ([dc95206](https://github.com/zengenti/contensis-react-base/commit/dc95206f97a45857c87c7ed64876d374e70718de))
+
 ## [4.0.0](https://github.com/zengenti/contensis-react-base/compare/v3.4.0...v4.0.0) (2026-04-22)
 
 
