@@ -1,5 +1,6 @@
 interface DevOptions {
     config?: string;
+    globalsPath?: string;
     envFile?: string;
     devHost?: string;
     devPort?: string;

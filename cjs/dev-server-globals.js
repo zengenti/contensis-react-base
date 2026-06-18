@@ -13,7 +13,7 @@ var path__default = /*#__PURE__*/_interopDefault(path);
  * `process.cwd()` = consumer project root) and injects the development
  * defines as global variables.
  */
-const defineConfigPath = path__default.default.resolve(process.cwd(), 'webpack', 'define-config');
+const defineConfigPath = process.env.CRB_GLOBALS_PATH || path__default.default.resolve(process.cwd(), 'webpack', 'define-config');
 const defineConfig = require(defineConfigPath).development;
 Object.entries(defineConfig).forEach(([key, value]) => {
   global[key] = value;

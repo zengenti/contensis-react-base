@@ -10,8 +10,46 @@ import WebpackDevServer from 'webpack-dev-server';
 
 const projectRoot = process.cwd();
 const DEVSERVER_RUNTIME_GLOBALS = path.resolve(__dirname, 'dev-server-globals.js');
+function resolveConfigPath(configArg) {
+  if (configArg) {
+    const resolved = path.resolve(projectRoot, configArg);
+    if (fs.existsSync(resolved)) return resolved;
+    console.error(`[crb] ❌ Error: Config file not found: ${resolved}`);
+    process.exit(1);
+  }
+  const defaults = ['webpack.config.js', 'webpack/webpack.config.js'];
+  for (const candidate of defaults) {
+    const resolved = path.resolve(projectRoot, candidate);
+    if (fs.existsSync(resolved)) return resolved;
+  }
+  console.error(`[crb] ❌ Error: No webpack config found. Tried:\n  ${defaults.map(d => path.resolve(projectRoot, d)).join('\n  ')}\nProvide one with --config <path>.`);
+  process.exit(1);
+}
+function resolveGlobalsPath(globalsPathArg,
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+configModule) {
+  if (globalsPathArg) {
+    const resolved = path.resolve(projectRoot, globalsPathArg);
+    if (fs.existsSync(resolved)) return resolved;
+    console.warn(`[crb] ⚠️ Warning: Globals file not found: ${resolved}`);
+    return undefined;
+  }
+  const devGlobals = configModule.devGlobals;
+  if (devGlobals !== undefined) {
+    if (typeof devGlobals === 'string') {
+      const resolved = path.resolve(projectRoot, devGlobals);
+      if (fs.existsSync(resolved)) return resolved;
+      console.warn(`[crb] ⚠️ Warning: Globals file from devGlobals not found: ${resolved}`);
+    } else {
+      console.warn(`[crb] ⚠️ Warning: devGlobals must be a string path, got ${typeof devGlobals}. Falling through.`);
+    }
+  }
+  const fallback = path.resolve(projectRoot, 'webpack', 'define-config.js');
+  if (fs.existsSync(fallback)) return fallback;
+  console.warn('[crb] ⚠️ Warning: No globals file found. Continuing without injecting globals.');
+  return undefined;
+}
 function runDev(args) {
-  const configPath = args.config;
   const devHost = args.devHost || 'localhost';
   const devPort = args.devPort || '3000';
   const devListen = args.devListen || '0.0.0.0';
@@ -21,21 +59,8 @@ function runDev(args) {
   // A bare flag (no port value) resolves to true in cac — treat that as the default port.
   const resolveInspectPort = val => val === true || val === undefined ? '9229' : String(val);
   const inspectNodeArg = args.inspectBrk !== undefined ? `--inspect-brk=${resolveInspectPort(args.inspectBrk)}` : `--inspect=${resolveInspectPort(args.inspect)}`;
-
-  // Validate --config option
-  if (!configPath) {
-    console.error('[crb] ❌ Error: --config option is required');
-    console.log('Usage: crb dev --config <path-to-webpack-config> [--dev-host <host>] [--dev-port <port>] [--dev-listen <host>] [--inspect[=port]] [--inspect-brk[=port]]');
-    process.exit(1);
-  }
   console.info('[crb] 🚀 Starting SSR dev server pipeline');
-  const resolvedConfigPath = path.resolve(projectRoot, configPath);
-
-  // Check config file exists
-  if (!fs.existsSync(resolvedConfigPath)) {
-    console.error(`[crb] ❌ Error: Config file not found: ${resolvedConfigPath}`);
-    process.exit(1);
-  }
+  const resolvedConfigPath = resolveConfigPath(args.config);
 
   // Set default host and port
   process.env.DEV_HOST = devHost;
@@ -77,6 +102,12 @@ function runDev(args) {
     process.exit(1);
   }
   const [clientConfig, serverConfig] = webpackConfig;
+
+  // Resolve globals path and pass to nodemon child via env var
+  const resolvedGlobalsPath = resolveGlobalsPath(args.globalsPath, webpackConfig);
+  if (resolvedGlobalsPath) {
+    process.env.CRB_GLOBALS_PATH = resolvedGlobalsPath;
+  }
 
   // State flags for orchestration
   let clientReady = false;
@@ -198,7 +229,7 @@ function runDev(args) {
 const cli = cac('crb');
 
 // Dev subcommand
-cli.command('dev', 'Start the SSR dev server pipeline').option('--config <path>', 'Path to webpack config file (required)').option('--env-file <path>', 'Path to .env file (default: .env)').option('--dev-host <host>', 'webpack publicPath / HMR host (default: localhost)').option('--dev-port <port>', 'webpack-dev-server listen port (default: 3000)').option('--dev-listen <host>', 'webpack-dev-server listen host (default: 0.0.0.0)').option('--open', 'Open the browser when the SSR server starts. Use --no-open to disable. (default: true)').option('--inspect [port]', 'Enable the V8 inspector on the SSR server. Optionally specify a port (default: 9229)').option('--inspect-brk [port]', 'Enable the V8 inspector and break before the script starts — useful for debugging server startup. Optionally specify a port (default: 9229). Takes precedence over --inspect.').action(runDev);
+cli.command('dev', 'Start the SSR dev server pipeline').option('--config <path>', 'Path to webpack config file (default: webpack.config.js)').option('--globals-path <path>', 'Path to runtime globals shim file (default: webpack/define-config.js)').option('--env-file <path>', 'Path to .env file (default: .env)').option('--dev-host <host>', 'webpack publicPath / HMR host (default: localhost)').option('--dev-port <port>', 'webpack-dev-server listen port (default: 3000)').option('--dev-listen <host>', 'webpack-dev-server listen host (default: 0.0.0.0)').option('--open', 'Open the browser when the SSR server starts. Use --no-open to disable. (default: true)').option('--inspect [port]', 'Enable the V8 inspector on the SSR server. Optionally specify a port (default: 9229)').option('--inspect-brk [port]', 'Enable the V8 inspector and break before the script starts — useful for debugging server startup. Optionally specify a port (default: 9229). Takes precedence over --inspect.').action(runDev);
 cli.help();
 cli.parse();
 if (!cli.matchedCommand) {

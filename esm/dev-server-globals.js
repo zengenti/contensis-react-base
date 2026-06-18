@@ -7,7 +7,7 @@ import path from 'path';
  * `process.cwd()` = consumer project root) and injects the development
  * defines as global variables.
  */
-const defineConfigPath = path.resolve(process.cwd(), 'webpack', 'define-config');
+const defineConfigPath = process.env.CRB_GLOBALS_PATH || path.resolve(process.cwd(), 'webpack', 'define-config');
 const defineConfig = require(defineConfigPath).development;
 Object.entries(defineConfig).forEach(([key, value]) => {
   global[key] = value;
