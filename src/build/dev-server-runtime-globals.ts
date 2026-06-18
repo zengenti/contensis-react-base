@@ -7,7 +7,9 @@
  */
 import path from 'path';
 
-const defineConfigPath = path.resolve(process.cwd(), 'webpack', 'define-config');
+const defineConfigPath =
+  process.env.CRB_GLOBALS_PATH ||
+  path.resolve(process.cwd(), 'webpack', 'define-config');
 
 const defineConfig = require(defineConfigPath).development as Record<string, string>;
 

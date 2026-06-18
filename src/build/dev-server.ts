@@ -11,6 +11,7 @@ const DEVSERVER_RUNTIME_GLOBALS = path.resolve(__dirname, 'dev-server-globals.js
 
 interface DevOptions {
   config?: string;
+  globalsPath?: string;
   envFile?: string;
   devHost?: string;
   devPort?: string;
@@ -20,8 +21,65 @@ interface DevOptions {
   inspectBrk?: boolean | string;
 }
 
+function resolveConfigPath(configArg: string | undefined): string {
+  if (configArg) {
+    const resolved = path.resolve(projectRoot, configArg);
+    if (fs.existsSync(resolved)) return resolved;
+    console.error(`[crb] ❌ Error: Config file not found: ${resolved}`);
+    process.exit(1);
+  }
+
+  const defaults = ['webpack.config.js', 'webpack/webpack.config.js'];
+  for (const candidate of defaults) {
+    const resolved = path.resolve(projectRoot, candidate);
+    if (fs.existsSync(resolved)) return resolved;
+  }
+
+  console.error(
+    `[crb] ❌ Error: No webpack config found. Tried:\n  ${defaults.map((d) => path.resolve(projectRoot, d)).join('\n  ')}\nProvide one with --config <path>.`
+  );
+  process.exit(1);
+}
+
+function resolveGlobalsPath(
+  globalsPathArg: string | undefined,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  configModule: any
+): string | undefined {
+  if (globalsPathArg) {
+    const resolved = path.resolve(projectRoot, globalsPathArg);
+    if (fs.existsSync(resolved)) return resolved;
+    console.warn(
+      `[crb] ⚠️ Warning: Globals file not found: ${resolved}`
+    );
+    return undefined;
+  }
+
+  const devGlobals = configModule.devGlobals;
+  if (devGlobals !== undefined) {
+    if (typeof devGlobals === 'string') {
+      const resolved = path.resolve(projectRoot, devGlobals);
+      if (fs.existsSync(resolved)) return resolved;
+      console.warn(
+        `[crb] ⚠️ Warning: Globals file from devGlobals not found: ${resolved}`
+      );
+    } else {
+      console.warn(
+        `[crb] ⚠️ Warning: devGlobals must be a string path, got ${typeof devGlobals}. Falling through.`
+      );
+    }
+  }
+
+  const fallback = path.resolve(projectRoot, 'webpack', 'define-config.js');
+  if (fs.existsSync(fallback)) return fallback;
+
+  console.warn(
+    '[crb] ⚠️ Warning: No globals file found. Continuing without injecting globals.'
+  );
+  return undefined;
+}
+
 export function runDev(args: DevOptions): void {
-  const configPath = args.config;
   const devHost = args.devHost || 'localhost';
   const devPort = args.devPort || '3000';
   const devListen = args.devListen || '0.0.0.0';
@@ -36,26 +94,9 @@ export function runDev(args: DevOptions): void {
       ? `--inspect-brk=${resolveInspectPort(args.inspectBrk)}`
       : `--inspect=${resolveInspectPort(args.inspect)}`;
 
-  // Validate --config option
-  if (!configPath) {
-    console.error('[crb] ❌ Error: --config option is required');
-    console.log(
-      'Usage: crb dev --config <path-to-webpack-config> [--dev-host <host>] [--dev-port <port>] [--dev-listen <host>] [--inspect[=port]] [--inspect-brk[=port]]'
-    );
-    process.exit(1);
-  }
-
   console.info('[crb] 🚀 Starting SSR dev server pipeline');
 
-  const resolvedConfigPath = path.resolve(projectRoot, configPath);
-
-  // Check config file exists
-  if (!fs.existsSync(resolvedConfigPath)) {
-    console.error(
-      `[crb] ❌ Error: Config file not found: ${resolvedConfigPath}`
-    );
-    process.exit(1);
-  }
+  const resolvedConfigPath = resolveConfigPath(args.config);
 
   // Set default host and port
   process.env.DEV_HOST = devHost;
@@ -109,6 +150,15 @@ export function runDev(args: DevOptions): void {
   }
 
   const [clientConfig, serverConfig] = webpackConfig as [webpack.Configuration, webpack.Configuration];
+
+  // Resolve globals path and pass to nodemon child via env var
+  const resolvedGlobalsPath = resolveGlobalsPath(
+    args.globalsPath,
+    webpackConfig
+  );
+  if (resolvedGlobalsPath) {
+    process.env.CRB_GLOBALS_PATH = resolvedGlobalsPath;
+  }
 
   // State flags for orchestration
   let clientReady = false;

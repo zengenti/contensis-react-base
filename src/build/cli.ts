@@ -8,7 +8,14 @@ const cli = cac('crb');
 // Dev subcommand
 cli
   .command('dev', 'Start the SSR dev server pipeline')
-  .option('--config <path>', 'Path to webpack config file (required)')
+  .option(
+    '--config <path>',
+    'Path to webpack config file (default: webpack.config.js)'
+  )
+  .option(
+    '--globals-path <path>',
+    'Path to runtime globals shim file (default: webpack/define-config.js)'
+  )
   .option('--env-file <path>', 'Path to .env file (default: .env)')
   .option(
     '--dev-host <host>',
