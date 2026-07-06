@@ -20,7 +20,7 @@ require('isomorphic-fetch');
 var express = require('express');
 var http = require('http');
 var httpProxy = require('http-proxy');
-var App = require('./App-95IjaQXT.js');
+var App = require('./App-ClKmJATp.js');
 var fs = require('fs');
 var path = require('path');
 var appRootPath = require('app-root-path');
