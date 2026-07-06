@@ -186,10 +186,10 @@ function* getRouteSaga(action) {
           );
           // Static route limits override content type mapping limits
           fields = setStaticRouteLimits
-            ? fields || '*' : contentTypeMapping?.fields || fields;
+            ? fields || '*' : contentTypeMapping?.fields || '*';
           linkDepth = setStaticRouteLimits
             ? linkDepth || 0 : typeof contentTypeMapping?.linkDepth !== 'undefined'
-              ? contentTypeMapping.linkDepth : linkDepth;
+              ? contentTypeMapping.linkDepth : defaultLinkDepth;
           fieldLinkDepths = setStaticRouteLimits
             ? fieldLinkDepths
             : contentTypeMapping?.fieldLinkDepths || fieldLinkDepths;
