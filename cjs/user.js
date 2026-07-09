@@ -1,6 +1,6 @@
 'use strict';
 
-var ChangePassword_container = require('./ChangePassword.container-CVwXfQjB.js');
+var ChangePassword_container = require('./ChangePassword.container-DoYRQQg7.js');
 var React = require('react');
 var reactCookie = require('react-cookie');
 var reactRedux = require('react-redux');
