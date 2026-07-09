@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { registerUser } from '../redux/actions';
 import {
   selectUserRegistration,
@@ -16,7 +16,7 @@ const useRegistration = () => {
     error: select(selectUserRegistrationError),
     isLoading: select(selectUserRegistrationIsLoading),
     isSuccess: select(selectUserRegistrationIsSuccess),
-    user: select(selectUserRegistration),
+    user: select(selectUserRegistration, shallowEqual),
   };
 };
 
