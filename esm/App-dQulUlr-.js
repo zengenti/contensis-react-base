@@ -20,7 +20,7 @@ import 'jsonpath-mapper';
 import 'react-router-dom';
 import { s as selectCurrentLanguage, a as selectDictionary, c as selectLocaleRoutes, d as selectLocales, b as selectDictionaryResolver, e as selectPrimaryLanguage } from './selectors-D4ulaTom.js';
 import { f as findContentTypeMapping, h as handleRequiresLoginSaga, L as LoginHelper, c as getSearchOptions, g as getManagementApiClient, l as loginSagas } from './ChangePassword.container-DNb4TZzK.js';
-import './sagas-BN4gNmmc.js';
+import './sagas-CYdmN1Uz.js';
 import 'reselect';
 import 'immer';
 import 'deep-equal';
@@ -1319,4 +1319,4 @@ const AppRoot = props => {
 };
 
 export { AppRoot as A, browserHistory as b, createLocaleRoutes as c, history as h, pickProject as p, rootSaga as r, shorten as s };
-//# sourceMappingURL=App-cQ1XwIg-.js.map
+//# sourceMappingURL=App-dQulUlr-.js.map
