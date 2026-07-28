@@ -15,7 +15,7 @@ export const fieldExpression = (
   value: any,
   operator: FieldOperators = 'equalTo',
   weight?: number,
-  fuzzySearch = false
+  fuzzySearch?: boolean
 ): IExpression[] => {
   if (!field || !value || (Array.isArray(value) && value.length === 0))
     return [];
@@ -268,7 +268,7 @@ const equalToOrIn = (
   field: string,
   value: string | string[],
   operator: FieldOperators = 'equalTo',
-  fuzzySearch = false
+  fuzzySearch?: boolean
 ) => {
   if (value.length === 0) return [];
   if (Array.isArray(value)) {
@@ -487,7 +487,7 @@ export const termExpressions = (
         fixFreeTextForElastic(term),
         'freeText',
         f.weight,
-        fuzzySearch
+        f.fuzzySearch ?? fuzzySearch
       );
 
     // For each weighted search field

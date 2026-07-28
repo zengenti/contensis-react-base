@@ -188,6 +188,8 @@ export type WeightedSearchField = {
   fieldId: string;
   /** The weighting applied to the field */
   weight: number;
+  /** Per-field fuzzy search override. Falls back to global fuzzySearch when omitted. */
+  fuzzySearch?: boolean;
 };
 
 /**
