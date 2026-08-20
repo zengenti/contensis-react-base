@@ -115,7 +115,7 @@ export function runDev(args: DevOptions): void {
   }
 
   // Validate required environment variables
-  const REQUIRED_ENV: string[] = ['ALIAS', 'PROJECT', 'ACCESS_TOKEN'];
+  const REQUIRED_ENV: string[] = ['ALIAS', 'PROJECT'];
   const missingEnv = REQUIRED_ENV.filter(
     (k) => !process.env[k] || !process.env[k].trim()
   );
