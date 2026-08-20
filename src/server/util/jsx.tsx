@@ -16,6 +16,45 @@ import { reduxStore } from '~/redux/store/store';
 import { HttpContext, HttpContextValues } from '~/routing/httpContext';
 import { SSRContextProvider } from '~/util';
 
+export type SSRJsxProducerProps = {
+  /** Providers enrich the JSX */
+  providers: {
+    loadable: { extractor: ChunkExtractor };
+    cookies?: Cookies;
+    helmet: Record<string, unknown>;
+    redux: typeof reduxStore;
+    httpContext: HttpContextValues;
+    router: {
+      url: string;
+    };
+    styledComponents?: { sheet: ServerStyleSheet };
+    ssrContext: {
+      accessMethod: SSRAccessMethod;
+      config: typeof DELIVERY_API_CONFIG;
+      request: Request;
+      response: Response;
+    };
+  };
+  /** Props are supplied to the ReactApp */
+  props: {
+    routes: AppRoutes;
+    withEvents: WithEvents;
+  };
+  // /**
+  //  * SSR Assets are passed in here when they become available
+  //  * allowing the ReactApp to control the render for the
+  //  * entire HTML document
+  //  */
+  // ssrAssets?: {
+  //   bundleTags?: string;
+  //   htmlAttributes?: string;
+  //   metadata?: string;
+  //   serializedState?: string;
+  //   styleTags?: string;
+  //   title?: string;
+  // };
+};
+
 /**
  * Produce the JSX wrapped in the necessary Providers
  * to render the app in SSR
@@ -29,43 +68,7 @@ export const ssrJsxProducer = (
     providers,
     props,
     // ssrAssets,
-  }: {
-    /** Providers enrich the JSX */
-    providers: {
-      loadable: { extractor: ChunkExtractor };
-      cookies?: Cookies;
-      helmet: Record<string, unknown>;
-      redux: typeof reduxStore;
-      httpContext: HttpContextValues;
-      router: {
-        url: string;
-      };
-      styledComponents?: { sheet: ServerStyleSheet };
-      ssrContext: {
-        accessMethod: SSRAccessMethod;
-        request: Request;
-        response: Response;
-      };
-    };
-    /** Props are supplied to the ReactApp */
-    props: {
-      routes: AppRoutes;
-      withEvents: WithEvents;
-    };
-    // /**
-    //  * SSR Assets are passed in here when they become available
-    //  * allowing the ReactApp to control the render for the
-    //  * entire HTML document
-    //  */
-    // ssrAssets?: {
-    //   bundleTags?: string;
-    //   htmlAttributes?: string;
-    //   metadata?: string;
-    //   serializedState?: string;
-    //   styleTags?: string;
-    //   title?: string;
-    // };
-  }
+  }: SSRJsxProducerProps
 ) => {
   type ChunkExtractorManagerPropsForReact18 = ChunkExtractorManagerProps & {
     children?: React.ReactNode;
@@ -92,6 +95,7 @@ export const ssrJsxProducer = (
               >
                 <SSRContextProvider
                   accessMethod={providers.ssrContext.accessMethod}
+                  config={providers.ssrContext.config}
                   request={providers.ssrContext.request}
                   response={providers.ssrContext.response}
                   // ssrAssets={ssrAssets}

@@ -4,6 +4,7 @@ import type { EventEmitter } from 'events';
 import http from 'http';
 import React from 'react';
 
+import ConfigureAccessTokenApi from './features/access-token-api';
 import ConfigureReverseProxies, {
   deliveryProxy,
 } from './features/reverse-proxy';
@@ -39,6 +40,8 @@ const start = (
   DisplayStartupConfiguration(config);
 
   ServerFeatures(app);
+  // Registers only when `accessTokens` is configured with `requireLogin` to release
+  ConfigureAccessTokenApi(app, config.accessTokens);
   // Set-up local proxy for images from cms, and delivery api requests
   // to save doing rewrites and extra code
   ConfigureReverseProxies(app, config.reverseProxyPaths);

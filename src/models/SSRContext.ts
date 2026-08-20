@@ -1,3 +1,4 @@
+import { Config as DeliveryClientConfig } from 'contensis-delivery-api';
 import { Request, Response } from 'express';
 import { Dispatch } from 'redux';
 import { CookieHelper } from '~/user/util/CookieHelper.class';
@@ -8,6 +9,8 @@ export type SSRContext = {
   accessMethod?: SSRAccessMethod;
   /** Available in both SSR and client side */
   api: CachedSearch;
+  /** Available in both SSR and client side */
+  config: typeof DELIVERY_API_CONFIG;
   /** Available in both SSR and client side */
   cookies: CookieHelper;
   /** Available in both SSR and client side */

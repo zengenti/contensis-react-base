@@ -30,6 +30,10 @@ import { mergeStaticRoutes } from '~/util/mergeStaticRoutes';
 import pickProject from '~/util/pickProject';
 import stringifyAttributes from './util/stringifyAttributes';
 
+import {
+  accessTokenScript,
+  resolveAccessToken,
+} from './features/access-token-api/resolveAccessToken';
 import { getCacheDuration } from './features/caching/cacheDuration.schema';
 import handleResponse from './features/response-handler';
 import {
@@ -48,7 +52,7 @@ import { addStandardHeaders } from './util/headers';
 import { replaceHtml } from './util/html';
 
 import { AppState, ServerConfig, MatchedRoute, StaticRoute } from '~/models';
-import { ssrJsxProducer } from './util/jsx';
+import { ssrJsxProducer, SSRJsxProducerProps } from './util/jsx';
 import { getSubsitePath } from '~/util/subsite';
 
 const webApp = (
@@ -61,6 +65,7 @@ const webApp = (
   }
 ) => {
   const {
+    accessTokens,
     stateType = 'js',
     routes,
     withReducers,
@@ -144,12 +149,44 @@ const webApp = (
 
       const normaliseQs = q => (q && q.toLowerCase() === 'true' ? true : false);
 
+      // In server-side blocks world, the hostname requested by the client resides in the x-orig-host header
+      // Because of this, we prioritize x-orig-host when setting our hostname
+      const hostname = (request.headers['x-orig-host'] ||
+        request.hostname) as string;
+
+      // Resolved ahead of accessMethod so the access token this response is
+      // allowed to carry can force a client-side render. All three only
+      // depend on the request.
+      const versionStatus = deliveryApi.getServerSideVersionStatus(request);
+      const project = pickProject(hostname, request.query);
+      const resolvedToken = resolveAccessToken(
+        accessTokens,
+        project,
+        versionStatus
+      );
+
+      const deliveryApiConfig: typeof DELIVERY_API_CONFIG = {
+        ...DELIVERY_API_CONFIG,
+        accessToken: resolvedToken?.accessToken
+          ? resolvedToken?.accessToken
+          : // A release uri means the access token is not available in SSR
+            // and user must make an auth request to crb-api/auth/access-token to release it client-side
+            resolvedToken?.releaseUri
+            ? ''
+            : DELIVERY_API_CONFIG.accessToken, // Fallback classic access token if no other configured
+      };
+
       // Determine functional params from QueryString and set access methods
       const accessMethod = mapJson<
         any,
         { DYNAMIC: boolean; REDUX: boolean; FRAGMENT: boolean; STATIC: boolean }
       >(request.query, {
-        DYNAMIC: ({ dynamic }) => normaliseQs(dynamic) || onlyDynamic,
+        DYNAMIC: ({ dynamic }) =>
+          normaliseQs(dynamic) ||
+          onlyDynamic ||
+          // No token available to SSR this request - serve the dynamic shell and let
+          // the client obtain its own
+          (!!resolvedToken?.releaseUri && !resolvedToken.accessToken),
         REDUX: ({ redux }) => normaliseQs(redux),
         FRAGMENT: ({ fragment }) => normaliseQs(fragment),
         STATIC: ({ static: value }) => normaliseQs(value) || onlySSR,
@@ -165,17 +202,13 @@ const webApp = (
         stateType
       );
 
-      // dispatch any global and non-saga related actions before calling our JSX
-      const versionStatus = deliveryApi.getServerSideVersionStatus(request);
-
-      // In server-side blocks world, the hostname requested by the client resides in the x-orig-host header
-      // Because of this, we prioritize x-orig-host when setting our hostname
-      const hostname = (request.headers['x-orig-host'] ||
-        request.hostname) as string;
       const subsitePath = getSubsitePath(request);
       const subsitePathScript = subsitePath
         ? `window.subsitePath = ${serialize(subsitePath)};`
         : '';
+
+      // Writes the resolved access token, or where to request one, into the page
+      const accessTokenHint = accessTokenScript(resolvedToken);
 
       console.info(
         `[webApp] "${request.method} ${request.path}" hostname: ${hostname} versionStatus: ${versionStatus}`
@@ -183,8 +216,6 @@ const webApp = (
 
       store.dispatch(setVersionStatus(versionStatus));
       store.dispatch(setVersion(versionInfo.commitRef, versionInfo.buildNo));
-
-      const project = pickProject(hostname, request.query);
 
       const groups = allowedGroups && allowedGroups[project];
       store.dispatch(setCurrentProject(project, groups, hostname));
@@ -220,17 +251,25 @@ const webApp = (
       const helmetContext = {} as Record<string, unknown>;
 
       // Amalgamate all props for the various Providers we wrap the ReactApp with
-      const jsxProviderProps = {
+      const jsxProviderProps: SSRJsxProducerProps['providers'] = {
         loadable: { extractor: loadableExtractor.commonLoadableExtractor },
         cookies: ssrCookies,
         helmet: helmetContext,
         redux: store,
         httpContext: context,
         router: { url },
-        ssrContext: { accessMethod, request, response },
+        ssrContext: {
+          accessMethod,
+          config: deliveryApiConfig,
+          request,
+          response,
+        },
       };
       // These are the props we will pass to the ReactApp itself
-      const jsxReactAppProps = { routes, withEvents };
+      const jsxReactAppProps: SSRJsxProducerProps['props'] = {
+        routes,
+        withEvents,
+      };
 
       // Get the configured HTML templates provided by the consumer
       const {
@@ -244,7 +283,7 @@ const webApp = (
         // Dynamic doesn't need sagas
         // or styles, or any split component bundles
         // nor are we streaming responses
-        const isDynamicHints = `<script ${attributes}>window.isDynamic = true; ${subsitePathScript}</script>`;
+        const isDynamicHints = `<script ${attributes}>window.isDynamic = true; ${subsitePathScript} ${accessTokenHint}</script>`;
 
         const jsx = ssrJsxProducer(ReactApp, {
           providers: jsxProviderProps,
@@ -324,7 +363,7 @@ const webApp = (
                 return true;
               }
               if (!disableSsrRedux) {
-                serialisedReduxData = `<script ${attributes}>${subsitePathScript} window.__USE_HYDRATE__ = true; window.REDUX_DATA = ${serialisedReduxData}</script>`;
+                serialisedReduxData = `<script ${attributes}>${subsitePathScript} ${accessTokenHint} window.__USE_HYDRATE__ = true; window.REDUX_DATA = ${serialisedReduxData}</script>`;
               }
             }
 

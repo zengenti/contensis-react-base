@@ -1,5 +1,15 @@
 import to from 'await-to-js';
-import { takeEvery, put, select, call, all, fork, cancel, cancelled, take } from 'redux-saga/effects';
+import {
+  takeEvery,
+  put,
+  select,
+  call,
+  all,
+  fork,
+  cancel,
+  cancelled,
+  take,
+} from 'redux-saga/effects';
 import { eventChannel } from 'redux-saga';
 
 import { resolveCurrentRouteLanguage } from '~/i18n/redux/sagas';
@@ -29,14 +39,19 @@ import { handleRequiresLoginSaga } from '~/user/redux/sagas/login';
 import { ensureNodeTreeSaga } from '~/redux/sagas/navigation';
 
 import { LoginHelper } from '~/user';
-import { findContentTypeMapping, getSearchOptions } from '../util/find-contenttype-mapping';
+import {
+  findContentTypeMapping,
+  getSearchOptions,
+} from '../util/find-contenttype-mapping';
 import { routeEntryByFieldsQuery } from '../util/queries';
 import { handleSearchSaga } from './invokeSearch';
 import { reduxInjectorSaga } from '~/redux/sagas/injector';
 import { routeParams } from '~/search';
+import { isSSR } from '~/util/env';
 import { logError } from '~/util/errors';
 
-const error = (e, message) => logError(`[routeSaga]${message ? ` ${message}` : ''}`, e);
+const error = (e, message) =>
+  logError(`[routeSaga]${message ? ` ${message}` : ''}`, e);
 
 let livePreviewTask = null;
 
@@ -59,6 +74,66 @@ function* setRouteSaga(action) {
   });
 }
 
+/** Request a privileged access token from the release endpoint */
+const releaseAccessToken = async releaseUri => {
+  const [error, response] = await to(
+    fetch(releaseUri, { method: 'POST', credentials: 'same-origin' })
+  );
+  if (error || !response.ok)
+    return [error || new Error(`Release failed: ${response.status}`)];
+
+  const [parseError, body] = await to(response.json());
+  return parseError ? [parseError] : [undefined, body.accessToken];
+};
+
+/**
+ * Ensure we hold an access token that can serve this route before any content
+ * is requested. Returns false when the route must not continue.
+ */
+function* ensureAccessTokenSaga(action) {
+  // The server never releases a token to itself so this should never be hit
+  if (isSSR) return true;
+
+  const config = window.DELIVERY_API_CONFIG || {};
+
+  // If we already hold a token, or this deployment doesn't gate one
+  if (config.accessToken) return true;
+
+  // Blocking - validates the user from cookies, redirects to sign-in if it can't
+  const userLoggedIn = yield call(handleRequiresLoginSaga, {
+    ...action,
+    requireLogin: true,
+  });
+  if (!userLoggedIn) return false;
+
+  // If NO releaseUri is configured, the deployment doesn't gate a token instead
+  // auth is handled by the user's own credentials (cookies) and we can continue
+  if (config.releaseUri) {
+    const [releaseError, accessToken] = yield call(
+      releaseAccessToken,
+      config.releaseUri
+    );
+
+    // Added userLoggedIn check as a logged-in user can use their credentials for Delivery API access
+    if (releaseError || !accessToken || !userLoggedIn) {
+      error(releaseError, 'unable to release an access token');
+      // Authenticated but nothing released. Don't fall through to published
+      // content - one versionStatus per host.
+      // REVIEW: assumes a refusal is an authorisation problem. Revisit if the
+      // endpoint can refuse for other reasons.
+      LoginHelper.ClientRedirectToAccessDeniedPage(action.location?.pathname);
+      return false;
+    }
+
+    // deliveryApiConfig() spreads this global on every call, so mutating it here
+    // is picked up by the next request without re-plumbing anything downstream
+    config.accessToken = accessToken;
+    // update (mutate) the existing config in the SSRContext
+    action.ssr?.config && (action.ssr.config.accessToken = accessToken);
+  }
+  return true;
+}
+
 function* getRouteSaga(action) {
   let entry = null;
   try {
@@ -69,6 +144,13 @@ function* getRouteSaga(action) {
       // get api instance from ssr context that is connected to the specific request in ssr
       ssr: { api, subsitePath },
     } = action;
+
+    // Resolve an access token that can serve this route before we request
+    // any content with it
+    if (!(yield call(ensureAccessTokenSaga, action))) {
+      yield put({ type: UPDATE_LOADING_STATE, isLoading: false });
+      return;
+    }
 
     // Inject redux { key, reducer, saga } provided by staticRoute
     if (staticRoute && staticRoute.route.injectRedux)
@@ -108,7 +190,8 @@ function* getRouteSaga(action) {
     // TODO: drop this default fallback to 0 with CRBv5 as 2 is a legacy arbritary medium and encourages
     // routing optimisation to be ignored resulting in excessive API calls going unnoticed
     // Use of `linkDepth` should be avoided in favour of `fieldLinkDepths` with newer Contensis versions
-    const defaultLinkDepth = appsays?.entryLinkDepth !== undefined ? appsays.entryLinkDepth : 2;
+    const defaultLinkDepth =
+      appsays?.entryLinkDepth !== undefined ? appsays.entryLinkDepth : 2;
     const defaultFieldLinkDepths = appsays?.entryFieldLinkDepths;
 
     const setStaticRouteLimits =
@@ -154,7 +237,8 @@ function* getRouteSaga(action) {
     // const isHome = currentPath === '/';
     const isPreview = currentPath && currentPath.startsWith('/preview/');
     const currentLanguage = selectCurrentLanguage(state);
-    const defaultLang = (appsays && appsays.defaultLang) || currentLanguage || 'en-GB';
+    const defaultLang =
+      (appsays && appsays.defaultLang) || currentLanguage || 'en-GB';
 
     if (
       !isPreview &&
@@ -186,10 +270,13 @@ function* getRouteSaga(action) {
           );
           // Static route limits override content type mapping limits
           fields = setStaticRouteLimits
-            ? fields || '*' : contentTypeMapping?.fields || '*';
+            ? fields || '*'
+            : contentTypeMapping?.fields || '*';
           linkDepth = setStaticRouteLimits
-            ? linkDepth || 0 : typeof contentTypeMapping?.linkDepth !== 'undefined'
-              ? contentTypeMapping.linkDepth : defaultLinkDepth;
+            ? linkDepth || 0
+            : typeof contentTypeMapping?.linkDepth !== 'undefined'
+              ? contentTypeMapping.linkDepth
+              : defaultLinkDepth;
           fieldLinkDepths = setStaticRouteLimits
             ? fieldLinkDepths
             : contentTypeMapping?.fieldLinkDepths || fieldLinkDepths;
@@ -265,9 +352,16 @@ function* getRouteSaga(action) {
               // authentication cookies are written
               return yield call(setRouteSaga, { path: currentPath });
             } else if (userLoggedIn && nodeError.status === 403) {
-              return yield call(setRouteSaga, {
-                path: LoginHelper.GetAccessDeniedRoute(currentPath),
-              });
+              const accessDeniedRoute =
+                LoginHelper.GetAccessDeniedRoute(currentPath);
+              // So we don't get stuck in a loop if the user is already on the access denied page
+              if (currentPath !== accessDeniedRoute) {
+                return yield call(setRouteSaga, {
+                  path: LoginHelper.GetAccessDeniedRoute(currentPath),
+                });
+              } else {
+                return yield call(do500, nodeError);
+              }
             } else {
               return yield call(do500, nodeError);
             }
@@ -297,7 +391,11 @@ function* getRouteSaga(action) {
           // reassign the query limiting variables if we haven't
           // already set them in a static route
           if (!setStaticRouteLimits)
-            ({ fieldLinkDepths, fields, linkDepth = defaultLinkDepth } = contentTypeMapping || {});
+            ({
+              fieldLinkDepths,
+              fields,
+              linkDepth = defaultLinkDepth,
+            } = contentTypeMapping || {});
 
           const query = routeEntryByFieldsQuery(
             pathNode.entry.sys.id,
@@ -307,11 +405,7 @@ function* getRouteSaga(action) {
             fieldLinkDepths,
             deliveryApiStatus
           );
-          const payload = yield api.search(
-            query,
-            linkDepth,
-            project
-          );
+          const payload = yield api.search(query, linkDepth, project);
           if (payload?.items?.length > 0) {
             pathNode.entry = entry = payload.items[0];
           }
@@ -342,13 +436,15 @@ function* getRouteSaga(action) {
     // We initially listened for SET_ENTRY to complete before
     // resolving the current route language, but this meant
     // that the language change was not captured in time for the SSR response
-    yield call(resolveCurrentRouteLanguage, { entry: pathNode?.entry, node: pathNode });
+    yield call(resolveCurrentRouteLanguage, {
+      entry: pathNode?.entry,
+      node: pathNode,
+    });
 
-    const contentTypeRoute =
-      findContentTypeMapping(
-        ContentTypeMappings,
-        pathNode?.entry?.sys?.contentTypeId
-      );
+    const contentTypeRoute = findContentTypeMapping(
+      ContentTypeMappings,
+      pathNode?.entry?.sys?.contentTypeId
+    );
 
     // Inject redux { key, reducer, saga } provided by ContentTypeMapping
     if (contentTypeRoute?.injectRedux)
@@ -358,13 +454,16 @@ function* getRouteSaga(action) {
     const routeSearchOptions = getSearchOptions(staticRoute, contentTypeRoute);
 
     if (withEvents && withEvents.onRouteLoaded) {
-
       // Check if the app has provided a requireLogin boolean flag or groups array
       // in addition to checking if requireLogin is set in the route definition
       // The app can provide an object to invoke the search saga
       ({ requireLogin, searchOptions } =
         (yield withEvents.onRouteLoaded({
-          ...action, contentTypeRoute, entry, params, searchOptions: routeSearchOptions
+          ...action,
+          contentTypeRoute,
+          entry,
+          params,
+          searchOptions: routeSearchOptions,
         })) || {});
     }
 
@@ -373,9 +472,13 @@ function* getRouteSaga(action) {
       yield call(handleRequiresLoginSaga, { ...action, entry, requireLogin });
     }
 
-    if (searchOptions || routeSearchOptions) yield call(
-      handleSearchSaga, { ...action, params, routeSearchOptions, searchOptions }
-    );
+    if (searchOptions || routeSearchOptions)
+      yield call(handleSearchSaga, {
+        ...action,
+        params,
+        routeSearchOptions,
+        searchOptions,
+      });
 
     if (!appsays || !appsays.preventScrollTop) {
       // Scroll into View
@@ -388,8 +491,11 @@ function* getRouteSaga(action) {
       if (params.livePreview && typeof window !== 'undefined') {
         if (livePreviewTask) yield cancel(livePreviewTask);
         livePreviewTask = yield fork(watchLivePreviewSaga, {
-          currentPath, entry, entryMapper, pathNode,
-          limits: { fields, fieldLinkDepths, linkDepth }
+          currentPath,
+          entry,
+          entryMapper,
+          pathNode,
+          limits: { fields, fieldLinkDepths, linkDepth },
         });
       }
 
@@ -603,8 +709,8 @@ function* resolveCurrentNodeOrdinates(action) {
     apiCall[3] = function* getNodeTree() {
       const treeDepth =
         doNavigation === true ||
-          !doNavigation.tree ||
-          doNavigation.tree === true
+        !doNavigation.tree ||
+        doNavigation.tree === true
           ? 2
           : doNavigation.tree;
 
@@ -650,15 +756,15 @@ function* setRouteEntry(
   const mappedEntry = !entryMapper
     ? null
     : currentEntryId === entrySys.id &&
-      currentEntryLang === entrySys.language &&
-      remapEntry === false
+        currentEntryLang === entrySys.language &&
+        remapEntry === false
       ? (yield select(selectMappedEntry, 'js')) || {}
       : yield mapRouteEntry(entryMapper, {
-        ...node,
-        entry,
-        ancestors,
-        siblings,
-      });
+          ...node,
+          entry,
+          ancestors,
+          siblings,
+        });
 
   yield all([
     put({
@@ -671,15 +777,15 @@ function* setRouteEntry(
       notFound,
     }),
     ancestors &&
-    put({
-      type: SET_ANCESTORS,
-      ancestors,
-    }),
+      put({
+        type: SET_ANCESTORS,
+        ancestors,
+      }),
     siblings &&
-    put({
-      type: SET_SIBLINGS,
-      siblings,
-    }),
+      put({
+        type: SET_SIBLINGS,
+        siblings,
+      }),
   ]);
 }
 

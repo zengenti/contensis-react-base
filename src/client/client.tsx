@@ -61,7 +61,13 @@ class ClientApp {
                   v7_startTransition: true,
                 }}
               >
-                <SSRContextProvider>
+                <SSRContextProvider
+                  config={{
+                    ...DELIVERY_API_CONFIG,
+                    // Grab any config written by SSR
+                    ...((window as any).DELIVERY_API_CONFIG || {}),
+                  }}
+                >
                   <ReactApp routes={routes} withEvents={withEvents} />
                 </SSRContextProvider>
               </HistoryRouter>

@@ -106,8 +106,11 @@ const recordApiResponse =
  * Create a new Config object to create a DeliveryAPI Client
  */
 const deliveryApiConfig = (ssr?: SSRContext) => {
-  const config: Config = {
+  const config: Config = ssr?.config ?? {
+    // Fallback to plain global when SSRContext is not provided
     ...DELIVERY_API_CONFIG /* global DELIVERY_API_CONFIG */,
+    // Grab any further config written by SSR
+    ...(!isSSR ? window.DELIVERY_API_CONFIG || {} : {}),
   };
 
   config.responseHandler = {
@@ -155,6 +158,7 @@ export const getClientConfig = (project?: string, ssr?: SSRContext) => {
 
 declare let window: Window &
   typeof globalThis & {
+    DELIVERY_API_CONFIG?: Partial<typeof DELIVERY_API_CONFIG>;
     versionStatus?: VersionStatus;
   };
 
@@ -183,21 +187,12 @@ export class DeliveryApi {
   };
 
   getServerSideVersionStatus = (request: Request) => {
-    const rawStatus =
+    const status =
       request.query.versionStatus ??
       deliveryApi.getVersionStatusFromHeaders(request.headers) ??
       deliveryApi.getVersionStatusFromHostname(request.hostname);
 
-    const status =
-      typeof rawStatus === 'string' ? rawStatus.trim().toLowerCase() : '';
-
-    // Validate the status to only allow known values and ignore any others
-    // to prevent malicious injection
-    if (['latest', 'published'].includes(status)) {
-      return status as 'latest' | 'published';
-    }
-
-    return undefined;
+    return this.normalizeVersionStatus(status as VersionStatus);
   };
 
   getVersionStatusFromHeaders = (headers: IncomingHttpHeaders) => {
@@ -227,6 +222,15 @@ export class DeliveryApi {
 
     return 'published';
   };
+
+  /* Normalize the version status to only allow known values and fallback to published content */
+  normalizeVersionStatus = (
+    versionStatus: VersionStatus | undefined
+  ): VersionStatus =>
+    typeof versionStatus === 'string' &&
+    versionStatus.trim().toLowerCase() === 'latest'
+      ? 'latest'
+      : 'published';
 
   search = (query: Query, linkDepth = 0, project?: string) => {
     const client = Client.create(getClientConfig(project, this.ssr));

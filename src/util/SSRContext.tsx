@@ -24,10 +24,12 @@ const SSRContext = createContext<SSRContextType | null>(null);
 export const SSRContextProvider = ({
   accessMethod,
   children,
+  config,
   request,
   response,
 }: PropsWithChildren<{
   accessMethod?: SSRAccessMethod;
+  config: typeof DELIVERY_API_CONFIG;
   request?: Request;
   response?: Response;
 }>) => {
@@ -35,12 +37,13 @@ export const SSRContextProvider = ({
   // we cannot access in a global scope
   const dispatch = useDispatch();
   const cookies = new CookieHelper(...useCookies());
-  const api = cachedSearchWithContext({ cookies, dispatch, request, response });
+  const api = cachedSearchWithContext({ config, cookies, dispatch, request, response });
   const subsitePath = getSubsitePath(request);
 
   const [context] = useState<SSRContextType>({
     accessMethod,
     api,
+    config,
     cookies,
     dispatch,
     request,
