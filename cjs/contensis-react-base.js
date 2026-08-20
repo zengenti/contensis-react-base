@@ -2,13 +2,13 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var ContensisDeliveryApi = require('./ContensisDeliveryApi-vsHVQ_Ci.js');
+var ContensisDeliveryApi = require('./ContensisDeliveryApi-B1-6b_NF.js');
 var contensisDeliveryApi = require('contensis-delivery-api');
 var React = require('react');
 var reactRedux = require('react-redux');
 var slice = require('./slice-5xJMH24n.js');
 var mapJson = require('jsonpath-mapper');
-var sagas = require('./sagas-Blev8h_u.js');
+var sagas = require('./sagas-Cz07BgGr.js');
 require('reselect');
 require('immer');
 require('deep-equal');
@@ -19,8 +19,13 @@ var urls = require('./urls-DGZlAs0y.js');
 require('isomorphic-fetch');
 var express = require('express');
 var http = require('http');
+var to = require('await-to-js');
+var selectors = require('./selectors-CM7tFAXq.js');
+var CookieHelper_class = require('./CookieHelper.class-Det3qfdU.js');
+var App = require('./App-DEbnqzLb.js');
+var ChangePassword_container = require('./ChangePassword.container-CJCsHYrd.js');
+var CookieConstants = require('./CookieConstants-DfPiWCRZ.js');
 var httpProxy = require('http-proxy');
-var App = require('./App-CglX6YP5.js');
 var fs = require('fs');
 var path = require('path');
 var appRootPath = require('app-root-path');
@@ -31,12 +36,11 @@ var styled = require('styled-components');
 var serialize = require('serialize-javascript');
 var lodash = require('lodash');
 var lodashClean = require('lodash-clean');
-var CookieHelper_class = require('./CookieHelper.class-Det3qfdU.js');
 var cookiesMiddleware = require('universal-cookie-express');
 var store = require('./store-Ccwrx5Do.js');
 var version = require('./version-AE19NqSo.js');
-var selectors = require('./selectors-BnaBk5xL.js');
-var RouteLoader = require('./RouteLoader-NjuQ0VMn.js');
+var selectors$1 = require('./selectors-BnaBk5xL.js');
+var RouteLoader = require('./RouteLoader-Dq1YqinW.js');
 var stream = require('stream');
 var server$2 = require('@loadable/server');
 var chalk = require('chalk');
@@ -44,21 +48,17 @@ var minifyCssString = require('minify-css-string');
 var reactCookie = require('react-cookie');
 var reactHelmetAsync = require('react-helmet-async');
 var server$3 = require('react-router-dom/server');
-var SSRContext = require('./SSRContext-WPN0QwEg.js');
+var SSRContext = require('./SSRContext-BDNNaGPD.js');
 require('./VersionInfo-BygZuA9D.js');
-require('./CookieConstants-DfPiWCRZ.js');
 require('@reduxjs/toolkit');
 require('loglevel');
 require('@redux-saga/core/effects');
 require('./version-CaRCM9vq.js');
-require('./util-LE7KTRCU.js');
+require('./util-xORD0DfD.js');
 require('./selectors-DAQR0uZa.js');
 require('./_commonjsHelpers-BJu3ubxk.js');
 require('history');
-require('await-to-js');
 require('redux-saga');
-require('./ChangePassword.container-DoYRQQg7.js');
-require('./matchGroups-D8QZEd1p.js');
 require('./ToJs-BsWqWjdm.js');
 require('redux');
 require('redux-thunk');
@@ -70,6 +70,7 @@ var React__default = /*#__PURE__*/_interopDefault(React);
 var mapJson__default = /*#__PURE__*/_interopDefault(mapJson);
 var express__default = /*#__PURE__*/_interopDefault(express);
 var http__default = /*#__PURE__*/_interopDefault(http);
+var to__default = /*#__PURE__*/_interopDefault(to);
 var httpProxy__default = /*#__PURE__*/_interopDefault(httpProxy);
 var fs__default = /*#__PURE__*/_interopDefault(fs);
 var path__default = /*#__PURE__*/_interopDefault(path);
@@ -659,6 +660,241 @@ const subsiteDebugMiddleware = (subsitePath, exceptions = []) => (req, res, next
   next();
 };
 
+/** The credentials a request can be resolved with: a bearer token from the
+ *  Authorization header or the login cookies, plus the refresh token cookie.
+ *  `cookiesMiddleware()` is registered later by webApp, so read the header
+ *  direct. */
+const getRequestCredentials = req => {
+  var _req$headers$authoriz;
+  const cookies = new CookieHelper_class.Cookies(req.headers.cookie || '').getAll();
+  return {
+    bearerToken: ((_req$headers$authoriz = req.headers.authorization) === null || _req$headers$authoriz === void 0 ? void 0 : _req$headers$authoriz.replace(/^Bearer /i, '')) || cookies[CookieConstants.LOGIN_COOKIE] || cookies[CookieConstants.BEARER_TOKEN_COOKIE],
+    refreshToken: cookies[CookieConstants.REFRESH_TOKEN_COOKIE]
+  };
+};
+
+/**
+ * Resolve a user from the credentials supplied, so callers only need care
+ * about the returned user (or `null` when nothing authenticates).
+ *
+ * The bearer token is tried first, falling back to the refresh token if it's
+ * missing or stale. The resolved user carries their groups where they were
+ * resolved, so callers can check group membership. Groups are only resolved
+ * when `resolveGroups` is set.
+ *
+ * A failed bearer token is only reported when the request fails to
+ * authenticate overall - a stale bearer that a refresh login recovers from
+ * is the normal case and is not logged.
+ */
+const authenticateRequest = async (bearerToken, refreshToken, resolveGroups = false) => {
+  // Remember why the bearer token (if any) didn't resolve a user, so it can
+  // be reported only when the request fails to authenticate overall.
+  let bearerError = null;
+  if (bearerToken) {
+    // TODO: `/api/security/users/@current` lifted from contensis-management-api,
+    // could just use the management api?
+    const [error, response] = await to.to(fetch(`${ChangePassword_container.LoginHelper.CMS_URL}/api/security/users/@current`, {
+      headers: {
+        Authorization: `Bearer ${bearerToken}`,
+        Accept: 'application/json'
+      }
+    }));
+    if (error) {
+      bearerError = error;
+    } else if (!(response !== null && response !== void 0 && response.ok)) {
+      // `statusText` is the HTTP/1 reason phrase, which is empty over HTTP/2
+      // and when the server omits it (Node doesn't send one), so remember the
+      // numeric status only.
+      bearerError = `@current responded ${response.status}`;
+    } else {
+      const [parseError, user] = await to.to(response.json());
+      if (parseError) {
+        bearerError = parseError;
+      } else if (!(user !== null && user !== void 0 && user.id)) {
+        bearerError = '@current response has no user id';
+      } else {
+        // `@current` returns the user alone, so where the caller needs
+        // checking against user groups, resolve them the same way the refresh
+        // path does. A failure here leaves the user without groups, so
+        // group-restricted tokens fail closed for them while plain
+        // `requireLogin: true` tokens still release - log it so a surprise
+        // 403 is traceable.
+        if (resolveGroups) {
+          const [groupsError, groupsResponse] = await to.to(fetch(`${ChangePassword_container.LoginHelper.CMS_URL}/api/security/users/${user.id}/groups?includeInherited=true&pageSize=500`, {
+            headers: {
+              Authorization: `Bearer ${bearerToken}`,
+              Accept: 'application/json'
+            }
+          }));
+          if (groupsError) {
+            App.logError('[accessTokenApi] user groups request failed', groupsError);
+          } else if (!(groupsResponse !== null && groupsResponse !== void 0 && groupsResponse.ok)) {
+            console.warn(`[accessTokenApi] user groups request responded ${groupsResponse.status}`);
+          } else {
+            const [parseGroupsError, groupsResult] = await to.to(groupsResponse.json());
+            if (parseGroupsError) {
+              App.logError('[accessTokenApi] user groups response parse error', parseGroupsError);
+            } else if (groupsResult !== null && groupsResult !== void 0 && groupsResult.items) {
+              user.groups = groupsResult.items;
+            }
+          }
+        }
+        return user;
+      }
+    }
+  }
+
+  // No user from the bearer token. Only the refresh token can still
+  // authenticate this request.
+  if (refreshToken) {
+    const client = await ChangePassword_container.getManagementApiClient({
+      refreshToken
+    });
+    const [error, user] = resolveGroups ? await ChangePassword_container.LoginHelper.GetUserDetails(client) : await to.to(client.security.users.getCurrent());
+    if (error || !user) {
+      // Both credentials failed to authenticate - report both so the failure
+      // is diagnosable.
+      if (bearerError) App.logError('[accessTokenApi] bearer token authentication failed', bearerError);
+      App.logError('[accessTokenApi] refresh token authentication failed', error != null ? error : 'no user returned');
+      return null;
+    }
+
+    // The refresh token authenticated the request; an earlier bearer failure
+    // was the normal stale-bearer case, so it is deliberately not logged.
+    return user;
+  }
+
+  // No refresh token to fall back to - a bearer failure here is the terminal
+  // failure for this request.
+  if (bearerError) App.logError('[accessTokenApi] bearer token authentication failed', bearerError);
+  return null;
+};
+
+/** Release uri for any protected token  preview and live are the same node, and the request decides which token
+ *  the caller gets, so nothing needs supplying by the caller. */
+const ACCESS_TOKEN_URI = '/crb-api/auth/access-token';
+
+/** The outcome of resolving a request against the `accessTokens` config.
+ *  `undefined` means no config is in play and the startup defaults stand -
+ *  anything else is authoritative over them, including an empty result. */
+
+/** The token configured for a scope in a project, falling back to the
+ *  top-level entry for that scope. */
+const getAccessToken = (config, project, scope) => {
+  var _config$projects$proj, _config$projects;
+  return (_config$projects$proj = config === null || config === void 0 || (_config$projects = config.projects) === null || _config$projects === void 0 || (_config$projects = _config$projects[project]) === null || _config$projects === void 0 ? void 0 : _config$projects[scope]) != null ? _config$projects$proj : config === null || config === void 0 ? void 0 : config[scope];
+};
+
+/**
+ * Release the access token in SSR, or provide a release URI if the resolved
+ * config has `requireLogin` set (a `true`/array means any authenticated
+ * caller, or only the listed user groups, may fetch it).
+ */
+const resolveAccessToken = (config, project, versionStatus) => {
+  // Unconfigured. Existing consumers keep the token from the environment startup defaults
+  if (!config) return undefined;
+  const accessToken = getAccessToken(config, project, versionStatus);
+
+  // Nothing configured for the scope this request resolved to. Neither a
+  // token nor somewhere to fetch one, so the request will fail where it is
+  // made rather than being hidden behind a blank shell.
+  // REVIEW: misconfiguration - worth validating at startup instead.
+  if (!(accessToken !== null && accessToken !== void 0 && accessToken.token)) {
+    console.warn(`[accessToken] project "${project}" resolved to versionStatus ${versionStatus} with no token configured`);
+    return {};
+  }
+
+  // Not protected: the token goes into the page and SSR renders normally
+  if (!accessToken.requireLogin) return {
+    accessToken: accessToken.token
+  };
+
+  // Protected: skip SSR (render dynamic) and the client must authenticate,
+  // then request the access token from the release URI.
+  return {
+    releaseUri: `${ACCESS_TOKEN_URI}?versionStatus=${versionStatus}`
+  };
+};
+
+/** Serialise the resolved token into the script tag written into the SSR page response */
+const accessTokenScript = resolved => {
+  // Nothing configured - leave the startup defaults alone
+  if (!resolved) return '';
+  const {
+    accessToken,
+    releaseUri
+  } = resolved;
+  const values = [
+  // Always written, including as null. Omitting it would leave a token from
+  // the startup defaults in place, which the client would use in good faith.
+  `accessToken: ${JSON.stringify(accessToken != null ? accessToken : null)}`, releaseUri && `releaseUri: ${JSON.stringify(releaseUri)}`].filter(Boolean);
+
+  // Merged over anything already on the context. startup.js applies its own
+  // values as defaults beneath this, so it cannot overwrite them whichever
+  // order the two scripts run in.
+  return `window.DELIVERY_API_CONFIG = Object.assign(window.DELIVERY_API_CONFIG || {}, { ${values.join(', ')} });`;
+};
+
+/**
+ * Release a protected access token to an authenticated caller.
+ *
+ * Preview and live sites are served by the same deployment, so the token a
+ * caller receives is decided by the request, not by the uri they post to.
+ *
+ * This route is only registered when a scope is configured with `requireLogin`.
+ */
+const makeAccessTokenApi = (app, accessTokens) => {
+  // This route serves the default project, set at container start.
+  const isProtected = ['published', 'latest'].some(scope => {
+    const accessToken = getAccessToken(accessTokens, PROJECT, scope);
+    return !!(accessToken !== null && accessToken !== void 0 && accessToken.token) && !!accessToken.requireLogin;
+  });
+  if (!isProtected) return;
+  console.warn(`[accessTokenApi] accessTokens configured for project "${PROJECT}" require auth, registering ${ACCESS_TOKEN_URI}`);
+  // POST prevents the response from being cached
+  app.post(ACCESS_TOKEN_URI, makeAccessTokenMiddleware(accessTokens));
+};
+
+/** Produces the request handler for the access token api */
+const makeAccessTokenMiddleware = accessTokens => async (req, res) => {
+  res.setHeader('Cache-Control', 'no-store, private');
+  res.setHeader('Surrogate-Control', 'no-store');
+
+  // Resolve latest/published scope from the request
+  const scope = ContensisDeliveryApi.deliveryApi.getServerSideVersionStatus(req);
+  const accessToken = getAccessToken(accessTokens, PROJECT, scope);
+
+  // No token for this scope, or it isn't protected and is already in the page
+  // (app is likely misconfigured if we're here - should never need it)
+  if (!(accessToken !== null && accessToken !== void 0 && accessToken.token) || !accessToken.requireLogin) return res.status(404).json({
+    message: 'Not found'
+  });
+
+  // Only resolve the caller's groups when this scope actually restricts the
+  // token to user groups; a plain `requireLogin: true` needs only a valid user
+  const requireGroups = Array.isArray(accessToken.requireLogin) && accessToken.requireLogin.length > 0;
+  const {
+    bearerToken,
+    refreshToken
+  } = getRequestCredentials(req);
+  const [err, user] = await to__default.default(authenticateRequest(bearerToken, refreshToken, requireGroups));
+  if (err) App.logError('[accessTokenApi] authenticateRequest error', err);
+  if (!user) return res.status(401).json({
+    message: 'Not authenticated'
+  });
+
+  // Group-restricted token: only release it to a caller who is a member of
+  // at least one of the configured groups. `matchUserGroup` passes booleans
+  // and empty arrays through, so `requireLogin: true` behaves as before.
+  // A user with no resolvable groups fails closed.
+  if (!selectors.matchUserGroup(user.groups, accessToken.requireLogin)) return res.status(403).json({
+    message: 'Not a member of a required user group'
+  });
+  return res.json({
+    accessToken: accessToken.token
+  });
+};
+
 const servers$1 = SERVERS; /* global SERVERS */
 const project = PROJECT; /* global PROJECT */
 const alias$1 = ALIAS; /* global ALIAS */
@@ -1152,8 +1388,8 @@ const logPrefix = '[addHeaders]';
 const addStandardHeaders = (state, response, packagejson, groups) => {
   if (state) {
     try {
-      const routingSurrogateKeys = selectors.selectSurrogateKeys(state);
-      const apiCalls = selectors.selectSsrApiCalls(state);
+      const routingSurrogateKeys = selectors$1.selectSurrogateKeys(state);
+      const apiCalls = selectors$1.selectSsrApiCalls(state);
       const anyApiError = !!apiCalls.find(call => call.statusCode >= 400);
 
       // Check length of surrogate keys and prevent potential header overflow errors in prod
@@ -1176,14 +1412,14 @@ const addStandardHeaders = (state, response, packagejson, groups) => {
 const addVarnishAuthenticationHeaders = (state, response, groups = {}) => {
   if (state) {
     try {
-      const stateEntry = selectors.selectRouteEntry(state);
-      const project = selectors.selectCurrentProject(state);
+      const stateEntry = selectors$1.selectRouteEntry(state);
+      const project = selectors$1.selectCurrentProject(state);
       const {
         globalGroups,
         allowedGroups
       } = groups;
       let allGroups = Array.from(globalGroups && globalGroups[project] || {});
-      if (stateEntry && selectors.getImmutableOrJS(stateEntry, ['authentication', 'isLoginRequired']) && allowedGroups && allowedGroups[project]) {
+      if (stateEntry && selectors$1.getImmutableOrJS(stateEntry, ['authentication', 'isLoginRequired']) && allowedGroups && allowedGroups[project]) {
         allGroups = [...allGroups, ...allowedGroups[project]];
       }
       response.header('x-contensis-viewer-groups', allGroups.join('|'));
@@ -1289,6 +1525,7 @@ const ssrJsxProducer = (ReactApp, {
     }
   }, /*#__PURE__*/React__default.default.createElement(SSRContext.SSRContextProvider, {
     accessMethod: providers.ssrContext.accessMethod,
+    config: providers.ssrContext.config,
     request: providers.ssrContext.request,
     response: providers.ssrContext.response
     // ssrAssets={ssrAssets}
@@ -1303,6 +1540,7 @@ const ssrJsxProducer = (ReactApp, {
 
 const webApp = (app, ReactApp, config) => {
   const {
+    accessTokens,
     stateType = 'js',
     routes,
     withReducers,
@@ -1361,11 +1599,32 @@ const webApp = (app, ReactApp, config) => {
     const onlySSR = staticRoute && staticRoute.route.ssrOnly === true;
     const normaliseQs = q => q && q.toLowerCase() === 'true' ? true : false;
 
+    // In server-side blocks world, the hostname requested by the client resides in the x-orig-host header
+    // Because of this, we prioritize x-orig-host when setting our hostname
+    const hostname = request.headers['x-orig-host'] || request.hostname;
+
+    // Resolved ahead of accessMethod so the access token this response is
+    // allowed to carry can force a client-side render. All three only
+    // depend on the request.
+    const versionStatus = ContensisDeliveryApi.deliveryApi.getServerSideVersionStatus(request);
+    const project = App.pickProject(hostname, request.query);
+    const resolvedToken = resolveAccessToken(accessTokens, project, versionStatus);
+    const deliveryApiConfig = {
+      ...DELIVERY_API_CONFIG,
+      accessToken: resolvedToken !== null && resolvedToken !== void 0 && resolvedToken.accessToken ? resolvedToken === null || resolvedToken === void 0 ? void 0 : resolvedToken.accessToken :
+      // A release uri means the access token is not available in SSR
+      // and user must make an auth request to crb-api/auth/access-token to release it client-side
+      resolvedToken !== null && resolvedToken !== void 0 && resolvedToken.releaseUri ? '' : DELIVERY_API_CONFIG.accessToken // Fallback classic access token if no other configured
+    };
+
     // Determine functional params from QueryString and set access methods
     const accessMethod = mapJson__default.default(request.query, {
       DYNAMIC: ({
         dynamic
-      }) => normaliseQs(dynamic) || onlyDynamic,
+      }) => normaliseQs(dynamic) || onlyDynamic ||
+      // No token available to SSR this request - serve the dynamic shell and let
+      // the client obtain its own
+      !!(resolvedToken !== null && resolvedToken !== void 0 && resolvedToken.releaseUri) && !resolvedToken.accessToken,
       REDUX: ({
         redux
       }) => normaliseQs(redux),
@@ -1381,21 +1640,16 @@ const webApp = (app, ReactApp, config) => {
     const store$1 = await store.createStore(withReducers, {}, App.history({
       initialEntries: [url]
     }), stateType);
-
-    // dispatch any global and non-saga related actions before calling our JSX
-    const versionStatus = ContensisDeliveryApi.deliveryApi.getServerSideVersionStatus(request);
-
-    // In server-side blocks world, the hostname requested by the client resides in the x-orig-host header
-    // Because of this, we prioritize x-orig-host when setting our hostname
-    const hostname = request.headers['x-orig-host'] || request.hostname;
     const subsitePath = SSRContext.getSubsitePath(request);
     const subsitePathScript = subsitePath ? `window.subsitePath = ${serialize__default.default(subsitePath)};` : '';
+
+    // Writes the resolved access token, or where to request one, into the page
+    const accessTokenHint = accessTokenScript(resolvedToken);
     console.info(`[webApp] "${request.method} ${request.path}" hostname: ${hostname} versionStatus: ${versionStatus}`);
     store$1.dispatch(version.setVersionStatus(versionStatus));
     store$1.dispatch(version.setVersion(versionInfo.commitRef, versionInfo.buildNo));
-    const project = App.pickProject(hostname, request.query);
     const groups = allowedGroups && allowedGroups[project];
-    store$1.dispatch(selectors.setCurrentProject(project, groups, hostname));
+    store$1.dispatch(selectors$1.setCurrentProject(project, groups, hostname));
     if (i18n) {
       store$1.dispatch(slice.actions.INIT_LOCALES({
         locales: {},
@@ -1436,6 +1690,7 @@ const webApp = (app, ReactApp, config) => {
       },
       ssrContext: {
         accessMethod,
+        config: deliveryApiConfig,
         request,
         response
       }
@@ -1458,7 +1713,7 @@ const webApp = (app, ReactApp, config) => {
       // Dynamic doesn't need sagas
       // or styles, or any split component bundles
       // nor are we streaming responses
-      const isDynamicHints = `<script ${attributes}>window.isDynamic = true; ${subsitePathScript}</script>`;
+      const isDynamicHints = `<script ${attributes}>window.isDynamic = true; ${subsitePathScript} ${accessTokenHint}</script>`;
       const jsx = ssrJsxProducer(ReactApp, {
         providers: jsxProviderProps,
         props: jsxReactAppProps
@@ -1498,7 +1753,7 @@ const webApp = (app, ReactApp, config) => {
         })(sagas.cloneDeep(reduxState));
         // These keys are used for preparing server-side response headers only
         // and are not required in the client at all except for debugging ssr
-        if (!((_selectCurrentSearch = selectors.selectCurrentSearch(reduxState)) !== null && _selectCurrentSearch !== void 0 && _selectCurrentSearch.includes('includeApiCalls'))) {
+        if (!((_selectCurrentSearch = selectors$1.selectCurrentSearch(reduxState)) !== null && _selectCurrentSearch !== void 0 && _selectCurrentSearch.includes('includeApiCalls'))) {
           if (stateType === 'immutable') clonedState = clonedState.deleteIn(['routing', 'apiCalls']).deleteIn(['routing', 'surrogateKeys']);else {
             delete clonedState.routing.apiCalls;
             delete clonedState.routing.surrogateKeys;
@@ -1520,7 +1775,7 @@ const webApp = (app, ReactApp, config) => {
             return true;
           }
           if (!disableSsrRedux) {
-            serialisedReduxData = `<script ${attributes}>${subsitePathScript} window.__USE_HYDRATE__ = true; window.REDUX_DATA = ${serialisedReduxData}</script>`;
+            serialisedReduxData = `<script ${attributes}>${subsitePathScript} ${accessTokenHint} window.__USE_HYDRATE__ = true; window.REDUX_DATA = ${serialisedReduxData}</script>`;
           }
         }
 
@@ -1651,6 +1906,8 @@ const start = (ReactApp, config, ServerFeatures) => {
   // Output some information about the used build/startup configuration
   DisplayStartupConfiguration(config);
   ServerFeatures(app);
+  // Registers only when `accessTokens` is configured with `requireLogin` to release
+  makeAccessTokenApi(app, config.accessTokens);
   // Set-up local proxy for images from cms, and delivery api requests
   // to save doing rewrites and extra code
   reverseProxies(app, config.reverseProxyPaths);

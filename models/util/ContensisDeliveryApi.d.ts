@@ -11,9 +11,10 @@ export declare class DeliveryApi {
     ssr?: SSRContext;
     constructor(ssr?: SSRContext);
     getClientSideVersionStatus: () => string | (string | null)[] | null;
-    getServerSideVersionStatus: (request: Request) => "published" | "latest" | undefined;
+    getServerSideVersionStatus: (request: Request) => VersionStatus;
     getVersionStatusFromHeaders: (headers: IncomingHttpHeaders) => string | string[] | null;
     getVersionStatusFromHostname: (currentHostname: string) => "published" | "latest";
+    normalizeVersionStatus: (versionStatus: VersionStatus | undefined) => VersionStatus;
     search: (query: Query, linkDepth?: number, project?: string) => Promise<import("contensis-core-api").PagedSearchList<import("contensis-delivery-api").Entry>>;
     getClient: (versionStatus?: VersionStatus, project?: string) => Client;
     getEntry: (id: string, linkDepth?: number, versionStatus?: VersionStatus, project?: string) => Promise<import("contensis-delivery-api").Entry>;

@@ -1,10 +1,10 @@
 'use strict';
 
-var ChangePassword_container = require('./ChangePassword.container-DoYRQQg7.js');
+var ChangePassword_container = require('./ChangePassword.container-CJCsHYrd.js');
 var React = require('react');
 var reactCookie = require('react-cookie');
 var reactRedux = require('react-redux');
-var matchGroups = require('./matchGroups-D8QZEd1p.js');
+var selectors$1 = require('./selectors-CM7tFAXq.js');
 var CookieHelper_class = require('./CookieHelper.class-Det3qfdU.js');
 var ToJs = require('./ToJs-BsWqWjdm.js');
 var selectors = require('./selectors-BnaBk5xL.js');
@@ -26,16 +26,16 @@ const getDisplayName$1 = WrappedComponent => {
 const withLogin = WrappedComponent => {
   const mapStateToProps = state => {
     return {
-      errorMessage: matchGroups.selectUserErrorMessage(state),
-      isAuthenticated: matchGroups.selectUserIsAuthenticated(state),
-      isAuthenticationError: matchGroups.selectUserIsAuthenticationError(state),
-      isError: matchGroups.selectUserIsError(state),
-      isLoading: matchGroups.selectUserIsLoading(state),
-      user: matchGroups.selectUser(state),
+      errorMessage: selectors$1.selectUserErrorMessage(state),
+      isAuthenticated: selectors$1.selectUserIsAuthenticated(state),
+      isAuthenticationError: selectors$1.selectUserIsAuthenticationError(state),
+      isError: selectors$1.selectUserIsError(state),
+      isLoading: selectors$1.selectUserIsLoading(state),
+      user: selectors$1.selectUser(state),
       // DEPRECATED: authenticationError is deprecated use isAuthenticationError instead
-      authenticationError: matchGroups.selectUserIsAuthenticationError(state),
+      authenticationError: selectors$1.selectUserIsAuthenticationError(state),
       // DEPRECATED: error is deprecated use isError instead
-      error: matchGroups.selectUserIsError(state)
+      error: selectors$1.selectUserIsError(state)
     };
   };
   const ConnectedComponent = () => {
@@ -58,10 +58,10 @@ const getDisplayName = WrappedComponent => {
 const withRegistration = WrappedComponent => {
   const mapStateToProps = state => {
     return {
-      error: matchGroups.selectUserRegistrationError(state),
-      isLoading: matchGroups.selectUserRegistrationIsLoading(state),
-      isSuccess: matchGroups.selectUserRegistrationIsSuccess(state),
-      user: matchGroups.selectUserRegistration(state)
+      error: selectors$1.selectUserRegistrationError(state),
+      isLoading: selectors$1.selectUserRegistrationIsLoading(state),
+      isSuccess: selectors$1.selectUserRegistrationIsSuccess(state),
+      user: selectors$1.selectUserRegistration(state)
     };
   };
   const mapDispatchToProps = {
@@ -84,7 +84,7 @@ exports.useChangePassword = ChangePassword_container.useChangePassword;
 exports.useForgotPassword = ChangePassword_container.useForgotPassword;
 exports.useLogin = ChangePassword_container.useLogin;
 exports.useRegistration = ChangePassword_container.useRegistration;
-exports.selectors = matchGroups.selectors;
+exports.selectors = selectors$1.selectors;
 exports.initialUserState = selectors.initialUserState;
 exports.reducer = selectors.UserReducer;
 exports.types = selectors.types;

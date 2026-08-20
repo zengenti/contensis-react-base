@@ -8,6 +8,8 @@ export type SSRContext = {
     /** Available in both SSR and client side */
     api: CachedSearch;
     /** Available in both SSR and client side */
+    config: typeof DELIVERY_API_CONFIG;
+    /** Available in both SSR and client side */
     cookies: CookieHelper;
     /** Available in both SSR and client side */
     dispatch: Dispatch<any>;

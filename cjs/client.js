@@ -11,14 +11,14 @@ var component = require('@loadable/component');
 var queryString = require('query-string');
 var reactCookie = require('react-cookie');
 var reactHelmetAsync = require('react-helmet-async');
-var App = require('./App-CglX6YP5.js');
+var App = require('./App-DEbnqzLb.js');
 var slice = require('./slice-5xJMH24n.js');
 var version = require('./version-CaRCM9vq.js');
 var version$1 = require('./version-AE19NqSo.js');
 var store = require('./store-Ccwrx5Do.js');
 var selectors = require('./selectors-BnaBk5xL.js');
-var ContensisDeliveryApi = require('./ContensisDeliveryApi-vsHVQ_Ci.js');
-var SSRContext = require('./SSRContext-WPN0QwEg.js');
+var ContensisDeliveryApi = require('./ContensisDeliveryApi-B1-6b_NF.js');
+var SSRContext = require('./SSRContext-BDNNaGPD.js');
 require('history');
 require('@redux-saga/core/effects');
 require('loglevel');
@@ -30,19 +30,19 @@ require('./_commonjsHelpers-BJu3ubxk.js');
 require('jsonpath-mapper');
 require('styled-components');
 require('./selectors-DAQR0uZa.js');
-require('./ChangePassword.container-DoYRQQg7.js');
-require('./matchGroups-D8QZEd1p.js');
+require('./ChangePassword.container-CJCsHYrd.js');
+require('./selectors-CM7tFAXq.js');
 require('./CookieConstants-DfPiWCRZ.js');
 require('./CookieHelper.class-Det3qfdU.js');
 require('./ToJs-BsWqWjdm.js');
-require('./sagas-Blev8h_u.js');
+require('./sagas-Cz07BgGr.js');
 require('reselect');
-require('./util-LE7KTRCU.js');
+require('./util-xORD0DfD.js');
 require('contensis-core-api');
 require('deepmerge');
 require('immer');
 require('deep-equal');
-require('./RouteLoader-NjuQ0VMn.js');
+require('./RouteLoader-Dq1YqinW.js');
 require('@reduxjs/toolkit');
 require('redux');
 require('redux-thunk');
@@ -76,7 +76,13 @@ class ClientApp {
           v7_relativeSplatPath: true,
           v7_startTransition: true
         }
-      }, /*#__PURE__*/React__default.default.createElement(SSRContext.SSRContextProvider, null, /*#__PURE__*/React__default.default.createElement(ReactApp, {
+      }, /*#__PURE__*/React__default.default.createElement(SSRContext.SSRContextProvider, {
+        config: {
+          ...DELIVERY_API_CONFIG,
+          // Grab any config written by SSR
+          ...(window.DELIVERY_API_CONFIG || {})
+        }
+      }, /*#__PURE__*/React__default.default.createElement(ReactApp, {
         routes: routes,
         withEvents: withEvents
       }))))));

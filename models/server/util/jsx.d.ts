@@ -6,14 +6,7 @@ import Cookies from 'universal-cookie';
 import { AppRoutes, SSRAccessMethod, WithEvents } from "../../models";
 import { reduxStore } from "../../redux/store/store";
 import { HttpContextValues } from "../../routing/httpContext";
-/**
- * Produce the JSX wrapped in the necessary Providers
- * to render the app in SSR
- * @param ReactApp the JSX to render
- * @param { providers, props, ssrAssets }
- * @returns the final JSX to render decorated with all Provider and App props
- */
-export declare const ssrJsxProducer: (ReactApp: React.ComponentType<any>, { providers, props, }: {
+export type SSRJsxProducerProps = {
     /** Providers enrich the JSX */
     providers: {
         loadable: {
@@ -31,6 +24,7 @@ export declare const ssrJsxProducer: (ReactApp: React.ComponentType<any>, { prov
         };
         ssrContext: {
             accessMethod: SSRAccessMethod;
+            config: typeof DELIVERY_API_CONFIG;
             request: Request;
             response: Response;
         };
@@ -40,4 +34,12 @@ export declare const ssrJsxProducer: (ReactApp: React.ComponentType<any>, { prov
         routes: AppRoutes;
         withEvents: WithEvents;
     };
-}) => React.JSX.Element;
+};
+/**
+ * Produce the JSX wrapped in the necessary Providers
+ * to render the app in SSR
+ * @param ReactApp the JSX to render
+ * @param { providers, props, ssrAssets }
+ * @returns the final JSX to render decorated with all Provider and App props
+ */
+export declare const ssrJsxProducer: (ReactApp: React.ComponentType<any>, { providers, props, }: SSRJsxProducerProps) => React.JSX.Element;

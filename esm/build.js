@@ -79,7 +79,7 @@ function runDev(args) {
   }
 
   // Validate required environment variables
-  const REQUIRED_ENV = ['ALIAS', 'PROJECT', 'ACCESS_TOKEN'];
+  const REQUIRED_ENV = ['ALIAS', 'PROJECT'];
   const missingEnv = REQUIRED_ENV.filter(k => !process.env[k] || !process.env[k].trim());
   if (missingEnv.length) {
     console.error(`[crb] ❌ Error: Cannot start dev server. Missing required env vars: ${missingEnv.join(', ')}. ` + `Set them in a .env file at the project root or export them in your shell.`);

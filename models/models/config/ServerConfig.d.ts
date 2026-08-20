@@ -1,6 +1,10 @@
+import { AccessTokenConfig } from './AccessTokenConfig';
 import { AppConfig } from './AppConfig';
 import handleResponse from "../../server/features/response-handler";
 export type ServerConfig = AppConfig & {
+    /** Delivery API access tokens, scoped by content status (and optionally by project).
+     *  Omit to keep using the traditional access token baked into `DELIVERY_API_CONFIG` global */
+    accessTokens?: AccessTokenConfig;
     appRootPath?: string;
     disableSsrRedux?: boolean;
     enableSsrCookies?: boolean;

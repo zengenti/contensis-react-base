@@ -8,8 +8,9 @@ import { SSRAccessMethod, SSRContext as SSRContextType } from "../models";
  * adding this in client side allows consumers to write universal code and use
  * the same helpers and request-scoped refs for api, cookies and redux dispatcher
  * as in SSR */
-export declare const SSRContextProvider: ({ accessMethod, children, request, response, }: PropsWithChildren<{
+export declare const SSRContextProvider: ({ accessMethod, children, config, request, response, }: PropsWithChildren<{
     accessMethod?: SSRAccessMethod;
+    config: typeof DELIVERY_API_CONFIG;
     request?: Request;
     response?: Response;
 }>) => React.JSX.Element;

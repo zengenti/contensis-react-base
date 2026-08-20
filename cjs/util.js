@@ -1,8 +1,8 @@
 'use strict';
 
 var urls = require('./urls-DGZlAs0y.js');
-var ContensisDeliveryApi = require('./ContensisDeliveryApi-vsHVQ_Ci.js');
-var SSRContext = require('./SSRContext-WPN0QwEg.js');
+var ContensisDeliveryApi = require('./ContensisDeliveryApi-B1-6b_NF.js');
+var SSRContext = require('./SSRContext-BDNNaGPD.js');
 var VersionInfo = require('./VersionInfo-BygZuA9D.js');
 var React = require('react');
 var reactHelmetAsync = require('react-helmet-async');

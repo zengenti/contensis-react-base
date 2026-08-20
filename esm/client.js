@@ -7,15 +7,15 @@ import { loadableReady } from '@loadable/component';
 import { parse } from 'query-string';
 import { CookiesProvider } from 'react-cookie';
 import { HelmetProvider } from 'react-helmet-async';
-import { c as createLocaleRoutes, b as browserHistory, r as rootSaga, p as pickProject } from './App-dQulUlr-.js';
-export { A as ReactApp } from './App-dQulUlr-.js';
+import { c as createLocaleRoutes, b as browserHistory, r as rootSaga, p as pickProject } from './App-GveE4rY2.js';
+export { A as ReactApp } from './App-GveE4rY2.js';
 import { a as actions } from './slice-C6JLQik8.js';
 import { b as selectVersionStatus } from './version-hQnuV0n7.js';
 import { c as setVersionStatus } from './version-Cy-gb20a.js';
 import { d as createStore } from './store-Cxe7mlLh.js';
 import { a4 as setCurrentProject } from './selectors-Dj45vPZR.js';
-import { d as deliveryApi } from './ContensisDeliveryApi-Czq1gBOi.js';
-import { S as SSRContextProvider } from './SSRContext-DqqZUlqT.js';
+import { d as deliveryApi } from './ContensisDeliveryApi-C6hirWj-.js';
+import { S as SSRContextProvider } from './SSRContext-DQihgHNs.js';
 import 'history';
 import '@redux-saga/core/effects';
 import 'loglevel';
@@ -27,19 +27,19 @@ import './_commonjsHelpers-BFTU3MAI.js';
 import 'jsonpath-mapper';
 import 'styled-components';
 import './selectors-D4ulaTom.js';
-import './ChangePassword.container-DNb4TZzK.js';
-import './matchGroups-C2_rxOIO.js';
+import './ChangePassword.container-COIYkH0b.js';
+import './selectors-CQ6qh8Qi.js';
 import './CookieConstants-DEmbwzYr.js';
 import './CookieHelper.class-C6rTRl_1.js';
 import './ToJs-BnRRHk6f.js';
-import './sagas-CYdmN1Uz.js';
+import './sagas-_Mr24qe-.js';
 import 'reselect';
-import './util-DHWbLSvO.js';
+import './util-c8K9WtZG.js';
 import 'contensis-core-api';
 import 'deepmerge';
 import 'immer';
 import 'deep-equal';
-import './RouteLoader-CAVJs2rj.js';
+import './RouteLoader-Cdyy-qcm.js';
 import '@reduxjs/toolkit';
 import 'redux';
 import 'redux-thunk';
@@ -69,7 +69,13 @@ class ClientApp {
           v7_relativeSplatPath: true,
           v7_startTransition: true
         }
-      }, /*#__PURE__*/React.createElement(SSRContextProvider, null, /*#__PURE__*/React.createElement(ReactApp, {
+      }, /*#__PURE__*/React.createElement(SSRContextProvider, {
+        config: {
+          ...DELIVERY_API_CONFIG,
+          // Grab any config written by SSR
+          ...(window.DELIVERY_API_CONFIG || {})
+        }
+      }, /*#__PURE__*/React.createElement(ReactApp, {
         routes: routes,
         withEvents: withEvents
       }))))));
