@@ -12,7 +12,8 @@
   },
   "scripts": {
     "start": "npm run roll:watch",
-    "build": "npm run clean:lib && tspc && npm run roll:lib",
+    "build": "npm run clean:lib && tspc && npm run roll:lib && npm run chmod:bin",
+    "chmod:bin": "node -e \"require('fs').chmodSync(require('path').join(__dirname,'cjs','build.js'), 0o755)\"",
     "roll:lib": "cross-env NODE_ENV=production rollup -c rollup/rollup.config.lib.mjs",
     "roll:watch": "cross-env NODE_ENV=production rollup -c rollup/rollup.config.lib.mjs --watch",
     "clean:lib": "rimraf ./models && rimraf ./esm && rimraf ./cjs",
