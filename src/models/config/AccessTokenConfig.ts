@@ -11,6 +11,9 @@ export type ScopedAccessToken = {
   requireLogin?: RequireLogin;
 };
 
+/**
+ * Configuration for scoped access tokens when we require both published and latest configured together
+ */
 export type ScopedAccessTokenConfig =
   | {
       /** Serves published content */
@@ -29,6 +32,11 @@ export type AccessTokenConfig = ScopedAccessTokenConfig & {
   /** Per-project tokens. Used in place of the top-level values when a
    *  request resolves to that project. */
   projects?: {
-    [projectId: string]: ScopedAccessTokenConfig;
+    [projectId: string]: {
+      /** Serves published content */
+      published?: ScopedAccessToken;
+      /** Serves latest/draft content */
+      latest?: ScopedAccessToken;
+    };
   };
 };
