@@ -94,7 +94,7 @@ function* ensureAccessTokenSaga(action) {
   // The server never releases a token to itself so this should never be hit
   if (isSSR) return true;
 
-  const config = window.DELIVERY_API_CONFIG || {};
+  const config = window.DELIVERY_API_CONFIG || DELIVERY_API_CONFIG /* global DELIVERY_API_CONFIG */ || {};
 
   // If we already hold a token, or this deployment doesn't gate one
   if (config.accessToken) return true;
@@ -709,8 +709,8 @@ function* resolveCurrentNodeOrdinates(action) {
     apiCall[3] = function* getNodeTree() {
       const treeDepth =
         doNavigation === true ||
-        !doNavigation.tree ||
-        doNavigation.tree === true
+          !doNavigation.tree ||
+          doNavigation.tree === true
           ? 2
           : doNavigation.tree;
 
@@ -756,15 +756,15 @@ function* setRouteEntry(
   const mappedEntry = !entryMapper
     ? null
     : currentEntryId === entrySys.id &&
-        currentEntryLang === entrySys.language &&
-        remapEntry === false
+      currentEntryLang === entrySys.language &&
+      remapEntry === false
       ? (yield select(selectMappedEntry, 'js')) || {}
       : yield mapRouteEntry(entryMapper, {
-          ...node,
-          entry,
-          ancestors,
-          siblings,
-        });
+        ...node,
+        entry,
+        ancestors,
+        siblings,
+      });
 
   yield all([
     put({
@@ -777,15 +777,15 @@ function* setRouteEntry(
       notFound,
     }),
     ancestors &&
-      put({
-        type: SET_ANCESTORS,
-        ancestors,
-      }),
+    put({
+      type: SET_ANCESTORS,
+      ancestors,
+    }),
     siblings &&
-      put({
-        type: SET_SIBLINGS,
-        siblings,
-      }),
+    put({
+      type: SET_SIBLINGS,
+      siblings,
+    }),
   ]);
 }
 
