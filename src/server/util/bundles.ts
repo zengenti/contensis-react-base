@@ -168,9 +168,13 @@ export const getBundleTags = (
     const legacyScriptTags = loadableExtractor.legacy?.getScriptTags({
       nomodule: 'nomodule',
     });
-    const modernScriptTags = loadableExtractor.modern?.getScriptTags({
-      type: 'module',
-    });
+    const modernScriptTags = loadableExtractor.modern?.getScriptTags(asset =>
+      // we output script tags with type="module" for modern bundles so legacy browsers can ignore them
+      // loadable also outputs raw JSON in a script tag creating duplicate "type" attributes on this tag
+      // <script id="modern__LOADABLE_REQUIRED_CHUNKS__" type="application/json" ...
+      // `asset` is null when rendering loadable's JSON-only script tag
+      asset ? { type: 'module' } : {}
+    );
     const scriptTags = `${startupTag}${legacyScriptTags || ''}${
       modernScriptTags || ''
     }`.replace(/"\/static\//g, `"/${staticRoutePath}/`);
