@@ -165,16 +165,17 @@ const webApp = (
         versionStatus
       );
 
-      const deliveryApiConfig: typeof DELIVERY_API_CONFIG = {
-        ...DELIVERY_API_CONFIG,
-        accessToken: resolvedToken?.accessToken
-          ? resolvedToken?.accessToken
-          : // A release uri means the access token is not available in SSR
-            // and user must make an auth request to crb-api/auth/access-token to release it client-side
-            resolvedToken?.releaseUri
-            ? ''
-            : DELIVERY_API_CONFIG.accessToken, // Fallback classic access token if no other configured
-      };
+      const deliveryApiConfig: typeof DELIVERY_API_CONFIG /* global DELIVERY_API_CONFIG */ =
+        {
+          ...DELIVERY_API_CONFIG,
+          accessToken: resolvedToken?.accessToken
+            ? resolvedToken?.accessToken
+            : // A release uri means the access token is not available in SSR
+              // and user must make an auth request to crb-api/auth/access-token to release it client-side
+              resolvedToken?.releaseUri
+              ? ''
+              : DELIVERY_API_CONFIG.accessToken, // Fallback classic access token if no other configured
+        };
 
       // Determine functional params from QueryString and set access methods
       const accessMethod = mapJson<

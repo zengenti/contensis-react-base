@@ -63,7 +63,7 @@ class ClientApp {
               >
                 <SSRContextProvider
                   config={{
-                    ...DELIVERY_API_CONFIG,
+                    ...DELIVERY_API_CONFIG /* global DELIVERY_API_CONFIG */,
                     // Grab any config written by SSR
                     ...((window as any).DELIVERY_API_CONFIG || {}),
                   }}
