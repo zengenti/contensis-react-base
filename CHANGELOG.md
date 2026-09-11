@@ -1,5 +1,32 @@
 # Changelog
 
+## [4.1.0](https://github.com/zengenti/contensis-react-base/compare/v4.0.0...v4.1.0) (2026-09-11)
+
+
+### Features
+
+* enhance fallback `NotFound` component to render common status descriptions, e.g. 403 Forbidden ([d856c6b](https://github.com/zengenti/contensis-react-base/commit/d856c6b0e6f875dbdf242d397197aae641651faf))
+* export `NotFound` component in routing ([341e273](https://github.com/zengenti/contensis-react-base/commit/341e273507d532109c11e46279cfadddeac0bffa))
+* scoped `accessTokens` configured in server startup, a scoped access token will be supplied to the client via SSR and can be protected with `requireLogin` to forefeit SSR and release the access token client-side to authenticated users only; added `config` to `SSRContext` that reflects the config provided in SSR ([a9b87e5](https://github.com/zengenti/contensis-react-base/commit/a9b87e507cb0a1c395fb0800faf55821317f11e6))
+
+
+### Bug Fixes
+
+* duplicate `type` attribute in loadable script tag that contains raw JSON ([7e2934f](https://github.com/zengenti/contensis-react-base/commit/7e2934f3d3b0bc1be119922a31b35367af526de5))
+* live entry preview feature reporting incorrect fields and linkDepth to parent via messaging channel in the client after successful SSR ([b1ef772](https://github.com/zengenti/contensis-react-base/commit/b1ef772737880b747cddd1094a0d7e28ede54aab))
+* memoization warning in user registration selector ([af7b2e0](https://github.com/zengenti/contensis-react-base/commit/af7b2e00e69a4e71c78ec6229ec1dabb579bcdc4))
+* missing client-side DELIVERY_API_CONFIG webpack global fallback in development build ([8c36b4c](https://github.com/zengenti/contensis-react-base/commit/8c36b4cb4f9718a029b3cfa289cda4ede3c75c43))
+* paths containing any double-slash pattern will redirect to the trimmed path ([39f57ca](https://github.com/zengenti/contensis-react-base/commit/39f57ca9175529f7058aa0a71332dc5ee2b7b11b))
+* reduce log noise when a `version.json` file is not available ([8797565](https://github.com/zengenti/contensis-react-base/commit/8797565e3b759b232c1782fcc17a709b5dc03c17))
+* remove rogue spaces in output script tags ([1646a93](https://github.com/zengenti/contensis-react-base/commit/1646a9304ec598706cdbe89e9d95ea3867a4b504))
+* **search:** `fuzzy` option configurable in `weightedSearchFields`, falling back to the facet-level `fuzzySearch` config value for each field (CHALKY-2114) ([aec3c30](https://github.com/zengenti/contensis-react-base/commit/aec3c301a8ff1c8e410da678628db51c18dfb07f))
+* suppress output of `startup.js` script when running SSR in development ([c409d50](https://github.com/zengenti/contensis-react-base/commit/c409d50ccdcf73eccd0879d47c7c856e91c8bf57))
+
+
+### Performance Improvements
+
+* log warnings for slow or large delivery api requests made via CRB api wrapper, extend/refactor surrogate key implementation to cover other api metrics ([dc95206](https://github.com/zengenti/contensis-react-base/commit/dc95206f97a45857c87c7ed64876d374e70718de))
+
 ## [4.0.0](https://github.com/zengenti/contensis-react-base/compare/v3.4.0...v4.0.0) (2026-04-22)
 
 
