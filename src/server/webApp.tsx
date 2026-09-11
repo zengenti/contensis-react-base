@@ -93,7 +93,9 @@ const webApp = (
 
   const bundleData = getBundleData(config, staticRoutePath);
 
-  const attributes = stringifyAttributes(scripts.attributes);
+  const attributes = scripts.attributes
+    ? ` ${stringifyAttributes(scripts.attributes)}`
+    : '';
   scripts.startup =
     // We don't need the startup script with SSR in development
     // as globals are baked into the client-side development bundles
@@ -284,7 +286,7 @@ const webApp = (
         // Dynamic doesn't need sagas
         // or styles, or any split component bundles
         // nor are we streaming responses
-        const isDynamicHints = `<script ${attributes}>window.isDynamic = true; ${subsitePathScript} ${accessTokenHint}</script>`;
+        const isDynamicHints = `<script${attributes}>window.isDynamic = true;${subsitePathScript ? ` ${subsitePathScript}` : ''}${accessTokenHint ? ` ${accessTokenHint}` : ''}</script>`;
 
         const jsx = ssrJsxProducer(ReactApp, {
           providers: jsxProviderProps,
@@ -364,7 +366,7 @@ const webApp = (
                 return true;
               }
               if (!disableSsrRedux) {
-                serialisedReduxData = `<script ${attributes}>${subsitePathScript} ${accessTokenHint} window.__USE_HYDRATE__ = true; window.REDUX_DATA = ${serialisedReduxData}</script>`;
+                serialisedReduxData = `<script${attributes}>${subsitePathScript ? `${subsitePathScript} ` : ''}${accessTokenHint ? `${accessTokenHint} ` : ''}window.__USE_HYDRATE__ = true; window.REDUX_DATA = ${serialisedReduxData}</script>`;
               }
             }
 
