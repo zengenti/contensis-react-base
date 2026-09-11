@@ -18,8 +18,8 @@ import http from 'http';
 import to$1, { to } from 'await-to-js';
 import { m as matchUserGroup } from './selectors-CQ6qh8Qi.js';
 import { a as Cookies } from './CookieHelper.class-C6rTRl_1.js';
-import { l as logError, s as shorten, c as createLocaleRoutes, p as pickProject, h as history, r as rootSaga } from './App-GveE4rY2.js';
-export { A as ReactApp } from './App-GveE4rY2.js';
+import { l as logError, s as shorten, c as createLocaleRoutes, p as pickProject, h as history, r as rootSaga } from './App-Z3OuqfKS.js';
+export { A as ReactApp } from './App-Z3OuqfKS.js';
 import { L as LoginHelper, g as getManagementApiClient } from './ChangePassword.container-COIYkH0b.js';
 import { R as REFRESH_TOKEN_COOKIE, L as LOGIN_COOKIE, B as BEARER_TOKEN_COOKIE } from './CookieConstants-DEmbwzYr.js';
 import httpProxy from 'http-proxy';
@@ -1315,9 +1315,14 @@ const getBundleTags = (loadableExtractor, scripts, staticRoutePath = 'static') =
     const legacyScriptTags = (_loadableExtractor$le = loadableExtractor.legacy) === null || _loadableExtractor$le === void 0 ? void 0 : _loadableExtractor$le.getScriptTags({
       nomodule: 'nomodule'
     });
-    const modernScriptTags = (_loadableExtractor$mo = loadableExtractor.modern) === null || _loadableExtractor$mo === void 0 ? void 0 : _loadableExtractor$mo.getScriptTags({
+    const modernScriptTags = (_loadableExtractor$mo = loadableExtractor.modern) === null || _loadableExtractor$mo === void 0 ? void 0 : _loadableExtractor$mo.getScriptTags(asset =>
+    // we output script tags with type="module" for modern bundles so legacy browsers can ignore them
+    // loadable also outputs raw JSON in a script tag creating duplicate "type" attributes on this tag
+    // <script id="modern__LOADABLE_REQUIRED_CHUNKS__" type="application/json" ...
+    // `asset` is null when rendering loadable's JSON-only script tag
+    asset ? {
       type: 'module'
-    });
+    } : {});
     const scriptTags = `${startupTag}${legacyScriptTags || ''}${modernScriptTags || ''}`.replace(/"\/static\//g, `"/${staticRoutePath}/`);
     return scriptTags;
   }
@@ -1545,7 +1550,7 @@ const webApp = (app, ReactApp, config) => {
   const staticRoutePath = config.staticRoutePath || staticFolderPath;
   let isRenderingJsxToString = config.renderToString || false;
   const bundleData = getBundleData(config, staticRoutePath);
-  const attributes = stringifyAttributes(scripts.attributes);
+  const attributes = scripts.attributes ? ` ${stringifyAttributes(scripts.attributes)}` : '';
   scripts.startup =
   // We don't need the startup script with SSR in development
   // as globals are baked into the client-side development bundles
@@ -1694,7 +1699,7 @@ const webApp = (app, ReactApp, config) => {
       // Dynamic doesn't need sagas
       // or styles, or any split component bundles
       // nor are we streaming responses
-      const isDynamicHints = `<script ${attributes}>window.isDynamic = true; ${subsitePathScript} ${accessTokenHint}</script>`;
+      const isDynamicHints = `<script${attributes}>window.isDynamic = true;${subsitePathScript ? ` ${subsitePathScript}` : ''}${accessTokenHint ? ` ${accessTokenHint}` : ''}</script>`;
       const jsx = ssrJsxProducer(ReactApp, {
         providers: jsxProviderProps,
         props: jsxReactAppProps
@@ -1756,7 +1761,7 @@ const webApp = (app, ReactApp, config) => {
             return true;
           }
           if (!disableSsrRedux) {
-            serialisedReduxData = `<script ${attributes}>${subsitePathScript} ${accessTokenHint} window.__USE_HYDRATE__ = true; window.REDUX_DATA = ${serialisedReduxData}</script>`;
+            serialisedReduxData = `<script${attributes}>${subsitePathScript ? `${subsitePathScript} ` : ''}${accessTokenHint ? `${accessTokenHint} ` : ''}window.__USE_HYDRATE__ = true; window.REDUX_DATA = ${serialisedReduxData}</script>`;
           }
         }
 

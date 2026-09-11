@@ -7,8 +7,8 @@ import { loadableReady } from '@loadable/component';
 import { parse } from 'query-string';
 import { CookiesProvider } from 'react-cookie';
 import { HelmetProvider } from 'react-helmet-async';
-import { c as createLocaleRoutes, b as browserHistory, r as rootSaga, p as pickProject } from './App-GveE4rY2.js';
-export { A as ReactApp } from './App-GveE4rY2.js';
+import { c as createLocaleRoutes, b as browserHistory, r as rootSaga, p as pickProject } from './App-Z3OuqfKS.js';
+export { A as ReactApp } from './App-Z3OuqfKS.js';
 import { a as actions } from './slice-C6JLQik8.js';
 import { b as selectVersionStatus } from './version-hQnuV0n7.js';
 import { c as setVersionStatus } from './version-Cy-gb20a.js';
@@ -71,7 +71,8 @@ class ClientApp {
         }
       }, /*#__PURE__*/React.createElement(SSRContextProvider, {
         config: {
-          ...DELIVERY_API_CONFIG,
+          ...DELIVERY_API_CONFIG /* global DELIVERY_API_CONFIG */,
+
           // Grab any config written by SSR
           ...(window.DELIVERY_API_CONFIG || {})
         }

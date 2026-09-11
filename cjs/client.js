@@ -11,7 +11,7 @@ var component = require('@loadable/component');
 var queryString = require('query-string');
 var reactCookie = require('react-cookie');
 var reactHelmetAsync = require('react-helmet-async');
-var App = require('./App-DEbnqzLb.js');
+var App = require('./App-CEwUihAE.js');
 var slice = require('./slice-5xJMH24n.js');
 var version = require('./version-CaRCM9vq.js');
 var version$1 = require('./version-AE19NqSo.js');
@@ -78,7 +78,8 @@ class ClientApp {
         }
       }, /*#__PURE__*/React__default.default.createElement(SSRContext.SSRContextProvider, {
         config: {
-          ...DELIVERY_API_CONFIG,
+          ...DELIVERY_API_CONFIG /* global DELIVERY_API_CONFIG */,
+
           // Grab any config written by SSR
           ...(window.DELIVERY_API_CONFIG || {})
         }

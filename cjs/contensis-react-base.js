@@ -22,7 +22,7 @@ var http = require('http');
 var to = require('await-to-js');
 var selectors = require('./selectors-CM7tFAXq.js');
 var CookieHelper_class = require('./CookieHelper.class-Det3qfdU.js');
-var App = require('./App-DEbnqzLb.js');
+var App = require('./App-CEwUihAE.js');
 var ChangePassword_container = require('./ChangePassword.container-CJCsHYrd.js');
 var CookieConstants = require('./CookieConstants-DfPiWCRZ.js');
 var httpProxy = require('http-proxy');
@@ -1334,9 +1334,14 @@ const getBundleTags = (loadableExtractor, scripts, staticRoutePath = 'static') =
     const legacyScriptTags = (_loadableExtractor$le = loadableExtractor.legacy) === null || _loadableExtractor$le === void 0 ? void 0 : _loadableExtractor$le.getScriptTags({
       nomodule: 'nomodule'
     });
-    const modernScriptTags = (_loadableExtractor$mo = loadableExtractor.modern) === null || _loadableExtractor$mo === void 0 ? void 0 : _loadableExtractor$mo.getScriptTags({
+    const modernScriptTags = (_loadableExtractor$mo = loadableExtractor.modern) === null || _loadableExtractor$mo === void 0 ? void 0 : _loadableExtractor$mo.getScriptTags(asset =>
+    // we output script tags with type="module" for modern bundles so legacy browsers can ignore them
+    // loadable also outputs raw JSON in a script tag creating duplicate "type" attributes on this tag
+    // <script id="modern__LOADABLE_REQUIRED_CHUNKS__" type="application/json" ...
+    // `asset` is null when rendering loadable's JSON-only script tag
+    asset ? {
       type: 'module'
-    });
+    } : {});
     const scriptTags = `${startupTag}${legacyScriptTags || ''}${modernScriptTags || ''}`.replace(/"\/static\//g, `"/${staticRoutePath}/`);
     return scriptTags;
   }
@@ -1564,7 +1569,7 @@ const webApp = (app, ReactApp, config) => {
   const staticRoutePath = config.staticRoutePath || staticFolderPath;
   let isRenderingJsxToString = config.renderToString || false;
   const bundleData = getBundleData(config, staticRoutePath);
-  const attributes = stringifyAttributes(scripts.attributes);
+  const attributes = scripts.attributes ? ` ${stringifyAttributes(scripts.attributes)}` : '';
   scripts.startup =
   // We don't need the startup script with SSR in development
   // as globals are baked into the client-side development bundles
@@ -1713,7 +1718,7 @@ const webApp = (app, ReactApp, config) => {
       // Dynamic doesn't need sagas
       // or styles, or any split component bundles
       // nor are we streaming responses
-      const isDynamicHints = `<script ${attributes}>window.isDynamic = true; ${subsitePathScript} ${accessTokenHint}</script>`;
+      const isDynamicHints = `<script${attributes}>window.isDynamic = true;${subsitePathScript ? ` ${subsitePathScript}` : ''}${accessTokenHint ? ` ${accessTokenHint}` : ''}</script>`;
       const jsx = ssrJsxProducer(ReactApp, {
         providers: jsxProviderProps,
         props: jsxReactAppProps
@@ -1775,7 +1780,7 @@ const webApp = (app, ReactApp, config) => {
             return true;
           }
           if (!disableSsrRedux) {
-            serialisedReduxData = `<script ${attributes}>${subsitePathScript} ${accessTokenHint} window.__USE_HYDRATE__ = true; window.REDUX_DATA = ${serialisedReduxData}</script>`;
+            serialisedReduxData = `<script${attributes}>${subsitePathScript ? `${subsitePathScript} ` : ''}${accessTokenHint ? `${accessTokenHint} ` : ''}window.__USE_HYDRATE__ = true; window.REDUX_DATA = ${serialisedReduxData}</script>`;
           }
         }
 
