@@ -14,3 +14,12 @@ export const SET_TARGET_PROJECT = `${ROUTING_PREFIX}_SET_TARGET_PROJECT`;
 export const SET_ROUTE = `${ROUTING_PREFIX}_SET_ROUTE`;
 
 export const UPDATE_LOADING_STATE = `${ROUTING_PREFIX}_UPDATE_LOADING_STATE`;
+
+/**
+ * Non-redux Live Preview message channel action types for Contensis React Base.
+ */
+export const LIVE_ENTRY_PREFIX = 'LIVE_ENTRY_';
+export const LIVE_ENTRY_NAVIGATE = `${LIVE_ENTRY_PREFIX}NAVIGATE`;
+export const LIVE_ENTRY_ROUTE_LOAD_OPTIONS = `${LIVE_ENTRY_PREFIX}ROUTE_LOAD_OPTIONS`;
+export const LIVE_ENTRY_RESET = `${LIVE_ENTRY_PREFIX}RESET`;
+export const LIVE_ENTRY_UPDATE = `${LIVE_ENTRY_PREFIX}UPDATE`;

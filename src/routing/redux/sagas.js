@@ -6,6 +6,7 @@ import {
   call,
   all,
   fork,
+  spawn,
   cancel,
   cancelled,
   take,
@@ -15,6 +16,11 @@ import { eventChannel } from 'redux-saga';
 import { resolveCurrentRouteLanguage } from '~/i18n/redux/sagas';
 import { selectCurrentLanguage } from '~/i18n/redux/selectors';
 import {
+  LIVE_ENTRY_NAVIGATE,
+  LIVE_ENTRY_PREFIX,
+  LIVE_ENTRY_RESET,
+  LIVE_ENTRY_ROUTE_LOAD_OPTIONS,
+  LIVE_ENTRY_UPDATE,
   SET_ENTRY,
   SET_ANCESTORS,
   SET_NAVIGATION_PATH,
@@ -54,6 +60,7 @@ const error = (e, message) =>
   logError(`[routeSaga]${message ? ` ${message}` : ''}`, e);
 
 let livePreviewTask = null;
+let livePreviewNavigationTask = null;
 
 export const routingSagas = [
   takeEvery(SET_NAVIGATION_PATH, getRouteSaga),
@@ -144,6 +151,22 @@ function* getRouteSaga(action) {
       // get api instance from ssr context that is connected to the specific request in ssr
       ssr: { api, subsitePath },
     } = action;
+
+    // Live preview is scoped to the first entry route we've landed on and ends on any route change
+    if (livePreviewTask) {
+      yield cancel(livePreviewTask);
+      livePreviewTask = null;
+    }
+
+    // Back/forward: the user navigates away from the previewed entry and drops the `?livePreview=true`
+    // query string cancelling/omitting the main live preview messaging channel
+    if (
+      typeof window !== 'undefined' &&
+      !livePreviewNavigationTask &&
+      (parent !== window || opener)
+    ) {
+      livePreviewNavigationTask = yield spawn(watchLivePreviewNavigationSaga);
+    }
 
     // Resolve an access token that can serve this route before we request
     // any content with it
@@ -488,8 +511,8 @@ function* getRouteSaga(action) {
     if (pathNode?.entry?.sys?.id) {
       entryMapper = entryMapper || contentTypeRoute?.entryMapper;
 
+      // A previous live preview message channel would be cancelled at the top of this saga
       if (params.livePreview && typeof window !== 'undefined') {
-        if (livePreviewTask) yield cancel(livePreviewTask);
         livePreviewTask = yield fork(watchLivePreviewSaga, {
           currentPath,
           entry,
@@ -534,17 +557,45 @@ function createLivePreviewChannel() {
   return eventChannel(emit => {
     const handler = e => {
       // console.log('Received message in live preview channel', e.data);
-      if (e.data?.type?.startsWith('LIVE_ENTRY_')) emit(e.data);
+      // NAVIGATE excluded - watchLivePreviewNavigationSaga is also listening separately
+      if (
+        e.data?.type?.startsWith(LIVE_ENTRY_PREFIX) &&
+        e.data.type !== LIVE_ENTRY_NAVIGATE
+      )
+        emit(e.data);
     };
     window.addEventListener('message', handler);
     return () => window.removeEventListener('message', handler);
   });
 }
 
+/**
+ * Handles back/forward for the life of the session, outside the `?livePreview=true` route gate.
+ * Provides history back and forward only so safe to run on any route.
+ */
+function* watchLivePreviewNavigationSaga() {
+  const channel = eventChannel(emit => {
+    const handler = e => {
+      if (e.data?.type === LIVE_ENTRY_NAVIGATE) emit(e.data);
+    };
+    window.addEventListener('message', handler);
+    return () => window.removeEventListener('message', handler);
+  });
+  try {
+    while (true) {
+      const { payload: direction } = yield take(channel);
+      if (direction === 'back') history.back();
+      else if (direction === 'forward') history.forward();
+    }
+  } finally {
+    if (yield cancelled()) channel.close();
+  }
+}
+
 function* watchLivePreviewSaga(context) {
   const channel = createLivePreviewChannel();
   const routeLoadOptions = {
-    type: 'LIVE_ENTRY_ROUTE_LOAD_OPTIONS',
+    type: LIVE_ENTRY_ROUTE_LOAD_OPTIONS,
     payload: context.limits,
   };
   if (routeParams().debug) routeLoadOptions.debug = context.pathNode;
@@ -556,31 +607,24 @@ function* watchLivePreviewSaga(context) {
     while (true) {
       const data = yield take(channel);
       let entry = yield select(selectRouteEntry);
-      if (data.type === 'LIVE_ENTRY_NAVIGATE') {
-        const direction = data.payload;
-        console.log(`Navigate live preview ${direction}`, data);
-        if (direction === 'back') history.back();
-        if (direction === 'forward') history.forward();
-      } else {
-        if (data.type === 'LIVE_ENTRY_RESET') {
-          console.log('Resetting live preview entry to original route entry');
-          entry = context.entry;
-        } else if (data.type === 'LIVE_ENTRY_UPDATE') {
-          console.log('Handling live preview update', data);
-          entry = { ...entry, ...data.payload };
-        }
-        yield call(
-          setRouteEntry,
-          context.currentPath,
-          entry,
-          context.pathNode,
-          null, // ancestors unchanged
-          null, // siblings unchanged
-          context.entryMapper,
-          false,
-          true // we need to remap the entry here
-        );
+      if (data.type === LIVE_ENTRY_RESET) {
+        console.log('Resetting live preview entry to original route entry');
+        entry = context.entry;
+      } else if (data.type === LIVE_ENTRY_UPDATE) {
+        console.log('Handling live preview update', data);
+        entry = { ...entry, ...data.payload };
       }
+      yield call(
+        setRouteEntry,
+        context.currentPath,
+        entry,
+        context.pathNode,
+        null, // ancestors unchanged
+        null, // siblings unchanged
+        context.entryMapper,
+        false,
+        true // we need to remap the entry here
+      );
     }
   } finally {
     if (yield cancelled()) channel.close();
