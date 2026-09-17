@@ -9,3 +9,11 @@ export declare const SET_NAVIGATION_PATH = "@ROUTING/_SET_NAVIGATION_PATH";
 export declare const SET_TARGET_PROJECT = "@ROUTING/_SET_TARGET_PROJECT";
 export declare const SET_ROUTE = "@ROUTING/_SET_ROUTE";
 export declare const UPDATE_LOADING_STATE = "@ROUTING/_UPDATE_LOADING_STATE";
+/**
+ * Non-redux Live Preview message channel action types for Contensis React Base.
+ */
+export declare const LIVE_ENTRY_PREFIX = "LIVE_ENTRY_";
+export declare const LIVE_ENTRY_NAVIGATE = "LIVE_ENTRY_NAVIGATE";
+export declare const LIVE_ENTRY_ROUTE_LOAD_OPTIONS = "LIVE_ENTRY_ROUTE_LOAD_OPTIONS";
+export declare const LIVE_ENTRY_RESET = "LIVE_ENTRY_RESET";
+export declare const LIVE_ENTRY_UPDATE = "LIVE_ENTRY_UPDATE";
