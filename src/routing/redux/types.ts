@@ -16,7 +16,7 @@ export const SET_ROUTE = `${ROUTING_PREFIX}_SET_ROUTE`;
 export const UPDATE_LOADING_STATE = `${ROUTING_PREFIX}_UPDATE_LOADING_STATE`;
 
 /**
- * Non-redux Live Preview message channel action types for Contensis React Base.
+ * Non-redux "Live Preview" message channel action types
  */
 export const LIVE_ENTRY_PREFIX = 'LIVE_ENTRY_';
 export const LIVE_ENTRY_NAVIGATE = `${LIVE_ENTRY_PREFIX}NAVIGATE`;
