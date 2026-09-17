@@ -548,7 +548,7 @@ function* watchLivePreviewSaga(context) {
     payload: context.limits,
   };
   if (routeParams().debug) routeLoadOptions.debug = context.pathNode;
-  parent?.postMessage(routeLoadOptions, '*');
+  (parent || opener)?.postMessage(routeLoadOptions, '*');
 
   try {
     while (true) {
