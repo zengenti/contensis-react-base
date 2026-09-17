@@ -548,30 +548,39 @@ function* watchLivePreviewSaga(context) {
     payload: context.limits,
   };
   if (routeParams().debug) routeLoadOptions.debug = context.pathNode;
-  (parent || opener)?.postMessage(routeLoadOptions, '*');
+  // When not in an iframe, parent will be the same as window, as this is the "top-level"
+  // we can post the message to the opener window instead
+  (parent !== window ? parent : opener)?.postMessage(routeLoadOptions, '*');
 
   try {
     while (true) {
       const data = yield take(channel);
       let entry = yield select(selectRouteEntry);
-      if (data.type === 'LIVE_ENTRY_RESET') {
-        console.log('Resetting live preview entry to original route entry');
-        entry = context.entry;
-      } else if (data.type === 'LIVE_ENTRY_UPDATE') {
-        console.log('Handling live preview update', data);
-        entry = { ...entry, ...data.payload };
+      if (data.type === 'LIVE_ENTRY_NAVIGATE') {
+        const direction = data.payload;
+        console.log(`Navigate live preview ${direction}`, data);
+        if (direction === 'back') history.back();
+        if (direction === 'forward') history.forward();
+      } else {
+        if (data.type === 'LIVE_ENTRY_RESET') {
+          console.log('Resetting live preview entry to original route entry');
+          entry = context.entry;
+        } else if (data.type === 'LIVE_ENTRY_UPDATE') {
+          console.log('Handling live preview update', data);
+          entry = { ...entry, ...data.payload };
+        }
+        yield call(
+          setRouteEntry,
+          context.currentPath,
+          entry,
+          context.pathNode,
+          null, // ancestors unchanged
+          null, // siblings unchanged
+          context.entryMapper,
+          false,
+          true // we need to remap the entry here
+        );
       }
-      yield call(
-        setRouteEntry,
-        context.currentPath,
-        entry,
-        context.pathNode,
-        null, // ancestors unchanged
-        null, // siblings unchanged
-        context.entryMapper,
-        false,
-        true // we need to remap the entry here
-      );
     }
   } finally {
     if (yield cancelled()) channel.close();
