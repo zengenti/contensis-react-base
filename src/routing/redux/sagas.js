@@ -106,6 +106,12 @@ function* ensureAccessTokenSaga(action) {
   // If we already hold a token, or this deployment doesn't gate one
   if (config.accessToken) return true;
 
+  // A refused release lands the user on the access denied page, which must
+  // render without the token it was denied or we redirect back here forever.
+  // The app should serve this route without `fetchNode` so it needs no token
+  if (action.location?.pathname === LoginHelper.ACCESS_DENIED_ROUTE)
+    return true;
+
   // Blocking - validates the user from cookies, redirects to sign-in if it can't
   const userLoggedIn = yield call(handleRequiresLoginSaga, {
     ...action,
