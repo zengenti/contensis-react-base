@@ -98,19 +98,16 @@ const releaseAccessToken = async releaseUri => {
  * is requested. Returns false when the route must not continue.
  */
 function* ensureAccessTokenSaga(action) {
-  // The server never releases a token to itself so this should never be hit
-  if (isSSR) return true;
+  // 1. The server never releases a token to itself
+  // 2. A refused release lands the user on the access denied page, which must
+  // render without the token it was denied or we redirect back here forever.
+  // The app should serve this route without `fetchNode` so it needs no token
+  if (isSSR || action.location?.pathname === LoginHelper.ACCESS_DENIED_ROUTE) return true;
 
   const config = window.DELIVERY_API_CONFIG || DELIVERY_API_CONFIG /* global DELIVERY_API_CONFIG */ || {};
 
   // If we already hold a token, or this deployment doesn't gate one
   if (config.accessToken) return true;
-
-  // A refused release lands the user on the access denied page, which must
-  // render without the token it was denied or we redirect back here forever.
-  // The app should serve this route without `fetchNode` so it needs no token
-  if (action.location?.pathname === LoginHelper.ACCESS_DENIED_ROUTE)
-    return true;
 
   // Blocking - validates the user from cookies, redirects to sign-in if it can't
   const userLoggedIn = yield call(handleRequiresLoginSaga, {
@@ -130,10 +127,7 @@ function* ensureAccessTokenSaga(action) {
     // Added userLoggedIn check as a logged-in user can use their credentials for Delivery API access
     if (releaseError || !accessToken || !userLoggedIn) {
       error(releaseError, 'unable to release an access token');
-      // Authenticated but nothing released. Don't fall through to published
-      // content - one versionStatus per host.
-      // REVIEW: assumes a refusal is an authorisation problem. Revisit if the
-      // endpoint can refuse for other reasons.
+      // Authenticated but nothing released
       LoginHelper.ClientRedirectToAccessDeniedPage(action.location?.pathname);
       return false;
     }
