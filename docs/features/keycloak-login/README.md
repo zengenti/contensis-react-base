@@ -53,15 +53,16 @@ react-base logs a member in through two calls, and Keycloak rejects both for mem
 
 With the Keycloak login setting off, none of this runs.
 
-- **Knowing a site uses Keycloak.** A site setting in the server config, passed to the browser the way the access-token feature passes its config. The server checks for the refresh cookie and tells the browser whether a session exists (a yes/no value, never the token). As proposed; see question 1.
-- **One place builds clients.** `getManagementApiClient` reads the access token cookie at that moment, gives the client a far-future expiry date so the SDK never asks for a token itself, and passes no grant type. It takes the cookie source as an argument: the request's cookies on the server, `document.cookie` in the browser. Login, change password and the access-token release (question 2) all build their clients through it.
-- **What is stored.** Redux holds no access token, refresh token or expiry. It keeps `contensisClassicToken`, read from the `ContensisClassicToken` cookie, because sites read it through `selectUserSecurityToken`. `nlgpsf-website` sends it to its `/secure-documents` route to list a member's documents. `selectClientCredentials` on a Keycloak site returns only that field.
+- **Knowing a site uses Keycloak.** A site setting in the server config, passed to the browser the way the access-token feature passes its config. It is the same for every visitor, so it is safe in cached pages. As proposed; see question 1.
+- **Nothing per-member in server-rendered pages.** Those pages are cached for up to an hour, which is why react-base already strips the `user` slice before serialising state (`webApp.tsx:352-355`). The plan adds no session flag, classic token or access token to them. The browser works out whether a session exists itself, by reading the cookies and calling `/idp/refresh` when one is missing.
+- **One place builds clients.** `getManagementApiClient` reads the access token cookie at that moment, gives the client a far-future expiry date so the SDK never asks for a token itself, and passes no grant type. It takes the cookie source as an argument: `document.cookie` in the browser, and on the server the raw `Cookie` header of the request. The server can't use the sagas' cookie helper, because it is empty unless a site sets `enableSsrCookies`, and `nlgpsf-website` doesn't. Login, change password and the access-token release (question 2) all build their clients through it.
+- **What is stored.** Redux holds no access token, refresh token or expiry. It keeps `contensisClassicToken`, which the browser reads from the `ContensisClassicToken` cookie, because sites read it through `selectUserSecurityToken`. `nlgpsf-website` sends it to its `/secure-documents` route to list a member's documents. `selectClientCredentials` on a Keycloak site returns only that field.
 - **No cookie writes.** react-base never writes or deletes identity-client's cookies. Today `LoginUser` calls `SetLoginCookies` after a successful login, which writes 1-day copies of the access token and classic token. With the setting on, `LoginUser` skips that call.
-- **Refreshing.** If the access token or classic token cookie is missing but a session exists (for example after a browser restart), react-base calls `POST /idp/refresh` first. If the Management API returns 401, it refreshes once, builds a new client and retries once. Concurrent refreshes share one request.
-- **Sessions that can't be recovered, and logged-out members.** react-base navigates to `/idp/check?returnPath=…` instead of `/account/login`, at most once per page load; after that it shows an error. When the server can already see there is no session on a protected page, it redirects before rendering, using the existing redirect in `webApp.tsx`. react-base removes `Credentials`, `SecurityToken` and `Password` from `returnPath` first. These navigations take precedence over `ClientRedirectToSignInPage` in both places it runs.
+- **Refreshing.** If the access token or classic token cookie is missing (for example after a browser restart), react-base calls `POST /idp/refresh` first. A 200 means there is a session; a 401 means there isn't. If the Management API returns 401, it refreshes once, builds a new client and retries once. Concurrent refreshes share one request.
+- **Sessions that can't be recovered, and logged-out members.** react-base navigates to `/idp/check?returnPath=…` instead of `/account/login`. The change is made inside `handleRequiresLoginSaga`, so all three places that call it get it: protected content, the access-token saga, and routes marked `requireLogin`. A query parameter on `returnPath` limits this to one round trip; if the member comes back and still gets a 401, react-base shows an error instead of looping. When the server can already see there is no refresh cookie on a protected page, it redirects before rendering, using the existing redirect in `webApp.tsx`, with `no-store` cache headers so the redirect is never cached. react-base removes `securityToken`, `credentials` and `password` from `returnPath` first, matching names case-insensitively, because identity-client doesn't strip them.
 - **Logout** navigates to `/idp/logout?returnPath=…`.
 - **`refreshSecurityToken`** keeps its no-argument signature. It calls `/idp/refresh` and dispatches only the classic token; it builds no client.
-- **Server rendering** never refreshes and never deletes cookies. A protected page that gets 401 while a session exists must not end in `do500`. Either the server builds the client from the access token cookie, or it renders a state the browser recovers after hydration. Which one is decided during implementation.
+- **Server rendering** never refreshes and never deletes cookies. Protected content is fetched during server rendering through the Delivery API, which only carries the forwarded login cookies, so a 401 there can't be fixed on the server. With a refresh cookie present, a protected page that gets 401 renders a state the browser recovers after hydration. That replaces both `do500` and the route reload that would otherwise repeat without limit.
 - **Change password** keeps working for Keycloak members. Their passwords stay in the CMS database, which Keycloak reads at login, and `contensis-svc-security` checks and stores them without any grant.
 - **The access-token release** (`authenticateRequest.ts`), if Neil agrees: with a refresh cookie present it uses the access token cookie instead of `ContensisCMSUserName`, and returns 401 instead of falling back to a classic grant, so the browser can refresh and retry.
 
@@ -71,14 +72,14 @@ Members of a site that switches to Keycloak log in once more after the switch, b
 
 | File | Change |
 |---|---|
-| `src/models/config/ServerConfig.ts`, `src/util/SSRContext.tsx` | The setting, and the "session exists" flag passed to the browser |
+| `src/models/config/ServerConfig.ts`, `src/util/SSRContext.tsx` | The setting, passed to the browser; a server helper that reads the refresh cookie from the raw request header |
 | `src/user/util/CookieConstants.ts` | Names for `ContensisClassicToken` and `ContensisSecurityRefreshToken` |
 | `src/user/util/ContensisManagementApi.ts` | `getManagementApiClient` builds Keycloak clients from the cookie |
 | `src/user/util/LoginHelper.class.ts` | The `/idp/refresh` helper; `GetCachedCredentials` returns only the classic token; `LoginUser` refreshes and retries on 401 and skips `SetLoginCookies` and `ClearCachedCredentials`; `LogoutUser` goes to `/idp/logout` |
-| `src/user/redux/sagas/login.ts` | `validateUserSaga` skips `IsAuthenticated`; `/idp/check` instead of `/account/login`; `refreshSecurityToken` |
+| `src/user/redux/sagas/login.ts` | `validateUserSaga` skips `IsAuthenticated`; `handleRequiresLoginSaga` sends members to `/idp/check` instead of `/account/login`; `refreshSecurityToken` |
 | `src/user/redux/sagas/resetPassword.js` | `changePasswordSaga` builds its client through `getManagementApiClient` |
-| `src/routing/redux/sagas.js` | Redirect precedence; no `do500` for a session-present 401; `ensureAccessTokenSaga` (question 2) |
-| `src/server/webApp.tsx` | Existing redirect, used for the server-side redirect to `/idp/check` |
+| `src/routing/redux/sagas.js` | A protected-content 401 with a session present renders a recoverable state instead of `do500` or a reload |
+| `src/server/webApp.tsx` | Existing redirect, used for the server-side redirect to `/idp/check`, with `no-store` cache headers |
 | `src/server/features/access-token-api/authenticateRequest.ts` | Cookie order and no classic fallback (question 2) |
 
 ## What identity-client provides
@@ -107,11 +108,11 @@ Endpoints:
    - (c) a site setting decides whether the site uses Keycloak, and cookies decide whether to refresh or log in.
 
    **Recommendation: (c).** Something to check first: where `nlgpsf-temp-dev` sends logged-out members today.
-2. **Whether the access-token release is part of this work.** The access-token feature has two login paths: `ensureAccessTokenSaga` and `authenticateRequest.ts`. On a Keycloak site `authenticateRequest.ts` picks the classic token as the bearer and falls back to a classic grant. **Recommendation: include it.** Otherwise sites that protect their access token with `requireLogin` still fail for MFA members.
+2. **Whether the access-token release is part of this work.** The access-token feature has two login paths. `ensureAccessTokenSaga` is covered anyway, through `handleRequiresLoginSaga`. The open one is `authenticateRequest.ts`: on a Keycloak site it picks the classic token as the bearer and falls back to a classic grant. **Recommendation: include it.** Otherwise sites that protect their access token with `requireLogin` still fail for MFA members.
 3. **The expiry-date bug on classic sites.** react-base stores the token expiry as text (`mapClientCredentials`). The SDK compares it as a date and treats the token as expired, so every client built from stored credentials asks for a new token with a classic grant. This happens on `master` today. Keycloak sites are not affected, because they store no expiry. **Recommendation: a separate ticket for classic sites,** with no dependency on this work.
 4. **Where the new code goes.** The plan adds the Keycloak handling inside the existing functions. The alternative is a separate module that the sagas hand over to when the setting is on, which leaves the classic code untouched. **Recommendation: inside the existing functions,** as the plan is written; a separate module is a reasonable alternative if the number of checks in the classic functions feels unwieldy.
 
-Two smaller points are settled during implementation: how the server handles a 401 for a member whose session is still valid (above), and the value of the far-future expiry date.
+One smaller point is settled during implementation: the value of the far-future expiry date.
 
 ## Not part of this work
 
@@ -127,6 +128,8 @@ On `nlgpsf-temp-dev` after the upgrade, with member MFA on and the KEYC-200 bypa
 - a logged-out member opening a protected page is sent to the Keycloak login, completes MFA, and sees their account page and their documents (which also confirms `/secure-documents` accepts the classic token issued through Keycloak);
 - the network trace shows no `IsAuthenticated` call and no classic grant;
 - after the access token cookie is deleted, the next request refreshes once and carries on;
+- a protected content page, not only the documents route, loads for a logged-in member, including after a browser restart, without reloading in a loop;
+- a logged-out request for a protected page gets a redirect to `/idp/check` with `no-store` cache headers;
 - after closing and reopening the browser, both within 30 minutes and after longer, the member is still logged in without seeing a login page and still sees their documents;
 - a logged-in member can change their password, and the next login accepts the new one;
 - after logout, reloading the page shows no session.
