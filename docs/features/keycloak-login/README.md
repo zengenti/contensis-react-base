@@ -4,6 +4,7 @@
 **Keycloak side:** KEYC-199, linked to CHALKY-2080 as Relates. Must be fixed before the first customer with MFA member login; it does not block `standard`.
 **Detailed plan:** [Complete MFA-required published-site login via the BFF `/idp/*` session](../../plans/2026-07-21-001-fix-keyc-199-bff-session-login-plan.md). Proposed from the Keycloak migration; awaiting Neil's approval.
 **Plain-English version of the plan:** [review copy](../../plans/2026-07-21-001-fix-keyc-199-bff-session-login-plan-plain-english.md), easier to read; the plan above stays the source.
+**Shared page:** [claude.ai artifact](https://claude.ai/artifact/KP9mfHEAezgnW6cgFMX9jq), rendered from this file. Change this file, then republish the artifact with this file as its `README.md` so the two stay the same.
 **Last updated:** 2026-10-08
 
 ## What this document is about
@@ -36,8 +37,8 @@ This document is the summary for discussing the change with Neil. It gives the m
 
 | Item | Status |
 |---|---|
-| Plan and plain-English copy | Written 2026-10-08 against react-base `master` and the current identity-client. Untracked on branch `feat/keyc-199-bff-session-login`. Awaiting Neil's approval and answers to the questions below |
-| react-base code | None. The branch is at `origin/master` (`29ab2e28`, 4.0.1-beta.22) |
+| Plan and plain-English copy | Written 2026-10-08 against react-base `master` and the current identity-client. In draft PR [#29](https://github.com/zengenti/contensis-react-base/pull/29) on `feat/keyc-199-bff-session-login`, after a document review. Awaiting Neil's approval and answers to the questions below |
+| react-base code | None. The branch holds only the docs, on top of `master` (`29ab2e28`, 4.0.1-beta.22) |
 | identity-client (`/idp/*`) | Built in `zengenti-svc-identity-client` and running on the test tenant `nlgpsf-temp-dev`. Production rollout is tracked under KEYC-302. No change needed for this work |
 | `nlgpsf-website` | On react-base v3 (`^3.1.1-beta.16`). Needs a v3→v4 upgrade to use the fix. No ticket yet |
 | Testing on a real site | Waits on the `nlgpsf-website` upgrade |
@@ -136,8 +137,7 @@ On `nlgpsf-temp-dev` after the upgrade, with member MFA on and the KEYC-200 bypa
 
 ## Suggested next actions
 
-1. Neil reviews the plan and answers the questions above.
-2. Commit the plan, its plain-English copy and this document on `feat/keyc-199-bff-session-login` so Neil can read them.
-3. Add a short description to CHALKY-2080 pointing at the plan and this document.
-4. File the `nlgpsf-website` v3→v4 upgrade ticket.
-5. Confirm the KEYC-200 bypass is off on `nlgpsf-temp-dev`.
+1. Neil reviews the plan in PR #29 and answers the questions above.
+2. Add a short description to CHALKY-2080 pointing at the plan and this document.
+3. File the `nlgpsf-website` v3→v4 upgrade ticket.
+4. Confirm the KEYC-200 bypass is off on `nlgpsf-temp-dev`.
