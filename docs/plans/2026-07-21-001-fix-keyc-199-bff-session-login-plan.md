@@ -1,6 +1,9 @@
 ---
 title: "fix: Complete MFA-required published-site login via the BFF /idp/* session (KEYC-199)"
 date: 2026-10-08
+status: retired
+retired: 2026-10-09
+superseded_by: docs/features/keycloak-login/README.md
 artifact_contract: ce-unified-plan/v1
 execution: code
 product_contract_source: ce-plan-bootstrap
@@ -12,6 +15,9 @@ origin: "contensis-app repo — docs/reports/2026-07-21-mfa-published-site-login
 ---
 
 # fix: Complete MFA-required published-site login via the BFF `/idp/*` session (KEYC-199)
+
+> **Retired 2026-10-09 — do not implement from this plan.** Kept for reference only. The base document is now the overview,
+> [docs/features/keycloak-login/README.md](../features/keycloak-login/README.md). A new plan will be written once the scope is agreed with the react-base owner.
 
 **Target repo:** `contensis-react-base`, line `master` (v4). Branch `feat/keyc-199-bff-session-login` is at `origin/master` (`29ab2e28`, 4.0.1-beta.22) with no commits of its own. Paths are repo-relative to `contensis-react-base` unless another repo is named.
 

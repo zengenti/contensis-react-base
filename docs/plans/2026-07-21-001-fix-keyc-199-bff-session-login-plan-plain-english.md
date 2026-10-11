@@ -1,6 +1,9 @@
 # Keycloak login for published sites in react-base — plain-English version
 
-**Status:** Proposal from the Keycloak migration, awaiting approval by the react-base owner (Neil Flatley).
+> **Retired 2026-10-09 — do not use.** Kept for reference only. The base document is now the overview,
+> [docs/features/keycloak-login/README.md](../features/keycloak-login/README.md). A new plan will be written once the scope is agreed.
+
+**Status:** Retired. Was a proposal from the Keycloak migration, awaiting approval by the react-base owner (Neil Flatley).
 **Date:** 2026-10-08
 **Repo:** `contensis-react-base`, line `master` (v4)
 **Tickets:** CHALKY-2080 (react-base work), KEYC-199 (Keycloak side), linked as Relates
