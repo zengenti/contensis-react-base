@@ -38,7 +38,7 @@ This document is written for someone who knows react-base but has not followed t
 5. **It keeps storing the classic security token,** because sites read it through `selectUserSecurityToken`.
 6. **Only a 401 from `/idp/refresh` should end the session.** A timeout or 5xx on a healthy session must not send the member to log in. The CMS admin UI gets this wrong today, and the withdrawn plan repeated it.
 7. **A blocker outside react-base, now fixed in the realm config (KEYC-308):** on most tenants the Delivery API runs inside the CMS, which answered 403 to a request carrying the website login's access token, because that token had none of the CMS API scopes. The browser sends the token automatically as a cookie, so every content request from a logged-in member failed. Since 2026-10-10 the `contensis-web` client gets the same 13 CMS resource scopes as under IS3, and the same request returns 200 on the test tenant. Production realms get the change when they are switched.
-8. **Five questions need answers before a plan is written.** The main one is how react-base knows a site uses Keycloak.
+8. **Four questions need answers before a plan is written.** The main one is how react-base knows a site uses Keycloak.
 
 ## Where things stand
 
@@ -145,7 +145,7 @@ flowchart TD
     F -- no --> G[POST /idp/refresh]
     G -- 200 --> H
     G -- 401 --> N{Protected page?}
-    G -- timeout or 5xx --> T[Not decided: see question 5]
+    G -- timeout or 5xx --> T[Not decided: see question 4]
     N -- yes --> CK["/idp/check?returnPath=…<br/>once per returnPath"]
     N -- no --> AN[Anonymous]
     H --> I[getCurrent]
@@ -186,7 +186,7 @@ What this means for react-base:
 - react-base renders on the server and the admin UI doesn't; the server never refreshes.
 - The admin UI uses `AbortSignal.timeout`. Browser compatibility data (not code) puts it at Chrome 103, Firefox 100 and Safari 16. react-base's own build targets Chrome 78 and Firefox 70, so it needs `AbortController` and a timer.
 
-**The failure both share.** The admin UI treats a 401, a timeout, a network error, a 5xx and a 200 with no access token cookie the same way, and any of them can end in `/idp/check`. The withdrawn react-base plan did the same: its refresh helper returned one "failed" result for all of them, although only a 401 was meant to end the session. identity-client returns 500 on a network error during its token call to Keycloak, and contensis-app's diagnosis notes record intermittent 503s from `/idp/refresh` on a test tenant. On a healthy session, a 5xx or a 5-second stall would send the member to `/idp/check`. After a browser restart the identity-client session is gone, so that means the Keycloak login form. This is question 5.
+**The failure both share.** The admin UI treats a 401, a timeout, a network error, a 5xx and a 200 with no access token cookie the same way, and any of them can end in `/idp/check`. The withdrawn react-base plan did the same: its refresh helper returned one "failed" result for all of them, although only a 401 was meant to end the session. identity-client returns 500 on a network error during its token call to Keycloak, and contensis-app's diagnosis notes record intermittent 503s from `/idp/refresh` on a test tenant. On a healthy session, a 5xx or a 5-second stall would send the member to `/idp/check`. After a browser restart the identity-client session is gone, so that means the Keycloak login form. This is question 4.
 
 ## Risks
 
@@ -195,7 +195,7 @@ What this means for react-base:
 | A realm without the KEYC-308 scope update | The CMS answers 403 to every Delivery API request from a logged-in member's browser; the member lands on `/account/access-denied` | Fixed in svc-identity's realm config (contensis-svc-security's template on its feature branch); `nlgpsf-temp-dev` and `idp` updated. Production realms and `standard` are updated at the switch (KEYC-302) |
 | An old react-base session survives a Keycloak login | The site shows a different user, and that user's documents (seen on the test tenant) | With the setting on, react-base takes the member only from identity-client's cookies and ignores its own leftover cookies (test 28a) |
 | The setting check is wrong somewhere | Classic sites change behaviour | Setting off by default; every branch reviewed against it |
-| Transient refresh failure treated as logout | Healthy members sent to log in again | Question 5 |
+| Transient refresh failure treated as logout | Healthy members sent to log in again | Question 4 |
 | A Keycloak client built outside `getManagementApiClient` | The SDK asks for a token itself | One builder; no grant type, so a slip fails instead of firing a classic grant |
 | Redirect loop through `/idp/check` | An API rejects a token identity-client thinks is valid | One round trip per `returnPath`, then an error |
 | Per-member data in cached pages, or a cached redirect | Shown to other visitors, or loops members | Nothing per-member in server state; redirect sent `no-store` |
@@ -242,9 +242,8 @@ All the checks that can run before the react-base change are done.
 
    **Recommendation: (c).** The setting has to be turned on together with the tenant's switch. Today `nlgpsf-temp-dev` sends a logged-out visitor to the site's own login page, and only its unpushed branch adds a button to `/idp/check`; with (c), react-base would send them to `/idp/check` itself.
 2. **Whether the access-token release is part of this work.** `ensureAccessTokenSaga` is covered anyway through `handleRequiresLoginSaga`. The open one is `authenticateRequest.ts`: it takes the bearer from the `Authorization` header, then `ContensisCMSUserName` (the classic token on a Keycloak site), then `ContensisSecurityBearerToken`, and falls back to a classic refresh grant with the `RefreshToken` cookie. **Recommendation: include it.** Otherwise sites that protect their access token with `requireLogin` still fail for MFA members.
-3. **The expiry-date bug on classic sites.** react-base stores the token expiry as text (`mapClientCredentials`). The SDK compares it with a date, the comparison is always false, and the token is treated as expired, so clients built from stored credentials (change password, `refreshSecurityToken`) ask for a new token with a classic grant. This happens on `master` today. Keycloak sites are not affected if they store no expiry. **Recommendation: a separate ticket for classic sites,** with no dependency on this work.
-4. **Where the new code goes.** Inside the existing functions, behind the setting, or a separate module that the sagas hand over to when the setting is on, which leaves the classic code untouched and narrows the review to one hand-over point. **Recommendation: inside the existing functions;** a separate module is a reasonable alternative if the number of checks in the classic functions feels unwieldy.
-5. **What a refresh failure that isn't a 401 does.** A timeout, network error or 5xx from `/idp/refresh` says nothing about the session. **Recommendation: only a 401 ends the session.** Anything else leaves the member on the page, does not delete or redirect, and lets the next request or page load try again. A 403 means the header is missing, which is a code defect.
+3. **Where the new code goes.** Inside the existing functions, behind the setting, or a separate module that the sagas hand over to when the setting is on, which leaves the classic code untouched and narrows the review to one hand-over point. **Recommendation: inside the existing functions;** a separate module is a reasonable alternative if the number of checks in the classic functions feels unwieldy.
+4. **What a refresh failure that isn't a 401 does.** A timeout, network error or 5xx from `/idp/refresh` says nothing about the session. **Recommendation: only a 401 ends the session.** Anything else leaves the member on the page, does not delete or redirect, and lets the next request or page load try again. A 403 means the header is missing, which is a code defect.
 
 One smaller point is settled when the plan is written: the value of the far-future expiry date.
 
@@ -253,8 +252,7 @@ One smaller point is settled when the plan is written: the value of the far-futu
 - No change to the Management API SDK, identity-client, Keycloak or the CMS. The Delivery API 403 was fixed on the Keycloak side under KEYC-308.
 - No test framework for react-base. Checks are typecheck, lint, build and review, then testing on a real site.
 - The `nlgpsf-website` v3→v4 upgrade. Separate ticket, not yet filed.
-- The expiry-date bug on classic sites (question 3).
-- The server-side Delivery API cookie bug (see "Protected content today"); it affects classic sites too.
+- Issues that existed before Keycloak, in react-base or the CMS, such as the server-side Delivery API cookies described under "Protected content today". This work supports the Keycloak production release only.
 
 ## Tests after the react-base change
 
@@ -296,7 +294,7 @@ Tests 1 to 3 need pages that react-base protects: a route marked `requireLogin` 
 16. Delete the access token and refresh cookies, then open a protected page. Expect `/idp/refresh` to return 401 and one navigation to `/idp/check`.
 17. Do the same on a public page. Expect the member to be shown as logged out, with no redirect.
 18. Make the retry fail: block or override `security/users/@current` to return 401 after a successful refresh. Expect one round trip through `/idp/check`, then an error page, with no loop.
-19. Block `/idp/refresh` (network error), slow it past the timeout, and override it to return 503, in three runs. Expect what question 5 decides; with the recommendation, the member stays on the page logged in, no cookies are deleted, and the next page load recovers.
+19. Block `/idp/refresh` (network error), slow it past the timeout, and override it to return 503, in three runs. Expect what question 4 decides; with the recommendation, the member stays on the page logged in, no cookies are deleted, and the next page load recovers.
 
 **Logging out**
 
@@ -332,7 +330,7 @@ Tests 1 to 3 need pages that react-base protects: a route marked `requireLogin` 
 ## Suggested next actions
 
 1. Get a disposable MFA member account on `nlgpsf-temp-dev` and run the open checks.
-2. Alex and Neil agree the scope and answer the five questions.
+2. Alex and Neil agree the scope and answer the four questions.
 3. Write a new plan from this document (`/ce-plan`).
 4. Add a short description to CHALKY-2080 pointing at this document.
 5. File the `nlgpsf-website` v3→v4 upgrade ticket.
