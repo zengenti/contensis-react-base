@@ -3,15 +3,15 @@
 **Ticket:** CHALKY-2080, "CRB: Update to support new Keycloak IDP". Neil Flatley implements and approves the work.
 **Keycloak side:** KEYC-199, linked to CHALKY-2080 as Relates. Must be fixed before the first customer with MFA member login; it does not block the first tenant switched to Keycloak.
 **Status:** overview for agreeing the scope with Neil. The earlier detailed plan has been withdrawn; a new plan is written once the scope and the questions below are agreed.
-**Checked against code:** every statement about how a system behaves was checked against source code and config on 2026-10-09: identity-client `main` `206359e`, svc-identity `main` `eb5d790` (Keycloak 26.6.3), contensis-app, contensis-app-ui, contensis-svc-security and contensis-svc-delivery `main`, the Zengenti .NET services library 17.7.0, platform `master`, and react-base `master` `29ab2e28`. Re-checked on 2026-10-12 against identity-client `9d7e121`, svc-identity `236c3d5` and contensis-app `5d178c1a50a`: the changes since were the KEYC-308 scopes (described here), a comment-only change in identity-client, a refresh-token-reuse test and a login-theme restyle in svc-identity, and docs in contensis-app. Points that only a running system can settle were checked on `nlgpsf-temp-dev` on 2026-10-10 to 2026-10-12; results are under "Checks on the test tenant".
+**Checked against code:** every statement about how a system behaves was checked against source code and config on 2026-10-09: identity-client `main` `206359e`, svc-identity `main` `eb5d790` (Keycloak 26.6.3), contensis-app, contensis-app-ui, contensis-svc-security and contensis-svc-delivery `main`, the Zengenti .NET services library 17.7.0, platform `master`, and react-base `master` `29ab2e28`. Re-checked on 2026-10-12 against identity-client `9d7e121`, svc-identity `236c3d5` and contensis-app `5d178c1a50a`: the changes since were the KEYC-308 scopes (described here), a comment-only change in identity-client, a refresh-token-reuse test and a login-theme restyle in svc-identity, and docs in contensis-app. Points that only a running system can settle were checked on `nlgpsf-temp-dev` on 2026-10-10 to 2026-10-12; results are in [Keycloak login: tests](keycloak-tests.md).
 **Shared page:** [claude.ai artifact](https://claude.ai/artifact/KP9mfHEAezgnW6cgFMX9jq), rendered from this file. Change this file, then republish the artifact with this file as its `README.md` so the two stay the same.
-**Last updated:** 2026-10-09
+**Last updated:** 2026-10-12
 
 ## What this document is about
 
 On a tenant that has moved to Keycloak with MFA turned on, a website member completes the login page and the one-time code, comes back to the site, and is still logged out. No error appears. KEYC-199 records the bug; CHALKY-2080 is where react-base gets the fix.
 
-This document is written for someone who knows react-base but has not followed the Keycloak migration. It explains how Keycloak login works in Contensis, why react-base's login fails with it, what the fix has to achieve, a recommended direction, what still needs verifying, and the questions to settle. Everything needed to discuss the work is here; the sources at the end are only for checking. It does not list implementation steps; those go in a new plan after the questions are answered.
+This document is written for someone who knows react-base but has not followed the Keycloak migration. It explains how Keycloak login works in Contensis, why react-base's login fails with it, what the fix has to achieve, a recommended direction, and the questions to settle. Everything needed to discuss the work is here or in its two companions, [Keycloak login: details](keycloak-details.md) and [Keycloak login: tests](keycloak-tests.md); the sources at the end are only for checking. It does not list implementation steps; those go in a new plan after the questions are answered.
 
 ## Terms
 
@@ -50,7 +50,7 @@ This document is written for someone who knows react-base but has not followed t
 | Keycloak in production | Being prepared under the production release ticket, KEYC-302. Its report lists KEYC-199 / CHALKY-2080 as a must-fix before the first customer with MFA member login, and the 30-minute member token that renews only through `/idp/refresh` (KEYC-165, KEYC-181) as a should-fix |
 | Member API permissions (KEYC-308, done) | `contensis-web` gets the 13 CMS resource scopes, as under IS3. Merged in svc-identity's realm config and contensis-app's docs (#248, 2026-10-12); contensis-svc-security's realm template has it on `feature/identity-management`, which reaches `main` with its PR #25 (KEYC-301, open). The `nlgpsf-temp-dev` and `idp` realms are updated, and same-origin Delivery API requests with the cookie return 200 on both (2026-10-11); a member with no CMS role was checked on `nlgpsf-temp-dev`. Production realms and `standard` are updated at the switch |
 | `nlgpsf-website` | On react-base v3 (`^3.1.1-beta.16`). Needs a v3→v4 upgrade to use the fix. No ticket yet. A local, unpushed branch `feat/nlgpsf-temp-dev-deploy`, which is what `nlgpsf-temp-dev` runs, adds a "Sign in securely" button to the site's login page that goes to `/idp/check`, and a `useBffSessionBridge` hook. The hook dispatches `VALIDATE_USER`, which goes through `IsAuthenticated`, so it is not a fix |
-| Test tenant | `nlgpsf-temp-dev` has `Identity_UseKeycloak` and `Identity_EnableMFA` on (CMS 17.3.1.20). Until 2026-10-09 about 23:00 UTC its load balancers sent the old token endpoint to the wrong Keycloak host, so classic refreshes failed there; that is fixed. Checks run on 2026-10-10 are below |
+| Test tenant | `nlgpsf-temp-dev` has `Identity_UseKeycloak` and `Identity_EnableMFA` on (CMS 17.3.1.20). Until 2026-10-09 about 23:00 UTC its load balancers sent the old token endpoint to the wrong Keycloak host, so classic refreshes failed there; that is fixed. The checks run there are summarised under "Checks on the test tenant" |
 | Testing on a real site | Waits on the `nlgpsf-website` upgrade |
 
 ## How Keycloak login works in Contensis
@@ -192,7 +192,7 @@ What this means for react-base:
 
 | Risk | Why it matters | Mitigation |
 |---|---|---|
-| An old react-base session survives a Keycloak login | The site shows a different user, and that user's documents (seen on the test tenant) | With the setting on, react-base takes the member only from identity-client's cookies and ignores its own leftover cookies (test 28a) |
+| An old react-base session survives a Keycloak login | The site shows a different user, and that user's documents (seen on the test tenant) | With the setting on, react-base takes the member only from identity-client's cookies and ignores its own leftover cookies (test 28a in [Keycloak login: tests](keycloak-tests.md)) |
 | The setting check is wrong somewhere | Classic sites change behaviour | Setting off by default; every branch reviewed against it |
 | Transient refresh failure treated as logout | Healthy members sent to log in again | Question 4 |
 | A Keycloak client built outside `getManagementApiClient` | The SDK asks for a token itself | One builder; no grant type, so a slip fails instead of firing a classic grant |
@@ -213,24 +213,12 @@ Other effects to note in release notes: `selectClientCredentials` returns only `
 
 ## Checks on the test tenant
 
-Run read-only on `nlgpsf-temp-dev` on 2026-10-10, on the preview host and its CMS. The login was a Keycloak login through `/idp/check`, so the cookies came from the `contensis-web` client. The only account available was the CMS user `zengenti`, which is excluded from MFA; no website member account was used.
+All the checks that can run before the react-base change were run on `nlgpsf-temp-dev` from 2026-10-10 to 2026-10-12. Two of them shape the design:
 
-1. **Delivery API with the access token cookie: 403, then 200 after the KEYC-308 realm update** (re-checked by the KEYC-308 work on 2026-10-10, with the same account). See "Tokens and what accepts them" in [Keycloak login: details](keycloak-details.md).
-2. **`security/users/@current` with a `contensis-web` token: confirmed, 200** on both the site host and the CMS host. The user-groups call was not tried.
-3. **`/idp/refresh` restores the classic token cookies: confirmed.** With `ContensisClassicToken` and `ContensisCMSUserName` deleted and the refresh cookie kept, `POST /idp/refresh` returned 200 and both cookies were back. Whether `.Contensis.Auth` was rewritten can't be seen from the browser, because it is HttpOnly.
-4. **Change password with a `contensis-web` token: not run.** No disposable member account was available.
-5. **`Secure` cookies: confirmed for the cookies page JavaScript can see** (access token, classic token, user-name cookies): `Secure`, `SameSite=Lax`, `Path=/`, host-only. The HttpOnly refresh and session cookies can't be seen from page JavaScript; identity-client sets `Secure` on all cookies by the same rule.
-6. **Logged-out visitor on a protected page:** `/account/user` redirects (302) to the site's own `/account/login`. On the test tenant's branch, that page has a "Sign in securely" button that goes to `/idp/check`, then to the Keycloak login with the `contensis-web` client and PKCE. The site defines no `requireLogin` routes; `/account/user` is protected by a component.
+- The user-groups call returns 401 with only the access token cookie: contensis-svc-security never reads the cookie, so react-base must send the `Authorization` header itself.
+- After a member logs in with password and one-time code, identity-client writes the login cookies and today's site still shows the member as signed out (KEYC-199). An old react-base `RefreshToken` cookie left in the same browser showed a different user instead.
 
-The next three were run on 2026-10-11 with `testUser1` as a member with no CMS role (groups Everyone and one "Level 1" group).
-
-7. **User-groups call: confirmed.** The member's own groups return 200 with `Authorization: Bearer`; another user's groups return 403. With only the cookie and no header it returns 401: the security API never reads the cookie, so react-base must send the header itself. (With CMS groups, the call leaves them out of its answer.)
-8. **Delivery API: confirmed, 200** with only the cookie and with the header. With `versionStatus=latest` the member also gets draft entries (1,777 against 1,629 published). That adds no draft access the public site doesn't already have. react-base requests `published` on live and staging hosts and `latest` on preview hosts, but a `?versionStatus=latest` query string overrides that on any host, on the server and in the browser. The site's own Delivery API access token, which is in the page's JavaScript, returns draft entries for that request on the test tenant's live host with no member cookie (1,777 against 1,629 published, 2026-10-12). Production `nlgpsf` was not probed. Management API entry requests return 403.
-9. **Today's site after a member login with password and one-time code:** identity-client set the access token, classic token and name cookies for the member, and react-base still shows the member as signed out. That is KEYC-199 as expected. An earlier run showed a different user instead: react-base's own `RefreshToken` cookie, left from a `zengenti` login in the same browser, kept that session alive (test 28a covers it).
-
-10. **Change password: confirmed** (2026-10-12, same member, who has MFA). `POST /api/security/users/{id}/credentials/password` with `Authorization: Bearer` and the current and new password returned 200, and the next Keycloak login accepted the new password.
-
-All the checks that can run before the react-base change are done.
+The full list with results, and the tests to run after the react-base change, are in [Keycloak login: tests](keycloak-tests.md).
 
 ## Questions for Neil
 
@@ -253,87 +241,12 @@ One smaller point is settled when the plan is written: the value of the far-futu
 - The `nlgpsf-website` v3→v4 upgrade. Separate ticket, not yet filed.
 - Issues that existed before Keycloak, in react-base or the CMS, such as the server-side Delivery API cookies described under "Protected content today". This work supports the Keycloak production release only.
 
-## Tests after the react-base change
-
-These tests check that the react-base change delivers the fix described above. Each one says what to do and what must happen. Run them on `nlgpsf-temp-dev` once `nlgpsf-website` is on a react-base build with the change and the Keycloak setting on.
-
-Before starting:
-
-- `Identity_UseKeycloak` and `Identity_EnableMFA` on; the realm has the KEYC-308 scopes; `CONTENSIS_ALLOW_MFA_CLASSIC_GRANTS` off.
-- Accounts: a member with MFA set up, a member who has never set up MFA, and a member with no CMS permissions. None of them a CMS admin.
-- Browser developer tools with the network log kept across navigations, and a way to block or slow one request (request blocking, throttling or a local response override).
-- For the last group, a site on the same react-base build with the Keycloak setting off.
-
-**Logging in**
-
-Tests 1 to 3 need pages that react-base protects: a route marked `requireLogin` and a protected node. `nlgpsf-website` has no `requireLogin` routes today and protects `/account/user` with its own component, so either add one for testing or check that the site's own redirect goes to `/idp/check`.
-
-1. Logged out, open a protected page in the browser. Expect a redirect to `/idp/check?returnPath=<that page>`, not `/account/login`.
-2. Request a `requireLogin` route with no cookies from the command line. Expect a 302 to `/idp/check` before any page is rendered, with `Cache-Control: no-store, private` and `Surrogate-Control: no-store`.
-3. Open a protected page with `?securityToken=x&Credentials=y&PASSWORD=z` added. Expect the `returnPath` sent to `/idp/check` to contain none of the three.
-4. Complete the password and the one-time code. Expect to land back on the protected page, logged in, with the account page and the member's documents showing.
-5. Log in with the member who has never set up MFA. Expect Keycloak to ask for authenticator setup, then land back on the site logged in.
-6. In the network log for tests 4 and 5, expect no `IsAuthenticated` call, no request to `/authenticate/connect/token` and no `contensis_classic` grant of either kind. Expect `security/users/@current` and the user-groups call to return 200 with an `Authorization: Bearer` header.
-7. After login, check the cookies. Expect react-base to have written none: `ContensisSecurityBearerToken` still expires 30 minutes after it was issued, not after a day; `ContensisCMSUserName` is still a session cookie; no `RefreshToken` cookie exists.
-8. Check redux state. Expect `clientCredentials` to hold only `contensisClassicToken`, and `selectUserSecurityToken` to equal the `ContensisClassicToken` cookie.
-9. View the page source of a server-rendered page while logged in. Expect no access token, classic token or session flag in the HTML or the serialised state, and the same `Surrogate-Control` header as for a logged-out visitor.
-
-**Refreshing**
-
-10. Delete the `ContensisSecurityBearerToken` cookie and navigate. Expect one `POST /idp/refresh` with an `X-Contensis-Refresh` header to the site's own host, then the page loads logged in.
-11. Delete the access token cookie on a page that makes several API calls at once. Expect exactly one `/idp/refresh`.
-12. Stay idle on a page for more than 30 minutes, then navigate. Expect one refresh and no login page.
-13. Replace the access token cookie's value with an invalid token and navigate. Expect the Management API call to get 401, then one refresh, a retry that succeeds, and no cookies deleted by react-base.
-13a. With the same invalid cookie, open a protected node. Expect the CMS-served Delivery API to answer as for an anonymous visitor using the site's access key, not 401 (the CMS ignores a token it can't validate). The member's access to the node comes back only after the refresh in test 13.
-14. Close the browser completely and reopen it within 30 minutes. Expect to be logged in without a login page, the classic token cookies back after the first refresh, and the documents listed.
-15. Repeat test 14 after more than 30 minutes. Same result.
-
-**When the session can't be recovered**
-
-16. Delete the access token and refresh cookies, then open a protected page. Expect `/idp/refresh` to return 401 and one navigation to `/idp/check`.
-17. Do the same on a public page. Expect the member to be shown as logged out, with no redirect.
-18. Make the retry fail: block or override `security/users/@current` to return 401 after a successful refresh. Expect one round trip through `/idp/check`, then an error page, with no loop.
-19. Block `/idp/refresh` (network error), slow it past the timeout, and override it to return 503, in three runs. Expect what question 4 decides; with the recommendation, the member stays on the page logged in, no cookies are deleted, and the next page load recovers.
-
-**Logging out**
-
-20. Log out. Expect a navigation to `/idp/logout?returnPath=…`, every login cookie gone including the HttpOnly refresh cookie, and opening a protected page afterwards to show the Keycloak login form, not a silent login.
-
-**Server rendering and protected content**
-
-21. Logged in, open a protected content page directly (a full page load, not a client-side navigation), both a static route with `requireLogin` and a protected node. Expect no 500 and no repeated reload; the content appears after the page hydrates.
-22. Logged in as a member without access to a protected node, open it. Expect one access-denied or login outcome, with no reload loop.
-23. As the member with no CMS permissions, browse public and protected pages. Expect Delivery API requests to return 200 for content the member may see.
-
-**Other features**
-
-24. Change the password. Expect success with no classic grant in the network log, and the next Keycloak login to accept the new password.
-25. If the site calls `refreshSecurityToken`, trigger it. Expect one `/idp/refresh`, no `authenticate()` call, and only the classic token dispatched.
-26. On a page with `@contensis/forms`, submit a form while logged in. Expect it to succeed with no classic grant.
-27. Only if question 2 brings the access-token release into scope: on a route protected by `accessTokens` with `requireLogin`, expect the release to succeed with the access token cookie, a 401 to trigger one refresh and retry, and no classic grant.
-28. With leftover cookies from the old react-base login (`RefreshToken`, a 1-day `ContensisCMSUserName`) and no Keycloak cookies, open a protected page. Expect no classic grant, a refresh that returns 401, and one Keycloak login.
-28a. In a browser that holds an old react-base session for user A, log in through Keycloak as member B. Expect the site to show member B everywhere (header, account page, documents), never user A, and no classic grant made with A's leftover `RefreshToken`.
-
-**Sites with the setting off**
-
-29. On the site without the Keycloak setting, repeat login, refresh after deleting the access token cookie, change password and logout. Expect today's behaviour: `/account/login`, classic grants, and react-base's own cookies.
-
-**In code review**
-
-30. With the setting off, no new code path runs.
-31. No Keycloak code path can reach `GetCredentialsForSecurityToken`, `contensis_classic` or `contensis_classic_refresh_token`.
-32. Only `getManagementApiClient` builds Keycloak clients and sets the expiry, from a newly created date; the access token comes from the cookie source passed in, never from module state.
-33. `/idp/*` URLs are relative to the site; the refresh sends the header with same-origin credentials, has a timeout that doesn't use `AbortSignal.timeout`, and is shared across concurrent callers.
-34. react-base never writes or deletes identity-client's cookies, and the server never calls `/idp/refresh`.
-
 ## Suggested next actions
 
-1. Get a disposable MFA member account on `nlgpsf-temp-dev` and run the open checks.
-2. Alex and Neil agree the scope and answer the four questions.
-3. Write a new plan from this document (`/ce-plan`).
-4. Add a short description to CHALKY-2080 pointing at this document.
-5. File the `nlgpsf-website` v3→v4 upgrade ticket.
-6. After the react-base change and the site upgrade, run "Tests after the react-base change".
+1. Alex and Neil agree the scope and answer the four questions.
+2. Write a new plan from this document (`/ce-plan`).
+3. File the `nlgpsf-website` v3→v4 upgrade ticket.
+4. After the react-base change and the site upgrade, run the tests in [Keycloak login: tests](keycloak-tests.md).
 
 ## Appendix: tickets
 
