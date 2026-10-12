@@ -201,7 +201,6 @@ What this means for react-base:
 | Per-member data in cached pages, or a cached redirect | Shown to other visitors, or loops members | Nothing per-member in server state; redirect sent `no-store` |
 | Protected content after a 401 with `userLoggedIn` set | The route reloads without limit today | The same one-round-trip limit, applied to that reload |
 | Access token readable by page JavaScript | Script on the site can read it and call `/idp/refresh` | identity-client's design, not changed here; noted for the threat model |
-| Edge cache keying | react-base sets `x-contensis-viewer-groups`; whether the edge cache varies on it is set outside react-base | Nothing per-member in cached pages, so no dependency on it |
 | The setting is lost with `disableSsrRedux` | The `window.DELIVERY_API_CONFIG` script is not written on the hydrate path when `disableSsrRedux` is on, or on a 404 | Deliver it another way for such sites, as `WSFED_LOGIN` is (the site sets `window.WSFED_LOGIN` itself) |
 
 Other effects to note in release notes: `selectClientCredentials` returns only `contensisClassicToken` on Keycloak sites, and `refreshSecurityToken` dispatches no access token. `@contensis/forms` (1.0.5) reads `ContensisSecurityBearerToken`; when it is missing, it tries its own classic refresh grant with a readable `ContensisSecurityRefreshToken` or `RefreshToken` cookie. On Keycloak sites the refresh cookie is HttpOnly, so it can't.
