@@ -1,7 +1,7 @@
 # Keycloak login: details
 
 **Companion to:** [Keycloak login for published sites](README.md), the overview. This file holds the detail behind its "How Keycloak login works in Contensis" section.
-**Checked against code:** the same sources and date as the overview (2026-10-09), with test-tenant results from 2026-10-10 and 2026-10-11.
+**Checked against code:** the same sources as the overview, on 2026-10-09, re-checked on 2026-10-12, with test-tenant results from 2026-10-10 to 2026-10-12.
 **Last updated:** 2026-10-11
 
 ## How a tenant is switched
