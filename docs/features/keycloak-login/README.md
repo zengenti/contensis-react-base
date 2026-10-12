@@ -192,7 +192,6 @@ What this means for react-base:
 
 | Risk | Why it matters | Mitigation |
 |---|---|---|
-| A realm without the KEYC-308 scope update | The CMS answers 403 to every Delivery API request from a logged-in member's browser; the member lands on `/account/access-denied` | Fixed in svc-identity's realm config (contensis-svc-security's template on its feature branch); `nlgpsf-temp-dev` and `idp` updated. Production realms and `standard` are updated at the switch (KEYC-302) |
 | An old react-base session survives a Keycloak login | The site shows a different user, and that user's documents (seen on the test tenant) | With the setting on, react-base takes the member only from identity-client's cookies and ignores its own leftover cookies (test 28a) |
 | The setting check is wrong somewhere | Classic sites change behaviour | Setting off by default; every branch reviewed against it |
 | Transient refresh failure treated as logout | Healthy members sent to log in again | Question 4 |
