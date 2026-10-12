@@ -230,7 +230,7 @@ The next three were run on 2026-10-11 with `testUser1` as a member with no CMS r
 8. **Delivery API: confirmed, 200** with only the cookie and with the header. With `versionStatus=latest` the member also gets draft entries (1,777 against 1,629 published); whether IS3 let members read drafts was not checked. Management API entry requests return 403.
 9. **Today's site after a member login with password and one-time code:** identity-client set the access token, classic token and name cookies for the member, and react-base still shows the member as signed out. That is KEYC-199 as expected. An earlier run showed a different user instead: react-base's own `RefreshToken` cookie, left from a `zengenti` login in the same browser, kept that session alive (test 28a covers it).
 
-Still open: change password, which needs a disposable member and is sent by Alex. Results are tracked on the [Keycloak Login Tests](https://claude.ai/artifact/CAfpV1KRfEqGf8tjBRKjQy) page.
+Still open: change password, which needs a disposable member and is sent by Alex.
 
 ## Questions for Neil
 
@@ -257,7 +257,7 @@ One smaller point is settled when the plan is written: the value of the far-futu
 
 ## Tests after the react-base change
 
-These tests check that the react-base change delivers the fix described above. Each one says what to do and what must happen. Record results on the [Keycloak Login Tests](https://claude.ai/artifact/CAfpV1KRfEqGf8tjBRKjQy) page. Run them on `nlgpsf-temp-dev` once `nlgpsf-website` is on a react-base build with the change and the Keycloak setting on.
+These tests check that the react-base change delivers the fix described above. Each one says what to do and what must happen. Run them on `nlgpsf-temp-dev` once `nlgpsf-website` is on a react-base build with the change and the Keycloak setting on.
 
 Before starting:
 
