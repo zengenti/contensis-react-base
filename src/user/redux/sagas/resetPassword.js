@@ -1,5 +1,7 @@
 import { put, takeEvery, select } from 'redux-saga/effects';
 import { to } from 'await-to-js';
+import { isIdpEnabled } from '~/user/idp/setting';
+import { idpChangePasswordSaga } from '~/user/idp/sagas/userActions';
 import { getManagementApiClient } from '~/user/util/ContensisManagementApi';
 import { UserHelper } from '~/user/util/userHelper';
 import { selectClientCredentials } from '../selectors';
@@ -21,7 +23,11 @@ import {
 export const resetPasswordSagas = [
   takeEvery(REQUEST_USER_PASSWORD_RESET, requestPasswordResetSaga),
   takeEvery(RESET_USER_PASSWORD, resetPasswordSaga),
-  takeEvery(CHANGE_USER_PASSWORD, changePasswordSaga),
+  // Switch 4 (KTD1): change password through the access token under USE_IDP.
+  takeEvery(
+    CHANGE_USER_PASSWORD,
+    isIdpEnabled() ? idpChangePasswordSaga : changePasswordSaga
+  ),
 ];
 
 function* requestPasswordResetSaga(action) {

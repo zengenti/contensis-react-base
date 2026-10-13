@@ -41,6 +41,9 @@ import {
 } from './selectors';
 import { hasNavigationTree } from '~/redux/selectors/navigation';
 import { selectVersionStatus } from '~/redux/selectors/version';
+import { isIdpEnabled } from '~/user/idp/setting';
+import { idpDeliveryAuthErrorSaga } from '~/user/idp/sagas/deliveryAuthError';
+import { idpRouteSessionSaga } from '~/user/idp/sagas/routeSession';
 import { handleRequiresLoginSaga } from '~/user/redux/sagas/login';
 import { ensureNodeTreeSaga } from '~/redux/sagas/navigation';
 
@@ -167,6 +170,10 @@ function* getRouteSaga(action) {
     ) {
       livePreviewNavigationTask = yield spawn(watchLivePreviewNavigationSaga);
     }
+
+    // Switch 5 (KTD1, KTD3): resolve the member's session before any content
+    // or release request is made. Does nothing on the server (R19).
+    if (isIdpEnabled()) yield call(idpRouteSessionSaga, action);
 
     // Resolve an access token that can serve this route before we request
     // any content with it
@@ -362,6 +369,10 @@ function* getRouteSaga(action) {
         );
         if (nodeError) {
           if ([401, 403].includes(nodeError.status)) {
+            // Switch 6 (KTD1): one refresh and one reload under USE_IDP (R24).
+            if (isIdpEnabled())
+              return yield call(idpDeliveryAuthErrorSaga, action, nodeError);
+
             // Capture specific auth errors with the delivery api
             // and fire the user down the handleRequiresLoginSaga
             // If auth was successful via a refreshToken we need to reload the page

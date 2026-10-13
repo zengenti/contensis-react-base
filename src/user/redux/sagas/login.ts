@@ -17,19 +17,33 @@ import { findContentTypeMapping } from '~/routing/util/find-contenttype-mapping'
 
 import mapClientCredentials from '~/user/transformations/mapClientCredentials';
 
+import { isIdpEnabled } from '~/user/idp/setting';
+import { idpHandleRequiresLoginSaga } from '~/user/idp/sagas/requireLogin';
+import {
+  idpRefreshSecurityTokenSaga,
+  idpUserSagas,
+} from '~/user/idp/sagas/userActions';
 import { getManagementApiClient } from '~/user/util/ContensisManagementApi';
 import { LoginHelper } from '~/user/util/LoginHelper.class';
 import { matchUserGroup } from '~/user/util/matchGroups';
 import { queryParams } from '~/util/navigation';
 
-export const loginSagas = [
-  takeEvery(LOGIN_USER, loginUserSaga),
-  takeEvery(LOGOUT_USER, logoutUserSaga),
-  takeEvery(VALIDATE_USER, validateUserSaga),
-  takeEvery(SET_AUTHENTICATION_STATE, redirectAfterSuccessfulLoginSaga),
-];
+// Switch 1 (KTD1): under USE_IDP the IDP module owns LOGIN_USER, LOGOUT_USER
+// and VALIDATE_USER. The classic `redirectAfterSuccessfulLoginSaga` is not
+// registered because `/idp/check` returns the member to `returnPath` itself.
+export const loginSagas = isIdpEnabled()
+  ? idpUserSagas
+  : [
+      takeEvery(LOGIN_USER, loginUserSaga),
+      takeEvery(LOGOUT_USER, logoutUserSaga),
+      takeEvery(VALIDATE_USER, validateUserSaga),
+      takeEvery(SET_AUTHENTICATION_STATE, redirectAfterSuccessfulLoginSaga),
+    ];
 
 export function* handleRequiresLoginSaga(action: any) {
+  // Switch 2 (KTD1): the protected-route decision under USE_IDP (R13, R16).
+  if (isIdpEnabled()) return yield call(idpHandleRequiresLoginSaga, action);
+
   const {
     cookies,
     entry,
@@ -217,6 +231,9 @@ function* logoutUserSaga({ redirectPath, cookies }: any) {
 }
 
 export function* refreshSecurityToken() {
+  // Switch 3 (KTD1): refresh through `/idp/refresh`, same signature (R17).
+  if (isIdpEnabled()) return yield call(idpRefreshSecurityTokenSaga);
+
   const clientCredentials = yield select(selectClientCredentials, 'js');
   if (Object.keys(clientCredentials).length > 0) {
     const client = yield getManagementApiClient(clientCredentials);
