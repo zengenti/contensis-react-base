@@ -913,7 +913,11 @@ function* watchLivePreviewSaga(context) {
   const channel = createLivePreviewChannel();
   const routeLoadOptions = {
     type: LIVE_ENTRY_ROUTE_LOAD_OPTIONS,
-    payload: context.limits
+    payload: {
+      ...context.limits,
+      id: context.entry.sys.id,
+      language: context.entry.sys.language
+    }
   };
   if (routeParams().debug) routeLoadOptions.debug = context.pathNode;
   // When not in an iframe, parent will be the same as window, as this is the "top-level"
@@ -1435,4 +1439,4 @@ const AppRoot = props => {
 };
 
 export { AppRoot as A, browserHistory as b, createLocaleRoutes as c, history$1 as h, logError as l, pickProject as p, rootSaga as r, shorten as s };
-//# sourceMappingURL=App-CZmUtJQ5.js.map
+//# sourceMappingURL=App-CBAc__M7.js.map
