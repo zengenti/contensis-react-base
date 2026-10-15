@@ -596,7 +596,11 @@ function* watchLivePreviewSaga(context) {
   const channel = createLivePreviewChannel();
   const routeLoadOptions = {
     type: LIVE_ENTRY_ROUTE_LOAD_OPTIONS,
-    payload: context.limits,
+    payload: {
+      ...context.limits,
+      id: context.entry.sys.id,
+      language: context.entry.sys.language,
+    },
   };
   if (routeParams().debug) routeLoadOptions.debug = context.pathNode;
   // When not in an iframe, parent will be the same as window, as this is the "top-level"
