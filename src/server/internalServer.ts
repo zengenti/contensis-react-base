@@ -19,6 +19,7 @@ declare let global: typeof globalThis & {
   PACKAGE_JSON: any;
   PROXY_DELIVERY_API: boolean | undefined;
   REVERSE_PROXY_PATHS: string[];
+  USE_IDP: string | boolean | undefined;
 };
 
 const app = express();
@@ -34,6 +35,9 @@ const start = (
   global.DISABLE_SSR_REDUX = config.disableSsrRedux;
   global.PROXY_DELIVERY_API = config.proxyDeliveryApi;
   global.REVERSE_PROXY_PATHS = Object(config.reverseProxyPaths);
+  // Server-side `USE_IDP` (see ServerConfig.useIdp); undefined leaves the
+  // startup script's global in charge.
+  if (config.useIdp !== undefined) global.USE_IDP = config.useIdp;
 
   app.disable('x-powered-by');
   // Output some information about the used build/startup configuration

@@ -26,6 +26,7 @@ import { setCurrentProject } from '~/routing/redux/actions';
 import { selectCurrentSearch } from '~/routing/redux/selectors';
 
 import { deliveryApi } from '~/util/ContensisDeliveryApi';
+import { isIdpEnabled } from '~/user/idp/setting';
 import { mergeStaticRoutes } from '~/util/mergeStaticRoutes';
 import pickProject from '~/util/pickProject';
 import stringifyAttributes from './util/stringifyAttributes';
@@ -213,6 +214,10 @@ const webApp = (
       // Writes the resolved access token, or where to request one, into the page
       const accessTokenHint = accessTokenScript(resolvedToken);
 
+      // The server's login method, written into the page so the client
+      // hydrates with the same answer before its bundles load.
+      const useIdpHint = `window.USE_IDP = ${isIdpEnabled()};`;
+
       console.info(
         `[webApp] "${request.method} ${request.path}" hostname: ${hostname} versionStatus: ${versionStatus}`
       );
@@ -286,7 +291,7 @@ const webApp = (
         // Dynamic doesn't need sagas
         // or styles, or any split component bundles
         // nor are we streaming responses
-        const isDynamicHints = `<script${attributes}>window.isDynamic = true;${subsitePathScript ? ` ${subsitePathScript}` : ''}${accessTokenHint ? ` ${accessTokenHint}` : ''}</script>`;
+        const isDynamicHints = `<script${attributes}>window.isDynamic = true;${subsitePathScript ? ` ${subsitePathScript}` : ''}${accessTokenHint ? ` ${accessTokenHint}` : ''} ${useIdpHint}</script>`;
 
         const jsx = ssrJsxProducer(ReactApp, {
           providers: jsxProviderProps,
@@ -366,7 +371,10 @@ const webApp = (
                 return true;
               }
               if (!disableSsrRedux) {
-                serialisedReduxData = `<script${attributes}>${subsitePathScript ? `${subsitePathScript} ` : ''}${accessTokenHint ? `${accessTokenHint} ` : ''}window.__USE_HYDRATE__ = true; window.REDUX_DATA = ${serialisedReduxData}</script>`;
+                serialisedReduxData = `<script${attributes}>${subsitePathScript ? `${subsitePathScript} ` : ''}${accessTokenHint ? `${accessTokenHint} ` : ''}${useIdpHint} window.__USE_HYDRATE__ = true; window.REDUX_DATA = ${serialisedReduxData}</script>`;
+              } else {
+                // No hydrated state, but the page still gets the hints
+                serialisedReduxData = `<script${attributes}>${subsitePathScript ? `${subsitePathScript} ` : ''}${accessTokenHint ? `${accessTokenHint} ` : ''}${useIdpHint}</script>${serialisedReduxData}`;
               }
             }
 
