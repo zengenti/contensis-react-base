@@ -2,6 +2,8 @@ import { Request } from 'express';
 import { to } from 'await-to-js';
 import Cookies from 'universal-cookie';
 
+import { IDP_ACCESS_TOKEN_COOKIE } from '~/user/idp/cookies';
+import { isIdpEnabled } from '~/user/idp/setting';
 import { UserWithGroups } from '~/user/state';
 import { logError } from '~/util/errors';
 import { getManagementApiClient } from '~/user/util/ContensisManagementApi';
@@ -12,11 +14,42 @@ import {
   REFRESH_TOKEN_COOKIE,
 } from '~/user/util/CookieConstants';
 
+/** The credentials a release request can be resolved with. A bearer token from
+ *  the Authorization header or the login cookies, plus the refresh token where
+ *  one may be used. */
+export type RequestCredentials = {
+  bearerToken?: string;
+  refreshToken?: string;
+};
+
+/**
+ * Under `USE_IDP` the release resolves the member from the access token alone
+ * (KTD10, R25): the `Authorization` header, else identity-client's access token
+ * cookie. No refresh token — and that absence is the point. With none, the
+ * legacy fallback further down cannot run, so a stale `RefreshToken` cookie for
+ * somebody else can never resolve the member this release answers to, and with
+ * `ContensisCMSUserName` not read, the classic token cannot shadow the access
+ * token either.
+ */
+const getIdpRequestCredentials = (req: Request): RequestCredentials => {
+  const cookies = new Cookies(req.headers.cookie || '').getAll();
+  return {
+    bearerToken:
+      req.headers.authorization?.replace(/^Bearer /i, '') ||
+      cookies[IDP_ACCESS_TOKEN_COOKIE],
+  };
+};
+
 /** The credentials a request can be resolved with: a bearer token from the
  *  Authorization header or the login cookies, plus the refresh token cookie.
  *  `cookiesMiddleware()` is registered later by webApp, so read the header
  *  direct. */
-export const getRequestCredentials = (req: Request) => {
+export const getRequestCredentials = (
+  req: Request
+): RequestCredentials => {
+  // Switch 7 (KTD1): the access-token release reads the access token only.
+  if (isIdpEnabled()) return getIdpRequestCredentials(req);
+
   const cookies = new Cookies(req.headers.cookie || '').getAll();
   return {
     bearerToken:

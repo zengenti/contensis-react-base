@@ -24,9 +24,12 @@ const context = (
 
 export class LoginHelper {
   static CMS_URL = SERVERS.cms /* global SERVERS */;
+  // The `typeof` guard means a development build can leave `WSFED_LOGIN` out of
+  // DefinePlugin entirely: not defined is off, not a ReferenceError.
   static WSFED_LOGIN =
     process.env.NODE_ENV === 'development'
-      ? WSFED_LOGIN === 'true' /* global WSFED_LOGIN */
+      ? typeof WSFED_LOGIN !== 'undefined' &&
+        WSFED_LOGIN === 'true' /* global WSFED_LOGIN */
       : context.WSFED_LOGIN === 'true';
   static LOGIN_ROUTE = '/account/login';
   static ACCESS_DENIED_ROUTE = '/account/access-denied';

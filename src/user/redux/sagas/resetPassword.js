@@ -1,5 +1,7 @@
-import { put, takeEvery, select } from 'redux-saga/effects';
+import { call, put, takeEvery, select } from 'redux-saga/effects';
 import { to } from 'await-to-js';
+import { isIdpEnabled } from '~/user/idp/setting';
+import { idpChangePasswordSaga } from '~/user/idp/sagas/userActions';
 import { getManagementApiClient } from '~/user/util/ContensisManagementApi';
 import { UserHelper } from '~/user/util/userHelper';
 import { selectClientCredentials } from '../selectors';
@@ -21,8 +23,14 @@ import {
 export const resetPasswordSagas = [
   takeEvery(REQUEST_USER_PASSWORD_RESET, requestPasswordResetSaga),
   takeEvery(RESET_USER_PASSWORD, resetPasswordSaga),
-  takeEvery(CHANGE_USER_PASSWORD, changePasswordSaga),
+  takeEvery(CHANGE_USER_PASSWORD, handleChangePasswordSaga),
 ];
+
+// Switch 4 (KTD1): read when the action is handled, not at import (R19).
+function* handleChangePasswordSaga(action) {
+  if (isIdpEnabled()) return yield call(idpChangePasswordSaga, action);
+  return yield call(changePasswordSaga, action);
+}
 
 function* requestPasswordResetSaga(action) {
   const userEmailObject = action.userEmailObject;

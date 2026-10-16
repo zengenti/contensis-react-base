@@ -1,5 +1,7 @@
 import { Express } from 'express';
+import { IncomingMessage, ServerResponse } from 'http';
 import httpProxy from 'http-proxy';
+import { isIdpEnabled } from '~/user/idp/setting';
 import { shorten } from '~/util/errors';
 import { urls } from '~/util/urls';
 
@@ -7,14 +9,17 @@ const servers = SERVERS; /* global SERVERS */
 const project = PROJECT; /* global PROJECT */
 const alias = ALIAS; /* global ALIAS */
 const deliveryApiHostname = urls(alias, project).api;
+const idpHostname = urls(alias, project).previewWeb;
 
 const proxyTimeoutMs = 45_000;
 
 export const assetProxy = httpProxy.createProxyServer();
 export const deliveryProxy = httpProxy.createProxyServer();
+export const idpProxy = httpProxy.createProxyServer();
 
 const reverseProxies = (app: Express, reverseProxyPaths: string[] = []) => {
   deliveryApiProxy(deliveryProxy, app);
+  if (isIdpEnabled()) contensisIdpProxy(idpProxy, app);
 
   app.all(
     reverseProxyPaths.map(proxyPath =>
@@ -48,7 +53,7 @@ const reverseProxies = (app: Express, reverseProxyPaths: string[] = []) => {
   });
 };
 
-const deliveryApiProxy = (apiProxy, app) => {
+const deliveryApiProxy = (apiProxy: httpProxy<IncomingMessage, ServerResponse<IncomingMessage>>, app: Express) => {
   // This is just here to stop cors requests on localhost. In Production this is mapped using varnish.
   app.all(
     [
@@ -72,6 +77,31 @@ const deliveryApiProxy = (apiProxy, app) => {
   apiProxy.on('error', (e, req) => {
     console.log(
       `[apiProxy] "${req.method} ${req.url}" host: ${req.headers.host} failed with ${e}`
+    );
+  });
+};
+
+const contensisIdpProxy = (
+  idpProxy: httpProxy<IncomingMessage, ServerResponse<IncomingMessage>>,
+  app: Express
+) => {
+  // This is just here to stop cors requests on localhost. In Production this is mapped using varnish.
+  app.all(['/idp/{*splat}'], (req, res) => {
+    console.log(
+      `[idpProxy] "${req.method} ${shorten(req.url)}" target: ${servers.alias}`
+    );
+    idpProxy.web(req, res, {
+      target: idpHostname,
+      changeOrigin: true,
+      cookieDomainRewrite: false,
+      xfwd: true,
+      proxyTimeout: proxyTimeoutMs,
+      timeout: proxyTimeoutMs,
+    });
+  });
+  idpProxy.on('error', (e, req) => {
+    console.log(
+      `[idpProxy] "${req.method} ${req.url}" host: ${req.headers.host} failed with ${e}`
     );
   });
 };
