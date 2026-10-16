@@ -30,20 +30,12 @@ import { currentHref, getAccessDeniedRoute } from '../navigation';
 import { DELIVERY_GUARD } from '../loginGuard';
 import { getLoginReturnPath } from '../returnPath';
 import { refreshSession } from '../refresh';
+import { GENERIC_ERROR_MESSAGE, idpRouteError } from './errors';
 import {
   hasDeliveryReloadFor,
   rememberDeliveryReload,
 } from './routeSession';
 import { idpAnonymousRouteSaga } from './requireLogin';
-
-const GENERIC_ERROR_MESSAGE =
-  'We could not reach the service that signs you in. Please try again.';
-
-const idpRouteError = (status: number, statusText: string, message: string) => ({
-  status,
-  statusText,
-  data: { message },
-});
 
 /**
  * Switch 6. `deliveryError` is the error the Delivery fetch threw; the return

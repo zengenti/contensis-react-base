@@ -55,26 +55,15 @@ import {
   SessionResult,
 } from '../session';
 import {
+  GENERIC_ERROR_MESSAGE,
+  LOOP_GUARD_MESSAGE,
+  idpRouteError,
+} from './errors';
+import {
   idpRouteSessionSaga,
   RouteSessionOutcome,
   takeRouteSessionOutcome,
 } from './routeSession';
-
-/** What we could not reach. Says nothing about the member, and nothing about
- *  how they sign in (R22). */
-const GENERIC_ERROR_MESSAGE =
-  'We could not reach the service that signs you in. Please try again.';
-
-/** We already sent the member to sign in for this page and it did not work. */
-const LOOP_GUARD_MESSAGE = 'We could not sign you in. Please try again.';
-
-/** The shape `do500` reports through `SET_ENTRY`, so the site's
- *  `notFoundComponent` renders with this status (KTD6). */
-const idpRouteError = (
-  status: number,
-  statusText: string,
-  message: string
-) => ({ status, statusText, data: { message } });
 
 const asArray = (value: unknown) => (Array.isArray(value) ? value : []);
 
