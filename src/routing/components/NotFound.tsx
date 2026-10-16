@@ -16,7 +16,11 @@ const NotFound = ({
   statusCode?: number;
   statusText?: string;
 }) => {
-  const label = STATUS_TEXT[statusCode] ?? STATUS_TEXT[404];
+  // An unmapped 5xx must not read "Page Not Found" — e.g. a 504 from the
+  // sign-in chain is a service failure, not a missing page.
+  const label =
+    STATUS_TEXT[statusCode as keyof typeof STATUS_TEXT] ??
+    (statusCode >= 500 ? STATUS_TEXT[500] : STATUS_TEXT[404]);
 
   return (
     <>
