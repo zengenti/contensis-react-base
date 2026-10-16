@@ -2,7 +2,7 @@
 
 Sign members in through the Contensis IDP and keep them signed in from the cookies it writes. The app never handles a password and never asks for a token grant.
 
-The first half of this page is framework-neutral: any app on a host where `/idp/*` is routed to the IDP can implement it from this page alone. The second half covers turning it on in a react-base site.
+The first half is the framework-neutral contract; the second half covers react-base.
 
 ## The contract
 
@@ -57,18 +57,22 @@ Send a member to `/idp/check` automatically at most once per `returnPath`. Keep 
 
 ### Turn it on
 
+`useIdp: true` in the server's `ServerConfig` (`src/server/server.ts`). It sets the server global and is written into every SSR response (`window.USE_IDP = true;`), so the client hydrates with the same answer.
+
+Two alternatives, for sites that prefer them:
+
 | Where | How |
 |---|---|
-| Development | `USE_IDP: process.env.USE_IDP === 'true'` in `webpack/define-config.js` (`development`), then `USE_IDP=true npm run dev` |
-| Deployed | `USE_IDP=true` in the `.env` the startup scripts are built from. It reaches the server (`start.js`) and the browser (`startup.js`) as the string `"true"`, including on `disableSsrRedux` sites |
+| Pure CSR development (no SSR response to carry the value) | `USE_IDP: true` in the site's `DefinePlugin` variables. A build-time definition wins over the runtime globals. |
+| Per environment | `USE_IDP=true` in the `.env` the startup scripts are built from. It reaches the server (`start.js`) and the browser (`startup.js`). |
 
-It defaults to off, and with it off nothing changes. It takes precedence over `WSFED_LOGIN`. Server startup logs which method is active:
+Off by default; with it off nothing changes. `USE_IDP` takes precedence over `WSFED_LOGIN`, which needs nothing when off: not defined means off. The server startup logs the active method:
 
 ```
 Active login method: IDP (/idp/* session auth)
 ```
 
-`/idp/*` is only served on deployed hosts, so a full sign-in can't be completed from localhost.
+The dev server proxies `/idp/*` to the tenant's preview host, and identity-client builds the sign-in callback from the forwarded host — a full sign-in works from `localhost`.
 
 ### What stays the same
 
@@ -81,7 +85,7 @@ Active login method: IDP (/idp/* session auth)
 - **Server rendering is session-blind.** Every page is rendered anonymous and the browser settles the session after hydration, before each route's content is fetched. While it does, `useLogin().isLoading` is `true`. **A component-level guard must render nothing while `isLoading` is true**, or it will act on "not signed in" before the answer arrives. Prefer `requireLogin` on the route: a protected route shows your `loadingComponent` until the check settles.
 - **Failures render through your `notFoundComponent`**, with `statusCode` `401` (the member was already sent to sign in for this page and it didn't work) or `503` (the sign-in service couldn't be reached). It must branch on `statusCode` instead of always saying "page not found". `useLogin().isError` is set as well.
 - **`selectClientCredentials`** holds `{ contensisClassicToken }` and nothing else: no access token, refresh token or expiry. `selectUserSecurityToken` returns the classic token from the `ContensisClassicToken` cookie.
-- **Management API calls** made by react-base (current user, groups, change password) send the access token cookie as `Authorization: Bearer`, read at the time of the call. A `401` refreshes once and retries once.
+- **Management API calls** made by react-base (current user, groups, change password) send the access token cookie as `Authorization: Bearer`, read at the time of the call. A `401` refreshes once and retries once. The classic token is **not** a Bearer credential: `Authorization: Bearer <ContensisClassicToken>` answers `401`. Use it only where a classic security token is expected.
 - **Delivery API `401`** for route content refreshes once and reloads the route once. A second `401` sends the member to `/idp/check`, or to the error state if that already happened.
 - **Access-token release** (`accessTokens` with `requireLogin`) resolves the member from the access token only: the `Authorization` header, then the `ContensisSecurityBearerToken` cookie. The legacy `RefreshToken` cookie is never used, so a leftover classic session can't stand in for the member.
 - react-base's legacy cookies (`RefreshToken`, the `securityToken` query string) are ignored, not cleared. They expire on their own.
