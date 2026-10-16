@@ -9,6 +9,15 @@
  * `//host`, `/\host` (URL parsing normalises the backslash and resolves it off
  * site) and absolute cross-origin URLs.
  *
+ * Matching the origin is not enough on its own. A dot segment can leave the
+ * resolved *pathname* starting with two slashes — `/.//evil.com` and
+ * `/a/..//evil.com` both resolve on site with pathname `//evil.com` — and a
+ * path of that shape is treated as protocol-relative by anything that later
+ * joins it to a host, including identity-client's naive check. So a pathname
+ * that opens with two slashes — or a backslash in either position, which the
+ * URL parser treats as a slash there — also becomes `/`. A double slash
+ * anywhere else in the path is legitimate and is left alone.
+ *
  * The three parameters that must never leave the browser — `securityToken`,
  * `credentials` and `password`, matched case-insensitively — are removed last,
  * after any substitution, so a token cannot ride along inside a
@@ -65,6 +74,11 @@ export const sanitiseLocalPath = (
   // `/\host` (parsed as an authority) and non-http schemes such as
   // `javascript:` (no origin at all).
   if (!origin || resolved.origin !== origin) return '/';
+
+  // Still on site, but a dot segment can leave the pathname shaped like
+  // `//evil.com`, which the next hop resolves to another host. Nothing on this
+  // site legitimately starts a path that way, so it goes to `/` (R15).
+  if (/^[/\\]{2}/.test(resolved.pathname)) return '/';
 
   const cleaned = stripNeverSentParams(resolved);
   return `${cleaned.pathname}${cleaned.search}${cleaned.hash}` || '/';
