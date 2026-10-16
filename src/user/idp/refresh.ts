@@ -21,13 +21,14 @@
  */
 import { error } from 'loglevel';
 
+import { FETCH_TIMEOUT_MS, fetchOnce } from '~/util/fetch';
 import { logError } from '~/util/errors';
 import { IDP_ACCESS_TOKEN_COOKIE, readIdpAccessToken } from './cookies';
 
 export const IDP_REFRESH_PATH = '/idp/refresh';
 
 /** Matches the admin UI's refresh timeout (KTD4). */
-export const IDP_REFRESH_TIMEOUT_MS = 5000;
+export const IDP_REFRESH_TIMEOUT_MS = FETCH_TIMEOUT_MS;
 
 export type RefreshOutcome = 'session' | 'no-session' | 'unknown';
 
@@ -39,26 +40,17 @@ let inFlight: Promise<RefreshOutcome> | null = null;
 let cookielessRefreshSeen = false;
 
 const performRefresh = async (): Promise<RefreshOutcome> => {
-  const controller = new AbortController();
-  const timeout = setTimeout(
-    () => controller.abort(),
-    IDP_REFRESH_TIMEOUT_MS
-  );
-
   let response: Response | undefined;
   try {
-    response = await fetch(IDP_REFRESH_PATH, {
+    response = await fetchOnce(IDP_REFRESH_PATH, {
       method: 'POST',
       credentials: 'same-origin',
       headers: { 'X-Contensis-Refresh': '1' },
-      signal: controller.signal,
     });
   } catch (e) {
     // Timeout (abort) or a network failure: we do not know, so we do nothing.
     logError('[idp] POST /idp/refresh request failed', e);
     return 'unknown';
-  } finally {
-    clearTimeout(timeout);
   }
 
   if (response.status === 200) {

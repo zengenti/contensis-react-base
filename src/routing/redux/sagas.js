@@ -57,6 +57,7 @@ import { handleSearchSaga } from './invokeSearch';
 import { reduxInjectorSaga } from '~/redux/sagas/injector';
 import { routeParams } from '~/search';
 import { isSSR } from '~/util/env';
+import { fetchOnce } from '~/util/fetch';
 import { logError } from '~/util/errors';
 
 const error = (e, message) =>
@@ -86,23 +87,20 @@ function* setRouteSaga(action) {
 
 /** A hung release would otherwise sit in `releasesInFlight` and block every
  *  later navigation on it, so one attempt gets a timeout and then the normal
- *  failure path. */
+ *  failure path. Longer than the short calls a route change makes: this one
+ *  waits on the CMS. */
 export const RELEASE_TIMEOUT_MS = 15_000;
 
 /** Request a privileged access token from the release endpoint, as the
  *  `[error, accessToken]` tuple the saga already handles. */
 const releaseAccessToken = async (releaseUri, timeoutMs = RELEASE_TIMEOUT_MS) => {
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), timeoutMs);
-
   const [error, response] = await to(
-    fetch(releaseUri, {
+    fetchOnce(releaseUri, {
       method: 'POST',
       credentials: 'same-origin',
-      signal: controller.signal,
+      timeout: timeoutMs,
     })
   );
-  clearTimeout(timeout);
 
   if (error || !response.ok)
     return [error || new Error(`Release failed: ${response.status}`)];

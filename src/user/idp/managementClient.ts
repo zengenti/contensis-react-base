@@ -26,12 +26,9 @@ import to from 'await-to-js';
 import type { Client } from 'contensis-management-api';
 
 import { isApiError } from '~/util/errors';
+import { fetchOnce } from '~/util/fetch';
 import { readIdpAccessToken } from './cookies';
 import { refreshSession } from './refresh';
-
-/** Matches the refresh timeout, so one hung dependency cannot stall a route
- *  twice as long as the other (KTD4, KTD5). */
-export const MANAGEMENT_REQUEST_TIMEOUT_MS = 5000;
 
 /** Far enough ahead that the SDK never treats our bearer as expiring. */
 const BEARER_EXPIRY_FAR_FUTURE_MS = 1000 * 60 * 60 * 24 * 365 * 10;
@@ -58,31 +55,6 @@ const statusOf = (e: unknown): number | undefined =>
   isApiError(e) ? e.status : undefined;
 
 /**
- * `fetch` with a 5-second abort. The timer is cleared as soon as the response
- * arrives so a slow body cannot be cut off mid-read; a request that never
- * gets a response is aborted.
- */
-const createTimeoutFetchFn =
-  (): ((input: RequestInfo, init?: RequestInit) => Promise<Response>) =>
-    (input, init = {}) => {
-      const controller = new AbortController();
-      const timeout = setTimeout(
-        () => controller.abort(),
-        MANAGEMENT_REQUEST_TIMEOUT_MS
-      );
-      return fetch(input, { ...init, signal: controller.signal }).then(
-        response => {
-          clearTimeout(timeout);
-          return response;
-        },
-        e => {
-          clearTimeout(timeout);
-          throw e;
-        }
-      );
-    };
-
-/**
  * Build a client that speaks for the member behind the access token cookie.
  * A new one per attempt: after a refresh the new token must be read from the
  * browser, never reused from a value captured earlier.
@@ -103,7 +75,7 @@ export const createIdpManagementClient = async (
   const client = ManagementClient.create({
     projectId,
     rootUrl,
-    fetchFn: createTimeoutFetchFn(),
+    fetchFn: fetchOnce,
   });
 
   client.bearerToken = accessToken;
