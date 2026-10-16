@@ -32,7 +32,7 @@ export const replaceHtml = (
     responseHTML = templateHTML
       .replace('{{TITLE}}', '')
       .replace('{{SEO_CRITICAL_METADATA}}', '')
-      .replace('{{CRITICAL_CSS}}', '')
+      .replace('{{CRITICAL_CSS}}', minifyCssString(styleTags))
       .replace('{{APP}}', '')
       // .replace('{{LOADABLE_CHUNKS}}', bundleTags)
       .replace('{{REDUX_DATA}}', state);
