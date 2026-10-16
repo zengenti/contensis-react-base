@@ -3,12 +3,14 @@
  *
  * It follows the `WSFED_LOGIN` pattern exactly:
  *
- * - In development the setting is a build-time global replaced by webpack's
- *   `DefinePlugin`. The read is guarded with `typeof` so consumers that never
- *   define it (any app that upgrades react-base and changes nothing) fall back
- *   to `false` instead of throwing a `ReferenceError`.
- * - In production the setting arrives on `window` (browser) or `global`
- *   (server) from `startup.js` / `start.js` as the string `"true"`.
+ * - **Defined at build time** (webpack `DefinePlugin`, in either mode): the
+ *   value is baked into the bundle and wins. The read is guarded with `typeof`
+ *   so consumers that never define it (any app that upgrades react-base and
+ *   changes nothing) fall back to the runtime global instead of throwing a
+ *   `ReferenceError`.
+ * - **Not defined**: the setting arrives on `window` (browser) or `global`
+ *   (server) from `startup.js` / `start.js` as the string `"true"`, which keeps
+ *   a deployment that leaves it out of its bundle environment-agnostic.
  *
  * The value is read when the function is called and never cached at module
  * load, so the server and the client always agree on the same answer.
@@ -28,13 +30,11 @@ const context = (
 /** Both the boolean `true` and the string `"true"` turn a setting on. */
 const isOn = (value: unknown) => value === true || value === 'true';
 
+/** A build-time definition wins; otherwise the runtime global decides. */
 const readSetting = (
-  devValue: string | boolean | undefined,
+  buildValue: string | boolean | undefined,
   runtimeValue: string | boolean | undefined
-) =>
-  process.env.NODE_ENV === 'development'
-    ? isOn(typeof devValue === 'undefined' ? runtimeValue : devValue)
-    : isOn(runtimeValue);
+) => isOn(typeof buildValue === 'undefined' ? runtimeValue : buildValue);
 
 /**
  * Is this site opted in to IDP session auth (`/idp/*` + identity-client
