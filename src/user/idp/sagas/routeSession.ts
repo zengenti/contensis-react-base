@@ -30,7 +30,6 @@ import { call, put, select } from 'redux-saga/effects';
 
 import { UPDATE_LOADING_STATE } from '~/routing/redux/types';
 import { selectRouteEntry } from '~/routing/redux/selectors';
-import { findContentTypeMapping } from '~/routing/util/find-contenttype-mapping';
 import { isSSR } from '~/util/env';
 import {
   selectClientCredentials,
@@ -49,6 +48,7 @@ import {
   idpSessionUserAction,
   idpSettledUserAction,
 } from '../session';
+import { routeRequirements } from './routeRequirements';
 
 export type RouteSessionOutcome = 'session' | 'no-session' | 'unknown';
 
@@ -96,24 +96,6 @@ export const rememberDeliveryReload = (path?: string) => {
 };
 
 /**
- * Does this route need a member? Checked before any content exists, so it is
- * the matched static route plus, when we already have an entry in state (the
- * hydrated first load), that entry's content type mapping.
- */
-const routeRequiresLogin = (action: any, state: any) => {
-  const staticRequiresLogin = action?.staticRoute?.route?.requireLogin;
-  if (staticRequiresLogin) return true;
-
-  const contentTypeMappings = action?.routes?.ContentTypeMappings;
-  const entry = selectRouteEntry(state, 'js');
-  if (!contentTypeMappings || !entry?.sys?.contentTypeId) return false;
-
-  const { requireLogin: authContentType } =
-    findContentTypeMapping(contentTypeMappings, entry.sys.contentTypeId) || {};
-  return !!authContentType;
-};
-
-/**
  * Resolve the session for this route change and put the result in state.
  * Never redirects, never deletes a cookie: the decision belongs to the
  * require-login saga (switch 2).
@@ -130,7 +112,10 @@ export function* idpRouteSessionSaga(action: any) {
   clearRouteOutcome(path);
 
   const state = yield select();
-  const requiresLogin = routeRequiresLogin(action, state);
+  const { requiresLogin } = routeRequirements(
+    action,
+    selectRouteEntry(state, 'js')
+  );
   const isAuthenticated = yield select(selectUserIsAuthenticated);
   const classicToken = yield select(selectUserSecurityToken);
 

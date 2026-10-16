@@ -32,7 +32,6 @@
 import { call, delay, put, select } from 'redux-saga/effects';
 
 import { selectRouteEntry } from '~/routing/redux/selectors';
-import { findContentTypeMapping } from '~/routing/util/find-contenttype-mapping';
 import { isSSR } from '~/util/env';
 import { matchUserGroup } from '~/user/util/matchGroups';
 import {
@@ -64,8 +63,7 @@ import {
   RouteSessionOutcome,
   takeRouteSessionOutcome,
 } from './routeSession';
-
-const asArray = (value: unknown) => (Array.isArray(value) ? value : []);
+import { routeRequirements } from './routeRequirements';
 
 /** One more try, a second later, before telling the member anything (KTD4). */
 function* quietRetrySession() {
@@ -146,33 +144,16 @@ export function* idpHandleRequiresLoginSaga(action: any) {
   // "not logged in", which on the server is always true: nobody is.
   if (isSSR) return false;
 
-  const {
-    entry: actionEntry,
-    path,
-    requireLogin,
-    routes,
-    staticRoute,
-  } = action || {};
+  const { entry: actionEntry, path } = action || {};
 
   // Routing passes the entry it resolved; when it does not (the release-token
   // path calls with only `requireLogin`), fall back to the entry in state.
   const entry = actionEntry || selectRouteEntry(yield select(), 'js');
-  const { ContentTypeMappings } = routes || {};
 
   // Merge route, content type and app-provided requirements exactly as the
   // classic saga does, so groups from all three sources count (R18).
-  const { requireLogin: authRoute } = (staticRoute && staticRoute.route) || {};
-  const { requireLogin: authContentType } =
-    (entry &&
-      findContentTypeMapping(ContentTypeMappings, entry?.sys?.contentTypeId)) ||
-    {};
-
-  const routeRequiresGroups = [
-    ...asArray(authContentType),
-    ...asArray(authRoute),
-    ...asArray(requireLogin),
-  ];
-  const routeRequiresLogin = !!authContentType || !!authRoute || !!requireLogin;
+  const { requiresLogin: routeRequiresLogin, requiresGroups: routeRequiresGroups } =
+    routeRequirements(action, entry);
 
   // The session check at the top of the route change usually settled this
   // already. If it has not (a call from `ensureAccessTokenSaga`, say), settle
