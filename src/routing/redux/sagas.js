@@ -96,6 +96,18 @@ const releaseAccessToken = async releaseUri => {
   return parseError ? [parseError] : [undefined, body.accessToken];
 };
 
+/** Concurrent route sagas — React StrictMode doubles the first dispatch in
+ *  development — share one in-flight release per uri. */
+const releasesInFlight = new Map();
+const releaseAccessTokenShared = releaseUri => {
+  if (!releasesInFlight.has(releaseUri)) {
+    const flight = releaseAccessToken(releaseUri);
+    releasesInFlight.set(releaseUri, flight);
+    flight.finally(() => releasesInFlight.delete(releaseUri));
+  }
+  return releasesInFlight.get(releaseUri);
+};
+
 /**
  * Ensure we hold an access token that can serve this route before any content
  * is requested. Returns false when the route must not continue.
@@ -123,7 +135,7 @@ function* ensureAccessTokenSaga(action) {
   // auth is handled by the user's own credentials (cookies) and we can continue
   if (config.releaseUri) {
     const [releaseError, accessToken] = yield call(
-      releaseAccessToken,
+      releaseAccessTokenShared,
       config.releaseUri
     );
 
