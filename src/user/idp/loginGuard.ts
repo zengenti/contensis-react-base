@@ -42,38 +42,57 @@ const getStorage = (): Storage | null => {
 const keyFor = (returnPath: string, scope?: string) =>
   `${STORAGE_PREFIX}${scope ? `${scope}.` : ''}${returnPath}`;
 
+/** Stamped into every guard this page load arms. A guard armed by this load
+ *  means the redirect is still in hand; one armed by an earlier load means we
+ *  sent the visitor and it did not work (R16). */
+const PAGE_LOAD_ID = Math.random().toString(36).slice(2);
+
+const readGuard = (
+  returnPath: string,
+  scope?: string
+): { armedAt: number; pageLoadId?: string } | null => {
+  const storage = getStorage();
+  if (!storage) return null;
+
+  try {
+    const raw = storage.getItem(keyFor(returnPath, scope));
+    if (!raw) return null;
+
+    const [armedAtRaw, pageLoadId] = raw.split(':');
+    const armedAt = Number(armedAtRaw);
+    if (!Number.isFinite(armedAt)) return null;
+
+    if (Date.now() - armedAt > LOGIN_GUARD_TTL_MS) {
+      storage.removeItem(keyFor(returnPath, scope));
+      return null;
+    }
+    return { armedAt, pageLoadId };
+  } catch {
+    error('[idp] sessionStorage is unreadable, login guard treated as unset');
+    return null;
+  }
+};
+
 /** Has an automatic redirect to `/idp/check` already been made for this path? */
 export const isLoginGuardArmed = (
   returnPath: string,
   scope?: string
-): boolean => {
-  const storage = getStorage();
-  if (!storage) return false;
+): boolean => !!readGuard(returnPath, scope);
 
-  try {
-    const raw = storage.getItem(keyFor(returnPath, scope));
-    if (!raw) return false;
-
-    const armedAt = Number(raw);
-    if (!Number.isFinite(armedAt)) return false;
-
-    if (Date.now() - armedAt > LOGIN_GUARD_TTL_MS) {
-      storage.removeItem(keyFor(returnPath, scope));
-      return false;
-    }
-    return true;
-  } catch {
-    error('[idp] sessionStorage is unreadable, login guard treated as unset');
-    return false;
-  }
-};
+/** Was that redirect made by this page load? Then it is under way, not spent: a
+ *  second concurrent route saga must not read it as a failed attempt. */
+export const isRedirectPending = (returnPath: string, scope?: string): boolean =>
+  readGuard(returnPath, scope)?.pageLoadId === PAGE_LOAD_ID;
 
 /** Arm the guard for this path. Called by automatic redirects only. */
 export const armLoginGuard = (returnPath: string, scope?: string) => {
   const storage = getStorage();
   if (!storage) return;
   try {
-    storage.setItem(keyFor(returnPath, scope), String(Date.now()));
+    storage.setItem(
+      keyFor(returnPath, scope),
+      `${Date.now()}:${PAGE_LOAD_ID}`
+    );
   } catch {
     // Unwritable storage: the redirect may repeat. Nothing else to do.
   }

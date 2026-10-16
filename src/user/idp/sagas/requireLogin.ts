@@ -44,6 +44,7 @@ import {
   armLoginGuard,
   clearLoginGuard,
   isLoginGuardArmed,
+  isRedirectPending,
 } from '../loginGuard';
 import { currentHref, goToAccessDenied, goToIdpCheck } from '../navigation';
 import { getLoginReturnPath } from '../returnPath';
@@ -131,6 +132,10 @@ export function* idpAnonymousRouteSaga({
   returnPath: string;
   scope?: string;
 }) {
+  // A redirect armed by this page load is under way, not spent: a concurrent
+  // route saga leaves it to land (R16).
+  if (isRedirectPending(returnPath, scope)) return false;
+
   if (isLoginGuardArmed(returnPath, scope)) {
     yield put(
       idpErrorUserAction(
