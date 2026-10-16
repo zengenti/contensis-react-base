@@ -85,6 +85,25 @@ react-starter switched to a release-gated delivery config — `ACCESS_TOKEN` out
 
 **Open:** the dynamic shell ships no `app.css` — under release gating every page is dynamic, so global/layout styles (body background, the login control's panel) render unstyled until/unless their chunks load. Pre-existing gap in the dynamic path, newly reachable; to be fixed separately.
 
+## nlgpsf-website × IDP (16 Oct, evening)
+
+First run on a real client project: `nlgpsf-website` @ `crb4-ssr-dev-upgrade`, `useIdp: true` in `ServerConfig`, dev server against **`nlgpsf-temp-dev`**.
+
+| Check | Result |
+|---|---|
+| Startup | `Active login method: IDP`; SSR renders; no define/env needed |
+| IDP on temp-dev | **Deployed** — refresh 401, `/idp/check` → realm `contensis-nlgpsf-temp-dev`. (Decisions-doc §7 "not deployed" is outdated.) First blocker was Keycloak `Invalid parameter: redirect_uri` — the realm's client lacked the localhost allow-list; Alex applied it (see `REALM_LOCALHOST_CALLBACK.md`) |
+| Cross-tenant cookies | Stale `idp`-tenant cookies on `localhost:3001` → temp-dev refresh 401 → identity-client cleared them → clean anonymous |
+| Login | Full round trip, all five IDP cookies host-only on localhost |
+| **`/secure-documents`** | **200 — 495 documents.** The website's server chain ran `GetUserInfo` (classic REST, `ContensisCMSUserName` header = Keycloak-issued classic token), the `GetContentItems`/`GetContentInfoCollectionByPath` path calls, and the delivery search — **the decisions-doc §9 "one live request proves it" item is proven: the classic token satisfies the legacy REST check** |
+| `/account/user` | "Your documents" renders the full list; header flips to "Logged in" |
+| Secure asset | `/secure-assets/…pdf` through the reverse proxy → 200, 423 KB. (Locally proxied to `iis-preview-nlgpsf-temp-dev`; deployed restriction enforcement lives in the security-middleware container — unchanged by IDP, it resolves the same classic user) |
+| Logout | `/idp/logout?returnPath=%2Faccount%2Flogin` → end-session → back on the login page, cookies cleared, anonymous settles with one refresh 401 |
+
+**Changes made for the run:** `useIdp: true` in `server.ts` (test flag); `secureDocuments/api.ts` now reads `SERVERS.cms` instead of hardcoding the live `cms-nlgpsf` host (live routes delivery via the middleware/Varnish; temp-dev uses the standard crb local proxy — no middleware needed locally).
+
+**Adoption items spotted (not defects):** `/account/login` still renders the classic username/password form — it works as a trigger (`loginUser()` ignores credentials → `/idp/check`) but should become a "Sign in" button; "Forgotten password?" still targets the classic reset flow.
+
 ## How this run was made
 
 Headed Chrome via `agent-browser` against the dev server; network evidence from `agent-browser network requests/request`; Redux read by locating the store on the React fiber tree (`window.__store`). Reproduce: `npm run build:crb`, then `npm run dev` in `packages/react-starter` (`.env` already carries `USE_IDP=true`, `ALIAS=idp`).
