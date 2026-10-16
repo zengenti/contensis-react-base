@@ -116,15 +116,39 @@ export const buildSession = async (): Promise<SessionResult> =>
  * Cookie presence alone never proves a session, but when both the access token
  * and classic token are readable there is something to build from and no
  * refresh is needed. Otherwise the shared refresh decides.
+ *
+ * One resolution is shared by everything waiting at that moment, the same
+ * single-flight as the refresh (KTD4): two concurrent route sagas — React
+ * StrictMode doubles the first one in development, and overlapping navigations
+ * can do it in production — must not each fetch user and groups. The in-flight
+ * promise is cleared when it settles, so a later check (the quiet retry, say)
+ * resolves afresh.
  */
-export const resolveSession = async (): Promise<SessionResult> => {
-  if (!hasIdpSessionCookies()) {
-    const outcome = await refreshSession();
-    if (outcome === 'no-session') return { outcome: 'no-session' };
-    if (outcome !== 'session') return { outcome: 'unknown' };
-  }
+let inFlight: Promise<SessionResult> | null = null;
 
-  return buildSession();
+export const resolveSession = (): Promise<SessionResult> => {
+  if (inFlight) return inFlight;
+
+  inFlight = (async (): Promise<SessionResult> => {
+    if (!hasIdpSessionCookies()) {
+      const outcome = await refreshSession();
+      if (outcome === 'no-session') return { outcome: 'no-session' };
+      if (outcome !== 'session') return { outcome: 'unknown' };
+    }
+
+    return buildSession();
+  })().then(
+    result => {
+      inFlight = null;
+      return result;
+    },
+    e => {
+      inFlight = null;
+      throw e;
+    }
+  );
+
+  return inFlight;
 };
 
 /**
