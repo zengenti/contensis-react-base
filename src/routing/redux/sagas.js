@@ -84,26 +84,47 @@ function* setRouteSaga(action) {
   });
 }
 
-/** Request a privileged access token from the release endpoint */
-const releaseAccessToken = async releaseUri => {
+/** A hung release would otherwise sit in `releasesInFlight` and block every
+ *  later navigation on it, so one attempt gets a timeout and then the normal
+ *  failure path. */
+export const RELEASE_TIMEOUT_MS = 15_000;
+
+/** Request a privileged access token from the release endpoint, as the
+ *  `[error, accessToken]` tuple the saga already handles. */
+const releaseAccessToken = async (releaseUri, timeoutMs = RELEASE_TIMEOUT_MS) => {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), timeoutMs);
+
   const [error, response] = await to(
-    fetch(releaseUri, { method: 'POST', credentials: 'same-origin' })
+    fetch(releaseUri, {
+      method: 'POST',
+      credentials: 'same-origin',
+      signal: controller.signal,
+    })
   );
+  clearTimeout(timeout);
+
   if (error || !response.ok)
     return [error || new Error(`Release failed: ${response.status}`)];
 
   const [parseError, body] = await to(response.json());
-  return parseError ? [parseError] : [undefined, body.accessToken];
+  return parseError ? [parseError] : [undefined, body?.accessToken];
 };
 
 /** Concurrent route sagas — React StrictMode doubles the first dispatch in
  *  development — share one in-flight release per uri. */
 const releasesInFlight = new Map();
-const releaseAccessTokenShared = releaseUri => {
+export const releaseAccessTokenShared = (
+  releaseUri,
+  timeoutMs = RELEASE_TIMEOUT_MS
+) => {
   if (!releasesInFlight.has(releaseUri)) {
-    const flight = releaseAccessToken(releaseUri);
+    const flight = releaseAccessToken(releaseUri, timeoutMs);
     releasesInFlight.set(releaseUri, flight);
-    flight.finally(() => releasesInFlight.delete(releaseUri));
+    // Both handlers on `flight` itself: a `.finally()` chain makes a derived
+    // promise that nobody is obliged to catch.
+    const forget = () => releasesInFlight.delete(releaseUri);
+    flight.then(forget, forget);
   }
   return releasesInFlight.get(releaseUri);
 };
