@@ -1,6 +1,7 @@
 import { Express } from 'express';
 import { IncomingMessage, ServerResponse } from 'http';
 import httpProxy from 'http-proxy';
+import { isIdpEnabled } from '~/user/idp/setting';
 import { shorten } from '~/util/errors';
 import { urls } from '~/util/urls';
 
@@ -18,7 +19,7 @@ export const idpProxy = httpProxy.createProxyServer();
 
 const reverseProxies = (app: Express, reverseProxyPaths: string[] = []) => {
   deliveryApiProxy(deliveryProxy, app);
-  contensisIdpProxy(idpProxy, app);
+  if (isIdpEnabled()) contensisIdpProxy(idpProxy, app);
 
   app.all(
     reverseProxyPaths.map(proxyPath =>
