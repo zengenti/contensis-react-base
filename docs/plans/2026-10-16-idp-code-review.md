@@ -13,6 +13,12 @@ Multi-agent review of PR #30 (`feat-contensis-idp`, draft), committed range `29a
 
 **Verdict: not ready to merge (expected for a draft).** Three P1s, all local fixes rather than design changes. No fixes have been applied.
 
+> **Superseded on 16 Oct.** Everything below has since been worked through — nine
+> of the ten findings fixed, #8 recorded as pre-existing, and the whole set run
+> end to end in a browser. Outcomes are in
+> `2026-10-16-idp-review-fixes-and-e2e.md`. This document is left as the review
+> as it was made, including the parts that turned out to be wrong.
+
 ## P1 — High
 
 | # | File | Issue | Reviewer | Confidence |
@@ -47,6 +53,7 @@ Multi-agent review of PR #30 (`feat-contensis-idp`, draft), committed range `29a
 - **#6** — `getRouteSaga` only calls `handleRequiresLoginSaga` when `withEvents.onRouteLoaded` returns `requireLogin` (`sagas.js:212`, `:516`). react-starter defines that hook, which is why its e2e passed. Without it, nothing settles the loading state and the route never redirects. Fix: always put `idpSettledUserAction` when nobody was shown (keep only the route loading state for protected routes).
 - **#7** — Before this PR a hung release only stalled one navigation. Now the never-settling promise stays in `releasesInFlight` until a full reload. Add an `AbortController` timeout like `refresh.ts`. Minor: `flight.finally(...)` creates a derived promise that becomes an unhandled rejection if the flight rejects.
 - **#8** — Release-gated (`accessTokens`) sites only. The IDP route check correctly clears the member after a cross-tab logout, but `ensureAccessTokenSaga` short-circuits on `config.accessToken`, so gated content keeps loading. Fix: drop `config.accessToken` (and the SSR context copy) when the identity clears or changes.
+  - **Not fixed (17 Oct).** Real, but pre-existing and narrower than it reads. The released token is the static configured project token (`res.json({ accessToken: accessToken.token })`, `access-token-api/index.ts:80`) — the same string every eligible member is handed, and nothing revokes it on logout — so "released for B, used by C" is not a cross-user leak. What is left is presentation only: a logged-out visitor in a tab that was never reloaded keeps the gated view until they do reload, and both IDP identity changes (`/idp/check`, `/idp/logout`) are full loads in the tab they happen in. `if (config.accessToken) return true` and the config mutation are byte-identical on `master` (`29ab2e28`), so classic sites have always behaved this way; an IDP-only hook would fix one flag state and leave the other. Any change belongs in the release mechanism itself, for both.
 
 ## P3 — Low
 
@@ -65,7 +72,7 @@ Most requirements are met. Partially met:
 - **R15** — returnPath rule bypassable (#2).
 - **R16** — redirect limit fails for Delivery 401s (#3).
 - **R19 / R26** — server/client agreement (#1) and the loading state (#6).
-- **R27** — released token after a cross-tab logout (#8).
+- **R27** — released token after a cross-tab logout (#8, not fixed: pre-existing, presentation only).
 - **R1 / U6** — a flag-off site gains the `/idp/*` route (#4); the classic flag-off pass is still outstanding.
 
 ## Rejected during validation
@@ -137,3 +144,25 @@ Separate pass for duplication introduced by the diff, inside `src/user/idp/**` a
 2. #1 — the saga switch.
 3. #3 — the guard-clearing rule.
 4. #6, #7, #8, then #5 / DRY items.
+
+## Resolution (same day)
+
+Taken in the order above. Detail, evidence and the browser run are in
+`2026-10-16-idp-review-fixes-and-e2e.md`.
+
+| Item | Outcome |
+|---|---|
+| #1, #2, #3, #4, #5, #6, #7, #9, #10 | Fixed — `5113dc9c`, `4efbfe0b`, `cc4e0eb4`, `c33773a6`, `31ccd22a`, `ed9ecd9c`, `0f49892e`, `2d131115`, `192ef1b1` |
+| #8 | Not fixed — pre-existing, presentation only; see the note above |
+| D1, D3, D4, D9 | Landed (`192ef1b1`, `b073f295`, `c634cd6c`, `a93366a4`) |
+| D2 | Deferred — would change rejection semantics that differ on purpose |
+| D5, D6, D7, D8 | Declined — server-side repetition that never reaches a client bundle; D6 was built and reverted |
+| Testing gaps | Closed: flag-off routing, `ServerConfig.useIdp`-only hydration, `sanitiseLocalPath` dot-segments, `releaseAccessTokenShared`, the 403 branches. Still unexercised in a browser: the Delivery-401 loop, a hung release, concurrent StrictMode dispatch, token rotation, and the `isSSR` branches (the harness always fakes `window`) |
+| R1 / U6 | Now proven: flag-off makes zero `/idp/*` request, `POST /idp/refresh` 404s, and `/idp/check` falls through to the app shell with `window.USE_IDP = false` |
+| R15, R16, R18, R19, R26, R27 | R15/R16/R18/R26 proven in the browser; R19 proven by the clean hydration console; R27 left as #8 |
+
+Two of the review's own claims did not survive contact with the browser: the
+`/idp/*` proxy error handler writing no response is still true, but the
+open-redirect residual risk note about identity-client turned out to matter more
+than the react-base side, because identity-client double-encodes the logout
+return path. That is filed as a follow-up against identity-client, not here.
