@@ -164,10 +164,11 @@ export function* idpRouteSessionSaga(action: any) {
   // next navigation try again — but we never leave a member's face in the UI
   // when the cookies no longer support it (KTD12).
   if (isAuthenticated) yield put(idpClearSessionAction());
-  // Nobody was shown. On a public route that is the answer, so stop reporting
-  // loading or the member never sees a "Log in" control (R26). A protected
-  // route stays loading: the require-login saga navigates, retries or throws.
-  else if (!requiresLogin) yield put(idpSettledUserAction(clientCredentials));
+  // Nobody was shown, so that is the answer for this load: stop reporting
+  // loading, or the member never sees a "Log in" control (R26). A protected
+  // route keeps the *route* loading state while the require-login saga
+  // navigates, retries or throws.
+  else yield put(idpSettledUserAction(clientCredentials));
 
   recordOutcome(path, result.outcome);
 }
