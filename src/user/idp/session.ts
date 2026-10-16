@@ -185,29 +185,27 @@ export const identityHasChanged = (classicTokenInState?: string | null) => {
 /** What `selectClientCredentials` holds while `USE_IDP` is on (R12). */
 export type IdpClientCredentials = { contensisClassicToken?: string } | null;
 
-/** The session is being worked out: loading, and the existing credentials kept. */
-export const idpResolvingUserAction = (
-  clientCredentials?: IdpClientCredentials
+/** `clientCredentials` is carried forward on every put, because a
+ *  `SET_AUTHENTICATION_STATE` that omits them nulls them (KTD7). */
+const idpUserStateAction = (
+  clientCredentials: IdpClientCredentials | undefined,
+  isLoading: boolean
 ) => ({
   type: SET_AUTHENTICATION_STATE,
   authenticationState: {
     clientCredentials: clientCredentials || null,
-    isLoading: true,
+    isLoading,
   },
 });
 
+/** The session is being worked out: loading, and the existing credentials kept. */
+export const idpResolvingUserAction = (clientCredentials?: IdpClientCredentials) =>
+  idpUserStateAction(clientCredentials, true);
+
 /** The check has settled without a member: stop reporting loading. Nobody was
- *  shown, so there is nothing to reset, and `clientCredentials` is carried
- *  forward because the reducer nulls them otherwise. */
-export const idpSettledUserAction = (
-  clientCredentials?: IdpClientCredentials
-) => ({
-  type: SET_AUTHENTICATION_STATE,
-  authenticationState: {
-    clientCredentials: clientCredentials || null,
-    isLoading: false,
-  },
-});
+ *  shown, so there is nothing to reset. */
+export const idpSettledUserAction = (clientCredentials?: IdpClientCredentials) =>
+  idpUserStateAction(clientCredentials, false);
 
 /** A member is signed in: identity-client's classic token is the only
  *  credential we keep. */
