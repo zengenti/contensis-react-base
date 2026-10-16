@@ -69,10 +69,13 @@ export {
 export { IdpResult, withManagementClient } from './managementClient';
 
 // sagas — the functions the KTD1 switches hand over to
-export { idpUserSagas } from './sagas/userActions';
 export {
   idpChangePasswordSaga,
+  idpInitialUserStateSaga,
+  idpLoginUserSaga,
+  idpLogoutUserSaga,
   idpRefreshSecurityTokenSaga,
+  idpValidateUserSaga,
 } from './sagas/userActions';
 export {
   idpAnonymousRouteSaga,

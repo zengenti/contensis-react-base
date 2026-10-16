@@ -20,25 +20,46 @@ import mapClientCredentials from '~/user/transformations/mapClientCredentials';
 import { isIdpEnabled } from '~/user/idp/setting';
 import { idpHandleRequiresLoginSaga } from '~/user/idp/sagas/requireLogin';
 import {
+  idpInitialUserStateSaga,
+  idpLoginUserSaga,
+  idpLogoutUserSaga,
   idpRefreshSecurityTokenSaga,
-  idpUserSagas,
+  idpValidateUserSaga,
 } from '~/user/idp/sagas/userActions';
 import { getManagementApiClient } from '~/user/util/ContensisManagementApi';
 import { LoginHelper } from '~/user/util/LoginHelper.class';
 import { matchUserGroup } from '~/user/util/matchGroups';
 import { queryParams } from '~/util/navigation';
 
-// Switch 1 (KTD1): under USE_IDP the IDP module owns LOGIN_USER, LOGOUT_USER
-// and VALIDATE_USER. The classic `redirectAfterSuccessfulLoginSaga` is not
-// registered because `/idp/check` returns the member to `returnPath` itself.
-export const loginSagas = isIdpEnabled()
-  ? idpUserSagas
-  : [
-      takeEvery(LOGIN_USER, loginUserSaga),
-      takeEvery(LOGOUT_USER, logoutUserSaga),
-      takeEvery(VALIDATE_USER, validateUserSaga),
-      takeEvery(SET_AUTHENTICATION_STATE, redirectAfterSuccessfulLoginSaga),
-    ];
+// Switch 1 (KTD1). Read when the action is handled: this module is imported
+// before `start()` applies `config.useIdp`, so an import-time choice would run
+// the classic sagas on a server serving an IDP site (R19).
+export const loginSagas = [
+  call(handleInitialUserStateSaga),
+  takeEvery(LOGIN_USER, handleLoginUserSaga),
+  takeEvery(LOGOUT_USER, handleLogoutUserSaga),
+  takeEvery(VALIDATE_USER, handleValidateUserSaga),
+  takeEvery(SET_AUTHENTICATION_STATE, redirectAfterSuccessfulLoginSaga),
+];
+
+function* handleInitialUserStateSaga() {
+  if (isIdpEnabled()) yield call(idpInitialUserStateSaga);
+}
+
+function* handleLoginUserSaga(action: any) {
+  if (isIdpEnabled()) return yield call(idpLoginUserSaga, action);
+  return yield call(loginUserSaga, action);
+}
+
+function* handleLogoutUserSaga(action: any) {
+  if (isIdpEnabled()) return yield call(idpLogoutUserSaga, action);
+  return yield call(logoutUserSaga, action);
+}
+
+function* handleValidateUserSaga(action: any) {
+  if (isIdpEnabled()) return yield call(idpValidateUserSaga);
+  return yield call(validateUserSaga, action);
+}
 
 export function* handleRequiresLoginSaga(action: any) {
   // Switch 2 (KTD1): the protected-route decision under USE_IDP (R13, R16).
@@ -202,6 +223,9 @@ const removeHostnamePart = (path: string) => {
 };
 
 function* redirectAfterSuccessfulLoginSaga() {
+  // Switch 1: `/idp/check` returns the member to `returnPath` itself.
+  if (isIdpEnabled()) return;
+
   const isLoggedIn = yield select(selectUserIsAuthenticated);
   const { redirect_uri, ReturnURL } = queryParams(
     yield select(selectCurrentSearch)

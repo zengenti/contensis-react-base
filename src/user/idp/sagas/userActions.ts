@@ -12,7 +12,7 @@
  * MFA is entirely behind `/idp/check`.
  */
 import { warn } from 'loglevel';
-import { call, put, select, takeEvery } from 'redux-saga/effects';
+import { call, put, select } from 'redux-saga/effects';
 
 import { getImmutableOrJS as getIn } from '~/redux/util';
 import { AppState } from '~/models';
@@ -39,24 +39,15 @@ import {
   CHANGE_USER_PASSWORD_ERROR,
   CHANGE_USER_PASSWORD_SENDING,
   CHANGE_USER_PASSWORD_SUCCESS,
-  LOGIN_USER,
-  LOGOUT_USER,
-  VALIDATE_USER,
 } from '../../redux/types';
 
-/** The classic saga set, replaced wholesale by these registrations at switch 1
- *  (`loginSagas`). The classic `redirectAfterSuccessfulLoginSaga` is not
- *  registered: `/idp/check` returns the member to `returnPath` itself. */
-export const idpUserSagas = [
-  // KTD7: from the moment the store exists, the member state reports loading.
-  // Every visitor gets the same value, so server and client render the same
-  // thing (R19), and a component guard never sees "not loading, not
-  // authenticated" before the first check has settled (R26).
-  put(idpResolvingUserAction(null)),
-  takeEvery(LOGIN_USER, idpLoginUserSaga),
-  takeEvery(LOGOUT_USER, idpLogoutUserSaga),
-  takeEvery(VALIDATE_USER, idpValidateUserSaga),
-];
+/** KTD7: from the moment the store exists the member state reports loading.
+ *  Every visitor gets the same value, so server and client render the same
+ *  thing (R19), and a component guard never sees "not loading, not
+ *  authenticated" before the first check has settled (R26). */
+export function* idpInitialUserStateSaga() {
+  yield put(idpResolvingUserAction(null));
+}
 
 const selectRouteRequiresLogin = (state: AppState) =>
   getIn(state, ['routing', 'staticRoute', 'route', 'requireLogin']);

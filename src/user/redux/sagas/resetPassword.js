@@ -1,4 +1,4 @@
-import { put, takeEvery, select } from 'redux-saga/effects';
+import { call, put, takeEvery, select } from 'redux-saga/effects';
 import { to } from 'await-to-js';
 import { isIdpEnabled } from '~/user/idp/setting';
 import { idpChangePasswordSaga } from '~/user/idp/sagas/userActions';
@@ -23,12 +23,14 @@ import {
 export const resetPasswordSagas = [
   takeEvery(REQUEST_USER_PASSWORD_RESET, requestPasswordResetSaga),
   takeEvery(RESET_USER_PASSWORD, resetPasswordSaga),
-  // Switch 4 (KTD1): change password through the access token under USE_IDP.
-  takeEvery(
-    CHANGE_USER_PASSWORD,
-    isIdpEnabled() ? idpChangePasswordSaga : changePasswordSaga
-  ),
+  takeEvery(CHANGE_USER_PASSWORD, handleChangePasswordSaga),
 ];
+
+// Switch 4 (KTD1): read when the action is handled, not at import (R19).
+function* handleChangePasswordSaga(action) {
+  if (isIdpEnabled()) return yield call(idpChangePasswordSaga, action);
+  return yield call(changePasswordSaga, action);
+}
 
 function* requestPasswordResetSaga(action) {
   const userEmailObject = action.userEmailObject;
