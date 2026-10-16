@@ -1,4 +1,5 @@
 import { Express } from 'express';
+import { IncomingMessage, ServerResponse } from 'http';
 import httpProxy from 'http-proxy';
 import { shorten } from '~/util/errors';
 import { urls } from '~/util/urls';
@@ -51,7 +52,7 @@ const reverseProxies = (app: Express, reverseProxyPaths: string[] = []) => {
   });
 };
 
-const deliveryApiProxy = (apiProxy, app) => {
+const deliveryApiProxy = (apiProxy: httpProxy<IncomingMessage, ServerResponse<IncomingMessage>>, app: Express) => {
   // This is just here to stop cors requests on localhost. In Production this is mapped using varnish.
   app.all(
     [
@@ -79,7 +80,10 @@ const deliveryApiProxy = (apiProxy, app) => {
   });
 };
 
-const contensisIdpProxy = (idpProxy, app) => {
+const contensisIdpProxy = (
+  idpProxy: httpProxy<IncomingMessage, ServerResponse<IncomingMessage>>,
+  app: Express
+) => {
   // This is just here to stop cors requests on localhost. In Production this is mapped using varnish.
   app.all(['/idp/{*splat}'], (req, res) => {
     console.log(
@@ -88,6 +92,8 @@ const contensisIdpProxy = (idpProxy, app) => {
     idpProxy.web(req, res, {
       target: idpHostname,
       changeOrigin: true,
+      cookieDomainRewrite: false,
+      xfwd: true,
       proxyTimeout: proxyTimeoutMs,
       timeout: proxyTimeoutMs,
     });
