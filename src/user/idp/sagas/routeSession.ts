@@ -21,6 +21,10 @@
  *
  * Nothing here happens on the server (R19). The decision about what a protected
  * route does with the outcome stays in the require-login saga (switch 2).
+ *
+ * Resolving a session never disarms the redirect guard: only showing the member
+ * on the path does. A session that still cannot load the route must not earn
+ * itself another trip to `/idp/check` (R16).
  */
 import { call, put, select } from 'redux-saga/effects';
 
@@ -33,9 +37,6 @@ import {
   selectUserIsAuthenticated,
   selectUserSecurityToken,
 } from '../../redux/selectors';
-import { clearLoginGuard } from '../loginGuard';
-import { currentHref } from '../navigation';
-import { getLoginReturnPath } from '../returnPath';
 import { hasIdpSessionCookies } from '../cookies';
 import {
   identityHasChanged,
@@ -141,7 +142,6 @@ export function* idpRouteSessionSaga(action: any) {
     !identityHasChanged(classicToken)
   ) {
     recordOutcome(path, 'session');
-    clearLoginGuard(getLoginReturnPath(currentHref()));
     return;
   }
 
@@ -156,8 +156,6 @@ export function* idpRouteSessionSaga(action: any) {
   if (result.outcome === 'session') {
     yield put(idpSessionUserAction(result.session));
     recordOutcome(path, 'session');
-    // A session for this path ends the loop guard's business here (KTD8).
-    clearLoginGuard(getLoginReturnPath(currentHref()));
     return;
   }
 

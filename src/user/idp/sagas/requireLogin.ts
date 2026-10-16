@@ -118,15 +118,20 @@ function* memberRoute({
  * only once per `returnPath` (R16). Coming straight back and failing again is
  * an error state, not another redirect.
  *
+ * `scope` separates the guard a Delivery auth error arms from the one a missing
+ * session arms; see `DELIVERY_GUARD`.
+ *
  * Exported for the Delivery auth-error saga: a Delivery 401 that a refresh did
  * not fix ends up here too.
  */
 export function* idpAnonymousRouteSaga({
   returnPath,
+  scope,
 }: {
   returnPath: string;
+  scope?: string;
 }) {
-  if (isLoginGuardArmed(returnPath)) {
+  if (isLoginGuardArmed(returnPath, scope)) {
     yield put(
       idpErrorUserAction(
         LOOP_GUARD_MESSAGE,
@@ -136,7 +141,7 @@ export function* idpAnonymousRouteSaga({
     throw idpRouteError(401, 'Unauthorized', LOOP_GUARD_MESSAGE);
   }
 
-  armLoginGuard(returnPath);
+  armLoginGuard(returnPath, scope);
   goToIdpCheck(returnPath);
   return false;
 }

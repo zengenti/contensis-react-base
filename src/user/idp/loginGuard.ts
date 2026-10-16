@@ -25,6 +25,11 @@ const STORAGE_PREFIX = 'idp.loginGuard.';
 /** A guard older than this no longer suppresses a retry. */
 export const LOGIN_GUARD_TTL_MS = 5 * 60 * 1000;
 
+/** Delivery 401s escalate under their own key. Establishing a session must not
+ *  disarm it: a member whose Delivery access keeps failing would otherwise be
+ *  redirected to `/idp/check` on every load (R16). */
+export const DELIVERY_GUARD = 'delivery';
+
 const getStorage = (): Storage | null => {
   try {
     if (typeof window === 'undefined') return null;
@@ -34,22 +39,26 @@ const getStorage = (): Storage | null => {
   }
 };
 
-const keyFor = (returnPath: string) => `${STORAGE_PREFIX}${returnPath}`;
+const keyFor = (returnPath: string, scope?: string) =>
+  `${STORAGE_PREFIX}${scope ? `${scope}.` : ''}${returnPath}`;
 
 /** Has an automatic redirect to `/idp/check` already been made for this path? */
-export const isLoginGuardArmed = (returnPath: string): boolean => {
+export const isLoginGuardArmed = (
+  returnPath: string,
+  scope?: string
+): boolean => {
   const storage = getStorage();
   if (!storage) return false;
 
   try {
-    const raw = storage.getItem(keyFor(returnPath));
+    const raw = storage.getItem(keyFor(returnPath, scope));
     if (!raw) return false;
 
     const armedAt = Number(raw);
     if (!Number.isFinite(armedAt)) return false;
 
     if (Date.now() - armedAt > LOGIN_GUARD_TTL_MS) {
-      storage.removeItem(keyFor(returnPath));
+      storage.removeItem(keyFor(returnPath, scope));
       return false;
     }
     return true;
@@ -60,27 +69,27 @@ export const isLoginGuardArmed = (returnPath: string): boolean => {
 };
 
 /** Arm the guard for this path. Called by automatic redirects only. */
-export const armLoginGuard = (returnPath: string) => {
+export const armLoginGuard = (returnPath: string, scope?: string) => {
   const storage = getStorage();
   if (!storage) return;
   try {
-    storage.setItem(keyFor(returnPath), String(Date.now()));
+    storage.setItem(keyFor(returnPath, scope), String(Date.now()));
   } catch {
     // Unwritable storage: the redirect may repeat. Nothing else to do.
   }
 };
 
 /**
- * Disarm the guard. Called when a session is established for the path, and on
+ * Disarm the guard. Called when a member is shown on the path, and on
  * logout — where passing no path clears every guarded path.
  */
-export const clearLoginGuard = (returnPath?: string) => {
+export const clearLoginGuard = (returnPath?: string, scope?: string) => {
   const storage = getStorage();
   if (!storage) return;
 
   try {
     if (returnPath) {
-      storage.removeItem(keyFor(returnPath));
+      storage.removeItem(keyFor(returnPath, scope));
       return;
     }
     const keys: string[] = [];

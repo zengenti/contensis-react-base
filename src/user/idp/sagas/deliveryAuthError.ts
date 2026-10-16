@@ -27,6 +27,7 @@ import { setRoute } from '~/routing/redux/actions';
 import { isSSR } from '~/util/env';
 import { selectUserIsAuthenticated } from '../../redux/selectors';
 import { currentHref, getAccessDeniedRoute } from '../navigation';
+import { DELIVERY_GUARD } from '../loginGuard';
 import { getLoginReturnPath } from '../returnPath';
 import { refreshSession } from '../refresh';
 import {
@@ -57,6 +58,10 @@ export function* idpDeliveryAuthErrorSaga(action: any, deliveryError: any) {
   const status = deliveryError?.status;
   const returnPath = getLoginReturnPath(currentHref());
   const isAuthenticated = yield select(selectUserIsAuthenticated);
+  // Under its own guard key: establishing a session must not disarm a Delivery
+  // escalation, or a member who persistently 401s is redirected on every load.
+  const escalate = () =>
+    idpAnonymousRouteSaga({ returnPath, scope: DELIVERY_GUARD });
 
   if (status === 403) {
     // A member who is not allowed to see this. Same destination as today,
@@ -67,12 +72,11 @@ export function* idpDeliveryAuthErrorSaga(action: any, deliveryError: any) {
       return yield put(setRoute(accessDeniedRoute));
     }
     // No session at all: the anonymous path, not access-denied.
-    return yield* idpAnonymousRouteSaga({ returnPath });
+    return yield* escalate();
   }
 
   // A second 401 for a path we already reloaded once: stop reloading.
-  if (hasDeliveryReloadFor(path))
-    return yield* idpAnonymousRouteSaga({ returnPath });
+  if (hasDeliveryReloadFor(path)) return yield* escalate();
 
   const outcome = yield call(refreshSession);
 
@@ -82,8 +86,7 @@ export function* idpDeliveryAuthErrorSaga(action: any, deliveryError: any) {
     return yield put(setRoute(path));
   }
 
-  if (outcome === 'no-session')
-    return yield* idpAnonymousRouteSaga({ returnPath });
+  if (outcome === 'no-session') return yield* escalate();
 
   // `unknown`: a hiccup at the identity service is not the member's session
   // ending, and reloading would only hit the same wall (R9).
