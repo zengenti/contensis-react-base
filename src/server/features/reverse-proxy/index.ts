@@ -83,14 +83,34 @@ const deliveryApiProxy = (apiProxy: httpProxy<IncomingMessage, ServerResponse<In
   });
 };
 
+/** The `/idp/*` paths a browser actually visits. Exact routes rather than a
+ *  wildcard: express matches the pathname, so a traversal attempt
+ *  (`/idp/../../anything`) never reaches the relay at all, while the query
+ *  each path carries (`returnPath`, `code`) passes through untouched. */
+const IDP_PROXY_ROUTES = [
+  '/idp/check',
+  '/idp/login',
+  '/idp/callback',
+  '/idp/logout',
+  '/idp/refresh',
+];
+
 const contensisIdpProxy = (
   idpProxy: httpProxy<IncomingMessage, ServerResponse<IncomingMessage>>,
   app: Express
 ) => {
   // This is just here to stop cors requests on localhost. In Production this is mapped using varnish.
-  app.all(['/idp/{*splat}'], (req, res) => {
+  app.all(IDP_PROXY_ROUTES, (req, res) => {
+    // `xfwd` rebuilds X-Forwarded-Host from the real Host header, which is
+    // how identity-client builds the callback back to localhost. It honours
+    // an inbound header first, though, so drop whatever the client sent —
+    // only this server's view of the request may decide the host.
+    delete req.headers['x-forwarded-host'];
+    delete req.headers['x-forwarded-proto'];
+
+    // The path only: the callback query carries an authorization code.
     console.log(
-      `[idpProxy] "${req.method} ${shorten(req.url)}" target: ${servers.alias}`
+      `[idpProxy] "${req.method} ${req.url.split('?')[0]}" target: ${servers.alias}`
     );
     idpProxy.web(req, res, {
       target: idpHostname,
@@ -103,7 +123,7 @@ const contensisIdpProxy = (
   });
   idpProxy.on('error', (e, req) => {
     console.log(
-      `[idpProxy] "${req.method} ${req.url}" host: ${req.headers.host} failed with ${e}`
+      `[idpProxy] "${req.method} ${req.url?.split('?')[0] ?? req.url}" host: ${req.headers.host} failed with ${e}`
     );
   });
 };
