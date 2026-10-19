@@ -1,31 +1,19 @@
 /**
- * Choosing and sanitising the `returnPath` handed to `/idp/*` (R13, R14, R15).
+ * Choosing and sanitising the `returnPath` handed to `/idp/*`.
  *
- * A `returnPath` must be a local path. identity-client's own check is only
- * "starts with `/`", which would let an attacker-chosen `redirect_uri` on the
- * login route become a redirect to another host through a service we do not
- * own. So every candidate is resolved against the site's origin and accepted
- * only when the origin matches; anything else becomes `/`. That covers
- * `//host`, `/\host` (URL parsing normalises the backslash and resolves it off
- * site) and absolute cross-origin URLs.
+ * It must be a local path: identity-client only checks "starts with `/`", so an
+ * attacker-chosen `redirect_uri` on the login route could otherwise bounce the
+ * visitor off site through a service we do not own. Every candidate is resolved
+ * against the site's origin and accepted only when the origin matches; anything
+ * else becomes `/`.
  *
- * Matching the origin is not enough on its own. A dot segment can leave the
- * resolved *pathname* starting with two slashes — `/.//evil.com` and
- * `/a/..//evil.com` both resolve on site with pathname `//evil.com` — and a
- * path of that shape is treated as protocol-relative by anything that later
- * joins it to a host, including identity-client's naive check. So a pathname
- * that opens with two slashes — or a backslash in either position, which the
- * URL parser treats as a slash there — also becomes `/`. A double slash
- * anywhere else in the path is legitimate and is left alone.
- *
- * The three parameters that must never leave the browser — `securityToken`,
- * `credentials` and `password`, matched case-insensitively — are removed last,
- * after any substitution, so a token cannot ride along inside a
- * `redirect_uri` target. Other query parameters are kept.
+ * `securityToken`, `credentials` and `password` (any case) are stripped last,
+ * after any substitution, so a token cannot ride along inside another
+ * parameter's value.
  */
 
 /** The site's classic login route. Declared here rather than imported from
- *  `LoginHelper` so the module survives the v5 clean-up unchanged (KTD9). */
+ *  `LoginHelper` so this module survives the v5 clean-up unchanged. */
 export const LOGIN_ROUTE = '/account/login';
 
 const NEVER_IN_RETURN_PATH = ['securitytoken', 'credentials', 'password'];
@@ -35,7 +23,6 @@ const firstParam = (params: URLSearchParams, name: string) => {
   return typeof value === 'string' && value !== '' ? value : undefined;
 };
 
-/** Drop the parameters that must never be sent in a `returnPath` (R15). */
 const stripNeverSentParams = (url: URL) => {
   const names: string[] = [];
   url.searchParams.forEach((_value, name) => {
@@ -75,9 +62,10 @@ export const sanitiseLocalPath = (
   // `javascript:` (no origin at all).
   if (!origin || resolved.origin !== origin) return '/';
 
-  // Still on site, but a dot segment can leave the pathname shaped like
-  // `//evil.com`, which the next hop resolves to another host. Nothing on this
-  // site legitimately starts a path that way, so it goes to `/` (R15).
+  // Origin match alone is not enough: `/.//evil.com` and `/a/..//evil.com`
+  // resolve on site with a pathname of `//evil.com`, which the next hop treats
+  // as protocol-relative. No path here legitimately opens that way; a double
+  // slash anywhere later is left alone.
   if (/^[/\\]{2}/.test(resolved.pathname)) return '/';
 
   const cleaned = stripNeverSentParams(resolved);
@@ -85,12 +73,10 @@ export const sanitiseLocalPath = (
 };
 
 /**
- * The `returnPath` for a trip to `/idp/check` (R13).
- *
- * Normally the current path. When the current path *is* the site's login
- * route, the page's own target is used instead — `redirect_uri` (the react-base
- * classic login hand-off) or `ReturnURL` (the asset/IIS hand-off) — falling
- * back to `/`.
+ * The `returnPath` for a trip to `/idp/check`: normally the current path. When
+ * the current path *is* the site's login route, that page's own target is used
+ * instead — `redirect_uri` (the react-base classic hand-off) or `ReturnURL` (the
+ * asset/IIS one) — falling back to `/`.
  */
 export const getLoginReturnPath = (currentHref: string): string => {
   const current = safeHref(currentHref);
@@ -108,11 +94,9 @@ export const getLoginReturnPath = (currentHref: string): string => {
   return sanitiseLocalPath(currentHref, origin);
 };
 
-/**
- * The `returnPath` for a trip to `/idp/logout` (R14): the path the caller
- * asked for, otherwise the current path, otherwise `/` when the current route
- * requires login (so a logout from a members area lands somewhere public).
- */
+/** The `returnPath` for a trip to `/idp/logout`: the path the caller asked for,
+ *  else the current path, else `/` when the current route requires login — so a
+ *  logout from a members area lands somewhere public. */
 export const getLogoutReturnPath = ({
   redirectPath,
   currentHref,

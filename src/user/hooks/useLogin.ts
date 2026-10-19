@@ -18,8 +18,6 @@ const useLogin = () => {
   const select = useSelector;
 
   return {
-    // Credentials are optional: under `USE_IDP` the member signs in at
-    // `/idp/check`, so `loginUser()` is the whole call (R13, R17).
     loginUser: (username?: string, password?: string) =>
       dispatch(loginUser(username, password, cookies)),
     logoutUser: (redirectPath?: string) =>

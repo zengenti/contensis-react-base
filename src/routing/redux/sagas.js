@@ -202,8 +202,8 @@ function* getRouteSaga(action) {
       livePreviewNavigationTask = yield spawn(watchLivePreviewNavigationSaga);
     }
 
-    // Switch 5 (KTD1, KTD3): resolve the member's session before any content
-    // or release request is made. Does nothing on the server (R19).
+    // Resolve the member's session before any content or release request is
+    // made. Does nothing on the server.
     if (isIdpEnabled()) yield call(idpRouteSessionSaga, action);
 
     // Resolve an access token that can serve this route before we request
@@ -400,7 +400,7 @@ function* getRouteSaga(action) {
         );
         if (nodeError) {
           if ([401, 403].includes(nodeError.status)) {
-            // Switch 6 (KTD1): one refresh and one reload under USE_IDP (R24).
+            // One refresh and one reload under USE_IDP.
             if (isIdpEnabled())
               return yield call(idpDeliveryAuthErrorSaga, action, nodeError);
 

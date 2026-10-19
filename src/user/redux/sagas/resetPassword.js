@@ -26,7 +26,7 @@ export const resetPasswordSagas = [
   takeEvery(CHANGE_USER_PASSWORD, handleChangePasswordSaga),
 ];
 
-// Switch 4 (KTD1): read when the action is handled, not at import (R19).
+// Read when the action is handled, not at import.
 function* handleChangePasswordSaga(action) {
   if (isIdpEnabled()) return yield call(idpChangePasswordSaga, action);
   return yield call(changePasswordSaga, action);

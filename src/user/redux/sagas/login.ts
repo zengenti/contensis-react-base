@@ -31,9 +31,9 @@ import { LoginHelper } from '~/user/util/LoginHelper.class';
 import { matchUserGroup } from '~/user/util/matchGroups';
 import { queryParams } from '~/util/navigation';
 
-// Switch 1 (KTD1). Read when the action is handled: this module is imported
-// before `start()` applies `config.useIdp`, so an import-time choice would run
-// the classic sagas on a server serving an IDP site (R19).
+// Read when the action is handled: this module is imported before `start()`
+// applies `config.useIdp`, so an import-time choice would run the classic sagas
+// on a server serving an IDP site.
 export const loginSagas = [
   call(handleInitialUserStateSaga),
   takeEvery(LOGIN_USER, handleLoginUserSaga),
@@ -62,7 +62,7 @@ function* handleValidateUserSaga(action: any) {
 }
 
 export function* handleRequiresLoginSaga(action: any) {
-  // Switch 2 (KTD1): the protected-route decision under USE_IDP (R13, R16).
+  // The protected-route decision under USE_IDP.
   if (isIdpEnabled()) return yield call(idpHandleRequiresLoginSaga, action);
 
   const {
@@ -223,7 +223,7 @@ const removeHostnamePart = (path: string) => {
 };
 
 function* redirectAfterSuccessfulLoginSaga() {
-  // Switch 1: `/idp/check` returns the member to `returnPath` itself.
+  // Under `USE_IDP`, `/idp/check` returns the member to `returnPath` itself.
   if (isIdpEnabled()) return;
 
   const isLoggedIn = yield select(selectUserIsAuthenticated);
@@ -255,7 +255,7 @@ function* logoutUserSaga({ redirectPath, cookies }: any) {
 }
 
 export function* refreshSecurityToken() {
-  // Switch 3 (KTD1): refresh through `/idp/refresh`, same signature (R17).
+  // Refresh through `/idp/refresh`, same signature.
   if (isIdpEnabled()) return yield call(idpRefreshSecurityTokenSaga);
 
   const clientCredentials = yield select(selectClientCredentials, 'js');

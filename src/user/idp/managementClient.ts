@@ -1,26 +1,21 @@
 /**
  * A Management API client built from the access token cookie, at the moment of
- * the call (KTD5).
+ * the call. Nothing about it can start a classic grant:
  *
- * Nothing about this client can start a classic grant:
+ * - `bearerTokenExpiryDate` is far in the future, so the SDK's
+ *   `isBearerTokenExpired()` is false and `ensureBearerToken()` resolves without
+ *   asking for a token.
+ * - No `clientType` and no `clientDetails`, so anything that does reach
+ *   `/authenticate/connect/token` posts `grant_type=null` and fails rather than
+ *   firing a `contensis_classic` grant. `clientType: 'none'` is not an option:
+ *   it throws without a Delivery access token.
+ * - Every request carries the token in `Authorization`, read fresh each time.
+ * - `fetchFn` aborts after the shared timeout, so a hung Management API becomes
+ *   `unknown` instead of stalling the route.
  *
- * - `bearerToken` is the cookie value and `bearerTokenExpiryDate` is far in the
- *   future, so the SDK's `isBearerTokenExpired()` is false and
- *   `ensureBearerToken()` resolves without asking for a token.
- * - No `clientType` and no `clientDetails`, so a slip that does reach
- *   `/authenticate/connect/token` posts `grant_type=null` and fails, rather
- *   than firing a `contensis_classic` grant (R11).
- * - Every request carries the token in `Authorization`, read fresh each time
- *   (R11). `clientType: 'none'` is never used: it throws without a Delivery
- *   access token.
- * - `fetchFn` aborts after 5 seconds, so a hung Management API produces the
- *   `unknown` R23 names instead of stalling the route.
- *
- * `withManagementClient` adds the one refresh-and-retry that a 401 earns
- * (R10), and classifies everything that is not a 401 as `unknown` (R23).
- *
- * This module deliberately does not use `getManagementApiClient`, which is
- * classic-shaped and deleted at v5 (KTD9).
+ * `withManagementClient` adds the one refresh-and-retry a 401 earns and
+ * classifies everything else as `unknown`. This module deliberately avoids
+ * `getManagementApiClient`, which is classic-shaped and deleted at v5.
  */
 import to from 'await-to-js';
 import type { Client } from 'contensis-management-api';
@@ -33,9 +28,9 @@ import { refreshSession } from './refresh';
 /** Far enough ahead that the SDK never treats our bearer as expiring. */
 const BEARER_EXPIRY_FAR_FUTURE_MS = 1000 * 60 * 60 * 24 * 365 * 10;
 
-/** The three-way outcome every IDP call reports (R8, R9). `error` carries the
- *  rejection behind a non-success so a caller can still report what the API
- *  said — a wrong current password, say, is a 400 we must show. */
+/** The three-way outcome every IDP call reports. `error` carries the rejection
+ *  behind a non-success so a caller can still report what the API said — a wrong
+ *  current password, say, is a 400 we must show. */
 export type IdpResult<T> =
   | { outcome: 'session'; value: T }
   | { outcome: 'no-session'; error?: unknown }
@@ -54,11 +49,9 @@ export const unknownResult = (error?: unknown): IdpResult<never> => ({
 const statusOf = (e: unknown): number | undefined =>
   isApiError(e) ? e.status : undefined;
 
-/**
- * Build a client that speaks for the member behind the access token cookie.
- * A new one per attempt: after a refresh the new token must be read from the
- * browser, never reused from a value captured earlier.
- */
+/** A client that speaks for the member behind the access token cookie. A new one
+ *  per attempt: after a refresh the token must be read from the browser, never
+ *  reused from a value captured earlier. */
 export const createIdpManagementClient = async (
   accessToken: string
 ): Promise<Client> => {
@@ -104,14 +97,10 @@ const attempt = async <T>(
   return { ok: true, value: value as T };
 };
 
-/**
- * Run `run` against a cookie-backed Management API client.
- *
- * A missing access token refreshes first. A 401 refreshes once and retries
- * once: still 401 means `no-session`, anything else means `unknown` (R10, R23).
- * The callback throwing is how a nested call (e.g. groups) reports a 401 it
- * wants retried at this level.
- */
+/** Run `run` against a cookie-backed Management API client. A missing access
+ *  token refreshes first; a 401 refreshes once and retries once. The callback
+ *  throwing is how a nested call (groups, say) reports a 401 it wants retried
+ *  here. */
 export const withManagementClient = async <T>(
   run: (client: Client) => Promise<T>
 ): Promise<IdpResult<T>> => {
@@ -140,7 +129,7 @@ export const withManagementClient = async <T>(
   const retry = await attempt(run, freshToken);
   if (retry.ok) return { outcome: 'session', value: retry.value };
 
-  // One refresh, one retry, still refused: the session is gone (R10).
+  // One refresh, one retry, still refused: the session is gone.
   return retry.status === 401
     ? noSession(retry.error)
     : unknownResult(retry.error);

@@ -1,16 +1,13 @@
 /**
- * IDP session auth (KTD1).
+ * IDP session auth: everything that talks to `/idp/*` or reads identity-client's
+ * cookies. The existing auth code hands over to it with a one-line
+ * `if (isIdpEnabled())`.
  *
- * Everything that talks to `/idp/*` or reads identity-client's cookies lives in
- * this folder and is reached from the existing auth code through a one-line
- * `if (isIdpEnabled())` hand-over. Nothing here imports `LoginHelper`,
- * `CookieHelper`, `ContensisManagementApi`, `mapClientCredentials` or
- * `CookieConstants`, so when classic and WSFED login are deleted at v5 the
- * switches collapse into direct calls and this module does not change (R4, R5,
- * KTD9).
- *
- * The module never writes or deletes a cookie (R7), never reads the session
- * during server rendering (R19), and never requests a classic grant (R11).
+ * Nothing here imports `LoginHelper`, `CookieHelper`, `ContensisManagementApi`,
+ * `mapClientCredentials` or `CookieConstants`, so when classic and WSFED login
+ * are deleted at v5 the switches collapse into direct calls and this folder does
+ * not change. It never writes or deletes a cookie, never reads the session
+ * during server rendering, and never requests a classic grant.
  */
 
 // Setting
@@ -68,7 +65,7 @@ export {
 } from './session';
 export { IdpResult, withManagementClient } from './managementClient';
 
-// sagas — the functions the KTD1 switches hand over to
+// sagas — what the login switches hand over to
 export {
   idpChangePasswordSaga,
   idpInitialUserStateSaga,

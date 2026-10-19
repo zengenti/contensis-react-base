@@ -19,6 +19,8 @@ export const idpProxy = httpProxy.createProxyServer();
 
 const reverseProxies = (app: Express, reverseProxyPaths: string[] = []) => {
   deliveryApiProxy(deliveryProxy, app);
+  // Opt-in sites only: a flag-off site must not forward `/idp/*`. Reading the
+  // setting here is safe because `start()` has already applied it to the global.
   if (isIdpEnabled()) contensisIdpProxy(idpProxy, app);
 
   app.all(

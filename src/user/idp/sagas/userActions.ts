@@ -1,15 +1,9 @@
 /**
- * The member-facing actions under `USE_IDP` (U5, switch 1, 3 and 4).
- *
- * The public surface does not change: `useLogin`, `withLogin`,
- * `refreshSecurityToken` and `useChangePassword` all keep working (R17), which
- * is the whole point of putting the switches on the setting rather than on the
- * hooks. What changes is what the site is signed in *with* — the member in
- * identity-client's cookies — and how a sign-in is performed: by navigating to
- * `/idp/check`, never by posting a password (R13).
- *
- * There is no MFA-specific behaviour, state or message anywhere in here (R22).
- * MFA is entirely behind `/idp/check`.
+ * The member-facing actions under `USE_IDP`. The public surface does not change
+ * — `useLogin`, `withLogin`, `refreshSecurityToken` and `useChangePassword` all
+ * keep working — only what the site is signed in with (identity-client's
+ * cookies) and how a sign-in happens: navigate to `/idp/check`, never post a
+ * password. Nothing here is MFA-specific; MFA is entirely behind `/idp/check`.
  */
 import { warn } from 'loglevel';
 import { call, put, select } from 'redux-saga/effects';
@@ -41,10 +35,10 @@ import {
   CHANGE_USER_PASSWORD_SUCCESS,
 } from '../../redux/types';
 
-/** KTD7: from the moment the store exists the member state reports loading.
- *  Every visitor gets the same value, so server and client render the same
- *  thing (R19), and a component guard never sees "not loading, not
- *  authenticated" before the first check has settled (R26). */
+/** From the first moment the store exists the member state reports loading, so
+ *  every visitor gets the same value: server and client render alike, and a
+ *  guard never sees "not loading, not authenticated" before the first check has
+ *  settled. */
 export function* idpInitialUserStateSaga() {
   yield put(idpResolvingUserAction(null));
 }
@@ -52,15 +46,10 @@ export function* idpInitialUserStateSaga() {
 const selectRouteRequiresLogin = (state: AppState) =>
   getIn(state, ['routing', 'staticRoute', 'route', 'requireLogin']);
 
-/**
- * `loginUser()`: there are no credentials to post. The member is sent to
- * `/idp/check` for the page they were on (R13).
- *
- * Credentials passed in are ignored, with one warning, because a site that
- * still calls `loginUser(username, password)` needs to hear why nothing
- * happened. The once-per-path loop guard does not apply to an explicit login
- * click (R16).
- */
+/** `loginUser()`: there are no credentials to post — the member goes to
+ *  `/idp/check` for the page they were on. Credentials passed in are ignored
+ *  with one warning, so a site still posting them hears why nothing happened.
+ *  The once-per-path loop guard does not apply to an explicit login click. */
 export function* idpLoginUserSaga(action: any = {}) {
   if (action.username || action.password)
     warn(
@@ -71,15 +60,11 @@ export function* idpLoginUserSaga(action: any = {}) {
   yield call(goToIdpCheck, getLoginReturnPath(currentHref()));
 }
 
-/**
- * `logoutUser(redirectPath)`: the reducer has already cleared the user (its
- * `LOGOUT_USER` branch resets state), so this saga's only job is the
- * navigation (F2). identity-client clears its own cookies and ends the Keycloak
- * session — we never touch a cookie (R7).
- *
- * With `clearOnly` this dispatch is our own notice that another tab ended the
- * session (KTD12, R27), so there is nothing to navigate to.
- */
+/** `logoutUser(redirectPath)`: the reducer has already cleared the user, so this
+ *  saga's only job is the navigation. identity-client clears its own cookies and
+ *  ends the Keycloak session — we never touch a cookie. With `clearOnly` the
+ *  dispatch is our own notice that another tab ended the session, so there is
+ *  nothing to navigate to. */
 export function* idpLogoutUserSaga(action: any = {}) {
   if (action.clearOnly) return;
 
@@ -93,16 +78,14 @@ export function* idpLogoutUserSaga(action: any = {}) {
     getLogoutReturnPath({
       redirectPath: action.redirectPath,
       currentHref: currentHref(),
-      // From a members area, land somewhere public (R14).
+      // From a members area, land somewhere public.
       routeRequiresLogin: !!routeRequiresLogin,
     })
   );
 }
 
-/**
- * `VALIDATE_USER`: work out who is signed in, from the cookies and a refresh if
- * needed. Returns the logged-in boolean callers of the classic saga expected.
- */
+/** `VALIDATE_USER`: work out who is signed in, from the cookies and a refresh if
+ *  needed. Returns the logged-in boolean callers of the classic saga expected. */
 export function* idpValidateUserSaga() {
   const clientCredentials = yield select(selectClientCredentials, 'js');
   yield put(idpResolvingUserAction(clientCredentials));
@@ -115,7 +98,7 @@ export function* idpValidateUserSaga() {
   }
 
   // Only 401 ends a session, and ending it here means state only: this call
-  // never navigates (R9). Otherwise stop reporting loading and leave the rest.
+  // never navigates. Otherwise stop reporting loading and leave the rest.
   const isAuthenticated = yield select(selectUserIsAuthenticated);
   if (result.outcome === 'no-session' && isAuthenticated)
     yield put(idpClearSessionAction());
@@ -124,11 +107,9 @@ export function* idpValidateUserSaga() {
   return yield select(selectUserIsAuthenticated);
 }
 
-/**
- * Switch 3: `refreshSecurityToken()`, same no-argument signature, now refreshing
- * through `/idp/refresh` (R17). It updates the classic token we hold and never
- * navigates — refreshing a token is not a decision to send anybody anywhere.
- */
+/** `refreshSecurityToken`, same no-argument signature, now refreshing through
+ *  `/idp/refresh`. It updates the classic token we hold and never navigates:
+ *  refreshing a token is not a decision to send anybody anywhere. */
 export function* idpRefreshSecurityTokenSaga() {
   const outcome = yield call(refreshSession);
 
@@ -174,8 +155,8 @@ const changePassword = async (changePasswordObject: {
     : { ok: false, error: result.error };
 };
 
-/** Switch 4: change password with the access token, through the same
- *  refresh-and-retry wrapper as everything else (R11, AE9). No classic grant. */
+/** Change password with the access token, through the same refresh-and-retry
+ *  wrapper as everything else. No classic grant. */
 export function* idpChangePasswordSaga(action: any) {
   if (
     !action ||

@@ -1,20 +1,12 @@
 /**
- * Building a member's session from identity-client's cookies alone (KTD7,
- * KTD12, R23).
+ * A member's session is built from identity-client's cookies alone. No classic
+ * grant is used: user and groups are fetched with the access token as
+ * `Authorization`, and react-base's own `RefreshToken` cookie is never read — a
+ * leftover one can belong to somebody else.
  *
- * There is no classic grant anywhere in here: current user and groups are
- * fetched with the access token in `Authorization` (R11). A leftover react-base
- * `RefreshToken` cookie for somebody else is never read, so the site shows the
- * member identity-client actually has (AE5).
- *
- * Three outcomes, mapped from the refresh and Management API results:
- *
- * - `session`    — user and groups, plus the classic token for
- *                  `selectUserSecurityToken` (R12).
- * - `no-session` — a 401 survived one refresh and one retry (R10).
- * - `unknown`    — a timeout, a network error or a 5xx, including a groups
- *                  call that fails for any reason other than 401. A member is
- *                  never handed back with an empty group list (R23, AE13).
+ * Outcomes: `session`; `no-session` (a 401 survived one refresh and retry);
+ * `unknown` (timeout, network error, or a 5xx). Never a member with an empty
+ * group list.
  */
 import to from 'await-to-js';
 import type { Client } from 'contensis-management-api';
@@ -48,8 +40,8 @@ const isBuildable = (value: BuiltSession): value is { user: User; groups: Group[
 
 const statusOf = (e: unknown) => (isApiError(e) ? e.status : undefined);
 
-/** The same call shape as `LoginHelper.GetUserDetails` — read, not imported
- *  (KTD9): current user, then their groups, inherited included. */
+/** Mirrors `LoginHelper.GetUserDetails` rather than importing it: nothing in
+ *  here may depend on the classic login the v5 clean-up removes. */
 const buildUserAndGroups = async (client: Client): Promise<BuiltSession> => {
   const [userError, user] = await to(client.security.users.getCurrent());
 
@@ -70,19 +62,16 @@ const buildUserAndGroups = async (client: Client): Promise<BuiltSession> => {
 
   if (groupsError) {
     if (statusOf(groupsError) === 401) throw groupsError;
-    // R23: a member with no groups would fail group-restricted routes with
-    // access-denied. Not knowing is not the same as having none.
+    // Not knowing is not the same as having none: an empty group list would
+    // send a real member to access-denied.
     return UNBUILDABLE;
   }
 
   return { user, groups: groupsResult?.items || [] };
 };
 
-/**
- * The user object the reducer can hold. It reads `user.email` unguarded when
- * working out `isZengentiStaff`, so a member without an email address gets an
- * empty one rather than throwing on the way into state (KTD7).
- */
+/** The reducer reads `user.email` unguarded for `isZengentiStaff`, so a member
+ *  without one gets an empty string instead of throwing into state. */
 const toStateUser = (user: User, groups: Group[]): UserWithGroups => ({
   ...user,
   email: typeof user.email === 'string' ? user.email : '',
@@ -110,19 +99,13 @@ export const buildSession = async (): Promise<SessionResult> =>
   mapBuildResult(await withManagementClient(buildUserAndGroups));
 
 /**
- * Resolve who, if anybody, is logged in — the only place a session comes from
- * while `USE_IDP` is on (R6).
+ * Who, if anybody, is logged in — the only source of a session while `USE_IDP`
+ * is on. Two readable tokens are enough to try building one; otherwise the
+ * shared refresh decides first.
  *
- * Cookie presence alone never proves a session, but when both the access token
- * and classic token are readable there is something to build from and no
- * refresh is needed. Otherwise the shared refresh decides.
- *
- * One resolution is shared by everything waiting at that moment, the same
- * single-flight as the refresh (KTD4): two concurrent route sagas — React
- * StrictMode doubles the first one in development, and overlapping navigations
- * can do it in production — must not each fetch user and groups. The in-flight
- * promise is cleared when it settles, so a later check (the quiet retry, say)
- * resolves afresh.
+ * One resolution is shared by everything waiting on it (StrictMode doubles the
+ * first dispatch, and navigations overlap), cleared when it settles so a later
+ * check resolves afresh.
  */
 let inFlight: Promise<SessionResult> | null = null;
 
@@ -151,13 +134,9 @@ export const resolveSession = (): Promise<SessionResult> => {
   return inFlight;
 };
 
-/**
- * Has another tab changed who we are? (KTD12, R27)
- *
- * The classic token cookie is the identity we last put in state. If the cookie
- * is gone, or is a different token, this tab's view is stale: without this
- * check tab B would show user B while its API calls act as user C.
- */
+/** Has another tab changed who we are? The classic token cookie is the identity
+ *  last put in state; if it is gone or different, this tab's view is stale —
+ *  without the check tab B shows user B while its API calls act as user C. */
 export const identityHasChanged = (classicTokenInState?: string | null) => {
   const classicToken = readIdpClassicToken();
   if (!classicToken) return true;
@@ -165,28 +144,24 @@ export const identityHasChanged = (classicTokenInState?: string | null) => {
 };
 
 /**
- * ## Mapping a session onto the existing reducer (KTD7)
+ * Mapping a session onto the existing reducer, which is not edited. The actions
+ * below are written around three of its quirks:
  *
- * The reducer is not edited, so these actions are written around its three
- * quirks:
- *
- * - `isAuthenticated` can never be reset by `SET_AUTHENTICATION_STATE`
+ * - `SET_AUTHENTICATION_STATE` can never reset `isAuthenticated`
  *   (`isAuthenticated || state.isAuthenticated`), so ending a session goes
  *   through `LOGOUT_USER` instead — with an IDP-only `clearOnly` flag so the
- *   IDP logout saga knows not to navigate.
- * - A `SET_AUTHENTICATION_STATE` that does not carry `clientCredentials` nulls
- *   them, so every resolving put carries the current value forward.
+ *   logout saga knows not to navigate.
+ * - A `SET_AUTHENTICATION_STATE` that omits `clientCredentials` nulls them, so
+ *   every resolving put carries the current value forward.
  * - A user without `email` throws, which `toStateUser` prevents.
  *
  * Redux holds the classic token and nothing else: no access token, no refresh
  * token, no expiry.
  */
 
-/** What `selectClientCredentials` holds while `USE_IDP` is on (R12). */
+/** What `selectClientCredentials` holds while `USE_IDP` is on. */
 export type IdpClientCredentials = { contensisClassicToken?: string } | null;
 
-/** `clientCredentials` is carried forward on every put, because a
- *  `SET_AUTHENTICATION_STATE` that omits them nulls them (KTD7). */
 const idpUserStateAction = (
   clientCredentials: IdpClientCredentials | undefined,
   isLoading: boolean
@@ -198,12 +173,9 @@ const idpUserStateAction = (
   },
 });
 
-/** The session is being worked out: loading, and the existing credentials kept. */
 export const idpResolvingUserAction = (clientCredentials?: IdpClientCredentials) =>
   idpUserStateAction(clientCredentials, true);
 
-/** The check has settled without a member: stop reporting loading. Nobody was
- *  shown, so there is nothing to reset. */
 export const idpSettledUserAction = (clientCredentials?: IdpClientCredentials) =>
   idpUserStateAction(clientCredentials, false);
 
@@ -240,9 +212,9 @@ export const idpClassicTokenUserAction = (
 });
 
 /**
- * End the session in state only. `clearOnly` is the IDP logout saga's signal
- * not to navigate: this is us noticing that another tab ended the session, not
- * the member asking to log out (R27).
+ * End the session in state only. `clearOnly` is the IDP logout saga's signal not
+ * to navigate: this is us noticing that another tab ended the session, not the
+ * member asking to log out.
  */
 export const idpClearSessionAction = () => ({
   type: LOGOUT_USER,

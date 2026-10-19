@@ -23,13 +23,11 @@ export type RequestCredentials = {
 };
 
 /**
- * Under `USE_IDP` the release resolves the member from the access token alone
- * (KTD10, R25): the `Authorization` header, else identity-client's access token
- * cookie. No refresh token — and that absence is the point. With none, the
- * legacy fallback further down cannot run, so a stale `RefreshToken` cookie for
- * somebody else can never resolve the member this release answers to, and with
- * `ContensisCMSUserName` not read, the classic token cannot shadow the access
- * token either.
+ * Under `USE_IDP` the release resolves the member from the access token alone:
+ * the `Authorization` header, else identity-client's access token cookie. No
+ * refresh token, and that absence is the point: without one the legacy fallback
+ * below cannot run, so a stale `RefreshToken` cookie belonging to somebody else
+ * can never decide who this release answers to.
  */
 const getIdpRequestCredentials = (req: Request): RequestCredentials => {
   const cookies = new Cookies(req.headers.cookie || '').getAll();
@@ -47,7 +45,7 @@ const getIdpRequestCredentials = (req: Request): RequestCredentials => {
 export const getRequestCredentials = (
   req: Request
 ): RequestCredentials => {
-  // Switch 7 (KTD1): the access-token release reads the access token only.
+  // The access-token release reads the access token only.
   if (isIdpEnabled()) return getIdpRequestCredentials(req);
 
   const cookies = new Cookies(req.headers.cookie || '').getAll();

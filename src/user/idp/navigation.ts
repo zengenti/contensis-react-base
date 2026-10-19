@@ -1,18 +1,16 @@
 /**
- * The three navigations the IDP flow performs, and the URLs they use.
+ * The three IDP navigations. All are full browser navigations, not router
+ * pushes: `/idp/*` is served by identity-client outside the React app, and the
+ * access-denied page has to survive a reload with the original path in the query
+ * string.
  *
- * All three are full browser navigations, not router pushes: `/idp/*` is
- * served by identity-client outside the React app, and the access-denied page
- * has to survive a reload with the original path in the query string.
+ * `returnPath` is URL-encoded (`/documents?page=2` travels as
+ * `returnPath=%2Fdocuments%3Fpage%3D2`) and callers pass a value already through
+ * `sanitiseLocalPath`.
  *
- * `returnPath` is URL-encoded, so `/documents?page=2` travels as
- * `returnPath=%2Fdocuments%3Fpage%3D2` (AE7). Callers pass a value already
- * through `sanitiseLocalPath` (R15).
- *
- * The access-denied URL is built here in the same shape the classic login uses
- * (`/account/access-denied?original_uri=…`) rather than imported from
- * `LoginHelper`, so the module does not depend on code the v5 clean-up deletes
- * (KTD9).
+ * The access-denied URL is built here in the shape the classic login uses rather
+ * than imported from `LoginHelper`, so nothing here depends on code the v5
+ * clean-up deletes.
  */
 
 export const IDP_CHECK_PATH = '/idp/check';
@@ -39,14 +37,14 @@ export const getAccessDeniedRoute = (originalPath?: string) => {
 };
 
 const navigate = (url: string, replace = false) => {
-  // Server rendering never navigates (R19).
+  // Server rendering never navigates.
   if (typeof window === 'undefined') return;
   if (replace) window.location.replace(url);
   else window.location.href = url;
 };
 
-/** The address the browser is actually on. The routing action's location is
- *  the route React is rendering, which during a navigation can lag the URL a
+/** The address the browser is actually on. The routing action's location is the
+ *  route React is rendering, which during a navigation can lag the URL a
  *  `returnPath` should be taken from. */
 export const currentHref = () =>
   typeof window === 'undefined' ? '' : window.location.href;

@@ -1,23 +1,14 @@
 /**
- * `POST /idp/refresh` — the one network call that answers "is there a session?"
- * (KTD4).
+ * `POST /idp/refresh` — the one call that answers "is there a session?".
+ * Same-origin, carrying the `X-Contensis-Refresh` header as the CSRF
+ * protection: without it identity-client answers 403, which is also why a page
+ * on another origin cannot force a refresh.
  *
- * The request is same-origin with the `X-Contensis-Refresh` header, which is
- * the CSRF protection: without it identity-client answers 403. The header is
- * the reason a page on another origin cannot force a refresh.
+ * Only a 401 ends a session. Everything else — timeout, network error, 5xx, a
+ * 200 that left the access token cookie unreadable, and a 403 (our own
+ * missing-header defect) — is `unknown`, and `unknown` never logs anyone out.
  *
- * Three outcomes, and only one of them ends a session (R8, R9):
- *
- * - `session`     — 200 with a readable access token cookie.
- * - `no-session`  — 401. identity-client has already cleared its cookies.
- * - `unknown`     — timeout, network error, 5xx, or a 200 that left the access
- *                   token cookie unreadable (R23). Never a logout.
- *
- * A 403 means we forgot the header, i.e. a code defect. It is logged as one and
- * classified `unknown`, so a defect in our code cannot log a member out.
- *
- * One call is shared by everything waiting at that moment: concurrent callers
- * get the same in-flight promise.
+ * Concurrent callers share one in-flight request.
  */
 import { error } from 'loglevel';
 
@@ -27,16 +18,15 @@ import { IDP_ACCESS_TOKEN_COOKIE, readIdpAccessToken } from './cookies';
 
 export const IDP_REFRESH_PATH = '/idp/refresh';
 
-/** Matches the admin UI's refresh timeout (KTD4). */
+/** Matches the admin UI's refresh timeout. */
 export const IDP_REFRESH_TIMEOUT_MS = FETCH_TIMEOUT_MS;
 
 export type RefreshOutcome = 'session' | 'no-session' | 'unknown';
 
 let inFlight: Promise<RefreshOutcome> | null = null;
 
-/** Set once when a refresh returns 200 without leaving a readable access token
- *  cookie. Retrying the same call on the same page load cannot fix that, so we
- *  stop asking and report one console error. */
+/** Set when a refresh returns 200 without leaving a readable access token
+ *  cookie. Asking again cannot fix that, so we stop and log it once. */
 let cookielessRefreshSeen = false;
 
 const performRefresh = async (): Promise<RefreshOutcome> => {
@@ -55,7 +45,7 @@ const performRefresh = async (): Promise<RefreshOutcome> => {
 
   if (response.status === 200) {
     // A 200 writes a new access token cookie. If it is still not readable the
-    // refresh has not given us a session we can use (R23).
+    // refresh has not given us a session we can use.
     if (!readIdpAccessToken()) {
       if (!cookielessRefreshSeen) {
         cookielessRefreshSeen = true;
@@ -89,15 +79,13 @@ const performRefresh = async (): Promise<RefreshOutcome> => {
   return 'unknown';
 };
 
-/**
- * Refresh the session, sharing one in-flight call between concurrent callers.
- * Never rejects: an unreachable identity-client is `unknown`, not an exception.
- */
+/** Refresh the session, sharing one in-flight call between concurrent callers.
+ *  Never rejects: an unreachable identity-client is `unknown`, not an exception. */
 export const refreshSession = (): Promise<RefreshOutcome> => {
   if (inFlight) return inFlight;
 
   // A refresh that succeeded without leaving a readable cookie will not do
-  // better on a second attempt in the same page load (R23).
+  // better on a second attempt in the same page load.
   if (cookielessRefreshSeen && !readIdpAccessToken())
     return Promise.resolve('unknown');
 

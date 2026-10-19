@@ -1,33 +1,19 @@
 /**
- * What a protected route does with the session (KTD6, switch 2).
+ * What a protected route does with the session. Routing already calls this after
+ * `onRouteLoaded`, so it sees the matched static route, the entry, and whatever
+ * the app returned from its own hook — the same inputs and the same
+ * `userLoggedIn` return contract as the classic `handleRequiresLoginSaga`, which
+ * it replaces one-for-one under `USE_IDP`.
  *
- * Routing already calls this after `onRouteLoaded`, so it sees the matched
- * static route, the entry, and whatever the app returned from its own hook —
- * the same inputs and the same `userLoggedIn` return contract as the classic
- * `handleRequiresLoginSaga`, which it replaces one-for-one under `USE_IDP`.
+ * A public route always renders: anonymous if nobody is signed in, with no
+ * redirect and nothing deleted, whatever the outcome. On a protected route a
+ * missing session goes to `/idp/check` once per `returnPath` and to an error
+ * state the second time; an `unknown` outcome gets one quiet retry, then a 503.
  *
- * ## The decision table (checked against the plan's per-route diagram)
- *
- * | Session outcome | State      | Route                    | Result |
- * | --------------- | ---------- | ------------------------ | ------ |
- * | session         | member     | public                   | render, clear guard |
- * | session         | member     | protected, groups match  | render, clear guard |
- * | session         | member     | protected, groups lack   | `/account/access-denied?original_uri=…` (R18) |
- * | session         | member     | protected, no groups req | render, clear guard |
- * | no-session      | anonymous  | public                   | render anonymous, no redirect (R9, AE4) |
- * | no-session      | member     | public                   | reset to anonymous, render |
- * | no-session      | anonymous  | protected, guard unset   | arm guard, `/idp/check?returnPath=…` (R13) |
- * | no-session      | member     | protected, guard unset   | reset, arm guard, `/idp/check` |
- * | no-session      | any        | protected, guard armed   | throw 401 → generic error state, no second redirect (R16, AE6) |
- * | unknown         | any        | public                   | render anonymous for this load, no redirect, nothing deleted (R9) |
- * | unknown         | any        | protected                | one quiet retry after 1s, then throw 503 (KTD4, AE3) |
- * | unknown (retry) | any        | protected, retry 401     | falls through to the no-session rows |
- *
- * Errors are thrown, not put: the IDP sagas run inside `getRouteSaga`'s `try`,
- * so a thrown `{ status, statusText, data }` reaches `do500` and renders the
- * site's `notFoundComponent` with that status. A `put` would be overwritten by
- * the later `SET_ENTRY` (KTD6). `useLogin().isError` is set as well, so
- * component-level guards can tell.
+ * Errors are thrown, not put: these sagas run inside `getRouteSaga`'s `try`, so a
+ * thrown `{ status, statusText, data }` reaches `do500` and renders the site's
+ * `notFoundComponent` with that status, whereas a `put` would be overwritten by
+ * the later `SET_ENTRY`.
  */
 import { call, delay, put, select } from 'redux-saga/effects';
 
@@ -65,7 +51,7 @@ import {
 } from './routeSession';
 import { routeRequirements } from './routeRequirements';
 
-/** One more try, a second later, before telling the member anything (KTD4). */
+/** One more try, a second later, before telling the member anything. */
 function* quietRetrySession() {
   yield delay(1000);
 
@@ -80,7 +66,7 @@ function* quietRetrySession() {
 }
 
 /** The member is in. Clear the loop guard for this path, then honour any group
- *  requirement exactly as the classic saga does (R18). */
+ *  requirement exactly as the classic saga does. */
 function* memberRoute({
   returnPath,
   routeRequiresGroups,
@@ -102,15 +88,13 @@ function* memberRoute({
 }
 
 /**
- * Nobody is signed in on a route that needs somebody to be: `/idp/check`, but
- * only once per `returnPath` (R16). Coming straight back and failing again is
- * an error state, not another redirect.
+ * Nobody is signed in on a route that needs somebody to be: go to `/idp/check`,
+ * but only once per `returnPath` — coming straight back and failing again is an
+ * error state, not another redirect.
  *
  * `scope` separates the guard a Delivery auth error arms from the one a missing
- * session arms; see `DELIVERY_GUARD`.
- *
- * Exported for the Delivery auth-error saga: a Delivery 401 that a refresh did
- * not fix ends up here too.
+ * session arms; see `DELIVERY_GUARD`. Exported for that saga, whose 401 a refresh
+ * did not fix ends up here too.
  */
 export function* idpAnonymousRouteSaga({
   returnPath,
@@ -120,7 +104,7 @@ export function* idpAnonymousRouteSaga({
   scope?: string;
 }) {
   // A redirect armed by this page load is under way, not spent: a concurrent
-  // route saga leaves it to land (R16).
+  // route saga leaves it to land.
   if (isRedirectPending(returnPath, scope)) return false;
 
   if (isLoginGuardArmed(returnPath, scope)) {
@@ -138,9 +122,9 @@ export function* idpAnonymousRouteSaga({
   return false;
 }
 
-/** Switch 2: the IDP replacement for `handleRequiresLoginSaga`. */
+/** The IDP replacement for `handleRequiresLoginSaga`. */
 export function* idpHandleRequiresLoginSaga(action: any) {
-  // The server never decides this (R19). Routing treats a falsy return as
+  // The server never decides this. Routing treats a falsy return as
   // "not logged in", which on the server is always true: nobody is.
   if (isSSR) return false;
 
@@ -151,7 +135,7 @@ export function* idpHandleRequiresLoginSaga(action: any) {
   const entry = actionEntry || selectRouteEntry(yield select(), 'js');
 
   // Merge route, content type and app-provided requirements exactly as the
-  // classic saga does, so groups from all three sources count (R18).
+  // classic saga does, so groups from all three sources count.
   const { requiresLogin: routeRequiresLogin, requiresGroups: routeRequiresGroups } =
     routeRequirements(action, entry);
 
@@ -167,7 +151,7 @@ export function* idpHandleRequiresLoginSaga(action: any) {
   const isAuthenticated = yield select(selectUserIsAuthenticated);
 
   // A public route renders. Anonymous, or as a member if there is one; no
-  // redirect and nothing deleted, whatever the outcome (R9).
+  // redirect and nothing deleted, whatever the outcome.
   if (!routeRequiresLogin) return isAuthenticated;
 
   const returnPath = getLoginReturnPath(currentHref());
@@ -184,7 +168,7 @@ export function* idpHandleRequiresLoginSaga(action: any) {
       return yield* idpAnonymousRouteSaga({ returnPath });
 
     // Still no answer: a generic error, and the next navigation tries again.
-    // No redirect, nothing deleted (AE3).
+    // No redirect, nothing deleted.
     yield put(
       idpErrorUserAction(
         GENERIC_ERROR_MESSAGE,

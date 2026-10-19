@@ -1,30 +1,22 @@
 /**
- * The session check at the top of every client-side route change (KTD3).
+ * The session check at the top of every client-side route change. Registered
+ * before `ensureAccessTokenSaga`, so the token is refreshed before any content
+ * fetch or release call.
  *
- * Registered at switch 5, before `ensureAccessTokenSaga`, so it runs before any
- * content is requested and before a release call. Being before the Delivery
- * fetch is what keeps the access token fresh after an idle period (AE10);
- * being before the release call is what makes a release succeed on an expired
- * cookie.
+ * It costs nothing when both identity-client cookies are readable and the classic
+ * token still matches what is in state. Otherwise it puts the resolving state,
+ * resolves the session, and puts the session or the `clearOnly` reset. Nothing
+ * happens on the server, and what a protected route does with the outcome is the
+ * require-login saga's decision.
  *
- * It is free when both identity-client cookies are readable and the classic
- * token still matches what is in state — no network at all. Otherwise it puts
- * the resolving state, resolves the session, and puts the session or the
- * `clearOnly` reset.
- *
- * Client navigations already run inside the route's loading state. A first page
- * load does not, because the hydrated entry matches the path and the routing
- * reducer leaves `isLoading` false — so when the check has to go to the network
- * on a route that requires login, the route loading state is put first and a
- * protected route shows the site's loading component rather than the anonymous
- * view (R26).
- *
- * Nothing here happens on the server (R19). The decision about what a protected
- * route does with the outcome stays in the require-login saga (switch 2).
+ * A first page load, unlike a client navigation, is not inside the route's
+ * loading state — the hydrated entry matches the path and the routing reducer
+ * leaves `isLoading` false — so a protected route that has to go to the network
+ * puts the route loading state first: the site's loading component rather than
+ * the anonymous view.
  *
  * Resolving a session never disarms the redirect guard: only showing the member
- * on the path does. A session that still cannot load the route must not earn
- * itself another trip to `/idp/check` (R16).
+ * on the path does.
  */
 import { call, put, select } from 'redux-saga/effects';
 
@@ -65,21 +57,24 @@ export const takeRouteSessionOutcome = (path?: string) =>
     ? lastOutcome.outcome
     : undefined;
 
-/** Start a fresh route change with nothing recorded (a new route change means
- *  any earlier outcome belongs to a different load). */
+/** Start a fresh route change with nothing recorded: any earlier outcome belongs
+ *  to a different load. */
 const clearRouteOutcome = (path?: string) => {
   lastOutcome = { path };
 };
 
-const recordOutcome = (path: string | undefined, outcome: RouteSessionOutcome) => {
+const recordOutcome = (
+  path: string | undefined,
+  outcome: RouteSessionOutcome
+) => {
   lastOutcome = { path, outcome };
 };
 
 /**
- * Which path has just been reloaded after a Delivery 401 (R24). Kept in module
- * memory by path: a reload is a real route change, so nothing smaller survives
- * it. A route change to any other path ends it, which is also what lets the
- * member revisit the page later and get one reload again.
+ * Which path was just reloaded after a Delivery 401. Kept in module memory by
+ * path: a reload is a real route change, so nothing smaller survives it, and a
+ * change to any other path ends it — which is also what lets the member revisit
+ * the page later and get one reload again.
  */
 let deliveryReloadPath: string | null = null;
 
@@ -98,16 +93,16 @@ export const rememberDeliveryReload = (path?: string) => {
 /**
  * Resolve the session for this route change and put the result in state.
  * Never redirects, never deletes a cookie: the decision belongs to the
- * require-login saga (switch 2).
+ * require-login saga.
  */
 export function* idpRouteSessionSaga(action: any) {
-  // Server rendering stays session-blind (R19).
+  // Server rendering stays session-blind.
   if (isSSR) return;
 
   const path = action?.path;
 
   // A route change to a different path ends the delivery-401 reload memory, so
-  // the member can revisit a page later and get one reload again (R24).
+  // the member can revisit a page later and get one reload again.
   clearDeliveryReloadIfNot(path);
   clearRouteOutcome(path);
 
@@ -120,7 +115,7 @@ export function* idpRouteSessionSaga(action: any) {
   const classicToken = yield select(selectUserSecurityToken);
 
   // Cheap path: cookies readable, and the classic token is still the one we put
-  // in state, so this tab still shows the right member (KTD12).
+  // in state, so this tab still shows the right member.
   if (
     hasIdpSessionCookies() &&
     isAuthenticated &&
@@ -147,10 +142,10 @@ export function* idpRouteSessionSaga(action: any) {
   // `no-session`: identity-client has already cleared its cookies.
   // `unknown`: we do not know, so we show anonymous for this load and let the
   // next navigation try again — but we never leave a member's face in the UI
-  // when the cookies no longer support it (KTD12).
+  // when the cookies no longer support it.
   if (isAuthenticated) yield put(idpClearSessionAction());
   // Nobody was shown, so that is the answer for this load: stop reporting
-  // loading, or the member never sees a "Log in" control (R26). A protected
+  // loading, or the member never sees a "Log in" control. A protected
   // route keeps the *route* loading state while the require-login saga
   // navigates, retries or throws.
   else yield put(idpSettledUserAction(clientCredentials));
