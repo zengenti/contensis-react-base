@@ -34,3 +34,14 @@ export const routeRequirements = (
     ],
   };
 };
+
+/** Between a navigation and its `SET_ENTRY` the routing state still holds the
+ *  *previous* route's entry, so a caller arriving without one (the release
+ *  check, a Delivery auth error) may only trust the entry in state when it
+ *  belongs to this path — the same membership test the routing reducer uses.
+ *  Anything else counts as no entry, exactly as before an entry was loaded. */
+export const entryForPath = (entry: any, path?: string): any => {
+  const uri = entry?.sys?.uri;
+  if (!uri || !path) return undefined;
+  return uri === path || uri === path.split('?')[0] ? entry : undefined;
+};

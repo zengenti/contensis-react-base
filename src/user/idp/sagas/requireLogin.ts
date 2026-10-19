@@ -49,7 +49,7 @@ import {
   RouteSessionOutcome,
   takeRouteSessionOutcome,
 } from './routeSession';
-import { routeRequirements } from './routeRequirements';
+import { entryForPath, routeRequirements } from './routeRequirements';
 
 /** One more try, a second later, before telling the member anything. */
 function* quietRetrySession() {
@@ -131,8 +131,13 @@ export function* idpHandleRequiresLoginSaga(action: any) {
   const { entry: actionEntry, path } = action || {};
 
   // Routing passes the entry it resolved; when it does not (the release-token
-  // path calls with only `requireLogin`), fall back to the entry in state.
-  const entry = actionEntry || selectRouteEntry(yield select(), 'js');
+  // path calls with only `requireLogin`), the entry in state counts only if
+  // it belongs to this path — between a navigation and its `SET_ENTRY` the
+  // routing state still holds the previous route's entry, and its content
+  // type would borrow group requirements from a page we have left.
+  const entry =
+    actionEntry ||
+    entryForPath(selectRouteEntry(yield select(), 'js'), path);
 
   // Merge route, content type and app-provided requirements exactly as the
   // classic saga does, so groups from all three sources count.
