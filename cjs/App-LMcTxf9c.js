@@ -30,7 +30,7 @@ require('deep-equal');
 require('deepmerge');
 var util = require('./util-CKoVgdTP.js');
 require('contensis-core-api');
-var RouteLoader = require('./RouteLoader-BXQZ_qEo.js');
+var RouteLoader = require('./RouteLoader-DO40NoO0.js');
 require('query-string');
 
 function _interopDefault (e) { return e && e.__esModule ? e : { default: e }; }
@@ -1546,4 +1546,4 @@ exports.createLocaleRoutes = createLocaleRoutes;
 exports.history = history$1;
 exports.pickProject = pickProject;
 exports.rootSaga = rootSaga;
-//# sourceMappingURL=App-CdMynQ1i.js.map
+//# sourceMappingURL=App-LMcTxf9c.js.map

@@ -28,7 +28,7 @@ import 'deep-equal';
 import 'deepmerge';
 import { h as routeParams } from './util-LtK9x1s6.js';
 import 'contensis-core-api';
-import { a as RouteLoader } from './RouteLoader-BGtOmCiO.js';
+import { a as RouteLoader } from './RouteLoader-CTaEJ7o3.js';
 import 'query-string';
 
 const deparameterise = path => {
@@ -1515,4 +1515,4 @@ const AppRoot = props => {
 };
 
 export { AppRoot as A, browserHistory as b, createLocaleRoutes as c, history$1 as h, pickProject as p, rootSaga as r };
-//# sourceMappingURL=App-CEJlBBRP.js.map
+//# sourceMappingURL=App-D1eu892P.js.map

@@ -1,4 +1,4 @@
-import React, { useContext, createContext, useCallback, useEffect, cloneElement } from 'react';
+import React, { useContext, createContext, useCallback, useRef, useEffect, cloneElement } from 'react';
 import { connect } from 'react-redux';
 import { Navigate, useRoutes, useLocation, matchRoutes } from 'react-router-dom';
 import { createSelector } from 'reselect';
@@ -246,9 +246,20 @@ const RouteLoader$1 = ({
   // statePath,
   trimmedPath]);
   if (typeof window == 'undefined') setPath();
+
+  // The path and query last time the route sagas ran.
+  const navigatedRef = useRef(null);
   useEffect(() => {
+    // A fragment-only change is an in-page jump, not a navigation: react-router
+    // v6 hands us a new `location` object for it, and re-running the route saga
+    // would reset the scroll the browser is about to make. v5 did not treat it
+    // as a location change, so keep that. The query stays in the key because a
+    // search change does fetch different content.
+    const navigationKey = `${trimmedPath}${location.search}`;
+    if (navigatedRef.current === navigationKey) return;
+    navigatedRef.current = navigationKey;
     setPath();
-  }, [location, setPath]);
+  }, [location, setPath, trimmedPath]);
 
   // Need to redirect when url endswith a /
   if (location.pathname.length > trimmedPath.length) {
@@ -320,4 +331,4 @@ const mapDispatchToProps = {
 var RouteLoader = connect(mapStateToPropsMemoized, mapDispatchToProps)(toJS(RouteLoader$1));
 
 export { HttpContext as H, NotFound as N, Redirect as R, Status as S, RouteLoader as a, mergeStaticRoutes as m, useHttpContext as u };
-//# sourceMappingURL=RouteLoader-BGtOmCiO.js.map
+//# sourceMappingURL=RouteLoader-CTaEJ7o3.js.map

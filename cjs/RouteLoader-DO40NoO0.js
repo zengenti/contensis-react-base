@@ -252,9 +252,20 @@ const RouteLoader = ({
   // statePath,
   trimmedPath]);
   if (typeof window == 'undefined') setPath();
+
+  // The path and query last time the route sagas ran.
+  const navigatedRef = React.useRef(null);
   React.useEffect(() => {
+    // A fragment-only change is an in-page jump, not a navigation: react-router
+    // v6 hands us a new `location` object for it, and re-running the route saga
+    // would reset the scroll the browser is about to make. v5 did not treat it
+    // as a location change, so keep that. The query stays in the key because a
+    // search change does fetch different content.
+    const navigationKey = `${trimmedPath}${location.search}`;
+    if (navigatedRef.current === navigationKey) return;
+    navigatedRef.current = navigationKey;
     setPath();
-  }, [location, setPath]);
+  }, [location, setPath, trimmedPath]);
 
   // Need to redirect when url endswith a /
   if (location.pathname.length > trimmedPath.length) {
@@ -332,4 +343,4 @@ exports.RouteLoader = RouteLoader$1;
 exports.Status = Status;
 exports.mergeStaticRoutes = mergeStaticRoutes;
 exports.useHttpContext = useHttpContext;
-//# sourceMappingURL=RouteLoader-BXQZ_qEo.js.map
+//# sourceMappingURL=RouteLoader-DO40NoO0.js.map
