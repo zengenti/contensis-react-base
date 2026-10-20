@@ -45,3 +45,9 @@ export const entryForPath = (entry: any, path?: string): any => {
   if (!uri || !path) return undefined;
   return uri === path || uri === path.split('?')[0] ? entry : undefined;
 };
+
+/** The entry that describes this route. Both IDP sagas resolve it the same way:
+ *  the routing action's own entry wins, and the one in state counts only while
+ *  it belongs to this path. */
+export const resolveEntry = (action: any, stateEntry: any): any =>
+  action?.entry || entryForPath(stateEntry, action?.path);

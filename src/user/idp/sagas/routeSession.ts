@@ -40,7 +40,7 @@ import {
   idpSessionUserAction,
   idpSettledUserAction,
 } from '../session';
-import { entryForPath, routeRequirements } from './routeRequirements';
+import { resolveEntry, routeRequirements } from './routeRequirements';
 
 export type RouteSessionOutcome = 'session' | 'no-session' | 'unknown';
 
@@ -109,7 +109,7 @@ export function* idpRouteSessionSaga(action: any) {
   const state = yield select();
   const { requiresLogin } = routeRequirements(
     action,
-    entryForPath(selectRouteEntry(state, 'js'), path)
+    resolveEntry(action, selectRouteEntry(state, 'js'))
   );
   const isAuthenticated = yield select(selectUserIsAuthenticated);
   const classicToken = yield select(selectUserSecurityToken);
