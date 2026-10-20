@@ -93,6 +93,7 @@ const IDP_PROXY_ROUTES = [
   '/idp/callback',
   '/idp/logout',
   '/idp/refresh',
+  '/idp/error',
 ];
 
 const contensisIdpProxy = (
