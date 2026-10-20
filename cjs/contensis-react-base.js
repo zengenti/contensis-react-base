@@ -2,13 +2,13 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var ContensisDeliveryApi = require('./ContensisDeliveryApi-BTooAJDI.js');
+var ContensisDeliveryApi = require('./ContensisDeliveryApi-BpxhVqrl.js');
 var contensisDeliveryApi = require('contensis-delivery-api');
 var React = require('react');
 var reactRedux = require('react-redux');
 var slice = require('./slice-5xJMH24n.js');
 var mapJson = require('jsonpath-mapper');
-var sagas = require('./sagas-DOJJCnqw.js');
+var sagas = require('./sagas-TLachGco.js');
 require('reselect');
 require('immer');
 require('deep-equal');
@@ -20,11 +20,10 @@ require('isomorphic-fetch');
 var express = require('express');
 var http = require('http');
 var to = require('await-to-js');
-var selectors = require('./selectors-BrHyPW7a.js');
+var selectors = require('./selectors-CmJN_5Rz.js');
 var CookieHelper_class = require('./CookieHelper.class-Det3qfdU.js');
-var App = require('./App-HFZr-szf.js');
-var ChangePassword_container = require('./ChangePassword.container-CTos0DYb.js');
-var CookieConstants = require('./CookieConstants-DfPiWCRZ.js');
+var ChangePassword_container = require('./ChangePassword.container-C5zYv_qd.js');
+var CookieConstants = require('./CookieConstants-CN1e2I1R.js');
 var httpProxy = require('http-proxy');
 var fs = require('fs');
 var path = require('path');
@@ -37,10 +36,11 @@ var serialize = require('serialize-javascript');
 var lodash = require('lodash');
 var lodashClean = require('lodash-clean');
 var cookiesMiddleware = require('universal-cookie-express');
+var App = require('./App-CdMynQ1i.js');
 var store = require('./store-2Rx8ZF9-.js');
 var version = require('./version-nvHl-RQB.js');
 var selectors$1 = require('./selectors-PS7proOd.js');
-var RouteLoader = require('./RouteLoader-CyxOHDDk.js');
+var RouteLoader = require('./RouteLoader-BXQZ_qEo.js');
 var stream = require('stream');
 var server$2 = require('@loadable/server');
 var chalk = require('chalk');
@@ -48,18 +48,19 @@ var minifyCssString = require('minify-css-string');
 var reactCookie = require('react-cookie');
 var reactHelmetAsync = require('react-helmet-async');
 var server$3 = require('react-router-dom/server');
-var SSRContext = require('./SSRContext-D-6IbwgW.js');
+var SSRContext = require('./SSRContext-CIhs77tX.js');
 require('./VersionInfo-BVyI7gmw.js');
 require('@reduxjs/toolkit');
 require('loglevel');
 require('@redux-saga/core/effects');
 require('./version-DBVUgqWk.js');
-require('./util-B_Ato2qm.js');
+require('./util-CKoVgdTP.js');
 require('./selectors-DAQR0uZa.js');
 require('./_commonjsHelpers-BJu3ubxk.js');
+require('enterprise-fetch');
+require('./ToJs-BsWqWjdm.js');
 require('history');
 require('redux-saga');
-require('./ToJs-BsWqWjdm.js');
 require('redux');
 require('redux-thunk');
 require('redux-injectors-19');
@@ -660,15 +661,36 @@ const subsiteDebugMiddleware = (subsitePath, exceptions = []) => (req, res, next
   next();
 };
 
+/** The credentials a release request can be resolved with. A bearer token from
+ *  the Authorization header or the login cookies, plus the refresh token where
+ *  one may be used. */
+
+/**
+ * Under `USE_IDP` the release resolves the member from the access token alone:
+ * the `Authorization` header, else identity-client's access token cookie. No
+ * refresh token, and that absence is the point: without one the legacy fallback
+ * below cannot run, so a stale `RefreshToken` cookie belonging to somebody else
+ * can never decide who this release answers to.
+ */
+const getIdpRequestCredentials = req => {
+  var _req$headers$authoriz;
+  const cookies = new CookieHelper_class.Cookies(req.headers.cookie || '').getAll();
+  return {
+    bearerToken: ((_req$headers$authoriz = req.headers.authorization) === null || _req$headers$authoriz === void 0 ? void 0 : _req$headers$authoriz.replace(/^Bearer /i, '')) || cookies[ChangePassword_container.IDP_ACCESS_TOKEN_COOKIE]
+  };
+};
+
 /** The credentials a request can be resolved with: a bearer token from the
  *  Authorization header or the login cookies, plus the refresh token cookie.
  *  `cookiesMiddleware()` is registered later by webApp, so read the header
  *  direct. */
 const getRequestCredentials = req => {
-  var _req$headers$authoriz;
+  var _req$headers$authoriz2;
+  // The access-token release reads the access token only.
+  if (ChangePassword_container.isIdpEnabled()) return getIdpRequestCredentials(req);
   const cookies = new CookieHelper_class.Cookies(req.headers.cookie || '').getAll();
   return {
-    bearerToken: ((_req$headers$authoriz = req.headers.authorization) === null || _req$headers$authoriz === void 0 ? void 0 : _req$headers$authoriz.replace(/^Bearer /i, '')) || cookies[CookieConstants.LOGIN_COOKIE] || cookies[CookieConstants.BEARER_TOKEN_COOKIE],
+    bearerToken: ((_req$headers$authoriz2 = req.headers.authorization) === null || _req$headers$authoriz2 === void 0 ? void 0 : _req$headers$authoriz2.replace(/^Bearer /i, '')) || cookies[CookieConstants.LOGIN_COOKIE] || cookies[CookieConstants.BEARER_TOKEN_COOKIE],
     refreshToken: cookies[CookieConstants.REFRESH_TOKEN_COOKIE]
   };
 };
@@ -727,13 +749,13 @@ const authenticateRequest = async (bearerToken, refreshToken, resolveGroups = fa
             }
           }));
           if (groupsError) {
-            App.logError('[accessTokenApi] user groups request failed', groupsError);
+            ChangePassword_container.logError('[accessTokenApi] user groups request failed', groupsError);
           } else if (!(groupsResponse !== null && groupsResponse !== void 0 && groupsResponse.ok)) {
             console.warn(`[accessTokenApi] user groups request responded ${groupsResponse.status}`);
           } else {
             const [parseGroupsError, groupsResult] = await to.to(groupsResponse.json());
             if (parseGroupsError) {
-              App.logError('[accessTokenApi] user groups response parse error', parseGroupsError);
+              ChangePassword_container.logError('[accessTokenApi] user groups response parse error', parseGroupsError);
             } else if (groupsResult !== null && groupsResult !== void 0 && groupsResult.items) {
               user.groups = groupsResult.items;
             }
@@ -754,8 +776,8 @@ const authenticateRequest = async (bearerToken, refreshToken, resolveGroups = fa
     if (error || !user) {
       // Both credentials failed to authenticate - report both so the failure
       // is diagnosable.
-      if (bearerError) App.logError('[accessTokenApi] bearer token authentication failed', bearerError);
-      App.logError('[accessTokenApi] refresh token authentication failed', error != null ? error : 'no user returned');
+      if (bearerError) ChangePassword_container.logError('[accessTokenApi] bearer token authentication failed', bearerError);
+      ChangePassword_container.logError('[accessTokenApi] refresh token authentication failed', error != null ? error : 'no user returned');
       return null;
     }
 
@@ -766,7 +788,7 @@ const authenticateRequest = async (bearerToken, refreshToken, resolveGroups = fa
 
   // No refresh token to fall back to - a bearer failure here is the terminal
   // failure for this request.
-  if (bearerError) App.logError('[accessTokenApi] bearer token authentication failed', bearerError);
+  if (bearerError) ChangePassword_container.logError('[accessTokenApi] bearer token authentication failed', bearerError);
   return null;
 };
 
@@ -878,7 +900,7 @@ const makeAccessTokenMiddleware = accessTokens => async (req, res) => {
     refreshToken
   } = getRequestCredentials(req);
   const [err, user] = await to__default.default(authenticateRequest(bearerToken, refreshToken, requireGroups));
-  if (err) App.logError('[accessTokenApi] authenticateRequest error', err);
+  if (err) ChangePassword_container.logError('[accessTokenApi] authenticateRequest error', err);
   if (!user) return res.status(401).json({
     message: 'Not authenticated'
   });
@@ -899,11 +921,16 @@ const servers$1 = SERVERS; /* global SERVERS */
 const project = PROJECT; /* global PROJECT */
 const alias$1 = ALIAS; /* global ALIAS */
 const deliveryApiHostname = urls.urls(alias$1, project).api;
+const idpHostname = urls.urls(alias$1, project).previewWeb;
 const proxyTimeoutMs = 45_000;
 const assetProxy = httpProxy__default.default.createProxyServer();
 const deliveryProxy = httpProxy__default.default.createProxyServer();
+const idpProxy = httpProxy__default.default.createProxyServer();
 const reverseProxies = (app, reverseProxyPaths = []) => {
   deliveryApiProxy(deliveryProxy, app);
+  // Opt-in sites only: a flag-off site must not forward `/idp/*`. Reading the
+  // setting here is safe because `start()` has already applied it to the global.
+  if (ChangePassword_container.isIdpEnabled()) contensisIdpProxy(idpProxy, app);
   app.all(reverseProxyPaths.map(proxyPath =>
   // Patch to update paths for express v5
   proxyPath.endsWith('/*') ? `${proxyPath.slice(0, -2)}/{*splat}` : proxyPath.endsWith('/**') ? `${proxyPath.slice(0, -3)}/{*splat}` : proxyPath), (req, res) => {
@@ -922,7 +949,7 @@ const reverseProxies = (app, reverseProxyPaths = []) => {
 const deliveryApiProxy = (apiProxy, app) => {
   // This is just here to stop cors requests on localhost. In Production this is mapped using varnish.
   app.all(['/api/delivery/{*splat}', '/api/forms/{*splat}', '/api/image/{*splat}', '/authenticate/{*splat}'], (req, res) => {
-    console.log(`[apiProxy] "${req.method} ${App.shorten(req.url)}" target: ${servers$1.alias}`);
+    console.log(`[apiProxy] "${req.method} ${ChangePassword_container.shorten(req.url)}" target: ${servers$1.alias}`);
     apiProxy.web(req, res, {
       target: deliveryApiHostname,
       changeOrigin: true,
@@ -932,6 +959,38 @@ const deliveryApiProxy = (apiProxy, app) => {
   });
   apiProxy.on('error', (e, req) => {
     console.log(`[apiProxy] "${req.method} ${req.url}" host: ${req.headers.host} failed with ${e}`);
+  });
+};
+
+/** The `/idp/*` paths a browser actually visits. Exact routes rather than a
+ *  wildcard: express matches the pathname, so a traversal attempt
+ *  (`/idp/../../anything`) never reaches the relay at all, while the query
+ *  each path carries (`returnPath`, `code`) passes through untouched. */
+const IDP_PROXY_ROUTES = ['/idp/check', '/idp/login', '/idp/callback', '/idp/logout', '/idp/refresh', '/idp/error'];
+const contensisIdpProxy = (idpProxy, app) => {
+  // This is just here to stop cors requests on localhost. In Production this is mapped using varnish.
+  app.all(IDP_PROXY_ROUTES, (req, res) => {
+    // `xfwd` rebuilds X-Forwarded-Host from the real Host header, which is
+    // how identity-client builds the callback back to localhost. It honours
+    // an inbound header first, though, so drop whatever the client sent —
+    // only this server's view of the request may decide the host.
+    delete req.headers['x-forwarded-host'];
+    delete req.headers['x-forwarded-proto'];
+
+    // The path only: the callback query carries an authorization code.
+    console.log(`[idpProxy] "${req.method} ${req.url.split('?')[0]}" target: ${servers$1.alias}`);
+    idpProxy.web(req, res, {
+      target: idpHostname,
+      changeOrigin: true,
+      cookieDomainRewrite: false,
+      xfwd: true,
+      proxyTimeout: proxyTimeoutMs,
+      timeout: proxyTimeoutMs
+    });
+  });
+  idpProxy.on('error', (e, req) => {
+    var _req$url$split$, _req$url;
+    console.log(`[idpProxy] "${req.method} ${(_req$url$split$ = (_req$url = req.url) === null || _req$url === void 0 ? void 0 : _req$url.split('?')[0]) != null ? _req$url$split$ : req.url}" host: ${req.headers.host} failed with ${e}`);
   });
 };
 
@@ -1049,6 +1108,11 @@ const staticAssets = (app, {
 const servers = SERVERS; /* global SERVERS */
 const projects = PROJECTS; /* global PROJECTS */
 
+const loginMethodLabels = {
+  idp: 'IDP (/idp/* session auth)',
+  wsfed: 'WSFED',
+  classic: 'Classic Contensis login'
+};
 const DisplayStartupConfiguration = config => {
   /* eslint-disable no-console */
   console.log();
@@ -1057,6 +1121,8 @@ const DisplayStartupConfiguration = config => {
   console.log();
   console.log(`Configured projects:
 `, JSON.stringify(projects, null, 2));
+  console.log();
+  console.log(`Active login method: ${loginMethodLabels[ChangePassword_container.activeLoginMethod()]}`);
   console.log();
   console.log('Reverse proxy paths: ', JSON.stringify(config.reverseProxyPaths, null, 2));
   console.log();
@@ -1455,7 +1521,7 @@ const replaceHtml = ({
   let responseHTML = '';
   // Serve a blank HTML page with client scripts to load the app in the browser
   if (accessMethod.DYNAMIC) {
-    responseHTML = templateHTML.replace('{{TITLE}}', '').replace('{{SEO_CRITICAL_METADATA}}', '').replace('{{CRITICAL_CSS}}', '').replace('{{APP}}', '')
+    responseHTML = templateHTML.replace('{{TITLE}}', '').replace('{{SEO_CRITICAL_METADATA}}', '').replace('{{CRITICAL_CSS}}', minifyCssString__default.default(styleTags)).replace('{{APP}}', '')
     // .replace('{{LOADABLE_CHUNKS}}', bundleTags)
     .replace('{{REDUX_DATA}}', state);
   }
@@ -1650,6 +1716,10 @@ const webApp = (app, ReactApp, config) => {
 
     // Writes the resolved access token, or where to request one, into the page
     const accessTokenHint = accessTokenScript(resolvedToken);
+
+    // The server's login method, written into the page so the client
+    // hydrates with the same answer before its bundles load.
+    const useIdpHint = `window.USE_IDP = ${ChangePassword_container.isIdpEnabled()};`;
     console.info(`[webApp] "${request.method} ${request.path}" hostname: ${hostname} versionStatus: ${versionStatus}`);
     store$1.dispatch(version.setVersionStatus(versionStatus));
     store$1.dispatch(version.setVersion(versionInfo.commitRef, versionInfo.buildNo));
@@ -1663,6 +1733,14 @@ const webApp = (app, ReactApp, config) => {
       }));
     }
     const loadableExtractor = loadableChunkExtractors();
+
+    // CSS Module tags for the chunks this render used — inline or links per
+    // `styles.inline`. Call after rendering the JSX: the extractor collects
+    // chunks as it renders.
+    const cssModuleStyles = () => {
+      var _config$styles, _loadableExtractor$mo, _loadableExtractor$mo2;
+      return (_config$styles = config.styles) !== null && _config$styles !== void 0 && _config$styles.inline ? loadableExtractor === null || loadableExtractor === void 0 || (_loadableExtractor$mo = loadableExtractor.modern) === null || _loadableExtractor$mo === void 0 ? void 0 : _loadableExtractor$mo.getInlineStyleTags() : loadableExtractor === null || loadableExtractor === void 0 || (_loadableExtractor$mo2 = loadableExtractor.modern) === null || _loadableExtractor$mo2 === void 0 ? void 0 : _loadableExtractor$mo2.getStyleTags();
+    };
     const ssrCookies = enableSsrCookies ?
     // these cookies are managed by the cookiesMiddleware and contain listeners
     // when cookies are read or written in ssr can be added to the `set-cookie` response header
@@ -1718,12 +1796,17 @@ const webApp = (app, ReactApp, config) => {
       // Dynamic doesn't need sagas
       // or styles, or any split component bundles
       // nor are we streaming responses
-      const isDynamicHints = `<script${attributes}>window.isDynamic = true;${subsitePathScript ? ` ${subsitePathScript}` : ''}${accessTokenHint ? ` ${accessTokenHint}` : ''}</script>`;
+      const isDynamicHints = `<script${attributes}>window.isDynamic = true;${subsitePathScript ? ` ${subsitePathScript}` : ''}${accessTokenHint ? ` ${accessTokenHint}` : ''} ${useIdpHint}</script>`;
       const jsx = ssrJsxProducer(ReactApp, {
         providers: jsxProviderProps,
         props: jsxReactAppProps
       });
       server$1.renderToString(jsx);
+
+      // The shell still needs the global/layout CSS: extracted CSS Modules
+      // are not carried by the JS bundles, so without these the hydrated
+      // page renders unstyled. Per-route chunks load client-side as normal.
+      const dynamicStyleTags = await cssModuleStyles();
 
       // Dynamic page render has only the necessary bundles to start up the app
       // and does not include any react-loadable code-split bundles
@@ -1731,6 +1814,7 @@ const webApp = (app, ReactApp, config) => {
       const responseHtmlDynamic = replaceHtml({
         bundleTags,
         state: isDynamicHints,
+        styleTags: dynamicStyleTags || '',
         templateHTML,
         templateHTMLFragment
       }, accessMethod);
@@ -1780,7 +1864,10 @@ const webApp = (app, ReactApp, config) => {
             return true;
           }
           if (!disableSsrRedux) {
-            serialisedReduxData = `<script${attributes}>${subsitePathScript ? `${subsitePathScript} ` : ''}${accessTokenHint ? `${accessTokenHint} ` : ''}window.__USE_HYDRATE__ = true; window.REDUX_DATA = ${serialisedReduxData}</script>`;
+            serialisedReduxData = `<script${attributes}>${subsitePathScript ? `${subsitePathScript} ` : ''}${accessTokenHint ? `${accessTokenHint} ` : ''}${useIdpHint} window.__USE_HYDRATE__ = true; window.REDUX_DATA = ${serialisedReduxData}</script>`;
+          } else {
+            // No hydrated state, but the page still gets the hints
+            serialisedReduxData = `<script${attributes}>${subsitePathScript ? `${subsitePathScript} ` : ''}${accessTokenHint ? `${accessTokenHint} ` : ''}${useIdpHint}</script>${serialisedReduxData}`;
           }
         }
 
@@ -1823,12 +1910,9 @@ const webApp = (app, ReactApp, config) => {
         let title = helmet.title.toString().includes('><') ? helmetAsync.title.toString() : helmet.title.toString();
         const metadata = helmetAsync.meta.toString().concat(helmetAsync.base.toString()).concat(helmetAsync.priority.toString()).concat(helmetAsync.link.toString()).concat(helmetAsync.script.toString()).concat(helmetAsync.noscript.toString()).concat(helmet.meta.toString()).concat(helmet.base.toString()).concat(helmet.link.toString()).concat(helmet.script.toString()).concat(helmet.noscript.toString());
         try {
-          var _config$styles, _loadableExtractor$mo, _loadableExtractor$mo2;
-          // Getting style tags generated by "CSS Modules" because they will be
-          // available to loadable stats if we have built parts of the app with CSS
-          // plugins that are not within styled-components
-          // Render inline styles for CSS Modules if configured
-          const cssModuleStyles = (_config$styles = config.styles) !== null && _config$styles !== void 0 && _config$styles.inline ? await (loadableExtractor === null || loadableExtractor === void 0 || (_loadableExtractor$mo = loadableExtractor.modern) === null || _loadableExtractor$mo === void 0 ? void 0 : _loadableExtractor$mo.getInlineStyleTags()) : loadableExtractor === null || loadableExtractor === void 0 || (_loadableExtractor$mo2 = loadableExtractor.modern) === null || _loadableExtractor$mo2 === void 0 ? void 0 : _loadableExtractor$mo2.getStyleTags();
+          // Style tags for CSS Modules from the loadable stats (the app
+          // may be built with CSS plugins outside styled-components)
+          const moduleStyles = await cssModuleStyles();
 
           /**
            * Loads all page assets into the provided templateHTML
@@ -1860,7 +1944,7 @@ const webApp = (app, ReactApp, config) => {
               htmlAttributes,
               metadata,
               state: serialisedReduxData,
-              styleTags: `${styleTags || ''}${cssModuleStyles || ''}`,
+              styleTags: `${styleTags || ''}${moduleStyles || ''}`,
               title,
               templateHTML,
               templateHTMLFragment,
@@ -1907,6 +1991,9 @@ const start = (ReactApp, config, ServerFeatures) => {
   global.DISABLE_SSR_REDUX = config.disableSsrRedux;
   global.PROXY_DELIVERY_API = config.proxyDeliveryApi;
   global.REVERSE_PROXY_PATHS = Object(config.reverseProxyPaths);
+  // Server-side `USE_IDP` (see ServerConfig.useIdp); undefined leaves the
+  // startup script's global in charge.
+  if (config.useIdp !== undefined) global.USE_IDP = config.useIdp;
   app.disable('x-powered-by');
   // Output some information about the used build/startup configuration
   DisplayStartupConfiguration(config);

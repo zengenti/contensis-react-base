@@ -51,4 +51,13 @@ export type ServerConfig = AppConfig & {
         static: string;
         fragment: string;
     };
+    /**
+     * Turn on IDP session auth (`/idp/*` + identity-client cookies).
+     *
+     * Sets the server global and writes the resolved value into SSR responses
+     * so the client hydrates with the same answer. The single switch for
+     * SSR-first apps; older pure-CSR projects can use a `USE_IDP` build-time
+     * define instead. Omit to drive it from the environment startup global.
+     */
+    useIdp?: boolean;
 };

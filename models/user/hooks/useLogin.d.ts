@@ -1,5 +1,5 @@
 declare const useLogin: () => {
-    loginUser: (username: string, password: string) => any;
+    loginUser: (username?: string, password?: string) => any;
     logoutUser: (redirectPath?: string) => any;
     errorMessage: any;
     isAuthenticated: any;

@@ -1,13 +1,17 @@
 import { Request } from 'express';
 import { UserWithGroups } from "../../../user/state";
+/** The credentials a release request can be resolved with. A bearer token from
+ *  the Authorization header or the login cookies, plus the refresh token where
+ *  one may be used. */
+export type RequestCredentials = {
+    bearerToken?: string;
+    refreshToken?: string;
+};
 /** The credentials a request can be resolved with: a bearer token from the
  *  Authorization header or the login cookies, plus the refresh token cookie.
  *  `cookiesMiddleware()` is registered later by webApp, so read the header
  *  direct. */
-export declare const getRequestCredentials: (req: Request) => {
-    bearerToken: any;
-    refreshToken: any;
-};
+export declare const getRequestCredentials: (req: Request) => RequestCredentials;
 /**
  * Resolve a user from the credentials supplied, so callers only need care
  * about the returned user (or `null` when nothing authenticates).

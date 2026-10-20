@@ -1,10 +1,10 @@
-import { c as cachedSearch, d as deliveryApi } from './ContensisDeliveryApi-Cv7MK7e6.js';
+import { c as cachedSearch, d as deliveryApi } from './ContensisDeliveryApi-CU19zP3Z.js';
 import { Query as Query$1 } from 'contensis-delivery-api';
 import React from 'react';
 import { Provider } from 'react-redux';
 import { a as actions } from './slice-C6JLQik8.js';
 import mapJson from 'jsonpath-mapper';
-import { p as defaultExpressions, n as contentTypeIdExpression, s as filterExpressions, _ as termExpressions, T as orderByExpression, o as customWhereExpressions, m as cloneDeep } from './sagas-Db8MHJXQ.js';
+import { p as defaultExpressions, n as contentTypeIdExpression, s as filterExpressions, _ as termExpressions, T as orderByExpression, o as customWhereExpressions, m as cloneDeep } from './sagas-BX5fnAJA.js';
 import 'reselect';
 import 'immer';
 import 'deep-equal';
@@ -16,12 +16,10 @@ import 'isomorphic-fetch';
 import express from 'express';
 import http from 'http';
 import to$1, { to } from 'await-to-js';
-import { m as matchUserGroup } from './selectors-Dtb-Npd7.js';
+import { m as matchUserGroup } from './selectors-CPmW0m2A.js';
 import { a as Cookies } from './CookieHelper.class-C6rTRl_1.js';
-import { l as logError, s as shorten, c as createLocaleRoutes, p as pickProject, h as history, r as rootSaga } from './App-CBAc__M7.js';
-export { A as ReactApp } from './App-CBAc__M7.js';
-import { L as LoginHelper, g as getManagementApiClient } from './ChangePassword.container-Cd4fHjCN.js';
-import { R as REFRESH_TOKEN_COOKIE, L as LOGIN_COOKIE, B as BEARER_TOKEN_COOKIE } from './CookieConstants-DEmbwzYr.js';
+import { q as isIdpEnabled, L as LoginHelper, r as logError, i as getManagementApiClient, I as IDP_ACCESS_TOKEN_COOKIE, z as shorten, c as activeLoginMethod } from './ChangePassword.container-BVCnEtgB.js';
+import { R as REFRESH_TOKEN_COOKIE, L as LOGIN_COOKIE, B as BEARER_TOKEN_COOKIE } from './CookieConstants-YLzXsjzH.js';
 import httpProxy from 'http-proxy';
 import fs from 'fs';
 import path from 'path';
@@ -34,10 +32,12 @@ import serialize from 'serialize-javascript';
 import { noop, identity } from 'lodash';
 import { buildCleaner } from 'lodash-clean';
 import cookiesMiddleware from 'universal-cookie-express';
+import { c as createLocaleRoutes, p as pickProject, h as history, r as rootSaga } from './App-CEJlBBRP.js';
+export { A as ReactApp } from './App-CEJlBBRP.js';
 import { d as createStore } from './store-BVx96VK4.js';
 import { c as setVersionStatus, s as setVersion } from './version-DeSpihKR.js';
 import { a7 as selectSurrogateKeys, a5 as selectSsrApiCalls, X as selectRouteEntry, O as selectCurrentProject, D as getImmutableOrJS, a9 as setCurrentProject, P as selectCurrentSearch } from './selectors-DIKsu8SE.js';
-import { H as HttpContext, m as mergeStaticRoutes } from './RouteLoader-DYEFOZos.js';
+import { H as HttpContext, m as mergeStaticRoutes } from './RouteLoader-BGtOmCiO.js';
 import { Transform } from 'stream';
 import { ChunkExtractor, ChunkExtractorManager } from '@loadable/server';
 import chalk from 'chalk';
@@ -45,18 +45,19 @@ import minifyCssString from 'minify-css-string';
 import { CookiesProvider } from 'react-cookie';
 import { HelmetProvider } from 'react-helmet-async';
 import { StaticRouter } from 'react-router-dom/server';
-import { S as SSRContextProvider, g as getSubsitePath } from './SSRContext-C4BpqDQq.js';
+import { S as SSRContextProvider, g as getSubsitePath } from './SSRContext-C4te-b-5.js';
 import './VersionInfo-BKoTP8ct.js';
 import '@reduxjs/toolkit';
 import 'loglevel';
 import '@redux-saga/core/effects';
 import './version-7tjXt-WE.js';
-import './util-BqG6FtNI.js';
+import './util-LtK9x1s6.js';
 import './selectors-D4ulaTom.js';
 import './_commonjsHelpers-BFTU3MAI.js';
+import 'enterprise-fetch';
+import './ToJs-BnRRHk6f.js';
 import 'history';
 import 'redux-saga';
-import './ToJs-BnRRHk6f.js';
 import 'redux';
 import 'redux-thunk';
 import 'redux-injectors-19';
@@ -641,15 +642,36 @@ const subsiteDebugMiddleware = (subsitePath, exceptions = []) => (req, res, next
   next();
 };
 
+/** The credentials a release request can be resolved with. A bearer token from
+ *  the Authorization header or the login cookies, plus the refresh token where
+ *  one may be used. */
+
+/**
+ * Under `USE_IDP` the release resolves the member from the access token alone:
+ * the `Authorization` header, else identity-client's access token cookie. No
+ * refresh token, and that absence is the point: without one the legacy fallback
+ * below cannot run, so a stale `RefreshToken` cookie belonging to somebody else
+ * can never decide who this release answers to.
+ */
+const getIdpRequestCredentials = req => {
+  var _req$headers$authoriz;
+  const cookies = new Cookies(req.headers.cookie || '').getAll();
+  return {
+    bearerToken: ((_req$headers$authoriz = req.headers.authorization) === null || _req$headers$authoriz === void 0 ? void 0 : _req$headers$authoriz.replace(/^Bearer /i, '')) || cookies[IDP_ACCESS_TOKEN_COOKIE]
+  };
+};
+
 /** The credentials a request can be resolved with: a bearer token from the
  *  Authorization header or the login cookies, plus the refresh token cookie.
  *  `cookiesMiddleware()` is registered later by webApp, so read the header
  *  direct. */
 const getRequestCredentials = req => {
-  var _req$headers$authoriz;
+  var _req$headers$authoriz2;
+  // The access-token release reads the access token only.
+  if (isIdpEnabled()) return getIdpRequestCredentials(req);
   const cookies = new Cookies(req.headers.cookie || '').getAll();
   return {
-    bearerToken: ((_req$headers$authoriz = req.headers.authorization) === null || _req$headers$authoriz === void 0 ? void 0 : _req$headers$authoriz.replace(/^Bearer /i, '')) || cookies[LOGIN_COOKIE] || cookies[BEARER_TOKEN_COOKIE],
+    bearerToken: ((_req$headers$authoriz2 = req.headers.authorization) === null || _req$headers$authoriz2 === void 0 ? void 0 : _req$headers$authoriz2.replace(/^Bearer /i, '')) || cookies[LOGIN_COOKIE] || cookies[BEARER_TOKEN_COOKIE],
     refreshToken: cookies[REFRESH_TOKEN_COOKIE]
   };
 };
@@ -880,11 +902,16 @@ const servers$1 = SERVERS; /* global SERVERS */
 const project = PROJECT; /* global PROJECT */
 const alias$1 = ALIAS; /* global ALIAS */
 const deliveryApiHostname = urls(alias$1, project).api;
+const idpHostname = urls(alias$1, project).previewWeb;
 const proxyTimeoutMs = 45_000;
 const assetProxy = httpProxy.createProxyServer();
 const deliveryProxy = httpProxy.createProxyServer();
+const idpProxy = httpProxy.createProxyServer();
 const reverseProxies = (app, reverseProxyPaths = []) => {
   deliveryApiProxy(deliveryProxy, app);
+  // Opt-in sites only: a flag-off site must not forward `/idp/*`. Reading the
+  // setting here is safe because `start()` has already applied it to the global.
+  if (isIdpEnabled()) contensisIdpProxy(idpProxy, app);
   app.all(reverseProxyPaths.map(proxyPath =>
   // Patch to update paths for express v5
   proxyPath.endsWith('/*') ? `${proxyPath.slice(0, -2)}/{*splat}` : proxyPath.endsWith('/**') ? `${proxyPath.slice(0, -3)}/{*splat}` : proxyPath), (req, res) => {
@@ -913,6 +940,38 @@ const deliveryApiProxy = (apiProxy, app) => {
   });
   apiProxy.on('error', (e, req) => {
     console.log(`[apiProxy] "${req.method} ${req.url}" host: ${req.headers.host} failed with ${e}`);
+  });
+};
+
+/** The `/idp/*` paths a browser actually visits. Exact routes rather than a
+ *  wildcard: express matches the pathname, so a traversal attempt
+ *  (`/idp/../../anything`) never reaches the relay at all, while the query
+ *  each path carries (`returnPath`, `code`) passes through untouched. */
+const IDP_PROXY_ROUTES = ['/idp/check', '/idp/login', '/idp/callback', '/idp/logout', '/idp/refresh', '/idp/error'];
+const contensisIdpProxy = (idpProxy, app) => {
+  // This is just here to stop cors requests on localhost. In Production this is mapped using varnish.
+  app.all(IDP_PROXY_ROUTES, (req, res) => {
+    // `xfwd` rebuilds X-Forwarded-Host from the real Host header, which is
+    // how identity-client builds the callback back to localhost. It honours
+    // an inbound header first, though, so drop whatever the client sent —
+    // only this server's view of the request may decide the host.
+    delete req.headers['x-forwarded-host'];
+    delete req.headers['x-forwarded-proto'];
+
+    // The path only: the callback query carries an authorization code.
+    console.log(`[idpProxy] "${req.method} ${req.url.split('?')[0]}" target: ${servers$1.alias}`);
+    idpProxy.web(req, res, {
+      target: idpHostname,
+      changeOrigin: true,
+      cookieDomainRewrite: false,
+      xfwd: true,
+      proxyTimeout: proxyTimeoutMs,
+      timeout: proxyTimeoutMs
+    });
+  });
+  idpProxy.on('error', (e, req) => {
+    var _req$url$split$, _req$url;
+    console.log(`[idpProxy] "${req.method} ${(_req$url$split$ = (_req$url = req.url) === null || _req$url === void 0 ? void 0 : _req$url.split('?')[0]) != null ? _req$url$split$ : req.url}" host: ${req.headers.host} failed with ${e}`);
   });
 };
 
@@ -1030,6 +1089,11 @@ const staticAssets = (app, {
 const servers = SERVERS; /* global SERVERS */
 const projects = PROJECTS; /* global PROJECTS */
 
+const loginMethodLabels = {
+  idp: 'IDP (/idp/* session auth)',
+  wsfed: 'WSFED',
+  classic: 'Classic Contensis login'
+};
 const DisplayStartupConfiguration = config => {
   /* eslint-disable no-console */
   console.log();
@@ -1038,6 +1102,8 @@ const DisplayStartupConfiguration = config => {
   console.log();
   console.log(`Configured projects:
 `, JSON.stringify(projects, null, 2));
+  console.log();
+  console.log(`Active login method: ${loginMethodLabels[activeLoginMethod()]}`);
   console.log();
   console.log('Reverse proxy paths: ', JSON.stringify(config.reverseProxyPaths, null, 2));
   console.log();
@@ -1436,7 +1502,7 @@ const replaceHtml = ({
   let responseHTML = '';
   // Serve a blank HTML page with client scripts to load the app in the browser
   if (accessMethod.DYNAMIC) {
-    responseHTML = templateHTML.replace('{{TITLE}}', '').replace('{{SEO_CRITICAL_METADATA}}', '').replace('{{CRITICAL_CSS}}', '').replace('{{APP}}', '')
+    responseHTML = templateHTML.replace('{{TITLE}}', '').replace('{{SEO_CRITICAL_METADATA}}', '').replace('{{CRITICAL_CSS}}', minifyCssString(styleTags)).replace('{{APP}}', '')
     // .replace('{{LOADABLE_CHUNKS}}', bundleTags)
     .replace('{{REDUX_DATA}}', state);
   }
@@ -1631,6 +1697,10 @@ const webApp = (app, ReactApp, config) => {
 
     // Writes the resolved access token, or where to request one, into the page
     const accessTokenHint = accessTokenScript(resolvedToken);
+
+    // The server's login method, written into the page so the client
+    // hydrates with the same answer before its bundles load.
+    const useIdpHint = `window.USE_IDP = ${isIdpEnabled()};`;
     console.info(`[webApp] "${request.method} ${request.path}" hostname: ${hostname} versionStatus: ${versionStatus}`);
     store.dispatch(setVersionStatus(versionStatus));
     store.dispatch(setVersion(versionInfo.commitRef, versionInfo.buildNo));
@@ -1644,6 +1714,14 @@ const webApp = (app, ReactApp, config) => {
       }));
     }
     const loadableExtractor = loadableChunkExtractors();
+
+    // CSS Module tags for the chunks this render used — inline or links per
+    // `styles.inline`. Call after rendering the JSX: the extractor collects
+    // chunks as it renders.
+    const cssModuleStyles = () => {
+      var _config$styles, _loadableExtractor$mo, _loadableExtractor$mo2;
+      return (_config$styles = config.styles) !== null && _config$styles !== void 0 && _config$styles.inline ? loadableExtractor === null || loadableExtractor === void 0 || (_loadableExtractor$mo = loadableExtractor.modern) === null || _loadableExtractor$mo === void 0 ? void 0 : _loadableExtractor$mo.getInlineStyleTags() : loadableExtractor === null || loadableExtractor === void 0 || (_loadableExtractor$mo2 = loadableExtractor.modern) === null || _loadableExtractor$mo2 === void 0 ? void 0 : _loadableExtractor$mo2.getStyleTags();
+    };
     const ssrCookies = enableSsrCookies ?
     // these cookies are managed by the cookiesMiddleware and contain listeners
     // when cookies are read or written in ssr can be added to the `set-cookie` response header
@@ -1699,12 +1777,17 @@ const webApp = (app, ReactApp, config) => {
       // Dynamic doesn't need sagas
       // or styles, or any split component bundles
       // nor are we streaming responses
-      const isDynamicHints = `<script${attributes}>window.isDynamic = true;${subsitePathScript ? ` ${subsitePathScript}` : ''}${accessTokenHint ? ` ${accessTokenHint}` : ''}</script>`;
+      const isDynamicHints = `<script${attributes}>window.isDynamic = true;${subsitePathScript ? ` ${subsitePathScript}` : ''}${accessTokenHint ? ` ${accessTokenHint}` : ''} ${useIdpHint}</script>`;
       const jsx = ssrJsxProducer(ReactApp, {
         providers: jsxProviderProps,
         props: jsxReactAppProps
       });
       renderToString(jsx);
+
+      // The shell still needs the global/layout CSS: extracted CSS Modules
+      // are not carried by the JS bundles, so without these the hydrated
+      // page renders unstyled. Per-route chunks load client-side as normal.
+      const dynamicStyleTags = await cssModuleStyles();
 
       // Dynamic page render has only the necessary bundles to start up the app
       // and does not include any react-loadable code-split bundles
@@ -1712,6 +1795,7 @@ const webApp = (app, ReactApp, config) => {
       const responseHtmlDynamic = replaceHtml({
         bundleTags,
         state: isDynamicHints,
+        styleTags: dynamicStyleTags || '',
         templateHTML,
         templateHTMLFragment
       }, accessMethod);
@@ -1761,7 +1845,10 @@ const webApp = (app, ReactApp, config) => {
             return true;
           }
           if (!disableSsrRedux) {
-            serialisedReduxData = `<script${attributes}>${subsitePathScript ? `${subsitePathScript} ` : ''}${accessTokenHint ? `${accessTokenHint} ` : ''}window.__USE_HYDRATE__ = true; window.REDUX_DATA = ${serialisedReduxData}</script>`;
+            serialisedReduxData = `<script${attributes}>${subsitePathScript ? `${subsitePathScript} ` : ''}${accessTokenHint ? `${accessTokenHint} ` : ''}${useIdpHint} window.__USE_HYDRATE__ = true; window.REDUX_DATA = ${serialisedReduxData}</script>`;
+          } else {
+            // No hydrated state, but the page still gets the hints
+            serialisedReduxData = `<script${attributes}>${subsitePathScript ? `${subsitePathScript} ` : ''}${accessTokenHint ? `${accessTokenHint} ` : ''}${useIdpHint}</script>${serialisedReduxData}`;
           }
         }
 
@@ -1804,12 +1891,9 @@ const webApp = (app, ReactApp, config) => {
         let title = helmet.title.toString().includes('><') ? helmetAsync.title.toString() : helmet.title.toString();
         const metadata = helmetAsync.meta.toString().concat(helmetAsync.base.toString()).concat(helmetAsync.priority.toString()).concat(helmetAsync.link.toString()).concat(helmetAsync.script.toString()).concat(helmetAsync.noscript.toString()).concat(helmet.meta.toString()).concat(helmet.base.toString()).concat(helmet.link.toString()).concat(helmet.script.toString()).concat(helmet.noscript.toString());
         try {
-          var _config$styles, _loadableExtractor$mo, _loadableExtractor$mo2;
-          // Getting style tags generated by "CSS Modules" because they will be
-          // available to loadable stats if we have built parts of the app with CSS
-          // plugins that are not within styled-components
-          // Render inline styles for CSS Modules if configured
-          const cssModuleStyles = (_config$styles = config.styles) !== null && _config$styles !== void 0 && _config$styles.inline ? await (loadableExtractor === null || loadableExtractor === void 0 || (_loadableExtractor$mo = loadableExtractor.modern) === null || _loadableExtractor$mo === void 0 ? void 0 : _loadableExtractor$mo.getInlineStyleTags()) : loadableExtractor === null || loadableExtractor === void 0 || (_loadableExtractor$mo2 = loadableExtractor.modern) === null || _loadableExtractor$mo2 === void 0 ? void 0 : _loadableExtractor$mo2.getStyleTags();
+          // Style tags for CSS Modules from the loadable stats (the app
+          // may be built with CSS plugins outside styled-components)
+          const moduleStyles = await cssModuleStyles();
 
           /**
            * Loads all page assets into the provided templateHTML
@@ -1841,7 +1925,7 @@ const webApp = (app, ReactApp, config) => {
               htmlAttributes,
               metadata,
               state: serialisedReduxData,
-              styleTags: `${styleTags || ''}${cssModuleStyles || ''}`,
+              styleTags: `${styleTags || ''}${moduleStyles || ''}`,
               title,
               templateHTML,
               templateHTMLFragment,
@@ -1888,6 +1972,9 @@ const start = (ReactApp, config, ServerFeatures) => {
   global.DISABLE_SSR_REDUX = config.disableSsrRedux;
   global.PROXY_DELIVERY_API = config.proxyDeliveryApi;
   global.REVERSE_PROXY_PATHS = Object(config.reverseProxyPaths);
+  // Server-side `USE_IDP` (see ServerConfig.useIdp); undefined leaves the
+  // startup script's global in charge.
+  if (config.useIdp !== undefined) global.USE_IDP = config.useIdp;
   app.disable('x-powered-by');
   // Output some information about the used build/startup configuration
   DisplayStartupConfiguration(config);
