@@ -18,7 +18,7 @@ const useLogin = () => {
   const select = useSelector;
 
   return {
-    loginUser: (username: string, password: string) =>
+    loginUser: (username?: string, password?: string) =>
       dispatch(loginUser(username, password, cookies)),
     logoutUser: (redirectPath?: string) =>
       dispatch(logoutUser(redirectPath, cookies)),

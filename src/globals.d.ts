@@ -30,3 +30,5 @@ declare const SERVERS: {
 declare const STATIC_PATH: string;
 declare const VERSION: string;
 declare const WSFED_LOGIN: string | false;
+/** Opt a site in to IDP session auth (`/idp/*` + identity-client cookies). */
+declare const USE_IDP: string | boolean;

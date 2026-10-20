@@ -9,9 +9,12 @@ import {
 } from './types';
 import { CookieHelper } from '../util/CookieHelper.class';
 
+/** Credentials are optional: a site on `USE_IDP` signs the member in at
+ *  `/idp/check` and has nothing to pass, so `loginUser()` is the whole call.
+ *  Classic sites carry on passing them. */
 export const loginUser = (
-  username: string,
-  password: string,
+  username?: string,
+  password?: string,
   cookies?: CookieHelper
 ) => action(LOGIN_USER, { username, password, cookies });
 

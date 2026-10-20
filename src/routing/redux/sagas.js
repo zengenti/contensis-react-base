@@ -41,6 +41,9 @@ import {
 } from './selectors';
 import { hasNavigationTree } from '~/redux/selectors/navigation';
 import { selectVersionStatus } from '~/redux/selectors/version';
+import { isIdpEnabled } from '~/user/idp/setting';
+import { idpDeliveryAuthErrorSaga } from '~/user/idp/sagas/deliveryAuthError';
+import { idpRouteSessionSaga } from '~/user/idp/sagas/routeSession';
 import { handleRequiresLoginSaga } from '~/user/redux/sagas/login';
 import { ensureNodeTreeSaga } from '~/redux/sagas/navigation';
 
@@ -54,6 +57,7 @@ import { handleSearchSaga } from './invokeSearch';
 import { reduxInjectorSaga } from '~/redux/sagas/injector';
 import { routeParams } from '~/search';
 import { isSSR } from '~/util/env';
+import { fetchOnce } from '~/util/fetch';
 import { logError } from '~/util/errors';
 
 const error = (e, message) =>
@@ -81,16 +85,46 @@ function* setRouteSaga(action) {
   });
 }
 
-/** Request a privileged access token from the release endpoint */
-const releaseAccessToken = async releaseUri => {
+/** A hung release would otherwise sit in `releasesInFlight` and block every
+ *  later navigation on it, so one attempt gets a timeout and then the normal
+ *  failure path. Longer than the short calls a route change makes: this one
+ *  waits on the CMS. */
+export const RELEASE_TIMEOUT_MS = 15_000;
+
+/** Request a privileged access token from the release endpoint, as the
+ *  `[error, accessToken]` tuple the saga already handles. */
+const releaseAccessToken = async (releaseUri, timeoutMs = RELEASE_TIMEOUT_MS) => {
   const [error, response] = await to(
-    fetch(releaseUri, { method: 'POST', credentials: 'same-origin' })
+    fetchOnce(releaseUri, {
+      method: 'POST',
+      credentials: 'same-origin',
+      timeout: timeoutMs,
+    })
   );
+
   if (error || !response.ok)
     return [error || new Error(`Release failed: ${response.status}`)];
 
   const [parseError, body] = await to(response.json());
-  return parseError ? [parseError] : [undefined, body.accessToken];
+  return parseError ? [parseError] : [undefined, body?.accessToken];
+};
+
+/** Concurrent route sagas — React StrictMode doubles the first dispatch in
+ *  development — share one in-flight release per uri. */
+const releasesInFlight = new Map();
+export const releaseAccessTokenShared = (
+  releaseUri,
+  timeoutMs = RELEASE_TIMEOUT_MS
+) => {
+  if (!releasesInFlight.has(releaseUri)) {
+    const flight = releaseAccessToken(releaseUri, timeoutMs);
+    releasesInFlight.set(releaseUri, flight);
+    // Both handlers on `flight` itself: a `.finally()` chain makes a derived
+    // promise that nobody is obliged to catch.
+    const forget = () => releasesInFlight.delete(releaseUri);
+    flight.then(forget, forget);
+  }
+  return releasesInFlight.get(releaseUri);
 };
 
 /**
@@ -120,7 +154,7 @@ function* ensureAccessTokenSaga(action) {
   // auth is handled by the user's own credentials (cookies) and we can continue
   if (config.releaseUri) {
     const [releaseError, accessToken] = yield call(
-      releaseAccessToken,
+      releaseAccessTokenShared,
       config.releaseUri
     );
 
@@ -167,6 +201,10 @@ function* getRouteSaga(action) {
     ) {
       livePreviewNavigationTask = yield spawn(watchLivePreviewNavigationSaga);
     }
+
+    // Resolve the member's session before any content or release request is
+    // made. Does nothing on the server.
+    if (isIdpEnabled()) yield call(idpRouteSessionSaga, action);
 
     // Resolve an access token that can serve this route before we request
     // any content with it
@@ -362,6 +400,10 @@ function* getRouteSaga(action) {
         );
         if (nodeError) {
           if ([401, 403].includes(nodeError.status)) {
+            // One refresh and one reload under USE_IDP.
+            if (isIdpEnabled())
+              return yield call(idpDeliveryAuthErrorSaga, action, nodeError);
+
             // Capture specific auth errors with the delivery api
             // and fire the user down the handleRequiresLoginSaga
             // If auth was successful via a refreshToken we need to reload the page

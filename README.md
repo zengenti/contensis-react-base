@@ -109,7 +109,7 @@ For use when using the built-in search package for driving features like site se
 
 ### /user
 
-For use when interactions are required with Contensis users for example user registration or login. React hooks and Higher order components are exported for common user interactions inside app components.
+For use when interactions are required with Contensis users for example user registration or login. React hooks and Higher order components are exported for common user interactions inside app components. To sign users in through the Contensis IDP (Keycloak) instead of the classic Contensis login, see [IDP login](https://github.com/zengenti/contensis-react-base/blob/master/docs/IDP_LOGIN.md).
 
 ### /util
 

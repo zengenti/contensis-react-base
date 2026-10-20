@@ -6,9 +6,12 @@ const context = (
   WSFED_LOGIN: string;
 };
 
+// The `typeof` guard means a development build can leave `WSFED_LOGIN` out of
+// DefinePlugin entirely: not defined is off, not a ReferenceError.
 const requireOidc =
   process.env.NODE_ENV === 'development'
-    ? WSFED_LOGIN === 'true' /* global WSFED_LOGIN */
+    ? typeof WSFED_LOGIN !== 'undefined' &&
+      WSFED_LOGIN === 'true' /* global WSFED_LOGIN */
     : context.WSFED_LOGIN === 'true';
 
 const servers = SERVERS; /* global SERVERS */

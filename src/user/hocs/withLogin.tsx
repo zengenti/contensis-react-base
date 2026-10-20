@@ -38,7 +38,7 @@ const withLogin = (WrappedComponent: React.ComponentType) => {
     const cookies = new CookieHelper(...useCookies());
 
     const mapDispatchToProps = {
-      loginUser: (username: string, password: string) =>
+      loginUser: (username?: string, password?: string) =>
         loginUser(username, password, cookies),
       logoutUser: (redirectPath?: string) => logoutUser(redirectPath, cookies),
     };

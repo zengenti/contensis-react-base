@@ -1,5 +1,13 @@
+import { activeLoginMethod, LoginMethod } from '~/user/idp/setting';
+
 const servers = SERVERS; /* global SERVERS */
 const projects = PROJECTS; /* global PROJECTS */
+
+const loginMethodLabels: Record<LoginMethod, string> = {
+  idp: 'IDP (/idp/* session auth)',
+  wsfed: 'WSFED',
+  classic: 'Classic Contensis login',
+};
 
 const DisplayStartupConfiguration = config => {
   /* eslint-disable no-console */
@@ -14,6 +22,10 @@ const DisplayStartupConfiguration = config => {
     `Configured projects:
 `,
     JSON.stringify(projects, null, 2)
+  );
+  console.log();
+  console.log(
+    `Active login method: ${loginMethodLabels[activeLoginMethod()]}`
   );
   console.log();
   console.log(

@@ -17,19 +17,54 @@ import { findContentTypeMapping } from '~/routing/util/find-contenttype-mapping'
 
 import mapClientCredentials from '~/user/transformations/mapClientCredentials';
 
+import { isIdpEnabled } from '~/user/idp/setting';
+import { idpHandleRequiresLoginSaga } from '~/user/idp/sagas/requireLogin';
+import {
+  idpInitialUserStateSaga,
+  idpLoginUserSaga,
+  idpLogoutUserSaga,
+  idpRefreshSecurityTokenSaga,
+  idpValidateUserSaga,
+} from '~/user/idp/sagas/userActions';
 import { getManagementApiClient } from '~/user/util/ContensisManagementApi';
 import { LoginHelper } from '~/user/util/LoginHelper.class';
 import { matchUserGroup } from '~/user/util/matchGroups';
 import { queryParams } from '~/util/navigation';
 
+// Read when the action is handled: this module is imported before `start()`
+// applies `config.useIdp`, so an import-time choice would run the classic sagas
+// on a server serving an IDP site.
 export const loginSagas = [
-  takeEvery(LOGIN_USER, loginUserSaga),
-  takeEvery(LOGOUT_USER, logoutUserSaga),
-  takeEvery(VALIDATE_USER, validateUserSaga),
+  call(handleInitialUserStateSaga),
+  takeEvery(LOGIN_USER, handleLoginUserSaga),
+  takeEvery(LOGOUT_USER, handleLogoutUserSaga),
+  takeEvery(VALIDATE_USER, handleValidateUserSaga),
   takeEvery(SET_AUTHENTICATION_STATE, redirectAfterSuccessfulLoginSaga),
 ];
 
+function* handleInitialUserStateSaga() {
+  if (isIdpEnabled()) yield call(idpInitialUserStateSaga);
+}
+
+function* handleLoginUserSaga(action: any) {
+  if (isIdpEnabled()) return yield call(idpLoginUserSaga, action);
+  return yield call(loginUserSaga, action);
+}
+
+function* handleLogoutUserSaga(action: any) {
+  if (isIdpEnabled()) return yield call(idpLogoutUserSaga, action);
+  return yield call(logoutUserSaga, action);
+}
+
+function* handleValidateUserSaga(action: any) {
+  if (isIdpEnabled()) return yield call(idpValidateUserSaga);
+  return yield call(validateUserSaga, action);
+}
+
 export function* handleRequiresLoginSaga(action: any) {
+  // The protected-route decision under USE_IDP.
+  if (isIdpEnabled()) return yield call(idpHandleRequiresLoginSaga, action);
+
   const {
     cookies,
     entry,
@@ -188,6 +223,9 @@ const removeHostnamePart = (path: string) => {
 };
 
 function* redirectAfterSuccessfulLoginSaga() {
+  // Under `USE_IDP`, `/idp/check` returns the member to `returnPath` itself.
+  if (isIdpEnabled()) return;
+
   const isLoggedIn = yield select(selectUserIsAuthenticated);
   const { redirect_uri, ReturnURL } = queryParams(
     yield select(selectCurrentSearch)
@@ -217,6 +255,9 @@ function* logoutUserSaga({ redirectPath, cookies }: any) {
 }
 
 export function* refreshSecurityToken() {
+  // Refresh through `/idp/refresh`, same signature.
+  if (isIdpEnabled()) return yield call(idpRefreshSecurityTokenSaga);
+
   const clientCredentials = yield select(selectClientCredentials, 'js');
   if (Object.keys(clientCredentials).length > 0) {
     const client = yield getManagementApiClient(clientCredentials);
