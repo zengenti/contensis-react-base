@@ -2,6 +2,7 @@ import { Client } from 'contensis-delivery-api';
 import { getClientConfig } from '~/util/ContensisDeliveryApi';
 import { LruCache } from '~/util/LruCache';
 
+/** @deprecated Classic Contensis feature — modern Contensis uses tags and linked entries. */
 class CachedTaxonomyLookup {
   cache = new LruCache();
   taxonomyLookup = {};
@@ -47,6 +48,5 @@ class CachedTaxonomyLookup {
   }
 }
 
-/** @deprecated Taxonomy is deprecated in Contensis, code remains
- * to support any legacy implementations using Taxonomy in their search */
+/** @deprecated Classic Contensis feature — modern Contensis uses tags and linked entries. */
 export const cachedTaxonomyLookup = new CachedTaxonomyLookup();

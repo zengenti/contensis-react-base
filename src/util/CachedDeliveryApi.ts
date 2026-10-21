@@ -135,15 +135,28 @@ export class CachedSearch {
   }
 
   request<T extends () => Promise<any>>(key: string, execute: T) {
-    // do not cache results in SSR
-    if (!this.cache.get(key) || typeof window == 'undefined') {
-      const promise = execute();
-      this.cache.set(key, promise);
-      promise.catch(() => {
-        this.cache.remove(key);
-      });
+    // A server process cannot invalidate what it holds, so SSR does not cache.
+    if (typeof window === 'undefined') {
+      return execute();
     }
-    return this.cache.get(key) as ReturnType<T>;
+
+    const cached = this.cache.get(key);
+
+    if (cached) {
+      return cached as ReturnType<T>;
+    }
+
+    const promise = execute();
+    this.cache.set(key, promise);
+
+    promise.catch(() => {
+      // Only drop the entry if this promise still owns the key.
+      if (this.cache.get(key) === promise) {
+        this.cache.remove(key);
+      }
+    });
+
+    return promise;
   }
 
   /** Use the cached API for fetch requests */

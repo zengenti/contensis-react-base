@@ -1,75 +1,39 @@
-class CacheNode {
-  constructor(key, value) {
-    this.key = key;
-    this.value = value;
-    this.next = null;
-    this.prev = null;
-  }
-}
-
+/**
+ * Map order is the LRU policy: re-insert on read, evict the first key. A linked list
+ * kept beside the lookup map could desync from it, and removals then crashed.
+ */
 export class LruCache {
   constructor(limit = 100) {
-    this.map = {};
-    this.head = null;
-    this.tail = null;
-    this.limit = limit || 100;
-    this.size = 0;
+    this.map = new Map();
+    this.limit = limit > 0 ? limit : 100;
+  }
+
+  get size() {
+    return this.map.size;
   }
 
   get(key) {
-    if (this.map[key]) {
-      let value = this.map[key].value;
-      let node = new CacheNode(key, value);
-      this.remove(key);
-      this.setHead(node);
-      return value;
+    if (!this.map.has(key)) {
+      return undefined;
     }
+
+    const value = this.map.get(key);
+    // Re-inserting moves the entry to the end, which is the most-recently-used slot.
+    this.map.delete(key);
+    this.map.set(key, value);
+    return value;
   }
 
   set(key, value) {
-    let node = new CacheNode(key, value);
-    if (this.map[key]) {
-      this.remove(key);
-    } else {
-      if (this.size >= this.limit) {
-        delete this.map[this.tail.key];
-        this.size--;
-        this.tail = this.tail.prev;
-        this.tail.next = null;
-      }
-    }
-    this.setHead(node);
-  }
+    this.map.delete(key);
+    this.map.set(key, value);
 
-  setHead(node) {
-    node.next = this.head;
-    node.prev = null;
-    if (this.head) {
-      this.head.prev = node;
+    if (this.map.size > this.limit) {
+      this.remove(this.map.keys().next().value);
     }
-    this.head = node;
-    if (!this.tail) {
-      this.tail = node;
-    }
-    this.size++;
-    this.map[node.key] = node;
   }
 
   remove(key) {
-    let node = this.map[key];
-    if (!node) return; // This is sometimes null and crashes the container without this check
-
-    if (node.prev) {
-      node.prev.next = node.next;
-    } else {
-      this.head = node.next;
-    }
-    if (node.next) {
-      node.next.prev = node.prev;
-    } else {
-      this.tail = node.prev;
-    }
-    delete this.map[key];
-    this.size--;
+    this.map.delete(key);
   }
 }
