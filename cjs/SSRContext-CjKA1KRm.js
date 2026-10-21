@@ -1,8 +1,14 @@
-import React, { useContext, createContext, useState } from 'react';
-import { useCookies } from 'react-cookie';
-import { useDispatch } from 'react-redux';
-import { a as cachedSearchWithContext } from './ContensisDeliveryApi-CU19zP3Z.js';
-import { C as CookieHelper } from './CookieHelper.class-C6rTRl_1.js';
+'use strict';
+
+var React = require('react');
+var reactCookie = require('react-cookie');
+var reactRedux = require('react-redux');
+var ContensisDeliveryApi = require('./ContensisDeliveryApi-BPCiFzhy.js');
+var CookieHelper_class = require('./CookieHelper.class-Det3qfdU.js');
+
+function _interopDefault (e) { return e && e.__esModule ? e : { default: e }; }
+
+var React__default = /*#__PURE__*/_interopDefault(React);
 
 const isSSR = typeof window === 'undefined';
 const ensureLeadingSlash = value => value.startsWith('/') ? value : `/${value}`;
@@ -45,7 +51,7 @@ const transformPathForSubsite = (path, request) => {
   };
 };
 
-const SSRContext = /*#__PURE__*/createContext(null);
+const SSRContext = /*#__PURE__*/React.createContext(null);
 
 /**
  * SSRContextProvider allows us to hold and access request-scoped references
@@ -63,9 +69,9 @@ const SSRContextProvider = ({
 }) => {
   // In SSR pass references to things in backing sagas
   // we cannot access in a global scope
-  const dispatch = useDispatch();
-  const cookies = new CookieHelper(...useCookies());
-  const api = cachedSearchWithContext({
+  const dispatch = reactRedux.useDispatch();
+  const cookies = new CookieHelper_class.CookieHelper(...reactCookie.useCookies());
+  const api = ContensisDeliveryApi.cachedSearchWithContext({
     config,
     cookies,
     dispatch,
@@ -73,7 +79,7 @@ const SSRContextProvider = ({
     response
   });
   const subsitePath = getSubsitePath(request);
-  const [context] = useState({
+  const [context] = React.useState({
     accessMethod,
     api,
     config,
@@ -83,7 +89,7 @@ const SSRContextProvider = ({
     response,
     subsitePath
   });
-  return /*#__PURE__*/React.createElement(SSRContext.Provider, {
+  return /*#__PURE__*/React__default.default.createElement(SSRContext.Provider, {
     value: {
       ...context
     }
@@ -97,7 +103,7 @@ const SSRContextProvider = ({
  * helpers and request-scoped refs for api, cookies and redux dispatcher as in SSR
  * @returns SSRContextType
  */
-const useSSRContext = () => useContext(SSRContext);
+const useSSRContext = () => React.useContext(SSRContext);
 const useDeliveryApi = () => {
   const {
     api
@@ -105,5 +111,9 @@ const useDeliveryApi = () => {
   return api;
 };
 
-export { SSRContextProvider as S, useSSRContext as a, getSubsitePath as g, transformPathForSubsite as t, useDeliveryApi as u };
-//# sourceMappingURL=SSRContext-C4te-b-5.js.map
+exports.SSRContextProvider = SSRContextProvider;
+exports.getSubsitePath = getSubsitePath;
+exports.transformPathForSubsite = transformPathForSubsite;
+exports.useDeliveryApi = useDeliveryApi;
+exports.useSSRContext = useSSRContext;
+//# sourceMappingURL=SSRContext-CjKA1KRm.js.map

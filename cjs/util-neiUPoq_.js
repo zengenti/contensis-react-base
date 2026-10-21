@@ -1,5 +1,7 @@
-import { stringify, parse } from 'query-string';
-import { c as cachedSearch } from './ContensisDeliveryApi-CU19zP3Z.js';
+'use strict';
+
+var queryString = require('query-string');
+var ContensisDeliveryApi = require('./ContensisDeliveryApi-BPCiFzhy.js');
 
 const now = () => {
   if (typeof window == 'undefined') {
@@ -35,7 +37,7 @@ const timedSearch = async (query, linkDepth = 0, projectId,
 // get api instance from SSR context that is connected to the current request in SSR,
 // fall back to the imported cachedSearch api that is not connected to the current SSR context
 ssr = {
-  api: cachedSearch
+  api: ContensisDeliveryApi.cachedSearch
 }) => {
   if (!query) return null;
   let duration = 0;
@@ -66,7 +68,7 @@ const extractQuotedPhrases = searchTerm => {
 const buildUrl = (route, params) => {
   // [query-string v6+] BEHAVIOUR CHANGE: sort defaults to true — output key order is now alphabetical.
   // Pass { sort: false } if URL key order matters for cache keys or string comparison downstream.
-  const qs = stringify(params);
+  const qs = queryString.stringify(params);
   const path = qs ? `${route}${route.includes('?') ? '&' : '?'}${qs}` : route;
   return path;
 };
@@ -84,7 +86,7 @@ const routeParams = (staticRoute, location) => {
   // match.params is react-router-config/react-router@5 style
   // params is supplied with RouteObject in react-router@6
   const pathParams = (staticRoute === null || staticRoute === void 0 || (_staticRoute$match = staticRoute.match) === null || _staticRoute$match === void 0 ? void 0 : _staticRoute$match.params) || (staticRoute === null || staticRoute === void 0 ? void 0 : staticRoute.params) || {};
-  const queryParams = parse(typeof window !== 'undefined' ? window.location.search : (location === null || location === void 0 ? void 0 : location.search) || '');
+  const queryParams = queryString.parse(typeof window !== 'undefined' ? window.location.search : (location === null || location === void 0 ? void 0 : location.search) || '');
   return {
     ...pathParams,
     ...queryParams
@@ -94,7 +96,7 @@ const callCustomApi = async (customApi, filters,
 // get api instance from SSR context that is connected to the current request in SSR,
 // fall back to the imported cachedSearch api that is not connected to the current SSR context
 ssr = {
-  api: cachedSearch
+  api: ContensisDeliveryApi.cachedSearch
 }) => {
   const apiUri = customApi.uri || '';
   let uri = buildUrl(apiUri, filters);
@@ -135,5 +137,15 @@ const areArraysEqualSets = (a1, a2) => {
   return true;
 };
 
-export { areArraysEqualSets as a, cleanseFieldIdForAggregation as b, callCustomApi as c, convertKeyForAggregation as d, extractQuotedPhrases as e, fixFreeTextForElastic as f, getItemsFromResult as g, routeParams as h, toArray as i, removeEmptyAttributes as r, timedSearch as t };
-//# sourceMappingURL=util-LtK9x1s6.js.map
+exports.areArraysEqualSets = areArraysEqualSets;
+exports.callCustomApi = callCustomApi;
+exports.cleanseFieldIdForAggregation = cleanseFieldIdForAggregation;
+exports.convertKeyForAggregation = convertKeyForAggregation;
+exports.extractQuotedPhrases = extractQuotedPhrases;
+exports.fixFreeTextForElastic = fixFreeTextForElastic;
+exports.getItemsFromResult = getItemsFromResult;
+exports.removeEmptyAttributes = removeEmptyAttributes;
+exports.routeParams = routeParams;
+exports.timedSearch = timedSearch;
+exports.toArray = toArray;
+//# sourceMappingURL=util-neiUPoq_.js.map

@@ -1,6 +1,6 @@
-/** @deprecated Taxonomy is deprecated in Contensis, code remains
- * to support any legacy implementations using Taxonomy in their search */
+/** @deprecated Classic Contensis feature — modern Contensis uses tags and linked entries. */
 export const cachedTaxonomyLookup: CachedTaxonomyLookup;
+/** @deprecated Classic Contensis feature — modern Contensis uses tags and linked entries. */
 declare class CachedTaxonomyLookup {
     cache: LruCache;
     taxonomyLookup: {};

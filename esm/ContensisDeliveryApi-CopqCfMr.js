@@ -1,79 +1,40 @@
-'use strict';
+import { Client } from 'contensis-delivery-api';
+import { parse } from 'query-string';
+import { a8 as setApiMetrics } from './selectors-DIKsu8SE.js';
+import { r as reduxStore } from './store-BVx96VK4.js';
+import { f as findLoginCookies, i as isSSR } from './CookieConstants-YLzXsjzH.js';
 
-var contensisDeliveryApi = require('contensis-delivery-api');
-var queryString = require('query-string');
-var selectors = require('./selectors-PS7proOd.js');
-var store = require('./store-2Rx8ZF9-.js');
-var CookieConstants = require('./CookieConstants-CN1e2I1R.js');
-
-class CacheNode {
-  constructor(key, value) {
-    this.key = key;
-    this.value = value;
-    this.next = null;
-    this.prev = null;
-  }
-}
+/**
+ * Map order is the LRU policy: re-insert on read, evict the first key. A linked list
+ * kept beside the lookup map could desync from it, and removals then crashed.
+ */
 class LruCache {
   constructor(limit = 100) {
-    this.map = {};
-    this.head = null;
-    this.tail = null;
-    this.limit = limit || 100;
-    this.size = 0;
+    this.map = new Map();
+    this.limit = limit > 0 ? limit : 100;
+  }
+  get size() {
+    return this.map.size;
   }
   get(key) {
-    if (this.map[key]) {
-      let value = this.map[key].value;
-      let node = new CacheNode(key, value);
-      this.remove(key);
-      this.setHead(node);
-      return value;
+    if (!this.map.has(key)) {
+      return undefined;
     }
+    const value = this.map.get(key);
+    // Re-inserting moves the entry to the end, which is the most-recently-used slot.
+    this.map.delete(key);
+    this.map.set(key, value);
+    return value;
   }
   set(key, value) {
-    let node = new CacheNode(key, value);
-    if (this.map[key]) {
-      this.remove(key);
-    } else {
-      if (this.size >= this.limit) {
-        delete this.map[this.tail.key];
-        this.size--;
-        this.tail = this.tail.prev;
-        this.tail.next = null;
-      }
+    this.map.delete(key);
+    this.map.set(key, value);
+    if (this.map.size > this.limit) {
+      this.remove(this.map.keys().next().value);
     }
-    this.setHead(node);
-  }
-  setHead(node) {
-    node.next = this.head;
-    node.prev = null;
-    if (this.head) {
-      this.head.prev = node;
-    }
-    this.head = node;
-    if (!this.tail) {
-      this.tail = node;
-    }
-    this.size++;
-    this.map[node.key] = node;
   }
   remove(key) {
-    let node = this.map[key];
-    if (!node) return; // This is sometimes null and crashes the container without this check
-
-    if (node.prev) {
-      node.prev.next = node.next;
-    } else {
-      this.head = node.next;
-    }
-    if (node.next) {
-      node.next.prev = node.prev;
-    } else {
-      this.tail = node.prev;
-    }
-    delete this.map[key];
-    this.size--;
+    this.map.delete(key);
   }
 }
 
@@ -89,15 +50,15 @@ class CachedSearch {
     return new DeliveryApi(this.ssr).getClient(...args);
   }
   search(query, linkDepth = 0, project) {
-    const client = contensisDeliveryApi.Client.create(getClientConfig(project, this.ssr));
+    const client = Client.create(getClientConfig(project, this.ssr));
     return this.request(`${project}+${JSON.stringify(query)}+${linkDepth}`, () => client.entries.search(query, linkDepth));
   }
   searchUsingPost(query, linkDepth = 0, project = '') {
-    const client = contensisDeliveryApi.Client.create(getClientConfig(project, this.ssr));
+    const client = Client.create(getClientConfig(project, this.ssr));
     return this.request(`${project}+${JSON.stringify(query)}+${linkDepth}`, () => client.entries.searchUsingPost(query, linkDepth));
   }
   get(id, linkDepth = 0, versionStatus = 'published', project, fields) {
-    const client = contensisDeliveryApi.Client.create({
+    const client = Client.create({
       ...getClientConfig(project, this.ssr),
       versionStatus
     });
@@ -108,42 +69,50 @@ class CachedSearch {
     }));
   }
   getContentType(id, project) {
-    const client = contensisDeliveryApi.Client.create(getClientConfig(project, this.ssr));
+    const client = Client.create(getClientConfig(project, this.ssr));
     return this.request(`[CONTENT TYPE] ${id} ${project}`, () => client.contentTypes.get(id));
   }
   getRootNode(options, versionStatus = 'published', project) {
-    const client = contensisDeliveryApi.Client.create({
+    const client = Client.create({
       ...getClientConfig(project, this.ssr),
       versionStatus
     });
     return this.request(`${project} / ${JSON.stringify(options)}`, () => client.nodes.getRoot(options));
   }
   getNode(options, project) {
-    const client = contensisDeliveryApi.Client.create(getClientConfig(project, this.ssr));
+    const client = Client.create(getClientConfig(project, this.ssr));
     return this.request(`${project} ${options && typeof options !== 'string' ? 'path' in options ? options.path : options.id : options} ${JSON.stringify(options)}`, () => client.nodes.get(options));
   }
   getAncestors(options, project) {
-    const client = contensisDeliveryApi.Client.create(getClientConfig(project, this.ssr));
+    const client = Client.create(getClientConfig(project, this.ssr));
     return this.request(`${project} [A] ${options && typeof options !== 'string' && options.id || options} ${JSON.stringify(options)}`, () => client.nodes.getAncestors(options));
   }
   getChildren(options, project) {
-    const client = contensisDeliveryApi.Client.create(getClientConfig(project, this.ssr));
+    const client = Client.create(getClientConfig(project, this.ssr));
     return this.request(`${project} [C] ${options && typeof options !== 'string' && options.id || options} ${JSON.stringify(options)}`, () => client.nodes.getChildren(options));
   }
   getSiblings(options, project) {
-    const client = contensisDeliveryApi.Client.create(getClientConfig(project, this.ssr));
+    const client = Client.create(getClientConfig(project, this.ssr));
     return this.request(`${project} [S] ${options && typeof options !== 'string' && options.id || options} ${JSON.stringify(options)}`, () => client.nodes.getSiblings(options));
   }
   request(key, execute) {
-    // do not cache results in SSR
-    if (!this.cache.get(key) || typeof window == 'undefined') {
-      const promise = execute();
-      this.cache.set(key, promise);
-      promise.catch(() => {
-        this.cache.remove(key);
-      });
+    // A server process cannot invalidate what it holds, so SSR does not cache.
+    if (typeof window === 'undefined') {
+      return execute();
     }
-    return this.cache.get(key);
+    const cached = this.cache.get(key);
+    if (cached) {
+      return cached;
+    }
+    const promise = execute();
+    this.cache.set(key, promise);
+    promise.catch(() => {
+      // Only drop the entry if this promise still owns the key.
+      if (this.cache.get(key) === promise) {
+        this.cache.remove(key);
+      }
+    });
+    return promise;
   }
 
   /** Use the cached API for fetch requests */
@@ -203,7 +172,7 @@ const recordApiResponse = (ssr, startTime = Date.now()) => response => {
     // > 5 seconds
     console.warn(`[crb] 🐌 Slow response (${duration} ms) from ${response.url}`);
   const metrics = {
-    context: CookieConstants.isSSR ? 'ssr' : 'client',
+    context: isSSR ? 'ssr' : 'client',
     statusCode: response.status,
     contentLength,
     duration,
@@ -211,7 +180,7 @@ const recordApiResponse = (ssr, startTime = Date.now()) => response => {
   };
 
   // Surrogate keys are only meaningful during SSR
-  if (CookieConstants.isSSR) {
+  if (isSSR) {
     const surrogateKeyHeader = response.headers.get('surrogate-key');
     if (surrogateKeyHeader) {
       metrics.surrogateKeys = surrogateKeyHeader.split(' ').filter(Boolean);
@@ -223,8 +192,8 @@ const recordApiResponse = (ssr, startTime = Date.now()) => response => {
   // Using imported reduxStore in SSR is unreliable during high
   // concurrent loads and exists here as a best effort fallback
   // in case the SSRContext is not provided
-  const put = (ssr === null || ssr === void 0 ? void 0 : ssr.dispatch) || (store.reduxStore === null || store.reduxStore === void 0 ? void 0 : store.reduxStore.dispatch);
-  put === null || put === void 0 || put(selectors.setApiMetrics(metrics));
+  const put = (ssr === null || ssr === void 0 ? void 0 : ssr.dispatch) || (reduxStore === null || reduxStore === void 0 ? void 0 : reduxStore.dispatch);
+  put === null || put === void 0 || put(setApiMetrics(metrics));
 };
 
 /**
@@ -237,7 +206,7 @@ const deliveryApiConfig = ssr => {
     ...DELIVERY_API_CONFIG /* global DELIVERY_API_CONFIG */,
 
     // Grab any further config written by SSR
-    ...(!CookieConstants.isSSR ? window.DELIVERY_API_CONFIG || {} : {})
+    ...(!isSSR ? window.DELIVERY_API_CONFIG || {} : {})
   };
   config.responseHandler = {
     // Record metrics on both SSR and client-side;
@@ -246,7 +215,7 @@ const deliveryApiConfig = ssr => {
   };
 
   // Add SSR headers and handlers
-  if (CookieConstants.isSSR) {
+  if (isSSR) {
     config.defaultHeaders = {
       'x-require-surrogate-key': 'true',
       // request surrogate-key response header
@@ -266,7 +235,7 @@ const getClientConfig = (project, ssr) => {
     config.projectId = project;
   }
   if (ssr !== null && ssr !== void 0 && ssr.cookies) {
-    const cookieHeader = mapCookieHeader(CookieConstants.findLoginCookies(ssr.cookies));
+    const cookieHeader = mapCookieHeader(findLoginCookies(ssr.cookies));
     if (cookieHeader) {
       config.defaultHeaders = Object.assign(config.defaultHeaders || {}, {
         Cookie: cookieHeader
@@ -285,7 +254,7 @@ class DeliveryApi {
         // Allow overriding versionStatus with the querystring
         const {
           versionStatus
-        } = queryString.parse(window.location.search);
+        } = parse(window.location.search);
         if (versionStatus) return versionStatus;
         // Client-side we will have a global variable set if rendered by SSR in production
         if (typeof window.versionStatus !== 'undefined') return window.versionStatus;
@@ -326,15 +295,15 @@ class DeliveryApi {
     /* Normalize the version status to only allow known values and fallback to published content */
     this.normalizeVersionStatus = versionStatus => typeof versionStatus === 'string' && versionStatus.trim().toLowerCase() === 'latest' ? 'latest' : 'published';
     this.search = (query, linkDepth = 0, project) => {
-      const client = contensisDeliveryApi.Client.create(getClientConfig(project, this.ssr));
+      const client = Client.create(getClientConfig(project, this.ssr));
       return client.entries.search(query, typeof linkDepth !== 'undefined' ? linkDepth : 1);
     };
-    this.getClient = (versionStatus = 'published', project) => contensisDeliveryApi.Client.create({
+    this.getClient = (versionStatus = 'published', project) => Client.create({
       ...getClientConfig(project, this.ssr),
       versionStatus
     });
     this.getEntry = (id, linkDepth = 0, versionStatus = 'published', project) => {
-      const client = contensisDeliveryApi.Client.create({
+      const client = Client.create({
         ...getClientConfig(project, this.ssr),
         versionStatus
       });
@@ -350,11 +319,5 @@ class DeliveryApi {
 const deliveryApi = new DeliveryApi();
 const deliveryApiWithCookies = ssr => new DeliveryApi(ssr);
 
-exports.LruCache = LruCache;
-exports.cachedSearch = cachedSearch;
-exports.cachedSearchWithContext = cachedSearchWithContext;
-exports.cachedSearchWithCookies = cachedSearchWithCookies;
-exports.deliveryApi = deliveryApi;
-exports.deliveryApiWithCookies = deliveryApiWithCookies;
-exports.getClientConfig = getClientConfig;
-//# sourceMappingURL=ContensisDeliveryApi-BpxhVqrl.js.map
+export { LruCache as L, cachedSearchWithContext as a, cachedSearchWithCookies as b, cachedSearch as c, deliveryApi as d, deliveryApiWithCookies as e, getClientConfig as g };
+//# sourceMappingURL=ContensisDeliveryApi-CopqCfMr.js.map
