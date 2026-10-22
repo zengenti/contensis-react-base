@@ -17,6 +17,14 @@ export { default as useRegistration } from './hooks/useRegistration';
 export { default as useForgotPassword } from './hooks/useForgotPassword';
 export { default as useChangePassword } from './hooks/useChangePassword';
 
+// Site login setting — read this instead of the `USE_IDP` global, so the server
+// and the client return the same answer.
+export {
+  activeLoginMethod,
+  isIdpEnabled,
+  isWsFedLoginEnabled,
+} from './idp/setting';
+
 // Redux
 export {
   handleRequiresLoginSaga,

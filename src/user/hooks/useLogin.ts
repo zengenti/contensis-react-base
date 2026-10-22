@@ -10,6 +10,7 @@ import {
   selectUserIsLoading,
 } from '../redux/selectors';
 import { CookieHelper } from '../util/CookieHelper.class';
+import { activeLoginMethod } from '../idp/setting';
 
 const useLogin = () => {
   const cookies = new CookieHelper(...useCookies());
@@ -28,6 +29,8 @@ const useLogin = () => {
     isError: select(selectUserIsError),
     isLoading: select(selectUserIsLoading),
     user: select(selectUser),
+    // Config, not state: static for the life of the process.
+    loginMethod: activeLoginMethod(),
     // DEPRECATED: authenticationError is deprecated use isAuthenticationError instead
     authenticationError: select(selectUserIsAuthenticationError),
     // DEPRECATED: authenticationErrorMessage is deprecated use errorMessage instead

@@ -11,6 +11,7 @@ import {
   selectUserIsLoading,
 } from '../redux/selectors';
 import { CookieHelper } from '../util/CookieHelper.class';
+import { activeLoginMethod } from '../idp/setting';
 import { toJS } from '~/util/ToJs';
 import { AppState } from '~/models';
 
@@ -27,6 +28,8 @@ const withLogin = (WrappedComponent: React.ComponentType) => {
       isError: selectUserIsError(state),
       isLoading: selectUserIsLoading(state),
       user: selectUser(state),
+      // Config, not state: static for the life of the process.
+      loginMethod: activeLoginMethod(),
       // DEPRECATED: authenticationError is deprecated use isAuthenticationError instead
       authenticationError: selectUserIsAuthenticationError(state),
       // DEPRECATED: error is deprecated use isError instead
