@@ -7,6 +7,7 @@ declare const useLogin: () => {
     isError: any;
     isLoading: any;
     user: any;
+    loginMethod: import("../idp").LoginMethod;
     authenticationError: any;
     authenticationErrorMessage: any;
     error: any;

@@ -9,6 +9,7 @@ export { default as useLogin } from './hooks/useLogin';
 export { default as useRegistration } from './hooks/useRegistration';
 export { default as useForgotPassword } from './hooks/useForgotPassword';
 export { default as useChangePassword } from './hooks/useChangePassword';
+export { activeLoginMethod, isIdpEnabled, isWsFedLoginEnabled, } from './idp/setting';
 export { handleRequiresLoginSaga, refreshSecurityToken, } from './redux/sagas/login';
 export * as actions from './redux/actions';
 export { default as reducer, initialUserState } from './redux/reducers';

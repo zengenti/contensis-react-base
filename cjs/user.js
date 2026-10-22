@@ -1,6 +1,6 @@
 'use strict';
 
-var ChangePassword_container = require('./ChangePassword.container-C5zYv_qd.js');
+var ChangePassword_container = require('./ChangePassword.container-jrE4AVAg.js');
 var React = require('react');
 var reactCookie = require('react-cookie');
 var reactRedux = require('react-redux');
@@ -34,6 +34,8 @@ const withLogin = WrappedComponent => {
       isError: selectors$1.selectUserIsError(state),
       isLoading: selectors$1.selectUserIsLoading(state),
       user: selectors$1.selectUser(state),
+      // Config, not state: static for the life of the process.
+      loginMethod: ChangePassword_container.activeLoginMethod(),
       // DEPRECATED: authenticationError is deprecated use isAuthenticationError instead
       authenticationError: selectors$1.selectUserIsAuthenticationError(state),
       // DEPRECATED: error is deprecated use isError instead
@@ -80,7 +82,10 @@ exports.LoginContainer = ChangePassword_container.Login_container;
 exports.LoginHelper = ChangePassword_container.LoginHelper;
 exports.RegistrationContainer = ChangePassword_container.Registration_container;
 exports.actions = ChangePassword_container.actions;
+exports.activeLoginMethod = ChangePassword_container.activeLoginMethod;
 exports.handleRequiresLoginSaga = ChangePassword_container.handleRequiresLoginSaga;
+exports.isIdpEnabled = ChangePassword_container.isIdpEnabled;
+exports.isWsFedLoginEnabled = ChangePassword_container.isWsFedLoginEnabled;
 exports.refreshSecurityToken = ChangePassword_container.refreshSecurityToken;
 exports.useChangePassword = ChangePassword_container.useChangePassword;
 exports.useForgotPassword = ChangePassword_container.useForgotPassword;

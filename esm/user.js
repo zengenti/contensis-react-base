@@ -1,5 +1,5 @@
-import { u as logoutUser, t as loginUser, x as registerUser } from './ChangePassword.container-BVCnEtgB.js';
-export { C as ChangePassword, F as ForgotPasswordContainer, a as LoginContainer, L as LoginHelper, R as RegistrationContainer, b as actions, k as handleRequiresLoginSaga, v as refreshSecurityToken, A as useChangePassword, B as useForgotPassword, E as useLogin, H as useRegistration } from './ChangePassword.container-BVCnEtgB.js';
+import { c as activeLoginMethod, v as logoutUser, u as loginUser, y as registerUser } from './ChangePassword.container-Cz6zDGa8.js';
+export { C as ChangePassword, F as ForgotPasswordContainer, a as LoginContainer, L as LoginHelper, R as RegistrationContainer, b as actions, k as handleRequiresLoginSaga, q as isIdpEnabled, r as isWsFedLoginEnabled, w as refreshSecurityToken, B as useChangePassword, E as useForgotPassword, H as useLogin, J as useRegistration } from './ChangePassword.container-Cz6zDGa8.js';
 import React from 'react';
 import { useCookies } from 'react-cookie';
 import { connect } from 'react-redux';
@@ -30,6 +30,8 @@ const withLogin = WrappedComponent => {
       isError: selectUserIsError(state),
       isLoading: selectUserIsLoading(state),
       user: selectUser(state),
+      // Config, not state: static for the life of the process.
+      loginMethod: activeLoginMethod(),
       // DEPRECATED: authenticationError is deprecated use isAuthenticationError instead
       authenticationError: selectUserIsAuthenticationError(state),
       // DEPRECATED: error is deprecated use isError instead
@@ -70,5 +72,5 @@ const withRegistration = WrappedComponent => {
   return ConnectedComponent;
 };
 
-export { withLogin, withRegistration };
+export { activeLoginMethod, withLogin, withRegistration };
 //# sourceMappingURL=user.js.map

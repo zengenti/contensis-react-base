@@ -1,15 +1,22 @@
-import { select, put, call, delay, takeEvery } from '@redux-saga/core/effects';
-import { u as SET_AUTHENTICATION_STATE, i as LOGOUT_USER, X as selectRouteEntry, U as UPDATE_LOADING_STATE, D as getImmutableOrJS, a as CHANGE_USER_PASSWORD_ERROR, b as CHANGE_USER_PASSWORD_SENDING, c as CHANGE_USER_PASSWORD_SUCCESS, h as LOGIN_USER, V as VALIDATE_USER, G as queryParams, P as selectCurrentSearch, ab as setRoute, B as action, C as CHANGE_USER_PASSWORD, R as REGISTER_USER, l as REQUEST_USER_PASSWORD_RESET, p as RESET_USER_PASSWORD } from './selectors-DIKsu8SE.js';
-import { o as selectUserIsAuthenticated, x as selectUserSecurityToken, c as selectClientCredentials, l as selectUserGroups, m as matchUserGroup, q as selectUserIsError, k as selectUserErrorMessage, p as selectUserIsAuthenticationError, j as selectUser, r as selectUserIsLoading, t as selectUserRegistration, w as selectUserRegistrationIsSuccess, v as selectUserRegistrationIsLoading, u as selectUserRegistrationError, g as selectResetPasswordError, i as selectResetPasswordSent, h as selectResetPasswordSending, d as selectPasswordResetRequestError, f as selectPasswordResetRequestSent, e as selectPasswordResetRequestSending, s as selectChangePasswordError, n as selectUserGuid, b as selectChangePasswordSent, a as selectChangePasswordSending } from './selectors-CPmW0m2A.js';
-import mapJson from 'jsonpath-mapper';
-import { B as BEARER_TOKEN_COOKIE, L as LOGIN_COOKIE, R as REFRESH_TOKEN_COOKIE, i as isSSR } from './CookieConstants-YLzXsjzH.js';
-import { error, warn } from 'loglevel';
-import to$1, { to } from 'await-to-js';
-import { fetchWithDefaults } from 'enterprise-fetch';
-import { C as CookieHelper } from './CookieHelper.class-C6rTRl_1.js';
-import { useCookies } from 'react-cookie';
-import { useDispatch, useSelector, shallowEqual } from 'react-redux';
-import { t as toJS } from './ToJs-BnRRHk6f.js';
+'use strict';
+
+var effects = require('@redux-saga/core/effects');
+var selectors = require('./selectors-PS7proOd.js');
+var selectors$1 = require('./selectors-CmJN_5Rz.js');
+var mapJson = require('jsonpath-mapper');
+var CookieConstants = require('./CookieConstants-CN1e2I1R.js');
+var log = require('loglevel');
+var to = require('await-to-js');
+var enterpriseFetch = require('enterprise-fetch');
+var CookieHelper_class = require('./CookieHelper.class-Det3qfdU.js');
+var reactCookie = require('react-cookie');
+var reactRedux = require('react-redux');
+var ToJs = require('./ToJs-BsWqWjdm.js');
+
+function _interopDefault (e) { return e && e.__esModule ? e : { default: e }; }
+
+var mapJson__default = /*#__PURE__*/_interopDefault(mapJson);
+var to__default = /*#__PURE__*/_interopDefault(to);
 
 /**
  * identity-client's cookies, read-only. The names are declared here rather than
@@ -103,7 +110,7 @@ const isPlainError = e => !!e && typeof e === 'object' && 'message' in e && type
 const logError = (prefix, e) => {
   var _e$data;
   const message = isApiError(e) ? `${prefix} ${e.status} "${((_e$data = e.data) === null || _e$data === void 0 ? void 0 : _e$data.message) || ''}" url: ${e.url || ''}` : isPlainError(e) ? `${prefix} "${(e === null || e === void 0 ? void 0 : e.message) || e}"${e !== null && e !== void 0 && e.stack ? `\n${e.stack}` : ''}` : `${prefix} "${e}"`;
-  error(message);
+  log.error(message);
 };
 const shorten = (str, maxLength = 120, endWeight = 0.6) => {
   if (!str || str.length <= maxLength) return str;
@@ -175,7 +182,7 @@ const clientCredentials = {
   }) => refreshTokenExpiryDate.toISOString(),
   contensisClassicToken: 'contensisClassicToken'
 };
-var mapClientCredentials = obj => mapJson(obj, clientCredentials);
+var mapClientCredentials = obj => mapJson__default.default(obj, clientCredentials);
 
 const context$1 = typeof window != 'undefined' ? window : global;
 
@@ -210,7 +217,7 @@ var _LoginHelper;
 const context = typeof window != 'undefined' ? window : global;
 class LoginHelper {
   constructor(cookies) {
-    this.cookies = cookies || new CookieHelper();
+    this.cookies = cookies || new CookieHelper_class.CookieHelper();
   }
   static ClientRedirectToHome(location) {
     if (typeof window != 'undefined') {
@@ -280,7 +287,7 @@ class LoginHelper {
     }
   }
   static async GetCredentialsForSecurityToken(securityToken) {
-    const [error, response] = await to(fetch(`${LoginHelper.CMS_URL}/REST/Contensis/Security/IsAuthenticated`, {
+    const [error, response] = await to.to(fetch(`${LoginHelper.CMS_URL}/REST/Contensis/Security/IsAuthenticated`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -294,7 +301,7 @@ class LoginHelper {
       message: 'Failed to fetch credentials'
     }];
     if (response.ok) {
-      const [parseError, body] = await to(response.json());
+      const [parseError, body] = await to.to(response.json());
       if (parseError) return [parseError];
       const {
         LogonResult,
@@ -345,24 +352,24 @@ class LoginHelper {
     contensisClassicToken,
     refreshToken
   }) {
-    if (bearerToken) this.cookies.SetCookie(BEARER_TOKEN_COOKIE, bearerToken);
-    if (contensisClassicToken) this.cookies.SetCookie(LOGIN_COOKIE, contensisClassicToken);
-    if (refreshToken) this.cookies.SetCookie(REFRESH_TOKEN_COOKIE, refreshToken);
+    if (bearerToken) this.cookies.SetCookie(CookieConstants.BEARER_TOKEN_COOKIE, bearerToken);
+    if (contensisClassicToken) this.cookies.SetCookie(CookieConstants.LOGIN_COOKIE, contensisClassicToken);
+    if (refreshToken) this.cookies.SetCookie(CookieConstants.REFRESH_TOKEN_COOKIE, refreshToken);
   }
   GetCachedCredentials() {
     return {
       bearerToken: null,
       bearerTokenExpiryDate: null,
-      refreshToken: this.cookies.GetCookie(REFRESH_TOKEN_COOKIE),
+      refreshToken: this.cookies.GetCookie(CookieConstants.REFRESH_TOKEN_COOKIE),
       refreshTokenExpiryDate: null,
-      contensisClassicToken: this.cookies.GetCookie(LOGIN_COOKIE),
+      contensisClassicToken: this.cookies.GetCookie(CookieConstants.LOGIN_COOKIE),
       securityToken: null
     };
   }
   ClearCachedCredentials() {
-    this.cookies.DeleteCookie(LOGIN_COOKIE);
-    this.cookies.DeleteCookie(REFRESH_TOKEN_COOKIE);
-    this.cookies.DeleteCookie(BEARER_TOKEN_COOKIE); // additional cookie used by @contensis/forms package
+    this.cookies.DeleteCookie(CookieConstants.LOGIN_COOKIE);
+    this.cookies.DeleteCookie(CookieConstants.REFRESH_TOKEN_COOKIE);
+    this.cookies.DeleteCookie(CookieConstants.BEARER_TOKEN_COOKIE); // additional cookie used by @contensis/forms package
 
     if (LoginHelper.WSFED_LOGIN && typeof window !== 'undefined') {
       // remove any oidc keys left over in localStorage
@@ -399,7 +406,7 @@ class LoginHelper {
       });
 
       // Ensure the client has requested a bearer token
-      const [loginError, clientBearerToken] = await to(transientClient.ensureBearerToken());
+      const [loginError, clientBearerToken] = await to.to(transientClient.ensureBearerToken());
 
       // Problem getting token with username and password
       if (loginError) {
@@ -479,9 +486,9 @@ LoginHelper.LOGIN_ROUTE = '/account/login';
 LoginHelper.ACCESS_DENIED_ROUTE = '/account/access-denied';
 LoginHelper.withCookies = cookieHelper => new _LoginHelper(cookieHelper);
 LoginHelper.GetUserDetails = async client => {
-  const [userError, user] = await to(client.security.users.getCurrent());
+  const [userError, user] = await to.to(client.security.users.getCurrent());
   if (user && user.id) {
-    const [groupsError, groupsResult] = await to(client.security.users.getUserGroups({
+    const [groupsError, groupsResult] = await to.to(client.security.users.getUserGroups({
       userId: user.id,
       includeInherited: true,
       pageOptions: {
@@ -600,7 +607,7 @@ const readGuard = (returnPath, scope) => {
       pageLoadId
     };
   } catch {
-    error('[idp] sessionStorage is unreadable, login guard treated as unset');
+    log.error('[idp] sessionStorage is unreadable, login guard treated as unset');
     return null;
   }
 };
@@ -765,7 +772,7 @@ const getLogoutReturnPath = ({
 const FETCH_TIMEOUT_MS = 5000;
 
 /** One attempt, aborted after `FETCH_TIMEOUT_MS` (or a `timeout` on the call). */
-const fetchOnce = fetchWithDefaults({
+const fetchOnce = enterpriseFetch.fetchWithDefaults({
   timeout: FETCH_TIMEOUT_MS,
   retry: {
     retries: 0,
@@ -814,7 +821,7 @@ const performRefresh = async () => {
     if (!readIdpAccessToken()) {
       if (!cookielessRefreshSeen) {
         cookielessRefreshSeen = true;
-        error(`[idp] POST ${IDP_REFRESH_PATH} returned 200 but the ` + `"${IDP_ACCESS_TOKEN_COOKIE}" cookie is still not readable. No ` + "further refresh this page load. Check the cookie's Domain, Path, " + 'Secure and SameSite attributes against this host.');
+        log.error(`[idp] POST ${IDP_REFRESH_PATH} returned 200 but the ` + `"${IDP_ACCESS_TOKEN_COOKIE}" cookie is still not readable. No ` + "further refresh this page load. Check the cookie's Domain, Path, " + 'Secure and SameSite attributes against this host.');
       }
       return 'unknown';
     }
@@ -822,7 +829,7 @@ const performRefresh = async () => {
     return 'session';
   }
   if (response.status === 401) return 'no-session';
-  if (response.status === 403) error(`[idp] POST ${IDP_REFRESH_PATH} returned 403 — the ` + 'X-Contensis-Refresh header is missing, which is a code defect. ' + 'Treating the outcome as unknown so no member is logged out.');else error(`[idp] POST ${IDP_REFRESH_PATH} responded ${response.status} ` + `${response.statusText} — treated as unknown`);
+  if (response.status === 403) log.error(`[idp] POST ${IDP_REFRESH_PATH} returned 403 — the ` + 'X-Contensis-Refresh header is missing, which is a code defect. ' + 'Treating the outcome as unknown so no member is logged out.');else log.error(`[idp] POST ${IDP_REFRESH_PATH} responded ${response.status} ` + `${response.statusText} — treated as unknown`);
   return 'unknown';
 };
 
@@ -933,12 +940,12 @@ const createIdpManagementClient = async accessToken => {
   return client;
 };
 const attempt = async (run, accessToken) => {
-  const [clientError, client] = await to$1(createIdpManagementClient(accessToken));
+  const [clientError, client] = await to__default.default(createIdpManagementClient(accessToken));
   if (clientError || !client) return {
     ok: false,
     error: clientError
   };
-  const [error, value] = await to$1(run(client));
+  const [error, value] = await to__default.default(run(client));
   if (error) return {
     ok: false,
     status: statusOf$1(error),
@@ -1005,7 +1012,7 @@ const statusOf = e => isApiError(e) ? e.status : undefined;
 /** Mirrors `LoginHelper.GetUserDetails` rather than importing it: nothing in
  *  here may depend on the classic login the v5 clean-up removes. */
 const buildUserAndGroups = async client => {
-  const [userError, user] = await to$1(client.security.users.getCurrent());
+  const [userError, user] = await to__default.default(client.security.users.getCurrent());
 
   // A 401 has to reach `withManagementClient` so it can refresh and retry.
   if (userError) {
@@ -1013,7 +1020,7 @@ const buildUserAndGroups = async client => {
     return UNBUILDABLE;
   }
   if (!(user !== null && user !== void 0 && user.id)) return UNBUILDABLE;
-  const [groupsError, groupsResult] = await to$1(client.security.users.getUserGroups({
+  const [groupsError, groupsResult] = await to__default.default(client.security.users.getUserGroups({
     userId: user.id,
     includeInherited: true,
     pageOptions: {
@@ -1124,7 +1131,7 @@ const identityHasChanged = classicTokenInState => {
 /** What `selectClientCredentials` holds while `USE_IDP` is on. */
 
 const idpUserStateAction = (clientCredentials, isLoading) => ({
-  type: SET_AUTHENTICATION_STATE,
+  type: selectors.SET_AUTHENTICATION_STATE,
   authenticationState: {
     clientCredentials: clientCredentials || null,
     isLoading
@@ -1136,7 +1143,7 @@ const idpSettledUserAction = clientCredentials => idpUserStateAction(clientCrede
 /** A member is signed in: identity-client's classic token is the only
  *  credential we keep. */
 const idpSessionUserAction = session => ({
-  type: SET_AUTHENTICATION_STATE,
+  type: selectors.SET_AUTHENTICATION_STATE,
   authenticationState: {
     clientCredentials: {
       contensisClassicToken: session.classicToken
@@ -1153,7 +1160,7 @@ const idpSessionUserAction = session => ({
 /** The classic token moved (another tab signed in as somebody else): update
  *  the credential without disturbing anything else the site is holding. */
 const idpClassicTokenUserAction = (classicToken, clientCredentials) => ({
-  type: SET_AUTHENTICATION_STATE,
+  type: selectors.SET_AUTHENTICATION_STATE,
   authenticationState: {
     clientCredentials: {
       ...(clientCredentials || {}),
@@ -1169,7 +1176,7 @@ const idpClassicTokenUserAction = (classicToken, clientCredentials) => ({
  * member asking to log out.
  */
 const idpClearSessionAction = () => ({
-  type: LOGOUT_USER,
+  type: selectors.LOGOUT_USER,
   clearOnly: true
 });
 
@@ -1177,7 +1184,7 @@ const idpClearSessionAction = () => ({
  *  out. `clientCredentials` is carried forward so a transient error does not
  *  drop a session that may still be good. */
 const idpErrorUserAction = (errorMessage, clientCredentials) => ({
-  type: SET_AUTHENTICATION_STATE,
+  type: selectors.SET_AUTHENTICATION_STATE,
   authenticationState: {
     clientCredentials: clientCredentials || null,
     errorMessage,
@@ -1297,19 +1304,19 @@ const rememberDeliveryReload = path => {
  */
 function* idpRouteSessionSaga(action) {
   // Server rendering stays session-blind.
-  if (isSSR) return;
+  if (CookieConstants.isSSR) return;
   const path = action === null || action === void 0 ? void 0 : action.path;
 
   // A route change to a different path ends the delivery-401 reload memory, so
   // the member can revisit a page later and get one reload again.
   clearDeliveryReloadIfNot(path);
   clearRouteOutcome(path);
-  const state = yield select();
+  const state = yield effects.select();
   const {
     requiresLogin
-  } = routeRequirements(action, resolveEntry(action, selectRouteEntry(state, 'js')));
-  const isAuthenticated = yield select(selectUserIsAuthenticated);
-  const classicToken = yield select(selectUserSecurityToken);
+  } = routeRequirements(action, resolveEntry(action, selectors.selectRouteEntry(state, 'js')));
+  const isAuthenticated = yield effects.select(selectors$1.selectUserIsAuthenticated);
+  const classicToken = yield effects.select(selectors$1.selectUserSecurityToken);
 
   // Cheap path: cookies readable, and the classic token is still the one we put
   // in state, so this tab still shows the right member.
@@ -1317,15 +1324,15 @@ function* idpRouteSessionSaga(action) {
     recordOutcome(path, 'session');
     return;
   }
-  if (requiresLogin) yield put({
-    type: UPDATE_LOADING_STATE,
+  if (requiresLogin) yield effects.put({
+    type: selectors.UPDATE_LOADING_STATE,
     isLoading: true
   });
-  const clientCredentials = yield select(selectClientCredentials, 'js');
-  yield put(idpResolvingUserAction(clientCredentials));
-  const result = yield call(resolveSession);
+  const clientCredentials = yield effects.select(selectors$1.selectClientCredentials, 'js');
+  yield effects.put(idpResolvingUserAction(clientCredentials));
+  const result = yield effects.call(resolveSession);
   if (result.outcome === 'session') {
-    yield put(idpSessionUserAction(result.session));
+    yield effects.put(idpSessionUserAction(result.session));
     recordOutcome(path, 'session');
     return;
   }
@@ -1334,12 +1341,12 @@ function* idpRouteSessionSaga(action) {
   // `unknown`: we do not know, so we show anonymous for this load and let the
   // next navigation try again — but we never leave a member's face in the UI
   // when the cookies no longer support it.
-  if (isAuthenticated) yield put(idpClearSessionAction());
+  if (isAuthenticated) yield effects.put(idpClearSessionAction());
   // Nobody was shown, so that is the answer for this load: stop reporting
   // loading, or the member never sees a "Log in" control. A protected
   // route keeps the *route* loading state while the require-login saga
   // navigates, retries or throws.
-  else yield put(idpSettledUserAction(clientCredentials));
+  else yield effects.put(idpSettledUserAction(clientCredentials));
   recordOutcome(path, result.outcome);
 }
 
@@ -1363,10 +1370,10 @@ function* idpRouteSessionSaga(action) {
 
 /** One more try, a second later, before telling the member anything. */
 function* quietRetrySession() {
-  yield delay(1000);
-  const result = yield call(resolveSession);
+  yield effects.delay(1000);
+  const result = yield effects.call(resolveSession);
   if (result.outcome === 'session') {
-    yield put(idpSessionUserAction(result.session));
+    yield effects.put(idpSessionUserAction(result.session));
     return 'session';
   }
   if (result.outcome === 'no-session') return 'no-session';
@@ -1383,8 +1390,8 @@ function* memberRoute({
   clearLoginGuard(returnPath);
   if (routeRequiresGroups.length > 0) {
     var _action$location;
-    const userGroups = yield select(selectUserGroups, 'js');
-    if (!matchUserGroup(userGroups, routeRequiresGroups)) goToAccessDenied(action === null || action === void 0 || (_action$location = action.location) === null || _action$location === void 0 ? void 0 : _action$location.pathname);
+    const userGroups = yield effects.select(selectors$1.selectUserGroups, 'js');
+    if (!selectors$1.matchUserGroup(userGroups, routeRequiresGroups)) goToAccessDenied(action === null || action === void 0 || (_action$location = action.location) === null || _action$location === void 0 ? void 0 : _action$location.pathname);
   }
   return true;
 }
@@ -1406,7 +1413,7 @@ function* idpAnonymousRouteSaga({
   // route saga leaves it to land.
   if (isRedirectPending(returnPath, scope)) return false;
   if (isLoginGuardArmed(returnPath, scope)) {
-    yield put(idpErrorUserAction(LOOP_GUARD_MESSAGE, yield select(selectClientCredentials, 'js')));
+    yield effects.put(idpErrorUserAction(LOOP_GUARD_MESSAGE, yield effects.select(selectors$1.selectClientCredentials, 'js')));
     throw idpRouteError(401, 'Unauthorized', LOOP_GUARD_MESSAGE);
   }
   armLoginGuard(returnPath, scope);
@@ -1418,7 +1425,7 @@ function* idpAnonymousRouteSaga({
 function* idpHandleRequiresLoginSaga(action) {
   // The server never decides this. Routing treats a falsy return as
   // "not logged in", which on the server is always true: nobody is.
-  if (isSSR) return false;
+  if (CookieConstants.isSSR) return false;
   const {
     path
   } = action || {};
@@ -1428,7 +1435,7 @@ function* idpHandleRequiresLoginSaga(action) {
   // it belongs to this path — between a navigation and its `SET_ENTRY` the
   // routing state still holds the previous route's entry, and its content
   // type would borrow group requirements from a page we have left.
-  const entry = resolveEntry(action, selectRouteEntry(yield select(), 'js'));
+  const entry = resolveEntry(action, selectors.selectRouteEntry(yield effects.select(), 'js'));
 
   // Merge route, content type and app-provided requirements exactly as the
   // classic saga does, so groups from all three sources count.
@@ -1442,10 +1449,10 @@ function* idpHandleRequiresLoginSaga(action) {
   // it now — that call is free when the cookies are current.
   let outcome = takeRouteSessionOutcome(path);
   if (!outcome) {
-    yield call(idpRouteSessionSaga, action);
+    yield effects.call(idpRouteSessionSaga, action);
     outcome = takeRouteSessionOutcome(path);
   }
-  const isAuthenticated = yield select(selectUserIsAuthenticated);
+  const isAuthenticated = yield effects.select(selectors$1.selectUserIsAuthenticated);
 
   // A public route renders. Anonymous, or as a member if there is one; no
   // redirect and nothing deleted, whatever the outcome.
@@ -1469,7 +1476,7 @@ function* idpHandleRequiresLoginSaga(action) {
 
     // Still no answer: a generic error, and the next navigation tries again.
     // No redirect, nothing deleted.
-    yield put(idpErrorUserAction(GENERIC_ERROR_MESSAGE, yield select(selectClientCredentials, 'js')));
+    yield effects.put(idpErrorUserAction(GENERIC_ERROR_MESSAGE, yield effects.select(selectors$1.selectClientCredentials, 'js')));
     throw idpRouteError(503, 'Service Unavailable', GENERIC_ERROR_MESSAGE);
   }
 
@@ -1492,17 +1499,17 @@ function* idpHandleRequiresLoginSaga(action) {
  *  guard never sees "not loading, not authenticated" before the first check has
  *  settled. */
 function* idpInitialUserStateSaga() {
-  yield put(idpResolvingUserAction(null));
+  yield effects.put(idpResolvingUserAction(null));
 }
-const selectRouteRequiresLogin = state => getImmutableOrJS(state, ['routing', 'staticRoute', 'route', 'requireLogin']);
+const selectRouteRequiresLogin = state => selectors.getImmutableOrJS(state, ['routing', 'staticRoute', 'route', 'requireLogin']);
 
 /** `loginUser()`: there are no credentials to post — the member goes to
  *  `/idp/check` for the page they were on. Credentials passed in are ignored
  *  with one warning, so a site still posting them hears why nothing happened.
  *  The once-per-path loop guard does not apply to an explicit login click. */
 function* idpLoginUserSaga(action = {}) {
-  if (action.username || action.password) warn('[idp] loginUser() ignores username and password: under USE_IDP the ' + 'member signs in at /idp/check. Remove the credentials from this call.');
-  yield call(goToIdpCheck, getLoginReturnPath(currentHref()));
+  if (action.username || action.password) log.warn('[idp] loginUser() ignores username and password: under USE_IDP the ' + 'member signs in at /idp/check. Remove the credentials from this call.');
+  yield effects.call(goToIdpCheck, getLoginReturnPath(currentHref()));
 }
 
 /** `logoutUser(redirectPath)`: the reducer has already cleared the user, so this
@@ -1515,8 +1522,8 @@ function* idpLogoutUserSaga(action = {}) {
 
   // A signed-out member starts over: no path keeps its loop guard.
   clearLoginGuard();
-  const routeRequiresLogin = yield select(selectRouteRequiresLogin);
-  yield call(goToIdpLogout, getLogoutReturnPath({
+  const routeRequiresLogin = yield effects.select(selectRouteRequiresLogin);
+  yield effects.call(goToIdpLogout, getLogoutReturnPath({
     redirectPath: action.redirectPath,
     currentHref: currentHref(),
     // From a members area, land somewhere public.
@@ -1527,33 +1534,33 @@ function* idpLogoutUserSaga(action = {}) {
 /** `VALIDATE_USER`: work out who is signed in, from the cookies and a refresh if
  *  needed. Returns the logged-in boolean callers of the classic saga expected. */
 function* idpValidateUserSaga() {
-  const clientCredentials = yield select(selectClientCredentials, 'js');
-  yield put(idpResolvingUserAction(clientCredentials));
-  const result = yield call(resolveSession);
+  const clientCredentials = yield effects.select(selectors$1.selectClientCredentials, 'js');
+  yield effects.put(idpResolvingUserAction(clientCredentials));
+  const result = yield effects.call(resolveSession);
   if (result.outcome === 'session') {
-    yield put(idpSessionUserAction(result.session));
+    yield effects.put(idpSessionUserAction(result.session));
     return true;
   }
 
   // Only 401 ends a session, and ending it here means state only: this call
   // never navigates. Otherwise stop reporting loading and leave the rest.
-  const isAuthenticated = yield select(selectUserIsAuthenticated);
-  if (result.outcome === 'no-session' && isAuthenticated) yield put(idpClearSessionAction());else yield put(idpSettledUserAction(clientCredentials));
-  return yield select(selectUserIsAuthenticated);
+  const isAuthenticated = yield effects.select(selectors$1.selectUserIsAuthenticated);
+  if (result.outcome === 'no-session' && isAuthenticated) yield effects.put(idpClearSessionAction());else yield effects.put(idpSettledUserAction(clientCredentials));
+  return yield effects.select(selectors$1.selectUserIsAuthenticated);
 }
 
 /** `refreshSecurityToken`, same no-argument signature, now refreshing through
  *  `/idp/refresh`. It updates the classic token we hold and never navigates:
  *  refreshing a token is not a decision to send anybody anywhere. */
 function* idpRefreshSecurityTokenSaga() {
-  const outcome = yield call(refreshSession);
+  const outcome = yield effects.call(refreshSession);
   if (outcome === 'session') {
-    yield put(idpClassicTokenUserAction(readIdpClassicToken(), yield select(selectClientCredentials, 'js')));
+    yield effects.put(idpClassicTokenUserAction(readIdpClassicToken(), yield effects.select(selectors$1.selectClientCredentials, 'js')));
     return;
   }
   if (outcome === 'no-session') {
-    const isAuthenticated = yield select(selectUserIsAuthenticated);
-    if (isAuthenticated) yield put(idpClearSessionAction());
+    const isAuthenticated = yield effects.select(selectors$1.selectUserIsAuthenticated);
+    if (isAuthenticated) yield effects.put(idpClearSessionAction());
   }
 }
 
@@ -1579,28 +1586,28 @@ const changePassword$1 = async changePasswordObject => {
  *  wrapper as everything else. No classic grant. */
 function* idpChangePasswordSaga(action) {
   if (!action || !action.userId || !action.currentPassword || !action.newPassword) {
-    yield put({
-      type: CHANGE_USER_PASSWORD_ERROR,
+    yield effects.put({
+      type: selectors.CHANGE_USER_PASSWORD_ERROR,
       error: 'Invalid action object sent to changePassword saga'
     });
     return;
   }
-  yield put({
-    type: CHANGE_USER_PASSWORD_SENDING
+  yield effects.put({
+    type: selectors.CHANGE_USER_PASSWORD_SENDING
   });
-  const result = yield call(changePassword$1, {
+  const result = yield effects.call(changePassword$1, {
     userId: action.userId,
     existing: action.currentPassword,
     new: action.newPassword
   });
   if (result.ok) {
-    yield put({
-      type: CHANGE_USER_PASSWORD_SUCCESS
+    yield effects.put({
+      type: selectors.CHANGE_USER_PASSWORD_SUCCESS
     });
     return;
   }
-  yield put({
-    type: CHANGE_USER_PASSWORD_ERROR,
+  yield effects.put({
+    type: selectors.CHANGE_USER_PASSWORD_ERROR,
     error: changePasswordErrorMessage(result.error)
   });
 }
@@ -1608,26 +1615,26 @@ function* idpChangePasswordSaga(action) {
 // Read when the action is handled: this module is imported before `start()`
 // applies `config.useIdp`, so an import-time choice would run the classic sagas
 // on a server serving an IDP site.
-const loginSagas = [call(handleInitialUserStateSaga), takeEvery(LOGIN_USER, handleLoginUserSaga), takeEvery(LOGOUT_USER, handleLogoutUserSaga), takeEvery(VALIDATE_USER, handleValidateUserSaga), takeEvery(SET_AUTHENTICATION_STATE, redirectAfterSuccessfulLoginSaga)];
+const loginSagas = [effects.call(handleInitialUserStateSaga), effects.takeEvery(selectors.LOGIN_USER, handleLoginUserSaga), effects.takeEvery(selectors.LOGOUT_USER, handleLogoutUserSaga), effects.takeEvery(selectors.VALIDATE_USER, handleValidateUserSaga), effects.takeEvery(selectors.SET_AUTHENTICATION_STATE, redirectAfterSuccessfulLoginSaga)];
 function* handleInitialUserStateSaga() {
-  if (isIdpEnabled()) yield call(idpInitialUserStateSaga);
+  if (isIdpEnabled()) yield effects.call(idpInitialUserStateSaga);
 }
 function* handleLoginUserSaga(action) {
-  if (isIdpEnabled()) return yield call(idpLoginUserSaga, action);
-  return yield call(loginUserSaga, action);
+  if (isIdpEnabled()) return yield effects.call(idpLoginUserSaga, action);
+  return yield effects.call(loginUserSaga, action);
 }
 function* handleLogoutUserSaga(action) {
-  if (isIdpEnabled()) return yield call(idpLogoutUserSaga, action);
-  return yield call(logoutUserSaga, action);
+  if (isIdpEnabled()) return yield effects.call(idpLogoutUserSaga, action);
+  return yield effects.call(logoutUserSaga, action);
 }
 function* handleValidateUserSaga(action) {
-  if (isIdpEnabled()) return yield call(idpValidateUserSaga);
-  return yield call(validateUserSaga, action);
+  if (isIdpEnabled()) return yield effects.call(idpValidateUserSaga);
+  return yield effects.call(validateUserSaga, action);
 }
 function* handleRequiresLoginSaga(action) {
   var _entry$sys;
   // The protected-route decision under USE_IDP.
-  if (isIdpEnabled()) return yield call(idpHandleRequiresLoginSaga, action);
+  if (isIdpEnabled()) return yield effects.call(idpHandleRequiresLoginSaga, action);
   const {
     cookies,
     entry,
@@ -1638,10 +1645,10 @@ function* handleRequiresLoginSaga(action) {
     },
     staticRoute
   } = action;
-  let userLoggedIn = yield select(selectUserIsAuthenticated);
+  let userLoggedIn = yield effects.select(selectors$1.selectUserIsAuthenticated);
 
   // Check for a securityToken in querystring
-  const currentQs = queryParams(yield select(selectCurrentSearch));
+  const currentQs = selectors.queryParams(yield effects.select(selectors.selectCurrentSearch));
   const securityToken = currentQs.securityToken || currentQs.securitytoken;
 
   // Check if any of the defined routes have "requireLogin" attribute
@@ -1662,15 +1669,15 @@ function* handleRequiresLoginSaga(action) {
     if (routeRequiresLogin) {
       // console.info(`Route requires login: ${path}`);
       // If routeRequiresLogin do a blocking call that returns userLoggedIn
-      userLoggedIn = yield call(validateUserSaga, {
+      userLoggedIn = yield effects.call(validateUserSaga, {
         cookies,
         securityToken
       });
       // console.info(`User logged in: ${userLoggedIn}`);
     }
     // otherwise do a non blocking put to handle validation in the background
-    else yield put({
-      type: VALIDATE_USER,
+    else yield effects.put({
+      type: selectors.VALIDATE_USER,
       cookies,
       securityToken
     });
@@ -1681,8 +1688,8 @@ function* handleRequiresLoginSaga(action) {
     if (!userLoggedIn && !securityToken) {
       LoginHelper.ClientRedirectToSignInPage(action.location.pathname);
     } else if (routeRequiresGroups.length > 0) {
-      const userGroups = yield select(selectUserGroups, 'js');
-      const groupMatch = matchUserGroup(userGroups, routeRequiresGroups);
+      const userGroups = yield effects.select(selectors$1.selectUserGroups, 'js');
+      const groupMatch = selectors$1.matchUserGroup(userGroups, routeRequiresGroups);
       if (!groupMatch) LoginHelper.ClientRedirectToAccessDeniedPage(action.location.pathname);
     }
   }
@@ -1699,8 +1706,8 @@ function* validateUserSaga({
     // We only attempt to validate the user if one of the stored
     // tokens are found, in this case we set loading state manually
     // so we don't need to set and unset loading if there are no stored
-    yield put({
-      type: SET_AUTHENTICATION_STATE,
+    yield effects.put({
+      type: selectors.SET_AUTHENTICATION_STATE,
       authenticationState: {
         isLoading: true
       }
@@ -1719,8 +1726,8 @@ function* validateUserSaga({
       }
       if (error) {
         login.ClearCachedCredentials();
-        yield put({
-          type: SET_AUTHENTICATION_STATE,
+        yield effects.put({
+          type: selectors.SET_AUTHENTICATION_STATE,
           authenticationState: {
             isError: true,
             errorMessage: (error === null || error === void 0 ? void 0 : error.message) || error && 'toString' in error && error.toString()
@@ -1734,7 +1741,7 @@ function* validateUserSaga({
       // console.info(
       //   `Login user with refreshToken ${clientCredentials.refreshToken}`
       // );
-      yield call(loginUserSaga, {
+      yield effects.call(loginUserSaga, {
         clientCredentials,
         cookies: login.cookies
       });
@@ -1742,7 +1749,7 @@ function* validateUserSaga({
   }
 
   // Tell any callers have we successfully logged in?
-  return yield select(selectUserIsAuthenticated);
+  return yield effects.select(selectors$1.selectUserIsAuthenticated);
 }
 function* loginUserSaga(action = {}) {
   const {
@@ -1755,7 +1762,7 @@ function* loginUserSaga(action = {}) {
 
   // If a WSFED_LOGIN site has dispatched the loginUser action
   // just redirect them to the Identity Provider sign in
-  if (action.type === LOGIN_USER && LoginHelper.WSFED_LOGIN) LoginHelper.ClientRedirectToSignInPage();
+  if (action.type === selectors.LOGIN_USER && LoginHelper.WSFED_LOGIN) LoginHelper.ClientRedirectToSignInPage();
   const {
     authenticationState,
     user
@@ -1764,8 +1771,8 @@ function* loginUserSaga(action = {}) {
     password,
     clientCredentials
   });
-  yield put({
-    type: SET_AUTHENTICATION_STATE,
+  yield effects.put({
+    type: selectors.SET_AUTHENTICATION_STATE,
     authenticationState,
     user
   });
@@ -1777,11 +1784,11 @@ const removeHostnamePart = path => {
 function* redirectAfterSuccessfulLoginSaga() {
   // Under `USE_IDP`, `/idp/check` returns the member to `returnPath` itself.
   if (isIdpEnabled()) return;
-  const isLoggedIn = yield select(selectUserIsAuthenticated);
+  const isLoggedIn = yield effects.select(selectors$1.selectUserIsAuthenticated);
   const {
     redirect_uri,
     ReturnURL
-  } = queryParams(yield select(selectCurrentSearch));
+  } = selectors.queryParams(yield effects.select(selectors.selectCurrentSearch));
   const redirectPath = Array.isArray(redirect_uri) ? redirect_uri[0] : redirect_uri;
   const assetRedirectPath = Array.isArray(ReturnURL) ? ReturnURL[0] : ReturnURL;
   if (isLoggedIn && assetRedirectPath && typeof window != 'undefined') {
@@ -1791,28 +1798,28 @@ function* redirectAfterSuccessfulLoginSaga() {
     window.location.href = path;
     // yield put(setRoute(path)); // does not work in this scenario
   } else if (isLoggedIn && redirectPath) {
-    yield put(setRoute(redirectPath));
+    yield effects.put(selectors.setRoute(redirectPath));
   }
 }
 function* logoutUserSaga({
   redirectPath,
   cookies
 }) {
-  yield put({
-    type: SET_AUTHENTICATION_STATE,
+  yield effects.put({
+    type: selectors.SET_AUTHENTICATION_STATE,
     user: null
   });
   yield LoginHelper.withCookies(cookies).LogoutUser(redirectPath);
 }
 function* refreshSecurityToken() {
   // Refresh through `/idp/refresh`, same signature.
-  if (isIdpEnabled()) return yield call(idpRefreshSecurityTokenSaga);
-  const clientCredentials = yield select(selectClientCredentials, 'js');
+  if (isIdpEnabled()) return yield effects.call(idpRefreshSecurityTokenSaga);
+  const clientCredentials = yield effects.select(selectors$1.selectClientCredentials, 'js');
   if (Object.keys(clientCredentials).length > 0) {
     const client = yield getManagementApiClient(clientCredentials);
     yield client.authenticate();
-    yield put({
-      type: SET_AUTHENTICATION_STATE,
+    yield effects.put({
+      type: selectors.SET_AUTHENTICATION_STATE,
       authenticationState: {
         clientCredentials: mapClientCredentials(client)
       }
@@ -1823,26 +1830,26 @@ function* refreshSecurityToken() {
 /** Credentials are optional: a site on `USE_IDP` signs the member in at
  *  `/idp/check` and has nothing to pass, so `loginUser()` is the whole call.
  *  Classic sites carry on passing them. */
-const loginUser = (username, password, cookies) => action(LOGIN_USER, {
+const loginUser = (username, password, cookies) => selectors.action(selectors.LOGIN_USER, {
   username,
   password,
   cookies
 });
-const logoutUser = (redirectPath, cookies) => action(LOGOUT_USER, {
+const logoutUser = (redirectPath, cookies) => selectors.action(selectors.LOGOUT_USER, {
   redirectPath,
   cookies
 });
-const registerUser = (user, mappers) => action(REGISTER_USER, {
+const registerUser = (user, mappers) => selectors.action(selectors.REGISTER_USER, {
   user,
   mappers
 });
-const requestPasswordReset = userEmailObject => action(REQUEST_USER_PASSWORD_RESET, {
+const requestPasswordReset = userEmailObject => selectors.action(selectors.REQUEST_USER_PASSWORD_RESET, {
   userEmailObject
 });
-const resetPassword = resetPasswordObject => action(RESET_USER_PASSWORD, {
+const resetPassword = resetPasswordObject => selectors.action(selectors.RESET_USER_PASSWORD, {
   resetPasswordObject
 });
-const changePassword = (userId, currentPassword, newPassword) => action(CHANGE_USER_PASSWORD, {
+const changePassword = (userId, currentPassword, newPassword) => selectors.action(selectors.CHANGE_USER_PASSWORD, {
   userId,
   currentPassword,
   newPassword
@@ -1859,24 +1866,26 @@ var actions = /*#__PURE__*/Object.freeze({
 });
 
 const useLogin = () => {
-  const cookies = new CookieHelper(...useCookies());
-  const dispatch = useDispatch();
-  const select = useSelector;
+  const cookies = new CookieHelper_class.CookieHelper(...reactCookie.useCookies());
+  const dispatch = reactRedux.useDispatch();
+  const select = reactRedux.useSelector;
   return {
     loginUser: (username, password) => dispatch(loginUser(username, password, cookies)),
     logoutUser: redirectPath => dispatch(logoutUser(redirectPath, cookies)),
-    errorMessage: select(selectUserErrorMessage),
-    isAuthenticated: select(selectUserIsAuthenticated),
-    isAuthenticationError: select(selectUserIsAuthenticationError),
-    isError: select(selectUserIsError),
-    isLoading: select(selectUserIsLoading),
-    user: select(selectUser),
+    errorMessage: select(selectors$1.selectUserErrorMessage),
+    isAuthenticated: select(selectors$1.selectUserIsAuthenticated),
+    isAuthenticationError: select(selectors$1.selectUserIsAuthenticationError),
+    isError: select(selectors$1.selectUserIsError),
+    isLoading: select(selectors$1.selectUserIsLoading),
+    user: select(selectors$1.selectUser),
+    // Config, not state: static for the life of the process.
+    loginMethod: activeLoginMethod(),
     // DEPRECATED: authenticationError is deprecated use isAuthenticationError instead
-    authenticationError: select(selectUserIsAuthenticationError),
+    authenticationError: select(selectors$1.selectUserIsAuthenticationError),
     // DEPRECATED: authenticationErrorMessage is deprecated use errorMessage instead
-    authenticationErrorMessage: select(selectUserErrorMessage),
+    authenticationErrorMessage: select(selectors$1.selectUserErrorMessage),
     // DEPRECATED: error is deprecated use isError instead
-    error: select(selectUserIsError)
+    error: select(selectors$1.selectUserIsError)
   };
 };
 
@@ -1888,17 +1897,17 @@ const LoginContainer = ({
   return children(userProps);
 };
 LoginContainer.propTypes = {};
-var Login_container = toJS(LoginContainer);
+var Login_container = ToJs.toJS(LoginContainer);
 
 const useRegistration = () => {
-  const dispatch = useDispatch();
-  const select = useSelector;
+  const dispatch = reactRedux.useDispatch();
+  const select = reactRedux.useSelector;
   return {
     registerUser: (user, mappers) => dispatch(registerUser(user, mappers)),
-    error: select(selectUserRegistrationError),
-    isLoading: select(selectUserRegistrationIsLoading),
-    isSuccess: select(selectUserRegistrationIsSuccess),
-    user: select(selectUserRegistration, shallowEqual)
+    error: select(selectors$1.selectUserRegistrationError),
+    isLoading: select(selectors$1.selectUserRegistrationIsLoading),
+    isSuccess: select(selectors$1.selectUserRegistrationIsSuccess),
+    user: select(selectors$1.selectUserRegistration, reactRedux.shallowEqual)
   };
 };
 
@@ -1910,21 +1919,21 @@ const RegistrationContainer = ({
   return children(userProps);
 };
 RegistrationContainer.propTypes = {};
-var Registration_container = toJS(RegistrationContainer);
+var Registration_container = ToJs.toJS(RegistrationContainer);
 
 const useForgotPassword = () => {
-  const dispatch = useDispatch();
-  const select = useSelector;
+  const dispatch = reactRedux.useDispatch();
+  const select = reactRedux.useSelector;
   return {
-    isLoading: select(selectPasswordResetRequestSending),
-    isSuccess: select(selectPasswordResetRequestSent),
-    error: select(selectPasswordResetRequestError),
+    isLoading: select(selectors$1.selectPasswordResetRequestSending),
+    isSuccess: select(selectors$1.selectPasswordResetRequestSent),
+    error: select(selectors$1.selectPasswordResetRequestError),
     requestPasswordReset: userEmailObject => dispatch(requestPasswordReset(userEmailObject)),
     setNewPassword: {
-      queryString: select(selectCurrentSearch),
-      isLoading: select(selectResetPasswordSending),
-      isSuccess: select(selectResetPasswordSent),
-      error: select(selectResetPasswordError),
+      queryString: select(selectors.selectCurrentSearch),
+      isLoading: select(selectors$1.selectResetPasswordSending),
+      isSuccess: select(selectors$1.selectResetPasswordSent),
+      error: select(selectors$1.selectResetPasswordError),
       submit: resetPasswordObject => dispatch(resetPassword(resetPasswordObject))
     }
   };
@@ -1938,17 +1947,17 @@ const ForgotPasswordContainer = ({
   return children(userProps);
 };
 ForgotPasswordContainer.propTypes = {};
-var ForgotPassword_container = toJS(ForgotPasswordContainer);
+var ForgotPassword_container = ToJs.toJS(ForgotPasswordContainer);
 
 const useChangePassword = () => {
-  const dispatch = useDispatch();
-  const select = useSelector;
+  const dispatch = reactRedux.useDispatch();
+  const select = reactRedux.useSelector;
   return {
-    isLoading: select(selectChangePasswordSending),
-    isSuccess: select(selectChangePasswordSent),
-    userId: select(selectUserGuid),
-    isLoggedIn: select(selectUserIsAuthenticated),
-    error: select(selectChangePasswordError),
+    isLoading: select(selectors$1.selectChangePasswordSending),
+    isSuccess: select(selectors$1.selectChangePasswordSent),
+    userId: select(selectors$1.selectUserGuid),
+    isLoggedIn: select(selectors$1.selectUserIsAuthenticated),
+    error: select(selectors$1.selectChangePasswordError),
     changePassword: (userId, currentPassword, newPassword) => dispatch(changePassword(userId, currentPassword, newPassword))
   };
 };
@@ -1961,7 +1970,44 @@ const ChangePasswordContainer = ({
   return children(userProps);
 };
 ChangePasswordContainer.propTypes = {};
-var ChangePassword_container = toJS(ChangePasswordContainer);
+var ChangePassword_container = ToJs.toJS(ChangePasswordContainer);
 
-export { useChangePassword as A, useForgotPassword as B, ChangePassword_container as C, DELIVERY_GUARD as D, useLogin as E, ForgotPassword_container as F, GENERIC_ERROR_MESSAGE as G, useRegistration as H, IDP_ACCESS_TOKEN_COOKIE as I, LoginHelper as L, Registration_container as R, Login_container as a, actions as b, activeLoginMethod as c, currentHref as d, findContentTypeMapping as e, fetchOnce as f, getAccessDeniedRoute as g, getLoginReturnPath as h, getManagementApiClient as i, getSearchOptions as j, handleRequiresLoginSaga as k, hasDeliveryReloadFor as l, idpAnonymousRouteSaga as m, idpChangePasswordSaga as n, idpRouteError as o, idpRouteSessionSaga as p, isIdpEnabled as q, logError as r, loginSagas as s, loginUser as t, logoutUser as u, refreshSecurityToken as v, refreshSession as w, registerUser as x, rememberDeliveryReload as y, shorten as z };
-//# sourceMappingURL=ChangePassword.container-BVCnEtgB.js.map
+exports.ChangePassword_container = ChangePassword_container;
+exports.DELIVERY_GUARD = DELIVERY_GUARD;
+exports.ForgotPassword_container = ForgotPassword_container;
+exports.GENERIC_ERROR_MESSAGE = GENERIC_ERROR_MESSAGE;
+exports.IDP_ACCESS_TOKEN_COOKIE = IDP_ACCESS_TOKEN_COOKIE;
+exports.LoginHelper = LoginHelper;
+exports.Login_container = Login_container;
+exports.Registration_container = Registration_container;
+exports.actions = actions;
+exports.activeLoginMethod = activeLoginMethod;
+exports.currentHref = currentHref;
+exports.fetchOnce = fetchOnce;
+exports.findContentTypeMapping = findContentTypeMapping;
+exports.getAccessDeniedRoute = getAccessDeniedRoute;
+exports.getLoginReturnPath = getLoginReturnPath;
+exports.getManagementApiClient = getManagementApiClient;
+exports.getSearchOptions = getSearchOptions;
+exports.handleRequiresLoginSaga = handleRequiresLoginSaga;
+exports.hasDeliveryReloadFor = hasDeliveryReloadFor;
+exports.idpAnonymousRouteSaga = idpAnonymousRouteSaga;
+exports.idpChangePasswordSaga = idpChangePasswordSaga;
+exports.idpRouteError = idpRouteError;
+exports.idpRouteSessionSaga = idpRouteSessionSaga;
+exports.isIdpEnabled = isIdpEnabled;
+exports.isWsFedLoginEnabled = isWsFedLoginEnabled;
+exports.logError = logError;
+exports.loginSagas = loginSagas;
+exports.loginUser = loginUser;
+exports.logoutUser = logoutUser;
+exports.refreshSecurityToken = refreshSecurityToken;
+exports.refreshSession = refreshSession;
+exports.registerUser = registerUser;
+exports.rememberDeliveryReload = rememberDeliveryReload;
+exports.shorten = shorten;
+exports.useChangePassword = useChangePassword;
+exports.useForgotPassword = useForgotPassword;
+exports.useLogin = useLogin;
+exports.useRegistration = useRegistration;
+//# sourceMappingURL=ChangePassword.container-jrE4AVAg.js.map
