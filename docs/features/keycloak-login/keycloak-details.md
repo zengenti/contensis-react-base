@@ -1,8 +1,8 @@
 # Keycloak login: details
 
 **Companion to:** [Keycloak login for published sites](README.md), the overview. This file holds the detail behind its "How Keycloak login works in Contensis" section.
-**Checked against code:** the same sources as the overview, on 2026-10-09, re-checked on 2026-10-12, with test-tenant results from 2026-10-10 to 2026-10-12.
-**Last updated:** 2026-10-11
+**Checked against code:** the same sources as the overview, on 2026-10-09, re-checked on 2026-10-12, with test-tenant results from 2026-10-10 to 2026-10-12. The statements about react-base were re-checked against `master` `c416c44c` on 2026-10-25, after PR #30.
+**Last updated:** 2026-10-25
 
 ## How a tenant is switched
 
@@ -15,7 +15,7 @@ If only the first is on, `/idp/*` never reaches identity-client: on the CMS host
 
 If only the second is on, the CMS keeps writing its IS3 refresh token into a cookie with the same name as Keycloak's, `ContensisSecurityRefreshToken`. A call to `/idp/refresh` sends that token to Keycloak, Keycloak rejects it, and identity-client deletes every login cookie (KEYC-208, seen in production with CMS users in the admin UI).
 
-react-base reads neither setting today.
+react-base reads neither setting. Since PR #30 it has its own site setting, `useIdp` (`USE_IDP`), which has to be turned on together with these two.
 
 ## Where identity-client runs
 
@@ -37,7 +37,7 @@ identity-client runs a standard OpenID Connect login (authorization code with PK
 
 Keycloak's login form asks for the username and password together. A one-time code step follows only for users whose MFA is required. If the tenant has a default external identity provider configured, Keycloak sends the browser there instead of showing the form.
 
-The diagram shows a logged-out member opening a protected page.
+The diagram shows a logged-out member opening a protected page on a site with `USE_IDP` on.
 
 ```mermaid
 sequenceDiagram
@@ -48,7 +48,8 @@ sequenceDiagram
     participant DB as Tenant CMS database
 
     B->>S: GET /members/documents
-    S-->>B: redirect /idp/check?returnPath=/members/documents
+    S-->>B: page rendered for an anonymous visitor
+    B->>B: after hydration: /idp/refresh returns 401, navigate to /idp/check?returnPath=/members/documents
     B->>I: GET /idp/check
     I-->>B: no session: redirect /idp/login, then to Keycloak
     B->>K: login form (username and password)
@@ -62,7 +63,7 @@ sequenceDiagram
     B->>S: GET /members/documents, now with the cookies
 ```
 
-The first step is the part react-base does not do today: in the browser it sends a logged-out member to `/account/login`, the classic form, which can't run MFA.
+The navigation to `/idp/check` is the part react-base did not do at `29ab2e28`, and still does not do with `USE_IDP` off: in the browser it sends a logged-out member to `/account/login`, the classic form, which can't run MFA. With `USE_IDP` on, the server never redirects; the browser navigates after the page hydrates.
 
 ## Tokens and what accepts them
 
@@ -74,6 +75,6 @@ The first step is the part react-base does not do today: in the browser it sends
 
 ## Why the classic grants fail
 
-IS3 had two custom ways to get a token: one with a username and password (`contensis_classic`), and one with a refresh token (`contensis_classic_refresh_token`). Keycloak reimplements both under the same names, and returns the classic token under the same cookie and header names as IS3 (`ContensisClassicToken`, `x-contensis-classic-token`), so existing callers keep working. react-base's management client is one of those callers; the CMS's `IsAuthenticated` endpoint is another.
+IS3 had two custom ways to get a token: one with a username and password (`contensis_classic`), and one with a refresh token (`contensis_classic_refresh_token`). Keycloak reimplements both under the same names, and returns the classic token under the same cookie and header names as IS3 (`ContensisClassicToken`, `x-contensis-classic-token`), so existing callers keep working. react-base's management client is one of those callers with `USE_IDP` off; the CMS's `IsAuthenticated` endpoint is another.
 
 Neither request can show a page to ask for a one-time code, so Keycloak refuses both for any user whose MFA is required (KEYC-183); it also refuses the standard password grant. An environment variable on the Keycloak server, `CONTENSIS_ALLOW_MFA_CLASSIC_GRANTS` (KEYC-200), turns the refusal off. It is off by default and no deployment config in the platform repo sets it; only a code comment says it must never be deployed. If it is on in a test realm, it hides this bug.

@@ -2,16 +2,16 @@
 
 **Ticket:** CHALKY-2080, "CRB: Update to support new Keycloak IDP". Neil Flatley implements and approves the work.
 **Keycloak side:** KEYC-199, linked to CHALKY-2080 as Relates. Must be fixed before the first customer with MFA member login; it does not block the first tenant switched to Keycloak.
-**Status:** overview for agreeing the scope with Neil. The earlier detailed plan has been withdrawn; a new plan is written once the scope and the questions below are agreed.
-**Checked against code:** every statement about how a system behaves was checked against source code and config on 2026-10-09: identity-client `main` `206359e`, svc-identity `main` `eb5d790` (Keycloak 26.6.3), contensis-app, contensis-app-ui, contensis-svc-security and contensis-svc-delivery `main`, the Zengenti .NET services library 17.7.0, platform `master`, and react-base `master` `29ab2e28`. Re-checked on 2026-10-12 against identity-client `9d7e121`, svc-identity `236c3d5` and contensis-app `5d178c1a50a`: the changes since were the KEYC-308 scopes (described here), a comment-only change in identity-client, a refresh-token-reuse test and a login-theme restyle in svc-identity, and docs in contensis-app. Points that only a running system can settle were checked on `nlgpsf-temp-dev` on 2026-10-10 to 2026-10-12; results are in [Keycloak login: tests](keycloak-tests.md).
+**Status:** implemented. This overview was written to agree the scope with Neil; he built the change from his own plan in PR [#30](https://github.com/zengenti/contensis-react-base/pull/30), merged to `master` on 2026-10-20 as `791250b1`. It ships in 4.1.0 (release PR #27, open) and is in the 4.0.1-beta builds from beta.24. "What react-base now does" below compares the implementation with this overview. The rest of the document is the pre-implementation analysis: where it says what react-base does "today", it describes `29ab2e28`, which is still the behaviour with the new setting off.
+**Checked against code:** every statement about how a system behaves was checked against source code and config on 2026-10-09: identity-client `main` `206359e`, svc-identity `main` `eb5d790` (Keycloak 26.6.3), contensis-app, contensis-app-ui, contensis-svc-security and contensis-svc-delivery `main`, the Zengenti .NET services library 17.7.0, platform `master`, and react-base `master` `29ab2e28`. Re-checked on 2026-10-12 against identity-client `9d7e121`, svc-identity `236c3d5` and contensis-app `5d178c1a50a`: the changes since were the KEYC-308 scopes (described here), a comment-only change in identity-client, a refresh-token-reuse test and a login-theme restyle in svc-identity, and docs in contensis-app. Points that only a running system can settle were checked on `nlgpsf-temp-dev` on 2026-10-10 to 2026-10-12; results are in [Keycloak login: tests](keycloak-tests.md). The implementation was checked against react-base `master` `c416c44c` (4.0.1-beta.27) on 2026-10-25, by code reading only; nothing was run.
 **Shared page:** [claude.ai artifact](https://claude.ai/artifact/KP9mfHEAezgnW6cgFMX9jq), rendered from this file. Change this file, then republish the artifact with this file as its `README.md` so the two stay the same.
-**Last updated:** 2026-10-12
+**Last updated:** 2026-10-25
 
 ## What this document is about
 
 On a tenant that has moved to Keycloak with MFA turned on, a website member completes the login page and the one-time code, comes back to the site, and is still logged out. No error appears. KEYC-199 records the bug; CHALKY-2080 is where react-base gets the fix.
 
-This document is written for someone who knows react-base but has not followed the Keycloak migration. It explains how Keycloak login works in Contensis, why react-base's login fails with it, what the fix has to achieve, a recommended direction, and the questions to settle. Everything needed to discuss the work is here or in its two companions, [Keycloak login: details](keycloak-details.md) and [Keycloak login: tests](keycloak-tests.md); the sources at the end are only for checking. It does not list implementation steps; those go in a new plan after the questions are answered.
+This document is written for someone who knows react-base but has not followed the Keycloak migration. It explains how Keycloak login works in Contensis, why react-base's login fails with it, what the fix has to achieve, a recommended direction, and the questions to settle. Everything needed to discuss the work is here or in its two companions, [Keycloak login: details](keycloak-details.md) and [Keycloak login: tests](keycloak-tests.md); the sources at the end are only for checking. It does not list implementation steps; PR #30 was built from Neil's own plan, and "What react-base now does" compares the result with this document.
 
 ## Terms
 
@@ -38,20 +38,69 @@ This document is written for someone who knows react-base but has not followed t
 5. **It keeps storing the classic security token,** because sites read it through `selectUserSecurityToken`.
 6. **Only a 401 from `/idp/refresh` should end the session.** A timeout or 5xx on a healthy session must not send the member to log in. The CMS admin UI gets this wrong today, and the withdrawn plan repeated it.
 7. **A blocker outside react-base, now fixed in the realm config (KEYC-308):** on most tenants the Delivery API runs inside the CMS, which answered 403 to a request carrying the website login's access token, because that token had none of the CMS API scopes. The browser sends the token automatically as a cookie, so every content request from a logged-in member failed. Since 2026-10-10 the `contensis-web` client gets the same 13 CMS resource scopes as under IS3, and the same request returns 200 on the test tenant. Production realms get the change when they are switched.
-8. **Four questions need answers before a plan is written.** The main one is how react-base knows a site uses Keycloak.
+8. **Four questions needed answers before a plan was written.** The main one was how react-base knows a site uses Keycloak. The implementation answers all four; see "Questions for Neil".
+9. **Implemented in PR #30** behind a new site setting, `useIdp` (`USE_IDP`). It follows the recommended direction, with differences listed under "What react-base now does": the server never redirects, and a refresh failure that isn't a 401 is handled differently depending on where it happens.
 
 ## Where things stand
 
 | Item | Status |
 |---|---|
-| This overview | On `feat/keyc-199-bff-session-login`, draft PR [#29](https://github.com/zengenti/contensis-react-base/pull/29). The detailed plan from 2026-10-08 is withdrawn; it stays in `docs/plans/` marked retired, for reference only |
-| react-base code | None. The branch holds only docs, on top of `master` (`29ab2e28`, 4.0.1-beta.22) |
+| This overview | On `feat/keyc-199-bff-session-login`, draft PR [#29](https://github.com/zengenti/contensis-react-base/pull/29), a tracking PR. The detailed plan from 2026-10-08 is withdrawn; it stays in `docs/plans/` marked retired, for reference only |
+| react-base code | Merged: PR [#30](https://github.com/zengenti/contensis-react-base/pull/30), `791250b1`, 2026-10-20. Developer guide `docs/IDP_LOGIN.md` on `master`. In 4.0.1-beta.24 and later; released as 4.1.0 when release PR #27 is merged. `3f13e2bd` (2026-10-22) also exports the active login method |
 | identity-client (`/idp/*`) | Built. The platform routes `/idp/*` to it for three aliases: `idp`, `nlgpsf-temp-dev` and `standard`. No customer alias yet. No change needed for this work |
 | Keycloak in production | Being prepared under the production release ticket, KEYC-302. Its report lists KEYC-199 / CHALKY-2080 as a must-fix before the first customer with MFA member login, and the 30-minute member token that renews only through `/idp/refresh` (KEYC-165, KEYC-181) as a should-fix |
 | Member API permissions (KEYC-308, done) | `contensis-web` gets the 13 CMS resource scopes, as under IS3. Merged in svc-identity's realm config and contensis-app's docs (#248, 2026-10-12); contensis-svc-security's realm template has it on `feature/identity-management`, which reaches `main` with its PR #25 (KEYC-301, open). The `nlgpsf-temp-dev` and `idp` realms are updated, and same-origin Delivery API requests with the cookie return 200 on both (2026-10-11); a member with no CMS role was checked on `nlgpsf-temp-dev`. Production realms and `standard` are updated at the switch |
 | `nlgpsf-website` | On react-base v3 (`^3.1.1-beta.16`). Needs a v3→v4 upgrade to use the fix. No ticket yet. A local, unpushed branch `feat/nlgpsf-temp-dev-deploy`, which is what `nlgpsf-temp-dev` runs, adds a "Sign in securely" button to the site's login page that goes to `/idp/check`, and a `useBffSessionBridge` hook. The hook dispatches `VALIDATE_USER`, which goes through `IsAuthenticated`, so it is not a fix |
 | Test tenant | `nlgpsf-temp-dev` has `Identity_UseKeycloak` and `Identity_EnableMFA` on (CMS 17.3.1.20). Until 2026-10-09 about 23:00 UTC its load balancers sent the old token endpoint to the wrong Keycloak host, so classic refreshes failed there; that is fixed. The checks run there are summarised under "Checks on the test tenant" |
 | Testing on a real site | Waits on the `nlgpsf-website` upgrade |
+
+## What react-base now does
+
+Checked against `master` `c416c44c` on 2026-10-25 by reading the code. Paths are on `master`. The new code is in `src/user/idp/`; the existing sagas hand over to it with one `if (isIdpEnabled())` each (`src/user/redux/sagas/login.ts`, `sagas/resetPassword.js`, `src/routing/redux/sagas.js`).
+
+**The setting.** `useIdp: true` in `ServerConfig` sets the server global `USE_IDP` (`src/server/internalServer.ts:40`). Every server-rendered page carries `window.USE_IDP = true|false;` in its inline script (`src/server/webApp.tsx:219`), so the browser gets the same answer. A `USE_IDP` build-time define wins over the global (`src/user/idp/setting.ts:29-42`). With it on, `USE_IDP` takes precedence over `WSFED_LOGIN`.
+
+**Against "What the fix has to achieve":**
+
+| # | Result | How |
+|---|---|---|
+| 1 | Met | The session is built only from identity-client's cookies: `@current` and the user groups with the access token as `Authorization: Bearer` (`idp/session.ts:45-71`) |
+| 2 | Met | Login, logout, validate, `refreshSecurityToken`, change password and the protected-route decision all hand over to `idp/` (`login.ts:46-66,259`, `resetPassword.js:31`). The Management API client has no client type, so a slip sends `grant_type=null` (`idp/managementClient.ts:68-77`). The access-token release gets no refresh token, so its classic fallback can't run (`authenticateRequest.ts:32-39`) |
+| 3 | Met | A missing access token or classic token cookie triggers `/idp/refresh` (`idp/session.ts:116-120`). A Management API 401 gets one refresh and one retry (`idp/managementClient.ts:118-135`). The check runs at the start of every route change in the browser (`sagas.js:207`) |
+| 4 | Met, with differences | Only a 401 from `/idp/refresh` means no session (`idp/refresh.ts:65`); nothing in `idp/` writes or deletes a cookie. A protected route with no session goes to `/idp/check` from the browser (`idp/sagas/requireLogin.ts:120-121`). Non-401 failures: see question 4 |
+| 5 | Met | `logoutUser` navigates to `/idp/logout?returnPath=…` (`idp/sagas/userActions.ts:68-85`) |
+| 6 | Met, with changes that reach sites with the setting off | The release call is shared between concurrent callers and has a 15-second timeout (`sagas.js:92-128`); every page carries `window.USE_IDP = false;`; the page hints are now written when `disableSsrRedux` is on (`webApp.tsx:389-392`); `NotFound` labels an unmapped 5xx "Something Went Wrong" (`NotFound.tsx:19-24`) |
+| 7 | Met | The server never reads the session, refreshes or redirects (`isSSR` guards in `idp/sagas/`). A server-side Delivery 401 or 403 reaches `do500` with its own status, as before (`idp/sagas/deliveryAuthError.ts:33`); the browser fetches the content again after hydration. In the browser a Delivery 401 gets one refresh and one reload per path |
+| 8 | Met | The server renders every page as an anonymous visitor; the `user` slice is not serialised (`webApp.tsx:371-374`). The only per-site value in the page is `window.USE_IDP`. There is no cookie-dependent server response, so nothing needs `no-store` |
+| 9 | Met | `clientCredentials` is `{ contensisClassicToken }`, read from the `ContensisClassicToken` cookie (`idp/session.ts:91,184-195`) |
+| 10 | Met | `returnPath` must resolve to the site's own origin and not start with `//`; `securityToken`, `credentials` and `password` are removed in any letter case (`idp/returnPath.ts:47-73`). On `/account/login` the page's own `redirect_uri` or `ReturnURL` is used instead |
+
+**Where it differs from the recommended direction:**
+
+- **The setting** reaches the browser as `window.USE_IDP` in its own script, not inside `window.DELIVERY_API_CONFIG`.
+- **The client builder** is a new function, `createIdpManagementClient` (`idp/managementClient.ts:55-80`), not `getManagementApiClient`. It reads the access token cookie at each call and sets a 10-year expiry. It is never built on the server, so nothing reads the raw `Cookie` header there.
+- **No server redirect.** A logged-out visitor on a protected page gets the page rendered anonymously, with the site's loading component on a `requireLogin` route, and the browser navigates to `/idp/check` after hydration (`window.location.replace`).
+- **The loop guard** is a `sessionStorage` entry per `returnPath`, kept for 5 minutes (`idp/loginGuard.ts`), not a marker on `returnPath`. The second automatic redirect for the same path is replaced by a 401 error page rendered through the site's `notFoundComponent`. A click on the site's login control is never blocked. Where `sessionStorage` is unavailable the redirect is always allowed.
+- **The access-token release** accepts only the access token (the `Authorization` header, then the `ContensisSecurityBearerToken` cookie) and answers 401 without it. In the browser a failed release goes to `/account/access-denied`, as on classic sites (`sagas.js:162-166`); there is no refresh and retry.
+- **`loginUser()`** takes no credentials. Any passed are ignored with a console warning, and the member is sent to `/idp/check` (`idp/sagas/userActions.ts:53-61`). Sites replace their username and password form with a sign-in control.
+- **The timeout** is 5 seconds for `/idp/refresh` and the Management API calls, through `enterprise-fetch` 2.0.3, which uses `AbortController` and a timer, not `AbortSignal.timeout` (`src/util/fetch.ts`).
+
+**Not covered by this overview:**
+
+- **Delivery API 401 and 403** for route content, on public and protected routes alike (`idp/sagas/deliveryAuthError.ts`):
+  - A 401 gets one refresh and one reload of the route. A second 401 for the same path goes to `/idp/check` once, under its own guard, then shows the 401 error page.
+  - A 403 for a logged-in member goes to `/account/access-denied`; a 403 with no session goes to `/idp/check`.
+  - A refresh that isn't a 200 or a 401 shows a 503 error page.
+- **Loading state.** From store creation, on the server and in the browser, the user state reports `isLoading: true` until the first check settles (`idp/sagas/userActions.ts:42-44`). A site's own component-level guard must render nothing while `useLogin().isLoading` is true.
+- **Another tab.** If the `ContensisClassicToken` cookie no longer matches the token in state, the session is resolved again (`idp/session.ts:140-144`).
+- **A group lookup failure** is treated as unknown, never as a member with no groups (`idp/session.ts:63-68`).
+- **Local development.** When `USE_IDP` is on, the site's server forwards six exact paths (`/idp/check`, `login`, `callback`, `logout`, `refresh`, `error`) to the tenant's preview host (`src/server/features/reverse-proxy/index.ts:86-130`). It is registered whenever the setting is on.
+- **Exports** (`3f13e2bd`, 2026-10-22): `isIdpEnabled`, `activeLoginMethod`, `isWsFedLoginEnabled`, and `loginMethod` on `useLogin` and `withLogin`.
+
+**Open points from the code reading (not run):**
+
+- On a page whose server render ends with the router's status code at 404, the inline script with `window.USE_IDP` is not written (`webApp.tsx:377`). A site that sets the setting only through `useIdp` would then run the classic login code in the browser on that page.
+- `idpValidateUserSaga`, `idpRefreshSecurityTokenSaga` and `idpChangePasswordSaga` have no server guard. They are reached only if a site dispatches `VALIDATE_USER`, `refreshSecurityToken` or change password during server rendering.
 
 ## How Keycloak login works in Contensis
 
@@ -67,6 +116,8 @@ The detail, checked against code, is in [Keycloak login: details](keycloak-detai
 
 
 ## Why react-base's login fails today
+
+This section describes `29ab2e28`. On `master` it is still the behaviour with `USE_IDP` off; with it on, none of these paths run, and react-base's own `RefreshToken` cookie and the `securityToken` query string are ignored.
 
 react-base gets a member's tokens in three ways, and all of them use classic grants:
 
@@ -120,7 +171,7 @@ After a browser restart the member still has the refresh cookie, and the access 
 
 ## Recommended direction
 
-This is the direction the withdrawn plan took. It needs Neil's agreement and the answers to the questions below before it becomes a plan.
+This is the direction the withdrawn plan took, as proposed to Neil before the implementation. Where PR #30 differs, see "What react-base now does".
 
 - **A site setting declares Keycloak login.** It lives in the server config and reaches the browser the way the access-token config does, through the inline `window.DELIVERY_API_CONFIG` script. It is the same for every visitor, so it is safe in cached pages. The cookies only decide the next step: build a client, refresh, or send the member to log in.
 - **The browser finds out whether a session exists.** If the access token and classic token cookies are both readable, it builds a client. If either is missing, it calls `/idp/refresh`: a 200 means there is a session, a 401 means there isn't. The browser can't see the refresh cookie, so the refresh call is the check.
@@ -145,7 +196,7 @@ flowchart TD
     F -- no --> G[POST /idp/refresh]
     G -- 200 --> H
     G -- 401 --> N{Protected page?}
-    G -- timeout or 5xx --> T[Not decided: see question 4]
+    G -- timeout or 5xx --> T[No delete, no redirect: see question 4]
     N -- yes --> CK["/idp/check?returnPath=…<br/>once per returnPath"]
     N -- no --> AN[Anonymous]
     H --> I[getCurrent]
@@ -156,6 +207,8 @@ flowchart TD
 ```
 
 ### Code areas affected
+
+As proposed. PR #30 put the new code in `src/user/idp/` and left `SSRContext`, `ContensisManagementApi.ts` and the server redirect unchanged; it also changed `reverse-proxy`, `internalServer.ts`, `util/fetch.ts`, `NotFound.tsx`, `useLogin` and `withLogin`.
 
 | Area | What changes |
 |---|---|
@@ -190,19 +243,21 @@ What this means for react-base:
 
 ## Risks
 
+The mitigation column says what PR #30 does, checked by code reading.
+
 | Risk | Why it matters | Mitigation |
 |---|---|---|
-| An old react-base session survives a Keycloak login | The site shows a different user, and that user's documents (seen on the test tenant) | With the setting on, react-base takes the member only from identity-client's cookies and ignores its own leftover cookies (test 28a in [Keycloak login: tests](keycloak-tests.md)) |
-| The setting check is wrong somewhere | Classic sites change behaviour | Setting off by default; every branch reviewed against it |
-| Transient refresh failure treated as logout | Healthy members sent to log in again | Question 4 |
-| A Keycloak client built outside `getManagementApiClient` | The SDK asks for a token itself | One builder; no grant type, so a slip fails instead of firing a classic grant |
-| Redirect loop through `/idp/check` | An API rejects a token identity-client thinks is valid | One round trip per `returnPath`, then an error |
-| Per-member data in cached pages, or a cached redirect | Shown to other visitors, or loops members | Nothing per-member in server state; redirect sent `no-store` |
-| Protected content after a 401 with `userLoggedIn` set | The route reloads without limit today | The same one-round-trip limit, applied to that reload |
+| An old react-base session survives a Keycloak login | The site shows a different user, and that user's documents (seen on the test tenant) | With the setting on, react-base takes the member only from identity-client's cookies and never reads its own `RefreshToken` cookie (test 28a in [Keycloak login: tests](keycloak-tests.md)) |
+| The setting check is wrong somewhere | Classic sites change behaviour | Setting off by default; each hand-over is one `isIdpEnabled()` check, read when the action is handled. Some changes reach classic sites anyway (requirement 6 above) |
+| Transient refresh failure treated as logout | Healthy members sent to log in again | Only a 401 ends the session; see question 4 for what each caller shows |
+| A Keycloak client built outside the one builder | The SDK asks for a token itself | One builder, `createIdpManagementClient`; no grant type, so a slip fails instead of firing a classic grant |
+| Redirect loop through `/idp/check` | An API rejects a token identity-client thinks is valid | One automatic redirect per `returnPath` in 5 minutes (`sessionStorage`), then a 401 error page |
+| Per-member data in cached pages, or a cached redirect | Shown to other visitors, or loops members | The server renders every page as anonymous and never redirects |
+| Protected content after a 401 with `userLoggedIn` set | The route reloads without limit on classic sites | With the setting on: one refresh and one reload per path, then `/idp/check` once, then an error page |
 | Access token readable by page JavaScript | Script on the site can read it and call `/idp/refresh` | identity-client's design, not changed here; noted for the threat model |
-| The setting is lost with `disableSsrRedux` | The `window.DELIVERY_API_CONFIG` script is not written on the hydrate path when `disableSsrRedux` is on, or on a 404 | Deliver it another way for such sites, as `WSFED_LOGIN` is (the site sets `window.WSFED_LOGIN` itself) |
+| The setting is lost on some pages | Classic login code runs in the browser on that page | The `window.USE_IDP` hint is now written with `disableSsrRedux` on and on dynamic renders. It is still not written when the server render ends with status code 404 (`webApp.tsx:377`); a `USE_IDP` build-time define or startup global covers that page |
 
-Other effects to note in release notes: `selectClientCredentials` returns only `contensisClassicToken` on Keycloak sites, and `refreshSecurityToken` dispatches no access token. `@contensis/forms` (1.0.5) reads `ContensisSecurityBearerToken`; when it is missing, it tries its own classic refresh grant with a readable `ContensisSecurityRefreshToken` or `RefreshToken` cookie. On Keycloak sites the refresh cookie is HttpOnly, so it can't.
+Other effects to note in release notes (both as built): `selectClientCredentials` returns only `contensisClassicToken` on Keycloak sites, and `refreshSecurityToken` dispatches no access token. `@contensis/forms` (1.0.5) reads `ContensisSecurityBearerToken`; when it is missing, it tries its own classic refresh grant with a readable `ContensisSecurityRefreshToken` or `RefreshToken` cookie. On Keycloak sites the refresh cookie is HttpOnly, so it can't.
 
 ## Considered and rejected
 
@@ -222,17 +277,30 @@ The full list with results, and the tests to run after the react-base change, ar
 
 ## Questions for Neil
 
+PR #30 answers all four; each question ends with what was built.
+
 1. **How react-base knows a site uses Keycloak.** react-base does not read the tenant's Keycloak switch today. The options:
    - (a) the `ContensisClassicToken` cookie only. Fails after a browser restart and for logged-out members;
    - (b) a site setting only;
    - (c) a site setting decides whether the site uses Keycloak, and cookies decide whether to refresh or log in.
 
    **Recommendation: (c).** The setting has to be turned on together with the tenant's switch. Today `nlgpsf-temp-dev` sends a logged-out visitor to the site's own login page, and only its unpushed branch adds a button to `/idp/check`; with (c), react-base would send them to `/idp/check` itself.
+
+   **Implemented: (c).** The setting is `useIdp` in `ServerConfig` (or a `USE_IDP` build-time define or startup global); the cookies decide whether to build a client or refresh first.
 2. **Whether the access-token release is part of this work.** `ensureAccessTokenSaga` is covered anyway through `handleRequiresLoginSaga`. The open one is `authenticateRequest.ts`: it takes the bearer from the `Authorization` header, then `ContensisCMSUserName` (the classic token on a Keycloak site), then `ContensisSecurityBearerToken`, and falls back to a classic refresh grant with the `RefreshToken` cookie. **Recommendation: include it.** Otherwise sites that protect their access token with `requireLogin` still fail for MFA members.
+
+   **Implemented: included.** The release takes the `Authorization` header, then the `ContensisSecurityBearerToken` cookie, and nothing else; without a valid token it answers 401. The browser then goes to access-denied without a refresh and retry.
 3. **Where the new code goes.** Inside the existing functions, behind the setting, or a separate module that the sagas hand over to when the setting is on, which leaves the classic code untouched and narrows the review to one hand-over point. **Recommendation: inside the existing functions;** a separate module is a reasonable alternative if the number of checks in the classic functions feels unwieldy.
+
+   **Implemented: a separate module,** `src/user/idp/`, which imports nothing from the classic login code. Each existing saga hands over to it with one `isIdpEnabled()` check.
 4. **What a refresh failure that isn't a 401 does.** A timeout, network error or 5xx from `/idp/refresh` says nothing about the session. **Recommendation: only a 401 ends the session.** Anything else leaves the member on the page, does not delete or redirect, and lets the next request or page load try again. A 403 means the header is missing, which is a code defect.
 
-One smaller point is settled when the plan is written: the value of the far-future expiry date.
+   **Implemented: only a 401 ends the session.** A timeout, network error, 5xx, 403 or a 200 that leaves no readable access token cookie is "unknown": nothing is deleted and nobody is redirected. What the member sees depends on where it happens:
+   - at a route change, if the member was shown as logged in, the member is shown as logged out for that page load, and the next navigation tries again (`idp/sagas/routeSession.ts:146`);
+   - on a protected route, one more try after a second, then a 503 error page through the site's `notFoundComponent` (`idp/sagas/requireLogin.ts:165-181`);
+   - from `VALIDATE_USER` or `refreshSecurityToken`, nothing changes; the member is cleared only on a 401.
+
+One smaller point was left for the plan: the value of the far-future expiry date. It is 10 years from when each client is built.
 
 ## Not part of this work
 
@@ -243,10 +311,10 @@ One smaller point is settled when the plan is written: the value of the far-futu
 
 ## Suggested next actions
 
-1. Alex and Neil agree the scope and answer the four questions.
-2. Write a new plan from this document (`/ce-plan`).
-3. File the `nlgpsf-website` v3→v4 upgrade ticket.
-4. After the react-base change and the site upgrade, run the tests in [Keycloak login: tests](keycloak-tests.md).
+1. File the `nlgpsf-website` v3→v4 upgrade ticket. On top of the upgrade the site needs `useIdp: true`, a sign-in control that calls `loginUser()` in place of its username and password form, its own component guards waiting for `useLogin().isLoading`, and a `notFoundComponent` that shows 401 and 503 as errors, not "page not found" (`docs/IDP_LOGIN.md` on `master`).
+2. After the site upgrade, run the tests in [Keycloak login: tests](keycloak-tests.md).
+
+Done: the scope and the four questions were settled in PR #30, built from Neil's own plan.
 
 ## Appendix: tickets
 
@@ -275,5 +343,6 @@ For checking only; nothing above needs them to be understood. Branches as listed
 - contensis-svc-delivery: `AuthenticationService.cs`.
 - contensis-app (CMS): `Zengenti.Contensis.Api.WebHost/Startup.cs`, `…/Middleware/Extensions/ContensisAuthenticationAppBuilderExtensions.cs`, `…/Middleware/Security/RequiredScopesGate.cs`, `…/Middleware/Security/Services/ContensisAuthorisationService.cs` (CMS API token handling); `api/Contensis.Services/Security/SecurityService.vb` (`IsAuthenticated`); `WebAuthentication.vb` (classic cookies); `RequestFlagLatch.vb` and `dbo.xp_System_Setup.sql` (`Identity_UseKeycloak`); `IntegrationInfo.vb` (user types); `engine/App_Start/InitializeMvcFilters.vb`, `Contensis.UI/GlobalFilters/ContensisUserFilter.cs` (admin UI startup call); `docs/solutions/architecture-patterns/flag-on-keycloak-503-diagnosis.md` (503s).
 - contensis-app-ui: `packages/contensis/http/src/identity/identity.service.ts`, `providers/keycloak.ts`, `providers/shared.ts`, `packages/contensis/http/src/interceptors/contensis-auth.ts`.
+- react-base `master` `c416c44c` (the implementation): `src/user/idp/` (all files), `src/user/redux/sagas/login.ts`, `src/user/redux/sagas/resetPassword.js`, `src/routing/redux/sagas.js`, `src/server/webApp.tsx`, `src/server/internalServer.ts`, `src/server/features/access-token-api/authenticateRequest.ts`, `src/server/features/reverse-proxy/index.ts`, `src/util/fetch.ts`, `src/routing/components/NotFound.tsx`, `docs/IDP_LOGIN.md`; `enterprise-fetch` 2.0.3 package source.
 - react-base `29ab2e28`: `src/user/redux/sagas/login.ts`, `src/user/util/LoginHelper.class.ts`, `src/user/util/ContensisManagementApi.ts`, `src/user/util/CookieHelper.class.ts`, `src/user/util/CookieConstants.ts`, `src/util/ContensisDeliveryApi.ts`, `src/routing/redux/sagas.js`, `src/server/webApp.tsx`, `src/server/util/headers.ts`, `src/server/features/access-token-api/`, `src/user/transformations/mapClientCredentials.ts`, `rollup/rollup.config.lib.mjs`; `contensis-management-api` 2.4.0 package source; `@contensis/forms` 1.0.5 package source.
 - `nlgpsf-website`: `package.json`, `src/app/redux/documents/sagas.ts`, `src/server/features/index.ts`; branch `feat/nlgpsf-temp-dev-deploy` `src/app/hooks/useBffSessionBridge.ts`.

@@ -1,7 +1,7 @@
 # Keycloak login: tests
 
 **Companion to:** [Keycloak login for published sites](README.md), the overview. This file holds the checks run on the test tenant before the react-base change, and the tests to run after it.
-**Last updated:** 2026-10-12
+**Last updated:** 2026-10-25. The tests after the react-base change were brought in line with PR #30 (`master` `c416c44c`, code reading): tests 1, 2, 13, 18, 19, 27, 30, 32 and 34 changed.
 
 ## Checks on the test tenant
 
@@ -26,7 +26,7 @@ All the checks that can run before the react-base change are done.
 
 ## Tests after the react-base change
 
-These tests check that the react-base change delivers the fix described in the overview. Each one says what to do and what must happen. Run them on `nlgpsf-temp-dev` once `nlgpsf-website` is on a react-base build with the change and the Keycloak setting on.
+These tests check that the react-base change delivers the fix described in the overview. Each one says what to do and what must happen. Run them on `nlgpsf-temp-dev` once `nlgpsf-website` is on a react-base build with the change (4.0.1-beta.24 or later) and `useIdp: true`.
 
 Before starting:
 
@@ -39,8 +39,8 @@ Before starting:
 
 Tests 1 to 3 need pages that react-base protects: a route marked `requireLogin` and a protected node. `nlgpsf-website` has no `requireLogin` routes today and protects `/account/user` with its own component, so either add one for testing or check that the site's own redirect goes to `/idp/check`.
 
-1. Logged out, open a protected page in the browser. Expect a redirect to `/idp/check?returnPath=<that page>`, not `/account/login`.
-2. Request a `requireLogin` route with no cookies from the command line. Expect a 302 to `/idp/check` before any page is rendered, with `Cache-Control: no-store, private` and `Surrogate-Control: no-store`.
+1. Logged out, open a protected page in the browser. Expect one `POST /idp/refresh` that returns 401 (on a `requireLogin` route the site's loading component shows meanwhile), then a navigation to `/idp/check?returnPath=<that page>`, not `/account/login`.
+2. Request a `requireLogin` route with no cookies from the command line. Expect a 200 with the page rendered for an anonymous visitor, `window.USE_IDP = true;` in its inline script, and the same `Surrogate-Control` header as a public page. The server does not redirect; the browser does, after hydration (test 1).
 3. Open a protected page with `?securityToken=x&Credentials=y&PASSWORD=z` added. Expect the `returnPath` sent to `/idp/check` to contain none of the three.
 4. Complete the password and the one-time code. Expect to land back on the protected page, logged in, with the account page and the member's documents showing.
 5. Log in with the member who has never set up MFA. Expect Keycloak to ask for authenticator setup, then land back on the site logged in.
@@ -54,7 +54,7 @@ Tests 1 to 3 need pages that react-base protects: a route marked `requireLogin` 
 10. Delete the `ContensisSecurityBearerToken` cookie and navigate. Expect one `POST /idp/refresh` with an `X-Contensis-Refresh` header to the site's own host, then the page loads logged in.
 11. Delete the access token cookie on a page that makes several API calls at once. Expect exactly one `/idp/refresh`.
 12. Stay idle on a page for more than 30 minutes, then navigate. Expect one refresh and no login page.
-13. Replace the access token cookie's value with an invalid token and navigate. Expect the Management API call to get 401, then one refresh, a retry that succeeds, and no cookies deleted by react-base.
+13. Replace the access token cookie's value with an invalid token and reload the page (a client-side navigation trusts the cookies already checked and makes no Management API call). Expect the Management API call to get 401, then one refresh, a retry that succeeds, and no cookies deleted by react-base.
 13a. With the same invalid cookie, open a protected node. Expect the CMS-served Delivery API to answer as for an anonymous visitor using the site's access key, not 401 (the CMS ignores a token it can't validate). The member's access to the node comes back only after the refresh in test 13.
 14. Close the browser completely and reopen it within 30 minutes. Expect to be logged in without a login page, the classic token cookies back after the first refresh, and the documents listed.
 15. Repeat test 14 after more than 30 minutes. Same result.
@@ -63,8 +63,8 @@ Tests 1 to 3 need pages that react-base protects: a route marked `requireLogin` 
 
 16. Delete the access token and refresh cookies, then open a protected page. Expect `/idp/refresh` to return 401 and one navigation to `/idp/check`.
 17. Do the same on a public page. Expect the member to be shown as logged out, with no redirect.
-18. Make the retry fail: block or override `security/users/@current` to return 401 after a successful refresh. Expect one round trip through `/idp/check`, then an error page, with no loop.
-19. Block `/idp/refresh` (network error), slow it past the timeout, and override it to return 503, in three runs. Expect what the overview's question on refresh failures that aren't a 401 decides; with its recommendation, the member stays on the page logged in, no cookies are deleted, and the next page load recovers.
+18. Make the retry fail: block or override `security/users/@current` to return 401 after a successful refresh. Expect one round trip through `/idp/check`, then the site's `notFoundComponent` with status 401, with no loop. Within 5 minutes the same path shows the error again; after that, one more redirect is allowed.
+19. Block `/idp/refresh` (network error), slow it past the 5-second timeout, and override it to return 503, in three runs, each with the access token cookie deleted. Expect no cookies deleted and no redirect in every run. On a public page: the member is shown as logged out for that page load, and the next navigation recovers. On a protected page: one more `/idp/refresh` about a second later, then the site's `notFoundComponent` with status 503.
 
 **Logging out**
 
@@ -81,7 +81,7 @@ Tests 1 to 3 need pages that react-base protects: a route marked `requireLogin` 
 24. Change the password. Expect success with no classic grant in the network log, and the next Keycloak login to accept the new password.
 25. If the site calls `refreshSecurityToken`, trigger it. Expect one `/idp/refresh`, no `authenticate()` call, and only the classic token dispatched.
 26. On a page with `@contensis/forms`, submit a form while logged in. Expect it to succeed with no classic grant.
-27. Only if the overview's question on the access-token release brings it into scope: on a route protected by `accessTokens` with `requireLogin`, expect the release to succeed with the access token cookie, a 401 to trigger one refresh and retry, and no classic grant.
+27. On a route protected by `accessTokens` with `requireLogin`, expect the release to succeed with the access token cookie and no classic grant. With an invalid access token cookie, expect the release to answer 401 and the browser to go to `/account/access-denied`; there is no refresh and retry.
 28. With leftover cookies from the old react-base login (`RefreshToken`, a 1-day `ContensisCMSUserName`) and no Keycloak cookies, open a protected page. Expect no classic grant, a refresh that returns 401, and one Keycloak login.
 28a. In a browser that holds an old react-base session for user A, log in through Keycloak as member B. Expect the site to show member B everywhere (header, account page, documents), never user A, and no classic grant made with A's leftover `RefreshToken`.
 
@@ -91,8 +91,8 @@ Tests 1 to 3 need pages that react-base protects: a route marked `requireLogin` 
 
 **In code review**
 
-30. With the setting off, no new code path runs.
+30. With the setting off, no code in `src/user/idp/` runs except the setting check. The changes that do reach sites with the setting off are expected: the shared access-token release call with its 15-second timeout, the `window.USE_IDP = false;` hint, the page hints written under `disableSsrRedux`, and the `NotFound` label for an unmapped 5xx.
 31. No Keycloak code path can reach `GetCredentialsForSecurityToken`, `contensis_classic` or `contensis_classic_refresh_token`.
-32. Only `getManagementApiClient` builds Keycloak clients and sets the expiry, from a newly created date; the access token comes from the cookie source passed in, never from module state.
+32. Only `createIdpManagementClient` builds Keycloak clients and sets the expiry, from a newly created date; the access token is read from the cookie at each call, never from module state.
 33. `/idp/*` URLs are relative to the site; the refresh sends the header with same-origin credentials, has a timeout that doesn't use `AbortSignal.timeout`, and is shared across concurrent callers.
-34. react-base never writes or deletes identity-client's cookies, and the server never calls `/idp/refresh`.
+34. react-base never writes or deletes identity-client's cookies, and react-base's own server-side flows never call `/idp/refresh`. (The validate, refresh and change-password sagas have no server guard; they would call it only if a site dispatched them during server rendering.)
