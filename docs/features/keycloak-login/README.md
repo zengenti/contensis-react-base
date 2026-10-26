@@ -3,9 +3,9 @@
 **Ticket:** CHALKY-2080, "CRB: Update to support new Keycloak IDP". Neil Flatley implements and approves the work.
 **Keycloak side:** KEYC-199, linked to CHALKY-2080 as Relates. Must be fixed before the first customer with MFA member login; it does not block the first tenant switched to Keycloak.
 **Status:** implemented. This overview was written to agree the scope with Neil; he built the change from his own plan in PR [#30](https://github.com/zengenti/contensis-react-base/pull/30), merged to `master` on 2026-10-20 as `791250b1`. It ships in 4.1.0 (release PR #27, open) and is in the 4.0.1-beta builds from beta.24. "What react-base now does" below compares the implementation with this overview. The rest of the document is the pre-implementation analysis: where it says what react-base does "today", it describes `29ab2e28`, which is still the behaviour with the new setting off.
-**Checked against code:** every statement about how a system behaves was checked against source code and config on 2026-10-09: identity-client `main` `206359e`, svc-identity `main` `eb5d790` (Keycloak 26.6.3), contensis-app, contensis-app-ui, contensis-svc-security and contensis-svc-delivery `main`, the Zengenti .NET services library 17.7.0, platform `master`, and react-base `master` `29ab2e28`. Re-checked on 2026-10-12 against identity-client `9d7e121`, svc-identity `236c3d5` and contensis-app `5d178c1a50a`: the changes since were the KEYC-308 scopes (described here), a comment-only change in identity-client, a refresh-token-reuse test and a login-theme restyle in svc-identity, and docs in contensis-app. Points that only a running system can settle were checked on `nlgpsf-temp-dev` on 2026-10-10 to 2026-10-12; results are in [Keycloak login: tests](keycloak-tests.md). The implementation was checked against react-base `master` `c416c44c` (4.0.1-beta.27) on 2026-10-25, by code reading only; nothing was run.
+**Checked against code:** every statement about how a system behaves was checked against source code and config on 2026-10-09: identity-client `main` `206359e`, svc-identity `main` `eb5d790` (Keycloak 26.6.3), contensis-app, contensis-app-ui, contensis-svc-security and contensis-svc-delivery `main`, the Zengenti .NET services library 17.7.0, platform `master`, and react-base `master` `29ab2e28`. Re-checked on 2026-10-12 against identity-client `9d7e121`, svc-identity `236c3d5` and contensis-app `5d178c1a50a`: the changes since were the KEYC-308 scopes (described here), a comment-only change in identity-client, a refresh-token-reuse test and a login-theme restyle in svc-identity, and docs in contensis-app. Points that only a running system can settle were checked on `nlgpsf-temp-dev` on 2026-10-10 to 2026-10-12; results are in [Keycloak login: tests](keycloak-tests.md). The implementation was checked against react-base `master` `c416c44c` (4.0.1-beta.27) on 2026-10-25, by code reading only; nothing was run. Re-checked on 2026-10-26 (`master` unchanged): the two open points found on 2026-10-25 do not hold and were removed.
 **Shared page:** [claude.ai artifact](https://claude.ai/artifact/KP9mfHEAezgnW6cgFMX9jq), rendered from this file. Change this file, then republish the artifact with this file as its `README.md` so the two stay the same.
-**Last updated:** 2026-10-25
+**Last updated:** 2026-10-26
 
 ## What this document is about
 
@@ -97,10 +97,7 @@ Checked against `master` `c416c44c` on 2026-10-25 by reading the code. Paths are
 - **Local development.** When `USE_IDP` is on, the site's server forwards six exact paths (`/idp/check`, `login`, `callback`, `logout`, `refresh`, `error`) to the tenant's preview host (`src/server/features/reverse-proxy/index.ts:86-130`). It is registered whenever the setting is on.
 - **Exports** (`3f13e2bd`, 2026-10-22): `isIdpEnabled`, `activeLoginMethod`, `isWsFedLoginEnabled`, and `loginMethod` on `useLogin` and `withLogin`.
 
-**Open points from the code reading (not run):**
-
-- On a page whose server render ends with the router's status code at 404, the inline script with `window.USE_IDP` is not written (`webApp.tsx:377`). A site that sets the setting only through `useIdp` would then run the classic login code in the browser on that page.
-- `idpValidateUserSaga`, `idpRefreshSecurityTokenSaga` and `idpChangePasswordSaga` have no server guard. They are reached only if a site dispatches `VALIDATE_USER`, `refreshSecurityToken` or change password during server rendering.
+**Open points from the code reading:** none.
 
 ## How Keycloak login works in Contensis
 
@@ -255,7 +252,7 @@ The mitigation column says what PR #30 does, checked by code reading.
 | Per-member data in cached pages, or a cached redirect | Shown to other visitors, or loops members | The server renders every page as anonymous and never redirects |
 | Protected content after a 401 with `userLoggedIn` set | The route reloads without limit on classic sites | With the setting on: one refresh and one reload per path, then `/idp/check` once, then an error page |
 | Access token readable by page JavaScript | Script on the site can read it and call `/idp/refresh` | identity-client's design, not changed here; noted for the threat model |
-| The setting is lost on some pages | Classic login code runs in the browser on that page | The `window.USE_IDP` hint is now written with `disableSsrRedux` on and on dynamic renders. It is still not written when the server render ends with status code 404 (`webApp.tsx:377`); a `USE_IDP` build-time define or startup global covers that page |
+| The setting is lost on some pages | Classic login code runs in the browser on that page | The `window.USE_IDP` hint is now written with `disableSsrRedux` on and on dynamic renders |
 
 Other effects to note in release notes (both as built): `selectClientCredentials` returns only `contensisClassicToken` on Keycloak sites, and `refreshSecurityToken` dispatches no access token. `@contensis/forms` (1.0.5) reads `ContensisSecurityBearerToken`; when it is missing, it tries its own classic refresh grant with a readable `ContensisSecurityRefreshToken` or `RefreshToken` cookie. On Keycloak sites the refresh cookie is HttpOnly, so it can't.
 

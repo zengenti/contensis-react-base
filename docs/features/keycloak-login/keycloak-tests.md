@@ -1,7 +1,7 @@
 # Keycloak login: tests
 
 **Companion to:** [Keycloak login for published sites](README.md), the overview. This file holds the checks run on the test tenant before the react-base change, and the tests to run after it.
-**Last updated:** 2026-10-25. The tests after the react-base change were brought in line with PR #30 (`master` `c416c44c`, code reading): tests 1, 2, 13, 18, 19, 27, 30, 32 and 34 changed.
+**Last updated:** 2026-10-26. The tests after the react-base change were brought in line with PR #30 (`master` `c416c44c`, code reading): tests 1, 2, 13, 18, 19, 27, 30, 32 and 34 changed on 2026-10-25, and test 34's note was corrected on 2026-10-26.
 
 ## Checks on the test tenant
 
@@ -95,4 +95,4 @@ Tests 1 to 3 need pages that react-base protects: a route marked `requireLogin` 
 31. No Keycloak code path can reach `GetCredentialsForSecurityToken`, `contensis_classic` or `contensis_classic_refresh_token`.
 32. Only `createIdpManagementClient` builds Keycloak clients and sets the expiry, from a newly created date; the access token is read from the cookie at each call, never from module state.
 33. `/idp/*` URLs are relative to the site; the refresh sends the header with same-origin credentials, has a timeout that doesn't use `AbortSignal.timeout`, and is shared across concurrent callers.
-34. react-base never writes or deletes identity-client's cookies, and react-base's own server-side flows never call `/idp/refresh`. (The validate, refresh and change-password sagas have no server guard; they would call it only if a site dispatched them during server rendering.)
+34. react-base never writes or deletes identity-client's cookies, and react-base's own server-side flows never call `/idp/refresh`. (The validate, refresh and change-password sagas have no server check, but on the server the refresh fails before any request and counts as unknown.)
