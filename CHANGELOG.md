@@ -1,5 +1,42 @@
 # Changelog
 
+## [4.1.0](https://github.com/zengenti/contensis-react-base/compare/v4.0.0...v4.1.0) (2026-10-27)
+
+
+### Features
+
+* Contensis Identity Provider ([#30](https://github.com/zengenti/contensis-react-base/issues/30)) ([791250b](https://github.com/zengenti/contensis-react-base/commit/791250b14ba217403ee831ad5b282c7fdcf060e4))
+* enhance fallback `NotFound` component to render common status descriptions, e.g. 403 Forbidden ([d856c6b](https://github.com/zengenti/contensis-react-base/commit/d856c6b0e6f875dbdf242d397197aae641651faf))
+* export `NotFound` component in routing ([341e273](https://github.com/zengenti/contensis-react-base/commit/341e273507d532109c11e46279cfadddeac0bffa))
+* expose the active login method to consumers via exports, and `useLogin`/`withLogin` helpers ([3f13e2b](https://github.com/zengenti/contensis-react-base/commit/3f13e2bd282bdf0dd6cd860e98b0a97672da86dc))
+* scoped `accessTokens` configured in server startup, a scoped access token will be supplied to the client via SSR and can be protected with `requireLogin` to forefeit SSR and release the access token client-side to authenticated users only; added `config` to `SSRContext` that reflects the config provided in SSR ([a9b87e5](https://github.com/zengenti/contensis-react-base/commit/a9b87e507cb0a1c395fb0800faf55821317f11e6))
+
+
+### Bug Fixes
+
+* a url hash change no longer triggers the get route saga (same as v3 behaviour) ([2218453](https://github.com/zengenti/contensis-react-base/commit/221845345630c6b7ab10cb8b1367e2ea4e6dbbd2))
+* access denied redirect loop from a failed access token release ([#28](https://github.com/zengenti/contensis-react-base/issues/28)) ([1ebb2cf](https://github.com/zengenti/contensis-react-base/commit/1ebb2cf404d9b2fa52a07fb802264e7400714109))
+* add window messaging for live preview navigation ([b6ac7ff](https://github.com/zengenti/contensis-react-base/commit/b6ac7ff1ecbbdd3d154e840076e7d1b4b2610d92))
+* allow livePreview to work with a popup window ([90d343b](https://github.com/zengenti/contensis-react-base/commit/90d343be8b2f903040e142b1b6315ba684619381))
+* don't clear the user session state with IDP enabled to allow the redirect process to complete logout while avoiding intermediate premature consumer rerenders ([d26a913](https://github.com/zengenti/contensis-react-base/commit/d26a913e53dbb3c3910fa5904f62dac3e22cdf16))
+* duplicate `type` attribute in loadable script tag that contains raw JSON ([7e2934f](https://github.com/zengenti/contensis-react-base/commit/7e2934f3d3b0bc1be119922a31b35367af526de5))
+* live entry preview feature reporting incorrect fields and linkDepth to parent via messaging channel in the client after successful SSR ([b1ef772](https://github.com/zengenti/contensis-react-base/commit/b1ef772737880b747cddd1094a0d7e28ede54aab))
+* live preview navigation works outside of an activated live preview messaging channel ([a725f57](https://github.com/zengenti/contensis-react-base/commit/a725f5795a4f07c771321ccb0c3623a6d615827e))
+* make the delivery cache browser-only, backed by a Map; `CachedTaxonomyLookup` marked as deprecated ([ca5dfc5](https://github.com/zengenti/contensis-react-base/commit/ca5dfc5e53c466bfa3c1188d503e5de320c629a7))
+* memoization warning in user registration selector ([af7b2e0](https://github.com/zengenti/contensis-react-base/commit/af7b2e00e69a4e71c78ec6229ec1dabb579bcdc4))
+* missing client-side DELIVERY_API_CONFIG webpack global fallback in development build ([8c36b4c](https://github.com/zengenti/contensis-react-base/commit/8c36b4cb4f9718a029b3cfa289cda4ede3c75c43))
+* paths containing any double-slash pattern will redirect to the trimmed path ([39f57ca](https://github.com/zengenti/contensis-react-base/commit/39f57ca9175529f7058aa0a71332dc5ee2b7b11b))
+* post id and language with route load options for limiting live-preview updates to only one entry variant ([82a0909](https://github.com/zengenti/contensis-react-base/commit/82a0909a22984cc42685da23dcd28af9a6d96967))
+* reduce log noise when a `version.json` file is not available ([8797565](https://github.com/zengenti/contensis-react-base/commit/8797565e3b759b232c1782fcc17a709b5dc03c17))
+* remove rogue spaces in output script tags ([1646a93](https://github.com/zengenti/contensis-react-base/commit/1646a9304ec598706cdbe89e9d95ea3867a4b504))
+* **search:** `fuzzy` option configurable in `weightedSearchFields`, falling back to the facet-level `fuzzySearch` config value for each field (CHALKY-2114) ([aec3c30](https://github.com/zengenti/contensis-react-base/commit/aec3c301a8ff1c8e410da678628db51c18dfb07f))
+* suppress output of `startup.js` script when running SSR in development ([c409d50](https://github.com/zengenti/contensis-react-base/commit/c409d50ccdcf73eccd0879d47c7c856e91c8bf57))
+
+
+### Performance Improvements
+
+* log warnings for slow or large delivery api requests made via CRB api wrapper, extend/refactor surrogate key implementation to cover other api metrics ([dc95206](https://github.com/zengenti/contensis-react-base/commit/dc95206f97a45857c87c7ed64876d374e70718de))
+
 ## [4.0.0](https://github.com/zengenti/contensis-react-base/compare/v3.4.0...v4.0.0) (2026-04-22)
 
 
