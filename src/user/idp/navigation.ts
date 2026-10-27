@@ -36,6 +36,19 @@ export const getAccessDeniedRoute = (originalPath?: string) => {
   return `${ACCESS_DENIED_ROUTE}?original_uri=${originalPath}`;
 };
 
+let loggingOut = false;
+
+/** Set once the logout navigation starts. The page is on its way out, and a
+ *  later navigation would cancel the request carrying the cookie deletions —
+ *  which is how a logout ends up not happening at all. Challenges are not
+ *  latched: losing one costs a second attempt, not a session. */
+export const isLoggingOut = () => loggingOut;
+
+/** Test seam: a real page load clears the flag by unloading. */
+export const resetLoggingOut = () => {
+  loggingOut = false;
+};
+
 const navigate = (url: string, replace = false) => {
   // Server rendering never navigates.
   if (typeof window === 'undefined') return;
@@ -54,8 +67,12 @@ export const currentHref = () =>
 export const goToIdpCheck = (returnPath: string) =>
   navigate(getIdpCheckUrl(returnPath), true);
 
-export const goToIdpLogout = (returnPath: string) =>
+export const goToIdpLogout = (returnPath: string) => {
+  // One logout per page load: a second would cancel the first response.
+  if (typeof window === 'undefined' || loggingOut) return;
+  loggingOut = true;
   navigate(getIdpLogoutUrl(returnPath));
+};
 
 export const goToAccessDenied = (originalPath?: string) =>
   navigate(getAccessDeniedRoute(originalPath));

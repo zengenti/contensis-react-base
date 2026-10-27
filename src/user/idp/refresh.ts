@@ -15,6 +15,7 @@ import { error } from 'loglevel';
 import { FETCH_TIMEOUT_MS, fetchOnce } from '~/util/fetch';
 import { logError } from '~/util/errors';
 import { IDP_ACCESS_TOKEN_COOKIE, readIdpAccessToken } from './cookies';
+import { isLoggingOut } from './navigation';
 
 export const IDP_REFRESH_PATH = '/idp/refresh';
 
@@ -83,6 +84,11 @@ const performRefresh = async (): Promise<RefreshOutcome> => {
  *  Never rejects: an unreachable identity-client is `unknown`, not an exception. */
 export const refreshSession = (): Promise<RefreshOutcome> => {
   if (inFlight) return inFlight;
+
+  // A refresh answering after a logout would re-write the cookies the logout's
+  // response just deleted. `unknown` never logs anyone out, which is right:
+  // we are logging out, not signed out.
+  if (isLoggingOut()) return Promise.resolve('unknown');
 
   // A refresh that succeeded without leaving a readable cookie will not do
   // better on a second attempt in the same page load.

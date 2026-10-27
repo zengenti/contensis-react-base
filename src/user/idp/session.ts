@@ -144,8 +144,10 @@ export const identityHasChanged = (classicTokenInState?: string | null) => {
 };
 
 /**
- * Mapping a session onto the existing reducer, which is not edited. The actions
- * below are written around three of its quirks:
+ * Mapping a session onto the existing reducer, edited in one place only:
+ * `LOGOUT_USER` holds the session under `USE_IDP` so nothing redirects while
+ * `/idp/logout` is in flight. The actions below are written around three of its
+ * quirks:
  *
  * - `SET_AUTHENTICATION_STATE` can never reset `isAuthenticated`
  *   (`isAuthenticated || state.isAuthenticated`), so ending a session goes

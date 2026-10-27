@@ -1,5 +1,6 @@
 import { Draft, produce } from 'immer';
 import { AppState } from '~/models';
+import { isIdpEnabled } from '~/user/idp/setting';
 import {
   REGISTER_USER,
   REGISTER_USER_FAILED,
@@ -62,6 +63,15 @@ export const initialUserState = {
 export default produce((state: Draft<AppState['user']>, action) => {
   switch (action.type) {
     case LOGOUT_USER: {
+      // Under USE_IDP, logout is a navigation to /idp/logout. Clearing state
+      // here re-renders every consumer, and the redirect that follows cancels
+      // the request carrying the cookie deletions. Hold the session, marked
+      // loading, until the page unloads — the store is rebuilt on return.
+      // `clearOnly` is a session ended elsewhere (another tab, a 401): reset.
+      if (isIdpEnabled() && !action.clearOnly) {
+        state.authenticationState.isLoading = true;
+        return;
+      }
       return initialUserState;
     }
     case LOGIN_USER:

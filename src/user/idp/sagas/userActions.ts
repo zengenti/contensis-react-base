@@ -60,11 +60,12 @@ export function* idpLoginUserSaga(action: any = {}) {
   yield call(goToIdpCheck, getLoginReturnPath(currentHref()));
 }
 
-/** `logoutUser(redirectPath)`: the reducer has already cleared the user, so this
- *  saga's only job is the navigation. identity-client clears its own cookies and
- *  ends the Keycloak session — we never touch a cookie. With `clearOnly` the
- *  dispatch is our own notice that another tab ended the session, so there is
- *  nothing to navigate to. */
+/** `logoutUser(redirectPath)`: navigation only. The reducer holds the session,
+ *  marked loading, until this page unloads, so no consumer redirects and
+ *  cancels the request carrying the cookie deletions. identity-client clears
+ *  its own cookies and ends the Keycloak session — we never touch a cookie.
+ *  With `clearOnly` the dispatch is our own notice that another tab ended the
+ *  session, so state resets and there is nothing to navigate to. */
 export function* idpLogoutUserSaga(action: any = {}) {
   if (action.clearOnly) return;
 
