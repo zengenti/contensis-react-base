@@ -20,8 +20,10 @@ export declare const resolveSession: () => Promise<SessionResult>;
  *  without the check tab B shows user B while its API calls act as user C. */
 export declare const identityHasChanged: (classicTokenInState?: string | null) => boolean;
 /**
- * Mapping a session onto the existing reducer, which is not edited. The actions
- * below are written around three of its quirks:
+ * Mapping a session onto the existing reducer, edited in one place only:
+ * `LOGOUT_USER` holds the session under `USE_IDP` so nothing redirects while
+ * `/idp/logout` is in flight. The actions below are written around three of its
+ * quirks:
  *
  * - `SET_AUTHENTICATION_STATE` can never reset `isAuthenticated`
  *   (`isAuthenticated || state.isAuthenticated`), so ending a session goes

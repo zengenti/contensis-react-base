@@ -2,13 +2,13 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var ContensisDeliveryApi = require('./ContensisDeliveryApi-BPCiFzhy.js');
+var ContensisDeliveryApi = require('./ContensisDeliveryApi-B4fNAtan.js');
 var contensisDeliveryApi = require('contensis-delivery-api');
 var React = require('react');
 var reactRedux = require('react-redux');
 var slice = require('./slice-5xJMH24n.js');
 var mapJson = require('jsonpath-mapper');
-var sagas = require('./sagas-YExDaZq6.js');
+var sagas = require('./sagas-wEWdR8Yz.js');
 require('reselect');
 require('immer');
 require('deep-equal');
@@ -20,9 +20,10 @@ require('isomorphic-fetch');
 var express = require('express');
 var http = require('http');
 var to = require('await-to-js');
-var selectors = require('./selectors-CmJN_5Rz.js');
+var selectors$1 = require('./selectors-D8KXI7Ll.js');
 var CookieHelper_class = require('./CookieHelper.class-Det3qfdU.js');
-var ChangePassword_container = require('./ChangePassword.container-jrE4AVAg.js');
+var ChangePassword_container = require('./ChangePassword.container-Co7aITiv.js');
+var selectors = require('./selectors-BT_exexK.js');
 var CookieConstants = require('./CookieConstants-CN1e2I1R.js');
 var httpProxy = require('http-proxy');
 var fs = require('fs');
@@ -36,11 +37,10 @@ var serialize = require('serialize-javascript');
 var lodash = require('lodash');
 var lodashClean = require('lodash-clean');
 var cookiesMiddleware = require('universal-cookie-express');
-var App = require('./App-Bw2THVgN.js');
-var store = require('./store-2Rx8ZF9-.js');
-var version = require('./version-nvHl-RQB.js');
-var selectors$1 = require('./selectors-PS7proOd.js');
-var RouteLoader = require('./RouteLoader-BCSuhhHZ.js');
+var App = require('./App-B2RirsPI.js');
+var store = require('./store-BOyffVFp.js');
+var version = require('./version-C74W3lwG.js');
+var RouteLoader = require('./RouteLoader-qNGpgDW1.js');
 var stream = require('stream');
 var server$2 = require('@loadable/server');
 var chalk = require('chalk');
@@ -48,13 +48,13 @@ var minifyCssString = require('minify-css-string');
 var reactCookie = require('react-cookie');
 var reactHelmetAsync = require('react-helmet-async');
 var server$3 = require('react-router-dom/server');
-var SSRContext = require('./SSRContext-CjKA1KRm.js');
-require('./VersionInfo-BVyI7gmw.js');
+var SSRContext = require('./SSRContext-B9p7ffVn.js');
+require('./VersionInfo-DCncFAuc.js');
 require('@reduxjs/toolkit');
 require('loglevel');
 require('@redux-saga/core/effects');
-require('./version-DBVUgqWk.js');
-require('./util-neiUPoq_.js');
+require('./version-CJynOae6.js');
+require('./util-De2w-kF0.js');
 require('./selectors-DAQR0uZa.js');
 require('./_commonjsHelpers-BJu3ubxk.js');
 require('enterprise-fetch');
@@ -687,7 +687,7 @@ const getIdpRequestCredentials = req => {
 const getRequestCredentials = req => {
   var _req$headers$authoriz2;
   // The access-token release reads the access token only.
-  if (ChangePassword_container.isIdpEnabled()) return getIdpRequestCredentials(req);
+  if (selectors.isIdpEnabled()) return getIdpRequestCredentials(req);
   const cookies = new CookieHelper_class.Cookies(req.headers.cookie || '').getAll();
   return {
     bearerToken: ((_req$headers$authoriz2 = req.headers.authorization) === null || _req$headers$authoriz2 === void 0 ? void 0 : _req$headers$authoriz2.replace(/^Bearer /i, '')) || cookies[CookieConstants.LOGIN_COOKIE] || cookies[CookieConstants.BEARER_TOKEN_COOKIE],
@@ -909,7 +909,7 @@ const makeAccessTokenMiddleware = accessTokens => async (req, res) => {
   // at least one of the configured groups. `matchUserGroup` passes booleans
   // and empty arrays through, so `requireLogin: true` behaves as before.
   // A user with no resolvable groups fails closed.
-  if (!selectors.matchUserGroup(user.groups, accessToken.requireLogin)) return res.status(403).json({
+  if (!selectors$1.matchUserGroup(user.groups, accessToken.requireLogin)) return res.status(403).json({
     message: 'Not a member of a required user group'
   });
   return res.json({
@@ -930,7 +930,7 @@ const reverseProxies = (app, reverseProxyPaths = []) => {
   deliveryApiProxy(deliveryProxy, app);
   // Opt-in sites only: a flag-off site must not forward `/idp/*`. Reading the
   // setting here is safe because `start()` has already applied it to the global.
-  if (ChangePassword_container.isIdpEnabled()) contensisIdpProxy(idpProxy, app);
+  if (selectors.isIdpEnabled()) contensisIdpProxy(idpProxy, app);
   app.all(reverseProxyPaths.map(proxyPath =>
   // Patch to update paths for express v5
   proxyPath.endsWith('/*') ? `${proxyPath.slice(0, -2)}/{*splat}` : proxyPath.endsWith('/**') ? `${proxyPath.slice(0, -3)}/{*splat}` : proxyPath), (req, res) => {
@@ -1122,7 +1122,7 @@ const DisplayStartupConfiguration = config => {
   console.log(`Configured projects:
 `, JSON.stringify(projects, null, 2));
   console.log();
-  console.log(`Active login method: ${loginMethodLabels[ChangePassword_container.activeLoginMethod()]}`);
+  console.log(`Active login method: ${loginMethodLabels[selectors.activeLoginMethod()]}`);
   console.log();
   console.log('Reverse proxy paths: ', JSON.stringify(config.reverseProxyPaths, null, 2));
   console.log();
@@ -1459,8 +1459,8 @@ const logPrefix = '[addHeaders]';
 const addStandardHeaders = (state, response, packagejson, groups) => {
   if (state) {
     try {
-      const routingSurrogateKeys = selectors$1.selectSurrogateKeys(state);
-      const apiCalls = selectors$1.selectSsrApiCalls(state);
+      const routingSurrogateKeys = selectors.selectSurrogateKeys(state);
+      const apiCalls = selectors.selectSsrApiCalls(state);
       const anyApiError = !!apiCalls.find(call => call.statusCode >= 400);
 
       // Check length of surrogate keys and prevent potential header overflow errors in prod
@@ -1483,14 +1483,14 @@ const addStandardHeaders = (state, response, packagejson, groups) => {
 const addVarnishAuthenticationHeaders = (state, response, groups = {}) => {
   if (state) {
     try {
-      const stateEntry = selectors$1.selectRouteEntry(state);
-      const project = selectors$1.selectCurrentProject(state);
+      const stateEntry = selectors.selectRouteEntry(state);
+      const project = selectors.selectCurrentProject(state);
       const {
         globalGroups,
         allowedGroups
       } = groups;
       let allGroups = Array.from(globalGroups && globalGroups[project] || {});
-      if (stateEntry && selectors$1.getImmutableOrJS(stateEntry, ['authentication', 'isLoginRequired']) && allowedGroups && allowedGroups[project]) {
+      if (stateEntry && selectors.getImmutableOrJS(stateEntry, ['authentication', 'isLoginRequired']) && allowedGroups && allowedGroups[project]) {
         allGroups = [...allGroups, ...allowedGroups[project]];
       }
       response.header('x-contensis-viewer-groups', allGroups.join('|'));
@@ -1719,12 +1719,12 @@ const webApp = (app, ReactApp, config) => {
 
     // The server's login method, written into the page so the client
     // hydrates with the same answer before its bundles load.
-    const useIdpHint = `window.USE_IDP = ${ChangePassword_container.isIdpEnabled()};`;
+    const useIdpHint = `window.USE_IDP = ${selectors.isIdpEnabled()};`;
     console.info(`[webApp] "${request.method} ${request.path}" hostname: ${hostname} versionStatus: ${versionStatus}`);
     store$1.dispatch(version.setVersionStatus(versionStatus));
     store$1.dispatch(version.setVersion(versionInfo.commitRef, versionInfo.buildNo));
     const groups = allowedGroups && allowedGroups[project];
-    store$1.dispatch(selectors$1.setCurrentProject(project, groups, hostname));
+    store$1.dispatch(selectors.setCurrentProject(project, groups, hostname));
     if (i18n) {
       store$1.dispatch(slice.actions.INIT_LOCALES({
         locales: {},
@@ -1842,7 +1842,7 @@ const webApp = (app, ReactApp, config) => {
         })(sagas.cloneDeep(reduxState));
         // These keys are used for preparing server-side response headers only
         // and are not required in the client at all except for debugging ssr
-        if (!((_selectCurrentSearch = selectors$1.selectCurrentSearch(reduxState)) !== null && _selectCurrentSearch !== void 0 && _selectCurrentSearch.includes('includeApiCalls'))) {
+        if (!((_selectCurrentSearch = selectors.selectCurrentSearch(reduxState)) !== null && _selectCurrentSearch !== void 0 && _selectCurrentSearch.includes('includeApiCalls'))) {
           if (stateType === 'immutable') clonedState = clonedState.deleteIn(['routing', 'apiCalls']).deleteIn(['routing', 'surrogateKeys']);else {
             delete clonedState.routing.apiCalls;
             delete clonedState.routing.surrogateKeys;

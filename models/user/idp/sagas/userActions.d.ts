@@ -17,11 +17,12 @@ export declare function idpInitialUserStateSaga(): Generator<import("redux-saga/
  *  with one warning, so a site still posting them hears why nothing happened.
  *  The once-per-path loop guard does not apply to an explicit login click. */
 export declare function idpLoginUserSaga(action?: any): Generator<import("redux-saga/effects").CallEffect<void>, void, unknown>;
-/** `logoutUser(redirectPath)`: the reducer has already cleared the user, so this
- *  saga's only job is the navigation. identity-client clears its own cookies and
- *  ends the Keycloak session — we never touch a cookie. With `clearOnly` the
- *  dispatch is our own notice that another tab ended the session, so there is
- *  nothing to navigate to. */
+/** `logoutUser(redirectPath)`: navigation only. The reducer holds the session,
+ *  marked loading, until this page unloads, so no consumer redirects and
+ *  cancels the request carrying the cookie deletions. identity-client clears
+ *  its own cookies and ends the Keycloak session — we never touch a cookie.
+ *  With `clearOnly` the dispatch is our own notice that another tab ended the
+ *  session, so state resets and there is nothing to navigate to. */
 export declare function idpLogoutUserSaga(action?: any): Generator<import("redux-saga/effects").SelectEffect | import("redux-saga/effects").CallEffect<void>, void, unknown>;
 /** `VALIDATE_USER`: work out who is signed in, from the cookies and a refresh if
  *  needed. Returns the logged-in boolean callers of the classic saga expected. */

@@ -20,6 +20,13 @@ export declare const getIdpCheckUrl: (returnPath: string) => string;
 /** identity-client clears its cookies and ends the Keycloak session. */
 export declare const getIdpLogoutUrl: (returnPath: string) => string;
 export declare const getAccessDeniedRoute: (originalPath?: string) => string;
+/** Set once the logout navigation starts. The page is on its way out, and a
+ *  later navigation would cancel the request carrying the cookie deletions —
+ *  which is how a logout ends up not happening at all. Challenges are not
+ *  latched: losing one costs a second attempt, not a session. */
+export declare const isLoggingOut: () => boolean;
+/** Test seam: a real page load clears the flag by unloading. */
+export declare const resetLoggingOut: () => void;
 /** The address the browser is actually on. The routing action's location is the
  *  route React is rendering, which during a navigation can lag the URL a
  *  `returnPath` should be taken from. */
