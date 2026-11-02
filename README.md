@@ -1,4 +1,8 @@
-# Contensis React Base 🍃
+# [![Contensis](https://github.com/contensis/cli/raw/refs/heads/main/assets/contensis-logo--tiny.svg)](https://www.contensis.com) Contensis React Base 🍃
+
+[![Contensis](https://img.shields.io/badge/Contensis-00304d?style=for-the-badge&logoColor=37BFA7&logo=contensis)](https://www.contensis.com)
+[![npm (@zengenti/contensis-react-base)](https://img.shields.io/npm/v/@zengenti/contensis-react-base?style=for-the-badge&label=npm&color=CB3837&logo=npm&logoColor=white)](https://www.npmjs.com/package/@zengenti/contensis-react-base)
+[![Contensis Slack](https://img.shields.io/badge/Slack-4A154B?style=for-the-badge&logo=contensis&logoColor=white)](https://contensis.slack.com)
 
 Everything you need to get started with React and Contensis.
 
