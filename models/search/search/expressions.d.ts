@@ -25,4 +25,4 @@ export declare const orderByExpression: (orderBy: string[]) => ContensisQueryOrd
  * @returns {array} array of constructed Delivery API Operators
  */
 export declare const customWhereExpressions: (where?: CustomWhereClause) => IExpression[];
-export declare const termExpressions: (searchTerm: string, weightedSearchFields: WeightedSearchField[], fuzzySearch?: boolean, omitSearchFields?: string[]) => any[];
+export declare const termExpressions: (searchTerm: string, weightedSearchFields: WeightedSearchField[], fuzzySearch?: boolean, omitSearchFields?: string[]) => import("contensis-core-api").ILogicalExpression[];
